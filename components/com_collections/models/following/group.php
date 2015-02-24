@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,31 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Following;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Model class for following a group
  */
-class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
+class Group extends Base
 {
 	/**
 	 * \Hubzero\User\Group
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_image = NULL;
 
@@ -60,63 +59,28 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 	private $_baselink = NULL;
 
 	/**
-	 * JDatabase
-	 *
-	 * @var object
-	 */
-	//private $_db = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Group ID
-	 * @return     void
+	 * @param   integer  $id  Group ID
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
-		//$this->_db = JFactory::getDBO();
-
 		$this->_obj = \Hubzero\User\Group::getInstance($oid);
 
 		$this->_baselink = 'index.php?option=com_groups&cn=' . $this->_obj->get('cn') . '&active=collections';
 	}
 
 	/**
-	 * Returns a reference to a model object
-	 *
-	 * This method must be invoked as:
-	 *     $inst = CollectionsModelFollowingGroup::getInstance($oid);
-	 *
-	 * @param      mixed $oid Group ID or alias
-	 * @return     object CollectionsModelFollowingGroup
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new CollectionsModelFollowingGroup($oid);
-		}
-
-		return $instances[$oid];
-	}
-
-	/**
 	 * Get the group's image
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function image()
 	{
 		if (!isset($this->_image))
 		{
-			$config = JComponentHelper::getParams('com_groups');
+			$config = \JComponentHelper::getParams('com_groups');
 			if ($this->_obj->get('logo'))
 			{
 				$this->_image = DS . trim($config->get('uploadpath', '/site/groups'), DS) . DS . $this->_obj->get('gidNumber') . DS . $this->_obj->get('logo');
@@ -132,7 +96,7 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the group's alias
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function alias()
 	{
@@ -142,7 +106,7 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the group's title
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function title()
 	{
@@ -152,7 +116,7 @@ class CollectionsModelFollowingGroup extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the URL for this group
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function link($what='base')
 	{

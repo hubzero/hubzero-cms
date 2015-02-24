@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CollectionsHelperPermissions::getActions('collection');
+$canDo = \Components\Collections\Helpers\Permissions::getActions('collection');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS'), 'collection.png');
 if ($canDo->get('core.admin'))

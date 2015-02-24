@@ -174,7 +174,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new CollectionsModelArchive('group', $this->group->get('gidNumber'));
+		$this->model = new \Components\Collections\Models\Archive('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
 		//$p = new \Hubzero\Plugin\Params($this->database);
@@ -836,7 +836,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->following   = $this->model->following($count);
 		}
 
-		$view->collection = CollectionsModelCollection::getInstance();
+		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
 		//$view->filters['user_id'] = JFactory::getUser()->get('id');
 
@@ -887,7 +887,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$post_id = JRequest::getInt('post', 0);
 
-		$view->post = CollectionsModelPost::getInstance($post_id);
+		$view->post = \Components\Collections\Models\Post::getInstance($post_id);
 
 		if (!$view->post->exists())
 		{
@@ -1056,7 +1056,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Get model
-		$row = new CollectionsModelItem($fields['id']);
+		$row = new \Components\Collections\Models\Item($fields['id']);
 
 		// Bind content
 		if (!$row->bind($fields))
@@ -1088,7 +1088,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Create a post entry linking the item to the board
 		$p = JRequest::getVar('post', array(), 'post');
 
-		$post = new CollectionsModelPost($p['id']);
+		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
 		{
 			$post->set('item_id', $row->get('id'));
@@ -1098,7 +1098,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$coltitle = JRequest::getVar('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', $coltitle);
 			$collection->set('object_id', $this->group->get('gidNumber'));
 			$collection->set('object_type', 'group');
@@ -1166,7 +1166,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$post = CollectionsModelPost::getInstance($post_id);
+				$post = \Components\Collections\Models\Post::getInstance($post_id);
 
 				$item_id = $post->get('item_id');
 			}
@@ -1208,7 +1208,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$collection_id = JRequest::getInt('collection_id', 0);
 		if (!$collection_id)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', JRequest::getVar('collection_title', ''));
 			$collection->set('object_id', $this->group->get('gidNumber'));
 			$collection->set('object_type', 'group');
@@ -1223,7 +1223,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		// Try loading the current board/bulletin to see
 		// if this has already been posted to the board (i.e., no duplicates)
-		$post = new CollectionsTablePost($this->database);
+		$post = new \Components\Collections\Tables\Post($this->database);
 		$post->loadByBoard($collection_id, $item_id);
 		if (!$post->get('id'))
 		{
@@ -1278,7 +1278,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
@@ -1326,7 +1326,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 
 		if (!$post->move(JRequest::getInt('board', 0)))
 		{
@@ -1370,7 +1370,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$no_html = JRequest::getInt('no_html', 0);
 
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 		if (!$post->get('id'))
 		{
 			return $this->_collections();
@@ -1536,7 +1536,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$id = JRequest::getInt('post', 0);
 
 		// Get the post model
-		$post = CollectionsModelPost::getInstance($id);
+		$post = \Components\Collections\Models\Post::getInstance($id);
 
 		// Record the vote
 		if (!$post->item()->vote())
@@ -1666,7 +1666,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Bind new content
-		$row = new CollectionsModelCollection();
+		$row = new \Components\Collections\Models\Collection();
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());

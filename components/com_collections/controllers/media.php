@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,54 +24,57 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
+use Components\Collections\Models\Item;
+use Components\Collections\Models\Post;
+use Components\Collections\Models\Asset;
+use Hubzero\Component\SiteController;
+use Hubzero\Content\Server;
+use Hubzero\Component\View;
+use Hubzero\Utility\Number;
+use Exception;
 
 /**
  * Collections controller class for media
  */
-class CollectionsControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Download a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
-		$file = JRequest::getVar('file', '');
-		$item = JRequest::getInt('post', 0);
+		$file = \JRequest::getVar('file', '');
+		$item = \JRequest::getInt('post', 0);
 
-		$post = CollectionsModelPost::getInstance($item);
+		$post = Post::getInstance($item);
 
 		// Instantiate an attachment object
-		$asset = CollectionsModelAsset::getInstance($file, $post->get('item_id'));
+		$asset = Asset::getInstance($file, $post->get('item_id'));
 
 		// Ensure record exist
 		if (!$asset->get('id') || $post->item()->get('state') == 2)
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'), 404);
 		}
 
 		// Check authorization
 		if ($post->item()->get('access') == 4 && $this->juser->get('guest'))
 		{
-			JError::raiseError(403, JText::_('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'));
-			return;
+			throw new Exception(\JText::_('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'), 403);
 		}
 
 		// Ensure we have a path
 		if (!$asset->get('filename'))
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'), 404);
 		}
 
 		// Get the configured upload path
@@ -80,15 +83,14 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' ' . $filename);
-			return;
+			throw new Exception(\JText::_('COM_COLLECTIONS_FILE_NOT_FOUND') . ' ' . $filename, 404);
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($filename));
+		$ext = strtolower(\JFile::getExt($filename));
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
+		$xserver = new Server();
 		$xserver->filename($filename);
 		$xserver->disposition('attachment');
 		if (in_array($ext, array('jpg','jpeg','jpe','png','gif')))
@@ -100,7 +102,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COLLECTIONS_SERVER_ERROR'));
+			throw new Exception(\JText::_('COM_COLLECTIONS_SERVER_ERROR'), 500);
 		}
 		else
 		{
@@ -115,7 +117,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
@@ -128,17 +130,17 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('dir', 0, 'post');
+		$listdir = \JRequest::getInt('dir', 0, 'post');
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
 			return;
 		}
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new CollectionsModelItem($listdir);
+			$item = new Item($listdir);
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
@@ -152,10 +154,10 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Create database entry
-		$asset = new CollectionsModelAsset();
+		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', JRequest::getVar('description', '', 'post'));
+		$asset->set('description', \JRequest::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
@@ -177,21 +179,21 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(JRequest::getVar('dir', ''));
+		$listdir = strtolower(\JRequest::getVar('dir', ''));
 		if (!$listdir)
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_NO_ID')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_NO_ID')));
 			return;
 		}
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new CollectionsModelItem($listdir);
+			$item = new Item($listdir);
 			if (!$item->exists())
 			{
 				$item->set('id', 0);
@@ -213,16 +215,15 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Create database entry
-		$asset = new CollectionsModelAsset();
+		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', JRequest::getVar('description', '', 'post'));
+		$asset->set('description', \JRequest::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
 		if (!$asset->store())
 		{
-			//$this->setError($asset->getError());
 			echo json_encode(array(
 				'success'   => false,
 				'errors'    => $asset->getErrors(),
@@ -233,7 +234,6 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		//echo result
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => 'http://',
@@ -252,21 +252,21 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(JRequest::getVar('dir', ''));
+		$listdir = strtolower(\JRequest::getVar('dir', ''));
 		if (!$listdir)
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_NO_ID')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_NO_ID')));
 			return;
 		}
 
 		if (substr($listdir, 0, 3) == 'tmp')
 		{
-			$item = new CollectionsModelItem($listdir);
+			$item = new Item($listdir);
 			if (!$item->exists())
 			{
 				$item->set('state', 0);
@@ -300,7 +300,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_FILE_NOT_FOUND')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_FILE_NOT_FOUND')));
 			return;
 		}
 
@@ -309,29 +309,29 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR')));
+				echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_ERROR_UPLOAD_DIR_NOT_WRITABLE')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('COM_COLLECTIONS_ERROR_EMPTY_FILE')));
+			echo json_encode(array('error' => \JText::_('COM_COLLECTIONS_ERROR_EMPTY_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
+			echo json_encode(array('error' => \JText::sprintf('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -342,7 +342,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = \JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -373,10 +373,10 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Create database entry
-		$asset = new CollectionsModelAsset();
+		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
-		$asset->set('description', JRequest::getVar('description', '', 'post'));
+		$asset->set('description', \JRequest::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'file');
 
@@ -388,11 +388,11 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$view = new \Hubzero\Component\View(array(
+		$view = new View(array(
 			'name'   => 'media',
 			'layout' => '_asset'
 		));
-		$view->i          = JRequest::getInt('i', 0);
+		$view->i          = \JRequest::getInt('i', 0);
 		$view->option     = $this->_option;
 		$view->controller = $this->_controller;
 		$view->asset      = $asset;
@@ -411,7 +411,7 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Upload a file to the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -422,25 +422,25 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('dir', 0, 'post');
+		$listdir = \JRequest::getInt('dir', 0, 'post');
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_FILE'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -451,9 +451,9 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
+				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
 				$this->displayTask();
 				return;
 			}
@@ -462,22 +462,22 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPLOAD'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPLOAD'));
 		}
 		// File was uploaded
 		else
 		{
 			// Create database entry
-			$asset = new CollectionsModelAsset();
+			$asset = new Asset();
 			$asset->set('item_id', intval($listdir));
 			$asset->set('filename', $file['name']);
-			$asset->set('description', JRequest::getVar('description', '', 'post'));
+			$asset->set('description', \JRequest::getVar('description', '', 'post'));
 			$asset->set('state', 1);
 			$asset->set('type', 'file');
 
@@ -494,11 +494,11 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Delete a file in the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
@@ -511,9 +511,9 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming asset
-		$id = JRequest::getInt('asset', 0, 'get');
+		$id = \JRequest::getInt('asset', 0, 'get');
 
-		$model = new CollectionsModelAsset($id);
+		$model = new Asset($id);
 
 		if ($model->exists())
 		{
@@ -531,16 +531,16 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Display a form for uploading files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function ajaxDeleteTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('asset', 0);
+		$id = \JRequest::getInt('asset', 0);
 
 		if ($id)
 		{
-			$model = new CollectionsModelAsset($id);
+			$model = new Asset($id);
 
 			if ($model->exists())
 			{
@@ -566,60 +566,55 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Display a form for uploading files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
-		$this->view->listdir = JRequest::getInt('dir', 0, 'request');
+		$this->view->listdir = \JRequest::getInt('dir', 0, 'request');
 
 		// Output HTML
 		$this->view->config = $this->config;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Display a list of files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function listTask()
 	{
 		// Incoming
-		$listdir = JRequest::getInt('dir', 0, 'get');
+		$listdir = \JRequest::getInt('dir', 0, 'get');
 
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 		}
 
-		$this->view->item = CollectionsModelItem::getInstance($listdir);
+		$this->view->item = Item::getInstance($listdir);
 		if (!$this->view->item->exists())
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 		}
 
 		$this->view->config  = $this->config;
 		$this->view->listdir = $listdir;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 }

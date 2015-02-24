@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Tables;
 
 /**
  * Table class for collection item asset
  */
-class CollectionsTableAsset extends JTable
+class Asset extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,14 +56,17 @@ class CollectionsTableAsset extends JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
-			return false;
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 		}
 
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -78,8 +80,8 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 			$this->state      = 1;
 
 			$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");
@@ -284,7 +286,7 @@ class CollectionsTableAsset extends JTable
 		}
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
 			return false;
 		}
 
@@ -292,7 +294,7 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->filename)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
 			return false;
 		}
 
@@ -302,20 +304,20 @@ class CollectionsTableAsset extends JTable
 
 			$path = $this->path($this->item_id);
 
-			$ext = JFile::getExt($this->filename);
-			$fileRemoved = JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
+			$ext = \JFile::getExt($this->filename);
+			$fileRemoved = \JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
 
 			$file = $path . DS . $this->filename;
 
 			if (!file_exists($file) or !$file)
 			{
-				$this->setError(JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
+				$this->setError(\JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
 				return false;
 			}
 
-			if (!JFile::move($file, $path . DS . $fileRemoved))
+			if (!\JFile::move($file, $path . DS . $fileRemoved))
 			{
-				$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
+				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
 				return false;
 			}
 
@@ -326,7 +328,7 @@ class CollectionsTableAsset extends JTable
 
 		if (!$this->store())
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPDATE_RECORD'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPDATE_RECORD'));
 			return false;
 		}
 
@@ -352,9 +354,9 @@ class CollectionsTableAsset extends JTable
 		$path = $this->path($this->item_id);
 
 		jimport('joomla.filesystem.file');
-		if (!JFile::delete($path . DS . $this->filename))
+		if (!\JFile::delete($path . DS . $this->filename))
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 		}
 
 		return parent::delete();
@@ -368,7 +370,7 @@ class CollectionsTableAsset extends JTable
 	 */
 	public function path($id=null)
 	{
-		$config = JComponentHelper::getParams('com_collections');
+		$config = \JComponentHelper::getParams('com_collections');
 		return JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $id;
 	}
 }

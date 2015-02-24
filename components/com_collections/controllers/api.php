@@ -176,7 +176,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new CollectionsModelCollection();
+		$model = new \Component\Collections\Models\Collection();
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),
@@ -259,7 +259,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new CollectionsModelArchive();
+		$model = new \Components\Collections\Models\Archive();
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),
@@ -287,7 +287,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 
 			foreach ($model->collections($filters) as $i => $entry)
 			{
-				$collection = CollectionsModelCollection::getInstance($entry->item()->get('object_id'));
+				$collection = \Components\Collections\Models\Collection::getInstance($entry->item()->get('object_id'));
 
 				$obj = new stdClass;
 				$obj->id          = $entry->get('id');

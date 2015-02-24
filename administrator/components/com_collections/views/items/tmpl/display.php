@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CollectionsHelperPermissions::getActions('post');
+$canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_ITEMS'), 'collection.png');
 if ($canDo->get('core.create'))
@@ -101,7 +101,7 @@ $k = 0;
 $i = 0;
 foreach ($this->rows as $row)
 {
-	$row = new CollectionsModelItem($row);
+	$row = new \Components\Collections\Models\Item($row);
 	if (!($content = $row->description('clean', 75)))
 	{
 		$content = JText::_('COM_COLLECTIONS_NONE');

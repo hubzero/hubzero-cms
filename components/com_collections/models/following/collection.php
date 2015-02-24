@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,23 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Following;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collection.php');
+use Components\Collections\Models\Collection;
+use Hubzero\User\Group;
+
+require_once(__DIR__ . DS . 'base.php');
+require_once(dirname(__DIR__) . DS . 'collection.php');
 
 /**
  * Model class for following a collection
  */
-class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstract
+class Collection extends Base
 {
 	/**
-	 * CollectionsModelCollection
+	 * Collection
 	 *
 	 * @var object
 	 */
@@ -61,28 +63,19 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	private $_baselink = NULL;
 
 	/**
-	 * JDatabase
-	 *
-	 * @var object
-	 */
-	//private $_db = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Collection ID
-	 * @return     void
+	 * @param   integer  $id  Collection ID
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
-		//$this->_db = JFactory::getDBO();
-
-		$this->_obj = new CollectionsModelCollection($oid);
+		$this->_obj = new Collection($oid);
 
 		switch ($this->_obj->get('object_type'))
 		{
 			case 'group':
-				$group = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
+				$group = Group::getInstance($this->_obj->get('object_id'));
 				$this->_baselink = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->_obj->get('alias');
 			break;
 
@@ -94,39 +87,14 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	}
 
 	/**
-	 * Returns a reference to a model object
-	 *
-	 * This method must be invoked as:
-	 *     $inst = CollectionsModelFollowingCollection::getInstance($oid);
-	 *
-	 * @param      string $pagename The page to load
-	 * @return     object CollectionsModelFollowingCollection
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new CollectionsModelFollowingCollection($oid);
-		}
-
-		return $instances[$oid];
-	}
-
-	/**
 	 * Get the creator of this entry
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @return  mixed
 	 */
 	public function creator($property=null)
 	{
@@ -135,7 +103,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 			case 'group':
 				if (!isset($this->_creator) || !is_object($this->_creator))
 				{
-					$this->_creator = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
+					$this->_creator = Group::getInstance($this->_obj->get('object_id'));
 				}
 				if ($property)
 				{
@@ -158,7 +126,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 			default:
 				if (!isset($this->_creator) || !is_object($this->_creator))
 				{
-					$this->_creator = JUser::getInstance($this->_obj->get('created_by'));
+					$this->_creator = \JUser::getInstance($this->_obj->get('created_by'));
 				}
 				if ($property)
 				{
@@ -183,7 +151,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	/**
 	 * Get the creator of this entry
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function image()
 	{
@@ -193,7 +161,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	/**
 	 * Get the creator of this entry
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function alias()
 	{
@@ -203,7 +171,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	/**
 	 * Get the creator of this entry
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function title()
 	{
@@ -213,7 +181,7 @@ class CollectionsModelFollowingCollection extends CollectionsModelFollowingAbstr
 	/**
 	 * Get the creator of this entry
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function link($what='base')
 	{

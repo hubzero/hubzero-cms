@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Adapters;
+
+use Hubzero\Base\Object;
 
 /**
  * Abstract adapter class for a blog entry link
  */
-abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
+abstract class Base extends Object
 {
 	/**
 	 * Script name
@@ -53,8 +54,8 @@ abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer  $scope_id S cope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
@@ -64,9 +65,9 @@ abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function build($type='', $params=null)
 	{
@@ -76,8 +77,8 @@ abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Flatten array of segments into querystring
 	 *
-	 * @param      array $segments An associative array of querystring bits
-	 * @return     string
+	 * @param   array   $segments  An associative array of querystring bits
+	 * @return  string
 	 */
 	protected function _build(array $segments)
 	{

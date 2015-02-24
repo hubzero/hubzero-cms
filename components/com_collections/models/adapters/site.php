@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Adapters;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'adapters' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
- * Adapter class for an entry link for the site-wide blog
+ * Adapter class for an entry link for the site-wide collections
  */
-class CollectionsModelAdapterSite extends CollectionsModelAdapterAbstract
+class Site extends Base
 {
 	/**
 	 * URL segments
@@ -50,14 +49,14 @@ class CollectionsModelAdapterSite extends CollectionsModelAdapterAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
 		$this->set('scope_id', $scope_id);
 
-		$config = JComponentHelper::getParams($this->_segments['option']);
+		$config = \JComponentHelper::getParams($this->_segments['option']);
 
 		$this->set('path', $config->get('uploadpath', '/site/blog'));
 		$this->set('scope', 'site');
@@ -68,9 +67,9 @@ class CollectionsModelAdapterSite extends CollectionsModelAdapterAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function build($type='', $params=null)
 	{
@@ -100,8 +99,8 @@ class CollectionsModelAdapterSite extends CollectionsModelAdapterAbstract
 			break;
 
 			case 'comments':
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['task'] .= $this->get('alias');
 
 				$anchor = '#comments';
@@ -109,8 +108,8 @@ class CollectionsModelAdapterSite extends CollectionsModelAdapterAbstract
 
 			case 'permalink':
 			default:
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['task'] .= $this->get('alias');
 			break;
 		}

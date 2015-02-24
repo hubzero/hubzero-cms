@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,18 +23,25 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Controllers;
+
+use Components\Collections\Models\Collection;
+use Components\Collections\Models\Archive;
+use Components\Collections\Models\Post;
+use Components\Collections\Models\Item;
+use Components\Collections\Tables;
+use Hubzero\Component\SiteController;
+use Hubzero\Item\Comment;
 
 /**
- * Controller class for bulletin boards
+ * Controller class for collection posts
  */
-class CollectionsControllerPosts extends \Hubzero\Component\SiteController
+class Posts extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -43,9 +50,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		//$this->_authorize('collection');
-		//$this->_authorize('item');
-		$this->model = CollectionsModelArchive::getInstance();
+		$this->model = Archive::getInstance();
 
 		$this->registerTask('comment', 'post');
 
@@ -53,58 +58,46 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * View a post
-	 *
-	 * @return     void
-	 */
-	/**
 	 * Display a post
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
+		$this->view->config  = $this->config;
+		$this->view->juser   = $this->juser;
+		$this->view->model   = $this->model;
+		$this->view->no_html = \JRequest::getInt('no_html', 0);
 
-		$this->view->config     = $this->config;
-		$this->view->juser      = $this->juser;
+		$post_id = \JRequest::getInt('post', 0);
 
-		$this->view->model      = $this->model;
-		$this->view->no_html    = JRequest::getInt('no_html', 0);
-
-		$post_id = JRequest::getInt('post', 0);
-
-		$this->view->post = CollectionsModelPost::getInstance($post_id);
+		$this->view->post = Post::getInstance($post_id);
 
 		if (!$this->view->post->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
+				\JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
 			);
 			return;
 		}
 
 		$this->view->collection = $this->model->collection($this->view->post->get('collection_id'));
-		/*if ($view->collection->get('access') == 4 // private collection
-		 && $this->juser->get('id') != $this->member->get('uidNumber')) // is user the collection owner?
-		{
-			$this->params->set('access-view-item', false);
-		}*/
 
-		if ($this->getError())
+		// Push error messages ot the view
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Display a form for editing an entry
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function editTask()
 	{
@@ -114,17 +107,15 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return $this->loginTask();
 		}
 
-		$this->view->setLayout('edit');
-
 		$this->view->juser      = $this->juser;
 		$this->view->config     = $this->config;
 
 		// Incoming
-		$this->view->no_html = JRequest::getInt('no_html', 0);
+		$this->view->no_html = \JRequest::getInt('no_html', 0);
 
-		$id = JRequest::getInt('post', 0);
+		$id = \JRequest::getInt('post', 0);
 
-		$this->view->collection = $this->model->collection(JRequest::getVar('board', 0));
+		$this->view->collection = $this->model->collection(\JRequest::getVar('board', 0));
 
 		// Get all collections for a user
 		$this->view->collections = $this->model->collections();
@@ -132,7 +123,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		{
 			$this->view->collection->setup($this->juser->get('id'), 'member');
 			$this->view->collections = $this->model->collections();
-			$this->view->collection  = $this->model->collection(JRequest::getVar('board', 0));
+			$this->view->collection  = $this->model->collection(\JRequest::getVar('board', 0));
 		}
 
 		// Load the post
@@ -143,7 +134,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Are we removing an asset?
-		if ($remove = JRequest::getInt('remove', 0))
+		if ($remove = \JRequest::getInt('remove', 0))
 		{
 			if (!$this->view->entry->item()->removeAsset($remove))
 			{
@@ -166,27 +157,26 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Push error messages ot the view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Login is required
 		if ($this->juser->get('guest'))
@@ -195,10 +185,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Get model
-		$row = new CollectionsModelItem();
+		$row = new Item();
 
 		// Bind content
 		if (!$row->bind($fields))
@@ -209,8 +199,8 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 
 		// Add some data
 		//$row->set('_files', $files);
-		$row->set('_assets', JRequest::getVar('assets', array(), 'post'));
-		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('_assets', \JRequest::getVar('assets', array(), 'post'));
+		$row->set('_tags', trim(\JRequest::getVar('tags', '')));
 		$row->set('state', 1);
 
 		// Store new content
@@ -221,10 +211,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Create a post entry linking the item to the board
-		$p = JRequest::getVar('post', array(), 'post');
+		$p = \JRequest::getVar('post', array(), 'post');
 
 		// Load a post entry
-		$post = new CollectionsModelPost($p['id']);
+		$post = new Post($p['id']);
 		if (!$post->exists())
 		{
 			// No post existed so set some values
@@ -233,10 +223,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Are we creating a new collection for it?
-		$coltitle = JRequest::getVar('collection_title', '', 'post');
+		$coltitle = \JRequest::getVar('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new Collection();
 			$collection->set('title', $coltitle);
 			$collection->set('object_id', $this->juser->get('id'));
 			$collection->set('object_type', 'member');
@@ -266,29 +256,19 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=collections')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=collections')
 		);
 	}
 
 	/**
-	 * View a post
-	 *
-	 * @return     void
-	 */
-	/*public function commentTask()
-	{
-		$this->postTask();
-	}*/
-
-	/**
 	 * Save a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function savecommentTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
@@ -297,10 +277,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new \Hubzero\Item\Comment($this->database);
+		$row = new Comment($this->database);
 		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
@@ -327,7 +307,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	/**
 	 * Delete a comment
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function deletecommentTask()
 	{
@@ -338,14 +318,14 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$id = JRequest::getInt('comment', 0);
+		$id = \JRequest::getInt('comment', 0);
 		if (!$id)
 		{
 			return $this->displayTask();
 		}
 
 		// Initiate a whiteboard comment object
-		$comment = new \Hubzero\Item\Comment($this->database);
+		$comment = new Comment($this->database);
 		$comment->load($id);
 		$comment->state = 2;
 
@@ -362,7 +342,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	/**
 	 * Vote for an item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function voteTask()
 	{
@@ -372,10 +352,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$id = JRequest::getInt('post', 0);
+		$id = \JRequest::getInt('post', 0);
 
 		// Get the post model
-		$post = CollectionsModelPost::getInstance($id);
+		$post = Post::getInstance($id);
 
 		// Record the vote
 		if (!$post->item()->vote())
@@ -384,16 +364,16 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		}
 
 		// Display updated item stats if called via AJAX
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = \JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
-			echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive'));
+			echo \JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive'));
 			exit;
 		}
 
 		// Display the main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
+			\JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);
 	}
 
@@ -409,17 +389,17 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return $this->loginTask();
 		}
 
-		$model = new CollectionsModelArchive('member', $this->juser->get('id'));
+		$model = new Archive('member', $this->juser->get('id'));
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = \JRequest::getInt('no_html', 0);
 
 		// No collection ID selected so present repost form
-		$repost = JRequest::getInt('repost', 0);
+		$repost = \JRequest::getInt('repost', 0);
 		if (!$repost)
 		{
 			// Incoming
-			$post_id       = JRequest::getInt('post', 0);
-			$collection_id = JRequest::getVar('board', 0);
+			$post_id       = \JRequest::getInt('post', 0);
+			$collection_id = \JRequest::getVar('board', 0);
 
 			if (!$post_id && $collection_id)
 			{
@@ -430,7 +410,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$post = CollectionsModelPost::getInstance($post_id);
+				$post = Post::getInstance($post_id);
 
 				$item_id = $post->get('item_id');
 			}
@@ -450,13 +430,13 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$collection_title = JRequest::getVar('collection_title', '');
-		$collection_id = JRequest::getInt('collection_id', 0);
-		$item_id       = JRequest::getInt('item_id', 0);
+		$collection_title = \JRequest::getVar('collection_title', '');
+		$collection_id = \JRequest::getInt('collection_id', 0);
+		$item_id       = \JRequest::getInt('item_id', 0);
 
 		if ($collection_title)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new Collection();
 			$collection->set('title', $collection_title);
 			$collection->set('object_id', $this->juser->get('id'));
 			$collection->set('object_type', 'member');
@@ -469,14 +449,14 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 
 		// Try loading the current collection/post to see
 		// if this has already been posted to the collection (i.e., no duplicates)
-		$post = new CollectionsTablePost($this->database);
+		$post = new Tables\Post($this->database);
 		$post->loadByBoard($collection_id, $item_id);
 		if (!$post->get('id'))
 		{
 			// No record found -- we're OK to add one
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = JRequest::getVar('description', '');
+			$post->description   = \JRequest::getVar('description', '');
 			if ($post->check())
 			{
 				$this->setError($post->getError());
@@ -495,13 +475,13 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		// Display updated item stats if called via AJAX
 		if ($no_html)
 		{
-			echo JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
+			echo \JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(array('item_id' => $post->get('item_id'), 'original' => 0)));
 			exit;
 		}
 
 		// Display the main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
+			\JRoute::_('index.php?option=' . $this->option . '&controller=collections&task=posts')
 		);
 	}
 
@@ -513,10 +493,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$posts = JRequest::getVar('post', array());
+		$posts = \JRequest::getVar('post', array());
 
 		if (is_array($posts))
 		{
@@ -531,7 +511,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 					continue;
 				}
 
-				$row = new CollectionsModelPost($post);
+				$row = new Post($post);
 				if (!$row->exists())
 				{
 					continue;
@@ -547,15 +527,15 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COLLECTIONS_POSTS_REORDERED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				\JText::_('COM_COLLECTIONS_POSTS_REORDERED')
 			);
 			return;
 		}
 
-		$response = new stdClass;
+		$response = new \stdClass;
 		$response->success = 1;
-		$response->message = JText::_('COM_COLLECTIONS_POSTS_REORDERED');
+		$response->message = \JText::_('COM_COLLECTIONS_POSTS_REORDERED');
 
 		echo json_encode($response);
 	}
@@ -567,24 +547,24 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	 */
 	public function metadataTask()
 	{
-		$id = JRequest::getInt('post', 0);
+		$id = \JRequest::getInt('post', 0);
 
-		$post = new CollectionsModelPost($id);
+		$post = new Post($id);
 
-		if (!JRequest::getInt('no_html', 0))
+		if (!\JRequest::getInt('no_html', 0))
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
 		}
 
-		$response = new stdClass;
+		$response = new \stdClass;
 		$response->id       = $id;
-		$response->reposts  = JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->item()->get('reposts', 0));
-		$response->comments = JText::sprintf('COM_COLLECTIONS_NUM_COMMENTS', $post->item()->get('comments', 0));
-		$response->likes    = JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive', 0));
+		$response->reposts  = \JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->item()->get('reposts', 0));
+		$response->comments = \JText::sprintf('COM_COLLECTIONS_NUM_COMMENTS', $post->item()->get('comments', 0));
+		$response->likes    = \JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive', 0));
 
 		echo json_encode($response);
 	}

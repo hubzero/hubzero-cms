@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Tables;
 
 /**
  * Table class for collection items
  */
-class CollectionsTableItem extends JTable
+class Item extends \JTable
 {
 	/**
 	 * Constructor
@@ -61,7 +60,7 @@ class CollectionsTableItem extends JTable
 		if ($this->type != 'image' && $this->type != 'file'
 		 && (!$this->title && !$this->description && !$this->url))
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_CONTENT'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_CONTENT'));
 			return false;
 		}
 
@@ -70,15 +69,15 @@ class CollectionsTableItem extends JTable
 			$this->access = 0;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
+			$this->created    = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified    = JFactory::getDate()->toSql();
+			$this->modified    = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 			if (!$this->created_by)
 			{
@@ -269,7 +268,7 @@ class CollectionsTableItem extends JTable
 			{
 				$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
 			}
-			else if (!JFactory::getApplication()->isAdmin())
+			else if (!\JFactory::getApplication()->isAdmin())
 			{
 				$where[] = "d.access=0";
 				$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
@@ -378,7 +377,7 @@ class CollectionsTableItem extends JTable
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		$query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->Quote($id) . " AND v.user_id=" . $this->_db->Quote($juser->get('id'));
 

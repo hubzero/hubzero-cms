@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
+namespace Components\Collections\Tables;
 /**
  * Table class for collections
  */
-class CollectionsTableCollection extends JTable
+class Collection extends \JTable
 {
 	/**
 	 * Constructor
@@ -116,13 +114,13 @@ class CollectionsTableCollection extends JTable
 	 */
 	public function setup($object_id=0, $object_type='')
 	{
-		$lang = JFactory::getLanguage();
+		$lang = \JFactory::getLanguage();
 		$lang->load('com_collections');
 
 		$result = array(
 			'id'          => 0,
-			'title'       => JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
-			'description' => JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
+			'title'       => \JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => \JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
@@ -131,7 +129,7 @@ class CollectionsTableCollection extends JTable
 		);
 		if (!$result['created_by'])
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$result['created_by'] = $juser->get('id');
 		}
 		if (!$this->bind($result))
@@ -159,8 +157,7 @@ class CollectionsTableCollection extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'));
 		}
 
 		$this->alias = str_replace(' ', '-', strtolower($this->title));
@@ -169,14 +166,17 @@ class CollectionsTableCollection extends JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'));
-			return false;
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'));
 		}
 
 		$this->object_type = trim($this->object_type);
 		if (!$this->object_type)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -185,19 +185,19 @@ class CollectionsTableCollection extends JTable
 			$this->access = 0;
 		}
 
-		$tbl = new CollectionsTableCollection($this->_db);
+		$tbl = new self($this->_db);
 		$tbl->load($this->alias, $this->object_id, $this->object_type);
 
 		if (!$this->id)
 		{
 			if ($tbl->id && $tbl->state != 2)
 			{
-				$this->setError(JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
+				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 
-			$juser = JFactory::getUser();
-			$this->created    = ($this->created ? $this->created : JFactory::getDate()->toSql());
+			$juser = \JFactory::getUser();
+			$this->created    = ($this->created ? $this->created : \JFactory::getDate()->toSql());
 			$this->created_by = ($this->created_by ? $this->created_by : $juser->get('id'));
 			$this->state      = 1;
 		}
@@ -207,7 +207,7 @@ class CollectionsTableCollection extends JTable
 			 && $tbl->id != $this->id
 			 && $tbl->state != 2)
 			{
-				$this->setError(JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
+				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 		}

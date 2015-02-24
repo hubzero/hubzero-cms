@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,36 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'following.php');
+use Hubzero\Base\Model;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'following.php');
 
 /**
  * Collections model class for following something/one
  */
-class CollectionsModelFollowing extends \Hubzero\Base\Model
+class Following extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CollectionsTableFollowing';
+	protected $_tbl_name = '\\Components\\Collections\\Tables\\Following';
 
 	/**
-	 * CollectionsModelFollowingAbstract
+	 * Following
 	 *
 	 * @var object
 	 */
 	private $_following = null;
 
 	/**
-	 * CollectionsModelFollowingAbstract
+	 * Follower
 	 *
 	 * @var object
 	 */
@@ -62,17 +63,18 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed   $oid            Following ID, array, or object
-	 * @param   string  $following_type Type being followed [collection, member, group]
-	 * @param   integer $follower_id    Follower ID [member, group]
-	 * @param   string  $follower_type  [member, group]
+	 * @param   mixed    $oid             Following ID, array, or object
+	 * @param   string   $following_type  Type being followed [collection, member, group]
+	 * @param   integer  $follower_id     Follower ID [member, group]
+	 * @param   string   $follower_type   [member, group]
 	 * @return  void
 	 */
 	public function __construct($oid=null, $following_type=null, $follower_id=0, $follower_type='member')
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CollectionsTableFollowing($this->_db);
+		$tbl = $this->_tbl_name;
+		$this->_tbl = new $tbl($this->_db);
 
 		if (is_numeric($oid))
 		{
@@ -88,13 +90,13 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Returns a reference to a CollectionsModelFollowing object
+	 * Returns a reference to this object
 	 *
-	 * @param   mixed   $oid            Following ID, array, or object
-	 * @param   string  $following_type Type being followed [collection, member, group]
-	 * @param   integer $follower_id    Follower ID [member, group]
-	 * @param   string  $follower_type  [member, group]
-	 * @return  object  CollectionsModelFollowing
+	 * @param   mixed    $oid             Following ID, array, or object
+	 * @param   string   $following_type  Type being followed [collection, member, group]
+	 * @param   integer  $follower_id     Follower ID [member, group]
+	 * @param   string   $follower_type   [member, group]
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $following_type=null, $follower_id=0, $follower_type='member')
 	{
@@ -148,20 +150,20 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Get an adapter
 	 *
-	 * @param   string $what Key name [following, follower]
+	 * @param   string  $what  Key name [following, follower]
 	 * @return  object
 	 */
 	private function _adapter($key='following')
 	{
 		$scope = strtolower($this->get($key . '_type'));
-		$cls = 'CollectionsModelFollowing' . ucfirst($scope);
+		$cls = __NAMESPACE__ . '\\Following\\' . ucfirst($scope);
 
 		if (!class_exists($cls))
 		{
-			$path = dirname(__FILE__) . '/following/' . $scope . '.php';
+			$path = __DIR__ . '/following/' . $scope . '.php';
 			if (!is_file($path))
 			{
-				throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
 			}
 			include_once($path);
 		}
@@ -172,7 +174,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Get a count for the specified key
 	 *
-	 * @param   string $what Key name [following, followers, collectios, posts]
+	 * @param   string   $what  Key name [following, followers, collectios, posts]
 	 * @return  integer
 	 */
 	public function count($what='following')
@@ -206,9 +208,9 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 			break;
 
 			case 'collections':
-				if ($value === null && $thi->get('following_type') != 'collection')
+				if ($value === null && $this->get('following_type') != 'collection')
 				{
-					$model = CollectionsModelCollections::getInstance($this->get('following_type'), $this->get('following_id'));
+					$model = Collections::getInstance($this->get('following_type'), $this->get('following_id'));
 					$value = $model->collections(array('count'));
 					$this->set($what, $value);
 				}
@@ -217,15 +219,15 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 			case 'posts':
 				if ($value === null)
 				{
-					if ($thi->get('following_type') != 'collection')
+					if ($this->get('following_type') != 'collection')
 					{
-						$model = CollectionsModelCollections::getInstance($this->get('following_type'), $this->get('following_id'));
+						$model = Archive::getInstance($this->get('following_type'), $this->get('following_id'));
 						$value = $model->posts(array('count'));
 						$this->set($what, $value);
 					}
 					else
 					{
-						$model = CollectionsModelCollection::getInstance($this->get('following_id'));
+						$model = Collection::getInstance($this->get('following_id'));
 						$value = $model->posts(array('count'));
 						$this->set($what, $value);
 					}
@@ -244,7 +246,7 @@ class CollectionsModelFollowing extends \Hubzero\Base\Model
 	/**
 	 * Stop following an object
 	 *
-	 * @param   integer $id ID of record to unfollow
+	 * @param   integer  $id  ID of record to unfollow
 	 * @return  boolean
 	 */
 	public function unfollow($id=null)

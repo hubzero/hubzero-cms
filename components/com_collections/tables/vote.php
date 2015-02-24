@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Tables;
 
 /**
  * Table class for post votes
  */
-class CollectionsTableVote extends JTable
+class Vote extends \JTable
 {
 	/**
 	 * Constructor
@@ -74,14 +73,14 @@ class CollectionsTableVote extends JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->voted   = JFactory::getDate()->toSql();
-			$this->user_id = JFactory::getUser()->get('id');
+			$this->voted   = \JFactory::getDate()->toSql();
+			$this->user_id = \JFactory::getUser()->get('id');
 		}
 
 		return true;

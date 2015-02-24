@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Item;
+
+use Components\Collections\Models\Item as GenericItem;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
 /**
  * Collections model for a wish
  */
-class CollectionsModelItemWishlist extends CollectionsModelItem
+class Wishlist extends GenericItem
 {
 	/**
 	 * Item type
@@ -55,7 +56,7 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 	{
 		if ($as == 'title')
 		{
-			return JText::_('Wish');
+			return \JText::_('Wish');
 		}
 		return parent::type($as);
 	}
@@ -67,12 +68,12 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 	 */
 	public function canCollect()
 	{
-		if (JRequest::getCmd('option') != 'com_wishlist')
+		if (\JRequest::getCmd('option') != 'com_wishlist')
 		{
 			return false;
 		}
 
-		if (!JRequest::getInt('wishid', 0))
+		if (!\JRequest::getInt('wishid', 0))
 		{
 			return false;
 		}
@@ -93,7 +94,7 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 			return true;
 		}
 
-		$id = ($id ?: JRequest::getInt('wishid', 0));
+		$id = ($id ?: \JRequest::getInt('wishid', 0));
 
 		$this->_tbl->loadType($id, $this->_type);
 
@@ -104,11 +105,11 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
-		$wish = new WishlistModelWish($id);
+		$wish = new \WishlistModelWish($id);
 
 		if (!$wish->exists())
 		{
-			$this->setError(JText::_('Wish not found.'));
+			$this->setError(\JText::_('Wish not found.'));
 			return false;
 		}
 
@@ -118,7 +119,7 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 		     ->set('created_by', $wish->get('proposed_by'))
 		     ->set('title', $wish->get('subject'))
 		     ->set('description', $wish->content('clean', 200))
-		     ->set('url', JRoute::_($wish->link()));
+		     ->set('url', \JRoute::_($wish->link()));
 
 		if (!$this->store())
 		{

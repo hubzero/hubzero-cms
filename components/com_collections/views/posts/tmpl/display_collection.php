@@ -31,13 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->row instanceof CollectionsModelCollection)
+if ($this->row instanceof \Components\Collections\Models\Collection)
 {
 	$collection = $this->row;
 }
 else
 {
-	$collection = CollectionsModelCollection::getInstance($this->row->item()->get('object_id'));
+	$collection = \Components\Collections\Models\Collection::getInstance($this->row->item()->get('object_id'));
 	if ($this->row->get('description'))
 	{
 		$collection->set('description', $this->row->get('description'));

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CollectionsHelperPermissions::getActions('post');
+$canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_POSTS'), 'collection.png');
 if ($canDo->get('core.create'))

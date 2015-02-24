@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Controllers;
+
+use Components\Collections\Models\Collection;
+use Components\Collections\Models\Archive;
+use Hubzero\Component\SiteController;
 
 /**
  * Controller class for collections and posts
  */
-class CollectionsControllerCollections extends \Hubzero\Component\SiteController
+class Collections extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -61,20 +64,18 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 	/**
 	 * Display a list of latest whiteboard entries
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function postsTask()
 	{
-		$this->view->setLayout('posts');
-
 		$this->view->config  = $this->config;
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'   => JRequest::getInt('limit', 25),
-			'start'   => JRequest::getInt('limitstart', 0),
-			'search'  => JRequest::getVar('search', ''),
-			'id'      => JRequest::getInt('id', 0),
+			'limit'   => \JRequest::getInt('limit', 25),
+			'start'   => \JRequest::getInt('limitstart', 0),
+			'search'  => \JRequest::getVar('search', ''),
+			'id'      => \JRequest::getInt('id', 0),
 			'user_id' => $this->juser->get('id'),
 			'sort'    => 'p.created',
 			'state'   => 1,
@@ -85,7 +86,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 
-		$this->view->collection = new CollectionsModelCollection();
+		$this->view->collection = new Collection();
 
 		$this->view->filters['count'] = true;
 		$this->view->total = $this->view->collection->posts($this->view->filters);
@@ -93,7 +94,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = false;
 		$this->view->rows = $this->view->collection->posts($this->view->filters);
 
-		$model = CollectionsModelArchive::getInstance();
+		$model = Archive::getInstance();
 
 		$this->view->collections = $model->collections(array(
 			'count'      => true,
@@ -101,44 +102,29 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			'state'      => 1
 		));
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-		$this->view->display();
+		$this->view
+			->setLayout('posts')
+			->display();
 	}
 
 	/**
 	 * Display a list of collections
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function collectionsTask()
 	{
-		$this->view->setLayout('collections');
-
-		$this->view->config  = $this->config;
+		$this->view->config = $this->config;
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'   => JRequest::getInt('limit', 25),
-			'start'   => JRequest::getInt('limitstart', 0),
-			'search'  => JRequest::getVar('search', ''),
-			'id'      => JRequest::getInt('id', 0),
+			'limit'   => \JRequest::getInt('limit', 25),
+			'start'   => \JRequest::getInt('limitstart', 0),
+			'search'  => \JRequest::getVar('search', ''),
+			'id'      => \JRequest::getInt('id', 0),
 			'state'   => 1,
 			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
 		);
@@ -147,7 +133,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 
-		$model = CollectionsModelArchive::getInstance();
+		$model = Archive::getInstance();
 
 		$this->view->filters['count'] = true;
 		$this->view->total = $model->collections($this->view->filters);
@@ -160,41 +146,27 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = false;
 		$this->view->rows = $model->collections($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		$this->view->display();
+		$this->view
+			->setLayout('collections')
+			->display();
 	}
 
 	/**
 	 * Display information about collections
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function aboutTask()
 	{
-		$this->view->setLayout('about');
+		$this->view;
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'id'      => JRequest::getInt('id', 0),
-			'search'  => JRequest::getVar('search', ''),
+			'id'      => \JRequest::getInt('id', 0),
+			'search'  => \JRequest::getVar('search', ''),
 			'sort'    => 'p.created',
 			'state'   => 1,
 			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
@@ -204,12 +176,12 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 
-		$this->view->collection = new CollectionsModelCollection();
+		$this->view->collection = new Collection();
 
 		$this->view->filters['count'] = true;
 		$this->view->total = $this->view->collection->posts($this->view->filters);
 
-		$model = CollectionsModelArchive::getInstance();
+		$model = Archive::getInstance();
 
 		$this->view->collections = $model->collections(array(
 			'count'  => true,
@@ -220,21 +192,17 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		$this->view->display();
+		$this->view
+			->setLayout('about')
+			->display();
 	}
 
 	/**
 	 * Set the authorization level for the user
 	 *
-	 * @return     void
+	 * @param   string   $assetType
+	 * @param   integer  $assetId
+	 * @return  void
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{
@@ -273,19 +241,19 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -298,12 +266,12 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if ($this->_task)
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		\JFactory::getDocument()->setTitle($this->_title);
 	}
 }

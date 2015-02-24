@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Tables;
 
 /**
  * Table class for collection posts
  */
-class CollectionsTablePost extends JTable
+class Post extends \JTable
 {
 	/**
 	 * Constructor
@@ -74,21 +73,24 @@ class CollectionsTablePost extends JTable
 		$this->collection_id = intval($this->collection_id);
 		if (!$this->collection_id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'));
-			return false;
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'));
 		}
 
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 
 			if (!$this->ordering)
 			{

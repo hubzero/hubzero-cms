@@ -185,7 +185,19 @@ $this->css()
 					</div><!-- / .post -->
 				<?php } ?>
 			</div><!-- / #posts -->
-			<?php if ($this->total > $this->filters['limit']) { echo $this->pageNav->getListFooter(); } ?>
+			<?php
+			if ($this->total > $this->filters['limit'])
+			{
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+			}
+			?>
 			<div class="clear"></div>
 		<?php } else { ?>
 			<div id="collection-introduction">

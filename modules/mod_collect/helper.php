@@ -32,9 +32,9 @@
 namespace Modules\Collect;
 
 use Hubzero\Module\Module;
-use CollectionsModelArchive;
-use CollectionsModelCollection;
-use CollectionsTablePost;
+use Components\Collections\Models\Archive;
+use Components\Collections\Models\Collection;
+use Components\Collections\Tables\Post;
 use JRequest;
 use JFactory;
 use JText;
@@ -61,7 +61,7 @@ class Helper extends Module
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new CollectionsModelArchive('member', $this->juser->get('id'));
+		$this->model = new Archive('member', $this->juser->get('id'));
 
 		$this->item = $this->model->collectible(JRequest::getCmd('option'));
 		if (!$this->item->canCollect())
@@ -84,7 +84,7 @@ class Helper extends Module
 	 */
 	public function collect()
 	{
-		$collectible   = JRequest::getVar('collectible', array(), 'post', 'none', 2);
+		$collectible = JRequest::getVar('collectible', array(), 'post', 'none', 2);
 
 		if (!$this->item->make())
 		{
@@ -143,7 +143,7 @@ class Helper extends Module
 						{
 							if (!in_array($board->id, $found) && $board->id == $post->collection_id)
 							{
-								$this->collections[] = new CollectionsModelCollection($board);
+								$this->collections[] = new Collection($board);
 								$found[] = $board->id;
 							}
 						}
@@ -157,7 +157,7 @@ class Helper extends Module
 								{
 									if (!in_array($board->id, $found) && $board->id == $post->collection_id)
 									{
-										$this->collections[] = new CollectionsModelCollection($board);
+										$this->collections[] = new Collection($board);
 										$found[] = $board->id;
 									}
 								}
@@ -179,7 +179,7 @@ class Helper extends Module
 		// If so, we'll create a new collection with that title.
 		if (isset($collectible['title']) && $collectible['title'])
 		{
-			$collection = with(new CollectionsModelCollection())
+			$collection = with(new Collection())
 				->set('title', $collectible['title'])
 				->set('access', 0)
 				->set('object_id', $this->juser->get('id'))
@@ -197,7 +197,7 @@ class Helper extends Module
 			// already been posted to this collection (i.e., no duplicates)
 			$database = JFactory::getDBO();
 
-			$post = new CollectionsTablePost($database);
+			$post = new Post($database);
 			$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));
 			if (!$post->id)
 			{

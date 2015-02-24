@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Item;
+
+use Components\Collections\Models\Item as GenericItem;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
 /**
  * Collections model for an item
  */
-class CollectionsModelItemWiki extends CollectionsModelItem
+class Wiki extends GenericItem
 {
 	/**
 	 * Item type
@@ -55,7 +56,7 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 	{
 		if ($as == 'title')
 		{
-			return JText::_('Wiki page');
+			return \JText::_('Wiki page');
 		}
 		return parent::type($as);
 	}
@@ -67,14 +68,14 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 	 */
 	public function canCollect()
 	{
-		if (JRequest::getCmd('option') != 'com_wiki')
+		if (\JRequest::getCmd('option') != 'com_wiki')
 		{
 			return false;
 		}
 
-		//$controller = JRequest::getVar('controller', '');
+		//$controller = \JRequest::getVar('controller', '');
 		//if (!in_array($controller, array('page', 'history', 'comments')))
-		if (!JRequest::getVar('pagename', ''))
+		if (!\JRequest::getVar('pagename', ''))
 		{
 			return false;
 		}
@@ -100,9 +101,9 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 
 		if (!$id)
 		{
-			$group = JRequest::getVar('cn', '');
+			$group = \JRequest::getVar('cn', '');
 
-			$book = new WikiModelBook(($group ? $group : '__site__'));
+			$book = new \WikiModelBook(($group ? $group : '__site__'));
 			$page = $book->page();
 
 			$id = $page->get('id');
@@ -117,12 +118,12 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 
 		if (!$page)
 		{
-			$page = new WikiModelPage($id);
+			$page = new \WikiModelPage($id);
 		}
 
 		if (!$page->exists())
 		{
-			$this->setError(JText::_('Wiki page not found.'));
+			$this->setError(\JText::_('Wiki page not found.'));
 			return false;
 		}
 
@@ -132,7 +133,7 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 		     ->set('created_by', $page->get('created_by'))
 		     ->set('title', $page->get('title'))
 		     ->set('description', $page->revision()->content('clean', 300))
-		     ->set('url', JRoute::_($page->link()));
+		     ->set('url', \JRoute::_($page->link()));
 
 		if (!$this->store())
 		{

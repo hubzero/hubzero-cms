@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,93 +24,57 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models\Following;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'following' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Model class for following a member
  */
-class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
+class Member extends Base
 {
 	/**
 	 * \Hubzero\User\Profile
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_obj = NULL;
 
 	/**
 	 * File path
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_image = NULL;
 
 	/**
 	 * URL
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_baselink = NULL;
 
 	/**
-	 * JDatabase
-	 *
-	 * @var object
-	 */
-	//private $_db = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Member ID
-	 * @return     void
+	 * @param   integer  $id  Member ID
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
-		//$this->_db = JFactory::getDBO();
-
 		$this->_obj = \Hubzero\User\Profile::getInstance($oid);
 
 		$this->_baselink = 'index.php?option=com_members&id=' . $this->_obj->get('uidNumber') . '&active=collections';
 	}
 
 	/**
-	 * Returns a reference to a model object
-	 *
-	 * This method must be invoked as:
-	 *     $inst = CollectionsModelFollowingMember::getInstance($oid);
-	 *
-	 * @param      integer $oid User ID
-	 * @return     object CollectionsModelFollowingMember
-	 */
-	static function &getInstance($oid=null)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new CollectionsModelFollowingMember($oid);
-		}
-
-		return $instances[$oid];
-	}
-
-	/**
 	 * Get the member's image
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function image()
 	{
@@ -124,7 +88,7 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the member's username
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function alias()
 	{
@@ -134,7 +98,7 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the member's name
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function title()
 	{
@@ -144,7 +108,7 @@ class CollectionsModelFollowingMember extends CollectionsModelFollowingAbstract
 	/**
 	 * Get the URL for this member
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function link($what='base')
 	{

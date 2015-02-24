@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,40 +24,40 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'asset.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Collections model class for an Asset
  */
-class CollectionsModelAsset extends CollectionsModelAbstract
+class Asset extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	public $_tbl_name = 'CollectionsTableAsset';
+	public $_tbl_name = '\\Components\\Collections\\Tables\\Asset';
 
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed   $oid     ID, string, array, or object
-	 * @param   integer $item_id ID of the item asset is attached
+	 * @param   mixed    $oid      ID, string, array, or object
+	 * @param   integer  $item_id  ID of the item asset is attached
 	 * @return  void
 	 */
 	public function __construct($oid=null, $item_id=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CollectionsTableAsset($this->_db);
+		$tbl = $this->_tbl_name;
+		$this->_tbl = new $tbl($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -72,9 +72,9 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Returns a reference to an asset object
 	 *
-	 * @param   mixed   $oid     ID, string, array, or object
-	 * @param   integer $item_id ID of the item asset is attached
-	 * @return  object  CollectionsModelAsset
+	 * @param   mixed    $oid      ID, string, array, or object
+	 * @param   integer  $item_id  ID of the item asset is attached
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $item_id=null)
 	{
@@ -114,7 +114,7 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	public function image()
 	{
 		jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($this->get('filename')));
+		$ext = strtolower(\JFile::getExt($this->get('filename')));
 
 		if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')))
 		{
@@ -127,7 +127,7 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Remove a record
 	 *
-	 * @return  boolean True on success, false if errors
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function remove()
 	{
@@ -142,10 +142,10 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Update content
 	 *
-	 * @param   string $field  Field name
-	 * @param   string $before Old value
-	 * @param   string $after  New value
-	 * @return  boolean True on success, false if errors
+	 * @param   string   $field   Field name
+	 * @param   string   $before  Old value
+	 * @param   string   $after   New value
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function update($field, $before, $after)
 	{
@@ -169,16 +169,16 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	{
 		if ($this->get('_file'))
 		{
-			$config = JComponentHelper::getParams('com_collections');
+			$config = \JComponentHelper::getParams('com_collections');
 
 			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
 
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path))
+				if (!\JFolder::create($path))
 				{
-					$this->setError(JText::_('Error uploading. Unable to create path.'));
+					$this->setError(\JText::_('Error uploading. Unable to create path.'));
 					return false;
 				}
 			}
@@ -188,13 +188,13 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 			// Make the filename safe
 			jimport('joomla.filesystem.file');
 			$file['name'] = urldecode($files['name']);
-			$file['name'] = JFile::makeSafe($file['name']);
+			$file['name'] = \JFile::makeSafe($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 
 			// Upload new files
-			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+			if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
-				$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $file['name']);
+				$this->setError(\JText::_('ERROR_UPLOADING') . ': ' . $file['name']);
 				return false;
 			}
 
@@ -207,8 +207,8 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Update ordering
 	 *
-	 * @param   integer $item_id ITem ID
-	 * @return  boolean True on success, false if errors
+	 * @param   integer  $item_id  Item ID
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function reorder($item_id=0)
 	{

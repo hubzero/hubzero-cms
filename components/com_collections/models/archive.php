@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models;
+
+use Components\Collections\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
+use Hubzero\User\Profile;
+use Hubzero\Plugin\Params;
 
 require_once(__DIR__ . DS . 'post.php');
 require_once(__DIR__ . DS . 'following.php');
@@ -38,7 +43,7 @@ require_once(__DIR__ . DS . 'collection.php');
 /**
  * Collections archive model
  */
-class CollectionsModelArchive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
 	 * Object type [member, group, etc.]
@@ -69,7 +74,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	private $_collections = null;
 
 	/**
-	 * CollectionsModelCollection
+	 * Collection
 	 *
 	 * @var object
 	 */
@@ -106,13 +111,13 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param   integer $id  Resource ID or alias
-	 * @param   object  &$db JDatabase
+	 * @param   string   $object_type  The object type
+	 * @param   itneger  $object_id    The object ID
 	 * @return  void
 	 */
 	public function __construct($object_type='', $object_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->_object_type = (string) $object_type;
 		$this->_object_id   = (int) $object_id;
@@ -121,9 +126,9 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param   string $pagename The page to load
-	 * @param   string $scope    The page scope
-	 * @return  object CollectionsModel
+	 * @param   string   $object_type  The object type
+	 * @param   itneger  $object_id    The object ID
+	 * @return  object
 	 */
 	static function &getInstance($object_type='', $object_id=0)
 	{
@@ -147,9 +152,9 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $default  The default value
-	 * @return  mixed  The value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $default   The default value
+	 * @return  mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -164,9 +169,9 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $value    The value of the property to set
-	 * @return  mixed  Previous value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $value     The value of the property to set
+	 * @return  mixed   Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -179,7 +184,8 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Set and get a specific collection
 	 *
-	 * @return  object CollectionsModelCollection
+	 * @param   mixed   $id
+	 * @return  object
 	 */
 	public function collection($id=null)
 	{
@@ -192,7 +198,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 			$this->_collection = null;
 
 			// If the list of all offerings is available ...
-			if ($this->_collections instanceof \Hubzero\Base\ItemList)
+			if ($this->_collections instanceof ItemList)
 			{
 				// Find an offering in the list that matches the ID passed
 				foreach ($this->collections() as $key => $collection)
@@ -208,7 +214,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 			if (!$this->_collection)
 			{
-				$this->_collection = CollectionsModelCollection::getInstance($id, $this->_object_id, $this->_object_type);
+				$this->_collection = Collection::getInstance($id, $this->_object_id, $this->_object_type);
 			}
 		}
 		// Return current offering
@@ -218,8 +224,8 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of collections
 	 *
-	 * @param   array $filters Filters to apply to the query that retrieves records
-	 * @return  mixed Integer or object
+	 * @param   array  $filters  Filters to apply to the query that retrieves records
+	 * @return  mixed  Integer or object
 	 */
 	public function collections($filters=array())
 	{
@@ -238,25 +244,25 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CollectionsTableCollection($this->_db);
+			$tbl = new Tables\Collection($this->_db);
 
 			return $tbl->getCount($filters);
 		}
 
-		if (!($this->_collections instanceof \Hubzero\Base\ItemList))
+		if (!($this->_collections instanceof ItemList))
 		{
-			$tbl = new CollectionsTableCollection($this->_db);
+			$tbl = new Tables\Collection($this->_db);
 
 			if (($results = $tbl->getRecords($filters)))
 			{
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CollectionsModelCollection($result);
+					$results[$key] = new Collection($result);
 				}
 			}
 
-			$this->_collections = new \Hubzero\Base\ItemList($results);
+			$this->_collections = new ItemList($results);
 		}
 
 		return $this->_collections;
@@ -265,8 +271,8 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of followers
 	 *
-	 * @param   array $filters Filters to apply to the query that retrieves records
-	 * @return  mixed Integer or object
+	 * @param   array  $filters  Filters to apply to the query that retrieves records
+	 * @return  mixed  Integer or object
 	 */
 	public function followers($filters=array())
 	{
@@ -275,24 +281,24 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CollectionsTableFollowing($this->_db);
+			$tbl = new Tables\Following($this->_db);
 
 			return $tbl->count($filters);
 		}
-		if (!($this->_followers instanceof \Hubzero\Base\ItemList))
+		if (!($this->_followers instanceof ItemList))
 		{
-			$tbl = new CollectionsTableFollowing($this->_db);
+			$tbl = new Tables\Following($this->_db);
 
 			if ($results = $tbl->find($filters))
 			{
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CollectionsModelFollowing($result);
+					$results[$key] = new Following($result);
 				}
 			}
 
-			$this->_followers = new \Hubzero\Base\ItemList($results);
+			$this->_followers = new ItemList($results);
 		}
 
 		return $this->_followers;
@@ -301,9 +307,9 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of following
 	 *
-	 * @param   array  $filters Filters to apply to the query that retrieves records
-	 * @param   string $what    Following what? A collection or a member, etc.
-	 * @return  mixed  Integer or object
+	 * @param   array   $filters  Filters to apply to the query that retrieves records
+	 * @param   string  $what     Following what? A collection or a member, etc.
+	 * @return  mixed   Integer or object
 	 */
 	public function following($filters=array(), $what='all')
 	{
@@ -312,7 +318,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CollectionsTableFollowing($this->_db);
+			$tbl = new Tables\Following($this->_db);
 
 			return $tbl->count($filters);
 		}
@@ -322,20 +328,20 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 			$filters['limit'] = 1;
 		}
 
-		if (!($this->_following instanceof \Hubzero\Base\ItemList))
+		if (!($this->_following instanceof ItemList))
 		{
-			$tbl = new CollectionsTableFollowing($this->_db);
+			$tbl = new Tables\Following($this->_db);
 
 			if ($results = $tbl->find($filters))
 			{
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CollectionsModelFollowing($result);
+					$results[$key] = new Following($result);
 				}
 			}
 
-			$this->_following = new \Hubzero\Base\ItemList($results);
+			$this->_following = new ItemList($results);
 		}
 
 		if ($what == 'collections')
@@ -398,8 +404,8 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Get a count or list of posts
 	 *
-	 * @param   array $filters Filters to apply to the query that retrieves records
-	 * @return  mixed Integer or array
+	 * @param   array  $filters  Filters to apply to the query that retrieves records
+	 * @return  mixed  Integer or array
 	 */
 	public function posts($filters=array())
 	{
@@ -412,12 +418,11 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CollectionsTablePost($this->_db);
-
+			$tbl = new Tables\Post($this->_db);
 			return $tbl->getCount($filters);
 		}
 
-		$tbl = new CollectionsTablePost($this->_db);
+		$tbl = new Tables\Post($this->_db);
 		return $tbl->getRecords($filters);
 	}
 
@@ -434,9 +439,9 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	 */
 	public function mine($type='')
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
-		$tbl = new CollectionsTableCollection($this->_db);
+		$tbl = new Tables\Collection($this->_db);
 
 		switch (strtolower(trim($type)))
 		{
@@ -444,7 +449,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 			case 'groups':
 				$collections = array();
 
-				$member = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$member = Profile::getInstance($juser->get('id'));
 
 				$usergroups = $member->getGroups('members');
 				if ($usergroups)
@@ -460,7 +465,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 						{
 							if (!isset($usergroup->params) || !is_object($usergroup->params))
 							{
-								$p = new \Hubzero\Plugin\Params($this->_db);
+								$p = new Params($this->_db);
 								$usergroup->params = $p->getCustomParams($usergroup->gidNumber, 'groups', 'collections');
 							}
 							foreach ($groups as $s)
@@ -515,10 +520,10 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = JFactory::getUser()->get('id');
+				$follower_id = \JFactory::getUser()->get('id');
 			}
 
-			$follow = new CollectionsModelFollowing($this->_object_id, $this->_object_type, $follower_id, $follower_type);
+			$follow = new Following($this->_object_id, $this->_object_type, $follower_id, $follower_type);
 			if ($follow->exists())
 			{
 				$this->_isFollowing = true;
@@ -530,8 +535,8 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Check if someone or a group is following this collection
 	 *
-	 * @param   integer $follower_id   ID of the follower
-	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @param   integer  $follower_id    ID of the follower
+	 * @param   string   $follower_type  Type of the follower [member, group]
 	 * @return  boolean
 	 */
 	public function isFollowed($follower_id=null, $follower_type='member')
@@ -542,10 +547,10 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = JFactory::getUser()->get('id');
+				$follower_id = \JFactory::getUser()->get('id');
 			}
 
-			$follow = new CollectionsModelFollowing($follower_id, $follower_type, $this->_object_id, $this->_object_type);
+			$follow = new Following($follower_id, $follower_type, $this->_object_id, $this->_object_type);
 			if ($follow->exists())
 			{
 				$this->_isFollowed = true;
@@ -557,17 +562,17 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Unfollow this collection
 	 *
-	 * @param   integer $follower_id   ID of the follower
-	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @param   integer  $follower_id    ID of the follower
+	 * @param   string   $follower_type  Type of the follower [member, group]
 	 * @return  boolean
 	 */
 	public function unfollow($id, $what='collection', $follower_id=0, $follower_type='member')
 	{
-		$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
+		$follow = new Following($id, $what, $follower_id, $follower_type);
 
 		if (!$follow->exists())
 		{
-			$this->setError(JText::_('Item is not being followed'));
+			$this->setError(\JText::_('Item is not being followed'));
 			return true;
 		}
 
@@ -583,15 +588,15 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Follow something [collection, member, goup]
 	 *
-	 * @param   integer $id            ID of the thing being followed
-	 * @param   string  $what          What's being followed
-	 * @param   integer $follower_id   ID of the follower
-	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @param   integer  $id             ID of the thing being followed
+	 * @param   string   $what           What's being followed
+	 * @param   integer  $follower_id    ID of the follower
+	 * @param   string   $follower_type  Type of the follower [member, group]
 	 * @return  boolean
 	 */
 	public function follow($id, $what='collection', $follower_id=0, $follower_type='member')
 	{
-		$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
+		$follow = new Following($id, $what, $follower_id, $follower_type);
 
 		if (!$follow->exists())
 		{
@@ -619,7 +624,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 	 */
 	public function collectible($option)
 	{
-		$cls = 'CollectionsModelItem';
+		$cls = __NAMESPACE__ . '\\Item';
 
 		if ($option != 'com_collections')
 		{
@@ -631,7 +636,7 @@ class CollectionsModelArchive extends \Hubzero\Base\Object
 			{
 				include_once($path);
 
-				$cls = 'CollectionsModelItem' . ucfirst($option);
+				$cls = __NAMESPACE__ . '\\Item\\' . ucfirst($option);
 			}
 		}
 

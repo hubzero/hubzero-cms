@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models;
+
+use Hubzero\Base\ItemList;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Collections Tagging class
  */
-class CollectionsModelTags extends TagsModelCloud
+class Tags extends \TagsModelCloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -54,8 +55,8 @@ class CollectionsModelTags extends TagsModelCloud
 	 */
 	public function getTagsForIds($ids=array(), $admin=0)
 	{
-		$tt = new TagsTableTag($this->_db);
-		$tj = new TagsTableObject($this->_db);
+		$tt = new \TagsTableTag($this->_db);
+		$tj = new \TagsTableObject($this->_db);
 
 		if (!is_array($ids) || empty($ids))
 		{
@@ -105,9 +106,9 @@ class CollectionsModelTags extends TagsModelCloud
 	 */
 	public function append($tag)
 	{
-		if (!($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList))
+		if (!($this->_cache['tags.list'] instanceof ItemList))
 		{
-			$this->_cache['tags.list'] = new \Hubzero\Base\ItemList(array());
+			$this->_cache['tags.list'] = new ItemList(array());
 		}
 
 		if (!$tag)
@@ -115,19 +116,19 @@ class CollectionsModelTags extends TagsModelCloud
 			return $this;
 		}
 
-		if (!($tag instanceof TagsModelTag))
+		if (!($tag instanceof \TagsModelTag))
 		{
 			if (is_array($tag))
 			{
 				foreach ($tag as $t)
 				{
-					$this->_cache['tags.list']->add(new TagsModelTag($t));
+					$this->_cache['tags.list']->add(new \TagsModelTag($t));
 				}
 				return $this;
 			}
 			else
 			{
-				$tag = new TagsModelTag($tag);
+				$tag = new \TagsModelTag($tag);
 			}
 		}
 		$this->_cache['tags.list']->add($tag);

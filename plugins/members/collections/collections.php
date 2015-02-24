@@ -93,7 +93,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$this->_authorize('collection');
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
-		$this->model = new CollectionsModelArchive('member', $this->member->get('uidNumber'));
+		$this->model = new \Components\Collections\Models\Archive('member', $this->member->get('uidNumber'));
 
 		//are we returning html
 		if ($returnhtml)
@@ -798,7 +798,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->following   = $this->model->following($count);
 
 		$view->filters['collection_id'] = $this->model->following(array(), 'collections');
-		$view->collection = CollectionsModelCollection::getInstance();
+		$view->collection = \Components\Collections\Models\Collection::getInstance();
 		if (count($view->filters['collection_id']) <= 0)
 		{
 			$view->filters['collection_id'][] = -1;
@@ -883,7 +883,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->posts       = $this->model->posts($count);
 		$view->total = $view->posts;
 
-		$view->collection = CollectionsModelCollection::getInstance();
+		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
 		$view->filters['user_id'] = $this->member->get('uidNumber');
 
@@ -933,7 +933,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$post_id = JRequest::getInt('post', 0);
 
-		$view->post = CollectionsModelPost::getInstance($post_id);
+		$view->post = \Components\Collections\Models\Post::getInstance($post_id);
 
 		if (!$view->post->exists())
 		{
@@ -1111,7 +1111,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Get model
-		$row = new CollectionsModelItem($fields['id']);
+		$row = new \Components\Collections\Models\Item($fields['id']);
 
 		// Bind content
 		if (!$row->bind($fields))
@@ -1143,7 +1143,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Create a post entry linking the item to the board
 		$p = JRequest::getVar('post', array(), 'post');
 
-		$post = new CollectionsModelPost($p['id']);
+		$post = new \Components\Collections\Models\Post($p['id']);
 		if (!$post->exists())
 		{
 			$post->set('item_id', $row->get('id'));
@@ -1153,7 +1153,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$coltitle = JRequest::getVar('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', $coltitle);
 			$collection->set('object_id', $this->member->get('uidNumber'));
 			$collection->set('object_type', 'member');
@@ -1213,7 +1213,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$post = CollectionsModelPost::getInstance($post_id);
+				$post = \Components\Collections\Models\Post::getInstance($post_id);
 
 				$item_id = $post->get('item_id');
 			}
@@ -1255,7 +1255,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$collection_id = JRequest::getInt('collection_id', 0);
 		if (!$collection_id)
 		{
-			$collection = new CollectionsModelCollection();
+			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', JRequest::getVar('collection_title', ''));
 			$collection->set('object_id', $this->juser->get('id'));
 			$collection->set('object_type', 'member');
@@ -1269,7 +1269,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Try loading the current board/bulletin to see
 		// if this has already been posted to the board (i.e., no duplicates)
-		$post = new CollectionsTablePost($this->database);
+		$post = new \Components\Collections\Tables\Post($this->database);
 		$post->loadByBoard($collection_id, $item_id);
 		if (!$post->get('id'))
 		{
@@ -1324,7 +1324,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 
 		$collection = $this->model->collection($post->get('collection_id'));
 
@@ -1369,7 +1369,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 
 		if (!$post->move(JRequest::getInt('board', 0)))
 		{
@@ -1411,7 +1411,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$no_html = JRequest::getInt('no_html', 0);
 
-		$post = CollectionsModelPost::getInstance(JRequest::getInt('post', 0));
+		$post = \Components\Collections\Models\Post::getInstance(JRequest::getInt('post', 0));
 		if (!$post->get('id'))
 		{
 			return $this->_collections();
@@ -1575,7 +1575,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$id = JRequest::getInt('post', 0);
 
 		// Get the post model
-		$post = CollectionsModelPost::getInstance($id);
+		$post = \Components\Collections\Models\Post::getInstance($id);
 
 		// Record the vote
 		if (!$post->item()->vote())
@@ -1701,7 +1701,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Bind new content
-		$row = new CollectionsModelCollection();
+		$row = new \Components\Collections\Models\Collection();
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());

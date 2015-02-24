@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'tags.php');
+use Components\Collections\Tables;
+use Hubzero\User\Profile;
+use Hubzero\Item\Comment;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'item.php');
+require_once(__DIR__ . DS . 'asset.php');
+require_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Collections model for an item
  */
-class CollectionsModelItem extends CollectionsModelAbstract
+class Item extends Base
 {
 	/**
 	 * Item type
@@ -52,7 +57,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 *
 	 * @var strong
 	 */
-	protected $_tbl_name = 'CollectionsTableItem';
+	protected $_tbl_name = '\\Components\\Collections\\Tables\\Item';
 
 	/**
 	 * Model context
@@ -97,14 +102,15 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed $oid Integer, object, or array
+	 * @param   mixed  $oid  Integer, object, or array
 	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CollectionsTableItem($this->_db);
+		$tbl = $this->_tbl_name;
+		$this->_tbl = new $tbl($this->_db);
 
 		if ($oid)
 		{
@@ -129,8 +135,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Returns a reference to a collections item instance
 	 *
-	 * @param   mixed $oid Integer or string
-	 * @return  object CollectionsModelItem
+	 * @param   mixed   $oid  Integer or string
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -165,9 +171,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $default The default value
-	 * @return  mixed  The value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $default   The default value
+	 * @return  mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -200,7 +206,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string $as What format to return
+	 * @param   string  $as  What format to return
 	 * @return  string
 	 */
 	public function modified($as='')
@@ -208,11 +214,11 @@ class CollectionsModelItem extends CollectionsModelAbstract
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('modified'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -228,18 +234,18 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire user object
 	 *
-	 * @param   string $property Property to retrieve
-	 * @param   mixed  $default  Default value if property not set
+	 * @param   string  $property  Property to retrieve
+	 * @param   mixed   $default   Default value if property not set
 	 * @return  mixed
 	 */
 	public function modifier($property=null, $default=null)
 	{
-		if (!($this->_modifier instanceof \Hubzero\User\Profile))
+		if (!($this->_modifier instanceof Profile))
 		{
-			$this->_modifier = \Hubzero\User\Profile::getInstance($this->get('modified_by'));
+			$this->_modifier = Profile::getInstance($this->get('modified_by'));
 			if (!$this->_modifier)
 			{
-				$this->_modifier = new \Hubzero\User\Profile();
+				$this->_modifier = new Profile();
 			}
 		}
 		if ($property)
@@ -278,7 +284,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			case 'count':
 				if ($this->_cache['comments.count'] === null)
 				{
-					$tbl = new \Hubzero\Item\Comment($this->_db);
+					$tbl = new Comment($this->_db);
 					$this->_cache['comments.count'] = $tbl->count($filters);
 				}
 				return $this->_cache['comments.count'];
@@ -289,7 +295,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			default:
 				if (!is_array($this->_cache['comments.list']))
 				{
-					$tbl = new \Hubzero\Item\Comment($this->_db);
+					$tbl = new Comment($this->_db);
 
 					if (!($results = $tbl->getComments('collection', $this->get('id'))))
 					{
@@ -312,9 +318,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 */
 	public function assets($filters=array(), $reset = false)
 	{
-		if (!($this->_assets instanceof \Hubzero\Base\ItemList) || $reset)
+		if (!($this->_assets instanceof ItemList) || $reset)
 		{
-			$tbl = new CollectionsTableAsset($this->_db);
+			$tbl = new Tables\Asset($this->_db);
 
 			if (!isset($filters['item_id']))
 			{
@@ -325,7 +331,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			{
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new CollectionsModelAsset($result);
+					$results[$key] = new Asset($result);
 				}
 			}
 			else
@@ -333,7 +339,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 				$results = array();
 			}
 
-			$this->_assets = new \Hubzero\Base\ItemList($results);
+			$this->_assets = new ItemList($results);
 		}
 		return $this->_assets;
 	}
@@ -346,15 +352,15 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 */
 	public function addAsset($asset=null)
 	{
-		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\Base\ItemList))
+		if (!isset($this->_assets) || !($this->_assets instanceof ItemList))
 		{
-			$this->_assets = new \Hubzero\Base\ItemList(array());
+			$this->_assets = new ItemList(array());
 		}
 		if ($asset)
 		{
-			if (!($asset instanceof CollectionsModelAsset))
+			if (!($asset instanceof Asset))
 			{
-				$asset = new CollectionsModelAsset($asset);
+				$asset = new Asset($asset);
 			}
 			$this->_assets->add($asset);
 		}
@@ -369,20 +375,20 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	public function removeAsset($asset)
 	{
 		// Remove the asset
-		if ($asset instanceof CollectionsModelAsset)
+		if ($asset instanceof Asset)
 		{
 			if (!$asset->remove())
 			{
-				$this->setError(JText::_('Failed to remove asset.'));
+				$this->setError(\JText::_('Failed to remove asset.'));
 				return false;
 			}
 		}
 		else
 		{
-			$tbl = new CollectionsTableAsset($this->_db);
+			$tbl = new Tables\Asset($this->_db);
 			if (!$tbl->remove($asset))
 			{
-				$this->setError(JText::_('Failed to remove asset.'));
+				$this->setError(\JText::_('Failed to remove asset.'));
 				return false;
 			}
 		}
@@ -421,7 +427,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 
 		if (!isset($this->_tags))
 		{
-			$this->_tags = new CollectionsModelTags($this->get('id'));
+			$this->_tags = new Tags($this->get('id'));
 		}
 
 		return $this->_tags->render($as, array('admin' => $admin));
@@ -436,9 +442,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	{
 		if (!isset($this->_tags))
 		{
-			$this->_tags = new CollectionsModelTags($this->get('id'));
+			$this->_tags = new Tags($this->get('id'));
 		}
-		$user_id = $user_id ?: JFactory::getUser()->get('id');
+		$user_id = $user_id ?: \JFactory::getUser()->get('id');
 
 		return $this->_tags->setTags($tags, $user_id, $admin);
 	}
@@ -453,9 +459,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	{
 		if (!isset($this->_tags))
 		{
-			$this->_tags = new CollectionsModelTags($this->get('id'));
+			$this->_tags = new Tags($this->get('id'));
 		}
-		//$user_id = $user_id ?: JFactory::getUser()->get('id');
+		//$user_id = $user_id ?: \JFactory::getUser()->get('id');
 
 		//return $this->_tags->add($tag, $user_id, $admin);
 		return $this->_tags->append($tag);
@@ -468,11 +474,11 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 */
 	public function vote()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'vote.php');
+		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
-		$vote = new CollectionsTableVote($this->_db);
+		$vote = new Tables\Vote($this->_db);
 		$vote->loadByBulletin($this->get('id'), $juser->get('id'));
 
 		$like = true;
@@ -491,7 +497,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			{
 				if (!$vote->store())
 				{
-					$this->setError(JText::_('Error occurred while saving vote'));
+					$this->setError(\JText::_('Error occurred while saving vote'));
 					return false;
 				}
 			}
@@ -553,7 +559,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			{
 				$k++;
 
-				$a = new CollectionsModelAsset($asset['id']);
+				$a = new Asset($asset['id']);
 				$a->set('type', $asset['type']);
 				$a->set('item_id', $this->get('id'));
 				$a->set('ordering', $k);
@@ -575,7 +581,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 
 		if ($files = $this->get('_files'))
 		{
-			$config = JComponentHelper::getParams('com_collections');
+			$config = \JComponentHelper::getParams('com_collections');
 
 			// Build the upload path if it doesn't exist
 			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
@@ -583,9 +589,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($path))
+				if (!\JFolder::create($path))
 				{
-					$this->setError(JText::_('Error uploading. Unable to create path.'));
+					$this->setError(\JText::_('Error uploading. Unable to create path.'));
 					return false;
 				}
 			}
@@ -599,18 +605,18 @@ class CollectionsModelItem extends CollectionsModelAbstract
 					// Make the filename safe
 					jimport('joomla.filesystem.file');
 					$files['name'][$i] = urldecode($files['name'][$i]);
-					$files['name'][$i] = JFile::makeSafe($files['name'][$i]);
+					$files['name'][$i] = \JFile::makeSafe($files['name'][$i]);
 					$files['name'][$i] = str_replace(' ', '_', $files['name'][$i]);
 
 					// Upload new files
-					if (!JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
+					if (!\JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
 					{
-						$this->setError(JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
+						$this->setError(\JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
 					}
 					// File was uploaded
 					else
 					{
-						$asset = new CollectionsModelAsset();
+						$asset = new Asset();
 						//$asset->set('_file', $file);
 						$asset->set('item_id', $this->get('id'));
 						$asset->set('filename', $files['name'][$i]);
@@ -669,7 +675,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', JRequest::getCmd('option', 'com_collections')),
+						'option'   => $this->get('option', \JRequest::getCmd('option', 'com_collections')),
 						'scope'    => 'collections',
 						'pagename' => 'collections',
 						'pageid'   => 0,
@@ -705,7 +711,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten);
+			$content = String::truncate($content, $shorten);
 		}
 		return $content;
 	}
@@ -755,7 +761,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 				// Filter available classes to just our collectibles
 				$collectibles = array_values(array_filter(get_declared_classes(), function($class)
 				{
-					return (in_array('CollectionsModelItem', class_parents($class)));
+					return (in_array('Components\\Collectionss\\Models\\Item', class_parents($class)));
 				}));
 			}
 
@@ -801,7 +807,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = (!JFactory::getUser()->get('guest') ? array(0, 1) : 0);
+			$filters['access'] = (!\JFactory::getUser()->get('guest') ? array(0, 1) : 0);
 		}
 
 		switch (strtolower($what))
@@ -809,7 +815,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			case 'count':
 				if (!isset($this->_cache['collections.count']) || $clear)
 				{
-					$tbl = new CollectionsTableCollection($this->_db);
+					$tbl = new Tables\Collection($this->_db);
 					$this->_cache['collections.count'] = $tbl->getCount($filters);
 				}
 				return $this->_cache['collections.count'];
@@ -818,22 +824,22 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['collections.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['collections.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new CollectionsTableCollection($this->_db);
+					$tbl = new Tables\Collection($this->_db);
 
 					if ($results = $tbl->getRecords($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new CollectionsModelCollection($result);
+							$results[$key] = new Collection($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['collections.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['collections.list'] = new ItemList($results);
 				}
 				return $this->_cache['collections.list'];
 			break;
@@ -847,12 +853,12 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 */
 	public function canCollect()
 	{
-		if (JRequest::getCmd('option') != 'com_collections')
+		if (\JRequest::getCmd('option') != 'com_collections')
 		{
 			return false;
 		}
 
-		if (!JRequest::getInt('post', 0))
+		if (!\JRequest::getInt('post', 0))
 		{
 			return false;
 		}
@@ -873,7 +879,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			return true;
 		}
 
-		$id = ($id ?: JRequest::getInt('post', 0));
+		$id = ($id ?: \JRequest::getInt('post', 0));
 
 		if (!$this->_tbl->loadType($id, $this->_type))
 		{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-20115 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Collections\Controllers;
+
+use Components\Collections\Models\Item;
+use Components\Collections\Tables;
+use Hubzero\Component\AdminController;
 
 /**
  * Controller class for collection items
  */
-class CollectionsControllerItems extends \Hubzero\Component\AdminController
+class Items extends AdminController
 {
 	/**
 	 * Execute a task
@@ -57,46 +60,44 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Get filters
 		$this->view->filters = array(
 			'state'  => -1,
-			'access' => -1
+			'access' => -1,
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		$this->view->filters['sort'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'created'
-		);
-		$this->view->filters['sort_Dir'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		);
-		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-
-		// Get paging variables
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		$obj = new CollectionsTableItem($this->database);
+		$obj = new Tables\Item($this->database);
 
 		// Get record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -113,14 +114,14 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
+		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 
 			if (is_array($id))
 			{
@@ -128,7 +129,7 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$row = new CollectionsModelItem($id);
+			$row = new Item($id);
 		}
 
 		$this->view->row = $row;
@@ -136,7 +137,7 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', JFactory::getDate()->toSql());
+			$this->view->row->set('created', \JFactory::getDate()->toSql());
 		}
 
 		// Set any errors
@@ -159,13 +160,13 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new CollectionsModelItem($fields['id']);
+		$row = new Item($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -174,12 +175,12 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Add some data
-		if ($files  = JRequest::getVar('fls', '', 'files', 'array'))
+		if ($files  = \JRequest::getVar('fls', '', 'files', 'array'))
 		{
 			$row->set('_files', $files);
 		}
-		$row->set('_assets', JRequest::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('_assets', \JRequest::getVar('assets', null, 'post'));
+		$row->set('_tags', trim(\JRequest::getVar('tags', '')));
 
 		// Store new content
 		if (!$row->store(true))
@@ -190,7 +191,7 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(JRequest::getVar('tags', '')));
+		$row->tag(trim(\JRequest::getVar('tags', '')));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -199,8 +200,8 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_COLLECTIONS_POST_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_COLLECTIONS_POST_SAVED')
 		);
 	}
 
@@ -212,10 +213,10 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -223,7 +224,8 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new CollectionsModelItem(intval($id));
+				$entry = new Item(intval($id));
+
 				// Delete the entry
 				if (!$entry->delete())
 				{
@@ -234,21 +236,8 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_COLLECTIONS_ITEMS_DELETED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_COLLECTIONS_ITEMS_DELETED')
 		);
 	}
 }
