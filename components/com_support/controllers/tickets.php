@@ -791,45 +791,62 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	/**
 	 * Displays a form for creating a new support ticket
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function newTask()
+	public function newTask($row = null)
 	{
-		// Get browser info
+		if (!($row instanceof SupportModelTicket))
+		{
+			$row = new SupportModelTicket();
+			$row->set('open', 1)
+				->set('status', 0)
+				->set('ip', JRequest::ip())
+				->set('uas', JRequest::getVar('HTTP_USER_AGENT', '', 'server'))
+				->set('referrer', base64_encode(JRequest::getVar('HTTP_REFERER', NULL, 'server')))
+				->set('cookies', (JRequest::getVar('sessioncookie', '', 'cookie') ? 1 : 0))
+				->set('instances', 1)
+				->set('section', 1)
+				->set('tool', JRequest::getVar('tool', ''))
+				->set('verified', 0);
+
+			if (!$this->juser->get('guest'))
+			{
+				$row->set('name', $this->juser->get('name'));
+				$row->set('login', $this->juser->get('username'));
+				$row->set('email', $this->juser->get('email'));
+			}
+		}
+
 		$browser = new \Hubzero\Browser\Detector();
 
-		// @TODO change to use SupportTicketModel
-		$problem = array(
-			'os'         => $browser->platform(),
-			'osver'      => $browser->platformVersion(),
-			'browser'    => $browser->name(),
-			'browserver' => $browser->version(),
-			'topic'      => '',
-			'short'      => '',
-			'long'       => '',
-			'referer'    => base64_encode(JRequest::getVar('HTTP_REFERER', NULL, 'server')),
-			'tool'       => JRequest::getVar('tool', '')
-		);
+		$row->set('os', $browser->platform())
+			->set('osver', $browser->platformVersion())
+			->set('browser', $browser->name())
+			->set('browserver', $browser->version());
+
+		if (!$this->juser->get('guest'))
+		{
+			$profile = new \Hubzero\User\Profile();
+			$profile->load($this->juser->get('id'));
+			$emailConfirmed = $profile->get('emailConfirmed');
+			if (($emailConfirmed == 1) || ($emailConfirmed == 3))
+			{
+				$row->set('verified', 1);
+			}
+		}
 
 		// Generate a CAPTCHA
 		JPluginHelper::importPlugin('support');
 		$dispatcher = JDispatcher::getInstance();
-		$this->view->captchas = $dispatcher->trigger('onGetComponentCaptcha');
-
-		// Set page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
 
 		// Output HTML
-		$this->view->verified   = $this->_isVerified();
-		if ($this->view->verified && $this->acl->check('update', 'tickets') > 0)
+		$lists = array();
+
+		if ($row->get('verified') && $this->acl->check('update', 'tickets') > 0)
 		{
-			$this->view->lists = array();
 			if (trim($this->config->get('group')))
 			{
-				$this->view->lists['owner'] = $this->_userSelectGroup(
+				$lists['owner'] = $this->_userSelectGroup(
 					'problem[owner]',
 					'',
 					1,
@@ -839,84 +856,42 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->view->lists['owner'] = $this->_userSelect(
+				$lists['owner'] = $this->_userSelect(
 					'problem[owner]',
 					'',
 					1
 				);
 			}
-			$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
-			// Get resolutions
+
+			$lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+
 			$sr = new SupportResolution($this->database);
-			$this->view->lists['resolutions'] = $sr->getResolutions();
+			$lists['resolutions'] = $sr->getResolutions();
 
 			$sc = new SupportCategory($this->database);
-			$this->view->lists['categories'] = $sc->find('list');
+			$lists['categories'] = $sc->find('list');
 		}
-		$this->view->acl        = $this->acl;
-		$this->view->title      = $this->_title;
-		$this->view->reporter   = $this->_getUser();
-		$this->view->problem    = $problem;
-		$this->view->file_types = $this->config->get('file_ext');
-		if ($this->getError())
+
+		// Set page title
+		$this->_buildTitle();
+
+		// Set the pathway
+		$this->_buildPathway();
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
-	}
 
-	/**
-	 * Checks if the current user session has a verified account
-	 *
-	 * @return     boolean True if user is verified
-	 */
-	private function _isVerified()
-	{
-		if (!$this->juser->get('guest'))
-		{
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($this->juser->get('id'));
-			$emailConfirmed = $profile->get('emailConfirmed');
-			if (($emailConfirmed == 1) || ($emailConfirmed == 3))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Gets some basic info of the current user session
-	 *
-	 * @return     array
-	 */
-	private function _getUser()
-	{
-		$user = array();
-		$user['login'] = '';
-		$user['name']  = '';
-		$user['org']   = '';
-		$user['email'] = '';
-		$user['uid']   = '';
-
-		if (!$this->juser->get('guest'))
-		{
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($this->juser->get('id'));
-
-			if (is_object($profile))
-			{
-				$user['login'] = $profile->get('username');
-				$user['name']  = $profile->get('name');
-				$user['org']   = $profile->get('organization');
-				$user['email'] = $profile->get('email');
-				$user['uid']   = $profile->get('uidNumber');
-			}
-		}
-		return $user;
+		$this->view
+			->set('acl', $this->acl)
+			->set('title', $this->_title)
+			->set('file_types', $this->config->get('file_ext'))
+			->set('lists', $lists)
+			->set('row', $row)
+			->set('captchas', $dispatcher->trigger('onGetComponentCaptcha'))
+			->setLayout('new')
+			->display();
 	}
 
 	/**
@@ -1151,30 +1126,16 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$prevSubmission = $ticket->getTickets($filters , false);
 
 		// for the first ticket ever
-		if (!isset($prevSubmission[0]))
+		if (isset($prevSubmission[0]) && $prevSubmission[0]->report == $row->get('report') && (time() - strtotime($prevSubmission[0]->created) <= 15))
 		{
-			// Save the data
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-		}
-		elseif ($prevSubmission[0]->summary != $row->get('summary') && (time() - strtotime($prevSubmission[0]->created) > 15))
-		{
-			// Save the data
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-		}
-		else
-		{
-			// need to adjust the path ...
 			$this->setError(JText::_('COM_SUPPORT_TICKET_DUPLICATE_DETECTION'));
-			$this->view->setLayout('new');
-			$this->view->display();
-			return;
+			return $this->newTask($row);
+		}
 
+		// Save the data
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
 		}
 
 		$attachment = $this->uploadTask($row->get('id'));
