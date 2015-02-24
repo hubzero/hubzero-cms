@@ -1336,6 +1336,9 @@
 		display: block;
 		font-weight: normal;
 	}
+	#ticket-number a {
+		border: none;
+	}
 	#messagebox {
 	}
 	#messagebox .wrap {

@@ -60,7 +60,7 @@ if (!$this->no_html)
 			<div class="col span-half">
 				<div id="ticket-number">
 					<h2>
-						<span><?php echo JText::sprintf('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><?php echo $this->ticket; ?></strong>
+						<span><?php echo JText::sprintf('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></strong>
 					</h2>
 				</div>
 			</div>
