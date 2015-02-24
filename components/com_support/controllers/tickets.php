@@ -826,10 +826,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$dispatcher = JDispatcher::getInstance();
 
 		// Output HTML
+		$lists = array();
+
 		if ($row->get('verified') && $this->acl->check('update', 'tickets') > 0)
 		{
-			$lists = array();
-
 			if (trim($this->config->get('group')))
 			{
 				$lists['owner'] = $this->_userSelectGroup(
