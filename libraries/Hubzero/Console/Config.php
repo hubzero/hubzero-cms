@@ -174,7 +174,7 @@ class Config
 		{
 			if (is_array($v))
 			{
-				$existing[$k] = $this->merge($existing[$k], $v);
+				$existing[$k] = isset($existing[$k]) ? $this->merge($existing[$k], $v) : $this->merge(array(), $v);
 			}
 			else
 			{
