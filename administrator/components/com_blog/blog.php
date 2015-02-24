@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,49 +23,46 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog;
 
-$option = 'com_blog';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_blog'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$scope = JRequest::getCmd('scope', 'site');
-$controllerName = JRequest::getCmd('controller', 'entries');
+$scope = \JRequest::getCmd('scope', 'site');
+$controllerName = \JRequest::getCmd('controller', 'entries');
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_BLOG_SCOPE_SITE'),
-	JRoute::_('index.php?option=' . $option. '&controller=entries&scope=site'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_BLOG_SCOPE_SITE'),
+	\JRoute::_('index.php?option=com_blog&controller=entries&scope=site'),
 	($controllerName == 'entries' && $scope == 'site')
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_BLOG_SCOPE_MEMBER'),
-	JRoute::_('index.php?option=' . $option. '&controller=entries&scope=member'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_BLOG_SCOPE_MEMBER'),
+	\JRoute::_('index.php?option=com_blog&controller=entries&scope=member'),
 	($controllerName == 'entries' && $scope == 'member')
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_BLOG_SCOPE_GROUP'),
-	JRoute::_('index.php?option=' . $option. '&controller=entries&scope=group'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_BLOG_SCOPE_GROUP'),
+	\JRoute::_('index.php?option=com_blog&controller=entries&scope=group'),
 	($controllerName == 'entries' && $scope == 'group')
 );
 
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';
 }
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'BlogController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

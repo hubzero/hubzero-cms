@@ -98,7 +98,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new BlogModelArchive('group', $group->get('gidNumber'));
+		$this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
 		//are we returning html
 		if ($return == 'html')
@@ -240,7 +240,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$tbl = new BlogTableEntry($database);
+		$tbl = new \Components\Blog\Tables\Entry($database);
 
 		// Get all the IDs for entries associated with this group
 		$entries = $tbl->find(
@@ -289,7 +289,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$tbl = new BlogTableEntry($database);
+		$tbl = new \Components\Blog\Tables\Entry($database);
 
 		// Get all the IDs for entries associated with this group
 		$entries = $tbl->find(
@@ -452,13 +452,11 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$view->month  = $view->filters['month'];
 		$view->search = $view->filters['search'];
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -732,7 +730,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$id = JRequest::getInt('entry', 0);
-			$view->entry = new BlogModelEntry($id);
+			$view->entry = new \Components\Blog\Models\Entry($id);
 		}
 
 		// Does it exist?
@@ -879,7 +877,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new BlogModelEntry($id);
+		$entry = new \Components\Blog\Models\Entry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -951,7 +949,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogModelComment($comment['id']);
+		$row = new \Components\Blog\Models\Comment($comment['id']);
 		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
@@ -991,7 +989,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogModelComment($id);
+		$comment = new \Components\Blog\Models\Comment($id);
 
 		// Delete all comments on an entry
 		$comment->set('state', 2);

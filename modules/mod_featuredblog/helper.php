@@ -31,7 +31,7 @@
 namespace Modules\Featuredblog;
 
 use Hubzero\Module\Module;
-use BlogTableEntry;
+use Components\Blog\Tables\Entry;
 use JFactory;
 
 /**
@@ -94,7 +94,7 @@ class Helper extends Module
 			'authorized' => false
 		);
 
-		$mp = new BlogTableEntry($database);
+		$mp = new Entry($database);
 
 		// Did we have a result to display?
 		if ($row = $mp->find('one', $filters))

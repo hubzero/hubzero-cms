@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,15 +23,15 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = BlogHelperPermissions::getActions('entry');
+$canDo = \Components\Blog\Helpers\Permissions::getActions('entry');
 
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin'))
@@ -148,7 +148,16 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo ($this->filters['scope'] == 'group') ? '9' : '8'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo ($this->filters['scope'] == 'group') ? '9' : '8'; ?>"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Models\Adapters;
 
-require_once(__DIR__ . '/abstract.php');
+use Hubzero\User\Group as UserGroup;
+
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for an entry link for the group blog
  */
-class BlogModelAdapterGroup extends BlogModelAdapterAbstract
+class Group extends Base
 {
 	/**
 	 * URL segments
@@ -57,16 +58,16 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
-		$this->_item = \Hubzero\User\Group::getInstance($scope_id);
-		if (!($this->_item instanceof \Hubzero\User\Group))
+		$this->_item = UserGroup::getInstance($scope_id);
+		if (!($this->_item instanceof UserGroup))
 		{
-			$this->_item = new \Hubzero\User\Group();
+			$this->_item = new UserGroup();
 		}
 
 		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'blog';
 
-		$groupParams = JComponentHelper::getParams('com_groups');
+		$groupParams = \JComponentHelper::getParams('com_groups');
 		$uploadpath = $groupParams->get('uploadpath', '/site/groups');
 		$uploadpath = trim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS . 'blog';
 
@@ -140,8 +141,8 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 			break;
 
 			case 'comments':
-				$segments['scope']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['scope'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['scope']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['scope'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['scope'] .= $this->get('alias');
 
 				$anchor = '#comments';
@@ -149,8 +150,8 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 
 			case 'permalink':
 			default:
-				$segments['scope']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['scope'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['scope']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['scope'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['scope'] .= $this->get('alias');
 			break;
 		}

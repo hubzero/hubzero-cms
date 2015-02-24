@@ -507,7 +507,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		$filters['scope'] = 'group';
 		$filters['group_id'] = $gid;
 
-		$gb = new BlogTableEntry($database);
+		$gb = new \Components\Blog\Tables\Entry($database);
 
 		$total = $gb->find('count', $filters);
 

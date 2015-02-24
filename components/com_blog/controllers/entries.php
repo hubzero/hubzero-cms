@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,27 +23,34 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Controllers;
+
+use Components\Blog\Models\Archive;
+use Components\Blog\Models\Comment;
+use Components\Blog\Tables;
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\String;
+use Hubzero\Utility\Sanitize;
+use Exception;
 
 /**
  * Blog controller class for entries
  */
-class BlogControllerEntries extends \Hubzero\Component\SiteController
+class Entries extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->model = new BlogModelArchive('site', 0);
+		$this->model = new Archive('site', 0);
 
 		$this->_authorize();
 		$this->_authorize('entry');
@@ -63,13 +70,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
-		$title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+		$title = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -83,11 +90,11 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
 				$pathway->addItem(
-					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+					\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
 			}
-			$year = JRequest::getInt('year', 0);
+			$year = \JRequest::getInt('year', 0);
 			if ($year)
 			{
 				$pathway->addItem(
@@ -95,7 +102,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 					'index.php?option=' . $this->_option . '&year=' . $year
 				);
 			}
-			$month = JRequest::getInt('month', 0);
+			$month = \JRequest::getInt('month', 0);
 			if ($month)
 			{
 				$pathway->addItem(
@@ -120,19 +127,19 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'display')
 		{
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
-				$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+				$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			}
-			$year = JRequest::getInt('year', 0);
+			$year = \JRequest::getInt('year', 0);
 			if ($year)
 			{
 				$this->_title .= ': ' . $year;
 			}
-			$month = JRequest::getInt('month', 0);
+			$month = \JRequest::getInt('month', 0);
 			if ($month)
 			{
 				$this->_title .= ': ' . sprintf("%02d", $month);
@@ -142,8 +149,8 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 				$this->_title .= ': ' . stripslashes($this->view->row->get('title'));
 			}
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		\JFactory::getDocument()->setTitle($this->_title);
 	}
 
 	/**
@@ -156,17 +163,17 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'year'       => JRequest::getInt('year', 0),
-			'month'      => JRequest::getInt('month', 0),
+			'limit'      => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => \JRequest::getInt('limitstart', 0),
+			'year'       => \JRequest::getInt('year', 0),
+			'month'      => \JRequest::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
 			'scope_id'   => 0,
-			'search'     => JRequest::getVar('search', ''),
+			'search'     => \JRequest::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 'public'
 		);
@@ -193,7 +200,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
 
 		// Get any errors for display
 		foreach ($this->getErrors() as $error)
@@ -215,12 +222,12 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
-		$alias = JRequest::getVar('alias', '');
+		$alias = \JRequest::getVar('alias', '');
 
 		if (!$alias)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
 		}
@@ -229,13 +236,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		if (!$this->view->row->exists())
 		{
-			throw new JException(JText::_('COM_BLOG_NOT_FOUND'), 404);
+			throw new Exception(\JText::_('COM_BLOG_NOT_FOUND'), 404);
 		}
 
 		// Check authorization
 		if (!$this->view->row->access('view'))
 		{
-			throw new JException(JText::_('COM_BLOG_NOT_AUTH'), 403);
+			throw new Exception(\JText::_('COM_BLOG_NOT_AUTH'), 403);
 		}
 
 		// Filters for returning results
@@ -262,7 +269,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -293,10 +300,10 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -308,7 +315,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->view->entry = $this->model->entry(JRequest::getInt('entry', 0));
+			$this->view->entry = $this->model->entry(\JRequest::getInt('entry', 0));
 		}
 
 		if (!$this->view->entry->exists())
@@ -323,7 +330,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -344,30 +351,30 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$entry = JRequest::getVar('entry', array(), 'post', 'none', 2);
+		$entry = \JRequest::getVar('entry', array(), 'post', 'none', 2);
 
-		// make sure we dont want to turn off comments
+		// Make sure we don't want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
-			$entry['publish_up']   = JFactory::getDate($entry['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_up']   = \JFactory::getDate($entry['publish_up'], \JFactory::getConfig()->get('offset'))->toSql();
 		}
 		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
 		{
-			$entry['publish_down'] = JFactory::getDate($entry['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_down'] = \JFactory::getDate($entry['publish_down'], \JFactory::getConfig()->get('offset'))->toSql();
 		}
 
 		$row = $this->model->entry(0);
@@ -386,30 +393,30 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		// Process tags
-		if (!$row->tag(JRequest::getVar('tags', '')))
+		if (!$row->tag(\JRequest::getVar('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
 		}
 
 		$this->setRedirect(
-			JRoute::_($row->link())
+			\JRoute::_($row->link())
 		);
 	}
 
 	/**
 	 * Mark an entry as deleted
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -418,22 +425,22 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		if (!$this->config->get('access-delete-entry'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_BLOG_NOT_AUTHORIZED'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_BLOG_NOT_AUTHORIZED'),
 				'error'
 			);
 			return;
 		}
 
 		// Incoming
-		$id = JRequest::getInt('entry', 0);
+		$id = \JRequest::getInt('entry', 0);
 		if (!$id)
 		{
 			return $this->displayTask();
 		}
 
-		$process    = JRequest::getVar('process', '');
-		$confirmdel = JRequest::getVar('confirmdel', '');
+		$process    = \JRequest::getVar('process', '');
+		$confirmdel = \JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = $this->model->entry($id);
@@ -443,7 +450,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->setError(JText::_('COM_BLOG_ERROR_CONFIRM_DELETION'));
+				$this->setError(\JText::_('COM_BLOG_ERROR_CONFIRM_DELETION'));
 			}
 
 			// Push some scripts to the template
@@ -451,7 +458,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			$this->_buildPathway();
 
 			// Output HTML
-			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
 			$this->view->entry  = $entry;
 			$this->view->config = $this->config;
 			if ($this->getError())
@@ -466,7 +473,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Delete the entry itself
 		$entry->set('state', -1);
@@ -477,7 +484,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Return the topics list
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
+			\JRoute::_('index.php?option=' . $this->_option)
 		);
 		return;
 	}
@@ -492,7 +499,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		if (!$this->config->get('feeds_enabled'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -500,25 +507,25 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
+		$jdoc = \JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
-		$doc->link = JRoute::_('index.php?option=' . $this->_option);
+		$doc = new \JDocumentFeed;
+		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Incoming
 		$filters = array(
-			'limit'    => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'    => JRequest::getInt('limitstart', 0),
-			'year'     => JRequest::getInt('year', 0),
-			'month'    => JRequest::getInt('month', 0),
+			'limit'    => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'    => \JRequest::getInt('limitstart', 0),
+			'year'     => \JRequest::getInt('year', 0),
+			'month'    => \JRequest::getInt('month', 0),
 			'scope'    => 'site',
 			'scope_id' => 0,
-			'search'   => JRequest::getVar('search','')
+			'search'   => \JRequest::getVar('search','')
 		);
 
 		if ($this->juser->get('guest'))
@@ -534,13 +541,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
 		$doc->title .= ($filters['year'])  ? ': ' . $filters['year'] : '';
 		$doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
-		$doc->description = JText::sprintf('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = JText::_('COM_BLOG_RSS_CATEGORY');
+		$doc->description = \JText::sprintf('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = \JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = \JText::_('COM_BLOG_RSS_CATEGORY');
 
 		// Get the records
 		$rows = $this->model->entries('list', $filters);
@@ -550,19 +557,19 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		{
 			foreach ($rows as $row)
 			{
-				$item = new JFeedItem();
+				$item = new \JFeedItem();
 
 				// Strip html from feed item description text
 				$item->description = $row->content('parsed');
-				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($item->description));
+				$item->description = html_entity_decode(Sanitize::stripAll($item->description));
 				if ($this->config->get('feed_entries') == 'partial')
 				{
-					$item->description = \Hubzero\Utility\String::truncate($item->description, 300);
+					$item->description = String::truncate($item->description, 300);
 				}
 
 				// Load individual item creator class
 				$item->title       = html_entity_decode(strip_tags($row->get('title')));
-				$item->link        = JRoute::_($row->link());
+				$item->link        = \JRoute::_($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
 				$item->author      = $row->creator('name');
@@ -587,23 +594,23 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_BLOG_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogModelComment($comment['id']);
+		$row = new Comment($comment['id']);
 		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
@@ -618,7 +625,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		/*
-		$entry = new BlogModelEntry($row->get('entry_id'));
+		$entry = new Entry($row->get('entry_id'));
 
 		if ($row->get('created_by') != $entry->get('created_by'))
 		{
@@ -665,39 +672,39 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	/**
 	 * Delete a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletecommentTask()
 	{
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->setError(JText::_('COM_BLOG_LOGIN_NOTICE'));
+			$this->setError(\JText::_('COM_BLOG_LOGIN_NOTICE'));
 			return $this->entryTask();
 		}
 
 		// Incoming
-		$id    = JRequest::getInt('comment', 0);
-		$year  = JRequest::getVar('year', '');
-		$month = JRequest::getVar('month', '');
-		$alias = JRequest::getVar('alias', '');
+		$id    = \JRequest::getInt('comment', 0);
+		$year  = \JRequest::getVar('year', '');
+		$month = \JRequest::getVar('month', '');
+		$alias = \JRequest::getVar('alias', '');
 
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
 		}
 
 		// Initiate a blog comment object
-		$comment = new BlogTableComment($this->database);
+		$comment = new Tables\Comment($this->database);
 		$comment->load($id);
 
 		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
 		}
@@ -707,7 +714,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Return the topics list
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
+			\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : null)
 		);
@@ -716,55 +723,52 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	/**
 	 * Display an RSS feed of comments
 	 *
-	 * @return     string RSS
+	 * @return  string  RSS
 	 */
 	public function commentsTask()
 	{
 		if (!$this->config->get('feeds_enabled'))
 		{
-			JError::raiseError(404, JText::_('Feed not found.'));
-			return;
+			throw new Exception(\JText::_('Feed not found.'), 404);
 		}
 
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
+		$jdoc = \JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
-		$doc->link = JRoute::_('index.php?option=' . $this->_option);
+		$doc = new \JDocumentFeed;
+		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
 
 		// Incoming
-		$alias = JRequest::getVar('alias', '');
+		$alias = \JRequest::getVar('alias', '');
 		if (!$alias)
 		{
-			JError::raiseError(404, JText::_('Feed not found.'));
-			return;
+			throw new Exception(\JText::_('Feed not found.'), 404);
 		}
 
 		$this->entry = $this->model->entry($alias);
 
 		if (!$this->entry->isAvailable())
 		{
-			JError::raiseError(404, JText::_('Feed not found.'));
-			return;
+			throw new Exception(\JText::_('Feed not found.'), 404);
 		}
 
-		$year  = JRequest::getInt('year', date("Y"));
-		$month = JRequest::getInt('month', 0);
+		$year  = \JRequest::getInt('year', date("Y"));
+		$month = \JRequest::getInt('month', 0);
 
 		// Build some basic RSS document information
-		$jconfig = JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$jconfig = \JFactory::getConfig();
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
 		$doc->title .= ($year) ? ': ' . $year : '';
 		$doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';
 		$doc->title .= stripslashes($this->entry->get('title', ''));
-		$doc->title .= ': '.JText::_('Comments');
+		$doc->title .= ': ' . \JText::_('Comments');
 
-		$doc->description = JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
-		$doc->copyright   = JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = \JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
+		$doc->copyright   = \JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 
 		$rows = $this->entry->comments('list');
 
@@ -794,22 +798,22 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	private function _comment(&$doc, $row)
 	{
 		// Load individual item creator class
-		$item = new JFeedItem();
-		$item->title = JText::sprintf('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
-		$item->link  = JRoute::_($this->entry->link()  . '#c' . $row->get('id'));
+		$item = new \JFeedItem();
+		$item->title = \JText::sprintf('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+		$item->link  = \JRoute::_($this->entry->link()  . '#c' . $row->get('id'));
 
 		if ($row->isReported())
 		{
-			$item->description = JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
+			$item->description = \JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
 		}
 		else
 		{
-			$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($row->content('clean')));
+			$item->description = html_entity_decode(Sanitize::stripAll($row->content('clean')));
 		}
 
 		if ($row->get('anonymous'))
 		{
-			$item->author = JText::_('COM_BLOG_ANONYMOUS');
+			$item->author = \JText::_('COM_BLOG_ANONYMOUS');
 		}
 		else
 		{
@@ -832,7 +836,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	/**
 	 * Method to check admin access permission
 	 *
-	 * @return	boolean	True on success
+	 * @return  boolean  True on success
 	 */
 	protected function _authorize($assetType='component', $assetId=null)
 	{

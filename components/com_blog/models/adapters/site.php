@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Models\Adapters;
 
-require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for an entry link for the site-wide blog
  */
-class BlogModelAdapterSite extends BlogModelAdapterAbstract
+class Site extends Base
 {
 	/**
 	 * URL segments
@@ -57,7 +56,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 	{
 		$this->set('scope_id', $scope_id);
 
-		$config = JComponentHelper::getParams($this->_segments['option']);
+		$config = \JComponentHelper::getParams($this->_segments['option']);
 
 		$this->set('path', $config->get('uploadpath', '/site/blog'));
 		$this->set('scope', '');
@@ -75,7 +74,7 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 		switch (strtolower($key))
 		{
 			case 'title':
-				return JText::_('COM_BLOG');
+				return \JText::_('COM_BLOG');
 			break;
 
 			case 'alias':
@@ -129,8 +128,8 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 			break;
 
 			case 'comments':
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['task'] .= $this->get('alias');
 
 				$anchor = '#comments';
@@ -138,8 +137,8 @@ class BlogModelAdapterSite extends BlogModelAdapterAbstract
 
 			case 'permalink':
 			default:
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
+				$segments['task']  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+				$segments['task'] .= \JHTML::_('date', $this->get('publish_up'), 'm') . '/';
 				$segments['task'] .= $this->get('alias');
 			break;
 		}

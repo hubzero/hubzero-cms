@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Tables;
 
 /**
  * Blog Entry database class
  */
-class BlogTableEntry extends JTable
+class Entry extends \JTable
 {
 	/**
 	 * Constructor
@@ -74,7 +73,7 @@ class BlogTableEntry extends JTable
 		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'));
+			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'));
 			return false;
 		}
 
@@ -97,11 +96,11 @@ class BlogTableEntry extends JTable
 		$this->content = trim($this->content);
 		if ($this->content == '')
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'));
+			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->created_by)
 		{
 			$this->created_by = $juser->get('id');
@@ -109,7 +108,7 @@ class BlogTableEntry extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
 		if (!$this->publish_up || $this->publish_up == $this->_db->getNullDate())
@@ -226,7 +225,7 @@ class BlogTableEntry extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$nullDate = $this->_db->getNullDate();
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		$query = "FROM `$this->_tbl` AS m LEFT JOIN `#__xprofiles` AS u ON u.uidNumber=m.created_by";
 
@@ -294,14 +293,14 @@ class BlogTableEntry extends JTable
 		}
 		else
 		{
-			if (!JFactory::getApplication()->isAdmin())
+			if (!\JFactory::getApplication()->isAdmin())
 			{
-				$created_by = " OR m.created_by=" .  $this->_db->quote(JFactory::getUser()->get('id'));
+				$created_by = " OR m.created_by=" .  $this->_db->quote(\JFactory::getUser()->get('id'));
 				$where[] = "(m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
 			}
 		}
 
-		if (!JFactory::getApplication()->isAdmin())
+		if (!\JFactory::getApplication()->isAdmin())
 		{
 			if ((isset($filters['state']) && $filters['state'] != 'all') || !isset($filters['state']))
 			{

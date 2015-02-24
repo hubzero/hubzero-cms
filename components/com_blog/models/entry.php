@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,28 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Models;
 
-require_once(__DIR__ . DS . '..' . DS . 'tables' . DS . 'entry.php');
+use Components\Blog\Tables;
+use Hubzero\Base\Model;
+use Hubzero\User\Profile;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'entry.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Model class for a blog entry
  */
-class BlogModelEntry extends \Hubzero\Base\Model
+class Entry extends Model
 {
 	/**
 	 * Table name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'BlogTableEntry';
+	protected $_tbl_name = '\\Components\\Blog\\Tables\\Entry';
 
 	/**
 	 * Model context
@@ -106,9 +111,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid, $scope=null, $scope_id=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new BlogTableEntry($this->_db);
+		$this->_tbl = new Tables\Entry($this->_db);
 
 		if ($oid)
 		{
@@ -125,7 +130,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				$this->bind($oid);
 			}
 
-			$this->params = new JRegistry($this->_tbl->get('params'));
+			$this->params = new \JRegistry($this->_tbl->get('params'));
 		}
 	}
 
@@ -167,7 +172,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			return false;
 		}
 
-		$now = JFactory::getDate();
+		$now = \JFactory::getDate();
 
 		if ($this->get('publish_up')
 		 && $this->get('publish_up') != $this->_db->getNullDate()
@@ -192,7 +197,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			return true;
 		}
 
-		$now = JFactory::getDate();
+		$now = \JFactory::getDate();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()
@@ -253,12 +258,12 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -285,7 +290,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		 || ($id !== null && (int) $this->_comment->get('id') != $id))
 		{
 			$this->_comment = null;
-			if ($this->_comments instanceof \Hubzero\Base\ItemList)
+			if ($this->_comments instanceof ItemList)
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
@@ -298,7 +303,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			}
 			if (!$this->_comment)
 			{
-				$this->_comment = BlogModelComment::getInstance($id);
+				$this->_comment = Comment::getInstance($id);
 			}
 		}
 		return $this->_comment;
@@ -314,7 +319,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)
 	{
-		$tbl = new BlogTableComment($this->_db);
+		$tbl = new Tables\Comment($this->_db);
 
 		if (!isset($filters['entry_id']))
 		{
@@ -358,13 +363,13 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->getAllComments($this->get('id'), $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new BlogModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('option', $this->_adapter()->get('option'));
 							$results[$key]->set('scope', $this->_adapter()->get('scope'));
 							$results[$key]->set('alias', $this->_adapter()->get('alias'));
@@ -375,7 +380,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -408,7 +413,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			}
 		}
 
-		$cloud = new BlogModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -423,7 +428,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new BlogModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -477,7 +482,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			return call_user_func_array($callback, $arguments);
 		}
 
-		throw new \BadMethodCallException(JText::sprintf('Method "%s" does not exist.', $method));
+		throw new \BadMethodCallException(\JText::sprintf('Method "%s" does not exist.', $method));
 	}
 
 	/**
@@ -492,14 +497,14 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		{
 			$scope = strtolower($this->get('scope'));
 
-			$cls = 'BlogModelAdapter' . ucfirst($scope);
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -523,11 +528,11 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('publish_up'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('publish_up'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('publish_up'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('publish_up'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -555,8 +560,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 				if ($content === null)
 				{
-					$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-					$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
+					$scope  = \JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
+					$scope .= \JHTML::_('date', $this->get('publish_up'), 'm');
 
 					$config = array(
 						'option'   => $this->_adapter()->get('option'),
@@ -596,7 +601,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -620,7 +625,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				$this->params->set('access-view-entry', true);
 			}
 
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			if ($juser->get('guest'))
 			{
 				// Do not allow logged-out users to see private, 
@@ -688,17 +693,17 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		}
 
 		// Remove comments
-		$comment = new BlogTableComment($this->_db);
+		$comment = new Tables\Comment($this->_db);
 		if (!$comment->deleteByEntry($this->get('id')))
 		{
 			$this->setError($comment->getError());
 			return false;
 		}
 
-		$cloud = new BlogModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 		if (!$cloud->removeAll())
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
+			$this->setError(\JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
 			return false;
 		}
 

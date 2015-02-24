@@ -148,7 +148,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new BlogModelArchive('site');
+		$model = new \Components\Blog\Models\Archive('site');
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),

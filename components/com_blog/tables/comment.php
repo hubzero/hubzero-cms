@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,89 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Tables;
 
 /**
  * Blog Comment database class
  */
-class BlogTableComment extends JTable
+class Comment extends \JTable
 {
-
-	/**
-	 * int(11) primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $entry_id   = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $anonymous  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent     = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state     = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -128,17 +56,17 @@ class BlogTableComment extends JTable
 		$this->content = trim($this->content);
 		if ($this->content == '')
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT='));
+			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT='));
 			return false;
 		}
 
 		if (!$this->entry_id)
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+			$this->setError(\JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->created_by)
 		{
 			$this->created_by = $juser->get('id');
@@ -146,11 +74,11 @@ class BlogTableComment extends JTable
 		if (!$this->id)
 		{
 			$this->state   = ($this->state !== null ? $this->state : 1);
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 		else
 		{
-			$this->modified    = JFactory::getDate()->toSql();
+			$this->modified    = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 
@@ -488,7 +416,7 @@ class BlogTableComment extends JTable
 	{
 		if (!$entry_id)
 		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+			$this->setError(\JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 

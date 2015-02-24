@@ -86,7 +86,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		// Get our model
-		$this->model = new BlogModelArchive('member', $member->get('uidNumber'));
+		$this->model = new \Components\Blog\Models\Archive('member', $member->get('uidNumber'));
 
 		if ($returnhtml)
 		{
@@ -329,13 +329,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->month  = $view->filters['month'];
 		$view->search = $view->filters['search'];
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -501,13 +499,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 
@@ -572,7 +568,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->entry = new BlogModelEntry(JRequest::getInt('entry', 0));
+			$view->entry = new \Components\Blog\Models\Entry(JRequest::getInt('entry', 0));
 		}
 
 		// Does it exist?
@@ -587,12 +583,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Pass any errors on to the view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Render view
@@ -636,7 +629,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		// Instantiate model
-		$row = new BlogModelEntry($entry['id']);
+		$row = new \Components\Blog\Models\Entry($entry['id']);
 
 		// Bind data
 		if (!$row->bind($entry))
@@ -693,7 +686,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = new BlogModelEntry($id);
+		$entry = new \Components\Blog\Models\Entry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -718,13 +711,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$view->entry  = $entry;
 			$view->authorized = true;
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$view->setError($error);
-				}
+				$view->setError($error);
 			}
+
 			return $view->loadTemplate();
 		}
 
@@ -758,7 +749,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new BlogModelComment($comment['id']);
+		$row = new \Components\Blog\Models\Comment($comment['id']);
 		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
@@ -829,7 +820,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate a blog comment object
-		$comment = BlogModelComment::getInstance($id);
+		$comment = \Components\Blog\Models\Comment::getInstance($id);
 
 		// Delete all comments on an entry
 		$comment->set('state', 2);
@@ -881,13 +872,12 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$view->settings->loadPlugin($this->member->get('uidNumber'), 'members', $this->_name);
 
 		$view->message  = (isset($this->message)) ? $this->message : '';
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
+
 		return $view->loadTemplate();
 	}
 

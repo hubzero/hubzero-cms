@@ -231,7 +231,7 @@ class Helper extends Module
 					$filters['group_id'] = 0;
 					$filters['authorized'] = false;
 					$filters['sql'] = '';
-					$mp = new \BlogTableEntry($this->database);
+					$mp = new \Components\Blog\Tables\Entry($this->database);
 					$entry = $mp->getRecords($filters);
 
 					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;

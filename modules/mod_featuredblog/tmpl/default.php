@@ -39,7 +39,7 @@ if ($this->getError())
 }
 else if ($this->row)
 {
-	$row = new BlogModelEntry($this->row);
+	$row = new \Components\Blog\Models\Entry($this->row);
 	$base = rtrim(JURI::getInstance()->base(true), '/');
 	?>
 	<div class="<?php echo $this->cls; ?>">

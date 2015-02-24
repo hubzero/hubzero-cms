@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,36 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Blog\Models\Archive;
+use Components\Blog\Models\Entry;
 
 /**
  * Blog controller class for entries
  */
-class BlogControllerEntries extends \Hubzero\Component\AdminController
+class Entries extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
 	/**
 	 * Display a list of blog entries
 	 *
@@ -44,8 +62,8 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$jconfig = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$jconfig = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
 			'scope' => $app->getUserStateFromRequest(
@@ -101,7 +119,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		$this->view->filters['order'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Instantiate our HelloEntry object
-		$obj = new BlogModelArchive();
+		$obj = new Archive();
 
 		// Get record count
 		$this->view->total = $obj->entries('count', $this->view->filters);
@@ -109,32 +127,8 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows  = $obj->entries('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Create a new category
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -145,19 +139,19 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
 
 			// Load the article
-			$row = new BlogModelEntry($id);
+			$row = new Entry($id);
 		}
 
 		$this->view->row = $row;
@@ -165,8 +159,8 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', JFactory::getDate()->toSql());
-			$this->view->row->set('publish_up', JFactory::getDate()->toSql());
+			$this->view->row->set('created', \JFactory::getDate()->toSql());
+			$this->view->row->set('publish_up', \JFactory::getDate()->toSql());
 		}
 
 		// Set any errors
@@ -182,40 +176,29 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save an entry and show the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save an entry
 	 *
-	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
-			$fields['publish_up']   = JFactory::getDate($fields['publish_up'], JFactory::getConfig()->get('offset'))->toSql();
+			$fields['publish_up']   = \JFactory::getDate($fields['publish_up'], \JFactory::getConfig()->get('offset'))->toSql();
 		}
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
 		{
-			$fields['publish_down'] = JFactory::getDate($fields['publish_down'], JFactory::getConfig()->get('offset'))->toSql();
+			$fields['publish_down'] = \JFactory::getDate($fields['publish_down'], \JFactory::getConfig()->get('offset'))->toSql();
 		}
 
 		// Initiate extended database class
-		$row = new BlogModelEntry($fields['id']);
+		$row = new Entry($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -232,19 +215,18 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(JRequest::getVar('tags', '')));
+		$row->tag(trim(\JRequest::getVar('tags', '')));
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Set the redirect
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_BLOG_ENTRY_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_BLOG_ENTRY_SAVED')
+		);
 	}
 
 	/**
@@ -255,17 +237,17 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 
 		if (count($ids) > 0)
 		{
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new BlogModelEntry(intval($id));
+				$entry = new Entry(intval($id));
 				// Delete the entry
 				if (!$entry->delete())
 				{
@@ -276,52 +258,33 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_BLOG_ENTRIES_DELETED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_BLOG_ENTRIES_DELETED')
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param   integer  $state  The state to set entries to
 	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+
+		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = \JRequest::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
 				'error'
 			);
 			return;
@@ -332,7 +295,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogModelEntry(intval($id));
+			$row = new Entry(intval($id));
 			$row->set('state', $state);
 
 			// Store new content
@@ -347,19 +310,19 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		switch ($this->_task)
 		{
 			case 'publish':
-				$message = JText::sprintf('COM_BLOG_ITEMS_PUBLISHED', $success);
+				$message = \JText::sprintf('COM_BLOG_ITEMS_PUBLISHED', $success);
 			break;
 			case 'unpublish':
-				$message = JText::sprintf('COM_BLOG_ITEMS_UNPUBLISHED', $success);
+				$message = \JText::sprintf('COM_BLOG_ITEMS_UNPUBLISHED', $success);
 			break;
 			case 'archive':
-				$message = JText::sprintf('COM_BLOG_ITEMS_ARCHIVED', $success);
+				$message = \JText::sprintf('COM_BLOG_ITEMS_ARCHIVED', $success);
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -372,19 +335,19 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	public function setcommentsTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = \JRequest::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$state = JRequest::getInt('state', 0);
+		$state = \JRequest::getInt('state', 0);
 
 		// Check for a resource
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
 				'error'
 			);
 			return;
@@ -394,14 +357,14 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the article
-			$row = new BlogModelEntry(intval($id));
+			$row = new Entry(intval($id));
 			$row->set('allow_comments', $state);
 
 			// Store new content
 			if (!$row->store())
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$row->getError(),
 					'error'
 				);
@@ -412,31 +375,18 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		switch ($state)
 		{
 			case 1:
-				$message = JText::sprintf('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
+				$message = \JText::sprintf('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
 			break;
 			case 0:
 			default:
-				$message = JText::sprintf('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
+				$message = \JText::sprintf('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
-		);
-	}
-
-	/**
-	 * Cancels a task and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

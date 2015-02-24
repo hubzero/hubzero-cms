@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,43 +24,46 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Blog\Models;
+
+use Components\Blog\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
 
 require_once(__DIR__ . DS . 'entry.php');
 
 /**
  * Blog archive model class
  */
-class BlogModelArchive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
-	 * BlogTableEntry
+	 * Tables\Entry
 	 *
 	 * @var  object
 	 */
 	private $_tbl = null;
 
 	/**
-	 * BlogModelEntry
+	 * Models\Entry
 	 *
 	 * @var  object
 	 */
 	private $_entry = null;
 
 	/**
-	 * JDatabase
+	 * \JDatabase
 	 *
 	 * @var  object
 	 */
 	private $_db = NULL;
 
 	/**
-	 * JRegistry
+	 * \JRegistry
 	 *
 	 * @var  object
 	 */
@@ -82,9 +85,9 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new BlogTableEntry($this->_db);
+		$this->_tbl = new Tables\Entry($this->_db);
 
 		$this->set('scope', $scope);
 		$this->set('scope_id', $scope_id);
@@ -95,7 +98,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	 *
 	 * @param   string   $scope     Blog scope [site, group, member]
 	 * @param   integer  $scope_id  Scope ID if scope is member or group
-	 * @return  object   BlogModelArchive
+	 * @return  object
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
 	{
@@ -127,7 +130,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 		if (!isset($this->_entry)
 		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
 		{
-			$this->_entry = BlogModelEntry::getInstance($id, $this->get('scope'), $this->get('scope_id'));
+			$this->_entry = Entry::getInstance($id, $this->get('scope'), $this->get('scope_id'));
 		}
 		return $this->_entry;
 	}
@@ -162,7 +165,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 				$filters['sort_Dir'] = 'ASC';
 
 				$result = $this->_tbl->find('first', $filters);
-				return new BlogModelEntry($result);
+				return new Entry($result);
 			break;
 
 			case 'popular':
@@ -180,11 +183,11 @@ class BlogModelArchive extends \Hubzero\Base\Object
 		{
 			foreach ($results as $key => $result)
 			{
-				$results[$key] = new BlogModelEntry($result);
+				$results[$key] = new Entry($result);
 			}
 		}
 
-		return new \Hubzero\Base\ItemList($results);
+		return new ItemList($results);
 	}
 
 	/**
@@ -204,7 +207,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 			return call_user_func_array($callback, $arguments);
 		}
 
-		throw new \BadMethodCallException(JText::sprintf('Method "%s" does not exist.', $method));
+		throw new \BadMethodCallException(\JText::sprintf('Method "%s" does not exist.', $method));
 	}
 
 	/**
@@ -220,14 +223,14 @@ class BlogModelArchive extends \Hubzero\Base\Object
 		{
 			$scope = strtolower($this->get('scope'));
 
-			$cls = 'BlogModelAdapter' . ucfirst($scope);
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -249,7 +252,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_blog');
+			$this->_config = \JComponentHelper::getParams('com_blog');
 		}
 		if ($property)
 		{
@@ -269,7 +272,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	{
 		if (!$this->config()->get('access-check-done', false))
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			if ($juser->get('guest'))
 			{
 				$this->config()->set('access-check-done', true);

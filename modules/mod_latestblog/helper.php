@@ -32,7 +32,7 @@ namespace Modules\LatestBlog;
 
 use Hubzero\Module\Module;
 use Hubzero\User\Group\Helper as GroupHelper;
-use BlogModelArchive;
+use Components\Blog\Models\Archive;
 use JFactory;
 
 /**
@@ -71,7 +71,7 @@ class Helper extends Module
 			$filters['scope'] = '';
 		}
 
-		$archive = new BlogModelArchive('site', 0);
+		$archive = new Archive('site', 0);
 		$rows = $archive->entries('list', $filters);
 
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')
