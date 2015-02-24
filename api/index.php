@@ -49,18 +49,9 @@ define('_JEXEC', 1);
 define('JPROFILE', 0);
 define('JPATH_PLATFORM', 1);
 define('DS', DIRECTORY_SEPARATOR);
-define('JPATH_ROOT', dirname( dirname(__FILE__) ));
-define('JPATH_BASE', JPATH_ROOT);
-define('JPATH_SITE', JPATH_ROOT);
-define('JPATH_CONFIGURATION', JPATH_ROOT);
-define('JPATH_INSTALLATION', JPATH_ROOT . DS . 'installation');
-define('JPATH_ADMINISTRATOR', JPATH_ROOT . DS . 'administrator');
-define('JPATH_LIBRARIES', JPATH_ROOT . DS . 'libraries');
-define('JPATH_XMLRPC', JPATH_ROOT . DS . 'xmlrpc');
-define('JPATH_CACHE', JPATH_ROOT . DS . 'cache');
-define('JPATH_PLUGINS', JPATH_ROOT . DS . 'plugins');
-define('JPATH_API', JPATH_ROOT . DS . 'api');
-define('HVERSION', "1.3.0");
+define('JPATH_BASE', __DIR__);
+require_once JPATH_BASE.'/includes/defines.php';
+//define('HVERSION', "1.3.0");
 
 require(JPATH_LIBRARIES.DS.'loader.php');
 
