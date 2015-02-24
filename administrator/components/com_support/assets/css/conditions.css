@@ -31,6 +31,7 @@
 		margin: 0;
 		border: none;
 		padding: 0;
+		width: 100%;
 	}
 	.query fieldset p {
 		padding: 0.5em;
