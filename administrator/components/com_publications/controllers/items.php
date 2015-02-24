@@ -808,7 +808,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
 		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
-		$uid 		= JRequest::getInt( 'user_id', 0, 'post' );
 
 		// Set redirect URL
 		$url = 'index.php?option=' . $this->_option . '&controller='
