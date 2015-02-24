@@ -381,7 +381,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$clsd = $this->database->loadObjectList();
 
 		$this->view->opened['closed'] = 0;
-		// First we need to loop through all the entries and reove some potential duplicates
+		// First we need to loop through all the entries and remove some potential duplicates
 		$closedTickets = array();
 		foreach ($clsd as $closed)
 		{
@@ -798,6 +798,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Get browser info
 		$browser = new \Hubzero\Browser\Detector();
 
+		// @TODO change to use SupportTicketModel
 		$problem = array(
 			'os'         => $browser->platform(),
 			'osver'      => $browser->platformVersion(),
@@ -1149,7 +1150,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$filters = array('status' => 'new', 'sort' => 'id' ,'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
 		$prevSubmission = $ticket->getTickets($filters , false);
 
-		if(!isset($prevSubmission[0]))
+		// for the first ticket ever
+		if (!isset($prevSubmission[0]))
 		{
 			// Save the data
 			if (!$row->store())
@@ -1157,7 +1159,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$this->setError($row->getError());
 			}
 		}
-		elseif ($prevSubmission[0]->summary != $row->get('summary') && (strtotime($prevSubmission[0]->created) - time() > 15))
+		elseif ($prevSubmission[0]->summary != $row->get('summary') && (time() - strtotime($prevSubmission[0]->created) > 15))
 		{
 			// Save the data
 			if (!$row->store())
@@ -1167,13 +1169,12 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=tickets'),
-				JText::_('A previous submission matching the contents of this submission was found to have been submitted just prior to your submission.\n
-					Please review the contents of your submission and try again.'),
-				'error'
-			);
+			// need to adjust the path ...
+			$this->setError(JText::_('COM_SUPPORT_TICKET_DUPLICATE_DETECTION'));
+			$this->view->setLayout('new');
+			$this->view->display();
 			return;
+
 		}
 
 		$attachment = $this->uploadTask($row->get('id'));
