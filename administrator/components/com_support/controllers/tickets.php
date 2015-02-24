@@ -256,17 +256,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-
-		var_dump($obj->getRecords('all'));
-		var_dump($this->view->rows);
-		die;
 
 		// Output the HTML
 		$this->view->display();
