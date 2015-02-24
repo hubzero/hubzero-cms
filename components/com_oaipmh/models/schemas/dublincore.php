@@ -342,51 +342,85 @@ class DublinCore implements Schema
 						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
 
 			$dcs = array(
-				'title',
-				'creator',
-				'subject',
-				'date',
-				'identifier',
-				'description',
-				'type',
-				'publisher',
-				'rights',
-				'contributor',
-				'relation',
-				'format',
-				'coverage',
-				'language',
-				'source'
+				'title'   => null,
+				'creator' => null,
+				'subject' => null,
+				'date'    => array(
+					'created',
+					'valid',
+					'available',
+					'issued',
+					'modified',
+					'dateAccepted',
+					'dateCopyrighted',
+					'dateSubmitted'
+				),
+				'identifier'  => null,
+				'description' => null,
+				'type'        => null,
+				'publisher'   => null,
+				'rights'      => null,
+				'contributor' => null,
+				'relation'    => array(
+					'isVersionOf',
+					'hasVersion',
+					'isReplacedBy',
+					'replaces',
+					'isRequiredBy',
+					'requires',
+					'isPartOf',
+					'hasPart',
+					'isReferencedBy',
+					'references',
+					'isFormatof',
+					'hasFormat',
+					'conformsTo'
+				),
+				'format'   => array(
+					'medium',
+					'extent'
+				),
+				'coverage' => null,
+				'language' => null,
+				'source'   => null
 			);
 
 			// loop through DC elements
-			for ($i=0; $i<15; $i++)
+			foreach ($dcs as $dc => $attrs)
 			{
-				if (!isset($result->$dcs[$i]))
+				if (!isset($result->$dc))
 				{
 					continue;
 				}
 
-				if (is_array($result->$dcs[$i]))
+				if (is_array($result->$dc))
 				{
-					foreach ($result->$dcs[$i] as $sub)
+					foreach ($result->$dc as $sub)
 					{
 						$sub = html_entity_decode($sub);
 
-						$this->response->element('dc:' . $dcs[$i], $this->escape(stripslashes($sub)))->end();
+						$this->response->element('dc:' . $dc, $this->escape(stripslashes($sub)))->end();
 					}
 				}
-				elseif (!empty($result->$dcs[$i]))
+				elseif (!empty($result->$dc))
 				{
-					if ($dcs[$i] == 'date')
+					if ($dc == 'date')
 					{
-						$this->response->element('dc:' . $dcs[$i], \JFactory::getDate($result->date)->format($gran))->end();
+						$this->response->element('dc:' . $dc, \JFactory::getDate($result->date)->format($gran))->end();
 					}
 					else
 					{
-						$res = html_entity_decode(stripslashes($result->$dcs[$i]));
+						$res = html_entity_decode(stripslashes($result->$dc));
 
-						$this->response->element('dc:' . $dcs[$i], $this->escape($res))->end();
+						$this->response->element('dc:' . $dc, $this->escape($res));
+						/*if (is_array($attrs))
+						{
+							foreach ($attrs as $attr)
+							{
+
+							}
+						}*/
+						$this->response->end();
 					}
 				}
 			}
