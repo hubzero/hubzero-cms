@@ -349,7 +349,7 @@ class WishlistModelComment extends WishlistModelAbstract
 			break;
 
 			case 'reply':
-				$link .= 'index.php?option=com_wishlist&task=reply&cat=wish&id=' . $this->get('listid') . '&refid=' . $this->get('item_id') . '&wishid=' . $this->get('item_id');
+				$link .= 'index.php?option=com_wishlist&task=reply&cat=' . $this->get('listcategory') . '&id=' . $this->get('listid') . '&refid=' . $this->get('item_id') . '&wishid=' . $this->get('item_id');
 			break;
 
 			case 'report':
