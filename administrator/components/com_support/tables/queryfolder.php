@@ -188,7 +188,7 @@ class SupportTableQueryFolder extends JTable
 	}
 
 	/**
-	 * Clone core folders and queries and assign 
+	 * Clone core folders and queries and assign
 	 * them to a given user ID
 	 *
 	 * @param   integer  $user_id  User ID
@@ -203,6 +203,11 @@ class SupportTableQueryFolder extends JTable
 			'sort_Dir' => 'asc',
 			'iscore'   => 1
 		));
+
+		if (count($folders) < 0)
+		{
+
+		}
 
 		$sq = new SupportQuery($this->_db);
 
