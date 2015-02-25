@@ -209,7 +209,7 @@ $link = $base . '/' . ltrim(JRoute::_($this->wish->link()), '/');
 												<tr>
 													<td width="100%" style="padding: 8px;">
 														<div id="wish-number" class="mobilehide" style="float: left; width: 5em; font-size: 2.5em; font-weight: bold; text-align: center; padding: 30px;" align="center">
-															&#x1f4a1;
+															<?php /* &#x1f4a1; */ ?>&#x2736;
 														</div>
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
