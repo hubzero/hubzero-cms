@@ -121,6 +121,6 @@ abstract class Base extends Object
 	 */
 	public function filespace()
 	{
-		return JPATH_ROOT . DS . trim($this->get('path', ''), DS);
+		return PATH_APP . DS . trim($this->get('path', ''), DS);
 	}
 }

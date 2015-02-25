@@ -584,7 +584,7 @@ class Item extends Base
 			$config = \JComponentHelper::getParams('com_collections');
 
 			// Build the upload path if it doesn't exist
-			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
+			$path = PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
 
 			if (!is_dir($path))
 			{

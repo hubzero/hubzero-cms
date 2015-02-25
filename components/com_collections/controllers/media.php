@@ -78,7 +78,7 @@ class Media extends SiteController
 		}
 
 		// Get the configured upload path
-		$filename = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
+		$filename = PATH_APP . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename))
@@ -305,7 +305,7 @@ class Media extends SiteController
 		}
 
 		//define upload directory and make sure its writable
-		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
@@ -402,7 +402,7 @@ class Media extends SiteController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $listdir,
 			'html'      => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
 		));
@@ -446,7 +446,7 @@ class Media extends SiteController
 		}
 
 		// Build the upload path if it doesn't exist
-		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('filepath', '/site/collections'), DS) . DS . $listdir;
 
 		if (!is_dir($path))
 		{

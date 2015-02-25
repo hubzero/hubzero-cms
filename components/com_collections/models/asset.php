@@ -171,7 +171,7 @@ class Asset extends Base
 		{
 			$config = \JComponentHelper::getParams('com_collections');
 
-			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
+			$path = PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
 
 			if (!is_dir($path))
 			{
