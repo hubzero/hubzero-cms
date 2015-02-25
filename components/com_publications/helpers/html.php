@@ -136,6 +136,11 @@ class PublicationsHtml
 					}
 				}
 			}
+			if (!isset($new['title']))
+			{
+				// skip
+				continue;
+			}
 
 			$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
 			$b++;

@@ -149,6 +149,18 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Allow rename?
 		$configs->allowRename = false;
 
+		// Include in bundle?
+		$configs->includeInPackage = isset($typeParams->includeInPackage)
+			&& $typeParams->includeInPackage == 0 ? false : true;
+
+		// Bundle with dir hierarchy?
+		$configs->bundleDirHierarchy = isset($typeParams->bundleDirHierarchy)
+							? $typeParams->bundleDirHierarchy : 1;
+
+		// Bundle directory
+		$configs->bundleDirectory = isset($typeParams->bundleDirectory)
+							? trim($typeParams->bundleDirectory) : NULL;
+
 		// Archival path
 		$tarname  = JText::_('Publication') . '_' . $pub->id . '.zip';
 		$configs->archPath	= $configs->pubBase . DS . $tarname;
@@ -168,6 +180,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 		$filePath = NULL;
 
+		if ($configs->includeInPackage == false)
+		{
+			return false;
+		}
+
 		// Add inside bundles
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
@@ -176,7 +193,15 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			if (is_file($filePath))
 			{
 				$where  = $bundleDir;
-				$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				if ($configs->bundleDirectory)
+				{
+					$where .= DS . $configs->bundleDirectory;
+				}
+				if ($configs->directory
+					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				{
+					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				}
 				$where .= DS . basename($filePath);
 				$zip->addFile($filePath, $where);
 				$readme   .= "\n" . $element->label . ': ' . "\n";
@@ -186,6 +211,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		elseif ($attachments)
 		{
 			$readme   .= "\n" . $element->label . ': ' . "\n";
+			$added = array();
 
 			// Add separately
 			foreach ($attachments as $attach)
@@ -198,8 +224,31 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$fPath .= basename($filePath);
+				if (!$configs->bundleDirHierarchy)
+				{
+					$fPath = basename($filePath);
+					if (in_array($fPath, $added))
+					{
+						$num   = ProjectsHtml::getAppendedNumber($fPath);
+						$num   = $num ? $num : 1;
+						$fPath = ProjectsHtml::fixFileName($fPath, ' (' . $num . ')');
+					}
+					else
+					{
+						$added[] = $fPath;
+					}
+				}
+
 				$where  = $bundleDir;
-				$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				if ($configs->bundleDirectory)
+				{
+					$where .= DS . $configs->bundleDirectory;
+				}
+				if ($configs->directory
+					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				{
+					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				}
 				$where .= $configs->subdir ? DS . $configs->subdir : '';
 				$where .= DS . $fPath;
 
@@ -224,6 +273,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
+		if ($configs->includeInPackage == false)
+		{
+			return false;
+		}
+
 		$list = NULL;
 
 		if (!$attachments)
@@ -243,12 +297,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$list .= '<li>' . $icon . ' ' . $title . '</li>';
 		}
 		// Draw directories
-		if ($configs->multiZip == 2 && $configs->subdir)
+		if (($configs->multiZip == 2 && $configs->subdir) || $configs->bundleDirectory)
 		{
 			$icon  = '<img src="/plugins/projects/files/images/folder.gif" alt="" />';
 
 			// Bundle name
-			$list .= '<li>' . $icon . ' ' . $configs->subdir . '</li>';
+			$name  = $configs->bundleDirectory ? $configs->bundleDirectory : $configs->subdir;
+			$list .= '<li>' . $icon . ' ' . $name . '</li>';
 			$class = 'level2';
 		}
 		// List individual
@@ -264,9 +319,21 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
 				$fPath .= basename($filePath);
 
-				$where  = $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				$where = '';
+				if ($configs->directory
+					&& strtolower($configs->bundleDirectory) != strtolower($configs->directory))
+				{
+					$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				}
+
 				$where .= $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
 				$where .= DS . $fPath;
+
+				if (!$configs->bundleDirHierarchy)
+				{
+					$where = $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
+					$where .= DS . basename($filePath);
+				}
 
 				// Get ext
 				$parts  = explode('.', $attach->path);
@@ -484,7 +551,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				$label = JText::_('Download');
 				// Link to bundle
-				if ($showArchive == true)
+				if ($showArchive == 1 || ($showArchive == 2 && count($attachments) > 1))
 				{
 					$url = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
 					$label .= ' ' . JText::_('Bundle');
@@ -750,6 +817,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	public function bundle( $attachments, $configs = NULL, $overwrite = false )
 	{
 		if ($configs === NULL || count($attachments) < 2)
+		{
+			return false;
+		}
+
+		if ($configs->includeInPackage == false)
 		{
 			return false;
 		}
@@ -1219,7 +1291,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		$file 		= $objPA->path;
-		$copyFrom 	= $configs->path . DS . $file;
+		$copyFrom 	= isset($configs->copyFrom) ? $configs->copyFrom : $configs->path . DS . $file;
 		$copyTo 	= $this->getFilePath($file, $objPA->id, $configs, $objPA->params);
 
 		// Copy
