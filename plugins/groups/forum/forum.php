@@ -1461,14 +1461,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				// add unsubscribe link
 				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
 				$unsubscribeLink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
-				$forum_message  .= "\r\n" . JText::_('Unsubscribe: ') . "\r\n" . $unsubscribeLink;
+				$unsubscribe = "\r\n" . JText::_('Unsubscribe: ') . "\r\n" . $unsubscribeLink;
 
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
 				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
 
-				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
+				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message . $unsubscribe, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{
 					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
