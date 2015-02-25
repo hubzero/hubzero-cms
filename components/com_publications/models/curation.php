@@ -1863,10 +1863,11 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		// Get elements in primary and supporting role
+		// Get elements
 		$prime    = $this->getElements(1);
 		$second   = $this->getElements(2);
-		$elements = array_merge($prime, $second);
+		$gallery  = $this->getElements(3);
+		$elements = array_merge($prime, $second, $gallery);
 
 		// Do we have items to package?
 		if (!$elements)
@@ -1909,10 +1910,11 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		// Get elements in primary and supporting role
+		// Get elements
 		$prime    = $this->getElements(1);
 		$second   = $this->getElements(2);
-		$elements = array_merge($prime, $second);
+		$gallery  = $this->getElements(3);
+		$elements = array_merge($prime, $second, $gallery);
 
 		// Do we have items to package?
 		if (!$elements)
@@ -2058,7 +2060,7 @@ class PublicationsCuration extends JObject
 	public function convertToCuration( $pub = NULL, $uid = 0 )
 	{
 		$pub = $pub ? $pub : $this->_pub;
-		$oldFlow = false;
+		$oldFlow = 0;
 
 		if (!isset($pub->_attachments)
 			|| !isset($pub->_attachments['elements'])
@@ -2072,7 +2074,7 @@ class PublicationsCuration extends JObject
 		$attModel = new PublicationsModelAttachments($this->_db);
 		$fileAttach = $attModel->loadAttach('file');
 
-		// Get supporting docs element element manifest
+		// Get supporting docs element manifest
 		$sElements = self::getElements(2);
 		$sElement  = $sElements ? $sElements[0] : NULL;
 
@@ -2088,8 +2090,6 @@ class PublicationsCuration extends JObject
 			{
 				if ($elAttach->element_id == 0)
 				{
-					$oldFlow = true; // will need to make further checks
-
 					// Save elementid
 					$row = new PublicationAttachment( $this->_db );
 					if ($row->load($elAttach->id))
@@ -2098,13 +2098,13 @@ class PublicationsCuration extends JObject
 						$row->element_id = $markId;
 						$row->store();
 					}
+					$oldFlow = 1; // will need to make further checks
 				}
 			}
 		}
 
-		if ($oldFlow == false)
+		if (!$oldFlow)
 		{
-			// Nothing to convert
 			return false;
 		}
 
@@ -2138,9 +2138,9 @@ class PublicationsCuration extends JObject
 
 			if (is_dir($galleryPath))
 			{
-				$objPA = new PublicationAttachment( $this->_db );
 				foreach ($shots as $shot)
 				{
+					$objPA = new PublicationAttachment( $this->_db );
 					if (is_file($galleryPath . DS . $shot->srcfile)
 					&& !$objPA->loadElementAttachment($pub->version_id, array( 'path' => $shot->filename),
 						$element->id, 'file', $element->manifest->params->role))
@@ -2168,11 +2168,15 @@ class PublicationsCuration extends JObject
 						// Save params if applicable
 						if ($suffix)
 						{
-							$pa = new PublicationAttachment( $this->_db );
-							$pa->saveParam($objPA, 'suffix', $suffix);
+							$objPA->params = 'suffix=' . $suffix . "\n";
 						}
+
 						// Copy file into the right spot
-						$fileAttach->publishAttachment($objPA, $pub, $configs);
+						$configs->copyFrom = $galleryPath . DS . $shot->srcfile;
+						if (!$fileAttach->publishAttachment($objPA, $pub, $configs))
+						{
+							$objPA->delete();
+						}
 					}
 				}
 			}

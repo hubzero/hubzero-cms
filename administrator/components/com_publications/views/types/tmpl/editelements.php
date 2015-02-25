@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 						<?php }
 						elseif ($element->type == 'attachment' && $paramname == 'role')
 						{ ?>
-						<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>]">
+						<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>]">
 							<option value="1" <?php echo $paramvalue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_ROLE_PRIMARY'); ?></option>
 							<option value="2" <?php echo ($paramvalue == 2 || $paramvalue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_ROLE_SUPPORTING'); ?></option>
 							<option value="3" <?php echo $paramvalue == 3 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_ROLE_GALLERY'); ?></option>
@@ -102,26 +102,36 @@ function submitbutton(pressbutton)
 								<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_PARAMS_' . strtoupper($tpName)); ?></label>
 							<?php
 								if ($tpName == 'handler') { ?>
-								<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
 									<option value="" <?php echo !$tpValue ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNONE'); ?></option>
 									<option value="imageviewer" <?php echo $tpValue == 'imageviewer' ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_HANDLER_IMAGE'); ?></option>
 								</select>
 							<?php }
 							elseif ($tpName == 'reuse') {  ?>
-							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+							<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
 								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
 								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
 							</select>
 						<?php }
 							elseif ($tpName == 'dirHierarchy') {  ?>
-							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+							<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
 								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_PRESERVE'); ?></option>
 								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_NOT_PRESERVE_APPEND_ID'); ?></option>
 								<option value="2" <?php echo ($tpValue == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_NOT_PRESERVE_APPEND_NUMBER'); ?></option>
 							</select>
+						<?php } elseif ($tpName == 'includeInPackage') {  ?>
+							<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+								<option value="0" <?php echo $tpValue != 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+							</select>
+						<?php } elseif ($tpName == 'bundleDirHierarchy') {  ?>
+							<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_PRESERVE'); ?></option>
+								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_NOT_PRESERVE_APPEND_NUMBER'); ?></option>
+							</select>
 						<?php }
 							elseif ($tpName == 'multiZip') {  ?>
-							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+							<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
 								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_ONE'); ?></option>
 								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_ZERO'); ?></option>
 								<option value="2" <?php echo ($tpValue == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_TWO'); ?></option>

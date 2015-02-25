@@ -142,6 +142,7 @@ function submitbutton(pressbutton)
 				<select name="curation[params][show_archival]" id="field-showarchive">
 					<option value="0" <?php echo (!isset($curParams->show_archival) || $curParams->show_archival == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_NO'); ?></option>
 					<option value="1" <?php echo (isset($curParams->show_archival) && $curParams->show_archival == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_YES'); ?></option>
+					<option value="2" <?php echo (isset($curParams->show_archival) && $curParams->show_archival == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_SHOW_ARCHIVAL_PARTIAL'); ?></option>
 				</select>
 			</div>
 			<div class="input-wrap">
