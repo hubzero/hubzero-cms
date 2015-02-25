@@ -177,14 +177,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$mems = array();
 
 		// Explode the string of logins/e-mails into an array
-		if (strstr($logins, ','))
-		{
-			$la = explode(',', $logins);
-		}
-		else
-		{
-			$la = array($logins);
-		}
+		$la = preg_split("/[,;]/", $logins);
+		$la = array_map('trim', $la);
 
 		// turn usernames into proper uidNumbers
 		foreach ($la as $k => $l)
@@ -205,9 +199,6 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// handle each entered
 		foreach ($la as $l)
 		{
-			// Trim up content
-			$l = trim($l);
-
 			// If it was a user id
 			if (is_numeric($l))
 			{
