@@ -163,6 +163,16 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
+		// Check logged in status
+		if ($this->view->category->get('access') > 0 && $this->juser->get('guest'))
+		{
+			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return)
+			);
+			return;
+		}
+
 		$this->view->config = $this->config;
 
 		$this->view->model = $this->model;

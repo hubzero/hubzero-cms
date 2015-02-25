@@ -89,30 +89,50 @@ class plgSearchForum extends SearchPlugin
 			}
 		}
 
+		// fml
+		$groupAuth = array();
+		if ($authz->is_super_admin())
+		{
+			$groupAuth[] = '1';
+		}
+		else
+		{
+			$groupAuth[] = "g.plugins LIKE '%forum=anyone%'";
+			if (!$authz->is_guest())
+			{
+				$groupAuth[] = "g.plugins LIKE '%forum=registered%'";
+				if ($gids)
+				{
+					$groupAuth[] = "(g.plugins LIKE '%wiki=members%' AND g.gidNumber IN (" . join(',', $gids) . "))";
+				}
+			}
+		}
+
 		$rows = new SearchResultSQL(
 			"SELECT
 				f.title,
-				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as thread,
-				(CASE WHEN f.scope_id > 0 AND f.scope='group' THEN
-					concat('index.php?option=com_groups&cn=', g.cn, '&active=forum')
-				ELSE
-					concat('index.php?option=com_forum&section=', coalesce(concat(s.alias, '&category=', coalesce(concat(c.alias, '&thread='), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
-				END) AS link,
-				$weight AS weight,
-				f.created AS date,
-				concat(s.alias, ', ', c.alias) AS section
+				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as `thread`,
+				(CASE
+					WHEN f.scope_id > 0 AND f.scope='group' THEN concat('index.php?option=com_groups&cn=', g.cn, '&active=forum')
+					ELSE concat('index.php?option=com_forum&section=', coalesce(concat(s.alias, '&category=', coalesce(concat(c.alias, '&thread='), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
+				END) AS `link`,
+				$weight AS `weight`,
+				f.created AS `date`,
+				concat(s.alias, ', ', c.alias) AS `section`
 			FROM `#__forum_posts` f
-			LEFT JOIN `#__forum_categories` c
+			LEFT JOIN `#__forum_categories` AS c
 				ON c.id = f.category_id
-			LEFT JOIN `#__forum_sections` s
+			LEFT JOIN `#__forum_sections` AS s
 				ON s.id = c.section_id
-			LEFT JOIN `#__xgroups` g
-				ON g.gidNumber = f.scope_id
+			LEFT JOIN `#__xgroups` AS g
+				ON g.gidNumber = f.scope_id AND f.scope='group'
 			WHERE
 				f.state = 1 AND
+				f.scope != 'course' AND
 				$weight > 0".
-				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '').
-			" ORDER BY $weight DESC"
+				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
+				" AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
+			ORDER BY $weight DESC"
 		);
 		foreach ($rows->to_associative() as $row)
 		{

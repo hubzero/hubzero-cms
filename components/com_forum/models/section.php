@@ -176,6 +176,7 @@ class ForumModelSection extends ForumModelAbstract
 				$this->_cache['category']->set('scope', $this->get('scope'));
 				$this->_cache['category']->set('scope_id', $this->get('scope_id'));
 			}
+			$this->_cache['category']->set('section_alias', $this->get('alias'));
 		}
 		return $this->_cache['category'];
 	}
@@ -221,6 +222,7 @@ class ForumModelSection extends ForumModelAbstract
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new ForumModelCategory($result, $this->get('id'), $this->get('scope'), $this->get('group_id'));
+							$results[$key]->set('section_alias', $this->get('alias'));
 						}
 					}
 					else

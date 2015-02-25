@@ -198,6 +198,8 @@ class ForumModelThread extends ForumModelPost
 						foreach ($rows as $row)
 						{
 							$v = new ForumModelPost($row);
+							$v->set('category', $this->get('category'));
+							$v->set('section', $this->get('section'));
 
 							$pt      = $v->get('parent');
 							$list    = @$children[$pt] ? $children[$pt] : array();
@@ -223,6 +225,8 @@ class ForumModelThread extends ForumModelPost
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new ForumModelPost($result);
+							$results[$key]->set('category', $this->get('category'));
+							$results[$key]->set('section', $this->get('section'));
 						}
 					}
 					else

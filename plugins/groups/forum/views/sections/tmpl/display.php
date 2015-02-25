@@ -128,7 +128,7 @@ if ($this->config->get('access-manage-section')) {
 							</span>
 						</td>
 						<td>
-							<span><?php echo $row->count('posts'); ?></span>
+							<span><?php echo ($row->count('threads') ? $row->count('posts') : 0); ?></span>
 							<span class="entry-details">
 								<?php echo JText::_('PLG_GROUPS_FORUM_POSTS'); ?>
 							</span>

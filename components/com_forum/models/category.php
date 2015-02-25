@@ -230,6 +230,8 @@ class ForumModelCategory extends ForumModelAbstract
 						foreach ($results as $key => $result)
 						{
 							$results[$key] = new ForumModelThread($result);
+							$results[$key]->set('category', $this->get('alias'));
+							$results[$key]->set('section', $this->adapter()->get('section'));
 						}
 					}
 					else
