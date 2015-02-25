@@ -1,12 +1,34 @@
 <?php
 /**
- * @version		$Id: banner.php 21320 2011-05-11 01:01:37Z dextercowley $
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Wiki\Models;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -17,7 +39,7 @@ jimport('joomla.application.component.modeladmin');
  * @subpackage	com_banners
  * @since		1.6
  */
-class WikiModelPagePermissions extends JModelAdmin
+class PagePermissions extends \JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -28,19 +50,20 @@ class WikiModelPagePermissions extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = JRequest::getVar($key, array());
-		if (!empty($pk)) {
+		$pk = \JRequest::getVar($key, array());
+		if (!empty($pk))
+		{
 			$pk = intval($pk[0]);
 		}
 		$this->setState($this->getName().'.id', $pk);
 
 		// Load the parameters.
-		$value = JComponentHelper::getParams($this->option);
+		$value = \JComponentHelper::getParams($this->option);
 		$this->setState('params', $value);
 	}
 
@@ -56,7 +79,8 @@ class WikiModelPagePermissions extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_wiki.page', 'page', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -74,7 +98,7 @@ class WikiModelPagePermissions extends JModelAdmin
 		 */
 	public function getTable($type = 'Page', $prefix = 'Wiki', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -86,7 +110,7 @@ class WikiModelPagePermissions extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_wiki.edit.page.data', array());
+		$data = \JFactory::getApplication()->getUserState('com_wiki.edit.page.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

@@ -881,7 +881,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Import some needed libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
-		$page = new WikiTablePage($this->_database);
+		$page = new \Components\Wiki\Tables\Page($this->_database);
 		if ($page->loadById($ref))
 		{
 			$revision = $page->getCurrentRevision();

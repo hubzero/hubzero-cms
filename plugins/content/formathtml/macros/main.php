@@ -95,7 +95,7 @@ class Main extends Macro
 				$scope = $this->scope;
 			}
 			// No, get resource by alias
-			$g = new \WikiTablePage($this->_db);
+			$g = new \Components\Wiki\Tables\Page($this->_db);
 
 			if (strstr($page, ' '))
 			{

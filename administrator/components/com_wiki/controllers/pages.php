@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Page;
 
 /**
  * Controller class for wiki pages
  */
-class WikiControllerPages extends \Hubzero\Component\AdminController
+class Pages extends AdminController
 {
 	/**
 	 * Execute a task
@@ -63,8 +66,8 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
 			'authorized' => true
@@ -116,7 +119,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$p = new WikiModelBook();
+		$p = new Book();
 
 		// Get record count
 		$this->view->total = $p->pages('count', $this->view->filters);
@@ -125,14 +128,6 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$this->view->rows  = $p->pages('list', $this->view->filters);
 
 		$this->view->groups = $p->groups();
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -151,19 +146,19 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row = null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
 
 			// Load the article
-			$row = new WikiModelPage(intval($id));
+			$row = new Page(intval($id));
 		}
 
 		$this->view->row = $row;
@@ -194,14 +189,14 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$page = JRequest::getVar('page', array(), 'post');
+		$page = \JRequest::getVar('page', array(), 'post');
 		$page = array_map('trim', $page);
 
 		// Initiate extended database class
-		$row = new WikiModelPage(intval($page['id']));
+		$row = new Page(intval($page['id']));
 		if (!$row->bind($page))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -210,10 +205,10 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', array(), 'post');
+		$params = \JRequest::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
-			$pparams = new JRegistry($row->get('params'));
+			$pparams = new \JRegistry($row->get('params'));
 			$pparams->loadArray($params);
 
 			$row->set('params', $pparams->toString());
@@ -238,15 +233,15 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			JRequest::setVar('id', $row->get('id'));
+			\JRequest::setVar('id', $row->get('id'));
 
 			return $this->editTask($row);
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_WIKI_PAGE_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_WIKI_PAGE_SAVED')
 		);
 	}
 
@@ -258,27 +253,27 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = \JRequest::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_WIKI_ERROR_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
 		}
 
-		$step = JRequest::getInt('step', 1);
+		$step = \JRequest::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
 		// What step are we on?
 		switch ($step)
 		{
 			case 1:
-				JRequest::setVar('hidemainmenu', 1);
+				\JRequest::setVar('hidemainmenu', 1);
 
 				// Instantiate a new view
 				$this->view->ids = $ids;
@@ -295,16 +290,16 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 			case 2:
 				// Check for request forgeries
-				JRequest::checkToken() or jexit('Invalid Token');
+				\JRequest::checkToken() or jexit('Invalid Token');
 
 				// Check if they confirmed
-				$confirmed = JRequest::getInt('confirm', 0);
+				$confirmed = \JRequest::getInt('confirm', 0);
 				if (!$confirmed)
 				{
 					// Instantiate a new view
 					$this->view->ids = $ids;
 
-					$this->setMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
+					$this->setMessage(\JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
 
 					// Output the HTML
 					$this->view->display();
@@ -316,7 +311,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 					foreach ($ids as $id)
 					{
 						// Finally, delete the page itself
-						$page = new WikiModelPage(intval($id));
+						$page = new Page(intval($id));
 						if (!$page->delete())
 						{
 							$this->setError($page->getError());
@@ -325,8 +320,8 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 				}
 
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids))
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					\JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids))
 				);
 			break;
 		}
@@ -340,17 +335,17 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_WIKI_ERROR_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
@@ -364,14 +359,14 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// Load the article
-		$row = new WikiModelPage(intval($id));
+		$row = new Page(intval($id));
 		$row->set('access', $access);
 
 		// Check and store the changes
 		if (!$row->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -379,7 +374,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -391,30 +386,30 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function resethitsTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_WIKI_ERROR_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
 		}
 
 		// Load and reset the article's hits
-		$page = new WikiModelPage(intval($id));
+		$page = new Page(intval($id));
 		$page->set('hits', 0);
 
 		if (!$page->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$page->getError(),
 				'error'
 			);
@@ -423,7 +418,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -435,25 +430,25 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_WIKI_ERROR_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
 		}
 
 		// Load and reset the article's hits
-		$page = new WikiModelPage(intval($id));
-		$page->set('state', JRequest::getInt('state', 0));
+		$page = new Page(intval($id));
+		$page->set('state', \JRequest::getInt('state', 0));
 
 		if (!$page->store())
 		{
@@ -462,19 +457,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Cancels a task and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

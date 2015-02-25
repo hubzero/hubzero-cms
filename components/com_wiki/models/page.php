@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
+use Components\Wiki\Helpers\Parser;
+use Components\Wiki\Tables;
+use Hubzero\Base\Model;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'author.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'revision.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'page.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
+
+require_once(__DIR__ . DS . 'author.php');
+require_once(__DIR__ . DS . 'revision.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Wiki model for a page
  */
-class WikiModelPage extends \Hubzero\Base\Model
+class Page extends Model
 {
 	/**
 	 * JRegistry
@@ -124,9 +129,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid, $scope='')
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new WikiTablePage($this->_db);
+		$this->_tbl = new Tables\Page($this->_db);
 
 		$pagename = '';
 
@@ -154,7 +159,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		if (!$this->get('group_cn'))
 		{
-			$this->set('group_cn', JRequest::getVar('cn', ''));
+			$this->set('group_cn', \JRequest::getVar('cn', ''));
 		}
 
 		/*if ($space == 'special')
@@ -164,7 +169,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		$this->set('title', $this->_tbl->getTitle());
 
-		$this->_params = new JRegistry($this->get('params'));
+		$this->_params = new \JRegistry($this->get('params'));
 	}
 
 	/**
@@ -257,9 +262,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 		{
 			if (!$user_id)
 			{
-				$user_id = JFactory::getUser()->get('id');
+				$user_id = \JFactory::getUser()->get('id');
 			}
-			$wpa = new WikiTableAuthor($this->_db);
+			$wpa = new Tables\Author($this->_db);
 			$this->set('author-' . $user_id, $wpa->isAuthor($this->get('id'), $user_id));
 		}
 
@@ -279,12 +284,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof JUser))
+		if (!($this->_creator instanceof \JUser))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = \JUser::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new JUser();
+				$this->_creator = new \JUser();
 			}
 		}
 		if ($property)
@@ -316,7 +321,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		if (!isset($this->_revision) && !$version)
 		{
 			// Set the revision to the current version
-			$this->_revision = new WikiModelRevision((int) $this->get('version_id'));
+			$this->_revision = new Revision((int) $this->get('version_id'));
 		}
 
 		// If version is specified AND (no revision set or (revision is set and version doesn't match)) ...
@@ -361,15 +366,15 @@ class WikiModelPage extends \Hubzero\Base\Model
 				switch ($version)
 				{
 					case 'first':
-						$this->_revision = new WikiModelRevision($this->_tbl->getRevision('first'));
+						$this->_revision = new Revision($this->_tbl->getRevision('first'));
 					break;
 
 					case 'current':
-						$this->_revision = new WikiModelRevision((int) $this->get('version_id'));
+						$this->_revision = new Revision((int) $this->get('version_id'));
 					break;
 
 					default:
-						$this->_revision = new WikiModelRevision((int) $version, $this->get('id'));
+						$this->_revision = new Revision((int) $version, $this->get('id'));
 					break;
 				}
 			}
@@ -406,7 +411,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'count':
 				if (!is_numeric($this->_revisions_count) || $clear)
 				{
-					$tbl = new WikiTableRevision($this->_db);
+					$tbl = new Tables\Revision($this->_db);
 					$this->_revisions_count = $tbl->getRecordsCount($filters);
 				}
 				return $this->_revisions_count;
@@ -415,20 +420,20 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_revisions instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_revisions instanceof ItemList) || $clear)
 				{
 					$results = array();
 
-					$tbl = new WikiTableRevision($this->_db);
+					$tbl = new Tables\Revision($this->_db);
 					if (($results = $tbl->getRecords($filters)))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WikiModelRevision($result);
+							$results[$key] = new Revision($result);
 						}
 					}
 
-					$this->_revisions = new \Hubzero\Base\ItemList($results);
+					$this->_revisions = new ItemList($results);
 				}
 
 				return $this->_revisions;
@@ -473,20 +478,20 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_revisions instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_revisions instanceof ItemList) || $clear)
 				{
 					$results = array();
 
-					$tbl = new WikiTableAuthor($this->_db);
+					$tbl = new Tables\Author($this->_db);
 					if (($results = $tbl->getAuthors($this->get('id'))))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WikiModelAuthor($result);
+							$results[$key] = new Author($result);
 						}
 					}
 
-					$this->_revisions = new \Hubzero\Base\ItemList($results);
+					$this->_revisions = new ItemList($results);
 				}
 
 				return $this->_revisions;
@@ -522,7 +527,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'count':
 				if (!is_numeric($this->_comments_count) || $clear)
 				{
-					$tbl = new WikiTableComment($this->_db);
+					$tbl = new Tables\Comment($this->_db);
 
 					$this->_comments_count = $tbl->find('count', $filters);
 				}
@@ -532,27 +537,27 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					if (!isset($filters['parent']))
 					{
 						$filters['parent'] = 0;
 					}
 
-					$tbl = new WikiTableComment($this->_db);
+					$tbl = new Tables\Comment($this->_db);
 
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WikiModelComment($result);
+							$results[$key] = new Comment($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -568,7 +573,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
-		$cloud = new WikiModelTags(($this->get('id') ? $this->get('id') : -1));
+		$cloud = new Tags(($this->get('id') ? $this->get('id') : -1));
 
 		return $cloud->render($what, array('admin' => $admin));
 	}
@@ -583,7 +588,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new WikiModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -633,11 +638,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($property), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($property), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($property), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($property), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -670,7 +675,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 					return $this->get('pagetext_parsed');
 				}
 
-				$p = WikiHelperParser::getInstance();
+				$p = Parser::getInstance();
 
 				$wikiconfig = array(
 					'option'   => 'com_wiki',
@@ -685,7 +690,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($this->get('pagetext_parsed'), $shorten, array('html' => true));
+					$content = String::truncate($this->get('pagetext_parsed'), $shorten, array('html' => true));
 					return $content;
 				}
 
@@ -696,7 +701,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+					$content = String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -706,7 +711,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				$content = $this->get('pagetext');
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+					$content = String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -740,7 +745,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_wiki');
+			$this->_config = \JComponentHelper::getParams('com_wiki');
 		}
 		if ($key)
 		{
@@ -773,7 +778,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 			$this->config()->set('access-comment-delete', false);
 			$this->config()->set('access-comment-edit', false);
 
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 
 			// Check if they are logged in
 			if ($juser->get('guest'))
@@ -782,7 +787,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				$this->config()->set('access-check-done', true);
 			}
 
-			$option = JRequest::getCmd('option', 'com_wiki');
+			$option = \JRequest::getCmd('option', 'com_wiki');
 
 			if (!$this->config('access-check-done', false))
 			{
@@ -930,7 +935,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		// Are they just changing case of characters?
 		if (!trim($newpagename))
 		{
-			$this->setError(JText::_('No new name provided.'));
+			$this->setError(\JText::_('No new name provided.'));
 			return false;
 		}
 
@@ -939,15 +944,15 @@ class WikiModelPage extends \Hubzero\Base\Model
 		// Are they just changing case of characters?
 		if (strtolower($this->get('pagename')) == strtolower($newpagename))
 		{
-			$this->setError(JText::_('New name matches old name.'));
+			$this->setError(\JText::_('New name matches old name.'));
 			return false;
 		}
 
 		// Check that no other pages are using the new title
-		$p = new WikiModelPage($newpagename, $this->get('scope'));
+		$p = new self($newpagename, $this->get('scope'));
 		if ($p->exists())
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . JText::_('CHOOSE_ANOTHER_PAGENAME'));
+			$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . \JText::_('CHOOSE_ANOTHER_PAGENAME'));
 			return false;
 		}
 
@@ -1037,12 +1042,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		// Remove files
 		jimport('joomla.filesystem.folder');
-		$path = JPATH_ROOT . DS . trim($this->config('filepath', '/site/wiki'), DS);
+		$path = PATH_APP . DS . trim($this->config('filepath', '/site/wiki'), DS);
 		if (is_dir($path . DS . $this->get('id')))
 		{
-			if (!JFolder::delete($path . DS . $this->get('id')))
+			if (!\JFolder::delete($path . DS . $this->get('id')))
 			{
-				$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
+				$this->setError(\JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
 			}
 		}
 
@@ -1056,12 +1061,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 		$this->log('page_deleted');
 
 		// Clear cached data
-		$conf = JFactory::getConfig();
-		$cache = JCache::getInstance('', array(
+		$conf = \JFactory::getConfig();
+		$cache = \JCache::getInstance('', array(
 			'defaultgroup' => '',
 			'storage'      => $conf->get('cache_handler', ''),
 			'caching'      => true,
-			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+			'cachebase'    => $conf->get('cache_path', PATH_APP . '/cache')
 		));
 		$cache->clean('wiki');
 
@@ -1078,9 +1083,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	public function log($action='page_created', $user_id=0)
 	{
-		$user = JFactory::getUser();
+		$user = \JFactory::getUser();
 
-		$data = new stdClass();
+		$data = new \stdClass();
 		foreach ($this->_tbl->getProperties() as $property)
 		{
 			if ($this->get($property))
@@ -1089,10 +1094,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 			}
 		}
 
-		$log = new WikiTableLog($this->_db);
+		$log = new Tables\Log($this->_db);
 		$log->pid       = (int) $this->get('id');
 		$log->uid       = ($user_id ? $user_id : $user->get('id'));
-		$log->timestamp = JFactory::getDate()->toSql();
+		$log->timestamp = \JFactory::getDate()->toSql();
 		$log->action    = (string) $action;
 		$log->actorid   = $user->get('id');
 		$log->comments  = json_encode($data);
@@ -1130,7 +1135,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 */
 	protected function _adapter()
 	{
-		if (!($this->_adapter instanceof WikiModelAdapterAbstract))
+		if (!($this->_adapter instanceof BaseAdapter))
 		{
 			$scope = 'site';
 			if ($this->get('group_cn'))
@@ -1138,7 +1143,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 				$scope = strtolower(\JRequest::getCmd('option'));
 				$scope = ($scope ? substr($scope, 4) : 'site');
 			}
-			$cls = 'WikiModelAdapter' . ucfirst($scope);
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{

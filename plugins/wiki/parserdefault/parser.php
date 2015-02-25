@@ -372,7 +372,7 @@ class WikiParser
 		// If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
 		if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
 		{
-			$links = new WikiTableLink(JFactory::getDBO());
+			$links = new \Components\Wiki\Tables\Link(JFactory::getDBO());
 			$links->updateLinks($this->get('pageid'), $this->_data['links']);
 		}
 
@@ -692,12 +692,12 @@ class WikiParser
 
 		if ($namespace == 'help')
 		{
-			$p = WikiTablePage::getInstance($pagename, '');
+			$p = \Components\Wiki\Tables\Page::getInstance($pagename, '');
 			$p->scope = $scope;
 		}
 		else
 		{
-			$p = WikiTablePage::getInstance($pagename, $scope);
+			$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
 		}
 
 		switch (substr($href, 0, 1))
@@ -852,7 +852,7 @@ class WikiParser
 			$scope = $this->get('scope');
 		}
 
-		$p = WikiTablePage::getInstance($pagename, $scope);
+		$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
 
 		if ((!is_object($p) || !$p->id) && substr($name, 0, 1) != '?')
 		{
@@ -1451,7 +1451,7 @@ class WikiParser
 			}
 
 			// Load the page
-			$p = WikiTablePage::getInstance($pagename, $scope);
+			$p = \Components\Wiki\Tables\Page::getInstance($pagename, $scope);
 			if ($p->id)
 			{
 				// Parse any nested includes

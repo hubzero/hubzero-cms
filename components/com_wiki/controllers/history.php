@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Controllers;
+
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Revision;
+use Hubzero\Component\SiteController;
+use Exception;
 
 /**
  * Wiki controller class for page history
  */
-class WikiControllerHistory extends \Hubzero\Component\SiteController
+class History extends SiteController
 {
 	/**
 	 * Constructor
@@ -44,7 +48,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 	 */
 	public function __construct($config=array())
 	{
-		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
+		$this->_base_path = PATH_CORE . DS . 'components' . DS . 'com_wiki';
 		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
@@ -64,10 +68,10 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		if ($this->_sub)
 		{
-			JRequest::setVar('task', JRequest::getWord('action'));
+			\JRequest::setVar('task', \JRequest::getWord('action'));
 		}
 
-		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
+		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
 
 		parent::__construct($config);
 	}
@@ -79,11 +83,6 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		/*if ($this->_sub || $this->_option != 'com_wiki')
-		{
-			$this->config = JComponentHelper::getParams('com_wiki');
-		}*/
-
 		if (!$this->book->pages('count'))
 		{
 			if ($result = $this->book->scribe($this->_option))
@@ -91,7 +90,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -128,11 +127,11 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
+		$document = \JFactory::getDocument();
+		$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . \JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
@@ -145,18 +144,15 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_option . '_' . $this->_task)),
+			\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->message = $this->_message;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -169,7 +165,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 	 */
 	public function compareTask()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
+		include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'differenceengine.php');
 
 		$this->view->page      = $this->page;
 		$this->view->config    = $this->config;
@@ -177,19 +173,19 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->view->sub       = $this->_sub;
 
 		// Incoming
-		$oldid = JRequest::getInt('oldid', 0);
-		$diff  = JRequest::getInt('diff', 0);
+		$oldid = \JRequest::getInt('oldid', 0);
+		$diff  = \JRequest::getInt('diff', 0);
 
 		// Do some error checking
 		if (!$diff)
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_MISSING_VERSION'));
+			$this->setError(\JText::_('COM_WIKI_ERROR_MISSING_VERSION'));
 			$this->displayTask();
 			return;
 		}
 		if ($diff == $oldid)
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_SAME_VERSIONS'));
+			$this->setError(\JText::_('COM_WIKI_ERROR_SAME_VERSIONS'));
 			$this->displayTask();
 			return;
 		}
@@ -205,23 +201,23 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$nta = explode("\n", $this->view->dr->get('pagetext'));
 
 		//$diffs = new Diff($ota, $nta);
-		$formatter = new TableDiffFormatter();
-		$this->view->content = $formatter->format(new Diff($ota, $nta));
+		$formatter = new \TableDiffFormatter();
+		$this->view->content = $formatter->format(new \Diff($ota, $nta));
 
 		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
+		$document = \JFactory::getDocument();
+		$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . \JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -230,20 +226,17 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_option . '_' . $this->_task)),
+			\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->sub     = $this->_sub;
 		$this->view->message = $this->_message;
-		$this->view->name    = JText::_(strtoupper($this->_option));
+		$this->view->name    = \JText::_(strtoupper($this->_option));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -259,33 +252,32 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
 
 		// Incoming
-		$id = JRequest::getInt('oldid', 0);
+		$id = \JRequest::getInt('oldid', 0);
 
 		if (!$id || !$this->page->access('delete'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link('history'))
+				\JRoute::_($this->page->link('history'))
 			);
 			return;
 		}
 
-		$revision = new WikiModelRevision($id);
-		//$revision->load($id);
+		$revision = new Revision($id);
 
 		// Get a count of all approved revisions
 		if ($this->page->revisions('count', array('approved' => 1)) <= 1)
 		{
 			// Can't delete - it's the only approved version!
 			$this->setRedirect(
-				JRoute::_($this->page->link('history'))
+				\JRoute::_($this->page->link('history'))
 			);
 			return;
 		}
@@ -296,8 +288,8 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		if (!$revision->store())
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link('history')),
-				JText::_('COM_WIKI_ERROR_REMOVING_REVISION'),
+				\JRoute::_($this->page->link('history')),
+				\JText::_('COM_WIKI_ERROR_REMOVING_REVISION'),
 				'error'
 			);
 			return;
@@ -310,7 +302,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		$this->page->store(false, 'revision_removed');
 
 		$this->setRedirect(
-			JRoute::_($this->page->link('history'))
+			\JRoute::_($this->page->link('history'))
 		);
 	}
 
@@ -324,31 +316,30 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
 
 		// Incoming
-		$id = JRequest::getInt('oldid', 0);
+		$id = \JRequest::getInt('oldid', 0);
 
 		if (!$id || !$this->page->access('manage'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link())
+				\JRoute::_($this->page->link())
 			);
 			return;
 		}
 
 		// Load the revision, approve it, and save
-		$revision = new WikiModelRevision($id);
+		$revision = new Revision($id);
 		$revision->set('approved', 1);
 		if (!$revision->store())
 		{
-			JError::raiseWarning(500, $revision->getError());
-			return;
+			throw new Exception($revision->getError(), 500);
 		}
 
 		// Get the most recent revision and compare to the set "current" version
@@ -366,7 +357,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		}
 
 		$this->setRedirect(
-			JRoute::_($this->page->link())
+			\JRoute::_($this->page->link())
 		);
 	}
 }

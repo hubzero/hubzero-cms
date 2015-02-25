@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Tables;
 
 /**
  * Wiki table for associating authors to a page
  */
-class WikiTableAuthor extends JTable
+class Author extends \JTable
 {
 	/**
 	 * Object constructor to set table and key field
@@ -57,14 +56,17 @@ class WikiTableAuthor extends JTable
 		$this->page_id = intval($this->page_id);
 		if (!$this->page_id)
 		{
-			$this->setError(JText::_('Author entry must have a page ID.'));
-			return false;
+			$this->setError(\JText::_('Author entry must have a page ID.'));
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(JText::_('Author entry must have a user ID.'));
+			$this->setError(\JText::_('Author entry must have a user ID.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -85,7 +87,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id || !$user_id)
 		{
-			$this->setError(JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
+			$this->setError(\JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
 
@@ -126,7 +128,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id)
 		{
-			$this->setError(JText::_('Missing page ID.'));
+			$this->setError(\JText::_('Missing page ID.'));
 			return false;
 		}
 		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
@@ -145,7 +147,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id)
 		{
-			$this->setError(JText::_('Missing page ID.'));
+			$this->setError(\JText::_('Missing page ID.'));
 			return false;
 		}
 		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, `#__users` AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
@@ -166,7 +168,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id || !$user_id)
 		{
-			$this->setError(JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
+			$this->setError(\JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
 
@@ -191,7 +193,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id)
 		{
-			$this->setError(JText::_('Missing page ID.'));
+			$this->setError(\JText::_('Missing page ID.'));
 			return false;
 		}
 
@@ -217,7 +219,7 @@ class WikiTableAuthor extends JTable
 
 		if (!$page_id)
 		{
-			$this->setError(JText::_("Missing argument (page_id: $page_id)."));
+			$this->setError(\JText::_("Missing argument (page_id: $page_id)."));
 			return false;
 		}
 
@@ -234,7 +236,7 @@ class WikiTableAuthor extends JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser = JUser::getInstance($author);
+				$targetuser = \JUser::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser))
@@ -252,7 +254,7 @@ class WikiTableAuthor extends JTable
 					continue;
 				}
 				// Create a new author object and attempt to save the record
-				$wpa = new WikiTableAuthor($this->_db);
+				$wpa = new self($this->_db);
 				$wpa->page_id = $page_id;
 				$wpa->user_id = $targetuser->get('id');
 				if ($wpa->check())
@@ -276,7 +278,7 @@ class WikiTableAuthor extends JTable
 		{
 			if (!in_array($id, $auths))
 			{
-				$wpa = new WikiTableAuthor($this->_db);
+				$wpa = new self($this->_db);
 				if (!$wpa->removeAuthor($page_id, $id))
 				{
 					$this->setError($wpa->getError());
@@ -306,12 +308,12 @@ class WikiTableAuthor extends JTable
 				$authors = array_map('trim', $authors);
 				foreach ($authors as $author)
 				{
-					$targetuser =& JUser::getInstance($author);
+					$targetuser = \JUser::getInstance($author);
 
 					// Ensure we found an account
 					if (is_object($targetuser))
 					{
-						$wpa = new WikiTableAuthor($this->_db);
+						$wpa = new self($this->_db);
 						$wpa->page_id = $page->id;
 						$wpa->user_id = $targetuser->get('id');
 						if ($wpa->check())

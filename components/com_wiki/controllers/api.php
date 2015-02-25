@@ -209,7 +209,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 
 		$group = JRequest::getVar('group', '');
 
-		$book = new WikiModelBook(($group ? $group : '__site__'));
+		$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),
@@ -260,7 +260,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 
 		$group = JRequest::getVar('group', '');
 
-		$book = new WikiModelBook(($group ? $group : '__site__'));
+		$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
 		$page = $book->page();
 
 		$revision = $page->revision(JRequest::getInt('revision', 0));

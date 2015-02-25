@@ -1327,7 +1327,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 			//load wiki page from db
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
-			$page = new WikiTablePage($this->database);
+			$page = new \Components\Wiki\Tables\Page($this->database);
 
 			$pagename = JRequest::getVar('pagename');
 			$scope = JRequest::getVar('scope', $group->get('cn') . DS . 'wiki');

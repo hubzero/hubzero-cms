@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models\Adapters;
 
-require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/base.php');
 
 /**
  * Adapter class for a project note
  */
-class WikiModelAdapterProjects extends WikiModelAdapterAbstract
+class Projects extends Base
 {
 	/**
 	 * URL segments
@@ -58,8 +57,8 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-		$project = JRequest::getVar('project', NULL);
-		$segments['scope'] = JRequest::getVar('scope', NULL);
+		$project = \JRequest::getVar('project', NULL);
+		$segments['scope'] = \JRequest::getVar('scope', NULL);
 		if (!$segments['scope'] && is_object($project))
 		{
 			$segments['scope'] = 'projects/' . $project->alias . '/notes';
@@ -115,6 +114,6 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 
 		$segments = array_merge($segments, (array) $params);
 
-		return JRoute::_($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor) . '?t=1';
+		return \JRoute::_($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor) . '?t=1';
 	}
 }

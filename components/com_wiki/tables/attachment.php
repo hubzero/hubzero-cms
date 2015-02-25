@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Tables;
 
 /**
  * Wiki table class for file attachments
  */
-class WikiTableAttachment extends JTable
+class Attachment extends \JTable
 {
 	/**
 	 * Constructor
@@ -116,7 +115,6 @@ class WikiTableAttachment extends JTable
 	 */
 	public function parse($text)
 	{
-		//$f = '/\{file#[0-9]*\}/sU';
 		$f = '/\[\[file#[0-9]*\]\]/sU';
 		return preg_replace_callback($f, array(&$this, 'getAttachment'), $text);
 	}
@@ -136,7 +134,7 @@ class WikiTableAttachment extends JTable
 		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
 
-		if (is_file(JPATH_ROOT . $this->path . DS . $this->pageid . DS . $a[0]))
+		if (is_file(PATH_APP . $this->path . DS . $this->pageid . DS . $a[0]))
 		{
 			if (preg_match("#bmp|gif|jpg|jpe|jpeg|tif|tiff|png#i", $a[0]))
 			{

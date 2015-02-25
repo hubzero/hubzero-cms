@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,25 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Page as Article;
+use Components\Wiki\Models\Revision;
+use Components\Wiki\Helpers\Parser;
+use Components\Wiki\Tables;
+use Exception;
 
 /**
  * Wiki controller class for pages
  */
-class WikiControllerPage extends \Hubzero\Component\SiteController
+class Page extends SiteController
 {
+	/**
+	 * Book model
+	 *
+	 * @var  object
+	 */
 	public $book = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Optional configurations
-	 * @return     void
+	 * @param   array  $config  Optional configurations
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -66,10 +78,10 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		if ($this->_sub)
 		{
-			JRequest::setVar('task', JRequest::getWord('action'));
+			\JRequest::setVar('task', \JRequest::getWord('action'));
 		}
 
-		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
+		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
 
 		parent::__construct($config);
 	}
@@ -77,15 +89,10 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		/*if ($this->_sub || $this->_option != 'com_wiki')
-		{
-			$this->config = JComponentHelper::getParams('com_wiki');
-		}*/
-
 		if (!$this->book->pages('count'))
 		{
 			if ($result = $this->book->scribe($this->_option))
@@ -93,7 +100,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -112,7 +119,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	/**
 	 * Display a page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -126,22 +133,22 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->title = $this->page->get('title'); //getTitle();
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		if ($this->_sub)
 		{
 			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
 		}
 		else
 		{
-			$document->setTitle(($this->_sub ? JText::_('COM_GROUPS') . ': ' : '') . JText::_('COM_WIKI') . ': ' . $this->view->title);
+			$document->setTitle(($this->_sub ? \JText::_('COM_GROUPS') . ': ' : '') . \JText::_('COM_WIKI') . ': ' . $this->view->title);
 		}
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				\JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
@@ -151,28 +158,25 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			// Set the layout
 			$this->view->setLayout('special');
-			$this->view->layout = $this->page->denamespaced(); //get('pagename')
-			$this->view->page->set('scope', JRequest::getVar('scope', ''));
+			$this->view->layout = $this->page->denamespaced();
+			$this->view->page->set('scope', \JRequest::getVar('scope', ''));
 			$this->view->page->set('group_cn', $this->_group);
 			$this->view->message = $this->_message;
 
 			// Ensure the special page exists
 			if (!in_array(strtolower($this->view->layout), $this->book->special()))
 			{
-				//JError::raiseWarning(404, JText::_('COM_WIKI_WARNING_NOT_FOUND'));
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->view->page->get('scope'))
+					\JRoute::_('index.php?option=' . $this->_option . '&scope=' . $this->view->page->get('scope'))
 				);
 				return;
 			}
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
+
 			$this->view->display();
 			return;
 		}
@@ -188,13 +192,11 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->page->set('scope', $this->_group . '/wiki');
 			}
 
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
+
 			$this->view->display();
 			return;
 		}
@@ -202,7 +204,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if ($this->page->get('group_cn') && !$this->_group)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_groups&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename'))
+				\JRoute::_('index.php?option=com_groups&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename'))
 			);
 			return;
 		}
@@ -210,8 +212,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// Check if the page is group restricted and the user is authorized
 		if (!$this->page->access('view', 'page'))
 		{
-			JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
-			return;
+			throw new Exception(\JText::_('COM_WIKI_WARNING_NOT_AUTH'), 403);
 		}
 
 		if ($this->page->get('scope') && !$this->page->get('group_cn'))
@@ -223,7 +224,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$bit = trim($bit);
 				if ($bit != '/' && $bit != '')
 				{
-					$p = WikiModelPage::getInstance($bit, implode('/', $s));
+					$p = Article::getInstance($bit, implode('/', $s));
 					if ($p->exists())
 					{
 						$pathway->addItem(
@@ -235,40 +236,32 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				}
 			}
 		}
-		/*if ($this->page->get('group_cn'))
-		{
-			$pathway->addItem(
-				JText::_('Wiki'),
-				$this->page->link('base')
-			);
-		}*/
+
 		$pathway->addItem(
 			$this->view->title,
 			$this->page->link()
 		);
 
 		// Retrieve a specific version if given
-		$this->view->version  = JRequest::getInt('version', 0);
+		$this->view->version  = \JRequest::getInt('version', 0);
 		$this->view->revision = $this->page->revision($this->view->version);
 
 		if (!$this->view->revision->exists())
 		{
-			$this->view->setLayout('nosuchrevision');
-
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
-			$this->view->display();
+
+			$this->view
+				->setLayout('nosuchrevision')
+				->display();
 			return;
 		}
 
-		if (JRequest::getVar('format', '') == 'raw')
+		if (\JRequest::getVar('format', '') == 'raw')
 		{
-			JRequest::setVar('no_html', 1);
+			\JRequest::setVar('no_html', 1);
 
 			echo nl2br($this->view->revision->get('pagetext'));
 			return;
@@ -284,14 +277,14 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			'domain'   => $this->page->get('group_cn')
 		);
 
-		$p = WikiHelperParser::getInstance();
+		$p = Parser::getInstance();
 
 		// Parse the text
 		if (intval($this->book->config('cache', 1)))
 		{
 			// Caching
 			// Default time is 15 minutes
-			$cache = JFactory::getCache('wiki', 'callback');
+			$cache = \JFactory::getCache('wiki', 'callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->book->config('cache_time', 15)));
 
@@ -305,13 +298,13 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
 		}
 
-		JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
+		JPROFILE ? \JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
 
 		// Handle display events
-		JPluginHelper::importPlugin('wiki');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('wiki');
+		$dispatcher = \JDispatcher::getInstance();
 
-		$this->page->event = new stdClass();
+		$this->page->event = new \stdClass();
 
 		$results = $dispatcher->trigger('onAfterDisplayTitle', array($this->page, &$this->view->revision, $this->config));
 		$this->page->event->afterDisplayTitle = trim(implode("\n", $results));
@@ -324,12 +317,9 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		$this->view->message = $this->_message;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -338,7 +328,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for creating an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newTask()
 	{
@@ -348,16 +338,16 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -366,8 +356,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if ($this->page->get('state') == 1 && !$this->page->access('manage'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link()),
-				JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
+				\JRoute::_($this->page->link()),
+				\JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
 			);
 			return;
@@ -377,8 +367,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!$this->page->access('edit') && !$this->page->access('modify'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link()),
-				JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
+				\JRoute::_($this->page->link()),
+				\JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'),
 				'warning'
 			);
 			return;
@@ -419,34 +409,34 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->revision->set('pagetext', '');
 				$this->page->set('scope', $this->page->get('scope') . ($this->page->get('scope') ? '/' . $this->page->get('pagename') : $this->page->get('pagename')));
 				$this->page->set('pagename', '');
-				$this->page->set('title', JText::_('COM_WIKI_NEW_PAGE'));
+				$this->page->set('title', \JText::_('COM_WIKI_NEW_PAGE'));
 			}
 		}
 
-		$this->view->tags = trim(JRequest::getVar('tags', $this->page->tags('string'), 'post'));
-		$this->view->authors = trim(JRequest::getVar('authors', $this->page->authors('string'), 'post'));
+		$this->view->tags = trim(\JRequest::getVar('tags', $this->page->tags('string'), 'post'));
+		$this->view->authors = trim(\JRequest::getVar('authors', $this->page->authors('string'), 'post'));
 
 		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
-		$this->view->title = (trim($this->page->get('title')) ? $this->page->get('title') : JText::_('COM_WIKI_NEW_PAGE'));
+		$this->view->title = (trim($this->page->get('title')) ? $this->page->get('title') : \JText::_('COM_WIKI_NEW_PAGE'));
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		if ($this->_sub)
 		{
 			$document->setTitle($document->getTitle() . ': ' . $this->view->title);
 		}
 		else
 		{
-			$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
+			$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . \JText::_(strtoupper($this->_option . '_' . $this->_task)));
 		}
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
@@ -457,7 +447,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->page->link()
 			);
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option . '_' . $this->_task)),
+				\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 				$this->page->link() . '&task=' . $this->_task
 			);
 		}
@@ -487,7 +477,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				'domain'   => $this->_group
 			);
 
-			$p = WikiHelperParser::getInstance();
+			$p = Parser::getInstance();
 
 			$this->revision->set('pagehtml', $p->parse($this->revision->get('pagetext'), $wikiconfig, true, true));
 		}
@@ -497,7 +487,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->message   = $this->_message;
 		$this->view->page      = $this->page;
 		$this->view->book      = $this->book;
-		//$this->view->config    = $this->config;
 		$this->view->revision  = $this->revision;
 
 		// Pull a tree of pages in this wiki
@@ -526,14 +515,11 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 		$this->view->tree = $tree; //$items;
 
-		$this->view->tplate = trim(JRequest::getVar('tplate', ''));
+		$this->view->tplate = trim(\JRequest::getVar('tplate', ''));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -542,25 +528,25 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 	/**
 	 * Save a wiki page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
 
 		// Incoming revision
-		$rev = JRequest::getVar('revision', array(), 'post', 'none', 2);
+		$rev = \JRequest::getVar('revision', array(), 'post', 'none', 2);
 		//$rev['pageid'] = (isset($rev['pageid'])) ? intval($rev['pageid']) : 0;
 
 		$this->revision = $this->page->revision('current');
@@ -574,24 +560,24 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->revision->set('id', 0);
 
 		// Incoming page
-		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
+		$page = \JRequest::getVar('page', array(), 'post', 'none', 2);
 
-		$this->page = new WikiModelPage(intval($rev['pageid']));
+		$this->page = new Article(intval($rev['pageid']));
 		if (!$this->page->bind($page))
 		{
 			$this->setError($this->page->getError());
 			$this->editTask();
 			return;
 		}
-		$this->page->set('pagename', trim(JRequest::getVar('pagename', '', 'post')));
-		$this->page->set('scope', trim(JRequest::getVar('scope', '', 'post')));
+		$this->page->set('pagename', trim(\JRequest::getVar('pagename', '', 'post')));
+		$this->page->set('scope', trim(\JRequest::getVar('scope', '', 'post')));
 
 		// Get parameters
 		$paramClass = 'JRegistry';
 		$bindMethod = 'loadArray';
 
 		$params = new $paramClass($this->page->get('params', ''));
-		$params->$bindMethod(JRequest::getVar('params', array(), 'post'));
+		$params->$bindMethod(\JRequest::getVar('params', array(), 'post'));
 
 		$this->page->set('params', $params->toString());
 
@@ -601,7 +587,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			// New page - save it to the database
 			$this->page->set('created_by', $this->juser->get('id'));
 
-			$old = new WikiModelRevision(0);
+			$old = new Revision(0);
 		}
 		else
 		{
@@ -610,18 +596,18 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 
 		// Was the preview button pushed?
-		$this->preview = trim(JRequest::getVar('preview', ''));
+		$this->preview = trim(\JRequest::getVar('preview', ''));
 		if ($this->preview)
 		{
 			// Set the component task
 			if (!$rev['pageid'])
 			{
-				JRequest::setVar('task', 'new');
+				\JRequest::setVar('task', 'new');
 				$this->_task = 'new';
 			}
 			else
 			{
-				JRequest::setVar('task', 'edit');
+				\JRequest::setVar('task', 'edit');
 				$this->_task = 'edit';
 			}
 
@@ -634,7 +620,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// First, make sure the pagetext isn't empty
 		if ($this->revision->get('pagetext') == '')
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_MISSING_PAGETEXT'));
+			$this->setError(\JText::_('COM_WIKI_ERROR_MISSING_PAGETEXT'));
 			$this->editTask();
 			return;
 		}
@@ -648,7 +634,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 
 		// Get allowed authors
-		if (!$this->page->updateAuthors(JRequest::getVar('authors', '', 'post')))
+		if (!$this->page->updateAuthors(\JRequest::getVar('authors', '', 'post')))
 		{
 			$this->setError($this->page->getError());
 			$this->editTask();
@@ -659,17 +645,17 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$path = DS . trim($this->book->config('filepath', '/site/wiki'), DS);
 
 		// Rename the temporary upload directory if it exist
-		$lid = JRequest::getInt('lid', 0, 'post');
+		$lid = \JRequest::getInt('lid', 0, 'post');
 		if ($lid != $this->page->get('id'))
 		{
 			if (is_dir(JPATH_ROOT . $path . DS . $lid))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::move(JPATH_ROOT . $path . DS . $lid, JPATH_ROOT . $path . DS . $this->page->get('id')))
+				if (!\JFolder::move(JPATH_ROOT . $path . DS . $lid, JPATH_ROOT . $path . DS . $this->page->get('id')))
 				{
-					$this->setError(JFolder::move(JPATH_ROOT . $path . DS . $lid, JPATH_ROOT . $path . DS . $this->page->get('id')));
+					$this->setError(\JFolder::move(JPATH_ROOT . $path . DS . $lid, JPATH_ROOT . $path . DS . $this->page->get('id')));
 				}
-				$wpa = new WikiTableAttachment($this->database);
+				$wpa = new Tables\Attachment($this->database);
 				$wpa->setPageID($lid, $this->page->get('id'));
 			}
 		}
@@ -706,7 +692,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$this->revision->set('pagehtml', $this->revision->content('parsed'));
 
 			// Parse attachments
-			/*$a = new WikiTableAttachment($this->database);
+			/*$a = new Tables\Attachment($this->database);
 			$a->pageid = $this->page->id;
 			$a->path = $path;
 
@@ -719,7 +705,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			// Store content
 			if (!$this->revision->store(true))
 			{
-				$this->setError(JText::_('COM_WIKI_ERROR_SAVING_REVISION'));
+				$this->setError(\JText::_('COM_WIKI_ERROR_SAVING_REVISION'));
 				$this->editTask();
 				return;
 			}
@@ -735,33 +721,33 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!$this->page->store(true))
 		{
 			// This really shouldn't happen.
-			$this->setError(JText::_('COM_WIKI_ERROR_SAVING_PAGE'));
+			$this->setError(\JText::_('COM_WIKI_ERROR_SAVING_PAGE'));
 			$this->editTask();
 			return;
 		}
 
 		// Process tags
-		$this->page->tag(JRequest::getVar('tags', ''));
+		$this->page->tag(\JRequest::getVar('tags', ''));
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_($this->page->link())
+			\JRoute::_($this->page->link())
 		);
 	}
 
 	/**
 	 * Delete a page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -769,8 +755,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!is_object($this->page))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link('base')),
-				JText::_('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
+				\JRoute::_($this->page->link('base')),
+				\JText::_('COM_WIKI_ERROR_PAGE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -780,28 +766,28 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!$this->page->access('delete'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link('base')),
-				JText::_('COM_WIKI_ERROR_NOTAUTH'),
+				\JRoute::_($this->page->link('base')),
+				\JText::_('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
 			);
 			return;
 		}
 
-		$confirmed = JRequest::getInt('confirm', 0, 'post');
+		$confirmed = \JRequest::getInt('confirm', 0, 'post');
 
 		switch ($confirmed)
 		{
 			case 1:
 				// Check for request forgeries
-				JRequest::checkToken() or jexit('Invalid Token');
+				\JRequest::checkToken() or jexit('Invalid Token');
 
 				$this->page->set('state', 2);
 				if (!$this->page->store(false, 'page_removed'))
 				{
-					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
+					$this->setError(\JText::_('COM_WIKI_UNABLE_TO_DELETE'));
 				}
 
-				$cache = JFactory::getCache('wiki', 'callback');
+				$cache = \JFactory::getCache('wiki', 'callback');
 				$cache->clean('wiki');
 			break;
 
@@ -816,15 +802,15 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->view->title = $this->page->get('title');
 
 				// Set the page's <title> tag
-				$document = JFactory::getDocument();
-				$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
+				$document = \JFactory::getDocument();
+				$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . \JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 				// Set the pathway
-				$pathway = JFactory::getApplication()->getPathway();
+				$pathway = \JFactory::getApplication()->getPathway();
 				if (count($pathway->getPathWay()) <= 0)
 				{
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option)),
+						\JText::_(strtoupper($this->_option)),
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 					);
 				}
@@ -833,18 +819,15 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 					$this->page->link()
 				);
 				$pathway->addItem(
-					JText::_(strtoupper($this->_option . '_' . $this->_task)),
+					\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 					$this->page->link('delete')
 				);
 
 				$this->view->message = $this->_message;
 
-				if ($this->getError())
+				foreach ($this->getErrors() as $error)
 				{
-					foreach ($this->getErrors() as $error)
-					{
-						$this->view->setError($error);
-					}
+					$this->view->setError($error);
 				}
 
 				$this->view->display();
@@ -853,23 +836,23 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 
 		$this->setRedirect(
-			JRoute::_($this->page->link('base'))
+			\JRoute::_($this->page->link('base'))
 		);
 	}
 
 	/**
 	 * Show a form to rename a page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function renameTask()
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
@@ -878,16 +861,12 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		if (!$this->page->access('edit'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->page->link('base')),
-				JText::_('COM_WIKI_ERROR_NOTAUTH'),
+				\JRoute::_($this->page->link('base')),
+				\JText::_('COM_WIKI_ERROR_NOTAUTH'),
 				'error'
 			);
 			return;
 		}
-
-		// Set the layout
-		// This is done in case we fell through from saverenameTask()
-		$this->view->setLayout('rename');
 
 		$this->view->page      = $this->page;
 		$this->view->config    = $this->config;
@@ -899,15 +878,15 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_('RENAME'));
+		$document = \JFactory::getDocument();
+		$document->setTitle(\JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . \JText::_('RENAME'));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				\JText::_(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -916,52 +895,51 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper('COM_WIKI_RENAME')),
+			\JText::_(strtoupper('COM_WIKI_RENAME')),
 			$this->page->link('rename')
 		);
 
 		$this->view->message = $this->_message;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setLayout('rename')
+			->display();
 	}
 
 	/**
 	 * Save the new page name
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saverenameTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
 
 		// Incoming
-		$oldpagename = trim(JRequest::getVar('oldpagename', '', 'post'));
-		$newpagename = trim(JRequest::getVar('newpagename', '', 'post'));
-		$scope = trim(JRequest::getVar('scope', '', 'post'));
+		$oldpagename = trim(\JRequest::getVar('oldpagename', '', 'post'));
+		$newpagename = trim(\JRequest::getVar('newpagename', '', 'post'));
+		$scope       = trim(\JRequest::getVar('scope', '', 'post'));
 
 		// Load the page
-		$this->page = new WikiModelPage($oldpagename, $scope);
+		$this->page = new Article($oldpagename, $scope);
 
 		// Attempt to rename
 		if (!$this->page->rename($newpagename))
@@ -973,7 +951,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 
 		// Redirect to the newly named page
 		$this->setRedirect(
-			JRoute::_($this->page->link())
+			\JRoute::_($this->page->link())
 		);
 	}
 
@@ -1009,25 +987,23 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		}
 
 		// Retrieve a specific version if given
-		$this->view->revision = $this->page->revision(JRequest::getInt('version', 0));
+		$this->view->revision = $this->page->revision(\JRequest::getInt('version', 0));
 		if (!$this->view->revision->exists())
 		{
-			$this->view->setLayout('nosuchrevision');
-
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
-			$this->view->display();
+
+			$this->view
+				->setLayout('nosuchrevision')
+				->display();
 			return;
 		}
 
-		JRequest::setVar('format', 'pdf');
+		\JRequest::setVar('format', 'pdf');
 
-		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		// set header and footer fonts
 		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -1047,11 +1023,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// Set font
 		$pdf->SetFont('dejavusans', '', 11, '', true);
 
-		//$current = $page->getCurrentRevision();
-		//$pageTitle = $page->getTitle();
-		//$pageAuthor = $page->authors();
 		$pdf->setAuthor  = $this->page->creator('name');
-		$pdf->setCreator = JFactory::getConfig()->get('sitename');
+		$pdf->setCreator = \JFactory::getConfig()->get('sitename');
 
 		$pdf->setDocModificationTimeStamp($this->page->modified());
 		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->get('itle')), NULL, array(84, 94, 124), array(146, 152, 169));
@@ -1072,7 +1045,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			'domain'   => $this->page->get('group_cn')
 		);
 
-		$p = WikiHelperParser::getInstance();
+		$p = Parser::getInstance();
 
 		// Parse the text
 		$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
@@ -1087,4 +1060,3 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		exit();
 	}
 }
-

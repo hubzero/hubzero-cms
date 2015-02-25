@@ -102,7 +102,7 @@ class PageMacro extends WikiMacro
 		}
 
 		// No, get resource by alias
-		$g = new WikiTablePage($this->_db);
+		$g = new \Components\Wiki\Tables\Page($this->_db);
 		$g->load($page, $scope);
 		if (!$g->id)
 		{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Tables;
 
 /**
  * Wiki table class for page
  */
-class WikiTablePage extends JTable
+class Page extends \JTable
 {
 	/**
 	 * Object constructor to set table and key field
@@ -51,11 +50,11 @@ class WikiTablePage extends JTable
 	 * Returns a reference to a wiki page object
 	 *
 	 * This method must be invoked as:
-	 *     $page = WikiTablePage::getInstance($pagename);
+	 *     $page = Page::getInstance($pagename);
 	 *
 	 * @param   string  $pagename  The page to load
 	 * @param   string  $scope     The page scope
-	 * @return  object  WikiTablePage
+	 * @return  object
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
@@ -75,7 +74,7 @@ class WikiTablePage extends JTable
 
 		if (!isset($instances[$scope . '/' . $pagename]))
 		{
-			$db = JFactory::getDBO();
+			$db = \JFactory::getDBO();
 			$page = new self($db);
 			// Find the page id
 			if (strstr($pagename, ' '))
@@ -272,7 +271,7 @@ class WikiTablePage extends JTable
 	{
 		include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 
-		$obj = new WikiModelTags($this->id);
+		$obj = new \Components\Wiki\Models\Tags($this->id);
 		return $obj->tags('list', (!$admin ? array('admin' => 0) : array()));
 	}
 
@@ -280,7 +279,7 @@ class WikiTablePage extends JTable
 	 * Loads a specific page revision
 	 *
 	 * @param   integer  $version
-	 * @return  object   WikiTableRevision
+	 * @return  object
 	 */
 	public function getRevision($version)
 	{
@@ -288,7 +287,7 @@ class WikiTablePage extends JTable
 		{
 			return $this->getCurrentRevision();
 		}
-		$obj = new WikiTableRevision($this->_db);
+		$obj = new Revision($this->_db);
 		$obj->loadByVersion($this->id, intval($version));
 		return $obj;
 	}
@@ -300,7 +299,7 @@ class WikiTablePage extends JTable
 	 */
 	public function getRevisionCount()
 	{
-		$obj = new WikiTableRevision($this->_db);
+		$obj = new Revision($this->_db);
 		$obj->pageid = $this->id;
 		return $obj->getRevisionCount();
 	}
@@ -308,11 +307,11 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads the most current page revision
 	 *
-	 * @return  object  WikiTableRevision
+	 * @return  object
 	 */
 	public function getCurrentRevision()
 	{
-		$obj = new WikiTableRevision($this->_db);
+		$obj = new Revision($this->_db);
 		$obj->loadByVersion($this->id);
 
 		return $obj;
@@ -327,7 +326,7 @@ class WikiTablePage extends JTable
 	 */
 	public function setRevisionId($id=null)
 	{
-		$modified = JFactory::getDate()->toSql();
+		$modified = \JFactory::getDate()->toSql();
 		if (!$id)
 		{
 			$revision = $this->getCurrentRevision();
@@ -356,7 +355,6 @@ class WikiTablePage extends JTable
 		if (strstr($pagename, ':'))
 		{
 			$parts = explode(':', $pagename);
-			//return preg_replace('/^([^:]+)(:.*)$/', "$1", $pagename);
 			return trim($parts[0]);
 		}
 		return '';
@@ -378,7 +376,6 @@ class WikiTablePage extends JTable
 		if (strstr($pagename, ':'))
 		{
 			$parts = explode(':', $pagename);
-			//return preg_replace('/^([^:]+)(:.*)$/', "$2", $pagename);
 			return trim($parts[1]);
 		}
 		return $pagename;
@@ -413,50 +410,44 @@ class WikiTablePage extends JTable
 
 		if (!$this->pagename)
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_NO_PAGE_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_WIKI_ERROR_NO_PAGE_TITLE'));
 		}
 
 		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file')))
 		{
-			$this->setError(JText::_('COM_WIKI_ERROR_INVALID_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_WIKI_ERROR_INVALID_TITLE'));
 		}
 
 		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH)
 		{
-			//$this->pagename = substr($this->pagename, 0, WIKI_MAX_PAGENAME_LENGTH);
-			$this->setError(JText::_('Pagename too long'));
+			$this->setError(\JText::_('Pagename too long'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
-		/*if ($this->group_cn && !$this->_validCn($this->group_cn))
-		{
-			$this->setError(JText::_('Invalid group'));
-			return false;
-		}*/
-
 		if (!$this->id)
 		{
-			$g = new WikiTablePage($this->_db);
+			$g = new self($this->_db);
 			$g->loadByTitle($this->pagename, $this->scope);
 			if ($g->exist())
 			{
-				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
+				$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 
 			$g->load($this->pagename, $this->scope);
 			if ($g->exist())
 			{
-				$this->setError(JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
+				$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->modified = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->modified   = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		if ($this->getError())
@@ -493,7 +484,7 @@ class WikiTablePage extends JTable
 	 */
 	public function getAuthors()
 	{
-		$wpa = new WikiTableAuthor($this->_db);
+		$wpa = new Author($this->_db);
 		return $wpa->getAuthors($this->id);
 	}
 
@@ -506,7 +497,7 @@ class WikiTablePage extends JTable
 	 */
 	public function updateAuthors($authors=NULL)
 	{
-		$wpa = new WikiTableAuthor($this->_db);
+		$wpa = new Author($this->_db);
 		return $wpa->updateAuthors($authors, $this->id);
 	}
 
@@ -518,7 +509,7 @@ class WikiTablePage extends JTable
 	 */
 	public function isAuthor($user_id=NULL)
 	{
-		$wpa = new WikiTableAuthor($this->_db);
+		$wpa = new Author($this->_db);
 		return $wpa->isAuthor($this->id, $user_id);
 	}
 
@@ -537,7 +528,7 @@ class WikiTablePage extends JTable
 		$id = intval($id);
 		if (!$id)
 		{
-			$this->setError(JText::_('Missing page ID'));
+			$this->setError(\JText::_('Missing page ID'));
 			return false;
 		}
 
@@ -736,7 +727,7 @@ class WikiTablePage extends JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -1025,7 +1016,7 @@ class WikiTablePage extends JTable
 
 		if (!isset($RE))
 		{
-			$language = strtolower(JFactory::getLanguage()->getTag());
+			$language = strtolower(\JFactory::getLanguage()->getTag());
 
 			// This mess splits between a lower-case letter followed by
 			// either an upper-case or a numeral; except that it wont

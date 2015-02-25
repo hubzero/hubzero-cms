@@ -103,7 +103,7 @@ class Wiki extends GenericItem
 		{
 			$group = \JRequest::getVar('cn', '');
 
-			$book = new \WikiModelBook(($group ? $group : '__site__'));
+			$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
 			$page = $book->page();
 
 			$id = $page->get('id');
@@ -118,7 +118,7 @@ class Wiki extends GenericItem
 
 		if (!$page)
 		{
-			$page = new \WikiModelPage($id);
+			$page = new \Components\Wiki\Models\Page($id);
 		}
 
 		if (!$page->exists())

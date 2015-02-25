@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,45 +24,45 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+namespace Components\Wiki\Helpers;
+
+use Exception;
 
 jimport('joomla.event.dispatcher');
 
 /**
  * Hubzero helper class for retrieving wiki parser
  */
-class WikiHelperParser extends JObservable
+class Parser extends \JObservable
 {
 	/**
 	 * Parser Plugin object
 	 *
-	 * @var	object
+	 * @var	 object
 	 */
 	public $_parser = null;
 
 	/**
 	 * Parser Plugin name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	public $_name = null;
 
 	/**
-	 * constructor
+	 * Constructor
 	 *
-	 * @access	protected
-	 * @param	string	The parser name
+	 * @param  string  The parser name
 	 */
 	public function __construct($parser = '')
 	{
 		if (!$parser)
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'parser%' ORDER BY enabled DESC LIMIT 1");
 
 			$parser = $database->loadResult();
@@ -76,11 +75,10 @@ class WikiHelperParser extends JObservable
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $parser = WikiHelperParser::getInstance($parser_name);</pre>
+	 *     $parser = WikiHelperParser::getInstance($parser_name);
 	 *
-	 * @access	public
-	 * @param	string	$parser  The name of the parser to use.
-	 * @return	object  WikiHelperParser  The Parser object.
+	 * @param   string  $parser  The name of the parser to use.
+	 * @return  object  The Parser object.
 	 */
 	public static function &getInstance($parser = '')
 	{
@@ -103,6 +101,10 @@ class WikiHelperParser extends JObservable
 
 	/**
 	 * Initialize the parser
+	 *
+	 * @param   array    $config
+	 * @param   boolean  $getnew
+	 * @return  void
 	 */
 	public function initialise($config=array(), $getnew=false)
 	{
@@ -119,7 +121,7 @@ class WikiHelperParser extends JObservable
 		);
 
 		$return = '';
-		$results[] = $this->_parser->update($args); //$this->_parser->onGetWikiParser($config, $getnew);
+		$results[] = $this->_parser->update($args);
 		foreach ($results as $result)
 		{
 			if (is_object($result))
@@ -132,11 +134,12 @@ class WikiHelperParser extends JObservable
 	/**
 	 * Parse the text
 	 *
-	 * @param	string	The content to be parsed
-	 * @param	array	Params for the parser
-	 * @param	bool	Do a full parse or not
-	 * @param	bool	Use the existing parser or get new
-	 * @param	array	Params for the plugin
+	 * @param   string  $text       The content to be parsed
+	 * @param   array   $config     Params for the parser
+	 * @param   bool    $fullparse  Do a full parse or not
+	 * @param   bool    $getnew     Use the existing parser or get new
+	 * @param   array   $params     Params for the plugin
+	 * @return  void
 	 */
 	public function parse($text, $config, $fullparse=true, $getnew=false, $params=array())
 	{
@@ -179,11 +182,10 @@ class WikiHelperParser extends JObservable
 	/**
 	 * Load the parser
 	 *
-	 * @access	private
-	 * @param	array	Associative array of parser plugin config paramaters
-	 * @param	array	Associative array of parser config paramaters
-	 * @param	bool	Tells initialise() to create new parser or not
-	 * @since	1.5
+	 * @param   array  $config   Associative array of parser plugin config paramaters
+	 * @param   array  $pconfig  Associative array of parser config paramaters
+	 * @param   bool   $getnew   Tells initialise() to create new parser or not
+	 * @return  void
 	 */
 	private function _loadParser($config=array(), $pconfig=array(), $getnew=false)
 	{
@@ -194,15 +196,15 @@ class WikiHelperParser extends JObservable
 		}
 
 		jimport('joomla.filesystem.file');
-		$input = new JFilterInput();
+		$input = new \JFilterInput();
 
 		// Build the path to the needed parser plugin
 		$name = $input->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!JFile::exists($path))
+		if (!\JFile::exists($path))
 		{
-			JError::raiseWarning(500, JText::_('Cannot load the parser'));
+			throw new Exception(\JText::_('Cannot load the parser'), 500);
 			return false;
 		}
 
@@ -210,10 +212,10 @@ class WikiHelperParser extends JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
+		$plugin = \JPluginHelper::getPlugin('wiki', $this->_name);
 		if (is_string($plugin->params))
 		{
-			$plugin->params = new JRegistry($plugin->params);
+			$plugin->params = new \JRegistry($plugin->params);
 		}
 		$plugin->params->loadArray($config);
 

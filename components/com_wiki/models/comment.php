@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
+use Components\Wiki\Helpers\Parser;
+use Hubzero\Base\Model;
+use Hubzero\User\Profile;
+use Hubzero\Utility\String;
+use Hubzero\Base\ItemList;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 
 /**
  * Wiki model for a comment
  */
-class WikiModelComment extends \Hubzero\Base\Model
+class Comment extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'WikiTableComment';
+	protected $_tbl_name = '\\Components\\Wiki\\Tables\\Comment';
 
 	/**
 	 * \Hubzero\User\Profile
@@ -53,7 +58,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 	private $_creator = NULL;
 
 	/**
-	 * WikiModelIterator
+	 * ItemList
 	 *
 	 * @var object
 	 */
@@ -69,8 +74,8 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a wiki comment model
 	 *
-	 * @param   mixed $oid ID (int) or alias (string)
-	 * @return  object WikiModelComment
+	 * @param   mixed   $oid  ID (int) or alias (string)
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -114,11 +119,11 @@ class WikiModelComment extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -140,12 +145,12 @@ class WikiModelComment extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -184,21 +189,21 @@ class WikiModelComment extends \Hubzero\Base\Model
 					return $this->get('parsed');
 				}
 
-				$p = WikiHelperParser::getInstance();
+				$p = Parser::getInstance();
 
 				$wikiconfig = array(
-					'option'   => JRequest::getCmd('option', 'com_wiki'),
-					'scope'    => JRequest::getVar('scope'),
-					'pagename' => JRequest::getVar('pagename'),
+					'option'   => \JRequest::getCmd('option', 'com_wiki'),
+					'scope'    => \JRequest::getVar('scope'),
+					'pagename' => \JRequest::getVar('pagename'),
 					'pageid'   => $this->get('pageid'),
 					'filepath' => '',
-					'domain'   => JRequest::getVar('group', '')
+					'domain'   => \JRequest::getVar('group', '')
 				);
 
 				$this->set('parsed', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($this->get('parsed'), $shorten, array('html' => true));
+					$content = String::truncate($this->get('parsed'), $shorten, array('html' => true));
 					return $content;
 				}
 
@@ -217,7 +222,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -234,9 +239,9 @@ class WikiModelComment extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base  = 'index.php?option=' . JRequest::getCmd('option', 'com_wiki') . '&scope=' . JRequest::getVar('scope') . '&pagename=' . JRequest::getVar('pagename');
+			$this->_base  = 'index.php?option=' . \JRequest::getCmd('option', 'com_wiki') . '&scope=' . \JRequest::getVar('scope') . '&pagename=' . \JRequest::getVar('pagename');
 		}
-		$task = JRequest::getVar('cn', '') ? 'action' : 'task';
+		$task = \JRequest::getVar('cn', '') ? 'action' : 'task';
 
 		$link = $this->_base;
 
@@ -324,7 +329,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					$results = $this->_tbl->find('list', $filters);
 
@@ -332,14 +337,14 @@ class WikiModelComment extends \Hubzero\Base\Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WikiModelComment($result);
+							$results[$key] = new Comment($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;

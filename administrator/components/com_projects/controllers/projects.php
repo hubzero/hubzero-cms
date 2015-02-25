@@ -638,7 +638,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		{
 			foreach ($notes as $note)
 			{
-				$page = new WikiTablePage( $this->database );
+				$page = new \Components\Wiki\Tables\Page( $this->database );
 
 				// Delete the page's history, tags, comments, etc.
 				$page->deleteBits( $note->id );

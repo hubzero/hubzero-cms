@@ -64,7 +64,7 @@ class ProjectModelNote extends WikiModelBook
 	{
 		$this->_db = JFactory::getDBO();
 		$this->_scope = $scope;
-		$this->_tbl = new WikiTablePage($this->_db);
+		$this->_tbl = new \Components\Wiki\Tables\Page($this->_db);
 		$this->_group_cn = $group_cn;
 		$this->_project_id = $project_id;
 

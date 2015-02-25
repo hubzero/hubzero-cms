@@ -31,7 +31,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WikiHelperPermissions::getActions('page');
+$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') . ': ' . JText::_('COM_WIKI_REVISIONS'), 'wiki.png');
 if ($canDo->get('core.create'))
@@ -105,7 +105,16 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Page;
+use Components\Wiki\Models\Comment;
+use Components\Wiki\Tables;
 
 /**
  * Wiki controller class for entries
  */
-class WikiControllerComments extends \Hubzero\Component\AdminController
+class Comments extends AdminController
 {
 	/**
 	 * Execute a task
@@ -59,8 +64,8 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$jconfig = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$jconfig = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
 			'pageid' => $app->getUserStateFromRequest(
@@ -100,10 +105,10 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 			)
 		);
 
-		$this->view->entry = new WikiModelPage($this->view->filters['pageid']);
+		$this->view->entry = new Page($this->view->filters['pageid']);
 
 		// Instantiate our HelloEntry object
-		$obj = new WikiTableComment($this->database);
+		$obj = new Tables\Comment($this->database);
 
 		// Get records
 		$rows = $obj->find('list', $this->view->filters);
@@ -132,14 +137,6 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		$this->view->total = count($list);
 
 		$this->view->rows = array_slice($list, $this->view->filters['start'], $this->view->filters['limit']);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -197,7 +194,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 					}
 				}
 
-				$k = new stdClass;
+				$k = new \stdClass;
 				foreach ($data as $key => $val)
 				{
 					$k->$key = $val;
@@ -230,28 +227,28 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
 
 			// Load the article
-			$row = new WikiModelComment($id);
+			$row = new Comment($id);
 		}
 
 		$this->view->row = $row;
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('pageid', JRequest::getInt('pageid', 0));
+			$this->view->row->set('pageid', \JRequest::getInt('pageid', 0));
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', JFactory::getDate()->toSql());  // use gmdate() ?
+			$this->view->row->set('created', \JFactory::getDate()->toSql());  // use gmdate() ?
 		}
 
 		// Set any errors
@@ -274,14 +271,14 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new WikiModelComment($fields['id']);
+		$row = new Comment($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -304,8 +301,8 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $fields['pageid'], false),
-			JText::_('COM_WIKI_COMMENT_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $fields['pageid'], false),
+			\JText::_('COM_WIKI_COMMENT_SAVED')
 		);
 	}
 
@@ -317,10 +314,10 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -328,7 +325,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
-				$entry = new WikiModelComment(intval($id));
+				$entry = new Comment(intval($id));
 				// Delete the entry
 				if (!$entry->delete())
 				{
@@ -339,8 +336,8 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0), false),
-			JText::sprintf('COM_WIKI_COMMENTS_DELETED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . \JRequest::getInt('pageid', 0), false),
+			\JText::sprintf('COM_WIKI_COMMENTS_DELETED', count($ids))
 		);
 	}
 
@@ -352,23 +349,23 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		$state = $this->getTask() == 'unpublish' ? 2 : 0;
 
 		// Incoming
-		$ids    = JRequest::getVar('id', array());
+		$ids    = \JRequest::getVar('id', array());
 		$ids    = (!is_array($ids) ? array($ids) : $ids);
-		$pageid = JRequest::getInt('pageid', 0);
+		$pageid = \JRequest::getInt('pageid', 0);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? JText::_('COM_WIKI_UNPUBLISH') : JText::_('COM_WIKI_PUBLISH');
+			$action = ($state == 1) ? \JText::_('COM_WIKI_UNPUBLISH') : \JText::_('COM_WIKI_PUBLISH');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
-				JText::sprintf('COM_WIKI_ERROR_SELECT_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
+				\JText::sprintf('COM_WIKI_ERROR_SELECT_TO', $action),
 				'error'
 			);
 			return;
@@ -377,7 +374,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		// Loop through all the IDs
 		foreach ($ids as $id)
 		{
-			$entry = new WikiModelComment(intval($id));
+			$entry = new Comment(intval($id));
 			$entry->set('status', $state);
 			if (!$entry->store())
 			{
@@ -388,16 +385,16 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		// Set message
 		if ($state == 1)
 		{
-			$message = JText::sprintf('COM_WIKI_ITEMS_PUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_WIKI_ITEMS_PUBLISHED', count($ids));
 		}
 		else
 		{
-			$message = JText::sprintf('COM_WIKI_ITEMS_UNPUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_WIKI_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		// Set redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 			$message
 		);
 	}
@@ -411,7 +408,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0), false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . \JRequest::getInt('pageid', 0), false)
 		);
 	}
 }

@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access');
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_WIKI_ENTER_COMMENTS'); ?></span>
 							<?php
-							echo WikiHelperEditor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 

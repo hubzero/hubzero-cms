@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,22 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
+use Components\Wiki\Helpers\Parser;
+use Components\Wiki\Tables;
+use Hubzero\Base\Model;
+use Hubzero\Utility\String;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'revision.php');
 
 /**
  * Wiki model for a page revision
  */
-class WikiModelRevision extends \Hubzero\Base\Model
+class Revision extends Model
 {
 	/**
-	 * JUser
+	 * User object
 	 *
 	 * @var object
 	 */
@@ -54,9 +58,9 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid, $page_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new WikiTableRevision($this->_db);
+		$this->_tbl = new Tables\Revision($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -123,11 +127,11 @@ class WikiModelRevision extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -149,12 +153,12 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof JUser))
+		if (!($this->_creator instanceof \JUser))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = \JUser::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new JUser();
+				$this->_creator = new \JUser();
 			}
 		}
 		if ($property)
@@ -188,22 +192,22 @@ class WikiModelRevision extends \Hubzero\Base\Model
 					return $this->get('pagetext_parsed');
 				}
 
-				$p = WikiHelperParser::getInstance();
+				$p = Parser::getInstance();
 
 				$wikiconfig = array(
-					'option'   => JRequest::getCmd('option', 'com_wiki'),
-					'scope'    => $this->get('scope', JRequest::getVar('scope')),
-					'pagename' => $this->get('pagename', JRequest::getVar('pagename')),
+					'option'   => \JRequest::getCmd('option', 'com_wiki'),
+					'scope'    => $this->get('scope', \JRequest::getVar('scope')),
+					'pagename' => $this->get('pagename', \JRequest::getVar('pagename')),
 					'pageid'   => $this->get('pageid'),
 					'filepath' => '',
-					'domain'   => $this->get('group_cn', JRequest::getVar('group'))
+					'domain'   => $this->get('group_cn', \JRequest::getVar('group'))
 				);
 
 				$this->set('pagetext_parsed', $p->parse(stripslashes($this->get('pagetext')), $wikiconfig));
 
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($this->get('pagetext_parsed'), $shorten, array('html' => true));
+					$content = String::truncate($this->get('pagetext_parsed'), $shorten, array('html' => true));
 
 					return $content;
 				}
@@ -215,7 +219,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 				$content = strip_tags($this->content('parsed'));
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+					$content = String::truncate($content, $shorten);
 				}
 				return $content;
 			break;
@@ -225,7 +229,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 				$content = $this->get('pagetext');
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+					$content = String::truncate($content, $shorten);
 				}
 				return $content;
 			break;

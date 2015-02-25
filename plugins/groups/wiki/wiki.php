@@ -222,7 +222,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 				$controllerName = 'page';
 			}
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php');
-			$controllerName = 'WikiController' . ucfirst($controllerName);
+			$controllerName = '\\Components\\Wiki\\Controllers\\' . ucfirst($controllerName);
 
 			// Instantiate controller
 			$controller = new $controllerName(array(
@@ -300,7 +300,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		// Import needed libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 
-		// Instantiate a WikiTablePage object
+		// Instantiate a object
 		$database = JFactory::getDBO();
 
 		// Start the log text
@@ -311,7 +311,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			// Loop through all the IDs for pages associated with this group
 			foreach ($ids as $id)
 			{
-				$wp = new WikiTablePage($database);
+				$wp = new \Components\Wiki\Tables\Page($database);
 				$wp->load($id->id);
 				// Delete all items linked to this page
 				//$wp->deleteBits($id->id);

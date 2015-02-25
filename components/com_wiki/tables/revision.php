@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Tables;
 
 /**
  * Wiki table class for page version
  */
-class WikiTableRevision extends JTable
+class Revision extends \JTable
 {
 	/**
 	 * Constructor
@@ -55,8 +54,8 @@ class WikiTableRevision extends JTable
 	public function check()
 	{
 		$this->minor_edit = intval($this->minor_edit);
-		$this->approved = intval($this->approved);
-		$this->version = intval($this->version);
+		$this->approved   = intval($this->approved);
+		$this->version    = intval($this->version);
 		if ($this->version <= 0)
 		{
 			$this->version = 1;
@@ -65,19 +64,22 @@ class WikiTableRevision extends JTable
 		$this->pageid = intval($this->pageid);
 		if (!$this->pageid)
 		{
-			$this->setError(JText::_('This revision is missing its page ID.'));
-			return false;
+			$this->setError(\JText::_('This revision is missing its page ID.'));
 		}
 		if (trim($this->pagetext) == '')
 		{
-			$this->setError(JText::_('Please provide content. A wiki page cannot be empty.'));
+			$this->setError(\JText::_('Please provide content. A wiki page cannot be empty.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
+
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 		$this->length = strlen($this->pagetext);
 

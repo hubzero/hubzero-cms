@@ -191,7 +191,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'attachment.php');
 
 			// Get resource by ID
-			$attach = new WikiTableAttachment($this->_db);
+			$attach = new \Components\Wiki\Tables\Attachment($this->_db);
 			$attach->load(intval($file));
 
 			// Check for file existence
@@ -433,7 +433,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	{
 		if (substr($file, 0, 1) == DS)
 		{
-			$path = JPATH_ROOT . $file;
+			$path = PATH_APP . $file;
 		}
 		else
 		{
@@ -455,7 +455,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
 				}
 			}
-			$path  = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
+			$path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
 			$path .= ($this->pageid) ? DS . $this->pageid : '';
 			$path .= DS . $file;
 		}

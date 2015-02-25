@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,45 +24,45 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+namespace Components\Wiki\Helpers;
+
+use Exception;
 
 jimport('joomla.event.dispatcher');
 
 /**
  * Hubzero helper class for retrieving the current wiki editor
  */
-class WikiHelperEditor extends JObservable
+class Editor extends \JObservable
 {
 	/**
 	 * Editor Plugin object
 	 *
-	 * @var	object
+	 * @var	 object
 	 */
 	private $_editor = null;
 
 	/**
 	 * Editor Plugin name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_name = null;
 
 	/**
-	 * constructor
+	 * Constructor
 	 *
-	 * @access	protected
-	 * @param	string	The editor name
+	 * @param  string  The parser name
 	 */
 	public function __construct($editor = '')
 	{
 		if (!$editor)
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			$database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1");
 
 			$editor = $database->loadResult();
@@ -72,15 +71,14 @@ class WikiHelperEditor extends JObservable
 	}
 
 	/**
-	 * Returns a reference to a global Editor object, only creating it
+	 * Returns a reference to a global Parser object, only creating it
 	 * if it doesn't already exist.
 	 *
 	 * This method must be invoked as:
-	 * 		<pre>  $editor = WikiHelperEditor::getInstance($editor);</pre>
+	 *     $parser = WikiHelperParser::getInstance($parser_name);
 	 *
-	 * @access	public
-	 * @param	string	$editor  The editor to use.
-	 * @return	JEditor	The Editor object.
+	 * @param   string  $parser  The name of the parser to use.
+	 * @return  object  The Parser object.
 	 */
 	public static function &getInstance($editor = '')
 	{
@@ -102,7 +100,11 @@ class WikiHelperEditor extends JObservable
 	}
 
 	/**
-	 * Initialize the editor
+	 * Initialize the parser
+	 *
+	 * @param   array    $config
+	 * @param   boolean  $getnew
+	 * @return  void
 	 */
 	public function initialise()
 	{
@@ -128,7 +130,7 @@ class WikiHelperEditor extends JObservable
 
 		if ($return)
 		{
-			$document = JFactory::getDocument();
+			$document = \JFactory::getDocument();
 			$document->addCustomTag($return);
 		}
 	}
@@ -136,14 +138,14 @@ class WikiHelperEditor extends JObservable
 	/**
 	 * Present a text area
 	 *
-	 * @param	string	The control name
-	 * @param	string	The control id
-	 * @param	string	The contents of the text area
-	 * @param	string	The width of the text area (px or %)
-	 * @param	string	The height of the text area (px or %)
-	 * @param	int		The number of columns for the textarea
-	 * @param	int		The number of rows for the textarea
-	 * @param	array	Associative array of editor parameters
+	 * @param   string   $name    The control name
+	 * @param   string   $id      The control id
+	 * @param   string   $html    The contents of the text area
+	 * @param   string   $cls     The width of the text area (px or %)
+	 * @param   integer  $col     The number of columns for the textarea
+	 * @param   integer  $row     The number of rows for the textarea
+	 * @param   array    $params  Associative array of editor parameters
+	 * @return  mixed
 	 */
 	public function display($name, $id, $html, $cls, $col, $row, $params = array())
 	{
@@ -161,9 +163,6 @@ class WikiHelperEditor extends JObservable
 			return;
 		}
 
-		// Initialize variables
-		$return = null;
-
 		$args = array(
 			'name'    => $name,
 			'id'      => $id,
@@ -173,6 +172,9 @@ class WikiHelperEditor extends JObservable
 			'row'     => $row,
 			'event'   => 'onDisplayEditor'
 		);
+
+		// Initialize variables
+		$return = null;
 
 		$results[] = $this->_editor->update($args);
 
@@ -189,7 +191,8 @@ class WikiHelperEditor extends JObservable
 	/**
 	 * Save the editor content
 	 *
-	 * @param	string	The name of the editor control
+	 * @param   string  $editor  The name of the editor control
+	 * @return  void
 	 */
 	public function save($editor)
 	{
@@ -219,7 +222,8 @@ class WikiHelperEditor extends JObservable
 	/**
 	 * Get the editor contents
 	 *
-	 * @param	string	The name of the editor control
+	 * @param   string  $editor  The name of the editor control
+	 * @return  mixed
 	 */
 	public function getContent($editor)
 	{
@@ -242,8 +246,9 @@ class WikiHelperEditor extends JObservable
 	/**
 	 * Set the editor contents
 	 *
-	 * @param	string	The name of the editor control
-	 * @param	string	The contents of the text area
+	 * @param   string  $editor  The name of the editor control
+	 * @param   string  $html    The contents of the text area
+	 * @return  mixed
 	 */
 	public function setContent($editor, $html)
 	{
@@ -270,9 +275,8 @@ class WikiHelperEditor extends JObservable
 	/**
 	 * Load the editor
 	 *
-	 * @access	private
-	 * @param	array	Associative array of editor config paramaters
-	 * @since	1.5
+	 * @param   array  $config  Associative array of editor config paramaters
+	 * @return  void
 	 */
 	private function _loadEditor($config = array())
 	{
@@ -285,12 +289,12 @@ class WikiHelperEditor extends JObservable
 		jimport('joomla.filesystem.file');
 
 		// Build the path to the needed editor plugin
-		$name = JFilterInput::getInstance()->clean($this->_name, 'cmd');
+		$name = \JFilterInput::getInstance()->clean($this->_name, 'cmd');
 		$path = JPATH_SITE . DS . 'plugins' . DS . 'wiki' . DS . $name . DS . $name . '.php';
 
-		if (!JFile::exists($path))
+		if (!\JFile::exists($path))
 		{
-			JError::raiseWarning(500, JText::_('Cannot load the editor'));
+			throw new Exception(\JText::_('Cannot load the editor'), 500);
 			return false;
 		}
 
@@ -298,8 +302,8 @@ class WikiHelperEditor extends JObservable
 		require_once $path;
 
 		// Get the plugin
-		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
-		$params = new JRegistry($plugin->params);
+		$plugin = \JPluginHelper::getPlugin('wiki', $this->_name);
+		$params = new \JRegistry($plugin->params);
 		$params->loadArray($config);
 		$plugin->params = $params;
 

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,31 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
+use Components\Wiki\Tables;
+use Hubzero\Base\Model;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
 
 /**
  * Wiki model for a page author
  */
-class WikiModelAuthor extends \Hubzero\Base\Model
+class Author extends Model
 {
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed $oid Integer, object, or array
+	 * @param   mixed  $oid  Integer, object, or array
 	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new WikiTableAuthor($this->_db);
+		$this->_tbl = new Tables\Author($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -66,8 +68,8 @@ class WikiModelAuthor extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param   mixed  $oid Integer, object, or array
-	 * @return  object WikiModelAuthor
+	 * @param   mixed  $oid  Integer, object, or array
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{

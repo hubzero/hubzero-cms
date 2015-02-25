@@ -218,12 +218,12 @@ class ParentsMacro extends WikiMacro
 	 */
 	private function _getPageByAlias($alias, $scope)
 	{
-		if (!class_exists('WikiTablePage') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
+		if (!class_exists('\\Components\\Wiki\\Tables\\Page') && is_file(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php'))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 		}
 
-		$page = new WikiTablePage($this->_db);
+		$page = new \Components\Wiki\Tables\Page($this->_db);
 		$page->load($alias, $scope);
 
 		// Check for a result

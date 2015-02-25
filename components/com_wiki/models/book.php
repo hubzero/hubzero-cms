@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'page.php');
+use Components\Wiki\Helpers\Parser;
+use Components\Wiki\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
+use Exception;
+
+require_once(__DIR__ . DS . 'page.php');
 
 /**
  * Wiki model for a book
  */
-class WikiModelBook extends \Hubzero\Base\Object
+class Book extends Object
 {
 	/**
 	 * Wiki domain
@@ -99,11 +104,11 @@ class WikiModelBook extends \Hubzero\Base\Object
 	 */
 	public function __construct($scope='__site__')
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->_scope = $scope;
 
-		$this->_tbl = new WikiTablePage($this->_db);
+		$this->_tbl = new Tables\Page($this->_db);
 
 		if (!defined('WIKI_SUBPAGE_SEPARATOR'))
 		{
@@ -191,17 +196,17 @@ class WikiModelBook extends \Hubzero\Base\Object
 
 		if (count($pages) <= 0)
 		{
-			return JText::_('No default pages found');
+			return \JText::_('No default pages found');
 		}
 
-		$p = WikiHelperParser::getInstance();
+		$p = Parser::getInstance();
 
 		foreach ($pages as $f => $c)
 		{
 			$f = str_replace('_', ':', $f);
 
 			// Instantiate a new page
-			$page = new WikiTablePage($this->_db);
+			$page = new Tables\Page($this->_db);
 			$page->pagename = $f;
 			$page->title    = $page->getTitle();
 			$page->access   = 0;
@@ -222,15 +227,13 @@ class WikiModelBook extends \Hubzero\Base\Object
 			// Check content
 			if (!$page->check())
 			{
-				JError::raiseWarning(500, $page->getError());
-				return;
+				throw new Exception($page->getError(), 500);
 			}
 
 			// Store content
 			if (!$page->store())
 			{
-				JError::raiseWarning(500, $page->getError());
-				return;
+				throw new Exception($page->getError(), 500);
 			}
 			// Ensure we have a page ID
 			if (!$page->id)
@@ -239,7 +242,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 			}
 
 			// Instantiate a new revision
-			$revision = new WikiTableRevision($this->_db);
+			$revision = new Tables\Revision($this->_db);
 			$revision->pageid     = $page->id;
 			$revision->minor_edit = 0;
 			$revision->version    = 1;
@@ -264,14 +267,12 @@ class WikiModelBook extends \Hubzero\Base\Object
 			// Check content
 			if (!$revision->check())
 			{
-				JError::raiseWarning(500, $revision->getError());
-				return;
+				throw new Exception($revision->getError(), 500);
 			}
 			// Store content
 			if (!$revision->store())
 			{
-				JError::raiseWarning(500, $revision->getError());
-				return;
+				throw new Exception($revision->getError(), 500);
 			}
 
 			$page->version_id = $revision->id;
@@ -279,8 +280,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 			if (!$page->store())
 			{
 				// This really shouldn't happen.
-				JError::raiseWarning(500, $page->getError());
-				return;
+				throw new Exception($page->getError(), 500);
 			}
 		}
 
@@ -294,7 +294,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 	 */
 	private function _defaultPages()
 	{
-		$path = dirname(dirname(__FILE__)) . DS . 'default';
+		$path = dirname(__DIR__) . DS . 'default';
 		if ($this->_scope != '__site__')
 		{
 			$path .= DS . 'groups';
@@ -306,7 +306,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 		{
 			jimport('joomla.filesystem.file');
 
-			$dirIterator = new DirectoryIterator($path);
+			$dirIterator = new \DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot() || $file->isDir())
@@ -317,10 +317,10 @@ class WikiModelBook extends \Hubzero\Base\Object
 				if ($file->isFile())
 				{
 					$fl = $file->getFilename();
-					if (strtolower(JFile::getExt($fl)) == 'txt')
+					if (strtolower(\JFile::getExt($fl)) == 'txt')
 					{
-						$name = JFile::stripExt($fl);
-						$pages[$name] = JFile::read($path . DS . $fl);
+						$name = \JFile::stripExt($fl);
+						$pages[$name] = \JFile::read($path . DS . $fl);
 					}
 				}
 			}
@@ -355,7 +355,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_wiki');
+			$this->_config = \JComponentHelper::getParams('com_wiki');
 		}
 		if ($key)
 		{
@@ -374,15 +374,15 @@ class WikiModelBook extends \Hubzero\Base\Object
 	{
 		if (!isset($this->_cache['page']) && $id === null)
 		{
-			$pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
+			$pagename = trim(\JRequest::getVar('pagename', '', 'default', 'none', 2));
 			if (substr(strtolower($pagename), 0, strlen('image:')) != 'image:'
 			 && substr(strtolower($pagename), 0, strlen('file:')) != 'file:')
 			{
 				$pagename = $this->_tbl->normalize($pagename);
 			}
-			JRequest::setVar('pagename', $pagename);
+			\JRequest::setVar('pagename', $pagename);
 
-			$scope = JRequest::getVar('scope', '');
+			$scope = \JRequest::getVar('scope', '');
 			if ($scope)
 			{
 				// Clean the scope. Since scope is built of a chain of pagenames or groups/groupname/wiki
@@ -393,10 +393,10 @@ class WikiModelBook extends \Hubzero\Base\Object
 					$bits[$i] = $this->_tbl->normalize($bit);
 				}
 				$scope = implode('/', $bits);
-				JRequest::setVar('scope', $scope);
+				\JRequest::setVar('scope', $scope);
 			}
 
-			$task = trim(JRequest::getWord('task', ''));
+			$task = trim(\JRequest::getWord('task', ''));
 
 			// No page name given! Default to the home page
 			if (!$pagename && $task != 'new')
@@ -405,11 +405,11 @@ class WikiModelBook extends \Hubzero\Base\Object
 			}
 
 			// Load the page
-			$this->_cache['page'] = new WikiModelPage($pagename, $scope);
+			$this->_cache['page'] = new Page($pagename, $scope);
 
 			if (!$this->_cache['page']->exists() && $this->_cache['page']->get('namespace') == 'help')
 			{
-				$this->_cache['page'] = new WikiModelPage($pagename, '');
+				$this->_cache['page'] = new Page($pagename, '');
 				$this->_cache['page']->set('scope', $scope);
 				if ($this->_scope != '__site__')
 				{
@@ -442,7 +442,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 
 			if (!$this->_cache['page'])
 			{
-				$this->_cache['page'] = WikiModelPage::getInstance($id, JRequest::getVar('scope', ''));
+				$this->_cache['page'] = Page::getInstance($id, \JRequest::getVar('scope', ''));
 			}
 		}
 
@@ -510,20 +510,20 @@ class WikiModelBook extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['pages']) || !($this->_cache['pages'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!isset($this->_cache['pages']) || !($this->_cache['pages'] instanceof ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getPages($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WikiModelPage($result);
+							$results[$key] = new Page($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['pages'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['pages'] = new ItemList($results);
 				}
 				return $this->_cache['pages'];
 			break;
@@ -542,7 +542,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 	{
 		$filters['namespace'] = 'Template';
 		$filters['sortby']    = 'title ASC';
-		$filters['scope']     = JRequest::getVar('scope', '');
+		$filters['scope']     = \JRequest::getVar('scope', '');
 
 		return $this->pages($what, $filters, $clear);
 	}
@@ -558,7 +558,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 
 		if (!isset($pages))
 		{
-			$path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'views' . DS . 'special' . DS . 'tmpl';
+			$path = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'views' . DS . 'special' . DS . 'tmpl';
 
 			$pages = array();
 
@@ -567,7 +567,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 				jimport('joomla.filesystem.file');
 
 				// Loop through all files and separate them into arrays of images, folders, and other
-				$dirIterator = new DirectoryIterator($path);
+				$dirIterator = new \DirectoryIterator($path);
 				foreach ($dirIterator as $file)
 				{
 					if ($file->isDot() || $file->isDir())
@@ -578,14 +578,14 @@ class WikiModelBook extends \Hubzero\Base\Object
 					if ($file->isFile())
 					{
 						$name = $file->getFilename();
-						if (JFile::getExt($name) != 'php'
+						if (\JFile::getExt($name) != 'php'
 						 || 'cvs' == strtolower($name)
 						 || '.svn' == strtolower($name))
 						{
 							continue;
 						}
 
-						$pages[] = strtolower(JFile::stripExt($name));
+						$pages[] = strtolower(\JFile::stripExt($name));
 					}
 				}
 

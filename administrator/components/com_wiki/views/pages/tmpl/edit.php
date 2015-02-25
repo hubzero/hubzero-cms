@@ -31,7 +31,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WikiHelperPermissions::getActions('page');
+$canDo =\Components\Wiki\Helpers\Permissions::getActions('page');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 

@@ -40,7 +40,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . 
 
 $database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
-$page		= new WikiTablePage( $database );
+$page		= new \Components\Wiki\Tables\Page( $database );
 
 // Get listed public notes
 $items = $objSt->getPubList($this->project->id, 'notes');

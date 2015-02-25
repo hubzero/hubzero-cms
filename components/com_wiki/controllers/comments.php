@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Controllers;
+
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Comment;
+use Hubzero\Component\SiteController;
+use Exception;
 
 /**
  * Wiki controller class for comments
  */
-class WikiControllerComments extends \Hubzero\Component\SiteController
+class Comments extends SiteController
 {
 	/**
 	 * Constructor
@@ -44,7 +48,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	 */
 	public function __construct($config=array())
 	{
-		$this->_base_path = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
+		$this->_base_path = PATH_CORE . DS . 'components' . DS . 'com_wiki';
 		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
@@ -64,10 +68,10 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		if ($this->_sub)
 		{
-			JRequest::setVar('task', JRequest::getWord('action'));
+			\JRequest::setVar('task', \JRequest::getWord('action'));
 		}
 
-		$this->book = new WikiModelBook(($this->_group ? $this->_group : '__site__'));
+		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
 
 		parent::__construct($config);
 	}
@@ -86,7 +90,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JDEBUG ? \JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -121,18 +125,18 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$this->view->sub       = $this->_sub;
 
 		// Viewing comments for a specific version?
-		$this->view->v = JRequest::getInt('version', 0);
+		$this->view->v = \JRequest::getInt('version', 0);
 
 		if (!isset($this->view->mycomment) && !$this->juser->get('guest'))
 		{
-			$this->view->mycomment = new WikiModelComment(0);
+			$this->view->mycomment = new Comment(0);
 			// No ID, so we're creating a new comment
 			// In that case, we'll need to set some data...
 			$revision = $this->page->revision('current');
 
 			$this->view->mycomment->set('pageid', $revision->get('pageid'));
 			$this->view->mycomment->set('version', $revision->get('version'));
-			$this->view->mycomment->set('parent', JRequest::getInt('parent', 0));
+			$this->view->mycomment->set('parent', \JRequest::getInt('parent', 0));
 			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
 
@@ -141,15 +145,15 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$this->view->title = $this->page->get('title');
 
 		// Set the page's <title> tag
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
+		$document = \JFactory::getDocument();
+		$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . \JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -158,7 +162,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_option . '_' . $this->_task)),
+			\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link('comments')
 		);
 
@@ -197,19 +201,19 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		// If not, then we need to stop everything else and display a login form
 		if ($this->juser->get('guest'))
 		{
-			$url = JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
 			return;
 		}
 
 		// Retrieve a comment ID if we're editing
-		$id = JRequest::getInt('comment', 0);
+		$id = \JRequest::getInt('comment', 0);
 
 		// Add the comment object to our controller's registry
 		// This is how comments() knows if it needs to display a form or not
-		$this->view->mycomment = new WikiModelComment($id);
+		$this->view->mycomment = new Comment($id);
 
 		if (!$id)
 		{
@@ -219,7 +223,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 			$this->view->mycomment->set('pageid', $revision->get('pageid'));
 			$this->view->mycomment->set('version', $revision->get('version'));
-			$this->view->mycomment->set('parent', JRequest::getInt('parent', 0));
+			$this->view->mycomment->set('parent', \JRequest::getInt('parent', 0));
 			$this->view->mycomment->set('created_by', $this->juser->get('id'));
 		}
 
@@ -234,12 +238,12 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('comment', array(), 'post');
+		$fields = \JRequest::getVar('comment', array(), 'post');
 
 		// Bind the form data to our object
-		$comment = new WikiModelComment($fields['id']);
+		$comment = new Comment($fields['id']);
 		if (!$comment->bind($fields))
 		{
 			$this->setError($comment->getError());
@@ -251,7 +255,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$comment->set('chtml', NULL);
 		$comment->set('chtml', $comment->content('parsed'));
 		$comment->set('anonymous', ($comment->get('anonymous') ? 1 : 0));
-		$comment->set('created', ($comment->get('created') ? $comment->get('created') : JFactory::getDate()->toSql()));
+		$comment->set('created', ($comment->get('created') ? $comment->get('created') : \JFactory::getDate()->toSql()));
 
 		// Save the data
 		if (!$comment->store(true))
@@ -289,28 +293,28 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if (($id = JRequest::getInt('comment', 0)))
+		if (($id = \JRequest::getInt('comment', 0)))
 		{
 			// Make sure they're authorized to delete (must be an author)
 			if ($this->page->access('delete', 'comment'))
 			{
-				$comment = new WikiModelComment($id);
+				$comment = new Comment($id);
 				$comment->set('status', 2);
 				if ($comment->store(false))
 				{
-					$msg = JText::_('COM_WIKI_COMMENT_DELETED');
+					$msg = \JText::_('COM_WIKI_COMMENT_DELETED');
 				}
 			}
 			else
 			{
-				$msg = JText::_('COM_WIKI_ERROR_NOTAUTH');
+				$msg = \JText::_('COM_WIKI_ERROR_NOTAUTH');
 				$cls = 'error';
 			}
 		}
 
 		// Redirect to Comments page
 		$this->setRedirect(
-			JRoute::_($this->page->link('comments')),
+			\JRoute::_($this->page->link('comments')),
 			$msg,
 			$cls
 		);

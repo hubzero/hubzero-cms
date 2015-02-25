@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wiki\Tables;
 
 /**
  * Wiki table class for logging links
  */
-class WikiTableLink extends JTable
+class Link extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,20 +56,23 @@ class WikiTableLink extends JTable
 		$this->page_id = intval($this->page_id);
 		if (!$this->page_id)
 		{
-			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
-			return false;
+			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 		}
 
 		$this->scope = strtolower($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(JText::_('COM_WIKI_LOGS_MUST_HAVE_SCOPE'));
+			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_SCOPE'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->timestamp = JFactory::getDate()->toSql();
+			$this->timestamp = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -132,7 +134,7 @@ class WikiTableLink extends JTable
 			return true;
 		}
 
-		$timestamp = JFactory::getDate()->toSql();
+		$timestamp = \JFactory::getDate()->toSql();
 
 		$query = "INSERT INTO $this->_tbl (`page_id`, `timestamp`, `scope`, `scope_id`, `link`, `url`) VALUES ";
 

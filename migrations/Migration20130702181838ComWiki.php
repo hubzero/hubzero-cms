@@ -34,6 +34,10 @@ class Migration20130702181838ComWiki extends Base
 			{
 				$cls = 'WikiTableRevision';
 			}
+			else if (class_exists('\\Components\\Wiki\\Tables\\Revision'))
+			{
+				$cls = '\\Components\\Wiki\\Tables\\Revision';
+			}
 
 			$version = new $cls($this->db);
 			$version->loadByVersion($result->pageid, $result->version);

@@ -85,7 +85,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
 
-				$entry = new WikiModelComment($rows[$key]->entry_id);
+				$entry = new \Components\Wiki\Models\Comment($rows[$key]->entry_id);
 
 				$rows[$key]->text = $rows[$key]->text; //$entry->content('raw');
 				$rows[$key]->href = JRoute::_($entry->link() . '#c' . $rows[$key]->id);
@@ -112,7 +112,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new WikiTableComment($database);
+		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->status = 3;
 		$comment->store();
@@ -139,7 +139,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new WikiTableComment($database);
+		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->status = 1;
 		$comment->store();
@@ -167,7 +167,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new WikiTableComment($database);
+		$comment = new \Components\Wiki\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->status = 2;
 		$comment->store();
