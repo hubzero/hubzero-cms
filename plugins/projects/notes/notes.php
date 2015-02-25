@@ -398,7 +398,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 		if (!$view->content)
 		{
-			$controllerName = 'WikiController' . ucfirst($this->_controllerName);
+			$controllerName = "Components\Wiki\Controllers\\"  . ucfirst($this->_controllerName);
 			// Instantiate controller
 			$controller = new $controllerName(array(
 				'base_path' => $basePath,

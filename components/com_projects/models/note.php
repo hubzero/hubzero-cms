@@ -38,7 +38,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' .
 /**
  * Project Note model
  */
-class ProjectModelNote extends WikiModelBook
+class ProjectModelNote extends Components\Wiki\Models\Book
 {
 	/**
 	 * Project group cn
@@ -80,7 +80,7 @@ class ProjectModelNote extends WikiModelBook
 	public function page($id=null, $scope = '')
 	{
 		$scope = $scope ? $scope : $this->_scope;
-		$this->_cache['page'] = WikiModelPage::getInstance($id, $scope);
+		$this->_cache['page'] = Components\Wiki\Models\Page::getInstance($id, $scope);
 
 		return $this->_cache['page'];
 	}
