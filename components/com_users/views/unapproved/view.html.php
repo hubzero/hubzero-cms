@@ -38,4 +38,30 @@ jimport('joomla.application.component.view');
  */
 class UsersViewUnapproved extends JViewLegacy
 {
+	/**
+	 * Method to display the view
+	 *
+	 * @param string the template file to include
+	 */
+	public function display($tpl = null)
+	{
+		// Get the user and then check the database to see if the session and database are out of sync
+		$user = \JFactory::getUser();
+		$real = \JUser::getInstance($user->get('id'));
+
+		if ($real->get('approved'))
+		{
+			// Update the session and redirect
+			$session = \JFactory::getSession();
+
+			$sessionUser = $session->get('user');
+			$sessionUser->set('approved', $real->get('approved'));
+			$session->set('user', $sessionUser);
+
+			// Redirect
+			\JFactory::getApplication()->redirect(JURI::getInstance()->toString());
+		}
+
+		parent::display($tpl);
+	}
 }
