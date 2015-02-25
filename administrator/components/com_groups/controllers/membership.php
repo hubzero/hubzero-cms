@@ -238,7 +238,7 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 
 		// Incoming array of users to add
 		$m = JRequest::getVar('usernames', '', 'post');
-		$mbrs = explode(',', $m);
+		$mbrs = preg_split("/[,;]/", $m);
 
 		jimport('joomla.user.helper');
 
