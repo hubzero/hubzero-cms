@@ -745,6 +745,12 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->_authorize('category');
 		$this->_authorize('thread');
 
+		if ($this->view->category->get('access') == 4 && !$this->params->get('access-view-category'))
+		{
+			JError::raiseError(403, JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return;
+		}
+
 		$this->view->model  = $this->model;
 		$this->view->config = $this->params;
 		$this->view->group  = $this->group;

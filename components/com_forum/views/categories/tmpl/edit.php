@@ -67,10 +67,23 @@ $juser = JFactory::getUser();
 					<?php } ?>
 				</legend>
 
-				<label for="field-closed" id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::_('COM_FORUM_FIELD_CLOSED'); ?>
-				</label>
+				<div class="grid">
+					<div class="col span6">
+						<label for="field-closed" id="comment-anonymous-label">
+							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
+							<?php echo JText::_('COM_FORUM_FIELD_CLOSED'); ?>
+						</label>
+					</div>
+					<div class="col span6 omega">
+						<label for="field-access">
+							<?php echo JText::_('COM_FORUM_FIELD_VIEW_ACCESS'); ?>
+							<select name="fields[access]" id="field-access">
+								<option value="0"<?php if ($this->category->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+								<option value="1"<?php if ($this->category->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+							</select>
+						</label>
+					</div>
+				</div>
 
 				<label for="field-section_id">
 					<?php echo JText::_('COM_FORUM_FIELD_SECTION'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
@@ -106,7 +119,6 @@ $juser = JFactory::getUser();
 			<input type="hidden" name="fields[state]" value="1" />
 			<input type="hidden" name="fields[scope]" value="site" />
 			<input type="hidden" name="fields[scope_id]" value="0" />
-			<input type="hidden" name="fields[access]" value="0" />
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="categories" />
