@@ -810,7 +810,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		// Get tool contributors if question is about a tool
 		if ($tags)
 		{
-			$tags = explode(',', $tags);
+			$tags = preg_split("/[,;]/", $tags);
 			if (count($tags) > 0)
 			{
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');

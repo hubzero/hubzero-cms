@@ -311,49 +311,34 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 			return $this;
 		}
 
-		if (strstr($val, ','))
-		{
-			$val = explode(',', $val);
-			foreach ($val as $acc)
-			{
-				$acc = trim($acc);
+		$val = preg_split("/[,;]/", $val);
+		$val = array_map('trim', $val);
 
-				// Is this a username or email address?
-				if (!strstr($acc, '@'))
-				{
-					// Username or user ID - load the user
-					$acc = (is_string($acc)) ? strtolower($acc) : $acc;
-					$juser = JUser::getInstance($acc);
-
-					// Did we find an account?
-					if (is_object($juser))
-					{
-						$this->_log['cc'][] = $juser->get('username');
-					}
-					else
-					{
-						// Move on - nothing else we can do here
-						continue;
-					}
-				}
-				// Make sure it's a valid e-mail address
-				else if (\Hubzero\Utility\Validate::email($acc))
-				{
-					$this->_log['cc'][] = $acc;
-				}
-			}
-		}
-		else
+		foreach ($val as $acc)
 		{
-			if (is_numeric($val))
+			// Is this a username or email address?
+			if (!strstr($acc, '@'))
 			{
-				$juser = JUser::getInstance($val);
+				// Username or user ID - load the user
+				$acc = (is_string($acc)) ? strtolower($acc) : $acc;
+				$juser = JUser::getInstance($acc);
+
+				// Did we find an account?
 				if (is_object($juser))
 				{
-					$val = $juser->get('username');
+					$this->_log['cc'][] = $juser->get('username');
+				}
+				else
+				{
+					// Move on - nothing else we can do here
+					continue;
 				}
 			}
-			$this->_log['cc'][] = $val;
+			// Make sure it's a valid e-mail address
+			else if (\Hubzero\Utility\Validate::email($acc))
+			{
+				$this->_log['cc'][] = $acc;
+			}
 		}
 
 		return $this;
