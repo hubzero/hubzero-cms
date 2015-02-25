@@ -1385,31 +1385,24 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$thread = $model->id;
 		}
 
-		$threadTbl = new ForumTablePost($this->database);
-		$threadTbl->load(intval($thread));
-
-		// Build outgoing email message
-		$juser = JFactory::getUser();
-		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
-		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
-		$prependtext .= ($model->anonymous) ? "Anonymous" : $juser->name . " (". $juser->username . ")";
-		$prependtext .= " wrote";
-		$prependtext .= " (in {$this->group->get('description')}: {$sectionTbl->title} - {$category->title} - {$threadTbl->title}):";
-
-		$output = html_entity_decode(strip_tags($model->comment), ENT_COMPAT, 'UTF-8');
-		$output = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $output);
-
-		$forum_message = $prependtext . "\r\n\r\n" . $output;
-
-		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $section . '/' . $category->alias . '/' . $thread . '#c' . $model->id);
-		$forum_message .= "\r\n\r\n" . rtrim($juri->base(), DS) . DS . ltrim($sef, DS) . "\r\n";
-
 		$params = JComponentHelper::getParams('com_groups');
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
 		if ($params->get('email_comment_processing'))
 		{
+			$esection = new ForumModelSection($sectionTbl);
+
+			$ecategory = new ForumModelCategory($category);
+			$ecategory->set('section_alias', $esection->get('alias'));
+
+			$ethread = new ForumModelThread(intval($thread));
+			$ethread->set('section', $esection->get('alias'));
+			$ethread->set('category', $ecategory->get('alias'));
+
+			$epost = new ForumModelThread($model);
+			$epost->set('section', $esection->get('alias'));
+			$epost->set('category', $ecategory->get('alias'));
+
 			// Figure out who should be notified about this comment (all group members for now)
 			$userIDsToEmail = array();
 
@@ -1443,32 +1436,57 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+			$encryptor = new \Hubzero\Mail\Token();
+			$jconfig = JFactory::getConfig();
+			$juri = JURI::getInstance();
+
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
+
+			$from = array(
+				'name'  => $jconfig->getValue('config.sitename'),
+				'email' => $jconfig->getValue('config.mailfrom')
+			);
 
 			// Email each group member separately, each needs a user specific token
 			foreach ($userIDsToEmail as $userID)
 			{
-				$encryptor = new \Hubzero\Mail\Token();
-				$jconfig = JFactory::getConfig();
-
 				// Construct User specific Email ThreadToken
 				// Version, type, userid, xforumid
 				$token = $encryptor->buildEmailToken(1, 2, $userID, $parent);
 
-				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
-
 				// add unsubscribe link
 				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
-				$unsubscribeLink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
-				$unsubscribe = "\r\n" . JText::_('Unsubscribe: ') . "\r\n" . $unsubscribeLink;
+				$unsubscribeLink  = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
 
-				$from = array();
-				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
-				$from['email'] = $jconfig->getValue('config.mailfrom');
+				$msg = array();
+
+				// create view object
+				$eview = $this->view('comment_plain', 'email');
+
+				// plain text
+				$eview
+					->set('delimiter', '~!~!~!~!~!~!~!~!~!~!')
+					->set('unsubscribe', $unsubscribeLink)
+					->set('group', $this->group)
+					->set('section', $esection)
+					->set('category', $ecategory)
+					->set('thread', $ethread)
+					->set('post', $epost);
+
+				$plain = $eview->loadTemplate();
+				$msg['plaintext'] = str_replace("\n", "\r\n", $plain);
+
+				// HTML
+				$eview->setLayout('comment_html');
+				$html = $eview->loadTemplate();
+				$msg['multipart'] = str_replace("\n", "\r\n", $html);
+
+				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
+
 				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
 
-				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $forum_message . $unsubscribe, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
+				if (!$dispatcher->trigger('onSendMessage', array('group_message', $subject, $msg, $from, array($userID), $this->option, null, '', $this->group->get('gidNumber'))))
 				{
 					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
