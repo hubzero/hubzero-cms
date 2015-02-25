@@ -646,7 +646,7 @@ HUB.ProjectPublicationsDraft = {
 				var skipped  = $(item).hasClass('el-skipped') ? 1 : 0;
 
 				// Input field?
-				var input = $(item).find('input');
+				var input = $(item).find('.block-subject input');
 				if (input.length)
 				{
 					$(input).on('keyup', function(e)
