@@ -125,7 +125,7 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 			{
 				$allow = trim($allow);
 
-				if (preg_match('/(.+?),\s+([^\s]+)\s+(\d)\.(\d)/i', $allow, $matches))
+				if (preg_match('/(.+?),\s+([^\s]+)\s+(\d+)\.(\d+)/i', $allow, $matches))
 				{
 					$req = new stdClass;
 					$req->name  = strtolower(trim($matches[2]));
