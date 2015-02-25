@@ -226,7 +226,7 @@ class CartControllerOrder extends ComponentController
 
 			if (!$postBackTransactionId) {
 				// Transaction id couldn't be extracted
-				$error = 'Postback did not have proper transaction ID ';
+				$error = 'Post back did not have the valid transaction ID ';
 
 				$logger->setMessage($error);
 				$logger->setPostback($_POST);
@@ -263,39 +263,72 @@ class CartControllerOrder extends ComponentController
 			return false;
 		}
 
-		// verify payment
-		if (!$test && !$pay->verifyPayment($tInfo))
-		{
-			// Payment has not been verified, get verification error
-			$error = $pay->getError()->msg;
+        // Get the action. Post back will normally be triggered on payment success, but can also be the cancel post back
+        $postBackAction = $pay->getPostBackAction();
 
-			$error .= ' Transaction ID: ' . $postBackTransactionId;
+		if ($postBackAction == 'payment')
+        {
+            // verify payment
+            if (!$test && !$pay->verifyPayment($tInfo))
+            {
+                // Payment has not been verified, get verification error
+                $error = $pay->getError()->msg;
 
-			// Log error
-			$logger->setMessage($error);
-			$logger->setPostback($_POST);
-			$logger->log(LoggingLevel::ERROR);
+                $error .= ' Transaction ID: ' . $postBackTransactionId;
 
-			// Handle error
-			CartModelCart::handleTransactionError($postBackTransactionId, $error);
+                // Log error
+                $logger->setMessage($error);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::ERROR);
 
-			return false;
-		}
+                // Handle error
+                CartModelCart::handleTransactionError($postBackTransactionId, $error);
 
-		// No error
-		$message = 'Transaction completed. ';
-		$message .= 'Transaction ID: ' . $postBackTransactionId;
+                return false;
+            }
 
-		// Log info
-		if (!$test) {
-			$logger->setMessage($message);
-			$logger->setPostback($_POST);
-			$logger->log(LoggingLevel::INFO);
-		}
+            // No error
+            $message = 'Transaction completed. ';
+            $message .= 'Transaction ID: ' . $postBackTransactionId;
 
-		// Finalize order -- whatever needs to be done
-		$this->completeOrder($tInfo);
+            // Log info
+            if (!$test)
+            {
+                $logger->setMessage($message);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::INFO);
+            }
 
+            // Finalize order -- whatever needs to be done
+            $this->completeOrder($tInfo);
+        }
+        elseif ($postBackAction == 'cancel')
+        {
+            // Cancel transaction
+            $message = 'Transaction cancelled. ';
+            $message .= 'Transaction ID: ' . $postBackTransactionId;
+
+            // Log info
+            if (!$test)
+            {
+                $logger->setMessage($message);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::INFO);
+            }
+
+            // Release the transaction
+            CartModelCart::releaseTransaction($postBackTransactionId);
+        }
+        else
+        {
+            // No supported action, log error
+            $error = 'Post back action is invalid: ' . $postBackAction;
+
+            $logger->setMessage($error);
+            $logger->setPostback($_POST);
+            $logger->log(LoggingLevel::ERROR);
+            return false;
+        }
 	}
 
 	/**

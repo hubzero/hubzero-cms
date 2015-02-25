@@ -1731,6 +1731,9 @@ class CartModelCurrentCart extends CartModelCart
             }
             setcookie("cartId", $crtId, time() + $this->cookieTTL); // Set cookie life time
         }
+
+        // Update session cart
+        $this->syncSessionCart();
     }
 
     /**

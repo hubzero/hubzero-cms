@@ -40,6 +40,13 @@ class PaymentProvider
 	private $buttonVars;
 	private $credentials;
 
+    public function __construct()
+    {
+        $this->options = new stdClass();
+        // Default action is payment
+        $this->options->postbackAction = 'payment';
+    }
+
 	/**
 	 * Set transaction details
 	 *
@@ -68,10 +75,10 @@ class PaymentProvider
 		return $code;
 	}
 
-	/* ------------------------ Postback functions ---------------------------- */
+	/* ------------------------ Post back functions ---------------------------- */
 
 	/**
-	 * Set postback info ($_POST)
+	 * Set post back info ($_POST)
 	 *
 	 * @param 	array $_POST
 	 * @return 	int associated transaction ID if $_POST data is valid, false otherwise
@@ -84,6 +91,14 @@ class PaymentProvider
 		$tId = $customData[1];
 		return $tId;
 	}
+
+    /**
+     * Get the post back action (payment, cancel transaction...)
+     */
+    public function getPostBackAction()
+    {
+        return $this->options->postbackAction;
+    }
 
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment

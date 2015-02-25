@@ -41,6 +41,7 @@ class PaymentProvider
 	private $credentials;
 	private $postMessage;
 	private $error;
+    private $options;
 
 	/**
 	 * Constructor
@@ -55,11 +56,17 @@ class PaymentProvider
 
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 
-		$paymentOptions->transactionName = "$hubName online purchase";
+        $this->options = new stdClass();
+        // Default action is payment
+        $this->options->postbackAction = 'payment';
+
+		$paymentOptions = new stdClass();
+        $paymentOptions->transactionName = "$hubName online purchase";
 		$paymentOptions->businessName = $params->get('PPS_businessName');
 		$this->setPaymentOptions($paymentOptions);
 
-		$paymentGatewayCredentials->user = $params->get('PPS_user');
+        $paymentGatewayCredentials = new stdClass();
+        $paymentGatewayCredentials->user = $params->get('PPS_user');
 		$paymentGatewayCredentials->password = $params->get('PPS_password');
 		$paymentGatewayCredentials->signature = $params->get('PPS_signature');
 		$this->setCredentials($paymentGatewayCredentials);
@@ -141,10 +148,10 @@ class PaymentProvider
 	}
 
 
-	/* ------------------------ Postback functions ---------------------------- */
+	/* ------------------------ Post back functions ---------------------------- */
 
 	/**
-	 * Set postback info ($_POST)
+	 * Set post back info ($_POST)
 	 *
 	 * @param 	array $_POST
 	 * @return 	int associated transaction ID if $_POST data is valid, false otherwise
@@ -165,6 +172,14 @@ class PaymentProvider
 		$tId = $customData[1];
 		return $tId;
 	}
+
+    /**
+     * Get the post back action (payment, cancel transaction...)
+     */
+    public function getPostBackAction()
+    {
+        return $this->options->postbackAction;
+    }
 
 	/**
 	 * Verify the payment -- make sure it matches the transaction awaiting payment
