@@ -42,7 +42,7 @@ trait ErrorBag
 	 *
 	 * @var    array
 	 */
-	protected $errors = array();
+	protected $_errors = array();
 
 	/**
 	 * Get the most recent error message.
@@ -57,16 +57,16 @@ trait ErrorBag
 		if ($i === null)
 		{
 			// Default, return the last message
-			$error = end($this->errors);
+			$error = end($this->_errors);
 		}
-		elseif (!array_key_exists($i, $this->errors))
+		elseif (!array_key_exists($i, $this->_errors))
 		{
 			// If $i has been specified but does not exist, return false
 			return false;
 		}
 		else
 		{
-			$error = $this->errors[$i];
+			$error = $this->_errors[$i];
 		}
 
 		// Check if only the string is requested
@@ -85,7 +85,7 @@ trait ErrorBag
 	 */
 	public function getErrors()
 	{
-		return $this->errors;
+		return $this->_errors;
 	}
 
 	/**
@@ -99,11 +99,11 @@ trait ErrorBag
 	{
 		if ($key)
 		{
-			$this->errors[$key] = $error;
+			$this->_errors[$key] = $error;
 		}
 		else
 		{
-			array_push($this->errors, $error);
+			array_push($this->_errors, $error);
 		}
 		return $this;
 	}
