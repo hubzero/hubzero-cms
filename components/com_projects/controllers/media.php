@@ -52,199 +52,6 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 	}
 
 	/**
-	 * Upload project image
-	 *
-	 * @return     void
-	 */
-	public function uploadTask()
-	{
-		// How many steps in setup process?
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-		$prefix = JPATH_ROOT;
-
-		// Check if they are logged in
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		// Incoming project ID
-		$id 	= JRequest::getInt( 'id', 0 );
-		$tempid = JRequest::getInt( 'tempid', 0 );
-		if (!$id && !$tempid)
-		{
-			$this->setError( JText::_('COM_PROJECTS_ERROR_NO_ID') );
-			$this->imgTask( $id, $tempid );
-			return;
-		}
-
-		// Check authorization - extra check
-		if ($id)
-		{
-			$authorized = $this->_authorize();
-			if (!$authorized)
-			{
-				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-				return;
-			}
-		}
-
-		// Incoming file
-		$file = JRequest::getVar( 'upload', '', 'files', 'array' );
-		if (!$file['name'])
-		{
-			$this->setError( JText::_('COM_PROJECTS_NO_FILE') );
-			$this->imgTask( $id, $tempid );
-			return;
-		}
-
-		// Build upload path
-		$useid = $id ? $id : $tempid;
-
-		// Use if or alias?
-		if ($id)
-		{
-			$obj = new Project( $this->database );
-			$dir = $obj->getAlias( $id );
-		}
-		else
-		{
-			$dir = \Hubzero\Utility\String::pad( $useid );
-		}
-		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
-		$path  = $prefix . $webdir;
-		$path .= !$id && $tempid ? DS . 'temp' : '';
-		$path .= DS . $dir . DS . 'images';
-
-		if (!is_dir( $path ))
-		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path ))
-			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
-				$this->imgTask( $id, $tempid );
-				return;
-			}
-		}
-
-		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ','_',$file['name']);
-
-		// Do we have an old file we're replacing?
-		$curfile = JRequest::getVar( 'currentfile', '' );
-
-		// Check it's an image in allowed format
-		$ext = explode('.', $file['name']);
-		$ext = end($ext);
-
-		if (!in_array($ext, array('jpg', 'gif', 'png')))
-		{
-			$this->setError( JText::_('Format unsupported. Please upload a .jpg, .gif or .png') );
-			$this->imgTask( $id, $tempid, $curfile );
-			return false;
-		}
-
-		// Delete older file with same name
-		if (file_exists($path . DS . $file['name']))
-		{
-			JFile::delete($path . DS . $file['name']);
-		}
-
-		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
-		{
-			$this->setError( JText::_('COM_PROJECTS_ERROR_UPLOADING') );
-			$file = $curfile;
-		}
-		else
-		{
-			if (ProjectsHelper::virusCheck($path . DS . $file['name']))
-			{
-				$this->setError(JText::_('Virus detected, refusing to upload'));
-				$this->imgTask( $id, $tempid );
-				return;
-			}
-
-			$ih = new ProjectsImgHandler();
-
-			// Resize the image if necessary
-			$ih->set('image',$file['name']);
-			$ih->set('path',$path.DS);
-			$ih->set('maxWidth', 186);
-			$ih->set('maxHeight', 186);
-			if (!$ih->process())
-			{
-				JFile::delete($path . DS . $file['name']);
-				$this->setError( $ih->getError() );
-			}
-
-			// Delete previous thumb
-			if (file_exists($path . DS . 'thumb.png'))
-			{
-				JFile::delete($path . DS . 'thumb.png');
-			}
-
-			// Create a thumbnail image
-			$ih->set('maxWidth', 50);
-			$ih->set('maxHeight', 50);
-			$ih->set('cropratio', '1:1');
-			$ih->set('outputName', 'thumb.png');
-			if (!$ih->process())
-			{
-				JFile::delete($path . DS . $file['name']);
-				$this->setError( $ih->getError() );
-			}
-
-			$file = $file['name'];
-
-			// Instantiate a project, change some info and save
-			if (!$this->getError() && $id)
-			{
-				$obj = new Project( $this->database );
-				$obj->loadProject($id);
-				$obj->picture = $file;
-				if (!$obj->store())
-				{
-					$this->setError( $obj->getError() );
-				}
-				elseif ($obj->setup_stage >= $setup_complete)
-				{
-					// Record activity
-					$objAA = new ProjectActivity( $this->database );
-					$aid = $objAA->recordActivity( $id, $this->juser->get('id'),
-						JText::_('COM_PROJECTS_REPLACED_PROJECT_PICTURE'), $id, '',
-						'', 'project', 0 );
-				}
-			}
-
-			// Remove old images
-			if (!$this->getError() && $curfile != '' && $curfile != $file )
-			{
-				if (file_exists($path . DS . $curfile))
-				{
-					JFile::delete($path . DS . $curfile);
-				}
-				$curthumb = $ih->createThumbName($curfile);
-				if (file_exists($path . DS . $curthumb))
-				{
-					JFile::delete($path . DS . $curthumb);
-				}
-			}
-		}
-
-		if ($this->getError())
-		{
-			$this->imgTask( $id, $tempid, $curfile );
-			return;
-		}
-
-		// Push through to the image view
-		$this->imgTask( $id, $tempid );
-	}
-
-	/**
 	 * Upload a file to the profile via AJAX
 	 *
 	 * @return     string
@@ -447,12 +254,12 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				echo json_encode(array('error' => JText::_('User login required')));
 				return;
 			}
-			return false;
+			$this->_showError();
+			return;
 		}
 
 		// Incoming project ID
-		$tempid = JRequest::getInt( 'tempid', 0 );
-		if (!$this->_identifier && !$tempid)
+		if (!$this->_identifier)
 		{
 			$this->setError( JText::_('COM_PROJECTS_ERROR_NO_ID') );
 			if ($ajax)
@@ -460,7 +267,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				echo json_encode(array('error' => $this->getError()));
 				return;
 			}
-			$this->imgTask( $this->_identifier, $tempid );
+			$this->_showError();
 			return;
 		}
 
@@ -468,16 +275,13 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		$obj = new Project( $this->database );
 		$obj->loadProject($this->_identifier);
 
-		// Build the file path
-		$useid = $obj->id ? $obj->id : $tempid;
-
 		if ($obj->alias)
 		{
 			$dir = $obj->alias;
 		}
 		else
 		{
-			$dir = \Hubzero\Utility\String::pad( $useid );
+			$dir = \Hubzero\Utility\String::pad( $obj->id );
 		}
 
 		// Incoming file
@@ -491,7 +295,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				echo json_encode(array('error' => $this->getError()));
 				return;
 			}
-			$this->imgTask( $this->_identifier, $tempid );
+			$this->_showError();
 			return;
 		}
 
@@ -525,7 +329,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 					echo json_encode(array('error' => $this->getError()));
 					return;
 				}
-				$this->imgTask( $this->_identifier, $tempid, $file );
+				$this->_showError();
 				return;
 			}
 
@@ -542,7 +346,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 						echo json_encode(array('error' => $this->getError()));
 						return;
 					}
-					$this->imgTask( $this->_identifier, $tempid );
+					$this->_showError();
 					return;
 				}
 			}
@@ -561,7 +365,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				if (!$obj->store())
 				{
 					$this->setError( $obj->getError() );
-					echo json_encode(array('error' => $obj->getError()));
+					if ($ajax)
+					{
+						echo json_encode(array('error' => $obj->getError()));
+						return;
+					}
 					return;
 				}
 			}
@@ -577,78 +385,18 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			echo json_encode(array(
 				'success'   => true
 			));
-			return;	
+			return;
 		}
 
-		// Push through to the image view
-		$this->imgTask( $obj->id, $tempid );
-	}
-
-	/**
-	 * Display project image and upload form
-	 *
-	 * @param  string $file
-	 * @param  int $id
-	 * @param  int $tempid
-	 * @return void
-	 */
-	public function imgTask( $id = 0, $tempid = 0, $file = '' )
-	{
-		// Incoming
-		$this->_id 			= JRequest::getInt( 'id', 0 );
-		$this->_alias   	= JRequest::getVar( 'alias', '' );
-		$this->_identifier  = $this->_id ? $this->_id : $this->_alias;
-		$this->_identifier	= $id ? $id : $this->_identifier;
-		$tempid 			= $tempid ? $tempid : JRequest::getInt( 'tempid', 0, 'get' );
-
-		$useid 				= $this->_identifier ? $this->_identifier : $tempid;
-		$prefix 			= JPATH_ROOT;
-
-		// Load project
-		$obj = new Project( $this->database );
-		$obj->loadProject($this->_identifier);
-
-		if ($obj->alias)
-		{
-			$dir = $obj->alias;
-		}
-		else
-		{
-			$dir = \Hubzero\Utility\String::pad( $useid );
-		}
-
-		// Build the file path
-		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
-		$path  = $webdir;
-		$path .= !$this->_identifier && $tempid ? DS . 'temp' : '';
-		$path .= DS . $dir . DS . 'images';
-
-		$file = $file ? $file : $obj->picture;
-
-		// set the needed layout
-		$this->view->setLayout('img');
-
-		// Output HTML
-		$this->view->option 			= $this->_option;
-		$this->view->webpath 			= $webdir;
-		$this->view->default_picture 	= $this->config->get('defaultpic');
-		$this->view->path 				= $path;
-		$this->view->file 				= $file;
-
-		$ih = new ProjectsImgHandler();
-		$this->view->thumb 			= !file_exists($prefix . $path . DS . 'thumb.png')
-									&& file_exists($prefix . $path . DS . $file)
-									? $ih->createThumbName($file) : 'thumb.png';
-
-		$this->view->file_path 		= $prefix . $path;
-		$this->view->id 			= $obj->id;
-		$this->view->tempid 		= $tempid;
-		$this->view->alias			= $obj->alias;
+		// Go to error page
 		if ($this->getError())
 		{
-			$this->view->setError( $this->getError() );
+			$this->_showError();
 		}
-		$this->view->display();
+
+		// Return to project page
+		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+		return;
 	}
 
 	/**

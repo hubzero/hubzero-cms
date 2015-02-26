@@ -59,7 +59,7 @@ $this->css('introduction.css', 'system')
 		<div class="col span5">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
 			<p><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>" id="projects-intro-start" class="btn icon-next"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>" id="projects-intro-start" class="btn icon-next"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
 		</div>
 		<div class="col span4 omega">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_WHAT_YOU_GET'); ?></h3>
@@ -72,7 +72,7 @@ $this->css('introduction.css', 'system')
 				<li><?php echo JText::_('COM_PROJECTS_INTRO_GET_PUBLISHING'); ?></li>
 				<?php } ?>
 			</ul>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=features'); ?>" id="projects-intro-features" class="btn"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=features'); ?>" id="projects-intro-features" class="btn"><?php echo JText::_('COM_PROJECTS_LEARN_MORE'); ?></a></p>
 		</div>
 	</div>
  </div>
@@ -99,7 +99,7 @@ $this->css('introduction.css', 'system')
 				<?php }	?>
 			</ul>
 		<?php } else { ?>
-			<div class="noresults"><?php echo ($this->guest) ? JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=intro').'/?action=login" id="projects-intro-login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : JText::_('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
+			<div class="noresults"><?php echo ($this->guest) ? JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : JText::_('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
 		<?php }	?>
 	</div>
 </div>

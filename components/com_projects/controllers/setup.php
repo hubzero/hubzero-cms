@@ -121,7 +121,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					{
 						// Dispay error
 						$this->setError(JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
-						$this->_showError('restricted');
+						$this->_showError();
 						return;
 					}
 				}

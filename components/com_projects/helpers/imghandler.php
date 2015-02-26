@@ -430,35 +430,6 @@ class ProjectsImgHandler extends JObject
 	}
 
 	/**
-	 * Append timestamp (or random string) to file name
-	 *
-	 * @param      string $file
-	 * @param      string $stamp
-	 * @return     string
-	 */
-	public function appendTimeStamp ( $file = null, $stamp = '' )
-	{
-		if (!$file)
-		{
-			$this->setError( JText::_('No filename set.') );
-			return false;
-		}
-		if (!$stamp)
-		{
-			$stamp = strtotime("now");
-		}
-
-		$file = explode('.',$file);
-		$n = count($file);
-		$file[$n-2] .= '_'.$stamp;
-		$end = array_pop($file);
-		$file[] = $end;
-		$new = implode('.',$file);
-
-		return $new;
-	}
-
-	/**
 	 * Sharpen the image based on two things:
 	 *
 	 * (1) the difference between the original size and the final size

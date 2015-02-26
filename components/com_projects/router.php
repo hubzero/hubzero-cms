@@ -165,7 +165,7 @@ class ProjectsRouter extends \Hubzero\Component\Router\Base
 		);
 
 		// Media tasks
-		$mediaTasks = array( 'img', 'deleteimg', 'upload', 'media', 'thumb', 'doajaxupload' );
+		$mediaTasks = array( 'deleteimg', 'media', 'thumb', 'doajaxupload' );
 
 		// Tasks managed by Setup controller
 		$setupTasks = array( 'setup', 'start', 'edit', 'save', 'verify', 'suggestalias' );

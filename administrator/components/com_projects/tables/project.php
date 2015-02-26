@@ -1080,7 +1080,7 @@ class Project extends JTable
 								$in .= $extracted[0] . '=';
 								$default = isset($extracted[1]) ? $extracted[1] : 0;
 								$in .= $extracted[0] == $param ? $value : $default;
-								$in	.= n;
+								$in	.= "\n";
 								if ($extracted[0] == $param) {
 									$found = 1;
 								}
@@ -1090,7 +1090,7 @@ class Project extends JTable
 				}
 				if (!$found)
 				{
-					$in .= n . $param . '=' . $value;
+					$in .= "\n" . $param . '=' . $value;
 				}
 			}
 			else

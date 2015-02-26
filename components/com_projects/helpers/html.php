@@ -760,8 +760,7 @@ class ProjectsHtml
 			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
 				. 'helpers' . DS . 'imghandler.php' );
 
-			$ih = new ProjectsImgHandler();
-			$thumb = $ih->createThumbName($picture);
+			$thumb = self::createThumbName($picture);
 			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
 		}
 		if (!$src)
@@ -770,6 +769,53 @@ class ProjectsHtml
 		}
 
 		return $src;
+	}
+
+	/**
+	 * Create a thumbnail name
+	 *
+	 * @param      string $image Image name
+	 * @param      string $tn    Thumbnail prefix
+	 * @param      string $ext
+	 * @return     string
+	 */
+	public static function createThumbName( $image = null, $tn = '_thumb', $ext = '' )
+	{
+		if (!$image)
+		{
+			$this->setError( JText::_('No image set.') );
+			return false;
+		}
+
+		$image = explode('.',$image);
+		$n = count($image);
+
+		if ($n > 1)
+		{
+			$image[$n-2] .= $tn;
+			$end = array_pop($image);
+			if ($ext)
+			{
+				$image[] = $ext;
+			}
+			else
+			{
+				$image[] = $end;
+			}
+
+			$thumb = implode('.',$image);
+		}
+		else
+		{
+			// No extension
+			$thumb = $image[0];
+			$thumb .= $tn;
+			if ($ext)
+			{
+				$thumb .= '.'.$ext;
+			}
+		}
+		return $thumb;
 	}
 
 	/**
