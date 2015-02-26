@@ -64,16 +64,60 @@ else
 ?>
 <div id="project-wrap" class="theme">
 	<?php if ($layout == 'extended') {
-		echo ProjectsHtml::drawProjectHeader($this); ?>
+		// Draw top header
+		$this->view('_topheader')
+		     ->set('project', $this->project)
+		     ->set('publicView', false)
+		     ->set('option', $this->option)
+		     ->display();
+		// Draw top menu
+		$this->view('_topmenu', 'projects')
+		     ->set('project', $this->project)
+		     ->set('active', $this->active)
+		     ->set('tabs', $this->tabs)
+		     ->set('option', $this->option)
+		     ->set('guest', $this->guest)
+		     ->set('publicView', false)
+		     ->display();
+	?>
 	<div class="project-inner-wrap">
 	<?php
 	} else { ?>
 	<div id="project-innerwrap">
-		<?php echo ProjectsHtml::drawLeftPanel($this); ?>
+		<div class="main-menu">
+			<?php
+			// Draw image
+			$this->view('_image', 'projects')
+			     ->set('project', $this->project)
+			     ->set('option', $this->option)
+			     ->display();
+
+			// Draw left menu
+			$this->view('_menu', 'projects')
+			     ->set('project', $this->project)
+			     ->set('active', $this->active)
+			     ->set('tabs', $this->tabs)
+			     ->set('option', $this->option)
+			     ->display();
+			?>
+		</div><!-- / .main-menu -->
 		<div class="main-content">
 	<?php
-		echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0);
-		echo ProjectsHtml::writeMemberOptions($this);
+		// Draw traditional header
+		$this->view('_header')
+		     ->set('project', $this->project)
+		     ->set('showPic', 0)
+		     ->set('showPrivacy', 2)
+		     ->set('goBack', 0)
+		     ->set('showUnderline', 1)
+		     ->set('option', $this->option)
+		     ->display();
+
+		// Member options
+		$this->view('_options', 'projects')
+		     ->set('project', $this->project)
+		     ->set('option', $this->option)
+		     ->display();
 	} ?>
 			<div class="status-msg" id="status-msg">
 				<?php

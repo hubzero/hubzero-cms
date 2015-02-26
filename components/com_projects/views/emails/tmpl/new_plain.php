@@ -37,7 +37,7 @@ if (substr($base, -13) == 'administrator')
 else
 {
 	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = JRoute::_('index.php?option=' . $this->option . a . 'task=browse');
+	$sef_browse = JRoute::_('index.php?option=' . $this->option . '&task=browse');
 }
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);

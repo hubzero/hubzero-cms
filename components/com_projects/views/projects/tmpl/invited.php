@@ -43,7 +43,16 @@ $rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->o
 ?>
 <div id="project-wrap">
 	<section class="main section">
-		<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
+		<?php
+			$this->view('_header')
+			     ->set('project', $this->project)
+			     ->set('showPic', 1)
+			     ->set('showPrivacy', 0)
+			     ->set('goBack', 0)
+			     ->set('showUnderline', 1)
+			     ->set('option', $this->option)
+			     ->display();
+		?>
 		<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>
 		<div id="confirm-invite" class="invitation">
 			<div class="grid">

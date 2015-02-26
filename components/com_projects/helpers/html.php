@@ -31,38 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!defined('n')) {
-
-/**
- * Description for ''n''
- */
-	define('n',"\n");
-
-/**
- * Description for ''t''
- */
-	define('t',"\t");
-
-/**
- * Description for ''r''
- */
-	define('r',"\r");
-
-/**
- * Description for ''a''
- */
-	define('a','&amp;');
-}
-
 /**
  * Html helper class
  */
 class ProjectsHtml
 {
-	//----------------------------------------------------------
-	// Time format
-	//----------------------------------------------------------
-
 	/**
 	 * Show time since present moment or an actual date
 	 *
@@ -217,10 +190,6 @@ class ProjectsHtml
 		return ProjectsHtml::timeDifference($difference);
 	}
 
-	//----------------------------------------------------------
-	// File management
-	//----------------------------------------------------------
-
 	/**
 	 * Get file attributes
 	 *
@@ -230,7 +199,10 @@ class ProjectsHtml
 	 * @param      string $prefix
 	 * @return     string
 	 */
-	public static function getFileAttribs( $path = '', $base_path = '', $get = '', $prefix = JPATH_ROOT )
+	public static function getFileAttribs(
+		$path = '', $base_path = '',
+		$get = '', $prefix = JPATH_ROOT
+	)
 	{
 		if (!$path)
 		{
@@ -725,17 +697,13 @@ class ProjectsHtml
 		return $text;
 	}
 
-	//----------------------------------------------------------
-	// Project page elements
-	//----------------------------------------------------------
-
 	/**
 	 * Get project image source
 	 *
 	 * @param      string $alias
 	 * @param      string $picture
 	 * @param      array $config
-	 * @return     string HTML
+	 * @return     string
 	 */
 	public static function getProjectImageSrc( $alias = '', $picture = '', $config = '' )
 	{
@@ -749,7 +717,7 @@ class ProjectsHtml
 		}
 		$path    = trim($config->get('imagepath', '/site/projects'), DS)
 					. DS . $alias . DS . 'images';
-		$default = trim($config->get('matsterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
+		$default = trim($config->get('masterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
 		$default = is_file( JPATH_ROOT . DS . $default )
 					? $default
 					: NULL;
@@ -805,408 +773,6 @@ class ProjectsHtml
 	}
 
 	/**
-	 * Embed project image
-	 *
-	 * @param      object $view
-	 * @return     string HTML
-	 */
-	public static function embedProjectImage( $view )
-	{
-		$source = ProjectsHtml::getProjectImageSrc($view->project->alias, $view->project->picture, $view->config); ?>
-		<div id="pimage" class="pimage">
-			<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias='
-			.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - '
-			. JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>">
-	<?php
-		if ($source) {
-		?>
-			<img src="<?php echo JRoute::_('index.php?option=' . $view->option . '&alias='
-			. $view->project->alias . '&controller=media&media=master');  ?>" alt="<?php echo $view->project->title; ?>" />
-	<?php
-		}
-		else
-		{ ?>
-			<span class="defaultimage">&nbsp;</span>
-	<?php } ?>
-		</a></div>
-	<?php }
-
-	/**
-	 * Write member options
-	 *
-	 * @param      object $view
-	 * @return     string HTML
-	 */
-	public static function writeMemberOptions ( $view )
-	{
-		$options = '';
-		$role    = JText::_('COM_PROJECTS_PROJECT') . ' <span>';
-
-		switch ($view->project->role)
-		{
-			case 1:
-				$role .= JText::_('COM_PROJECTS_LABEL_OWNER');
-				$options .= '<li><a href="' . JRoute::_('index.php?option='
-						 . $view->option . a . 'task=edit' . a . 'alias='
-						 . $view->project->alias) . '">' . JText::_('COM_PROJECTS_EDIT_PROJECT') . '</a></li>';
-				$options .= '<li><a href="' . JRoute::_('index.php?option='
-						 . $view->option . a . 'task=edit' . a . 'alias='
-						 . $view->project->alias) . '?edit=team">' . JText::_('COM_PROJECTS_INVITE_PEOPLE') . '</a></li>';
-				break;
-			default:
-				$role .= JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
-		}
-		$role 	.= '</span>';
-
-		if (!$view->project->private)
-		{
-			$options .= '<li><a href="' . JRoute::_('index.php?option='
-					 . $view->option . a . 'alias='
-					 . $view->project->alias) . '?preview=1">'
-					 . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '</a></li>';
-		}
-		if (isset($view->project->counts['team']) && $view->project->counts['team'] > 1)
-		{
-			$options .= '<li><a href="' . JRoute::_('index.php?option='
-					 . $view->option . a . 'alias='
-					 . $view->project->alias . a. 'active=team') . '?action=quit">'
-					 . JText::_('COM_PROJECTS_LEAVE_PROJECT') . '</a></li>';
-		}
-
-		$html = "\n" . t.t. '<ul id="member_options">' . "\n";
-		$html.= t.t.' <li>' . ucfirst($role) . "\n";
-		$html.= t.t.' 	<div id="options-dock">' . "\n";
-		$html.= t.t.' 		<div>' . "\n";
-		$html.= t.t.' 			<p>' . JText::_('COM_PROJECTS_JOINED')
-				. ' ' . JHTML::_('date', $view->project->since, 'M d, Y') . '</p>' . "\n";
-		if ($options)
-		{
-			$html.= t.t.'			<ul>' . "\n";
-			$html.= t.t.t.t.t.t. $options . "\n";
-			$html.= t.t.'			</ul>' . "\n";
-		}
-		$html.= t.t.' 		</div>' . "\n";
-		$html.= t.t.' 	</div>' . "\n";
-		$html.= t.t.' </li>' . "\n";
-		$html.= t.t.'</ul>' . "\n";
-		echo $html;
-	}
-
-	/**
-	 * Write project header
-	 *
-	 * @param      object $view
-	 * @return     string HTML
-	 */
-	public static function drawProjectHeader ($view, $publicView = false)
-	{
-		if ($view->project->private)
-		{
-			$privacy = '<span class="private">' . ucfirst(JText::_('COM_PROJECTS_PRIVATE')) . '</span>';
-		}
-		else
-		{
-			$privacy = '<a href="' . JRoute::_('index.php?option=' . $view->option . a . 'alias=' . $view->project->alias) . '/?preview=1" title="' . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(JText::_('COM_PROJECTS_PUBLIC')) . '</a>';
-		}
-
-		$start = ($view->project->owner && $publicView == false)
-				? '<span class="h-privacy">' .$privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT'))
-				: ucfirst(JText::_('COM_PROJECTS_PROJECT'));
-
-		$assets = array('files', 'databases', 'tools');
-		$assetTabs = array();
-		if ($publicView || !isset($view->tabs))
-		{
-			$view->tabs = array();
-		}
-		if ($view->active == 'edit')
-		{
-			$view->tabs[] = array('name' => 'edit', 'title' => 'Edit');
-		}
-
-		// Sort tabs so that asset tabs are together
-		foreach ($view->tabs as $tab)
-		{
-			if (!isset($tab['name']))
-			{
-				continue;
-			}
-			if (in_array($tab['name'], $assets))
-			{
-				$assetTabs[] = $tab;
-			}
-		}
-		$a = 0;
-		if (count($assetTabs) > 1)
-		{
-			array_splice( $view->tabs, 3, 0, array(0 => array('name' => 'assets', 'title' => 'Assets')) );
-		}
-?>
-		<div id="project-header" class="project-header">
-			<div class="grid">
-				<div class="col span10">
-					<div class="pimage-container">
-					<?php echo ProjectsHtml::embedProjectImage($view); ?>
-					</div>
-					<div class="ptitle-container">
-						<h2><a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias=' . $view->project->alias); ?>"><?php echo \Hubzero\Utility\String::truncate($view->project->title, 50); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
-						<p>
-						<?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
-						if ($view->project->owned_by_group)
-						{
-							$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );
-							if ($group)
-							{
-								echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
-							}
-							else
-							{
-								echo JText::_('COM_PROJECTS_UNKNOWN').' '.JText::_('COM_PROJECTS_GROUP');
-							}
-						}
-						else
-						{
-							echo '<a href="/members/'.$view->project->owned_by_user.'">'.$view->project->fullname.'</a>';
-						}
-						?>
-						</p>
-					</div>
-				</div>
-				<div class="col span2 omega">
-					<?php echo $publicView == false ? ProjectsHtml::writeMemberOptions($view) : ''; ?>
-				</div>
-				<div class="clear"></div>
-			</div>
-		</div>
-		<div class="menu-wrapper">
-		<?php if ($publicView == false && isset($view->tabs) && $view->tabs) { ?>
-			<ul>
-			<?php foreach ($view->tabs as $tab)
-			{
-				if (!isset($tab['name']))
-				{
-					continue;
-				}
-				if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
-				{
-					continue;
-				}
-				if ($tab['name'] == 'blog')
-				{
-					$tab['name'] = 'feed';
-				}
-				$gopanel = $tab['name'] == 'assets' ? 'files' : $tab['name'];
-				$active = (($tab['name'] == $view->active) || ($tab['name'] == 'assets' && in_array($view->active, $assets)))
-				?>
-				<li<?php if ($active) { echo ' class="active"'; } ?> id="tab-<?php echo $tab['name']; ?>">
-					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=' . $gopanel); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($tab['title']); ?>">
-						<span class="label"><?php echo $tab['title']; ?></span>
-					<?php if ($tab['name'] != 'feed' && isset($view->project->counts[$tab['name']]) && $view->project->counts[$tab['name']] != 0) { ?>
-						<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $view->project->counts[$tab['name']]; ?></span></span>
-					<?php } elseif ($tab['name'] == 'feed') { ?>
-						<span id="c-new" class="mini highlight <?php if ($view->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $view->project->counts['newactivity'];?></span></span>
-					<?php } ?>
-					</a>
-					<?php if ($tab['name'] == 'assets') { ?>
-					<div id="asset-selection" class="submenu-wrap">
-						<?php foreach ($assetTabs as $aTab) { ?>
-							<p><a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=' . $aTab['name']); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($aTab['title']); ?>" id="tab-<?php echo $aTab['name']; ?>"><span class="label"><?php echo $aTab['title']; ?></span><?php if (isset($view->project->counts[$aTab['name']]) && $view->project->counts[$aTab['name']] != 0) { ?>
-								<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $view->project->counts[$aTab['name']]; ?></span></span>
-							<?php } ?>
-								</a>
-							</p>
-						<?php } ?>
-					</div>
-					<?php } ?>
-				</li>
-			<?php  } ?>
-			<li class="sideli <?php if ($view->active == 'info') { echo ' active'; } ?>" id="tab-info"><a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_ABOUT')); ?>">
-				<span class="label"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></span></a></li>
-			</ul>
-		<?php } else {  ?>
-			<?php if (isset($view->guest) && $view->guest) { ?>
-			<p><?php echo JText::_('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&alias=' . $view->project->alias . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_LOGIN')).'</a> '.JText::_('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></p>
-			<?php } ?>
-		<?php } ?>
-		</div>
-	<?php }
-
-	/**
-	 * Write project left-hand side (traditional layout)
-	 *
-	 * @param      object $view
-	 * @return     string HTML
-	 */
-	public static function drawLeftPanel ($view)
-	{
-		?>
-		<div class="main-menu">
-			<?php echo ProjectsHtml::embedProjectImage($view); ?>
-			<?php echo ProjectsHtml::drawProjectMenu($view); ?>
-		</div><!-- / .main-menu -->
-<?php	}
-
-	/**
-	 * Write project menu
-	 *
-	 * @param      object $view
-	 * @return     string HTML
-	 */
-	public static function drawProjectMenu ($view)
-	{
-		$goto  = 'alias=' . $view->project->alias;
-		$assets = array('files', 'databases', 'tools');
-		$assetTabs = array();
-
-		// Sort tabs so that asset tabs are together
-		foreach ($view->tabs as $tab)
-		{
-			if (in_array($tab['name'], $assets))
-			{
-				$assetTabs[] = $tab;
-			}
-		}
-		$a = 0;
-
-		?>
-		<ul class="projecttools">
-			<li<?php if ($view->active == 'feed') { echo ' class="active"'; }?>>
-				<a class="newsupdate" href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . $goto . '&active=feed'); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo JText::_('COM_PROJECTS_TAB_FEED'); ?></span>
-				<span id="c-new" class="mini highlight <?php if ($view->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $view->project->counts['newactivity'];?></span></span></a>
-			</li>
-			<li<?php if ($view->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . $goto . '&active=info'); ?>" class="inform" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_INFO')); ?>">
-				<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
-			</li>
-<?php if ($view->tabs) {
-foreach ($view->tabs as $tab)
-{
-	if ($tab['name'] == 'blog')
-	{
-		continue;
-	}
-
-	if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
-	{
-		$a++; // counter for asset tabs
-
-		// Header tab
-		if ($a == 1)
-		{
-			?>
-			<li class="assets">
-				<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
-			</li>
-		</ul>
-		<ul class="projecttools assetlist">
-		<?php
-		foreach ($assetTabs as $aTab)
-		{
-			?>
-			<li<?php if ($aTab['name'] == $view->active) { echo ' class="active"'; } ?>>
-				<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . $goto . '&active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
-					<span><?php echo $aTab['title']; ?></span>
-				<?php if (isset($view->project->counts[$aTab['name']]) && $view->project->counts[$aTab['name']] != 0) { ?>
-					<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $view->project->counts[$aTab['name']]; ?></span></span>
-				<?php } ?>
-				</a>
-			</li>
-		<?php } ?>
-		</ul>
-		<ul class="projecttools">
-	<?php
-	}
-	continue;
-}
-?>
-			<li<?php if ($tab['name'] == $view->active) { echo ' class="active"'; } ?>>
-				<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . $goto . '&active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
-					<span><?php echo $tab['title']; ?></span>
-				<?php if (isset($view->project->counts[$tab['name']]) && $view->project->counts[$tab['name']] != 0) { ?>
-					<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $view->project->counts[$tab['name']]; ?></span></span>
-				<?php } ?>
-				</a>
-			</li>
-<?php }
-} ?>
-		</ul>
-	<?php }
-
-	/**
-	 * Write project header
-	 *
-	 * @param      object $view
-	 * @param      boolean $back
-	 * @param      boolean $underline
-	 * @param      int $show_privacy
-	 * @param      boolean $show_pic
-	 * @return     string HTML
-	 */
-	public static function writeProjectHeader ($view, $back = 0, $underline = 0, $show_privacy = 0, $show_pic = 1)
-	{
-		// Use alias or id in urls?
-		$goto  = 'alias=' . $view->project->alias;
-		$privacy_txt = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
-
-		if ($view->project->private)
-		{
-			$privacy = '<span class="private">' . ucfirst($privacy_txt) . '</span>';
-		}
-		else
-		{
-			$privacy = '<a href="' . JRoute::_('index.php?option=' . $view->option . a . $goto)
-					. '/?preview=1" title="' . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">'
-					. ucfirst($privacy_txt) . '</a>';
-		}
-
-		$start = ($show_privacy == 2 && $view->project->owner)
-				? '<span class="h-privacy">' .$privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT'))
-				: ucfirst(JText::_('COM_PROJECTS_PROJECT'));
-	?>
-	<div id="content-header" <?php if (!$show_pic) { echo 'class="nopic"'; } ?>>
-		<?php if ($show_pic) { ?>
-		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo	JRoute::_('index.php?option=' . $view->option . '&alias='
-			. $view->project->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
-		<?php } ?>
-		<div class="ptitle">
-			<h2><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($view->project->title, 50); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
-			<?php if ($back)  { ?>
-			<h3 class="returnln"><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
-			<?php } else { ?>
-			<h3 <?php if ($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
-			if ($view->project->owned_by_group)
-			{
-				$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );
-				if ($group)
-				{
-					echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
-				}
-				else
-				{
-					echo JText::_('COM_PROJECTS_UNKNOWN').' '.JText::_('COM_PROJECTS_GROUP');
-				}
-			}
-			else
-			{
-				echo '<a href="/members/'.$view->project->owned_by_user.'">'.$view->project->fullname.'</a>';
-			//	echo '<span class="prominent">'.$view->project->fullname.'</span>';
-			}
-			?>
-			<?php if ($show_privacy == 1) { ?>
-				<span class="privacy <?php if ($view->project->private) { echo 'private'; } ?>"><?php if (!$view->project->private) {  ?><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto).'/?preview=1'; ?>"><?php } ?><?php echo $privacy_txt; ?><?php if (!$view->project->private) {  ?></a><?php } ?> <?php echo strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>
-				</span>
-			<?php } ?>
-			</h3>
-			<?php } ?>
-		</div>
-	</div><!-- / #content-header -->
-	<?php
-	}
-
-	//----------------------------------------------------------
-	// Misc
-	//----------------------------------------------------------
-
-	/**
 	 * Generate random code
 	 *
 	 * @param      int $minlength
@@ -1216,17 +782,41 @@ foreach ($view->tabs as $tab)
 	 * @param      boolean $useletters
 	 * @return     string HTML
 	 */
-	public static function generateCode( $minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false )
+	public static function generateCode(
+		$minlength = 10, $maxlength = 10, $usespecial = 0,
+		$usenumbers = 0, $useletters = 1, $mixedcaps = false
+	)
 	{
 		$key = '';
 		$charset = '';
-		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		if ($useletters && $mixedcaps) $charset .= "abcdefghijklmnopqrstuvwxyz";
-		if ($usenumbers) $charset .= "0123456789";
-		if ($usespecial) $charset .= "~@#$%^*()_+-={}|][";
-		if ($minlength > $maxlength) $length = mt_rand ($maxlength, $minlength);
-		else $length = mt_rand ($minlength, $maxlength);
-		for ($i=0; $i<$length; $i++) $key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
+		if ($useletters)
+		{
+			$charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		}
+		if ($useletters && $mixedcaps)
+		{
+			$charset .= "abcdefghijklmnopqrstuvwxyz";
+		}
+		if ($usenumbers)
+		{
+			$charset .= "0123456789";
+		}
+		if ($usespecial)
+		{
+			$charset .= "~@#$%^*()_+-={}|][";
+		}
+		if ($minlength > $maxlength)
+		{
+			$length = mt_rand ($maxlength, $minlength);
+		}
+		else
+		{
+			$length = mt_rand ($minlength, $maxlength);
+		}
+		for ($i=0; $i<$length; $i++)
+		{
+			$key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
+		}
 		return $key;
 	}
 
@@ -1289,14 +879,17 @@ foreach ($view->tabs as $tab)
 					$exists = 0;
 				}
 			}
-			if ($exists) return $key;
+			if ($exists)
+			{
+				return $key;
+			}
 		}
 
 		return false;
 	}
 
 	/**
-	 * Get appended to file name random string
+	 * Get the random number appended to file name
 	 *
 	 * @param      string $path
 	 *
@@ -1426,15 +1019,15 @@ foreach ($view->tabs as $tab)
 	/**
 	 * Return filename without extension
 	 *
-	 * @param      string  $file      String to shorten
+	 * @param      string  $filename      Filename string to shorten
 	 * @return     string
 	 */
-	public static function takeOutExt($file = '')
+	public static function takeOutExt($filename = '')
 	{
 		// Take out extention
-		if ($file)
+		if ($filename)
 		{
-			$parts = explode('.', $file);
+			$parts = explode('.', $filename);
 
 			if (count($parts) > 1)
 			{
@@ -1446,10 +1039,10 @@ foreach ($view->tabs as $tab)
 				$end = array_pop($parts);
 			}
 
-			$file = implode($parts);
+			$filename = implode($parts);
 		}
 
-		return $file;
+		return $filename;
 	}
 
 	/**
@@ -1497,26 +1090,6 @@ foreach ($view->tabs as $tab)
 		if ($name == '')
 		{
 			$name = JText::_('COM_PROJECTS_UNKNOWN');
-		}
-
-		return $name;
-	}
-
-	/**
-	 * Shorten user full name
-	 *
-	 * @param      string $name
-	 * @param      int $chars
-	 * @return     string
-	 */
-	public static function shortenUrl( $name, $chars = 40 )
-	{
-		$name = trim($name);
-
-		if (strlen($name) > $chars)
-		{
-			$name = substr($name, 0, $chars);
-			$name = $name . '...';
 		}
 
 		return $name;
@@ -1577,10 +1150,6 @@ foreach ($view->tabs as $tab)
 		$regex = array('#[^A-Za-z0-9:\_\-' . $ds . ' ]#');
 		return preg_replace($regex, '', $path);
 	}
-
-	//----------------------------------------------------------
-	// Reviewers
-	//----------------------------------------------------------
 
 	/**
 	 * Get admin notes

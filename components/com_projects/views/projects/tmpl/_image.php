@@ -25,24 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$this->css()
-	->js();
-
-// Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
 ?>
-<div id="project-wrap">
-	<section class="main section">
-		<?php
-			$this->view('_header')
-			     ->set('project', $this->project)
-			     ->set('showPic', 1)
-			     ->set('showPrivacy', 0)
-			     ->set('goBack', 0)
-			     ->set('showUnderline', 1)
-			     ->set('option', $this->option)
-			     ->display();
-		?>
-		<p class="warning"><?php echo JText::_('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
-	</section><!-- / .main section -->
-</div>
+	<div id="pimage" class="pimage">
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" title="<?php echo $this->project->title . ' - ' . JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&controller=media&media=master');  ?>" alt="<?php echo $this->project->title; ?>" /></a>
+	</div>
+

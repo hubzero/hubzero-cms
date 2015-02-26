@@ -39,7 +39,16 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 				<input type="hidden" name="task" value="reinstate" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-				<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
+				<?php
+					$this->view('_header')
+					     ->set('project', $this->project)
+					     ->set('showPic', 1)
+					     ->set('showPrivacy', 0)
+					     ->set('goBack', 0)
+					     ->set('showUnderline', 1)
+					     ->set('option', $this->option)
+					     ->display();
+				?>
 
 				<p class="warning">
 					<?php echo $this->suspended == 2 ? JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if ($this->project->role != 1 && $this->suspended == 2) { ?><?php echo JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php } ?>

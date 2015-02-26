@@ -55,11 +55,33 @@ else
 ?>
 <div id="project-wrap" class="theme">
 	<?php if ($layout == 'extended') {
-		echo ProjectsHtml::drawProjectHeader($this); ?>
+		// Draw top header
+		$this->view('_topheader', 'projects')
+		     ->set('project', $this->project)
+		     ->set('publicView', false)
+		     ->set('option', $this->option)
+		     ->display();
+		// Draw top menu
+		$this->view('_topmenu', 'projects')
+		     ->set('project', $this->project)
+		     ->set('active', 'edit')
+		     ->set('tabs', array())
+		     ->set('option', $this->option)
+		     ->set('guest', false)
+		     ->set('publicView', false)
+		     ->display();
+	?>
 		<div class="project-inner-wrap">
 	<?php
 	} else {
-		echo ProjectsHtml::writeProjectHeader($this, 1); ?>
+		$this->view('_header', 'projects')
+		     ->set('project', $this->project)
+		     ->set('showPic', 1)
+		     ->set('showPrivacy', 0)
+		     ->set('goBack', 1)
+		     ->set('showUnderline', 1)
+		     ->set('option', $this->option)
+		     ->display(); ?>
 	<?php } ?>
 	<?php
 		// Display status message

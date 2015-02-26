@@ -27,9 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js()
-	 ->css('external');
-
-$html  = '';
+	 ->css('external')
+	 ->css('extended.css');
 
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
@@ -40,9 +39,6 @@ $this->project->about = $project->about('parsed');
 // Get project params
 $params = new JParameter( $this->project->params );
 $theme = $params->get('theme', $this->config->get('theme', 'light'));
-
-// Include extended CSS
-$this->css('extended.css');
 
 // Include theme CSS
 $this->css('theme' . $theme . '.css');
@@ -62,86 +58,100 @@ $this->css('theme' . $theme . '.css');
 		</div>
 	<?php } else if ($this->reviewer) { ?>
 		<div id="project-preview">
-			<p><?php echo JText::_('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse') . '?reviewer=' . $this->reviewer; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
+			<p><?php echo JText::_('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
 		</div>
 	<?php } ?>
-	<?php echo ProjectsHtml::drawProjectHeader($this, true); ?>
-	
-<div class="project-inner-wrap">
-	<section class="main section">
+	<?php // Draw top header
+	$this->view('_topheader')
+	     ->set('project', $this->project)
+	     ->set('publicView', true)
+	     ->set('option', $this->option)
+	     ->display();
+	// Draw top menu
+	$this->view('_topmenu', 'projects')
+	     ->set('project', $this->project)
+	     ->set('active', $this->active)
+	     ->set('tabs', $this->tabs)
+	     ->set('option', $this->option)
+	     ->set('guest', $this->guest)
+	     ->set('publicView', true)
+	     ->display();
+	?>
 
-			<?php if ($this->project->about) { ?>
-			<div class="public-list-header">
-				<h3><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></h3>
-			</div>
-			<div class="public-list-wrap">
-				<?php echo $this->project->about; ?>
-			</div>
-			<?php } ?>
+	<div class="project-inner-wrap">
+		<section class="main section">
+				<?php if ($this->project->about) { ?>
+				<div class="public-list-header">
+					<h3><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></h3>
+				</div>
+				<div class="public-list-wrap">
+					<?php echo $this->project->about; ?>
+				</div>
+				<?php } ?>
 
-			<?php if ($this->params->get('publications_public', 0))
-			{
-				// Show team
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'projects',
-						'element'=>'publications',
-						'name'=>'publist'
-					)
-				);
-				$view->option 	= $this->option;
-				$view->project 	= $this->project;
-				$view->pubconfig = $this->config;
-				echo $view->loadTemplate();
-			 } ?>
+				<?php if ($this->params->get('publications_public', 0))
+				{
+					// Show team
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'=>'projects',
+							'element'=>'publications',
+							'name'=>'publist'
+						)
+					);
+					$view->option 	= $this->option;
+					$view->project 	= $this->project;
+					$view->pubconfig = $this->config;
+					echo $view->loadTemplate();
+				 } ?>
 
-			<?php if ($this->params->get('files_public', 1))
-			{
-				// Show files
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'projects',
-						'element'=>'files',
-						'name'=>'publist'
-					)
-				);
-				$view->option 	= $this->option;
-				$view->project 	= $this->project;
-				echo $view->loadTemplate();
-			 } ?>
+				<?php if ($this->params->get('files_public', 1))
+				{
+					// Show files
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'=>'projects',
+							'element'=>'files',
+							'name'=>'publist'
+						)
+					);
+					$view->option 	= $this->option;
+					$view->project 	= $this->project;
+					echo $view->loadTemplate();
+				 } ?>
 
-			<?php if ($this->params->get('notes_public', 1))
-			{
-				// Show team
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'projects',
-						'element'=>'notes',
-						'name'=>'publist'
-					)
-				);
-				$view->option 	= $this->option;
-				$view->project 	= $this->project;
-				echo $view->loadTemplate();
-			 } ?>
+				<?php if ($this->params->get('notes_public', 1))
+				{
+					// Show team
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'=>'projects',
+							'element'=>'notes',
+							'name'=>'publist'
+						)
+					);
+					$view->option 	= $this->option;
+					$view->project 	= $this->project;
+					echo $view->loadTemplate();
+				 } ?>
 
-			<?php if ($this->params->get('team_public', 0))
-			{
-				// Show team
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'=>'projects',
-						'element'=>'team',
-						'name'=>'view',
-						'layout'=>'horizontal'
-					)
-				);
-				$view->option 	= $this->option;
-				$view->project 	= $this->project;
-				$view->goto 	= 'alias='.$this->project->alias;
-				$view->team 	= $this->team;
-				echo $view->loadTemplate();
-			 } ?>
-	</section><!-- / .main section -->
+				<?php if ($this->params->get('team_public', 0))
+				{
+					// Show team
+					$view = new \Hubzero\Plugin\View(
+						array(
+							'folder'=>'projects',
+							'element'=>'team',
+							'name'=>'view',
+							'layout'=>'horizontal'
+						)
+					);
+					$view->option 	= $this->option;
+					$view->project 	= $this->project;
+					$view->goto 	= 'alias='.$this->project->alias;
+					$view->team 	= $this->team;
+					echo $view->loadTemplate();
+				 } ?>
+		</section><!-- / .main section -->
 	</div>
 </div>

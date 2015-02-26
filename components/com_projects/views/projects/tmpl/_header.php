@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -25,8 +25,54 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-?>
+$privacyTxt = $this->project->private
+	? JText::_('COM_PROJECTS_PRIVATE')
+	: JText::_('COM_PROJECTS_PUBLIC');
 
-<div class="status-msg">
-<?php if ($this->getError()) { echo '<p class="witherror">' . $this->getError().'</p>'; } elseif ($this->msg) { echo '<p>' . $this->msg . '</p>'; } ?>
-</div>
+if ($this->project->private)
+{
+	$privacy = '<span class="private">' . ucfirst($privacyTxt) . '</span>';
+}
+else
+{
+	$privacy = '<a href="' . JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1') . '" title="' . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst($privacyTxt) . '</a>';
+}
+
+$start = ($this->showPrivacy == 2 && $this->project->owner) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) : ucfirst(JText::_('COM_PROJECTS_PROJECT'));
+
+?>
+<div id="content-header" <?php if (!$this->showPic) { echo 'class="nopic"'; } ?>>
+<?php if ($this->showPic) { ?>
+	<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo	JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->project->title; ?>" /></a></div>
+<?php } ?>
+	<div class="ptitle">
+		<h2><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo \Hubzero\Utility\String::truncate($this->project->title, 50); ?> <span>(<?php echo $this->project->alias; ?>)</span></a></h2>
+		<?php if ($this->goBack)  { ?>
+		<h3 class="returnln"><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
+		<?php } else { ?>
+		<h3 <?php if ($this->showUnderline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
+		if ($this->project->owned_by_group)
+		{
+			$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
+			if ($group)
+			{
+				echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="' . JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')) .'">' . $group->get('cn') . '</a>';
+			}
+			else
+			{
+				echo JText::_('COM_PROJECTS_UNKNOWN').' '.JText::_('COM_PROJECTS_GROUP');
+			}
+		}
+		else
+		{
+			echo '<a href=="' . JRoute::_('index.php?option=com_members&id=' . $this->project->owned_by_user) .'">' . $this->project->fullname.'</a>';
+		}
+		?>
+		<?php if ($this->showPrivacy == 1) { ?>
+			<span class="privacy <?php if ($this->project->private) { echo 'private'; } ?>"><?php if (!$this->project->private) {  ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1'); ?>"><?php } ?><?php echo $privacyTxt; ?><?php if (!$this->project->private) {  ?></a><?php } ?> <?php echo strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>
+			</span>
+		<?php } ?>
+		</h3>
+		<?php } ?>
+	</div>
+</div><!-- / #content-header -->

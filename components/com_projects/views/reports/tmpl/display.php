@@ -294,7 +294,7 @@ tooltip: true,
 					<?php foreach ($this->stats['topActiveProjects'] as $topProject) {
 						?>
 					<li><span class="stats-ima-small"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
-						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=view' . a . 'alias=' . $topProject->alias); ?>"> <?php } ?>
+						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>"> <?php } ?>
 						<?php echo $topProject->title; ?><?php if (!$topProject->private) { ?></a> <?php } ?>
 					</li>
 					<?php } ?>
@@ -376,7 +376,7 @@ tooltip: true,
 				<ul>
 					<?php foreach ($this->stats['topTeamProjects'] as $topProject) {?>
 					<li><span class="stats-ima-small"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
-						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=view' . a . 'alias=' . $topProject->alias); ?>"> <?php } ?>
+						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>"> <?php } ?>
 						<?php echo $topProject->title . ' (' . $topProject->team . ' ' . JText::_('members') . ')'; ?><?php if (!$topProject->private) { ?></a> <?php } ?>
 					</li>
 					<?php } ?>

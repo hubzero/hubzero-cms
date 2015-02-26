@@ -34,9 +34,18 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 ?>
 <div id="project-wrap">
 	<section class="main section">
-		<?php echo ProjectsHtml::writeProjectHeader($this, '', 1); ?>
+		<?php
+		$this->view('_header', 'projects')
+		     ->set('project', $this->project)
+		     ->set('showPic', 0)
+		     ->set('showPrivacy', 0)
+		     ->set('goBack', 0)
+		     ->set('showUnderline', 1)
+		     ->set('option', $this->option)
+		     ->display();
+		?>
 		<p class="warning"><?php echo JText::_('COM_PROJECTS_INFO_OWNER_DELETED'); ?></p>
-		<form method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias); ?>" id="hubForm">
+		<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" id="hubForm">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="task" value="fixownership" />
