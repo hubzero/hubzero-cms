@@ -996,6 +996,7 @@ class Page extends SiteController
 			}
 
 			$this->view
+				->set('page', $this->page)
 				->setLayout('nosuchrevision')
 				->display();
 			return;
