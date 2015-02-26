@@ -69,6 +69,13 @@ class Query
 	private static $cache = array();
 
 	/**
+	 * The database query type constants
+	 **/
+	const ROW    = 'loadObject';
+	const ROWS   = 'loadObjectList';
+	const COLUMN = 'loadColumn';
+
+	/**
 	 * The elements of a basic select statement
 	 *
 	 * @var array
@@ -462,13 +469,17 @@ class Query
 	}
 
 	/**
-	 * Retrieves all applicable rows
+	 * Retrieves all applicable data
 	 *
-	 * @param  bool $noCache whether or not to check cache for results
+	 * @FIXME: this could result in slightly odd behavior if you call the same query
+	 *         twice, but for some reason want differing structures of the returned data.
+	 *
+	 * @param  string $structure the structure of the item(s) returned (if applicable)
+	 * @param  bool   $noCache   whether or not to check cache for results
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function fetch($noCache=false)
+	public function fetch($structure='rows', $noCache=false)
 	{
 		// Build and hash query
 		$query = $this->buildQuery();
@@ -477,7 +488,7 @@ class Query
 		// Check cache for results first
 		if ($noCache || !isset(self::$cache[$key]))
 		{
-			self::$cache[$key] = $this->query($query);
+			self::$cache[$key] = $this->query($query, $structure);
 		}
 
 		// Clear elements
@@ -581,18 +592,21 @@ class Query
 	/**
 	 * Performs the actual query and returns the results
 	 *
-	 * @param  string $query the query to perform
+	 * @param  string $query     the query to perform
+	 * @param  string $structure the structure of the item(s) returned (if applicable)
 	 * @return mixed
 	 * @since  1.3.2
 	 **/
-	public function query($query)
+	public function query($query, $structure='rows')
 	{
 		// Check the type of query to decide what to return
-		list($type) = explode(' ', $query);
+		list($type) = explode(' ', $query, 2);
 
 		$this->connection->setQuery($query);
 
-		$result = (strtolower($type) == 'select') ? $this->connection->loadObjectList() : $this->connection->query();
+		$result = (strtolower($type) == 'select')
+					? $this->connection->{constant('self::' . strtoupper($structure))}()
+					: $this->connection->query();
 
 		if (self::$debug) Log::add($query, $this->connection->timer);
 
