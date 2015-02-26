@@ -175,6 +175,23 @@ class MembersHelperUtility
 	}
 
 	/**
+	 * Validate name
+	 *
+	 * @param      string $name the name to validate
+	 * @return     integer 1 = valid, 0 = invalid
+	 */
+	public static function validname($name)
+	{
+		// Look for all printable characters except for ':'
+		// ':' can mess up ldap entries
+		if (preg_match("/^[\x20-\x39\x3B-\x7F]*$/u", $name))
+		{
+			return(1);
+		}
+		return(0);
+	}
+
+	/**
 	 * Validate ORCID
 	 *
 	 * @param      string $orcid ORCID

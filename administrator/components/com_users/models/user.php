@@ -146,6 +146,34 @@ class UsersModelUser extends JModelAdmin
 	}
 
 	/**
+	 * Method to validate the form data.
+	 *
+	 * @param   JForm   $form   The form to validate against.
+	 * @param   array   $data   The data to validate.
+	 * @param   string  $group  The name of the field group to validate.
+	 *
+	 * @return  mixed  Array of filtered data if valid, false otherwise.
+	 */
+	public function validate($form, $data, $group = null)
+	{
+		// Fire HUBzero registration check here so that we don't have to duplicate validation code
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php';
+		$registration = new MembersModelRegistration();
+		$registration->set('name',  $data['name']);
+		$registration->set('login', $data['username']);
+		$registration->set('email', $data['email']);
+		$registration->set('confirmEmail', $data['email']);
+
+		if (!$registration->check('create', $data['id'], array('name', 'login', 'email')))
+		{
+			$this->setError(implode("<br/>", $registration->_invalid));
+			return false;
+		}
+
+		return parent::validate($form, $data, $group);
+	}
+
+	/**
 	 * Method to save the form data.
 	 *
 	 * @param   array  $data  The form data.

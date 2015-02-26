@@ -374,13 +374,14 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$profile->load($id);
 
 		// Set the new info
-		$profile->set('givenName', trim($p['givenName']));
-		$profile->set('middleName', trim($p['middleName']));
-		$profile->set('surname', trim($p['surname']));
+		$profile->set('givenName', preg_replace('/\s+/', ' ', trim($p['givenName'])));
+		$profile->set('middleName', preg_replace('/\s+/', ' ', trim($p['middleName'])));
+		$profile->set('surname', preg_replace('/\s+/', ' ', trim($p['surname'])));
 
 		$name  = trim($p['givenName']).' ';
 		$name .= (trim($p['middleName']) != '') ? trim($p['middleName']).' ' : '';
 		$name .= trim($p['surname']);
+		$name  = preg_replace('/\s+/', ' ', $name);
 
 		$profile->set('name', $name);
 		if (isset($p['vip']))

@@ -377,6 +377,9 @@ class MembersModelRegistration
 		}
 		if ($name)
 		{
+			$name['first']  = preg_replace('/\s+/', ' ', trim($name['first']));
+			$name['middle'] = preg_replace('/\s+/', ' ', trim($name['middle']));
+			$name['last']   = preg_replace('/\s+/', ' ', trim($name['last']));
 			$nm  = trim($name['first']);
 			$nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' '.$name['middle'] : '';
 			$nm .= ' '.trim($name['last']);
@@ -857,7 +860,7 @@ class MembersModelRegistration
 		}
 
 		if ($registrationFullname != REG_HIDE)
-			if (!empty($registration['name']) && !MembersHelperUtility::validtext($registration['name']) )
+			if (!empty($registration['name']) && !MembersHelperUtility::validname($registration['name']) )
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
 
 		if ($registrationEmail == REG_REQUIRED)
@@ -1233,27 +1236,24 @@ class MembersModelRegistration
 
 		if (!empty($field_to_check))
 		{
-			foreach ($field_to_check as $f)
+			if ($this->_missing)
 			{
-				if ($this->_missing)
+				foreach ($this->_missing as $k => $v)
 				{
-					foreach ($this->_missing as $k => $v)
+					if (!in_array($k, $field_to_check))
 					{
-						if ($k != $f)
-						{
-							unset($this->_missing[$k]);
-						}
+						unset($this->_missing[$k]);
 					}
 				}
+			}
 
-				if ($this->_invalid)
+			if ($this->_invalid)
+			{
+				foreach ($this->_invalid as $k => $v)
 				{
-					foreach ($this->_invalid as $k => $v)
+					if (!in_array($k, $field_to_check))
 					{
-						if ($k != $f)
-						{
-							unset($this->_invalid[$k]);
-						}
+						unset($this->_invalid[$k]);
 					}
 				}
 			}
