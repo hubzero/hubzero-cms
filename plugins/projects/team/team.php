@@ -729,9 +729,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			// Build pub url
 			$route = $this->_project->provisioned
-				? 'index.php?option=com_publications' . a . 'task=submit'
-				: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-			$url = JRoute::_($route . a . 'pid=' . $pid).'/?edit=authors';
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+			$url = JRoute::_($route . '&pid=' . $pid);
 			$this->_redirect = $url;
 			return;
 		}
@@ -739,9 +739,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			$url = $setup
 							? JRoute::_('index.php?option=' . $this->_option
-							. a . 'alias=' . $this->_project->alias . a . 'task=setup' . a . 'step=1')
+							. '&alias=' . $this->_project->alias . '&task=setup&step=1')
 							: JRoute::_('index.php?option=' . $this->_option
-							. a . 'alias=' . $this->_project->alias . a . 'task=edit' . a . 'edit=team');
+							. '&alias=' . $this->_project->alias . '&task=edit&edit=team');
 			$this->_referer = $url;
 		}
 
@@ -1219,9 +1219,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid) . '?version=' . $version ;
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = JRoute::_($view->route . '&pid=' . $pid . '&version=' . $version) ;
 
 		// Save incoming settings
 		if ($this->_task == 'saveauthors')
