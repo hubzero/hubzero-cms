@@ -208,6 +208,8 @@ $this->css();
 
 					$tsformat = JFactory::getDBO()->getDateFormat();
 
+					if (count($this->rows) > 0)
+					{
 					for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					{
 						$row = &$this->rows[$i];
@@ -299,6 +301,15 @@ $this->css();
 						<?php
 						$k = 1 - $k;
 					}
+				}
+				else
+				{
+					?>
+						<li>
+							<p class="no-records"><?php echo JText::_('No tickets found.'); ?></p>
+						</li>
+					<?php
+				}
 					?>
 					</ul>
 

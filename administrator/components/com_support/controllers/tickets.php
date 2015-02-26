@@ -78,7 +78,9 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				0,
 				'int'
 			),
-			'search' => ''
+			'search'  => '',
+			'sort'    => 'id',
+			'sortdir' => 'DESC'
 		);
 
 		// Get query list

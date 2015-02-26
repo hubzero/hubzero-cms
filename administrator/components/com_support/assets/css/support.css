@@ -949,6 +949,23 @@
 		line-height: 0;
 		clear: left;
 	}
+	.pane-list .no-records {
+		padding: 1em 1.4em;
+		text-align: center;
+		font-size: 2em;
+		margin: 0 auto;
+		max-width: 9em;
+		color: #bbb;
+	}
+	.pane-list .no-records:before {
+		content: "\2298";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 5em;
+		line-height: 1;
+		color: #ddd;
+		margin: 0.1em 0;
+	}
 	.pane-item .instructions {
 		padding: 1em 1.4em;
 		text-align: center;
@@ -959,7 +976,6 @@
 	}
 	.pane-item .instructions:before {
 		content: "\f15b";
-		/*content: "\f0a5";*/
 		font-family: "Fontcons";
 		display: block;
 		font-size: 7em;

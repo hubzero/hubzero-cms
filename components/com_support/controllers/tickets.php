@@ -627,6 +627,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			));
 		}
 
+		$this->view->filters['sort'] = 'id';
+		$this->view->filters['sortdir'] = 'DESC';
+
 		foreach ($queries as $query)
 		{
 			$filters = $this->view->filters;
@@ -634,7 +637,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				$filters['search'] = '';
 			}
-
 
 			$query->query = $sq->getQuery($query->conditions);
 
