@@ -1545,7 +1545,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Redirect
 			if (empty($return))
 			{
-				$r = $this->config->get('LoginReturn');
+				$r = $this->config->get('ConfirmationReturn');
 				$return = ($r) ? $r : JRoute::_('index.php?option=com_members&task=myaccount');
 				// consume cookie (yum) if available to return to whatever action prompted registration
 				if (isset($_COOKIE['return']))
