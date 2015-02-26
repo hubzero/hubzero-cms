@@ -25,13 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$assets = array('files', 'databases', 'tools');
 $assetTabs = array();
 
 // Sort tabs so that asset tabs are together
 foreach ($this->tabs as $tab)
 {
-	if (in_array($tab['name'], $assets))
+	if ($tab['submenu'] == 'Assets')
 	{
 		$assetTabs[] = $tab;
 	}
@@ -48,12 +47,12 @@ $a = 0;
 			<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
 		</li>
 <?php foreach ($this->tabs as $tab) {
-		if ($tab['name'] == 'blog')
+		if (isset($tab['show']) && $tab['show'] == false)
 		{
 			continue;
 		}
 
-		if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
+		if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 1)
 		{
 		$a++; // counter for asset tabs
 

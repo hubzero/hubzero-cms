@@ -106,8 +106,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		$area = array(
-			'name' => 'databases',
-			'title' => 'Databases'
+			'name'    => 'databases',
+			'title'   => 'Databases',
+			'submenu' => 'Assets',
+			'show'    => true
 		);
 
 		return $area;

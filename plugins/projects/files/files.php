@@ -86,8 +86,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function &onProjectAreas()
 	{
 		$area = array(
-			'name' => 'files',
-			'title' => JText::_('COM_PROJECTS_TAB_FILES')
+			'name'    => 'files',
+			'title'   => JText::_('COM_PROJECTS_TAB_FILES'),
+			'submenu' => 'Assets',
+			'show'    => true
 		);
 
 		return $area;

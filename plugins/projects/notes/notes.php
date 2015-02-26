@@ -100,8 +100,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	public function &onProjectAreas()
 	{
 		$area = array(
-			'name' => 'notes',
-			'title' => JText::_('COM_PROJECTS_TAB_NOTES')
+			'name'    => 'notes',
+			'title'   => JText::_('COM_PROJECTS_TAB_NOTES'),
+			'submenu' => NULL,
+			'show'    => true
 		);
 
 		return $area;

@@ -70,8 +70,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		if ($all == true)
 		{
 			$area = array(
-				'name' => 'links',
-				'title' => 'Links'
+				'name'    => 'links',
+				'title'   => 'Links',
+				'submenu' => NULL,
+				'show'    => false
 			);
 		}
 

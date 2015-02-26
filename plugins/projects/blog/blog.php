@@ -58,8 +58,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	public function &onProjectAreas()
 	{
 		$area = array(
-			'name'  => 'blog',
-			'title' => JText::_('COM_PROJECTS_TAB_FEED')
+			'name'    => 'blog',
+			'alias'   => 'feed',
+			'title'   => JText::_('COM_PROJECTS_TAB_FEED'),
+			'submenu' => NULL,
+			'show'    => true
 		);
 		return $area;
 	}

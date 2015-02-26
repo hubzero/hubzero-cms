@@ -65,8 +65,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function &onProjectAreas()
 	{
 		$area = array(
-			'name' => 'team',
-			'title' => JText::_('COM_PROJECTS_TAB_TEAM')
+			'name'    => 'team',
+			'title'   => JText::_('COM_PROJECTS_TAB_TEAM'),
+			'submenu' => NULL,
+			'show'    => true
 		);
 
 		return $area;

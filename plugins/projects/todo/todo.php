@@ -65,8 +65,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function &onProjectAreas()
 	{
 		$area = array(
-			'name' => 'todo',
-			'title' => JText::_('COM_PROJECTS_TAB_TODO')
+			'name'    => 'todo',
+			'title'   => JText::_('COM_PROJECTS_TAB_TODO'),
+			'submenu' => NULL,
+			'show'    => true
 		);
 
 		return $area;

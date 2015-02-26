@@ -94,13 +94,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (JPluginHelper::isEnabled('projects', 'publications')
-			&& is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php'))
+		if (JPluginHelper::isEnabled('projects', 'publications'))
 		{
 			$area = array(
-				'name' => 'publications',
-				'title' => JText::_('COM_PROJECTS_TAB_PUBLICATIONS')
+				'name'    => 'publications',
+				'title'   => JText::_('COM_PROJECTS_TAB_PUBLICATIONS'),
+				'submenu' => NULL,
+				'show'    => true
 			);
 		}
 

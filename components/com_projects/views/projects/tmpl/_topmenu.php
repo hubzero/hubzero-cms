@@ -25,7 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$assets = array('files', 'databases', 'tools');
 $assetTabs = array();
 
 if ($this->publicView || !isset($this->tabs))
@@ -34,22 +33,21 @@ if ($this->publicView || !isset($this->tabs))
 }
 if ($this->active == 'edit')
 {
-	$this->tabs[] = array('name' => 'edit', 'title' => 'Edit', 'submenu' => '');
+	$this->tabs[] = array('name' => 'edit', 'title' => 'Edit', 'submenu' => '', 'show' => true);
 }
 
 // Sort tabs so that asset tabs are together
 foreach ($this->tabs as $tab)
 {
-	if (in_array($tab['name'], $assets))
+	if ($tab['submenu'] == 'Assets')
 	{
 		$assetTabs[] = $tab;
 	}
 }
-$a = 0;
 
 if (count($assetTabs) > 1)
 {
-	array_splice( $this->tabs, 3, 0, array(0 => array('name' => 'assets', 'title' => 'Assets')) );
+	array_splice( $this->tabs, 3, 0, array(0 => array('name' => 'assets', 'title' => 'Assets', 'show' => true)) );
 }
 ?>
 <div class="menu-wrapper">
@@ -61,16 +59,20 @@ if (count($assetTabs) > 1)
 			{
 				continue;
 			}
-			if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
+			if (isset($tab['show']) && $tab['show'] == false)
 			{
 				continue;
 			}
-			if ($tab['name'] == 'blog')
+			if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 1)
 			{
-				$tab['name'] = 'feed';
+				continue;
+			}
+			if (isset($tab['alias']) && trim($tab['alias']))
+			{
+				$tab['name'] = trim($tab['alias']);
 			}
 			$gopanel = $tab['name'] == 'assets' ? 'files' : $tab['name'];
-			$active = (($tab['name'] == $this->active) || ($tab['name'] == 'assets' && in_array($this->active, $assets)))
+			$active = (($tab['name'] == $this->active) || ($tab['name'] == 'assets' && (isset($tab['submenu']) && $tab['submenu'] == 'Assets')))
 			?>
 			<li<?php if ($active) { echo ' class="active"'; } ?> id="tab-<?php echo $tab['name']; ?>">
 				<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $gopanel); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($tab['title']); ?>">
