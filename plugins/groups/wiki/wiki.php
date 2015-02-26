@@ -99,7 +99,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
-		$book = new WikiModelBook($group->get('cn'));
+		$book = new Components\Wiki\Models\Book($group->get('cn'));
 		$arr['metadata']['count'] = $book->pages('count');
 
 		if ($arr['metadata']['count'] <= 0)
