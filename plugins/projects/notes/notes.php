@@ -423,8 +423,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				$what .= $exists ? ' "' . $controller->page->get('title') . '" ' : '';
 				$what .= ' '.JText::_('COM_PROJECTS_NOTE_IN_NOTES');
 				$aid = $objAA->recordActivity($this->_project->id, $this->_uid, $what,
-					$controller->page->get('id'), 'notes', JRoute::_('index.php?option=' . $this->_option . a
-					. 'alias=' . $this->_project->alias . a . 'active=notes') , 'notes', 0);
+					$controller->page->get('id'), 'notes', JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=notes') , 'notes', 0);
 
 				// Record page order for new pages
 				$lastorder = $this->model->getLastNoteOrder($scope);
@@ -485,8 +484,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = trim(JRequest::getInt( 'p', 0 ));
 
-		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= JRoute::_($route . a . 'active=notes');
+		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
+		$url 	= JRoute::_($route . '&active=notes');
 
 		// Load requested page
 		$page = $this->model->page($id);
@@ -523,8 +522,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = trim(JRequest::getInt( 'p', 0 ));
 
-		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
-		$url 	= JRoute::_($route . a . 'active=notes');
+		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
+		$url 	= JRoute::_($route . '&active=notes');
 
 		// Load requested page
 		$page = $this->model->page($id);
@@ -614,11 +613,11 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			);
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($group->get('description'), 50),
-				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn)
+				JRoute::_('index.php?option=com_groups&cn=' . $group->cn)
 			);
 			$pathway->addItem(
 				JText::_('COM_PROJECTS_PROJECTS'),
-				JRoute::_('index.php?option=com_groups' . a . 'cn=' . $group->cn . a . 'active=projects')
+				JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
 			);
 		}
 		else
@@ -631,35 +630,35 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		$pathway->addItem(
 			stripslashes($this->_project->title),
-			JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias)
+			JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias)
 		);
 
 		if ($this->_tool && $this->_tool->id)
 		{
 			$pathway->addItem(
 				ucfirst(JText::_('COM_PROJECTS_PANEL_TOOLS')),
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=tools')
+				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				. $this->_project->alias . '&active=tools')
 			);
 
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id)
+				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				. $this->_project->alias . '&active=tools&tool=' . $this->_tool->id)
 			);
 
 			$pathway->addItem(
 				ucfirst(JText::_('COM_PROJECTS_TOOLS_TAB_WIKI')),
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=tools' . a . 'tool=' . $this->_tool->id . a . 'action=wiki')
+				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				. $this->_project->alias . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
 				ucfirst(JText::_('COM_PROJECTS_TAB_NOTES')),
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias='
-				. $this->_project->alias . a . 'active=notes')
+				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				. $this->_project->alias . '&active=notes')
 			);
 		}
 	}
@@ -775,7 +774,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->fixupPathway();
 
 		// URL to project
-		$url 	= JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->_project->alias);
+		$url 	= JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias);
 
 		// Load requested page
 		$page = $this->model->page($data->pageid);
