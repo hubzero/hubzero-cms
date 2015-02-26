@@ -199,20 +199,13 @@ class ManyToMany extends Relationship
 			$localKeyValue = $this->model->getPkValue();
 
 			// Get any existing entries
-			$existing = $query->select('*')
+			$existing = $query->select($this->relatedKey)
 			                  ->from($this->associativeTable)
 			                  ->whereEquals($this->localKey, $localKeyValue)
-			                  ->fetch();
-
-			// Get just the related keys
-			$keys = [];
-			foreach ($existing as $item)
-			{
-				$keys[] = $item->{$this->relatedKey};
-			}
+			                  ->fetch('column');
 
 			// See if there's anything to delete
-			$deletes = array_diff($keys, $ids);
+			$deletes = array_diff($existing, $ids);
 			if (!empty($deletes))
 			{
 				$query->delete()
@@ -223,7 +216,7 @@ class ManyToMany extends Relationship
 			}
 
 			// Now see if there's anything to add
-			$inserts = array_diff($ids, $keys);
+			$inserts = array_diff($ids, $existing);
 			$this->connect($inserts);
 		}
 
