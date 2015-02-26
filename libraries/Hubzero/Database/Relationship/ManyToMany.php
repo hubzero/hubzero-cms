@@ -157,6 +157,10 @@ class ManyToMany extends Relationship
 	/**
 	 * Connects the provided identifiers back to the parent model by way of associative entities
 	 *
+	 * This will add a new entry, irrelevant of whether or not a comparable entry is already there.
+	 * To avoid this behavior, either use the sync function or set a constraint on your associative
+	 * table.
+	 *
 	 * @param  array $ids the identifiers to place in the associative table
 	 * @return $this
 	 * @since  1.3.2
@@ -169,8 +173,60 @@ class ManyToMany extends Relationship
 			foreach ($ids as $id)
 			{
 				$data  = [$this->localKey => $localKeyValue, $this->relatedKey => $id];
-				$query = with(new Query)->insert($this->associativeTable, $data, true);
+				$query = with(new Query)->push($this->associativeTable, $data, true);
 			}
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Syncs the provided identifiers back to the parent model by way of associative entities,
+	 * deleting ones that should no longer be there, and adding ones that are missing.
+	 *
+	 * @param  array $ids the identifiers to place in the associative table
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function sync($ids)
+	{
+		if (is_array($ids) && count($ids) > 0)
+		{
+			// Get a query instance
+			$query = new Query;
+
+			// Get the parent primary key value
+			$localKeyValue = $this->model->getPkValue();
+
+			// Get any existing entries
+			$existing = $query->select('*')
+			                  ->from($this->associativeTable)
+			                  ->whereEquals($this->localKey, $localKeyValue)
+			                  ->fetch();
+
+			// Get just the related keys
+			$keys = [];
+			foreach ($existing as $item)
+			{
+				$keys[] = $item->{$this->relatedKey};
+			}
+
+			// See if there's anything to delete
+			$deletes = array_diff($keys, $ids);
+			if (!empty($deletes))
+			{
+				$query->delete()
+				      ->from($this->associativeTable)
+				      ->whereEquals($this->localKey, $localKeyValue)
+				      ->whereIn($this->relatedKey, $deletes)
+				      ->execute();
+			}
+
+			// Now see if there's anything to add
+			$inserts = array_diff($ids, $keys);
+			$this->connect($inserts);
+		}
+
+		return $this;
 	}
 }

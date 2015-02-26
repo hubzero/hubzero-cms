@@ -871,7 +871,7 @@ class Relational implements \IteratorAggregate
 		// Add any automatic fields
 		$this->parseAutomatics('initiate');
 
-		return $this->query->insert($this->getTableName(), $this->attributes);
+		return $this->query->push($this->getTableName(), $this->attributes);
 	}
 
 	/**
@@ -886,7 +886,7 @@ class Relational implements \IteratorAggregate
 		$this->parseAutomatics('renew');
 
 		// Return the result of the query
-		return $this->query->update(
+		return $this->query->alter(
 			$this->getTableName(),
 			$this->getPrimaryKey(),
 			$this->getPkValue(),
@@ -971,7 +971,7 @@ class Relational implements \IteratorAggregate
 			if (!Asset::destroy($this)) return false;
 		}
 
-		return $this->query->delete(
+		return $this->query->remove(
 			$this->getTableName(),
 			$this->getPrimaryKey(),
 			$this->getPkValue()

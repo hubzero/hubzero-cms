@@ -133,6 +133,16 @@ class Query
 	);
 
 	/**
+	 * The query type to be performed
+	 *
+	 * This is a silly way of tracking what type of query we think
+	 * we're going to execute. This is used by the execute method.
+	 *
+	 * @var string
+	 **/
+	private $type = null;
+
+	/**
 	 * Constructs a new query instance
 	 *
 	 * @param  object $connect the database connection to use in the query builder
@@ -177,6 +187,49 @@ class Query
 	public function select($column, $as=null, $count=false)
 	{
 		$this->addElement('select', $column, $as, $count);
+		$this->type = 'select';
+		return $this;
+	}
+
+	/**
+	 * Applies an insert statement to the pending query
+	 *
+	 * @param  string $table  the table into which we will be inserting
+	 * @param  bool   $ignore whether or not to ignore errors produced related to things like duplicate keys
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function insert($table, $ignore)
+	{
+		$this->addElement('insert', $table, $ignore);
+		$this->type = 'insert';
+		return $this;
+	}
+
+	/**
+	 * Applies an update statement to the pending query
+	 *
+	 * @param  string $table the table whose fields will be updated
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function update($table)
+	{
+		$this->addElement('update', $table);
+		$this->type = 'update';
+		return $this;
+	}
+
+	/**
+	 * Applies a delete statement to the pending query
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function delete()
+	{
+		$this->addElement('delete', null);
+		$this->type = 'delete';
 		return $this;
 	}
 
@@ -442,18 +495,13 @@ class Query
 	 * @return bool|int
 	 * @since  1.3.2
 	 **/
-	public function insert($table, $data, $ignore=false)
+	public function push($table, $data, $ignore=false)
 	{
 		// Add insert statement
-		$this->addElement('insert', $table, $ignore);
+		$this->insert($table, $ignore)
+		     ->values($data);
 
-		// Set values
-		$this->values($data);
-
-		$result = $this->query($this->buildQuery('insert'));
-
-		// Clear elements
-		$this->reset();
+		$result = $this->execute();
 
 		// Return the inserted data
 		return !$result ?: $this->connection->insertid();
@@ -469,28 +517,21 @@ class Query
 	 * @return bool
 	 * @since  1.3.2
 	 **/
-	public function update($table, $pkField, $pkValue, $data)
+	public function alter($table, $pkField, $pkValue, $data)
 	{
 		// Add insert statement
-		$this->addElement('update', $table);
-
-		// Set values
-		$this->set($data);
+		$this->update($table)
+		     ->set($data);
 
 		// Where primary key is...
 		$this->whereEquals($pkField, $pkValue);
 
-		$result = $this->query($this->buildQuery('update'));
-
-		// Clear elements
-		$this->reset();
-
 		// Return the result of the query
-		return $result;
+		return $this->execute();
 	}
 
 	/**
-	 * Deletes a record by its primary key
+	 * Removes a record by its primary key
 	 *
 	 * @param  string $table   the table to update
 	 * @param  string $pkField the table field serving as primary key
@@ -498,7 +539,7 @@ class Query
 	 * @return bool
 	 * @since  1.3.2
 	 **/
-	public function delete($table, $pkField, $pkValue)
+	public function remove($table, $pkField, $pkValue)
 	{
 		// Make sure we have an id (i.e. don't delete everything in the table!)
 		if (is_null($pkValue) || empty($pkValue))
@@ -507,10 +548,28 @@ class Query
 		}
 
 		// Add delete statement
-		$this->addElement('delete', null);
-		$this->whereEquals($pkField, $pkValue);
+		$this->delete()
+		     ->whereEquals($pkField, $pkValue);
 
-		$result = $this->query($this->buildQuery('delete'));
+		// Return result of the query
+		return $this->execute();
+	}
+
+	/**
+	 * Builds and executes the current query based on the elements present
+	 *
+	 * This is a fairly 'dumb' function, in that it just looks for whichever type was
+	 * most recently set by one of the primary functions (select, insert, update, delete).
+	 * Fetch should still be used for select queries as it offers result caching.
+	 *
+	 * @FIXME: maybe this should be combined with fetch?
+	 *
+	 * @return mixed
+	 * @since  1.3.2
+	 **/
+	public function execute()
+	{
+		$result = $this->query($this->buildQuery($this->type));
 
 		// Clear elements
 		$this->reset();
