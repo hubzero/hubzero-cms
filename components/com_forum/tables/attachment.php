@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,56 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Tables;
 
 /**
  * Table class for forum attachments
  */
-class ForumTableAttachment extends JTable
+class Attachment extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $post_id     = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $filename    = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -83,8 +49,8 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Loads a record from the database and populates the current object with DB data
 	 *
-	 * @param      integer $post_id ID of post the file was attached to
-	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
+	 * @param   integer  $post_id  ID of post the file was attached to
+	 * @return  mixed    Return object on success, false on failure
 	 */
 	public function loadByPost($post_id=NULL)
 	{
@@ -94,9 +60,9 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Loads a record from the database and populates the current object with DB data
 	 *
-	 * @param      integer $parent   Thread the file was posted in
-	 * @param      integer $filename Name of file
-	 * @return     mixed   Return ForumTableAttachment object on success, false on failure
+	 * @param   integer  $parent    Thread the file was posted in
+	 * @param   integer  $filename  Name of file
+	 * @return  mixed    Return object on success, false on failure
 	 */
 	public function loadByThread($parent=NULL, $filename=NULL)
 	{
@@ -111,20 +77,24 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->post_id = intval($this->post_id);
 		if (!$this->post_id)
 		{
-			$this->setError(JText::_('COM_FORUM_ERROR_NO_POST_ID'));
-			return false;
+			$this->setError(\JText::_('COM_FORUM_ERROR_NO_POST_ID'));
 		}
+
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(JText::_('COM_FORUM_ERROR_NO_FILENAME'));
+			$this->setError(\JText::_('COM_FORUM_ERROR_NO_FILENAME'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -134,7 +104,7 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Get the ID of a record
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function getID()
 	{
@@ -146,8 +116,8 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Get all attachments for a thread
 	 *
-	 * @param      integer $parent Thread ID
-	 * @return     array
+	 * @param   integer  $parent  Thread ID
+	 * @return  array
 	 */
 	public function getAttachments($parent)
 	{
@@ -158,10 +128,10 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Generate the upload path for files
 	 *
-	 * @param      integer $id     Record ID
-	 * @param      string  $url    URL to this post
-	*  @param      object  $config Component config
-	 * @return     string
+	 * @param   integer  $id      Record ID
+	 * @param   string   $url     URL to this post
+	*  @param   object   $config  Component config
+	 * @return  string
 	 */
 	public function getAttachment($id, $url=null, $config=null)
 	{
@@ -176,14 +146,14 @@ class ForumTableAttachment extends JTable
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
 		if ($this->filename && file_exists($path))
 		{
-			$url = JRoute::_($url . $this->filename);
+			$url = \JRoute::_($url . $this->filename);
 
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 
 			if (preg_match("#bmp|gif|jpg|jpe|jpeg|png#i", $this->filename))
 			{
 				$type = 'img';
-				$html  = '<span class="figure">';
+				$html = '<span class="figure">';
 				$size = getimagesize($path);
 
 				if ($size[0] > 400)
@@ -192,17 +162,20 @@ class ForumTableAttachment extends JTable
 
 					$targetWidth = $targetHeight = min(400, max($size[0], $size[1]));
 
-					if ($ratio < 1) {
-					    $targetWidth = $targetHeight * $ratio;
-					} else {
-					    $targetHeight = $targetWidth / $ratio;
+					if ($ratio < 1)
+					{
+						$targetWidth = $targetHeight * $ratio;
+					}
+					else
+					{
+						$targetHeight = $targetWidth / $ratio;
 					}
 
 					//$srcWidth = $originalWidth;
 					//$srcHeight = $originalHeight;
 					//$srcX = $srcY = 0;
 
-					$html .= '<a href="' . $url . '" title="'. JText::_('Click for larger version') . '">';
+					$html .= '<a href="' . $url . '" title="'. \JText::_('Click for larger version') . '">';
 					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $targetWidth . '" height="' . $targetHeight . '" />';
 					$html .= '</a>';
 				}
@@ -234,9 +207,9 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Generate the upload path for files
 	 *
-	 * @param      integer $id     Record ID
-	 * @param      object  $config Component config
-	 * @return     integer
+	 * @param   integer  $id      Record ID
+	 * @param   object   $config  Component config
+	 * @return  integer
 	 */
 	public function getUploadPath($id=0, $config=null)
 	{
@@ -244,9 +217,9 @@ class ForumTableAttachment extends JTable
 		{
 			if (!is_object($config))
 			{
-				$config = JComponentHelper::getParams('com_forum');
+				$config = \JComponentHelper::getParams('com_forum');
 			}
-			$this->_uppath = JPATH_ROOT . DS . trim($config->get('filepath', '/site/forum'), DS);
+			$this->_uppath = PATH_APP . DS . trim($config->get('filepath', '/site/forum'), DS);
 		}
 
 		return $this->_uppath;
@@ -255,9 +228,9 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Deletea record based on filename and post ID
 	 *
-	 * @param      string  $filename Filename
-	 * @param      integer $post_id  Post ID
-	 * @return     boolean True on success
+	 * @param   string   $filename  Filename
+	 * @param   integer  $post_id   Post ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteAttachment($filename, $post_id)
 	{
@@ -272,9 +245,9 @@ class ForumTableAttachment extends JTable
 	/**
 	 * Load a record based on filename and post ID
 	 *
-	 * @param      string  $filename Filename
-	 * @param      integer $post_id  Post ID
-	 * @return     object
+	 * @param   string   $filename  Filename
+	 * @param   integer  $post_id   Post ID
+	 * @return  object
 	 */
 	public function loadAttachment($filename=NULL, $post_id=NULL)
 	{

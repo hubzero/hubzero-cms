@@ -43,7 +43,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 class Comment extends Model
 {
 	/**
-	 * ForumTablePost
+	 * Table
 	 *
 	 * @var object
 	 */

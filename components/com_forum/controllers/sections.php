@@ -1,43 +1,52 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2013 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
 
 /**
  * Controller class for forum sections
  */
-class ForumControllerSections extends \Hubzero\Component\SiteController
+class Sections extends SiteController
 {
 	/**
 	 * Determine task and execute
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->model = new ForumModel('site', 0);
+		$this->model = new Manager('site', 0);
 
 		parent::execute();
 	}
@@ -45,7 +54,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 	/**
 	 * Display a list of sections and their categories
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -55,14 +64,14 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 		$this->view->config = $this->config;
 
-		$this->view->title = JText::_('COM_FORUM');
+		$this->view->title = \JText::_('COM_FORUM');
 
 		// Incoming
 		$this->view->filters = array(
 			//'authorized' => 1,
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
-			'search'     => JRequest::getVar('q', ''),
+			'search'     => \JRequest::getVar('q', ''),
 			//'section_id' => 0,
 			'state'      => 1,
 			// Show based on if logged in or not
@@ -71,19 +80,17 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 		// Flag to indicate if a section is being put into edit mode
 		$this->view->edit = null;
-		if (($section = JRequest::getVar('section', '')) && $this->_task == 'edit')
+		if (($section = \JRequest::getVar('section', '')) && $this->_task == 'edit')
 		{
 			$this->view->edit = $section;
 		}
-		//$this->view->edit = JRequest::getVar('section', '');
-
 		$this->view->sections = $this->model->sections('list', array('state' => 1));
 
 		$this->view->model = $this->model;
 
 		if (!$this->view->sections->total()
 		 && $this->config->get('access-create-section')
-		 && JRequest::getWord('action') == 'populate')
+		 && \JRequest::getWord('action') == 'populate')
 		{
 			if (!$this->model->setup())
 			{
@@ -101,12 +108,9 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -120,18 +124,18 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming posted data
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
-		$section = new ForumModelSection($fields['id']);
+		$section = new Section($fields['id']);
 		if (!$section->bind($fields))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
+				\JRoute::_('index.php?option=' . $this->_option),
 				$section->getError(),
 				'error'
 			);
@@ -142,7 +146,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		if (!$section->store(true))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
+				\JRoute::_('index.php?option=' . $this->_option),
 				$section->getError(),
 				'error'
 			);
@@ -151,7 +155,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
+			\JRoute::_('index.php?option=' . $this->_option)
 		);
 	}
 
@@ -166,22 +170,22 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option, false, true))),
-				JText::_('COM_FORUM_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(\JRoute::_('index.php?option=' . $this->_option, false, true))),
+				\JText::_('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
 		}
 
 		// Load the section
-		$section = $this->model->section(JRequest::getVar('section', ''));
+		$section = $this->model->section(\JRequest::getVar('section', ''));
 
 		// Make the sure the section exist
 		if (!$section->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_FORUM_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_FORUM_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -193,8 +197,8 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		if (!$this->config->get('access-delete-section'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_FORUM_NOT_AUTHORIZED'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
 			return;
@@ -206,7 +210,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		if (!$section->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
+				\JRoute::_('index.php?option=' . $this->_option),
 				$model->getError(),
 				'error'
 			);
@@ -215,8 +219,8 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option),
-			JText::_('COM_FORUM_SECTION_DELETED'),
+			\JRoute::_('index.php?option=' . $this->_option),
+			\JText::_('COM_FORUM_SECTION_DELETED'),
 			'message'
 		);
 	}
@@ -290,19 +294,19 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -315,12 +319,12 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if ($this->_task)
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 }

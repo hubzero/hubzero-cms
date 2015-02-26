@@ -51,7 +51,7 @@ $base = $this->offering->alias() . '&active=forum';
 
 						if ($row->parent)
 						{
-							$p = new ForumTablePost(JFactory::getDBO());
+							$p = new \Components\Forum\Tables\Post(JFactory::getDBO());
 							$thread = $p->getThread($row->parent);
 						}
 						else

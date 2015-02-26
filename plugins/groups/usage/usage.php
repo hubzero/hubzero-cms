@@ -328,7 +328,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		$filters['start'] = 0;
 		$filters['group'] = $gid;
 
-		$forum = new ForumTablePost($database);
+		$forum = new \Components\Forum\Tables\Post($database);
 		return $forum->getCount($filters);
 	}
 

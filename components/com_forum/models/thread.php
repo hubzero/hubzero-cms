@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'tags.php');
+use Components\Forum\Tables;
+use Hubzero\Base\ItemList;
+
+require_once(__DIR__ . DS . 'post.php');
+require_once(__DIR__ . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Model class for a forum thread
  */
-class ForumModelThread extends ForumModelPost
+class Thread extends Post
 {
 	/**
 	 * Container for data
@@ -86,8 +88,8 @@ class ForumModelThread extends ForumModelPost
 	/**
 	 * Returns a reference to a forum thread model
 	 *
-	 * @param   mixed  $oid ID (int) or array or object
-	 * @return  object ForumModelThread
+	 * @param   mixed  $oid  ID (int) or array or object
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -113,7 +115,7 @@ class ForumModelThread extends ForumModelPost
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new ForumModelThread($oid);
+			$instances[$oid] = new static($oid);
 		}
 
 		return $instances[$oid];
@@ -146,7 +148,7 @@ class ForumModelThread extends ForumModelPost
 
 			if (!$this->_cache['post'])
 			{
-				$this->_cache['post'] = ForumModelPost::getInstance($id);
+				$this->_cache['post'] = Post::getInstance($id);
 			}
 			if (!$this->_cache['post']->exists())
 			{
@@ -185,7 +187,7 @@ class ForumModelThread extends ForumModelPost
 			break;
 
 			case 'tree':
-				if (!($this->_cache['tree'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['tree'] instanceof ItemList) || $clear)
 				{
 					if ($rows = $this->_tbl->getTree($filters['thread']))
 					{
@@ -197,7 +199,7 @@ class ForumModelThread extends ForumModelPost
 
 						foreach ($rows as $row)
 						{
-							$v = new ForumModelPost($row);
+							$v = new Post($row);
 							$v->set('category', $this->get('category'));
 							$v->set('section', $this->get('section'));
 
@@ -210,7 +212,7 @@ class ForumModelThread extends ForumModelPost
 						$results = $this->_treeRecurse($children[$this->get('parent')], $children);
 					}
 
-					$this->_cache['tree'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['tree'] = new ItemList($results);
 				}
 				return $this->_cache['tree'];
 			break;
@@ -218,13 +220,13 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['posts'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['posts'] instanceof ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelPost($result);
+							$results[$key] = new Post($result);
 							$results[$key]->set('category', $this->get('category'));
 							$results[$key]->set('section', $this->get('section'));
 						}
@@ -233,7 +235,7 @@ class ForumModelThread extends ForumModelPost
 					{
 						$results = array();
 					}
-					$this->_cache['posts'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['posts'] = new ItemList($results);
 				}
 				return $this->_cache['posts'];
 			break;
@@ -262,7 +264,7 @@ class ForumModelThread extends ForumModelPost
 					$replies = $this->_treeRecurse($list[$child->get('id')], $list, $maxlevel, $level+1);
 				}
 
-				$children[$v]->set('replies', new \Hubzero\Base\ItemList($replies));
+				$children[$v]->set('replies', new ItemList($replies));
 			}
 		}
 		return $children;
@@ -280,13 +282,13 @@ class ForumModelThread extends ForumModelPost
 		$filters['thread'] = isset($filters['thread']) ? $filters['thread'] : $this->get('thread');
 		$filters['state']  = isset($filters['state'])  ? $filters['state']  : self::APP_STATE_PUBLISHED;
 
-		if (!($this->_cache['participants'] instanceof \Hubzero\Base\ItemList) || $clear)
+		if (!($this->_cache['participants'] instanceof ItemList) || $clear)
 		{
 			if (!($results = $this->_tbl->getParticipants($filters)))
 			{
 				$results = array();
 			}
-			$this->_cache['participants'] = new \Hubzero\Base\ItemList($results);
+			$this->_cache['participants'] = new ItemList($results);
 		}
 
 		return $this->_cache['participants'];
@@ -313,22 +315,22 @@ class ForumModelThread extends ForumModelPost
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['attachments'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['attachments'] instanceof ItemList) || $clear)
 				{
-					$tbl = new ForumTableAttachment($this->_db);
+					$tbl = new Tables\Attachment($this->_db);
 
 					if ($results = $tbl->getAttachments($this->get('id')))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelAttachment($result);
+							$results[$key] = new Attachment($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['attachments'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['attachments'] = new ItemList($results);
 				}
 				return $this->_cache['attachments'];
 			break;
@@ -338,18 +340,18 @@ class ForumModelThread extends ForumModelPost
 	/**
 	 * Get the most recent post made in the forum
 	 *
-	 * @return  object ForumModelPost
+	 * @return  object
 	 */
 	public function lastActivity()
 	{
-		if (!($this->_cache['last'] instanceof ForumModelPost))
+		if (!($this->_cache['last'] instanceof Post))
 		{
-			$post = new ForumTablePost($this->_db);
+			$post = new Tables\Post($this->_db);
 			if (!($last = $post->getLastPost($this->get('id'))))
 			{
 				$last = 0;
 			}
-			$this->_cache['last'] = new ForumModelPost($last);
+			$this->_cache['last'] = new Post($last);
 		}
 		return $this->_cache['last'];
 	}

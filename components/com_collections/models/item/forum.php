@@ -105,7 +105,7 @@ class Forum extends GenericItem
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		$thread = new \ForumModelPost($id);
+		$thread = new \Components\Forum\Models\Post($id);
 
 		if (!$thread->exists())
 		{

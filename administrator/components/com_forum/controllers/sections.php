@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,15 +21,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Forum\Tables;
+use Components\Forum\Models\Manager;
+use Components\Forum\Models\Section;
+use Components\Forum\Models\AdminSection;
+use Exception;
 
 /**
  * Controller class for forum sections
  */
-class ForumControllerSections extends \Hubzero\Component\AdminController
+class Sections extends AdminController
 {
 	/**
 	 * Display all sections
@@ -42,38 +50,39 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'scopeinfo' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.scopeinfo',
+				'scopeinfo',
+				''
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['scopeinfo']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.scopeinfo',
-			'scopeinfo',
-			''
-		));
 		if (strstr($this->view->filters['scopeinfo'], ':'))
 		{
 			$bits = explode(':', $this->view->filters['scopeinfo']);
@@ -86,21 +95,13 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$this->view->filters['scope_id'] = -1;
 		}
 
-		$model = new ForumModel($this->view->filters['scope'], $this->view->filters['scope_id']);
+		$model = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
 
 		// Get a record count
 		$this->view->total = $model->sections('count', $this->view->filters);
 
 		// Get records
 		$this->view->results = $model->sections('list', $this->view->filters);
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -129,30 +130,28 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$this->view->row = $row;
-		}
-		else
-		{
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
 			}
 
 			// load infor from database
-			$this->view->row = new ForumModelSection($id);
+			$row = new Section($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
 		}
 
-		$m = new ForumModelAdminSection();
+		$m = new AdminSection();
 		$this->view->form = $m->getForm();
 
 		// Set any errors
@@ -168,29 +167,29 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	/**
 	 * Save an entry and show the edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
-		$this->saveTask(false);
+		$this->saveTask();
 	}
 
 	/**
 	 * Saves an entry and redirects to listing
 	 *
-	 * @return	void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new ForumModelSection($fields['id']);
+		$row = new Section($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -206,31 +205,31 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_FORUM_SECTION_SAVED'),
-				'message'
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_FORUM_SECTION_SAVED'),
+			'message'
+		);
 	}
 
 	/**
 	 * Deletes one or more records and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -241,44 +240,41 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
-				$section = new ForumTableSection($this->database);
+				$section = new Tables\Section($this->database);
 				$section->load($id);
 
 				// Get the categories in this section
-				$cModel = new ForumTableCategory($this->database);
+				$cModel = new Tables\Category($this->database);
 				$categories = $cModel->getRecords(array('section_id' => $section->id));
 
 				// Loop through each category
 				foreach ($categories as $category)
 				{
 					// Remove the posts in this category
-					$tModel = new ForumTablePost($this->database);
+					$tModel = new Tables\Post($this->database);
 					if (!$tModel->deleteByCategory($category->id))
 					{
-						JError::raiseError(500, $tModel->getError());
-						return;
+						throw new Exception($tModel->getError(), 500);
 					}
 					// Remove this category
 					if (!$cModel->delete($category->id))
 					{
-						JError::raiseError(500, $cModel->getError());
-						return;
+						throw new Exception($cModel->getError(), 500);
 					}
 				}
 
 				// Remove this section
 				if (!$section->delete())
 				{
-					JError::raiseError(500, $section->getError());
-					return;
+					throw new Exception($section->getError(), 500);
 				}
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . JRequest::getInt('section_id', 0), false),
-			JText::_('COM_FORUM_SECTIONS_DELETED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . \JRequest::getInt('section_id', 0), false),
+			\JText::_('COM_FORUM_SECTIONS_DELETED')
 		);
 	}
 
@@ -305,13 +301,13 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  $state  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -320,11 +316,11 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? JText::_('COM_FORUM_UNPUBLISH') : JText::_('COM_FORUM_PUBLISH');
+			$action = ($state == 1) ? \JText::_('COM_FORUM_UNPUBLISH') : \JText::_('COM_FORUM_PUBLISH');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
 			return;
@@ -333,7 +329,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ForumModelSection(intval($id));
+			$row = new Section(intval($id));
 			if (!$row->exists())
 			{
 				continue;
@@ -342,23 +338,22 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$row->set('state', $state);
 			if (!$row->store())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 		}
 
 		// set message
 		if ($state == 1)
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_PUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_PUBLISHED', count($ids));
 		}
 		else
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -366,25 +361,24 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$state = JRequest::getInt('access', 0);
-		$ids = JRequest::getVar('id', array());
+		$state = \JRequest::getInt('access', 0);
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
 			);
 			return;
@@ -393,7 +387,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ForumModelSection(intval($id));
+			$row = new Section(intval($id));
 			if (!$row->exists())
 			{
 				continue;
@@ -402,27 +396,14 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 			$row->set('access', $state);
 			if (!$row->store())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 		}
 
 		// set message
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancels a task and redirects to listing
-	 *
-	 * @return     void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
 	}
 }

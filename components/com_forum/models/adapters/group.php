@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models\Adapters;
 
-require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/base.php');
 
 /**
  * Adapter class for a forum post link for group forum
  */
-class ForumModelAdapterGroup extends ForumModelAdapterAbstract
+class Group extends Base
 {
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_segments = array(
 		'option' => 'com_groups',
@@ -50,7 +49,7 @@ class ForumModelAdapterGroup extends ForumModelAdapterAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   integer $scope_id Scope ID (group, course, etc.)
+	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
 	 * @return  void
 	 */
 	public function __construct($scope_id)
@@ -73,8 +72,8 @@ class ForumModelAdapterGroup extends ForumModelAdapterAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
 	 * @return  string
 	 */
 	public function build($type='', $params=null)

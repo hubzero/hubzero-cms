@@ -39,7 +39,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models
 class WishlistModelComment extends WishlistModelAbstract
 {
 	/**
-	 * ForumTablePost
+	 * Table
 	 *
 	 * @var string
 	 */

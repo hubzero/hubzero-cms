@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,112 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Tables;
 
 /**
  * Table class for a forum category
  */
-class ForumTableSection extends JTable
+class Section extends \JTable
 {
-	/**
-	 * Primary key
-	 *
-	 * @var integer int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * Description for 'title'
-	 *
-	 * @var string varchar(255)
-	 */
-	var $title = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var unknown
-	 */
-	var $alias      = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(2)
-	 * Pushed state (0=unpublished, 1=published, 2=trashed)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * Group the entry belongs to
-	 *
-	 * @var integer int(11)
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * tinyint(2)
-	 * Access level (0=public, 1=registered, 2=special, 3=protected, 4=private)
-	 *
-	 * @var integer
-	 */
-	var $access = NULL;
-
-	/**
-	 * int(11)
-	 * ID for ACL asset (J1.6+)
-	 *
-	 * @var integer
-	 */
-	var $asset_id = NULL;
-
-	/**
-	 * int(11)
-	 * Used to associate another object such as a
-	 * course lecture to a specific entry
-	 *
-	 * @var integer
-	 */
-	var $object_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -142,8 +52,6 @@ class ForumTableSection extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -155,8 +63,6 @@ class ForumTableSection extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -166,12 +72,9 @@ class ForumTableSection extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
@@ -182,7 +85,7 @@ class ForumTableSection extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_forum'));
@@ -209,8 +112,8 @@ class ForumTableSection extends JTable
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByAlias($oid=NULL, $scope_id=null, $scope='site')
 	{
@@ -231,8 +134,8 @@ class ForumTableSection extends JTable
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
 	{
@@ -259,13 +162,13 @@ class ForumTableSection extends JTable
 	public function loadDefault($scope='site', $scope_id=0)
 	{
 		$result = array(
-			'id' => 0,
-			'title' => JText::_('Categories'),
+			'id'         => 0,
+			'title'      => \JText::_('Categories'),
 			'created_by' => 0,
-			'scope'    => $scope,
-			'scope_id' => $scope_id,
-			'state' => 1,
-			'access' => 1
+			'scope'      => $scope,
+			'scope_id'   => $scope_id,
+			'state'      => 1,
+			'access'     => 1
 		);
 		$result['alias'] = str_replace(' ', '-', $result['title']);
 		$result['alias'] = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($result['alias']));
@@ -282,8 +185,7 @@ class ForumTableSection extends JTable
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('Please provide a title.'));
-			return false;
+			$this->setError(\JText::_('Please provide a title.'));
 		}
 
 		if (!$this->alias)
@@ -293,7 +195,11 @@ class ForumTableSection extends JTable
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 		if (!$this->alias)
 		{
-			$this->setError(JText::_('Alias cannot be all punctuation or blank.'));
+			$this->setError(\JText::_('Alias cannot be all punctuation or blank.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -302,8 +208,8 @@ class ForumTableSection extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created    = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 			$this->state = 1;
 			if (!$this->ordering)

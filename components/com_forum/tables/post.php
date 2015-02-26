@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,193 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Tables;
 
 /**
  * Table class for forum posts
  */
-class ForumTablePost extends JTable
+class Post extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $category_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $comment    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $state      = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $sticky     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $hits       = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_sub_id = NULL;
-
-	/**
-	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
-	 *
-	 * @var integer
-	 */
-	var $access     = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $anonymous  = NULL;
-
-	/**
-	 * ID for ACL asset (J1.6+)
-	 *
-	 * @var int(11)
-	 */
-	var $last_activity = null;
-
-	/**
-	 * ID for ACL asset (J1.6+)
-	 *
-	 * @var int(11)
-	 */
-	var $asset_id = NULL;
-
-	/**
-	 * int(11)
-	 * Used to associate another object such as a
-	 * course lecture to a specific entry
-	 *
-	 * @var integer
-	 */
-	var $object_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $lft = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $rgt = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $thread = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $closed = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -223,8 +52,6 @@ class ForumTablePost extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -237,8 +64,6 @@ class ForumTablePost extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -248,23 +73,20 @@ class ForumTablePost extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_forum'));
@@ -291,8 +113,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByObject($oid=NULL, $scope_id=null, $scope='site')
 	{
@@ -321,7 +143,7 @@ class ForumTablePost extends JTable
 
 		if (!$this->comment)
 		{
-			$this->setError(JText::_('Please provide a comment'));
+			$this->setError(\JText::_('Please provide a comment'));
 			return false;
 		}
 
@@ -339,15 +161,15 @@ class ForumTablePost extends JTable
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = ($this->created && $this->created != $this->_db->getNullDate()) ? $this->created : JFactory::getDate()->toSql();
+			$this->created    = ($this->created && $this->created != $this->_db->getNullDate()) ? $this->created : \JFactory::getDate()->toSql();
 			$this->created_by = ($this->created_by) ? $this->created_by : $juser->get('id');
 		}
 		else
 		{
-			$this->modified    = ($this->modified && $this->modified != $this->_db->getNullDate()) ? $this->modified : JFactory::getDate()->toSql();
+			$this->modified    = ($this->modified && $this->modified != $this->_db->getNullDate()) ? $this->modified : \JFactory::getDate()->toSql();
 			$this->modified_by = ($this->modified_by) ? $this->modified_by : $juser->get('id');
 		}
 
@@ -370,8 +192,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -382,10 +204,8 @@ class ForumTablePost extends JTable
 		}
 		$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 
-		//if (isset($filters['parent']) && $filters['parent'] != 0)
 		if (isset($filters['thread']) && $filters['thread'] != 0)
 		{
-			//$query .= " WHERE (c.parent=" . $this->_db->Quote(intval($filters['parent'])) . " OR c.id=" . $this->_db->Quote(intval($filters['parent'])) . ")";
 			$query .= " WHERE c.thread=" . $this->_db->Quote(intval($filters['thread']));
 			if (isset($filters['state']))
 			{
@@ -526,8 +346,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -543,8 +363,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -553,14 +373,12 @@ class ForumTablePost extends JTable
 		{
 			$query .= ", g.cn AS group_alias";
 		}
-		//if (!isset($filters['parent']) || $filters['parent'] == 0)
+
 		if (!isset($filters['thread']) || $filters['thread'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
-			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
-		//$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id AND r.state=0) AS reports ";
 		$query .= ", a.title AS access_level";
 		$query .= $this->buildQuery($filters);
 
@@ -576,8 +394,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getLatestPosts($filters=array())
 	{
@@ -589,7 +407,6 @@ class ForumTablePost extends JTable
 		if (!isset($filters['parent']) || $filters['parent'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
-			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
 		$query .= ", a.title AS access_level";
@@ -626,10 +443,7 @@ class ForumTablePost extends JTable
 		{
 			$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
 		}
-		/*if (isset($filters['group']) && (int) $filters['group'] >= 0)
-		{
-			$where[] = "(c.scope_id=" . $this->_db->Quote(intval($filters['group'])) . " AND c.scope=" . $this->_db->Quote('group') . ")";
-		}*/
+
 		if (isset($filters['closed']) && (int) $filters['closed'] >= 0)
 		{
 			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
@@ -654,9 +468,7 @@ class ForumTablePost extends JTable
 		{
 			$where[] = "c.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 		}
-		//if (!isset($filters['authorized']) || !$filters['authorized']) {
-		//	$query .= "c.access=0 AND ";
-		//}
+
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
@@ -709,8 +521,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -885,8 +697,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function count($filters=array())
 	{
@@ -902,8 +714,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{
@@ -911,10 +723,8 @@ class ForumTablePost extends JTable
 		if (!isset($filters['parent']) || $filters['parent'] == 0)
 		{
 			$query .= ", (SELECT COUNT(*) FROM $this->_tbl AS r WHERE r.parent=c.id AND r.state<2) AS replies ";
-			//$query .= ", (SELECT d.created FROM $this->_tbl AS d WHERE d.parent=c.id ORDER BY created DESC LIMIT 1) AS last_activity ";
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
-		//$query .= ", (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=c.id AND r.state=0) AS reports ";
 		$query .= ", a.title AS access_level";
 		$query .= $this->_buildQuery($filters);
 
@@ -934,8 +744,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get a list of all participants in a thread
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getParticipants($filters=array())
 	{
@@ -967,8 +777,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Get the last post in a thread
 	 *
-	 * @param      integer $parent Thread ID
-	 * @return     object
+	 * @param   integer  $parent  Thread ID
+	 * @return  object
 	 */
 	public function getLastPost($thread=null)
 	{
@@ -982,7 +792,7 @@ class ForumTablePost extends JTable
 		}
 
 		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1";
-		if (JFactory::getUser()->get('guest'))
+		if (\JFactory::getUser()->get('guest'))
 		{
 			$query .= " AND r.access=0";
 		}
@@ -1004,9 +814,9 @@ class ForumTablePost extends JTable
 	/**
 	 * Get the last activity for a category
 	 *
-	 * @param      integer $group_id    Group ID
-	 * @param      integer $category_id Category ID
-	 * @return     object
+	 * @param   integer  $group_id     Group ID
+	 * @param   integer  $category_id  Category ID
+	 * @return  object
 	 */
 	public function getLastActivity($scope_id=null, $scope='site', $category_id=null)
 	{
@@ -1018,7 +828,7 @@ class ForumTablePost extends JTable
 		}
 		$where[] = "r.scope=" . $this->_db->Quote($scope);
 		$where[] = "r.state=" . $this->_db->Quote(1);
-		if (JFactory::getUser()->get('guest'))
+		if (\JFactory::getUser()->get('guest'))
 		{
 			$where[] = "r.access=0";
 		}
@@ -1048,8 +858,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Delete replies to a post
 	 *
-	 * @param      integer $parent Thread ID
-	 * @return     boolean True on success
+	 * @param   integer  $parent  Thread ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteReplies($parent=null)
 	{
@@ -1068,18 +878,16 @@ class ForumTablePost extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+
+		return true;
 	}
 
 	/**
 	 * Update all replies to a post
 	 *
-	 * @param      array   $data   Data to update posts with
-	 * @param      integer $parent Parent ID
-	 * @return     boolean True on success
+	 * @param   array    $data    Data to update posts with
+	 * @param   integer  $parent  Parent ID
+	 * @return  boolean  True on success
 	 */
 	public function updateReplies($data=array(), $parent=null)
 	{
@@ -1113,19 +921,17 @@ class ForumTablePost extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+
+		return true;
 	}
 
 	/**
 	 * Set a new category for all records of a previous category
 	 *
-	 * @param      integer $old      Old category ID
-	 * @param      integer $nw       New category ID
-	 * @param      integer $group_id Group ID
-	 * @return     boolean True on success
+	 * @param   integer  $old       Old category ID
+	 * @param   integer  $nw        New category ID
+	 * @param   integer  $group_id  Group ID
+	 * @return  boolean  True on success
 	 */
 	public function updateCategory($old=null, $nw=null, $group_id=0, $scope='site')
 	{
@@ -1144,17 +950,15 @@ class ForumTablePost extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+
+		return true;
 	}
 
 	/**
 	 * Delete all records in a category
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     boolean True on success
+	 * @param   integer  $oid  Record ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteByCategory($oid=null)
 	{
@@ -1178,8 +982,8 @@ class ForumTablePost extends JTable
 	/**
 	 * Delete a record and any children
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     boolean True on success
+	 * @param   integer  $oid  Record ID
+	 * @return  boolean  True on success
 	 */
 	public function delete($oid=null)
 	{
@@ -1207,9 +1011,9 @@ class ForumTablePost extends JTable
 	/**
 	 * Set the state of posts by the category
 	 *
-	 * @param      integer $cat   Category ID
-	 * @param      integer $state State to set (0, 1, 2)
-	 * @return     boolean True on success
+	 * @param   integer  $cat    Category ID
+	 * @param   integer  $state  State to set (0, 1, 2)
+	 * @return  boolean  True on success
 	 */
 	public function setStateByCategory($cat=null, $state=null)
 	{
@@ -1238,21 +1042,19 @@ class ForumTablePost extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+
+		return true;
 	}
 
 	/**
 	 * Get the thread starter
 	 *
-	 * @param   integer $id  Parent to look up
-	 * @return  object  ForumTablePost
+	 * @param   integer  $id  Parent to look up
+	 * @return  object
 	 */
 	public function getThread($id = null)
 	{
-		$thread = new ForumTablePost($this->_db);
+		$thread = new self($this->_db);
 		$thread->load($id);
 
 		// Return the asset id.
@@ -1268,29 +1070,23 @@ class ForumTablePost extends JTable
 	 * Method to store a node in the database table.
 	 *
 	 * @param   boolean  True to update null values as well.
-	 *
 	 * @return  boolean  True on success.
-	 *
-	 * @link    http://docs.joomla.org/JTableNested/store
-	 * @since   11.1
 	 */
 	public function store($updateNulls = false)
 	{
 		// Initialise variables.
 		$k = $this->_tbl_key;
 
-		/*
-		 * If the primary key is empty, then we assume we are inserting a new node into the
-		 * tree.  From this point we would need to determine where in the tree to insert it.
-		 */
+		// If the primary key is empty, then we assume we are inserting a new node into the
+		// tree.  From this point we would need to determine where in the tree to insert it.
 		if (empty($this->$k) && $this->parent)
 		{
-			$parent = new ForumTablePost($this->_db);
+			$parent = new self($this->_db);
 			$parent->load($this->parent);
 
 			if (!$parent)
 			{
-				$this->setError(JText::_('Parent node does not exist.'));
+				$this->setError(\JText::_('Parent node does not exist.'));
 				return false;
 			}
 
@@ -1322,26 +1118,11 @@ class ForumTablePost extends JTable
 		}
 
 		// Store the row to the database.
-		/*if (!parent::store($updateNulls))
-		{
-			return false;
-		}
-
-		if ($this->state == 2)
-		{
-			$this->_db->setQuery("UPDATE $this->_tbl AS n SET n.state = ? WHERE (n.lft > ".(int) $this->lft." AND n.rgt < ".(int) $this->rgt.") OR n.".$k." = ".(int) $this->id);
-			if (!$this->_db->query())
-			{
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
-		}*/
 		$result = parent::store($updateNulls);
 		if ($result)
 		{
 			if ($this->parent == 0)
 			{
-				//UPDATE $this->_tbl SET thread=id WHERE parent=0 AND thread=0
 				$this->_db->setQuery("UPDATE $this->_tbl SET thread=id WHERE parent=0 AND id=" . $this->_db->Quote($this->id));
 				if (!$this->_db->query())
 				{
@@ -1364,11 +1145,8 @@ class ForumTablePost extends JTable
 	 *                                   which to make room in the tree around for a new node.
 	 * @param   integer  $nodeWidth      The width of the node for which to make room in the tree.
 	 * @param   string   $position       The position relative to the reference node where the room
-	 *	                                 should be made.
-	 *
+	 *                                   should be made.
 	 * @return  mixed    Boolean false on failure or data object on success.
-	 *
-	 * @since   11.1
 	 */
 	protected function _getTreeRepositionData($referenceNode, $nodeWidth, $position = 'before')
 	{
@@ -1386,7 +1164,7 @@ class ForumTablePost extends JTable
 
 		// Initialise variables.
 		$k = $this->_tbl_key;
-		$data = new stdClass;
+		$data = new \stdClass;
 
 		// Run the calculations and build the data object by reference position.
 		switch ($position)
@@ -1397,9 +1175,7 @@ class ForumTablePost extends JTable
 
 				$data->new_lft			= $referenceNode->lft + 1;
 				$data->new_rgt			= $referenceNode->lft + $nodeWidth;
-				//$data->new_parent_id	= $referenceNode->$k;
-				//$data->new_level		= $referenceNode->level + 1;
-				break;
+			break;
 
 			case 'last-child':
 				$data->left_where		= 'lft > '.($referenceNode->rgt);
@@ -1407,9 +1183,7 @@ class ForumTablePost extends JTable
 
 				$data->new_lft			= $referenceNode->rgt;
 				$data->new_rgt			= $referenceNode->rgt + $nodeWidth - 1;
-				//$data->new_parent_id	= $referenceNode->$k;
-				//$data->new_level		= $referenceNode->level + 1;
-				break;
+			break;
 
 			case 'before':
 				$data->left_where		= 'lft >= '.$referenceNode->lft;
@@ -1417,9 +1191,7 @@ class ForumTablePost extends JTable
 
 				$data->new_lft			= $referenceNode->lft;
 				$data->new_rgt			= $referenceNode->lft + $nodeWidth - 1;
-				//$data->new_parent_id	= $referenceNode->parent_id;
-				//$data->new_level		= $referenceNode->level;
-				break;
+			break;
 
 			default:
 			case 'after':
@@ -1428,21 +1200,8 @@ class ForumTablePost extends JTable
 
 				$data->new_lft			= $referenceNode->rgt + 1;
 				$data->new_rgt			= $referenceNode->rgt + $nodeWidth;
-				//$data->new_parent_id	= $referenceNode->parent_id;
-				//$data->new_level		= $referenceNode->level;
-				break;
+			break;
 		}
-
-		/*if ($this->_debug)
-		{
-			echo "\nRepositioning Data for $position" .
-					"\n-----------------------------------" .
-					"\nLeft Where:    $data->left_where" .
-					"\nRight Where:   $data->right_where" .
-					"\nNew Lft:       $data->new_lft" .
-					"\nNew Rgt:       $data->new_rgt".
-					"\n";
-		}*/
 
 		return $data;
 	}
@@ -1464,13 +1223,6 @@ class ForumTablePost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node and children as a tree.
-		/*$query = "SELECT COUNT(n.id)
-					FROM $this->_tbl AS n, $this->_tbl AS p
-					WHERE n.lft BETWEEN p.lft AND p.rgt
-					AND p." . $k . ' = ' . (int) $pk . "
-					AND n.scope=p.scope
-					AND n.scope_id=p.scope_id
-					AND n.object_id=p.object_id ";*/
 		$query = "SELECT COUNT(n.id)
 					FROM $this->_tbl AS n
 					WHERE n.thread=" . (int) $pk;
@@ -1497,7 +1249,7 @@ class ForumTablePost extends JTable
 		// Check for a database error.
 		if ($this->_db->getErrorNum())
 		{
-			$this->setError(JText::_('Failed to get tree.'));
+			$this->setError(\JText::_('Failed to get tree.'));
 			return false;
 		}
 
@@ -1521,18 +1273,9 @@ class ForumTablePost extends JTable
 		$pk = (is_null($pk)) ? $this->$k : $pk;
 
 		// Get the node and children as a tree.
-		/*$query = "SELECT n.*,
-					0 AS replies,
-					(SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports
-					FROM $this->_tbl AS n, $this->_tbl AS p
-					WHERE n.lft BETWEEN p.lft AND p.rgt
-					AND p." . $k . ' = ' . (int) $pk . "
-					AND n.scope=p.scope
-					AND n.scope_id=p.scope_id
-					AND n.object_id=p.object_id ";*/
 		$query = "SELECT n.*, 0 AS replies
 					FROM $this->_tbl AS n
-					WHERE n.thread=" . (int) $pk; //, (SELECT COUNT(*) FROM #__abuse_reports AS r WHERE r.category='forum' AND r.referenceid=n.id AND r.state=0) AS reports
+					WHERE n.thread=" . (int) $pk;
 		if (isset($filters['start_at']) && $filters['start_at'])
 		{
 			$query .= " AND n.created >" . $this->_db->Quote($filters['start_at']);
@@ -1578,7 +1321,7 @@ class ForumTablePost extends JTable
 		// Check for a database error.
 		if ($this->_db->getErrorNum())
 		{
-			$this->setError(JText::_('Failed to get tree.'));
+			$this->setError(\JText::_('Failed to get tree.'));
 			return false;
 		}
 
@@ -1620,7 +1363,7 @@ class ForumTablePost extends JTable
 		// Check for a database error or no $row returned
 		if ((!$row) || ($this->_db->getErrorNum()))
 		{
-			$this->setError(JText::_('Get node failed'));
+			$this->setError(\JText::_('Get node failed'));
 			return false;
 		}
 
@@ -1635,11 +1378,7 @@ class ForumTablePost extends JTable
 	 * Method to determine if a node is a leaf node in the tree (has no children).
 	 *
 	 * @param   integer  $pk  Primary key of the node to check.
-	 *
 	 * @return  boolean  True if a leaf node.
-	 *
-	 * @link    http://docs.joomla.org/JTableNested/isLeaf
-	 * @since   11.1
 	 */
 	public function isLeaf($pk = null)
 	{

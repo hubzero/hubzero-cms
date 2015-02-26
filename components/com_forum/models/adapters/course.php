@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models\Adapters;
 
-require_once(__DIR__ . '/abstract.php');
+use Hubzero\Utility\String;
+
+require_once(__DIR__ . '/base.php');
 
 /**
  * Adapter class for a forum post link for course forum
  */
-class ForumModelAdapterCourse extends ForumModelAdapterAbstract
+class Course extends Base
 {
 	/**
 	 * URL segments
@@ -50,7 +51,7 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   integer $scope_id Scope ID (group, course, etc.)
+	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
 	 * @return  void
 	 */
 	public function __construct($scope_id=0)
@@ -59,26 +60,26 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 
-		$offering = CoursesModelOffering::getInstance($this->get('scope_id'));
-		$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+		$offering = \CoursesModelOffering::getInstance($this->get('scope_id'));
+		$course = \CoursesModelCourse::getInstance($offering->get('course_id'));
 
 		$this->_segments['gid']      = $course->get('alias');
 		$this->_segments['offering'] = $offering->alias();
 		$this->_segments['active']   = 'discussions';
-		if (JRequest::getVar('active') == 'outline')
+		if (\JRequest::getVar('active') == 'outline')
 		{
 			$this->_segments['active']   = 'outline';
 		}
 
-		$this->_name = \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50);
+		$this->_name = String::truncate($course->get('alias'), 50) . ': ' . String::truncate($offering->get('alias'), 50);
 	}
 
 	/**
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
 	 * @return  string
 	 */
 	public function build($type='', $params=null)

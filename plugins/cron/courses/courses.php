@@ -254,7 +254,7 @@ class plgCronCourses extends JPlugin
 								// Get discussion stats and posts
 								require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php';
 
-								$postsTbl  = new ForumTablePost($database);
+								$postsTbl  = new \Components\Forum\Tables\Post($database);
 								$filters   = array(
 									'scope'    => 'course',
 									'scope_id' => $offering->get('id'),

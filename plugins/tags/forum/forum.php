@@ -177,7 +177,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 			'element' => 'forum',
 			'name'    => 'result'
 		));
-		$view->post = new ForumModelPost($row);
+		$view->post = new \Components\Forum\Models\Post($row);
 
 		return $view->loadTemplate();
 	}

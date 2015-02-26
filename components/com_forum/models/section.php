@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,28 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'section.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php');
+use Components\Forum\Tables;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+use LogicException;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'section.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'category.php');
 
 /**
  * Model class for a forum section
  */
-class ForumModelSection extends ForumModelAbstract
+class Section extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumTableSection';
+	protected $_tbl_name = '\\Components\\Forum\\Tables\\Section';
 
 	/**
 	 * Container for instance data
@@ -68,7 +72,7 @@ class ForumModelSection extends ForumModelAbstract
 	 */
 	public function __construct($oid, $scope='site', $scope_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);
@@ -78,7 +82,7 @@ class ForumModelSection extends ForumModelAbstract
 			$this->_logError(
 				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
 			);
-			throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+			throw new LogicException(\JText::_('Table class must be an instance of JTable.'));
 		}
 
 		if ($oid)
@@ -109,7 +113,7 @@ class ForumModelSection extends ForumModelAbstract
 	 * @param      integer $id       Section ID (integer), alias (string), array, or object
 	 * @param      string  $scope    Forum scope [site, group, course]
 	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     object  ForumModelSection
+	 * @return     object
 	 */
 	static function &getInstance($oid=0, $scope='site', $scope_id=0)
 	{
@@ -136,7 +140,7 @@ class ForumModelSection extends ForumModelAbstract
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new ForumModelSection($oid, $scope_id, $scope);
+			$instances[$key] = new self($oid, $scope_id, $scope);
 		}
 
 		return $instances[$key];
@@ -155,7 +159,7 @@ class ForumModelSection extends ForumModelAbstract
 		{
 			$this->_cache['category'] = null;
 
-			if ($this->_cache['categories'] instanceof \Hubzero\Base\ItemList)
+			if ($this->_cache['categories'] instanceof ItemList)
 			{
 				foreach ($this->_cache['categories'] as $key => $category)
 				{
@@ -169,7 +173,7 @@ class ForumModelSection extends ForumModelAbstract
 
 			if (!$this->_cache['category']);
 			{
-				$this->_cache['category'] = ForumModelCategory::getInstance($id, $this->get('id')); //, $this->get('scope'), $this->get('scope_id'));
+				$this->_cache['category'] = Category::getInstance($id, $this->get('id')); //, $this->get('scope'), $this->get('scope_id'));
 			}
 			if (!$this->_cache['category']->exists())
 			{
@@ -201,7 +205,7 @@ class ForumModelSection extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['categories_count']) || $clear)
 				{
-					$tbl = new ForumTableCategory($this->_db);
+					$tbl = new Tables\Category($this->_db);
 					$this->_cache['categories_count'] = (int) $tbl->getCount($filters);
 				}
 				return $this->_cache['categories_count'];
@@ -214,14 +218,14 @@ class ForumModelSection extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['categories'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['categories'] instanceof ItemList) || $clear)
 				{
-					$tbl = new ForumTableCategory($this->_db);
+					$tbl = new Tables\Category($this->_db);
 					if (($results = $tbl->getRecords($filters)))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelCategory($result, $this->get('id'), $this->get('scope'), $this->get('group_id'));
+							$results[$key] = new Category($result, $this->get('id'), $this->get('scope'), $this->get('group_id'));
 							$results[$key]->set('section_alias', $this->get('alias'));
 						}
 					}
@@ -229,7 +233,7 @@ class ForumModelSection extends ForumModelAbstract
 					{
 						$results = array();
 					}
-					$this->_cache['categories'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['categories'] = new ItemList($results);
 				}
 				return $this->_cache['categories'];
 			break;
@@ -272,7 +276,7 @@ class ForumModelSection extends ForumModelAbstract
 				break;
 
 				default:
-					$this->setError(JText::sprintf('Property value of "%" not accepted', $what));
+					$this->setError(\JText::sprintf('Property value of "%" not accepted', $what));
 					return $this->_cache[$key];
 				break;
 			}
@@ -290,7 +294,7 @@ class ForumModelSection extends ForumModelAbstract
 	public function store($check=true)
 	{
 		// Get the entry before changes were made
-		$old = new ForumModelSection($this->get('id'));
+		$old = new self($this->get('id'));
 
 		// Store entry
 		if (!parent::store($check))
@@ -312,14 +316,14 @@ class ForumModelSection extends ForumModelAbstract
 			if (count($cats) > 0)
 			{
 				// Set all the threads/posts in all the categories to "deleted"
-				$post = new ForumTablePost($this->_db);
+				$post = new Tables\Post($this->_db);
 				if (!$post->setStateByCategory($cats, self::APP_STATE_DELETED))
 				{
 					$this->setError($post->getError());
 				}
 
 				// Set all the categories to "deleted"
-				$cModel = new ForumTableCategory($this->_db);
+				$cModel = new Tables\Category($this->_db);
 				if (!$cModel->setStateBySection($this->get('id'), self::APP_STATE_DELETED))
 				{
 					$this->setError($cModel->getError());

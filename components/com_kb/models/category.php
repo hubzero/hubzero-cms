@@ -50,7 +50,7 @@ class Category extends Model
 	protected $_tbl_name = '\\Components\\Kb\\Tables\\Category';
 
 	/**
-	 * KbModelCategory
+	 * Category
 	 *
 	 * @var object
 	 */
@@ -94,8 +94,8 @@ class Category extends Model
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param      integer $oid Question ID
-	 * @return     object ForumModelCourse
+	 * @param   mixed   $oid
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -117,10 +117,10 @@ class Category extends Model
 	/**
 	 * Get a list of articles
 	 *
-	 * @param      string  $rtrn    Data type to return [count, list]
-	 * @param      array   $filters Filters to apply to query
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed   Returns an integer or iterator object depending upon format chosen
+	 * @param      string   $rtrn     Data type to return [count, list]
+	 * @param      array    $filters  Filters to apply to query
+	 * @param      boolean  $clear    Clear cached data?
+	 * @return     mixed    Returns an integer or iterator object depending upon format chosen
 	 */
 	public function articles($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -194,10 +194,10 @@ class Category extends Model
 	/**
 	 * Get a list of responses
 	 *
-	 * @param      string  $rtrn    Data type to return [count, list]
-	 * @param      array   $filters Filters to apply to query
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed   Returns an integer or iterator object depending upon format chosen
+	 * @param      string   $rtrn     Data type to return [count, list]
+	 * @param      array    $filters  Filters to apply to query
+	 * @param      boolean  $clear    Clear cached data?
+	 * @return     mixed    Returns an integer or iterator object depending upon format chosen
 	 */
 	public function children($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -263,7 +263,7 @@ class Category extends Model
 	/**
 	 * Get parent section
 	 *
-	 * @return     object KbModelCategory
+	 * @return  object
 	 */
 	public function parent()
 	{
@@ -278,8 +278,8 @@ class Category extends Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -322,7 +322,7 @@ class Category extends Model
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{

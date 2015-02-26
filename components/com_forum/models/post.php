@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,28 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'post.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'attachment.php');
+use Components\Forum\Tables;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'post.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'attachment.php');
 
 /**
  * Forum model class for a forum post
  */
-class ForumModelPost extends ForumModelAbstract
+class Post extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var object
 	 */
-	protected $_tbl_name = 'ForumTablePost';
+	protected $_tbl_name = '\\Components\\Forum\\Tables\\Post';
 
 	/**
 	 * Model context
@@ -55,7 +58,7 @@ class ForumModelPost extends ForumModelAbstract
 	protected $_context = 'com_forum.post.comment';
 
 	/**
-	 * ForumModelAttachment
+	 * Attachment
 	 *
 	 * @var object
 	 */
@@ -64,8 +67,8 @@ class ForumModelPost extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum post model
 	 *
-	 * @param   mixed  $oid ID (int) or array or object
-	 * @return  object ForumModelPost
+	 * @param   mixed  $oid  ID (int) or array or object
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -91,7 +94,7 @@ class ForumModelPost extends ForumModelAbstract
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new ForumModelPost($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -106,7 +109,7 @@ class ForumModelPost extends ForumModelAbstract
 	{
 		if (!isset($this->_attachment))
 		{
-			$this->_attachment = ForumModelAttachment::getInstance(0, $this->get('id'));
+			$this->_attachment = Attachment::getInstance(0, $this->get('id'));
 		}
 		return $this->_attachment;
 	}
@@ -136,11 +139,11 @@ class ForumModelPost extends ForumModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('modified'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -174,7 +177,7 @@ class ForumModelPost extends ForumModelAbstract
 		$new = true;
 		if ($this->get('id'))
 		{
-			$old = new ForumModelPost($this->get('id'));
+			$old = new self($this->get('id'));
 			$new = false;
 		}
 
@@ -244,7 +247,7 @@ class ForumModelPost extends ForumModelAbstract
 			}
 		}
 
-		$cloud = new ForumModelTags($this->get('thread'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->render($as, array('admin' => $admin));
 	}
@@ -256,7 +259,7 @@ class ForumModelPost extends ForumModelAbstract
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new ForumModelTags($this->get('thread'));
+		$cloud = new Tags($this->get('thread'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -290,15 +293,15 @@ class ForumModelPost extends ForumModelAbstract
 
 			if (!$this->get('category'))
 			{
-				$category = ForumModelCategory::getInstance($this->get('category_id'));
+				$category = Category::getInstance($this->get('category_id'));
 				$this->set('category', $category->get('alias'));
 			}
 			$this->_adapter->set('category', $this->get('category'));
 
 			if (!$this->get('section'))
 			{
-				$category = ForumModelCategory::getInstance($this->get('category_id'));
-				$this->set('section', ForumModelSection::getInstance($category->get('section_id'))->get('alias'));
+				$category = Category::getInstance($this->get('category_id'));
+				$this->set('section', Section::getInstance($category->get('section_id'))->get('alias'));
 			}
 			$this->_adapter->set('section', $this->get('section'));
 		}
@@ -334,7 +337,7 @@ class ForumModelPost extends ForumModelAbstract
 						'domain'   => $this->get('thread')
 					);
 
-					$attach = new ForumTableAttachment($this->_db);
+					$attach = new Tables\Attachment($this->_db);
 
 					$content = (string) stripslashes($this->get('comment', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
@@ -370,7 +373,7 @@ class ForumModelPost extends ForumModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}

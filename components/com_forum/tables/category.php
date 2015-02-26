@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,159 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Tables;
 
 /**
  * Table class for a forum category
  */
-class ForumTableCategory extends JTable
+class Category extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title      = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $alias      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description    = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $state      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $hits       = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	//var $scope_sub_id = NULL;
-
-	/**
-	 * tinyint(2)  0=public, 1=registered, 2=special, 3=protected, 4=private
-	 *
-	 * @var integer
-	 */
-	var $access     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $closed = null;
-
-	/**
-	 * int(11)
-	 * ID for ACL asset (J1.6+)
-	 *
-	 * @var integer
-	 */
-	var $asset_id = NULL;
-
-	/**
-	 * int(11)
-	 * Used to associate another object such as a
-	 * course lecture to a specific entry
-	 *
-	 * @var integer
-	 */
-	var $object_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -189,8 +52,6 @@ class ForumTableCategory extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -202,8 +63,6 @@ class ForumTableCategory extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -213,12 +72,9 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   object   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
@@ -256,8 +112,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True on success
 	 */
 	public function loadByAlias($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
 	{
@@ -282,8 +138,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByObject($oid=NULL, $section_id=null, $scope_id=null, $scope='site')
 	{
@@ -308,15 +164,15 @@ class ForumTableCategory extends JTable
 	/**
 	 * Populate the object with default data
 	 *
-	 * @param      integer $group ID of group the data belongs to
-	 * @return     boolean True if data is bound to $this object
+	 * @param   integer  $group  ID of group the data belongs to
+	 * @return  boolean  True if data is bound to $this object
 	 */
 	public function loadDefault($scope_id=0, $scope='site')
 	{
 		$result = array(
 			'id'          => 0,
-			'title'       => JText::_('Discussions'),
-			'description' => JText::_('Default category for all discussions in this forum.'),
+			'title'       => \JText::_('Discussions'),
+			'description' => \JText::_('Default category for all discussions in this forum.'),
 			'section_id'  => 0,
 			'created_by'  => 0,
 			'scope'       => $scope,
@@ -333,7 +189,7 @@ class ForumTableCategory extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -341,8 +197,7 @@ class ForumTableCategory extends JTable
 
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title.'));
-			return false;
+			$this->setError(\JText::_('Please provide a title.'));
 		}
 
 		if (!$this->alias)
@@ -352,17 +207,21 @@ class ForumTableCategory extends JTable
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 		if (!$this->alias)
 		{
-			$this->setError(JText::_('Alias cannot be all punctuation or blank.'));
+			$this->setError(\JText::_('Alias cannot be all punctuation or blank.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		$this->scope = preg_replace("/[^a-zA-Z0-9]/", '', strtolower($this->scope));
 		$this->scope_id = intval($this->scope_id);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created    = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 			if (!$this->ordering)
 			{
@@ -371,7 +230,7 @@ class ForumTableCategory extends JTable
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified    = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 
@@ -381,8 +240,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get the last page in the ordering
 	 *
-	 * @param      string  $offering_id
-	 * @return     integer
+	 * @param   string   $offering_id
+	 * @return  integer
 	 */
 	public function getHighestOrdering($scope, $scope_id)
 	{
@@ -394,8 +253,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -469,8 +328,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -485,8 +344,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -553,9 +412,9 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get a count of all threads for a category
 	 *
-	 * @param      integer $oid      Category ID
-	 * @param      integer $group_id Group ID
-	 * @return     array
+	 * @param   integer  $oid       Category ID
+	 * @param   integer  $group_id  Group ID
+	 * @return  array
 	 */
 	public function getThreadCount($oid=null, $scope_id=0, $scope='site')
 	{
@@ -565,7 +424,7 @@ class ForumTableCategory extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$query = "SELECT COUNT(*) FROM #__forum_posts WHERE category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
+		$query = "SELECT COUNT(*) FROM `#__forum_posts` WHERE `category_id`=" . $this->_db->Quote($this->$k) . " AND `scope_id`=" . $this->_db->Quote($scope_id) . " AND `scope`=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -574,9 +433,9 @@ class ForumTableCategory extends JTable
 	/**
 	 * Get a count of all posts for a category
 	 *
-	 * @param      integer $oid      Category ID
-	 * @param      integer $group_id Group ID
-	 * @return     array
+	 * @param   integer  $oid       Category ID
+	 * @param   integer  $group_id  Group ID
+	 * @return  array
 	 */
 	public function getPostCount($oid=null, $scope_id=0, $scope='site')
 	{
@@ -586,8 +445,8 @@ class ForumTableCategory extends JTable
 			$this->$k = intval($oid);
 		}
 
-		//$query = "SELECT COUNT(*) FROM #__forum_posts WHERE parent IN (SELECT r.id FROM #__forum_posts AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
-		$query = "SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
+		//$query = "SELECT COUNT(*) FROM `#__forum_posts` WHERE parent IN (SELECT r.id FROM `#__forum_posts` AS r WHERE r.category_id=" . $this->$k . " AND group_id=$group_id AND parent=0 AND state < 2)";
+		$query = "SELECT COUNT(*) FROM `#__forum_posts` AS r WHERE r.category_id=" . $this->_db->Quote($this->$k) . " AND scope_id=" . $this->_db->Quote($scope_id) . " AND scope=" . $this->_db->Quote($scope) . " AND parent=0 AND state < 2";
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -595,8 +454,8 @@ class ForumTableCategory extends JTable
 	/**
 	 * Delete a category and all associated content
 	 *
-	 * @param      integer $oid Object ID (primary key)
-	 * @return     true if successful otherwise returns and error message
+	 * @param   integer  $oid  Object ID (primary key)
+	 * @return  boolean  True if successful otherwise returns and error message
 	 */
 	public function delete($oid=null)
 	{
@@ -606,7 +465,9 @@ class ForumTableCategory extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$post = new ForumTablePost($this->_db);
+		include_once(__DIR__ . '/post.php');
+
+		$post = new Post($this->_db);
 		if (!$post->deleteByCategory($this->$k))
 		{
 			$this->setError($post->getErrorMsg());
@@ -619,9 +480,9 @@ class ForumTableCategory extends JTable
 	/**
 	 * Set the state of records for a section
 	 *
-	 * @param      integer $section Section ID
-	 * @param      integer $state   State (0, 1, 2)
-	 * @return     array
+	 * @param   integer  $section  Section ID
+	 * @param   integer  $state    State (0, 1, 2)
+	 * @return  array
 	 */
 	public function setStateBySection($section=null, $state=null)
 	{
@@ -650,9 +511,7 @@ class ForumTableCategory extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		else
-		{
-			return true;
-		}
+
+		return true;
 	}
 }

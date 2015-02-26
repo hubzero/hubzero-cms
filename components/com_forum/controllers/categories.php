@@ -1,43 +1,55 @@
 <?php
 /**
- * @package		HUBzero                                  CMS
- * @author		Shawn                                     Rice <zooley@purdue.edu>
- * @copyright	Copyright                               2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\String;
+use Components\Forum\Models\Manager;
+use Components\Forum\Models\Category;
+use Components\Forum\Tables;
+use Exception;
 
 /**
  * Controller class for forum categories
  */
-class ForumControllerCategories extends \Hubzero\Component\SiteController
+class Categories extends SiteController
 {
 	/**
 	 * Determine task and execute
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->model = new ForumModel('site', 0);
+		$this->model = new Manager('site', 0);
 
 		parent::execute();
 	}
@@ -45,31 +57,31 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 		$pathway = $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if (isset($this->view->section))
 		{
 			$pathway->addItem(
-				\Hubzero\Utility\String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true)),
+				String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
 			);
 		}
 		if (isset($this->view->category))
 		{
 			$pathway->addItem(
-				\Hubzero\Utility\String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true)),
+				String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
 			);
 		}
@@ -82,36 +94,36 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if (isset($this->view->section))
 		{
-			$this->_title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true));
 		}
 		if (isset($this->view->category))
 		{
-			$this->_title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true));
+			$this->_title .= ': ' . String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true));
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
 	/**
 	 * Display a list of threads for a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->title = JText::_('COM_FORUM');
+		$this->view->title = \JText::_('COM_FORUM');
 
 		// Incoming
 		$this->view->filters = array(
 			'authorized' => 1,
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'section'    => JRequest::getVar('section', ''),
-			'category'   => JRequest::getCmd('category', ''),
-			'search'     => JRequest::getVar('q', ''),
+			'limit'      => \JRequest::getInt('limit', 25),
+			'start'      => \JRequest::getInt('limitstart', 0),
+			'section'    => \JRequest::getVar('section', ''),
+			'category'   => \JRequest::getCmd('category', ''),
+			'search'     => \JRequest::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
@@ -120,43 +132,41 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
 		);
 
-		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'activity');
+		$this->view->filters['sortby'] = \JRequest::getWord('sortby', 'activity');
 		switch ($this->view->filters['sortby'])
 		{
 			case 'title':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
-				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'ASC'));
+				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$this->view->filters['sort'] = 'c.sticky DESC, replies';
-				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
-				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$this->view->filters['sort'] = 'c.sticky DESC, activity';
-				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
 			break;
 		}
 
 		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
 		if (!$this->view->section->exists())
 		{
-			JError::raiseError(404, JText::_('COM_FORUM_SECTION_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_FORUM_SECTION_NOT_FOUND'), 404);
 		}
 
 		$this->view->category = $this->view->section->category($this->view->filters['category']);
 		if (!$this->view->category->exists())
 		{
-			JError::raiseError(404, JText::_('COM_FORUM_CATEGORY_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_FORUM_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		//get authorization
@@ -166,9 +176,9 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		// Check logged in status
 		if ($this->view->category->get('access') > 0 && $this->juser->get('guest'))
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
+			$return = base64_encode(\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return)
+				\JRoute::_('index.php?option=com_users&view=login&return=' . $return)
 			);
 			return;
 		}
@@ -186,12 +196,9 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -204,14 +211,14 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	 */
 	public function searchTask()
 	{
-		$this->view->title = JText::_('COM_FORUM');
+		$this->view->title = \JText::_('COM_FORUM');
 
 		// Incoming
 		$this->view->filters = array(
 			'authorized' => 1,
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('q', ''),
+			'limit'      => \JRequest::getInt('limit', 25),
+			'start'      => \JRequest::getInt('limitstart', 0),
+			'search'     => \JRequest::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
@@ -221,7 +228,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		$this->view->section = $this->model->section(0);
 		$this->view->section->set('scope', $this->model->get('scope'));
-		$this->view->section->set('title', JText::_('COM_FORUM_POSTS'));
+		$this->view->section->set('title', \JText::_('COM_FORUM_POSTS'));
 		$this->view->section->set('alias', str_replace(' ', '-', $this->view->section->get('title')));
 		$this->view->section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->get('title'))));
 
@@ -236,7 +243,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		$this->view->category = $this->view->section->category(0);
 		$this->view->category->set('scope', $this->model->get('scope'));
-		$this->view->category->set('title', JText::_('COM_FORUM_SEARCH'));
+		$this->view->category->set('title', \JText::_('COM_FORUM_SEARCH'));
 		$this->view->category->set('alias', str_replace(' ', '-', $this->view->category->get('title')));
 		$this->view->category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->get('title'))));
 
@@ -267,12 +274,9 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -281,7 +285,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for creating an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newTask()
 	{
@@ -291,22 +295,20 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
-		$this->view->setLayout('edit');
-
 		if ($this->juser->get('guest'))
 		{
-			$return = JRoute::_('index.php?option=' . $this->_option, false, true);
+			$return = \JRoute::_('index.php?option=' . $this->_option, false, true);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
 
-		$this->view->section = $this->model->section(JRequest::getVar('section', ''));
+		$this->view->section = $this->model->section(\JRequest::getVar('section', ''));
 
 		// Incoming
 		if (is_object($model))
@@ -315,8 +317,8 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->view->category = new ForumModelCategory(
-				JRequest::getVar('category', ''),
+			$this->view->category = new Category(
+				\JRequest::getVar('category', ''),
 				$this->view->section->get('id')
 			);
 		}
@@ -331,7 +333,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		elseif ($this->view->category->get('created_by') != $this->juser->get('id') && !$this->config->get('access-create-category'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -342,15 +344,14 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->view->notifications = $this->getComponentMessage();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -361,12 +362,12 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$model = new ForumModelCategory($fields['id']);
+		$model = new Category($fields['id']);
 		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
@@ -380,7 +381,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 		}
 
@@ -396,7 +397,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
+			\JRoute::_('index.php?option=' . $this->_option)
 		);
 	}
 
@@ -411,25 +412,25 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option, false, true))),
-				JText::_('COM_FORUM_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(\JRoute::_('index.php?option=' . $this->_option, false, true))),
+				\JText::_('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
 		}
 
 		// Load the section
-		$section = $this->model->section(JRequest::getVar('section', ''));
+		$section = $this->model->section(\JRequest::getVar('section', ''));
 
 		// Load the category
-		$category = $section->category(JRequest::getVar('category', ''));
+		$category = $section->category(\JRequest::getVar('category', ''));
 
 		// Make the sure the category exist
 		if (!$category->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_FORUM_MISSING_ID'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_FORUM_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -440,15 +441,15 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		if (!$this->config->get('access-delete-category'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_FORUM_NOT_AUTHORIZED'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
 			return;
 		}
 
 		// Set all the threads/posts in all the categories to "deleted"
-		$tModel = new ForumTablePost($this->database);
+		$tModel = new Tables\Post($this->database);
 		if (!$tModel->setStateByCategory($category->get('id'), 2))  /* 0 = unpublished, 1 = published, 2 = deleted */
 		{
 			$this->setError($tModel->getError());
@@ -459,7 +460,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		if (!$category->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
+				\JRoute::_('index.php?option=' . $this->_option),
 				$category->getError(),
 				'error'
 			);
@@ -468,8 +469,8 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option),
-			JText::_('COM_FORUM_CATEGORY_DELETED'),
+			\JRoute::_('index.php?option=' . $this->_option),
+			\JText::_('COM_FORUM_CATEGORY_DELETED'),
 			'message'
 		);
 	}

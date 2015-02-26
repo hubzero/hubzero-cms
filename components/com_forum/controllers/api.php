@@ -150,7 +150,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new ForumModel('site', 0);
+		$model = new \Components\Forum\Models\Manager('site', 0);
 
 		$response = new stdClass;
 		$response->sections = array();
@@ -208,7 +208,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			'parent'     => 0
 		);
 
-		$model = new ForumModel($filters['scope'], $filters['scope_id']);
+		$model = new \Components\Forum\Models\Manager($filters['scope'], $filters['scope_id']);
 
 		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
 		if (!$section->exists())
@@ -286,7 +286,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			'parent'     => 0
 		);
 
-		$model = new ForumModel($filters['scope'], $filters['scope_id']);
+		$model = new \Components\Forum\Models\Manager($filters['scope'], $filters['scope_id']);
 
 		$section = $model->section($filters['section'], $model->get('scope'), $model->get('scope_id'));
 		if (!$section->exists())
@@ -421,7 +421,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			$filters['start'] = 0;
 		}
 
-		$post = new ForumTablePost($this->database);
+		$post = new \Components\Forum\Tables\Post($this->database);
 
 		$data = new stdClass();
 		$data->code = 0;

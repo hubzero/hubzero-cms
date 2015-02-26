@@ -42,9 +42,9 @@ if ($this->post->id) {
 	$action = $base . '&unit=' . $this->category->alias;
 }
 
-if (!($this->post instanceof ForumModelPost))
+if (!($this->post instanceof \Components\Forum\Models\Post))
 {
-	$this->post = new ForumModelPost($this->post);
+	$this->post = new \Components\Forum\Models\Post($this->post);
 }
 ?>
 	<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?php echo $this->post->get('thread'); ?>">

@@ -31,7 +31,7 @@
 namespace Modules\LatestDiscussions;
 
 use Hubzero\Module\Module;
-use ForumModel;
+use Components\Forum\Models\Manager;
 use JFactory;
 
 /**
@@ -53,9 +53,9 @@ class Helper extends Module
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
 
-		include_once(JPATH_ROOT . '/components/com_forum/models/forum.php');
+		include_once(JPATH_ROOT . '/components/com_forum/models/manager.php');
 
-		$forum = new ForumModel();
+		$forum = new Manager();
 
 		//based on param decide what to include
 		switch ($this->params->get('forum', 'both')) 

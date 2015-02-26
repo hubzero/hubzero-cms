@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php');
+use Components\Forum\Tables;
+use Hubzero\Base\ItemList;
+
+require_once(__DIR__ . DS . 'section.php');
 
 /**
  * Model class for a forum
  */
-class ForumModel extends ForumModelAbstract
+class Manager extends Base
 {
 	/**
 	 * Container for interally cached data
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_cache = array(
 		'section'        => null,
@@ -56,15 +58,15 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $scope    Forum scope [site, group, course]
-	 * @param   integer $scope_id Forum scope ID (group ID, couse ID)
+	 * @param   string   $scope     Forum scope [site, group, course]
+	 * @param   integer  $scope_id  Forum scope ID (group ID, couse ID)
 	 * @return  void
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new stdClass;
+		$this->_tbl = new \stdClass;
 
 		$this->set('scope', $scope);
 		$this->set('scope_id', $scope_id);
@@ -73,9 +75,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum model
 	 *
-	 * @param   string  $scope    Forum scope [site, group, course]
-	 * @param   integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return  object ForumModel
+	 * @param   string   $scope     Forum scope [site, group, course]
+	 * @param   integer  $scope_id  Forum scope ID (group ID, couse ID)
+	 * @return  object
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
 	{
@@ -99,9 +101,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $default The default value
-	 * @return  mixed  The value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $default   The default value
+	 * @return  mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -115,9 +117,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $value The value of the property to set
-	 * @return  mixed  Previous value of the property
+	 * @param   string  $property  The name of the property
+	 * @param   mixed   $value     The value of the property to set
+	 * @return  mixed   Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -134,9 +136,9 @@ class ForumModel extends ForumModelAbstract
 	public function setup()
 	{
 		// Create a default section
-		$section = new ForumModelSection(0, $this->get('scope'), $this->get('scope_id'));
+		$section = new Section(0, $this->get('scope'), $this->get('scope_id'));
 		$section->bind(array(
-			'title'    => JText::_('Default Section'),
+			'title'    => \JText::_('Default Section'),
 			'scope'    => $this->get('scope'),
 			'scope_id' => $this->get('scope_id'),
 			'state'    => 1
@@ -148,10 +150,10 @@ class ForumModel extends ForumModelAbstract
 		}
 
 		// Create a default category
-		$category = new ForumModelCategory(0);
+		$category = new Category(0);
 		$category->bind(array(
-			'title'       => JText::_('Discussions'),
-			'description' => JText::_('Default category for all discussions in this forum.'),
+			'title'       => \JText::_('Discussions'),
+			'description' => \JText::_('Default category for all discussions in this forum.'),
 			'section_id'  => $section->get('id'),
 			'scope'       => $this->get('scope'),
 			'scope_id'    => $this->get('scope_id'),
@@ -163,7 +165,7 @@ class ForumModel extends ForumModelAbstract
 			return false;
 		}
 
-		$this->_cache['sections'] = new \Hubzero\Base\ItemList(array($section));
+		$this->_cache['sections'] = new ItemList(array($section));
 
 		return true;
 	}
@@ -171,6 +173,7 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Set and get a specific section
 	 *
+	 * @param   mixed   $id
 	 * @return  object
 	 */
 	public function section($id=null)
@@ -180,7 +183,7 @@ class ForumModel extends ForumModelAbstract
 		{
 			$this->_cache['section'] = null;
 
-			if ($this->_cache['sections'] instanceof \Hubzero\Base\ItemList)
+			if ($this->_cache['sections'] instanceof ItemList)
 			{
 				foreach ($this->_cache['sections'] as $key => $section)
 				{
@@ -194,7 +197,7 @@ class ForumModel extends ForumModelAbstract
 
 			if (!$this->_cache['section'])
 			{
-				$this->_cache['section'] = ForumModelSection::getInstance($id, $this->get('scope'), $this->get('scope_id'));
+				$this->_cache['section'] = Section::getInstance($id, $this->get('scope'), $this->get('scope_id'));
 			}
 			if (!$this->_cache['section']->exists())
 			{
@@ -209,10 +212,10 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Get a list of sections for a forum
 	 *
-	 * @param      string  $rtrn    What data to return [count, list, first]
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return [count, list, first]
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function sections($rtrn='', $filters=array(), $clear=false)
 	{
@@ -225,7 +228,7 @@ class ForumModel extends ForumModelAbstract
 			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
-		$tbl = new ForumTableSection($this->_db);
+		$tbl = new Tables\Section($this->_db);
 
 		switch (strtolower($rtrn))
 		{
@@ -238,7 +241,7 @@ class ForumModel extends ForumModelAbstract
 			break;
 
 			case 'first':
-				if (!($this->_cache['sections_first'] instanceof ForumModelSection) || $clear)
+				if (!($this->_cache['sections_first'] instanceof Section) || $clear)
 				{
 					$filters['limit'] = 1;
 					$filters['start'] = 0;
@@ -247,7 +250,7 @@ class ForumModel extends ForumModelAbstract
 					$results = $tbl->getRecords($filters);
 					$res = isset($results[0]) ? $results[0] : null;
 
-					$this->_cache['sections_first'] = new ForumModelSection($res);
+					$this->_cache['sections_first'] = new Section($res);
 				}
 				return $this->_cache['sections_first'];
 			break;
@@ -255,20 +258,20 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['sections'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['sections'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->getRecords($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelSection($result);
+							$results[$key] = new Section($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['sections'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['sections'] = new ItemList($results);
 				}
 				return $this->_cache['sections'];
 			break;
@@ -278,9 +281,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Get a list or count of posts for a forum
 	 *
-	 * @param   string  $rtrn    Data to return
-	 * @param   array   $filters Filters to apply to the query
-	 * @param   boolean $clear   Clear cached results?
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to the query
+	 * @param   boolean  $clear    Clear cached results?
 	 * @return  mixed
 	 */
 	public function posts($rtrn='list', $filters=array(), $clear=false)
@@ -295,7 +298,7 @@ class ForumModel extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['posts.count']) || $clear)
 				{
-					$tbl = new ForumTablePost($this->_db);
+					$tbl = new Tables\Post($this->_db);
 					$this->_cache['posts.count'] = $tbl->count($filters);
 				}
 				return $this->_cache['posts.count'];
@@ -308,15 +311,15 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['posts.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['posts.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new ForumTablePost($this->_db);
+					$tbl = new Tables\Post($this->_db);
 
 					if (($results = $tbl->find($filters)))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelPost($result);
+							$results[$key] = new Post($result);
 						}
 					}
 					else
@@ -324,7 +327,7 @@ class ForumModel extends ForumModelAbstract
 						$results = array();
 					}
 
-					$this->_cache['posts.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['posts.list'] = new ItemList($results);
 				}
 
 				return $this->_cache['posts.list'];
@@ -335,10 +338,10 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param   string  $action    Action to check
-	 * @param   string  $assetType Type of asset to check
-	 * @param   integer $assetId   ID of item to check access on
-	 * @return  boolean True if authorized, false if not
+	 * @param   string   $action     Action to check
+	 * @param   string   $assetType  Type of asset to check
+	 * @param   integer  $assetId    ID of item to check access on
+	 * @return  boolean  True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='section', $assetId=null)
 	{
@@ -420,7 +423,7 @@ class ForumModel extends ForumModelAbstract
 				break;
 
 				default:
-					$this->setError(JText::sprintf('Property value of "%s" not accepted', $what));
+					$this->setError(\JText::sprintf('Property value of "%s" not accepted', $what));
 					return 0;
 				break;
 			}
@@ -432,18 +435,18 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Get the most recent post made in the forum
 	 *
-	 * @return  object ForumModelPost
+	 * @return  object
 	 */
 	public function lastActivity()
 	{
-		if (!($this->_cache['last'] instanceof ForumModelPost))
+		if (!($this->_cache['last'] instanceof Post))
 		{
-			$post = new ForumTablePost($this->_db);
+			$post = new Tables\Post($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'))))
 			{
 				$last = 0;
 			}
-			$this->_cache['last'] = new ForumModelPost($last);
+			$this->_cache['last'] = new Post($last);
 		}
 		return $this->_cache['last'];
 	}

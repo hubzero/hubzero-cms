@@ -3,9 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 
 	$juser = JFactory::getUser();
 
-	if (!($this->comment instanceof ForumModelPost))
+	if (!($this->comment instanceof \Components\Forum\Models\Post))
 	{
-		$this->comment = new ForumModelPost($this->comment);
+		$this->comment = new \Components\Forum\Models\Post($this->comment);
 	}
 
 	if ($this->comment->isReported())

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,19 +23,22 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Forum\Models;
 
 jimport('joomla.application.component.modeladmin');
 
 /**
- * Blog comment model.
+ * Category model.
+ *
+ * NOTE: This is used purely for interfacing with
+ * Joomla's permissions system.
  */
-class BlogModelComment extends JModelAdmin
+class AdminCategory extends \JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -46,12 +49,12 @@ class BlogModelComment extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = JRequest::getVar($key, array());
+		$pk = \JRequest::getVar($key, array());
 		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
@@ -59,7 +62,7 @@ class BlogModelComment extends JModelAdmin
 		$this->setState($this->getName() . '.id', $pk);
 
 		// Load the parameters.
-		$value = JComponentHelper::getParams($this->option);
+		$value = \JComponentHelper::getParams($this->option);
 		$this->setState('params', $value);
 	}
 
@@ -74,8 +77,9 @@ class BlogModelComment extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_blog.comment', 'category', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		$form = $this->loadForm('com_forum.category', 'category', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -91,9 +95,10 @@ class BlogModelComment extends JModelAdmin
 		 * @return	JTable	A database object
 		 * @since	1.7
 		 */
-	public function getTable($type = 'Comment', $prefix = 'Blog', $config = array())
+	public function getTable($type = 'Category', $prefix = 'ForumTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		$db = \JFactory::getDBO();
+		return new \Components\Forum\Tables\Category($db); //JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -105,7 +110,7 @@ class BlogModelComment extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_blog.edit.comment.data', array());
+		$data = \JFactory::getApplication()->getUserState('com_forum.edit.category.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

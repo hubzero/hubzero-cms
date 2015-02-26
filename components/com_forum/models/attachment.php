@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,48 +24,49 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
+use LogicException;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Model class for a forum post attachment
  */
-class ForumModelAttachment extends ForumModelAbstract
+class Attachment extends Base
 {
 	/**
 	 * Table class name
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	protected $_tbl_name = 'ForumTableAttachment';
+	protected $_tbl_name = '\\Components\\Forum\\Tables\\Attachment';
 
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed   $oid ID (integer), alias (string), array or object
-	 * @param   integer $pid Post ID
+	 * @param   mixed    $oid  ID (integer), alias (string), array or object
+	 * @param   integer  $pid  Post ID
 	 * @return  void
 	 */
 	public function __construct($oid=null, $pid=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);
 
-		if (!($this->_tbl instanceof JTable))
+		if (!($this->_tbl instanceof \JTable))
 		{
 			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . JText::_('Table class must be an instance of JTable.')
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
 			);
-			throw new LogicException(JText::_('Table class must be an instance of JTable.'));
+			throw new LogicException(\JText::_('Table class must be an instance of JTable.'));
 		}
 
 		if ($oid)
@@ -92,9 +93,9 @@ class ForumModelAttachment extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum post attachment model
 	 *
-	 * @param   mixed   $oid ID (int), alias (string), array, or object
-	 * @param   integer $pid Post ID
-	 * @return  object  ForumModelAttachment
+	 * @param   mixed    $oid  ID (int), alias (string), array, or object
+	 * @param   integer  $pid  Post ID
+	 * @return  object
 	 */
 	static function &getInstance($oid=0, $pid=null)
 	{

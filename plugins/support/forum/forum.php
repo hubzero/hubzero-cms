@@ -115,7 +115,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$comment = new ForumTablePost($database);
+		$comment = new \Components\Forum\Tables\Post($database);
 		$comment->load($parent);
 		if (!$comment->parent)
 		{
@@ -145,7 +145,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new ForumTablePost($database);
+		$comment = new \Components\Forum\Tables\Post($database);
 		$comment->load($refid);
 		$comment->state = 3;
 		$comment->store();
@@ -172,7 +172,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new ForumTablePost($database);
+		$comment = new \Components\Forum\Tables\Post($database);
 		$comment->load($refid);
 		$comment->state = 1;
 		$comment->store();
@@ -200,7 +200,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new ForumTablePost($database);
+		$comment = new \Components\Forum\Tables\Post($database);
 		$comment->load($refid);
 		$comment->state = 2;
 		$comment->store();

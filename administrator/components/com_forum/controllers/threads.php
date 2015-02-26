@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,74 +21,87 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Forum\Tables\Section;
+use Components\Forum\Tables\Category;
+use Components\Forum\Tables\Post;
+use Components\Forum\Models\AdminThread;
+use Components\Forum\Models\Tags;
+use Exception;
 
 /**
  * Controller class for forum threads
  */
-class ForumControllerThreads extends \Hubzero\Component\AdminController
+class Threads extends AdminController
 {
 	/**
 	 * Display all threads in a category
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'group' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.group',
+				'group',
+				-1,
+				'int'
+			),
+			'section_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.section_id',
+				'section_id',
+				-1,
+				'int'
+			),
+			'category_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.category_id',
+				'category_id',
+				-1,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'c.id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'sticky' => false,
+			'parent' => 0
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['group']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.group',
-			'group',
-			-1,
-			'int'
-		);
-		$this->view->filters['section_id'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.section_id',
-			'section_id',
-			-1,
-			'int'
-		));
-		$this->view->filters['category_id'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.category_id',
-			'category_id',
-			-1,
-			'int'
-		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'c.id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['sticky'] = false;
-		$this->view->filters['parent'] = 0;
 
 		// Get the section
-		$this->view->section = new ForumTableSection($this->database);
+		$this->view->section = new Section($this->database);
 		if (!$this->view->section->id || $this->view->filters['section_id'] <= 0)
 		{
 			// No section? Load a default blank section
@@ -103,7 +113,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Get the category
-		$this->view->category = new ForumTableCategory($this->database);
+		$this->view->category = new Category($this->database);
 		if (!$this->view->category->id || $this->view->filters['category_id'] <= 0)
 		{
 			// No category? Load a default blank catgory
@@ -155,8 +165,8 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 						}
 					break;
 					case 'course':
-						$offering = CoursesModelOffering::getInstance($s->scope_id);
-						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
+						$offering = \CoursesModelOffering::getInstance($s->scope_id);
+						$course = \CoursesModelCourse::getInstance($offering->get('course_id'));
 						$ky = $s->scope . ' (' . \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50) . ')';
 					break;
 					case 'site':
@@ -180,28 +190,20 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$default = new ForumTableSection($this->database);
+			$default = new Section($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);
 
-		$model = new ForumTablePost($this->database);
+		$model = new Post($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
 
 		// Get records
 		$this->view->results = $model->getRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -221,61 +223,62 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	public function threadTask()
 	{
 		// Get Joomla configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.thread.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'group' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.group',
+				'group',
+				-1,
+				'int'
+			),
+			'section_id' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.section_id',
+				'section_id',
+				-1,
+				'int'
+			),
+			'category_id' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.category_id',
+				'category_id',
+				-1,
+				'int'
+			),
+			'thread' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.thread',
+				'thread',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.sort',
+				'filter_order',
+				'c.id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.thread.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'sticky' => false
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.thread.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['group']    = $app->getUserStateFromRequest(
-			$this->_option . '.thread.group',
-			'group',
-			-1,
-			'int'
-		);
-		$this->view->filters['section_id'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.section_id',
-			'section_id',
-			-1,
-			'int'
-		));
-		$this->view->filters['category_id'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.category_id',
-			'category_id',
-			-1,
-			'int'
-		));
-		$this->view->filters['thread'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.thread',
-			'thread',
-			0,
-			'int'
-		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.sort',
-			'filter_order',
-			'c.id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.thread.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['sticky'] = false;
 
 		// Get the section
-		$this->view->section = new ForumTableSection($this->database);
+		$this->view->section = new Section($this->database);
 		$this->view->section->load($this->view->filters['section_id']);
 		if (!$this->view->section->id)
 		{
@@ -284,7 +287,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Get the category
-		$this->view->category = new ForumTableCategory($this->database);
+		$this->view->category = new Category($this->database);
 		$this->view->category->load($this->view->filters['category_id']);
 		if (!$this->view->category->id)
 		{
@@ -330,14 +333,14 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$default = new ForumTableSection($this->database);
+			$default = new Section($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);
 
-		$model = new ForumTablePost($this->database);
+		$model = new Post($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -347,14 +350,6 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		$model->load($this->view->filters['thread']);
 		$this->view->thread = $model;
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -379,17 +374,16 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a question response for editing
 	 *
-	 * @return	void
+	 * @param   mixed  $post
+	 * @return  void
 	 */
 	public function editTask($post=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		$parent = JRequest::getInt('parent', 0);
+		$id = \JRequest::getVar('id', array(0));
+		$parent = \JRequest::getInt('parent', 0);
 		$this->view->parent = $parent;
 		if (is_array($id))
 		{
@@ -397,15 +391,13 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Incoming
-		if (is_object($post))
+		if (!is_object($post))
 		{
-			$this->view->row = $post;
+			$post = new Post($this->database);
+			$post->load($id);
 		}
-		else
-		{
-			$this->view->row = new ForumTablePost($this->database);
-			$this->view->row->load($id);
-		}
+
+		$this->view->row = $post;
 
 		if (!$id)
 		{
@@ -428,7 +420,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Get the category
-		$this->view->category = new ForumTableCategory($this->database);
+		$this->view->category = new Category($this->database);
 		$this->view->category->load($this->view->row->category_id);
 		if (!$this->view->category->id)
 		{
@@ -452,7 +444,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Get the section
-		$this->view->section = new ForumTableSection($this->database);
+		$this->view->section = new Section($this->database);
 		$this->view->section->load($this->view->category->section_id);
 		if (!$this->view->section->id)
 		{
@@ -483,18 +475,18 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$default = new ForumTableSection($this->database);
+			$default = new Section($this->database);
 			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
 
 			$this->view->sections[] = $default;
 		}
 		asort($this->view->sections);
 
-		$m = new ForumModelAdminThread();
+		$m = new AdminThread();
 		$this->view->form = $m->getForm();
 
 		// Get tags on this article
-		$this->view->tModel = new ForumModelTags($this->view->row->id);
+		$this->view->tModel = new Tags($this->view->row->id);
 		$this->view->tags = $this->view->tModel->render('string');
 
 		// Set any errors
@@ -503,7 +495,9 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 			$this->view->setError($this->getError());
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -514,15 +508,15 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		if ($fields['id'])
 		{
-			$old = new ForumTablePost($this->database);
+			$old = new Post($this->database);
 			$old->load(intval($fields['id']));
 		}
 
@@ -531,7 +525,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
 
 		// Initiate extended database class
-		$model = new ForumTablePost($this->database);
+		$model = new Post($this->database);
 		if (!$model->bind($fields))
 		{
 			$this->addComponentMessage($model->getError(), 'error');
@@ -565,17 +559,17 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		$this->uploadTask(($model->thread ? $model->thread : $model->id), $model->id);
 
-		$msg = JText::_('COM_FORUM_THREAD_SAVED');
+		$msg = \JText::_('COM_FORUM_THREAD_SAVED');
 		$p = '';
-		if (($parent = JRequest::getInt('parent', 0)))
+		if (($parent = \JRequest::getInt('parent', 0)))
 		{
-			$msg = JText::_('COM_FORUM_POST_SAVED');
+			$msg = \JText::_('COM_FORUM_POST_SAVED');
 			$p = '&task=thread&parent=' . $parent;
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
 			$msg,
 			'message'
 		);
@@ -585,25 +579,26 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	 * Uploads a file to a given directory and returns an attachment string
 	 * that is appended to report/comment bodies
 	 *
-	 * @param      string $listdir Directory to upload files to
-	 * @return     string A string that gets appended to messages
+	 * @param   string   $listdir  Directory to upload files to
+	 * @param   integer  $post_id  Post ID
+	 * @return  string   A string that gets appended to messages
 	 */
 	public function uploadTask($listdir, $post_id)
 	{
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_FORUM_NO_UPLOAD_DIRECTORY'));
+			$this->setError(\JText::_('COM_FORUM_NO_UPLOAD_DIRECTORY'));
 			return;
 		}
 
-		$row = new ForumTableAttachment($this->database);
-		$row->load(JRequest::getInt('attachment', 0));
-		$row->description = trim(JRequest::getVar('description', ''));
+		$row = new Attachment($this->database);
+		$row->load(\JRequest::getInt('attachment', 0));
+		$row->description = trim(\JRequest::getVar('description', ''));
 		$row->post_id = $post_id;
 		$row->parent = $listdir;
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			if ($row->id)
@@ -621,7 +616,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Construct our file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/forum'), DS) . DS . $listdir;
 		if ($post_id)
 		{
 			$path .= DS . $post_id;
@@ -631,23 +626,23 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
 			}
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(JFile::getExt($file['name']));
+		$ext = strtolower(\JFile::getExt($file['name']));
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_FORUM_ERROR_UPLOADING'));
+			$this->setError(\JText::_('COM_FORUM_ERROR_UPLOADING'));
 			return;
 		}
 		else
@@ -670,23 +665,23 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Deletes one or more records and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = JRequest::getInt('category_id', 0);
+		$category = \JRequest::getInt('category_id', 0);
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
 		{
-			$thread = new ForumTablePost($this->database);
+			$thread = new Post($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -698,16 +693,15 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 				if (!$thread->delete($id))
 				{
-					JError::raiseError(500, $thread->getError());
-					return;
+					throw new Exception($thread->getError(), 500);
 				}
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			JText::_('COM_FORUM_POSTS_DELETED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+			\JText::_('COM_FORUM_POSTS_DELETED')
 		);
 	}
 
@@ -734,18 +728,18 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  $state  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = JRequest::getInt('category_id', 0);
+		$category = \JRequest::getInt('category_id', 0);
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		//attachment state
 		$attachment_state = 0;
@@ -753,11 +747,11 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? JText::_('COM_FORUM_UNPUBLISH') : JText::_('COM_FORUM_PUBLISH');
+			$action = ($state == 1) ? \JText::_('COM_FORUM_UNPUBLISH') : \JText::_('COM_FORUM_PUBLISH');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+				\JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
 			return;
@@ -766,13 +760,12 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ForumTablePost($this->database);
+			$row = new Post($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 
 			if ($state == 1)
@@ -788,15 +781,15 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		// set message
 		if ($state == 1)
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_PUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_PUBLISHED', count($ids));
 		}
 		else
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_UNPUBLISHED', count($ids));
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
 	}
@@ -804,29 +797,28 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @return  void
 	 */
 	public function stickyTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = JRequest::getInt('category_id', 0);
-		$state    = JRequest::getInt('sticky', 0);
+		$category = \JRequest::getInt('category_id', 0);
+		$state    = \JRequest::getInt('sticky', 0);
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? JText::_('COM_FORUM_MAKE_NOT_STICKY') : JText::_('COM_FORUM_MAKE_STICKY');
+			$action = ($state == 1) ? \JText::_('COM_FORUM_MAKE_NOT_STICKY') : \JText::_('COM_FORUM_MAKE_STICKY');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+				\JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
 			return;
@@ -835,28 +827,27 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ForumTablePost($this->database);
+			$row = new Post($this->database);
 			$row->load(intval($id));
 			$row->sticky = $state;
 			if (!$row->store())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 		}
 
 		// set message
 		if ($state == 1)
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_STUCK', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_STUCK', count($ids));
 		}
 		else
 		{
-			$message = JText::sprintf('COM_FORUM_ITEMS_UNSTUCK', count($ids));
+			$message = \JText::sprintf('COM_FORUM_ITEMS_UNSTUCK', count($ids));
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
 	}
@@ -864,27 +855,26 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = JRequest::getInt('category_id', 0);
-		$state    = JRequest::getInt('access', 0);
+		$category = \JRequest::getInt('category_id', 0);
+		$state    = \JRequest::getInt('access', 0);
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-				JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+				\JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
 			);
 			return;
@@ -893,35 +883,34 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ForumTablePost($this->database);
+			$row = new Post($this->database);
 			$row->load(intval($id));
 			$row->access = $state;
 			if (!$row->store())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 		}
 
 		// set message
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
-			JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
+			\JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
 	}
 
 	/**
 	 * Cancels a task and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
-		$fields = JRequest::getVar('fields', array());
+		$fields = \JRequest::getVar('fields', array());
 		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
 		);
 	}
 
@@ -929,8 +918,8 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Marks a file for deletion
 	 *
-	 * @param      integer the ID of the post which is associated with the attachment
-	 * @return     NULL
+	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
+	 * @return  void
 	 */
 	public function markForDelete($post_id)
 	{
@@ -941,7 +930,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Load attachment object
-		$row = new ForumTableAttachment($this->database);
+		$row = new Attachment($this->database);
 		$row->loadByPost($post_id);
 
 		//mark for deletion
@@ -958,8 +947,8 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 	/**
 	 * Marks a file for deletion
 	 *
-	 * @param      integer the ID of the post which is associated with the attachment
-	 * @return     NULL
+	 * @param   integer  $post_id  The ID of the post which is associated with the attachment
+	 * @return  void
 	 */
 	public function markForPublish($post_id)
 	{
@@ -970,7 +959,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		// Load attachment object
-		$row = new ForumTableAttachment($this->database);
+		$row = new Attachment($this->database);
 		$row->loadByPost($post_id);
 
 		//mark for deletion
@@ -980,6 +969,5 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		{
 			$this->setError($row->getError());
 		}
-
 	}
 }

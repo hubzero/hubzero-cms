@@ -60,7 +60,7 @@ Latest Discussions:
 <?php if (count($this->latest) > 0) : ?>
 <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
-<?php $postObj = ForumModelPost::getInstance($post->id); ?>
+<?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
 <?php echo JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a') . "\n"; ?>
 <?php echo $postObj->content('raw') . "\n"; ?>
 ----------------------------------------

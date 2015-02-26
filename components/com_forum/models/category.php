@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,33 +24,36 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Forum\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'thread.php');
+use Components\Forum\Tables;
+use Hubzero\Base\ItemList;
+use LogicException;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'thread.php');
 
 /**
  * Forum model class for a forum category
  */
-class ForumModelCategory extends ForumModelAbstract
+class Category extends Base
 {
 	/**
 	 * Table class name
 	 *
-	 * @var object
+	 * @var  object
 	 */
-	protected $_tbl_name = 'ForumTableCategory';
+	protected $_tbl_name = '\\Components\\Forum\\Tables\\Category';
 
 	/**
 	 * Container for properties
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	private $_cache = array(
 		'thread'        => null,
@@ -62,13 +65,13 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed   $oid        ID (integer), alias (string), array or object
-	 * @param   integer $section_id Section ID
+	 * @param   mixed    $oid         ID (integer), alias (string), array or object
+	 * @param   integer  $section_id  Section ID
 	 * @return  void
 	 */
 	public function __construct($oid, $section_id=0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$cls = $this->_tbl_name;
 		$this->_tbl = new $cls($this->_db);
@@ -78,7 +81,7 @@ class ForumModelCategory extends ForumModelAbstract
 			$this->_logError(
 				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
 			);
-			throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+			throw new LogicException(\JText::_('Table class must be an instance of JTable.'));
 		}
 
 		if ($oid)
@@ -104,8 +107,8 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum category model
 	 *
-	 * @param   mixed  $oid ID (int) or alias (string)
-	 * @return  object ForumModelCategory
+	 * @param   mixed  $oid  ID (int) or alias (string)
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $section_id=0)
 	{
@@ -154,8 +157,8 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Set and get a specific thread
 	 *
-	 * @param   mixed  $id ID (integer) or alias (string)
-	 * @return  object ForumModelThread
+	 * @param   mixed  $id  ID (integer) or alias (string)
+	 * @return  object
 	 */
 	public function thread($id=null)
 	{
@@ -164,7 +167,7 @@ class ForumModelCategory extends ForumModelAbstract
 		{
 			$this->_cache['thread'] = null;
 
-			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof \Hubzero\Base\ItemList))
+			if (isset($this->_cache['threads']) && ($this->_cache['threads'] instanceof ItemList))
 			{
 				foreach ($this->_cache['threads'] as $key => $thread)
 				{
@@ -178,7 +181,7 @@ class ForumModelCategory extends ForumModelAbstract
 
 			if (!$this->_cache['thread'])
 			{
-				$this->_cache['thread'] = ForumModelThread::getInstance($id);
+				$this->_cache['thread'] = Thread::getInstance($id);
 			}
 			if (!$this->_cache['thread']->exists())
 			{
@@ -192,9 +195,9 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Get a list of threads for a forum category
 	 *
-	 * @param   string  $rtrn    What data to return?
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     What data to return?
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function threads($rtrn='list', $filters=array(), $clear=false)
@@ -208,7 +211,7 @@ class ForumModelCategory extends ForumModelAbstract
 			case 'count':
 				if (!isset($this->_cache['threads_count']) || $clear)
 				{
-					$tbl = new ForumTablePost($this->_db);
+					$tbl = new Tables\Post($this->_db);
 					$this->_cache['threads_count'] = $tbl->getCount($filters);
 				}
 				return $this->_cache['threads_count'];
@@ -221,15 +224,15 @@ class ForumModelCategory extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['threads'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['threads'] instanceof ItemList) || $clear)
 				{
-					$tbl = new ForumTablePost($this->_db);
+					$tbl = new Tables\Post($this->_db);
 
 					if (($results = $tbl->getRecords($filters)))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ForumModelThread($result);
+							$results[$key] = new Thread($result);
 							$results[$key]->set('category', $this->get('alias'));
 							$results[$key]->set('section', $this->adapter()->get('section'));
 						}
@@ -239,7 +242,7 @@ class ForumModelCategory extends ForumModelAbstract
 						$results = array();
 					}
 
-					$this->_cache['threads'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['threads'] = new ItemList($results);
 				}
 
 				return $this->_cache['threads'];
@@ -250,7 +253,7 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Return a count for the type of data specified
 	 *
-	 * @param   string $what What to count
+	 * @param   string   $what  What to count
 	 * @return  integer
 	 */
 	public function count($what='threads')
@@ -290,7 +293,7 @@ class ForumModelCategory extends ForumModelAbstract
 				break;
 
 				default:
-					$this->setError(JText::sprintf('Property value of "%" not accepted', $what));
+					$this->setError(\JText::sprintf('Property value of "%" not accepted', $what));
 					return $this->_cache[$key];
 				break;
 			}
@@ -303,8 +306,8 @@ class ForumModelCategory extends ForumModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
 	 * @return  string
 	 */
 	public function link($type='', $params=null)
@@ -315,18 +318,18 @@ class ForumModelCategory extends ForumModelAbstract
 	/**
 	 * Get the most recent post
 	 *
-	 * @return  object ForumModelPost
+	 * @return  object
 	 */
 	public function lastActivity()
 	{
-		if (!($this->_cache['last'] instanceof ForumModelPost))
+		if (!($this->_cache['last'] instanceof Post))
 		{
-			$post = new ForumTablePost($this->_db);
+			$post = new Tables\Post($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'), $this->get('id'))))
 			{
 				$last = 0;
 			}
-			$this->_cache['last'] = new ForumModelPost($last);
+			$this->_cache['last'] = new Post($last);
 		}
 		return $this->_cache['last'];
 	}
@@ -343,7 +346,7 @@ class ForumModelCategory extends ForumModelAbstract
 			$this->_adapter = $this->_adapter();
 			if (!$this->get('section_alias'))
 			{
-				$this->set('section_alias', ForumModelSection::getInstance($this->get('section_id'))->get('alias'));
+				$this->set('section_alias', Section::getInstance($this->get('section_id'))->get('alias'));
 			}
 			$this->_adapter->set('section', $this->get('section_alias'));
 			$this->_adapter->set('category', $this->get('alias'));
