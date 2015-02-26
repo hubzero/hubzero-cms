@@ -172,12 +172,36 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 			JPluginHelper::importPlugin('hubzero');
 			$dispatcher = JDispatcher::getInstance();
 
-			$params = new JRegistry();
-			$params->set('onCommentMark', function($comment)
+			// get experts
+			$experts = array();
+			foreach ($this->group->get('members') as $member)
 			{
-				if (in_array($comment->creator('id'), $this->group->get('managers')))
+				// get each members roles
+				$roles = Hubzero\User\Profile::getGroupMemberRoles($member, $this->group->get('gidNumber'));
+
+				// make sure roles match pattern "Expert: ..."
+				$roles = array_map(function($role)
 				{
-					return 'marked';
+					if (preg_match('/Expert:(.*)/', $role['name']))
+					{
+						return $role['name'];
+					}
+				}, $roles);
+
+				// if we are in any expert role mark as expert
+				if (count($roles) > 0)
+				{
+					$experts[] = $member;
+				}
+			}
+
+			// mark comments for experts
+			$params = new JRegistry();
+			$params->set('onCommentMark', function($comment) use ($experts)
+			{
+				if (in_array($comment->creator('id'), $experts))
+				{
+					return 'expert';
 				}
 				return '';
 			});
@@ -193,6 +217,15 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 				$params->set('access-vote-comment', 0);
 			}
 
+			if (in_array(JFactory::getUser()->get('id'), $this->group->get('managers')))
+			{
+				$params->set('access-create-comment', 1);
+				$params->set('access-edit-comment', 1);
+				$params->set('access-delete-comment', 1);
+				$params->set('access-manage-comment', 1);
+				$params->set('access-vote-comment', 1);
+			}
+
 			$params = array(
 				$this->page,
 				'com_groups',
@@ -200,7 +233,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 				$params
 			);
 
-			$comments = $dispatcher->trigger( 'onAfterDisplayContent', $params );
+			$comments = $dispatcher->trigger('onAfterDisplayContent', $params);
 			echo $comments[0];
 		?>
 	</div>
