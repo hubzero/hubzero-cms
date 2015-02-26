@@ -91,51 +91,51 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		// Enable publication management
 		if ($this->_publishing)
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'version.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'access.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'audience.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'author.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'license.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'category.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'master.type.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-			require_once( JPATH_ROOT . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'components'.DS
 				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		}
 
 		// Database development on?
 		if (JPluginHelper::isEnabled('projects', 'databases'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 					.'com_projects' . DS . 'tables' . DS . 'project.database.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 					.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
 		}
 
 		// Logging and stats
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 				.'com_projects' . DS . 'tables' . DS . 'project.log.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 		// Include external file connection
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
 				. 'helpers' . DS . 'connect.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
 		require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );

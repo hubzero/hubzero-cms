@@ -201,7 +201,7 @@ class ProjectsHtml
 	 */
 	public static function getFileAttribs(
 		$path = '', $base_path = '',
-		$get = '', $prefix = JPATH_ROOT
+		$get = '', $prefix = PATH_APP
 	)
 	{
 		if (!$path)
@@ -718,11 +718,11 @@ class ProjectsHtml
 		$path    = trim($config->get('imagepath', '/site/projects'), DS)
 					. DS . $alias . DS . 'images';
 		$default = trim($config->get('masterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
-		$default = is_file( JPATH_ROOT . DS . $default )
+		$default = is_file( PATH_APP . DS . $default )
 					? $default
 					: NULL;
 
-		$src  = $picture && is_file( JPATH_ROOT . DS . $path . DS . $picture )
+		$src  = $picture && is_file( PATH_APP . DS . $path . DS . $picture )
 					? $path . DS . $picture
 					: $default;
 		return $src;
@@ -750,18 +750,18 @@ class ProjectsHtml
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
 
-		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
+		if (file_exists( PATH_APP . $path . DS . 'thumb.png' ))
 		{
 			return $path . DS . 'thumb.png';
 		}
 
 		if ($picture)
 		{
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+			require_once( PATH_APP . DS . 'components' . DS . 'com_projects' . DS
 				. 'helpers' . DS . 'imghandler.php' );
 
 			$thumb = self::createThumbName($picture);
-			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+			$src = $thumb && file_exists( PATH_APP . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
 		}
 		if (!$src)
 		{

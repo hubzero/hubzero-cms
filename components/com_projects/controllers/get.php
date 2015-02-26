@@ -43,10 +43,10 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 		}
 		else
