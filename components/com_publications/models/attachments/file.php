@@ -231,7 +231,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 					{
 						$num   = ProjectsHtml::getAppendedNumber($fPath);
 						$num   = $num ? $num : 1;
-						$fPath = ProjectsHtml::fixFileName($fPath, ' (' . $num . ')');
+						$fPath = ProjectsHtml::fixFileName($fPath, '-' . $num);
 					}
 					else
 					{
