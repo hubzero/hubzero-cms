@@ -1005,6 +1005,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		$this->view->revision = $this->page->revision(JRequest::getInt('version', 0));
 		if (!$this->view->revision->exists())
 		{
+			$this->view->page = $this->page;
 			$this->view->setLayout('nosuchrevision');
 
 			if ($this->getError())
