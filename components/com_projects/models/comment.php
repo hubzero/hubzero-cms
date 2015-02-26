@@ -33,10 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
 
+use Hubzero\Base\Model;
+
 /**
  * Comments model class for a project
  */
-class ProjectModelComment extends \Hubzero\Base\Model
+class ProjectModelComment extends Model
 {
 	/**
 	 * ForumTablePost

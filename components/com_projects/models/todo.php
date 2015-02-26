@@ -35,10 +35,12 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_p
 
 require_once(__DIR__ . '/todoentry.php');
 
+use Hubzero\Base\Model;
+
 /**
  * Project Todo model
  */
-class ProjectModelTodo extends \Hubzero\Base\Model
+class ProjectModelTodo extends Model
 {
 	/**
 	 * Table class name

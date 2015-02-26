@@ -34,10 +34,12 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'comment.php');
 
+use Hubzero\Base\Model;
+
 /**
  * Model class for a todo entry
  */
-class ProjectModelTodoEntry extends \Hubzero\Base\Model
+class ProjectModelTodoEntry extends Model
 {
 	/**
 	 * Table name

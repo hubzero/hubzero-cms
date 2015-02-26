@@ -33,10 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 
+use Hubzero\Base\Model;
+
 /**
  * Project model
  */
-class ProjectsModelProject extends \Hubzero\Base\Model
+class ProjectsModelProject extends Model
 {
 	/**
 	 * Table class name
@@ -318,4 +320,3 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 		return true;
 	}
 }
-
