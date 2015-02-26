@@ -1171,6 +1171,11 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			$regex = '/^[0-9a-zA-Z]+[-_0-9a-zA-Z]*$/i';
 		}
 
+		if (\Hubzero\Utility\Validate::reserved('group', $cn))
+		{
+			return false;
+		}
+
 		if (preg_match($regex, $cn))
 		{
 			if (is_numeric($cn) && intval($cn) == $cn && $cn >= 0)
