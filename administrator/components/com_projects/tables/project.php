@@ -277,10 +277,10 @@ class Project extends JTable
 			else
 			{
 				$query .= $uid
-						? " WHERE (p.state = 1 AND p.private = 0)
+						? " WHERE ((p.state = 1 AND p.private = 0)
 							OR (o.userid='$uid' AND o.status!=2 AND ((p.state = 1
 							AND p.setup_stage = " . $setup_complete . ")
-							OR (o.role = 1 AND p.owned_by_user='$uid'))) "
+							OR (o.role = 1 AND p.owned_by_user='$uid')))) "
 						: " WHERE p.state = 1 AND p.private = 0 ";
 			}
 		}
