@@ -226,7 +226,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 	public function browseTask()
 	{
 		// Incoming
-		$reviewer 	= JRequest::getVar( 'reviewer', '' );
+		$reviewer 	= JRequest::getWord( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
 		$layout	 	= 'browse';
 
@@ -264,7 +264,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Set layout
-		$this->view->setLayout( $layout );
+	//	$this->view->setLayout( $layout );
 
 		// Incoming
 		$this->view->filters 				= array();
@@ -750,7 +750,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 					}
 
 					$this->_redirect = JRoute::_('index.php?option=' . $this->_option
-						. a . 'task=view' . a . 'alias=' . $this->project->alias);
+						. '&task=view&alias=' . $this->project->alias);
 					return;
 				}
 
@@ -1314,7 +1314,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 	public function processTask()
 	{
 		// Incoming
-		$reviewer 	= JRequest::getVar( 'reviewer', '' );
+		$reviewer 	= JRequest::getWord( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
 		$comment  	= JRequest::getVar( 'comment', '' );
 		$approve  	= JRequest::getInt( 'approve', 0 );

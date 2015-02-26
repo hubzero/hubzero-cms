@@ -94,13 +94,13 @@ $this->css('theme' . $theme . '.css');
 					// Show team
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'=>'projects',
+							'folder' =>'projects',
 							'element'=>'publications',
-							'name'=>'publist'
+							'name'   =>'publist'
 						)
 					);
-					$view->option 	= $this->option;
-					$view->project 	= $this->project;
+					$view->option 	 = $this->option;
+					$view->project 	 = $this->project;
 					$view->pubconfig = $this->config;
 					echo $view->loadTemplate();
 				 } ?>
@@ -110,9 +110,9 @@ $this->css('theme' . $theme . '.css');
 					// Show files
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'=>'projects',
-							'element'=>'files',
-							'name'=>'publist'
+							'folder'  =>'projects',
+							'element' =>'files',
+							'name'    =>'publist'
 						)
 					);
 					$view->option 	= $this->option;
@@ -125,9 +125,9 @@ $this->css('theme' . $theme . '.css');
 					// Show team
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'=>'projects',
-							'element'=>'notes',
-							'name'=>'publist'
+							'folder'  =>'projects',
+							'element' =>'notes',
+							'name'    =>'publist'
 						)
 					);
 					$view->option 	= $this->option;
@@ -140,15 +140,15 @@ $this->css('theme' . $theme . '.css');
 					// Show team
 					$view = new \Hubzero\Plugin\View(
 						array(
-							'folder'=>'projects',
+							'folder' =>'projects',
 							'element'=>'team',
-							'name'=>'view',
-							'layout'=>'horizontal'
+							'name'   =>'view',
+							'layout' =>'horizontal'
 						)
 					);
 					$view->option 	= $this->option;
 					$view->project 	= $this->project;
-					$view->goto 	= 'alias='.$this->project->alias;
+					$view->goto 	= 'alias=' . $this->project->alias;
 					$view->team 	= $this->team;
 					echo $view->loadTemplate();
 				 } ?>

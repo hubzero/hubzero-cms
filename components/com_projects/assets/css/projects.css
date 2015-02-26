@@ -92,6 +92,9 @@
 		width: 20px;
 		*padding-left: 20px;
 	}
+	#browseForm .container-block {
+		padding: 2em 0 1em 0;
+	}
 /* Listings
 --------------------------------------------- */
 	table.listing {

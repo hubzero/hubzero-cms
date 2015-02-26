@@ -119,16 +119,13 @@ else
 		     ->set('option', $this->option)
 		     ->display();
 	} ?>
-			<div class="status-msg" id="status-msg">
-				<?php
-				// Display error or success message
-				if ($this->getError()) {
-					echo ('<p class="witherror">' . $this->getError().'</p>');
-				}
-				else if ($this->msg) {
-					echo ('<p>' . $this->msg . '</p>');
-				} ?>
-			</div>
+			<?php
+				// Display status message
+				$this->view('_statusmsg', 'projects')
+				     ->set('error', $this->getError())
+				     ->set('msg', $this->msg)
+				     ->display();
+			?>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
 			<?php if ($this->notification) { echo $this->notification; } ?>
 			<?php if ($this->sideContent) { ?>
