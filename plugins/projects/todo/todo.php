@@ -315,9 +315,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$pathway = $app->getPathway();
 		$pathway->addItem(
 				stripslashes($view->row->get('content')),
-				JRoute::_('index.php?option=' . $this->_option . a
-					. 'alias=' . $this->_project->alias . a . 'active=todo'
-					. a . 'action=view') . '/?todoid=' . $todoid
+				JRoute::_('index.php?option=' . $this->_option
+					. '&alias=' . $this->_project->alias . '&active=todo'
+					. '&action=view') . '/?todoid=' . $todoid
 		);
 
 		$view->uid			= $this->_uid;
@@ -391,8 +391,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Prevent resubmit
 		if ($task == 'save' && $content == '' && $newlist == '')
 		{
-			$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
-			'alias='.$this->_project->alias . a . 'active=todo');
+			$this->_referer = JRoute::_('index.php?option=' . $this->_option
+				. '&alias='.$this->_project->alias . '&active=todo');
 			return;
 		}
 
@@ -523,9 +523,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						$objAA = new ProjectActivity ( $this->_database );
 						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
 							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
-							JRoute::_('index.php?option=' . $this->_option . a .
-							'alias=' . $this->_project->alias . a . 'active=todo'. a .
-							'action=view') . '/?todoid=' . $objTD->id, 'todo', 1 );
+							JRoute::_('index.php?option=' . $this->_option
+								. '&alias=' . $this->_project->alias . '&active=todo'
+								. '&action=view&todoid=' . $objTD->id), 'todo', 1 );
 					}
 				}
 			}
@@ -564,9 +564,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		{
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
 				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
-				JRoute::_('index.php?option=' . $this->_option . a .
-				'alias=' . $this->_project->alias . a . 'active=todo' . a .
-				'action=view') . '/?todoid=' . $objTD->id, 'todo', 1);
+				JRoute::_('index.php?option=' . $this->_option
+					. '&alias=' . $this->_project->alias . '&active=todo'
+					. '&action=view&todoid=' . $objTD->id), 'todo', 1);
 			// Store activity ID
 			if ($aid)
 			{
@@ -588,15 +588,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Set redirect path
 		if ($page == 'item')
 		{
-			$url = JRoute::_('index.php?option=' . $this->_option . a .
-				'alias='.$this->_project->alias . a . 'active=todo' . a .
-				'action=view') . '/?todoid=' . $objTD->id;
+			$url = JRoute::_('index.php?option=' . $this->_option
+					. '&alias='.$this->_project->alias . '&active=todo'
+					. '&action=view&todoid=' . $objTD->id);
 		}
 		else
 		{
-			$url = JRoute::_('index.php?option=' . $this->_option . a .
-				'alias=' . $this->_project->alias . a . 'active=todo') .
-				'/?list=' . $objTD->color;
+			$url = JRoute::_('index.php?option=' . $this->_option
+				. '&alias=' . $this->_project->alias . '&active=todo&list=' . $objTD->color);
 		}
 
 		// Go to view
@@ -715,8 +714,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to todo list
-		$url  = JRoute::_('index.php?option=' . $this->_option . a .
-			   'alias=' . $this->_project->alias . a . 'active=todo');
+		$url  = JRoute::_('index.php?option=' . $this->_option
+				. '&alias=' . $this->_project->alias . '&active=todo');
 		$url .= $gobacklist ? '?list=' . $gobacklist : '';
 		$this->_referer = $url;
 		return;
@@ -816,9 +815,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set redirect path
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
-						  'alias=' . $this->_project->alias . a . 'active=todo' . a .
-						  'action=view') . '/?todoid='.$todoid;
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option
+							. '&alias=' . $this->_project->alias . '&active=todo'
+							. '&action=view&todoid=' . $todoid);
 		return;
 
 	}
@@ -889,9 +888,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set redirect path
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
-						 'alias=' . $this->_project->alias . a . 'active=todo' . a .
-						 'action=view') . '/?todoid=' . $itemid;
+		$this->_referer = JRoute::_('index.php?option=' . $this->_option
+							. '&alias=' . $this->_project->alias . '&active=todo'
+							. '&action=view&todoid=' . $itemid);
 		return;
 	}
 }
