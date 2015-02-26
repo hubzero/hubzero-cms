@@ -34,6 +34,8 @@ defined('_JEXEC') or die;
 $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
+JHTML::_('behavior.framework', true);
+
 // Load CSS
 $doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
 $doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/icons.css');
@@ -88,7 +90,7 @@ $v = $browser->major();
 					}
 					else
 					{
-						$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+						$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
 					}
 					$hideLinks= JRequest::getBool('hidemainmenu');
 					$output = array();
