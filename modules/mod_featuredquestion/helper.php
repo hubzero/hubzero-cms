@@ -31,7 +31,7 @@
 namespace Modules\Featuredresource;
 
 use Hubzero\Module\Module;
-use AnswersTableQuestion;
+use Components\Answers\Tables\Question;
 use JComponentHelper;
 use JFactory;
 
@@ -62,7 +62,7 @@ class Helper extends Module
 			'created_before' => gmdate('Y-m-d', mktime(0, 0, 0, gmdate('m'), (gmdate('d')+7), gmdate('Y'))) . ' 00:00:00'
 		);
 
-		$mp = new AnswersTableQuestion($database);
+		$mp = new Question($database);
 
 		$rows = $mp->getResults($filters);
 		if (count($rows) > 0)

@@ -246,12 +246,19 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						</tbody>
 					</table>
 					<?php
-					$this->pageNav->setAdditionalUrlParam('q', $this->filters['q']);
-					$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-					$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
-					$this->pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-					echo $this->pageNav->getListFooter();
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('q', $this->filters['q']);
+					$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$pageNav->setAdditionalUrlParam('area', $this->filters['area']);
+					$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
+					echo $pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->

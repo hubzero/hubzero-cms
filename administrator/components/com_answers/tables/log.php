@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Tables;
+
+use Hubzero\Utility\Validate;
 
 /**
  * Table class for answer votes
  */
-class AnswersTableLog extends JTable
+class Log extends \JTable
 {
 	/**
 	 * Constructor
@@ -79,26 +80,27 @@ class AnswersTableLog extends JTable
 		$this->response_id = intval($this->response_id);
 		if (!$this->response_id)
 		{
-			$this->setError(JText::_('Missing response ID'));
-			return false;
+			$this->setError(\JText::_('Missing response ID'));
 		}
 
 		$this->helpful = strtolower(trim($this->helpful));
 		if (!$this->helpful)
 		{
-			$this->setError(JText::_('Missing vote'));
-			return false;
+			$this->setError(\JText::_('Missing vote'));
 		}
 
 		if (!in_array($this->helpful, array(1, 'yes', 'like', 'up', -1, 'no', 'dislike', 'down')))
 		{
-			$this->setError(JText::_('Invalid vote'));
-			return false;
+			$this->setError(\JText::_('Invalid vote'));
 		}
 
-		if (!\Hubzero\Utility\Validate::ip($this->ip))
+		if (!Validate::ip($this->ip))
 		{
-			$this->setError(JText::_('Invalid IP address'));
+			$this->setError(\JText::_('Invalid IP address'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 

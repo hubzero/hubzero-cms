@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Models;
+
+use Components\Answers\Tables;
+use Components\Answers\Helpers;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+use Hubzero\Bank\Transaction;
+use Hubzero\Bank\Teller;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
 
 require_once(__DIR__ . '/tags.php');
-require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/base.php');
 require_once(__DIR__ . '/response.php');
 
 /**
  * Answers mdoel class for a question
  */
-class AnswersModelQuestion extends AnswersModelAbstract
+class Question extends Base
 {
 	/**
 	 * Open state
@@ -71,7 +77,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'AnswersTableQuestion';
+	protected $_tbl_name = '\\Components\\Answers\\Tables\\Question';
 
 	/**
 	 * Model context
@@ -81,7 +87,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	protected $_context = 'com_answers.question.question';
 
 	/**
-	 * AnswersModelComment
+	 * Comment
 	 *
 	 * @var object
 	 */
@@ -118,11 +124,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Returns a reference to a question model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = AnswersModelQuestion::getInstance($id);
-	 *
 	 * @param   integer $oid Question ID
-	 * @return  object  AnswersModelQuestion
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -135,7 +138,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new AnswersModelQuestion($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -184,10 +187,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		if ($this->get('reward', -1) == 1)
 		{
-			$BT = new \Hubzero\Bank\Transaction($this->_db);
+			$BT = new Transaction($this->_db);
 			$this->set('reward', $BT->getAmount('answers', 'hold', $this->get('id')));
 
-			$AE = new AnswersEconomy($this->_db);
+			$AE = new Economy($this->_db);
 
 			$this->set('marketvalue', round($AE->calculate_marketvalue($this->get('id'), 'maxaward')));
 			$this->set('maxaward', round(2* $this->get('marketvalue', 0)/3 + $this->get('reward', 0)));
@@ -214,7 +217,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			$this->_comment = null;
 
 			// See if we already have a list of comments that we can look through
-			if ($this->_comments instanceof \Hubzero\Base\ItemList)
+			if ($this->_comments instanceof ItemList)
 			{
 				foreach ($this->_comments as $key => $comment)
 				{
@@ -230,7 +233,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			if (!$this->_comment)
 			{
 				// Load the record
-				$this->_comment = AnswersModelComment::getInstance($id);
+				$this->_comment = Comment::getInstance($id);
 			}
 		}
 		return $this->_comment;
@@ -246,7 +249,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new AnswersTableResponse($this->_db);
+		$tbl = new Tables\Response($this->_db);
 
 		if (!isset($filters['question_id']))
 		{
@@ -302,20 +305,20 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new AnswersModelResponse($result);
+							$results[$key] = new Response($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -331,7 +334,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function chosen($rtrn='list', $filters=array())
 	{
-		$tbl = new AnswersTableResponse($this->_db);
+		$tbl = new Tables\Response($this->_db);
 
 		if (!isset($filters['question_id']))
 		{
@@ -355,20 +358,20 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof \Hubzero\Base\ItemList))
+				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof ItemList))
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new AnswersModelResponse($result);
+							$results[$key] = new Response($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->set('chosen', new \Hubzero\Base\ItemList($results));
+					$this->set('chosen', new ItemList($results));
 				}
 				return $this->get('chosen');
 			break;
@@ -402,7 +405,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			}
 		}
 
-		$cloud = new AnswersModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->render($as, array('admin' => $admin));
 	}
@@ -414,7 +417,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new AnswersModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -426,7 +429,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 */
 	public function addTag($tag=null, $user_id=0, $admin=0)
 	{
-		$cloud = new AnswersModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->add($tag, $user_id, $admin);
 	}
@@ -570,7 +573,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -634,7 +637,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -650,13 +653,13 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+			$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
 
 			// See if a person from this IP has already voted in the last week
-			$aql = new AnswersTableQuestionsLog($this->_db);
+			$aql = new Tables\QuestionsLog($this->_db);
 			$this->set(
 				'voted',
-				$aql->checkVote($this->get('id'), JRequest::ip(), $juser->get('id'))
+				$aql->checkVote($this->get('id'), \JRequest::ip(), $juser->get('id'))
 			);
 		}
 
@@ -674,32 +677,32 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		if (!$this->exists())
 		{
-			$this->setError(JText::_('No record found'));
+			$this->setError(\JText::_('No record found'));
 			return false;
 		}
 
 		if (!$vote)
 		{
-			$this->setError(JText::_('No vote provided'));
+			$this->setError(\JText::_('No vote provided'));
 			return false;
 		}
 
-		$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+		$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
 
-		$al = new AnswersTableQuestionsLog($this->_db);
+		$al = new Tables\QuestionsLog($this->_db);
 		$al->question_id = $this->get('id');
-		$al->ip          = JRequest::ip();
+		$al->ip          = \JRequest::ip();
 		$al->voter       = $juser->get('id');
 
 		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
 		{
-			$this->setError(JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
+			$this->setError(\JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
 			return false;
 		}
 
 		if ($this->get('created_by') == $juser->get('username'))
 		{
-			$this->setError(JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			$this->setError(\JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
 			return false;
 		}
 
@@ -736,15 +739,15 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	{
 		if (!$answer_id)
 		{
-			$this->setError(JText::_('No answer ID provided.'));
+			$this->setError(\JText::_('No answer ID provided.'));
 			return false;
 		}
 
 		// Load the answer
-		$answer = new AnswersModelResponse($answer_id);
+		$answer = new Response($answer_id);
 		if (!$answer->exists())
 		{
-			$this->setError(JText::_('Answer not found.'));
+			$this->setError(\JText::_('Answer not found.'));
 			return false;
 		}
 		// Mark it at the chosen one
@@ -764,20 +767,20 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			// Accepted answer is same person as question submitter?
 			if ($this->get('created_by') == $answer->get('created_by'))
 			{
-				$BT = new \Hubzero\Bank\Transaction($this->_db);
+				$BT = new Transaction($this->_db);
 				$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 
 				// Remove hold
 				$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 				// Make credit adjustment
-				$BTL_Q = new \Hubzero\Bank\Teller($this->_db, JFactory::getUser()->get('id'));
+				$BTL_Q = new Teller($this->_db, \JFactory::getUser()->get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
 			else
 			{
 				// Calculate and distribute earned points
-				$AE = new AnswersEconomy($this->_db);
+				$AE = new Economy($this->_db);
 				$AE->distribute_points(
 					$this->get('id'),
 					$this->get('created_by'),
@@ -805,14 +808,14 @@ class AnswersModelQuestion extends AnswersModelAbstract
 		{
 			// Adjust credits
 			// Remove hold
-			$BT = new \Hubzero\Bank\Transaction($this->_db);
+			$BT = new Transaction($this->_db);
 			$reward = $BT->getAmount('answers', 'hold', $this->get('id'));
 			$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 			// Make credit adjustment
 			if (is_object($this->creator()))
 			{
-				$BTL = new \Hubzero\Bank\Teller($this->_db, $this->creator('id'));
+				$BTL = new Teller($this->_db, $this->creator('id'));
 				$credit = $BTL->credit_summary();
 				$adjusted = $credit - $reward;
 				$BTL->credit_adjustment($adjusted);
@@ -825,7 +828,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return  boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{

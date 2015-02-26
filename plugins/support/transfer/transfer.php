@@ -119,7 +119,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 			// Transfer from a Question
 			case 'question':
-				$row = new AnswersModelQuestion($from_id);
+				$row = new \Components\Answers\Models\Question($from_id);
 
 				if ($row->exists())
 				{
@@ -222,7 +222,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'question':
-				$newrow = new AnswersModelQuestion();
+				$newrow = new \Components\Answers\Models\Question();
 				$newrow->set('subject', $subject);
 				$newrow->set('question', $body);
 				$newrow->set('created', $today);

@@ -231,7 +231,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 
-				$aq = new AnswersTableQuestion($this->database);
+				$aq = new \Components\Answers\Tables\Question($this->database);
 				$status['questions'] = $aq->getCount(array(
 					'filterby' => 'all',
 					'sortby'   => 'date',

@@ -131,10 +131,10 @@ class Helper extends Module
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
-		$aq = new \AnswersTableQuestion($database);
+		$aq = new \Components\Answers\Tables\Question($database);
 		if ($this->banking)
 		{
-			$AE = new \AnswersEconomy($database);
+			$AE = new \Components\Answers\Helpers\Economy($database);
 			$BT = new \Hubzero\Bank\Transaction($database);
 		}
 
@@ -208,7 +208,7 @@ class Helper extends Module
 
 		foreach ($results as $k => $result)
 		{
-			$results[$k] = new \AnswersModelQuestion($result);
+			$results[$k] = new \Components\Answers\Models\Question($result);
 		}
 
 		return $results;

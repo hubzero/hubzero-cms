@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,62 +24,64 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Models;
 
-require_once(__DIR__ . '/abstract.php');
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+
+require_once(__DIR__ . '/base.php');
 
 /**
  * Answers model for a comment
  */
-class AnswersModelComment extends AnswersModelAbstract
+class Comment extends Base
 {
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl_name = '\\Hubzero\\Item\\Comment';
 
 	/**
 	 * Model context
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_context = 'com_answers.comment.content';
 
 	/**
 	 * \Hubzero\Base\ItemList
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_comments = null;
 
 	/**
 	 * Comment count
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $_comments_count = null;
 
 	/**
 	 * URL for this entry
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_base = null;
 
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -133,7 +135,7 @@ class AnswersModelComment extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -148,7 +150,7 @@ class AnswersModelComment extends AnswersModelAbstract
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new AnswersModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('question_id', $this->get('question_id'));
 						}
 					}
@@ -156,7 +158,7 @@ class AnswersModelComment extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -166,9 +168,9 @@ class AnswersModelComment extends AnswersModelAbstract
 	/**
 	 * Get the contents of this entry in various formats
 	 *
-	 * @param      string  $as      Format to return state in [raw, parsed]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string   $as       Format to return state in [raw, parsed]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -220,7 +222,7 @@ class AnswersModelComment extends AnswersModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -230,8 +232,8 @@ class AnswersModelComment extends AnswersModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -239,7 +241,7 @@ class AnswersModelComment extends AnswersModelAbstract
 		{
 			if (!$this->get('question_id'))
 			{
-				$answer = AnswersModelResponse::getInstance($this->get('item_id'));
+				$answer = Response::getInstance($this->get('item_id'));
 
 				$this->set('question_id', $answer->get('question_id'));
 			}
@@ -278,7 +280,7 @@ class AnswersModelComment extends AnswersModelAbstract
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{

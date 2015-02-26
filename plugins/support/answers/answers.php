@@ -231,11 +231,11 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'answer':
-				$comment = new AnswersTableResponse($database);
+				$comment = new \Components\Answers\Tables\Response($database);
 			break;
 
 			case 'question':
-				$comment = new AnswersTableQuestion($database);
+				$comment = new \Components\Answers\Tables\Question($database);
 			break;
 
 			case 'answercomment':
@@ -272,12 +272,12 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'answer':
-				$comment = new AnswersTableResponse($database);
+				$comment = new \Components\Answers\Tables\Response($database);
 				$state = 0;
 			break;
 
 			case 'question':
-				$comment = new AnswersTableQuestion($database);
+				$comment = new \Components\Answers\Tables\Question($database);
 			break;
 
 			case 'answercomment':

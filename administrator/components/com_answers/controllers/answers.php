@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,18 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Answers\Models\Question;
+use Components\Answers\Models\Response;
+use Components\Answers\Tables;
+use Exception;
 
 /**
  * Controller class for question responses
  */
-class AnswersControllerAnswers extends \Hubzero\Component\AdminController
+class Answers extends AdminController
 {
 	/**
 	 * Execute a task
@@ -43,7 +48,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
+		$this->banking = \JComponentHelper::getParams('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
@@ -60,8 +65,8 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Filters
 		$this->view->filters = array(
@@ -103,9 +108,9 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 			))
 		);
 
-		$this->view->question = new AnswersModelQuestion($this->view->filters['question_id']);
+		$this->view->question = new Question($this->view->filters['question_id']);
 
-		$ar = new AnswersTableResponse($this->database);
+		$ar = new Tables\Response($this->database);
 
 		// Get a record count
 		$this->view->total   = $ar->find('count', $this->view->filters);
@@ -118,17 +123,9 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		{
 			foreach ($this->view->results as $key => $result)
 			{
-				$this->view->results[$key] = new AnswersModelResponse($result);
+				$this->view->results[$key] = new Response($result);
 			}
 		}
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -143,27 +140,27 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a question response for editing
 	 *
-	 * @param   object  $row  AnswersModelResponse
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$qid = JRequest::getInt('qid', 0);
+		$qid = \JRequest::getInt('qid', 0);
 
 		if (!is_object($row))
 		{
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			$id = (is_array($id) && !empty($id)) ? $id[0] : $id;
 
-			$row = new AnswersModelResponse($id);
+			$row = new Response($id);
 		}
 
 		$qid = $qid ?: $row->get('question_id');
 
-		$this->view->set('question', new AnswersModelQuestion($qid));
+		$this->view->set('question', new Question($qid));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -186,13 +183,13 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$answer = JRequest::getVar('answer', array(), 'post', 'none', 2);
+		$answer = \JRequest::getVar('answer', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new AnswersModelResponse(intval($answer['id']));
+		$row = new Response(intval($answer['id']));
 		if (!$row->bind($answer))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -219,8 +216,8 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_ANSWERS_ANSWER_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_ANSWERS_ANSWER_SAVED')
 		);
 	}
 
@@ -232,10 +229,10 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -244,18 +241,17 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 			// Loop through each ID
 			foreach ($ids as $id)
 			{
-				$ar = new AnswersModelResponse(intval($id));
+				$ar = new Response(intval($id));
 				if (!$ar->delete())
 				{
-					JError::raiseError(500, $ar->getError());
-					return;
+					throw new Exception($ar->getError(), 500);
 				}
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . JRequest::getInt('qid', 0), false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . JRequest::getInt('qid', 0), false)
 		);
 	}
 
@@ -267,11 +263,11 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	public function acceptTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$qid = JRequest::getInt('qid', 0);
-		$id = JRequest::getVar('id', array(0));
+		$qid = \JRequest::getInt('qid', 0);
+		$id  = \JRequest::getVar('id', array(0));
 
 		if (!is_array($id))
 		{
@@ -286,8 +282,8 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 			$action = ($publish == 1) ? 'accept' : 'reject';
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action),
 				'error'
 			);
 			return;
@@ -295,18 +291,18 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		else if (count($id) > 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'),
 				'error'
 			);
 			return;
 		}
 
-		$ar = new AnswersModelResponse($id[0]);
+		$ar = new Response($id[0]);
 		if (!$ar->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -314,12 +310,12 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		if ($publish == 1)
 		{
 			// Unmark all other entries
-			$tbl = new AnswersTableResponse($this->database);
+			$tbl = new Tables\Response($this->database);
 			if ($results = $tbl->find('list', array('question_id' => $ar->get('question_id'))))
 			{
 				foreach ($results as $result)
 				{
-					$result = new AnswersModelResponse($result);
+					$result = new Response($result);
 					if ($result->get('state') != 0 && $result->get('state') != 1)
 					{
 						continue;
@@ -335,7 +331,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		if (!$ar->store(false))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$ar->getError(),
 				'error'
 			);
@@ -345,28 +341,16 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		// Set message
 		if ($publish == '1')
 		{
-			$message = JText::_('COM_ANSWERS_ANSWER_ACCEPTED');
+			$message = \JText::_('COM_ANSWERS_ANSWER_ACCEPTED');
 		}
 		else if ($publish == '0')
 		{
-			$message = JText::_('COM_ANSWERS_ANSWER_REJECTED');
+			$message = \JText::_('COM_ANSWERS_ANSWER_REJECTED');
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
-		);
-	}
-
-	/**
-	 * Cancel a task and redirect to default view
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -378,24 +362,23 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	public function resetTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$answer = JRequest::getVar('answer', array());
+		$answer = \JRequest::getVar('answer', array());
 
 		// Reset some values
-		$model = new AnswersModelResponse(intval($answer['id']));
+		$model = new Response(intval($answer['id']));
 
 		if (!$model->reset())
 		{
-			JError::raiseError(500, $ar->getError());
-			return;
+			throw new Exception($ar->getError(), 500);
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_ANSWERS_VOTE_LOG_RESET')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_ANSWERS_VOTE_LOG_RESET')
 		);
 	}
 }

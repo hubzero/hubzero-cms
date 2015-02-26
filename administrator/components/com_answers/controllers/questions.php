@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,18 +23,22 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Answers\Models\Question;
+use Components\Answers\Tables;
+use Exception;
 
 /**
  * Controller class for questions
  */
-class AnswersControllerQuestions extends \Hubzero\Component\AdminController
+class Questions extends AdminController
 {
 	/**
 	 * Execute a task
@@ -43,7 +47,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
+		$this->banking = \JComponentHelper::getParams('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
@@ -61,55 +65,54 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['tag']      = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.tag',
-			'tag',
-			''
-		);
-		$this->view->filters['q']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.q',
-			'q',
-			''
-		);
-		$this->view->filters['filterby'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.filterby',
-			'filterby',
-			'all'
+		$this->view->filters = array(
+			'tag' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.tag',
+				'tag',
+				''
+			),
+			'q' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.q',
+				'q',
+				''
+			),
+			'filterby' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.filterby',
+				'filterby',
+				'all'
+			),
+			// Paging
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Sorting
+			'sortby' => '',
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			)
 		);
 
-		// Paging
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		// Sorting
-		$this->view->filters['sortby']   = '';
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'created'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-
-		$aq = new AnswersTableQuestion($this->database);
+		$aq = new Tables\Question($this->database);
 
 		// Get a record count
 		$this->view->total = $aq->getCount($this->view->filters);
@@ -122,17 +125,9 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		{
 			foreach ($this->view->results as $key => $result)
 			{
-				$this->view->results[$key] = new AnswersModelQuestion($result);
+				$this->view->results[$key] = new Question($result);
 			}
 		}
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -147,21 +142,21 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a question for editing
 	 *
-	 * @param   object  $row  AnswersModelResponse
+	 * @param   object  $row
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Load object
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
-			$row = new AnswersModelQuestion($id);
+			$row = new Question($id);
 		}
 
 		// Set any errors
@@ -185,13 +180,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming data
-		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('question', array(), 'post', 'none', 2);
 
 		// Initiate model
-		$row = new AnswersModelQuestion($fields['id']);
+		$row = new Question($fields['id']);
 
 		if (!$row->bind($fields))
 		{
@@ -203,7 +198,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Ensure we have at least one tag
 		if (!isset($fields['tags']) || !$fields['tags'])
 		{
-			$this->addComponentMessage(JText::_('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'), 'error');
+			$this->addComponentMessage(\JText::_('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -229,8 +224,8 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 		// Redirect back to the full questions list
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_ANSWERS_QUESTION_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_ANSWERS_QUESTION_SAVED')
 		);
 	}
 
@@ -242,16 +237,16 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -259,7 +254,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the record
-			$aq = new AnswersModelQuestion(intval($id));
+			$aq = new Question(intval($id));
 
 			// Delete the question
 			if (!$aq->delete())
@@ -272,7 +267,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		if ($this->getError())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
 			);
@@ -280,8 +275,8 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_ANSWERS_QUESTION_DELETED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_ANSWERS_QUESTION_DELETED')
 		);
 	}
 
@@ -293,10 +288,10 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = ($this->getTask() == 'close') ? 1 : 0;
@@ -304,11 +299,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($publish == 1) ? JText::_('COM_ANSWERS_SET_STATE_CLOSE') : JText::_('COM_ANSWERS_SET_STATE_OPEN');
+			$action = ($publish == 1) ? \JText::_('COM_ANSWERS_SET_STATE_CLOSE') : \JText::_('COM_ANSWERS_SET_STATE_OPEN');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
 				'error'
 			);
 			return;
@@ -317,7 +312,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$aq = new AnswersModelQuestion(intval($id));
+			$aq = new Question(intval($id));
 			if (!$aq->exists())
 			{
 				continue;
@@ -331,36 +326,23 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 			if (!$aq->store())
 			{
-				JError::raiseError(500, $aq->getError());
-				return;
+				throw new Exception($aq->getError(), 500);
 			}
 		}
 
 		// Set message
 		if ($publish == 1)
 		{
-			$message = JText::sprintf('COM_ANSWERS_QUESTIONS_CLOSED', count($ids));
+			$message = \JText::sprintf('COM_ANSWERS_QUESTIONS_CLOSED', count($ids));
 		}
 		else if ($publish == 0)
 		{
-			$message = JText::sprintf('COM_ANSWERS_QUESTIONS_OPENED', count($ids));
+			$message = \JText::sprintf('COM_ANSWERS_QUESTIONS_OPENED', count($ids));
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
-		);
-	}
-
-	/**
-	 * Cancel a task and redirect to default view
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

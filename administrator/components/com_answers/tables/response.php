@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,81 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Tables;
 
 /**
  * Table class for answers response
  */
-class AnswersTableResponse extends JTable
+class Response extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $question_id        = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $answer     = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $helpful    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $nothelpful = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state      = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $anonymous  = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -120,18 +56,21 @@ class AnswersTableResponse extends JTable
 		$this->question_id = intval($this->question_id);
 		if (!$this->question_id)
 		{
-			$this->setError(JText::_('Missing question ID.'));
-			return false;
+			$this->setError(\JText::_('Missing question ID.'));
 		}
 
 		$this->answer = trim($this->answer);
 		if ($this->answer == '')
 		{
-			$this->setError(JText::_('Your response must contain text.'));
+			$this->setError(\JText::_('Your response must contain text.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
-		$this->answer = nl2br($this->answer);
 
+		$this->answer     = nl2br($this->answer);
 		$this->helpful    = intval($this->helpful);
 		$this->nothelpful = intval($this->nothelpful);
 		$this->state      = intval($this->state);
@@ -142,8 +81,8 @@ class AnswersTableResponse extends JTable
 			$this->anonymous = 1;
 		}
 
-		$this->created    = $this->created    ?: JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
+		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+		$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -156,10 +95,10 @@ class AnswersTableResponse extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-		$ab = new ReportAbuse($this->_db);
+		$ab = new \ReportAbuse($this->_db);
 
 		if (isset($filters['question_id']))
 		{

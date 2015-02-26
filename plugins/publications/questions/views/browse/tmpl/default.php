@@ -60,7 +60,7 @@ $this->css();
 				break;
 			}
 
-			$row = new AnswersModelQuestion($row);
+			$row = new \Components\Answers\Models\Question($row);
 
 			$i++;
 

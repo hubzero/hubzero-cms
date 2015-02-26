@@ -32,9 +32,7 @@
 namespace Modules\RecentQuestions;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JRequest;
-use AnswersModelQuestion;
+use Components\Answers\Models\Question;
 
 /**
  * Module class for displaying recent questions
@@ -48,7 +46,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$this->database = JFactory::getDBO();
+		$this->database = \JFactory::getDBO();
 
 		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
@@ -64,8 +62,8 @@ class Helper extends Module
 			default:       $st = ""; break;
 		}
 
-		$this->tag   = JRequest::getVar('tag', '', 'get');
-		$this->style = JRequest::getVar('style', '', 'get');
+		$this->tag   = \JRequest::getVar('tag', '', 'get');
+		$this->style = \JRequest::getVar('style', '', 'get');
 
 		if ($this->tag)
 		{
@@ -98,7 +96,7 @@ class Helper extends Module
 
 			foreach ($this->rows as $k => $row)
 			{
-				$this->rows[$k] = new AnswersModelQuestion($row);
+				$this->rows[$k] = new Question($row);
 			}
 		}
 
@@ -119,11 +117,11 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
 			return;
 		}
 

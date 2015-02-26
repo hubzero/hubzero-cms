@@ -111,7 +111,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this tool
-		$this->a = new AnswersTableQuestion($this->database);
+		$this->a = new \Components\Answers\Tables\Question($this->database);
 
 		$this->filters = array(
 			'limit'    => JRequest::getInt('limit', 0),
@@ -196,12 +196,10 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$view->rows     = $this->a->getResults($this->filters);
 		$view->count    = $this->count;
 		$view->limit    = $this->params->get('display_limit', 10);
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -210,7 +208,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for adding a question
 	 *
-	 * @param      object $row AnswersTableQuestion
+	 * @param      object $row
 	 * @return     string
 	 */
 	private function _new($row=null)
@@ -248,7 +246,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->row  = new AnswersModelQuestion(0);
+			$view->row  = new \Components\Answers\Models\Question(0);
 		}
 		$view->tag      = $this->filters['tag'];
 
@@ -266,12 +264,9 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$view->funds = ($funds > 0) ? $funds : 0;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -320,7 +315,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Initiate class and bind posted items to database fields
 		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
-		$row = new AnswersModelQuestion($fields['id']);
+		$row = new \Components\Answers\Models\Question($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());

@@ -142,7 +142,7 @@ class AnswersControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new AnswersModelQuestion();
+		$model = new \Components\Answers\Models\Question();
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),

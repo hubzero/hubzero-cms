@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Tables;
+
+use Components\Answers\Models\Tags;
 
 /**
  * Table class for a question
  */
-class AnswersTableQuestion extends JTable
+class Question extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,13 +58,13 @@ class AnswersTableQuestion extends JTable
 		$this->subject = trim($this->subject);
 		if ($this->subject == '')
 		{
-			$this->setError(JText::_('Your question must contain a subject.'));
+			$this->setError(\JText::_('Your question must contain a subject.'));
 			return false;
 		}
 
 		// Updating entry
-		$this->created    = $this->created    ?: JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
+		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+		$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -76,7 +77,7 @@ class AnswersTableQuestion extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// build body of query
 		$query  = "";
@@ -135,7 +136,7 @@ class AnswersTableQuestion extends JTable
 		if ($filters['tag'])
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
-			$cloud = new AnswersModelTags();
+			$cloud = new Tags();
 			$tags = $cloud->parse($filters['tag']);
 
 			$query .= "AND (
@@ -207,7 +208,7 @@ class AnswersTableQuestion extends JTable
 	 */
 	public function getResults($filters=array())
 	{
-		$ar = new AnswersTableResponse($this->_db);
+		$ar = new Response($this->_db);
 
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.question_id=C.id) AS rcount";
@@ -229,8 +230,7 @@ class AnswersTableQuestion extends JTable
 	 */
 	public function getQuestionsByTag($tag, $limit=100)
 	{
-		$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount";
-		//$query.= "\n FROM $this->_tbl AS a, `#__answers_tags` AS t, `#__tags` AS tg";
+		$query  = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount";
 		$query .= " FROM $this->_tbl AS a, #__tags_object AS RTA ";
 		$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag=" . $this->_db->quote(strtolower($tag)) . " OR TA.raw_tag=" . $this->_db->quote($tag) . ")";

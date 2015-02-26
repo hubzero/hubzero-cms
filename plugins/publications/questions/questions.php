@@ -108,7 +108,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 
 		// Get all the questions for this publication
-		$this->a = new AnswersTableQuestion( $this->database );
+		$this->a = new \Components\Answers\Tables\Question($this->database);
 
 		$this->filters = array();
 		$this->filters['limit']    	= JRequest::getInt( 'limit', 0 );
@@ -212,7 +212,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for adding a question
 	 *
-	 * @param      object $row AnswersTableQuestion
+	 * @param      object $row
 	 * @return     string
 	 */
 	private function _new($row=null)
@@ -249,7 +249,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->row  = new AnswersModelQuestion(0);
+			$view->row  = new \Components\Answers\Models\Question(0);
 		}
 		$view->tag      = $this->filters['tag'];
 
@@ -319,7 +319,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Initiate class and bind posted items to database fields
 		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
-		$row = new AnswersModelQuestion($fields['id']);
+		$row = new \Components\Answers\Models\Question($fields['id']);
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
@@ -361,7 +361,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 
 		// Add the tag to link to the publication
 		$identifier = $this->publication->alias ? $this->publication->alias : $this->publication->id;
-		$tag      	= $this->publication->cat_alias == 'tool' ?  'tool' . $identifier : 'publication' . $identifier;
+		$tag        = $this->publication->cat_alias == 'tool' ?  'tool' . $identifier : 'publication' . $identifier;
 
 		$row->addTag($tag, $this->juser->get('id'), ($this->publication->cat_alias == 'tool' ? 0 : 1));
 

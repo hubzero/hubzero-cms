@@ -102,7 +102,7 @@ class Helper extends Module
 						// Get open questions
 						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-						$aq = new \AnswersTableQuestion($database);
+						$aq = new \Components\Answers\Tables\Question($database);
 
 						$filters = array(
 							'limit'    => $limit,

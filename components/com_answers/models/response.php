@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,29 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Answers\Models;
+
+use Components\Answers\Tables;
+use Components\Answers\Helpers;
+use Hubzero\Base\ItemList;
+use Hubzero\Item;
+use Hubzero\Utility\String;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-require_once(__DIR__ . '/abstract.php');
+require_once(__DIR__ . '/base.php');
 require_once(__DIR__ . '/comment.php');
 
 /**
  * Answers model for a question response
  */
-class AnswersModelResponse extends AnswersModelAbstract
+class Response extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'AnswersTableResponse';
+	protected $_tbl_name = '\\Components\\Answers\\Tables\\Response';
 
 	/**
 	 * Model context
@@ -136,9 +141,9 @@ class AnswersModelResponse extends AnswersModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_comments instanceof ItemList) || $clear)
 				{
-					$tbl = new \Hubzero\Item\Comment($this->_db);
+					$tbl = new Item\Comment($this->_db);
 
 					if ($this->get('replies', null) !== null)
 					{
@@ -153,7 +158,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new AnswersModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('question_id', $this->get('question_id'));
 						}
 					}
@@ -161,7 +166,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -225,7 +230,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 
 		return $content;
@@ -302,7 +307,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 
 		// Clear the history of "helpful" clicks
-		$al = new AnswersTableLog($this->_db);
+		$al = new Tables\Log($this->_db);
 		if (!$al->deleteLog($this->get('id')))
 		{
 			$this->setError($al->getError());
@@ -320,10 +325,10 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 */
 	public function accept($question_id)
 	{
-		/*$question = new AnswersModelQuestion($question_id);
+		/*$question = new Question($question_id);
 		if (!$question->exists())
 		{
-			$this->setError(JText::_('Question not found.'));
+			$this->setError(\JText::_('Question not found.'));
 			return false;
 		}
 		// Mark it at the chosen one
@@ -351,10 +356,10 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 */
 	public function reject($question_id)
 	{
-		/*$question = new AnswersModelQuestion($question_id);
+		/*$question = new Question($question_id);
 		if (!$question->exists())
 		{
-			$this->setError(JText::_('Question not found.'));
+			$this->setError(\JText::_('Question not found.'));
 			return false;
 		}
 		// Mark it at the chosen one
@@ -387,9 +392,9 @@ class AnswersModelResponse extends AnswersModelAbstract
 		// If marked as chosen answer
 		if ($res && $this->get('state') == 1)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+			require_once(__DIR__ . DS . 'question.php');
 
-			$aq = new AnswersModelQuestion($this->get('question_id'));
+			$aq = new Question($this->get('question_id'));
 			if ($aq->exists() && $aq->get('state') != 1)
 			{
 				$aq->set('state', 1);
@@ -399,12 +404,12 @@ class AnswersModelResponse extends AnswersModelAbstract
 				if ($aq->config('banking'))
 				{
 					// Calculate and distribute earned points
-					$AE = new AnswersEconomy($this->_db);
+					$AE = new Economy($this->_db);
 					$AE->distribute_points($this->get('question_id'), $aq->get('created_by'), $this->get('created_by'), 'closure');
 
 					// Load the plugins
-					JPluginHelper::importPlugin('xmessage');
-					$dispatcher = JDispatcher::getInstance();
+					\JPluginHelper::importPlugin('xmessage');
+					$dispatcher = \JDispatcher::getInstance();
 
 					// Call the plugin
 					if (
@@ -416,7 +421,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 						))
 					)
 					{
-						$this->setError(JText::_('Failed to remove alert.'));
+						$this->setError(\JText::_('Failed to remove alert.'));
 					}
 				}
 				*/
@@ -456,7 +461,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 		}
 
 		// Clear the history of "helpful" clicks
-		$al = new AnswersTableLog($this->_db);
+		$al = new Tables\Log($this->_db);
 		if (!$al->deleteLog($this->get('id')))
 		{
 			$this->setError($al->getError());
