@@ -868,7 +868,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		{
 			if ($session->get('badpassword','0') || $session->get('expiredpassword','0'))
 			{
-				$this->_redirect = $this->config->get('LoginReturn', '/members/myaccount');
 				$session->set('badpassword','0');
 				$session->set('expiredpassword','0');
 			}
