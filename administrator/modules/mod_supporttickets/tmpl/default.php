@@ -143,19 +143,19 @@ JHTML::_('behavior.chart');
 			<tbody>
 				<tr>
 					<td class="major">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&show=' . $this->topened[0]->id); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[0]->count); ?>
 							<span><?php echo JText::_('MOD_SUPPORTTICKETS_OPEN'); ?></span>
 						</a>
 					</td>
 					<td class="critical">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&show=' . $this->topened[2]->id); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[2]->count); ?>
 							<span><?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
 						</a>
 					</td>
 					<td class="newt">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&show=' . $this->topened[1]->id); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[1]->count); ?>
 							<span><?php echo JText::_('MOD_SUPPORTTICKETS_NEW'); ?></span>
 						</a>
