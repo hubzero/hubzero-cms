@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b365b4e9a614f3d0fb9f7c45f6c8df8a",
+    "hash": "a6649670932ed8ba7ac68e251e547a42",
     "packages": [
         {
             "name": "aferrandini/phpqrcode",
@@ -253,6 +253,48 @@
                 "sdk"
             ],
             "time": "2014-08-25 18:58:37"
+        },
+        {
+            "name": "google/apiclient",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/google/google-api-php-client.git",
+                "reference": "9c35bbbbaf04a5236d763560dab1e2f6e672a724"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/9c35bbbbaf04a5236d763560dab1e2f6e672a724",
+                "reference": "9c35bbbbaf04a5236d763560dab1e2f6e672a724",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "Client library for Google APIs",
+            "homepage": "http://developers.google.com/api-client-library/php",
+            "keywords": [
+                "google"
+            ],
+            "time": "2014-11-25 14:35:03"
         },
         {
             "name": "guzzle/guzzle",

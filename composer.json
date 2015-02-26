@@ -69,7 +69,8 @@
         "symfony/yaml": "2.5.*",
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "dev-master",
-        "aferrandini/phpqrcode": "1.0.1"
+        "aferrandini/phpqrcode": "1.0.1",
+        "google/apiclient": "1.1.*"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
