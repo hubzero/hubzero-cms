@@ -228,7 +228,6 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		// Incoming
 		$reviewer 	= JRequest::getWord( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
-		$layout	 	= 'browse';
 
 		// Set the pathway
 		$this->_task = 'browse';
@@ -247,11 +246,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 				return;
 			}
 
-			if (ProjectsHelper::checkReviewerAuth($reviewer, $this->config))
-			{
-				$layout = $reviewer;
-			}
-			else
+			if (!ProjectsHelper::checkReviewerAuth($reviewer, $this->config))
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
 				$this->view->error  = JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
@@ -262,9 +257,6 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 				return;
 			}
 		}
-
-		// Set layout
-	//	$this->view->setLayout( $layout );
 
 		// Incoming
 		$this->view->filters 				= array();
@@ -754,49 +746,6 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 					return;
 				}
 
-				// Need this to direct to correct repository
-				$extraParam = '';
-				$case = JRequest::getVar( 'case', '' );
-				$pagename = JRequest::getVar( 'pagename', '' );
-
-				// Are we trying to load tool source code or wiki?
-				if ((($this->active == 'tools' && $action == 'source')
-					|| ($this->active == 'files' && preg_match("/tools:/", $case))
-					|| ($this->active == 'notes' && preg_match("/tool:/", $pagename))
-					|| ($this->active == 'tools' && $action == 'wiki'))
-					&& 	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'
-					. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php')
-					&& JPluginHelper::isEnabled('projects', 'tools'))
-				{
-					$toolname = JRequest::getVar( 'tool', '' );
-					$reponame = preg_replace( "/tools:/", "", $case);
-
-					$toolname = $toolname ? $toolname : $reponame;
-
-					// Get project tool library
-					require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-						. DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.php');
-
-					// Check that tool belongs to this project
-					$tool = new ProjectTool( $this->database );
-					$tool->loadTool($toolname, $this->project->id);
-
-					// Direct to relevant plugin
-					if (($action == 'source' || $this->active == 'files') && $tool)
-					{
-						$plugin = 'files';
-						$extraParam = 'tools:' . $tool->name;
-						$action = JRequest::getVar( 'do', '' );
-						$this->active = 'tools';
-					}
-					if ($tool && ($action == 'wiki' || $this->active == 'notes'))
-					{
-						$plugin = 'notes';
-						$extraParam = $tool->name;
-						$this->active = 'tools';
-					}
-				}
-
 				// Plugin params
 				$plugin_params = array(
 					$this->project,
@@ -806,8 +755,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 					$this->_getNotifications('success'),
 					$this->_getNotifications('error'),
 					$action,
-					array($plugin),
-					$extraParam
+					array($plugin)
 				);
 
 				// Get plugin content
