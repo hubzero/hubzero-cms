@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Controllers;
+
+use Hubzero\Component\AdminController;
+use Exception;
 
 /**
  * Tags controller class for managing raltionships between tags
  */
-class TagsControllerRelationships extends \Hubzero\Component\AdminController
+class Relationships extends AdminController
 {
 	/**
 	 * Prelead
@@ -56,7 +58,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			$this->view->setError($error);
 		}
 
-		$tag = JRequest::getVar('tag', null);
+		$tag = \JRequest::getVar('tag', null);
 		if ($tag && (int) $tag == $tag)
 		{
 			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);
@@ -455,12 +457,12 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			// no form field == deleted
 			if (!isset($_POST['name-' . $id]))
 			{
-				$this->database->setQuery('DELETE FROM #__focus_areas WHERE id = ' . $id);
+				$this->database->setQuery('DELETE FROM `#__focus_areas` WHERE id = ' . $id);
 				$this->database->execute();
 				continue;
 			}
 			$new_tag = $this->get_tag($_POST['name-' . $id], false);
-			$this->database->setQuery('UPDATE #__focus_areas SET
+			$this->database->setQuery('UPDATE `#__focus_areas` SET
 				mandatory_depth = ' . ($_POST['mandatory-' . $id] === 'mandatory' ? 1 : ($_POST['mandatory-' . $id] === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ',
 				multiple_depth = ' . ($_POST['multiple-' . $id]  === 'multiple'  ? 1 : ($_POST['multiple-' . $id]  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ',
 				tag_id = ' . $new_tag['id'].'
@@ -482,7 +484,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			}
 			$tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
-			$this->database->setQuery('INSERT INTO #__focus_areas(mandatory_depth, multiple_depth, tag_id) VALUES (' .
+			$this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES (' .
 				($_POST['mandatory-new-' . $idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-' . $idx] === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
 				($_POST['multiple-new-' . $idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-' . $idx]  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
 				$tag['id'] . ')'
@@ -497,19 +499,6 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		}
 
 		$this->metaTask();
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
 	}
 
 	/**

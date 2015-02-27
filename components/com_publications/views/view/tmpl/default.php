@@ -89,7 +89,7 @@ else
 	if ($supported)
 	{
 		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-		$tag = new TagsTableTag( $this->database );
+		$tag = new \Components\Tags\Tables\Tag( $this->database );
 		$tag->loadTag($this->config->get('supportedtag'));
 
 		$sl = $this->config->get('supportedlink');

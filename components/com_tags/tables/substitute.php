@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Tables;
 
 /**
  * Table class for substituting tags for another tag
  */
-class TagsTableSubstitute extends JTable
+class Substitute extends \JTable
 {
 	/**
 	 * Constructor
@@ -61,7 +60,7 @@ class TagsTableSubstitute extends JTable
 		$this->raw_tag = trim($this->raw_tag);
 		if (!$this->raw_tag)
 		{
-			$this->setError(JText::_('You must enter a tag.'));
+			$this->setError(\JText::_('You must enter a tag.'));
 			return false;
 		}
 
@@ -69,14 +68,14 @@ class TagsTableSubstitute extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 
 		if (!$this->tag_id)
 		{
-			$this->setError(JText::_('You must enter the ID of the tag to substitute this tag for.'));
+			$this->setError(\JText::_('You must enter the ID of the tag to substitute this tag for.'));
 			return false;
 		}
 
@@ -106,13 +105,13 @@ class TagsTableSubstitute extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->tag_id  = $this->tag_id;
 			$data->tag     = $this->tag;
 			$data->raw_tag = $this->raw_tag;
 			$data->id      = $this->$k;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($this->tag_id, $action, json_encode($data));
 		}
 		return $result;
@@ -131,7 +130,7 @@ class TagsTableSubstitute extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($oid, 'substitute_deleted');
 		}
 		return $result;
@@ -162,7 +161,7 @@ class TagsTableSubstitute extends JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -181,10 +180,10 @@ class TagsTableSubstitute extends JTable
 
 		require_once(__DIR__ . DS . 'log.php');
 
-		$d = new stdClass;
+		$d = new \stdClass;
 		$d->tags = $data;
 
-		$log = new TagsTableLog($this->_db);
+		$log = new Log($this->_db);
 		$log->log($tag_id, 'substitute_deleted', json_encode($d));
 
 		return true;
@@ -202,7 +201,7 @@ class TagsTableSubstitute extends JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -224,7 +223,7 @@ class TagsTableSubstitute extends JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -288,12 +287,12 @@ class TagsTableSubstitute extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $items;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($newtagid, 'substitutes_moved', json_encode($data));
 		}
 		return $this->cleanUp($newtagid);
@@ -311,7 +310,7 @@ class TagsTableSubstitute extends JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 

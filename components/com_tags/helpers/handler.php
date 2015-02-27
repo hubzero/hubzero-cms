@@ -41,7 +41,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . 
  * Generally, direct use is rare (and discouraged). It will
  * typically be extended by another component.
  */
-class TagsHandler extends JObject
+class TagsHandler extends \Hubzero\Base\Object
 {
 	/**
 	 * Database
@@ -109,7 +109,7 @@ class TagsHandler extends JObject
 			return array();
 		}
 
-		$to = new TagsTableObject($this->_db);
+		$to = new \Components\Tags\Tables\Object($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
 		$to->strength = $strength;
@@ -151,13 +151,13 @@ class TagsHandler extends JObject
 			return true;
 		}
 
-		$to = new TagsTableObject($this->_db);
+		$to = new \Components\Tags\Tables\Object($this->_db);
 		$to->objectid = $object_id;
 		$to->tbl = $this->_tbl;
 		$to->label = $label;
 
 		// First see if the tag exists.
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		$t->loadTag($t->normalize($tag));
 		if (!$t->id)
 		{
@@ -292,7 +292,7 @@ class TagsHandler extends JObject
 			return false;
 		}
 
-		$to = new TagsTableObject($this->_db);
+		$to = new \Components\Tags\Tables\Object($this->_db);
 		if (!$to->deleteObjects($tag_id, $this->_tbl, $object_id, $tagger_id, $admin))
 		{
 			$this->setError($to->getError());
@@ -311,7 +311,7 @@ class TagsHandler extends JObject
 	{
 		if ($object_id > 0)
 		{
-			$to = new TagsTableObject($this->_db);
+			$to = new \Components\Tags\Tables\Object($this->_db);
 			if (!$to->removeAllTags($this->_tbl, $object_id))
 			{
 				$this->setError($to->getError());
@@ -334,7 +334,7 @@ class TagsHandler extends JObject
 	 */
 	public function normalize_tag($tag)
 	{
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		return $t->normalize($tag);
 	}
 
@@ -352,7 +352,7 @@ class TagsHandler extends JObject
 			return false;
 		}
 
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		$t->loadTag($t->normalize($tag));
 		return $t->id;
 	}
@@ -387,7 +387,7 @@ class TagsHandler extends JObject
 		{
 			$filters['by'] = 'all';
 		}
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		return $t->getCount($filters);
 	}
 
@@ -401,7 +401,7 @@ class TagsHandler extends JObject
 	 */
 	public function get_tag_cloud($showsizes=0, $admin=0, $objectid=NULL)
 	{
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		$tags = $t->getCloud($this->_tbl, $admin, $objectid);
 
 		return $this->buildCloud($tags, 'alpha', $showsizes);

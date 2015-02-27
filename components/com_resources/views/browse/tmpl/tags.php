@@ -126,7 +126,7 @@ $this->css()
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-			$tag = new TagsTableTag($database);
+			$tag = new \Components\Tags\Tables\Tag($database);
 			$tag->loadTag($this->supportedtag);
 
 			if ($sl = $this->config->get('supportedlink'))

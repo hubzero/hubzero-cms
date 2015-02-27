@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,14 +23,15 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = TagsHelperPermissions::getActions();
+$canDo = \Components\Tags\Helpers\Permissions::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_TAGGED'), 'tags.png');
 if ($canDo->get('core.create'))
@@ -64,7 +65,7 @@ JToolBarHelper::help('tagged');
 	<table class="adminlist">
 		<?php if ($this->filters['tagid']) { ?>
 			<caption><?php
-			$tag = new TagsModelTag($this->filters['tagid']);
+			$tag = new \Components\Tags\Models\Tag($this->filters['tagid']);
 			echo JText::_('COM_TAGS_TAG') . ': ' . $this->escape($tag->get('raw_tag')) . ' (' . $this->escape($tag->get('tag')) . ')';
 			?></caption>
 		<?php } ?>
@@ -83,7 +84,16 @@ JToolBarHelper::help('tagged');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->filters['tagid'] ? 7 : 6); ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo (!$this->filters['tagid'] ? 7 : 6); ?>"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -92,7 +102,7 @@ JToolBarHelper::help('tagged');
 		$i = 0;
 		foreach ($this->rows as $row)
 		{
-			$row = new TagsModelObject($row);
+			$row = new \Components\Tags\Models\Object($row);
 			$row->set('id', $row->get('taggedid'));
 		?>
 			<tr class="<?php echo "row$k"; ?>">

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'tag.php');
+use Components\Tags\Tables;
+use Hubzero\Component\View;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
+
+require_once(__DIR__ . DS . 'tag.php');
 
 /**
  * Courses model class for a forum
  */
-class TagsModelCloud extends \Hubzero\Base\Object
+class Cloud extends Object
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -53,7 +57,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	protected $_scope_id = null;
 
 	/**
-	 * TagsTableTag
+	 * Tag table
 	 *
 	 * @var object
 	 */
@@ -94,9 +98,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 */
 	public function __construct($scope_id=0, $scope='')
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new TagsTableTag($this->_db);
+		$this->_tbl = new Tables\Tag($this->_db);
 
 		if ($scope)
 		{
@@ -107,15 +111,15 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			$this->_scope_id = $scope_id;
 		}
 
-		$this->_config = JComponentHelper::getParams('com_tags');
+		$this->_config = \JComponentHelper::getParams('com_tags');
 	}
 
 	/**
 	 * Returns a reference to a tag cloud model
 	 *
-	 * @param      string  $scope
-	 * @param      integer $scope_id
-	 * @return     object TagsModelCloud
+	 * @param   string   $scope
+	 * @param   integer  $scope_id
+	 * @return  object
 	 */
 	static function &getInstance($scope_id=0, $scope='')
 	{
@@ -130,7 +134,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new TagsModelCloud($scope_id, $scope);
+			$instances[$key] = new self($scope_id, $scope);
 		}
 
 		return $instances[$key];
@@ -139,9 +143,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default  The default value
-	 * @return	mixed The value of the property
+	 * @param	string  $property  The name of the property
+	 * @param	mixed   $default   The default value
+	 * @return	mixed   The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -168,9 +172,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value    The value of the property to set
-	 * @return	mixed Previous value of the property
+	 * @param	string  $property  The name of the property
+	 * @param	mixed   $value     The value of the property to set
+	 * @return	mixed   Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -199,8 +203,8 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Set and get a specific offering
 	 *
-	 * @param      mixed $id Integer or string of tag to look up
-	 * @return     object TagsModelTag
+	 * @param   mixed   $id  Integer or string of tag to look up
+	 * @return  object
 	 */
 	public function tag($id=null)
 	{
@@ -217,7 +221,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 			// Is the tags list available?
 			// If so, this may save us a trip to the database
-			if ($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList)
+			if ($this->_cache['tags.list'] instanceof ItemList)
 			{
 				// Loop through each tag looking one that matches
 				foreach ($this->_cache['tags.list'] as $key => $tag)
@@ -233,7 +237,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			// No tag found?
 			if (!$this->_cache['tags.one'])
 			{
-				$this->_cache['tags.one'] = TagsModelTag::getInstance($id);
+				$this->_cache['tags.one'] = Tag::getInstance($id);
 			}
 		}
 
@@ -243,10 +247,10 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Get a list of tags
 	 *
-	 * @param      string  $rtrn    Format of data to return
-	 * @param      array   $filters Filters to apply
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     Format of data to return
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function tags($rtrn='', $filters=array(), $clear=false)
 	{
@@ -275,20 +279,20 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['tags.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new TagsModelTag($result);
+							$results[$key] = new Tag($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['tags.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['tags.list'] = new ItemList($results);
 				}
 				return $this->_cache['tags.list'];
 			break;
@@ -321,7 +325,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 		foreach ($this->_parse($tags, 1) as $tg => $raw)
 		{
-			$tag = TagsModelTag::getInstance((string) $tg);
+			$tag = Tag::getInstance((string) $tg);
 
 			// Does the tag already exist?
 			if (!$tag->exists())
@@ -369,7 +373,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 		foreach ($this->_parse($tags) as $tg)
 		{
-			$tag = TagsModelTag::getInstance((string) $tg);
+			$tag = Tag::getInstance((string) $tg);
 
 			// Does the tag exist?
 			if (!$tag->exists())
@@ -403,7 +407,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		$to = new TagsTableObject($this->_db);
+		$to = new Tables\Object($this->_db);
 		if (!$to->removeAllTags($this->_scope, $this->_scope_id, $tagger))
 		{
 			$this->setError($to->getError());
@@ -426,7 +430,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		$t = new TagsTableTag($this->_db);
+		$t = new Tables\Tag($this->_db);
 		$t->loadTag($this->normalize($tag));
 
 		return $t->id;
@@ -435,10 +439,10 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Render a tag cloud
 	 *
-	 * @param      string  $rtrn    Format to render
-	 * @param      array   $filters Filters to apply
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     string
+	 * @param   string   $rtrn     Format to render
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  string
 	 */
 	public function render($rtrn='html', $filters=array(), $clear=false)
 	{
@@ -466,7 +470,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			default:
 				if (!isset($this->_cache['tags.cloud']) || $clear)
 				{
-					$view = new \Hubzero\Component\View(array(
+					$view = new View(array(
 						'base_path' => JPATH_ROOT . '/components/com_tags',
 						'name'      => 'tags',
 						'layout'    => '_cloud'
@@ -498,7 +502,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	{
 		if (!$tagger_id)
 		{
-			$tagger_id = JFactory::getUser()->get('id');
+			$tagger_id = \JFactory::getUser()->get('id');
 		}
 
 		$tagArray  = $this->_parse($tag_string);    // array of normalized tags

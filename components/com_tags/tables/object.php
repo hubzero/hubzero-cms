@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Tables;
 
 /**
  * Table class for attaching tags to objects
  */
-class TagsTableObject extends JTable
+class Object extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,21 +56,23 @@ class TagsTableObject extends JTable
 		$this->objectid = intval($this->objectid);
 		if (!$this->objectid)
 		{
-			$this->setError(JText::_('Missing scope ID.'));
-			return false;
+			$this->setError(\JText::_('Missing scope ID.'));
 		}
 
 		$this->tbl = trim($this->tbl);
 		if (!$this->tbl)
 		{
-			$this->setError(JText::_('Missing scope.'));
-			return false;
+			$this->setError(\JText::_('Missing scope.'));
 		}
 
 		$this->tagid = intval($this->tagid);
 		if (!$this->tagid)
 		{
-			$this->setError(JText::_('Missing tag ID.'));
+			$this->setError(\JText::_('Missing tag ID.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -80,12 +81,12 @@ class TagsTableObject extends JTable
 		$this->taggerid = intval($this->taggerid);
 		if (!$this->taggerid)
 		{
-			$this->taggerid = JFactory::getUser()->get('id');
+			$this->taggerid = \JFactory::getUser()->get('id');
 		}
 
 		if (!$this->id)
 		{
-			$this->taggedon = JFactory::getDate()->toSql();
+			$this->taggedon = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -144,7 +145,7 @@ class TagsTableObject extends JTable
 
 		if (!$tagid)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -177,14 +178,14 @@ class TagsTableObject extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->tbl      = $tbl;
 			$data->objectid = $objectid;
 			$data->taggerid = $taggerid;
 			$data->tagid    = $tagid;
 			$data->entres   = $items;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($tagid, 'objects_removed', json_encode($data));
 		}
 		return true;
@@ -205,7 +206,7 @@ class TagsTableObject extends JTable
 
 		if (!$tbl || !$objectid)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -234,12 +235,12 @@ class TagsTableObject extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->tbl      = $tbl;
 			$data->objectid = $objectid;
 			$data->entries  = $items;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($objectid, 'tags_removed', json_encode($data));
 		}
 		return true;
@@ -257,7 +258,7 @@ class TagsTableObject extends JTable
 
 		if (!$tagid)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -282,7 +283,7 @@ class TagsTableObject extends JTable
 
 		if (!$tbl || !$objectid)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -326,7 +327,7 @@ class TagsTableObject extends JTable
 
 		if (!$tagid || !$tbl || !$objectid)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -363,12 +364,12 @@ class TagsTableObject extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $items;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($newtagid, 'objects_moved', json_encode($data));
 		}
 		return true;
@@ -396,7 +397,7 @@ class TagsTableObject extends JTable
 			$entries = array();
 			foreach ($rows as $row)
 			{
-				$to = new TagsTableObject($this->_db);
+				$to = new self($this->_db);
 				$to->objectid = $row->objectid;
 				$to->tagid    = $newtagid;
 				$to->strength = $row->strength;
@@ -409,12 +410,12 @@ class TagsTableObject extends JTable
 			}
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new stdClass;
+			$data = new \stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $entries;
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($newtagid, 'objects_copied', json_encode($data));
 		}
 		return true;

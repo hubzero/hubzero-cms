@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Resources Tagging class
  */
-class ResourcesTags extends TagsModelCloud
+class ResourcesTags extends \Components\Tags\Models\Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -433,7 +433,7 @@ class ResourcesTags extends TagsModelCloud
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
 		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 
@@ -450,7 +450,7 @@ class ResourcesTags extends TagsModelCloud
 	 */
 	public function getTopTags($limit)
 	{
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 		return $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 	}
 
@@ -464,7 +464,7 @@ class ResourcesTags extends TagsModelCloud
 	 */
 	public function getTopTagString($limit)
 	{
-		$t = new TagsTableTag($this->_db);
+		$t = new \Components\Tags\Tables\Tag($this->_db);
 
 		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 

@@ -31,13 +31,16 @@
 namespace Components\Collections\Models;
 
 use Hubzero\Base\ItemList;
+use Components\Tags\Models\Cloud;
+use Components\Tags\Tables;
+use Components\Tags\Models\Tag;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Collections Tagging class
  */
-class Tags extends \TagsModelCloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -55,8 +58,8 @@ class Tags extends \TagsModelCloud
 	 */
 	public function getTagsForIds($ids=array(), $admin=0)
 	{
-		$tt = new \TagsTableTag($this->_db);
-		$tj = new \TagsTableObject($this->_db);
+		$tt = new Tables\Tag($this->_db);
+		$tj = new Tables\Object($this->_db);
 
 		if (!is_array($ids) || empty($ids))
 		{
@@ -116,19 +119,19 @@ class Tags extends \TagsModelCloud
 			return $this;
 		}
 
-		if (!($tag instanceof \TagsModelTag))
+		if (!($tag instanceof Tag))
 		{
 			if (is_array($tag))
 			{
 				foreach ($tag as $t)
 				{
-					$this->_cache['tags.list']->add(new \TagsModelTag($t));
+					$this->_cache['tags.list']->add(new Tag($t));
 				}
 				return $this;
 			}
 			else
 			{
-				$tag = new \TagsModelTag($tag);
+				$tag = new Tag($tag);
 			}
 		}
 		$this->_cache['tags.list']->add($tag);

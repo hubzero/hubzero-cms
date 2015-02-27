@@ -30,12 +30,14 @@
 
 namespace Components\Answers\Models;
 
+use Components\Tags\Models\Cloud;
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Answers Tagging class
  */
-class Tags extends \TagsModelCloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

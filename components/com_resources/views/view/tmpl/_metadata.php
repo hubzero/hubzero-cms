@@ -109,7 +109,7 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 			{
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
-				$tag = new TagsTableTag($database);
+				$tag = new \Components\Tags\Tables\Tag($database);
 				$tag->loadTag($this->model->params->get('supportedtag'));
 			?>
 			<p class="supported">

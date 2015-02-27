@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * MEmbers Tagging class
  */
-class MembersModelTags extends TagsModelCloud
+class MembersModelTags extends \Components\Tags\Models\Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

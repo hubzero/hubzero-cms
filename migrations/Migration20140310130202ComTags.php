@@ -24,6 +24,13 @@ class Migration20140310130202ComTags extends Base
 			{
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
+				$cls = '\\Components\\Tags\\Models\\Tag';
+				// [!] - Backwards compatibility
+				if (class_exists('TagsModelTag'))
+				{
+					$cls = 'TagsModelTag';
+				}
+
 				foreach ($results as $result)
 				{
 					// Get all duplicate tags
@@ -37,7 +44,8 @@ class Migration20140310130202ComTags extends Base
 							{
 								continue;
 							}
-							$oldtag = new TagsModelTag($tag->id);
+
+							$oldtag = new $cls($tag->id);
 							if (!$oldtag->mergeWith($result->id))
 							{
 								continue;

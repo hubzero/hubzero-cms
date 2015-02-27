@@ -172,7 +172,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$cloud = new TagsModelCloud();
+		$cloud = new \Components\Tags\Models\Cloud();
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),
@@ -224,7 +224,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		$response = new stdClass;
 
-		$tag = new TagsModelTag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
@@ -274,7 +274,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		$response = new stdClass;
 
-		$tag = new TagsModelTag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
@@ -319,7 +319,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		$response = new stdClass;
 
-		$tag = new TagsModelTag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
@@ -376,7 +376,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		$msg = new stdClass;
 
 		// Any tags?
-		$tag = new TagsModelTag(JRequest::getVar('tag', '', 'post'));
+		$tag = new \Components\Tags\Models\Tag(JRequest::getVar('tag', '', 'post'));
 		if (!$tag->exists())
 		{
 			if (!$tag->store(true))

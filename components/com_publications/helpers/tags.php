@@ -491,7 +491,7 @@ class PublicationTags extends TagsHandler
 	 */
 	public function getTopTags($limit)
 	{
-		$tj = new TagsTableObject($this->_db);
+		$tj = new \Components\Tags\Tables\Object($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";

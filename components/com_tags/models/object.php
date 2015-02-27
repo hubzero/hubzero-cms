@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
+use Hubzero\User\Profile;
+use Hubzero\Base\Model;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'object.php');
 
 /**
  * Model class for a tag/object association
  */
-class TagsModelObject extends \Hubzero\Base\Model
+class Object extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'TagsTableObject';
+	protected $_tbl_name = '\\Components\\Tags\\Tables\\Object';
 
 	/**
 	 * \Hubzero\User\Profile
@@ -55,19 +57,20 @@ class TagsModelObject extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed   $oid       Redord ID or object or array
-	 * @param      integer $scope_id  ID of tagged object
-	 * @param      integer $tag_id    Tag ID
-	 * @param      integer $tagger_id User ID of tagger
-	 * @return     void
+	 * @param   mixed    $oid        Record ID or object or array
+	 * @param   integer  $scope_id   ID of tagged object
+	 * @param   integer  $tag_id     Tag ID
+	 * @param   integer  $tagger_id  User ID of tagger
+	 * @return  void
 	 */
 	public function __construct($oid, $scope_id=null, $tag_id=null, $tagger_id=null)
 	{
 		// Set the database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// Set the table object
-		$this->_tbl = new TagsTableObject($this->_db);
+		$tbl = $this->_tbl_name;
+		$this->_tbl = new $tbl($this->_db);
 
 		// Load record
 		if (is_numeric($oid))
@@ -87,11 +90,11 @@ class TagsModelObject extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a tags object model
 	 *
-	 * @param      mixed   $oid       Redord ID or object or array
-	 * @param      integer $scope_id  ID of tagged object
-	 * @param      integer $tag_id    Tag ID
-	 * @param      integer $tagger_id User ID of tagger
-	 * @return     object TagsModelObject
+	 * @param   mixed    $oid        Record ID or object or array
+	 * @param   integer  $scope_id   ID of tagged object
+	 * @param   integer  $tag_id     Tag ID
+	 * @param   integer  $tagger_id  User ID of tagger
+	 * @return  object
 	 */
 	static function &getInstance($oid=0, $scope_id=null, $tag_id=null, $tagger_id=null)
 	{
@@ -130,18 +133,18 @@ class TagsModelObject extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string  $property  Property to retrieve
+	 * @param   mixed   $default   Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('taggerid'));
+			$this->_creator = Profile::getInstance($this->get('taggerid'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -155,19 +158,19 @@ class TagsModelObject extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($rtrn='')
 	{
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('taggedon'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('taggedon'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('taggedon'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('taggedon'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

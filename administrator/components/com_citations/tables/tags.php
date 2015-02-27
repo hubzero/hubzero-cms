@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Citations Tagging Class
  */
-class CitationTags extends TagsModelCloud
+class CitationTags extends \Components\Tags\Models\Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

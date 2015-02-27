@@ -6568,7 +6568,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$tagarray = array();
 		$newTags = $this->_parseTags($newtag);
 		$rawTags = $this->_parseTags($newtag, 1);
-		$tagObj = new TagsTableTag( $this->_database );
+		$tagObj = new \Components\Tags\Tables\Tag( $this->_database );
 
 		foreach ($newTags as $tag)
 		{
@@ -6582,7 +6582,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				else
 				{
 					// Create tag
-					$tagObj = new TagsTableTag( $this->_database );
+					$tagObj = new \Components\Tags\Tables\Tag( $this->_database );
 					if (get_magic_quotes_gpc())
 					{
 						$tag = addslashes($tag);

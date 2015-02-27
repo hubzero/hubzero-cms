@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Wishlist Tagging class
  */
-class WishlistModelTags extends TagsModelCloud
+class WishlistModelTags extends \Components\Tags\Models\Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags

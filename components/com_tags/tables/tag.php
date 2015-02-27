@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Tables;
 
 /**
  * Table class for tags
  */
-class TagsTableTag extends JTable
+class Tag extends \JTable
 {
 	/**
 	 * Constructor
@@ -97,12 +96,12 @@ class TagsTableTag extends JTable
 			$this->$k = intval($oid);
 		}
 
-		$data = new TagsTableTag($this->_db);
+		$data = new self($this->_db);
 		$data->load($this->$k);
 		$comment = '';
 		if ($data->tag)
 		{
-			$comment = new stdClass;
+			$comment = new \stdClass;
 			foreach ($this->getProperties() as $key => $property)
 			{
 				$comment->$key = $property;
@@ -132,7 +131,7 @@ class TagsTableTag extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($oid, 'tag_deleted', $comment);
 		}
 
@@ -163,7 +162,7 @@ class TagsTableTag extends JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$log = new TagsTableLog($this->_db);
+			$log = new Log($this->_db);
 			$log->log($this->$k, $action);
 		}
 
@@ -204,7 +203,9 @@ class TagsTableTag extends JTable
 			return null;
 		}
 
-		$to = new TagsTableObject($this->_db);
+		require_once(__DIR__ . DS . 'object.php');
+
+		$to = new Object($this->_db);
 		return $to->getCount($tagid);
 	}
 
@@ -218,7 +219,9 @@ class TagsTableTag extends JTable
 	 */
 	public function getUsageForObject($tagid=null, $objectid=null, $tbl=null)
 	{
-		$to = new TagsTableObject($this->_db);
+		require_once(__DIR__ . DS . 'object.php');
+
+		$to = new Object($this->_db);
 		return $to->getCountForObject($tagid, $objectid, $tbl);
 	}
 
@@ -232,7 +235,7 @@ class TagsTableTag extends JTable
 		$this->raw_tag = trim($this->raw_tag);
 		if (!$this->raw_tag)
 		{
-			$this->setError(JText::_('You must enter a tag.'));
+			$this->setError(\JText::_('You must enter a tag.'));
 			return false;
 		}
 
@@ -240,13 +243,13 @@ class TagsTableTag extends JTable
 
 		if (!$this->id)
 		{
-			$this->created_by = JFactory::getUser()->get('id');
-			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
 		}
 		else
 		{
-			$this->modified    = ($this->modified ? $this->modified : JFactory::getDate()->toSql());
-			$this->modified_by = ($this->modified_by ? $this->modified_by : JFactory::getUser()->get('id'));
+			$this->modified    = ($this->modified ? $this->modified : \JFactory::getDate()->toSql());
+			$this->modified_by = ($this->modified_by ? $this->modified_by : \JFactory::getUser()->get('id'));
 		}
 
 		return true;
@@ -362,7 +365,9 @@ class TagsTableTag extends JTable
 						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total,
 						(SELECT COUNT(*) FROM `#__tags_substitute` AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
-		$tj = new TagsTableObject($this->_db);
+
+		require_once(__DIR__ . DS . 'object.php');
+		$tj = new Object($this->_db);
 
 		$query .= " FROM $this->_tbl AS t";
 		if (isset($filters['by']) && $filters['by'] == 'user')
@@ -501,7 +506,9 @@ class TagsTableTag extends JTable
 	 */
 	public function getCloud($tbl='', $state=0, $objectid=0)
 	{
-		$tj = new TagsTableObject($this->_db);
+		require_once(__DIR__ . DS . 'object.php');
+
+		$tj = new Object($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, COUNT(*) as count
 				FROM $this->_tbl AS t
@@ -590,7 +597,9 @@ class TagsTableTag extends JTable
 	 */
 	public function getTopTags($limit=25, $tbl='', $order='tcount DESC', $exclude_private=1)
 	{
-		$tj = new TagsTableObject($this->_db);
+		require_once(__DIR__ . DS . 'object.php');
+
+		$tj = new Object($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
@@ -627,7 +636,9 @@ class TagsTableTag extends JTable
 	 */
 	public function getRecentTags($limit=25, $order='taggedon DESC', $exclude_private=1)
 	{
-		$tj = new TagsTableObject($this->_db);
+		require_once(__DIR__ . DS . 'object.php');
+
+		$tj = new Object($this->_db);
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
@@ -706,7 +717,7 @@ class TagsTableTag extends JTable
 
 		require_once(__DIR__ . DS . 'substitute.php');
 
-		$subs = new TagsTableSubstitute($this->_db);
+		$subs = new Substitute($this->_db);
 		if ($asString)
 		{
 			return $subs->getRecordString($tag_id, $offset, $limit);
@@ -729,13 +740,13 @@ class TagsTableTag extends JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
 		require_once(__DIR__ . DS . 'substitute.php');
 
-		$ts = new TagsTableSubstitute($this->_db);
+		$ts = new Substitute($this->_db);
 		$subs = $ts->getRecords($tag_id);
 		if (!$subs)
 		{
@@ -755,7 +766,7 @@ class TagsTableTag extends JTable
 				continue; // Substitution already exists
 			}
 
-			$sub = new TagsTableSubstitute($this->_db);
+			$sub = new Substitute($this->_db);
 			$sub->raw_tag = trim($raw_tag);
 			$sub->tag_id  = $tag_id;
 			if ($sub->check())
@@ -776,7 +787,7 @@ class TagsTableTag extends JTable
 				$remove[] = $key;
 			}
 		}
-		$ts = new TagsTableSubstitute($this->_db);
+		$ts = new Substitute($this->_db);
 		if (count($remove) > 0)
 		{
 			if (!$ts->removeForTag($tag_id, $remove))
@@ -794,7 +805,7 @@ class TagsTableTag extends JTable
 		{
 			require_once(__DIR__ . DS . 'object.php');
 
-			$to = new TagsTableObject($this->_db);
+			$to = new Object($this->_db);
 
 			// Move associations on tag and delete tag
 			foreach ($ids as $id)
@@ -810,7 +821,7 @@ class TagsTableTag extends JTable
 					$ts->moveSubstitutes($id->id, $tag_id);
 
 					// Delete the tag
-					$tag = new TagsTableTag($this->_db);
+					$tag = new self($this->_db);
 					$tag->delete($id->id);
 				}
 			}
@@ -819,4 +830,3 @@ class TagsTableTag extends JTable
 		return true;
 	}
 }
-

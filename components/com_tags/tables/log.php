@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Tables;
 
 /**
  * Tags class for log table
  * This is used to track events on tags (adding, editing, merging, deleting)
  */
-class TagsTableLog extends JTable
+class Log extends \JTable
 {
 	/**
 	 * Constructor
@@ -58,14 +57,14 @@ class TagsTableLog extends JTable
 		$this->tag_id = intval($this->tag_id);
 		if (!$this->tag_id)
 		{
-			$this->setError(JText::_('TAGS_LOGS_MUST_HAVE_TAG_ID'));
+			$this->setError(\JText::_('TAGS_LOGS_MUST_HAVE_TAG_ID'));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->timestamp = JFactory::getDate()->toSql();
+			$this->timestamp = \JFactory::getDate()->toSql();
 			$this->actorid = $juser->get('id');
 		}
 
@@ -92,7 +91,7 @@ class TagsTableLog extends JTable
 
 		if (!$tag_id || !$action)
 		{
-			$this->setError(JText::_('Missing argument.'));
+			$this->setError(\JText::_('Missing argument.'));
 			return false;
 		}
 
@@ -160,7 +159,7 @@ class TagsTableLog extends JTable
 	/**
 	 * Format a log
 	 *
-	 * @param   object $log Database row (TagsTableLog)
+	 * @param   object  $log  Database row
 	 * @return  string
 	 */
 	public function formatLog($log=null)

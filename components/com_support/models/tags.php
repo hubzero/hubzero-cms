@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . 
 /**
  * Support Tagging class
  */
-class SupportModelTags extends TagsModelCloud
+class SupportModelTags extends \Components\Tags\Models\Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -123,9 +123,9 @@ class SupportModelTags extends TagsModelCloud
 			return;
 		}
 
-		if (!($tag instanceof TagsModelTag))
+		if (!($tag instanceof \Components\Tags\Models\Tag))
 		{
-			$tg = new TagsModelTag($tag);
+			$tg = new \Components\Tags\Models\Tag($tag);
 			$tg->set('raw_tag', $tag);
 
 			$tag = $tg;

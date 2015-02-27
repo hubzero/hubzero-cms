@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
  * Tags controller class for listing tagged objects
  */
-class TagsControllerTagged extends \Hubzero\Component\AdminController
+class Tagged extends AdminController
 {
 	/**
 	 * Execute a task
@@ -57,8 +58,8 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
@@ -99,7 +100,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		$t = new TagsTableObject($this->database);
+		$t = new Tables\Object($this->database);
 
 		// Record count
 		$this->view->total = $t->count($this->view->filters);
@@ -110,14 +111,6 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		$this->view->rows = $t->find($this->view->filters);
 
 		$this->view->types = $t->getTblsForTag($this->view->filters['tagid']);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -137,19 +130,19 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=NULL)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Load a tag object if one doesn't already exist
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
 
-			$row = new TagsModelObject(intval($id));
+			$row = new Object(intval($id));
 		}
 
 		$this->view->row = $row;
@@ -174,11 +167,11 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 
-		$row = new TagsModelObject();
+		$row = new Object();
 		if (!$row->bind($fields))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -202,7 +195,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setMessage(JText::_('COM_TAGS_OBJECT_SAVED'));
+		$this->setMessage(\JText::_('COM_TAGS_OBJECT_SAVED'));
 
 		// Redirect to main listing
 		if ($this->_task == 'apply')
@@ -211,7 +204,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -223,23 +216,23 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
 		}
 
-		$row = new TagsTableObject($this->database);
+		$row = new Tables\Object($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -248,22 +241,8 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_TAGS_OBJECT_REMOVED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_TAGS_OBJECT_REMOVED')
 		);
 	}
 }
-

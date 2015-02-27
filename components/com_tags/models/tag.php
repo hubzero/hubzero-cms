@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,29 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Tags\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'log.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'object.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'substitute.php');
+use Components\Tags\Tables;
+use Hubzero\User\Profile;
+use Hubzero\Base\Model;
+use Hubzero\Base\ItemList;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tag.php');
+require_once(__DIR__ . DS . 'log.php');
+require_once(__DIR__ . DS . 'object.php');
+require_once(__DIR__ . DS . 'substitute.php');
 
 /**
  * Model class for a tag
  */
-class TagsModelTag extends \Hubzero\Base\Model
+class Tag extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'TagsTableTag';
+	protected $_tbl_name = '\\Components\\Tags\\Tables\\Tag';
 
 	/**
 	 * Base URL to this tag
@@ -79,16 +83,17 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Tag ID or raw tag
-	 * @return     void
+	 * @param   integer  $id  Tag ID or raw tag
+	 * @return  void
 	 */
 	public function __construct($oid)
 	{
 		// Set the database object
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// Set the table object
-		$this->_tbl = new TagsTableTag($this->_db);
+		$tbl = $this->_tbl_name;
+		$this->_tbl = new $tbl($this->_db);
 
 		// Load record
 		if (is_string($oid))
@@ -111,8 +116,8 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a tag model
 	 *
-	 * @param      mixed $oid Tag ID or raw tag
-	 * @return     object TagsModelTag
+	 * @param   mixed   $oid  Tag ID or raw tag
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -151,18 +156,18 @@ class TagsModelTag extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string  $property  Property to retrieve
+	 * @param   mixed   $default   Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -176,8 +181,8 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -187,8 +192,8 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
@@ -202,19 +207,19 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	private function _datetime($as='', $key='created')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -226,7 +231,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Determine if record was modified
 	 *
-	 * @return     boolean True if modified, false if not
+	 * @return  boolean  True if modified, false if not
 	 */
 	public function wasModified()
 	{
@@ -240,8 +245,8 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Store changes to this tag
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean  $check  Perform data validation check?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -262,7 +267,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Store changes to this record
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{
@@ -299,8 +304,8 @@ class TagsModelTag extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -328,10 +333,10 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a list or count of substitutions on this tag
 	 *
-	 * @param      string  $rtrn    What data to return (ex: 'list', 'count')
-	 * @param      array   $filters Filters to apply for data retrieval
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
+	 * @param   array    $filters  Filters to apply for data retrieval
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function substitutes($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -353,7 +358,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'count':
 				if (is_null($this->_cache['subs.count']) || $clear)
 				{
-					$tbl = new TagsTableSubstitute($this->_db);
+					$tbl = new Tables\Substitute($this->_db);
 					$this->_cache['subs.count'] = (int) $tbl->getCount($filters);
 				}
 				return $this->_cache['subs.count'];
@@ -371,20 +376,20 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['subs.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['subs.list'] instanceof ItemList) || $clear)
 				{
 					$results = array();
 
-					$tbl = new TagsTableSubstitute($this->_db);
+					$tbl = new Tables\Substitute($this->_db);
 					if ($res = $tbl->getRecords($filters['tag_id'], $filters['start'], $filters['limit']))
 					{
 						foreach ($res as $key => $result)
 						{
-							$results[] = new TagsModelSubstitute($result);
+							$results[] = new Substitute($result);
 						}
 					}
 
-					$this->_cache['subs.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['subs.list'] = new ItemList($results);
 				}
 				return $this->_cache['subs.list'];
 			break;
@@ -394,10 +399,10 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a list or count of objects associated with this tag
 	 *
-	 * @param      string  $rtrn    What data to return (ex: 'list', 'count')
-	 * @param      array   $filters Filters to apply for data retrieval
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
+	 * @param   array    $filters  Filters to apply for data retrieval
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function objects($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -419,7 +424,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'count':
 				if (is_null($this->_cache['objects.count']) || $clear)
 				{
-					$tbl = new TagsTableObject($this->_db);
+					$tbl = new Tables\Object($this->_db);
 					$this->_cache['objects.count'] = (int) $tbl->count($filters);
 				}
 				return $this->_cache['objects.count'];
@@ -428,21 +433,21 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['objects.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['objects.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new TagsTableObject($this->_db);
+					$tbl = new Tables\Object($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new TagsModelObject($result);
+							$results[$key] = new Object($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['objects.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['objects.list'] = new ItemList($results);
 				}
 				return $this->_cache['objects.list'];
 			break;
@@ -452,10 +457,10 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Return a list or count of objects associated with this tag
 	 *
-	 * @param      string  $rtrn    What data to return (ex: 'list', 'count')
-	 * @param      array   $filters Filters to apply for data retrieval
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return (ex: 'list', 'count')
+	 * @param   array    $filters  Filters to apply for data retrieval
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function logs($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -473,7 +478,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'count':
 				if (is_null($this->_cache['logs.count']) || $clear)
 				{
-					$tbl = new TagsTableLog($this->_db);
+					$tbl = new Tables\Log($this->_db);
 					$this->_cache['logs.count'] = (int) $tbl->count($filters);
 				}
 				return $this->_cache['logs.count'];
@@ -482,21 +487,21 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['logs.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['logs.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new TagsTableLog($this->_db);
+					$tbl = new Tables\Log($this->_db);
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new TagsModelLog($result);
+							$results[$key] = new Log($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['logs.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['logs.list'] = new ItemList($results);
 				}
 				return $this->_cache['logs.list'];
 			break;
@@ -509,15 +514,15 @@ class TagsModelTag extends \Hubzero\Base\Model
 	 * If $taggerid is provided, it will only remove the tags added to an object by
 	 * that specific user
 	 *
-	 * @param      string  $scope    Object type (ex: resource, ticket)
-	 * @param      integer $scope_id Object ID (e.g., resource ID, ticket ID)
-	 * @param      integer $tagger   User ID of person to filter tag by
-	 * @return     boolean
+	 * @param   string   $scope     Object type (ex: resource, ticket)
+	 * @param   integer  $scope_id  Object ID (e.g., resource ID, ticket ID)
+	 * @param   integer  $tagger    User ID of person to filter tag by
+	 * @return  boolean
 	 */
 	public function removeFrom($scope, $scope_id, $tagger=0)
 	{
 		// Check if the relationship exists
-		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $tagger);
+		$to = new Object($scope, $scope_id, $this->get('id'), $tagger);
 		if (!$to->exists())
 		{
 			return true;
@@ -536,17 +541,17 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Add this tag to an object
 	 *
-	 * @param      string  $scope    Object type (ex: resource, ticket)
-	 * @param      integer $scope_id Object ID (e.g., resource ID, ticket ID)
-	 * @param      integer $tagger   User ID of person adding tag
-	 * @param      integer $strength Tag strength
-	 * @param      string  $label    Label to apply
-	 * @return     boolean
+	 * @param   string   $scope     Object type (ex: resource, ticket)
+	 * @param   integer  $scope_id  Object ID (e.g., resource ID, ticket ID)
+	 * @param   integer  $tagger    User ID of person adding tag
+	 * @param   integer  $strength  Tag strength
+	 * @param   string   $label     Label to apply
+	 * @return  boolean
 	 */
 	public function addTo($scope, $scope_id, $tagger=0, $strength=1, $label='')
 	{
 		// Check if the relationship already exists
-		$to = new TagsModelObject($scope, $scope_id, $this->get('id'), $tagger);
+		$to = new Object($scope, $scope_id, $this->get('id'), $tagger);
 		if ($to->exists())
 		{
 			return true;
@@ -579,20 +584,20 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Move all data from this tag to another, including the tag itself
 	 *
-	 * @param      integer $tag_id ID of tag to merge with
-	 * @return     boolean
+	 * @param   integer  $tag_id  ID of tag to merge with
+	 * @return  boolean
 	 */
 	public function mergeWith($tag_id)
 	{
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing tag ID.'));
+			$this->setError(\JText::_('Missing tag ID.'));
 			return false;
 		}
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new TagsTableObject($this->_db);
+		$to = new Tables\Object($this->_db);
 		if (!$to->moveObjects($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());
@@ -601,7 +606,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 
 		// Get all the substitutions to this tag
 		// Loop through the records and link them to a different tag
-		$ts = new TagsTableSubstitute($this->_db);
+		$ts = new Tables\Substitute($this->_db);
 		if (!$ts->moveSubstitutes($this->get('id'), $tag_id))
 		{
 			$this->setError($ts->getError());
@@ -609,7 +614,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 		}
 
 		// Make the current tag a substitute for the new tag
-		$sub = new TagsModelSubstitute(0);
+		$sub = new Substitute(0);
 		$sub->set('raw_tag', $this->get('raw_tag'));
 		$sub->set('tag_id', $tag_id);
 		if (!$sub->store(true))
@@ -629,20 +634,20 @@ class TagsModelTag extends \Hubzero\Base\Model
 	/**
 	 * Copy associations from this tag to another
 	 *
-	 * @param      integer $tag_id ID of tag to copy associations to
-	 * @return     boolean
+	 * @param   integer  $tag_id  ID of tag to copy associations to
+	 * @return  boolean
 	 */
 	public function copyTo($tag_id)
 	{
 		if (!$tag_id)
 		{
-			$this->setError(JText::_('Missing tag ID.'));
+			$this->setError(\JText::_('Missing tag ID.'));
 			return false;
 		}
 
 		// Get all the associations to this tag
 		// Loop through the associations and link them to a different tag
-		$to = new TagsTableObject($this->_db);
+		$to = new Tables\Object($this->_db);
 		if (!$to->copyObjects($this->get('id'), $tag_id))
 		{
 			$this->setError($to->getError());

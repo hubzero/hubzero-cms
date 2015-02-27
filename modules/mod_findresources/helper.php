@@ -31,8 +31,7 @@
 namespace Modules\FindResources;
 
 use Hubzero\Module\Module;
-use JFactory;
-use TagsTableTag;
+use Components\Tags\Tables\Tag;
 use ResourcesType;
 
 /**
@@ -50,9 +49,9 @@ class Helper extends Module
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
-		$obj = new TagsTableTag($database);
+		$obj = new Tag($database);
 
 		$this->tags = $obj->getTopTags(intval($this->params->get('limit', 25)));
 
@@ -74,7 +73,7 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 
 			// Module time is in seconds, setLifeTime() is in minutes
@@ -85,7 +84,7 @@ class Helper extends Module
 			$cache->setLifeTime($ct);
 
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
 			return;
 		}
 

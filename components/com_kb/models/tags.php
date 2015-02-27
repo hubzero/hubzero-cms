@@ -30,7 +30,7 @@
 
 namespace Components\Kb\Models;
 
-use TagsModelCloud as Cloud;
+use Components\Tags\Models\Cloud;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
