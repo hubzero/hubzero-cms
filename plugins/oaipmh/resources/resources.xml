@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>PLG_OAIPMH_PUBLICATIONS</description>
+	<description>PLG_OAIPMH_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="resources">resources.php</filename>
 	</files>
@@ -41,8 +41,8 @@ HUBzero is a registered trademark of Purdue University.
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic">
-				<field name="type" type="text" default="7" label="Type" description="Type to allow data consumption for." />
+			<fieldset name="basic" addfieldpath="/plugins/oaipmh/resources">
+				<field name="type" type="resourcetype" default="0" label="PLG_OAIPMH_RESOURCES_TYPE_LABEL" description="PLG_OAIPMH_RESOURCES_TYPE_DESC" />
 			</fieldset>
 		</fields>
 	</config>
