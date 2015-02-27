@@ -41,6 +41,20 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'OaipmhController' . ucfirst($controllerName);
 
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_OAIPMH_ABOUT'),
+	\JRoute::_('index.php?option=com_oaipmh'),
+	true
+);
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+if (\PluginsHelper::getActions()->get('core.manage'))
+{
+	\JSubMenuHelper::addEntry(
+		\JText::_('COM_OAIPMH_PLUGINS'),
+		\JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+	);
+}
+
 // Instantiate controller
 $controller = new $controllerName();
 $controller->execute();

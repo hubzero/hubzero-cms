@@ -2,7 +2,8 @@
 	<h1><span>OAIPMH</span></h1>
 	<ul class="nav">
 		<li><a href="#overview">Overview</a></li>
-		<li><a href="#dublincore">Dublin Core Specifications</a></li>
+		<li><a href="#schemas">Schemas</a></li>
+		<li><a href="#providers">Data Providers</a></li>
 		<li><a href="#guide">Manual Harvesting Guide</a></li>
 		<li><a href="#toolbar">Toolbar</a></li>
 	</ul>
@@ -11,16 +12,15 @@
 
 		<p>The Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH) is a low-barrier mechanism for repository interoperability. Data Providers are repositories that expose structured metadata via OAI-PMH. Service Providers then make OAI-PMH service requests to harvest that metadata. OAI-PMH is a set of six verbs or services that are invoked within HTTP.</p>
 	</section>
-	<section id="dublincore">
-		<h2><span>Dublin Core Specifications</span></h2>
+	<section id="schemas">
+		<h2><span>Schemas</span></h2>
 
-		<p>The OAI-PMH component allows custom SQL statements to be written that allow discovery and exposure of records that exist anywhere within a HUB. Each of the 15 Dublin Core elements can be individually modified to point to different tables or fields. You may also create additional groups of SQL statements to expose multiple sets of records from multiple groups of tables. By default, all values for the standard HUB Records have been populated.</p>
-		<ol>
-			<li><strong>Resource IDs</strong>: a SQL statement to SELECT only the database IDs of the records you wish to expose with this group. These IDs will be used in the remainder of this group’s DC queries with the variable <code>$id</code>. Default: <code>SELECT id FROM #__resources WHERE standalone = 1</code></li>
-			<li><strong>Specify sets</strong>: a SQL to SELECT the setName, setSpec, and setDesc for this group of sets. If you would like to exclude certain sets from this group, you may do it here. Default: <code>SELECT alias, type, description FROM #__resource_types WHERE category = 27</code></li>
-			<li><strong>Dublin Core Elements</strong>: By default, the OAI-PMH component is populated with SQL statements for Title, Author, Subject, Description, Date, Identifier, and Relation from the <code>#__resources</code> table. You may modify these and add the remaining elements for the first group. You may enter SQL statements or static values in any of these fields.</li>
-			<li><strong>Additional Groups</strong>: Click Add Group to create a new tab and a new group of SQL statements for an additional set. Repeat steps 1-3 for this new tab. To remove a group, click [ remove group ] at the bottom of any tab (except Group 1).</li>
-		</ol>
+		<p>The OAI-PMH component allows for output in various data schemas. The srvice comes with Qualified Dublin Core as the default schema.</p>
+	</section>
+	<section id="providers">
+		<h2><span>Data Providers</span></h2>
+
+		<p>The OAI-PMH component uses data providers for feeding records to the service. Each provider is represented by a plugin. This allows for easy addition, removal, and configuration of data types without having to modify the core OAIPMH code. The list of available plugins can be found and configured by clicking the <strong>Plugins</strong> menu item above or by navigating to the <strong>Plugins Manager</strong> and filtering by type "oaipmh".</p>
 	</section>
 	<section id="guide">
 		<h2><span>Manual Harvesting Guide</span></h2>
