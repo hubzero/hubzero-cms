@@ -219,8 +219,6 @@ class Relational implements \IteratorAggregate
 		$this->modelName = with(new \ReflectionClass($this))->getShortName();
 
 		// If table name isn't explicitly set, build it
-		// @FIXME: just adding 's' isn't sufficient to properly plurize table names
-		//         for now, table name must be overridden if it doesn't fit this convention
 		$namespace   = (!$this->namespace ? '' : $this->namespace . '_');
 		$plural      = \Hubzero\Utility\Inflector::pluralize(strtolower($this->getModelName()));
 		$this->table = $this->table ?: '#__' . $namespace . $plural;
