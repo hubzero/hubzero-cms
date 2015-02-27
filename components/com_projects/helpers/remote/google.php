@@ -77,7 +77,7 @@ class ProjectsGoogleHelper extends JObject
 	 */
 	public static function insertPermission($apiService, $fileId, $value, $type, $role)
 	{
-		$newPermission = new Google_Permission();
+		$newPermission = new Google_Service_Drive_Permission();
 		$newPermission->setValue($value);
 		$newPermission->setType($type);
 		$newPermission->setRole($role);
@@ -159,7 +159,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 
 		// Create file instance
-		$file = new Google_DriveFile;
+		$file = new Google_Service_Drive_DriveFile;
 
 		if ($title)
 		{
@@ -168,7 +168,7 @@ class ProjectsGoogleHelper extends JObject
 
 		if ($parentId)
 		{
-			$parent = new Google_ParentReference;
+			$parent = new Google_Service_Drive_ParentReference;
 			$parent->setId($parentId);
 			$file->setParents(array($parent));
 		}
@@ -199,7 +199,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return	 string (id) or false
 	 */
-	public static function insertFile ($apiService, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function insertFile ($apiService, $client, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType)
@@ -208,11 +208,11 @@ class ProjectsGoogleHelper extends JObject
 		}
 
 		// Create file instance
-		$file = new Google_DriveFile;
+		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
 		$file->setTitle($title);
 
-		$parent = new Google_ParentReference;
+		$parent = new Google_Service_Drive_ParentReference;
 		$parent->setId($parentId);
 		$file->setParents(array($parent));
 
@@ -221,6 +221,7 @@ class ProjectsGoogleHelper extends JObject
 
 		$fparams = array();
 		$fparams['mimeType'] = $mimeType;
+		$fparams['uploadType'] = 'media';
 
 		// Are we converting to Google format?
 		if ($convert == true)
@@ -262,22 +263,43 @@ class ProjectsGoogleHelper extends JObject
 		try
 		{
 			$chunkSizeBytes = 1 * 1024 * 1024;
-			$media = new Google_MediaFileUpload('text/plain', null, true, $chunkSizeBytes);
-			$media->setFileSize($size);
 
-			$result = $apiService->files->insert($file, array('mediaUpload' => $media));
+			// Call the API with the media upload, defer so it doesn't immediately return.
+			$client->setDefer(true);
+			$request = $apiService->files->insert($file);
+
+			$media = new Google_Http_MediaFileUpload(
+				$client,
+				$request,
+				$mimeType,
+				null,
+				true,
+				$chunkSizeBytes
+			);
+
+			$media->setFileSize($size);
 
 			$status = false;
 			$handle = fopen($localPath, "rb");
 			while (!$status && !feof($handle))
 			{
 				$chunk = fread($handle, $chunkSizeBytes);
-				$status = $media->nextChunk($result, $chunk);
+				$status = $media->nextChunk($chunk);
 			}
 
+			$result = false;
+			if ($status != false)
+			{
+				$result = $status;
+			}	
+
 			fclose($handle);
-			$metadata = $status;
-			return isset($status['id']) ? $status['id'] : NULL;
+
+			// Reset to the client to execute requests immediately in the future.
+			$client->setDefer(false);
+
+			$metadata = $result;
+			return isset($result['id']) ? $result['id'] : NULL;
 		}
 		catch (Exception $e)
 		{
@@ -308,13 +330,13 @@ class ProjectsGoogleHelper extends JObject
 		}
 
 		// Create file instance
-		$file = new Google_DriveFile;
+		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType($mimeType);
 		$file->setTitle($title);
 
 		if ($parentId)
 		{
-			$parent = new Google_ParentReference;
+			$parent = new Google_Service_Drive_ParentReference;
 			$parent->setId($parentId);
 			$file->setParents(array($parent));
 		}
@@ -530,13 +552,13 @@ class ProjectsGoogleHelper extends JObject
 			return false;
 		}
 
-		$file = new Google_DriveFile;
+		$file = new Google_Service_Drive_DriveFile;
 		$file->setMimeType('application/vnd.google-apps.folder');
 		$file->setTitle($title);
 
 		if ($parentId != null)
 		{
-			$parent = new Google_ParentReference;
+			$parent = new Google_Service_Drive_ParentReference;
 			$parent->setId($parentId);
 			$file->setParents(array($parent));
 		}

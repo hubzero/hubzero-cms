@@ -159,7 +159,7 @@ class ProjectsImgHandler extends JObject
 		}
 
 		// Get the size and MIME type of the requested image
-		$size = GetImageSize($docRoot . $image);
+		$size = getimagesize($docRoot . $image);
 		$mime = $size['mime'];
 
 		// Make sure that the requested file is actually an image

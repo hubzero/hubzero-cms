@@ -131,15 +131,6 @@ class ProjectsConnectHelper extends JObject {
 		// Set configurations
 		$this->setConfigs();
 
-		// Load library for active service
-		foreach ($this->_services as $servicename)
-		{
-			if ($this->_connect[$servicename]['on'])
-			{
-				$this->loadLibrary($servicename);
-			}
-		}
-
 		// Set local timezone after loading library (so that local and remote sync)
 		date_default_timezone_set($zone);
 	}
@@ -338,30 +329,6 @@ class ProjectsConnectHelper extends JObject {
 		}
 
 		return $this->_connect[$service];
-	}
-
-	/**
-	 * Load library for service
-	 *
-	 * @param	   string	$service	Service name (google or dropbox)
-	 *
-	 * @return	   void
-	 */
-	public function loadLibrary ($service = 'google')
-	{
-		if ($service == 'google')
-		{
-			$srcDir = 'src';
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client'
-				. DS . $srcDir . DS . 'Google_Client.php');
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client'
-				. DS . $srcDir . DS . 'contrib' . DS . 'Google_DriveService.php');
-			require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client'
-				. DS . $srcDir . DS . 'contrib' . DS . 'Google_Oauth2Service.php');
-
-			/*require_once(JPATH_SITE . DS . 'libraries' . DS . 'google-api-php-client'
-				. DS . $srcDir . DS . 'io' . DS . 'Google_HttpRequest.php');*/
-		}
 	}
 
 	/**
@@ -605,7 +572,7 @@ class ProjectsConnectHelper extends JObject {
 		// Get API
 		if ($service == 'google')
 		{
-			$this->_api[$service] = new Google_DriveService($client);
+			$this->_api[$service] = new Google_Service_Drive($client);
 		}
 		else
 		{
@@ -701,7 +668,7 @@ class ProjectsConnectHelper extends JObject {
 			// Create remote project folder if not found (project owner)
 			if ($folderID == 1	&& $owner)
 			{
-				$file = new Google_DriveFile;
+				$file = new Google_Service_Drive_DriveFile;
 				$file->setMimeType('application/vnd.google-apps.folder');
 				$file->setTitle($config['remote_dir']);
 
@@ -739,7 +706,7 @@ class ProjectsConnectHelper extends JObject {
 					// Need to add permission
 					if (!in_array($name, $permNames))
 					{
-						$permission = new Google_Permission;
+						$permission = new Google_Service_Drive_Permission;
 						$permission->setRole('writer');
 						$permission->setType('user');
 						$permission->setValue($email);
@@ -786,7 +753,7 @@ class ProjectsConnectHelper extends JObject {
 				return false;
 			}
 
-			$oauth2 = new Google_Oauth2Service($client);
+			$oauth2 = new Google_Auth_OAuth2($client);
 			try
 			{
 				$user = $oauth2->userinfo->get();
@@ -887,7 +854,7 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 		}
 
 		// Error!
@@ -1834,10 +1801,12 @@ class ProjectsConnectHelper extends JObject {
 		if ($service == 'google')
 		{
 			// Make Http request
-			$request = new Google_HttpRequest($url, 'GET', null, null);
+			$request = new Google_Http_Request($url, 'GET', null, null);
 
 			// Get remote content
-			$httpRequest = Google_Client::$io->authenticatedRequest($request);
+			$client  = $this->_client[$service];
+			$request = $client->getAuth()->sign($request);
+			$httpRequest = $client->getIo()->makeRequest($request);
 
 			if ($httpRequest->getResponseHttpCode() == 200)
 			{
@@ -1880,8 +1849,11 @@ class ProjectsConnectHelper extends JObject {
 		$fp = fopen($path, 'w');
 
 		// Make Http request
-		$request = new Google_HttpRequest($url, 'GET', null, null);
-		$request = Google_Client::$auth->sign($request);
+		$request = new Google_Http_Request($url, 'GET', null, null);
+
+		$client  = $this->_client[$service];
+		$request = $client->getAuth()->sign($request);
+		$request = $client->getIo()->makeRequest($request);
 
 		//Initialize the Curl Session.
 		$ch = curl_init();
@@ -2073,8 +2045,8 @@ class ProjectsConnectHelper extends JObject {
 					fclose($handle);
 
 					// Resize the image if necessary
-					$ih->set('image',$thumb);
-					$ih->set('overwrite',true);
+					$ih->set('image', $thumb);
+					$ih->set('overwrite', true);
 					$ih->set('path', PATH_APP. $to_path . DS);
 					$ih->set('maxWidth', 180);
 					$ih->set('maxHeight', 180);

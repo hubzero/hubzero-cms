@@ -5999,23 +5999,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					: 'Mixing in timed changes ' . "\n";
 
 				$remotes = array_merge($timedRemotes, $remotes);
-				array_unique($remotes);
+				//array_unique($remotes);
 			}
 		}
 		else
 		{
 			$output .= 'No timed changes since ' . $from . "\n";
-		}
-
-		// Error!
-		if ($lastSyncId > 1 && !$newSyncId)
-		{
-			/*
-			$this->_writeToFile( '' );
-			$this->_rSync['error'] = 'Oups! Unknown sync error. Please try again at a later time.';
-			$this->lockSync($service, true);
-			return false;
-			*/
 		}
 
 		if ($this->_connect->getError())
