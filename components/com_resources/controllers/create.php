@@ -854,16 +854,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// build path to temp upload folder and future permanent folder
 		$session = JFactory::getSession();
 		$created = JFactory::getDate()->format('Y-m-d 00:00:00');
-		$oldPath = trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($created, $session->get('resources_temp_id') ,'');
-		$newPath = trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $row->id, '');
+		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($created, $session->get('resources_temp_id') ,'');
+		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $row->id, '');
 
 		// if we have a temp dir, move it to permanent location
 		if (is_dir($oldPath))
 		{
 			JFolder::move($oldPath, $newPath);
 
-			$old = DS . 'resources' . DS . $session->get('resources_temp_id') . DS . 'download' . DS;
-			$new = DS . 'resources' . DS . $row->id . DS . 'download' . DS;
+			$old = DS . $session->get('resources_temp_id') . DS;
+			$new = DS . $row->id . DS;
 
 			// update all images in abstract
 			$row->introtext = str_replace($old, $new, $row->introtext);
