@@ -1,8 +1,10 @@
 <?php
 /**
- * HUBzero CMS
+ * @package     hubzero-cms
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -21,26 +23,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+defined('_JEXEC') or die( 'Restricted access' );
 
-namespace Components\Oaipmh;
+$option = 'com_oaipmh';
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_oaipmh')) 
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
-	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-$controllerName = \JRequest::getCmd('controller', 'config');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = JRequest::getCmd('controller', 'config');
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'config';
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = 'OaipmhController' . ucfirst($controllerName);
+
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_OAIPMH_ABOUT'),
+	\JRoute::_('index.php?option=com_oaipmh'),
+	true
+);
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+if (\PluginsHelper::getActions()->get('core.manage'))
+{
+	\JSubMenuHelper::addEntry(
+		\JText::_('COM_OAIPMH_PLUGINS'),
+		\JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+	);
+}
 
 // Instantiate controller
 $controller = new $controllerName();
