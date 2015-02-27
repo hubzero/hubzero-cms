@@ -482,7 +482,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $id,
 			'size'      => \Hubzero\Utility\Number::formatBytes($this_size),
 			'width'     => $width,
@@ -644,7 +644,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		echo json_encode(array(
 			'success'   => true,
 			'file'      => '',
-			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'directory' => str_replace(PATH_APP, '', $path),
 			'id'        => $id,
 			'size'      => 0,
 			'width'     => 0,

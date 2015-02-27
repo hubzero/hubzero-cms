@@ -146,7 +146,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 		}
 
 		// Build the path
-		$path = JPATH_ROOT . '/site/tools/zones/' . $this->get('id');
+		$path = PATH_APP . '/site/tools/zones/' . $this->get('id');
 
 		// Return just the upload path?
 		if ($rtrn == 'path')
