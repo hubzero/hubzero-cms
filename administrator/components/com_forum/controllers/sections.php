@@ -103,6 +103,8 @@ class Sections extends AdminController
 		// Get records
 		$this->view->results = $model->sections('list', $this->view->filters);
 
+		$this->view->forum = $model;
+
 		// Set any errors
 		if ($this->getError())
 		{

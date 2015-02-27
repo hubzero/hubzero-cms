@@ -35,6 +35,7 @@ use Components\Forum\Tables\Section;
 use Components\Forum\Tables\Category;
 use Components\Forum\Tables\Post;
 use Components\Forum\Models\AdminCategory;
+use Components\Forum\Models\Manager;
 use Exception;
 
 /**
@@ -101,6 +102,11 @@ class Categories extends AdminController
 			$this->view->filters['scope'] = $bits[0];
 			$this->view->filters['scope_id'] = intval(end($bits));
 		}
+		else
+		{
+			$this->view->filters['scope'] = '';
+			$this->view->filters['scope_id'] = -1;
+		}
 
 		$this->view->filters['admin'] = true;
 
@@ -116,74 +122,17 @@ class Categories extends AdminController
 			$this->view->section->load($this->view->filters['section_id']);
 		}
 
-		// Set the group ID from the secton, if a section is selected
-		/*if ($this->view->filters['section_id'] && $this->view->section->id)
-		{
-			$this->view->filters['scope'] = $this->view->section->scope;
-			$this->view->filters['scope_id'] = $this->view->section->scope_id;
-		}*/
-
-		// Get the sections for this group
 		$this->view->sections = array();
 
 		if ($this->view->filters['scopeinfo'])
 		{
 			$this->view->sections = $this->view->section->getRecords(array(
-				'scope' => $this->view->filters['scope'],
+				'scope'    => $this->view->filters['scope'],
 				'scope_id' => $this->view->filters['scope_id'],
-				'sort' => 'title',
+				'sort'     => 'title',
 				'sort_Dir' => 'ASC'
 			));
 		}
-
-
-		/*if ($sections)
-		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
-			foreach ($sections as $s)
-			{
-				switch ($s->scope)
-				{
-					case 'group':
-						$group = \Hubzero\User\Group::getInstance($s->scope_id);
-						$ky = $s->scope;
-						if ($group)
-						{
-							$ky .= ' (' . \Hubzero\Utility\String::truncate($group->get('cn'), 50) . ')';
-						}
-						else
-						{
-							$ky .= ' (' . $s->scope_id . ')';
-						}
-					break;
-					case 'course':
-						$offering = CoursesModelOffering::getInstance($s->scope_id);
-						$course = CoursesModelCourse::getInstance($offering->get('course_id'));
-						$ky = $s->scope . ' (' . \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50) . ')';
-					break;
-					case 'site':
-					default:
-						$ky = '[ site ]'; //$ky = $s->scope . ($s->scope_id ? ' (' . $s->scope_id . ')' : '');
-					break;
-				}
-
-				if (!isset($this->view->sections[$ky]))
-				{
-					$this->view->sections[$ky] = array();
-				}
-				$this->view->sections[$ky][] = $s;
-				asort($this->view->sections[$ky]);
-			}
-		}
-		else
-		{
-			$default = new Section($this->database);
-			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
-
-			$this->view->sections[] = $default;
-		}
-		asort($this->view->sections);*/
 
 		$model = new Category($this->database);
 
@@ -192,6 +141,8 @@ class Categories extends AdminController
 
 		// Get records
 		$this->view->results = $model->getRecords($this->view->filters);
+
+		$this->view->forum = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
 
 		// Set any errors
 		if ($this->getError())

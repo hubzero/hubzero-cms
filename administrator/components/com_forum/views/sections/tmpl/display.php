@@ -76,39 +76,39 @@ function submitbutton(pressbutton)
 			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
 			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_NONE'); ?></option>
 			<?php
-			$html = '';
+			$results = $this->forum->scopes();
 
 			$list = array();
 
-			foreach ($this->results as $result)
+			foreach ($results as $result)
 			{
-				if ($result->get('scope') == 'site')
+				if (!isset($list[$result->scope]))
+				{
+					$list[$result->scope] = array();
+				}
+				$list[$result->scope][$result->scope_id] = $result;
+			}
+
+			$html = '';
+			foreach ($list as $label => $optgroup)
+			{
+				if ($label == 'site')
 				{
 					continue;
 				}
-				if (!isset($list[$result->get('scope')]))
-				{
-					$list[$result->get('scope')] = array();
-				}
-				$list[$result->get('scope')][$result->get('scope_id')] = $result;
-			}
-
-			foreach ($list as $label => $optgroup)
-			{
 				$html .= ' <optgroup label="' . $label . '">';
 				foreach ($optgroup as $result)
 				{
-					$html .= ' <option value="' . $result->get('scope') . ':' . $result->get('scope_id') . '"';
-					if ($this->filters['scopeinfo'] == $result->get('scope') . ':' . $result->get('scope_id'))
+					$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+					if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id)
 					{
 						$html .= ' selected="selected"';
 					}
-					$html .= '>' . $this->escape($result->adapter()->name());
+					$html .= '>' . $this->escape(stripslashes($result->caption));
 					$html .= '</option>'."\n";
 				}
 				$html .= '</optgroup>'."\n";
 			}
-
 			echo $html;
 			?>
 		</select>
@@ -233,7 +233,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="scope">
-						<span><?php echo $this->escape($row->get('scope')) . ' (' . $this->escape($row->adapter()->name()) . ')'; ?></span>
+						<span><?php echo $this->escape($row->get('scope')) . ' (' . (isset($list[$row->get('scope')][$row->get('scope_id')]) ? $this->escape($list[$row->get('scope')][$row->get('scope_id')]->caption) : $this->escape($row->get('scope_id'))) . ')'; ?></span>
 					</span>
 				</td>
 				<td>

@@ -36,6 +36,7 @@ use Components\Forum\Tables\Category;
 use Components\Forum\Tables\Post;
 use Components\Forum\Models\AdminThread;
 use Components\Forum\Models\Tags;
+use Components\Forum\Models\Manager;
 use Exception;
 
 /**
@@ -96,25 +97,30 @@ class Threads extends AdminController
 				'filter_order_Dir',
 				'DESC'
 			),
+			'scopeinfo' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.scopeinfo',
+				'scopeinfo',
+				''
+			),
 			'sticky' => false,
-			'parent' => 0
+			'parent' => 0,
+			'admin' => true
 		);
-
-		// Get the section
-		$this->view->section = new Section($this->database);
-		if (!$this->view->section->id || $this->view->filters['section_id'] <= 0)
+		if (strstr($this->view->filters['scopeinfo'], ':'))
 		{
-			// No section? Load a default blank section
-			$this->view->section->loadDefault();
+			$bits = explode(':', $this->view->filters['scopeinfo']);
+			$this->view->filters['scope'] = $bits[0];
+			$this->view->filters['scope_id'] = intval(end($bits));
 		}
 		else
 		{
-			$this->view->section->load($this->view->filters['section_id']);
+			$this->view->filters['scope'] = '';
+			$this->view->filters['scope_id'] = -1;
 		}
 
 		// Get the category
 		$this->view->category = new Category($this->database);
-		if (!$this->view->category->id || $this->view->filters['category_id'] <= 0)
+		if (!$this->view->filters['category_id'] || $this->view->filters['category_id'] <= 0)
 		{
 			// No category? Load a default blank catgory
 			$this->view->category->loadDefault();
@@ -122,80 +128,58 @@ class Threads extends AdminController
 		else
 		{
 			$this->view->category->load($this->view->filters['category_id']);
+
+			$this->view->filters['scope'] = $this->view->category->scope;
+			$this->view->filters['scope_id'] = $this->view->category->scope_id;
+			$this->view->filters['scopeinfo'] = $this->view->filters['scope'] . ':' . $this->view->filters['scope_id'];
+			$this->view->filters['section_id'] = $this->view->category->section_id;
 		}
 
-		$this->view->cateories = array();
-		$categories = $this->view->category->getRecords();
-		if ($categories)
+		// Get the section
+		$this->view->section = new Section($this->database);
+		if (!$this->view->filters['section_id'] || $this->view->filters['section_id'] <= 0)
 		{
-			foreach ($categories as $c)
-			{
-				if (!isset($this->view->cateories[$c->section_id]))
-				{
-					$this->view->cateories[$c->section_id] = array();
-				}
-				$this->view->cateories[$c->section_id][] = $c;
-				asort($this->view->cateories[$c->section_id]);
-			}
-		}
-
-		// Get the sections for this group
-		$this->view->sections = array();
-		$sections = $this->view->section->getRecords();
-		if ($sections)
-		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
-			foreach ($sections as $s)
-			{
-				$ky = $s->scope . ' (' . $s->scope_id . ')';
-
-				switch ($s->scope)
-				{
-					case 'group':
-						$group = \Hubzero\User\Group::getInstance($s->scope_id);
-						$ky = $s->scope;
-						if ($group)
-						{
-							$ky .= ' (' . \Hubzero\Utility\String::truncate($group->get('cn'), 50) . ')';
-						}
-						else
-						{
-							$ky .= ' (' . $s->scope_id . ')';
-						}
-					break;
-					case 'course':
-						$offering = \CoursesModelOffering::getInstance($s->scope_id);
-						$course = \CoursesModelCourse::getInstance($offering->get('course_id'));
-						$ky = $s->scope . ' (' . \Hubzero\Utility\String::truncate($course->get('alias'), 50) . ': ' . \Hubzero\Utility\String::truncate($offering->get('alias'), 50) . ')';
-					break;
-					case 'site':
-					default:
-						$ky = '[ site ]'; //$ky = $s->scope . ($s->scope_id ? ' (' . $s->scope_id . ')' : '');
-					break;
-				}
-
-				/*if ($s->scope == 'site')
-				{
-					$ky = '[ site ]';
-				}*/
-				if (!isset($this->view->sections[$ky]))
-				{
-					$this->view->sections[$ky] = array();
-				}
-				$s->categories = (isset($this->view->cateories[$s->id])) ? $this->view->cateories[$s->id] : array(); //$this->view->category->getRecords(array('section_id'=>$s->id));
-				$this->view->sections[$ky][] = $s;
-				asort($this->view->sections[$ky]);
-			}
+			// No section? Load a default blank section
+			$this->view->section->loadDefault();
 		}
 		else
 		{
-			$default = new Section($this->database);
-			$default->loadDefault($this->view->section->scope, $this->view->section->scope_id);
+			$this->view->section->load($this->view->filters['section_id']);
 
-			$this->view->sections[] = $default;
+			if (!$this->view->filters['scopeinfo'])
+			{
+				$this->view->filters['scope'] = $this->view->section->scope;
+				$this->view->filters['scope_id'] = $this->view->section->scope_id;
+				$this->view->filters['scopeinfo'] = $this->view->filters['scope'] . ':' . $this->view->filters['scope_id'];
+			}
 		}
-		asort($this->view->sections);
+
+		$this->view->sections = array();
+		if ($this->view->filters['scopeinfo'])
+		{
+			$this->view->sections = $this->view->section->getRecords(array(
+				'scope'    => $this->view->filters['scope'],
+				'scope_id' => $this->view->filters['scope_id'],
+				'sort'     => 'title',
+				'sort_Dir' => 'ASC'
+			));
+		}
+
+		$this->view->categories = array();
+		if ($this->view->filters['section_id'])
+		{
+			$this->view->categories = $this->view->category->getRecords(array(
+				'section_id'    => $this->view->filters['section_id']
+			));
+			if (!$this->view->filters['category_id'] || $this->view->filters['category_id'] <= 0)
+			{
+				$this->view->filters['category_id'] = array();
+				foreach ($this->view->categories as $cat)
+				{
+					$this->view->filters['category_id'][] = $cat->id;
+				}
+			}
+		}
 
 		$model = new Post($this->database);
 
@@ -204,6 +188,10 @@ class Threads extends AdminController
 
 		// Get records
 		$this->view->results = $model->getRecords($this->view->filters);
+
+		$this->view->forum = new Manager($this->view->filters['scope'], $this->view->filters['scope_id']);
+
+		$this->view->filters['category_id'] = is_array($this->view->filters['category_id']) ? -1 : $this->view->filters['category_id'];
 
 		// Set any errors
 		if ($this->getError())

@@ -450,5 +450,46 @@ class Manager extends Base
 		}
 		return $this->_cache['last'];
 	}
+
+	/**
+	 * Get all available scopes
+	 *
+	 * @return  array
+	 */
+	public function scopes()
+	{
+		if (!isset($this->_cache['scopes']))
+		{
+			$this->_db->setQuery("
+				SELECT DISTINCT s.scope, s.scope_id
+				FROM #__forum_sections AS s
+				ORDER BY s.scope, s.scope_id
+			");
+
+			$results = $this->_db->loadObjectList();
+
+			if (!$results || !is_array($results))
+			{
+				$results = array();
+			}
+
+			$scope = $this->get('scope');
+			$scope_id = $this->get('scope_id');
+
+			foreach ($results as $i => $result)
+			{
+				$this->set('scope', $result->scope);
+				$this->set('scope_id', $result->scope_id);
+				$results[$i]->caption = $this->_adapter()->name();
+			}
+
+			$this->set('scope', $scope);
+			$this->set('scope_id', $scope_id);
+
+			$this->_cache['scopes'] = $results;
+		}
+
+		return $this->_cache['scopes'];
+	}
 }
 

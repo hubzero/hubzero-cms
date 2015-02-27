@@ -70,31 +70,75 @@ function submitbutton(pressbutton) {
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="field-category_id"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
-		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
-			<option value="-1"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY_SELECT'); ?></option>
-		<?php foreach ($this->sections as $scope => $sections) { ?>
-			<optgroup label="<?php echo $this->escape(stripslashes($scope)); ?>">
-			<?php foreach ($sections as $section) { ?>
-				<optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
-				<?php foreach ($section->categories as $category) { ?>
-					<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
-				<?php } ?>
-				</optgroup>
+		<label for="scopeinfo"><?php echo JText::_('COM_FORUM_FILTER_SCOPE'); ?>:</label>
+		<select name="scopeinfo" id="scopeinfo" style="max-width: 20em;" onchange="document.adminForm.submit();">
+			<option value=""<?php if ($this->filters['scopeinfo'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
+			<option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_FORUM_NONE'); ?></option>
 			<?php
-				if (!isset($list[$section->scope]))
+			$list = array();
+
+			foreach ($this->forum->scopes() as $result)
+			{
+				if (!isset($list[$result->scope]))
 				{
-					$list[$section->scope] = array();
+					$list[$result->scope] = array();
 				}
-				if (!isset($list[$section->scope][$section->scope_id]))
-				{
-					$list[$section->scope][$section->scope_id] = $scope;
-				}
+				$list[$result->scope][$result->scope_id] = $result;
 			}
+
+			$html = '';
+			foreach ($list as $label => $optgroup)
+			{
+				if ($label == 'site')
+				{
+					continue;
+				}
+				$html .= ' <optgroup label="' . $label . '">';
+				foreach ($optgroup as $result)
+				{
+					$html .= ' <option value="' . $result->scope . ':' . $result->scope_id . '"';
+					if ($this->filters['scopeinfo'] == $result->scope . ':' . $result->scope_id)
+					{
+						$html .= ' selected="selected"';
+					}
+					$html .= '>' . $this->escape(stripslashes($result->caption));
+					$html .= '</option>'."\n";
+				}
+				$html .= '</optgroup>'."\n";
+			}
+			echo $html;
 			?>
-			</optgroup>
-		<?php } ?>
 		</select>
+
+		<?php if (count($this->sections) > 0) { ?>
+			<label for="field-section_id"><?php echo JText::_('COM_FORUM_FILTER_SECTION'); ?>:</label>
+			<select name="section_id" id="field-section_id" onchange="document.adminForm.submit( );">
+				<option value="-1"><?php echo JText::_('COM_FORUM_FILTER_SECTION_SELECT'); ?></option>
+				<?php
+				foreach ($this->sections as $section)
+				{
+					?>
+					<option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+					<?php
+				}
+				?>
+			</select>
+		<?php } ?>
+
+		<?php if ($this->filters['section_id'] && $this->filters['section_id'] > 0) { ?>
+			<label for="field-category_id"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
+			<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">
+				<option value="-1"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY_SELECT'); ?></option>
+				<?php
+				foreach ($this->categories as $category)
+				{
+					?>
+					<option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+					<?php
+				}
+				?>
+			</select>
+		<?php } ?>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -241,7 +285,7 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="scope">
-						<span><?php echo $this->escape($list[$row->scope][$row->scope_id]); /*$this->escape($row->scope); ?> <?php echo ($row->scope_id) ? '(' . $this->escape($row->scope_id) . ')' : '';*/ ?></span>
+						<span><?php echo $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')'; ?></span>
 					</span>
 				</td>
 				<td>

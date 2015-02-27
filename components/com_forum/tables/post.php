@@ -281,9 +281,17 @@ class Post extends \JTable
 			{
 				$where[] = "(c.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR c.sticky=1)";
 			}
-			if (isset($filters['category_id']) && (int) $filters['category_id'] >= 0)
+			if (isset($filters['category_id']))
 			{
-				$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+				if (is_array($filters['category_id']) && !empty($filters['category_id']))
+				{
+					$filters['category_id'] = array_map('intval', $filters['category_id']);
+					$where[] = "c.category_id IN (" . implode(',', $filters['category_id']) . ")";
+				}
+				else if ((int) $filters['category_id'] >= 0)
+				{
+					$where[] = "c.category_id=" . $this->_db->Quote(intval($filters['category_id']));
+				}
 			}
 			if (isset($filters['object_id']) && (int) $filters['object_id'] >= 0)
 			{
