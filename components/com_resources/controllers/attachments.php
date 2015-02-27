@@ -495,7 +495,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 				'success'   => false,
 				'errors'    => $this->getErrors(),
 				'file'      => $filename . '.' . $ext,
-				'directory' => str_replace(JPATH_ROOT, '', $path),
+				'directory' => str_replace(PATH_APP, '', $path),
 				'parent'    => $pid
 			));
 			return;
@@ -514,14 +514,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 			if (!empty($hash))
 			{
-				$this->database->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
+				$this->database->setQuery('SELECT id FROM `#__document_text_data` WHERE hash = \'' . $hash . '\'');
 				if (!($doc_id = $this->database->loadResult()))
 				{
-					$this->database->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
+					$this->database->execute('INSERT INTO `#__document_text_data` (hash) VALUES (\'' . $hash . '\')');
 					$doc_id = $this->database->insertId();
 				}
 
-				$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
+				$this->database->execute('INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
 				system('/usr/bin/textifier ' . escapeshellarg($file) . ' >/dev/null');
 			}
 		}
@@ -530,7 +530,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			'success'   => true,
 			'errors'    => $this->getErrors(),
 			'file'      => $filename . '.' . $ext,
-			'directory' => str_replace(JPATH_ROOT, '', $path),
+			'directory' => str_replace(PATH_APP, '', $path),
 			'parent'    => $pid
 		));
 	}
@@ -874,14 +874,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 				if (!empty($hash))
 				{
-					$this->database->setQuery('SELECT id FROM #__document_text_data WHERE hash = \'' . $hash . '\'');
+					$this->database->setQuery('SELECT id FROM `#__document_text_data` WHERE hash = \'' . $hash . '\'');
 					if (!($doc_id = $this->database->loadResult()))
 					{
-						$this->database->execute('INSERT INTO #__document_text_data(hash) VALUES (\'' . $hash . '\')');
+						$this->database->execute('INSERT INTO `#__document_text_data` (hash) VALUES (\'' . $hash . '\')');
 						$doc_id = $this->database->insertId();
 					}
 
-					$this->database->execute('INSERT IGNORE INTO #__document_resource_rel(document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
+					$this->database->execute('INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (' . (int)$doc_id . ', ' . (int)$row->id . ')');
 					system('/usr/bin/textifier ' . escapeshellarg($path . DS . $file['name']) . ' >/dev/null');
 				}
 			}
@@ -937,7 +937,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, '');
 
-		$base  = JPATH_ROOT . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
+		$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
 		$baseY = $base . '/'. JFactory::getDate($row->created)->format("Y");
 		$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
 
@@ -976,7 +976,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 			$file  = basename($path);
 			$path  = substr($path, 0, (strlen($path) - strlen($file)));
-			$path  = str_replace(JPATH_ROOT, '', $path);
+			$path  = str_replace(PATH_APP, '', $path);
 			$path  = str_replace($uploadPath, '', $path);
 
 			$bits  = explode('/', $path);
@@ -1005,7 +1005,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 						continue;
 					}
 
-					$npath = JPATH_ROOT . $uploadPath . $b . DS . $v;
+					$npath = PATH_APP . $uploadPath . $b . DS . $v;
 
 					// Check if the folder even exists
 					if (!is_dir($npath)
@@ -1117,7 +1117,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		return JPATH_ROOT . $listdir . $subdir;
+		return PATH_APP . $listdir . $subdir;
 	}
 
 	/**

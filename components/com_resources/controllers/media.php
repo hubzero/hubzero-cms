@@ -67,7 +67,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$path =  JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
+		$path =  PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
@@ -156,7 +156,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$path =  JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
 
 		// Make sure the listdir follows YYYY/MM/#
 		$parts = explode('/', $path);
@@ -226,7 +226,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$this->view->path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $this->view->resource, '') . DS . 'media';
+		$this->view->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $this->view->resource, '') . DS . 'media';
 
 		$folders = array();
 		$docs    = array();

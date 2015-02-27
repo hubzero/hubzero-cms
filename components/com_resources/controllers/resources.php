@@ -747,7 +747,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$path = $base . $path;
 
 		// we must have a folder
-		if (!JFolder::exists(JPATH_ROOT . DS . $path))
+		if (!JFolder::exists(PATH_APP . DS . $path))
 		{
 			$this->setError(JText::_('Folder containing assets does nto exist.'));
 
@@ -759,13 +759,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
-		//$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
-		$manifests = JFolder::files( JPATH_ROOT . DS . $path, '.json' );
+		//$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
+		$manifests = JFolder::files(PATH_APP . DS . $path, '.json');
 		$manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
-		$manifest_path_xml  = JPATH_ROOT . $path . DS . 'presentation.xml';
+		$manifest_path_xml  = PATH_APP . $path . DS . 'presentation.xml';
 
 		//check if the formatted json exists
-		if (!file_exists(JPATH_ROOT . $path . DS . $manifest_path_json))
+		if (!file_exists(PATH_APP . $path . DS . $manifest_path_json))
 		{
 			//check to see if we just havent converted yet
 			if (!file_exists($manifest_path_xml))
@@ -783,7 +783,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		//path to media
-		$media_path = JPATH_ROOT . $path;
+		$media_path = PATH_APP . $path;
 
 		//check if path exists
 		if (!is_dir($media_path))
@@ -981,7 +981,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		//get manifest
 		$manifest = $this->getVideoManifestForResource( $activechild );
-		$manifest = json_decode( file_get_contents( JPATH_ROOT . $manifest ) );
+		$manifest = json_decode( file_get_contents( PATH_APP . $manifest ) );
 
 		//media tracking object
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
@@ -1058,7 +1058,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$path = $path ? $path : ResourcesHtml::build_path($resource->created, $resource->id, '');
 
 		//get manifests
-		$manifests = JFolder::files(JPATH_ROOT . DS . $base . $path, '.json');
+		$manifests = JFolder::files(PATH_APP . DS . $base . $path, '.json');
 
 		//return path to manifest if we have one
 		return (count($manifests) > 0) ? $base . $path . DS . $manifests[0] : array();
@@ -1108,7 +1108,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$manifest->presentation->subtitles = array();
 
 		//get the videos
-		$videos = JFolder::files(JPATH_ROOT . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		$videos = JFolder::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
 		//add each video to manifest
 		foreach ($videos as $k => $video)
@@ -1126,7 +1126,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		//get the subs
-		$subtitles = JFolder::files(JPATH_ROOT . DS . $base . $path, '.srt|.SRT');
+		$subtitles = JFolder::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
 
 		//add each subtitle to manifest
 		foreach ($subtitles as $k => $subtitle)
@@ -1155,7 +1155,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$manifest = json_encode($manifest, JSON_PRETTY_PRINT);
 
 		// attempt to create manifest file
-		if (!JFile::write(JPATH_ROOT . DS . $base . $path . DS . 'presentation.json', $manifest))
+		if (!JFile::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
 		{
 			return false;
 		}
@@ -1867,7 +1867,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 						{
 							$podcastp = trim($this->config->get('uploadpath'), DS) . DS . ltrim($podcastp, DS);
 						}
-						$podcastp = JPATH_ROOT . DS . ltrim($podcastp, DS);
+						$podcastp = PATH_APP . DS . ltrim($podcastp, DS);
 						if (file_exists($podcastp))
 						{
 							$fs = filesize($podcastp);
@@ -1940,7 +1940,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Ensure the upath has format of /upath
 		$upath = DS . trim($upath, DS);
 
-		$d = @dir(JPATH_ROOT . $upath . $path);
+		$d = @dir(PATH_APP . $upath . $path);
 
 		$images = array();
 
@@ -1949,7 +1949,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file)
+				if (is_file(PATH_APP . $upath . $path . DS . $img_file)
 				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
@@ -2143,8 +2143,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $resource->path;
+		// Add root path
+		$filename = PATH_APP . $resource->path;
 
 		// Ensure the file exist
 		if (!file_exists($filename))
@@ -2212,7 +2212,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		if ($tarball_path[0] != DS)
 		{
-			$tarball_path = rtrim(JPATH_ROOT . DS . $tarball_path, DS);
+			$tarball_path = rtrim(PATH_APP . DS . $tarball_path, DS);
 		}
 		$tarpath = $tarball_path . DS . $tv->toolname . DS;
 		$opencode = ($tv->codeaccess=='@OPEN') ? 1 : 0;
@@ -2369,7 +2369,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$row->author = $helper->ul_contributors;
 
 		// Build the download path
-		$path = JPATH_ROOT . $this->config->get('cachepath', '/cache/resources');
+		$path = PATH_APP . $this->config->get('cachepath', '/cache/resources');
 		$date = $row->created;
 		$dir_resid = \Hubzero\Utility\String::pad($row->id);
 		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))

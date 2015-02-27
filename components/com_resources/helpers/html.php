@@ -1064,7 +1064,7 @@ class ResourcesHtml
 				$path = $base_path . $path;
 			}
 
-			$path = JPATH_ROOT . $path;
+			$path = PATH_APP . $path;
 
 			jimport('joomla.filesystem.file');
 			$type = strtoupper(JFile::getExt($path));
