@@ -115,7 +115,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			$sf = getenv('SERVER_SOFTWARE');
 		}
 
-		$commit = shell_exec("git log -1 --pretty=format:'%H - %s (%ci)' --abbrev-commit");
+		//$commit = shell_exec("git log -1 --pretty=format:'%H - %s (%ad)' --abbrev-commit");
 		//shell_exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit git merge-base local-dev dev");
 
 		// System
@@ -126,8 +126,54 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'dbcollation' => $this->database->getCollation(),
 			'phpversion'  => phpversion(),
 			'server'      => $sf,
-			'last_commit' => $commit
+			//'last_commit' => $commit,
+			'last_update' => null,
+			'last_core_update' => null
 		);
+
+		require_once JPATH_ROOT . DS . 'administrator/components/com_update' . DS . 'helpers' . DS . 'cli.php';
+
+		// Get the last update
+		$rows = json_decode(
+			cli::log(
+				1,
+				0,
+				'',
+				false,
+				true,
+				false,
+				null
+			)
+		);
+		if ($rows)
+		{
+			$props = get_object_vars($rows);
+			foreach ($props as $key => $item)
+			{
+				$response->system['last_update'] = $item;
+			}
+		}
+
+		// Get last core update
+		$rows = json_decode(
+			cli::log(
+				1,
+				0,
+				'Merge remote-tracking',
+				false,
+				true,
+				false,
+				null
+			)
+		);
+		if ($rows)
+		{
+			$props = get_object_vars($rows);
+			foreach ($props as $key => $item)
+			{
+				$response->system['last_update_core'] = $item;
+			}
+		}
 
 		if (strstr($values, ',') || ($values != 'all' && $values != 'short'))
 		{
