@@ -13793,3 +13793,9 @@
 ./administrator/components/com_dataviewer/html/jquery.min.js
 ./migrations/Migration20150113130000ComPublications.php
 ./components/com_members/views/emails/tmpl/admincreate.php
+./administrator/components/com_oaipmh/install.sql
+./administrator/components/com_oaipmh/tables/custom.php
+./administrator/components/com_oaipmh/tables/result.php
+./administrator/components/com_oaipmh/tables/sets.php
+./administrator/components/com_oaipmh/uninstall.sql
+./components/com_oaipmh/views/xml/tmpl/display.php
