@@ -988,7 +988,7 @@ class Owner extends \JTable
 
 		$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`added`,`status`,
 			`native`, `role`, `invited_name`, `invited_email`, `invited_code` )
-			VALUES ($projectid, 0 , $this->_db->Quote($now), 0 , 0, $role, $this->_db->Quote($name), $this->_db->Quote($email), $this->_db->Quote($code) )";
+			VALUES ($projectid, 0 ,'$now' , 0 , 0, $role, '$name', '$email', '$code'  )";
 		$this->_db->setQuery( $query );
 		if ($this->_db->query()) {
 			return true;
@@ -1058,7 +1058,7 @@ class Owner extends \JTable
 			if (!$found)
 			{
 				// User not in project
-				$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role`, `invited_email` ) VALUES ($projectid, $userid, $groupid , $this->_db->Quote($now), $status, $native, $role, $this->_db->Quote($invited_email))";
+				$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role`, `invited_email` ) VALUES ($projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email')";
 				$this->_db->setQuery( $query );
 				if ($this->_db->query()) {
 					$added[] = $userid;
@@ -1067,7 +1067,7 @@ class Owner extends \JTable
 			elseif ($found != 1)
 			{
 				// Inactive/deleted - activate
-				$query = "UPDATE $this->_tbl SET added = " . $this->_db->Quote($now) . ", status = 1, role = " . $this->_db->Quote($role) . ", groupid = " . $this->_db->Quote($groupid) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($userid);
+				$query = "UPDATE $this->_tbl SET added = '$now', status = 1, role = " . $this->_db->Quote($role) . ", groupid = " . $this->_db->Quote($groupid) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($userid);
 				$this->_db->setQuery( $query );
 				if ($this->_db->query())
 				{
@@ -1108,7 +1108,7 @@ class Owner extends \JTable
 					if (!$found)
 					{
 						// User not in project
-						$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role` ) VALUES ($projectid, $owner ,$gidNumber, $this->_db->Quote($now), $status, $native, $role )";
+						$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`groupid`,`added`,`status`,`native`, `role` ) VALUES ($projectid, $owner , $gidNumber, '$now', $status, $native, $role )";
 						$this->_db->setQuery( $query );
 						if ($this->_db->query())
 						{
