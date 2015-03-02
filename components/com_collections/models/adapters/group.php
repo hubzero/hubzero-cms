@@ -58,6 +58,13 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 		$this->set('scope_id', $scope_id);
 
 		$group = \Hubzero\User\Group::getInstance($scope_id);
+		if (!$group || !$group->get('cn'))
+		{
+			$group = new \Hubzero\User\Group();
+			$group->set('gidNumber', $scope_id);
+			$group->set('cn', $scope_id);
+			$group->set('description', JText::_('(unknown)'));
+		}
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'collections';
