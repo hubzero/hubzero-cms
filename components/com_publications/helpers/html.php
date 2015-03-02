@@ -1605,17 +1605,6 @@ class PublicationsHtml
 	}
 
 	/**
-	 * Format a filesize to more understandable Gb/Mb/Kb/b
-	 *
-	 * @param      integer $fileSize File size to format
-	 * @return     string
-	 */
-	public static function formatsize($file_size)
-	{
-		return \Hubzero\Utility\Number::formatBytes($file_size);
-	}
-
-	/**
 	 * Clean text of potential XSS and other unwanted items such as
 	 * HTML comments and javascript. Also shortens text.
 	 *

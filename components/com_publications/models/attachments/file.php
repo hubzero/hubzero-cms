@@ -389,7 +389,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			// Get size
 			$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
-			$size = $size ? PublicationsHtml::formatsize($size) : '';
+			$size = $size ? \Hubzero\Utility\Number::formatBytes($size) : '';
 			$ext  = 'zip';
 
 			// Get file icon
@@ -421,7 +421,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				// Get size
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 				$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
-				$size = $size ? PublicationsHtml::formatsize($size) : '';
+				$size = $size ? \Hubzero\Utility\Number::formatBytes($size) : '';
 
 				// Get ext
 				$parts  = explode('.', $attach->path);

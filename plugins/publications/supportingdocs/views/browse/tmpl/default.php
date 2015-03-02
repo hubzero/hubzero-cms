@@ -116,7 +116,7 @@ elseif ($this->docs) {
 		// Get size
 		$fpath = $this->path . DS . $child->path;
 		$size = ($serveas == 'download' && $child->type == 'file' && file_exists( $fpath )) ? filesize( $fpath ) : '';
-		$size = $size ? PublicationsHtml::formatsize($size) : '';
+		$size = $size ? \Hubzero\Utility\Number::formatBytes($size) : '';
 
 		// Get file icon
 		$icon  = ($child->type == 'file')
