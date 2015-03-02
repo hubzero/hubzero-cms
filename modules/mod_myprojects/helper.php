@@ -78,7 +78,7 @@ class Helper extends Module
 		$this->pconfig  = $config;
 
 		// Get a record count
-		$obj = new Project($db);
+		$obj = new \Components\Projects\Tables\Project($db);
 		$this->total = $obj->getCount($filters, false, $juser->get('id'), 0, $setup_complete);
 
 		// Get records

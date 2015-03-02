@@ -211,7 +211,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Load publication project
-		$this->view->pub->_project = new Project($this->database);
+		$this->view->pub->_project = new \Components\Projects\Tables\Project($this->database);
 		$this->view->pub->_project->load($this->view->pub->project_id);
 
 		// Load version
@@ -412,7 +412,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		else
 		{
 			// Load publication project
-			$this->view->pub->_project = new Project($this->database);
+			$this->view->pub->_project = new \Components\Projects\Tables\Project($this->database);
 			$this->view->pub->_project->load($this->view->pub->project_id);
 
 			// Get master type info
@@ -511,7 +511,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		else
 		{
 			// Load publication project
-			$pub->_project = new Project($this->database);
+			$pub->_project = new \Components\Projects\Tables\Project($this->database);
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
@@ -738,7 +738,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pub = $objP->getPublication($id, $version);
 
 		// Load publication project
-		$pub->_project = new Project($this->database);
+		$pub->_project = new \Components\Projects\Tables\Project($this->database);
 		$pub->_project->load($pub->project_id);
 
 		// Get language file
@@ -828,7 +828,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pub = $objP->getPublication($id, $version);
 
 		// Load publication project
-		$pub->_project = new Project($this->database);
+		$pub->_project = new \Components\Projects\Tables\Project($this->database);
 		$pub->_project->load($pub->project_id);
 
 		// Get language file
@@ -978,7 +978,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$objP->checkin();
 
 		// Get pub project
-		$project = new Project($this->database);
+		$project = new \Components\Projects\Tables\Project($this->database);
 		$project->load($pub->project_id);
 
 		// Incoming updates
@@ -1414,7 +1414,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$metadata['language'] 		= 'en';
 
 		// Get dc:contibutor
-		$project = new Project($this->database);
+		$project = new \Components\Projects\Tables\Project($this->database);
 		$project->load($objP->project_id);
 		$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		$owner 	 = $project->owned_by_user ? $project->owned_by_user : $project->created_by_user;
@@ -1909,7 +1909,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$pub->version 	= $pub->version_number;
 
 			// Load publication project
-			$pub->_project = new Project($this->database);
+			$pub->_project = new \Components\Projects\Tables\Project($this->database);
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info

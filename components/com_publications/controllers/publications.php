@@ -375,7 +375,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Get projects user has access to
 		if (!$this->juser->get('guest'))
 		{
-			$obj = new Project( $this->database );
+			$obj = new \Components\Projects\Tables\Project( $this->database );
 			$this->view->filters['projects']  = $obj->getUserProjectIds($this->juser->get('id'));
 		}
 
@@ -638,7 +638,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Load publication project
-		$publication->_project = new Project($this->database);
+		$publication->_project = new \Components\Projects\Tables\Project($this->database);
 		$publication->_project->load($publication->project_id);
 
 		// Whew! Finally passed all the checks
@@ -926,7 +926,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->publication->version = $this->version;
 
 		// Load publication project
-		$this->publication->_project = new Project($this->database);
+		$this->publication->_project = new \Components\Projects\Tables\Project($this->database);
 		$this->publication->_project->load($this->publication->project_id);
 
 		// Get attachments
@@ -1271,7 +1271,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$pPath 	 = $primary->path;
 
 		// Load publication project
-		$publication->project = new Project($this->database);
+		$publication->project = new \Components\Projects\Tables\Project($this->database);
 		$publication->project->load($publication->project_id);
 
 		// Get pub type helper
@@ -1714,7 +1714,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$pub->version 	= $pub->version_number;
 
 			// Load publication project
-			$pub->_project = new Project($this->database);
+			$pub->_project = new \Components\Projects\Tables\Project($this->database);
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
@@ -2166,7 +2166,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Get project information
 		if ($pid)
 		{
-			$obj = new Project( $this->database );
+			$obj = new \Components\Projects\Tables\Project( $this->database );
 			$project = $obj->getProject(NULL, $this->juser->get('id'), $pid);
 
 			if (!$project)

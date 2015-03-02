@@ -28,145 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for projects
  */
-class Project extends JTable
+class Project extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Project alias, varchar(30)
-	 *
-	 * @var string
-	 */
-	var $alias       		= NULL;
-
-	/**
-	 * Project title, varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title				= NULL;
-
-	/**
-	 * Project picture, varchar(255)
-	 *
-	 * @var string
-	 */
-	var $picture			= NULL;
-
-	/**
-	 * Project description, text
-	 *
-	 * @var text
-	 */
-	var $about				= NULL;
-
-	/**
-	 * Created date, datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $created			= NULL;
-
-	/**
-	 * Created by user (user id), int(11)
-	 *
-	 * @var int
-	 */
-	var $created_by_user	= NULL;
-
-	/**
-	 * Owned by user (user id), int(11)
-	 *
-	 * @var int
-	 */
-	var $owned_by_user		= NULL;
-
-	/**
-	 * Owned by group (group id), int(11)
-	 *
-	 * @var int
-	 */
-	var $owned_by_group		= NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * 0 setup in progress/suspended
-	 * 1 active
-	 * 2 deleted
-	 * 5 pending
-	 *
-	 * @var int
-	 */
-	var $state				= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params				= NULL;
-
-	/**
-	 * Type
-	 *
-	 * @var int
-	 */
-	var $type				= NULL;
-
-	/**
-	 * Privacy: 0 - public; 1 - private
-	 *
-	 * @var int
-	 */
-	var $private			= NULL;
-
-	/**
-	 * Provisioned: 0 - no; 1 - yes (not full-scale)
-	 *
-	 * @var int
-	 */
-	var $provisioned		= NULL;
-
-	/**
-	 * Modified, datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $modified			= NULL;
-
-	/**
-	 * Modified by user (user id), int(11)
-	 *
-	 * @var int
-	 */
-	var $modified_by		= NULL;
-
-	/**
-	 * Setup stage
-	 *
-	 * @var int
-	 */
-	var $setup_stage		= NULL;
-
-	/**
-	 * Admin notes
-	 *
-	 * @var text
-	 */
-	var $admin_notes		= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -187,13 +55,13 @@ class Project extends JTable
 	{
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( JText::_('PROJECT_MUST_HAVE_ALIAS') );
+			$this->setError( \JText::_('PROJECT_MUST_HAVE_ALIAS') );
 			return false;
 		}
 
 		if (trim( $this->title ) == '')
 		{
-			$this->setError( JText::_('PROJECT_MUST_HAVE_TITLE') );
+			$this->setError( \JText::_('PROJECT_MUST_HAVE_TITLE') );
 			return false;
 		}
 
@@ -227,7 +95,7 @@ class Project extends JTable
 					? $filters['which'] : '';
 
 		$query  = " FROM $this->_tbl AS p ";
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid='$uid' ";
+		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->Quote($uid);
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
@@ -242,14 +110,14 @@ class Project extends JTable
 			$query .= " OR p.params LIKE '%export_data=yes%' ";
 			$query .= " OR p.params LIKE 'restricted_data=maybe%' ";
 			$query .= " OR p.params LIKE '%followup=yes%') ";
-			$query .= " AND p.state != 2 AND p.setup_stage = ".$setup_complete." ) ";
+			$query .= " AND p.state != 2 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . " ) ";
 		}
 		elseif ($reviewer == 'sponsored')
 		{
 			$query .= " WHERE ((( p.params LIKE '%grant_title=%' AND p.params NOT LIKE '%grant_title=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_agency=%' AND p.params NOT LIKE '%grant_agency=\\n%') ";
 			$query .= " OR ( p.params LIKE '%grant_budget=%' AND p.params NOT LIKE '%grant_budget=\\n%') ";
-			$query .= " ) AND p.state=1 AND p.setup_stage = ".$setup_complete." ) ";
+			$query .= " ) AND p.state=1 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . " ) ";
 		}
 		elseif ($admin)
 		{
@@ -261,36 +129,36 @@ class Project extends JTable
 			if ($mine)
 			{
 				$query .= $uid
-						? " WHERE (o.userid='$uid' AND o.status!=2
-							AND ((p.state != 2 AND p.setup_stage = " . $setup_complete.")
-							OR (o.role = 1 AND p.owned_by_user='$uid' ))) "
+						? " WHERE (o.userid=" . $this->_db->Quote($uid) . "AND o.status!=2
+							AND ((p.state != 2 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . ")
+							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . " ))) "
 						: " WHERE 1=2";
 				if ($which == 'owned' && $uid)
 				{
-					$query .= " AND (p.owned_by_user ='$uid' AND p.owned_by_group = 0) ";
+					$query .= " AND (p.owned_by_user =" . $this->_db->Quote($uid) . " AND p.owned_by_group = 0) ";
 				}
 				if ($which == 'other' && $uid)
 				{
-					$query .= " AND (p.owned_by_user != '$uid' OR p.owned_by_group != 0) ";
+					$query .= " AND (p.owned_by_user != " . $this->_db->Quote($uid) . " OR p.owned_by_group != 0) ";
 				}
 			}
 			else
 			{
 				$query .= $uid
 						? " WHERE ((p.state = 1 AND p.private = 0)
-							OR (o.userid='$uid' AND o.status!=2 AND ((p.state = 1
-							AND p.setup_stage = " . $setup_complete . ")
-							OR (o.role = 1 AND p.owned_by_user='$uid')))) "
+							OR (o.userid=" . $this->_db->Quote($uid) . " AND o.status!=2 AND ((p.state = 1
+							AND p.setup_stage = " . $this->_db->Quote($setup_complete) . ")
+							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . ")))) "
 						: " WHERE p.state = 1 AND p.private = 0 ";
 			}
 		}
 		if ($type)
 		{
-			$query .= " AND p.type = '$type' ";
+			$query .= " AND p.type =" . $this->_db->Quote($type);
 		}
 		if ($group)
 		{
-			$query .= " AND p.owned_by_group = '$group' ";
+			$query .= " AND p.owned_by_group =" . $this->_db->Quote($group);
 		}
 		if (isset($filters['show_prov']))
 		{
@@ -309,7 +177,7 @@ class Project extends JTable
 		}
 		if ($search)
 		{
-			$query .= " AND (p.title LIKE '%".$search."%' OR p.alias LIKE '%".$search."%') ";
+			$query .= " AND (p.title LIKE '%" . $search . "%' OR p.alias LIKE '%" . $search . "%') ";
 		}
 
 		if (!$filters['count'])
@@ -464,19 +332,19 @@ class Project extends JTable
 		$saveLog = 0;
 		$updated = NULL;
 
-		$pastMonth 		= JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
+		$pastMonth 		= \JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
 
-		$thisYearNum 	= JFactory::getDate()->format('y');
-		$thisMonthNum 	= JFactory::getDate()->format('m');
-		$thisWeekNum	= JFactory::getDate()->format('W');
+		$thisYearNum 	= \JFactory::getDate()->format('y');
+		$thisMonthNum 	= \JFactory::getDate()->format('m');
+		$thisWeekNum	= \JFactory::getDate()->format('W');
 
 		// Do we have a recent saved stats log?
-		$logged = (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		$logged = (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.stats.php')) ? 1 : 0;
 
 		if ($logged)
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 			$objStats = new ProjectStats($this->_db);
@@ -552,8 +420,8 @@ class Project extends JTable
 		else
 		{
 			// Compute
-			JPluginHelper::importPlugin( 'projects', 'files');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'files');
+			$dispatcher = \JDispatcher::getInstance();
 			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
 			$fTotal 	= $fTotal[0];
 			$fAverage 	= number_format($fTotal/count($validProjects), 0);
@@ -569,12 +437,12 @@ class Project extends JTable
 			$perc = round(($fUsage * 100)/$active) . '%';
 
 			$stats['files'] = array(
-				'total' => $fTotal,
-				'average' => $fAverage,
-				'usage' => $perc,
+				'total'     => $fTotal,
+				'average'   => $fAverage,
+				'usage'     => $perc,
 				'diskspace' => ProjectsHtml::formatSize($fDSpace),
-				'commits' => $fCommits,
-				'pubspace' => ProjectsHtml::formatSize($pDSpace)
+				'commits'   => $fCommits,
+				'pubspace'  => ProjectsHtml::formatSize($pDSpace)
 			);
 		}
 
@@ -587,11 +455,11 @@ class Project extends JTable
 			$perc = round(($prPub * 100)/$total) . '%';
 
 			$stats['pub'] = array(
-				'total' => $objP->getPubStats($validProjectIds, 'total'),
-				'average' => $objP->getPubStats($validProjectIds, 'average'),
-				'usage' => $perc,
-				'released' => $objP->getPubStats($validProjectIds, 'released'),
-				'versions' => $objPV->getPubStats($validProjectIds)
+				'total'     => $objP->getPubStats($validProjectIds, 'total'),
+				'average'   => $objP->getPubStats($validProjectIds, 'average'),
+				'usage'     => $perc,
+				'released'  => $objP->getPubStats($validProjectIds, 'released'),
+				'versions'  => $objPV->getPubStats($validProjectIds)
 			);
 		}
 
@@ -602,7 +470,7 @@ class Project extends JTable
 			$objStats->year 		= $thisYearNum;
 			$objStats->month 		= $thisMonthNum;
 			$objStats->week 		= $thisWeekNum;
-			$objStats->processed 	= JFactory::getDate()->toSql();
+			$objStats->processed 	= \JFactory::getDate()->toSql();
 			$objStats->stats 		= json_encode($stats);
 			$objStats->store();
 		}
@@ -661,19 +529,19 @@ class Project extends JTable
 		{
 			$query .= " JOIN #__project_activity AS pa
 						ON pa.projectid=p.id AND pa.state != 2 ";
-			$query .= "AND pa.recorded >= ' " . $filters['timed'] . " ' ";
+			$query .= "AND pa.recorded >= " . $this->_db->Quote($filters['timed']);
 		}
 
-		$query .= "WHERE p.state != 2 AND p.provisioned = 0 ";
+		$query .= " WHERE p.state != 2 AND p.provisioned = 0 ";
 
 		if (isset($filters['created']))
 		{
-			$query .= "AND p.created LIKE '" . $filters['created'] . "%' ";
+			$query .= " AND p.created LIKE '" . $filters['created'] . "%' ";
 		}
 
 		if (isset($filters['setup']) && $filters['setup'] == 1)
 		{
-			$query .= "AND p.setup_stage < $setup_complete ";
+			$query .= " AND p.setup_stage < $setup_complete ";
 		}
 		elseif (isset($filters['all']) && $filters['all'] == 1)
 		{
@@ -681,12 +549,12 @@ class Project extends JTable
 		}
 		else
 		{
-			$query .= "AND p.setup_stage >= $setup_complete ";
+			$query .= " AND p.setup_stage >= $setup_complete ";
 		}
 
 		if (isset($filters['private']))
 		{
-			$query .= " AND p.private = " .$filters['private'];
+			$query .= " AND p.private = " . $filters['private'];
 		}
 
 		if (isset($filters['sponsored']) && $filters['sponsored'] == 1)
@@ -758,8 +626,8 @@ class Project extends JTable
 					AND pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2 ) as newactivity ";
 		$query .= " FROM #__project_owners as po, $this->_tbl AS p";
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid='$uid'
-					AND o.userid != 0 AND p.state!= 2 ";
+		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
+					. $this->_db->Quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
 		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.created_by_user ";
 		$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . $groupid;
@@ -775,9 +643,9 @@ class Project extends JTable
 		}
 
 		$query .= $uid
-				? " AND (p.state = 1 OR  (o.userid='$uid' AND o.status!=2
+				? " AND (p.state = 1 OR  (o.userid=" . $this->_db->Quote($uid) . " AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
-					OR (o.role = 1 AND p.owned_by_user='$uid')))) "
+					OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . ")))) "
 				: " AND p.state = 1 ";
 
 		// Sorting
@@ -839,7 +707,7 @@ class Project extends JTable
 			$query .= " FROM $this->_tbl AS p, #__project_owners as o ";
 			$query .= " WHERE p.id=o.projectid ";
 			$query .= $active == 1
-					? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user='$uid' AND p.state !=2)) "
+					? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . " AND p.state !=2)) "
 					: "AND p.state !=2 ";
 			$query .= $include_provisioned ? "" : " AND p.provisioned=0";
 			$query .= " AND o.userid=" . $uid;
@@ -874,10 +742,10 @@ class Project extends JTable
 			$query  = "SELECT DISTINCT p.id ";
 			$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 			$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id
-						AND o.userid='$uid' AND o.userid != 0  ";
+						AND o.userid=" . $this->_db->Quote($uid) . " AND o.userid != 0  ";
 			$query .= " WHERE p.id=po.projectid AND po.status=1 AND po.groupid=" . $groupid;
 			$query .= $active == 1
-					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user='$uid' AND p.state !=2))  "
+					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . " AND p.state !=2))  "
 					: " AND p.state !=2 ";
 			$query .= " AND p.provisioned=0";
 			$this->_db->setQuery( $query );
@@ -906,7 +774,7 @@ class Project extends JTable
 		if (!empty($projects) && $uid != 0)
 		{
 			$query  = "SELECT COUNT(*) FROM #__project_activity AS pa ";
-			$query .= " JOIN #__project_owners as o ON o.projectid=pa.projectid AND o.userid='$uid' ";
+			$query .= " JOIN #__project_owners as o ON o.projectid=pa.projectid AND o.userid=" . $this->_db->Quote($uid);
 			$query .= " WHERE pa.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 						AND pa.state !=2 AND pa.recorded >= o.added";
 			$query .= " AND pa.projectid IN ( ";
@@ -951,7 +819,10 @@ class Project extends JTable
 					AND o.userid=0 AND o.status != 2 AND o.invited_email=" . $this->_db->Quote( $email) . "
 					AND o.invited_code=" . $this->_db->Quote( $code );
 		$query .= " WHERE ";
-		$query .= is_numeric($identifier) ? ' p.id=' . $identifier : ' p.alias="' . $identifier . '"';
+		$query .= is_numeric($identifier)
+			? " p.id=" . $this->_db->Quote($identifier)
+			: " p.alias=" . $this->_db->Quote($identifier);
+
 		$query .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $query );
@@ -988,7 +859,7 @@ class Project extends JTable
 			$query .= " FROM $this->_tbl AS p ";
 		}
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id ";
-		$query .= " AND o.userid='$uid' AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
+		$query .= " AND o.userid=" . $this->_db->Quote($uid) . " AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
 		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.owned_by_user ";
 		$query .= " WHERE ";
 
@@ -998,7 +869,9 @@ class Project extends JTable
 		}
 		else
 		{
-			$query .= is_numeric($identifier) ? ' p.id=' . $identifier : ' p.alias="' . $identifier . '"';
+			$query .= is_numeric($identifier)
+				? " p.id=" . $this->_db->Quote($identifier)
+				: " p.alias=" . $this->_db->Quote($identifier);
 		}
 		$query .= " LIMIT 1";
 
@@ -1036,7 +909,7 @@ class Project extends JTable
 		{
 			return false;
 		}
-		$query = "SELECT alias FROM $this->_tbl WHERE id=" . $id;
+		$query = "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->Quote($id);
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -1116,7 +989,7 @@ class Project extends JTable
 		}
 		$name = is_numeric($identifier) ? 'id' : 'alias';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name='$identifier' LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->Quote($identifier) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -1139,8 +1012,8 @@ class Project extends JTable
 		if ($name === NULL) {
 			return false;
 		}
-		$query  =  "SELECT id FROM $this->_tbl WHERE alias='$name' ";
-		$query .= $pid ? "AND id!=$pid" : "";
+		$query  =  "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->Quote($name);
+		$query .= $pid ? " AND id!=" . $this->_db->Quote($pid) : "";
 		$query .= " LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		if ($this->_db->loadResult())
@@ -1163,7 +1036,7 @@ class Project extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT * FROM $this->_tbl WHERE id='$projectid' LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($projectid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 
 		if ($result = $this->_db->loadAssoc())
@@ -1172,7 +1045,7 @@ class Project extends JTable
 			$this->setup_stage = $stage;
 			if (!$this->store())
 			{
-				$this->setError( JText::_('Failed to update setup stage.') );
+				$this->setError( \JText::_('Failed to update setup stage.') );
 				return false;
 			}
 			return true;

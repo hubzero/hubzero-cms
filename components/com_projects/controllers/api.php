@@ -210,7 +210,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 
 		include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		$objP = new Project($this->_database);
+		$objP = new Components\Projects\Tables\Project($this->_database);
 
 		// Set filters
 		$filters = array(
@@ -434,7 +434,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		include_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		$objP = new Project($this->_database);
+		$objP = new Components\Projects\Tables\Project($this->_database);
 
 		$this->project 	= $objP->getProject($this->project_id, $this->user_id);
 

@@ -388,7 +388,7 @@ class ProjectsConnectHelper extends JObject {
 					// Store master token for project
 					if ($this->_uid == $this->_project->owned_by_user)
 					{
-						$obj = new Project( $this->_db );
+						$obj = new Components\Projects\Tables\Project( $this->_db );
 						$obj->saveParam($this->_project->id, $service . '_token', $token->refresh_token);
 					}
 				}
@@ -679,7 +679,7 @@ class ProjectsConnectHelper extends JObject {
 				$folderID = $createdFolder['id'];
 				if ($folderID)
 				{
-					$obj	= new Project( $this->_db );
+					$obj	= new Components\Projects\Tables\Project( $this->_db );
 					$obj->saveParam($this->_project->id, $service . '_dir_id', $folderID);
 				}
 			}
@@ -1755,7 +1755,7 @@ class ProjectsConnectHelper extends JObject {
 				if ($folder && $folder['title'] != $folderName)
 				{
 					// Save renamed reference
-					$obj	= new Project( $this->_db );
+					$obj	= new Components\Projects\Tables\Project( $this->_db );
 					$obj->saveParam($this->_project->id, $service . '_dir', $folder['title']);
 				}
 			}
@@ -2353,7 +2353,7 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 
-		$obj = new Project( $this->_db );
+		$obj = new Components\Projects\Tables\Project( $this->_db );
 		if (!$obj->loadProject($this->_project->id))
 		{
 			$this->setError( JText::_('Oups! There was a problem loading project data.') );

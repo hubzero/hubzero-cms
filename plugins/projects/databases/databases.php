@@ -95,7 +95,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			if (!$alias)
 			{
 				$database = JFactory::getDBO();
-				$obj = new Project( $database );
+				$obj = new \Components\Projects\Tables\Project( $database );
 				$alias = $obj->getAlias( $id );
 			}
 

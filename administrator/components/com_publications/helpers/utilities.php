@@ -458,7 +458,7 @@ class PublicationUtilities
 		if (!isset($pub->_project))
 		{
 			// Get project
-			$pub->_project = new Project($database);
+			$pub->_project = new \Components\Projects\Tables\Project($database);
 			$pub->_project->load($pub->project_id);
 		}
 

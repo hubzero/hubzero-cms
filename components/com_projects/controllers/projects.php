@@ -71,7 +71,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		);
 
 		// Get a record count
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 
 		// Get records
 		$rows = $obj->getRecords(
@@ -136,7 +136,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$this->view->filters['sortby'] 	= 'myprojects';
 
 		// Get a record count
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		$this->view->total = $obj->getCount(
 			$this->view->filters,
 			$admin = false,
@@ -192,7 +192,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 	public function featuresTask()
 	{
 		// Get language file
-		$lang = JFactory::getLanguage();
+		$lang = \JFactory::getLanguage();
 		$lang->load('com_projects_features');
 
 		// Set the pathway
@@ -287,7 +287,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Get a record count
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 
 		// Get count
 		$this->view->total = $obj->getCount(
@@ -368,7 +368,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj  	= new Project( $this->database );
+		$obj  	= new Components\Projects\Tables\Project( $this->database );
 		$objO 	= new ProjectOwner( $this->database );
 		$objAA 	= new ProjectActivity( $this->database );
 
@@ -660,7 +660,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		if ($this->project->provisioned == 1)
 		{
 			// Get JS & CSS
-			$document = JFactory::getDocument();
+			$document = \JFactory::getDocument();
 			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'publications.css');
 
 			$this->view->pub 	   = isset($pub) ? $pub : '';
@@ -684,7 +684,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 				}
 
 				// If newly created - remove join activity of project creator
-				$timecheck = JFactory::getDate(time() - (10 * 60)); // last second
+				$timecheck = \JFactory::getDate(time() - (10 * 60)); // last second
 				if ($this->project->created_by_user == $this->juser->get('id') && $timecheck <= $this->project->created)
 				{
 				    $objAA->deleteActivity($aid);
@@ -693,7 +693,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Get latest log from user session
-		$jsession = JFactory::getSession();
+		$jsession = \JFactory::getSession();
 
 		// Log activity
 		if (!$jsession->get('projects-nolog'))
@@ -902,7 +902,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate needed classes
-		$obj  = new Project( $this->database );
+		$obj  = new Components\Projects\Tables\Project( $this->database );
 		$objO = new ProjectOwner( $this->database );
 
 		// Get Project
@@ -1026,7 +1026,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 			$obj->alias 		= $name;
 			$obj->state 		= 0;
 			$obj->setup_stage 	= $this->_setupComplete - 1;
-			$obj->modified		= JFactory::getDate()->toSql();
+			$obj->modified		= \JFactory::getDate()->toSql();
 			$obj->modified_by 	= $this->juser->get('id');
 
 			// Save changes
@@ -1063,7 +1063,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		$objAA = new ProjectActivity ( $this->database );
 
 		// Load project
@@ -1155,7 +1155,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Update project
-		$obj->modified = JFactory::getDate()->toSql();
+		$obj->modified = \JFactory::getDate()->toSql();
 		$obj->modified_by = $this->juser->get('id');
 		if ($this->_task != 'fixownership')
 		{
@@ -1222,7 +1222,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$this->_identifier = $json->alias;
 
 		// Load project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		if (!$this->_identifier || !$obj->loadProject($this->_identifier) )
 		{
 			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
@@ -1271,7 +1271,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$notify 	= \JRequest::getVar( 'notify', 0, 'post' );
 
 		// Instantiate a project and related classes
-		$obj 		= new Project( $this->database );
+		$obj 		= new Components\Projects\Tables\Project( $this->database );
 		$objAA 		= new ProjectActivity ( $this->database );
 
 		// Check authorization
@@ -1311,7 +1311,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 			$cbase = $obj->admin_notes;
 
 			// Meta data for comment
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 			$actor = $this->juser->get('name');
 			$meta = '<meta>' . \JHTML::_('date', $now, 'M d, Y') . ' - ' . $actor . '</meta>';
 

@@ -130,7 +130,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			$this->view->filters['start'] = 0;
 		}
 
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 
 		// Get records
 		$this->view->rows = $obj->getRecords( $this->view->filters, true, 0, 1 );
@@ -234,7 +234,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->view = $this->view;
 		$this->view->config = $this->config;
 
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 		$objAC = new ProjectActivity( $this->database );
 
 		if ($id)
@@ -352,7 +352,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'message', '' )));
 
 		// Initiate extended database class
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
@@ -567,7 +567,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		jimport('joomla.filesystem.folder');
 
 		// Initiate extended database class
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
@@ -702,7 +702,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar( 'file', '' );
 
 		// Initiate extended database class
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
@@ -767,7 +767,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$id = JRequest::getVar( 'id', 0 );
 
 		// Initiate extended database class
-		$obj = new Project($this->database);
+		$obj = new \Components\Projects\Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
@@ -801,7 +801,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$service = 'google';
 
 		// Initiate extended database class
-		$obj = new Project( $this->database );
+		$obj = new \Components\Projects\Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,

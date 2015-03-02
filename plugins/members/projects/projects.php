@@ -123,7 +123,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
 
 		// Get a record count
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		$total = $obj->getCount($filters, false, $user->get('id'), 0, $this->_setup_complete);
 		$this->_filters = $filters;
 		$this->_total = $total;
@@ -176,7 +176,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		$projects = $obj->getUserProjectIds($this->_juser->get('id'));
 		$view->newcount = $obj->getUpdateCount($projects, $this->_juser->get('id'));
 
@@ -235,7 +235,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get all projects user has access to
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		$projects = $obj->getUserProjectIds($this->_juser->get('id'));
 		$view->newcount = $obj->getUpdateCount ($projects, $this->_juser->get('id'));
 

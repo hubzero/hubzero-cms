@@ -262,7 +262,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pub->_project 	= new Project( $this->database );
+		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
 		$pub->_project->load($pub->project_id);
 		$pub->_type    	= $mt->getType($pub->base);
 
@@ -391,7 +391,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pub->_project 	= new Project( $this->database );
+		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
 		$pub->_project->load($pub->project_id);
 		$pub->_type    	= $mt->getType($pub->base);
 
@@ -648,7 +648,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pub->_project 	= new Project( $this->database );
+		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
 		$pub->_project->load($pub->project_id);
 		$pub->_type    	= $mt->getType($pub->base);
 
@@ -772,7 +772,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pub->_project 	= new Project( $this->database );
+		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
 		$pub->_project->load($pub->project_id);
 		$pub->_type    	= $mt->getType($pub->base);
 
@@ -878,7 +878,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pub->_project 	= new Project( $this->database );
+		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
 		$pub->_project->load($pub->project_id);
 		$pub->_type    	= $mt->getType($pub->base);
 

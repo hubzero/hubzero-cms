@@ -84,7 +84,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (!$alias)
 			{
 				$database = JFactory::getDBO();
-				$obj = new Project( $database );
+				$obj = new \Components\Projects\Tables\Project( $database );
 				$alias = $obj->getAlias( $id );
 			}
 
@@ -223,7 +223,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($project) or !$project->id)
 		{
-			$project = new Project( $this->_database );
+			$project = new \Components\Projects\Tables\Project( $this->_database );
 			$project->provisioned = 1;
 
 			$ajax_tasks  = array('showoptions', 'save', 'showitem');
@@ -1151,7 +1151,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
 
@@ -1235,7 +1235,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Need to provision a project
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project 					= new Project( $this->_database );
+			$this->_project 					= new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned 		= 1;
 			$this->_project->alias 	 			= 'pub-' . strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 			$this->_project->title 	 			= $this->_project->alias;
@@ -1784,7 +1784,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 
 			// Send to file picker
@@ -1896,7 +1896,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
 
@@ -3264,7 +3264,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				// Need to provision a project
 				if (!is_object($this->_project) or !$this->_project->id)
 				{
-					$this->_project 					= new Project( $this->_database );
+					$this->_project 					= new \Components\Projects\Tables\Project( $this->_database );
 					$this->_project->provisioned 		= 1;
 					$random 							= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 					$this->_project->alias 	 			= 'pub-' . $random;
@@ -5031,7 +5031,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
 
@@ -5086,7 +5086,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
 
@@ -6795,7 +6795,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->filters = array();
 
 			// Get user projects
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$view->filters['projects']  = $obj->getUserProjectIds($juser->get('id'), 0, 1);
 
 			$view->filters['mine']		= $juser->get('id');
@@ -7740,7 +7740,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate a project
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 
 		// Get referenced path
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );

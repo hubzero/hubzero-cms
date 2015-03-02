@@ -48,7 +48,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// set layout
 		$this->view->setLayout('display');
 
-		$project = new Project($this->database);
+		$project = new \Components\Projects\Tables\Project($this->database);
 
 		// Get filters
 		$filters = array();
@@ -160,7 +160,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$this->data = NULL;
 
 		// Project ID must be supplied
-		$this->project = new Project($this->database);
+		$this->project = new \Components\Projects\Tables\Project($this->database);
 		if (!$id || !$this->project->load($id))
 		{
 			echo json_encode(array('result' => 'error', 'error' => JText::_('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'), 'records' => NULL));

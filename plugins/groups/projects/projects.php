@@ -124,7 +124,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters['mine']     = 1;
 
 		// Get a record count
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		$this->_projects = $obj->getGroupProjectIds($group->get('gidNumber'), $this->_juser->get('id'));
 
 		//if we want to return content
@@ -216,7 +216,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 
 		// Get group projects
-		$obj  = new Project($this->_database);
+		$obj  = new \Components\Projects\Tables\Project($this->_database);
 		$objO = new ProjectOwner( $this->_database );
 		$projects = $obj->getGroupProjects($group->get('gidNumber'), $this->_juser->get('id'));
 
@@ -256,7 +256,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		if ($which == 'all')
 		{
 			$filters['which'] = 'owned';
@@ -327,7 +327,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
 
 		// Get all projects group has access to
-		$obj = new Project($this->_database);
+		$obj = new \Components\Projects\Tables\Project($this->_database);
 		$projects = $obj->getGroupProjectIds($this->group->get('gidNumber'), $this->_juser->get('id'));
 		$view->projectcount = count($projects);
 

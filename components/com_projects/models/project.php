@@ -45,7 +45,7 @@ class ProjectsModelProject extends Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'Project';
+	protected $_tbl_name = '\\Components\\Projects\\Tables\\Project';
 
 	/**
 	 * Model context
@@ -304,7 +304,7 @@ class ProjectsModelProject extends Model
 		{
 			// Verify name uniqueness
 			$database = JFactory::getDBO();
-			$obj = new Project( $database );
+			$obj = new Components\Projects\Tables\Project( $database );
 			if (!$obj->checkUniqueName( $name, $pid )
 				|| in_array( $name, $reserved ) ||
 				in_array( $name, $tasks ))

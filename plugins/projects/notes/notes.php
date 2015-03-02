@@ -745,7 +745,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate a project
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 
 		// Get Project
 		$this->_project = $obj->getProject($projectid);

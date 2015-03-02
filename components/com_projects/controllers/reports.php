@@ -47,7 +47,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$period = \JRequest::getVar( 'period', 'alltime');
 
 		// Instantiate a project and related classes
-		$obj   = new Project( $this->database );
+		$obj   = new Components\Projects\Tables\Project( $this->database );
 		$objAA = new ProjectActivity ( $this->database );
 
 		// Is user in special admin group to view advanced stats?
@@ -129,7 +129,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj   = new Project( $this->database );
+		$obj   = new Components\Projects\Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
@@ -226,7 +226,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$this->view->setLayout('custom');
 
 		// Instantiate a project and related classes
-		$obj   = new Project( $this->database );
+		$obj   = new Components\Projects\Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);

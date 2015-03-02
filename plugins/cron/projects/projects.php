@@ -108,7 +108,7 @@ class plgCronProjects extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
@@ -146,7 +146,7 @@ class plgCronProjects extends JPlugin
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'version.php');
 
 		// Get all projects
-		$obj = new Project($database);
+		$obj = new \Components\Projects\Tables\Project($database);
 		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
 
 		if (!$projects)
@@ -216,7 +216,7 @@ class plgCronProjects extends JPlugin
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
 
 		// Get all projects
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias' );
 
 		if (!$projects)

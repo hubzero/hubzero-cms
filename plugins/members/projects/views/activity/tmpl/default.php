@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (count($this->activities) > 0 ) {
 	$projects = array();
-	$obj = new Project($this->database);
+	$obj = new \Components\Projects\Tables\Project($this->database);
 	$i = 1;
 	?>
 	<table>

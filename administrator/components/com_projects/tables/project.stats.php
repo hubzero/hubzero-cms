@@ -154,7 +154,7 @@ class ProjectStats extends JTable
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php');
 
-		$obj  = new Project( $this->_db );
+		$obj  = new \Components\Projects\Tables\Project( $this->_db );
 		$objO = new ProjectOwner( $this->_db );
 		$objP = new Publication( $this->_db );
 

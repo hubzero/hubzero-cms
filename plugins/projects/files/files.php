@@ -261,7 +261,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Contribute process outside of projects
 			if (!is_object($this->_project) or !$this->_project->id)
 			{
-				$this->_project = new Project( $this->_database );
+				$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 				$this->_project->provisioned = 1;
 			}
 
@@ -481,7 +481,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->onAfterUpdate();
 
 		// Get fresh data
-		$obj = new Project( $this->_database );
+		$obj = new \Components\Projects\Tables\Project( $this->_database );
 		$obj->load($this->_project->id);
 		$view->params = new JParameter( $obj->params );
 
@@ -711,7 +711,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$this->_project = new Project( $this->_database );
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned = 1;
 		}
 
@@ -991,7 +991,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Force sync
 		if ($sync)
 		{
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 
@@ -2123,7 +2123,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($sync && $this->_case == 'files')
 		{
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 
@@ -2192,7 +2192,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($sync && $this->_case == 'files')
 		{
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 
@@ -2525,7 +2525,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($sync && $this->_case == 'files')
 			{
-				$obj = new Project( $this->_database );
+				$obj = new \Components\Projects\Tables\Project( $this->_database );
 				$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 			}
 
@@ -2863,7 +2863,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($sync && $this->_case == 'files')
 		{
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 
@@ -3309,7 +3309,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($sync && $this->_case == 'files')
 		{
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 		}
 
@@ -3340,7 +3340,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate a project
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 
 		$juser = JFactory::getUser();
 		$uid   = $juser->get('id');
@@ -3481,7 +3481,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Force sync
 			if ($this->_case == 'files')
 			{
-				$obj = new Project( $this->_database );
+				$obj = new \Components\Projects\Tables\Project( $this->_database );
 				$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 			}
 		}
@@ -4129,7 +4129,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					if ($this->_case == 'files')
 					{
-						$obj = new Project( $this->_database );
+						$obj = new \Components\Projects\Tables\Project( $this->_database );
 						$obj->saveParam($this->_project->id, 'google_sync_queue', 1);
 					}
 
@@ -5342,7 +5342,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$obj = new Project( $database );
+		$obj = new \Components\Projects\Tables\Project( $database );
 		if (!$obj->loadProject($identifier))
 		{
 			return 0;
@@ -5434,7 +5434,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make sure Git helper is included
 		$this->getGitHelper();
 
-		$this->_project = new Project($this->_database);
+		$this->_project = new \Components\Projects\Tables\Project($this->_database);
 		$this->_project->provisioned = 0;
 
 		// Publication space
@@ -5727,7 +5727,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->connect		= $this->_connect;
 
 		// Get refreshed params
-		$obj = new Project( $this->_database );
+		$obj = new \Components\Projects\Tables\Project( $this->_database );
 		$obj->load($this->_project->id);
 		$view->params = new JParameter( $obj->params );
 
@@ -5853,7 +5853,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_writeToFile(ucfirst($service) . ' '. JText::_('PLG_PROJECTS_FILES_SYNC_STARTED') );
 
 		// Get time of last sync
-		$obj = new Project( $this->_database );
+		$obj = new \Components\Projects\Tables\Project( $this->_database );
 		$obj->load($this->_project->id);
 		$pparams = new JParameter( $obj->params );
 		$synced = $pparams->get($service . '_sync', 1);
@@ -6597,7 +6597,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save sync time and last sync ID
-		$obj = new Project( $this->_database );
+		$obj = new \Components\Projects\Tables\Project( $this->_database );
 
 		// Save sync time
 		$obj->saveParam($this->_project->id, $service . '_sync', $endTime);
@@ -6669,7 +6669,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		elseif ($service)
 		{
 			// Get time of last sync
-			$obj = new Project( $this->_database );
+			$obj = new \Components\Projects\Tables\Project( $this->_database );
 			$obj->load($pid);
 			$pparams 	= new JParameter( $obj->params );
 			$synced 	= $pparams->get($service . '_sync');
@@ -6735,7 +6735,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	protected function lockSync ($service = 'google', $unlock = false, $queue = 0 )
 	{
-		$obj = new Project( $this->_database );
+		$obj = new \Components\Projects\Tables\Project( $this->_database );
 		$obj->load($this->_project->id);
 
 		$pparams 	= new JParameter( $obj->params );
@@ -6862,7 +6862,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get project and check authorization
-		$objP = new Project( $this->_database );
+		$objP = new \Components\Projects\Tables\Project( $this->_database );
 		$this->_project = $objP->getProject($identifier, $this->_uid);
 		if (!$this->_project || !$this->_project->owner)
 		{

@@ -75,7 +75,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$this->_task = 'setup';
 
 		// Instantiate a project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 
 		// Get project information
 		if ($this->_identifier)
@@ -253,7 +253,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$step       = \JRequest::getInt( 'step', '0'); // Where do we go next?
 
 		// Instantiate a project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 
 		if ($this->_identifier && !$obj->loadProject($this->_identifier))
 		{
@@ -388,7 +388,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$state				= 1;
 
 		// Load project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
 			$this->setError( \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
@@ -645,7 +645,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	protected function _process()
 	{
 		// Load project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		$obj->loadProject($this->_identifier);
 
 		// New project?
@@ -935,7 +935,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 
 		// Which section are we editing?
 		$sections = array('info', 'team', 'settings');

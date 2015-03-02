@@ -581,7 +581,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		// Get project
 		if (!isset($this->project) || !is_object($this->project) || !$this->project->alias)
 		{
-			$obj 		= new Project( $this->database );
+			$obj 		= new Components\Projects\Tables\Project( $this->database );
 			$this->project 	= $obj->getProject($this->_identifier, $this->juser->get('id'));
 			if (!$this->project)
 			{

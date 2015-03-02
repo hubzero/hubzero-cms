@@ -111,7 +111,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		$file = \JFile::makeSafe($file);
 
 		// Load project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
 			echo json_encode(array('error' => \JText::_('Error loading project')));
@@ -272,7 +272,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 
 		// Load project
-		$obj = new Project( $this->database );
+		$obj = new Components\Projects\Tables\Project( $this->database );
 		$obj->loadProject($this->_identifier);
 
 		if ($obj->alias)
@@ -424,7 +424,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 		elseif ($media)
 		{
-			$obj = new Project( $this->database );
+			$obj = new Components\Projects\Tables\Project( $this->database );
 			if (!$obj->loadProject($alias))
 			{
 				return false;
