@@ -175,65 +175,20 @@ class Html
 	}
 
 	/**
-	 * Get file attributes
+	 * Get file extension
 	 *
-	 * @param      string $path
-	 * @param      string $base_path
-	 * @param      string $get
-	 * @param      string $prefix
+	 * @param      string $file
 	 * @return     string
 	 */
-	public static function getFileAttribs(
-		$path = '', $base_path = '',
-		$get = '', $prefix = PATH_APP
-	)
+	public static function getFileExtension( $file = '')
 	{
-		if (!$path)
+		if (!is_null($file))
 		{
-			return '';
-		}
+			$dot = strrpos($file, '.') + 1;
 
-		// Get extension
-		if ($get == 'ext')
-		{
-			$ext = explode('.', basename($path));
-			$ext = count($ext) > 1 ? end($ext) : '';
-			return strtoupper($ext);
+			return strtolower(substr($file, $dot));
 		}
-
-		$path = DS . trim($path, DS);
-		if ($base_path)
-		{
-			$base_path = DS . trim($base_path, DS);
-		}
-
-		if (substr($path, 0, strlen($base_path)) == $base_path)
-		{
-			// Do nothing
-		}
-		else
-		{
-			$path = $base_path . $path;
-		}
-		$path = $prefix . $path;
-
-		$fs = '';
-
-		// Get the file size if the file exist
-		if (file_exists( $path ))
-		{
-			try
-			{
-				$fs = filesize( $path );
-			}
-			catch (Exception $e)
-			{
-				// could not get file size
-			}
-		}
-		$fs = self::formatSize($fs);
-		return ($fs) ? $fs : '';
-
+		return NULL;
 	}
 
 	/**
@@ -248,34 +203,8 @@ class Html
 		{
 			return 0;
 		}
-		$dirSize=0;
 
-		if (!$dh=opendir($directory))
-		{
-			return false;
-		}
-
-		while ($file = readdir($dh))
-		{
-			if ($file == "." || $file == "..")
-			{
-				continue;
-			}
-
-			if (is_file($directory."/".$file))
-			{
-				$dirSize += filesize($directory."/".$file);
-			}
-
-			if (is_dir($directory."/".$file))
-			{
-				$dirSize += self::getDirSize($directory."/".$file);
-			}
-		}
-
-		closedir($dh);
-
-		return $dirSize;
+		return \Hubzero\Filesystem\Size($directory);
 	}
 
 	/**
@@ -670,16 +599,13 @@ class Html
 		{
 			$config = \JComponentHelper::getParams('com_projects');
 		}
-		$path    = trim($config->get('imagepath', '/site/projects'), DS)
-					. DS . $alias . DS . 'images';
+		$path    = trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
 		$default = trim($config->get('masterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
-		$default = is_file( PATH_APP . DS . $default )
-					? $default
-					: NULL;
+		$default = is_file( PATH_APP . DS . $default ) ? $default : NULL;
 
 		$src  = $picture && is_file( PATH_APP . DS . $path . DS . $picture )
-					? $path . DS . $picture
-					: $default;
+				? $path . DS . $picture
+				: $default;
 		return $src;
 	}
 

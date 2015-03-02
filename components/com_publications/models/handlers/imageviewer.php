@@ -285,8 +285,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			if (is_file(JPATH_ROOT . DS . $fpath) && is_file(JPATH_ROOT . DS . $thumbPath))
 			{
 				// Get extentsion
-				$ext = explode('.', basename($fpath));
-				$ext = strtolower(end($ext));
+				$ext = \Components\Projects\Helpers\Html::getFileExtension($fpath);
 
 				$title = $attach->title ? $attach->title : basename($attach->path);
 				$fpath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . basename($fpath);

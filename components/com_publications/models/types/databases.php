@@ -567,8 +567,7 @@ class typeDatabases extends JObject
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $file);
 
 				// Get file extention
-				$ext = explode('.', $file);
-				$ext = count($ext) > 1 ? end($ext) : '';
+				$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
 
 				// Image formats
 				$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');

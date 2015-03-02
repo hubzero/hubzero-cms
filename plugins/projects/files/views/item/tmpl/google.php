@@ -33,8 +33,7 @@ $url = $this->url . '/?action=open' . a . 'subdir='.urlencode($this->subdir) . a
 
 $when = \Components\Projects\Helpers\Html::formatTime(date ('c', strtotime($item->remote_modified .  ' UTC')));
 
-$ext = explode('.', $item->local_path);
-$ext = count($ext) > 1 ? end($ext) : '';
+$ext = \Components\Projects\Helpers\Html::getFileExtension($item->local_path);
 
 $name = basename($item->local_path);
 

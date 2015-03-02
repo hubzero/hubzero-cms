@@ -6252,8 +6252,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is image?
-		$ext = explode('.',$ima);
-		$ext = end($ext);
+		$ext = \Components\Projects\Helpers\Html::getFileExtension($ima);
 		if (!in_array(strtolower($ext), $this->_image_ext) && !in_array(strtolower($ext), $this->_video_ext))
 		{
 			return JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_WRONG_EXT') . ' ' . $ext;
@@ -6366,8 +6365,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Is image?
-			$ext = explode('.', $filename);
-			$ext = end($ext);
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($filename);
 			if (in_array(strtolower($ext), $this->_image_ext))
 			{
 				// Also create a thumbnail

@@ -695,8 +695,7 @@ class ProjectsGoogleHelper extends JObject
 						$title = \Components\Projects\Helpers\Html::makeSafeFile($doc['title']);
 
 						// Get file extention
-						$ext = explode('.', $title);
-						$ext = count($ext) > 1 ? end($ext) : '';
+						$ext = \Components\Projects\Helpers\Html::getFileExtension($title);
 
 						if ($converted)
 						{

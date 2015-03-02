@@ -62,8 +62,7 @@ foreach ($this->versions as $version) {
 
 $endPath = ' &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
 
-$ext = explode('.', $this->file);
-$ext = count($ext) > 1 ? end($ext) : '';
+$ext = \Components\Projects\Helpers\Html::getFileExtension($this->file);
 
 $allowDiff = ($this->binary || ($this->remote && $this->remote['converted'] == 1) || $candiff <= 1 ) ? 0 : 1;
 

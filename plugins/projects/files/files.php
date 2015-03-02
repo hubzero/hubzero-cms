@@ -3631,8 +3631,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get file extention
-			$ext = explode('.', $fpath);
-			$ext = count($ext) > 1 ? end($ext) : '';
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($fpath);
 
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{
@@ -4359,8 +4358,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get file extention
-			$ext = explode('.', basename($file));
-			$ext = count($ext) > 1 ? end($ext) : '';
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
 
 			// Image formats
 			$image_formats = array('png', 'gif', 'jpg', 'jpeg', 'tiff', 'bmp');
@@ -4781,7 +4779,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
 			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
 			$entry['size']		= $entry['bytes'] ? \Hubzero\Utility\Number::formatBytes($entry['bytes']) : 'unknown';
-			$entry['ext']		= \Components\Projects\Helpers\Html::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );
+			$entry['ext']		= \Components\Projects\Helpers\Html::getFileExtension( $e );
 
 			// Get last commit data
 			if ($this->_fileinfo && isset($this->_fileinfo[$fpath]))
@@ -4866,8 +4864,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$entry = array();
 					$entry['name']	= basename($file);
 					$entry['fpath']	= $file;
-					$ext = explode('.', $entry['name']);
-					$entry['ext'] = end($ext);
+					$entry['ext'] = \Components\Projects\Helpers\Html::getFileExtension($entry['name']);
 					$files[] = $entry;
 				}
 			}
@@ -5196,7 +5193,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$file = array();
 						$file['name']	= basename($fpath);
 						$file['fpath']	= $fpath;
-						$file['ext']	= \Components\Projects\Helpers\Html::getFileAttribs( basename($fpath), $fullpath, 'ext' );
+						$file['ext']	= \Components\Projects\Helpers\Html::getFileExtension($fpath);
 					}
 					else
 					{
@@ -5242,7 +5239,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$file 						= array();
 				$file['name']				= basename($ut);
 				$file['fpath']				= $ut;
-				$file['ext']				= \Components\Projects\Helpers\Html::getFileAttribs( basename($ut), $fullpath, 'ext' );
+				$file['ext']				= \Components\Projects\Helpers\Html::getFileExtension($ut);
 				$file['date']  				= NULL;
 				$file['author'] 			= NULL;
 				$file['email'] 				= NULL;

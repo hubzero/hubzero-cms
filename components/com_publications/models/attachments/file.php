@@ -1499,8 +1499,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		foreach ($attachments as $attach)
 		{
 			$file = isset($attach->path) ? $attach->path : $attach;
-			$ext = explode('.', $file);
-			$ext = end($ext);
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
 
 			if ($ext && !in_array(strtolower($ext), $formats))
 			{
@@ -1532,8 +1531,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		foreach ($attachments as $attach)
 		{
 			$file = isset($attach->path) ? $attach->path : $attach;
-			$ext = explode('.', $file);
-			$ext = end($ext);
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
 
 			if ($ext && in_array(strtolower($ext), $formats))
 			{

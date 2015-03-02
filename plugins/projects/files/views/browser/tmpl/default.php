@@ -95,7 +95,7 @@ $skipped = 0;
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $attachment->path;
-					$miss['ext'] = \Components\Projects\Helpers\Html::getFileAttribs( $attachment->path, '', 'ext' );
+					$miss['ext'] = \Components\Projects\Helpers\Html::getFileExtension( $attachment->path);
 					$missing[] = $miss;
 				}
 			}
@@ -110,7 +110,7 @@ $skipped = 0;
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $shot->filename;
-					$miss['ext'] = \Components\Projects\Helpers\Html::getFileAttribs( $shot->filename, '', 'ext' );
+					$miss['ext'] = \Components\Projects\Helpers\Html::getFileExtension( $shot->filename);
 					$missing[] = $miss;
 				}
 			}

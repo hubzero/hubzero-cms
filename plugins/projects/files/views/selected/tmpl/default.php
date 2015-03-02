@@ -32,8 +32,7 @@ if ($this->type == 'folder')
 }
 else
 {
-	$ext = explode('.', $this->item);
-	$ext = count($ext) > 1 ? end($ext) : '';
+	$ext = \Components\Projects\Helpers\Html::getFileExtension($this->item);
 	$name = $this->item;
 }
 
@@ -44,8 +43,7 @@ if ($this->remote && $this->item != $this->remote['title'])
 
 	if ($append > 0)
 	{
-		$ext = explode('.', $this->item);
-		$ext = count($ext) > 1 ? end($ext) : '';
+		$ext = \Components\Projects\Helpers\Html::getFileExtension($this->item);
 
 		$name = \Components\Projects\Helpers\Html::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
 	}

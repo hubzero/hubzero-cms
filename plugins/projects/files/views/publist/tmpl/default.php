@@ -57,8 +57,7 @@ if ($items) {
 			$serve = $prefix . $path . DS . $ref->file;
 
 			// Get file extention
-			$ext = explode('.', $ref->file);
-			$ext = count($ext) > 1 ? end($ext) : '';
+			$ext = \Components\Projects\Helpers\Html::getFileExtension($ref->file);
 
 			if (is_file($serve))
 			{
