@@ -85,14 +85,10 @@ $shown = array();
 							$miss['credit'] = stripslashes($member->credit);
 
 							// Get profile thumb image
-							$thumb = '';
-							if ($member->picture) {
-								$curthumb = $ih->createThumbName($member->picture);
-								$thumb = $path.DS.\Hubzero\Utility\String::pad($member->user_id).DS.$curthumb;
-							}
-							if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-								$thumb = $default_thumb;
-							}
+							$profile = \Hubzero\User\Profile::getInstance($member->user_id);
+							$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+							$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
+
 							$miss['thumb'] = $thumb;
 							$missing[] = $miss;
 						}
