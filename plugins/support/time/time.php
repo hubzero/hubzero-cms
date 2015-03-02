@@ -132,22 +132,23 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
 
 		$permissions = new TimeModelPermissions('com_time');
-		if (!$permissions->can('save', 'records'))
+		if (!$permissions->can('save.records'))
 		{
 			return;
 		}
 
-		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();
 
 		// Incoming posted data
-		$record = JRequest::getVar('record', array(), 'post');
+		$record = JRequest::getVar('records', array(), 'post');
 		$record = array_map('trim', $record);
 
 		// Combine the time entry
-		$record['user_id'] = $juser->get('id');
-		$record['time'] = $record['htime'] . '.' . $record['mtime'];
+		$record['user_id']     = JFactory::getUser()->get('id');
+		$record['time']        = $record['htime'] . '.' . $record['mtime'];
+		$record['date']        = JFactory::getDate($record['date'], JFactory::getConfig()->get('offset'))->toSql();
 		$record['description'] = $comment->get('comment');
+
 		// Don't attempt to save a record if no time or task was chosen
 		if (!$record['time'] || !$record['task_id'])
 		{
