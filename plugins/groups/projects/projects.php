@@ -337,7 +337,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Get activity class
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
-		$objAC = new ProjectActivity($this->_database);
+		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();
 		$view->total = $objAC->getActivities(0, $afilters, 1, $this->_juser->get('id'), $projects);
@@ -376,7 +376,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	protected function prepActivities($activities, $option, $uid, $filters, $limit)
 	{
 		// Get latest activity
-		$objAC = new ProjectActivity($this->_database);
+		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 		$objM  = new ProjectMicroblog($this->_database);
 		$objC  = new ProjectComment($this->_database);
 		$objTD = new ProjectTodo($this->_database);

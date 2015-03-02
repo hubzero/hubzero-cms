@@ -1120,7 +1120,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$output = '';
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 				. DS . 'com_projects'. DS . 'tables' . DS . 'project.activity.php');
-			$objAA = new ProjectActivity ( $this->database );
+			$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 			switch ($action)
 			{
 				case 'publish':
@@ -1291,7 +1291,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						$objC->checkin();
 					}
 
-					$objAA = new ProjectActivity ( $this->database );
+					$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 					if ( $objC->id )
 					{
@@ -1697,7 +1697,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$objP->deleteExistence($id);
 
 					// Delete related publishing activity from feed
-					$objAA = new ProjectActivity( $this->database );
+					$objAA = new \Components\Projects\Tables\Activity( $this->database );
 					$objAA->deleteActivityByReference($projectId, $id, 'publication');
 
 					// Build publication path

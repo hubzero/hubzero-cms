@@ -225,7 +225,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						// Unpublished
 						case 0:
 							// Check who unpublished this
-							$objAA = new ProjectActivity( $this->database );
+							$objAA = new \Components\Projects\Tables\Activity( $this->database );
 							$pubtitle = \Hubzero\Utility\String::truncate($this->pub->title, 100);
 							$activity = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
 							$activity.= ' '.strtolower(JText::_('version'))

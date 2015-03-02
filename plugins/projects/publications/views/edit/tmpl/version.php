@@ -298,7 +298,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 
 			<?php if ($this->row->state == 0) { // unpublished
 					// Check who unpublished this
-					$objAA = new ProjectActivity( $this->database );
+					$objAA = new \Components\Projects\Tables\Activity( $this->database );
 					$pubtitle = \Hubzero\Utility\String::truncate($this->row->title, 100);
 					$activity = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
 					$activity .= ' '.strtolower(JText::_('version')).' '.$this->row->version_label.' '

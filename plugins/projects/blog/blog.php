@@ -372,7 +372,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get activities
-		$objAC = new ProjectActivity($this->_database);
+		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 		$view->filters 			= array();
 		$view->filters['role'] 	= $this->_project->role;
 		$view->total 			= $objAC->getActivities($this->_project->id, $view->filters, 1, $this->_uid);
@@ -445,7 +445,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$objAA = new ProjectActivity($this->_database);
+			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($objM->id)
 			{
 				$aid = $objAA->recordActivity(
@@ -519,7 +519,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					// Delete all associated activities
 					foreach ($activities as $a)
 					{
-						$objAA = new ProjectActivity($this->_database);
+						$objAA = new \Components\Projects\Tables\Activity($this->_database);
 						$objAA->loadActivity($a, $this->_project->id);
 						$objAA->deleteActivity();
 					}
@@ -529,7 +529,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Are we deleting activity?
 		if ($tbl == 'activity')
 		{
-			$objAA = new ProjectActivity($this->_database);
+			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			$objAA->loadActivity($eid, $this->_project->id);
 
 			if ($this->_project->role == 1 or $this->_authorized or $objAA->userid == $this->_uid)
@@ -548,7 +548,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					// Delete all associated activities
 					foreach ($activities as $a)
 					{
-						$objAA = new ProjectActivity($this->_database);
+						$objAA = new \Components\Projects\Tables\Activity($this->_database);
 						$objAA->loadActivity($a, $this->_project->id);
 						$objAA->deleteActivity();
 					}
@@ -601,7 +601,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				'name'    => 'activity'
 			)
 		);
-		$objAC = new ProjectActivity($this->_database);
+		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 		$view->filters 			= array();
 		$view->total 			= $objAC->getActivities($this->_project->id, $view->filters, 1, $this->_uid);
 		$view->limit 			= intval($this->params->get('limit', 25));
@@ -627,7 +627,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _prepActivities($filters, $limit)
 	{
 		// Get latest activity
-		$objAC = new ProjectActivity($this->_database);
+		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 		$activities = $objAC->getActivities ($this->_project->id, $filters, 0, $this->_uid);
 
 		// Instantiate some classes
@@ -1041,7 +1041,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$objAA = new ProjectActivity($this->_database);
+			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($objC->id)
 			{
 				$what = $tbl == 'blog' ? JText::_('COM_PROJECTS_BLOG_POST') : JText::_('COM_PROJECTS_AN_ACTIVITY');
@@ -1108,7 +1108,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// delete associated activity
-			$objAA = new ProjectActivity($this->_database);
+			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();

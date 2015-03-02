@@ -416,7 +416,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			// Record activity
 			if ($save && !$preview && !$this->getError() && !$controller->getError())
 			{
-				$objAA = new ProjectActivity( $this->_database );
+				$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 				$what  = $exists
 					? JText::_('COM_PROJECTS_NOTE_EDITED')
 					: JText::_('COM_PROJECTS_NOTE_ADDED');

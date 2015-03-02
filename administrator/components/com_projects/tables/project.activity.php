@@ -28,105 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project activity
  */
-class ProjectActivity extends JTable
+class Activity extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Project id
-	 *
-	 * @var integer
-	 */
-	var $projectid       	= NULL;
-
-	/**
-	 * User id
-	 *
-	 * @var integer
-	 */
-	var $userid       		= NULL;
-
-	/**
-	 * Reference id, varchar(100)
-	 *
-	 * @var string
-	 */
-	var $referenceid       	= NULL;
-
-	/**
-	 * Show to managers only?
-	 *
-	 * @var integer
-	 */
-	var $managers_only      = NULL;
-
-	/**
-	 * Activity by admin?
-	 *
-	 * @var integer
-	 */
-	var $admin      		= NULL;
-
-	/**
-	 * Comments allowed?
-	 *
-	 * @var integer
-	 */
-	var $commentable       	= NULL;
-
-	/**
-	 * State
-	 *
-	 * @var integer
-	 */
-	var $state       		= NULL;
-
-	/**
-	 * Datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $recorded			= NULL;
-
-	/**
-	 * Activity, varchar(255)
-	 *
-	 * @var string
-	 */
-	var $activity       	= NULL;
-
-	/**
-	 * Highlighted text, varchar(100)
-	 *
-	 * @var string
-	 */
-	var $highlighted       	= NULL;
-
-	/**
-	 * URL to referenced item, varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url       			= NULL;
-
-	/**
-	 * CSS class, varchar(150)
-	 *
-	 * @var string
-	 */
-	var $class       		= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -180,7 +88,9 @@ class ProjectActivity extends JTable
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE referenceid = '$refid'
-				AND projectid = '$projectid' AND class = '$class' AND activity = '$activity' LIMIT 1";
+				AND projectid = " . $this->_db->Quote($projectid) . " AND class = "
+				. $this->_db->Quote($class) . " AND activity = "
+				. $this->_db->Quote($activity) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
 		{
@@ -235,7 +145,7 @@ class ProjectActivity extends JTable
 		}
 		if($projectid)
 		{
-		$query  .= " WHERE a.projectid=$projectid ";
+		$query  .= " WHERE a.projectid=" . $this->_db->Quote($projectid);
 		}
 		else
 		{
@@ -250,7 +160,7 @@ class ProjectActivity extends JTable
 		}
 		if($class)
 		{
-			$query  .= " AND a.class='" . $class . "' ";
+			$query  .= " AND a.class=" . $this->_db->Quote($class);
 		}
 		if($managers && $role == 1)
 		{
@@ -262,7 +172,7 @@ class ProjectActivity extends JTable
 		}
 		if($id)
 		{
-			$query  .= " AND a.id='" . $id . "' ";
+			$query  .= " AND a.id=" . $this->_db->Quote($id);
 		}
 
 		$query  .= " AND a.state != 2 ";
@@ -310,9 +220,12 @@ class ProjectActivity extends JTable
 		// Collapse some repeated activities by the same actor
 		if ($referenceid || $class == 'project')
 		{
-			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class='$class'
-					AND activity='$activity' AND userid=$by AND projectid=$projectid
-					AND referenceid='$referenceid'");
+			$this->_db->setQuery( "UPDATE $this->_tbl SET state = 2 WHERE class="
+				. $this->_db->Quote($class) . " AND activity="
+				. $this->_db->Quote($activity) . " AND userid="
+				. $this->_db->Quote($by) . " AND projectid="
+				. $this->_db->Quote($projectid) . " AND referenceid="
+				. $this->_db->Quote($referenceid));
 			$this->_db->query();
 		}
 
@@ -321,15 +234,15 @@ class ProjectActivity extends JTable
 		$this->managers_only = $managers_only;
 
 		// Collapse checked/posted to-do item activities
-		if($class == 'todo' && $activity == JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
+		if($class == 'todo' && $activity == \JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
 		{
 			$this->loadActivityByRef($projectid, $referenceid, $class,
-				JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
+				\JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
 		}
 
 		$this->projectid 	= $projectid;
 		$this->userid 		= $by;
-		$this->recorded 	= JFactory::getDate()->toSql();
+		$this->recorded 	= \JFactory::getDate()->toSql();
 		$this->activity 	= $activity;
 		$this->highlighted 	= $highlighted;
 		$this->referenceid 	= $referenceid;
@@ -363,7 +276,7 @@ class ProjectActivity extends JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE projectid=" . $projectid . " AND referenceid=" . $refid . " AND class='$class'";
+		$query .= " WHERE projectid=" . $this->_db->Quote($projectid) . " AND referenceid=" . $this->_db->Quote($refid) . " AND class=" . $this->_db->Quote($class);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -449,7 +362,7 @@ class ProjectActivity extends JTable
 		}
 
 		$query  = " SELECT COUNT(*) FROM #__project_activity AS X ";
-		$query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid='$uid' ";
+		$query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->_db->Quote($uid);
 		$query .= " WHERE X.projectid=" . $projectid . "
 					AND (X.recorded >= o.lastvisit AND o.lastvisit IS NOT NULL
 				    AND X.state != 2 AND (X.managers_only = 0
@@ -594,7 +507,7 @@ class ProjectActivity extends JTable
 
 		$query  =  "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
 		$query .=  "WHERE projectid=$projectid ";
-		$query .=  "AND activity='" . mysql_real_escape_string($check)."' AND state!=2 ";
+		$query .=  "AND activity=" . $this->_db->Quote($check) . " AND state!=2 ";
 		$query .= " ORDER BY recorded DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();

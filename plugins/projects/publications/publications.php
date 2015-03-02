@@ -1080,7 +1080,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->get('_activity'))
 		{
 			$pubTitle = \Hubzero\Utility\String::truncate($pub->title, 100);
-			$objAA = new ProjectActivity ( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   $this->get('_activity'), $pub->id, $pubTitle,
 				   JRoute::_('index.php?option=' . $this->_option . a .
@@ -1100,7 +1100,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Record activity
 		if (!$this->_project->provisioned && !$this->getError())
 		{
-			$objAA = new ProjectActivity ( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid   = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
 					.' (id ' . $row->publication_id . ')', $row->publication_id, 'publication',
@@ -2916,7 +2916,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pubtitle = \Hubzero\Utility\String::truncate($new->title, 100);
 					$action  = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION').' '.$new->version_label.' ';
 					$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
-					$objAA = new ProjectActivity ( $this->_database );
+					$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 					$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 						   $action, $pid, $pubtitle,
 						   JRoute::_('index.php?option=' . $this->_option . a .
@@ -4144,7 +4144,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Record activity
 		if (!$this->_project->provisioned && !$this->getError())
 		{
-			$objAA = new ProjectActivity ( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 					$action, $row->publication_id, $pubtitle,
 					JRoute::_('index.php?option=' . $this->_option . a .
@@ -4677,7 +4677,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (!$this->getError())
 			{
 				$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
-				$objAA = new ProjectActivity ( $this->_database );
+				$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 
 				if ($pub->state == 1)
 				{
@@ -4773,7 +4773,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$url  = JRoute::_($route);
 
 						// Delete related publishing activity from feed
-						$objAA = new ProjectActivity( $this->_database );
+						$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 						$objAA->deleteActivityByReference($this->_project->id, $pid, 'publication');
 					}
 

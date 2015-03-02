@@ -520,7 +520,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 					if ($state == 1)
 					{
 						// Record activity
-						$objAA = new ProjectActivity ( $this->_database );
+						$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
 							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
 							JRoute::_('index.php?option=' . $this->_option
@@ -559,7 +559,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record activity
-		$objAA = new ProjectActivity( $this->_database );
+		$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 		if ($new)
 		{
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
@@ -651,7 +651,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Delete all associated activities
 				foreach ($activities as $a)
 				{
-					$objAA = new ProjectActivity( $this->_database );
+					$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 					$objAA->loadActivity($a, $this->_project->id);
 					$objAA->deleteActivity();
 				}
@@ -688,7 +688,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 								// Delete all associated activities
 								foreach ($activities as $a)
 								{
-									$objAA = new ProjectActivity( $this->_database );
+									$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 									$objAA->loadActivity( $a, $this->_project->id );
 									$objAA->deleteActivity();
 								}
@@ -797,7 +797,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// delete associated activity
-			$objAA = new ProjectActivity( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();
@@ -859,7 +859,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$objAA = new ProjectActivity( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 			if ($objC->id )
 			{
 				$what = JText::_('PLG_PROJECTS_TODO_TODO_ITEM');

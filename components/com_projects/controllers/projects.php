@@ -370,7 +370,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		// Instantiate a project and related classes
 		$obj  	= new Components\Projects\Tables\Project( $this->database );
 		$objO 	= new ProjectOwner( $this->database );
-		$objAA 	= new ProjectActivity( $this->database );
+		$objAA 	= new \Components\Projects\Tables\Activity( $this->database );
 
 		// Is user invited to project?
 		$confirmcode = \JRequest::getVar( 'confirm', '' );
@@ -1064,7 +1064,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 		// Instantiate a project and related classes
 		$obj = new Components\Projects\Tables\Project( $this->database );
-		$objAA = new ProjectActivity ( $this->database );
+		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Load project
 		if (!$obj->loadProject($this->_identifier))
@@ -1272,7 +1272,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 		// Instantiate a project and related classes
 		$obj 		= new Components\Projects\Tables\Project( $this->database );
-		$objAA 		= new ProjectActivity ( $this->database );
+		$objAA 		= new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Check authorization
 		$authorized = ProjectsHelper::checkReviewerAuth($reviewer, $this->config);
@@ -1489,7 +1489,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 					if ($activity)
 					{
-						$objAA = new ProjectActivity( $this->database );
+						$objAA = new \Components\Projects\Tables\Activity( $this->database );
 						$aid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
 							$activity, $obj->id, '', '', 'admin', 0, 1, 1 );
 
@@ -1502,7 +1502,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 							if ($cid)
 							{
-								$objAA = new ProjectActivity( $this->database );
+								$objAA = new \Components\Projects\Tables\Activity( $this->database );
 								$caid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
 									\JText::_('COM_PROJECTS_COMMENTED') . ' '
 									. \JText::_('COM_PROJECTS_ON') . ' '

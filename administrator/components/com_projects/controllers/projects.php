@@ -235,7 +235,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		$obj = new \Components\Projects\Tables\Project( $this->database );
-		$objAC = new ProjectActivity( $this->database );
+		$objAC = new \Components\Projects\Tables\Activity( $this->database );
 
 		if ($id)
 		{
@@ -343,7 +343,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 		// Get some needed classes
-		$objAA = new ProjectActivity ( $this->database );
+		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Incoming
 		$formdata 	= $_POST;
@@ -604,7 +604,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$objC->deleteProjectComments ( $id, $permanent );
 
 		// Erase all activities
-		$objA = new ProjectActivity( $this->database );
+		$objA = new \Components\Projects\Tables\Activity( $this->database );
 		$objA->deleteActivities( $id, $permanent );
 
 		// Erase all todos

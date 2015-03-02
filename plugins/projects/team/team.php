@@ -889,7 +889,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$this->_msg = JText::_('COM_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
 				// Record activity
-				$objAA = new ProjectActivity($this->_database);
+				$objAA = new \Components\Projects\Tables\Activity($this->_database);
 				$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 					JText::_('COM_PROJECTS_TEAM_PROJECT_QUIT') , 0, '', '', 'team', 0 );
 

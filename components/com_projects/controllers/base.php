@@ -692,7 +692,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 	 */
 	protected function _postActivity($activity = '', $underline = '', $url = '', $class = 'project')
 	{
-		$objAA = new ProjectActivity ( $this->database );
+		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 		if (isset($this->project) && is_object($this->project) && $this->project->id && $activity)
 		{

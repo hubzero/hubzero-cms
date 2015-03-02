@@ -971,7 +971,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 				. $pub->id . '/?version=' . $pub->version_number;
 
 		// Record activity
-		$objAA = new ProjectActivity ( $this->database );
+		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 		$aid   = $objAA->recordActivity(
 				$pub->project_id,
 				$this->juser->get('id'),

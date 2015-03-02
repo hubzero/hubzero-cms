@@ -1137,7 +1137,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			if ($objPD->id)
 			{
 				// Record project activity
-				$prjAct = new ProjectActivity($this->_database);
+				$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 				$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $objPD->id, 'databases',
 					JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=databases'),
 					'databases', 1);
@@ -1245,7 +1245,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$objPD->source_revision = $hash;
 			$objPD->store();
 
-			$prjAct = new ProjectActivity($this->_database);
+			$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 			$msg = 'updated file "' . $file . '" in project ';
 			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $file, 'files',
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=files'),
@@ -1287,7 +1287,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record project activity
-			$prjAct = new ProjectActivity($this->_database);
+			$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 			$msg = 'removed database "' . $title . '" from project ';
 			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $id, 'databases',
 				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=databases'),

@@ -382,7 +382,7 @@ class Project extends \JTable
 		);
 
 		// Collect activity stats
-		$objAA = new ProjectActivity( $this->_db );
+		$objAA = new Activity( $this->_db );
 		$recentlyActive = count($this->getValidProjects($exclude, array('timed' => $pastMonth, 'active' => 1), $config ));
 		$perc = round(($recentlyActive * 100)/$active) . '%';
 		$stats['activity'] = array(

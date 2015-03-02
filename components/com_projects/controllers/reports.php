@@ -48,7 +48,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 
 		// Instantiate a project and related classes
 		$obj   = new Components\Projects\Tables\Project( $this->database );
-		$objAA = new ProjectActivity ( $this->database );
+		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);

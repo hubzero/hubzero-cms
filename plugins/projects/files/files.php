@@ -998,7 +998,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Add activity to feed
 		if ($activity && $this->_case == 'files')
 		{
-			$objAA = new ProjectActivity( $this->_database );
+			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 
 			$refParts  = explode(',', $ref);
 			$parsedRef = '';
