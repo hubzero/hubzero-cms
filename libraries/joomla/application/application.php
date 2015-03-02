@@ -172,7 +172,7 @@ class JApplication extends JObject
 			// Load the router object.
 			$info = JApplicationHelper::getClientInfo($client, true);
 
-			$path = $info->path . '/includes/application.php';
+			$path = $info->path . '/application.php';
 			if (file_exists($path))
 			{
 				include_once $path;

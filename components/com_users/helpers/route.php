@@ -30,7 +30,7 @@ class UsersHelperRoute
 		// Get the menu items for this component.
 		if (!isset($items)) {
 			// Include the site app in case we are loading this from the admin.
-			require_once JPATH_SITE.'/includes/application.php';
+			require_once JPATH_SITE.'/core/bootstrap/site/application.php';
 
 			$app	= JFactory::getApplication();
 			$menu	= $app->getMenu();

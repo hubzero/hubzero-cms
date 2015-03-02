@@ -39,9 +39,9 @@ define('DS', DIRECTORY_SEPARATOR);
 if (!defined('JPATH_BASE'))
 {
 	define('JPATH_BASE', dirname(__DIR__));
-	require_once JPATH_BASE.'/includes/defines.php';
+	require_once JPATH_BASE.'/core/bootstrap/site/defines.php';
 }
 
-require_once JPATH_BASE.'/includes/framework.php';
+require_once JPATH_BASE.'/core/bootstrap/site/framework.php';
 
 \JFactory::getApplication('site');

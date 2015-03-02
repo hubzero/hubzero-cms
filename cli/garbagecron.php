@@ -14,15 +14,10 @@ define('_JEXEC', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
 // Load system defines
-if (file_exists(dirname(dirname(__FILE__)) . '/defines.php'))
-{
-	require_once dirname(dirname(__FILE__)) . '/defines.php';
-}
-
 if (!defined('_JDEFINES'))
 {
 	define('JPATH_BASE', dirname(dirname(__FILE__)));
-	require_once JPATH_BASE . '/includes/defines.php';
+	require_once JPATH_BASE . '/core/bootstrap/site/defines.php';
 }
 
 // Get the framework.

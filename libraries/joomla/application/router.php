@@ -124,7 +124,7 @@ class JRouter extends JObject
 			// Load the router object
 			$info = JApplicationHelper::getClientInfo($client, true);
 
-			$path = $info->path . '/includes/router.php';
+			$path = $info->path . '/router.php';
 			if (file_exists($path))
 			{
 				include_once $path;

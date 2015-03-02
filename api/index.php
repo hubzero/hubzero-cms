@@ -30,8 +30,10 @@
 
 $_HUBZERO_API_START = microtime(true);
 
-ini_set('display_errors','0');
-error_reporting(0);
+//ini_set('display_errors','0');
+//error_reporting(0);
+error_reporting(-1);
+ini_set('error_reporting', E_ALL);
 header("HTTP/1.1 404 Not Found");
 
 if (function_exists('xdebug_disable'))
@@ -49,11 +51,14 @@ define('_JEXEC', 1);
 define('JPROFILE', 0);
 define('JPATH_PLATFORM', 1);
 define('DS', DIRECTORY_SEPARATOR);
-define('JPATH_BASE', __DIR__);
-require_once JPATH_BASE.'/includes/defines.php';
-//define('HVERSION', "1.3.0");
 
-require(JPATH_LIBRARIES.DS.'loader.php');
+if (!defined('_JDEFINES')) {
+	define('JPATH_BASE', __DIR__);
+	require_once dirname(JPATH_BASE).'/core/bootstrap/api/defines.php';
+}
+
+require_once JPATH_LIBRARIES.DS.'loader.php';
+require_once dirname(JPATH_BASE).'/vendor/autoload.php';
 
 JLoader::import('cms.version.version');
 

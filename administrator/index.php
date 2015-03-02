@@ -11,12 +11,10 @@ define('DS', DIRECTORY_SEPARATOR);
 
 if (!defined('_JDEFINES')) {
 	define('JPATH_BASE', __DIR__);
-	require_once JPATH_BASE.'/includes/defines.php';
+	require_once dirname(JPATH_BASE).'/core/bootstrap/administrator/defines.php';
 }
 
-require_once JPATH_BASE.'/includes/framework.php';
-require_once JPATH_BASE.'/includes/helper.php';
-require_once JPATH_BASE.'/includes/toolbar.php';
+require_once JPATH_ROOT.'/core/bootstrap/administrator/framework.php';
 
 // Mark afterLoad in the profiler.
 JPROFILE ? $_PROFILER->mark('afterLoad') : null;

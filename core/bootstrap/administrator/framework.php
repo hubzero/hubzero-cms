@@ -1,6 +1,6 @@
 <?php
 /**
- * @package		Joomla.Site
+ * @package		Joomla.Administrator
  * @subpackage	Application
  * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,16 +9,16 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-//
-// Joomla system checks.
-//
+/*
+ * Joomla! system checks.
+ */
 
 @ini_set('magic_quotes_runtime', 0);
 @ini_set('zend.ze1_compatibility_mode', '0');
 
-//
-// Installation check, and check on removal of the install directory.
-//
+/*
+ * Installation check, and check on removal of the install directory.
+ */
 if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
 	echo 'No configuration file found. Exiting...';
 	exit();
@@ -29,13 +29,14 @@ if (!file_exists( JPATH_CONFIGURATION . DS . 'configuration.php' ) ) {
 //
 
 // System includes.
-require_once JPATH_LIBRARIES.'/import.php';
+//require_once JPATH_LIBRARIES.'/import.php';
+require_once JPATH_ROOT.'/core/bootstrap/autoload.php';
 
 // Force library to be in JError legacy mode
 JError::$legacy = true;
 JError::setErrorHandling(E_NOTICE, 'message');
 JError::setErrorHandling(E_WARNING, 'message');
-JError::setErrorHandling(E_ERROR, 'callback', array('JError', 'customErrorPage'));
+JError::setErrorHandling(E_ERROR, 'message', array('JError', 'customErrorPage'));
 
 // Botstrap the CMS libraries.
 require_once JPATH_LIBRARIES.'/cms.php';
@@ -102,7 +103,7 @@ switch ($config->error_reporting)
 
 if (!isset($config->profile))
 {
-	$config->profile = 0;
+        $config->profile = 0;
 }
 
 define('JDEBUG', $config->debug);
@@ -110,9 +111,9 @@ define('JPROFILE', $config->debug || $config->profile);
 
 unset($config);
 
-//
-// Joomla framework loading.
-//
+/*
+ * Joomla! framework loading.
+ */
 
 // System profiler.
 
@@ -121,12 +122,13 @@ if (JPROFILE) {
 	$_PROFILER = JProfiler::getInstance('Application');
 }
 
-//
-// Joomla library imports.
-//
-
+// Joomla! library imports.
 jimport('joomla.application.menu');
 jimport('joomla.environment.uri');
+jimport('joomla.html.parameter');
 jimport('joomla.utilities.utility');
 jimport('joomla.event.dispatcher');
 jimport('joomla.utilities.arrayhelper');
+
+require_once __DIR__.'/helper.php';
+require_once __DIR__.'/toolbar.php';

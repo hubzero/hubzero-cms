@@ -388,5 +388,3 @@ function jimport($path)
 {
 	return JLoader::import($path);
 }
-
-include_once(JPATH_ROOT . DS . 'vendor' . DS . 'autoload.php');

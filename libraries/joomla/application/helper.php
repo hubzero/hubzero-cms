@@ -79,25 +79,25 @@ class JApplicationHelper
 			// Site Client
 			$obj->id = 0;
 			$obj->name = 'site';
-			$obj->path = JPATH_SITE;
+			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site'; //JPATH_SITE;
 			self::$_clients[0] = clone $obj;
 
 			// Administrator Client
 			$obj->id = 1;
 			$obj->name = 'administrator';
-			$obj->path = JPATH_ADMINISTRATOR;
+			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'administrator';//JPATH_ADMINISTRATOR;
 			self::$_clients[1] = clone $obj;
 
 			// Installation Client
 			$obj->id = 2;
 			$obj->name = 'installation';
-			$obj->path = JPATH_INSTALLATION;
+			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'installation'; //JPATH_INSTALLATION;
 			self::$_clients[2] = clone $obj;
 
 			// HUBzero API Client
 			$obj->id = 4;
 			$obj->name = 'api';
-			$obj->path = JPATH_SITE . DS . 'api';
+			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'api'; //JPATH_SITE . DS . 'api';
 			self::$_clients[4] = clone $obj;
 		}
 
@@ -214,7 +214,7 @@ class JApplicationHelper
 
 			case 'toolbar_default':
 			case 'toolbar_front':
-				$result = self::_checkPath('/includes/HTML_toolbar.php', 0);
+				$result = self::_checkPath('/core/bootstrap/site/HTML_toolbar.php', 0);
 				break;
 
 			case 'admin':
@@ -240,7 +240,7 @@ class JApplicationHelper
 			case 'class':
 				if (!($result = self::_checkPath('/components/' . $user_option . '/' . $name . '.class.php')))
 				{
-					$result = self::_checkPath('/includes/' . $name . '.php');
+					$result = self::_checkPath('/core/bootstrap/site/' . $name . '.php');
 				}
 				break;
 
