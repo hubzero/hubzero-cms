@@ -516,7 +516,6 @@ if (!defined('HG_AJAX')):
 			</ol>
 		</div>
 
-`
 		<div class="facets">
 			<?php
 			$timeframe = array();
