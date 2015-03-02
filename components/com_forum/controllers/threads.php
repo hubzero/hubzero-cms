@@ -675,7 +675,7 @@ class Threads extends SiteController
 
 		if (!$attach->filename)
 		{
-			throw new Exception(404, \JText::_('COM_FORUM_FILE_NOT_FOUND'), 404);
+			throw new Exception(\JText::_('COM_FORUM_FILE_NOT_FOUND'), 404);
 		}
 		$file = $attach->filename;
 
@@ -685,7 +685,7 @@ class Threads extends SiteController
 
 		if (!$row->id)
 		{
-			throw new Exception(404, \JText::_('COM_FORUM_POST_NOT_FOUND'), 404);
+			throw new Exception(\JText::_('COM_FORUM_POST_NOT_FOUND'), 404);
 		}
 
 		// Check logged in status

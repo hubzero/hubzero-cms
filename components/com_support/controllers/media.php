@@ -48,16 +48,16 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => \JText::_('Must be logged in.')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$ticket  = JRequest::getInt('ticket', 0);
-		$comment = JRequest::getInt('comment', 0);
+		$ticket  = \JRequest::getInt('ticket', 0);
+		$comment = \JRequest::getInt('comment', 0);
 		if (!$ticket)
 		{
-			echo json_encode(array('error' => JText::_('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
+			echo json_encode(array('error' => \JText::_('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
 			return;
 		}
 
@@ -79,38 +79,38 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => \JText::_('File not found')));
 			return;
 		}
 
 		//define upload directory and make sure its writable
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
+		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => \JText::_('Error uploading. Unable to create path.')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => \JText::_('Server error. Upload directory isn\'t writable.')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => \JText::_('File is empty')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => \JText::sprintf('File is too large. Max file upload size is %s', $max)));
 			return;
 		}
 
@@ -121,7 +121,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = \JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -133,7 +133,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		//make sure that file is acceptable type
 		if (!in_array(strtolower($ext), explode(',', $this->config->get('file_ext'))))
 		{
-			echo json_encode(array('error' => JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
+			echo json_encode(array('error' => \JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
 			return;
 		}
 
@@ -158,13 +158,13 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		if (!JFile::isSafe($file))
+		if (!\JFile::isSafe($file))
 		{
-			if (JFile::delete($file))
+			if (\JFile::delete($file))
 			{
 				echo json_encode(array(
 					'success' => false,
-					'error'  => JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
+					'error'  => \JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
 				));
 				return;
 			}
@@ -177,7 +177,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			'ticket'      => $ticket,
 			'comment_id'  => $comment,
 			'filename'    => $filename . '.' . $ext,
-			'description' => JRequest::getVar('description', '')
+			'description' => \JRequest::getVar('description', '')
 		));
 		if (!$asset->store(true))
 		{
@@ -201,7 +201,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		echo json_encode(array(
 			'success'    => true,
 			'file'       => $filename . '.' . $ext,
-			'directory'  => str_replace(JPATH_ROOT, '', $path),
+			'directory'  => str_replace(PATH_APP, '', $path),
 			'ticket'     => $ticket,
 			'comment_id' => $comment,
 			'html'       => str_replace('>', '&gt;',  $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
@@ -222,39 +222,39 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Ensure we have an ID to work with
-		$ticket  = JRequest::getInt('ticket', 0, 'post');
-		$comment = JRequest::getInt('comment', 0, 'post');
+		$ticket  = \JRequest::getInt('ticket', 0, 'post');
+		$comment = \JRequest::getInt('comment', 0, 'post');
 		if (!$ticket)
 		{
-			$this->setError(JText::_('COM_SUPPORT_NO_ID'));
+			$this->setError(\JText::_('COM_SUPPORT_NO_ID'));
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_SUPPORT_NO_FILE'));
+			$this->setError(\JText::_('COM_SUPPORT_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
 
 		// Build the upload path if it doesn't exist
-		$path = JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/tickets'), DS) . DS . $ticket;
+		$path = PATH_APP . DS . trim($this->config->get('filepath', '/site/tickets'), DS) . DS . $ticket;
 
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('Error uploading. Unable to create path.'));
+				$this->setError(\JText::_('Error uploading. Unable to create path.'));
 				$this->displayTask();
 				return;
 			}
@@ -263,11 +263,11 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$ext = JFile::getExt($file['name']);
-		$filename = JFile::stripExt($file['name']);
+		$ext = \JFile::getExt($file['name']);
+		$filename = \JFile::stripExt($file['name']);
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -276,7 +276,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		//make sure that file is acceptable type
 		if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
 		{
-			$this->setError(JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+			$this->setError(\JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
 			echo $this->getError();
 			return;
 		}
@@ -284,20 +284,20 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		$filename .= '.' . $ext;
 
 		// Upload new files
-		if (!JFile::upload($file['tmp_name'], $path . DS . $filename))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $filename))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(\JText::_('ERROR_UPLOADING'));
 		}
 		// File was uploaded
 		else
 		{
 			$fle = $path . DS . $filename;
 
-			if (!JFile::isSafe($file))
+			if (!\JFile::isSafe($file))
 			{
-				if (JFile::delete($file))
+				if (\JFile::delete($file))
 				{
-					$this->setError(JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
+					$this->setError(\JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
 					echo $this->getError();
 					return;
 				}
@@ -310,7 +310,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 				'ticket'      => $ticket,
 				'comment_id'  => $comment,
 				'filename'    => $filename,
-				'description' => JRequest::getVar('description', '')
+				'description' => \JRequest::getVar('description', '')
 			));
 
 			if (!$asset->store())
@@ -330,7 +330,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function deleteTask()
 	{
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
@@ -343,7 +343,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming asset
-		$id = JRequest::getInt('asset', 0, 'get');
+		$id = \JRequest::getInt('asset', 0, 'get');
 
 		$model = new SupportModelAttachment($id);
 
@@ -364,7 +364,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 	public function ajaxDeleteTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('asset', 0);
+		$id = \JRequest::getInt('asset', 0);
 
 		if ($id)
 		{
@@ -397,15 +397,13 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('list');
-
 		// Incoming
-		$ticket  = JRequest::getInt('ticket', 0);
-		$comment = JRequest::getInt('comment', 0);
+		$ticket  = \JRequest::getInt('ticket', 0);
+		$comment = \JRequest::getInt('comment', 0);
 
 		if (!$ticket)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 		}
 
 		if ($comment)
@@ -422,14 +420,14 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->ticket  = $ticket;
 		$this->view->comment = $comment;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('list')
+			->display();
 	}
 }
 

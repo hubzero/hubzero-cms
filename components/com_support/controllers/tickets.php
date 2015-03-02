@@ -2301,8 +2301,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$file = $basePath . $file;
 		}
 
-		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $file;
+		// Add root path
+		$filename = PATH_APP . $file;
 
 		// Ensure the file exist
 		if (!file_exists($filename))
@@ -2320,7 +2320,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_SERVING_FILE'));
+			throw new Exception(JText::_('COM_SUPPORT_ERROR_SERVING_FILE'), 500);
 		}
 		else
 		{
@@ -2351,20 +2351,20 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 
 		// Construct our file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
 
 		$row = new SupportAttachment($this->database);
 
 		// Rename temp directories
 		if ($tmp = JRequest::getInt('tmp_dir'))
 		{
-			$tmpPath = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
+			$tmpPath = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
 			if (is_dir($tmpPath))
 			{
 				if (!JFolder::move($tmpPath, $path))
 				{
 					$this->setError(JText::_('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
-					JError::raiseError(500, JText::_('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
+					throw new Exception(JText::_('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'), 500);
 					return '';
 				}
 				$row->updateTicketId($tmp, $listdir);
