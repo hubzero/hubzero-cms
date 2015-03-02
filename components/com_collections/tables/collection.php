@@ -65,21 +65,26 @@ class Collection extends \JTable
 			return parent::load($oid);
 		}
 
-		$fields = array(
-			'alias'  => trim($oid)
-		);
-
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->Quote(trim($oid));
 		if ($object_id !== null)
 		{
-			$fields['object_id'] = intval($object_id);
+			$query .= " AND object_id=" . $this->_db->Quote(intval($object_id));
 		}
 		if ($object_type !== null)
 		{
-			$fields['object_type'] = strtolower(trim($object_type));
+			$query .= " AND object_type=" . $this->_db->Quote(strtolower(trim($object_type)));
 		}
 
-		return parent::load($fields);
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc())
+		{
+			return $this->bind($result);
+		}
+		else
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
 	}
 
 	/**
