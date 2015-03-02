@@ -218,24 +218,24 @@ $bdcolor = '#e1e1e1';
 																		-webkit-background-size: 30px 30px;
 																		-moz-background-size: 30px 30px;
 																		background-size: 30px 30px;">
-											<thead class="mobilehide">
+											<?php /*<thead class="mobilehide">
 												<tr>
 													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
 														<?php echo $this->escape($this->thread->get('title')); ?>
 													</th>
 												</tr>
-											</thead>
+											</thead> */?>
 											<tbody>
 												<tr>
 													<td width="100%" style="padding: 8px;">
-														<div id="ticket-number" style="float: left; width: 5em; font-size: 2em; font-weight: bold; text-align: center; padding: 30px;" align="center">
-															<a href="<?php echo $link; ?>">#<?php echo $this->thread->get('id'); ?></a>
+														<div class="mobilehide" id="ticket-number" style="float: left; width: 1.2em; font-size: 4em; font-weight: bold; text-align: center; padding: 30px;" align="center">
+															&ldquo;
 														</div>
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('PLG_GROUPS_FORUM_DETAILS_THREAD'); ?>:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo JText::sprintf('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->thread->get('title')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('PLG_GROUPS_FORUM_DETAILS_CREATED'); ?>:</th>
@@ -248,6 +248,10 @@ $bdcolor = '#e1e1e1';
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('PLG_GROUPS_FORUM_DETAILS_CATEGORY'); ?>:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->category->get('title')); ?></td>
+																</tr>
+																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('PLG_GROUPS_FORUM_DETAILS_LINK'); ?>:</th>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
 																</tr>
 															</tbody>
 														</table>
@@ -302,7 +306,7 @@ $bdcolor = '#e1e1e1';
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('PLG_GROUPS_FORUM_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, JText::sprintf('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')), $base, $base); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('PLG_GROUPS_FORUM_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, JText::sprintf('PLG_GROUPS_FORUM_DETAILS_THREAD_TITLE', $this->thread->get('id')), $base, $base); ?></span>
 													</td>
 												</tr>
 											</tbody>

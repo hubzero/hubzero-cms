@@ -1388,8 +1388,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$params = JComponentHelper::getParams('com_groups');
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
-		if ($params->get('email_comment_processing'))
-		{
+		//if ($params->get('email_comment_processing'))
+		//{
 			$esection = new ForumModelSection($sectionTbl);
 
 			$ecategory = new ForumModelCategory($category);
@@ -1481,7 +1481,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$eview->setLayout('comment_html');
 				$html = $eview->loadTemplate();
 				$msg['multipart'] = str_replace("\n", "\r\n", $html);
-
+print_r($msg); die();
 				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
 
 				$from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
@@ -1491,7 +1491,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					$this->setError(JText::_('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
 				}
 			}
-		}
+		//}
 
 		// Set the redirect
 		$this->setRedirect(
