@@ -55,7 +55,7 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$stamp = JRequest::getVar( 's', '' );
+		$stamp = \JRequest::getVar( 's', '' );
 
 		// Clean up stamp value (only numbers and letters)
 		$regex  = array('/[^a-zA-Z0-9]/');
@@ -66,7 +66,7 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -75,14 +75,14 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
 		// Get plugin
-		JPluginHelper::importPlugin( 'projects', $objSt->type );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', $objSt->type );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Serve requested item
 		$content = $dispatcher->trigger('serve', array($objSt->projectid, $objSt->reference));
@@ -95,7 +95,7 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 
 		// Redirect if nothing fetched
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
+			\JRoute::_('index.php?option=' . $this->_option)
 		);
 
 		return;

@@ -47,7 +47,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
-		$this->section  =  JRequest::getVar( 'active', $defaultSection );
+		$this->section  = \JRequest::getVar( 'active', $defaultSection );
 
 		$this->project  = NULL;
 		$this->group    = NULL;
@@ -56,8 +56,8 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		if ($this->juser->get('guest'))
 		{
 			$this->_msg = $this->_task == 'edit'
-				? JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
-				: JText::_('COM_PROJECTS_LOGIN_SETUP');
+				? \JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
+				: \JText::_('COM_PROJECTS_LOGIN_SETUP');
 			$this->_login();
 			return;
 		}
@@ -85,7 +85,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 			if (!$obj->loadProject($this->_identifier) or !$this->project)
 			{
-				JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+				\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 				return;
 			}
 
@@ -95,7 +95,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Is project deleted?
 			if ($this->project->state == 2)
 			{
-				JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_DELETED') );
+				\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_DELETED') );
 				return;
 			}
 
@@ -120,7 +120,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 						!$cgroup->is_member_of('managers',$this->juser->get('id')))
 					{
 						// Dispay error
-						$this->setError(JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
+						$this->setError(\JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
 						$this->_showError();
 						return;
 					}
@@ -129,10 +129,10 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 			// New entry defaults
 			$obj->id 			= 0;
-			$obj->alias 		= JRequest::getCmd( 'name', '', 'post' );
-			$obj->title 		= JRequest::getVar( 'title', '', 'post' );
-			$obj->about 		= trim(JRequest::getVar( 'about', '', 'post', 'none', 2 ));
-			$obj->type 			= JRequest::getInt( 'type', 1, 'post' );
+			$obj->alias 		= \JRequest::getCmd( 'name', '', 'post' );
+			$obj->title 		= \JRequest::getVar( 'title', '', 'post' );
+			$obj->about 		= trim(\JRequest::getVar( 'about', '', 'post', 'none', 2 ));
+			$obj->type 			= \JRequest::getInt( 'type', 1, 'post' );
 			$obj->setup_stage 	= 0;
 			$obj->private 		= 1;
 		}
@@ -146,7 +146,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				JError::raiseError( 404, JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
+				JError::raiseError( 404, \JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
 				return;
 			}
 			$this->_gid = $this->group->get('gidNumber');
@@ -163,7 +163,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			|| $obj->created_by_user != $this->juser->get('id'))
 		)
 		{
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 			return;
 		}
 		elseif (!$obj->id && $this->_gid && !$this->view->authorized)
@@ -172,7 +172,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			if (!$this->group->is_member_of('members', $this->juser->get('id'))
 				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
 			{
-				JError::raiseError( 403, JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
+				\JError::raiseError( 403, \JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
 				return;
 			}
 		}
@@ -196,7 +196,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		else
 		{
 			// Setup complete, go to project page
-			$this->_redirect 	= JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+			$this->_redirect 	= \JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
 			return;
 		}
 
@@ -211,7 +211,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 		if ($obj->id)
 		{
-			$this->view->params = new JParameter( $obj->params );
+			$this->view->params = new \JParameter( $obj->params );
 		}
 		if ($this->section == 'team')
 		{
@@ -228,7 +228,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$this->view->config 		= $this->config;
 		$this->view->gid 			= $this->_gid;
 		$this->view->group 			= $this->group;
-		$this->view->extended       = JRequest::getInt( 'extended', 0, 'post');
+		$this->view->extended       = \JRequest::getInt( 'extended', 0, 'post');
 
 		// Get messages	and errors
 		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->_getNotifications('success');
@@ -250,14 +250,14 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	public function saveTask()
 	{
 		// Incoming
-		$step       = JRequest::getInt( 'step', '0'); // Where do we go next?
+		$step       = \JRequest::getInt( 'step', '0'); // Where do we go next?
 
 		// Instantiate a project
 		$obj = new Project( $this->database );
 
 		if ($this->_identifier && !$obj->loadProject($this->_identifier))
 		{
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -288,7 +288,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		// Cannot save a new project unless in setup
 		if (!$setup && !$obj->id)
 		{
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -299,7 +299,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			|| ($setup && $obj->created_by_user != $this->juser->get('id')))
 		)
 		{
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
 			return;
 		}
 		elseif (!$obj->id && $this->_gid && !$this->authorized)
@@ -310,7 +310,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				JError::raiseError( 404, JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
+				\JError::raiseError( 404, \JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
 				return;
 			}
 
@@ -318,7 +318,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			if (!$this->group->is_member_of('members',$this->juser->get('id'))
 				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
 			{
-				JError::raiseError( 403, JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
+				\JError::raiseError( 403, \JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
 				return;
 			}
 		}
@@ -328,12 +328,12 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Complete project setup
 			if ($this->_finalize())
 			{
-				$this->_setNotification(JText::_('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
+				$this->_setNotification(\JText::_('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
 	
 				// Some follow-up actions
 				$this->_onAfterProjectCreate();
 
-				$this->_redirect = 	JRoute::_('index.php?option=' . $this->_option
+				$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
 					. '&alias=' . $obj->alias);
 				return;
 			}
@@ -361,15 +361,16 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		}
 		else
 		{
-			$this->_setNotification(JText::_('COM_PROJECTS_'
+			$this->_setNotification(\JText::_('COM_PROJECTS_'
 				. strtoupper($this->section) . '_SAVED'), 'success');
 		}
 
 		// Redirect
 		$task   = $setup ? 'setup' : 'edit';
 		$append = $new && $this->project->id && $this->next == 'describe' ? '#describearea' : '';
-		$this->_redirect = 	JRoute::_('index.php?option=' . $this->_option
-			. '&task=' . $task . '&alias=' . $this->project->alias . '&active=' . $this->next ) . $append;
+		$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			. '&task=' . $task . '&alias=' . $this->project->alias
+			. '&active=' . $this->next ) . $append;
 		return;
 	}
 
@@ -380,17 +381,17 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	 */
 	protected function _finalize()
 	{
-		$agree 				= JRequest::getInt( 'agree', 0, 'post' );
-		$restricted 		= JRequest::getVar( 'restricted', '', 'post' );
-		$agree_irb 			= JRequest::getInt( 'agree_irb', 0, 'post' );
-		$agree_ferpa 		= JRequest::getInt( 'agree_ferpa', 0, 'post' );
+		$agree 				= \JRequest::getInt( 'agree', 0, 'post' );
+		$restricted 		= \JRequest::getVar( 'restricted', '', 'post' );
+		$agree_irb 			= \JRequest::getInt( 'agree_irb', 0, 'post' );
+		$agree_ferpa 		= \JRequest::getInt( 'agree_ferpa', 0, 'post' );
 		$state				= 1;
 
 		// Load project
 		$obj = new Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
-			$this->setError( JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			$this->setError( \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -402,7 +403,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			{
 				if (!$restricted)
 				{
-					$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA'));
+					$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA'));
 					return false;
 				}
 
@@ -414,10 +415,10 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			if ($this->config->get('restricted_data', 0) == 1)
 			{
 				$restrictions = array(
-					'hipaa_data'  => JRequest::getVar( 'hipaa', 'no', 'post' ),
-					'ferpa_data'  => JRequest::getVar( 'ferpa', 'no', 'post' ),
-					'export_data' => JRequest::getVar( 'export', 'no', 'post' ),
-					'irb_data'    => JRequest::getVar( 'irb', 'no', 'post' )
+					'hipaa_data'  => \JRequest::getVar( 'hipaa', 'no', 'post' ),
+					'ferpa_data'  => \JRequest::getVar( 'ferpa', 'no', 'post' ),
+					'export_data' => \JRequest::getVar( 'export', 'no', 'post' ),
+					'irb_data'    => \JRequest::getVar( 'irb', 'no', 'post' )
 				);
 
 				// Save individual restrictions
@@ -439,7 +440,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 					if ($restricted != 'yes')
 					{
-						$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_HIPAA'));
+						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_HIPAA'));
 						return false;
 					}
 				}
@@ -461,7 +462,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					// Make sure user made selections
 					if ($selected == 0)
 					{
-						$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_SPECIFY_DATA'));
+						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_SPECIFY_DATA'));
 						return false;
 					}
 
@@ -469,7 +470,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					if (($restrictions['ferpa_data'] == 'yes' && !$agree_ferpa)
 						|| ($restrictions['irb_data'] == 'yes' && !$agree_irb))
 					{
-						$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'));
+						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'));
 						return false;
 					}
 
@@ -493,17 +494,17 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Check to make sure user has agreed to terms
 			if ($agree == 0)
 			{
-				$this->setError( JText::_('COM_PROJECTS_ERROR_SETUP_TERMS'));
+				$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS'));
 				return false;
 			}
 
 			// Collect grant information
 			if ($this->config->get('grantinfo', 0))
 			{
-				$grant_agency = JRequest::getVar( 'grant_agency', '' );
-				$grant_title = JRequest::getVar( 'grant_title', '' );
-				$grant_PI = JRequest::getVar( 'grant_PI', '' );
-				$grant_budget = JRequest::getVar( 'grant_budget', '' );
+				$grant_agency    = \JRequest::getVar( 'grant_agency', '' );
+				$grant_title     = \JRequest::getVar( 'grant_title', '' );
+				$grant_PI        = \JRequest::getVar( 'grant_PI', '' );
+				$grant_budget    = \JRequest::getVar( 'grant_budget', '' );
 				$obj->saveParam($obj->id, 'grant_budget', htmlentities($grant_budget));
 				$obj->saveParam($obj->id, 'grant_agency', htmlentities($grant_agency));
 				$obj->saveParam($obj->id, 'grant_title', htmlentities($grant_title));
@@ -524,7 +525,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		{
 			$obj->state = $state;
 			$obj->provisioned = 0; // remove provisioned flag if any
-			$obj->created = JFactory::getDate()->toSql();
+			$obj->created = \JFactory::getDate()->toSql();
 			$obj->setup_stage = $this->_setupComplete;
 
 			// Save changes
@@ -577,7 +578,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					$this->config,
 					$this->project,
 					$admins,
-					JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+					\JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 					'projects_new_project_admin',
 					'new'
 				);
@@ -588,7 +589,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		if (isset($this->_notify) && $this->_notify === true)
 		{
 			// Record activity
-			$this->_postActivity(JText::_('COM_PROJECTS_PROJECT_STARTED'));
+			$this->_postActivity(\JText::_('COM_PROJECTS_PROJECT_STARTED'));
 
 			// Send out emails
 			$this->_notifyTeam();
@@ -619,19 +620,19 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		if (!is_dir( $path ))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path ))
+			if (!\JFolder::create( $path ))
 			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 			}
 		}
 
 		// Git ini
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
 		$this->_git = new ProjectsGitHelper(
 			$this->config->get('gitpath', '/opt/local/bin/git'),
 			0,
-			$this->config->get('offroot', 0) ? '' : JPATH_ROOT
+			$this->config->get('offroot', 0) ? '' : PATH_APP
 		);
 		$this->_git->iniGit($path);
 	}
@@ -654,7 +655,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$setup = $obj->id && $obj->state == 1 ? false : true;
 
 		// Incoming
-		$private    = JRequest::getInt( 'private', 1, 'post' );
+		$private    = \JRequest::getInt( 'private', 1, 'post' );
 
 		// Save section
 		switch ($this->section)
@@ -663,9 +664,9 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			case 'info':
 			
 				// Incoming
-				$name       = trim(JRequest::getVar( 'name', '', 'post' ));
-				$title      = trim(JRequest::getVar( 'title', '', 'post' ));
-				$type       = JRequest::getInt( 'type', 1, 'post' );
+				$name       = trim(\JRequest::getVar( 'name', '', 'post' ));
+				$title      = trim(\JRequest::getVar( 'title', '', 'post' ));
+				$type       = \JRequest::getInt( 'type', 1, 'post' );
 
 				$name = preg_replace('/ /', '', $name);
 				$name = strtolower($name);
@@ -677,32 +678,32 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 				// Check incoming data
 				if ($setup && $new && !$this->model->check($name, $obj->id))
 				{
-					$this->setError( JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
+					$this->setError( \JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 					return false;
 				}
 				elseif (!$title)
 				{
-					$this->setError( JText::_('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
+					$this->setError( \JText::_('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
 					return false;
 				}
 
 				if ($obj->id)
 				{
-					$obj->modified    = JFactory::getDate()->toSql();
+					$obj->modified    = \JFactory::getDate()->toSql();
 					$obj->modified_by = $this->juser->get('id');
 				}
 				else
 				{
 					$obj->alias             = $name;
 					$obj->private 			= $this->config->get('privacy', 1);
-					$obj->created 			= JFactory::getDate()->toSql();
+					$obj->created 			= \JFactory::getDate()->toSql();
 					$obj->created_by_user 	= $this->juser->get('id');
 					$obj->owned_by_user 	= $this->juser->get('id');
 					$obj->owned_by_group 	= $this->_gid;
 				}
 
 				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
-				$obj->about = trim(JRequest::getVar( 'about', '', 'post', 'none', 2 ));
+				$obj->about = trim(\JRequest::getVar( 'about', '', 'post', 'none', 2 ));
 				$obj->type 	= $type;
 
 				// save advanced permissions
@@ -743,7 +744,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 							0, 1, 1, '', $split_group_roles = 0
 						))
 						{
-							$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+							$this->setError( \JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
 								. ': ' . $objO->getError() );
 							return false;
 						}
@@ -759,7 +760,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 						$this->juser->get('id'), $this->_gid, 1, 1, 1 )
 					)
 					{
-						$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+						$this->setError( \JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
 							. ': ' . $objO->getError() );
 						return false;
 					}
@@ -775,8 +776,8 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 				}
 
 				// Get team plugin
-				JPluginHelper::importPlugin( 'projects', 'team' );
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin( 'projects', 'team' );
+				$dispatcher = \JDispatcher::getInstance();
 
 				// Save team
 				$content = $dispatcher->trigger( 'onProject', array(
@@ -820,7 +821,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 				}
 
 				// Save params
-				$incoming   = JRequest::getVar( 'params', array() );
+				$incoming   = \JRequest::getVar( 'params', array() );
 				if (!empty($incoming))
 				{
 					$old_params = $obj->params;
@@ -839,7 +840,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 							&& $old_params != $this->project->params)
 						{
 							// Meta data for comment
-							$meta = '<meta>' . JHTML::_('date', JFactory::getDate(), 'M d, Y')
+							$meta = '<meta>' . \JHTML::_('date', \JFactory::getDate(), 'M d, Y')
 							. ' - ' . $this->juser->get('name') . '</meta>';
 
 							$cbase   = $obj->admin_notes;
@@ -869,10 +870,10 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 										$this->config,
 										$this->project,
 										$admins,
-										JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+										\JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 										'projects_new_project_admin',
 										'admin',
-										JText::_('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
+										\JText::_('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
 										'sponsored'
 									);
 								}
@@ -892,8 +893,8 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	protected function _loadTeamEditor()
 	{
 		// Get team plugin
-		JPluginHelper::importPlugin( 'projects', 'team' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'team' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get plugin output
 		$content = $dispatcher->trigger( 'onProject', array(
@@ -929,7 +930,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -948,14 +949,14 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
 		if (!$this->project)
 		{
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
 		// Check if project is in setup
 		if ($this->project->setup_stage < $this->_setupComplete)
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
 				. '&task=setup&id=' . $this->project->id);
 			return;
 		}
@@ -963,7 +964,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		// Is project deleted?
 		if ($this->project->state == 2)
 		{
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_DELETED') );
+			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_DELETED') );
 			return;
 		}
 
@@ -978,13 +979,13 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		if ($this->authorized != 1)
 		{
 			// Only managers can edit
-			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
 			return;
 		}
 
 		$this->view->setLayout( 'edit' );
 		$this->view->project = $this->project;
-		$this->view->params = new JParameter( $this->view->project->params );
+		$this->view->params = new \JParameter( $this->view->project->params );
 
 		if ($this->section == 'team')
 		{
@@ -1021,15 +1022,18 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	public function verifyTask()
 	{
 		// Incoming
-		$name   = isset($this->_text) ? $this->_text : trim(JRequest::getVar( 'text', '' ));
-		$id 	= $this->_identifier ? $this->_identifier: trim(JRequest::getInt( 'pid', 0 ));
-		$ajax 	= isset($this->_ajax) ? $this->_ajax : trim(JRequest::getInt( 'ajax', 0 ));
+		$name   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
+		$id 	= $this->_identifier ? $this->_identifier: trim(\JRequest::getInt( 'pid', 0 ));
+		$ajax 	= isset($this->_ajax) ? $this->_ajax : trim(\JRequest::getInt( 'ajax', 0 ));
 
 		$this->model->check($name, $id, $ajax);
 
 		if ($ajax)
 		{
-			echo json_encode(array('error' => $this->model->getError(), 'message' => JText::_('COM_PROJECTS_VERIFY_PASSED')));
+			echo json_encode(array(
+				'error' => $this->model->getError(),
+				'message' => \JText::_('COM_PROJECTS_VERIFY_PASSED')
+			));
 			return;
 		}
 
@@ -1051,7 +1055,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	public function suggestaliasTask()
 	{
 		// Incoming
-		$title   = isset($this->_text) ? $this->_text : trim(JRequest::getVar( 'text', '' ));
+		$title   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
 		$title   = urldecode($title);
 
 		$suggested = ProjectsHelper::suggestAlias($title);

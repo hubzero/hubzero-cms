@@ -44,7 +44,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 	public function displayTask()
 	{
 		// Incoming
-		$period = JRequest::getVar( 'period', 'alltime');
+		$period = \JRequest::getVar( 'period', 'alltime');
 
 		// Instantiate a project and related classes
 		$obj   = new Project( $this->database );
@@ -63,10 +63,10 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$this->_buildTitle();
 		$this->view->title = $this->title;
 
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 			$objStats = new ProjectStats($this->database);
@@ -106,26 +106,26 @@ class ProjectsControllerReports extends ProjectsControllerBase
 	public function generateTask()
 	{
 		// Incoming
-		$data   = JRequest::getVar( 'data', array(), 'post', 'array' );
-		$from   = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-		$to     = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+		$data   = \JRequest::getVar( 'data', array(), 'post', 'array' );
+		$from   = \JRequest::getVar( 'fromdate', \JHTML::_('date', \JFactory::getDate('-1 month')->toSql(), 'Y-m') );
+		$to     = \JRequest::getVar( 'todate', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m') );
 		$filter = JRequest::getVar( 'searchterm', '');
 
 		if (empty($data))
 		{
-			$this->setError(JText::_('Please pick at least one information field to report'));
+			$this->setError(\JText::_('Please pick at least one information field to report'));
 		}
 
 		$date_regex = '/^(19|20)\d\d[\-\/.](0[1-9]|1[012])$/';
 
 		if (!preg_match($date_regex, $from) || !preg_match($date_regex, $to))
 		{
-			$this->setError(JText::_('Please use yyyy-mm format for the date'));
+			$this->setError(\JText::_('Please use yyyy-mm format for the date'));
 		}
 
 		if (strtotime($from) > strtotime($to))
 		{
-			$this->setError(JText::_('The start date of report should be earlier than the end date'));
+			$this->setError(\JText::_('The start date of report should be earlier than the end date'));
 		}
 
 		// Instantiate a project and related classes
@@ -142,12 +142,12 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
+				$this->_msg = \JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, \JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
 			return;
 		}
 
@@ -197,7 +197,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 			}
 			else
 			{
-				$this->setError(JText::_('Nothing to report for selected date range and/or search term'));
+				$this->setError(\JText::_('Nothing to report for selected date range and/or search term'));
 			}
 		}
 
@@ -205,7 +205,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		if ($this->getError())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option
+				\JRoute::_('index.php?option=' . $this->_option
 				. '&controller=reports&task=custom'
 				. '&searchterm=' . $filter),
 				$this->getError(),
@@ -249,12 +249,12 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
+				$this->_msg = \JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, \JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
 			return;
 		}
 

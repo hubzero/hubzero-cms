@@ -79,20 +79,20 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 		else
 		{
-			echo json_encode(array('error' => 'Please select a file to upload'));
+			echo json_encode(array('error' => \JText::_('Please select a file to upload')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => 'File is empty'));
+			echo json_encode(array('error' => \JText::_('File is empty')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+			echo json_encode(array('error' => \JText::_('File is too large. Max file upload size is ') . $max));
 			return;
 		}
 		//check to make sure we have an allowable extension
@@ -102,19 +102,19 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);
-			echo json_encode(array('error' => 'File has an invalid extension, it should be one of '. $these . '.'));
+			echo json_encode(array('error' => \JText::_('File has an invalid extension, it should be one of '. $these . '.')));
 			return;
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file = JFile::makeSafe($file);
+		$file = \JFile::makeSafe($file);
 
 		// Load project
 		$obj = new Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
-			echo json_encode(array('error' => 'Error loading project'));
+			echo json_encode(array('error' => \JText::_('Error loading project')));
 			return;
 		}
 
@@ -122,20 +122,20 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		$authorized = $this->_authorize();
 		if ($authorized != 1)
 		{
-			echo json_encode(array('error' => 'Unauthorized action'));
+			echo json_encode(array('error' => \JText::_('Unauthorized action')));
 			return;
 		}
 
 		// Build project image path
-		$path  = JPATH_ROOT . DS . trim($this->config->get('imagepath', '/site/projects'), DS);
+		$path  = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		$path .= DS . $obj->alias . DS . 'images';
 
 		if (!is_dir( $path ))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path ))
+			if (!\JFolder::create( $path ))
 			{
-				echo json_encode(array('error' => JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
+				echo json_encode(array('error' => \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
@@ -143,7 +143,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		// Delete older file with same name
 		if (file_exists($path . DS . $file))
 		{
-			JFile::delete($path . DS . $file);
+			\JFile::delete($path . DS . $file);
 		}
 
 		if ($stream)
@@ -156,8 +156,8 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 
 			if (ProjectsHelper::virusCheck($temp))
 			{
-				JFile::delete($temp);
-				echo json_encode(array('error' => JText::_('Virus detected, refusing to upload')));
+				\JFile::delete($temp);
+				echo json_encode(array('error' => \JText::_('Virus detected, refusing to upload')));
 				return;
 			}
 
@@ -175,7 +175,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		// Perform the upload
 		if (!is_file($path . DS . $file))
 		{
-			echo json_encode(array('error' => JText::_('COM_PROJECTS_ERROR_UPLOADING')));
+			echo json_encode(array('error' => \JText::_('COM_PROJECTS_ERROR_UPLOADING')));
 			return;
 		}
 		else
@@ -198,7 +198,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			// Delete previous thumb
 			if (file_exists($path . DS . 'thumb.png'))
 			{
-				JFile::delete($path . DS . 'thumb.png');
+				\JFile::delete($path . DS . 'thumb.png');
 			}
 
 			// create thumb
@@ -225,7 +225,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			{
 				// Record activity
 				$this->project = $obj;
-				$this->_postActivity(JText::_('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
+				$this->_postActivity(\JText::_('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
 			}
 		}
 
@@ -242,16 +242,16 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 	public function deleteimgTask()
 	{
 		// Incoming
-		$ajax = JRequest::getInt( 'ajax', 0 );
+		$ajax = \JRequest::getInt( 'ajax', 0 );
 
-		$prefix = JPATH_ROOT;
+		$prefix = PATH_APP;
 
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
 			if ($ajax)
 			{
-				echo json_encode(array('error' => JText::_('User login required')));
+				echo json_encode(array('error' => \JText::_('User login required')));
 				return;
 			}
 			$this->_showError();
@@ -261,7 +261,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		// Incoming project ID
 		if (!$this->_identifier)
 		{
-			$this->setError( JText::_('COM_PROJECTS_ERROR_NO_ID') );
+			$this->setError( \JText::_('COM_PROJECTS_ERROR_NO_ID') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -285,11 +285,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 
 		// Incoming file
-		$file = JRequest::getVar( 'file', '' );
+		$file = \JRequest::getVar( 'file', '' );
 		$file = $file ? $file : $obj->picture;
 		if (!$file)
 		{
-			$this->setError( JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError( \JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -308,7 +308,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError( JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError( \JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -321,9 +321,9 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!\JFile::delete($path . DS . $file))
 			{
-				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 				if ($ajax)
 				{
 					echo json_encode(array('error' => $this->getError()));
@@ -338,9 +338,9 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			$curthumb = file_exists($path . DS . $curthumb) ? $curthumb : 'thumb.png';
 			if (file_exists($path . DS . $curthumb))
 			{
-				if (!JFile::delete($path . DS . $curthumb))
+				if (!\JFile::delete($path . DS . $curthumb))
 				{
-					$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+					$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 					if ($ajax)
 					{
 						echo json_encode(array('error' => $this->getError()));
@@ -355,7 +355,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			if (!$this->_identifier && $tempid)
 			{
 				jimport('joomla.filesystem.folder');
-				JFolder::delete( $tpath);
+				\JFolder::delete( $tpath);
 			}
 
 			// Instantiate a project, change some info and save
@@ -395,7 +395,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 
 		// Return to project page
-		$this->_redirect = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+		$this->_redirect = \JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
 		return;
 	}
 
@@ -407,8 +407,8 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 	public function mediaTask()
 	{
 		// Incoming
-		$media   = trim(JRequest::getVar( 'media', 'thumb' ));
-		$alias 	 = trim(JRequest::getVar( 'alias', '' ));
+		$media   = trim(\JRequest::getVar( 'media', 'thumb' ));
+		$alias 	 = trim(\JRequest::getVar( 'alias', '' ));
 		$source	 = NULL;
 		$redirect= false;
 
@@ -437,32 +437,23 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			}
 			else
 			{
-				// Other images are non-public; in 'preview' folder
-				// Check authorization
-				/*
-				if (!$this->_authorize())
-				{
-					JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
-					return;
-				}
-				*/
 				$path 	= trim($this->config->get('imagepath', '/site/projects'), DS);
 				$source = $path . DS . $alias . DS . 'preview' . DS . $media;
 				$redirect = true;
 			}
 		}
 
-		if (is_file(JPATH_ROOT . DS . $source))
+		if (is_file(PATH_APP . DS . $source))
 		{
 			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($source);
-			$xserver->serve_inline(JPATH_ROOT . DS . $source);
+			$xserver->serve_inline(PATH_APP . DS . $source);
 			exit;
 		}
 		elseif ($redirect)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 		}
 

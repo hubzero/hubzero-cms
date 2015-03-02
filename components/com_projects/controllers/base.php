@@ -51,7 +51,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		}
 
 		// Publishing enabled?
-		$this->_publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 		// Setup complete?
 		$this->_setupComplete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -60,13 +60,13 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		$this->_includeScripts();
 
 		// Incoming project identifier
-		$id    = JRequest::getInt( 'id', 0 );
-		$alias = JRequest::getVar( 'alias', '' );
+		$id    = \JRequest::getInt( 'id', 0 );
+		$alias = \JRequest::getVar( 'alias', '' );
 		$this->_identifier = $id ? $id : $alias;
 
 		// Incoming
 		$this->_task = strtolower(JRequest::getWord( 'task', '' ));
-		$this->_gid  = JRequest::getVar( 'gid', 0 );
+		$this->_gid  = \JRequest::getVar( 'gid', 0 );
 
 		// Model
 		$this->model = new ProjectsModelProject();
@@ -118,7 +118,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		}
 
 		// Database development on?
-		if (JPluginHelper::isEnabled('projects', 'databases'))
+		if (\JPluginHelper::isEnabled('projects', 'databases'))
 		{
 			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 					.'com_projects' . DS . 'tables' . DS . 'project.database.php');
@@ -137,7 +137,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				. 'helpers' . DS . 'connect.php' );
 		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-		require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects'
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
 				. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
 	}
 
@@ -198,11 +198,11 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			? $this->_msg
 			: JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option='
+		$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option='
 			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+			\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);
@@ -297,22 +297,22 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 
 		// Set the title
 		$this->title  = $this->_task == 'edit'
-			? JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task))
-			: JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
+			? \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task))
+			: \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		// Add project title
 		if (is_object($project) && $project->alias)
 		{
 			if ($project->provisioned == 1)
 			{
-				$this->title .= ': ' . JText::_('COM_PROJECTS_PROVISIONED_PROJECT');
+				$this->title .= ': ' . \JText::_('COM_PROJECTS_PROVISIONED_PROJECT');
 			}
 			else
 			{
 				$this->title .= ': '.stripslashes($project->title);
 				if ($active && !$this->juser->get('guest'))
 				{
-					$this->title .= ' :: ' . ucfirst(JText::_('COM_PROJECTS_TAB_' . strtoupper($active)));
+					$this->title .= ' :: ' . ucfirst(\JText::_('COM_PROJECTS_TAB_' . strtoupper($active)));
 				}
 			}
 		}
@@ -321,17 +321,17 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		switch ($this->_task)
 		{
 			case 'browse':
-				$reviewer 	 = JRequest::getVar( 'reviewer', '' );
+				$reviewer 	 = \JRequest::getVar( 'reviewer', '' );
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
-								 ? JText::_('COM_PROJECTS_REVIEWER_SPS')
-								 : JText::_('COM_PROJECTS_REVIEWER_HIPAA');
+								 ? \JText::_('COM_PROJECTS_REVIEWER_SPS')
+								 : \JText::_('COM_PROJECTS_REVIEWER_HIPAA');
 				}
 				else
 				{
 					$this->title .= ($this->_task)
-						? ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
+						? ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
 				}
 				break;
 
@@ -346,13 +346,13 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			default:
 				if ($this->_task)
 				{
-					$this->title .= ': ' . JText::_(strtoupper($this->_option)
+					$this->title .= ': ' . \JText::_(strtoupper($this->_option)
 						. '_' . strtoupper($this->_task));
 				}
 				break;
 		}
 
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle( $this->title );
 
 		return $this->title;
@@ -365,7 +365,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app     = JFactory::getApplication();
+		$app     = \JFactory::getApplication();
 		$pathway = $app->getPathway();
 
 		$group_tasks = array('start', 'setup', 'view');
@@ -378,23 +378,23 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		{
 			$pathway->setPathway(array());
 			$pathway->addItem(
-				JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
-				JRoute::_('index.php?option=com_groups')
+				\JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
+				\JRoute::_('index.php?option=com_groups')
 			);
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($group->get('description'), 50),
-				JRoute::_('index.php?option=com_groups&cn=' . $group->cn)
+				\JRoute::_('index.php?option=com_groups&cn=' . $group->cn)
 			);
 			$pathway->addItem(
-				JText::_('COM_PROJECTS_PROJECTS'),
-				JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
+				\JText::_('COM_PROJECTS_PROJECTS'),
+				\JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
 			);
 		}
 		elseif (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_('COMPONENT_LONG_NAME'),
-				JRoute::_('index.php?option=' . $this->_option)
+				\JText::_('COMPONENT_LONG_NAME'),
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 		}
 
@@ -405,7 +405,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			{
 				$pathway->addItem(
 					stripslashes(JText::_('COM_PROJECTS_PROVISIONED_PROJECT')),
-					JRoute::_('index.php?option=' . $this->_option . '&alias='
+					\JRoute::_('index.php?option=' . $this->_option . '&alias='
 					.$project->alias . '&action=activate')
 				);
 			}
@@ -413,7 +413,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			{
 				$pathway->addItem(
 					stripslashes($project->title),
-					JRoute::_('index.php?option=' . $this->_option . '&alias=' . $project->alias)
+					\JRoute::_('index.php?option=' . $this->_option . '&alias=' . $project->alias)
 				);
 			}
 		}
@@ -423,8 +423,8 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		{
 			case 'reports':
 				$pathway->addItem(
-					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+					\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 				);
 				break;
 
@@ -453,7 +453,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 						default:
 							$pathway->addItem(
 								ucfirst(JText::_('COM_PROJECTS_TAB_'.strtoupper($this->active))),
-								JRoute::_('index.php?option=' . $this->_option . '&alias='
+								\JRoute::_('index.php?option=' . $this->_option . '&alias='
 								. $project->alias . '&active=' . $this->active)
 							);
 						break;
@@ -466,8 +466,8 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				if (!is_object($project) || !$project->id)
 				{
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+						\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 					break;
 				}
@@ -475,24 +475,24 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 
 			case 'browse':
 			case 'process':
-				$reviewer 	= JRequest::getWord( 'reviewer', '' );
+				$reviewer 	= \JRequest::getWord( 'reviewer', '' );
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$title = $reviewer == 'sponsored'
-										? JText::_('COM_PROJECTS_REVIEWER_SPS')
-										: JText::_('COM_PROJECTS_REVIEWER_HIPAA');
+										? \JText::_('COM_PROJECTS_REVIEWER_SPS')
+										: \JText::_('COM_PROJECTS_REVIEWER_HIPAA');
 
 					$pathway->addItem(
 						$title,
-						JRoute::_('index.php?option=' . $this->_option
+						\JRoute::_('index.php?option=' . $this->_option
 						. '&task=browse&reviewer=' . $reviewer)
 					);
 				}
 				else
 				{
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+						\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 				}
 			break;
@@ -504,8 +504,8 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 
 			default:
 				$pathway->addItem(
-					JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-					JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+					\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+					\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 				);
 				break;
 		}
@@ -532,25 +532,25 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		}
 
 		// Is this an ajax call?
-		$ajax = JRequest::getInt( 'ajax', 0 );
+		$ajax = \JRequest::getInt( 'ajax', 0 );
 		if ($ajax && $enabled == 1)
 		{
 			return false;
 		}
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 
 		// Log activity
 		$objLog  				= new ProjectLog( $this->database );
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
-		$objLog->ip 			= JRequest::ip();
+		$objLog->ip 			= \JRequest::ip();
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
 		$objLog->time 			= date('Y-m-d H:i:s');
-		$objLog->request_uri 	= JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
+		$objLog->request_uri 	= \JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();
 	}
@@ -590,7 +590,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		}
 
 		// Set up email config
-		$jconfig 		= JFactory::getConfig();
+		$jconfig 		= \JFactory::getConfig();
 		$from 			= array();
 		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PROJECTS');
 		$from['email'] 	= $jconfig->getValue('config.mailfrom');
@@ -611,8 +611,8 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			return false;
 		}
 
-		$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->project->alias;
-		$subject_pending = JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->project->alias;
+		$subject_active  = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->project->alias;
+		$subject_pending = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->project->alias;
 
 		// Message body
 		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
@@ -647,13 +647,13 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				// Creator
 				if ($member->userid == $this->project->created_by_user)
 				{
-					$subject_active  = JText::_('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
+					$subject_active  = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
 					. ' ' . $this->project->alias . '!';
 				}
 
 				// Send HUB message
-				JPluginHelper::importPlugin( 'xmessage' );
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin( 'xmessage' );
+				$dispatcher = \JDispatcher::getInstance();
 				$dispatcher->trigger( 'onSendMessage',
 					array(
 						'projects_member_added',
