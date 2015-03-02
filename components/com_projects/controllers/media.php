@@ -317,8 +317,6 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 		else
 		{
-			$ih = new ProjectsImgHandler();
-
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
 			if (!\JFile::delete($path . DS . $file))
@@ -334,7 +332,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			}
 
 			// Delete thumbnail
-			$curthumb = $ih->createThumbName($file);
+			$curthumb = \Components\Projects\Helpers\Html::createThumbName($file);
 			$curthumb = file_exists($path . DS . $curthumb) ? $curthumb : 'thumb.png';
 			if (file_exists($path . DS . $curthumb))
 			{

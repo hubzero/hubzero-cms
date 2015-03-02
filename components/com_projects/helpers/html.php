@@ -662,41 +662,7 @@ class Html
 	 */
 	public static function createThumbName( $image = null, $tn = '_thumb', $ext = '' )
 	{
-		if (!$image)
-		{
-			$this->setError( \JText::_('No image set.') );
-			return false;
-		}
-
-		$image = explode('.',$image);
-		$n = count($image);
-
-		if ($n > 1)
-		{
-			$image[$n-2] .= $tn;
-			$end = array_pop($image);
-			if ($ext)
-			{
-				$image[] = $ext;
-			}
-			else
-			{
-				$image[] = $end;
-			}
-
-			$thumb = implode('.',$image);
-		}
-		else
-		{
-			// No extension
-			$thumb = $image[0];
-			$thumb .= $tn;
-			if ($ext)
-			{
-				$thumb .= '.'.$ext;
-			}
-		}
-		return $thumb;
+		return \JFile::stripExt($image) . $tn . '.' . $ext;
 	}
 
 	/**
