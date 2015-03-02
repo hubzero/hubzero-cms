@@ -36,9 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWeightContributor
+class plgSearchWeightContributor extends \JPlugin
 {
-
 	/**
 	 * Short description for 'onSearchWeightAll'
 	 *

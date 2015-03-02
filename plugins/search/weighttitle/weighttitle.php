@@ -36,9 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWeightTitle
+class plgSearchWeightTitle extends \JPlugin
 {
-
 	/**
 	 * Short description for 'onSearchWeightAll'
 	 *
@@ -105,7 +104,7 @@ class plgSearchWeightTitle
 		$stems = array();
 		foreach (array_unique(preg_split('/\s+/', trim($str))) as $word)
 		{
-			if (!DocumentMetadata::is_stop_word($word))
+			if (!\Components\Search\Models\Basic\DocumentMetadata::is_stop_word($word))
 			{
 				$stems[] = stem(preg_replace('/[^[:alnum:]]/', '', $word));
 			}

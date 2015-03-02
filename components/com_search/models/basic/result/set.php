@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic\Result;
+
+use Components\Search\Models\Basic\Authorization;
+use Components\Search\Models\Basic\Request;
+use ReflectionClass;
+use Iterator;
 
 jimport('joomla.application.component.model');
 
 /**
- * Short description for 'SearchModelResultSet'
- *
- * Long description (if any) ...
+ * Search result set
  */
-class SearchModelResultSet extends JModel implements Iterator
+class Set extends \JModel implements Iterator
 {
 	/**
 	 * Description for 'plugin_weights'
@@ -63,7 +65,7 @@ class SearchModelResultSet extends JModel implements Iterator
 	 */
 	public function get_tags()
 	{
-		return is_a($this->tags, 'SearchResultEmpty') ? array() : $this->tags;
+		return ($this->tags instanceof Blank) ? array() : $this->tags;
 	}
 
 	/**
@@ -203,12 +205,12 @@ class SearchModelResultSet extends JModel implements Iterator
 			return;
 		}
 
-		$authz = new SearchAuthorization();
-		$req = new SearchModelRequest($this->terms);
+		$authz = new Authorization();
+		$req = new Request($this->terms);
 		$this->tags = $req->get_tags();
 
 		$weighters = array('all' => array());
-		$plugins = JPluginHelper::getPlugin('search');
+		$plugins = \JPluginHelper::getPlugin('search');
 
 		$this->custom_mode = true;
 		// Poll custom result plugins, like the one that shows matching members at the top of the list
@@ -216,7 +218,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		{
 			foreach ($plugins as $plugin)
 			{
-				if (JPluginHelper::isEnabled('search', $plugin->name))
+				if (\JPluginHelper::isEnabled('search', $plugin->name))
 				{
 					$refl = new ReflectionClass("plgSearch$plugin->name");
 					if ($refl->hasMethod('onSearchCustom'))
@@ -235,7 +237,7 @@ class SearchModelResultSet extends JModel implements Iterator
 
 		foreach ($plugins as $plugin)
 		{
-			if (!JPluginHelper::isEnabled('search', $plugin->name))
+			if (!\JPluginHelper::isEnabled('search', $plugin->name))
 			{
 				continue;
 			}
@@ -275,7 +277,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		$plugin_types = array_keys($weighters);
 		foreach ($plugins as $plugin)
 		{
-			if (!JPluginHelper::isEnabled('search', $plugin->name))
+			if (!\JPluginHelper::isEnabled('search', $plugin->name))
 			{
 				continue;
 			}
@@ -309,7 +311,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		$flat_results = $this->processed_results;
 		foreach ($flat_results as $res)
 		{
-			$fc_child_flag = 'plgSearch'.$res->get_plugin().'::FIRST_CLASS_CHILDREN';
+			$fc_child_flag = 'plgSearch' . $res->get_plugin() . '::FIRST_CLASS_CHILDREN';
 			if (!defined($fc_child_flag) || constant($fc_child_flag))
 			{
 				foreach ($res->get_children() as $child)
@@ -327,7 +329,7 @@ class SearchModelResultSet extends JModel implements Iterator
 			{
 				if (array_key_exists($plugin, self::$plugin_weights))
 				{
-					$res->adjust_weight(self::$plugin_weights[$plugin], $plugin.' base weight');
+					$res->adjust_weight(self::$plugin_weights[$plugin], $plugin . ' base weight');
 				}
 				$used = array();
 				foreach (array_key_exists($plugin, $weighters) ? array_merge($weighters['all'], $weighters[$plugin]) : $weighters['all'] as $weight_plugin)
@@ -538,7 +540,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		if (is_null(self::$plugin_weights) && $terms->any())
 		{
 			self::$plugin_weights = array();
-			$this->_db->setQuery('SELECT plugin, weight FROM #__ysearch_plugin_weights');
+			$this->_db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
 			foreach ($this->_db->loadAssocList() as $weight)
 			{
 				self::$plugin_weights[$weight['plugin']] = $weight['weight'];
@@ -562,7 +564,7 @@ class SearchModelResultSet extends JModel implements Iterator
 		$reso = $this->current_plugin == 'resources';
 		if (is_array($res))
 		{
-			$res = array_key_exists(0, $res) ? new SearchResultAssocList($res) : new SearchResultAssocScalar($res);
+			$res = array_key_exists(0, $res) ? new AssocList($res) : new AssocScalar($res);
 		}
 		$res->set_plugin($this->current_plugin);
 
@@ -588,7 +590,7 @@ class SearchModelResultSet extends JModel implements Iterator
 	{
 		$res = $res->to_associative();
 
-		if (is_a($res, 'SearchResultEmpty'))
+		if ($res instanceof Blank)
 		{
 			return;
 		}

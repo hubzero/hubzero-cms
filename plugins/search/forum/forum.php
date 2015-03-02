@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search forum entries
  */
-class plgSearchForum extends SearchPlugin
+class plgSearchForum extends \JPlugin
 {
 	/**
 	 * Get the name of the area being searched
@@ -49,8 +49,9 @@ class plgSearchForum extends SearchPlugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
@@ -108,7 +109,7 @@ class plgSearchForum extends SearchPlugin
 			}
 		}
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				f.title,
 				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as `thread`,

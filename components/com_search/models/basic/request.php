@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Search\Models\Basic;
 
-jimport('joomla.application.component.model');
+use Components\Search\Models\Basic\Result\Sql;
 
 /**
  * Search request model
  */
-class SearchModelRequest
+class Request
 {
 	/**
 	 * Description for 'terms'
@@ -146,7 +145,7 @@ class SearchModelRequest
 			$addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.tag NOT LIKE '%$forb%' AND t.description NOT LIKE '%$forb%')";
 		}
 
-		$tags = new SearchResultSQL(
+		$tags = new Sql(
 			"SELECT
 				id,
 				t.raw_tag AS title,
@@ -155,7 +154,7 @@ class SearchModelRequest
 				$weight AS weight,
 				NULL AS date,
 				'Tags' AS section
-			FROM #__tags t
+			FROM `#__tags` t
 			WHERE
 				$weight > 0".
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
@@ -171,9 +170,9 @@ class SearchModelRequest
 
 		if ($tag_ids)
 		{
-			$dbh = JFactory::getDBO();
+			$dbh = \JFactory::getDBO();
 			$dbh->setQuery(
-				'SELECT objectid, tbl FROM #__tags_object WHERE tagid IN (' . join(',', $tag_ids) . ')'
+				'SELECT objectid, tbl FROM `#__tags_object` WHERE tagid IN (' . join(',', $tag_ids) . ')'
 			);
 			foreach ($dbh->loadAssocList() as $row)
 			{

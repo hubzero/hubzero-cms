@@ -85,14 +85,14 @@ class PublicationChildSorter
 /**
  * Search plugin class for publications
  */
-class plgSearchPublications extends SearchPlugin
+class plgSearchPublications extends \JPlugin
 {
 	/**
-	 * Execute query and add results to $results object
+	 * Build search query and add it to the $results
 	 *
-	 * @param      mixed $request Parameter description (if any) ...
-	 * @param      object &$results Parameter description (if any) ...
-	 * @param      object $authz Parameter description (if any) ...
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
@@ -164,7 +164,7 @@ class plgSearchPublications extends SearchPlugin
 			$addtl_where[] = "(v.title NOT LIKE '%$forb%' AND v.description NOT LIKE '%$forb%' AND v.abstract NOT LIKE '%$forb%')";
 		}
 
-		$sql = new SearchResultSQL(
+		$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.id,
 				v.publication_id,
@@ -238,7 +238,7 @@ class plgSearchPublications extends SearchPlugin
 			// Fill in tagged resources that did not match on fulltext
 			if ($tag_map)
 			{
-				$sql = new SearchResultSQL(
+				$sql = new \Components\Search\Models\Basic\Result\Sql(
 					"SELECT
 						p.id,
 						v.publication_id,

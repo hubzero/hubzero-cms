@@ -32,16 +32,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Search blog entries
+ * Search course entries
  */
-class plgSearchCourses extends SearchPlugin
+class plgSearchCourses extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
-	 * @param      object $authz    SearchAuthorization
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
@@ -60,7 +60,7 @@ class plgSearchCourses extends SearchPlugin
 			$addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.blurb NOT LIKE '%$forb%')";
 		}
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				c.id,
 				c.title,
@@ -76,7 +76,7 @@ class plgSearchCourses extends SearchPlugin
 				$weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
-		if (($rows = $rows->to_associative()) instanceof SearchResultEmpty)
+		if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank)
 		{
 			return;
 		}

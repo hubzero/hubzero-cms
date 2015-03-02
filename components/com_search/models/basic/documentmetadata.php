@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,23 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic;
 
 /**
- * Short description for 'DocumentMetadata'
- *
- * Long description (if any) ...
+ * Stop words handler
  */
 abstract class DocumentMetadata
 {
-
 	/**
-	 * Description for 'stop_words'
+	 * List of stop words
 	 *
 	 * @var array
 	 */
@@ -76,12 +72,10 @@ abstract class DocumentMetadata
 	);
 
 	/**
-	 * Short description for 'is_stop_word'
+	 * Check if a word is a stop word
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $word Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   string  $word
+	 * @return  boolean
 	 */
 	public static function is_stop_word($word)
 	{

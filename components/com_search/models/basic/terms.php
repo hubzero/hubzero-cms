@@ -28,19 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic;
 
 jimport('joomla.application.component.model');
 
-include_once __DIR__ . DS . 'document_metadata.php';
-
 /**
- * Short description for 'class'
- *
- * Long description (if any) ...
+ * Search terms
  */
-class SearchModelTerms extends JModel
+class Terms extends \JModel
 {
 
 	/**
@@ -51,12 +46,10 @@ class SearchModelTerms extends JModel
 	private $raw, $positive_chunks, $optional_chunks = array(), $forbidden_chunks = array(), $mandatory_chunks = array(), $section = NULL, $quoted = array();
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $raw Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $raw
+	 * @return  void
 	 */
 	public function __construct($raw)
 	{
@@ -189,7 +182,7 @@ class SearchModelTerms extends JModel
 			}
 		}
 		$chunks = array_unique(array_merge(array_map('stem', $chunks), $chunks));
-		JFactory::getApplication()->triggerEvent('onSearchExpandTerms', array(&$chunks));
+		\JFactory::getApplication()->triggerEvent('onSearchExpandTerms', array(&$chunks));
 
 		return array_unique($chunks);
 	}

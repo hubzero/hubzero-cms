@@ -36,9 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSuffixes extends SearchPlugin
+class plgSearchSuffixes extends \JPlugin
 {
-
 	/**
 	 * Short description for 'onSearchExpandTerms'
 	 *

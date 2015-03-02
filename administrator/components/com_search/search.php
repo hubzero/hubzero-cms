@@ -54,9 +54,13 @@ if (!function_exists('stem'))
 	}
 }
 
-foreach (array('plugin', 'request', 'result_set', 'result_types', 'terms', 'authorization') as $mdl)
+foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
 {
 	require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
+}
+foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
+{
+	require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
 JPluginHelper::importPlugin('search');

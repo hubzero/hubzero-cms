@@ -101,16 +101,17 @@ class ContributionSorter
 /**
  * Search members
  */
-class plgSearchMembers extends SearchPlugin
+class plgSearchMembers extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = '(match(p.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(b.bio) against(\'' . join(' ', $terms['stemmed']) . '\'))';
@@ -125,7 +126,7 @@ class plgSearchMembers extends SearchPlugin
 			$addtl_where[] = "(p.name NOT LIKE '%$forb%' AND b.bio NOT LIKE '%$forb%')";
 		}
 
-		$results->add(new SearchResultSQL(
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.uidNumber AS id,
 				p.name AS title,
@@ -173,7 +174,7 @@ class plgSearchMembers extends SearchPlugin
 			$addtl_where[] = "(p.name NOT LIKE '%$forb%')";
 		}
 
-		$sql = new SearchResultSQL(
+		$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				p.uidNumber AS id,
 				p.name AS title,
@@ -253,7 +254,7 @@ class plgSearchMembers extends SearchPlugin
 						ON ca.id = c.catid";
 
 			$query .= " WHERE aa.authorid = " . $row->get('id');
-			$work = new SearchResultSQL($query);
+			$work = new \Components\Search\Models\Basic\Result\Sql($query);
 			$work_assoc = $work->to_associative();
 
 			$added = array();
@@ -270,7 +271,7 @@ class plgSearchMembers extends SearchPlugin
 			}
 			$row->sort_children(array('ContributionSorter', 'sort'));
 
-			$workp = new SearchResultSQL(
+			$workp = new \Components\Search\Models\Basic\Result\Sql(
 				"SELECT
 					r.publication_id AS id,
 					r.title AS title,

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('JPATH_BASE') or die();
+namespace Components\Search\Models\Hubgraph;
 
 /**
  * Hubgraph request class
  */
-class HubgraphRequest
+class Request
 {
 	private $form;
 
@@ -234,7 +233,7 @@ class HubgraphRequest
 
 		if (is_null($crit))
 		{
-			$user = JFactory::getUser();
+			$user = \JFactory::getUser();
 			$groups = array();
 			$super = FALSE;
 			if (($uid = $user->get('id')))

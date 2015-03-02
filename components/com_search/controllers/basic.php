@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Search\Models\Basic\Result\Set;
+use Components\Search\Models\Basic\Terms;
 
 if (!function_exists('stem'))
 {
@@ -45,15 +48,19 @@ if (!function_exists('stem'))
 	}
 }
 
-foreach (array('plugin', 'request', 'result_set', 'result_types', 'terms', 'authorization') as $mdl)
+foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
 {
 	require_once dirname(__DIR__) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
+}
+foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
+{
+	require_once dirname(__DIR__) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
 /**
  * Search controller class
  */
-class SearchControllerBasic extends \Hubzero\Component\SiteController
+class Basic extends SiteController
 {
 	/**
 	 * Display search form and results (if any)
@@ -62,27 +69,27 @@ class SearchControllerBasic extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		JPluginHelper::importPlugin('search');
+		\JPluginHelper::importPlugin('search');
 
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Set breadcrumbs
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			JText::_('COM_SEARCH'),
+			\JText::_('COM_SEARCH'),
 			'index.php?option=com_search'
 		);
 
-		$terms = new SearchModelTerms(JRequest::getString('terms'));
+		$terms = new Terms(\JRequest::getString('terms'));
 
 		// Set the document title
-		JFactory::getDocument()->setTitle($terms->is_set() ? JText::sprintf('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
+		\JFactory::getDocument()->setTitle($terms->is_set() ? \JText::sprintf('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
 
 		// Get search results
-		$results = new SearchModelResultSet($terms);
+		$results = new Set($terms);
 		$results->set_limit($app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int'));
-		$results->set_offset(JRequest::getInt('limitstart', 0));
-		$results->collect(JRequest::getBool('force-generic'));
+		$results->set_offset(\JRequest::getInt('limitstart', 0));
+		$results->collect(\JRequest::getBool('force-generic'));
 
 		$this->view->url_terms = urlencode($terms->get_raw_without_section());
 		@list($plugin, $section) = $terms->get_section();
@@ -103,15 +110,10 @@ class SearchControllerBasic extends \Hubzero\Component\SiteController
 			$total = $results->get_total_count();
 		}
 
-		$this->view->pagination = new JPagination(
-			$total,
-			$results->get_offset(),
-			$results->get_limit()
-		);
-
 		$this->view->app     = $app;
 		$this->view->terms   = $terms;
 		$this->view->results = $results;
+		$this->view->total   = $total;
 		$this->view->plugin  = $plugin;
 		$this->view->section = $section;
 

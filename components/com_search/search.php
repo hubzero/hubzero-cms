@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Search;
 
-$config = JComponentHelper::getParams('com_search');
+$config = \JComponentHelper::getParams('com_search');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', $config->get('engine', 'basic')));
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', $config->get('engine', 'basic')));
 
 // Are we falling back to the default engine?
-$fallback = JFactory::getSession()->get('searchfallback');
+$fallback = \JFactory::getSession()->get('searchfallback');
 if ($fallback && intval($fallback) <= time())
 {
 	// Don't fallback if the time limit has expired
@@ -44,7 +43,7 @@ if ($fallback && intval($fallback) <= time())
 }
 
 // Are we explicitely forcing the engine?
-if ($force = JRequest::getCmd('engine'))
+if ($force = \JRequest::getCmd('engine'))
 {
 	$fallback = null;
 	$controllerName = $force;
@@ -55,7 +54,7 @@ if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerNam
 	$controllerName = 'basic';
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'SearchController' . ucfirst(strtolower($controllerName));
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

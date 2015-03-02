@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic;
 
 /**
- * Short description for 'SearchAuthorization'
- *
- * Long description (if any) ...
+ * Authorization checker
  */
-class SearchAuthorization
+class Authorization
 {
 	/**
 	 * Description for 'uid'
@@ -46,21 +43,21 @@ class SearchAuthorization
 	private $uid = NULL, $super_admin = false, $groups = NULL;
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if ($juser->guest)
 		{
 			$this->groups = array();
 			return;
 		}
+
 		$this->uid = $juser->get('id');
+
 		if ($juser->usertype == 'Super Administrator')
 		{
 			$this->super_admin = true;
@@ -68,11 +65,9 @@ class SearchAuthorization
 	}
 
 	/**
-	 * Short description for 'is_guest'
+	 * Is the user logged out?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  bolean
 	 */
 	public function is_guest()
 	{
@@ -80,11 +75,9 @@ class SearchAuthorization
 	}
 
 	/**
-	 * Short description for 'is_super_admin'
+	 * Is the user a super admin?
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  boolean
 	 */
 	public function is_super_admin()
 	{
@@ -92,19 +85,25 @@ class SearchAuthorization
 	}
 
 	/**
-	 * Short description for 'get_groups'
+	 * Get a user's groups
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_groups()
 	{
 		if (is_null($this->groups))
 		{
-			$dbh = JFactory::getDBO();
+			$dbh = \JFactory::getDBO();
 			$dbh->setQuery(
-				'select distinct xm.gidNumber, cn from #__xgroups_members xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid.' union select distinct xm.gidNumber, cn from #__xgroups_managers xm inner join #__xgroups g on g.gidNumber = xm.gidNumber where uidNumber = '.$this->uid
+				'SELECT DISTINCT xm.gidNumber, g.cn
+				FROM `#__xgroups_members` AS xm
+				INNER JOIN `#__xgroups` AS g ON g.gidNumber = xm.gidNumber
+				WHERE xm.uidNumber = ' . $this->uid . '
+				UNION
+				SELECT DISTINCT xm.gidNumber, g.cn
+				FROM `#__xgroups_managers` AS xm
+				INNER JOIN `#__xgroups` AS g ON g.gidNumber = xm.gidNumber
+				WHERE xm.uidNumber = ' . $this->uid
 			);
 
 			$this->groups = array();
@@ -117,11 +116,9 @@ class SearchAuthorization
 	}
 
 	/**
-	 * Short description for 'get_group_ids'
+	 * Get group IDs
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_group_ids()
 	{
@@ -129,11 +126,9 @@ class SearchAuthorization
 	}
 
 	/**
-	 * Short description for 'get_group_names'
+	 * Get group names
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  array
 	 */
 	public function get_group_names()
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -174,8 +174,13 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			</ol>
 			<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get">
 				<?php
-				$this->pagination->setAdditionalUrlParam('terms', $this->terms);
-				echo $this->pagination->getListFooter();
+				$pagination = new JPagination(
+					$this->total,
+					$this->results->get_offset(),
+					$this->results->get_limit()
+				);
+				$pagination->setAdditionalUrlParam('terms', $this->terms);
+				echo $pagination->getListFooter();
 				?>
 				<input type="hidden" name="terms" value="<?php echo $this->escape($this->terms); ?>" />
 				<div class="clearfix"></div>

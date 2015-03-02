@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search knowledge base entries
  */
-class plgSearchKB extends SearchPlugin
+class plgSearchKB extends \JPlugin
 {
 	/**
 	 * Get the name of the area being searched
@@ -49,11 +49,12 @@ class plgSearchKB extends SearchPlugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
@@ -72,7 +73,7 @@ class plgSearchKB extends SearchPlugin
 
 		$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 
-		$results->add(new SearchResultSQL(
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				f.title,
 				coalesce(f.`fulltxt`, '') AS description,

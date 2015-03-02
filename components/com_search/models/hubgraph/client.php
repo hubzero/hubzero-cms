@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,27 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('JPATH_BASE') or die();
+namespace Components\Search\Models\Hubgraph;
 
-/**
- * Hubgraph connection error
- */
-class HubgraphConnectionError extends \Exception
-{
-}
+use Exception;
 
+require_once(__DIR__ . DS . 'connectionerror.php');
 require_once(__DIR__ . DS . 'configuration.php');
 require_once(__DIR__ . DS . 'db.php');
 
 /**
  * Hubgraph client
  */
-class HubgraphClient
+class Client
 {
 	const CHUNK_LEN = 1024;
 
@@ -58,11 +53,11 @@ class HubgraphClient
 	 */
 	private static function http($method, $url, $entity = NULL)
 	{
-		$conf = HubgraphConfiguration::instance();
+		$conf = Configuration::instance();
 
 		if (!($sock = @fsockopen($conf['host'], $conf['port'], $_errno, $errstr, 1)))
 		{
-			throw new HubGraphConnectionError('unable to establish HubGraph connection using ' . $conf['host'] . ': ' . $errstr);
+			throw new ConnectionError('unable to establish HubGraph connection using ' . $conf['host'] . ': ' . $errstr);
 		}
 
 		fwrite($sock, "$method $url HTTP/1.1\r\n");
@@ -87,7 +82,7 @@ class HubgraphClient
 		{
 			if ($first && !preg_match('/^HTTP\/1\.1\ (\d{3})/', $chunk, $code))
 			{
-				throw new \Exception('Unable to determine response status');
+				throw new Exception('Unable to determine response status');
 			}
 			elseif ($first)
 			{

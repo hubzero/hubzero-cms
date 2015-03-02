@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchWishlists extends SearchPlugin
+class plgSearchWishlists extends \JPlugin
 {
 	/**
 	 * Short description for 'onSearch'
@@ -62,7 +62,7 @@ class plgSearchWishlists extends SearchPlugin
 			$addtl_where[] = "(wli.subject NOT LIKE '%$forb%' AND wli.about NOT LIKE '%$forb%')";
 		}
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				wli.subject AS title,
 				wli.about AS description,

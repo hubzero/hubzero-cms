@@ -32,16 +32,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search citation entries
  */
-class plgSearchCitations extends SearchPlugin
+class plgSearchCitations extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
@@ -63,7 +64,7 @@ class plgSearchCitations extends SearchPlugin
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
 
-			$results->add(new SearchResultSQL($sql));
+			$results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
 
 			$sql2 = "SELECT
 						c.id as id,
@@ -95,7 +96,7 @@ class plgSearchCitations extends SearchPlugin
 					WHERE
 						c.published=1 AND $weight > 0
 					ORDER BY $weight DESC";
-			$results->add(new SearchResultSQL($sql));
+			$results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
 
 			$sql2 = "SELECT
 						c.id as id,
@@ -120,7 +121,7 @@ class plgSearchCitations extends SearchPlugin
 		//add final query to ysearch
 		$sql_result_one = "SELECT c.id as id FROM #__citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";
-		$results->add(new SearchResultSQL($sql2));
+		$results->add(new \Components\Search\Models\Basic\Result\Sql($sql2));
 	}
 }
 

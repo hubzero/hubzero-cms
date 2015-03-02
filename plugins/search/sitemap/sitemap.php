@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSiteMap extends SearchPlugin
+class plgSearchSiteMap extends \JPlugin
 {
 
 	/**
@@ -75,7 +75,7 @@ class plgSearchSiteMap extends SearchPlugin
 			$addtl_where[] = "(s.title NOT LIKE '%$forb%' AND s.description NOT LIKE '%$forb%')";
 		}
 
-		$results->add(new SearchResultSQL(
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				title, description, link, $weight as weight
 			FROM

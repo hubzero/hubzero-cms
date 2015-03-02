@@ -34,15 +34,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search plugin for wiki pages
  */
-class plgSearchWiki extends SearchPlugin
+class plgSearchWiki extends \JPlugin
 {
 	/**
-	 * Return search results for a set of terms
+	 * Build search query and add it to the $results
 	 *
-	 * @param   object  $request   Incoming request
-	 * @param   object  &$results  Results to append to
-	 * @param   object  $authz     User auth
-	 * @return  void
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
+	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -90,7 +90,7 @@ class plgSearchWiki extends SearchPlugin
 			}
 		}
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				wp.title,
 				wv.pagehtml AS description,

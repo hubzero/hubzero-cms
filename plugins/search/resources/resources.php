@@ -87,20 +87,16 @@ class ResourceChildSorter
 }
 
 /**
- * Short description for 'class'
- *
- * Long description (if any) ...
+ * Search plugin for resources
  */
-class plgSearchResources extends SearchPlugin
+class plgSearchResources extends \JPlugin
 {
 	/**
-	 * Short description for 'onYSearch'
+	 * Build search query and add it to the $results
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      mixed $request Parameter description (if any) ...
-	 * @param      object &$results Parameter description (if any) ...
-	 * @param      object $authz Parameter description (if any) ...
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
@@ -171,7 +167,7 @@ class plgSearchResources extends SearchPlugin
 			$addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltxt` NOT LIKE '%$forb%')";
 		}
 
-		$sql = new SearchResultSQL(
+		$sql = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				r.id,
 				r.title,
@@ -220,7 +216,7 @@ class plgSearchResources extends SearchPlugin
 			// Fill in tagged resources that did not match on fulltxt
 			if ($tag_map)
 			{
-				$sql = new SearchResultSQL(
+				$sql = new \Components\Search\Models\Basic\Result\Sql(
 					"SELECT
 						r.id,
 						r.title,

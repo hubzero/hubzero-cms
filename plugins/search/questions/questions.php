@@ -34,9 +34,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search questions
  */
-class plgSearchQuestions extends SearchPlugin
+class plgSearchQuestions extends \JPlugin
 {
-
 	/**
 	 * Short description for 'sort_by_date'
 	 *
@@ -72,13 +71,14 @@ class plgSearchQuestions extends SearchPlugin
 	}
 
 	/**
-	 * Build search query AND add it to the $results
+	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  YSearchModelRequest
-	 * @param      object &$results YSearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$qweight  = 'match(q.question, q.subject) against(\'' . join(' ', $terms['stemmed']) . '\')';
@@ -153,7 +153,7 @@ class plgSearchQuestions extends SearchPlugin
 		{
 			if (!array_key_exists($row['qid'], $questions))
 			{
-				$questions[$row['qid']] = new SearchResultAssocScalar(array(
+				$questions[$row['qid']] = new \Components\Search\Models\Basic\Result\AssocScalar(array(
 					'title'           => $row['subject'],
 					'description'     => $row['question'],
 					'section'         => 'Questions',
@@ -166,7 +166,7 @@ class plgSearchQuestions extends SearchPlugin
 			}
 			if (!array_key_exists($row['qid'] . '-' . $row['rid'], $seen_answers) && $row['answer'])
 			{
-				$questions[$row['qid']]->add_child(new SearchResultAssocScalar(array(
+				$questions[$row['qid']]->add_child(new \Components\Search\Models\Basic\Result\AssocScalar(array(
 					'title'           => ($row['rcontributors'] ? $row['rcontributors'] : 'Anonymous') . (', ' . $row['r_created']),
 					'description'     => $row['answer'],
 					'section'         => 'Questions',

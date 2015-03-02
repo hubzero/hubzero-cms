@@ -36,9 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
  *
  * Long description (if any) ...
  */
-class plgSearchSortCourses extends SearchPlugin
+class plgSearchSortCourses extends \JPlugin
 {
-
 	/**
 	 * Short description for 'onYSearchSort'
 	 *

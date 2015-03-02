@@ -34,16 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search events
  */
-class plgSearchEvents extends SearchPlugin
+class plgSearchEvents extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(e.title, e.content) against(\'' . join(' ', $terms['stemmed']) . '\')';
@@ -67,7 +68,7 @@ class plgSearchEvents extends SearchPlugin
 		// $user = JFactory::getUser();
 		// $addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				e.title,
 				e.content AS description,

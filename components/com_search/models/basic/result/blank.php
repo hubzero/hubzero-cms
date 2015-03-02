@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,42 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic\Result;
+
+use Components\Search\Models\Basic\Result as SearchResult;
+use Exception;
+
+include_once(dirname(__DIR__) . DS . 'result.php');
 
 /**
- * Short description for 'plgSearchSortEvents'
- *
- * Long description (if any) ...
+ * Empty result
  */
-class plgSearchSortEvents extends \JPlugin
+class Blank extends SearchResult
 {
 	/**
-	 * Short description for 'onYSearchSort'
+	 * Return results as associative array
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $a Parameter description (if any) ...
-	 * @param      object $b Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @return  void
+	 * @throws  Exception  Exception description (if any) ...
 	 */
-	public static function onSearchSort($a, $b)
+	public function to_associative()
 	{
-		if (!isset($_GET['dbg']))
-		{
-			return 0;
-		}
-
-		if ($a->get_plugin() !== 'events' || $b->get_plugin() !== 'events' || $a->get_date() === $b->get_date())
-		{
-			return 0;
-		}
-
-		return $a->get_date() > $b->get_date() ? 1 : -1;
+		throw new Exception('empty result -> to_associative');
 	}
 }
-

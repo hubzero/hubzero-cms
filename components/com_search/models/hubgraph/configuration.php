@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('JPATH_BASE') or die();
+namespace Components\Search\Models\Hubgraph;
+
+use Exception;
+use ArrayAccess;
+use Iterator;
 
 require_once(__DIR__ . DS . 'db.php');
 
 /**
  * Hubgraph configuration class
  */
-class HubgraphConfiguration implements \ArrayAccess, \Iterator
+class Configuration implements ArrayAccess, Iterator
 {
 	/**
 	 * Instance of Hubgraph config
@@ -93,7 +96,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	{
 		if (!self::$inst)
 		{
-			self::$inst = new HubgraphConfiguration;
+			self::$inst = new self;
 			self::$inst->settings = array();
 
 			$params = self::$inst->params();
@@ -210,7 +213,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	{
 		if (is_null($offset) || !isset($this->settings[$offset]))
 		{
-			throw new \Exception('Not supported');
+			throw new Exception('Not supported');
 		}
 		$this->settings[$offset] = $value;
 	}

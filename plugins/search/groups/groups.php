@@ -34,16 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search groups
  */
-class plgSearchGroups extends SearchPlugin
+class plgSearchGroups extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(g.cn, g.description, g.public_desc) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
@@ -66,7 +67,7 @@ class plgSearchGroups extends SearchPlugin
 			$addtl_where[] = "(g.cn NOT LIKE '%$forb%' AND g.description NOT LIKE '%$forb%' AND g.public_desc NOT LIKE '%$forb%')";
 		}
 
-		$results->add(new SearchResultSQL(
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				g.description AS title,
 				coalesce(g.public_desc, '') AS description,

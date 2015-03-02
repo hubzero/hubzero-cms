@@ -34,16 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search content articles
  */
-class plgSearchContent extends SearchPlugin
+class plgSearchContent extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = 'match(c.title, c.introtext, c.`fulltext`) against (\'' . join(' ', $terms['stemmed']) . '\')';
@@ -88,7 +89,7 @@ class plgSearchContent extends SearchPlugin
 			($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 		" ORDER BY $weight DESC";
 
-		$sql = new SearchResultSQL($query);
+		$sql = new \Components\Search\Models\Basic\Result\Sql($query);
 		$results->add($sql);
 	}
 }

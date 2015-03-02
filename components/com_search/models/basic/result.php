@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic;
 
 /**
- * Short description for 'SearchResult'
- *
- * Long description (if any) ...
+ * Abstract search result
  */
-abstract class SearchResult
+abstract class Result
 {
-
 	/**
 	 * Description for 'intro_excerpt_len'
 	 *
@@ -246,9 +242,7 @@ abstract class SearchResult
 			}
 			else
 			{
-				/*$this->canonicalized_link = (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on' ? 'https' : 'http').'://'.
-					$_SERVER['HTTP_HOST'].(substr($this->link, 0, 1) == '/' ? $this->link : '/' . $this->link);*/
-				$this->canonicalized_link = rtrim(JURI::base(), '/') . '/' . substr(ltrim(JRoute::_($this->link), '/'), strlen(JURI::base(true)));
+				$this->canonicalized_link = rtrim(\JURI::base(), '/') . '/' . substr(ltrim(\JRoute::_($this->link), '/'), strlen(\JURI::base(true)));
 			}
 		}
 		return $this->canonicalized_link;
@@ -265,7 +259,9 @@ abstract class SearchResult
 	{
 		$links = array($this->get_link());
 		foreach ($this->children as $child)
+		{
 			$links = array_merge($links, $child->get_links());
+		}
 		return $links;
 	}
 
@@ -545,9 +541,9 @@ abstract class SearchResult
 		if (!$this->excerpt)
 		{
 			$descr = preg_replace('#(?:[{]xhub:.*?[}]|[{}]|[\#][!]html)#ixms', '', $this->description);
-			if (preg_match_all('#(?:^|[.?!"])\s*?(.*?'.$this->highlight_regex.'.*?(?:[.?!"]|$))#ims', $descr, $excerpt))
+			if (preg_match_all('#(?:^|[.?!"])\s*?(.*?' . $this->highlight_regex . '.*?(?:[.?!"]|$))#ims', $descr, $excerpt))
 			{
-				$descr = join('<small>…</small> ', array_unique($excerpt[1]));
+				$descr = join('<small>&hellip;</small> ', array_unique($excerpt[1]));
 			}
 
 			$wrapped = wordwrap(str_replace("\n", '', $descr), self::$intro_excerpt_len);
@@ -566,415 +562,3 @@ abstract class SearchResult
 	 */
 	abstract public function to_associative();
 }
-
-/**
- * Short description for 'class'
- *
- * Long description (if any) ...
- */
-class SearchResultEmpty extends SearchResult
-{
-
-	/**
-	 * Short description for 'to_associative'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 * @throws Exception  Exception description (if any) ...
-	 */
-	public function to_associative()
-	{
-		throw new Exception('empty result -> to_associative');
-	}
-}
-
-/**
- * Short description for 'SearchResultAssoc'
- *
- * Long description (if any) ...
- */
-abstract class SearchResultAssoc extends SearchResult
-{
-
-	/**
-	 * Short description for 'is_scalar'
-	 *
-	 * Long description (if any) ...
-	 *
-	 */
-	abstract public function is_scalar();
-}
-
-/**
- * Short description for 'class'
- *
- * Long description (if any) ...
- */
-class SearchResultAssocList extends SearchResultAssoc implements Iterator
-{
-	/**
-	 * Description for 'rows'
-	 *
-	 * @var array
-	 */
-	private $rows = array();
-
-	/**
-	 * Description for 'pos'
-	 *
-	 * @var integer
-	 */
-	private $pos = 0;
-
-	/**
-	 * Short description for 'is_scalar'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function is_scalar()
-	{
-		return false;
-	}
-
-	/**
-	 * Short description for 'set_plugin'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $plugin Parameter description (if any) ...
-	 * @param      boolean $skip_cleanup Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function set_plugin($plugin, $skip_cleanup = false)
-	{
-		foreach ($this->rows as $row)
-		{
-			$row->set_plugin($plugin, $skip_cleanup);
-		}
-	}
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $rows Parameter description (if any) ...
-	 * @param      unknown $plugin Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($rows, $plugin = NULL)
-	{
-		$this->rows = is_array($rows) ? $rows : array($rows);
-		$scale = 1;
-		foreach ($this->rows as $idx=>&$row)
-		{
-			if (!is_a($row, 'SearchResult'))
-			{
-				$row = new SearchResultAssocScalar($row);
-				$row->set_plugin($plugin);
-			}
-
-			if ($idx == 0 && ($weight = $row->get_weight()) > 1)
-			{
-				$scale = $weight;
-			}
-
-			if ($scale > 1)
-			{
-				$row->scale_weight($scale, 'normalizing within plugin');
-			}
-		}
-	}
-
-	/**
-	 * Short description for 'at'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $idx Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function &at($idx)
-	{
-		return $this->rows[$idx];
-	}
-
-	/**
-	 * Short description for 'to_associative'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function to_associative()
-	{
-		return $this;
-	}
-
-	/**
-	 * Short description for 'get_items'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
-	 */
-	public function get_items()
-	{
-		return $this->rows;
-	}
-
-	/**
-	 * Short description for 'rewind'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	public function rewind()
-	{
-		$this->pos = 0;
-	}
-
-	/**
-	 * Short description for 'current'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
-	 */
-	public function current()
-	{
-		return $this->rows[$this->pos];
-	}
-
-	/**
-	 * Short description for 'key'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function key()
-	{
-		return $this->pos;
-	}
-
-	/**
-	 * Short description for 'next'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	public function next()
-	{
-		++$this->pos;
-	}
-
-	/**
-	 * Short description for 'valid'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
-	 */
-	public function valid()
-	{
-		return isset($this->rows[$this->pos]);
-	}
-}
-
-/**
- * Short description for 'SearchResultAssocScalar'
- *
- * Long description (if any) ...
- */
-class SearchResultAssocScalar extends SearchResult
-{
-
-	/**
-	 * Description for 'tag_weight_modifier'
-	 *
-	 * @var number
-	 */
-	private static $tag_weight_modifier;
-
-	/**
-	 * Description for 'row'
-	 *
-	 * @var unknown
-	 */
-	private $row;
-
-	/**
-	 * Short description for 'is_scalar'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
-	 */
-	public function is_scalar()
-	{
-		return true;
-	}
-
-	/**
-	 * Short description for 'assert_keys'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $keys Parameter description (if any) ...
-	 * @param      unknown $row Parameter description (if any) ...
-	 * @return     void
-	 * @throws SearchPluginError  Exception description (if any) ...
-	 */
-	private static function assert_keys($keys, $row)
-	{
-		foreach ($keys as $key)
-		{
-			if (!array_key_exists($key, $row))
-			{
-				throw new SearchPluginError("Result plugin did not define key '$key'");
-			}
-		}
-	}
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $row Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($row)
-	{
-		if (is_null(self::$tag_weight_modifier))
-		{
-			self::$tag_weight_modifier = SearchModelResultSet::get_tag_weight_modifier();
-		}
-
-		self::assert_keys(array('title', 'description', 'link'), $row);
-		foreach ($row as $key=>$val)
-		{
-			$this->$key = is_array($val) ? array_map('stripslashes', array_map('strip_tags', $val)) : stripslashes(strip_tags($val));
-		}
-
-		if ($this->weight === NULL)
-		{
-			if ($this->tag_count)
-			{
-				$this->weight = $this->tag_count * (self::$tag_weight_modifier / 2);
-			}
-			$this->weight = 1.0;
-			$this->weight_log[] = 'plugin did not suggest weight, guessing '.$this->weight.' based on tag count('.$this->tag_count.')';
-		}
-		else if ($this->tag_count)
-		{
-			$this->weight_log[] = 'plugin suggested weight of '.$this->weight;
-			$this->adjust_weight($this->tag_count * self::$tag_weight_modifier, 'tag count of '.$this->tag_count);
-		}
-
-		$this->contributors = $this->contributors ? array_unique(is_array($this->contributors) ? $this->contributors : preg_split("#\n#", $row['contributors'])) : array();
-		$this->contributor_ids = $this->contributor_ids ? array_unique(is_array($this->contributor_ids) ? $this->contributor_ids : preg_split("#\n#", $row['contributor_ids'])) : array();
-
-		if ($this->date && $this->date != '0000-00-00 00:00:00')
-		{
-			$this->date = strtotime($row['date']);
-		}
-		else
-		{
-			$this->date = null;
-		}
-	}
-
-	/**
-	 * Short description for 'get_result'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function get_result()
-	{
-		return $this->row;
-	}
-
-	/**
-	 * Short description for 'to_associative'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function to_associative()
-	{
-		return $this;
-	}
-}
-
-/**
- * Short description for 'class'
- *
- * Long description (if any) ...
- */
-class SearchResultSql extends SearchResult
-{
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $sql Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct($sql = NULL)
-	{
-		$this->sql = $sql;
-	}
-
-	/**
-	 * Short description for 'get_sql'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
-	 */
-	public function get_sql()
-	{
-		return $this->sql;
-	}
-
-	/**
-	 * Short description for 'to_associative'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     object Return description (if any) ...
-	 * @throws SearchPluginError  Exception description (if any) ...
-	 */
-	public function to_associative()
-	{
-		$dbh = JFactory::getDBO();
-		$dbh->setQuery($this->sql);
-
-		if (isset($_GET['dbgsql']))
-		{
-			echo '<pre>'.$dbh->getQuery().'</pre>';
-		}
-
-		if (!($rows = $dbh->loadAssocList()))
-		{
-			if (($error = $dbh->getErrorMsg()))
-			{
-				throw new SearchPluginError('Invalid SQL in '.$this->sql.': ' . $error );
-			}
-			return new SearchResultEmpty();
-		}
-		return new SearchResultAssocList($rows, $this->get_plugin());
-	}
-}
-

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,30 +24,61 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Search\Models\Basic\Result;
+
+use Components\Search\Models\Basic\Result as SearchResult;
+use Exception;
 
 /**
- * Short description for 'YSearchPluginError'
- *
- * Long description (if any) ...
+ * Search result SQL
  */
-class SearchPluginError extends Exception
+class Sql extends SearchResult
 {
-}
+	/**
+	 * Constructor
+	 *
+	 * @param   string  $sql
+	 * @return  void
+	 */
+	public function __construct($sql = NULL)
+	{
+		$this->sql = $sql;
+	}
 
-// this used to have some utilities in it, it should probably go away now
+	/**
+	 * Get the SQL
+	 *
+	 * @return  string
+	 */
+	public function get_sql()
+	{
+		return $this->sql;
+	}
 
-/**
- * Short description for 'class'
- *
- * Long description (if any) ...
- */
-class SearchPlugin extends JPlugin
-{
+	/**
+	 * Return results as associative array
+	 *
+	 * @return  object
+	 * @throws  SearchPluginError
+	 */
+	public function to_associative()
+	{
+		$db = \JFactory::getDBO();
+		$db->setQuery($this->sql);
+
+		if (!($rows = $db->loadAssocList()))
+		{
+			if ($error = $db->getErrorMsg())
+			{
+				throw new Exception('Invalid SQL in ' . $this->sql . ': ' . $error);
+			}
+			return new Blank();
+		}
+		return new AssocList($rows, $this->get_plugin());
+	}
 }
 

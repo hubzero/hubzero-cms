@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder <snyder13@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Search blog entries
  */
-class plgSearchBlogs extends SearchPlugin
+class plgSearchBlogs extends \JPlugin
 {
 	/**
 	 * Description for 'IRST_CLASS_CHILDREN'
@@ -44,9 +44,9 @@ class plgSearchBlogs extends SearchPlugin
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
-	 * @param      object $authz    SearchAuthorization
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
 	public static function onSearch($request, &$results, $authz)
@@ -81,7 +81,7 @@ class plgSearchBlogs extends SearchPlugin
 		$addtl_where[] = "(be.publish_up <= '$now')";
 		$addtl_where[] = "(be.publish_down = '0000-00-00 00:00:00' OR (be.publish_down != '0000-00-00 00:00:00' AND be.publish_down > '$now'))";
 
-		$rows = new SearchResultSQL(
+		$rows = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				be.id,
 				be.title,
@@ -107,7 +107,7 @@ class plgSearchBlogs extends SearchPlugin
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
 		);
 
-		if (($rows = $rows->to_associative()) instanceof SearchResultEmpty)
+		if (($rows = $rows->to_associative()) instanceof \Components\Search\Models\Basic\Result\Blank)
 		{
 			return;
 		}
@@ -118,7 +118,7 @@ class plgSearchBlogs extends SearchPlugin
 			$id_map[$row->get('id')] = $idx;
 		}
 
-		$comments = new SearchResultSQL(
+		$comments = new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 		 	CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
 			bc.content AS description,

@@ -34,16 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Search groups
  */
-class plgSearchCollections extends SearchPlugin
+class plgSearchCollections extends \JPlugin
 {
 	/**
 	 * Build search query and add it to the $results
 	 *
-	 * @param      object $request  SearchModelRequest
-	 * @param      object &$results SearchModelResultSet
+	 * @param      object $request  \Components\Search\Models\Basic\Request
+	 * @param      object &$results \Components\Search\Models\Basic\Result\Set
+	 * @param      object $authz    \Components\Search\Models\Basic\Authorization
 	 * @return     void
 	 */
-	public static function onSearch($request, &$results)
+	public static function onSearch($request, &$results, $authz)
 	{
 		$terms = $request->get_term_ar();
 		$weight = '(match(p.description) AGAINST (\'' . join(' ', $terms['stemmed']) . '\') + match(i.title, i.description) AGAINST (\'' . join(' ', $terms['stemmed']) . '\'))';
@@ -58,7 +59,7 @@ class plgSearchCollections extends SearchPlugin
 			$addtl_where[] = "(p.description NOT LIKE '%$forb%' AND i.title NOT LIKE '%$forb%' AND i.description NOT LIKE '%$forb%')";
 		}
 
-		$results->add(new SearchResultSQL(
+		$results->add(new \Components\Search\Models\Basic\Result\Sql(
 			"SELECT
 				i.title,
 				CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END AS description,
