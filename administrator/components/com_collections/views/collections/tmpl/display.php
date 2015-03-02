@@ -134,7 +134,7 @@ foreach ($this->rows as $row)
 			$alt = JText::_('JPUBLISHED');
 			break;
 		case 2:
-			$class = 'expire';
+			$class = 'trash';
 			$task = 'publish';
 			$alt = JText::_('JTRASHED');
 			break;
