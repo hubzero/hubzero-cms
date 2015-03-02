@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Helpers;
+
+use ProjectsHtml;
 
 /**
  * Projects Git LaTeX and PDF compiler helper class
  */
-class ProjectsCompiler extends JObject
+class Compiler extends \JObject
 {
 	/**
 	 * Cache dir

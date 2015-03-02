@@ -32,7 +32,7 @@ $c 		= $this->c;
 $when 	= $file['date'] ? ProjectsHtml::formatTime($file['date']) : 'N/A';
 
 // LaTeX?
-$tex = ProjectsCompiler::isTexFile(basename($file['name']));
+$tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 
 ?>
 	<tr class="mini faded mline">

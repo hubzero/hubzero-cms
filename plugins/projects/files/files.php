@@ -2762,7 +2762,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$mimeType = $mTypeParts[0];
 
 				// LaTeX?
-				$tex = ProjectsCompiler::isTexFile($file, $mimeType);
+				$tex = Components\Projects\Helpers\Compiler::isTexFile($file, $mimeType);
 
 				// Check format
 				if (!in_array($ext, $formats) && !$tex)
@@ -3745,7 +3745,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$this->_project->created_by_user, $remote['id']);
 
 					// Tex file?
-					$tex    = ProjectsCompiler::isTexFile($remote['title'], $remote['original_format']);
+					$tex    = Components\Projects\Helpers\Compiler::isTexFile($remote['title'], $remote['original_format']);
 
 					$cExt   = $tex ? 'tex' : ProjectsGoogleHelper::getGoogleImportExt($resource['mimeType']);
 					$url    = ProjectsGoogleHelper::getDownloadUrl($resource, $cExt);
@@ -3908,7 +3908,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get LaTeX helper
-		$compiler = new ProjectsCompiler();
+		$compiler = new \Components\Projects\Helpers\Compiler();
 
 		// Tex compiler path
 		$texpath = DS . trim($this->params->get('texpath'), DS);
