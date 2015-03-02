@@ -1386,6 +1386,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$params = JComponentHelper::getParams('com_groups');
 
 		// Email the group and insert email tokens to allow them to respond to group posts via email
+
 		if ($params->get('email_comment_processing'))
 		{
 			$esection = new \Components\Forum\Models\Section($sectionTbl);
