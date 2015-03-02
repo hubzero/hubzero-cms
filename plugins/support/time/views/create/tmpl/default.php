@@ -50,7 +50,7 @@ $this->css()
 			<div class="col span6 omega">
 			<label for="date">
 				<?php echo JText::_('PLG_SUPPORT_TIME_DATE'); ?>:
-				<input type="text" name="record[date]" id="datepicker" class="hadDatepicker" value="<?php echo $this->escape(stripslashes($this->row->date)); ?>" size="10" />
+				<input type="text" name="records[date]" id="datepicker" class="hadDatepicker" value="<?php echo $this->escape(stripslashes($this->row->date)); ?>" size="10" />
 			</label>
 		</div>
 		</div>
@@ -67,6 +67,6 @@ $this->css()
 		</div>
 		<div class="clear"></div>
 
-		<input type="hidden" name="record[id]" value="0" />
+		<input type="hidden" name="records[id]" value="0" />
 	</div>
 </fieldset>
