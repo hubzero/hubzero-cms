@@ -39,7 +39,7 @@ JToolBarHelper::help('format');
 // include citations format class
 // new citations format object
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
-$cf = new CitationFormat();
+$cf = new \Components\Citations\Helpers\Format();
 ?>
 
 <script type="text/javascript">
@@ -75,7 +75,7 @@ $jQ(document).ready(function(e) {
 </script>
 
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('CITATION_FORMAT'); ?></span></legend>

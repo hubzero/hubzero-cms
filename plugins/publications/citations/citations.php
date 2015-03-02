@@ -113,7 +113,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 			. DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 
 		// Get citations for this publication
-		$c = new CitationsCitation( $database );
+		$c = new \Components\Citations\Tables\Citation( $database );
 		$citations = $c->getCitations( 'publication', $publication->id );
 
 		$arr['count'] = $citations ? count($citations) : 0;

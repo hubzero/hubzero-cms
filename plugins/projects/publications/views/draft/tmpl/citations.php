@@ -76,7 +76,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 			<?php if (count($this->pub->_citations) > 0) {
 				$i= 1;
 
-				$formatter = new CitationFormat;
+				$formatter = new \Components\Citations\Helpers\Format;
 				$formatter->setTemplate($this->pub->_citationFormat);
 				?>
 					<ul class="itemlist" id="citations-list">
@@ -84,7 +84,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 
 							$citeText = $cite->formatted
 										? '<p>' . $cite->formatted . '</p>'
-										: CitationFormat::formatReference($cite, '');
+										: \Components\Citations\Helpers\Format::formatReference($cite, '');
 						 ?>
 						<li>
 							<span class="item-options">

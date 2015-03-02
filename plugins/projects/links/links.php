@@ -331,7 +331,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$citation = new CitationsCitation( $this->_database );
+			$citation = new \Components\Citations\Tables\Citation( $this->_database );
 			if (!$citation->bind($cite))
 			{
 				$this->setError($citation->getError());
@@ -351,7 +351,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Create association
 			if (!$this->getError() && $new == true && $citation->id)
 			{
-				$assoc 		 = new CitationsAssociation( $this->_database );
+				$assoc 		 = new \Components\Citations\Tables\Association( $this->_database );
 				$assoc->oid  = $pid;
 				$assoc->tbl  = 'publication';
 				$assoc->type = 'owner';
@@ -416,8 +416,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$c 		  = new CitationsCitation( $database );
-		$assoc 	  = new CitationsAssociation($database);
+		$c 		  = new \Components\Citations\Tables\Citation( $database );
+		$assoc 	  = new \Components\Citations\Tables\Association($database);
 
 		// Fetch all associations
 		$aPubs = $assoc->getRecords(array('cid' => $cid));
@@ -479,7 +479,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$c 		  = new CitationsCitation( $database );
+		$c 		  = new \Components\Citations\Tables\Citation( $database );
 
 		if ($c->loadPubCitation($doi, $pid))
 		{
@@ -545,7 +545,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					$c->pages = $data->page;
 
 					// Get type ID
-					$ct = new CitationsType($database);
+					$ct = new \Components\Citations\Tables\Type($database);
 					$types = $ct->getType();
 					$dType = isset($data->type) ? $data->type : 'article';
 
@@ -599,7 +599,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				// Create association
 				if ($c->id)
 				{
-					$assoc 		 = new CitationsAssociation($database);
+					$assoc 		 = new \Components\Citations\Tables\Association($database);
 					$assoc->oid  = $pid;
 					$assoc->tbl  = 'publication';
 					$assoc->type = 'owner';
@@ -755,11 +755,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 			// Load the object
-			$view->row = new CitationsCitation($this->_database);
+			$view->row = new \Components\Citations\Tables\Citation($this->_database);
 			$view->row->load($cid);
 
 			// get the citation types
-			$ct = new CitationsType($this->_database);
+			$ct = new \Components\Citations\Tables\Type($this->_database);
 			$view->types = $ct->getType();
 		}
 
@@ -851,11 +851,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 		// Load the object
-		$view->row = new CitationsCitation($this->_database);
+		$view->row = new \Components\Citations\Tables\Citation($this->_database);
 		$view->row->load($cid);
 
 		// get the citation types
-		$ct = new CitationsType($this->_database);
+		$ct = new \Components\Citations\Tables\Type($this->_database);
 		$view->types = $ct->getType();
 
 		$view->option 		= $this->_option;

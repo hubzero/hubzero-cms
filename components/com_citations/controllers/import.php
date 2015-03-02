@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,13 +23,18 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Controllers;
+
+use Components\Citations\Tables\Citation;
+use Components\Citations\Tables\Type;
+use Components\Citations\Tables\Tags;
+use Hubzero\Component\SiteController;
+use Exception;
 
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -37,20 +42,20 @@ jimport('joomla.filesystem.file');
 /**
  * Citations controller class for importing citation entries
  */
-class CitationsControllerImport extends \Hubzero\Component\SiteController
+class Import extends SiteController
 {
 	/**
 	 * Redirect to login form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
-				JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(\JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
+				\JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
 			);
 			return;
@@ -67,11 +72,11 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Display a form for importing citations
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$gid = JRequest::getVar('group');
+		$gid = \JRequest::getVar('group');
 		if (isset($gid) && $gid != '')
 		{
 			$this->view->gid = $gid;
@@ -84,7 +89,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if (!$importParam)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -94,8 +99,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if ($importParam == 2 && !$isAdmin)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_CITATIONS_CITATION_NOT_AUTH'),
+				\JRoute::_('index.php?option=' . $this->_option),
+				\JText::_('COM_CITATIONS_CITATION_NOT_AUTH'),
 				'warning'
 			);
 			return;
@@ -111,11 +116,11 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->_citationCleanup();
 
 		// Instantiate a new view
-		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
+		$this->view->title = \JText::_(strtoupper($this->_option)) . ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		//import the plugins
-		JPluginHelper::importPlugin('citation');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('citation');
+		$dispatcher = \JDispatcher::getInstance();
 
 		//call the plugins
 		$this->view->accepted_files = $dispatcher->trigger('onImportAcceptedFiles' , array());
@@ -130,19 +135,19 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Upload a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
 		// get file
-		$file = JRequest::getVar('citations_file', null, 'files', 'array');
+		$file = \JRequest::getVar('citations_file', null, 'files', 'array');
 
 		// make sure we have a file
 		if (!$file['name'])
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+				\JText::_('COM_CITATIONS_IMPORT_MISSING_FILE'),
 				'error'
 			);
 			return;
@@ -152,8 +157,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if ($file['size'] > 4000000)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+				\JText::_('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
 				'error'
 			);
 			return;
@@ -162,12 +167,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		// make sure we dont have any file errors
 		if ($file['error'] > 0)
 		{
-			JError::raiseError(500, JText::_('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'));
+			throw new Exception(\JText::_('COM_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
 		}
 
 		// load citation import plugins
-		JPluginHelper::importPlugin('citation');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('citation');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// call the plugins
 		$citations = $dispatcher->trigger('onImport' , array($file));
@@ -177,38 +182,38 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if (!$citations)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+				\JText::_('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
 				'error'
 			);
 			return;
 		}
 
 		// get the session object
-		$session = JFactory::getSession();
+		$session = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// write the citation data to files
-		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
-		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$file1 = JFile::write($p1, serialize($citations[0]['attention']));
-		$file2 = JFile::write($p2, serialize($citations[0]['no_attention']));
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$file1 = \JFile::write($p1, serialize($citations[0]['attention']));
+		$file2 = \JFile::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
-		$group = JRequest::getVar('group');
+		$group = \JRequest::getVar('group');
 
 		if (isset($group) && $group != '')
 		{
 			// review imported citations
 			$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=import_review&group=' . $group)
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import_review&group=' . $group)
 			);
 		}
 		else
 		{
 			// review imported citations
 			$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=import_review')
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import_review')
 			);
 		}
 
@@ -218,7 +223,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Review an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reviewTask()
 	{
@@ -227,8 +232,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$sessionid = $session->getId();
 
 		// get the citations
-		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
-		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
 		$citations_require_attention    = null;
 		$citations_require_no_attention = null;
 		if (file_exists($p1))
@@ -240,7 +245,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			$citations_require_no_attention = unserialize(JFile::read($p2));
 		}
 
-		$group = JRequest::getVar('group');
+		$group = \JRequest::getVar('group');
 
 		if (isset($group) && $group != '')
 		{
@@ -250,8 +255,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			if (!$citations_require_attention && !$citations_require_no_attention)
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&task=import&group=' . $group),
-					JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					\JRoute::_('index.php?option=' . $this->_option . '&task=import&group=' . $group),
+					\JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 					'error'
 				);
 				return;
@@ -263,8 +268,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			if (!$citations_require_attention && !$citations_require_no_attention)
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-					JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					\JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+					\JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 					'error'
 				);
 				return;
@@ -278,10 +283,10 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// include tag handler
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 		// Instantiate a new view
-		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		$this->view->title = \JText::_(strtoupper($this->_option)) . ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		$this->view->citations_require_attention    = $citations_require_attention;
 		$this->view->citations_require_no_attention = $citations_require_no_attention;
 
@@ -295,32 +300,32 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// get the session object
-		$session = JFactory::getSession();
+		$session = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// read in contents of citations file
-		$p1 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_attention_' . $sessionid . '.txt';
-		$p2 = JPATH_ROOT . DS . 'tmp' . DS . 'citations' . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
+		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
+		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
 		$cites_require_attention    = unserialize(JFile::read($p1));
 		$cites_require_no_attention = unserialize(JFile::read($p2));
 
 		// action for citations needing attention
-		$citations_action_attention = JRequest::getVar('citation_action_attention', array());
+		$citations_action_attention = \JRequest::getVar('citation_action_attention', array());
 
 		// action for citations needing no attention
-		$citations_action_no_attention = JRequest::getVar('citation_action_no_attention', array());
+		$citations_action_no_attention = \JRequest::getVar('citation_action_no_attention', array());
 
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+				\JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
 			return;
@@ -330,7 +335,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$citations_saved     = array();
 		$citations_not_saved = array();
 		$citations_error     = array();
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 		$user = $this->juser->get('id');
 		$allow_tags   = $this->config->get('citation_allow_tags', 'no');
 		$allow_badges = $this->config->get('citation_allow_badges', 'no');
@@ -340,7 +345,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		{
 			foreach ($cites_require_attention as $k => $cra)
 			{
-				$cc = new CitationsCitation($this->database);
+				$cc = new Citation($this->database);
 
 				// add a couple of needed keys
 				$cra['uid'] = $user;
@@ -368,7 +373,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				}
 
 				//take care fo type
-				$ct = new CitationsType($this->database);
+				$ct = new Type($this->database);
 				$types = $ct->getType();
 
 				$type = '';
@@ -400,7 +405,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($cra['duplicate']);
 
 				//sets group if set
-				$group = JRequest::getVar('group');
+				$group = \JRequest::getVar('group');
 				if (isset($group) && $group != '')
 				{
 					$cra['gid'] = $group;
@@ -438,7 +443,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			foreach ($cites_require_no_attention as $k => $crna)
 			{
 				// new citation object
-				$cc = new CitationsCitation($this->database);
+				$cc = new Citation($this->database);
 
 				// add a couple of needed keys
 				$crna['uid'] = $user;
@@ -473,7 +478,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				}
 
 				// take care fo type
-				$ct = new CitationsType($this->database);
+				$ct = new Type($this->database);
 				$types = $ct->getType();
 
 				$type = '';
@@ -491,7 +496,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				unset($crna['duplicate']);
 
 				//sets group if set
-				$group = JRequest::getVar('group');
+				$group = \JRequest::getVar('group');
 				if (isset($group) && $group != '')
 				{
 					$crna['gid'] = $group;
@@ -525,19 +530,19 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 		if (isset($group) && $group != '')
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
-			$gob = new GroupsGroup($this->database);
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			$gob = new \GroupsGroup($this->database);
 			$cn = $gob->getName($group);
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_groups' . DS . $cn . DS . 'citations&action=dashboard')
-				);
+				\JRoute::_('index.php?option=com_groups' . DS . $cn . DS . 'citations&action=dashboard')
+			);
 		}
 		else
 		{
 			// success message a redirect
 			$this->addComponentMessage(
-				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
+				\JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
 				'passed'
 			);
 
@@ -545,7 +550,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			if (count($citations_not_saved) > 0)
 			{
 				$this->addComponentMessage(
-					JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
+					\JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
 					'warning'
 				);
 			}
@@ -553,13 +558,13 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			if (count($citations_error) > 0)
 			{
 				$this->addComponentMessage(
-					JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
+					\JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
 					'error'
 				);
 			}
 
 			//get the session object
-			$session = JFactory::getSession();
+			$session = \JFactory::getSession();
 
 			//ids of sessions saved and not saved
 			$session->set('citations_saved', $citations_saved);
@@ -567,12 +572,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			$session->set('citations_error', $citations_error);
 
 			//delete the temp files that hold citation data
-			JFile::delete($p1);
-			JFile::delete($p2);
+			\JFile::delete($p1);
+			\JFile::delete($p2);
 
 			//redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import_saved')
+				\JRoute::_('index.php?option=' . $this->_option . '&task=import_saved')
 			);
 		}
 
@@ -582,12 +587,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Show the results of the import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function savedTask()
 	{
 		// Get the session object
-		$session = JFactory::getSession();
+		$session = \JFactory::getSession();
 
 		// Get the citations
 		$citations_saved     = $session->get('citations_saved');
@@ -598,8 +603,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if (!$citations_saved && !$citations_not_saved)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_citations&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+				\JRoute::_('index.php?option=com_citations&task=import'),
+				\JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
 				'error'
 			);
 			return;
@@ -612,12 +617,13 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Filters for gettiung just previously uploaded
-		$filters = array();
-		$filters['start']  = 0;
-		$filters['search'] = '';
+		$filters = array(
+			'start'  => 0,
+			'search' => ''
+		);
 
 		// Instantiate a new view
-		$this->view->title     = JText::_(strtoupper($this->_option)) . ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+		$this->view->title     = \JText::_(strtoupper($this->_option)) . ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		$this->view->config    = $this->config;
 		$this->view->database  = $this->database;
 		$this->view->filters   = $filters;
@@ -625,7 +631,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 		foreach ($citations_saved as $cs)
 		{
-			$cc = new CitationsCitation($this->database);
+			$cc = new Citation($this->database);
 			$cc->load($cs);
 			$this->view->citations[] = $cc;
 		}
@@ -635,7 +641,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$this->view->openurl['icon'] = '';
 
 		//take care fo type
-		$ct = new CitationsType($this->database);
+		$ct = new Type($this->database);
 		$this->view->types = $ct->getType();
 
 		//get any messages
@@ -648,17 +654,17 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Add tags to a citation
 	 *
-	 * @param      integer $userid     User ID
-	 * @param      integer $objectid   Citation ID
-	 * @param      string  $tag_string Comma separated list of tags
-	 * @param      string  $label      Label
-	 * @return     void
+	 * @param   integer  $userid      User ID
+	 * @param   integer  $objectid    Citation ID
+	 * @param   string   $tag_string  Comma separated list of tags
+	 * @param   string   $label       Label
+	 * @return  void
 	 */
 	protected function _tagCitation($userid, $objectid, $tag_string, $label)
 	{
 		if ($tag_string)
 		{
-			$ct = new CitationTags($objectid);
+			$ct = new Tags($objectid);
 			$ct->setTags($tag_string, $userid, 0, 1, $label);
 		}
 	}
@@ -666,15 +672,15 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Delete old files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _citationCleanup()
 	{
-		$p = JPATH_ROOT . DS . 'tmp' . DS . 'citations';
+		$p = $this->getTmpPath();
 
 		if (is_dir($p))
 		{
-			$tmp = JFolder::files($p);
+			$tmp = \JFolder::files($p);
 
 			if ($tmp)
 			{
@@ -684,7 +690,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 
 					if ($ft < strtotime("-1 DAY"))
 					{
-						JFile::delete($p . DS . $t);
+						\JFile::delete($p . DS . $t);
 					}
 				}
 			}
@@ -692,35 +698,45 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * Method to build and set the document title
+	 *
+	 * @return  void
+	 */
+	protected function getTmpPath()
+	{
+		return PATH_APP . DS . 'tmp' . DS . 'citations';
+	}
+
+	/**
 	 * Return the citation format
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . JRequest::getVar('format', 'apa');
+		echo 'format' . \JRequest::getVar('format', 'apa');
 	}
 
 	/**
 	 * Method to set the document path
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -729,17 +745,16 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if ($this->_task)
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		\JFactory::getDocument()->setTitle($this->_title);
 	}
 }
-

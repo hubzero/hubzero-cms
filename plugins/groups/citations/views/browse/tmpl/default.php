@@ -42,7 +42,7 @@ $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
 
 // citation format
-$citationsFormat = new CitationsFormat($this->database);
+$citationsFormat = new \Components\Citations\Tables\Format($this->database);
 $template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
 //batch downloads
@@ -127,7 +127,7 @@ if (isset($this->messages))
 
 					<?php if (count($this->citations) > 0) : ?>
 						<?php
-							$formatter = new CitationFormat();
+							$formatter = new \Components\Citations\Helpers\Format();
 							$formatter->setTemplate($template);
 
 							// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
@@ -214,7 +214,7 @@ if (isset($this->messages))
 											<?php if ($citation_rollover && $cite->abstract != "") : ?>
 												<div class="citation-notes">
 													<?php
-														$cs = new CitationsSponsor($this->database);
+														$cs = new \Components\Citations\Tables\Sponsor($this->database);
 														$sponsors = $cs->getCitationSponsor($cite->id);
 														$final = "";
 														if ($sponsors)
@@ -253,11 +253,11 @@ if (isset($this->messages))
 												}
 											?>
 											<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-												<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
+												<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 											<?php endif; ?>
 
 											<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-												<?php echo CitationFormat::citationTags($cite, $this->database); ?>
+												<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 											<?php endif; ?>
 										</td>
 									</tr>

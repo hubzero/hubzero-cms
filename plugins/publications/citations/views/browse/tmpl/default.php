@@ -37,7 +37,7 @@ if ($this->citations) {
 	$affiliated = '';
 	$nonaffiliated = '';
 
-	$formatter = new CitationFormat;
+	$formatter = new \Components\Citations\Helpers\Format;
 	$formatter->setTemplate($this->format);
 
 	// Loop through the citations and build the HTML
@@ -47,7 +47,7 @@ if ($this->citations) {
 		$showLinks = ($cite->title && $cite->author && $cite->publisher) ? true : false;
 
 		$item  = "\t".'<li>'."\n";
-		$formatted = $cite->formatted ? $cite->formatted : CitationFormat::formatReference($cite, '');
+		$formatted = $cite->formatted ? $cite->formatted : \Components\Citations\Helpers\Format::formatReference($cite, '');
 
 		if ($cite->doi && $cite->url)
 		{

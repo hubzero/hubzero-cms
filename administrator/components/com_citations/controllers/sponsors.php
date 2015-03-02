@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,36 +24,29 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Citations\Tables\Sponsor;
 
 /**
  * Controller class for citation types
  */
-class CitationsControllerSponsors extends \Hubzero\Component\AdminController
+class Sponsors extends AdminController
 {
 	/**
 	 * List types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$cs = new CitationsSponsor($this->database);
+		$cs = new Sponsor($this->database);
 		$this->view->sponsors = $cs->getSponsor();
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -62,72 +55,67 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
-		$this->view->setLayout('edit');
 		$this->editTask();
 	}
 
 	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->config = $this->config;
 
-		if (is_object($row))
-		{
-			$this->view->type = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
-			$this->view->sponsor = new CitationsSponsor($this->database);
-			$this->view->sponsor = $this->view->sponsor->getSponsor($id);
+			$sponsor = new Sponsor($this->database);
+			$row = $sponsor->getSponsor($id);
 		}
 
+		$this->view->sponsor = $row;
+
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$s = JRequest::getVar('sponsor', array(), 'post');
+		$s = \JRequest::getVar('sponsor', array(), 'post');
 
-		$row = new CitationsSponsor($this->database);
+		$row = new Sponsor($this->database);
 		if (!$row->bind($s))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -135,7 +123,6 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -145,43 +132,39 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('CITATION_SPONSOR_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('CITATION_SPONSOR_SAVED')
 		);
 	}
 
 	/**
 	 * Remove one or more types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
-		// Check for request forgeries
-		//JRequest::checkToken() or jexit('Invalid Token');
-
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('CITATION_NO_SPONSOR'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('CITATION_NO_SPONSOR'),
 				'error'
 			);
 			return;
 		}
 
-		$cs = new CitationsSponsor($this->database);
+		$cs = new Sponsor($this->database);
 		foreach ($ids as $id)
 		{
 			// Delete the type
@@ -190,21 +173,8 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('CITATION_SPONSOR_REMOVED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return     void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('CITATION_SPONSOR_REMOVED')
 		);
 	}
 }

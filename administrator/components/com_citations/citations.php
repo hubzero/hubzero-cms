@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,65 +24,62 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations;
 
-$option = 'com_citations';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_citations'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'format.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'citation.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'association.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'author.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'secondary.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'tags.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'type.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'sponsor.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'format.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'format.php');
 
-$controllerName = JRequest::getCmd('controller', 'citations');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'citations');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('CITATIONS'),
-	'index.php?option=com_citations&controller=citations',
-	($controllerName == 'citations' && JRequest::getVar('task', '') != 'stats')
+\JSubMenuHelper::addEntry(
+	\JText::_('CITATIONS'),
+	\JRoute::_('index.php?option=com_citations&controller=citations'),
+	($controllerName == 'citations' && \JRequest::getVar('task', '') != 'stats')
 );
-JSubMenuHelper::addEntry(
-	JText::_('CITATION_STATS'),
-	'index.php?option=com_citations&controller=citations&task=stats',
-	($controllerName == 'citations' && JRequest::getVar('task', '') == 'stats')
+\JSubMenuHelper::addEntry(
+	\JText::_('CITATION_STATS'),
+	\JRoute::_('index.php?option=com_citations&controller=citations&task=stats'),
+	($controllerName == 'citations' && \JRequest::getVar('task', '') == 'stats')
 );
-JSubMenuHelper::addEntry(
-	JText::_('CITATION_TYPES'),
-	'index.php?option=com_citations&controller=types',
+\JSubMenuHelper::addEntry(
+	\JText::_('CITATION_TYPES'),
+	\JRoute::_('index.php?option=com_citations&controller=types'),
 	$controllerName == 'types'
 );
-JSubMenuHelper::addEntry(
-	JText::_('CITATION_SPONSORS'),
-	'index.php?option=com_citations&controller=sponsors',
+\JSubMenuHelper::addEntry(
+	\JText::_('CITATION_SPONSORS'),
+	\JRoute::_('index.php?option=com_citations&controller=sponsors'),
 	$controllerName == 'sponsors'
 );
-JSubMenuHelper::addEntry(
-	JText::_('CITATION_FORMAT'),
-	'index.php?option=com_citations&controller=format',
+\JSubMenuHelper::addEntry(
+	\JText::_('CITATION_FORMAT'),
+	\JRoute::_('index.php?option=com_citations&controller=format'),
 	$controllerName == 'format'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'CitationsController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();

@@ -59,7 +59,7 @@ if ($this->pub->doi)
 	$cite->type = '';
 	$cite->author = $pubHelper->getUnlinkedContributors( $this->pub->_authors);
 	$cite->doi = $this->pub->doi;
-	$citation = CitationFormat::formatReference($cite);
+	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }
 
 // Get creator name

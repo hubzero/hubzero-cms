@@ -138,7 +138,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$ct = new CitationsType($database);
+		$ct = new \Components\Citations\Tables\Type($database);
 		$types = $ct->getType();
 
 		return $types;
@@ -182,10 +182,10 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$citationsFormat = new CitationsFormat($database);
+		$citationsFormat = new \Components\Citations\Tables\Format($database);
 		$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
-		$formatter = new CitationFormat();
+		$formatter = new \Components\Citations\Helpers\Format();
 		$formatter->setTemplate( $template );
 
 		// Start building the HTML
@@ -225,7 +225,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 		$db = JFactory::getDBO();
-		$cc = new CitationsCitation($db);
+		$cc = new \Components\Citations\Tables\Citation($db);
 		$cc->load($row->id);
 
 		$html .= '<p>' . $formatter->formatCitation($cc, null, $config->get("citation_coins", 1), $config) . '</p>';

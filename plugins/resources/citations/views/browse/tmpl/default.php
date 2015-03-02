@@ -44,14 +44,14 @@ if ($this->citations)
 	$affiliated = '';
 	$nonaffiliated = '';
 
-	$formatter = new CitationFormat;
+	$formatter = new \Components\Citations\Helpers\Format;
 	//$formatter->setFormat($this->format);
 
 	// Loop through the citations and build the HTML
 	foreach ($this->citations as $cite)
 	{
 		$item  = "\t" . '<li>' . "\n";
-		$item .= CitationFormat::formatReference($cite, '');
+		$item .= \Components\Citations\Helpers\Format::formatReference($cite, '');
 		$item .= "\t\t" . '<p class="details">' . "\n";
 		$item .= "\t\t\t" . '<a href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $cite->id . '&format=bibtex&no_html=1') . '" title="' . JText::_('PLG_RESOURCES_CITATIONS_DOWNLOAD_BIBTEX') . '">BibTex</a> <span>|</span> ' . "\n";
 		$item .= "\t\t\t" . '<a href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $cite->id . '&format=endnote&no_html=1') . '" title="' . JText::_('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";

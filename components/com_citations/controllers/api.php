@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,9 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 
 JLoader::import('Hubzero.Component.ApiController');
 
@@ -167,7 +162,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
 
 		$filters['id']              = JRequest::getInt('id', 0);
-		$filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
+		$filters['tag']             = JRequest::getVar('tag', '', 'request', 'none', 2);
 		$filters['type']            = JRequest::getVar('type', '');
 		$filters['author']          = JRequest::getVar('author', '');
 		$filters['publishedin']     = JRequest::getVar('publishedin', '');
@@ -191,7 +186,7 @@ class CitationsControllerApi extends \Hubzero\Component\ApiController
 		$response->citations = array();
 
 		// Instantiate a new citations object
-		$obj = new CitationsCitation($database);
+		$obj = new \Components\Citations\Tables\Citation($database);
 
 		// Get a record count
 		$response->total = $obj->getCount($filters);

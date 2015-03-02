@@ -120,13 +120,13 @@ $newCiteUrl   = $this->project->provisioned == 1
 						<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
 					<?php if ($this->citations) {
 
-						$formatter = new CitationFormat;
+						$formatter = new \Components\Citations\Helpers\Format;
 						$formatter->setTemplate($this->format);
 
 						foreach ($this->citations as $cite) {
 							$citeText = $cite->formatted
 								? '<p>' . $cite->formatted . '</p>'
-								: CitationFormat::formatReference($cite, '');
+								: \Components\Citations\Helpers\Format::formatReference($cite, '');
 						?>
 						<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
 							<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>

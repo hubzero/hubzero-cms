@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,422 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Tables;
+
+use Hubzero\Geocode\Geocode;
+use Exception;
 
 /**
  * Citations class
  */
-class CitationsCitation extends JTable
+class Citation extends \JTable
 {
-	/**
-	 * Description for 'id'
-	 *
-	 * @var unknown
-	 */
-	var $id             	= NULL;  // @var int(11) Primary key
-
-	/**
-	 * Description for 'uid'
-	 *
-	 * @var unknown
-	 */
-	var $uid            	= NULL;  // @var varchar(200)
-
-	/**
-	 * Description for 'affiliated'
-	 *
-	 * @var unknown
-	 */
-	var $affiliated     	= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'fundedby'
-	 *
-	 * @var unknown
-	 */
-	var $fundedby       	= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'created'
-	 *
-	 * @var unknown
-	 */
-	var $created        	= NULL;  // @var datetime
-
-	/**
-	 * Description for 'address'
-	 *
-	 * @var unknown
-	 */
-	var $address        	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'author'
-	 *
-	 * @var unknown
-	 */
-	var $author         	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'booktitle'
-	 *
-	 * @var unknown
-	 */
-	var $booktitle      	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'chapter'
-	 *
-	 * @var unknown
-	 */
-	var $chapter        	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'cite'
-	 *
-	 * @var unknown
-	 */
-	var $cite           	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'edition'
-	 *
-	 * @var unknown
-	 */
-	var $edition        	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'editor'
-	 *
-	 * @var unknown
-	 */
-	var $editor         	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'eprint'
-	 *
-	 * @var unknown
-	 */
-	var $eprint         	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'howpublished'
-	 *
-	 * @var unknown
-	 */
-	var $howpublished   	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'institution'
-	 *
-	 * @var unknown
-	 */
-	var $institution    	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'isbn'
-	 *
-	 * @var unknown
-	 */
-	var $isbn           	= NULL;  // @var varchar(50)
-
-	/**
-	 * Description for 'journal'
-	 *
-	 * @var unknown
-	 */
-	var $journal        	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'key'
-	 *
-	 * @var unknown
-	 */
-	var $key            	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'location'
-	 *
-	 * @var unknown
-	 */
-	var $location       	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'month'
-	 *
-	 * @var unknown
-	 */
-	var $month          	= NULL;  // @var int(2)
-
-	/**
-	 * Description for 'note'
-	 *
-	 * @var unknown
-	 */
-	var $note           	= NULL;  // @var text
-
-	/**
-	 * Description for 'number'
-	 *
-	 * @var unknown
-	 */
-	var $number         	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'organization'
-	 *
-	 * @var unknown
-	 */
-	var $organization   	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'pages'
-	 *
-	 * @var unknown
-	 */
-	var $pages          	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'publisher'
-	 *
-	 * @var unknown
-	 */
-	var $publisher      	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'school'
-	 *
-	 * @var unknown
-	 */
-	var $school         	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'series'
-	 *
-	 * @var unknown
-	 */
-	var $series         	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'title'
-	 *
-	 * @var unknown
-	 */
-	var $title          	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'type'
-	 *
-	 * @var unknown
-	 */
-	var $type           	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'url'
-	 *
-	 * @var unknown
-	 */
-	var $url            	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'volume'
-	 *
-	 * @var unknown
-	 */
-	var $volume         	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'year'
-	 *
-	 * @var unknown
-	 */
-	var $year           	= NULL;  // @var int(4)
-
-	/**
-	 * Description for 'doi'
-	 *
-	 * @var unknown
-	 */
-	var $doi            	= NULL;  // @var varchar(50)
-
-	/**
-	 * Description for 'ref_type'
-	 *
-	 * @var unknown
-	 */
-	var $ref_type       	= NULL;  // @var varchar(50)
-
-	/**
-	 * Description for 'date_submit'
-	 *
-	 * @var unknown
-	 */
-	var $date_submit    	= NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'date_accept'
-	 *
-	 * @var unknown
-	 */
-	var $date_accept    	= NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'date_publish'
-	 *
-	 * @var unknown
-	 */
-	var $date_publish   	= NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'software_use'
-	 *
-	 * @var unknown
-	 */
-	var $software_use   	= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'res_edu'
-	 *
-	 * @var unknown
-	 */
-	var	$res_edu 			= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'exp_list_exp_data'
-	 *
-	 * @var unknown
-	 */
-	var $exp_list_exp_data  = NULL;  // @var int(3)
-
-	/**
-	 * Description for 'exp_data'
-	 *
-	 * @var unknown
-	 */
-	var $exp_data       	= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'notes'
-	 *
-	 * @var unknown
-	 */
-	var $notes          	= NULL;  // @var text
-
-	/**
-	 * Description for 'published'
-	 *
-	 * @var unknown
-	 */
-	var $published      	= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'abstract'
-	 *
-	 * @var unknown
-	 */
-	var $abstract 			= NULL;
-
-	/**
-	 * Description for 'keywords'
-	 *
-	 * @var unknown
-	 */
-	var $keywords			= NULL;
-
-	/**
-	 * Description for 'language'
-	 *
-	 * @var unknown
-	 */
-	var $language			= NULL;
-
-	/**
-	 * Description for 'accession_number'
-	 *
-	 * @var unknown
-	 */
-	var $accession_number	= NULL;
-
-	/**
-	 * Description for 'short_title'
-	 *
-	 * @var unknown
-	 */
-	var $short_title 		= NULL;
-
-	/**
-	 * Description for 'research_notes'
-	 *
-	 * @var unknown
-	 */
-	var $research_notes		= NULL;
-
-	/**
-	 * Description for 'author_address'
-	 *
-	 * @var unknown
-	 */
-	var $author_address 	= NULL;
-
-	/**
-	 * Description for 'call_number'
-	 *
-	 * @var unknown
-	 */
-	var $call_number		= NULL;
-
-	/**
-	 * Description for 'label'
-	 *
-	 * @var unknown
-	 */
-	var $label 				= NULL;
-
-	/**
-	 * Description for 'badges'
-	 *
-	 * @var unknown
-	 */
-//	var $badges				= NULL;
-
-	/**
-	 * Description for 'tags'
-	 *
-	 * @var unknown
-	 */
-//	var $tags				= NULL;
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $params				= NULL;
-
-	/**
-	 * Formatted citation
-	 *
-	 * @var unknown
-	 */
-	var $formatted			= NULL;
-
-	/**
-	 * Format of saved formatted citation
-	 *
-	 * @var unknown
-	 */
-	var $format				= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -449,32 +52,32 @@ class CitationsCitation extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if valid, false if not
+	 * @return  boolean  True if valid, false if not
 	 */
 	public function check()
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TITLE'));
 		}
-
 		if ($this->type == '' || !is_numeric($this->type))
 		{
-			$this->setError(JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TYPE'));
+			$this->setError(\JText::_('COM_CITATIONS_CITATION_MUST_HAVE_TYPE'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getCount'
+	 * Get a record count
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filter Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filter  Filters to apply
+	 * @param   boolean  $admin   User has admin access
+	 * @return  integer
 	 */
 	public function getCount($filter=array(), $admin=true)
 	{
@@ -487,17 +90,17 @@ class CitationsCitation extends JTable
 			 			(
 						SELECT r.id, COUNT(DISTINCT tag.tag) AS uniques
 						FROM $this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.uid
-						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
-						JOIN #__tags_object as tago ON tago.objectid=r.id
-						JOIN #__tags as tag ON tag.id=tago.tagid";
+						LEFT JOIN `#__users` AS u ON u.id = r.uid
+						LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid
+						JOIN `#__tags_object` as tago ON tago.objectid=r.id
+						JOIN `#__tags` as tag ON tag.id=tago.tagid";
 		}
 		else
 		{
 			$query  = "SELECT COUNT(*)
 						FROM $this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.uid
-						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
+						LEFT JOIN `#__users` AS u ON u.id = r.uid
+						LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid";
 		}
 
 		if (isset($filter['geo']) || isset($filter['aff']))
@@ -543,13 +146,11 @@ class CitationsCitation extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build query
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filter Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array    $filter  Filters to apply
+	 * @param   boolean  $admin   User has admin access
+	 * @return  string
 	 */
 	public function buildQuery($filter=array(), $admin=true)
 	{
@@ -639,8 +240,7 @@ class CitationsCitation extends JTable
 			// make sure its valid
 			if (!is_array($filter['reftype']))
 			{
-				JError::raiseError('404', JText::_('Citations: Invalid search param "reftype"'));
-				return;
+				throw new Exception(\JText::_('Citations: Invalid search param "reftype"'), 500);
 			}
 
 			if ((isset($filter['reftype']['research']) && $filter['reftype']['research'] == 1)
@@ -804,7 +404,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['na']) && $filter['geo']['na'] == 1)
 				{
-					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('na');
+					$countries = Geocode::getCountriesByContinent('na');
 					$c = implode("','",$countries);
 					if ($multi)
 					{
@@ -815,7 +415,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['eu']) && $filter['geo']['eu'] == 1)
 				{
-					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('eu');
+					$countries = Geocode::getCountriesByContinent('eu');
 					$c = implode("','", $countries);
 					if ($multi)
 					{
@@ -826,7 +426,7 @@ class CitationsCitation extends JTable
 				}
 				if (isset($filter['geo']['as']) && $filter['geo']['as'] == 1)
 				{
-					$countries = \Hubzero\Geocode\Geocode::getCountriesByContinent('as');
+					$countries = Geocode::getCountriesByContinent('as');
 					$c = implode("','", $countries);
 					if ($multi)
 					{
@@ -901,13 +501,11 @@ class CitationsCitation extends JTable
 	}
 
 	/**
-	 * Short description for 'getRecords'
+	 * Get a list of records
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filter Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filter  Filters to apply
+	 * @param   boolean  $admin   User has admin access
+	 * @return  array
 	 */
 	public function getRecords($filter=array(), $admin=true)
 	{
@@ -915,17 +513,17 @@ class CitationsCitation extends JTable
 		{
 			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, CS.link1_title, CS.link1_url, CS.link2_title, CS.link2_url, CS.link3_title, CS.link3_url, u.username, COUNT(DISTINCT tag.tag) AS uniques
 						FROM $this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.uid
-						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
-						JOIN #__tags_object as tago ON tago.objectid=r.id
-						JOIN #__tags as tag ON tag.id=tago.tagid";
+						LEFT JOIN `#__users` AS u ON u.id = r.uid
+						LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid
+						JOIN `#__tags_object` as tago ON tago.objectid=r.id
+						JOIN `#__tags` as tag ON tag.id=tago.tagid";
 		}
 		else
 		{
 			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, CS.link1_title, CS.link1_url, CS.link2_title, CS.link2_url, CS.link3_title, CS.link3_url, u.username
 						FROM $this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.uid
-						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
+						LEFT JOIN `#__users` AS u ON u.id = r.uid
+						LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid";
 		}
 
 		if (isset($filter['geo']) || isset($filter['aff']))
@@ -965,11 +563,9 @@ class CitationsCitation extends JTable
 	}
 
 	/**
-	 * Short description for 'getStats'
+	 * Get a lsit of basic stats
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @return  array
 	 */
 	public function getStats()
 	{
@@ -990,22 +586,20 @@ class CitationsCitation extends JTable
 	}
 
 	/**
-	 * Short description for 'getCitations'
+	 * Get a list of sitations
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $tbl Parameter description (if any) ...
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   string  $tbl
+	 * @param   string  $oid
+	 * @return  array
 	 */
 	public function getCitations($tbl, $oid)
 	{
-		$ca = new CitationsAssociation($this->_db);
+		$ca = new Association($this->_db);
 
 		$sql = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username
 				FROM $this->_tbl AS r
-				LEFT JOIN #__users AS u ON u.id = r.uid
-				LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid, $ca->_tbl AS a
+				LEFT JOIN `#__users` AS u ON u.id = r.uid
+				LEFT JOIN `#__citations_secondary` as CS ON r.id=CS.cid, $ca->_tbl AS a
 				WHERE r.published=1 AND a.tbl=" . $this->_db->Quote($tbl) . " AND a.oid=" . $this->_db->Quote($oid) . " AND a.cid=r.id
 				ORDER BY affiliated ASC, year DESC";
 
@@ -1016,13 +610,13 @@ class CitationsCitation extends JTable
 	/**
 	 * Load publication citation
 	 *
-	 * @param      string $doi
-	 * @param      string $oid
-	 * @return     object Return description (if any) ...
+	 * @param   string  $doi
+	 * @param   string  $oid
+	 * @return  object
 	 */
 	public function loadPubCitation($doi, $oid)
 	{
-		$ca  = new CitationsAssociation($this->_db);
+		$ca  = new Association($this->_db);
 
 		$sql = "SELECT C.* FROM $this->_tbl AS C ";
 		$sql.= " JOIN $ca->_tbl AS a ON a.cid=C.id ";
@@ -1031,11 +625,11 @@ class CitationsCitation extends JTable
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
@@ -1043,8 +637,8 @@ class CitationsCitation extends JTable
 	/**
 	 * Load entry by DOI
 	 *
-	 * @param      string $doi
-	 * @return     object Return description (if any) ...
+	 * @param   string   $doi
+	 * @return  boolean
 	 */
 	public function loadByDoi($doi)
 	{
@@ -1054,18 +648,23 @@ class CitationsCitation extends JTable
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{
-			return $this->bind( $result );
+			return $this->bind($result);
 		}
 		else
 		{
-			$this->setError( $this->_db->getErrorMsg() );
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
+	/**
+	 * Get the earliest year we have citations for
+	 *
+	 * @return  integer
+	 */
 	public function getEarliestYear()
 	{
-		//get the earliest year we have citations for
+		//
 		$query = "SELECT c.year FROM " . $this->_tbl . " as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$earliest_year = $this->_db->loadResult();
@@ -1075,17 +674,15 @@ class CitationsCitation extends JTable
 	}
 
 	/**
-	 * Short description for 'getLastCitationDate'
+	 * Get the last citation date
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $tbl Parameter description (if any) ...
-	 * @param      string $oid Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   string   $tbl
+	 * @param   string   $oid
+	 * @return  itneger
 	 */
 	public function getLastCitationDate($tbl, $oid)
 	{
-		$ca = new CitationsAssociation($this->_db);
+		$ca = new Association($this->_db);
 
 		$sql = "SELECT c.created "
 			 . " FROM $this->_tbl AS c, $ca->_tbl AS a"

@@ -176,7 +176,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// instantiate citations object and get count
-		$obj = new CitationsCitation($this->database);
+		$obj = new \Components\Citations\Tables\Citation($this->database);
 		$total = $obj->getCount(array(
 			'scope'    => 'group',
 			'scope_id' => $group->gidNumber
@@ -219,10 +219,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// load citation object
-		$citations = new CitationsCitation($this->database);
+		$citations = new \Components\Citations\Tables\Citation($this->database);
 
 		// get citaton types
-		$ct = new CitationsType($this->database);
+		$ct = new \Components\Citations\Tables\Type($this->database);
 		$types = $ct->getType();
 
 		// Get type stats
@@ -279,7 +279,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->isAdmin           = ($this->authorized == 'manager') ? true : false;
 
 		// Instantiate a new citations object
-		$citations = new CitationsCitation($this->database);
+		$citations = new \Components\Citations\Tables\Citation($this->database);
 
 		//get the earliest year we have citations for
 		$view->earliest_year = $citations->getEarliestYear();
@@ -436,7 +436,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Add some data to our view for form filtering/sorting
-		$ct = new CitationsType($this->database);
+		$ct = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $ct->getType();
 
 		//for the inemo-navigation
@@ -574,7 +574,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//get the citation types
-		$citationsType = new CitationsType($this->database);
+		$citationsType = new \Components\Citations\Tables\Type($this->database);
 		$view->types = $citationsType->getType();
 
 		$fields = array();
@@ -609,7 +609,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$pubAuthor = false;
 
 		// Load the associations object
-		$assoc = new CitationsAssociation($this->database);
+		$assoc = new \Components\Citations\Tables\Association($this->database);
 
 		// Get associations
 		if ($id)
@@ -625,7 +625,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load the object
-		$view->row = new CitationsCitation($this->database);
+		$view->row = new \Components\Citations\Tables\Citation($this->database);
 		$view->row->load($id);
 
 		//make sure title isnt too long
@@ -673,8 +673,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		else
 		{
 			//tags & badges
-			$view->tags   = CitationFormat::citationTags($view->row, $this->database, false);
-			$view->badges = CitationFormat::citationBadges($view->row, $this->database, false);
+			$view->tags   = \Components\Citations\Helpers\Format::citationTags($view->row, $this->database, false);
+			$view->badges = \Components\Citations\Helpers\Format::citationBadges($view->row, $this->database, false);
 		}
 
 		// Output HTML
@@ -722,7 +722,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		unset($c['badges']);
 
 		// Bind incoming data to object
-		$row = new CitationsCitation($this->database);
+		$row = new \Components\Citations\Tables\Citation($this->database);
 		if (!$row->bind($c))
 		{
 			$this->setError($row->getError());
@@ -764,7 +764,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$a = array_map('trim', $a);
 
 			// Initiate extended database class
-			$assoc = new CitationsAssociation($this->database);
+			$assoc = new \Components\Citations\Tables\Association($this->database);
 
 			//check to see if we should delete
 			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
@@ -812,14 +812,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
-			$ct1 = new CitationTags($row->id);
+			$ct1 = new \Components\Citations\Tables\Tags($row->id);
 			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
-			$ct2 = new CitationTags($row->id);
+			$ct2 = new \Components\Citations\Tables\Tags($row->id);
 			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
 		}
 

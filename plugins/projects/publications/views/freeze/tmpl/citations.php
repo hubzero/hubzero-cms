@@ -50,7 +50,7 @@ $elName = "citationsPick";
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 <?php if (count($this->pub->_citations) > 0) {
 	$i= 1;
-	$formatter = new CitationFormat;
+	$formatter = new \Components\Citations\Helpers\Format;
 	$formatter->setTemplate($this->pub->_citationFormat);
 	?>
 	<div class="list-wrapper">
@@ -59,7 +59,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 
 				$citeText = $cite->formatted
 							? '<p>' . $cite->formatted . '</p>'
-							: CitationFormat::formatReference($cite, '');
+							: \Components\Citations\Helpers\Format::formatReference($cite, '');
 			 ?>
 			<li>
 				<span class="item-title citation-formatted"><?php echo $citeText; ?></span>

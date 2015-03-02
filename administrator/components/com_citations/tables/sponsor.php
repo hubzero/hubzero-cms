@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,52 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Tables;
 
 /**
  * Table class for citation sponsor
  */
-class CitationsSponsor extends JTable
+class Sponsor extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = null;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $sponsor = null;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $link = null;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $image = null;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,8 +49,8 @@ class CitationsSponsor extends JTable
 	/**
 	 * Load sponsor(s) in an associative array
 	 *
-	 * @param      integer $id Sponsor ID
-	 * @return     array
+	 * @param   integer  $id  Sponsor ID
+	 * @return  array
 	 */
 	public function getSponsor($id = '')
 	{
@@ -93,8 +64,8 @@ class CitationsSponsor extends JTable
 	/**
 	 * Get all the sponsor IDs associated with a citation
 	 *
-	 * @param      integer $citeid Citation ID
-	 * @return     array
+	 * @param   integer  $citeid  Citation ID
+	 * @return  array
 	 */
 	public function getCitationSponsor($citeid)
 	{
@@ -103,12 +74,18 @@ class CitationsSponsor extends JTable
 			return;
 		}
 
-		$sql = "SELECT sid FROM #__citations_sponsors_assoc WHERE cid=" . $this->_db->Quote($citeid);
+		$sql = "SELECT sid FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->Quote($citeid);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResultArray();
 	}
 
-	public function getSponsorsForCitationWithId( $citeid )
+	/**
+	 * Get all the sponsor associated with a citation
+	 *
+	 * @param   integer  $citeid  Citation ID
+	 * @return  array
+	 */
+	public function getSponsorsForCitationWithId($citeid)
 	{
 		if (!$citeid)
 		{
@@ -116,7 +93,7 @@ class CitationsSponsor extends JTable
 		}
 
 		$sql = "SELECT s.id, s.sponsor, s.link, s.image
-				FROM #__citations_sponsors AS s, #__citations_sponsors_assoc AS sa
+				FROM `#__citations_sponsors` AS s, `#__citations_sponsors_assoc` AS sa
 				WHERE sa.cid={$citeid}
 				AND s.id=sa.sid";
 		$this->_db->setQuery($sql);
@@ -126,9 +103,9 @@ class CitationsSponsor extends JTable
 	/**
 	 * Add associations to a citation for a list of sponsors
 	 *
-	 * @param      integer $citeid   Citation ID
-	 * @param      array   $sponsors List of sponsor IDs
-	 * @return     array
+	 * @param   integer  $citeid    Citation ID
+	 * @param   array    $sponsors  List of sponsor IDs
+	 * @return  array
 	 */
 	public function addSponsors($citeid, $sponsors)
 	{
@@ -138,12 +115,12 @@ class CitationsSponsor extends JTable
 		}
 
 		// remove any existing associations
-		$sql = "DELETE FROM #__citations_sponsors_assoc WHERE cid=" . $this->_db->Quote($citeid);
+		$sql = "DELETE FROM `#__citations_sponsors_assoc` WHERE cid=" . $this->_db->Quote($citeid);
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
-		//add all new associations
-		$sql = "INSERT INTO #__citations_sponsors_assoc(cid, sid) VALUES";
+		// add all new associations
+		$sql = "INSERT INTO `#__citations_sponsors_assoc` (cid, sid) VALUES";
 		foreach ($sponsors as $s)
 		{
 			$sql .= "({$citeid}, {$s}), ";

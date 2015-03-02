@@ -38,7 +38,7 @@ $this->css()
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
-$citationsFormat = new CitationsFormat( $this->database );
+$citationsFormat = new \Components\Citations\Tables\Format($this->database);
 $template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
 //batch downloads
@@ -123,7 +123,7 @@ if ($label == "none") {
 
 				<?php if (count($this->citations) > 0) : ?>
 					<?php
-						$formatter = new CitationFormat();
+						$formatter = new \Components\Citations\Helpers\Format();
 						$formatter->setTemplate($template);
 
 						// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
@@ -209,7 +209,7 @@ if ($label == "none") {
 										<?php if ($citation_rollover && $cite->abstract != "") : ?>
 											<div class="citation-notes">
 												<?php
-													$cs = new CitationsSponsor($this->database);
+													$cs = new \Components\Citations\Tables\Sponsor($this->database);
 													$sponsors = $cs->getCitationSponsor($cite->id);
 													$final = "";
 													if ($sponsors)
@@ -248,11 +248,11 @@ if ($label == "none") {
 											}
 										?>
 										<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-											<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
+											<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 										<?php endif; ?>
 
 										<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-											<?php echo CitationFormat::citationTags($cite, $this->database); ?>
+											<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -264,7 +264,14 @@ if ($label == "none") {
 					<p class="warning"><?php echo JText::_('COM_CITATIONS_NO_CITATIONS_FOUND'); ?></p>
 				<?php endif; ?>
 				<?php
-					$this->pageNav->setAdditionalUrlParam('task', 'browse');
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					$pageNav->setAdditionalUrlParam('task', 'browse');
 					foreach ($this->filters as $key => $value)
 					{
 						switch ($key)
@@ -279,16 +286,16 @@ if ($label == "none") {
 							case 'geo':
 								foreach ($value as $k => $v)
 								{
-									$this->pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
+									$pageNav->setAdditionalUrlParam($key . '[' . $k . ']', $v);
 								}
 							break;
 
 							default:
-								$this->pageNav->setAdditionalUrlParam($key, $value);
+								$pageNav->setAdditionalUrlParam($key, $value);
 							break;
 						}
 					}
-					echo $this->pageNav->getListFooter();
+					echo $pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- /.container -->

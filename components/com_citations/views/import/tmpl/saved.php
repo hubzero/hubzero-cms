@@ -37,7 +37,7 @@ $this->css()
 //citation params
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
-$citationsFormat = new CitationFormat( $this->database );
+$citationsFormat = new \Components\Citations\Helpers\Format( $this->database );
 $template = $citationsFormat->getDefaultFormat();
 
 //batch downloads
@@ -72,7 +72,7 @@ if ($label == "none") {
 
 	<?php if (count($this->citations) > 0) : ?>
 		<?php
-			$formatter = new CitationFormat();
+			$formatter = new \Components\Citations\Helpers\Format();
 			$formatter->setTemplate($template);
 
 			$counter = 1;
@@ -125,11 +125,11 @@ if ($label == "none") {
 							<?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
 
 							<?php if ($this->config->get("citation_show_badges","no") == "yes") : ?>
-								<?php echo CitationFormat::citationBadges($cite, $this->database); ?>
+								<?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
 							<?php endif; ?>
 
 							<?php if ($this->config->get("citation_show_tags","no") == "yes") : ?>
-								<?php echo CitationFormat::citationTags($cite, $this->database); ?>
+								<?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
 							<?php endif; ?>
 						</td>
 					</tr>

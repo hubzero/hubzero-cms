@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,52 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Tables;
 
 /**
  * Table class for citation secondary data
  */
-class CitationsSecondary extends JTable
+class Secondary extends \JTable
 {
-
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $cid           = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $sec_cits_cnt  = NULL;
-
-	/**
-	 * tinytext()
-	 *
-	 * @var string
-	 */
-	var $search_string = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -79,18 +49,21 @@ class CitationsSecondary extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->cid) == '')
 		{
-			$this->setError(JText::_('SECONDARY_MUST_HAVE_CITATION_ID'));
-			return false;
+			$this->setError(\JText::_('SECONDARY_MUST_HAVE_CITATION_ID'));
 		}
 		if (trim($this->sec_cits_cnt) == '')
 		{
-			$this->setError(JText::_('SECONDARY_MUST_HAVE_COUNT'));
+			$this->setError(\JText::_('SECONDARY_MUST_HAVE_COUNT'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 		return true;
@@ -99,8 +72,8 @@ class CitationsSecondary extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
@@ -134,8 +107,8 @@ class CitationsSecondary extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array   $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -148,8 +121,8 @@ class CitationsSecondary extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

@@ -44,12 +44,12 @@ $citation = $this->citation;
 $profile = \Hubzero\User\Profile::getInstance( $citation->uid );
 
 //get citation type
-$ct = new CitationsType($database);
+$ct = new \Components\Citations\Tables\Type($database);
 $type = $ct->getType( $citation->type );
 
 //get citation sponsors
-$cs = new CitationsSponsor($database);
-$sponsors = $cs->getSponsorsForCitationWithId( $citation->id );
+$cs = new \Components\Citations\Tables\Sponsor($database);
+$sponsors = $cs->getSponsorsForCitationWithId($citation->id);
 
 //determine the separator
 $urlSeparator = PHP_EOL;
@@ -119,8 +119,8 @@ $params = new JParameter($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges
-$tags 	= CitationFormat::citationTags($citation, $database, false);
-$badges = CitationFormat::citationBadges($citation, $database, false);
+$tags 	= \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
+$badges = \Components\Citations\Helpers\Format::citationBadges($citation, $database, false);
 
 //are we allowed to show tags and badges
 $showTags 	= $config->get('citation_show_tags', 'yes');
@@ -212,10 +212,10 @@ $area = JRequest::getVar('area', 'about');
 
 		<div class="citation-citation">
 			<?php
-				$citationsFormat = new CitationsFormat( $this->database );
+				$citationsFormat = new \Components\Citations\Tables\Format($this->database);
 				$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
-				$cf = new CitationFormat();
+				$cf = new \Components\Citations\Helpers\Format();
 				$cf->setTemplate($template);
 				echo strip_tags($cf->formatCitation($citation, null, false, $config));
 			?>
@@ -534,7 +534,7 @@ $area = JRequest::getVar('area', 'about');
 					<tr>
 						<th><?php echo JText::_('COM_CITATIONS_TAGS'); ?></th>
 						<td>
-							<?php echo CitationFormat::citationTags($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationTags($citation, JFactory::getDBO()); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -543,7 +543,7 @@ $area = JRequest::getVar('area', 'about');
 					<tr>
 						<th><?php echo JText::_('COM_CITATIONS_BADGES'); ?></th>
 						<td>
-							<?php echo CitationFormat::citationBadges($citation, JFactory::getDBO()); ?>
+							<?php echo \Components\Citations\Helpers\Format::citationBadges($citation, JFactory::getDBO()); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -632,7 +632,7 @@ $area = JRequest::getVar('area', 'about');
 							<ul class="secondary openurl">
 								<?php if ($this->openUrl) : ?>
 									<li>
-										<?php echo CitationFormat::citationOpenUrl($this->openUrl, $citation); ?>
+										<?php echo \Components\Citations\Helpers\Format::citationOpenUrl($this->openUrl, $citation); ?>
 									</li>
 								<?php endif; ?>
 							</ul>

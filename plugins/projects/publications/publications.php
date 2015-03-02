@@ -2333,7 +2333,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$view->format = $this->_pubconfig->get('citation_format', 'apa');
 
 				// Get citations for this publication
-				$c = new CitationsCitation( $this->_database );
+				$c = new \Components\Citations\Tables\Citation( $this->_database );
 				$view->citations = $c->getCitations( 'publication', $row->publication_id );
 
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
@@ -6993,7 +6993,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
-				$assoc 	= new CitationsAssociation($this->_database);
+				$assoc 	= new \Components\Citations\Tables\Association($this->_database);
 				$filters = array('tbl' => 'publication', 'oid' => $row->publication_id);
 				$checked['citations'] = ($assoc->getCount($filters) > 0) ? 1 : 0;
 			}

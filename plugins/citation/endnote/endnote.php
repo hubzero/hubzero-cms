@@ -266,7 +266,9 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
 	protected function getCitationVars()
 	{
 		//get all the vars that a citation can have
-		$keys = array_keys(get_class_vars('CitationsCitation'));
+		$db = JFactory::getDBO();
+		$tbl = new \Components\Citations\Tables\Citation($db);
+		$keys = $tbl->getProperties();
 
 		//remove any private vars
 		foreach ($keys as $k => $v)

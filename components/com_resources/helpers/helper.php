@@ -548,7 +548,7 @@ class ResourcesHelper extends JObject
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
-		$cc = new CitationsCitation($this->_db);
+		$cc = new \Components\Citations\Tables\Citation($this->_db);
 
 		$this->citations = $cc->getCitations('resource', $this->_id);
 	}
@@ -586,7 +586,7 @@ class ResourcesHelper extends JObject
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
-		$cc = new CitationsCitation($this->_db);
+		$cc = new \Components\Citations\Tables\Citation($this->_db);
 
 		$this->lastCitationDate = $cc->getLastCitationDate('resource', $this->_id);
 	}

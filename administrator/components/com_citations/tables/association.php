@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,58 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Tables;
 
 /**
  * Table class for citation associations
  */
-class CitationsAssociation extends JTable
+class Association extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $cid   = NULL;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $oid   = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $type  = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $tbl = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -85,23 +49,25 @@ class CitationsAssociation extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->cid) == '')
 		{
-			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID'));
-			return false;
+			$this->setError(\JText::_('ASSOCIATION_MUST_HAVE_CITATION_ID'));
 		}
 		if (trim($this->tbl) == '')
 		{
-			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_TYPE'));
-			return false;
+			$this->setError(\JText::_('ASSOCIATION_MUST_HAVE_TYPE'));
 		}
 		if (trim($this->oid) == '')
 		{
-			$this->setError(JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID'));
+			$this->setError(\JText::_('ASSOCIATION_MUST_HAVE_OBJECT_ID'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 		return true;
@@ -110,8 +76,8 @@ class CitationsAssociation extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
@@ -140,7 +106,6 @@ class CitationsAssociation extends JTable
 		}
 		if (count($ands) > 0)
 		{
-			//$query .= " WHERE r.published=1 AND ";
 			$query .= " WHERE ";
 			$query .= implode(" AND ", $ands);
 		}
@@ -159,8 +124,8 @@ class CitationsAssociation extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array   $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -173,8 +138,8 @@ class CitationsAssociation extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

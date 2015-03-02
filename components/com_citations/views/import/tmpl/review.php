@@ -76,16 +76,16 @@ $no_show = array("errors","duplicate");
 					<?php foreach ($citations_require_attention as $c) : ?>
 						<?php
 							//load the duplicate citation
-							$cc = new CitationsCitation($database);
+							$cc = new \Components\Citations\Tables\Citation($database);
 							$cc->load($c['duplicate']);
 
 							//get the type
-							$ct = new CitationsType($database);
+							$ct = new \Components\Citations\Tables\Type($database);
 							$type = $ct->getType($cc->type);
 							$type_title = $type[0]['type_title'];
 
 							//get citations tags
-							$th = new CitationTags($cc->id);
+							$th = new \Components\Citations\Tables\Tags($cc->id);
 							$tags = $th->render('string');
 							$badges = $th->render('string', array('label' => 'badges'), true);
 						?>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Download;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . 'abstract.php');
+use Components\Citations\Tables\Type;
+
+include_once(__DIR__ . DS . 'downloadable.php');
 
 /**
  * Citations download class for BibText format
  */
-class CitationsDownloadBibtex extends CitationsDownloadAbstract
+class Bibtex extends Downloadable
 {
 	/**
 	 * Mime type
@@ -61,7 +62,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 	public function format($row)
 	{
 		// get fields to not include for all citations
-		$config = JComponentHelper::getParams('com_citations');
+		$config = \JComponentHelper::getParams('com_citations');
 		$exclude = $config->get('citation_download_exclude', '');
 		if (strpos($exclude, ',') !== false)
 		{
@@ -70,7 +71,7 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		$exclude = array_values(array_filter(array_map('trim', explode("\n", $exclude))));
 
 		//get fields to not include for specific citation
-		$cparams = new JRegistry($row->params);
+		$cparams = new \JRegistry($row->params);
 		$citation_exclude = $cparams->get('exclude', '');
 		if (strpos($citation_exclude, ',') !== false)
 		{
@@ -81,14 +82,14 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		//merge overall exclude and specific exclude
 		$exclude = array_values(array_unique(array_merge($exclude, $citation_exclude)));
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
-		$bibtex = new Structures_BibTex();
+		include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'BibTex.php');
+		$bibtex = new \Structures_BibTex();
 
 		$addarray = array();
 
 		//get all the citation types
-		$db = JFactory::getDBO();
-		$ct = new CitationsType($db);
+		$db = \JFactory::getDBO();
+		$ct = new Type($db);
 		$types = $ct->getType();
 
 		//find the right title

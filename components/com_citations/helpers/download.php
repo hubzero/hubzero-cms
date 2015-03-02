@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,61 +24,61 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Helpers;
+
+use Components\Citations\Download\Downloadable;
+use Exception;
 
 /**
  * Citations class for downloading a citation of a specific file type
  */
-class CitationsDownload
+class Download
 {
 	/**
-	 * Description for '_format'
+	 * Download formt
 	 *
 	 * @var string
 	 */
 	protected $_format = 'Bibtex';
 
 	/**
-	 * Description for '_reference'
+	 * Citation object
 	 *
-	 * @var unknown
+	 * @var object
 	 */
 	protected $_reference = null;
 
 	/**
-	 * Description for '_formatters'
+	 * List of formatters
 	 *
 	 * @var array
 	 */
 	protected $_formatters = array();
 
 	/**
-	 * Description for '_mime'
+	 * Mime type
 	 *
 	 * @var string
 	 */
 	protected $_mime = '';
 
 	/**
-	 * Description for '_extension'
+	 * File extension
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_extension = '';
 
 	/**
-	 * Short description for '__construct'
+	 * Constructor
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $reference Parameter description (if any) ...
-	 * @param      string $format Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $reference
+	 * @param   string  $format
+	 * @return  void
 	 */
 	public function __construct($reference=null, $format='Bibtex')
 	{
@@ -87,12 +87,10 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'setFormat'
+	 * Set the format
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $format Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $format
+	 * @return  void
 	 */
 	public function setFormat($format)
 	{
@@ -100,11 +98,9 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'getFormat'
+	 * Get the format
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function getFormat()
 	{
@@ -112,12 +108,10 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'setReference'
+	 * Set the reference
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $reference Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $reference
+	 * @return  void
 	 */
 	public function setReference($reference)
 	{
@@ -125,11 +119,9 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'getReference'
+	 * Get the reference
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  object
 	 */
 	public function getReference()
 	{
@@ -137,12 +129,10 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'setMimeType'
+	 * Set the mime type
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $mime Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $mime
+	 * @return  void
 	 */
 	public function setMimeType($mime)
 	{
@@ -150,11 +140,9 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'getMimeType'
+	 * Get the mime type
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function getMimeType()
 	{
@@ -162,12 +150,10 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'setExtension'
+	 * Set the extension
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $extension Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $extension
+	 * @return  void
 	 */
 	public function setExtension($extension)
 	{
@@ -175,11 +161,9 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'getExtension'
+	 * Get the extension
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string
 	 */
 	public function getExtension()
 	{
@@ -187,13 +171,11 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'setFormatter'
+	 * Set formatter for specified format
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $formatter Parameter description (if any) ...
-	 * @param      string $format Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $formatter
+	 * @param   string  $format
+	 * @return  void
 	 */
 	public function setFormatter($formatter, $format='')
 	{
@@ -203,12 +185,10 @@ class CitationsDownload
 	}
 
 	/**
-	 * Short description for 'getFormatter'
+	 * Get the formatter object, if set
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $format Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string  $format  Format to get
+	 * @return  mixed
 	 */
 	public function getFormatter($format='')
 	{
@@ -220,8 +200,8 @@ class CitationsDownload
 	/**
 	 * Format a record
 	 *
-	 * @param      object $reference Record to format
-	 * @return     string
+	 * @param   object  $reference  Record to format
+	 * @return  string
 	 */
 	public function formatReference($reference=null)
 	{
@@ -241,24 +221,22 @@ class CitationsDownload
 
 		if (!$formatter || !is_object($formatter))
 		{
-			$cls = 'CitationsDownload' . $format;
+			$cls = '\\components\\Citations\\Download\\' . $format;
 
-			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php'))
+			if (is_file(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php'))
 			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'download' . DS . strtolower($format) . '.php');
+				include_once(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php');
 			}
 			if (!class_exists($cls))
 			{
-				JError::raiseError(500, JText::_('Download format unavailable.'));
-				return;
+				throw new Exception(\JText::_('Download format unavailable.'), 500);
 			}
 
 			$formatter = new $cls();
 
-			if (!$formatter instanceof CitationsDownloadAbstract)
+			if (!$formatter instanceof Downloadable)
 			{
-				JError::raiseError(500, JText::_('Invalid download formatter specified.'));
-				return;
+				throw new Exception(\JText::_('Invalid download formatter specified.'), 500);
 			}
 
 			$this->setFormatter($formatter, $format);

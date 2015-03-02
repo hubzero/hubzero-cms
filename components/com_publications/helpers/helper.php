@@ -513,7 +513,7 @@ class PublicationHelper extends JObject
 			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 		$database = JFactory::getDBO();
 
-		$cc = new CitationsCitation( $database );
+		$cc = new \Components\Citations\Tables\Citation( $database );
 
 		$this->citations = $cc->getCitations( 'publication', $this->_pub_id );
 	}
@@ -558,7 +558,7 @@ class PublicationHelper extends JObject
 			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
 		$database = JFactory::getDBO();
 
-		$cc = new CitationsCitation( $database );
+		$cc = new \Components\Citations\Tables\Citation( $database );
 
 		$this->lastCitationDate = $cc->getLastCitationDate( 'publication', $this->_pub_id );
 	}

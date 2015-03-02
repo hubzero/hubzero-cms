@@ -482,7 +482,7 @@ class ResourcesHtml
 		{
 			$html .= '<ul class="citations results">' . "\n";
 			$html .= "\t" . '<li>' . "\n";
-			$html .= CitationFormat::formatReference($cite);
+			$html .= \Components\Citations\Helpers\Format::formatReference($cite);
 			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev'))
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";

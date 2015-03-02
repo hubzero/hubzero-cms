@@ -1031,7 +1031,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
-			$cc = new CitationsCitation($this->_db);
+			$cc = new \Components\Citations\Tables\Citation($this->_db);
 
 			if ($results = $cc->getCitations('resource', $this->resource->id))
 			{

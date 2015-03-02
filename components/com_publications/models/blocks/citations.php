@@ -152,7 +152,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
-			$c = new CitationsCitation( $this->_parent->_db );
+			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
 
@@ -201,7 +201,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
-			$c = new CitationsCitation( $this->_parent->_db );
+			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
 
@@ -272,7 +272,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			return false;
 		}
 
-		$citation = new CitationsCitation( $this->_parent->_db );
+		$citation = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 		if (!$citation->bind($cite))
 		{
 			$this->setError($citation->getError());
@@ -293,7 +293,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		// Create association
 		if ($new == true && $citation->id)
 		{
-			$assoc 		 = new CitationsAssociation( $this->_parent->_db );
+			$assoc 		 = new \Components\Citations\Tables\Association( $this->_parent->_db );
 			$assoc->oid  = $pub->id;
 			$assoc->tbl  = 'publication';
 			$assoc->type = 'owner';
@@ -385,7 +385,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
-			$c = new CitationsCitation( $this->_parent->_db );
+			$c = new \Components\Citations\Tables\Citation( $this->_parent->_db );
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
 

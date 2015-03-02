@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,44 +24,42 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Citations\Helpers;
+use Components\Citations\Tables;
 
 /**
  * Controller class for citation format
  */
-class CitationsControllerFormat extends \Hubzero\Component\AdminController
+class Format extends AdminController
 {
 	/**
 	 * List types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		//get current format
-		$citationsFormat = new CitationsFormat( $this->database );
+		$citationsFormat = new Tables\Format($this->database);
 		$this->view->currentFormat = $citationsFormat->getDefaultFormat();
-		//$this->view->currentStyle = $currentFormat->style;
-		//$this->view->currentFormat = $currentFormat->format;
 
 		//get formatter object
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php';
-		$cf = new CitationFormat();
-		$this->view->apaFormat = $cf->getDefaultFormat('apa');
+		$cf = new Helpers\Format();
+		$this->view->apaFormat  = $cf->getDefaultFormat('apa');
 		$this->view->ieeeFormat = $cf->getDefaultFormat('ieee');
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -77,17 +75,17 @@ class CitationsControllerFormat extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		//get format
-		$format = JRequest::getVar('format', array());
+		$format = \JRequest::getVar('format', array());
 
-		$citationsFormat = new CitationsFormat( $this->database );
+		$citationsFormat = new Tables\Format($this->database);
 		$citationsFormat->save($format);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('CITATION_FORMAT_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('CITATION_FORMAT_SAVED')
 		);
 	}
 }

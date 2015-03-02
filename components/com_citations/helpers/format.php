@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,29 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Helpers;
+
+use Components\Citations\Tables\Association;
+use Components\Citations\Tables\Type;
+use Hubzero\Utility\String;
+use Hubzero\User\Profile;
 
 /**
  * Citations helper class for formatting results
  */
-class CitationFormat
+class Format
 {
 	/**
 	 * Formatting template to use (defaults to APA)
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_template = 'apa';
 
 	/**
 	 * Description for '_template_keys'
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_template_keys = array(
 		"type" => "{TYPE}",
@@ -90,28 +94,28 @@ class CitationFormat
 	/**
 	 * Values used by COINs
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_coins_keys = array(
-		'title' 		=> 'rft.atitle',
-		'journaltitle' 	=> 'rft.jtitle',
-		'date_publish' 	=> 'rft.date',
-		'volume' 		=> 'rft.volume',
-		'number' 		=> 'rft.issue',
-		'pages' 		=> 'rft.pages',
-		'issn' 			=> 'rft.issn',
-		'isbn' 			=> 'rft.isbn',
-		'type' 			=> 'rft.genre',
-		'author' 		=> 'rft.au',
-		'url' 			=> 'rft_id',
-		'doi' 			=> 'rft_id=info:doi/',
-		'author' 		=> 'rft.au'
+		'title'        => 'rft.atitle',
+		'journaltitle' => 'rft.jtitle',
+		'date_publish' => 'rft.date',
+		'volume'       => 'rft.volume',
+		'number'       => 'rft.issue',
+		'pages'        => 'rft.pages',
+		'issn'         => 'rft.issn',
+		'isbn'         => 'rft.isbn',
+		'type'         => 'rft.genre',
+		'author'       => 'rft.au',
+		'url'          => 'rft_id',
+		'doi'          => 'rft_id=info:doi/',
+		'author'       => 'rft.au'
 	);
 
 	/**
 	 * Default formats
 	 *
-	 * @var array
+	 * @var  array
 	 */
 	protected $_default_format = array(
 		'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
@@ -121,7 +125,7 @@ class CitationFormat
 	/**
 	 * Function to set the formatters template to use
 	 *
-	 * @param     string Template string that will be used to format the citation
+	 * @param  string  Template string that will be used to format the citation
 	 */
 	public function setTemplate($template)
 	{
@@ -138,7 +142,7 @@ class CitationFormat
 	/**
 	 * Function to get the formatter template being used
 	 *
-	 * @return     string Template string that is being used to format citations
+	 * @return  string  Template string that is being used to format citations
 	 */
 	public function getTemplate()
 	{
@@ -148,7 +152,7 @@ class CitationFormat
 	/**
 	 * Function to set the template keys the formatter will use
 	 *
-	 * @param     string Template keys that will be used to format the citation
+	 * @param  string  Template keys that will be used to format the citation
 	 */
 	public function setTemplateKeys($template_keys)
 	{
@@ -161,7 +165,7 @@ class CitationFormat
 	/**
 	 * Function to get the formatter template keys being used
 	 *
-	 * @return     string Template string that is being used to format citations
+	 * @return  string  Template string that is being used to format citations
 	 */
 	public function getTemplateKeys()
 	{
@@ -171,24 +175,24 @@ class CitationFormat
 	/**
 	 * Function to format citation based on template
 	 *
-	 * @param      object  $citation      Citation object
-	 * @param      string  $highlight     String that we want to highlight
-	 * @param      boolean $include_coins Include COINs?
-	 * @param      object  $config        JParameter
-	 * @param      boolean $coins_only 	  Only output COINs?
-	 * @return     string Formatted citation
+	 * @param   object   $citation       Citation object
+	 * @param   string   $highlight      String that we want to highlight
+	 * @param   boolean  $include_coins  Include COINs?
+	 * @param   object   $config         JParameter
+	 * @param   boolean  $coins_only     Only output COINs?
+	 * @return  string   Formatted citation
 	 */
 	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	{
 		//get hub specific details
-		$jconfig = JFactory::getConfig();
+		$jconfig  = \JFactory::getConfig();
 		$hub_name = $jconfig->getValue('config.sitename');
-		$hub_url = rtrim(JURI::base(), '/');
+		$hub_url  = rtrim(\JURI::base(), '/');
 
 		$c_type = 'journal';
 
-		$db = JFactory::getDBO();
-		$ct = new CitationsType($db);
+		$db = \JFactory::getDBO();
+		$ct = new Type($db);
 		$types = $ct->getType();
 
 		$type = '';
@@ -236,7 +240,7 @@ class CitationFormat
 
 		foreach ($template_keys as $k => $v)
 		{
-			if (!CitationFormat::keyExistsOrIsNotEmpty($k, $citation))
+			if (!self::keyExistsOrIsNotEmpty($k, $citation))
 			{
 				$replace_values[$v] = '';
 			}
@@ -287,10 +291,10 @@ class CitationFormat
 							$id = trim($matches[1]);
 							if (is_numeric($id))
 							{
-								$user = JUser::getInstance($id);
+								$user = \JUser::getInstance($id);
 								if (is_object($user))
 								{
-									$a[] = '<a rel="external" href="' . JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+									$a[] = '<a rel="external" href="' . \JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
 								}
 								else
 								{
@@ -368,7 +372,7 @@ class CitationFormat
 					$singleCitationView = $config->get('citation_single_view', 0);
 					if ($singleCitationView && isset($citation->id))
 					{
-						$title = '<a href="'.JRoute::_('index.php?option=com_citations&task=view&id='.$citation->id).'">' . $t . '</a>';
+						$title = '<a href="' . \JRoute::_('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $t . '</a>';
 					}
 
 					//send back title to replace title placeholder ({TITLE})
@@ -386,7 +390,6 @@ class CitationFormat
 		}
 
 		// Add more to coins
-
 
 		$tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
 		$cite = strtr($tmpl, $replace_values);
@@ -419,7 +422,7 @@ class CitationFormat
 			',.' => '.',
 			'","'=> '',
 			'doi:.'=>'',
-			'(DOI: ).'=>''
+			'(DOI:).'=>''
 		);
 
 		foreach ($b as $k => $i)
@@ -449,25 +452,25 @@ class CitationFormat
 			}
 		}
 
-		//remove trailing commas
+		// remove trailing commas
 		$cite = trim($cite);
 		if (substr($cite, -1) == ',')
 		{
 			$cite = substr($cite, 0, strlen($cite)-1);
 		}
 
-		//percent encode chars
-		$chars = array('%', ' ', '/', ':', '"', '&amp;');
-		$replace = array("%20", "%20", "%2F", "%3A", "%22", "%26");
+		// percent encode chars
+		$chars      = array('%', ' ', '/', ':', '"', '&amp;');
+		$replace    = array("%20", "%20", "%2F", "%3A", "%22", "%26");
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 
 		$cite = preg_replace('/, :/', ':', $cite);
 
 		// highlight citation data
 		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
-		$cite = ($highlight) ? \Hubzero\Utility\String::highlight($cite, $highlight) : $cite;
+		$cite = ($highlight) ? String::highlight($cite, $highlight) : $cite;
 
-		//if we want coins add them
+		// if we want coins add them
 		if ($include_coins || $coins_only)
 		{
 			$coins = '<span class="Z3988" title="' . $coins_data . '"></span>';
@@ -479,15 +482,15 @@ class CitationFormat
 			$cite .= $coins;
 		}
 
-		//output the citation
+		// output the citation
 		return $cite;
 	}
 
 	/**
 	 * Function to return the default formats (APA, IEEE, etc)
 	 *
-	 * @param 	string		Format Type
-	 * @return  String		Formats Template
+	 * @param   string  $format  Format Type
+	 * @return  string  Formats Template
 	 */
 	public function getDefaultFormat($format = 'apa')
 	{
@@ -495,13 +498,13 @@ class CitationFormat
 	}
 
 	/**
-	 * citation links and badges
+	 * Citation links and badges
 	 *
-	 * @param      object $citation Citation record
-	 * @param      object $database JDatabase
-	 * @param      object $config   JParameter
-	 * @param      array  $openurl  Data to append
-	 * @return     string =
+	 * @param   object  $citation  Citation record
+	 * @param   object  $database  JDatabase
+	 * @param   object  $config    JParameter
+	 * @param   array   $openurl   Data to append
+	 * @return  string
 	 */
 	public function citationDetails($citation, $database, $config, $openurl)
 	{
@@ -510,79 +513,86 @@ class CitationFormat
 
 		$html  = '';
 
-		//are we allowing downloading
+		// are we allowing downloading
 		if ($downloading)
 		{
-			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . JText::_('COM_CITATIONS_BIBTEX') . '">' . JText::_('COM_CITATIONS_BIBTEX') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . \JText::_('COM_CITATIONS_BIBTEX') . '">' . \JText::_('COM_CITATIONS_BIBTEX') . '</a>';
 			$html .= '<span> | </span>';
-			$html .= '<a rel="nofollow" href="' . JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . JText::_('COM_CITATIONS_ENDNOTE') . '">' . JText::_('COM_CITATIONS_ENDNOTE') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . \JText::_('COM_CITATIONS_ENDNOTE') . '">' . \JText::_('COM_CITATIONS_ENDNOTE') . '</a>';
 		}
 
-		//if we have an open url link and we want to use open urls
+		// if we have an open url link and we want to use open urls
 		if ($openurl['link'] && $openurls)
 		{
-			$html .= '<span> | </span>' . self::citationOpenUrl( $openurl, $citation );
+			$html .= '<span> | </span>' . self::citationOpenUrl($openurl, $citation);
 		}
 
-		//citation association - to HUB resources
-		$html .= $this->citationAssociation( $config, $citation );
+		// citation association - to HUB resources
+		$html .= $this->citationAssociation($config, $citation);
 
 		return $html;
 	}
 
-	public static function citationOpenUrl( $openurl, $citation )
+	/**
+	 * Output a citation's OpenURL
+	 *
+	 * @param   array   $openurl   OpenURL data
+	 * @param   object  $citation  Citation
+	 * @return  string  HTML
+	 */
+	public static function citationOpenUrl($openurl, $citation)
 	{
 		$html = "";
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
-		$text = $openurl['text'];
-		$icon = $openurl['icon'];
-		$link = $openurl['link'];
+		$text  = $openurl['text'];
+		$icon  = $openurl['icon'];
+		$link  = $openurl['link'];
 		$query = array();
 
-		//citation type
-		$citation_type = new CitationsType( $database );
-		$citation_type->load( $citation->type );
+		// citation type
+		$citation_type = new Type($database);
+		$citation_type->load($citation->type);
 
-		//do we have a title
+		// do we have a title
 		if (isset($citation->title) && $citation->title != '')
 		{
 			if ($citation_type->type == 'journalarticle')
 			{
-				$query[] = 'atitle=' . str_replace(" ", "+", $citation->title);
+				$query[] = 'atitle=' . str_replace(' ', '+', $citation->title);
 			}
 			else
 			{
-				$query[] = 'title=' . str_replace(" ", "+", $citation->title);
+				$query[] = 'title=' . str_replace(' ', '+', $citation->title);
 			}
 		}
 
-		//do we have a doi to append?
+		// do we have a doi to append?
 		if (isset($citation->doi) && $citation->doi != '')
 		{
 			$query[] = 'doi=' . $citation->doi;
 		}
 
-		//do we have an issn or isbn to append?
+		// do we have an issn or isbn to append?
 		if (isset($citation->isbn) && $citation->isbn != '')
 		{
-			//get the issn/isbn in db
+			// get the issn/isbn in db
 			$issn_isbn = $citation->isbn;;
 
-			//check to see if we need to do any special processing to the issn/isbn before outputting
+			// check to see if we need to do any special processing to the issn/isbn before outputting
 			if (strstr($issn_isbn, "\r\n"))
 			{
 				$issn_isbn = array_filter(array_values(explode("\r\n", $issn_isbn)));
-				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
+				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
 			}
-			elseif (strstr($issn_isbn, " "))
+			elseif (strstr($issn_isbn, ' '))
 			{
-				$issn_isbn = array_filter(array_values(explode(" ", $issn_isbn)));
-				$issn_isbn = preg_replace("/[^0-9\-]/","",$issn_isbn[0]);
+				$issn_isbn = array_filter(array_values(explode(' ', $issn_isbn)));
+				$issn_isbn = preg_replace("/[^0-9\-]/", '', $issn_isbn[0]);
 			}
 
-			//append to url as issn if journal otherwise as isbn
+			// append to url as issn if journal otherwise as isbn
 			if ($citation_type->type == 'journalarticle')
 			{
 				$query[] = 'issn=' . $issn_isbn;
@@ -593,86 +603,91 @@ class CitationFormat
 			}
 		}
 
-		//do we have a date/year to append?
+		// do we have a date/year to append?
 		if (isset($citation->year) && $citation->year != '')
 		{
 			$query[] = 'date=' . $citation->year;
 		}
 
-		//to we have an issue/number to append?
+		// to we have an issue/number to append?
 		if (isset($citation->number) && $citation->number != '')
 		{
 			$query[] = 'issue=' . $citation->number;
 		}
 
-		//do we have a volume to append?
+		// do we have a volume to append?
 		if (isset($citation->volume) && $citation->volume != '')
 		{
 			$query[] = 'volume=' . $citation->volume;
 		}
 
-		//do we have pages to append?
+		// do we have pages to append?
 		if (isset($citation->pages) && $citation->pages != '')
 		{
 			$query[] = 'pages=' . $citation->pages;
 		}
 
-		//do we have a link with some data to send to resolver?
+		// do we have a link with some data to send to resolver?
 		if (count($query) > 0)
 		{
 			//add parts to url
-			$link .= "?" . implode("&", $query);
+			$link .= '?' . implode('&', $query);
 
-			//do we have an icon or just using text as the link
-			//$link_text = ($icon != '') ? '<img src="' . $icon . '" />' : $text;
-			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='.$icon.'" />' : $text;
+			// do we have an icon or just using text as the link
+			$link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
 
-			//final link
-			//$html .= '<span> | </span><a rel="external" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
+			// final link
 			$html .= '<a rel="external nofollow" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';
 		}
 
 		return $html;
 	}
 
-	public function citationAssociation( $config, $citation )
+	/**
+	 * Output a citation's associations
+	 *
+	 * @param   object  $config    Component config
+	 * @param   object  $citation  Citation
+	 * @return  string  HTML
+	 */
+	public function citationAssociation($config, $citation)
 	{
-		$html = "";
+		$html = '';
 
 		$internally_cited_image = $config->get('citation_cited', 0);
 		$internally_cited_image_single = $config->get('citation_cited_single', '');
 		$internally_cited_image_multiple = $config->get('citation_cited_multiple', '');
 
 		//database
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Get the associations
-		$assoc = new CitationsAssociation($database);
+		$assoc = new Association($database);
 		$assocs = $assoc->getRecords(array('cid' => $citation->id));
 
 		if (count($assocs) > 0)
 		{
 			if (count($assocs) > 1)
 			{
-				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
+				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . \JText::_('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
 				$k = 0;
 				$rrs = array();
 				foreach ($assocs as $rid)
 				{
 					if ($rid->tbl == 'resource')
 					{
-						$database->setQuery("SELECT published FROM #__resources WHERE id=" . $rid->oid);
+						$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $rid->oid);
 						$state = $database->loadResult();
 						if ($state == 1)
 						{
 							$k++;
 							if ($internally_cited_image)
 							{
-								$rrs[] = '<a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[<img src="' . $internally_cited_image_multiple . '" alt="Resource Cited" />]</a>';
+								$rrs[] = '<a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[<img src="' . $internally_cited_image_multiple . '" alt="Resource Cited" />]</a>';
 							}
 							else
 							{
-								$rrs[] = '<a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[' . $k . ']</a>';
+								$rrs[] = '<a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[' . $k . ']</a>';
 							}
 						}
 					}
@@ -684,17 +699,17 @@ class CitationFormat
 			{
 				if ($assocs[0]->tbl == 'resource')
 				{
-					$database->setQuery("SELECT published FROM #__resources WHERE id=" . $assocs[0]->oid);
+					$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $assocs[0]->oid);
 					$state = $database->loadResult();
 					if ($state == 1)
 					{
 						if ($internally_cited_image)
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';
 						}
 						else
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';
 						}
 					}
 				}
@@ -704,7 +719,7 @@ class CitationFormat
 		if ($citation->eprint)
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . JFilterOutput::ampReplace($citation->eprint) . '">' . JText::_('Electronic Paper') . '</a>';
+			$html .= '<a href="' . \JFilterOutput::ampReplace($citation->eprint) . '">' . \JText::_('Electronic Paper') . '</a>';
 		}
 
 		return $html;
@@ -713,18 +728,18 @@ class CitationFormat
 	/**
 	 * Output a tagcloud of badges associated with a citation
 	 *
-	 * @param      object $citation Citation
-	 * @param      object $database JDatabase
-	 * @return     string HTML
+	 * @param   object  $citation  Citation
+	 * @param   object  $database  JDatabase
+	 * @return  string  HTML
 	 */
 	public static function citationBadges($citation, $database, $includeHtml = true)
 	{
-		$html = "";
+		$html = '';
 		$badges = array();
 
 		$sql = "SELECT DISTINCT t.*
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.tagid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl='citations'
 				AND to1.objectid={$citation->id}
 				AND to1.label='badge'";
@@ -738,7 +753,7 @@ class CitationFormat
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge)
 				{
-					$html .= '<li><a href="javascript:void(0);">' . stripslashes($badge['raw_tag']) . '</a></li>';
+					$html .= '<li><a href="#">' . stripslashes($badge['raw_tag']) . '</a></li>';
 				}
 				$html .= "</ul>";
 				return $html;
@@ -748,28 +763,25 @@ class CitationFormat
 				return $badges;
 			}
 		}
-		else
-		{
-			return ($includeHtml) ? '' : $badges;
-		}
+
+		return ($includeHtml) ? '' : $badges;
 	}
 
 	/**
 	 * Output a tagcloud of tags associated with a citation
 	 *
-	 * @param      object $citation Citation
-	 * @param      object $database JDatabase
-	 * @return     string HTML
+	 * @param   object  $citation  Citation
+	 * @param   object  $database  JDatabase
+	 * @return  string  HTML
 	 */
 	public static function citationTags($citation, $database, $includeHtml = true)
 	{
 		$html = '';
 		$tags = array();
-		$juser = JFactory::getUser();
 
 		$sql = "SELECT DISTINCT t.*
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.tagid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl='citations'
 				AND to1.objectid={$citation->id}
 				AND (to1.label='' OR to1.label IS NULL)";
@@ -780,16 +792,17 @@ class CitationFormat
 		{
 			if ($includeHtml)
 			{
+				$isAdmin = (\JFactory::getUser()->authorise('core.manage', 'com_citations') ? true : false);
+
 				$html  = '<ul class="tags">';
 				foreach ($tags as $tag)
 				{
 					$cls = ($tag['admin']) ? 'admin' : '';
-					$isAdmin = (in_array($juser->get('usertype'), array('Super Administrator', 'Administrator'))) ? true : false;
 
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
 					{
-						$html .= '<li class="'.$cls.'"><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+						$html .= '<li class="' . $cls . '"><a href="' . \JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
 					}
 				}
 				$html .= '</ul>';
@@ -800,17 +813,15 @@ class CitationFormat
 				return $tags;
 			}
 		}
-		else
-		{
-			return ($includeHtml) ? '' : $tags;
-		}
+
+		return ($includeHtml) ? '' : $tags;
 	}
 
 	/**
 	 * Encode ampersands
 	 *
-	 * @param      string $url URL to encode
-	 * @return     string
+	 * @param   string  $url  URL to encode
+	 * @return  string
 	 */
 	public static function cleanUrl($url)
 	{
@@ -824,9 +835,9 @@ class CitationFormat
 	/**
 	 * Check if a property of an object exist and is filled in
 	 *
-	 * @param      string $key Property name
-	 * @param      object $row Object to look in
-	 * @return     boolean True if exists, false if not
+	 * @param   string   $key  Property name
+	 * @param   object   $row  Object to look in
+	 * @return  boolean  True if exists, false if not
 	 */
 	public static function keyExistsOrIsNotEmpty($key, $row)
 	{
@@ -848,11 +859,11 @@ class CitationFormat
 	}
 
 	/**
-	 * Ensure correction punctuation
+	 * Ensure correct punctuation
 	 *
-	 * @param      string $html  String to check punctuation on
-	 * @param      string $punct Punctuation to insert
-	 * @return     string
+	 * @param   string  $html   String to check punctuation on
+	 * @param   string  $punct  Punctuation to insert
+	 * @return  string
 	 */
 	public static function grammarCheck($html, $punct=',')
 	{
@@ -870,18 +881,18 @@ class CitationFormat
 	/**
 	 * Formatting Resources
 	 *
-	 * @param      object &$row      Record to format
-	 * @param      string $link      Parameter description (if any) ...
-	 * @param      string $highlight String to highlight
-	 * @return     string
+	 * @param   object  &$row       Record to format
+	 * @param   string  $link       Parameter description (if any) ...
+	 * @param   string  $highlight  String to highlight
+	 * @return  string
 	 */
 	public static function formatReference(&$row, $link='none', $highlight='')
 	{
 		$html = "\t" . '<p>';
-		if (CitationFormat::keyExistsOrIsNotEmpty('author', $row))
+		if (self::keyExistsOrIsNotEmpty('author', $row))
 		{
-			$xprofile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
-			$app   = JFactory::getApplication();
+			$xprofile = Profile::getInstance(\JFactory::getUser()->get('id'));
+			$app   = \JFactory::getApplication();
 			$auths = explode(';', $row->author);
 			$a = array();
 			foreach ($auths as $auth)
@@ -897,7 +908,7 @@ class CitationFormat
 					}
 					else
 					{
-						$zuser = JUser::getInstance(trim($matches[0]));
+						$zuser = \JUser::getInstance(trim($matches[0]));
 						if (is_object($zuser))
 						{
 							$aid = $zuser->get('id');
@@ -906,7 +917,7 @@ class CitationFormat
 					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
 					if ($aid)
 					{
-						$a[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $aid) . '">' . trim($auth) . '</a>';
+						$a[] = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $aid) . '">' . trim($auth) . '</a>';
 					}
 					else
 					{
@@ -922,17 +933,17 @@ class CitationFormat
 
 			$html .= stripslashes($row->author);
 		}
-		elseif (CitationFormat::keyExistsOrIsNotEmpty('editor', $row))
+		elseif (self::keyExistsOrIsNotEmpty('editor', $row))
 		{
 			$html .= stripslashes($row->editor);
 		}
 
-		if (CitationFormat::keyExistsOrIsNotEmpty('year', $row))
+		if (self::keyExistsOrIsNotEmpty('year', $row))
 		{
 			$html .= ' (' . $row->year . ')';
 		}
 
-		if (CitationFormat::keyExistsOrIsNotEmpty('title', $row))
+		if (self::keyExistsOrIsNotEmpty('title', $row))
 		{
 			if (!$row->url)
 			{
@@ -940,21 +951,21 @@ class CitationFormat
 			}
 			else
 			{
-				$html .= ', "<a href="' . CitationFormat::cleanUrl($row->url) . '">' . \Hubzero\Utility\String::highlight(stripslashes($row->title), $highlight) . '</a>';
+				$html .= ', "<a href="' . self::cleanUrl($row->url) . '">' . String::highlight(stripslashes($row->title), $highlight) . '</a>';
 			}
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('journal', $row)
-		 || CitationFormat::keyExistsOrIsNotEmpty('edition', $row)
-		 || CitationFormat::keyExistsOrIsNotEmpty('booktitle', $row))
+		if (self::keyExistsOrIsNotEmpty('journal', $row)
+		 || self::keyExistsOrIsNotEmpty('edition', $row)
+		 || self::keyExistsOrIsNotEmpty('booktitle', $row))
 		{
 			$html .= ',';
 		}
 		$html .= '"';
-		if (CitationFormat::keyExistsOrIsNotEmpty('journal', $row))
+		if (self::keyExistsOrIsNotEmpty('journal', $row))
 		{
-			$html .= ' <i>' . \Hubzero\Utility\String::highlight(stripslashes($row->journal), $highlight) . '</i>';
+			$html .= ' <i>' . String::highlight(stripslashes($row->journal), $highlight) . '</i>';
 		}
-		elseif (CitationFormat::keyExistsOrIsNotEmpty('booktitle', $row))
+		elseif (self::keyExistsOrIsNotEmpty('booktitle', $row))
 		{
 			$html .= ' <i>' . stripslashes($row->booktitle) . '</i>';
 		}
@@ -962,86 +973,86 @@ class CitationFormat
 		{
 			switch ($row->type)
 			{
-				case 'phdthesis': $html .= ' (' . JText::_('PhD Thesis') . ')'; break;
-				case 'mastersthesis': $html .= ' (' . JText::_('Masters Thesis') . ')'; break;
+				case 'phdthesis': $html .= ' (' . \JText::_('PhD Thesis') . ')'; break;
+				case 'mastersthesis': $html .= ' (' . \JText::_('Masters Thesis') . ')'; break;
 				default: break;
 			}
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('edition', $row))
+		if (self::keyExistsOrIsNotEmpty('edition', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . $row->edition;
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('chapter', $row))
+		if (self::keyExistsOrIsNotEmpty('chapter', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->chapter);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('series', $row))
+		if (self::keyExistsOrIsNotEmpty('series', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->series);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('publisher', $row))
+		if (self::keyExistsOrIsNotEmpty('publisher', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->publisher);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('address', $row))
+		if (self::keyExistsOrIsNotEmpty('address', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->address);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('volume', $row))
+		if (self::keyExistsOrIsNotEmpty('volume', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' <b>' . $row->volume . '</b>';
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('number', $row))
+		if (self::keyExistsOrIsNotEmpty('number', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' <b>' . $row->number . '</b>';
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('pages', $row))
+		if (self::keyExistsOrIsNotEmpty('pages', $row))
 		{
 			$html .= ': pg. ' . $row->pages;
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('organization', $row))
+		if (self::keyExistsOrIsNotEmpty('organization', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->organization);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('institution', $row))
+		if (self::keyExistsOrIsNotEmpty('institution', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->institution);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('school', $row))
+		if (self::keyExistsOrIsNotEmpty('school', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->school);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('location', $row))
+		if (self::keyExistsOrIsNotEmpty('location', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . stripslashes($row->location);
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('month', $row))
+		if (self::keyExistsOrIsNotEmpty('month', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, ',');
+			$html  = self::grammarCheck($html, ',');
 			$html .= ' ' . $row->month;
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('isbn', $row))
+		if (self::keyExistsOrIsNotEmpty('isbn', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, '.');
+			$html  = self::grammarCheck($html, '.');
 			$html .= ' ' . $row->isbn;
 		}
-		if (CitationFormat::keyExistsOrIsNotEmpty('doi', $row))
+		if (self::keyExistsOrIsNotEmpty('doi', $row))
 		{
-			$html  = CitationFormat::grammarCheck($html, '.');
-			$html .= ' (' . JText::_('DOI') . ': ' . $row->doi . ')';
+			$html  = self::grammarCheck($html, '.');
+			$html .= ' (' . \JText::_('DOI') . ': ' . $row->doi . ')';
 		}
-		$html  = CitationFormat::grammarCheck($html, '.');
+		$html  = self::grammarCheck($html, '.');
 		$html .= '</p>' . "\n";
 
 		return $html;

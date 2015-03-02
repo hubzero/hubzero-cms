@@ -102,7 +102,7 @@ class plgResourcesCitations extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 		// Get reviews for this resource
-		$c = new CitationsCitation($database);
+		$c = new \Components\Citations\Tables\Citation($database);
 		$citations = $c->getCitations('resource', $model->resource->id);
 
 		// Are we returning HTML?

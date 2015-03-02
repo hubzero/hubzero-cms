@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,31 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'format.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'format.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'download.php');
+foreach (array('citation', 'association', 'author', 'secondary', 'tags', 'type', 'sponsor', 'format') as $inc)
+{
+	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . $inc . '.php');
+}
+require_once(__DIR__ . DS . 'helpers' . DS . 'format.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'download.php');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'citations'));
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'citations'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
 }
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'CitationsController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

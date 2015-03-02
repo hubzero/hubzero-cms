@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,65 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Citations\Tables;
 
 /**
  * Table class for citation type
  */
-class CitationsType extends JTable
+class Type extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $type        = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $type_title  = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $type_desc   = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $type_export = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $fields      = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -93,8 +50,8 @@ class CitationsType extends JTable
 	 * Load citation type(s)
 	 * If ID is passed, it loads only one record
 	 *
-	 * @param      integer $id Type ID
-	 * @return     array
+	 * @param   integer  $id  Type ID
+	 * @return  array
 	 */
 	public function getType($id = '')
 	{
