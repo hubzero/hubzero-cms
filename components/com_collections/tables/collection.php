@@ -71,7 +71,7 @@ class CollectionsTableCollection extends JTable
 			'alias'  => trim($oid)
 		);
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
+		$query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->Quote($oid);
 		if ($object_id !== null)
 		{
 			$fields['object_id'] = intval($object_id);
