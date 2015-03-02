@@ -1593,7 +1593,7 @@ class PublicationsHtml
 				break;
 
 				default:
-					$fs = ($fsize) ? $fs : PublicationsHtml::formatSize($fs);
+					$fs = ($fsize) ? $fs : \Hubzero\Utility\Number::formatBytes($fs);
 				break;
 			}
 

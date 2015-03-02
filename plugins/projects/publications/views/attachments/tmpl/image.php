@@ -67,13 +67,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
 	}
 	else
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
 		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
 	}
 

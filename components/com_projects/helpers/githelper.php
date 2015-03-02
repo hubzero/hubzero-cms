@@ -1132,7 +1132,7 @@ class ProjectsGitHelper extends JObject
 
 				if (in_array($revision['commitStatus'], array('A', 'M')))
 				{
-					$revision['size'] = \Components\Projects\Helpers\Html::formatSize($this->gitLog($path, $name, $hash, 'size'));
+					$revision['size'] = \Hubzero\Utility\Number::formatBytes($this->gitLog($path, $name, $hash, 'size'));
 				}
 
 				// Exctract file content for certain statuses

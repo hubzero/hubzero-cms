@@ -327,7 +327,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		<span class="leftfloat">
 		<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE'); ?>
 		<a href="<?php echo $this->url . '/?' . $this->do . '=diskspace'; ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED'); ?></span></span></span></a>
-			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Components\Projects\Helpers\Html::formatSize($this->quota); ?></span>
+			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
 		</span>
 		<?php } ?>
 		<span class="rightfloat">

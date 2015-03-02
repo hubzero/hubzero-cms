@@ -60,7 +60,7 @@ if (count($this->activities) > 0 ) {
 					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="'.$title.'" /></a>'; ?>
 				</td>
 				<td>
-					<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?> </span>
+					<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo \Components\Projects\Helpers\Html::timeAgo($a->recorded).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?> </span>
 					<span class="project-name"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($title, 65); ?></a></span>
 					<div class="mline <?php echo $class; ?><?php if ($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">
 						<span>
@@ -80,8 +80,8 @@ if (count($this->activities) > 0 ) {
 							$ctimeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $comment->created ? ' class="urgency"' : '';
 						?>
 						<li class="quote" id="c_<?php echo $comment->id; ?>">
-							<?php echo stripslashes(ProjectsHTML::replaceUrls($comment->comment, 'external')); ?>
-							<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHTML::timeAgo($comment->created).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?></span></span>
+							<?php echo stripslashes(\Components\Projects\Helpers\Html::replaceUrls($comment->comment, 'external')); ?>
+							<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo \Components\Projects\Helpers\Html::timeAgo($comment->created).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?></span></span>
 						</li>
 						<?php } ?>
 					</ol>

@@ -101,8 +101,8 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				$i++;
 				?>
 					<li <?php echo $class; ?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)); ?>" class="project-image" /></a>
-						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->title), 30); ?></a>
 						<span class="sub">
 							<?php echo $owned_by; ?> | <?php echo $role; ?> <?php
 							if ($setup)

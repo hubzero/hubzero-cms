@@ -277,7 +277,7 @@ $services = $this->connect->getActive();
 		<span class="leftfloat">
 		<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE'); ?>
 		<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto.a.'active=files').'?case='.$this->case.a.'action=diskspace'; ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED'); ?></span></span></span></a>
-			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Components\Projects\Helpers\Html::formatSize($this->quota); ?></span>
+			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
 		</span>
 		<span class="rightfloat">
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=files').'/?action=status'.a.'case='.$this->case; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_FILES_GIT_STATUS'); ?></a>

@@ -400,7 +400,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 					// Bring up commented item
 					$needle  = array('id' => $c->parent_activity);
-					$key     = ProjectsHTML::myArraySearch($needle, $activities);
+					$key     = \Components\Projects\Helpers\Html::myArraySearch($needle, $activities);
 					$shown[] = $a->id;
 					if (!$key)
 					{
@@ -468,7 +468,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 					// Embed links
 					if ($body)
 					{
-						$body = ProjectsHTML::replaceUrls($body, 'external');
+						$body = \Components\Projects\Helpers\Html::replaceUrls($body, 'external');
 					}
 
 					// Style body text

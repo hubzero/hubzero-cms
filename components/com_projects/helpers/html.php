@@ -175,23 +175,6 @@ class Html
 	}
 
 	/**
-	 * Time current moment
-	 *
-	 * @param      string $timestamp
-	 * @return     string
-	 */
-	public static function timeFromNow ($timestamp)
-	{
-		// Get current UTC time
-		$current_time = strtotime(\JFactory::getDate());
-
-		// Determine the difference, between the time now and the timestamp
-		$difference =  strtotime($timestamp) - $current_time;
-
-		return self::timeDifference($difference);
-	}
-
-	/**
 	 * Get file attributes
 	 *
 	 * @param      string $path
@@ -293,35 +276,6 @@ class Html
 		closedir($dh);
 
 		return $dirSize;
-	}
-
-	/**
-	 * Format size
-	 *
-	 * @param      int $file_size
-	 * @param      int $round
-	 * @return     string
-	 */
-	public static function formatSize($file_size, $round = 0)
-	{
-		if ($file_size >= 1073741824)
-		{
-			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
-		}
-		elseif ($file_size >= 1048576)
-		{
-			$file_size = round(($file_size / 1048576 * 100), $round) / 100 . 'MB';
-		}
-		elseif ($file_size >= 1024)
-		{
-			$file_size = round(($file_size / 1024 * 100) / 100, $round) . 'KB';
-		}
-		elseif ($file_size < 1024)
-		{
-			$file_size = $file_size . 'b';
-		}
-
-		return $file_size;
 	}
 
 	/**

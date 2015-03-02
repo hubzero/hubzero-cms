@@ -64,7 +64,7 @@ if (count($this->activities) > 0 ) {
 				</td>
 				<td>
 					<span class="rightfloat mini faded<?php echo $timeclass; ?>">
-						<?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?>
+						<?php echo JHTML::_('date.relative', $a->recorded); ?>
 					</span>
 					<span class="project-name">
 						<a href="<?php echo JRoute::_('index.php?option=' . $this->option.'&task=view&'.$goto); ?>">
@@ -88,8 +88,8 @@ if (count($this->activities) > 0 ) {
 									$ctimeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $comment->created ? ' class="urgency"' : '';
 								?>
 								<li class="quote" id="c_<?php echo $comment->id; ?>">
-									<?php echo stripslashes(ProjectsHTML::replaceUrls($comment->comment, 'external')); ?>
-									<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo ProjectsHTML::timeAgo($comment->created).' '.JText::_('COM_PROJECTS_AGO'); ?></span></span>
+									<?php echo stripslashes(\Components\Projects\Helpers\Html::replaceUrls($comment->comment, 'external')); ?>
+									<span class="block mini faded"><?php echo $comment->author; ?> &middot; <span <?php echo $ctimeclass; ?>><?php echo JHTML::_('date.relative', $comment->created); ?></span></span>
 								</li>
 								<?php } ?>
 							</ol>

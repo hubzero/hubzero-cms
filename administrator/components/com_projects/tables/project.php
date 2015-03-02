@@ -443,9 +443,9 @@ class Project extends \JTable
 				'total'     => $fTotal,
 				'average'   => $fAverage,
 				'usage'     => $perc,
-				'diskspace' => Components\Projects\Helpers\Html::formatSize($fDSpace),
+				'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
 				'commits'   => $fCommits,
-				'pubspace'  => Components\Projects\Helpers\Html::formatSize($pDSpace)
+				'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
 			);
 		}
 

@@ -545,7 +545,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							? $view->params->get('quota')
 							: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 		$view->fileparams 	= $this->params;
-		$view->sizelimit 	= \Components\Projects\Helpers\Html::formatSize($this->params->get('maxUpload', '104857600'));
+		$view->sizelimit 	= \Hubzero\Utility\Number::formatBytes($this->params->get('maxUpload', '104857600'));
 
 		return $view->loadTemplate();
 	}
@@ -1502,7 +1502,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$file = $this->subdir ? $this->subdir . DS . $file : $file;
 
 				// Check file size
-				$sizelimit = \Components\Projects\Helpers\Html::formatSize($this->params->get('maxUpload', '104857600'));
+				$sizelimit = \Hubzero\Utility\Number::formatBytes($this->params->get('maxUpload', '104857600'));
 
 				if ( $files['size'][$i] > intval($this->params->get('maxUpload', '104857600')))
 				{
@@ -3673,7 +3673,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->title 		= $file;
 			$view->content 		= $content;
 			$view->option 		= $this->_option;
-			$view->filesize		= isset($filesize) ? \Components\Projects\Helpers\Html::formatSize($filesize) : NULL;
+			$view->filesize		= isset($filesize) ? \Hubzero\Utility\Number::formatBytes($filesize) : NULL;
 			$view->remote		= $remote;
 			$view->project		= $this->_project;
 
@@ -4780,7 +4780,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['fpath']		= $fpath;
 			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
 			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
-			$entry['size']		= $entry['bytes'] ? \Components\Projects\Helpers\Html::formatSize($entry['bytes']) : 'unknown';
+			$entry['size']		= $entry['bytes'] ? \Hubzero\Utility\Number::formatBytes($entry['bytes']) : 'unknown';
 			$entry['ext']		= \Components\Projects\Helpers\Html::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );
 
 			// Get last commit data
@@ -5247,7 +5247,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$file['author'] 			= NULL;
 				$file['email'] 				= NULL;
 				$file['bytes']				= filesize($this->prefix . $path . DS . $ut);
-				$file['size']				= \Components\Projects\Helpers\Html::formatSize($file['bytes']);
+				$file['size']				= \Hubzero\Utility\Number::formatBytes($file['bytes']);
 				$file['untracked'] 			= 1;
 				$file['pid'] 				= '';
 				$file['pub_title'] 			= '';
@@ -7366,7 +7366,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$obj->size		= filesize($fullPath);
 		}
 
-		$obj->formattedSize = $obj->size ? \Components\Projects\Helpers\Html::formatSize($obj->size) : NULL;
+		$obj->formattedSize = $obj->size ? \Hubzero\Utility\Number::formatBytes($obj->size) : NULL;
 
 		// Get file extention
 		$parts 		= explode('.', $file);
