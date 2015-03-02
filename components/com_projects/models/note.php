@@ -108,7 +108,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
-		$objSt = new ProjectPubStamp( $this->_db );
+		$objSt = new \Components\Projects\Tables\Stamp( $this->_db );
 
 		// Build reference for latest revision of page
 		$reference = array(

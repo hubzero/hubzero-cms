@@ -126,7 +126,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$objPD = new ProjectDatabase($database);
+		$objPD = new \Components\Projects\Tables\Database($database);
 		$total = $objPD->getItems($project->id, array('count' => 1));
 
 		$counts['databases'] = $total;
@@ -407,7 +407,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->filter		= $filter;
 
 		// Get databases to choose from
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 		$view->items = $objPD->getItems($this->_project->id, array());
 
 		// Get messages	and errors
@@ -500,7 +500,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		// Get database list
 		$list  = $objPD->getList($this->_project->id);
@@ -592,7 +592,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		// Get database list
 		$used_files  = $objPD->getUsedItems($this->_project->id);
@@ -633,7 +633,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->error = $error;
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		if ($objPD->loadRecord($db_id))
 		{
@@ -1092,7 +1092,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$dd = json_encode($dd);
 
 			// Get project database object
-			$objPD = new ProjectDatabase($this->_database);
+			$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 			// Recreate or Expert mode
 			if ($recreate) {
@@ -1170,7 +1170,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$db = $this->get_ds_db($this->_project->id);
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		// Get project path
 		$path = ProjectsHelper::getProjectPath($this->_project->alias,
@@ -1266,7 +1266,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$ds_db = $this->get_ds_db($this->_project->id);
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		if ($objPD->loadRecord($id))
 		{
@@ -1311,7 +1311,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$description = JRequest::getVar('db_description', false);
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		if ($objPD->loadRecord($id))
 		{
@@ -1360,7 +1360,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$ds_db 	= $this->get_ds_db($project->id);
 
 		// Load database record
-		$objPD = new ProjectDatabase($db);
+		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
 			$this->setError( JText::_('Error: failed to load database record') );
@@ -1370,7 +1370,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$dd = json_decode($objPD->data_definition, true);
 
 		// Get last version
-		$objPDV = new ProjectDatabaseVersion($db);
+		$objPDV = new \Components\Projects\Tables\DatabaseVersion($db);
 		$version = $objPDV->getMaxVersion($objPD->database_name) + 1;
 
 		// Start cloning
@@ -1447,7 +1447,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$ds_db 	= $this->get_ds_db($project->id);
 
 		// Load database record
-		$objPD = new ProjectDatabase($db);
+		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
 			$this->setError( JText::_('Error: failed to load database record') );

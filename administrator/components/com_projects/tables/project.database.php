@@ -28,112 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project databases
  */
-class ProjectDatabase extends JTable
+class Database extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Project id
-	 *
-	 * @var integer
-	 */
-	var $project      		= NULL;
-
-	/**
-	 * Database name
-	 *
-	 * @var string
-	 */
-	var $database_name  	= NULL;
-
-	/**
-	 * Database title
-	 *
-	 * @var string
-	 */
-	var $title  			= NULL;
-
-	/**
-	 * Source file
-	 *
-	 * @var string
-	 */
-	var $source_file  		= NULL;
-
-	/**
-	 * Source directory
-	 *
-	 * @var string
-	 */
-	var $source_dir  		= NULL;
-
-	/**
-	 * Source revision
-	 *
-	 * @var string
-	 */
-	var $source_revision  	= NULL;
-
-	/**
-	 * Description
-	 *
-	 * @var text
-	 */
-	var $description 		= NULL;
-
-	/**
-	 * Data definition
-	 *
-	 * @var text
-	 */
-	var $data_definition  	= NULL;
-
-	/**
-	 * Revision
-	 *
-	 * @var integer
-	 */
-	var $revision      		= NULL;
-
-	/**
-	 * Created (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $created			= NULL;
-
-	/**
-	 * Created by
-	 *
-	 * @var integer
-	 */
-	var $created_by      	= NULL;
-
-	/**
-	 * Updated (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $updated			= NULL;
-
-	/**
-	 * Updated by
-	 *
-	 * @var integer
-	 */
-	var $updated_by      	= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -159,7 +60,7 @@ class ProjectDatabase extends JTable
 		}
 		$name = is_numeric($identifier) ? 'id' : 'database_name';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name='$identifier' LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->Quote($identifier) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -190,7 +91,7 @@ class ProjectDatabase extends JTable
 		$query  = "SELECT ";
 		$query .= $count ? " COUNT(*) " : "*";
 		$query .= " FROM $this->_tbl ";
-		$query .= " WHERE project = '".$projectid."' ";
+		$query .= " WHERE project = " . $this->_db->Quote($projectid);
 		$query .= $skipPublished ? " AND revision IS NULL" : "";
 
 		$this->_db->setQuery( $query );
@@ -211,7 +112,7 @@ class ProjectDatabase extends JTable
 		 	return false;
 		}
 
-		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $projectid;
+		$query = "SELECT database_name, title FROM $this->_tbl WHERE id=$id AND project=" . $this->_db->Quote($projectid);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssoc();
@@ -234,7 +135,7 @@ class ProjectDatabase extends JTable
 				db.source_dir, db.source_revision, db.description, db.data_definition,
 				db.revision, db.created, db.created_by, c.name
 				FROM $this->_tbl AS db LEFT JOIN #__users AS c ON (c.id=db.created_by)
-				WHERE project = " . $projectid . " ORDER BY db.created DESC";
+				WHERE project = " . $this->_db->Quote($projectid) . " ORDER BY db.created DESC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadAssocList();
@@ -255,7 +156,7 @@ class ProjectDatabase extends JTable
 
 		$query = "SELECT DISTINCT IF(source_dir != '', CONCAT(source_dir, '/', source_file), source_file) as file
 				  FROM $this->_tbl
-				  WHERE project = " . $projectid;
+				  WHERE project = " . $this->_db->Quote($projectid);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResultArray();

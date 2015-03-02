@@ -30,7 +30,7 @@ $skipped = 0;
 $maxlevel = 100;
 
 // Get remote connection
-$objRFile = new ProjectRemoteFile ($this->database);
+$objRFile = new \Components\Projects\Tables\RemoteFile ($this->database);
 
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 

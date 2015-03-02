@@ -6389,7 +6389,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Do we have a thumbnail from Google?
-				$objRFile = new ProjectRemoteFile ($this->_database);
+				$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 				$remote   = $objRFile->getConnection($this->_project->id, '', 'google', $ima);
 				$default  = '';
 

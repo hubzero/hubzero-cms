@@ -1587,7 +1587,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$stamp  = preg_replace($regex, '', $stamp);
 
 			// Load item reference
-			$objSt = new ProjectPubStamp( $this->database );
+			$objSt = new \Components\Projects\Tables\Stamp( $this->database );
 			if ($stamp  && $objSt->loadItem($stamp) && $objSt->projectid == $this->publication->project_id)
 			{
 				$data     = json_decode($objSt->reference);

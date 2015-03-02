@@ -28,84 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
+
+use ProjectsHtml;
 
 /**
  * Table class for project public links
  */
-class ProjectPubStamp extends JTable
+class Stamp extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         	= NULL;
-
-	/**
-	 * Project ID
-	 *
-	 * @var int
-	 */
-	var $projectid      = NULL;
-
-	/**
-	 * Is link listed on public page?
-	 *
-	 * @var tinyint
-	 */
-	var $listed      	= NULL;
-
-	/**
-	 * Stamp
-	 *
-	 * @var string
-	 */
-	var $stamp        	= NULL;
-
-	/**
-	 * Load method
-	 *
-	 * @var string
-	 */
-	var $method        	= NULL;
-
-	/**
-	 * Reference type
-	 *
-	 * @var string
-	 */
-	var $type        	= NULL;
-
-	/**
-	 * Reference url
-	 *
-	 * @var string
-	 */
-	var $reference      = NULL;
-
-	/**
-	 * Datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $expires		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created					= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -129,10 +60,9 @@ class ProjectPubStamp extends JTable
 		{
 			return false;
 		}
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
-		$query  = "SELECT * FROM $this->_tbl WHERE stamp='$stamp' ";
-		//$query .= " AND (expires IS NULL OR expires <= '$now')";
+		$query  = "SELECT * FROM $this->_tbl WHERE stamp=" . $this->_db->Quote($stamp);
 		$query .= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -171,8 +101,9 @@ class ProjectPubStamp extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid=$projectid ";
-		$query .= "AND type='" . $type . "' AND listed=1 ORDER BY created DESC ";
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
+		$query .= " AND type=" . $this->_db->Quote($type)
+				. " AND listed=1 ORDER BY created DESC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -192,8 +123,9 @@ class ProjectPubStamp extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid=$projectid ";
-		$query .= "AND reference='" . ($reference) . "' AND type= " . $this->_db->Quote($type) . " LIMIT 1";
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid);
+		$query .= " AND reference=" . $this->_db->Quote($reference)
+				. " AND type= " . $this->_db->Quote($type) . " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -221,9 +153,9 @@ class ProjectPubStamp extends JTable
 			return false;
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
-		$obj = new ProjectPubStamp($this->_db);
+		$obj = new self($this->_db);
 		$obj->checkStamp( $projectid, $reference, $type );
 
 		// Load record
@@ -252,16 +184,16 @@ class ProjectPubStamp extends JTable
 		}
 
 		// Make new entry
-		$created = JFactory::getDate()->toSql();
-		$juser = JFactory::getUser();
+		$created = \JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
 		$created_by	= $juser->get('id');
 
 		// Generate stamp
-		require_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once( PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
 		$stamp 		= ProjectsHtml::generateCode(20, 20, 0, 1, 1);
 
 		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by)
-				 VALUES ('$stamp', '$projectid', '$listed', '$type', '$reference', '$expires' , '$created', '$created_by' )";
+				 VALUES (" . $this->_db->Quote($stamp) . ", " . $this->_db->Quote($projectid) . ", " . $this->_db->Quote($listed) . ", " . $this->_db->Quote($type) . ", " . $this->_db->Quote($reference) . ", " . $this->_db->Quote($expires) . " , " . $this->_db->Quote($created) . ", " . $this->_db->Quote($created_by) . " )";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())

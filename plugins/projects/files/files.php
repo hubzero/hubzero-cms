@@ -497,7 +497,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->sharing 		 = 0;
 		$remotes			 = array();
 
-		$objRFile = new ProjectRemoteFile ($this->_database);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 
 		// Remote service(s) active?
 		if (!empty($this->_rServices) && $this->_case == 'files')
@@ -4281,7 +4281,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	private function _getRemoteConnection($local_path = '', $id = 0, $service = '', $converted = 'na')
 	{
 		// Get remote connection
-		$objRFile = new ProjectRemoteFile ($this->_database);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 		$remote   = $objRFile->getConnection($this->_project->id, $id, $service, $local_path, $converted);
 
 		return $remote;
@@ -5357,7 +5357,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-			$objRFile = new ProjectRemoteFile ($database);
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($database);
 			$converted = $objRFile->getFileCount($obj->id, '', '1');
 		}
 
@@ -5919,7 +5919,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_writeToFile(JText::_('Getting remote directory structure') );
 
 		// Get stored remote connections
-		$objRFile = new ProjectRemoteFile ($this->_database);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 		$connections = $objRFile->getRemoteConnections($this->_project->id, $service);
 
 		// Get remote folder structure (to find out remote ids)
@@ -6154,7 +6154,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Delete connection record if exists
 						if ($deleted)
 						{
-							$objRFile = new ProjectRemoteFile ($this->_database);
+							$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 							$objRFile->deleteRecord( $this->_project->id, $service, $local['remoteid'], $filename);
 						}
 					}
@@ -6387,7 +6387,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					// Delete connection record if exists
 					if ($deleted)
 					{
-						$objRFile = new ProjectRemoteFile ($this->_database);
+						$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 						$objRFile->deleteRecord( $this->_project->id, $service, $remote['remoteid']);
 					}
 				}
@@ -6546,7 +6546,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Update connection record
 				if ($updated)
 				{
-					$objRFile = new ProjectRemoteFile ($this->_database);
+					$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 					$objRFile->updateSyncRecord(
 						$this->_project->id, $service, $this->_uid,
 						$remote['type'], $remote['remoteid'], $filename,
@@ -7410,7 +7410,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
-			$objSt = new ProjectPubStamp( $this->_database );
+			$objSt = new \Components\Projects\Tables\Stamp( $this->_database );
 
 			// Build reference for download URL
 			$reference = array(

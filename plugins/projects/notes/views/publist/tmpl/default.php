@@ -25,21 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
-{
-	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-		.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-}
-else
-{
-	return false;
-}
-
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 $database 	= JFactory::getDBO();
-$objSt 		= new ProjectPubStamp( $database );
+$objSt 		= new \Components\Projects\Tables\Stamp( $database );
 $page		= new \Components\Wiki\Tables\Page( $database );
 
 // Get listed public notes

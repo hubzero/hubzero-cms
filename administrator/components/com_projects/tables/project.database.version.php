@@ -28,42 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project database versions
  */
-class ProjectDatabaseVersion extends JTable
+class DatabaseVersion extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Database name
-	 *
-	 * @var string
-	 */
-	var $database_name  	= NULL;
-
-	/**
-	 * Version
-	 *
-	 * @var integer
-	 */
-	var $version      		= NULL;
-
-	/**
-	 * Data definition
-	 *
-	 * @var text
-	 */
-	var $data_definition  	= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -90,7 +61,7 @@ class ProjectDatabaseVersion extends JTable
 		}
 
 		$query = "SELECT MAX(version) as version FROM $this->_tbl
-		 			WHERE database_name='$dbname'";
+		 			WHERE database_name=" . $this->_db->Quote($dbname);
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();

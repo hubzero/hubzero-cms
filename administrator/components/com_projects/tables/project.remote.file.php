@@ -28,183 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project shared files
  */
-class ProjectRemoteFile extends JTable
+class RemoteFile extends \JTable
 {
-
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Project id
-	 *
-	 * @var integer
-	 */
-	var $projectid       	= NULL;
-
-	/**
-	 * Local path to file in Git repo
-	 *
-	 * @var string
-	 */
-	var $local_path       	= NULL;
-
-	/**
-	 * Original path
-	 *
-	 * @var string
-	 */
-	var $original_path       = NULL;
-
-	/**
-	 * Original mimeType
-	 *
-	 * @var string
-	 */
-	var $original_format      = NULL;
-
-	/**
-	 * Local file format
-	 *
-	 * @var string
-	 */
-	var $local_format       = NULL;
-
-	/**
-	 * Local subdir
-	 *
-	 * @var string
-	 */
-	var $local_dirpath       = NULL;
-
-	/**
-	 * Local md5 hash
-	 *
-	 * @var string
-	 */
-	var $local_md5       	= NULL;
-
-	/**
-	 * Service name (google/dropbox)
-	 *
-	 * @var string
-	 */
-	var $service       		= NULL;
-
-	/**
-	 * Item type (file or folder)
-	 *
-	 * @var string
-	 */
-	var $type       		= NULL;
-
-	/**
-	 * Is file currently controlled by remote service?
-	 *
-	 * @var integer
-	 */
-	var $remote_editing    	= NULL;
-
-	/**
-	 * Remote Identifier
-	 *
-	 * @var string
-	 */
-	var $remote_id       	= NULL;
-
-	/**
-	 * Remote Parent Id or name
-	 *
-	 * @var string
-	 */
-	var $remote_parent      = NULL;
-
-	/**
-	 * Remote title
-	 *
-	 * @var text
-	 */
-	var $remote_title    	= NULL;
-
-	/**
-	 * Remote md5 hash
-	 *
-	 * @var string
-	 */
-	var $remote_md5       	= NULL;
-
-	/**
-	 * Remote mime type
-	 *
-	 * @var string
-	 */
-	var $remote_format      = NULL;
-
-	/**
-	 * Remote modified time (UTC)
-	 *
-	 * @var string
-	 */
-	var $remote_modified    = NULL;
-
-	/**
-	 * Remote change author
-	 *
-	 * @var string
-	 */
-	var $remote_author    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by			= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by		= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified			= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $synced				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $paired				= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -234,13 +64,13 @@ class ProjectRemoteFile extends JTable
 		$query  = "SELECT local_path, local_dirpath, remote_id, synced, type,
 					remote_editing as converted, remote_parent, remote_format,
 					remote_modified, paired, original_path FROM $this->_tbl";
-		$query .= " WHERE projectid=$projectid  ";
-		$query .= " AND service='" . $service . "' ";
-		$query .= $local_dirpath ? " AND local_dirpath='" . $local_dirpath . "' " : '';
+		$query .= " WHERE projectid=" . $this->_db->Quote($projectid);
+		$query .= " AND service=" . $this->_db->Quote($service);
+		$query .= $local_dirpath ? " AND local_dirpath=" . $this->_db->Quote($local_dirpath) : '';
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = '". $converted. "'";
+			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
 		}
 
 		$this->_db->setQuery( $query );
@@ -285,12 +115,12 @@ class ProjectRemoteFile extends JTable
 		}
 
 		$query  = "SELECT COUNT(*) FROM $this->_tbl";
-		$query .= " WHERE projectid=$projectid  ";
-		$query .= $service ? " AND service='" . $service . "' " : "";
+		$query .= " WHERE projectid=" . $this->_db->Quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->Quote($service) : "";
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = '". $converted. "'";
+			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
 		}
 
 		$this->_db->setQuery( $query );
@@ -347,16 +177,16 @@ class ProjectRemoteFile extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid = $projectid ";
-		$query .= $service ? " AND service='". $service ."' " : '';
+		$query  = "SELECT * FROM $this->_tbl WHERE projectid =" . $this->_db->Quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->Quote($service) : '';
 
 		if ($id)
 		{
-			$query .= " AND remote_id = '". $id. "'";
+			$query .= " AND remote_id = " . $this->_db->Quote($id);
 		}
 		else
 		{
-			$query .= "AND local_path = '". $local_path. "'";
+			$query .= " AND local_path =" . $this->_db->Quote($local_path);
 		}
 
 		$query .= " ORDER BY modified DESC, created DESC LIMIT 1";
@@ -390,20 +220,20 @@ class ProjectRemoteFile extends JTable
 			   		service, remote_modified as modified, remote_author as author,
 					remote_md5 as md5, synced, paired, type, original_path,
 					original_format, original_id
-		 		   FROM $this->_tbl WHERE projectid = $projectid ";
-		$query .= $service ? " AND service='". $service ."' " : '';
+		 		   FROM $this->_tbl WHERE projectid = " . $this->_db->Quote($projectid);
+		$query .= $service ? " AND service=" . $this->_db->Quote($service) : '';
 		if ($id)
 		{
-			$query .= " AND remote_id = '". $id. "'";
+			$query .= " AND remote_id = " . $this->_db->Quote($id);
 		}
 		else
 		{
-			$query .= "AND local_path = '". $local_path. "'";
+			$query .= " AND local_path = " . $this->_db->Quote($local_path);
 		}
 		if ($converted != 'na')
 		{
 			$converted = $converted == 1 ? 1 : 0;
-			$query .= " AND remote_editing = '". $converted. "'";
+			$query .= " AND remote_editing = " . $this->_db->Quote($converted);
 		}
 		$query .= " ORDER BY modified DESC, created DESC LIMIT 1";
 
@@ -437,7 +267,7 @@ class ProjectRemoteFile extends JTable
 			$this->remote_title 	= $item['title'];
 			$this->remote_md5 		= $item['md5'];
 			$this->type				= $item['type'];
-			$this->created			= JFactory::getDate()->toSql();
+			$this->created			= \JFactory::getDate()->toSql();
 			$this->created_by		= $uid;
 			$this->remote_editing	= $item['converted'];
 			$this->remote_format 	= $item['mimeType'];
@@ -502,7 +332,7 @@ class ProjectRemoteFile extends JTable
 		{
 			$this->projectid 		= $projectid;
 			$this->service			= $service;
-			$this->created			= JFactory::getDate()->toSql();
+			$this->created			= \JFactory::getDate()->toSql();
 			$this->created_by		= $uid ? $uid : $this->uid;
 			$this->type				= $type;
 		}
@@ -521,7 +351,7 @@ class ProjectRemoteFile extends JTable
 		$this->remote_modified 	= isset($remote['modified']) ? $remote['modified'] : $this->remote_modified;
 		$this->remote_author 	= isset($remote['author']) ? $remote['author'] : $this->remote_author;
 
-		$this->modified 		= JFactory::getDate()->toSql();
+		$this->modified 		= \JFactory::getDate()->toSql();
 		$this->modified_by		= $uid ? $uid : $this->uid;
 		$this->synced 			= gmdate('Y-m-d H:i:s');
 
@@ -557,7 +387,7 @@ class ProjectRemoteFile extends JTable
 			$this->projectid 		= $projectid;
 			$this->remote_id 		= $id;
 			$this->service			= $service;
-			$this->created			= JFactory::getDate()->toSql();
+			$this->created			= \JFactory::getDate()->toSql();
 			$this->created_by		= $uid ? $uid : $this->uid;
 		}
 
@@ -568,7 +398,7 @@ class ProjectRemoteFile extends JTable
 
 		$this->local_path 		= $local_path ? $local_path : $this->local_path;
 		$this->type				= $type;
-		$this->modified 		= JFactory::getDate()->toSql();
+		$this->modified 		= \JFactory::getDate()->toSql();
 		$this->modified_by		= $uid ? $uid : $this->uid;
 		$this->synced 			= gmdate('Y-m-d H:i:s');
 		$this->remote_editing	= $converted ? $converted : $this->remote_editing;

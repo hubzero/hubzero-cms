@@ -222,7 +222,7 @@ class typeDatabases extends JObject
 		$item = $this->__get('item');
 
 		// Get project database object
-		$objPD = new ProjectDatabase($this->_database);
+		$objPD = new \Components\Projects\Tables\Database($this->_database);
 		if ($objPD->loadRecord($item))
 		{
 			$title = $objPD->title;
@@ -268,7 +268,7 @@ class typeDatabases extends JObject
 		$dataid = $item->object_id;
 		$dbName = $item->object_name;
 
-		$data = new ProjectDatabase($this->_database);
+		$data = new \Components\Projects\Tables\Database($this->_database);
 		if (!$data->loadRecord($dbName))
 		{
 			return true;
@@ -290,7 +290,7 @@ class typeDatabases extends JObject
 
 		$dbName = $att->id ? $att->object_name : $item;
 
-		$data = new ProjectDatabase($this->_database);
+		$data = new \Components\Projects\Tables\Database($this->_database);
 		if (!$data->loadRecord($dbName))
 		{
 			return false;
@@ -335,7 +335,7 @@ class typeDatabases extends JObject
 			$dbVersion = NULL;
 
 			// Get database object and load record
-			$objData = new ProjectDatabase($this->_database);
+			$objData = new \Components\Projects\Tables\Database($this->_database);
 			$objData->loadRecord($database_name);
 
 			// Load component configs
@@ -369,8 +369,7 @@ class typeDatabases extends JObject
 			// Build publication path
 			$base_path 		= $pubconfig->get('webpath');
 			$publishPath 	= $helper->buildPath($pid, $vid, $base_path, 'data', 1);
-			$pPath 			= JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid)
-							. '/?vid=' . $vid . a . 'task=serve';
+			$pPath 			= JRoute::_('index.php?option=com_publications&id=' . $pid . '&vid=' . $vid . '&task=serve');
 
 			// Create new version path
 			if (!is_dir( $publishPath ))
@@ -644,11 +643,10 @@ class typeDatabases extends JObject
 
 			// Build publication path
 			$publishPath = $helper->buildPath($row->publication_id, $row->id, $base_path, 'data', 1);
-			$pPath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $row->publication_id)
-				. '/?vid=' . $row->id . a . 'task=serve';
+			$pPath = JRoute::_('index.php?option=com_publications&id=' . $row->publication_id . '&vid=' . $row->id . '&task=serve');
 
 			// Get database object and load record
-			$objData = new ProjectDatabase($this->_database);
+			$objData = new \Components\Projects\Tables\Database($this->_database);
 			$objData->loadRecord($database_name);
 
 			if (!$objData->id)

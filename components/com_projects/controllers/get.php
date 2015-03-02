@@ -62,7 +62,7 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 		$stamp  = preg_replace($regex, '', $stamp);
 
 		// Load item reference
-		$objSt = new ProjectPubStamp( $this->database );
+		$objSt = new \Components\Projects\Tables\Stamp( $this->database );
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			$this->setRedirect(

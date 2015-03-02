@@ -254,7 +254,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				continue;
 			}
 			// Get database object and load record
-			$objData = new ProjectDatabase($this->_parent->_db);
+			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 			$objData->loadRecord($att->object_name);
 			$dbVersion = NULL;
 
@@ -436,7 +436,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$dispatcher = JDispatcher::getInstance();
 
 		// Get database object and load record
-		$objData = new ProjectDatabase($this->_parent->_db);
+		$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 		$objData->loadRecord($database_name);
 		$dbVersion = NULL;
 
@@ -552,7 +552,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			$dispatcher = JDispatcher::getInstance();
 
 			// Get database object and load record
-			$objData = new ProjectDatabase($this->_parent->_db);
+			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 			$objData->loadRecord($row->object_name);
 			if (!$objData->id)
 			{

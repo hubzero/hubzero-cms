@@ -897,7 +897,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 
 		// Update connection record
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
 		$update = $objRFile->updateRecord( $projectid, $service, $newItemId,
 			$fpath, 'file', $this->_uid, $parentId, $title, $remote_md5,
@@ -990,7 +990,7 @@ class ProjectsConnectHelper extends JObject {
 								&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
 		// Update connection record
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
 		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
 			$local['local_path'], 'file', $uid, $parentId, $title, $remote_md5,
@@ -1052,7 +1052,7 @@ class ProjectsConnectHelper extends JObject {
 		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
 
 		// Update connection record
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
 		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
 			$local['local_path'], $local['type'], $uid, $parentId, $newTitle, $remote_md5,
@@ -1113,7 +1113,7 @@ class ProjectsConnectHelper extends JObject {
 		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
 
 		// Update connection record
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
 		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
 			$local['local_path'], $local['type'], $uid, $parentId, $metadata['title'], $remote_md5,
@@ -1174,7 +1174,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 
 		// Delete connection record
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 		if ($objRFile->loadItem( $projectid, $remoteid, $service))
 		{
 			$objRFile->delete();
@@ -1263,7 +1263,7 @@ class ProjectsConnectHelper extends JObject {
 			);
 
 			// Update connection record
-			$objRFile = new ProjectRemoteFile ($this->_db);
+			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
 			$update = $objRFile->updateRecord( $projectid, $service, $newParentId,
 				$path, 'folder', $this->_uid, $parentId, $title );
@@ -1550,7 +1550,7 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 		if ($objRFile->loadItem( $projectid, $id, $service, $path))
 		{
 			$objRFile->paired			= $paired;
@@ -1582,7 +1582,7 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 
-		$objRFile = new ProjectRemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 		$converted = $objRFile->getRemoteConnections($this->_project->id, $service, $dir, 1);
 
 		if (!empty($converted['paths']))

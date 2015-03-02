@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get databases to choose from
-$objPD = new ProjectDatabase($this->database);
+$objPD = new \Components\Projects\Tables\Database($this->database);
 $items = $objPD->getItems($this->project->id, array());
 
 $missing = array();

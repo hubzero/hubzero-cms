@@ -25,19 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
-{
-	require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-		.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-}
-else
-{
-	return false;
-}
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
 $database 	= JFactory::getDBO();
-$objSt 		= new ProjectPubStamp( $database );
+$objSt 		= new \Components\Projects\Tables\Stamp( $database );
 
 // Get listed public files
 $items = $objSt->getPubList($this->project->id, 'files');
