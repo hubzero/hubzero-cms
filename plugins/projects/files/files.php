@@ -473,7 +473,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->dirsize = $this->getDiskUsage($this->path, $this->prefix, $this->params->get('disk_usage'));
 
 		// Get connection details for user
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 		$objO->loadOwner ($this->_project->id, $this->_uid);
 		$view->oparams = new JParameter( $objO->params );
 
@@ -5732,7 +5732,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->params = new JParameter( $obj->params );
 
 		// Get connection details for user
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 		$objO->loadOwner ($this->_project->id, $this->_uid);
 		$view->oparams = new JParameter( $objO->params );
 
@@ -6276,7 +6276,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (count($remotes) > 0 && $synced != 1)
 		{
 			// Get email/name pairs of connected project owners
-			$objO = new ProjectOwner( $this->_database );
+			$objO = new \Components\Projects\Tables\Owner( $this->_database );
 			$connected = $objO->getConnected($this->_project->id, $service);
 
 			// Examine each change

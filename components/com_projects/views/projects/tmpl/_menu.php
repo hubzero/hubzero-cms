@@ -51,6 +51,14 @@ $a = 0;
 		{
 			continue;
 		}
+		if (isset($tab['alias']) && trim($tab['alias']))
+		{
+			$tab['name'] = trim($tab['alias']);
+		}
+		if ($tab['name'] == 'feed')
+		{
+			continue;
+		}
 
 		if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 1)
 		{

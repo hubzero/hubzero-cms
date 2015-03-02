@@ -28,95 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project comments
  */
-class ProjectComment extends JTable
+class Comment extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Id of commented item
-	 *
-	 * @var integer
-	 */
-	var $itemid       		= NULL;
-
-	/**
-	 * Reference id, varchar(100)
-	 *
-	 * @var string
-	 */
-	var $comment       		= NULL;
-
-	/**
-	 * Datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $created			= NULL;
-
-	/**
-	 * User id of creator
-	 *
-	 * @var integer
-	 */
-	var $created_by       	= NULL;
-
-	/**
-	 * Anonymous?
-	 *
-	 * @var integer
-	 */
-	var $anonymous       	= NULL;
-
-	/**
-	 * By admin?
-	 *
-	 * @var integer
-	 */
-	var $admin       		= NULL;
-
-	/**
-	 * State
-	 *
-	 * @var integer
-	 */
-	var $state       		= NULL;
-
-	/**
-	 * Section name of parent item, varchar(50)
-	 *
-	 * blog
-	 * activity
-	 * todo
-	 *
-	 * @var string
-	 */
-	var $tbl       			= NULL;
-
-	/**
-	 * Activity ID
-	 *
-	 * @var integer
-	 */
-	var $activityid       	= NULL;
-
-	/**
-	 * Activity ID of parent activity
-	 *
-	 * @var integer
-	 */
-	var $parent_activity    = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -137,7 +55,9 @@ class ProjectComment extends JTable
 	 */
 	public function loadUserComment( $itemid, $user_id )
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE itemid=".$itemid." AND created_by=".$user_id." LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE itemid="
+			. $this->_db->Quote($itemid) . " AND created_by="
+			. $this->_db->Quote($user_id) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -157,7 +77,8 @@ class ProjectComment extends JTable
 	 */
 	public function loadComment( $commentid )
 	{
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id=".$commentid." LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE id="
+			. $this->_db->Quote($commentid) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -179,7 +100,13 @@ class ProjectComment extends JTable
 	 * @param      integer $parent_activity
 	 * @return     object
 	 */
-	public function getComments( $itemid = NULL, $tbl = 'blog', $activityid = 0, $lastvisit = 0, $parent_activity = 0 )
+	public function getComments(
+		$itemid = NULL,
+		$tbl = 'blog',
+		$activityid = 0,
+		$lastvisit = 0,
+		$parent_activity = 0
+	)
 	{
 		if (!$itemid)
 		{
@@ -193,21 +120,24 @@ class ProjectComment extends JTable
 		$query = "SELECT c.*, x.name as author ";
 		if ($lastvisit && $activityid)
 		{
-			$query.= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity AND cc.created > '$lastvisit'  ) as newcount ";
+			$query.= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity AND cc.created > " . $this->_db->Quote($lastvisit) . ") as newcount ";
 		}
 		$query.= " FROM $this->_tbl as c";
 		$query.= " JOIN #__xprofiles as x ON x.uidNumber=c.created_by ";
 		if ($parent_activity)
 		{
-			$query.= " WHERE c.parent_activity='$parent_activity' ";
+			$query.= " WHERE c.parent_activity=" . $this->_db->Quote($parent_activity);
 		}
 		else
 		{
-			$query.= $activityid ? "" : "WHERE c.itemid=$itemid AND c.tbl='$tbl' ";
-			$query.= $activityid ? " WHERE c.activityid='$activityid' " : "";
+			$query.= $activityid ? "" : " WHERE c.itemid="
+				. $this->_db->Quote($itemid)
+				. " AND c.tbl=" . $this->_db->Quote($tbl);
+			$query.= $activityid ? " WHERE c.activityid="
+				. $this->_db->Quote($activityid) : "";
 		}
 		$query.= " AND c.state != 2 ";
-		$query.= "ORDER BY c.created ASC";
+		$query.= " ORDER BY c.created ASC";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
@@ -226,9 +156,12 @@ class ProjectComment extends JTable
 	 */
 	public function checkDuplicate($uid, $tbl, $itemid, $parent_activity, $comment)
 	{
-		$query = "SELECT id FROM $this->_tbl WHERE created_by=$uid AND itemid=$itemid
-			AND tbl='$tbl' AND parent_activity='$parent_activity'
-			AND comment='$comment' AND state!=2 ";
+		$query = "SELECT id FROM $this->_tbl WHERE created_by="
+				. $this->_db->Quote($uid) . " AND itemid="
+				. $this->_db->Quote($itemid) . " AND tbl="
+				. $this->_db->Quote($tbl) ." AND parent_activity="
+				. $this->_db->Quote($parent_activity) . " AND comment="
+				. $this->_db->Quote($comment) . " AND state!=2 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -252,7 +185,7 @@ class ProjectComment extends JTable
 		}
 		$activities = array();
 
-		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl='$tbl'";
+		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl=" . $this->_db->Quote($tbl);
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		if($result)
@@ -292,7 +225,7 @@ class ProjectComment extends JTable
 		$this->parent_activity 	= $parent_activity;
 		$this->comment 			= $comment;
 		$this->admin 			= $admin;
-		$this->created 			= JFactory::getDate()->toSql();
+		$this->created 			= \Factory::getDate()->toSql();
 		$this->created_by 		= $by;
 
 		if(!$this->store())
@@ -343,7 +276,8 @@ class ProjectComment extends JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE itemid=$itemid AND tbl='$tbl'";
+		$query .= " WHERE itemid=" . $this->_db->Quote($itemid)
+				. " AND tbl=" . $this->_db->Quote($tbl);
 
 		$this->_db->setQuery( $query );
 
@@ -374,7 +308,7 @@ class ProjectComment extends JTable
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE id=".$cid;
+		$query .= " WHERE id=" . $this->_db->Quote($cid);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -404,11 +338,9 @@ class ProjectComment extends JTable
 		}
 
 		$query  = ($permanent)
-			? "DELETE c FROM $this->_tbl as c
-			INNER JOIN #__project_activity as a ON a.id=c.activityid "
-			: "UPDATE $this->_tbl as c INNER JOIN #__project_activity as a
-			ON a.id=c.activityid  SET c.state = 2 ";
-		$query .= " WHERE a.projectid=".$projectid;
+			? "DELETE c FROM $this->_tbl as c INNER JOIN #__project_activity as a ON a.id=c.activityid "
+			: "UPDATE $this->_tbl as c INNER JOIN #__project_activity as a ON a.id=c.activityid  SET c.state = 2 ";
+		$query .= " WHERE a.projectid=" . $this->_db->Quote($projectid);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())

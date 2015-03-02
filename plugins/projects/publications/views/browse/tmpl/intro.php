@@ -106,7 +106,7 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 							$class = PublicationHelper::getPubStateProperty($row, 'class');
 
 							// Check team role
-							$pOwner = new ProjectOwner( $this->database );
+							$pOwner = new \Components\Projects\Tables\Owner( $this->database );
 							$owner = $pOwner->isOwner($this->uid, $row->project_id);
 						?>
 						<li>

@@ -138,7 +138,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		// Load classes
 		$pAuthor  = new PublicationAuthor( $this->_parent->_db );
-		$objO 	  = new ProjectOwner( $this->_parent->_db );
+		$objO 	  = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
 
@@ -351,7 +351,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Load classes
-		$objO = new ProjectOwner( $this->_parent->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// Instantiate a new registration object
 		include_once(JPATH_ROOT . DS . 'components' . DS
@@ -395,7 +395,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 		elseif ($email || trim($name))
 		{
-			$objO = new ProjectOwner( $this->_parent->_db );
+			$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 			$objO->projectid 	 = $pub->_project->id;
 			$objO->userid 		 = $uid;
@@ -499,7 +499,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		// Load classes
 		$row  = new PublicationAuthor( $this->_parent->_db );
-		$objO = new ProjectOwner( $this->_parent->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// We need attachment record
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
@@ -649,7 +649,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		// Load classes
 		$row  = new PublicationAuthor( $this->_parent->_db );
-		$objO = new ProjectOwner( $this->_parent->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// We need attachment record
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
@@ -708,7 +708,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$view->step		= $this->_sequence;
 
 		// Get team members
-		$objO = new ProjectOwner( $this->_parent->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 		$view->teamids = $objO->getIds( $pub->_project->id, 'all', 0, 0 );
 
 		if ($this->getError())

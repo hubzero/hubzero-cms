@@ -256,7 +256,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Get project types
-		$objT = new ProjectType( $this->database );
+		$objT = new \Components\Projects\Tables\Type( $this->database );
 		$this->view->types = $objT->getTypes();
 
 		// Get plugin
@@ -269,7 +269,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->view->counts = $counts;
 
 		// Get team
-		$objO = new ProjectOwner( $this->database );
+		$objO = new \Components\Projects\Tables\Owner( $this->database );
 
 		// Sync with system group
 		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
@@ -382,7 +382,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$project 		= $obj->getProject($id, $this->juser->get('id'));
 
 		// Get project managers
-		$objO = new ProjectOwner( $this->database );
+		$objO = new \Components\Projects\Tables\Owner( $this->database );
 		$managers = $objO->getIds( $id, 1, 1 );
 
 		// Admin actions
@@ -523,7 +523,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$id 		= JRequest::getVar( 'id', 0 );
 
 		// Get owner class
-		$objO = new ProjectOwner($this->database);
+		$objO = new \Components\Projects\Tables\Owner($this->database);
 
 		$mbrs = explode(',', $members);
 
@@ -588,7 +588,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$obj->delete();
 
 		// Erase all owners
-		$objO = new ProjectOwner ($this->database );
+		$objO = new \Components\Projects\Tables\Owner ($this->database );
 		$objO->removeOwners ( $id, '', 0, $permanent, '', $all = 1 );
 
 		// Erase owner group
@@ -600,7 +600,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Erase all comments
-		$objC = new ProjectComment ($this->database );
+		$objC = new \Components\Projects\Tables\Comment ($this->database );
 		$objC->deleteProjectComments ( $id, $permanent );
 
 		// Erase all activities
@@ -608,11 +608,11 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$objA->deleteActivities( $id, $permanent );
 
 		// Erase all todos
-		$objTD = new ProjectTodo( $this->database );
+		$objTD = new \Components\Projects\Tables\Todo( $this->database );
 		$objTD->deleteTodos( $id, '', $permanent );
 
 		// Erase all blog entries
-		$objB = new ProjectMicroblog( $this->database );
+		$objB = new \Components\Projects\Tables\Blog( $this->database );
 		$objB->deletePosts( $id, $permanent );
 
 		// Erase all notes

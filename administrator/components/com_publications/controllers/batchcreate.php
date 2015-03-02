@@ -814,7 +814,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// Need to create project owner
 		if (!$author->project_owner_id)
 		{
-			$objO = new ProjectOwner( $this->database );
+			$objO = new \Components\Projects\Tables\Owner( $this->database );
 
 			$objO->projectid 	 = $this->project->id;
 			$objO->userid 		 = $author->user_id;
@@ -888,7 +888,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$pAuthor->name 				= trim($pAuthor->firstName . ' ' . $pAuthor->lastName);
 
 		// Check if project member
-		$objO   = new ProjectOwner( $this->database );
+		$objO   = new \Components\Projects\Tables\Owner( $this->database );
 		$owner  = $objO->getOwnerId( $this->project->id, $uid, $pAuthor->name );
 		$pAuthor->project_owner_id 	= $owner;
 

@@ -69,7 +69,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
-			$objStats = new ProjectStats($this->database);
+			$objStats = new \Components\Projects\Tables\Stats($this->database);
 
 			$monthly = $objStats->monthlyStats(2, true);
 			$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;

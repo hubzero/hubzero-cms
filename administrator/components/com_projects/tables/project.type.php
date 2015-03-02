@@ -28,43 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project types
  */
-class ProjectType extends JTable
+class Type extends \JTable
 {
-
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Type name
-	 *
-	 * @var string
-	 */
-	var $type      			= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params       		= NULL;
-
-	/**
-	 * Description, varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description      		= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -84,7 +54,7 @@ class ProjectType extends JTable
 	 */
 	public function getParams ( $type = 1 )
 	{
-		$this->_db->setQuery( "SELECT params FROM $this->_tbl WHERE id=$type " );
+		$this->_db->setQuery( "SELECT params FROM $this->_tbl WHERE id=$type" );
 		return $this->_db->loadResult();
 	}
 
@@ -107,7 +77,7 @@ class ProjectType extends JTable
 	 */
 	public function getTypeTitle ( $id = 0 )
 	{
-		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=$id ");
+		$this->_db->setQuery( "SELECT type FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -119,7 +89,7 @@ class ProjectType extends JTable
 	 */
 	public function getIdByTitle ( $type = '' )
 	{
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE type='$type' ");
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE type=" . $this->_db->Quote($type));
 		return $this->_db->loadResult();
 	}
 }

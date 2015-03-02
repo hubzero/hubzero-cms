@@ -242,7 +242,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		// Check whether user belongs to the project
 		if ($this->_identifier)
 		{
-			$pOwner = new ProjectOwner( $this->database );
+			$pOwner = new \Components\Projects\Tables\Owner( $this->database );
 			if ($result = $pOwner->isOwner($this->juser->get('id'), $this->_identifier))
 			{
 				return $result;
@@ -541,7 +541,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		$juri = \JURI::getInstance();
 
 		// Log activity
-		$objLog  				= new ProjectLog( $this->database );
+		$objLog  				= new \Components\Projects\Tables\Log( $this->database );
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
@@ -602,7 +602,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			$filters['role'] = 1;
 		}
 		// Get team
-		$objO = new ProjectOwner( $this->database );
+		$objO = new \Components\Projects\Tables\Owner( $this->database );
 		$team = $objO->getOwners( $this->_identifier, $filters );
 
 		// Must have addressees

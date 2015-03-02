@@ -406,7 +406,7 @@ class PublicationAuthor extends JTable
 					. 'com_projects' . DS . 'tables' . DS . 'project.owner.php' );
 
 		// Get project owner info
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 		$owner_id = $objO->getOwnerId( $projectid, $by);
 
 		// Load submitter record if exists

@@ -107,7 +107,7 @@ class ProjectModelTodoEntry extends Model
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new ProjectTodo($this->_db);
+		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
 		if ($oid)
 		{
@@ -357,7 +357,7 @@ class ProjectModelTodoEntry extends Model
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)
 	{
-		$tbl = new ProjectComment($this->_db);
+		$tbl = new \Components\Projects\Tables\Comment($this->_db);
 
 		switch (strtolower($rtrn))
 		{

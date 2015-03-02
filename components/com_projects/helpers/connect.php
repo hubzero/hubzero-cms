@@ -610,7 +610,7 @@ class ProjectsConnectHelper extends JObject {
 		// Get and save acting user access profile info
 		$profile = $this->getAccessProfile($service, $uid);
 
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 
 		// Get email/name pairs of connected project owners
 		$connected = $objO->getConnected($this->_project->id, $service, $exclude = array($this->_project->owned_by_user));
@@ -2067,7 +2067,7 @@ class ProjectsConnectHelper extends JObject {
 	public function getStoredParam ($param, $uid = 0)
 	{
 		$uid = $uid ? $uid : $this->_uid;
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 		$objO->loadOwner ($this->_project->id, $uid);
 		$params = new JParameter( $objO->params );
 		return $params->get($param);
@@ -2086,7 +2086,7 @@ class ProjectsConnectHelper extends JObject {
 	{
 		$uid = $uid ? $uid : $this->_uid;
 
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 		$objO->saveParam (
 			$this->_project->id,
 			$uid,
@@ -2258,7 +2258,7 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 		$objO->loadOwner ($this->_project->id, $uid);
 
 		$creator = ($this->_project->owned_by_user == $uid) ? 1 : 0;
@@ -2378,7 +2378,7 @@ class ProjectsConnectHelper extends JObject {
 			if ($removeData == true && $remoteid)
 			{
 				// Disconnect all members
-				$objO = new ProjectOwner( $this->_db );
+				$objO = new \Components\Projects\Tables\Owner( $this->_db );
 				$owners = $objO->getOwners($this->_project->id, $filters = array('connected' => 1));
 
 				if ($owners)

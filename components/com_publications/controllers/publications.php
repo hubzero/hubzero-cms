@@ -2468,7 +2468,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Check if they're the project owner
 		if ($project_id)
 		{
-			$objO = new ProjectOwner($this->database);
+			$objO = new \Components\Projects\Tables\Owner($this->database);
 			$owner = $objO->isOwner($this->juser->get('id'), $project_id);
 			if ($owner)
 			{

@@ -79,7 +79,7 @@ class ProjectModelTodo extends Model
 	{
 		$this->_db = JFactory::getDBO();
 
-		$this->_tbl = new ProjectTodo($this->_db);
+		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
 		$this->config = JComponentHelper::getParams('com_projects');
 	}

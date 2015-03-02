@@ -81,7 +81,7 @@ $goto  = 'alias=' . $this->project->alias;
 					// Edge case!
 					if ($owner->userid && !$owner->username)
 					{
-						$objO = new ProjectOwner($this->database);
+						$objO = new \Components\Projects\Tables\Owner($this->database);
 						$objO->load($owner->id);
 						$objO->status = 2;
 						$objO->store();

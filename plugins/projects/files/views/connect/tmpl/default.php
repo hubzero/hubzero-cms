@@ -53,7 +53,7 @@ $i = 0;
 			$connected = 0;
 		}
 
-		$objO = new ProjectOwner( $this->database );
+		$objO = new \Components\Projects\Tables\Owner( $this->database );
 		$numConnected = $objO->getConnected($this->project->id, $servicename);
 		$teamCount = $objO->countOwners($this->project->id);
 

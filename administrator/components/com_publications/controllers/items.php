@@ -617,7 +617,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->database);
+		$objO = new \Components\Projects\Tables\Owner($this->database);
 		$filters 					= array();
 		$filters['limit']    		= 0;
 		$filters['start']    		= 0;
@@ -1271,7 +1271,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				{
 					require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 						. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
-					$objC = new ProjectComment( $this->database );
+					$objC = new \Components\Projects\Tables\Comment( $this->database );
 
 					$comment = \Hubzero\Utility\String::truncate($message, 250);
 					$comment = \Hubzero\Utility\Sanitize::stripAll($comment);

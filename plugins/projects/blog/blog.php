@@ -237,7 +237,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get todo's
-		$objTD = new ProjectTodo( $database );
+		$objTD = new \Components\Projects\Tables\Todo( $database );
 		$todos = $objTD->getTodos ($project->id, $filters = array(
 			'sortby' => 'due DESC, p.duedate ASC', 'limit' => $limit
 		  )
@@ -419,7 +419,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$entry = \Hubzero\Utility\Sanitize::stripImages($entry);
 
 		// Instantiate project microblog entry
-		$objM = new ProjectMicroblog($this->_database);
+		$objM = new \Components\Projects\Tables\Blog($this->_database);
 		if ($entry)
 		{
 			$objM->projectid = $this->_project->id;
@@ -499,12 +499,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Are we deleting a blog entry?
 		if ($tbl == 'blog')
 		{
-			$objM = new ProjectMicroblog($this->_database);
+			$objM = new \Components\Projects\Tables\Blog($this->_database);
 
 			if ($eid && $objM->load($eid))
 			{
 				// Get associated commenting activities
-				$objC = new ProjectComment($this->_database);
+				$objC = new \Components\Projects\Tables\Comment($this->_database);
 				$activities = $objC->collectActivities($eid, $tbl);
 				$activities[] = $objM->activityid;
 
@@ -535,7 +535,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			if ($this->_project->role == 1 or $this->_authorized or $objAA->userid == $this->_uid)
 			{
 				// Get associated commenting activities
-				$objC = new ProjectComment($this->_database);
+				$objC = new \Components\Projects\Tables\Comment($this->_database);
 				$activities = $objC->collectActivities($eid, $tbl);
 
 				if ($objAA->deleteActivity())
@@ -631,9 +631,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$activities = $objAC->getActivities ($this->_project->id, $filters, 0, $this->_uid);
 
 		// Instantiate some classes
-		$objM = new ProjectMicroblog($this->_database);
-		$objC = new ProjectComment($this->_database);
-		$objTD = new ProjectTodo($this->_database);
+		$objM = new \Components\Projects\Tables\Blog($this->_database);
+		$objC = new \Components\Projects\Tables\Comment($this->_database);
+		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Collectors
 		$shown = array();
@@ -1018,7 +1018,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
 
 		// Instantiate comment
-		$objC = new ProjectComment($this->_database);
+		$objC = new \Components\Projects\Tables\Comment($this->_database);
 		if ($comment)
 		{
 			$objC->itemid 			= $itemid;
@@ -1095,7 +1095,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$cid  = JRequest::getInt('cid', 0);
 
 		// Instantiate comment
-		$objC = new ProjectComment($this->_database);
+		$objC = new \Components\Projects\Tables\Comment($this->_database);
 
 		if ($objC->load($cid))
 		{

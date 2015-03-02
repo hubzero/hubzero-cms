@@ -85,7 +85,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$objTD = new ProjectTodo( $database );
+		$objTD = new \Components\Projects\Tables\Todo( $database );
 		$counts['todo'] = $objTD->getTodos($project->id, $filters = array('count' => 1));
 
 		if ($admin == 1)
@@ -250,7 +250,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Update view preference if changed
 		if ($layout != $defaultView)
 		{
-			$objO = new ProjectOwner( $this->_database );
+			$objO = new \Components\Projects\Tables\Owner( $this->_database );
 			$objO->saveParam(
 				$this->_project->id,
 				$this->_uid,
@@ -293,7 +293,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$view->project		= $this->_project;
 
 		// Get team members (to assign items to)
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 		$view->team = $objO->getOwners($this->_project->id, $tfilters = array('status' => 1));
 
 		if (isset($this->entry) && is_object($this->entry))
@@ -361,7 +361,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$new = 0;
 
 		// Check if assignee is owner
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 		if ($assigned && !$objO->isOwner($assigned, $this->_project->id))
 		{
 			$assigned = 0;
@@ -372,7 +372,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate extended database class
-		$objTD = new ProjectTodo( $this->_database );
+		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
 
 		// Load up todo if exists
 		if (!$objTD->loadTodo($this->_project->id, $todoid))
@@ -538,7 +538,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
 			if (!$objTD->getListName($this->_project->id, $newcolor))
 			{
-				$objTD				= new ProjectTodo( $this->_database );
+				$objTD				= new \Components\Projects\Tables\Todo( $this->_database );
 				$objTD->created_by	= $this->_uid;
 				$objTD->created		= JFactory::getDate()->toSql();
 				$objTD->projectid	= $this->_project->id;
@@ -627,11 +627,11 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$gobacklist = '';
 
 		// Load todo
-		$objTD = new ProjectTodo( $this->_database );
+		$objTD = new \Components\Projects\Tables\Todo( $this->_database );
 		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid))
 		{
 			// Get associated commenting activities
-			$objC = new ProjectComment( $this->_database );
+			$objC = new \Components\Projects\Tables\Comment( $this->_database );
 			$activities = $objC->collectActivities($todoid, "todo" );
 			$activities[] = $objTD->activityid;
 
@@ -675,7 +675,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						if ($objTD->loadTodo($this->_project->id, $todo->id))
 						{
 							// Get associated commenting activities
-							$objC = new ProjectComment( $this->_database );
+							$objC = new \Components\Projects\Tables\Comment( $this->_database );
 							$activities = $objC->collectActivities($todo->id, "todo" );
 							$activities[] = $objTD->activityid;
 
@@ -736,10 +736,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		if ($newid && $oldid)
 		{
-			$objTD1 = new ProjectTodo( $this->_database );
+			$objTD1 = new \Components\Projects\Tables\Todo( $this->_database );
 			$objTD1->loadTodo ($this->_project->id, $oldid);
 
-			$objTD2 = new ProjectTodo( $this->_database );
+			$objTD2 = new \Components\Projects\Tables\Todo( $this->_database );
 			$objTD2->loadTodo ($this->_project->id, $newid);
 
 			$priority1 = $objTD1->priority;
@@ -756,7 +756,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$o = 1;
 			foreach ($items as $item)
 			{
-				$objTD = new ProjectTodo( $this->_database );
+				$objTD = new \Components\Projects\Tables\Todo( $this->_database );
 				$objTD->loadTodo ($this->_project->id, $item);
 				$objTD->priority = $o;
 				$objTD->store();
@@ -784,7 +784,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$todoid = $this->_todoid;
 
 		// Instantiate comment
-		$objC = new ProjectComment( $this->_database );
+		$objC = new \Components\Projects\Tables\Comment( $this->_database );
 
 		if ($objC->load($cid))
 		{
@@ -835,7 +835,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 
 		// Instantiate comment
-		$objC = new ProjectComment( $this->_database );
+		$objC = new \Components\Projects\Tables\Comment( $this->_database );
 		if ($comment)
 		{
 			$objC->itemid = $itemid;

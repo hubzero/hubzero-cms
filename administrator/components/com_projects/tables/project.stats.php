@@ -28,56 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
+
+use Publication;
 
 /**
  * Table class for project log history
  */
-class ProjectStats extends JTable
+class Stats extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         	= NULL;
-
-	/**
-	 * Datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $processed		= NULL;
-
-	/**
-	 * Month
-	 *
-	 * @var integer
-	 */
-	var $month       	= NULL;
-
-	/**
-	 * Year
-	 *
-	 * @var integer
-	 */
-	var $year       	= NULL;
-
-	/**
-	 * Week
-	 *
-	 * @var integer
-	 */
-	var $week       	= NULL;
-
-	/**
-	 * Dump of all stats
-	 *
-	 * @var text
-	 */
-	var $stats       	= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -102,9 +61,9 @@ class ProjectStats extends JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-		$query .= $year ? " AND year='". $year ."' " : '';
-		$query .= $month ? " AND month='". $month ."' " : '';
-		$query .= $week ? " AND week='". $week ."' " : '';
+		$query .= $year ? " AND year=" . $this->_db->Quote($year) : '';
+		$query .= $month ? " AND month=" . $this->_db->Quote($month) : '';
+		$query .= $week ? " AND week=" . $this->_db->Quote($week) : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -132,9 +91,9 @@ class ProjectStats extends JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE 1=1 ";
-		$query .= $year ? " AND year='". $year ."' " : '';
-		$query .= $month ? " AND month='". $month ."' " : '';
-		$query .= $week ? " AND week='". $week ."' " : '';
+		$query .= $year ? " AND year=" . $this->_db->Quote($year) : '';
+		$query .= $month ? " AND month=" . $this->_db->Quote($month) : '';
+		$query .= $week ? " AND week=" . $this->_db->Quote($week) : '';
 		$query .= " ORDER BY processed DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -151,11 +110,11 @@ class ProjectStats extends JTable
 	{
 		$stats = array();
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php');
 
-		$obj  = new \Components\Projects\Tables\Project( $this->_db );
-		$objO = new ProjectOwner( $this->_db );
+		$obj  = new Project( $this->_db );
+		$objO = new Owner( $this->_db );
 		$objP = new Publication( $this->_db );
 
 		$testProjects    = $obj->getTestProjects();

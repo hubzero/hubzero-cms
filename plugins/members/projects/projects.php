@@ -278,9 +278,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	{
 		// Get latest activity
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-		$objM  = new ProjectMicroblog($this->_database);
-		$objC  = new ProjectComment($this->_database);
-		$objTD = new ProjectTodo($this->_database);
+		$objM  = new \Components\Projects\Tables\Blog($this->_database);
+		$objC  = new \Components\Projects\Tables\Comment($this->_database);
+		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Collectors
 		$shown   = array();

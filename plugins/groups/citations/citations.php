@@ -863,7 +863,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				if ($objP->load($pubID))
 				{
-					$objO = new ProjectOwner($this->database);
+					$objO = new \Components\Projects\Tables\Owner($this->database);
 
 					if ($objO->isOwner($this->juser->get('id'), $objP->project_id))
 					{

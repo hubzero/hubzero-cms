@@ -85,7 +85,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$objO = new ProjectOwner($database);
+		$objO = new \Components\Projects\Tables\Owner($database);
 		$counts['team'] = $objO->countOwners($project->id, $filters = array());
 
 		return $counts;
@@ -240,7 +240,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$view->filters['limit']    =  intval($this->params->get('limit', 0));
 		$view->filters['start']    = JRequest::getInt( 't_limitstart', 0);
 		$view->filters['sortby']   = JRequest::getVar( 't_sortby', 'name');
@@ -387,7 +387,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$view->filters['limit']    		=  0;
 		$view->filters['start']    		= JRequest::getInt( 't_limitstart', 0);
 		$view->filters['sortby']   		= JRequest::getVar( 't_sortby', 'name');
@@ -458,7 +458,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$view->filters['limit']    		=  0;
 		$view->filters['start']    		= JRequest::getInt( 't_limitstart', 0);
 		$view->filters['sortby']   		= JRequest::getVar( 't_sortby', 'name');
@@ -527,7 +527,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$setup = $this->_project->setup_stage == $setup_complete ? 0 : 1;
 
 		// Get owner class
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 
 		// Instantiate a new registration object
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
@@ -766,7 +766,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$setup = $this->_project->setup_stage == $setup_complete ? 0 : 1; // setup stage?
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 
 		if (!empty($checked))
 		{
@@ -868,7 +868,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$confirm = JRequest::getInt( 'confirm', 0, 'post' );
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 
 		// Check to make sure we are not deleting last manager
 		$onlymanager = 0;
@@ -963,7 +963,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$s = $this->_project->setup_stage == $setup_complete ? 0 : 1; // setup stage?
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 
 		if (!empty($checked))
 		{
@@ -1207,7 +1207,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->pub = $objP->getPublication($pid, $version, $this->_project->id);
 
 		// Instantiate project owner
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 
 		// Set filters
 		$view->filters['limit']    =  0;

@@ -217,7 +217,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Get group projects
 		$obj  = new \Components\Projects\Tables\Project($this->_database);
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 		$projects = $obj->getGroupProjects($group->get('gidNumber'), $this->_juser->get('id'));
 
 		// Project-group sync
@@ -377,9 +377,9 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	{
 		// Get latest activity
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-		$objM  = new ProjectMicroblog($this->_database);
-		$objC  = new ProjectComment($this->_database);
-		$objTD = new ProjectTodo($this->_database);
+		$objM  = new \Components\Projects\Tables\Blog($this->_database);
+		$objC  = new \Components\Projects\Tables\Comment($this->_database);
+		$objTD = new \Components\Projects\Tables\Todo($this->_database);
 
 		// Collectors
 		$shown   = array();

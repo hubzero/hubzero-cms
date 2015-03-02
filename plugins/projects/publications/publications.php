@@ -1110,7 +1110,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Notify project managers
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$managers = $objO->getIds($this->_project->id, 1, 1);
 		if (!empty($managers) && !$this->_project->provisioned)
 		{
@@ -1249,7 +1249,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Get project type params
 			require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS
 				. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
-			$objT = new ProjectType( $this->_database );
+			$objT = new \Components\Projects\Tables\Type( $this->_database );
 			$this->_project->params = $objT->getParams ($this->_project->type);
 
 			// Save changes
@@ -1327,7 +1327,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Add creator as project owner
-				$objO = new ProjectOwner( $this->_database );
+				$objO = new \Components\Projects\Tables\Owner( $this->_database );
 				if (!$objO->saveOwners ( $this->_project->id,
 					$this->_uid, $this->_uid,
 					0, 1, 1, 1 ))
@@ -2271,7 +2271,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 
 				// Get team members
-				$objO = new ProjectOwner( $this->_database );
+				$objO = new \Components\Projects\Tables\Owner( $this->_database );
 				$view->teamids = $objO->getIds( $this->_project->id, 'all', 0, 0 );
 				break;
 
@@ -3279,7 +3279,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Get project type params
 					require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS
 						. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
-					$objT = new ProjectType( $this->_database );
+					$objT = new \Components\Projects\Tables\Type( $this->_database );
 					$this->_project->params = $objT->getParams ($this->_project->type);
 
 					// Save changes
@@ -3345,7 +3345,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					else
 					{
 						// Add creator as project owner
-						$objO = new ProjectOwner( $this->_database );
+						$objO = new \Components\Projects\Tables\Owner( $this->_database );
 						if (!$objO->saveOwners ( $this->_project->id,
 							$this->_uid, $this->_uid,
 							0, 1, 1, 1 ))
@@ -4221,7 +4221,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Notify project managers (in all cases)
-		$objO = new ProjectOwner($this->_database);
+		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$managers = $objO->getIds($this->_project->id, 1, 1);
 		if (!$this->_project->provisioned && !empty($managers))
 		{
@@ -5627,7 +5627,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get owner class
-		$objO = new ProjectOwner( $this->_database );
+		$objO = new \Components\Projects\Tables\Owner( $this->_database );
 
 		// Instantiate a new registration object
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');

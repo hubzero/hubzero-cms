@@ -28,91 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Tables;
 
 /**
  * Table class for project logs
  */
-class ProjectLog extends JTable
+class Log extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         	= NULL;
-
-	/**
-	 * Project id
-	 *
-	 * @var integer
-	 */
-	var $projectid      = NULL;
-
-	/**
-	 * User id
-	 *
-	 * @var integer
-	 */
-	var $userid       	= NULL;
-
-	/**
-	 * Datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $time			= NULL;
-
-	/**
-	 * Major section (general / setup / project / edit / reviewer etc.)
-	 *
-	 * @var string
-	 */
-	var $section        = NULL;
-
-	/**
-	 * Plugin or layout name ( feed / todo / apps etc.)
-	 *
-	 * @var string
-	 */
-	var $layout        	= NULL;
-
-	/**
-	 * Task name (view / save etc.)
-	 *
-	 * @var string
-	 */
-	var $action       	= NULL;
-
-	/**
-	 * Request uri at time of log
-	 *
-	 * @var string
-	 */
-	var $request_uri    = NULL;
-
-	/**
-	 * Ajax call?
-	 *
-	 * @var tinyint
-	 */
-	var $ajax       	= NULL;
-
-	/**
-	 * Project owner ID
-	 *
-	 * @var int
-	 */
-	var $owner       	= NULL;
-
-	/**
-	 * IP address
-	 *
-	 * @var varchar
-	 */
-	var $ip       		= NULL;
-
 	/**
 	 * Constructor
 	 *

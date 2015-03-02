@@ -152,7 +152,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			$this->_gid = $this->group->get('gidNumber');
 
 			// Make sure we have up-to-date group membership information
-			$objO = new ProjectOwner( $this->database );
+			$objO = new \Components\Projects\Tables\Owner( $this->database );
 			$objO->reconcileGroups($obj->id);
 		}
 
@@ -517,7 +517,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$active = $obj->state == 1 ? 1 : 0;
 
 		// Sync with system group
-		$objO = new ProjectOwner( $this->database );
+		$objO = new \Components\Projects\Tables\Owner( $this->database );
 		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
 
 		// Activate project
@@ -715,7 +715,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 				if ($setup && !$obj->id)
 				{
 					// Copy params from default project type
-					$objT 	= new ProjectType( $this->database );
+					$objT 	= new \Components\Projects\Tables\Type( $this->database );
 					$obj->params = $objT->getParams ($obj->type);
 				}
 
@@ -736,7 +736,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					$this->_identifier = $obj->alias;
 
 					// Group owners
-					$objO 	= new ProjectOwner( $this->database );
+					$objO 	= new \Components\Projects\Tables\Owner( $this->database );
 					if ($this->_gid)
 					{
 						if (!$objO->saveOwners (

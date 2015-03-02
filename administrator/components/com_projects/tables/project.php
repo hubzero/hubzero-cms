@@ -30,6 +30,10 @@
 
 namespace Components\Projects\Tables;
 
+use ProjectsHtml;
+use Publication;
+use PublicationVersion;
+
 /**
  * Table class for projects
  */
@@ -129,7 +133,7 @@ class Project extends \JTable
 			if ($mine)
 			{
 				$query .= $uid
-						? " WHERE (o.userid=" . $this->_db->Quote($uid) . "AND o.status!=2
+						? " WHERE (o.userid=" . $this->_db->Quote($uid) . " AND o.status!=2
 							AND ((p.state != 2 AND p.setup_stage = " . $this->_db->Quote($setup_complete) . ")
 							OR (o.role = 1 AND p.owned_by_user=" . $this->_db->Quote($uid) . " ))) "
 						: " WHERE 1=2";
@@ -347,7 +351,7 @@ class Project extends \JTable
 			require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
-			$objStats = new ProjectStats($this->_db);
+			$objStats = new \Components\Projects\Tables\Stats($this->_db);
 			if ($objStats->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))
 			{
 				$lastLog = json_decode($objStats->stats, true);
@@ -394,7 +398,7 @@ class Project extends \JTable
 		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
 
 		// Collect team stats
-		$objO = new ProjectOwner( $this->_db );
+		$objO = new Owner( $this->_db );
 		$multiTeam = $objO->getTeamStats($exclude, 'multi');
 		$activeTeam = $objO->getTeamStats($exclude, 'registered');
 		$invitedTeam = $objO->getTeamStats($exclude, 'invited');
@@ -466,7 +470,7 @@ class Project extends \JTable
 		// Save weekly stats
 		if ($saveLog)
 		{
-			$objStats = new ProjectStats($this->_db);
+			$objStats = new \Components\Projects\Tables\Stats($this->_db);
 			$objStats->year 		= $thisYearNum;
 			$objStats->month 		= $thisMonthNum;
 			$objStats->week 		= $thisWeekNum;
