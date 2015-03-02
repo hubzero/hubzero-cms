@@ -734,7 +734,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			default:
 				$content = stripslashes($this->get('about'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				$content = str_replace(array('&lt;', '&gt;'), array('<', '>'), $content);
+				//$content = str_replace(array('&lt;', '&gt;'), array('<', '>'), $content);
 			break;
 		}
 
