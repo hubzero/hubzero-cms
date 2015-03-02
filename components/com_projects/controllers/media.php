@@ -420,7 +420,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		// Show project thumbnail
 		if ($media == 'thumb')
 		{
-			$source = ProjectsHtml::getThumbSrc( $alias, '', $this->config );
+			$source = \Components\Projects\Helpers\Html::getThumbSrc( $alias, '', $this->config );
 		}
 		elseif ($media)
 		{
@@ -433,7 +433,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			if ($media == 'master')
 			{
 				// Public picture
-				$source = ProjectsHtml::getProjectImageSrc( $alias, $obj->picture, $this->config );
+				$source = \Components\Projects\Helpers\Html::getProjectImageSrc( $alias, $obj->picture, $this->config );
 			}
 			else
 			{

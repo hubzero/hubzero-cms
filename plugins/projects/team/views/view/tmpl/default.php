@@ -71,7 +71,7 @@ $goto  = 'alias=' . $this->project->alias;
 
 					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'
-								? ProjectsHtml::timeAgo($owner->lastvisit) . ' ' . JText::_('COM_PROJECTS_AGO')
+								? \Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . JText::_('COM_PROJECTS_AGO')
 								: JText::_('COM_PROJECTS_NEVER');
 					$lastvisit = $owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)
 								? '<span class="online">' . JText::_('COM_PROJECTS_TEAM_ONLINE_NOW') . '</span>'

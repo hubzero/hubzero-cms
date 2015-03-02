@@ -32,7 +32,7 @@ $this->css()
 	->js('setup');
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
+$this->project->title = $this->escape($this->project->title);
 $privacy = $this->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
 
 // Get layout from project params or component

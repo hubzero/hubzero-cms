@@ -45,7 +45,7 @@ class ProjectModelComment extends Model
 	 *
 	 * @var object
 	 */
-	protected $_tbl_name = 'ProjectComment';
+	protected $_tbl_name = '\\Components\\Projects\\Tables\\Comment';
 
 	/**
 	 * Model context

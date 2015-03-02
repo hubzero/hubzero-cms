@@ -30,8 +30,6 @@
 
 namespace Components\Projects\Helpers;
 
-use ProjectsHtml;
-
 /**
  * Projects Git LaTeX and PDF compiler helper class
  */
@@ -126,8 +124,8 @@ class Compiler extends \JObject
 
 		if (!$tempBase)
 		{
-			$filename 	 = ProjectsHtml::takeOutExt(basename($fullpath));
-			$texFile	 = $cacheFolder . DS . $filename . '__temp_' . ProjectsHtml::generateCode (6, 6, 0, 1, 1 );
+			$filename 	 = Html::takeOutExt(basename($fullpath));
+			$texFile	 = $cacheFolder . DS . $filename . '__temp_' . Html::generateCode (6, 6, 0, 1, 1 );
 			$tempBase	 = basename($texFile);
 		}
 		else

@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $default_title = ($this->type == 'file') ? basename($this->item) : $this->item;
 
-$name    = ProjectsHtml::shortenFileName(basename($this->item), 70);
+$name    = \Components\Projects\Helpers\Html::shortenFileName(basename($this->item), 70);
 $dirname = dirname($this->item);
-$inDir	 = $dirname && $dirname != '.' ? ' in /' . ProjectsHtml::shortenFileName(basename($dirname), 40) : '';
+$inDir	 = $dirname && $dirname != '.' ? ' in /' . \Components\Projects\Helpers\Html::shortenFileName(basename($dirname), 40) : '';
 
 ?>
 <div id="abox-content">

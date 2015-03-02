@@ -47,7 +47,7 @@ class ProjectModelTodo extends Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'ProjectTodo';
+	protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
 
 	/**
 	 * ProjectModelTodoEntry

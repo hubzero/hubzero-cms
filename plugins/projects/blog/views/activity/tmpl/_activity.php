@@ -49,7 +49,7 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 				<?php } ?>
 				<div class="blog-item"><img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
 					<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span>
-					<span class="item-time">&middot; <?php echo ProjectsHtml::showTime($a->recorded, true); ?></span>
+					<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
 					<?php  if ($a->commentable && count($comments) == 0) { ?>
 					<span class="item-time">
 						&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo JText::_('COM_PROJECTS_COMMENT'); ?></a>

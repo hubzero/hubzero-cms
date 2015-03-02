@@ -89,7 +89,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
-				$lastsync = '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($lastsync, false) . ' ' . JText::_('COM_PROJECTS_AGO') . '</span>' ;
+				$lastsync = '<span class="faded">Last sync: ' . JHTML::_('date.relative', $lastsync) . ' </span>' ;
 			}
 			?>
 	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />
@@ -112,7 +112,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 
 	<?php if ($this->tool && $this->tool->name )
 	{
-		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
+		echo \Components\Projects\Helpers\Html::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
 	} ?>
 	<?php if (!$this->tool) { ?>
 		<?php
@@ -327,7 +327,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		<span class="leftfloat">
 		<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE'); ?>
 		<a href="<?php echo $this->url . '/?' . $this->do . '=diskspace'; ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED'); ?></span></span></span></a>
-			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . ProjectsHtml::formatSize($this->quota); ?></span>
+			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Components\Projects\Helpers\Html::formatSize($this->quota); ?></span>
 		</span>
 		<?php } ?>
 		<span class="rightfloat">

@@ -159,7 +159,7 @@ $i = 1;
 				<span class="leftfloat">
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
 				<a href="<?php echo $url . '/?action=diskspace'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED'); ?></span></span></span></a>
-					 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . ProjectsHtml::formatSize($this->quota); ?></span>
+					 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . \Components\Projects\Helpers\Html::formatSize($this->quota); ?></span>
 				</span>
 			</p>
 			<?php if ($showStats) { ?>

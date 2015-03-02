@@ -38,12 +38,12 @@ $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
 	? \Hubzero\Utility\String::truncate($longComment, 250) : $longComment;
 
-$longComment = ProjectsHtml::replaceUrls($longComment, 'external');
-$shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');
+$longComment = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
+$shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');
 
 // Emotions (new)
-$longComment  = ProjectsHtml::replaceEmoIcons($longComment);
-$shortComment = ProjectsHtml::replaceEmoIcons($shortComment);
+$longComment  = \Components\Projects\Helpers\Html::replaceEmoIcons($longComment);
+$shortComment = \Components\Projects\Helpers\Html::replaceEmoIcons($shortComment);
 
 $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 
@@ -62,7 +62,7 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 		<span class="comment-show">
 			<span class="comment-details">
 				<span class="actor"><?php echo $comment->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
-				<span class="item-time">&middot; <?php echo ProjectsHtml::showTime($comment->created, true); ?></span>
+				<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></span>
 			</span>
 	<?php 	echo '<span class="body">' . $shortComment;
 			if ($shorten)

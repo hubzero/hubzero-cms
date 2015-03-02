@@ -1338,12 +1338,12 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 					$approve = 1;
 
 					// Bump up quota
-					$premiumQuota = ProjectsHtml::convertSize(
+					$premiumQuota = \Components\Projects\Helpers\Html::convertSize(
 						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'quota', htmlentities($premiumQuota));
 
 					// Bump up publication quota
-					$premiumPubQuota = ProjectsHtml::convertSize(
+					$premiumPubQuota = \Components\Projects\Helpers\Html::convertSize(
 						floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'pubQuota', htmlentities($premiumPubQuota));
 				}

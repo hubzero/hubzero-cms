@@ -44,7 +44,7 @@ if ($this->subdir && count($desect_path) > 0)
 
 $i = 0;
 
-$endPath = '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></span>';
+$endPath = '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
 
 ?>
 <?php if($this->ajax) { ?>
@@ -70,10 +70,7 @@ if (!$this->getError())
 			</h3>
 		</div>
 	<?php } ?>
-	<?php if ($this->tool && $this->tool->name && !$this->ajax)
-	{
-		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
-	} ?>
+
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="diff" />
@@ -163,7 +160,7 @@ if (!$this->getError())
 
 				?>
 				<tr <?php if($trclass) { echo 'class="' . $trclass . '"'; } ?>>
-					<td class="commit-actor"><span class="prominent"><?php echo ProjectsHtml::formatTime($version['date'], true); ?></span>
+					<td class="commit-actor"><span class="prominent"><?php echo \Components\Projects\Helpers\Html::formatTime($version['date'], true); ?></span>
 						<span class="block"><?php echo $version['author'] ? $version['author'] : $version['email']; ?></span>
 					</td>
 					<td class="commit-details">

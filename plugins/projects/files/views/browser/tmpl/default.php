@@ -77,7 +77,7 @@ $skipped = 0;
 				$shown[] = $file['fpath'];
 
 				 ?>
-			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($file['fpath'], 50); ?></li>
+			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['fpath'], 50); ?></li>
 		<?php
 			$i++;
 		?>
@@ -95,7 +95,7 @@ $skipped = 0;
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $attachment->path;
-					$miss['ext'] = ProjectsHtml::getFileAttribs( $attachment->path, '', 'ext' );
+					$miss['ext'] = \Components\Projects\Helpers\Html::getFileAttribs( $attachment->path, '', 'ext' );
 					$missing[] = $miss;
 				}
 			}
@@ -110,7 +110,7 @@ $skipped = 0;
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $shot->filename;
-					$miss['ext'] = ProjectsHtml::getFileAttribs( $shot->filename, '', 'ext' );
+					$miss['ext'] = \Components\Projects\Helpers\Html::getFileAttribs( $shot->filename, '', 'ext' );
 					$missing[] = $miss;
 				}
 			}
@@ -120,7 +120,7 @@ $skipped = 0;
 	// Add missing items
 	if (count($missing) > 0) {
 		foreach ($missing as $miss) { ?>
-			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
+			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
 	}
 	 ?>

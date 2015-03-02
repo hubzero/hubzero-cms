@@ -145,7 +145,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED')); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->created, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->created, $dateFormat).' ('.\Components\Projects\Helpers\Html::timeAgo($this->pub->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')); ?>:</td>
@@ -179,7 +179,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php }  if ($this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->accepted, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->accepted, $dateFormat).' ('.\Components\Projects\Helpers\Html::timeAgo($this->pub->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } if ($this->pub->published_up && $this->pub->published_up != '0000-00-00 00:00:00') { ?>
 						<tr>
@@ -194,7 +194,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } if ($this->pub->state == 0) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED')); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_down, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_down, $dateFormat).' ('.\Components\Projects\Helpers\Html::timeAgo($this->pub->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } ?>
 						<tr>

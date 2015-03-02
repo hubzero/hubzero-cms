@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		{
 			if ($item->type == 'folder')
 			{
-				$tempId = strtolower(ProjectsHtml::generateCode(5, 5, 0, 1, 1));
+				$tempId = strtolower(\Components\Projects\Helpers\Html::generateCode(5, 5, 0, 1, 1));
 				$parents[$item->localPath] = $tempId;
 			}
 
@@ -60,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 					$icon = $item->type == 'folder'
 							? "/plugins/projects/files/images/folder.gif"
-							: ProjectsHtml::getFileIcon($item->ext);
+							: \Components\Projects\Helpers\Html::getFileIcon($item->ext);
 
 					$level =  $item->dirname ? count(explode('/', $item->dirname)) : 0;
 
@@ -114,7 +114,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<span class="item-info"><?php echo $item->type == 'file' ? $item->formattedSize : ''; ?></span>
 					<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->localPath); ?>">
 						<?php if ($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
-						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo ProjectsHtml::shortenFileName($item->name, 50); ?></span>
+						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->name, 50); ?></span>
 					</span>
 
 				</li>

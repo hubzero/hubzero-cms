@@ -30,7 +30,6 @@
 
 namespace Components\Projects\Tables;
 
-use ProjectsHtml;
 use Publication;
 use PublicationVersion;
 
@@ -444,9 +443,9 @@ class Project extends \JTable
 				'total'     => $fTotal,
 				'average'   => $fAverage,
 				'usage'     => $perc,
-				'diskspace' => ProjectsHtml::formatSize($fDSpace),
+				'diskspace' => Components\Projects\Helpers\Html::formatSize($fDSpace),
 				'commits'   => $fCommits,
-				'pubspace'  => ProjectsHtml::formatSize($pDSpace)
+				'pubspace'  => Components\Projects\Helpers\Html::formatSize($pDSpace)
 			);
 		}
 

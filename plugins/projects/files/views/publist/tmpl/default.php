@@ -63,7 +63,7 @@ if ($items) {
 			if (is_file($serve))
 			{
 		?>
-		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>
+		<li><a href="<?php echo $link . $item->stamp; ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($ext); ?>" alt="<?php echo $ext; ?>" /> <?php echo basename($ref->file); ?></li>
 		<?php }
 		} ?>
 	</ul>

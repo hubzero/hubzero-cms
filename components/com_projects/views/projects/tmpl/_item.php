@@ -108,8 +108,8 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 	}
 	$commentCount = 0;
 	if (isset($this->row->admin_notes) && $this->row->admin_notes) {
-		$commentCount = ProjectsHtml::getAdminNoteCount($this->row->admin_notes, 'sensitive');
-		echo ProjectsHtml::getLastAdminNote($this->row->admin_notes, 'sensitive');
+		$commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->admin_notes, 'sensitive');
+		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->admin_notes, 'sensitive');
 	}
 	echo '<span class="block mini"><a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->id . '&reviewer=' . $this->filters['reviewer']) . '" class="showinbox">' . $commentCount . ' ' . JText::_('COM_PROJECTS_COMMENTS') . '</a></span>';
 
@@ -161,7 +161,7 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 	}
 	if (isset($this->row->admin_notes) && $this->row->admin_notes)
 	{
-		echo ProjectsHtml::getLastAdminNote($this->row->admin_notes, 'sponsored');
+		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->admin_notes, 'sponsored');
 	}
 	?></td>
 	<td class="faded actions"><?php echo '<span class="manage mini"><a href="' . JRoute::_('index.php?option=' . $this->option . '&task=process&id=' . $this->row->id ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] . '" class="showinbox">' . JText::_('COM_PROJECTS_MANAGE') . '</a></span>'; ?></td>

@@ -60,15 +60,15 @@ if (count($this->activities) > 0 ) {
 			<tr>
 				<td class="p-ima">
 					<?php if ($i == $more) { echo '<a name="more"></a>'; } ?>
-					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="'.$this->escape(ProjectsHtml::cleanText($title)).'" /></a>'; ?>
+					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="' . $this->escape($title) . '" /></a>'; ?>
 				</td>
 				<td>
 					<span class="rightfloat mini faded<?php echo $timeclass; ?>">
 						<?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?>
 					</span>
 					<span class="project-name">
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto); ?>">
-							<?php echo $this->escape(ProjectsHtml::cleanText($title)); ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option.'&task=view&'.$goto); ?>">
+							<?php echo $this->escape($title); ?>
 						</a>
 					</span>
 					<div class="mline <?php echo $class; ?><?php if ($a->admin) { echo ' admin-action'; } ?>" id="tr_<?php echo $a->id; ?>">

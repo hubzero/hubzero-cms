@@ -579,7 +579,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 									if (!$invitee)
 									{
 										// Generate invitation code
-										$code = ProjectsHtml::generateCode();
+										$code = \Components\Projects\Helpers\Html::generateCode();
 
 										// Add invitee record
 										if ($objO->saveInvite ($this->_project->id, $cid, $code, '', $role))
@@ -1147,7 +1147,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if (ProjectsHtml::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from))
+			if (\Components\Projects\Helpers\Html::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from))
 			{
 				return true;
 			}

@@ -97,8 +97,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get quotas
-		$this->view->defaultQuota = ProjectsHtml::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
-		$this->view->premiumQuota = ProjectsHtml::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
+		$this->view->defaultQuota = \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
+		$this->view->premiumQuota = \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
 
 		// Get filters
 		$this->view->filters = array();
@@ -453,7 +453,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 				if ($key == 'quota' || $key == 'pubQuota')
 				{
 					// convert GB to bytes
-					$value = ProjectsHtml::convertSize( floatval($value), 'GB', 'b');
+					$value = \Components\Projects\Helpers\Html::convertSize( floatval($value), 'GB', 'b');
 				}
 
 				$obj->saveParam($id, $key, htmlentities($value));

@@ -30,8 +30,8 @@ $this->css()
      ->js();
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
-$this->project->about = ProjectsHtml::cleanText($this->project->about);
+$this->project->title = $this->escape($this->project->title);
+$this->project->about = $this->escape($this->project->about);
 
 $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
 ?>

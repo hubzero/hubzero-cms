@@ -301,7 +301,7 @@ class typeDatabases extends JObject
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		if ($data->source_file) {
 		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE')
-			. ': ' . ProjectsHtml::shortenFileName($data->source_file, 40) . '</span>';
+			. ': ' . \Components\Projects\Helpers\Html::shortenFileName($data->source_file, 40) . '</span>';
 		}
 
 		return $html;

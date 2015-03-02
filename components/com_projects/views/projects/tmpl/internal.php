@@ -39,7 +39,7 @@ $title = $this->project->counts['newactivity'] > 0
 $document->setTitle( $title );
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
+$this->project->title = $this->escape($this->project->title);
 
 // Get project params
 $params = new JParameter( $this->project->params );

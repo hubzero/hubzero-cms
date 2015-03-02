@@ -40,14 +40,14 @@ else
 // Is this a duplicate remote?
 if ($this->remote && $this->item != $this->remote['title'])
 {
-	$append = ProjectsHtml::getAppendedNumber($this->item);
+	$append = \Components\Projects\Helpers\Html::getAppendedNumber($this->item);
 
 	if ($append > 0)
 	{
 		$ext = explode('.', $this->item);
 		$ext = count($ext) > 1 ? end($ext) : '';
 
-		$name = ProjectsHtml::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
+		$name = \Components\Projects\Helpers\Html::fixFileName($this->remote['title'], ' (' . $append . ')', $ext );
 	}
 }
 
@@ -67,7 +67,7 @@ if ($this->remote && $this->remote['converted'] == 1)
 	}
 }
 
-$img = $this->remote && $this->remote['converted'] == 1 ? ProjectsHtml::getGoogleIcon($this->remote['mimeType']) : ProjectsHtml::getFileIcon($ext);
+$img = $this->remote && $this->remote['converted'] == 1 ? \Components\Projects\Helpers\Html::getGoogleIcon($this->remote['mimeType']) : \Components\Projects\Helpers\Html::getFileIcon($ext);
 
 $multi = isset($this->multi) && $this->multi ? '[]' : '';
 

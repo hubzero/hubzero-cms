@@ -50,7 +50,7 @@ if (count($this->activities) > 0 ) {
 				$projects[$pid] = $obj->getProject($pid, $this->uid);
 			}
 			$goto = 'alias='.$projects[$pid]->alias;
-			$title = $this->escape(ProjectsHtml::cleanText($projects[$pid]->title));
+			$title = $this->escape($projects[$pid]->title);
 			$timeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $activity['recorded'] ? ' urgency' : '';
 			$more = count($this->activities) - $this->limit;
 			?>

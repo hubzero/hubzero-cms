@@ -658,7 +658,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 					// Bring up commented item
 					$needle = array('id' => $c->parent_activity);
-					$key = ProjectsHtml::myArraySearch($needle, $activities);
+					$key = \Components\Projects\Helpers\Html::myArraySearch($needle, $activities);
 					$shown[] = $a->id;
 					if (!$key)
 					{
@@ -770,12 +770,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$shortBody = $shorten ? \Hubzero\Utility\String::truncate($body, 250) : $body;
 
 		// Embed links
-		$body      = ProjectsHtml::replaceUrls($body, 'external');
-		$shortBody = ProjectsHtml::replaceUrls($shortBody, 'external');
+		$body      = \Components\Projects\Helpers\Html::replaceUrls($body, 'external');
+		$shortBody = \Components\Projects\Helpers\Html::replaceUrls($shortBody, 'external');
 
 		// Emotions (new)
-		$body      = ProjectsHtml::replaceEmoIcons($body);
-		$shortBody = ProjectsHtml::replaceEmoIcons($shortBody);
+		$body      = \Components\Projects\Helpers\Html::replaceEmoIcons($body);
+		$shortBody = \Components\Projects\Helpers\Html::replaceEmoIcons($shortBody);
 
 		// Style body text
 		$ebody  = '<span class="body';

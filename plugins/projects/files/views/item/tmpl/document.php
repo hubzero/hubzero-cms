@@ -29,7 +29,7 @@ $file 	= $this->item;
 $me 	= ($file['email'] == $this->juser->get('email') || $file['author'] == $this->juser->get('name'))  ? 1 : 0;
 $c 		= $this->c;
 
-$when 	= $file['date'] ? ProjectsHtml::formatTime($file['date']) : 'N/A';
+$when 	= $file['date'] ? \Components\Projects\Helpers\Html::formatTime($file['date']) : 'N/A';
 
 // LaTeX?
 $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
@@ -42,13 +42,13 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 			<?php } ?>
 		</td>
 		<td class="top_valign nobsp">
-			<img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
+			<img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
 			<a href="<?php echo $this->url
 			. '/?' . $this->do . '=download' . a . 'subdir='.urlencode($this->subdir)
 			. a . 'file='.urlencode($file['name']); ?>"
 			<?php if ($file['untracked'] == 0) { ?>
 			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
-			<?php echo ProjectsHtml::shortenFileName($file['name'], 50); ?></a>
+			<?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name'], 50); ?></a>
 
 			<?php if ($file['untracked'] == 0) { ?>
 			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>

@@ -510,7 +510,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$item['version']->version_number 	= 1;
 		$item['version']->created_by 		= $this->_uid;
 		$item['version']->created 			= JFactory::getDate()->toSql();
-		$item['version']->secret			= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+		$item['version']->secret			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 		$item['version']->access			= 0;
 		$item['version']->main				= 1;
 		$item['version']->state				= 3;

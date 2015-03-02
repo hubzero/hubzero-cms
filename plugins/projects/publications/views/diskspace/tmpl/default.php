@@ -35,9 +35,9 @@ if($this->total > 0 && $inuse < 1) {
 }
 
 $inuse 	= ($inuse > 100) ? 100 : $inuse;
-$quota 	= ProjectsHtml::formatSize($this->quota);
-$used  	= ProjectsHtml::formatSize($this->dirsize);
-$unused = ProjectsHtml::formatSize($this->quota - $this->dirsize);
+$quota 	= \Components\Projects\Helpers\Html::formatSize($this->quota);
+$used  	= \Components\Projects\Helpers\Html::formatSize($this->dirsize);
+$unused = \Components\Projects\Helpers\Html::formatSize($this->quota - $this->dirsize);
 $unused = $unused <= 0 ? 'none' : $unused;
 $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;

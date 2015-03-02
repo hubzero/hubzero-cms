@@ -51,7 +51,7 @@ $listName = $this->model->getListName($this->project->id, $color);
 if ($this->row->isComplete())
 {
 	$diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
-	$diff = ProjectsHtml::timeDifference ($diff);
+	$diff = \Components\Projects\Helpers\Html::timeDifference ($diff);
 }
 $assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PLG_PROJECTS_TODO_NOONE');
 ?>
@@ -80,7 +80,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PL
 					<p><?php echo JText::_('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>'; ?></p>
 					<p><?php echo JText::_('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
 				<?php } else if ($this->row->isComplete()) { ?>
-						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . ProjectsHtml::shortenName($this->row->closer('name')); ?></p>
+						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')); ?></p>
 						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . JText::_('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
 				<?php } ?>
 				</div>
@@ -102,7 +102,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PL
 			<?php foreach ($this->row->comments() as $comment) { ?>
 				<li>
 					<p><?php echo $comment->content('parsed'); ?></p>
-					<p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo ProjectsHtml::timeAgo($comment->get('created')).' '.JText::_('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) { ?><a href="<?php echo JRoute::_($url . '&action=deletecomment').'/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" id="delc-<?php echo $comment->get('id'); ?>" class="confirm-it">[<?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php  } ?></p>
+					<p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo \Components\Projects\Helpers\Html::timeAgo($comment->get('created')).' '.JText::_('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) { ?><a href="<?php echo JRoute::_($url . '&action=deletecomment').'/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" id="delc-<?php echo $comment->get('id'); ?>" class="confirm-it">[<?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php  } ?></p>
 				</li>
 			<?php } ?>
 			</ul>

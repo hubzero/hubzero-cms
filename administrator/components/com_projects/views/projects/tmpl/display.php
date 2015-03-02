@@ -148,7 +148,7 @@ function submitbutton(pressbutton)
 
 					$params = new JParameter( $row->params );
 					$quota  = $params->get('quota', $this->defaultQuota);
-					$quota  = ProjectsHtml::convertSize($quota, 'b', 'GB', 2);
+					$quota  = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2);
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>

@@ -679,7 +679,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				ProjectsHtml::email($member->invited_email, $jconfig->getValue('config.sitename')
+				\Components\Projects\Helpers\Html::email($member->invited_email, $jconfig->getValue('config.sitename')
 					. ': ' . $subject_pending, $message, $from);
 			}
 		}

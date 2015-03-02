@@ -1884,7 +1884,7 @@ class PublicationsCuration extends JObject
 			$this->_pub
 		);
 
-		$txt   = '<img src="' . ProjectsHtml::getFileIcon('txt') . '" alt="txt" />';
+		$txt   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon('txt') . '" alt="txt" />';
 
 		// Custom license to be included in LICENSE.txt
 		if ($this->_pub->license_text)

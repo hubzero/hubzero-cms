@@ -45,11 +45,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 	elseif ($dirHierarchy == 2)
 	{
 		// Get file attachment params
-		$file 	= isset($this->data->suffix) && $this->data->suffix  ? ProjectsHtml::fixFileName(basename($data->path), ' (' . $this->data->suffix . ')') : basename($data->path);
+		$file 	= isset($this->data->suffix) && $this->data->suffix  ? \Components\Projects\Helpers\Html::fixFileName(basename($data->path), ' (' . $this->data->suffix . ')') : basename($data->path);
 	}
 	else
 	{
-		$file 	= ProjectsHtml::fixFileName(basename($data->path), '-' . $data->id);
+		$file 	= \Components\Projects\Helpers\Html::fixFileName(basename($data->path), '-' . $data->id);
 	}
 
 	$thumbName = $ih->createThumbName($file, $suffix, $format);
@@ -67,13 +67,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
 	}
 	else
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
 		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
 	}
 

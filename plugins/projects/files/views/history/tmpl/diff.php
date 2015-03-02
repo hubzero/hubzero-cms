@@ -41,7 +41,7 @@ if ($this->subdir && count($desect_path) > 0)
 	}
 }
 
-$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . ProjectsHtml::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
+$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
 
 ?>
 
@@ -65,10 +65,7 @@ if ($this->getError()) {
 			</h3>
 		</div>
 	<?php } ?>
-	<?php if ($this->tool && $this->tool->name && !$this->ajax)
-	{
-		echo ProjectsHtml::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
-	} ?>
+
 	<fieldset class="diff-form">
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />

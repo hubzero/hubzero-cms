@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 $rUrl = $this->url . '?a=1' . $subdirlink;
 
-$slimit = ProjectsHtml::formatSize($this->sizelimit);
+$slimit = \Components\Projects\Helpers\Html::formatSize($this->sizelimit);
 
 // Incoming
 $basic   = JRequest::getInt('basic', 0);

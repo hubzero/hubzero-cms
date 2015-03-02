@@ -120,7 +120,7 @@ elseif ($this->docs) {
 
 		// Get file icon
 		$icon  = ($child->type == 'file')
-		? '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" /> '
+		? '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" /> '
 		: '<span class="'.$child->type.'"></span> ';
 
 		$url = JRoute::_('index.php?option=com_publications&id='

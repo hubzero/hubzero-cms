@@ -1237,7 +1237,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_project 					= new \Components\Projects\Tables\Project( $this->_database );
 			$this->_project->provisioned 		= 1;
-			$this->_project->alias 	 			= 'pub-' . strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+			$this->_project->alias 	 			= 'pub-' . strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 			$this->_project->title 	 			= $this->_project->alias;
 			$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
 			$this->_project->state   			= 1;
@@ -1351,7 +1351,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row->version_number 	= 1;
 		$row->license_type 		= 0;
 		$row->access 			= 0;
-		$row->secret 			= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+		$row->secret 			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
 		if (!$row->store())
 		{
@@ -1747,7 +1747,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->params  = new JParameter( $this->_project->params );
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
-						: ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
+						: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -2738,7 +2738,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$new->state 		= 3;
 				$new->version_label = $label;
 				$new->doi 			= '';
-				$new->secret 		= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+				$new->secret 		= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 				$new->version_number= $pub->versions + 1;
 				$new->main 			= 0;
 				$new->release_notes = NULL; // Release notes will need to be different
@@ -3266,7 +3266,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					$this->_project 					= new \Components\Projects\Tables\Project( $this->_database );
 					$this->_project->provisioned 		= 1;
-					$random 							= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+					$random 							= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 					$this->_project->alias 	 			= 'pub-' . $random;
 					$this->_project->title 	 			= $this->_project->alias;
 					$this->_project->type 	 			= $base == 'tools' ? 2 : 3; // content publication
@@ -3371,7 +3371,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$row->access 			= 0;
 
 				// Get hash code for version (to be used as a dir name to guard against direct file access)
-				$code = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+				$code = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 				$row->secret = $code;
 
 				$row->params = 'stage=content'."\n";
@@ -3441,7 +3441,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Make sure version has a secret id
 			if (!$row->secret)
 			{
-				$code = strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+				$code = strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 				$row->secret = $code;
 				$row->store();
 			}
@@ -3793,7 +3793,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$params  	   = new JParameter( $this->_project->params );
 		$quota   	   = $params->get('pubQuota')
 						? $params->get('pubQuota')
-						: ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
+						: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 
 		if (($quota - $dirsize) <= 0)
 		{
@@ -4483,7 +4483,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Save state
 			$row->state = $state;
 			$row->main = $main;
-			$row->secret = $row->secret ? $row->secret : strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+			$row->secret = $row->secret ? $row->secret : strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 			$row->rating = '0.0';
 			if (!$republish)
 			{
@@ -5682,7 +5682,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($email || trim($name))
 			{
 				// Generate invitation code
-				$code = ProjectsHtml::generateCode();
+				$code = \Components\Projects\Helpers\Html::generateCode();
 				$objO->projectid = $this->_project->id;
 				$objO->userid = $uid;
 				$objO->status = $uid ? 1 : 0;
@@ -7365,7 +7365,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->params  = new JParameter( $project->params );
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
-						: ProjectsHtml::convertSize(floatval($config->get('pubQuota', '1')), 'GB', 'b');
+						: \Components\Projects\Helpers\Html::convertSize(floatval($config->get('pubQuota', '1')), 'GB', 'b');
 
 		// Get total count
 		$results = $objP->getCount($filters);

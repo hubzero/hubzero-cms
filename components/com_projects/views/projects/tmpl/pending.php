@@ -29,7 +29,7 @@ $this->css()
 	->js();
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
+$this->project->title = $this->escape($this->project->title);
 ?>
 <div id="project-wrap">
 	<section class="main section">

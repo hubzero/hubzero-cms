@@ -842,7 +842,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			return false;
 		}
 
-		$list .= '<li><img src="' . ProjectsHtml::getFileIcon('csv') . '" alt="" /> data.csv</li>';
+		$list .= '<li><img src="' . \Components\Projects\Helpers\Html::getFileIcon('csv') . '" alt="" /> data.csv</li>';
 
 		// Add data files
 		$dataFiles = array();
@@ -864,7 +864,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				$parts  = explode('.', $e);
 				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
 				$ext	= strtolower($ext);
-				$icon   = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				$icon   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
 				$fileinfo = pathinfo($e);
 				$a_dir  = $fileinfo['dirname'];
 				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);

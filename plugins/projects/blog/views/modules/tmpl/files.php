@@ -39,9 +39,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php foreach ($this->files as $file) {
 		?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=files'.a.$this->goto).'/?action=download'.a.'file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo ProjectsHtml::shortenFileName($file['name']); ?></a>
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=files'.a.$this->goto).'/?action=download'.a.'file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name']); ?></a>
 				<span class="block faded mini">
-					<?php echo $file['size']; ?> | <?php echo JText::_('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), 'M d, Y'); ?> &middot; <?php echo ProjectsHtml::shortenName($file['author']); ?>
+					<?php echo $file['size']; ?> | <?php echo JText::_('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), 'M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file['author']); ?>
 				</span>
 			</li>
 		<?php } ?>

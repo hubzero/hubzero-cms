@@ -121,7 +121,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 					</tr>
 					<tr>
 						<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED')); ?>:</td>
-						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->created, 'M d, Y').' ('.ProjectsHtml::timeAgo($this->row->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->created, 'M d, Y').' ('.\Components\Projects\Helpers\Html::timeAgo($this->row->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 					</tr>
 					<tr>
 						<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')); ?>:</td>
@@ -159,13 +159,13 @@ $showCitations = $typeParams->get('show_citations', 0);
 					<?php } elseif ($this->row->published_up <= $now) { ?>
 					<tr>
 						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FROM'); ?>:</td>
-						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->published_up, 'M d, Y').' ('.ProjectsHtml::timeAgo($this->row->published_up).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->published_up, 'M d, Y').' ('.\Components\Projects\Helpers\Html::timeAgo($this->row->published_up).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 					</tr>
 					<?php } ?>
 					<?php if ($this->row->accepted != '0000-00-00 00:00:00') { ?>
 					<tr>
 						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'); ?>:</td>
-						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->accepted, 'M d, Y').' ('.ProjectsHtml::timeAgo($this->row->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->accepted, 'M d, Y').' ('.\Components\Projects\Helpers\Html::timeAgo($this->row->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 					</tr>
 					<?php } ?>
 					<?php } elseif ($this->pub->state != 3) {
@@ -188,13 +188,13 @@ $showCitations = $typeParams->get('show_citations', 0);
 					?>
 					<tr>
 						<td class="tbl-lbl"><?php echo $show_action; ?>:</td>
-						<td class="tbl-input"><?php echo JHTML::_('date', $date, 'M d, Y').' ('.ProjectsHtml::timeAgo($date).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+						<td class="tbl-input"><?php echo JHTML::_('date', $date, 'M d, Y').' ('.\Components\Projects\Helpers\Html::timeAgo($date).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 					</tr>
 					<?php } ?>
 					<?php if ($this->pub->state == 0) { ?>
 					<tr>
 						<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED')); ?>:</td>
-						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->published_down, 'M d, Y').' ('.ProjectsHtml::timeAgo($this->row->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+						<td class="tbl-input"><?php echo JHTML::_('date', $this->row->published_down, 'M d, Y').' ('.\Components\Projects\Helpers\Html::timeAgo($this->row->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 					</tr>
 					<?php } ?>
 					<tr>

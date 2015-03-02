@@ -1064,7 +1064,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				$title 	= $html->find('title',0)->innertext; //Title Of Page
 
 				$out .= $title ? stripslashes('<h5>' . addslashes($title) . '</h5>')
-						: '<h5>' . ProjectsHtml::shortenText($finalUrl, 100) . '</h5>';
+						: '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
 
 				//Get all images found on this page
 				$jpgs = $html->find('img[src$=jpg],img[src$=png]');

@@ -692,7 +692,7 @@ class ProjectsGoogleHelper extends JObject
 
 					if (!preg_match("/.folder/", $doc['mimeType']))
 					{
-						$title = ProjectsHtml::makeSafeFile($doc['title']);
+						$title = \Components\Projects\Helpers\Html::makeSafeFile($doc['title']);
 
 						// Get file extention
 						$ext = explode('.', $title);
@@ -711,7 +711,7 @@ class ProjectsGoogleHelper extends JObject
 					}
 					else
 					{
-						$title = ProjectsHtml::makeSafeDir($doc['title']);
+						$title = \Components\Projects\Helpers\Html::makeSafeDir($doc['title']);
 						$type = 'folder';
 					}
 
@@ -845,15 +845,15 @@ class ProjectsGoogleHelper extends JObject
 			}
 
 			// Append duplicate count to file name
-			$appended = ProjectsHtml::getAppendedNumber($fpath);
+			$appended = \Components\Projects\Helpers\Html::getAppendedNumber($fpath);
 			$num = $appended ? $appended + 1 : 1;
 
 			if ($appended)
 			{
-				$fpath = ProjectsHtml::cleanFileNum($fpath, $appended);
+				$fpath = \Components\Projects\Helpers\Html::cleanFileNum($fpath, $appended);
 			}
 
-			$fpath = ProjectsHtml::fixFileName($fpath, '-' . $num);
+			$fpath = \Components\Projects\Helpers\Html::fixFileName($fpath, '-' . $num);
 
 			// Check that new path isn't used either
 			return ProjectsGoogleHelper::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);
@@ -906,7 +906,7 @@ class ProjectsGoogleHelper extends JObject
 						continue;
 					}
 
-					$title = ProjectsHtml::makeSafeDir($item['title']);
+					$title = \Components\Projects\Helpers\Html::makeSafeDir($item['title']);
 					$fpath = $lpath ? $lpath . DS . $title : $title;
 					$status = $item['labels']['trashed'] ? 'D' : 'A';
 
@@ -1008,7 +1008,7 @@ class ProjectsGoogleHelper extends JObject
 
 					if (!preg_match("/.folder/", $item['mimeType']))
 					{
-						$title = ProjectsHtml::makeSafeFile($item['title']);
+						$title = \Components\Projects\Helpers\Html::makeSafeFile($item['title']);
 
 						if ($converted)
 						{
@@ -1023,7 +1023,7 @@ class ProjectsGoogleHelper extends JObject
 					}
 					else
 					{
-						$title = ProjectsHtml::makeSafeDir($item['title']);
+						$title = \Components\Projects\Helpers\Html::makeSafeDir($item['title']);
 						$type = 'folder';
 					}
 

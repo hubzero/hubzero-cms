@@ -66,8 +66,8 @@ $allowed = $params->typeParams->allowed_ext;
 $reqext  = $params->typeParams->required_ext;
 $reuse   = isset($params->typeParams->reuse) ? $params->typeParams->reuse : 1;
 
-$minName = ProjectsHtml::getNumberName($min);
-$maxName = ProjectsHtml::getNumberName($max);
+$minName = \Components\Projects\Helpers\Html::getNumberName($min);
+$maxName = \Components\Projects\Helpers\Html::getNumberName($max);
 
 // Spell out requirement
 $req = JText::_('PLG_PROJECTS_FILES_SELECTOR_CHOOSE') . ' ';

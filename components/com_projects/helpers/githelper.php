@@ -763,7 +763,7 @@ class ProjectsGitHelper extends JObject
 					$time = strtotime(date('c', time() )); // Important! needs to be local time, NOT UTC
 
 					$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
-					$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);
+					$mimeType = \Components\Projects\Helpers\Html::fixUpMimeType($filename , $mTypeParts[0]);
 
 					$locals[$filename] = array(
 						'status' 		=> 'A',
@@ -912,7 +912,7 @@ class ProjectsGitHelper extends JObject
 						if ($type == 'file')
 						{
 							$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $filename));
-							$mimeType = ProjectsHtml::fixUpMimeType($filename , $mTypeParts[0]);
+							$mimeType = \Components\Projects\Helpers\Html::fixUpMimeType($filename , $mTypeParts[0]);
 						}
 
 						// We are only interested in last local change on the file
@@ -1132,7 +1132,7 @@ class ProjectsGitHelper extends JObject
 
 				if (in_array($revision['commitStatus'], array('A', 'M')))
 				{
-					$revision['size'] = ProjectsHtml::formatSize($this->gitLog($path, $name, $hash, 'size'));
+					$revision['size'] = \Components\Projects\Helpers\Html::formatSize($this->gitLog($path, $name, $hash, 'size'));
 				}
 
 				// Exctract file content for certain statuses

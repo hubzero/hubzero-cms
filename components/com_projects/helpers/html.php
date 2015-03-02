@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Helpers;
+
+use Exception;
 
 /**
  * Html helper class
  */
-class ProjectsHtml
+class Html
 {
 	/**
 	 * Show time since present moment or an actual date
@@ -47,24 +48,24 @@ class ProjectsHtml
 	{
 		$parsed 		= date_parse($time);
 		$timestamp		= strtotime($time);
-		$current_time 	= $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
+		$current_time 	= $utc ? strtotime(\JFactory::getDate()) : strtotime(date('c'));
 		$current  		= date_parse($current_time);
 		$lapsed 		= $current_time - $timestamp;
 		if ($lapsed < 30)
 		{
-			return JText::_('just now');
+			return \JText::_('just now');
 		}
 		elseif ($lapsed > 86400 && $current['year'] == $parsed['year'])
 		{
-			return JHTML::_('date', $timestamp, 'M j, Y', false);
+			return \JHTML::_('date', $timestamp, 'M j, Y', false);
 		}
 		elseif ($lapsed > 86400)
 		{
-			return JHTML::_('date', $timestamp, 'M j', false) . ' at ' . JHTML::_('date', $timestamp, 'h:ia', false);
+			return \JHTML::_('date', $timestamp, 'M j', false) . ' at ' . \JHTML::_('date', $timestamp, 'h:ia', false);
 		}
 		else
 		{
-			return ProjectsHtml::timeDifference($lapsed);
+			return self::timeDifference($lapsed);
 		}
 	}
 
@@ -81,28 +82,28 @@ class ProjectsHtml
 		$parsed 	= date_parse($time);
 		$timestamp	= strtotime($time);
 
-		$now 		= $utc ? JFactory::getDate()->toSql() : date('c');
+		$now 		= $utc ? \JFactory::getDate()->toSql() : date('c');
 		$current  	= date_parse($now);
 
 		if ($full)
 		{
-			return JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
+			return \JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
 		}
 
 		if ($current['year'] == $parsed['year'])
 		{
 			if ($current['month'] == $parsed['month'] && $current['day'] == $parsed['day'])
 			{
-				return JHTML::_('date', $timestamp, 'g:i A', false);
+				return \JHTML::_('date', $timestamp, 'g:i A', false);
 			}
 			else
 			{
-				return JHTML::_('date', $timestamp, 'M j', false);
+				return \JHTML::_('date', $timestamp, 'M j', false);
 			}
 		}
 		else
 		{
-			return JHTML::_('date', $timestamp, 'M j, Y', false);
+			return \JHTML::_('date', $timestamp, 'M j, Y', false);
 		}
 	}
 
@@ -118,9 +119,9 @@ class ProjectsHtml
 		$timestamp = strtotime($timestamp);
 
 		// Get current time
-		$current_time = $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
+		$current_time = $utc ? strtotime(\JFactory::getDate()) : strtotime(date('c'));
 
-		$text = ProjectsHtml::timeDifference($current_time - $timestamp);
+		$text = self::timeDifference($current_time - $timestamp);
 
 		return $text;
 	}
@@ -167,7 +168,7 @@ class ProjectsHtml
 		$text  = $parts[0] . ' ' . $parts[1];
 		if ($text == '0 seconds')
 		{
-			$text = JText::_('COM_PROJECTS_JUST_A_MOMENT');
+			$text = \JText::_('COM_PROJECTS_JUST_A_MOMENT');
 		}
 
 		return $text;
@@ -182,12 +183,12 @@ class ProjectsHtml
 	public static function timeFromNow ($timestamp)
 	{
 		// Get current UTC time
-		$current_time = strtotime(JFactory::getDate());
+		$current_time = strtotime(\JFactory::getDate());
 
 		// Determine the difference, between the time now and the timestamp
 		$difference =  strtotime($timestamp) - $current_time;
 
-		return ProjectsHtml::timeDifference($difference);
+		return self::timeDifference($difference);
 	}
 
 	/**
@@ -247,7 +248,7 @@ class ProjectsHtml
 				// could not get file size
 			}
 		}
-		$fs = ProjectsHtml::formatSize($fs);
+		$fs = self::formatSize($fs);
 		return ($fs) ? $fs : '';
 
 	}
@@ -285,7 +286,7 @@ class ProjectsHtml
 
 			if (is_dir($directory."/".$file))
 			{
-				$dirSize += ProjectsHtml::getDirSize($directory."/".$file);
+				$dirSize += self::getDirSize($directory."/".$file);
 			}
 		}
 
@@ -685,7 +686,7 @@ class ProjectsHtml
 	 */
 	public static function replaceEmoIcons($text = NULL)
 	{
-		$icons = ProjectsHtml::getEmoIcons();
+		$icons = self::getEmoIcons();
 
 		foreach ($icons as $icon => $image)
 		{
@@ -713,7 +714,7 @@ class ProjectsHtml
 		}
 		if (!$config)
 		{
-			$config = JComponentHelper::getParams('com_projects');
+			$config = \JComponentHelper::getParams('com_projects');
 		}
 		$path    = trim($config->get('imagepath', '/site/projects'), DS)
 					. DS . $alias . DS . 'images';
@@ -744,7 +745,7 @@ class ProjectsHtml
 		}
 		if (!$config)
 		{
-			$config = JComponentHelper::getParams('com_projects');
+			$config = \JComponentHelper::getParams('com_projects');
 		}
 
 		$src  = '';
@@ -783,7 +784,7 @@ class ProjectsHtml
 	{
 		if (!$image)
 		{
-			$this->setError( JText::_('No image set.') );
+			$this->setError( \JText::_('No image set.') );
 			return false;
 		}
 
@@ -864,25 +865,6 @@ class ProjectsHtml
 			$key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
 		}
 		return $key;
-	}
-
-	/**
-	 * Clean up text
-	 *
-	 * @param      string $in
-	 * @return     string
-	 */
-	public static function cleanText ($in = '')
-	{
-		$in = stripslashes($in);
-		$in = str_replace('&quote;','&quot;',$in);
-		$in = htmlspecialchars($in);
-
-		if (!strstr( $in, '</p>' ) && !strstr( $in, '<pre class="wiki">' ))
-		{
-			$in = str_replace("<br />","",$in);
-		}
-		return $in;
 	}
 
 	/**
@@ -1135,7 +1117,7 @@ class ProjectsHtml
 		}
 		if ($name == '')
 		{
-			$name = JText::_('COM_PROJECTS_UNKNOWN');
+			$name = \JText::_('COM_PROJECTS_UNKNOWN');
 		}
 
 		return $name;
@@ -1216,7 +1198,7 @@ class ProjectsHtml
 				krsort($notes);
 				foreach ($notes as $match)
 				{
-					$ntext .= ProjectsHtml::parseAdminNote($match, $reviewer);
+					$ntext .= self::parseAdminNote($match, $reviewer);
 				}
 			}
 		}
@@ -1298,7 +1280,7 @@ class ProjectsHtml
 			$notes = $matches[0];
 			if (count($notes) > 0)
 			{
-				$match = ProjectsHtml::parseAdminNote(end($notes), $reviewer, 1, 100);
+				$match = self::parseAdminNote(end($notes), $reviewer, 1, 100);
 			}
 		}
 		else

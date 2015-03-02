@@ -31,8 +31,8 @@ $this->css()
 $html  = '';
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
-$this->project->about = rtrim(stripslashes(ProjectsHtml::cleanText($this->project->about)));
+$this->project->title = $this->escape($this->project->title);
+$this->project->about = rtrim(stripslashes($this->escape($this->project->about)));
 
 $project = new ProjectsModelProject($this->project);
 

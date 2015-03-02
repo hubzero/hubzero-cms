@@ -27,11 +27,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $item = $this->item;
 
-$img = ProjectsHtml::getGoogleIcon($item->remote_format);
+$img = \Components\Projects\Helpers\Html::getGoogleIcon($item->remote_format);
 
 $url = $this->url . '/?action=open' . a . 'subdir='.urlencode($this->subdir) . a . 'file=' . urlencode(basename($item->local_path));
 
-$when = ProjectsHtml::formatTime(date ('c', strtotime($item->remote_modified .  ' UTC')));
+$when = \Components\Projects\Helpers\Html::formatTime(date ('c', strtotime($item->remote_modified .  ' UTC')));
 
 $ext = explode('.', $item->local_path);
 $ext = count($ext) > 1 ? end($ext) : '';
@@ -41,10 +41,10 @@ $name = basename($item->local_path);
 // Is this a duplicate remote?
 if (basename($item->local_path) != $item->remote_title)
 {
-	$append = ProjectsHtml::getAppendedNumber(basename($item->local_path));
+	$append = \Components\Projects\Helpers\Html::getAppendedNumber(basename($item->local_path));
 	if ($append > 0)
 	{
-		$name = ProjectsHtml::fixFileName($item->remote_title, ' (' . $append . ')', $ext );
+		$name = \Components\Projects\Helpers\Html::fixFileName($item->remote_title, ' (' . $append . ')', $ext );
 	}
 }
 
@@ -71,7 +71,7 @@ $me = ($author == utf8_decode($this->oparams->get('google_name')) || $author == 
 	<td><input type="checkbox" value="<?php echo urlencode(basename($item->local_path)); ?>" name="asset[]" class="checkasset js remote service-google" /></td>
 	<td class="sharing"><img src="<?php echo $img; ?>" alt="<?php echo urlencode($item->remote_title); ?>" />
 		<a href="<?php echo $url; ?>"
-		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo ProjectsHtml::shortenFileName($name, 50); ?></a>
+		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 50); ?></a>
 	</td>
 	<td class="shrinked"></td>
 	<td class="shrinked"></td>

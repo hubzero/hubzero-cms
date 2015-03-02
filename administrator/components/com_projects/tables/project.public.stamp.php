@@ -30,8 +30,6 @@
 
 namespace Components\Projects\Tables;
 
-use ProjectsHtml;
-
 /**
  * Table class for project public links
  */
@@ -190,7 +188,7 @@ class Stamp extends \JTable
 
 		// Generate stamp
 		require_once( PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');
-		$stamp 		= ProjectsHtml::generateCode(20, 20, 0, 1, 1);
+		$stamp 		= \Components\Projects\Helpers\Html::generateCode(20, 20, 0, 1, 1);
 
 		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by)
 				 VALUES (" . $this->_db->Quote($stamp) . ", " . $this->_db->Quote($projectid) . ", " . $this->_db->Quote($listed) . ", " . $this->_db->Quote($type) . ", " . $this->_db->Quote($reference) . ", " . $this->_db->Quote($expires) . " , " . $this->_db->Quote($created) . ", " . $this->_db->Quote($created_by) . " )";

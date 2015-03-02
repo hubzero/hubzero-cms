@@ -606,7 +606,7 @@ class typeFiles extends JObject
 			$revision = $projectsHelper->showGitInfo($gitpath, $path, $att->vcs_hash, $file);
 		}
 
-		$html = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . ProjectsHtml::shortenFileName($file, 50);
+		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
 		if($canedit && $pid) {
 		$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
 		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';

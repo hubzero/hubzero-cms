@@ -229,9 +229,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 					$fPath = basename($filePath);
 					if (in_array($fPath, $added))
 					{
-						$num   = ProjectsHtml::getAppendedNumber($fPath);
+						$num   = \Components\Projects\Helpers\Html::getAppendedNumber($fPath);
 						$num   = $num ? $num : 1;
-						$fPath = ProjectsHtml::fixFileName($fPath, '-' . $num);
+						$fPath = \Components\Projects\Helpers\Html::fixFileName($fPath, '-' . $num);
 					}
 					else
 					{
@@ -291,7 +291,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
 			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
-			$icon  = '<img src="' . ProjectsHtml::getFileIcon('zip') . '" alt="zip" />';
+			$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon('zip') . '" alt="zip" />';
 
 			// Bundle name
 			$list .= '<li>' . $icon . ' ' . $title . '</li>';
@@ -339,7 +339,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$parts  = explode('.', $attach->path);
 				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
 				$ext	= strtolower($ext);
-				$icon   = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				$icon   = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
 
 				$list .= '<li class="' . $class . '"><span class="item-title">' . $icon . ' ' . trim($where, DS) . '</span>';
 				$list .= '<span class="item-details">' . $attach->path . '</span>';
@@ -393,7 +393,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$ext  = 'zip';
 
 			// Get file icon
-			$icon  = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+			$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
 
 			// Serve as bundle
 			$html .= '<li>';
@@ -429,7 +429,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$ext	= strtolower($ext);
 
 				// Get file icon
-				$icon  = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				$icon  = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" />';
 
 				$itemUrl 	=  $url . '&a=' . $attach->id . '&download=1';
 				$title 		= $attach->title ? $attach->title : $configs->title;
@@ -796,13 +796,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 
 			// Do not preserve dir hierarchy, but append number for same-name files
-			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$name 	= $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
 			$fpath  = $configs->pubPath . DS . $name;
 		}
 		else
 		{
 			// Attach record number to file name
-			$name 	= ProjectsHtml::fixFileName(basename($path), '-' . $id);
+			$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
 			$fpath  = $configs->pubPath . DS . $name;
 		}
 
@@ -1072,11 +1072,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				}
 				else
 				{
-					$name 	= ProjectsHtml::fixFileName(basename($data->oldpath), '-' . $row->id);
+					$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($data->oldpath), '-' . $row->id);
 					$renameFrom = $configs->pubPath . DS . $name;
 
 					// Attach record number to file name
-					$name 	= ProjectsHtml::fixFileName(basename($newpath), '-' . $row->id);
+					$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($newpath), '-' . $row->id);
 					$renameTo   = $configs->pubPath . DS . $name;
 				}
 

@@ -44,7 +44,7 @@ else {
 }
 
 $profile = \Hubzero\User\Profile::getInstance($this->project->created_by_user);
-$notes = ProjectsHtml::getAdminNotes($this->project->admin_notes, $this->reviewer);
+$notes = \Components\Projects\Helpers\Html::getAdminNotes($this->project->admin_notes, $this->reviewer);
 
 ?>
 <?php if (!$this->ajax) { ?>

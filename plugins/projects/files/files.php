@@ -543,9 +543,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->title		= $this->_area['title'];
 		$view->quota 		= $view->params->get('quota')
 							? $view->params->get('quota')
-							: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+							: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 		$view->fileparams 	= $this->params;
-		$view->sizelimit 	= ProjectsHTML::formatSize($this->params->get('maxUpload', '104857600'));
+		$view->sizelimit 	= \Components\Projects\Helpers\Html::formatSize($this->params->get('maxUpload', '104857600'));
 
 		return $view->loadTemplate();
 	}
@@ -677,7 +677,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($prov)
 		{
-			$view->quota = ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
+			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 		}
 
 		// Get messages	and errors
@@ -1041,7 +1041,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Check to make sure we are not over in char length
 			if (strlen($parsedRef) > 255)
 			{
-				$parsedRef = ProjectsHtml::shortenText($parsedRef);
+				$parsedRef = \Components\Projects\Helpers\Html::shortenText($parsedRef);
 			}
 
 			// Record activity
@@ -1089,7 +1089,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get quota & routing
 		if ($prov)
 		{
-			$view->quota = ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
+			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 			$route 		 = 'index.php?option=com_publications' . a . 'task=submit';
 			$view->url   = JRoute::_($route);
 		}
@@ -1100,7 +1100,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$quota 		 = $params->get('quota');
 			$view->quota = $quota
 				? $quota
-				: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+				: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 
 			$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 			$view->url 	= ($this->_case != 'files' && $this->_tool->name)
@@ -1187,7 +1187,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Provisioned project scenario
 		if ($newProv)
 		{
-			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('pubQuota', '1')),
+			$quota 		= \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')),
 							'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($this->path, $prefix, false);
 		}
@@ -1199,7 +1199,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$quota 		= $params->get('quota');
 			$quota 		= $quota
 						  ? $quota
-						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')),
+						  : \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')),
 							'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->params->get('disk_usage'));
 		}
@@ -1223,7 +1223,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Make the filename safe
 		$filename = urldecode($filename);
-		$filename = ProjectsHtml::makeSafeFile($filename);
+		$filename = \Components\Projects\Helpers\Html::makeSafeFile($filename);
 
 		$fName 	  = $ext ? $filename . '.' . $ext : $filename;
 
@@ -1460,7 +1460,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Provisioned project scenario
 		if ($this->_task == 'saveprov')
 		{
-			$quota 		= ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+			$quota 		= \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($this->path, $prefix, false);
 		}
 		else
@@ -1470,7 +1470,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$quota 		= $params->get('quota');
 			$quota 		= $quota
 						  ? $quota
-						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+						  : \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->params->get('disk_usage'));
 		}
 
@@ -1490,7 +1490,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Make the filename safe
 				if ($file)
 				{
-					$file = ProjectsHtml::makeSafeFile($file);
+					$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
 				}
 
 				// Get file extention
@@ -1502,7 +1502,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$file = $this->subdir ? $this->subdir . DS . $file : $file;
 
 				// Check file size
-				$sizelimit = ProjectsHtml::formatSize($this->params->get('maxUpload', '104857600'));
+				$sizelimit = \Components\Projects\Helpers\Html::formatSize($this->params->get('maxUpload', '104857600'));
 
 				if ( $files['size'][$i] > intval($this->params->get('maxUpload', '104857600')))
 				{
@@ -1694,7 +1694,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$temp_path 	 = $this->_task == 'saveprov' ? 'temp' : $this->getProjectPath ($this->_project->alias, 'temp');
 		$archive 	 = $prefix . $temp_path . DS . $file;
-		$extractPath = $prefix . $temp_path . DS . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 );
+		$extractPath = $prefix . $temp_path . DS . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 );
 		$z 			 = 0;
 		$unzipto 	 = $subdir ? $prefix . $path . DS . $subdir : $prefix . $path;
 
@@ -1756,8 +1756,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Clean up filename
-				$safe_dir = $a_dir && $a_dir != '.' ? ProjectsHtml::makeSafeDir($a_dir) : '';
-				$safe_file= ProjectsHtml::makeSafeFile($a_file);
+				$safe_dir = $a_dir && $a_dir != '.' ? \Components\Projects\Helpers\Html::makeSafeDir($a_dir) : '';
+				$safe_file= \Components\Projects\Helpers\Html::makeSafeFile($a_file);
 
 				$skipDir = 0;
 				if ($safe_dir && in_array(strtolower($safe_dir), $reserved))
@@ -1889,8 +1889,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Clean up filename
-				$safe_dir = $a_dir ? ProjectsHtml::makeSafeDir($a_dir) : '';
-				$safe_file= ProjectsHtml::makeSafeFile($a_file);
+				$safe_dir = $a_dir ? \Components\Projects\Helpers\Html::makeSafeDir($a_dir) : '';
+				$safe_file= \Components\Projects\Helpers\Html::makeSafeFile($a_file);
 				$safename = $safe_dir && !$skipDir ? $safe_dir . DS . $safe_file : $safe_file;
 				$afile 	  = $subdir ? $subdir . DS . $safename : $safename;
 				$adir 	  = $subdir ? $subdir . DS . $safe_dir : $safe_dir;
@@ -2056,7 +2056,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		// Incoming
 		$newdir = JRequest::getVar('newdir', '', 'post');
-		$newdir = ProjectsHtml::makeSafeDir($newdir);
+		$newdir = \Components\Projects\Helpers\Html::makeSafeDir($newdir);
 		$createdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
 
 		$sync = 0;
@@ -2423,7 +2423,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if ($newdir)
 			{
 				$newdir = stripslashes($newdir);
-				$newdir = ProjectsHtml::makeSafeDir($newdir);
+				$newdir = \Components\Projects\Helpers\Html::makeSafeDir($newdir);
 				$newdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
 			}
 			if ($newdir && !file_exists( $this->prefix . $this->path . DS . $newdir ))
@@ -3210,11 +3210,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make dir/file name safe
 		if ($rename == 'dir')
 		{
-			$newname = ProjectsHtml::makeSafeDir($newname);
+			$newname = \Components\Projects\Helpers\Html::makeSafeDir($newname);
 		}
 		else
 		{
-			$newname = ProjectsHtml::makeSafeFile($newname);
+			$newname = \Components\Projects\Helpers\Html::makeSafeFile($newname);
 		}
 
 		// Compare new and old name
@@ -3384,7 +3384,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Include Git Helper
 			$this->getGitHelper();
 
-			$tempName = 'temp-' . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 ) . basename($file);
+			$tempName = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . basename($file);
 			$serve    = $prefix. $tempPath . DS . $tempName;
 
 			// Get file content
@@ -3655,7 +3655,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$binary && $filesize <= 10485760)
 				{
 					$content = $this->_git->showTextContent($fpath, 100);
-					$content = $content ? ProjectsHtml::shortenText($content, 200) : '';
+					$content = $content ? \Components\Projects\Helpers\Html::shortenText($content, 200) : '';
 				}
 			}
 
@@ -3673,7 +3673,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->title 		= $file;
 			$view->content 		= $content;
 			$view->option 		= $this->_option;
-			$view->filesize		= isset($filesize) ? ProjectsHtml::formatSize($filesize) : NULL;
+			$view->filesize		= isset($filesize) ? \Components\Projects\Helpers\Html::formatSize($filesize) : NULL;
 			$view->remote		= $remote;
 			$view->project		= $this->_project;
 
@@ -3770,7 +3770,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$parts = explode('/', $file);
 					$serveas = trim(end($parts));
 
-					$temppath = 'temp-' . ProjectsHtml::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
+					$temppath = 'temp-' . \Components\Projects\Helpers\Html::generateCode (4 ,4 ,0 ,1 ,0 ) . $serveas;
 					$fullpath = $this->prefix. $this->path . DS .$temppath;
 
 					// Get file content
@@ -4021,7 +4021,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Build temp name
-			$tempBase = $tex ? 'temp__' . ProjectsHtml::takeOutExt($filename) : $filename;
+			$tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($filename) : $filename;
 
 			// LaTeX file?
 			if ($tex)
@@ -4427,7 +4427,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get temp directory
 		$base_path 		= $this->getProjectPath ($this->_project->alias, 'temp');
-		$tarname 		= 'project_files_' . ProjectsHtml::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
+		$tarname 		= 'project_files_' . \Components\Projects\Helpers\Html::generateCode (6 , 6 , 0 , 1 , 1 ) . '.zip';
 		$path 			= $subdir ? $projectPath. DS . $subdir : $projectPath;
 		$combinedSize  	= 0;
 
@@ -4626,14 +4626,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->pubDiskUsage = $helper->getDiskUsage($project->id, $pubs);
 			$view->pubQuota 	= $view->params->get('pubQuota')
 								? $view->params->get('pubQuota')
-								: ProjectsHtml::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');
+								: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');
 		}
 
 		$view->total  = $this->getFiles($path, '', 0, 1);
 		$quota 		  = $view->params->get('quota');
 		$view->quota  = $quota
 			? $quota
-			: ProjectsHtml::convertSize( floatval($config->get('defaultQuota', '1')), 'GB', 'b');
+			: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('defaultQuota', '1')), 'GB', 'b');
 
 		$view->case 	= $case;
 		$view->tool		= $tool;
@@ -4780,8 +4780,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['fpath']		= $fpath;
 			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
 			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
-			$entry['size']		= $entry['bytes'] ? ProjectsHtml::formatSize($entry['bytes']) : 'unknown';
-			$entry['ext']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );
+			$entry['size']		= $entry['bytes'] ? \Components\Projects\Helpers\Html::formatSize($entry['bytes']) : 'unknown';
+			$entry['ext']		= \Components\Projects\Helpers\Html::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );
 
 			// Get last commit data
 			if ($this->_fileinfo && isset($this->_fileinfo[$fpath]))
@@ -5196,7 +5196,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$file = array();
 						$file['name']	= basename($fpath);
 						$file['fpath']	= $fpath;
-						$file['ext']	= ProjectsHtml::getFileAttribs( basename($fpath), $fullpath, 'ext' );
+						$file['ext']	= \Components\Projects\Helpers\Html::getFileAttribs( basename($fpath), $fullpath, 'ext' );
 					}
 					else
 					{
@@ -5242,12 +5242,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$file 						= array();
 				$file['name']				= basename($ut);
 				$file['fpath']				= $ut;
-				$file['ext']				= ProjectsHtml::getFileAttribs( basename($ut), $fullpath, 'ext' );
+				$file['ext']				= \Components\Projects\Helpers\Html::getFileAttribs( basename($ut), $fullpath, 'ext' );
 				$file['date']  				= NULL;
 				$file['author'] 			= NULL;
 				$file['email'] 				= NULL;
 				$file['bytes']				= filesize($this->prefix . $path . DS . $ut);
-				$file['size']				= ProjectsHtml::formatSize($file['bytes']);
+				$file['size']				= \Components\Projects\Helpers\Html::formatSize($file['bytes']);
 				$file['untracked'] 			= 1;
 				$file['pid'] 				= '';
 				$file['pub_title'] 			= '';
@@ -5862,7 +5862,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$diskUsage = $this->getDiskUsage($path, $this->prefix, $this->params->get('disk_usage'));
 		$quota 	   = $pparams->get('quota')
 					? $pparams->get('quota')
-					: ProjectsHtml::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
+					: \Components\Projects\Helpers\Html::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
 		$avail 	   = $quota - $diskUsage;
 
 		// Last synced remote/local change
@@ -5900,7 +5900,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Sync start time
 		$startTime =  date('c');
-		$passed    = $synced != 1 ? ProjectsHtml::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
+		$passed    = $synced != 1 ? \Components\Projects\Helpers\Html::timeDifference(strtotime($startTime) - strtotime($synced)) : 'N/A';
 
 		// Start debug output
 		$output  = ucfirst($service) . "\n";
@@ -6032,7 +6032,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			foreach ($locals as $filename => $local)
 			{
 				// Record sync status
-				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+				$this->_writeToFile(JText::_('Syncing ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 				$output .= ' * Local change ' . $filename . ' - ' . $local['status'] . ' - ' . $local['modified'] . ' - ' . $local['time'] . "\n";
 
@@ -6255,7 +6255,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
-					$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . ProjectsHTML::shortenFileName($filename, 15) );
+					$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 					$this->_connect->generateThumbnail($service, $projectCreator,
 						$nR, $this->_config, $this->_project->alias, $ih);
 				}
@@ -6283,7 +6283,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			foreach ($remotes as $filename => $remote)
 			{
 				// Record sync status
-				$this->_writeToFile(JText::_('Syncing ') . ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+				$this->_writeToFile(JText::_('Syncing ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'];
 				$output .= $remote['fileSize'] ? ' - ' . $remote['fileSize'] . ' bytes' : '';
@@ -6507,7 +6507,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 								// Record sync status
 								$this->_writeToFile(JText::_('Skipping (size over limit)')
-									. ' ' . ProjectsHTML::shortenFileName($filename, 30) );
+									. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 								continue;
 							}
@@ -6559,7 +6559,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if ($remote['thumb'] && $remote['status'] != 'D')
 					{
 						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' '
-						. ProjectsHTML::shortenFileName($filename, 15) );
+						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 						$this->_connect->generateThumbnail($service, $projectCreator, $remote,
 							$this->_config, $this->_project->alias, $ih);
 					}
@@ -6583,7 +6583,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Log time
 		$endTime = date('c');
-		$length  = ProjectsHtml::timeDifference(strtotime($endTime) - strtotime($startTime));
+		$length  = \Components\Projects\Helpers\Html::timeDifference(strtotime($endTime) - strtotime($startTime));
 
 		$output .= 'Sync complete:' . "\n";
 		$output .= 'Local time: '. $endTime . "\n";
@@ -6677,8 +6677,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Report last sync time
 			$msg = $synced && $synced != 1
-				? '<span class="faded">Last sync: ' . ProjectsHtml::timeAgo($synced, false)
-				. ' ' . JText::_('COM_PROJECTS_AGO') . '</span>'
+				? '<span class="faded">Last sync: '
+				. JHTML::_('date.relative', $synced) . ' </span>'
 				: '';
 			$status = array('status' => 'complete', 'msg' => $msg);
 
@@ -6978,7 +6978,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$newpath = $newExt ? $newpath : $newpath . '.' . $oldExt;
 
 		$newdir  = dirname($newpath) == '.' ? '' : dirname($newpath) . DS;
-		$newname = ProjectsHtml::makeSafeFile(basename($newpath));
+		$newname = \Components\Projects\Helpers\Html::makeSafeFile(basename($newpath));
 		$newpath = $newdir . $newname;
 
 		// Compare new and old name
@@ -7113,7 +7113,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$dataPath = urldecode($dataPath);
 
 			// Figure destination
-			$file 		= ProjectsHtml::makeSafeFile(basename($dataPath));
+			$file 		= \Components\Projects\Helpers\Html::makeSafeFile(basename($dataPath));
 			$localPath	= $this->subdir ? $this->subdir . DS . $file : $file;
 			$fullPath	= $this->prefix . $this->path . DS . $localPath;
 
@@ -7233,7 +7233,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				for ($i=0; $i < count($files['name']); $i++)
 				{
 					$file = $files['name'][$i];
-					$file = ProjectsHtml::makeSafeFile($file);
+					$file = \Components\Projects\Helpers\Html::makeSafeFile($file);
 					$assets[] = $this->subdir ? $this->subdir . DS . $file : $file;
 				}
 			}
@@ -7366,7 +7366,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$obj->size		= filesize($fullPath);
 		}
 
-		$obj->formattedSize = $obj->size ? ProjectsHtml::formatSize($obj->size) : NULL;
+		$obj->formattedSize = $obj->size ? \Components\Projects\Helpers\Html::formatSize($obj->size) : NULL;
 
 		// Get file extention
 		$parts 		= explode('.', $file);
@@ -7381,7 +7381,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (isset($this->mt))
 		{
 			$mTypeParts = explode(';', $this->mt->getMimeType($fullPath));
-			$obj->mimeType   = ProjectsHtml::fixUpMimeType($obj->name, $mTypeParts[0]);
+			$obj->mimeType   = \Components\Projects\Helpers\Html::fixUpMimeType($obj->name, $mTypeParts[0]);
 		}
 
 		// Get last commit data

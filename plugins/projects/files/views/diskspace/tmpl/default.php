@@ -43,19 +43,19 @@ $actual  = $working > 0 ? round((($working * 100 )/ $this->quota), 1) : NULL;
 $actual  = $actual > 100 ? 100 : $actual;
 
 $versions = $this->dirsize - $working;
-$versions = ($versions > $minGitSize && ($this->usageGit || $this->by == 'admin')) ? ProjectsHtml::formatSize($versions) : 0;
+$versions = ($versions > $minGitSize && ($this->usageGit || $this->by == 'admin')) ? \Components\Projects\Helpers\Html::formatSize($versions) : 0;
 
 $inuse = ($inuse > 100) ? '> 100' : $inuse;
 
-$quota = ProjectsHtml::formatSize($this->quota);
+$quota = \Components\Projects\Helpers\Html::formatSize($this->quota);
 
 $used  = ($this->usageGit)
-		? ProjectsHtml::formatSize($this->dirsize)
-		: ProjectsHtml::formatSize($working);
+		? \Components\Projects\Helpers\Html::formatSize($this->dirsize)
+		: \Components\Projects\Helpers\Html::formatSize($working);
 
 $unused = $this->usageGit
-		? ProjectsHtml::formatSize($this->quota - $this->dirsize)
-		: ProjectsHtml::formatSize($this->quota - $working);
+		? \Components\Projects\Helpers\Html::formatSize($this->quota - $this->dirsize)
+		: \Components\Projects\Helpers\Html::formatSize($this->quota - $working);
 $unused = $unused <= 0 ? 'none' : $unused;
 $approachingQuota = $this->config->get('approachingQuota', 85);
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
@@ -70,7 +70,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 	<?php } ?>
 	<?php if ($this->tool && $this->tool->name)
 	{
-		echo ProjectsHtml::toolDevHeader( $this->option, $this->config,
+		echo \Components\Projects\Helpers\Html::toolDevHeader( $this->option, $this->config,
 				$this->project, $this->tool, 'source', '&raquo; <span class="subheader">'
 				. JText::_('COM_PROJECTS_FILES_DISK_USAGE') . '</span>');
 	} ?>
@@ -91,7 +91,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					<?php } ?>
 			</div>
 			<div id="usage-labels">
-					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').' ('.ProjectsHtml::formatSize($working).')'; ?>
+					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').' ('.\Components\Projects\Helpers\Html::formatSize($working).')'; ?>
 					<?php if ($versions > 0) { ?>
 					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
 					<?php } ?>
@@ -100,17 +100,17 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 			<?php } else { ?>
 			<div id="usage-labels" class="usage-admin">
 				<span class="l-h"><?php echo JText::_('Project Files'); ?>
-					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').': '.ProjectsHtml::formatSize($working); ?>
+					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files').': '.\Components\Projects\Helpers\Html::formatSize($working); ?>
 					<span class="l-regular">&nbsp;</span><?php echo JText::_('History') . ': ' . $versions; ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unused; ?>
 				<span>
 				<?php if (isset($this->pubDiskUsage))
 				{
 					$unusedPub = $this->pubQuota - $this->pubDiskUsage;
-					$unusedPub = $unusedPub <= 0 ? 'none' : ProjectsHtml::formatSize($unusedPub);
+					$unusedPub = $unusedPub <= 0 ? 'none' : \Components\Projects\Helpers\Html::formatSize($unusedPub);
 				?>
 				<span class="l-h"><?php echo JText::_('Publications'); ?>
-					<span class="l-pub">&nbsp;</span><?php echo JText::_('Published') .': ' . ProjectsHtml::formatSize($this->pubDiskUsage); ?>
+					<span class="l-pub">&nbsp;</span><?php echo JText::_('Published') .': ' . \Components\Projects\Helpers\Html::formatSize($this->pubDiskUsage); ?>
 					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unusedPub; ?>
 				<span>
 				<?php } ?>

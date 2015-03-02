@@ -31,7 +31,7 @@ $this->css()
 	 ->css('extended.css');
 
 // Do some text cleanup
-$this->project->title = ProjectsHtml::cleanText($this->project->title);
+$this->project->title = $this->escape($this->project->title);
 
 $project = new ProjectsModelProject($this->project);
 $this->project->about = $project->about('parsed');

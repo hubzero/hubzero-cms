@@ -342,7 +342,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		$sendInvite = 0;
 		$exists 	= 0;
-		$code 		= ProjectsHtml::generateCode();
+		$code 		= \Components\Projects\Helpers\Html::generateCode();
 
 		if (!$firstName || !$lastName || !$org)
 		{
@@ -522,7 +522,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
 		$credit 	= JRequest::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
-		$code 		= ProjectsHtml::generateCode();
+		$code 		= \Components\Projects\Helpers\Html::generateCode();
 		$uid 		= JRequest::getInt( 'uid', 0, 'post' );
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';

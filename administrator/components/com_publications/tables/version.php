@@ -699,7 +699,7 @@ class PublicationVersion extends JTable
 		$new->id = 0;
 		$new->rating = '0.0';
 		$new->state = $state;
-		$new->secret = $secret ? $secret : strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
+		$new->secret = $secret ? $secret : strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 		$new->version_number = $version_number;
 		$new->main = $main;
 

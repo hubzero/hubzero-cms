@@ -54,10 +54,10 @@ elseif ($row->state == 5)
 
 $sysgroup 	= $this->config->get('group_prefix', 'pr-').$this->obj->alias;
 $quota 		= $this->params->get('quota');
-$quota 		= $quota ? $quota : ProjectsHtml::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+$quota 		= $quota ? $quota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
 $pubQuota 	= $this->params->get('pubQuota');
-$pubQuota 	= $pubQuota ? $pubQuota : ProjectsHtml::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+$pubQuota 	= $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize( floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
@@ -253,12 +253,12 @@ function submitbutton(pressbutton)
 
 				<div class="input-wrap">
 					<label><?php echo JText::_('Files Quota'); ?>: <?php echo ' ('.JText::_('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
-					<input name="params[quota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($quota, 'b', 'GB', 2); ?>" class="short" />
+					<input name="params[quota]" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2); ?>" class="short" />
 				</div>
 
 				<div class="input-wrap">
 					<label><?php echo JText::_('Publications Quota'); ?>: <?php echo ' ('.JText::_('COM_PROJECTS_FILES_GBYTES').')'; ?></label>
-					<input name="params[pubQuota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
+					<input name="params[pubQuota]" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
 				</div>
 
 				<?php if ($this->diskusage) { ?>
@@ -326,7 +326,7 @@ function submitbutton(pressbutton)
 						$activity = preg_replace('/said/', "posted an update", $this->last_activity->activity);
 						$activity = preg_replace('/&#58;/', "", $activity);
 						?>
-						<?php echo $this->last_activity->recorded; ?> (<?php echo ProjectsHtml::timeAgo($this->last_activity->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->name; ?></span> <?php echo $activity; ?>
+						<?php echo $this->last_activity->recorded; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->recorded).' '.JText::_('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->name; ?></span> <?php echo $activity; ?>
 						<?php } else { echo JText::_('COM_PROJECTS_NA'); }?>
 					</td>
 				</tr>

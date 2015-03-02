@@ -33,13 +33,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
 	}
 	else
 	{
 		$title 	 = $data->title;
 		$details = $data->path;
-		$details.= $data->size ? ' | ' . ProjectsHtml::formatSize($data->size) : '';
+		$details.= $data->size ? ' | ' . \Components\Projects\Helpers\Html::formatSize($data->size) : '';
 		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
 	}
 ?>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php } ?>
 		</span>
 		<span class="item-title">
-			<img alt="" src="<?php echo ProjectsHtml::getFileIcon($data->ext); ?>" /> <?php echo $title; ?>
+			<img alt="" src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($data->ext); ?>" /> <?php echo $title; ?>
 		</span>
 		<span class="item-details"><?php echo $details; ?></span>
 	</li>

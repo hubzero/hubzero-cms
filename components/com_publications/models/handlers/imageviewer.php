@@ -511,13 +511,13 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			}
 
 			// Do not preserve dir hierarchy, but append number for same-name files
-			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$name 	= $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
 			$fpath  = $configs->pubPath . DS . $name;
 		}
 		else
 		{
 			// Attach record number to file name
-			$name 	= ProjectsHtml::fixFileName(basename($path), '-' . $id);
+			$name 	= \Components\Projects\Helpers\Html::fixFileName(basename($path), '-' . $id);
 			$fpath  = $configs->pubPath . DS . $name;
 		}
 
