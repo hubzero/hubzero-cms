@@ -35,7 +35,7 @@ $on = ($google['on'] || $dropbox['on']) ? 1 : 0;
 // Project creator
 $creator = ($this->project->owned_by_user == $this->uid) ? 1 : 0;
 
-$limited = $this->params->get('connectedProjects') ? ProjectsHelper::getParamArray($this->params->get('connectedProjects')) : array();
+$limited = $this->params->get('connectedProjects') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : array();
 
 $authorized = (empty($limited) || (!empty($limited) && in_array($this->project->alias, $limited))) ? true : false;
 

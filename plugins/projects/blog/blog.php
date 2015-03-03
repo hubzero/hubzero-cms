@@ -210,7 +210,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if ($owner_params->get('hide_welcome', 0) == 1)
 		{
 			// Get suggestions
-			$suggestions = ProjectsHelper::getSuggestions(
+			$suggestions = \Components\Projects\Helpers\Html::getSuggestions(
 				$project,
 				$option,
 				$uid,
@@ -324,7 +324,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if ($show_welcome)
 		{
 			// Get suggestions
-			$suggestions = ProjectsHelper::getSuggestions(
+			$suggestions = \Components\Projects\Helpers\Html::getSuggestions(
 				$project,
 				$option,
 				$uid,

@@ -765,9 +765,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$pubPlugin 	= JPluginHelper::getPlugin( 'projects', 'publications' );
 			$pubparams  = new JParameter($pubPlugin->params);
 
-			$view->image_ext = ProjectsHelper::getParamArray(
+			$view->image_ext = \Components\Projects\Helpers\Html::getParamArray(
 								$pubparams->get('image_types', 'bmp, jpeg, jpg, png' ));
-			$view->video_ext = ProjectsHelper::getParamArray(
+			$view->video_ext = \Components\Projects\Helpers\Html::getParamArray(
 								$pubparams->get('video_types', 'avi, mpeg, mov, wmv' ));
 
 			$other = 1;
@@ -1690,7 +1690,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Reserved names (service directories)
-		$reserved = ProjectsHelper::getParamArray($this->params->get('reservedNames'));
+		$reserved = \Components\Projects\Helpers\Html::getParamArray($this->params->get('reservedNames'));
 
 		$temp_path 	 = $this->_task == 'saveprov' ? 'temp' : $this->getProjectPath ($this->_project->alias, 'temp');
 		$archive 	 = $prefix . $temp_path . DS . $file;
@@ -1851,7 +1851,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$unzipto = $subdir ? $prefix . $path . DS . $subdir : $prefix . $path;
 
 		// Reserved names (service directories)
-		$reserved = ProjectsHelper::getParamArray(
+		$reserved = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('reservedNames'));
 
 		// Do virus check
@@ -2062,7 +2062,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$sync = 0;
 
 		// Reserved names (service directories)
-		$reserved = ProjectsHelper::getParamArray(
+		$reserved = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('reservedNames', '' ));
 
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;

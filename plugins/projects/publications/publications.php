@@ -74,7 +74,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$area = array();
 
 		// Check if plugin is restricted to certain projects
-		$projects = $this->params->get('restricted') ? ProjectsHelper::getParamArray($this->params->get('restricted')) : array();
+		$projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
 
 		if (!empty($projects))
 		{
@@ -208,13 +208,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );
 
 		// Areas that can be updated after publication
-		$this->_updateAllowed = ProjectsHelper::getParamArray(
+		$this->_updateAllowed = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('updatable_areas', '' ));
 
 		// Common extensions (for gallery)
-		$this->_image_ext = ProjectsHelper::getParamArray(
+		$this->_image_ext = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('image_types', 'bmp, jpeg, jpg, png' ));
-		$this->_video_ext = ProjectsHelper::getParamArray(
+		$this->_video_ext = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('video_types', 'avi, mpeg, mov, wmv' ));
 
 		// Use new curation flow?
@@ -7687,7 +7687,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get restrictions from plugin params
 				$projects = $params->get('restricted')
-					? ProjectsHelper::getParamArray($params->get('restricted')) : array();
+					? \Components\Projects\Helpers\Html::getParamArray($params->get('restricted')) : array();
 
 				if (!empty($projects))
 				{

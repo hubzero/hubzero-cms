@@ -764,6 +764,23 @@ class Html
 	}
 
 	/**
+	 * Covert param to array of values
+	 *
+	 * @param      string $param
+	 *
+	 * @return     array
+	 */
+	public static function getParamArray($param = '')
+	{
+		if ($param)
+		{
+			$array = explode(',', $param);
+			return array_map('trim', $array);
+		}
+		return array();
+	}
+
+	/**
 	 * Get the random number appended to file name
 	 *
 	 * @param      string $path
@@ -1171,5 +1188,100 @@ class Html
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Get suggestions for new project members
+	 *
+	 * @param      object $project
+	 * @param      string $option
+	 * @param      int $uid
+	 * @param      array $config
+	 * @param      array $params
+	 * @return     void
+	 */
+	public static function getSuggestions( $project, $option, $uid = 0, $config, $params )
+	{
+		$suggestions = array();
+		$creator = $project->created_by_user == $uid ? 1 : 0;
+		$goto  = '&alias=' . $project->alias;
+
+		// Adding a picture
+		if ($creator && !$project->picture)
+		{
+			$suggestions[] = array(
+				'class' => 's-picture',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_THUMB'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit')
+			);
+		}
+
+		// Adding grant information
+		if ($creator && $config->get('grantinfo') && !$params->get('grant_title', ''))
+		{
+			$suggestions[] = array(
+				'class' => 's-about',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit&active=settings')
+			);
+		}
+
+		// Adding about text
+		if ($creator && !$project->about && $project->private == 0)
+		{
+			$suggestions[] = array(
+				'class' => 's-about',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_ABOUT'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit')
+			);
+		}
+
+		// File upload
+		if ($project->counts['files'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['files'] == 0 ) )
+		{
+			$text = $creator
+				? \JText::_('COM_PROJECTS_WELCOME_UPLOAD_FILES')
+				: \JText::_('COM_PROJECTS_WELCOME_SHARE_FILES');
+			$suggestions[] = array(
+				'class' => 's-files',
+				'text'  => $text,
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=files')
+			);
+		}
+
+		// Inviting others
+		if ($project->counts['team'] == 1 && $project->role == 1)
+		{
+			$suggestions[] = array(
+				'class' => 's-team',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_INVITE_USERS'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit&active=team')
+			);
+		}
+
+		// Todo items
+		if ($project->counts['todo'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['todo'] == 0 ) )
+		{
+			$suggestions[] = array(
+				'class' => 's-todo',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_TODO'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=todo')
+			);
+		}
+
+		// Notes
+		if ($project->counts['notes'] == 0 || (!$creator && $project->num_visits < 5)
+			|| ($creator && $project->num_visits < 5 &&  $project->counts['notes'] == 0 )  )
+		{
+			$suggestions[] = array(
+				'class' => 's-notes',
+				'text'  => \JText::_('COM_PROJECTS_WELCOME_START_NOTE'),
+				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=notes')
+			);
+		}
+
+		return $suggestions;
 	}
 }

@@ -85,7 +85,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$area = array();
 
 		// Check if plugin is restricted to certain projects
-		$projects = $this->params->get('restricted') ? ProjectsHelper::getParamArray($this->params->get('restricted')) : array();
+		$projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
 
 		if (!empty($projects))
 		{
