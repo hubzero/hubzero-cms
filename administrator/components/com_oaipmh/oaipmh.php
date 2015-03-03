@@ -42,10 +42,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
+$task = \JRequest::getCmd('task');
+
 \JSubMenuHelper::addEntry(
 	\JText::_('COM_OAIPMH_ABOUT'),
 	\JRoute::_('index.php?option=com_oaipmh'),
-	true
+	(!$task || $task == 'display')
+);
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_OAIPMH_SCHEMAS'),
+	\JRoute::_('index.php?option=com_oaipmh&task=schemas'),
+	($task == 'schemas')
 );
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))

@@ -29,6 +29,7 @@
 
 namespace Components\Oaipmh\Controllers;
 
+use Components\Oaipmh\Models\Service;
 use Hubzero\Component\AdminController;
 
 /**
@@ -45,5 +46,20 @@ class Config extends AdminController
 	{
 		// display panel
 		$this->view->display();
+	}
+
+	/**
+	 * Display available schemas
+	 * 
+	 * @return  void
+	 */
+	public function schemasTask()
+	{
+		require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'service.php');
+
+		// display panel
+		$this->view
+			->set('service', new Service())
+			->display();
 	}
 }
