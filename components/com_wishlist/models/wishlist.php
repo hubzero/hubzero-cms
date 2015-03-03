@@ -705,6 +705,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					{
 						$this->config()->set('access-edit-' . $assetType, true);
 						$this->config()->set('access-edit-state-' . $assetType, true);
+						$this->config()->set('access-manage-' . $assetType, true);
 
 						$this->set('admin', 3);  // advisory committee member
 					}

@@ -225,7 +225,7 @@ $this->css()
 							</li>
 						<?php } ?>
 					<?php } ?>
-					<?php if ($this->wishlist->access('manage') || $this->juser->get('id') == $this->wish->get('proposed_by')) { ?>
+					<?php if (($this->wishlist->access('manage') && $this->wishlist->get('admin') != 3) || $this->juser->get('id') == $this->wish->get('proposed_by')) {  ?>
 						<li>
 							<a class="edit" href="<?php echo JRoute::_($this->wish->link('edit')); ?>">
 								<?php echo JText::_('COM_WISHLIST_ACTION_EDIT'); ?>
@@ -363,12 +363,6 @@ $this->css()
 								}
 								else
 								{
-									if ($this->wish->get('num_votes', 0)
-									 && $this->wish->get('num_skipped_votes', 0)
-									 && $this->wish->get('num_votes') == $this->wish->get('num_skipped_votes'))
-									{
-										$this->wish->set('average_effort', 7);
-									}
 									?>
 									<td>
 										<?php echo WishlistHtml::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort'); ?>
@@ -658,7 +652,7 @@ $this->css()
 		</div><!-- / .subject -->
 		<div class="aside">
 			<p>
-				<?php 
+				<?php
 					$link = JRoute::_($this->wish->link('comment'));
 					if ($this->juser->get('guest'))
 					{
