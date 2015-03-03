@@ -246,14 +246,7 @@ class Miner extends Object implements Provider
 			WHERE a.rid=" . $this->database->quote($id) . "
 			ORDER BY `versionid` DESC LIMIT 1"
 		);
-		if ($doi = $this->database->loadResult())
-		{
-			$record->identifier = 'http://dx.doi.org/' . $doi;
-		}
-		else
-		{
-			$record->identifier = rtrim(\JURI::base(), '/') . '/' . ltrim(\JRoute::_('index.php?option=com_resources&id=' . $id), '/');
-		}
+		$record->identifier = $this->identifier($id, $this->database->loadResult());
 
 		$this->database->setQuery(
 			"SELECT 
@@ -275,6 +268,56 @@ class Miner extends Object implements Provider
 		);
 		$record->subject = $this->database->loadResultArray();
 
+		if ($record->alias)
+		{
+			$record->relation = array();
+
+			$this->database->setQuery(
+				"SELECT v.id, v.revision, d.*
+				FROM `#__tool_version` as v
+				LEFT JOIN `#__doi_mapping` as d
+				ON d.alias = v.toolname
+				AND d.local_revision=v.revision
+				WHERE v.toolname = " . $this->database->quote($record->alias) . "
+				ORDER BY v.state DESC, v.revision DESC"
+			);
+			$versions = $this->database->loadObjectList();
+			foreach ($versions as $i => $v)
+			{
+				if (!$v->revision)
+				{
+					continue;
+				}
+
+				$record->relation[] = array(
+					'type'  => 'hasVersion',
+					'value' => $this->identifier($id, $v->doi, $v->revision)
+				);
+			}
+		}
+
 		return $record;
+	}
+
+	/**
+	 * Build the identifier URI for a resource
+	 *
+	 * @param   integer  $id
+	 * @param   string   $doi
+	 * @param   integer  $rev
+	 * @return  string
+	 */
+	protected function identifier($id, $doi, $rev=0)
+	{
+		if ($doi)
+		{
+			$identifier = 'http://dx.doi.org/' . $doi;
+		}
+		else
+		{
+			$identifier = rtrim(\JURI::base(), '/') . '/' . ltrim(\JRoute::_('index.php?option=com_resources&id=' . $id . ($rev ? '&rev=' . $rev : '')), '/');
+		}
+
+		return $identifier;
 	}
 }

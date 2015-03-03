@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Display config optins
+	 * Display overview
 	 * 
 	 * @return  void
 	 */
@@ -40,5 +40,20 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	{
 		// display panel
 		$this->view->display();
+	}
+
+	/**
+	 * Display available schemas
+	 * 
+	 * @return  void
+	 */
+	public function schemasTask()
+	{
+		require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'service.php');
+
+		// display panel
+		$this->view
+			->set('service', new \Components\Oaipmh\Models\Service())
+			->display();
 	}
 }

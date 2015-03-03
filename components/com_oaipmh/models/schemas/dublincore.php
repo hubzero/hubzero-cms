@@ -53,7 +53,7 @@ class DublinCore implements Schema
 	 * 
 	 * @var  string
 	 */
-	public static $schema = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
+	public static $schema = 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
 
 	/**
 	 * Schema namespace
@@ -100,11 +100,11 @@ class DublinCore implements Schema
 	{
 		return in_array($type, array(
 			'dc',
-			'qdc',
 			'oai_dc',
 			'oai_pmh:dc',
+			'simple-dublin-core',
 			'dublincore',
-			'qualifiedddc',
+			__CLASS__
 		));
 	}
 
@@ -126,6 +126,26 @@ class DublinCore implements Schema
 		{
 			$this->setResponse($response);
 		}
+	}
+
+	/**
+	 * Get the schema name
+	 *
+	 * @return  string
+	 */
+	public function name()
+	{
+		return 'Dublin Core';
+	}
+
+	/**
+	 * Get the schema prefix
+	 *
+	 * @return  string
+	 */
+	public function prefix()
+	{
+		return self::$prefix;
 	}
 
 	/**
@@ -157,6 +177,18 @@ class DublinCore implements Schema
 	{
 		$this->_escape = $spec;
 		return $this;
+	}
+
+	/**
+	 * Prepare a value for XML output
+	 *
+	 * @param   string  $var  The output to escape.
+	 * @return  string  The prepared value.
+	 */
+	public function prepare($var)
+	{
+		$var = html_entity_decode(stripslashes($var));
+		return $this->escape($var);
 	}
 
 	/**
@@ -215,7 +247,7 @@ class DublinCore implements Schema
 	{
 		foreach ($iterator as $index => $set)
 		{
-			// make sure we have a record
+			// Make sure we have a record
 			if ($set === null)
 			{
 				continue;
@@ -256,7 +288,7 @@ class DublinCore implements Schema
 							->attr('xmlns:' . self::$prefix, self::$ns)
 							->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 							->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-							->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema)
+							->attr('xsi:schemaLocation', self::$schema)
 							->element('dc:description', $this->escape($set[2]))->end()
 						->end()
 					->end();
@@ -278,10 +310,10 @@ class DublinCore implements Schema
 	 */
 	public function records($iterator, $metadata=true)
 	{
-		// loop through each item
+		// Loop through each item
 		foreach ($iterator as $index => $record)
 		{
-			// make sure we have a record
+			// Make sure we have a record
 			if ($record === null)
 			{
 				continue;
@@ -311,7 +343,7 @@ class DublinCore implements Schema
 			$this->response->element('identifier', $result->identifier)->end();
 		}
 
-		// we want the "T" & "Z" strings in the output NOT the UTC offset (-400)
+		// We want the "T" & "Z" strings in the output NOT the UTC offset (-400)
 		$gran = $this->service->get('gran', 'c');
 		if ($gran == 'c')
 		{
@@ -329,7 +361,7 @@ class DublinCore implements Schema
 			$this->response->element('setSpec', $result->type)->end();
 		}
 
-		$this->response->end(); // end header
+		$this->response->end(); // End header
 
 		if ($metadata)
 		{
@@ -339,54 +371,28 @@ class DublinCore implements Schema
 						->attr('xmlns:' . self::$prefix, self::$ns)
 						->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
 						->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-						->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema);
+						->attr('xsi:schemaLocation', self::$schema);
 
 			$dcs = array(
-				'title'   => null,
-				'creator' => null,
-				'subject' => null,
-				'date'    => array(
-					'created',
-					'valid',
-					'available',
-					'issued',
-					'modified',
-					'dateAccepted',
-					'dateCopyrighted',
-					'dateSubmitted'
-				),
-				'identifier'  => null,
-				'description' => null,
-				'type'        => null,
-				'publisher'   => null,
-				'rights'      => null,
-				'contributor' => null,
-				'relation'    => array(
-					'isVersionOf',
-					'hasVersion',
-					'isReplacedBy',
-					'replaces',
-					'isRequiredBy',
-					'requires',
-					'isPartOf',
-					'hasPart',
-					'isReferencedBy',
-					'references',
-					'isFormatof',
-					'hasFormat',
-					'conformsTo'
-				),
-				'format'   => array(
-					'medium',
-					'extent'
-				),
-				'coverage' => null,
-				'language' => null,
-				'source'   => null
+				'title',
+				'creator',
+				'subject',
+				'date',
+				'identifier',
+				'description',
+				'type',
+				'publisher',
+				'rights',
+				'contributor',
+				'relation',
+				'format',
+				'coverage',
+				'language',
+				'source'
 			);
 
-			// loop through DC elements
-			foreach ($dcs as $dc => $attrs)
+			// Loop through DC elements
+			foreach ($dcs as $dc)
 			{
 				if (!isset($result->$dc))
 				{
@@ -395,11 +401,18 @@ class DublinCore implements Schema
 
 				if (is_array($result->$dc))
 				{
-					foreach ($result->$dc as $sub)
+					foreach ($result->$dc as $val)
 					{
-						$sub = html_entity_decode($sub);
+						if (is_array($val))
+						{
+							$res  = $val['value'];
+						}
+						else
+						{
+							$res = $val;
+						}
 
-						$this->response->element('dc:' . $dc, $this->escape(stripslashes($sub)))->end();
+						$this->response->element('dc:' . $dc, $this->prepare($res))->end();
 					}
 				}
 				elseif (!empty($result->$dc))
@@ -410,26 +423,16 @@ class DublinCore implements Schema
 					}
 					else
 					{
-						$res = html_entity_decode(stripslashes($result->$dc));
-
-						$this->response->element('dc:' . $dc, $this->escape($res));
-						/*if (is_array($attrs))
-						{
-							foreach ($attrs as $attr)
-							{
-
-							}
-						}*/
-						$this->response->end();
+						$this->response->element('dc:' . $dc, $this->prepare($result->$dc))->end();
 					}
 				}
 			}
 
-			$this->response->end() // end oai_dc:dc
-						->end(); // end metadata
+			$this->response->end() // End oai_dc:dc
+						->end(); // End metadata
 		}
 
-		$this->response->end(); // end record
+		$this->response->end(); // End record
 
 		return $this;
 	}

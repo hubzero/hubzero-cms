@@ -41,10 +41,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'OaipmhController' . ucfirst($controllerName);
 
+$task = \JRequest::getCmd('task');
+
 \JSubMenuHelper::addEntry(
 	\JText::_('COM_OAIPMH_ABOUT'),
 	\JRoute::_('index.php?option=com_oaipmh'),
-	true
+	(!$task || $task == 'display')
+);
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_OAIPMH_SCHEMAS'),
+	\JRoute::_('index.php?option=com_oaipmh&task=schemas'),
+	($task == 'schemas')
 );
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
