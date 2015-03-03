@@ -121,6 +121,11 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		$obj = new \Hubzero\Item\Comment($this->database);
 
+		// Get records
+		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
+
+		// add the appropriate filters and apply them to the Item::Comment
+
 		$filters = array(
 			'item_type' => 'wish',
 			'parent'    => 0,
@@ -130,6 +135,23 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		{
 			$filters['item_id'] = $this->view->filters['wish'];
 		}
+		if (isset($this->view->filters['sort']))
+		{
+			$filter['sort'] = $this->view->filters['sort'];
+			if (isset($this->view->filters['sort_Dir']))
+			{
+				$filters['sort_Dir'] = $this->view->filters['sort_Dir'];
+			}
+		}
+		if (isset($this->view->filters['limit']))
+		{
+			$filters['limit'] = $this->view->filters['limit'] ;
+		}
+		if (isset($this->view->filters['start']))
+		{
+			$filters['start'] = $this->view->filters['start'];
+		}
+
 		$comments1 = $obj->find($filters, 1);
 		$comments = array();
 		if (count($comments1) > 0)
@@ -166,6 +188,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 				}
 			}
 		}
+
 		$this->view->total = count($comments);
 		$this->view->rows  = $comments;
 
