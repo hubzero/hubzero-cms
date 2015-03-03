@@ -408,6 +408,12 @@ function popratings()
 						<td><?php echo $this->row->accepted; ?></td>
 					</tr>
 			<?php } ?>
+			<?php if ($this->row->archived != '0000-00-00 00:00:00') { ?>
+					<tr>
+						<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVED'); ?></td>
+						<td><?php echo $this->row->archived; ?></td>
+					</tr>
+			<?php } ?>
 		<?php }  ?>
 			<tr>
 				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
