@@ -627,6 +627,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pid 	= $this->_id ? $this->_id : JRequest::getInt('id', 0);
 		$vid 	= JRequest::getInt('vid', 0);
 
+		// Include utilities
+		require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS
+		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$row   = new PublicationVersion( $this->database );
