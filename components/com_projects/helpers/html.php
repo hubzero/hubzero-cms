@@ -153,6 +153,10 @@ class Html
 
 		// Set the current value to be floored
 		$number = floor($number);
+		if ($periods[$val] == 'sec')
+		{
+			return \JText::_('COM_PROJECTS_LESS_THAN_A_MINUTE');
+		}
 
 		// If required create a plural
 		if ($number != 1)

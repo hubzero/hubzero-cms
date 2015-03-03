@@ -6663,7 +6663,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Report last sync time
 			$msg = $synced && $synced != 1
 				? '<span class="faded">Last sync: '
-				. JHTML::_('date.relative', $synced) . ' </span>'
+				. \Components\Projects\Helpers\Html::timeAgo($synced, false)
+				. ' ' . JText::_('COM_PROJECTS_AGO') . ' </span>'
 				: '';
 			$status = array('status' => 'complete', 'msg' => $msg);
 

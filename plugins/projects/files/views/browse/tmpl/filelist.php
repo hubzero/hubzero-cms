@@ -89,7 +89,8 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
 			if ($lastsync)
 			{
-				$lastsync = '<span class="faded">Last sync: ' . JHTML::_('date.relative', $lastsync) . ' </span>' ;
+				$lastsync = '<span class="faded">Last sync: ' . \Components\Projects\Helpers\Html::timeAgo($lastsync, false)
+				. ' ' . JText::_('COM_PROJECTS_AGO') . ' </span>' ;
 			}
 			?>
 	<input type="hidden" name="service-<?php echo $service; ?>" id="service-<?php echo $service; ?>" value="<?php echo !empty($this->connections) && isset($this->connections[$service]) ? 1 : 0; ?>" />
