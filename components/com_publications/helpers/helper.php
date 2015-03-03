@@ -410,26 +410,23 @@ class PublicationHelper extends JObject
 				// Make publication thumbnail
 				if (is_file(JPATH_ROOT.$image))
 				{
-					include_once( JPATH_ROOT . DS . 'components' . DS
-						. 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
-
 					$image_ext = array('jpg', 'jpeg', 'gif', 'png');
 					$ext = explode('.', $shots[0]->srcfile);
 					$ext = end($ext);
 
 					if (in_array($ext, $image_ext))
 					{
-						$ih = new ProjectsImgHandler();
-						JFile::copy(JPATH_ROOT.$image, JPATH_ROOT.$path . DS . 'thumb.gif');
-						$ih->set('image','thumb.gif');
-						$ih->set('overwrite',true);
-						$ih->set('path',JPATH_ROOT.$path.DS);
-						$ih->set('maxWidth', 100);
-						$ih->set('maxHeight', 100);
-						$ih->set('cropratio', '1:1');
-						if ($ih->process())
+						JFile::copy(JPATH_ROOT . $image, JPATH_ROOT . $path . DS . 'thumb.gif');
+
+						$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $path . DS . 'thumb.gif');
+						if (count($hi->getErrors()) == 0)
 						{
+							$hi->resize(100, false, true, true);
 							return $path . DS . 'thumb.gif';
+						}
+						else
+						{
+							return false;
 						}
 					}
 				}

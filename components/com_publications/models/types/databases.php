@@ -578,33 +578,35 @@ class typeDatabases extends JObject
 					continue;
 				}
 
-				$ih = new ProjectsImgHandler();
-
 				// Generate thumbnail
 				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
 				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
 
-				$ih->set('image', basename($thumb));
-				$ih->set('overwrite',true);
-				$ih->set('path', $tpath . DS );
-				$ih->set('maxWidth', 100);
-				$ih->set('maxHeight', 60);
-				$ih->process();
+				$hi = new \Hubzero\Image\Processor($publishPath . DS . $thumb);
+				if (count($hi->getErrors()) == 0)
+				{
+					$hi->resize(100, false, false, true);
+				}
+				else
+				{
+					return false;
+				}
 
 				// Generate medium image
 				$med 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
 				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
 
-				$ih->set('image', basename($med));
-				$ih->set('overwrite',true);
-				$ih->set('path', $mpath . DS );
-				$ih->set('maxWidth', 800);
-				$ih->set('maxHeight', 800);
-				$ih->set('quality', 75);
-				$ih->set('force', false);
-				$ih->process();
+				$hi = new \Hubzero\Image\Processor($publishPath . DS . $med);
+				if (count($hi->getErrors()) == 0)
+				{
+					$hi->resize(800, false, false, true);
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 	}

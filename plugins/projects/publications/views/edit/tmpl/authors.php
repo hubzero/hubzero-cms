@@ -45,9 +45,6 @@ $instruct = $this->project->provisioned == 1
 $mconfig = JComponentHelper::getParams( 'com_members' );
 $path  = DS . trim($mconfig->get('webpath'), DS);
 
-// Get image handler
-$ih = new ProjectsImgHandler();
-
 // Keep count of authors deleted from team / unconfirmed
 $missing 	 = 0;
 $unconfirmed = 0;

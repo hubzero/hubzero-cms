@@ -178,7 +178,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 			// Load classes
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
 
 			// Which view
 			$task = $action ? strtolower(trim($action)) : JRequest::getVar('action', '');
@@ -507,13 +506,6 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	 */
 	private function browse()
 	{
-		//include a project helper file for handing project picture
-		$include = JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php';
-		if (is_file($include))
-		{
-			include_once($include);
-		}
-
 		//create plugin view
 		$view = new \Hubzero\Plugin\View(
 			array(

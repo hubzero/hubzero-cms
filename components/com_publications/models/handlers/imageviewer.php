@@ -100,14 +100,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		$thumbName = $this->_imgHelper->createThumbName(
 			basename($path),
 			$this->_config->params->thumbSuffix,
@@ -140,14 +132,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$defaultMasterName  = 'master.png';
 		$defaultThumbName 	= 'thumb.gif';
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		$path = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
 		// No file found
@@ -165,7 +149,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
 		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
 
-		$thumbName = $this->_imgHelper->createThumbName(
+		$thumbName = PublicationsHtml::createThumbName(
 			basename($path),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat
@@ -179,13 +163,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 			// Create/update thumb
 			JFile::copy($path, $copyToThumb);
-			$this->_imgHelper->set('image', basename($copyToThumb));
-			$this->_imgHelper->set('overwrite', true);
-			$this->_imgHelper->set('path', $configs->pubBase . DS );
-			$this->_imgHelper->set('maxWidth', 100);
-			$this->_imgHelper->set('maxHeight', 100);
-			$this->_imgHelper->set('cropratio', '1:1');
-			$this->_imgHelper->process();
+
+			$hi = new \Hubzero\Image\Processor($copyToThumb);
+			if (count($hi->getErrors()) == 0)
+			{
+				$hi->resize(100, false, true, true);
+			}
 		}
 		else
 		{
@@ -254,14 +237,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			return false;
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		$html 	= '';
 		$els 	= '';
 		$i 		= 0;
@@ -275,7 +250,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
-			$thumbName = $this->_imgHelper->createThumbName(
+			$thumbName = PublicationsHtml::createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
@@ -339,14 +314,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		$path = str_replace(JPATH_ROOT, '', $attConfigs->pubPath);
 
 		$html = '';
@@ -356,7 +323,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
 			$fpath = str_replace(JPATH_ROOT, '', $fpath);
 
-			$thumbName = $this->_imgHelper->createThumbName(
+			$thumbName = PublicationsHtml::createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
@@ -393,17 +360,9 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		$fpath = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
-		$thumbName = $this->_imgHelper->createThumbName(
+		$thumbName = PublicationsHtml::createThumbName(
 			basename($fpath),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat
@@ -428,13 +387,13 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		if (!is_file($thumbPath) || $md5 != $row->content_hash)
 		{
 			JFile::copy($fpath, $thumbPath);
-			$this->_imgHelper->set('image', basename($thumbName));
-			$this->_imgHelper->set('overwrite', true);
-			$this->_imgHelper->set('path', $configs->pubPath . DS);
-			$this->_imgHelper->set('maxWidth', $this->_config->params->thumbWidth);
-			$this->_imgHelper->set('maxHeight', $this->_config->params->thumbHeight);
-			$this->_imgHelper->set('cropratio', NULL);
-			if (!$this->_imgHelper->process())
+			$hi = new \Hubzero\Image\Processor($thumbPath);
+			if (count($hi->getErrors()) == 0)
+			{
+				$square = $this->_config->params->thumbWidth == $this->_config->params->thumbHeight ? true : false;
+				$hi->resize($this->_config->params->thumbWidth, false, $square, true);
+			}
+			else
 			{
 				return false;
 			}
@@ -456,14 +415,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		// Metadata file?
 		$layout =  ($data->ext == 'csv') ? 'file' : 'image';
 
@@ -478,7 +429,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		);
 		$view->data    		= $data;
 		$view->config  		= $this->_config;
-		$view->ih	   		= $this->_imgHelper;
 		$view->params 		= $params;
 
 		if ($this->getError())

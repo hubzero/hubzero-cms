@@ -41,7 +41,6 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
 
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
-include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 

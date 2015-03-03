@@ -106,10 +106,9 @@ else
 							<?php
 							// If we have files selected
 							if (count($this->shots) > 0) {
-								$ih = new ProjectsImgHandler();
 								$i = 1;
 								foreach ($this->shots as $shot) {
-									$thumb = $ih->createThumbName($shot->srcfile, '_tn', $extension = 'png');
+									$thumb = \Components\Projects\Helpers\Html::createThumbName($shot->srcfile, '_tn', $extension = 'png');
 									$src = JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->row->id) . '/Image:' . $thumb;
 									// Check if master file is still there
 									$gone = is_file($this->prefix.$this->fpath.DS.$shot->filename) ? 0 : 1;

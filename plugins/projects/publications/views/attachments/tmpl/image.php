@@ -25,57 +25,56 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	$data  		 = $this->data;
-	$ih    		 = $this->ih;
-	$allowRename = $this->data->allowRename;
+$data  		 = $this->data;
+$allowRename = $this->data->allowRename;
 
-	// Get settings
-	$suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix
-			? $this->config->params->thumbSuffix : '-tn';
+// Get settings
+$suffix = isset($this->config->params->thumbSuffix) && $this->config->params->thumbSuffix
+		? $this->config->params->thumbSuffix : '-tn';
 
-	$format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
-			? $this->config->params->thumbFormat : 'png';
+$format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
+		? $this->config->params->thumbFormat : 'png';
 
-	$dirHierarchy = isset($this->params->dirHierarchy) ? $this->params->dirHierarchy : 1;
+$dirHierarchy = isset($this->params->dirHierarchy) ? $this->params->dirHierarchy : 1;
 
-	if ($dirHierarchy == 1)
-	{
-		$file = $this->data->path;
-	}
-	elseif ($dirHierarchy == 2)
-	{
-		// Get file attachment params
-		$file 	= isset($this->data->suffix) && $this->data->suffix  ? \Components\Projects\Helpers\Html::fixFileName(basename($data->path), ' (' . $this->data->suffix . ')') : basename($data->path);
-	}
-	else
-	{
-		$file 	= \Components\Projects\Helpers\Html::fixFileName(basename($data->path), '-' . $data->id);
-	}
+if ($dirHierarchy == 1)
+{
+	$file = $this->data->path;
+}
+elseif ($dirHierarchy == 2)
+{
+	// Get file attachment params
+	$file 	= isset($this->data->suffix) && $this->data->suffix  ? \Components\Projects\Helpers\Html::fixFileName(basename($data->path), ' (' . $this->data->suffix . ')') : basename($data->path);
+}
+else
+{
+	$file 	= \Components\Projects\Helpers\Html::fixFileName(basename($data->path), '-' . $data->id);
+}
 
-	$thumbName = $ih->createThumbName($file, $suffix, $format);
+$thumbName = \Components\Projects\Helpers\Html::createThumbName($file, $suffix, $format);
 
-	$filePath = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $file;
-	$thumbSrc = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $thumbName;
+$filePath = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $file;
+$thumbSrc = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $thumbName;
 
-	// Is this image used for publication thumbail?
-	$class = $data->pubThumb == 1 ? ' starred' : '';
-	$over  = $data->pubThumb == 1 ? ' title="' . JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_DEFAULT') . '"' : '';
+// Is this image used for publication thumbail?
+$class = $data->pubThumb == 1 ? ' starred' : '';
+$over  = $data->pubThumb == 1 ? ' title="' . JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_DEFAULT') . '"' : '';
 
-	$viewer = $this->data->viewer;
+$viewer = $this->data->viewer;
 
-	if ($viewer == 'freeze')
-	{
-		$title 	 = $data->title;
-		$details = $data->path;
-		$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
-	}
-	else
-	{
-		$title 	 = $data->title;
-		$details = $data->path;
-		$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
-		$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
-	}
+if ($viewer == 'freeze')
+{
+	$title 	 = $data->title;
+	$details = $data->path;
+	$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
+}
+else
+{
+	$title 	 = $data->title;
+	$details = $data->path;
+	$details.= $data->size ? ' | ' . \Hubzero\Utility\Number::formatBytes($data->size) : '';
+	$details.= $data->gitStatus ? ' | ' . $data->gitStatus : '';
+}
 
 ?>
 	<li class="image-container">

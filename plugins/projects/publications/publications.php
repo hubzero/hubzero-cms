@@ -6104,7 +6104,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (count($originals) > 0)
 		{
 			$selected = isset($selections['files']) && count($selections['files']) > 0	? $selections['files'] : array();
-			$ih = new ProjectsImgHandler();
+
 			jimport('joomla.filesystem.file');
 			foreach ($originals as $old)
 			{
@@ -6113,7 +6113,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pScreenshot->deleteScreenshot($old->filename, $vid);
 
 					// Clean up files
-					$thumb = $ih->createThumbName($old->srcfile, '_tn', $extension = 'png');
+					$thumb = \Components\Projects\Helpers\Html::createThumbName($old->srcfile, '_tn', $extension = 'png');
 					if (is_file(JPATH_ROOT.$gallery_path. DS .$old->srcfile))
 					{
 						JFile::delete(JPATH_ROOT.$gallery_path. DS .$old->srcfile);
@@ -6164,14 +6164,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$ih = new ProjectsImgHandler();
-
 		// Load screenshot info if any
 		$pScreenshot = new PublicationScreenshot( $this->_database );
 		if ($pScreenshot->loadFromFilename($ima, $vid))
 		{
 			$view->file = $pScreenshot->srcfile;
-			$view->thumb = $ih->createThumbName($pScreenshot->srcfile, '_tn', $extension = 'png');
+			$view->thumb = \Components\Projects\Helpers\Html::createThumbName($pScreenshot->srcfile, '_tn', $extension = 'png');
 		}
 		elseif (!$this->getError())
 		{
@@ -6186,9 +6184,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$hash = $this->_git->gitLog($fpath, $ima, '' , 'hash');
 
 			// Get full & thumb image names
-			$ih = new ProjectsImgHandler();
-			$view->file = $ih->createThumbName($filename, '-'.substr($hash, 0, 3));
-			$view->thumb = $ih->createThumbName($filename, '-'.substr($hash, 0, 3).'_tn', $extension = 'png');
+			$view->file = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 3));
+			$view->thumb = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 3).'_tn', $extension = 'png');
 		}
 		else
 		{
@@ -6269,8 +6266,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pScreenshot = new PublicationScreenshot( $this->_database );
 		if ($pScreenshot->loadFromFilename($ima, $vid))
 		{
-			$ih = new ProjectsImgHandler();
-			$thumb = $ih->createThumbName($pScreenshot->srcfile, '_tn', $extension = 'png');
+			$thumb = \Components\Projects\Helpers\Html::createThumbName($pScreenshot->srcfile, '_tn', $extension = 'png');
 			$src = $gallery_path. DS .$thumb;
 			$title = $pScreenshot->title ? $pScreenshot->title : basename($pScreenshot->filename);
 		}
@@ -6343,9 +6339,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$src = '';
 		$filename = basename($ima);
 
-		$ih = new ProjectsImgHandler();
-		$hashed = $ih->createThumbName($filename, '-'.substr($hash, 0, 6));
-		$thumb = $ih->createThumbName($filename, '-'.substr($hash, 0, 6).'_tn', $extension = 'png');
+		$hashed = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 6));
+		$thumb = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 6) . '_tn', $extension = 'png');
 
 		// Make sure the path exist
 		if (!is_dir( JPATH_ROOT.$gallery_path ))
@@ -6358,7 +6353,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
-		if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT.$gallery_path. DS .$hashed))
+		if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT . $gallery_path. DS .$hashed))
 		{
 			return false;
 		}
@@ -6370,18 +6365,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			{
 				// Also create a thumbnail
 				JFile::copy($from_path . DS .$ima, JPATH_ROOT . $gallery_path . DS . $thumb);
-				$ih->set('image',$thumb);
-				$ih->set('overwrite',true);
-				$ih->set('path',JPATH_ROOT . $gallery_path . DS);
-				$ih->set('maxWidth', 100);
-				$ih->set('maxHeight', 60);
-				if (!$ih->process())
+				if (is_file(JPATH_ROOT . $gallery_path . DS . $thumb))
 				{
-					return false;
-				}
-				else
-				{
-					$src = $gallery_path. DS .$thumb;
+					$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+					if (count($hi->getErrors()) == 0)
+					{
+						$hi->resize(100, false, false, true);
+						$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
+						$src = $gallery_path. DS . $thumb;
+					}
+					else
+					{
+						return false;
+					}
 				}
 			}
 			else
@@ -6409,18 +6405,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				if (is_file(JPATH_ROOT . DS . $default))
 				{
 					JFile::copy(JPATH_ROOT . DS . $default, JPATH_ROOT . $gallery_path . DS . $thumb);
-					$ih->set('image',$thumb);
-					$ih->set('overwrite',true);
-					$ih->set('path',JPATH_ROOT . $gallery_path . DS);
-					$ih->set('maxWidth', 100);
-					$ih->set('maxHeight', 60);
-					if (!$ih->process())
+					$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+					if (count($hi->getErrors()) == 0)
 					{
-						return false;
+						$hi->resize(100, false, false, true);
+						$src = $gallery_path. DS . $thumb;
 					}
 					else
 					{
-						$src = $gallery_path. DS .$thumb;
+						return false;
 					}
 				}
 				else

@@ -638,9 +638,6 @@ class Html
 
 		if ($picture)
 		{
-			require_once( PATH_APP . DS . 'components' . DS . 'com_projects' . DS
-				. 'helpers' . DS . 'imghandler.php' );
-
 			$thumb = self::createThumbName($picture);
 			$src = $thumb && file_exists( PATH_APP . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
 		}

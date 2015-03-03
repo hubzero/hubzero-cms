@@ -2014,13 +2014,12 @@ class ProjectsConnectHelper extends JObject {
 	 * @param	   array	$remote			Remote resource array
 	 * @param	   array	$config			Configuration array
 	 * @param	   string	$alias			Project alias name
-	 * @param	   object	$ih				Image handler object
 	 *
 	 * @return	   void
 	 */
-	public function generateThumbnail($service = 'google', $uid = 0, $remote = array(), $config = array(), $alias = NULL, $ih = NULL)
+	public function generateThumbnail($service = 'google', $uid = 0, $remote = array(), $config = array(), $alias = NULL)
 	{
-		if (empty($remote) || !$remote['thumb'] || empty($config) || !$ih || !$alias)
+		if (empty($remote) || !$remote['thumb'] || empty($config) || !$alias)
 		{
 			return false;
 		}
@@ -2044,13 +2043,16 @@ class ProjectsConnectHelper extends JObject {
 					fwrite($handle, $fc);
 					fclose($handle);
 
-					// Resize the image if necessary
-					$ih->set('image', $thumb);
-					$ih->set('overwrite', true);
-					$ih->set('path', PATH_APP. $to_path . DS);
-					$ih->set('maxWidth', 180);
-					$ih->set('maxHeight', 180);
-					$ih->process();
+					// Resize image
+					$hi = new \Hubzero\Image\Processor(PATH_APP . $to_path . DS . $thumb);
+					if (count($hi->getErrors()) == 0)
+					{
+						$hi->resize(180, false, false, true);
+					}
+					else
+					{
+						return false;
+					}
 				}
 			}
 		}

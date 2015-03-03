@@ -744,14 +744,6 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			return false;
 		}
 
-		// Get image helper
-		if (!$this->_imgHelper)
-		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'imghandler.php' );
-			$this->_imgHelper = new ProjectsImgHandler();
-		}
-
 		// Get publications helper
 		if (!isset($this->_pubHelper))
 		{
@@ -763,8 +755,8 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 
 		$filename = basename($attachment->path);
 		$hash = $attachment->vcs_hash;
-		$hashed = $this->_imgHelper->createThumbName($filename, '-' . substr($hash, 0, 6));
-		$thumb = $this->_imgHelper->createThumbName($filename, '-' . substr($hash, 0, 6) . '_tn', $extension = 'png');
+		$hashed = PublicationsHtml::createThumbName($filename, '-' . substr($hash, 0, 6));
+		$thumb = PublicationsHtml::createThumbName($filename, '-' . substr($hash, 0, 6) . '_tn', $extension = 'png');
 
 		if (!is_dir( JPATH_ROOT . $gallery_path ))
 		{
@@ -777,17 +769,12 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		else
 		{
 			JFile::copy($fileRecord['projectPath'], JPATH_ROOT . $gallery_path. DS . $thumb);
-			$this->_imgHelper->set('image', basename($thumb));
-			$this->_imgHelper->set('overwrite', true);
-			$this->_imgHelper->set('path', JPATH_ROOT . $gallery_path. DS);
-			$this->_imgHelper->set('maxWidth', 100);
-			$this->_imgHelper->set('maxHeight', 60);
-			if (!$this->_imgHelper->process())
+
+			$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+			if (count($hi->getErrors()) == 0)
 			{
-				return false;
-			}
-			else
-			{
+				$hi->resize(100, false, false, true);
+
 				// Create screenshot record
 				$pScreenshot = new PublicationScreenshot( $this->database );
 				$pScreenshot->filename 					= $attachment->path;
@@ -799,6 +786,10 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$pScreenshot->created_by 				= $this->_uid;
 				$pScreenshot->store();
 				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}

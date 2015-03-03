@@ -4145,7 +4145,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			// Generate preview image for browsers that connot embed pdf
+			// Generate preview image for browsers that cannot embed pdf
 			if ($cType == 'application/pdf')
 			{
 				// GS path
@@ -4162,12 +4162,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					if (is_file(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg'))
 					{
-						$ih = new ProjectsImgHandler();
-						$ih->set('image', $tempBase . '1.jpg');
-						$ih->set('path', JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg');
-						$ih->set('maxWidth', $view->oWidth);
-						$ih->set('maxHeight', $view->oHeight);
-						$ih->process();
+						$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg');
+						if (count($hi->getErrors()) == 0)
+						{
+							$hi->resize($view->oWidth, false, false, true);
+							$hi->save(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg');
+						}
+						else
+						{
+							return false;
+						}
 					}
 					if (is_file(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg'))
 					{
@@ -4302,9 +4306,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function getFilePreview( $file, $hash, $path = '', $subdir = '', $remote = NULL, $medium = false, $to_path = NULL, $hashed = NULL, $width = 180, $height = 180 )
 	{
 		$image = NULL;
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'helpers' . DS . 'imghandler.php' );
-		$ih = new ProjectsImgHandler();
 
 		$rthumb	= NULL;
 		if ($remote)
@@ -4316,14 +4317,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$hashed)
 		{
 			$filename = basename($file);
-			$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash, 'png') : NULL;
+			$hashed = $hash ? \Components\Projects\Helpers\Html::createThumbName($filename, '-' . $hash, 'png') : NULL;
 			$hashed = $medium ? md5($filename . '-' . $hash) . '.png' : $hashed;
 		}
 
 		if (!$to_path)
 		{
 			$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
-			$to_path = JPATH_ROOT . DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+			$to_path = PATH_APP . DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
 		}
 
 		$from_path = isset($this->prefix) ? $this->prefix . $path . DS : $path . DS;
@@ -4335,12 +4336,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($hashed && is_file($to_path . DS . $hashed))
 		{
 			// First check locally generated thumbnail
-			$image = str_replace(JPATH_ROOT, '', $to_path . DS . $hashed);
+			$image = str_replace(PATH_APP, '', $to_path . DS . $hashed);
 		}
 		elseif ($rthumb && is_file($to_path . DS . $rthumb))
 		{
 			// Check remotely generated thumbnail
-			$image = str_replace(JPATH_ROOT, '', $to_path . DS . $rthumb);
+			$image = str_replace(PATH_APP, '', $to_path . DS . $rthumb);
 
 			// Copy this over as local thumb
 			if ($hashed && JFile::copy($to_path . DS . $rthumb, $to_path . DS . $hashed))
@@ -4375,20 +4376,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 
 			// Resize the image if necessary
-			$ih->set('image',$hashed);
-			$ih->set('overwrite',true);
-			$ih->set('path', $to_path . DS);
-			$ih->set('maxWidth', $maxWidth);
-			$ih->set('maxHeight', $maxHeight);
-			if ($medium)
-			{
-				$ih->set('quality', 50);
-				$ih->set('force', false);
-			}
-			if ($ih->process())
-			{
-				$image = str_replace(JPATH_ROOT, '', $to_path . DS . $hashed);
-			}
+			$hi = new \Hubzero\Image\Processor($to_path . DS . $hashed);
+			$hi->resize($maxWidth, false, false, true);
+			$hi->save($to_path . DS . $hashed);
+			$image = str_replace(PATH_APP, '', $to_path . DS . $hashed);
 		}
 
 		return $image;
@@ -6240,9 +6231,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$lastRemoteChange = $tChange ? date('c', $tChange) : NULL;
 		}
 
-		// Image handler for generating thumbnails
-		$ih = new ProjectsImgHandler();
-
 		// Make sure we have thumbnails for updates from local repo
 		if (!empty($newRemotes) && $synced != 1)
 		{
@@ -6254,7 +6242,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				{
 					$this->_writeToFile(JText::_('Getting thumbnail for ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 					$this->_connect->generateThumbnail($service, $projectCreator,
-						$nR, $this->_config, $this->_project->alias, $ih);
+						$nR, $this->_config, $this->_project->alias);
 				}
 
 				$tChange = $nR['time'] > $tChange ? $nR['time'] : $tChange;
@@ -6558,7 +6546,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$this->_writeToFile(JText::_('Getting thumbnail for ') . ' '
 						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 						$this->_connect->generateThumbnail($service, $projectCreator, $remote,
-							$this->_config, $this->_project->alias, $ih);
+							$this->_config, $this->_project->alias);
 					}
 
 					// Generate local preview

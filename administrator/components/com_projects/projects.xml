@@ -37,7 +37,6 @@
 		<filename>helpers/html.php</filename>
 		<filename>helpers/helper.php</filename>
 		<filename>helpers/install.php</filename>
-		<filename>helpers/imghandler.php</filename>
 		<filename>helpers/index.html</filename>
 		<filename>views/browse/tmpl/default.php</filename>
 		<filename>views/browse/tmpl/default.xml</filename>
