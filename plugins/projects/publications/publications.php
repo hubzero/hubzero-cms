@@ -714,7 +714,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Instantiate project publication
 		$pub 	 		= $objP->getPublication($pid, $version, $this->_project->id);
-		$pub->version 	= $version;
 
 		// Start url
 		$route = $this->_project->provisioned
@@ -722,14 +721,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: 'index.php?option=com_projects' . a . 'alias='
 						. $this->_project->alias . a . 'active=publications';
 
-		// New publication?
-		if (!$pub->id && $sequence == 1)
-		{
-			$new = true;
-		}
-
 		// Error loading publication record
-		if (!$pub->id && $new == false)
+		if (!$pub || !$pub->id && $new == false)
 		{
 			$this->_referer = JRoute::_($route);
 			$this->_message = array(
@@ -737,23 +730,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				'type' => 'error');
 			return;
 		}
-
-		// Create record for new publication
-		if ($new)
-		{
-			$pub = $this->createDraft();
-		}
-
-		// Now we need ID
-		if (!$pub->id)
-		{
-			$this->_referer = JRoute::_($route);
-			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_SAVE_PUBLICATION'),
-				'type' => 'error');
-			return;
-		}
-
+		$pub->version   = $version;
 		$pub->_project 	= $this->_project;
 		$pub->_type    	= $mt->getType($pub->base);
 
@@ -4071,24 +4048,24 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					$curatorgroups[] = $this->_pubconfig->get('curatorgroup', '');
 				}
+				$admins = array();
 				foreach ($curatorgroups as $curatorgroup)
 				{
 					if (trim($curatorgroup) && $group = \Hubzero\User\Group::getInstance($curatorgroup))
 					{
 						$members 	= $group->get('members');
 						$managers 	= $group->get('managers');
-						$admins 	= array_merge($members, $managers);
+						$admins 	= array_merge($members, $managers, $admins);
 						$admins 	= array_unique($admins);
-
-						PublicationHelper::notify(
-							$this->_pubconfig,
-							$pub,
-							$admins,
-							JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
-							$curatorMessage
-						);
 					}
 				}
+				PublicationHelper::notify(
+					$this->_pubconfig,
+					$pub,
+					$admins,
+					JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
+					$curatorMessage
+				);
 			}
 		}
 
