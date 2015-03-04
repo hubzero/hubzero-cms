@@ -155,15 +155,13 @@ function doFileoptions()
 					document.forms['adminForm'].elements['path'].value = filepath;
 					//}
 				} else if (act == '3') {
-					text = '<img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" />';
-					document.forms['adminForm'].elements['fulltxt'].focus();
-					document.forms['adminForm'].elements['fulltxt'].value  += text;
-					document.forms['adminForm'].elements['fulltxt'].focus();
+					var content = <?php echo JFactory::getEditor()->getContent('field-fulltxt'); ?>
+					content = content + '<p><img class="contentimg" src="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '" alt="image" /></p>';
+					<?php echo JFactory::getEditor()->setContent('field-fulltxt', 'content'); ?>
 				} else if (act == '4') {
-					text = '<a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a>';
-					document.forms['adminForm'].elements['fulltxt'].focus();
-					document.forms['adminForm'].elements['fulltxt'].value  += text;
-					document.forms['adminForm'].elements['fulltxt'].focus();
+					var content = <?php echo JFactory::getEditor()->getContent('field-fulltxt'); ?>
+					content = content + '<p><a href="<?php echo $this->rconfig->get('uploadpath').DS; ?>' + filepath + '">' + filepath + '</a></p>';
+					<?php echo JFactory::getEditor()->setContent('field-fulltxt', 'content'); ?>
 				}
 			}
 		}

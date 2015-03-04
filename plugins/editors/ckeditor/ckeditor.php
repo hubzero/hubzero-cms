@@ -82,7 +82,13 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onGetContent($id)
 	{
-		return "document.getElementById('$id').value;\n";
+		JFactory::getDocument()->addScriptDeclaration("
+			function getEditorContent(id) {
+				CKEDITOR.instances['$id'].updateElement();
+				return document.getElementById('$id').value;
+			}
+		");
+		return "getEditorContent('$id');\n";
 	}
 
 	/**
@@ -94,7 +100,7 @@ class plgEditorCkeditor extends JPlugin
 	 */
 	public function onSetContent($id, $html)
 	{
-		return "document.getElementById('$id').value = $html;\n";
+		return "CKEDITOR.instances['$id'].setData($html);\n"; //" document.getElementById('$id').value = '$html';\n";
 	}
 
 	/**
