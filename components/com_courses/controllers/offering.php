@@ -72,7 +72,9 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we found the course info
-		if (!$this->course->offering($offering)->exists() || $this->course->offering($offering)->isDeleted() || $this->course->offering($offering)->isUnpublished())
+		if (!$this->course->offering($offering)->exists()
+		 || $this->course->offering($offering)->isDeleted()
+		 || (!$this->course->offering($offering)->access('manage', 'section') && $this->course->offering($offering)->isUnpublished()))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;
