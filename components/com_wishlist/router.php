@@ -99,7 +99,6 @@ class WishlistRouter extends \Hubzero\Component\Router\Base
 		$vars = array();
 
 		// Count route segments
-		$count = count($segments);
 
 		if (empty($segments[0]))
 		{
@@ -169,9 +168,17 @@ class WishlistRouter extends \Hubzero\Component\Router\Base
 						$vars['category'] = $segments[0];
 						$vars['rid'] = $segments[1];
 
-						if (!empty($segments[2]))
+						if (!empty($segments[2])
+							&& !(intval($segments[2])))
 						{
 							$vars['task'] = $segments[2];
+						}
+						elseif (!empty($segments[2])
+							&& intval($segments[2]))
+						{
+							//make assumption we are viewing a wish
+							$vars['task'] = 'wish';
+							$vars['wishid'] =  $segments[2];
 						}
 						if (!empty($segments[3]))
 						{
