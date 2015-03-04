@@ -96,6 +96,7 @@ function WishlistParseRoute($segments)
 	// Count route segments
 	$count = count($segments);
 
+
 	if (empty($segments[0]))
 	{
 		// default to main wish list
@@ -104,6 +105,7 @@ function WishlistParseRoute($segments)
 		$vars['category'] = 'general';
 		return $vars;
 	}
+
 
 	if (intval($segments[0]) && empty($segments[1]))
 	{
@@ -164,9 +166,17 @@ function WishlistParseRoute($segments)
 					$vars['category'] = $segments[0];
 					$vars['rid'] = $segments[1];
 
-					if (!empty($segments[2]))
+					if (!empty($segments[2])
+						&& !(intval($segments[2])))
 					{
 						$vars['task'] = $segments[2];
+					}
+					elseif (!empty($segments[2])
+						&& intval($segments[2]))
+					{
+						//make assumption we are viewing a wish
+						$vars['task'] = 'wish';
+						$vars['wishid'] =  $segments[2];
 					}
 					if (!empty($segments[3]))
 					{
@@ -179,10 +189,9 @@ function WishlistParseRoute($segments)
 					}
 				break;
 			}
+
+			return $vars;
 		}
-
-		return $vars;
 	}
-
 	return $vars;
 }
