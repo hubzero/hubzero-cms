@@ -1032,7 +1032,7 @@ class PublicationsHtml
 			{
 				$text .= "\t\t".'<span class="archival-notice archived">'. JText::_('COM_PUBLICATIONS_VERSION_ARCHIVED_ON_DATE') . ' ' . JHTML::_('date', $publication->archived, $dateFormat, $tz) . "\n";
 			}
-			else
+			elseif ($config->get('graceperiod', 0))
 			{
 				$archiveDate  = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? JFactory::getDate($publication->accepted . '+1 month')->toSql() : NULL;
 				$text .= $archiveDate ? "\t\t".'<span class="archival-notice unarchived">'. JText::_('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . JHTML::_('date', $archiveDate, $dateFormat) . "\n" : '';
