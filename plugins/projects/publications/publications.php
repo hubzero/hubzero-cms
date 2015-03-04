@@ -722,7 +722,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						. $this->_project->alias . a . 'active=publications';
 
 		// Error loading publication record
-		if (!$pub || !$pub->id && $new == false)
+		if ((!$pub || !$pub->id) && $new == false)
 		{
 			$this->_referer = JRoute::_($route);
 			$this->_message = array(
