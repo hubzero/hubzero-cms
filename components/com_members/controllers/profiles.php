@@ -138,7 +138,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 						$members = null;
 						if (!empty($usersgroups))
 						{
-							$query = "SELECT DISTINCT uidNumber 
+							$query = "SELECT DISTINCT uidNumber
 									FROM `#__xgroups_members`
 									WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
@@ -165,11 +165,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// match against orcid id
 		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
 		{
-			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
-					FROM #__xprofiles AS xp 
-					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0 
-					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict 
-					ORDER BY xp.name ASC 
+			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
+					FROM #__xprofiles AS xp
+					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict
+					ORDER BY xp.name ASC
 					LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 		else
@@ -783,15 +783,15 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		if (!\Hubzero\User\Password::passwordMatches($profile->get('uidNumber'), $oldpass, true))
 		{
-			$this->setError(JText::_('MEMBERS_PASS_INCORRECT'));
+			$this->setError(JText::_('COM_MEMBERS_PASS_INCORRECT'));
 		}
 		elseif (!$newpass || !$newpass2)
 		{
-			$this->setError(JText::_('MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
+			$this->setError(JText::_('COM_MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
 		}
 		elseif ($newpass != $newpass2)
 		{
-			$this->setError(JText::_('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
+			$this->setError(JText::_('COM_MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
 		}
 		elseif ($oldpass == $newpass)
 		{
