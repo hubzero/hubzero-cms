@@ -41,9 +41,9 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
 
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
-include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 
 include_once( JPATH_COMPONENT . DS . 'models' . DS . 'project.php' );
+include_once( JPATH_COMPONENT . DS . 'models' . DS . 'tags.php' );
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'projects'));
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

@@ -23,26 +23,27 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
+use Components\Tags\Models\Cloud;
+
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
- * MEmbers Tagging class
+ * Projects Tagging class
  */
-class MembersModelTags extends \Components\Tags\Models\Cloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
 	 *
 	 * @var string
 	 */
-	protected $_scope = 'xprofiles';
+	protected $_scope = 'projects';
 }
 

@@ -309,8 +309,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Get tags on this item
-		$tagsHelper = new ProjectTags( $this->database);
-		$this->view->tags = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);
+		$cloud = new \Components\Projects\Models\Tags($id);
+		$this->view->tags = $cloud->render('string');
 
 		// Output the HTML
 		$this->view->obj = $obj;
@@ -441,8 +441,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$tags = JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new ProjectTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $obj->id, $tags, 1, 1);
+		$cloud = new \Components\Projects\Models\Tags($obj->id);
+		$cloud->setTags($tags, $this->juser->get('id'), 1);
 
 		// Save params
 		$incoming   = JRequest::getVar( 'params', array() );

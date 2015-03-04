@@ -104,9 +104,6 @@ function submitbutton(pressbutton)
 			$database = JFactory::getDBO();
 			$now = JFactory::getDate()->toSql();
 
-			$database = JFactory::getDBO();
-			$pt = new ProjectTags($database);
-
 			if ($this->rows)
 			{
 				for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
@@ -143,7 +140,8 @@ function submitbutton(pressbutton)
 						$status = '<span class="inactive">'.JText::_('Pending approval').'</span> ';
 					}
 
-					$tags = $pt->get_tag_cloud(3, 1, $row->id);
+					$cloud = new \Components\Projects\Models\Tags($row->id);
+					$tags  = $cloud->render('cloud');
 					$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
 
 					$params = new JParameter( $row->params );
