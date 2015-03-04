@@ -934,7 +934,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			default:
 				if (!($this->_cache['votes.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					$tbl = new Vote($this->_db);
+					$tbl = new \Components\Answers\Tables\Vote($this->_db);
 
 					$results = $tbl->getResults($filters);
 					if (!$results)
@@ -1232,7 +1232,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'vote':
 			case 'votes':
 			case 'feedback':
-				$v = new Vote($this->_db);
+				$v = new \Components\Answers\Tables\Vote($this->_db);
 				if (!$v->deleteVotes(array('id' => $this->get('id'), 'category' => 'wish')))
 				{
 					$this->setError($v->getError());

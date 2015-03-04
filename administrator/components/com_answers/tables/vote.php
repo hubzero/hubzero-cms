@@ -155,5 +155,26 @@ class Vote extends \JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Delete vote record(s)
+	 *
+	 * @param      integer $refid    Reference ID
+	 * @param      string  $category Reference type
+	 * @param      integer $voter    User ID
+	 * @return     mixed False on error, integer on success
+	 */
+	public function deleteVotes($refid=null, $category=null)
+	{
+		$query = "DELETE FROM $this->_tbl WHERE referenceid=" . $this->_db->Quote($refid) . " AND category = " . $this->_db->Quote($category);
+
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
 }
 
