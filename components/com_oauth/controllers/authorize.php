@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2012 Purdue University. All rights reserved.
+ * Copyright 2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,65 +24,69 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Oauth\Controllers;
 
-JLoader::import('Hubzero.Controller');
+use Hubzero\Component\SiteController;
+use Exception;
 
-class OAuthControllerAuthorize extends \Hubzero\Component\SiteController
+/**
+ * Controller for Authorizing OAuth
+ */
+class Authorize extends SiteController
 {
+	/**
+	 * Authorize
+	 *
+	 * @return  void
+	 */
 	public function authorizeTask()
 	{
-		$oauth_token = JRequest::getVar('oauth_token');
+		$oauth_token = \JRequest::getVar('oauth_token');
 
 		if (empty($oauth_token))
 		{
-			JError::raiseError(403, 'Forbidden');
+			throw new Exception('Forbidden', 403);
 		}
 
-		$db = JFactory::getDBO();
-
-		$db->setQuery("SELECT * FROM #__oauthp_tokens WHERE token="	.
-			$db->Quote($oauth_token) .
-			" AND user_id=0 LIMIT 1;");
+		$db = \JFactory::getDBO();
+		$db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->Quote($oauth_token) . " AND user_id=0 LIMIT 1;");
 
 		$result = $db->loadObject();
 
 		if ($result === false)
 		{
-			JError:raiseError(500, 'Internal Server Error');
+			throw new Exception('Internal Server Error', 500);
 		}
 
 		if (empty($result))
 		{
-			JError::raiseError(403, 'Forbidden');
+			throw new Exception('Forbidden', 403);
 		}
 
-		if (JRequest::getMethod() == 'GET')
+		if (\JRequest::getMethod() == 'GET')
 		{
 			$this->view->oauth_token = $oauth_token;
 			$this->view->display();
 			return;
 		}
 
-		if (JRequest::getMethod() == 'POST')
+		if (\JRequest::getMethod() == 'POST')
 		{
-			$token = JRequest::get('token',''.'post');
+			$token = \JRequest::get('token',''.'post');
 
 			if ($token != sha1($this->verifier))
 			{
-				JError::raiseError(403, 'Forbidden');
+				throw new Exception('Forbidden', 403);
 			}
 
 			echo "posted";
-
 			return;
 		}
 
-		JError::raiseError(405, 'Method Not Allowed');
+		throw new Exception('Method Not Allowed', 405);
 	}
 }
