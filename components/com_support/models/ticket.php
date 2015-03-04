@@ -890,10 +890,7 @@ class Ticket extends Model
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		if (!$this->_data->get('cloud'))
-		{
-			$this->_data->set('cloud', new Tags($this->get('id')));
-		}
+		$cloud = new Tags($this->get('id'));
 
 		return $this->_data->get('cloud')->setTags($tags, $user_id, $admin);
 	}
