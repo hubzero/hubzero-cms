@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Helpers;
+
+use Hubzero\Base\Object;
 
 /**
  * Image manipulation class
  */
-class StoreImgHandler extends JObject
+class ImgHandler extends Object
 {
 	/**
 	 * Description for 'path'
@@ -122,14 +123,14 @@ class StoreImgHandler extends JObject
 		// Make sure that the requested file is actually an image
 		if (!$image)
 		{
-			$this->setError(JText::_('No image set.'));
+			$this->setError(\JText::_('No image set.'));
 			return false;
 		}
 
 		// Make sure that the requested file is actually an image
 		if (!$docRoot)
 		{
-			$this->setError(JText::_('No image path set.'));
+			$this->setError(\JText::_('No image path set.'));
 			return false;
 		}
 
@@ -138,7 +139,7 @@ class StoreImgHandler extends JObject
 
 		if (!is_file($docRoot . $image))
 		{
-			$this->setError(JText::_('File/path not found.'));
+			$this->setError(\JText::_('File/path not found.'));
 			return false;
 		}
 
@@ -149,7 +150,7 @@ class StoreImgHandler extends JObject
 		// Make sure that the requested file is actually an image
 		if (substr($mime, 0, 6) != 'image/')
 		{
-			$this->setError(JText::_('File is not an image.'));
+			$this->setError(\JText::_('File is not an image.'));
 			return false;
 		}
 
@@ -347,15 +348,15 @@ class StoreImgHandler extends JObject
 			{
 				if (file_exists($docRoot . $image))
 				{
-					if (!JFile::delete($docRoot . $image))
+					if (!\JFile::delete($docRoot . $image))
 					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->setError(\JText::_('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!JFile::move($resized, $docRoot . $image))
+				if (!\JFile::move($resized, $docRoot . $image))
 				{
-					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+					$this->setError(\JText::_('UNABLE_TO_DELETE_FILE'));
 					return false;
 				}
 			}
@@ -379,13 +380,13 @@ class StoreImgHandler extends JObject
 		}
 		if (!$image)
 		{
-			$this->setError(JText::_('No image set.'));
+			$this->setError(\JText::_('No image set.'));
 			return false;
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext   = JFile::getExt($image);
-		$thumb = JFile::stripExt($image) . $tn . '.' . $ext;
+		$ext   = \JFile::getExt($image);
+		$thumb = \JFile::stripExt($image) . $tn . '.' . $ext;
 
 		return $thumb;
 	}

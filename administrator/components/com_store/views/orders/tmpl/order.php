@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = StoreHelper::getActions('component');
+$canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 JToolBarHelper::title(JText::_('COM_STORE_MANAGER') . $text, 'addedit.png');
@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
 <?php if (isset($this->row->id)) { ?>
 	<div class="col width-60 fltlft">

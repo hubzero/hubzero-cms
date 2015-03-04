@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,48 +24,45 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-$option = 'com_store';
+namespace Components\Store;
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_store'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'store.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'order.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'orderitem.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'cart.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'store.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'store.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'order.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'orderitem.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'cart.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'imghandler.php');
 
-$controllerName = JRequest::getCmd('controller', 'orders');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'orders');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'orders';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('Orders'),
-	'index.php?option=' .  $option . '&controller=orders',
+\JSubMenuHelper::addEntry(
+	\JText::_('Orders'),
+	\JRoute::_('index.php?option=com_store&controller=orders'),
 	($controllerName == 'orders')
 );
-JSubMenuHelper::addEntry(
-	JText::_('Store Items'),
-	'index.php?option=' .  $option . '&controller=items',
+\JSubMenuHelper::addEntry(
+	\JText::_('Store Items'),
+	\JRoute::_('index.php?option=com_store&controller=items'),
 	($controllerName == 'items')
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'StoreController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

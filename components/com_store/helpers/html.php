@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Helpers;
 
 /**
  * Helper class for misc functions
  */
-class StoreHelperHtml
+class Html
 {
 	/**
 	 * Get a default image for the store item
@@ -78,11 +77,11 @@ class StoreHelperHtml
 		{
 			if ($category == 'service')
 			{
-				$html = '<img src="' . JURI::base(true). '/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
+				$html = '<img src="' . \JURI::base(true). '/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
 			}
 			else
 			{
-				$html = '<img src="' . JURI::base(true). '/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
+				$html = '<img src="' . \JURI::base(true). '/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
 		}
 
@@ -95,8 +94,8 @@ class StoreHelperHtml
 		{
 			jimport('joomla.filesystem.file');
 
-			$ext = JFile::getExt($images[$i]);
-			$tn  = JFile::stripExt($images[$i]) . '-tn.';
+			$ext = \JFile::getExt($images[$i]);
+			$tn  = \JFile::stripExt($images[$i]) . '-tn.';
 
 			if (!is_file($root . $wpath . $item . DS . $tn . $ext))
 			{

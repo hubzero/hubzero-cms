@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
+namespace Components\Store\Tables;
 /**
  * Table class for store cart
  */
-class Cart extends JTable
+class Cart extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $itemid = NULL;
-
-	/**
-	 * varchar(20)
-	 *
-	 * @var string
-	 */
-	var $type = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $quantity = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $added = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $selections = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,9 +48,9 @@ class Cart extends JTable
 	/**
 	 * Check if an item is already in the cart
 	 *
-	 * @param      integer $id  Entry ID
-	 * @param      integer $uid User ID
-	 * @return     array
+	 * @param   integer  $id   Entry ID
+	 * @param   integer  $uid  User ID
+	 * @return  array
 	 */
 	public function checkCartItem($id=null, $uid)
 	{
@@ -118,9 +67,9 @@ class Cart extends JTable
 	/**
 	 * Get items int he cart
 	 *
-	 * @param      integer $uid  User ID
-	 * @param      string  $rtrn Return cost or items?
-	 * @return     mixed
+	 * @param   integer  $uid   User ID
+	 * @param   string   $rtrn  Return cost or items?
+	 * @return  mixed
 	 */
 	public function getCartItems($uid, $rtrn='')
 	{
@@ -152,8 +101,8 @@ class Cart extends JTable
 					$total = $total + $price;
 				}
 
-				$params     = new JRegistry($r->params);
-				$selections = new JRegistry($r->selections);
+				$params     = new \JRegistry($r->params);
+				$selections = new \JRegistry($r->selections);
 
 				// get size selection
 				$r->sizes         = $params->get('size', '');
@@ -180,9 +129,9 @@ class Cart extends JTable
 	/**
 	 * Save items to the cart
 	 *
-	 * @param      array  $posteditems List of items to save
-	 * @param      string $uid         User ID
-	 * @return     boolean True upon success
+	 * @param   array    $posteditems  List of items to save
+	 * @param   string   $uid          User ID
+	 * @return  boolean  True upon success
 	 */
 	public function saveCart($posteditems, $uid)
 	{
@@ -227,10 +176,10 @@ class Cart extends JTable
 	/**
 	 * Remove an item from the cart
 	 *
-	 * @param      integer $id  Entry ID
-	 * @param      integer $uid User ID
-	 * @param      integer $all Remove all items?
-	 * @return     void
+	 * @param   integer  $id   Entry ID
+	 * @param   integer  $uid  User ID
+	 * @param   integer  $all  Remove all items?
+	 * @return  void
 	 */
 	public function deleteCartItem($id, $uid, $all=0)
 	{
@@ -247,9 +196,9 @@ class Cart extends JTable
 	/**
 	 * Delete items marked as unavailable
 	 *
-	 * @param      integer $uid   User ID
-	 * @param      array   $items List of item IDs
-	 * @return     boolean True upon success
+	 * @param   integer  $uid    User ID
+	 * @param   array    $items  List of item IDs
+	 * @return  boolean  True upon success
 	 */
 	public function deleteUnavail($uid, $items)
 	{
@@ -274,10 +223,10 @@ class Cart extends JTable
 	/**
 	 * Delete an entry
 	 *
-	 * @param      integer $itemid Entry ID
-	 * @param      integer $uid    User ID
-	 * @param      string  $type   Entry type
-	 * @return     boolean True upon success
+	 * @param   integer  $itemid  Entry ID
+	 * @param   integer  $uid     User ID
+	 * @param   string   $type    Entry type
+	 * @return  boolean  True upon success
 	 */
 	public function deleteItem($itemid=null, $uid=null, $type='merchandise')
 	{

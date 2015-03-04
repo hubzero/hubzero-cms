@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,14 +23,14 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = StoreHelper::getActions('component');
+$canDo = \Components\Store\Helpers\PErmissions::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-filterby"><?php echo JText::_('COM_STORE_FILTERBY'); ?>:</label>
 		<select name="filterby" id="filter-filterby" onchange="document.adminForm.submit();">
@@ -89,7 +89,16 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="7">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>
@@ -116,7 +125,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=order&id=' . $row->id); ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
 						<?php echo $row->id; ?>
 					</a>
 				</td>
@@ -136,10 +145,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time datetime="<?php echo $row->ordered; ?>"><?php echo JHTML::_('date', $row->ordered, JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=order&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=order&id=' . $row->id); ?>" title="<?php echo JText::_('COM_STORE_VIEW_ORDER'); ?>">
 						<?php echo JText::_('COM_STORE_DETAILS'); ?>
 					</a>
-					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=receipt&amp;id=' . $row->id . '">' . JText::_('COM_STORE_RECEIPT') . '</a>'; } ?>
+					<?php if ($row->status!=2) { echo '&nbsp;&nbsp;|&nbsp;&nbsp; <a href="' . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=receipt&id=' . $row->id) . '">' . JText::_('COM_STORE_RECEIPT') . '</a>'; } ?>
 				</td>
 			</tr>
 <?php

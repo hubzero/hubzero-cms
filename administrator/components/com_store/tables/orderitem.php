@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Tables;
 
 /**
  * Table class for store order item
  */
-class OrderItem extends JTable
+class OrderItem extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $oid    	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid    	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $itemid     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $price    	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $quantity   = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $selections = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,8 +49,8 @@ class OrderItem extends JTable
 	/**
 	 * Get all items for an order
 	 *
-	 * @param      integer $oid Order ID
-	 * @return     mixed
+	 * @param   integer  $oid  Order ID
+	 * @return  mixed
 	 */
 	public function getOrderItems($oid)
 	{
@@ -119,8 +69,8 @@ class OrderItem extends JTable
 	/**
 	 * Count all items for an order
 	 *
-	 * @param      integer $oid Order ID
-	 * @return     mixed
+	 * @param   integer  $oid  Order ID
+	 * @return  mixed
 	 */
 	public function countAllItemOrders($oid)
 	{
@@ -139,8 +89,8 @@ class OrderItem extends JTable
 	/**
 	 * Count all active items for an order
 	 *
-	 * @param      integer $oid Order ID
-	 * @return     mixed
+	 * @param   integer  $oid  Order ID
+	 * @return  mixed
 	 */
 	public function countActiveItemOrders($oid)
 	{

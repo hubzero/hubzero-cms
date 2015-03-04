@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,107 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Tables;
 
 /**
  * Table class for store items
  */
-class Store extends  JTable
+class Store extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * varchar(127)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $price = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $available = NULL;
-
-	/**
-	 * tinyint(1)
-	 *
-	 * @var integer
-	 */
-	var $published = NULL;
-
-	/**
-	 * tinyint(1)
-	 *
-	 * @var integer
-	 */
-	var $featured = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $special = NULL;
-
-	/**
-	 * varchar(127)
-	 *
-	 * @var string
-	 */
-	var $category = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $type = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -134,8 +49,8 @@ class Store extends  JTable
 	/**
 	 * Get a record
 	 *
-	 * @param      integer $id
-	 * @return     object
+	 * @param   integer  $id
+	 * @return  object
 	 */
 	public function getInfo($id)
 	{
@@ -152,10 +67,10 @@ class Store extends  JTable
 	/**
 	 * Get records
 	 *
-	 * @param      string $rtrn    Return data (record count or array or records)
-	 * @param      array  $filters Filters to build query from
-	 * @param      object $config  JRegistry
-	 * @return     mixed
+	 * @param   string  $rtrn     Return data (record count or array or records)
+	 * @param   array   $filters  Filters to build query from
+	 * @param   object  $config   \JRegistry
+	 * @return  mixed
 	 */
 	public function getItems($rtrn='count', $filters, $config)
 	{
@@ -225,10 +140,10 @@ class Store extends  JTable
 					$row = &$result[$i];
 
 					$row->webpath = $config->get('webpath', '/site/store');
-					$row->root = JPATH_ROOT;
+					$row->root = PATH_APP;
 
 					// Get parameters
-					$params = new JRegistry($row->params);
+					$params = new \JRegistry($row->params);
 					$row->size  = $params->get('size', '');
 					$row->color = $params->get('color', '');
 				}

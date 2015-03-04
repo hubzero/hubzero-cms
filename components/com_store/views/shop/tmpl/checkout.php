@@ -45,7 +45,7 @@ $this->css()
 				<?php if ($this->getError()) { ?>
 					<p class="error"><?php echo $this->getError(); ?></p>
 				<?php } ?>
-				<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<form id="hubForm" method="post" class="full" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					<input type="hidden" name="task" value="process" />
@@ -104,8 +104,10 @@ $this->css()
 							<textarea name="comments" id="comments" rows="10" cols="50"><?php echo (isset($this->posted['comments'])) ? $this->escape($this->posted['comments']) : ''; ?></textarea>
 						</label>
 					</fieldset>
-					<p class="process"><input type="submit" class="button process_order" value="process" /></p>
-					<span class="confirm">(<?php echo JText::_('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
+					<p class="submit">
+						<input type="submit" class="btn" value="<?php echo JText::_('Confirm order'); ?>" />
+						<span>(<?php echo JText::_('COM_STORE_NOTE_NOCHARGE'); ?>)</span>
+					</p>
 				</form>
 			</div>
 

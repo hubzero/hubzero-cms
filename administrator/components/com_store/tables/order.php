@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,88 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Tables;
 
 /**
  * Table class for store order
  */
-class Order extends JTable
+class Order extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid    			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $total      		= NULL;
-
-	/**
-	 * int(11)
-	 * 0 - 'placed (newly received)'
-	 * 1 - 'processed' (account debited)
-	 * 2 - 'cancelled'
-	 * @var unknown
-	 */
-	var $status     		= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $details  			= NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $email    			= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $ordered  			= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $status_changed  	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $notes  			= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -115,9 +49,9 @@ class Order extends JTable
 	/**
 	 * Get the ID of an order for a user from a certain date
 	 *
-	 * @param      integer $uid     User ID
-	 * @param      string  $ordered Timestamp
-	 * @return     mixed
+	 * @param   integer  $uid      User ID
+	 * @param   string   $ordered  Timestamp
+	 * @return  mixed
 	 */
 	public function getOrderID($uid, $ordered)
 	{
@@ -130,7 +64,7 @@ class Order extends JTable
 			return false;
 		}
 
-		$sql = "SELECT id FROM $this->_tbl WHERE uid='" . $uid . "' AND ordered='" . $ordered . "' ";
+		$sql = "SELECT id FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " AND ordered=" . $this->_db->quote($ordered);
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -138,9 +72,9 @@ class Order extends JTable
 	/**
 	 * Get all orders
 	 *
-	 * @param      string  $rtrn    Data return type (record count or array of records)
-	 * @param      array   $filters Filters to build query from
-	 * @return     mixed
+	 * @param   string  $rtrn     Data return type (record count or array of records)
+	 * @param   array   $filters  Filters to build query from
+	 * @return  mixed
 	 */
 	public function getOrders($rtrn='count', $filters)
 	{

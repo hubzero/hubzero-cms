@@ -60,7 +60,7 @@ $this->css()
 			?>
 			<li class="cf<?php echo ($cls) ? ' ' . $cls : ''; ?>">
 				<div class="imageholder">
-					<?php echo StoreHelperHtml::productimage($this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category); ?>
+					<?php echo \Components\Store\Helpers\Html::productimage($this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category); ?>
 				</div>
 				<div class="infoholder">
 					<h4><?php echo $row->title; ?></h4>

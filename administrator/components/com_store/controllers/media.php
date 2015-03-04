@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,55 +24,59 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Store\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Store\Helpers\ImgHandler;
+use Exception;
+use DirectoryIterator;
 
 /**
  * Store controller class for handling media (files)
  */
-class StoreControllerMedia extends \Hubzero\Component\AdminController
+class Media extends AdminController
 {
 	/**
 	 * Upload an image
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('COM_STORE_FEEDBACK_NO_ID'));
 			$this->displayTask($id);
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_FILE'));
+			$this->setError(\JText::_('COM_STORE_FEEDBACK_NO_FILE'));
 			$this->displayTask($id);
 			return;
 		}
 
 		// Build upload path
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
+		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
 
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_STORE_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_STORE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($id);
 				return;
 			}
@@ -80,29 +84,29 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php');
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_STORE_ERROR_UPLOADING'));
+			$this->setError(\JText::_('COM_STORE_ERROR_UPLOADING'));
 		}
 		else
 		{
-			$ih = new StoreImgHandler();
+			$ih = new ImgHandler();
 
 			// Do we have an old file we're replacing?
-			if (($curfile = JRequest::getVar('currentfile', '')))
+			if (($curfile = \JRequest::getVar('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!JFile::delete($path . DS . $curfile))
+					if (!\JFile::delete($path . DS . $curfile))
 					{
-						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
+						$this->setError(\JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
 						return;
 					}
@@ -114,9 +118,9 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 				// Remove old thumbnail
 				if (file_exists($path . DS . $curthumb))
 				{
-					if (!JFile::delete($path . DS . $curthumb))
+					if (!\JFile::delete($path . DS . $curthumb))
 					{
-						$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
+						$this->setError(\JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($id);
 						return;
 					}
@@ -143,33 +147,33 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_STORE_FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('COM_STORE_FEEDBACK_NO_ID'));
 			$this->displayTask($id);
 			return;
 		}
 
 		// Incoming picture
-		$picture = JRequest::getVar('current', '');
+		$picture = \JRequest::getVar('current', '');
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
+		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
 
 		// Attempt to delete the file
 		jimport('joomla.filesystem.folder');
-		if (!JFolder::delete($path))
+		if (!\JFolder::delete($path))
 		{
-			$this->setError(JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
+			$this->setError(\JText::_('COM_STORE_UNABLE_TO_DELETE_FILE'));
 			$this->displayTask($id);
 			return;
 		}
@@ -181,23 +185,21 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Display an image
 	 *
-	 * @param      integer $id   Item ID
-	 * @return     void
+	 * @param   integer  $id  Item ID
+	 * @return  void
 	 */
 	public function displayTask($id=0)
 	{
-		$this->view->setLayout('display');
-
 		$this->view->type = $this->type;
 
 		// Load the component config
 		$this->view->config = $this->config;
 
 		// Do have an ID or do we need to get one?
-		$this->view->id = ($id) ? $id : JRequest::getInt('id', 0);
+		$this->view->id = ($id) ? $id : \JRequest::getInt('id', 0);
 
 		// Do we have a file or do we need to get one?
-		//$this->view->file = ($file) ? $file : JRequest::getVar('file', '');
+		//$this->view->file = ($file) ? $file : \JRequest::getVar('file', '');
 		// Build the directory path
 		$this->view->path = DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $this->view->id;
 
@@ -205,7 +207,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 		$docs    = array();
 		$imgs    = array();
 
-		$path = JPATH_ROOT . $this->view->path;
+		$path = PATH_APP . $this->view->path;
 
 		if (is_dir($path))
 		{
@@ -238,7 +240,7 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 
 					if (preg_match("#bmp|gif|jpg|png|swf#i", $name))
 					{
-						$base = JFile::stripExt($name);
+						$base = \JFile::stripExt($name);
 						if (substr($base, -3) == '-tn')
 						{
 							continue;
@@ -260,16 +262,15 @@ class StoreControllerMedia extends \Hubzero\Component\AdminController
 		$this->view->file = array_shift($imgs);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 
