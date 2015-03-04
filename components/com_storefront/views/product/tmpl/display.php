@@ -63,7 +63,16 @@ if (!empty($this->notifications))
 						echo '<div class="productImages">';
 					}
 
-					echo '<a href="' . $this->productImg[0] . '" rel="lightbox"><img src="' . $this->productImg[0] . '" /></a>';
+					if (!strstr($this->productImg[0], 'noimage'))
+                    {
+                        echo '<a href="' . $this->productImg[0] . '"';
+                        echo ' rel="lightbox">';
+                    }
+                    echo '<img src="' . $this->productImg[0] . '" />';
+                    if (!strstr($this->productImg[0], 'noimage'))
+                    {
+                        echo '</a>';
+                    }
 
 					if (!empty($this->productImg))
 					{

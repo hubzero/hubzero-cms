@@ -1,5 +1,9 @@
+.productImages a {
+    border-bottom: 0;
+}
+
 #price {
-	font-size: 3em;
+	font-size: 2em;
 	line-height: 1em;
 	margin: 0 0 0.2em;
 }
