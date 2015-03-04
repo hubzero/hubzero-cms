@@ -399,9 +399,16 @@ class File extends Object
 			return $output;
 		}
 
-		$relative = substr($output, strlen(JPATH_BASE));
+		if ($this->extensionType() == 'system')
+		{
+			$relative = rtrim(str_replace('/administrator', '', \JURI::base(true)), '/') . substr($output, strlen(JPATH_ROOT));
+		}
+		else
+		{
+			$relative = rtrim(\JURI::base(true), '/') . substr($output, strlen(JPATH_BASE));
+		}
 
-		return rtrim(\JURI::base(true), DS) . $relative . ($timestamp ? '?v=' . $this->lastModified() : '');
+		return $relative . ($timestamp ? '?v=' . $this->lastModified() : '');
 	}
 
 	/**
