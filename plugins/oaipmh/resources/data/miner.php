@@ -184,20 +184,22 @@ class Miner extends Object implements Provider
 	 */
 	public function match($identifier)
 	{
-		if (preg_match('/(.*?)\/resources\/(\d+)/i', $identifier, $matches))
+		if (preg_match('/(.*?)\/resources\/(\d+)(?:\?rev=(\d+))?/i', $identifier, $matches))
 		{
-			return $matches[2];
+			return $matches[2] . (isset($matches[3]) && is_numeric($matches[3]) ? ':' . $matches[3] : '');
 		}
 
 		$this->database->setQuery(
-			"SELECT a.`rid`
+			"SELECT a.`rid`, v.`revision`
 			FROM `#__doi_mapping` AS a
+			LEFT JOIN `#__tool_version` AS v ON v.`id`=a.`versionid`
 			WHERE a.`doi`=" . $this->database->quote($identifier) . "
 			LIMIT 1"
 		);
-		if ($id = $this->database->loadResult())
+		$doi = $this->database->loadObject();
+		if ($doi && $doi->rid)
 		{
-			return $id;
+			return $doi->rid . ($doi->revision ? ':' . $doi->revision : '');
 		}
 
 		return 0;
@@ -211,6 +213,16 @@ class Miner extends Object implements Provider
 	 */
 	public function record($id)
 	{
+		if (strstr($id, ':'))
+		{
+			list($id, $revision) = explode(':', $id);
+		}
+		$id = intval($id);
+		if (!isset($revision))
+		{
+			$revision = 0;
+		}
+
 		$this->database->setQuery(
 			"SELECT r.id, r.id AS identifier, r.title, r.introtext AS description, r.fulltxt, r.created, r.publish_up, r.alias, rt.alias AS type
 			FROM `#__resources` AS r
@@ -240,25 +252,39 @@ class Miner extends Object implements Provider
 		unset($record->created);
 		unset($record->fulltxt);
 
-		$this->database->setQuery(
-			"SELECT a.`doi`
-			FROM `#__doi_mapping` AS a
-			WHERE a.rid=" . $this->database->quote($id) . "
-			ORDER BY `versionid` DESC LIMIT 1"
-		);
-		$record->identifier = $this->identifier($id, $this->database->loadResult());
+		$isTool = 0;
 
-		$this->database->setQuery(
-			"SELECT 
-				CASE WHEN a.name!='' AND a.name IS NOT NULL THEN a.name 
-				ELSE n.name 
-				END AS `name`
-			FROM `#__author_assoc` AS a
-			LEFT JOIN `#__xprofiles` AS n ON n.uidNumber=a.authorid
-			WHERE a.subtable='resources' AND a.subid=" . $this->database->quote($id) . "
-			ORDER BY a.ordering, a.name"
-		);
-		$record->creator = $this->database->loadResultArray();
+		if ($record->alias)
+		{
+			$this->database->setQuery(
+				"SELECT id
+				FROM `#__tool`
+				WHERE toolname=" . $this->database->quote($record->alias) . "
+				LIMIT 1"
+			);
+			$isTool = $this->database->loadResult();
+		}
+
+		if ($revision)
+		{
+			$this->database->setQuery(
+				"SELECT a.`doi`
+				FROM `#__doi_mapping` AS a
+				LEFT JOIN `#__tool_version` AS v ON v.id=a.versionid
+				WHERE a.rid=" . $this->database->quote($id) . " AND v.revision=" . $this->database->quote($revision) . "
+				LIMIT 1"
+			);
+		}
+		else
+		{
+			$this->database->setQuery(
+				"SELECT a.`doi`
+				FROM `#__doi_mapping` AS a
+				WHERE a.rid=" . $this->database->quote($id) . "
+				ORDER BY `versionid` DESC LIMIT 1"
+			);
+		}
+		$record->identifier = $this->identifier($id, $this->database->loadResult(), $revision);
 
 		$this->database->setQuery(
 			"SELECT DISTINCT t.raw_tag
@@ -268,9 +294,32 @@ class Miner extends Object implements Provider
 		);
 		$record->subject = $this->database->loadResultArray();
 
-		if ($record->alias)
+		if ($isTool)
 		{
+			if ($revision)
+			{
+				$this->database->setQuery(
+					"SELECT n.uidNumber AS id,
+						CASE WHEN t.name!='' AND t.name IS NOT NULL THEN t.name
+						ELSE n.name
+						END AS `name`
+					FROM `#__tool_authors` AS t, `#__xprofiles` AS n, `#__tool_version` AS v
+					WHERE n.uidNumber=t.uid AND t.toolname=" . $this->database->quote($record->alias) . " AND v.id=t.version_id and v.state<>3
+					AND t.revision=" . $this->database->quote($revision) . "
+					ORDER BY t.ordering"
+				);
+				$record->creator = $this->database->loadResultArray();
+			}
+
 			$record->relation = array();
+
+			if ($revision)
+			{
+				$record->relation[] = array(
+					'type'  => 'isVersionOf',
+					'value' => $this->identifier($id, '', 0)
+				);
+			}
 
 			$this->database->setQuery(
 				"SELECT v.id, v.revision, d.*
@@ -284,7 +333,7 @@ class Miner extends Object implements Provider
 			$versions = $this->database->loadObjectList();
 			foreach ($versions as $i => $v)
 			{
-				if (!$v->revision)
+				if (!$v->revision || $v->revision == $revision)
 				{
 					continue;
 				}
@@ -294,6 +343,21 @@ class Miner extends Object implements Provider
 					'value' => $this->identifier($id, $v->doi, $v->revision)
 				);
 			}
+		}
+
+		if (!isset($record->creator))
+		{
+			$this->database->setQuery(
+				"SELECT 
+					CASE WHEN a.name!='' AND a.name IS NOT NULL THEN a.name
+					ELSE n.name
+					END AS `name`
+				FROM `#__author_assoc` AS a
+				LEFT JOIN `#__xprofiles` AS n ON n.uidNumber=a.authorid
+				WHERE a.subtable='resources' AND a.subid=" . $this->database->quote($id) . " AND a.role!='submitter'
+				ORDER BY a.ordering, a.name"
+			);
+			$record->creator = $this->database->loadResultArray();
 		}
 
 		return $record;
