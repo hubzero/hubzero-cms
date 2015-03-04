@@ -1100,7 +1100,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				. a . 'pid=' . $row->publication_id);
 			$sef = trim($sef, DS);
 
-			ProjectsHelper::sendHUBMessage(
+			\Components\Projects\Helpers\Html::sendHUBMessage(
 				'com_projects',
 				$this->_config,
 				$this->_project,
@@ -1437,7 +1437,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_helpers = new stdClass();
 		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
-		$pub->_helpers->projectsHelper 	= new ProjectsHelper( $this->_database );
 
 		// Get type info
 		$pub->_category = new PublicationCategory( $this->_database );
@@ -1637,8 +1636,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task != 'editauthor')
 		{
 			$config 		= JComponentHelper::getParams( 'com_projects' );
-			$view->path 	= ProjectsHelper::getProjectPath($this->_project->alias,
-							  $config->get('webpath'), $config->get('offroot'));
+			$view->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		}
 
 		$view->step 	= $step;
@@ -2191,7 +2189,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Initialize other helpers
 		$view->htmlHelper	  = new PublicationsHtml();
 		$view->contribHelper  = new PublicationContribHelper();
-		$view->projectsHelper = new ProjectsHelper( $this->_database );
 
 		// Instantiate publication version
 		$row->loadVersion($pid, $version);
@@ -2221,8 +2218,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$view->base = $pub->base ? $pub->base : 'files';
 
 				// Get project file path
-				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), 1);
+				$view->fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 
 				// Get Files JS
@@ -2331,8 +2327,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$row->id, $webpath, 'gallery');
 
 				// Get project file path
-				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), 1);
+				$view->fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 				break;
 
@@ -2515,7 +2510,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						// Send out email to admins
 						if (!empty($admins))
 						{
-							ProjectsHelper::sendHUBMessage(
+							\Components\Projects\Helpers\Html::sendHUBMessage(
 								$this->_option,
 								$this->_config,
 								$this->_project,
@@ -2594,7 +2589,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_helpers = new stdClass();
 		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
-		$pub->_helpers->projectsHelper 	= new ProjectsHelper( $this->_database );
 
 		// Get authors
 		$pAuthors 			= new PublicationAuthor( $this->_database );
@@ -3044,9 +3038,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$helper = new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$view->helper = $helper;
 
-		// Get projects helper
-		$view->projectsHelper = new ProjectsHelper( $this->_database );
-
 		// What's the last visited panel
 		$view->params 		= new JParameter( $row->params );
 		$view->lastpane 	= $view->params->get('stage', 'content');
@@ -3090,8 +3081,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get project file path
 		$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
-		$view->project_path = ProjectsHelper::getProjectPath($this->_project->alias,
-				$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$view->project_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		// Get tags
 		$view->helper->getTagCloud( 1 );
@@ -4155,7 +4145,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$admins 	= array_merge($members, $managers);
 				$admins 	= array_unique($admins);
 
-				ProjectsHelper::sendHUBMessage(
+				\Components\Projects\Helpers\Html::sendHUBMessage(
 					'com_projects',
 					$this->_config,
 					$this->_project,
@@ -4203,7 +4193,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$managers = $objO->getIds($this->_project->id, 1, 1);
 		if (!$this->_project->provisioned && !empty($managers))
 		{
-			ProjectsHelper::sendHUBMessage(
+			\Components\Projects\Helpers\Html::sendHUBMessage(
 				'com_projects',
 				$this->_config,
 				$this->_project,
@@ -5024,8 +5014,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$att->loadAttachment($vid, $item, $type );
 
 		// Get project file path
-		$project_path = ProjectsHelper::getProjectPath($this->_project->alias,
-				$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$project_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		$canedit = (!is_object($this->_project) or !$this->_project->id) ? 0 : 1;
 
@@ -6020,8 +6009,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$originals = $pScreenshot->getScreenshots( $vid );
 
 		// Get project file path
-		$fpath = ProjectsHelper::getProjectPath($this->_project->alias,
-				$this->_config->get('webpath'), 1);
+		$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 		$from_path = $prefix.$fpath;
@@ -6152,8 +6140,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		elseif (!$this->getError())
 		{
 			// Get project file path
-			$fpath =  ProjectsHelper::getProjectPath($this->_project->alias,
-					$this->_config->get('webpath'), 1);
+			$fpath =  \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 			// Include Git Helper
 			$this->getGitHelper();
@@ -6251,8 +6238,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Get project file path
-			$fpath = ProjectsHelper::getProjectPath($this->_project->alias,
-				$this->_config->get('webpath'), 1);
+			$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 			$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 			$from_path = $prefix . $fpath;
@@ -7109,8 +7095,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$memberPath = $this->_getMemberPath();
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-			$this->_config->get('webpath'), 1);
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
 

@@ -1322,4 +1322,190 @@ class Html
 
 		return false;
 	}
+
+	/**
+	 * Get group members
+	 *
+	 * @param  string $groupname
+	 * @return void
+	 */
+	public static function getGroupMembers($groupname)
+	{
+		$team = array();
+		if ($groupname)
+		{
+			$group = \Hubzero\User\Group::getInstance($groupname);
+			if ($group && $group->get('gidNumber'))
+			{
+				$members 	= $group->get('members');
+				$managers 	= $group->get('managers');
+				$team 		= array_merge($members, $managers);
+				$team 		= array_unique($team);
+			}
+		}
+
+		return $team;
+	}
+
+	/**
+	 * Get tabs
+	 *
+	 * @return    array
+	 */
+	public static function getPluginNames( &$plugins )
+	{
+		// Make sure we have name and title
+		$names = array();
+		for ($i = 0, $n = count($plugins); $i <= $n; $i++)
+		{
+			if (empty($plugins[$i]) || !isset($plugins[$i]['name']))
+			{
+				unset($plugins[$i]);
+			}
+			else
+			{
+				$names[] = $plugins[$i]['name'];
+			}
+		}
+
+		return array_unique($names);
+	}
+
+	/**
+	 * Get active tabs
+	 *
+	 * @return    array
+	 */
+	public static function getTabs( &$plugins )
+	{
+		// Make sure we have name and title
+		$tabs = array();
+		for ($i = 0, $n = count($plugins); $i <= $n; $i++)
+		{
+			if (empty($plugins[$i]) || !isset($plugins[$i]['name']))
+			{
+				unset($plugins[$i]);
+			}
+			else
+			{
+				if (isset($plugins[$i]['show']) && $plugins[$i]['show'] == false)
+				{
+					continue;
+				}
+				if (!in_array($plugins[$i], $tabs))
+				{
+					$tabs[] = $plugins[$i];
+				}
+			}
+		}
+
+		return $tabs;
+	}
+
+	/**
+	 * Get project Git repo path
+	 *
+	 * @param      string $projectAlias
+	 * @param      string $case
+	 * @return     string
+	 */
+	public static function getProjectRepoPath( $projectAlias = '', $case = 'files' )
+	{
+		if (!trim($projectAlias))
+		{
+			return false;
+		}
+
+		// Get component config
+		$config = \JComponentHelper::getParams('com_projects');
+
+		// Build repo path
+		$path   = DS . trim($config->get('webpath'), DS) . DS . strtolower(trim($projectAlias));
+		$path  .= $case ? DS . $case : '';
+		return is_dir($path) ? $path : false;
+	}
+
+	/**
+	 * Send hub message
+	 *
+	 * @param      string 	$option
+	 * @param      array 	$config
+	 * @param      object 	$project
+	 * @param      array 	$addressees
+	 * @param      string 	$subject
+	 * @param      string 	$component
+	 * @param      string 	$layout
+	 * @param      string 	$message
+	 * @param      string 	$reviewer
+	 * @return     void
+	 */
+	public static function sendHUBMessage(
+		$option, $config, $project,
+		$addressees = array(), $subject = '',
+		$component = '', $layout = '',
+		$message = '', $reviewer = '')
+	{
+		if (!$layout || !$subject || !$component || empty($addressees))
+		{
+			return false;
+		}
+
+		// Is messaging turned on?
+		if ($config->get('messaging') != 1)
+		{
+			return false;
+		}
+
+		// Set up email config
+		$jconfig = \JFactory::getConfig();
+		$from = array();
+		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_PROJECTS');
+		$from['email'] = $jconfig->getValue('config.mailfrom');
+
+		// Html email
+		$from['multipart'] = md5(date('U'));
+
+		// Get message body
+		$eview = new \Hubzero\Component\View(array(
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects',
+			'name'   => 'emails',
+			'layout' => $layout . '_plain'
+		));
+
+		$eview->option 			= $option;
+		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
+		$eview->project 		= $project;
+		$eview->params 			= new \JParameter( $project->params );
+		$eview->config 			= $config;
+		$eview->message			= $message;
+		$eview->reviewer		= $reviewer;
+
+		// Get profile of author group
+		if ($project->owned_by_group)
+		{
+			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group );
+		}
+		$body = array();
+		$body['plaintext'] 	= $eview->loadTemplate();
+		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+
+		// HTML email
+		$eview->setLayout($layout . '_html');
+		$body['multipart'] = $eview->loadTemplate();
+		$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
+
+		// Send HUB message
+		\JPluginHelper::importPlugin( 'xmessage' );
+		$dispatcher = \JDispatcher::getInstance();
+		$dispatcher->trigger( 'onSendMessage',
+			array(
+				$component,
+				$subject,
+				$body,
+				$from,
+				$addressees,
+				$option
+			)
+		);
+	}
 }

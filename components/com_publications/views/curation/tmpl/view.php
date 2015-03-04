@@ -36,7 +36,6 @@ $blocks = $this->pub->_curationModel->_blocks;
 
 $pubHelper 		= $this->pub->_helpers->pubHelper;
 $htmlHelper 	= $this->pub->_helpers->htmlHelper;
-$projectsHelper = $this->pub->_helpers->projectsHelper;
 
 $now = JFactory::getDate()->toSql();
 

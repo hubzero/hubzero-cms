@@ -242,7 +242,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 				  (SELECT vv.id FROM #__wiki_version as vv WHERE vv.pageid=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
 			      FROM #__wiki_page AS p
-				  WHERE p.group_cn='" . $this->_group_sn . "'
+				  WHERE p.group_cn='" . $this->_group_cn . "'
 				  AND p.scope LIKE '" . $this->_scope . "%'
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";

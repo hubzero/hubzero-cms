@@ -63,8 +63,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 		// Get project path
 		$config 	= JComponentHelper::getParams( 'com_projects' );
-		$this->path = ProjectsHelper::getProjectPath($pub->_project->alias,
-					  $config->get('webpath'), $config->get('offroot'));
+		$this->path = \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
 		$showElement 	= $master->props['showElement'];
 		$total 			= $master->props['total'];

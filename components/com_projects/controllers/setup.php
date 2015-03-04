@@ -563,9 +563,9 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			$admingroup 	= $this->config->get('admingroup', '');
 			$sdata_group 	= $this->config->get('sdata_group', '');
 			$ginfo_group 	= $this->config->get('ginfo_group', '');
-			$project_admins = ProjectsHelper::getGroupMembers($admingroup);
-			$ginfo_admins 	= ProjectsHelper::getGroupMembers($ginfo_group);
-			$sdata_admins 	= ProjectsHelper::getGroupMembers($sdata_group);
+			$project_admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
+			$ginfo_admins 	= \Components\Projects\Helpers\Html::getGroupMembers($ginfo_group);
+			$sdata_admins 	= \Components\Projects\Helpers\Html::getGroupMembers($sdata_group);
 
 			$admins = array_merge($project_admins, $ginfo_admins, $sdata_admins);
 			$admins = array_unique($admins);
@@ -573,7 +573,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			// Send out email to admins
 			if (!empty($admins))
 			{
-				ProjectsHelper::sendHUBMessage(
+				\Components\Projects\Helpers\Html::sendHUBMessage(
 					$this->_option,
 					$this->config,
 					$this->project,
@@ -609,12 +609,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		}
 
 		// Build project repo path
-		$path = ProjectsHelper::getProjectPath(
-			$this->project->alias,
-			$this->config->get('webpath'),
-			$this->config->get('offroot',
-			0)
-		);
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 
 		// Create project repo path
 		if (!is_dir( $path ))
@@ -860,12 +855,12 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 
 							if (\Hubzero\User\Group::getInstance($admingroup))
 							{
-								$admins = ProjectsHelper::getGroupMembers($admingroup);
+								$admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
 
 								// Send out email to admins
 								if (!empty($admins))
 								{
-									ProjectsHelper::sendHUBMessage(
+									\Components\Projects\Helpers\Html::sendHUBMessage(
 										$this->_option,
 										$this->config,
 										$this->project,

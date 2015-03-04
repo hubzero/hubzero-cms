@@ -27,7 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $pubHelper 		= $this->pub->_helpers->pubHelper;
 $htmlHelper 	= $this->pub->_helpers->htmlHelper;
-$projectsHelper = $this->pub->_helpers->projectsHelper;
 
 // Get hub config
 $juri 	 = JURI::getInstance();

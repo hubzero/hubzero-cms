@@ -280,7 +280,7 @@ class plgCronPublications extends JPlugin
 			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS
-			. 'com_projects' . DS . 'helpers' . DS . 'helper.php');
+			. 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Check that mkAIP script exists
 		if (!PublicationUtilities::archiveOn())
@@ -359,7 +359,7 @@ class plgCronPublications extends JPlugin
 				'multipart' => md5(date('U'))
 			);
 
-			$admins = ProjectsHelper::getGroupMembers($aipGroup);
+			$admins = \Components\Projects\Helpers\Html::getGroupMembers($aipGroup);
 
 			// Build message
 			if (!empty($admins))

@@ -709,8 +709,11 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		\JPluginHelper::importPlugin( 'projects');
 		$dispatcher = \JDispatcher::getInstance();
 
-		// Get plugins with side tabs
-		$this->view->tabs 	= $dispatcher->trigger( 'onProjectAreas', array( ) );
+		// Get all plugins
+		$plugins 	= $dispatcher->trigger( 'onProjectAreas', array( 'all' => true ) );
+
+		// Get tabbed plugins
+		$this->view->tabs = \Components\Projects\Helpers\Html::getTabs($plugins);
 
 		// Go through plugins
 		$this->view->content = '';
@@ -719,13 +722,8 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 			$plugin = $this->active == 'feed' ? 'blog' : $this->active;
 			$plugin = $this->active == 'info' ? '' : $plugin;
 
-			$availPlugins 		= $dispatcher->trigger( 'onProjectAreas', array('all' => true) );
-
-			// Get tabs
-			$tabs = ProjectsHelper::getTabs($this->view->tabs);
-
 			// Get active plugins (some may not be in tabs)
-			$activePlugins = ProjectsHelper::getTabs($availPlugins);
+			$activePlugins = \Components\Projects\Helpers\Html::getPluginNames($plugins);
 
 			// Get plugin content
 			if ($this->active != 'info')
@@ -1418,7 +1416,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 				if (\Hubzero\User\Group::getInstance($admingroup))
 				{
-					$admins = ProjectsHelper::getGroupMembers($admingroup);
+					$admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
 					$admincomment = $comment
 						? $actor . ' ' . \JText::_('COM_PROJECTS_SAID') . ': ' . $comment
 						: '';
@@ -1426,7 +1424,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 					// Send out email to admins
 					if (!empty($admins))
 					{
-						ProjectsHelper::sendHUBMessage(
+						\Components\Projects\Helpers\Html::sendHUBMessage(
 							$this->_option,
 							$this->config,
 							$this->project,

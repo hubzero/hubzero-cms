@@ -911,7 +911,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if (!$this->_path)
 		{
 			// Get project file path
-			$this->_path = ProjectsHelper::getProjectPath($this->_project->alias, $this->_config->get('webpath'), $this->_config->get('offroot', 0));
+			$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		}
 
 		// We do need project file path

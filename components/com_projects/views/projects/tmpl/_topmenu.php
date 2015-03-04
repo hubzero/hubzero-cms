@@ -55,14 +55,6 @@ if (count($assetTabs) > 1)
 		<ul>
 		<?php foreach ($this->tabs as $tab)
 		{
-			if (!isset($tab['name']))
-			{
-				continue;
-			}
-			if (isset($tab['show']) && $tab['show'] == false)
-			{
-				continue;
-			}
 			if (isset($tab['submenu']) && $tab['submenu'] == 'Assets' && count($assetTabs) > 1)
 			{
 				continue;

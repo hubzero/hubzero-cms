@@ -410,8 +410,7 @@ class typeFiles extends JObject
 			);
 
 			// Get project file path
-			$fpath = ProjectsHelper::getProjectPath($this->_project->alias,
-					$config->get('webpath'), $config->get('offroot'));
+			$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 			$objPA = new PublicationAttachment( $this->_database );
 
@@ -479,9 +478,6 @@ class typeFiles extends JObject
 		// Get publications helper
 		$helper = new PublicationHelper($this->_database, $vid, $pid);
 
-		// Get projects helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-
 		// Load component configs
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$config = JComponentHelper::getParams( 'com_projects' );
@@ -506,9 +502,6 @@ class typeFiles extends JObject
 			}
 		}
 
-		// Get latest commit hash
-		$latest = $projectsHelper->showGitInfo($gitpath, $devpath, $hash, $fpath, 2);
-
 		// If parent dir does not exist, we must create it
 		if (!file_exists(dirname($newpath. DS .$fpath)))
 		{
@@ -518,7 +511,7 @@ class typeFiles extends JObject
 		// Copy file if there (will be at latest revision)
 		if (is_file($devpath. DS .$fpath))
 		{
-			if (!is_file($newpath. DS .$fpath) || $hash != $latest['hash'])
+			if (!is_file($newpath. DS .$fpath))
 			{
 				JFile::copy($devpath. DS .$fpath, $newpath. DS .$fpath);
 			}
@@ -595,15 +588,11 @@ class typeFiles extends JObject
 		// Get file revision
 		if ($this->_project && $this->_project->provisioned != 1)
 		{
-			// Get projects helper
-			$projectsHelper = new ProjectsHelper( $this->_database );
-
 			// Load component configs
 			$config = JComponentHelper::getParams( 'com_projects' );
 
 			// Git path
 			$gitpath  = $config->get('gitpath', '/opt/local/bin/git');
-			$revision = $projectsHelper->showGitInfo($gitpath, $path, $att->vcs_hash, $file);
 		}
 
 		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
@@ -641,7 +630,6 @@ class typeFiles extends JObject
 
 		// Get helpers
 		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
-		$projectsHelper = new ProjectsHelper( $this->_database );
 
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
@@ -673,9 +661,6 @@ class typeFiles extends JObject
 				continue;
 			}
 
-			// Get latest commit hash
-			$latest = $projectsHelper->showGitInfo($gitpath, $devpath, $att->vcs_hash, $att->path, 2);
-
 			// If parent dir does not exist, we must create it
 			if (!file_exists(dirname($newpath. DS .$att->path)))
 			{
@@ -687,25 +672,12 @@ class typeFiles extends JObject
 			{
 				JFile::copy($devpath. DS .$att->path, $newpath. DS .$att->path);
 			}
-			else
-			{
-				// Check out revision when file was added
-				chdir($devpath);
-				exec($gitpath.' checkout '.$att->vcs_hash.' '.escapeshellarg($att->path).' 2>&1', $out);
-				if (file_exists($devpath. DS . $att->path))
-				{
-					JFile::copy($devpath. DS . $att->path, $newpath. DS .$att->path);
-				}
-				// Check back latest revision
-				exec($gitpath.' checkout '.$latest['hash'].' '.escapeshellarg($att->path).' 2>&1', $out);
-			}
 
 			// Copy succeeded?
 			if (is_file($newpath. DS . $att->path))
 			{
 				$objAtt = new PublicationAttachment( $this->_database );
 				$objAtt->load($att->id);
-				$objAtt->vcs_hash 	  = $latest['hash'];
 				$objAtt->modified_by  = $uid;
 				$objAtt->modified 	  = JFactory::getDate()->toSql();
 				$objAtt->content_hash = hash_file('sha256', $newpath. DS .$att->path);

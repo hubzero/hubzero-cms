@@ -47,15 +47,8 @@ $a = 0;
 			<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
 		</li>
 <?php foreach ($this->tabs as $tab) {
-		if (isset($tab['show']) && $tab['show'] == false)
-		{
-			continue;
-		}
-		if (isset($tab['alias']) && trim($tab['alias']))
-		{
-			$tab['name'] = trim($tab['alias']);
-		}
-		if ($tab['name'] == 'feed')
+
+		if ($tab['name'] == 'blog')
 		{
 			continue;
 		}

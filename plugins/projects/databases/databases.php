@@ -496,8 +496,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	public function act_list()
 	{
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		// Get project database object
 		$objPD = new \Components\Projects\Tables\Database($this->_database);
@@ -576,8 +575,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$db_id = JRequest::getInt('db_id', false);
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		$list = array();
 		$error = false;
@@ -664,8 +662,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		$path .= DS;
 
 		if ($dir != '')
@@ -961,8 +958,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$repo_base = '/projects/' . $this->_project->alias . '/files/?action=download&subdir=' . trim($dir, '/');
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		$path .= DS;
 
 		if ($dir != '')
@@ -1173,8 +1169,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias,
-						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		$path .= DS;
 
 		if ($objPD->loadRecord($id))

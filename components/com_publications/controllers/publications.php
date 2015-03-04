@@ -700,7 +700,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$publication->id
 			);
 			$publication->_helpers->htmlHelper	  	= new PublicationsHtml();
-			$publication->_helpers->projectsHelper 	= new ProjectsHelper( $this->database );
 
 			// Get manifest from either version record (published) or master type
 			$manifest = $publication->curation

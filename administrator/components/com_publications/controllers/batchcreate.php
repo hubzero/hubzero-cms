@@ -30,8 +30,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-ini_set('display_errors', '1');
-error_reporting(E_ALL | E_STRICT);
 
 /**
  * Manage publication batch
@@ -312,8 +310,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 
 		// Get project repo path
 		$projectConfig 		= JComponentHelper::getParams( 'com_projects' );
-		$this->projectPath 	= ProjectsHelper::getProjectPath($this->project->alias,
-							$projectConfig->get('webpath'), $projectConfig->get('offroot'));
+		$this->projectPath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 
 		// Git helper
 		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'

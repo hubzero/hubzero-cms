@@ -26,8 +26,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'helper.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'html.php');
 
 /**

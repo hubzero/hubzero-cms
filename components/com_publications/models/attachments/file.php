@@ -27,8 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'helper.php');
+
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'html.php');
 
@@ -121,10 +120,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Get project path
-		$config 		= JComponentHelper::getParams( 'com_projects' );
-		$configs->path 	= ProjectsHelper::getProjectPath($pub->_project->alias,
-						$config->get('webpath'),
-						$config->get('offroot', 0));
+		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
 		// Get publications helper
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);

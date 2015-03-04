@@ -469,13 +469,8 @@ class typeDatabases extends JObject
 			return false;
 		}
 
-		// Load component configs
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
-		$config = JComponentHelper::getParams( 'com_projects' );
-
-		$repoPath = ProjectsHelper::getProjectPath($this->_project->alias,
-			$config->get('webpath'), $config->get('offroot')
-		);
+		// Get project repo path
+		$repoPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		// Get data definition
 		$dd = json_decode($objPD->data_definition, true);

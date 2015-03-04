@@ -62,7 +62,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas( $all = false)
+	public function &onProjectAreas( $all = false )
 	{
 		// Not showing side panel
 		$area = array();

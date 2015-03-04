@@ -3351,16 +3351,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$config = JComponentHelper::getParams('com_projects');
 
 		// Get project path
-		$path  		= ProjectsHelper::getProjectPath($project->alias,
-					$config->get('webpath'), 1);
+		$path  		= \Components\Projects\Helpers\Html::getProjectRepoPath($project->alias);
 		$prefix 	= $config->get('offroot', 0) ? '' : JPATH_ROOT;
 
 		$deleteTemp = 0;
 
 		if ($hash)
 		{
-			$tempPath  	= ProjectsHelper::getProjectPath($project->alias,
-						$config->get('webpath'), 1, 'temp');
+			$tempPath  	= \Components\Projects\Helpers\Html::getProjectRepoPath($project->alias, 'temp');
 
 			if (!is_dir( $tempPath ))
 			{
@@ -5341,15 +5339,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$converted = $objRFile->getFileCount($obj->id, '', '1');
 		}
 
-		// Load component configs
-		$config = JComponentHelper::getParams( 'com_projects' );
-
 		// Get project path
-		$path = ProjectsHelper::getProjectPath(
-			$identifier,
-			$config->get('webpath', 0),
-			$config->get('offroot', 0)
-		);
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($obj->alias);
 
 		// Get local file count
 		$count = $this->getFiles($path, '', false, 1);
@@ -6820,8 +6811,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			.'com_projects' . DS . 'tables' . DS . 'project.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
 			.'com_projects' . DS . 'tables' . DS . 'project.activity.php');
-
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php');
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Get joomla libraries

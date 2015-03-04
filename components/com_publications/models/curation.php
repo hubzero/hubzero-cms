@@ -48,8 +48,6 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 	. DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'helper.php');
 
 // Get language file
 $lang = JFactory::getLanguage();

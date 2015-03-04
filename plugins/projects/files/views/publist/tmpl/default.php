@@ -40,8 +40,7 @@ $link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
 $config = JComponentHelper::getParams('com_projects');
 
 // Get project path
-$path  = ProjectsHelper::getProjectPath($this->project->alias,
-		$config->get('webpath'), 1);
+$path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 $prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT;
 
 if ($items) {
