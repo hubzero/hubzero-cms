@@ -25,17 +25,17 @@ if (!jq) {
 
 HUB.Plugins.GroupCalendar = {
 	jQuery: jq,
-	
+
 	initialize: function() {
 		// create calendar
 		HUB.Plugins.GroupCalendar.calendar();
 
 		// fancy calendar picker
 		HUB.Plugins.GroupCalendar.calendarPicker();
-		
+
 		// edit event js
 		HUB.Plugins.GroupCalendar.editEvent();
-		
+
 		// handle subscribe url changing
 		HUB.Plugins.GroupCalendar.subscribeUrl();
 
@@ -113,7 +113,7 @@ HUB.Plugins.GroupCalendar = {
 				HUB.Plugins.GroupCalendar.filterEvents();
 			},
 			dayClick: function(date, jsEvent, view)
-			{	
+			{
 				// convert to local
 				date.local();
 
@@ -122,7 +122,7 @@ HUB.Plugins.GroupCalendar = {
 
 				// add offset and format
 				var start = date.add(offset, 'm').format('YYYY-MM-DD HH:mm:ss');
-				
+
 				// double  click
 				if (_click)
 				{
@@ -154,7 +154,7 @@ HUB.Plugins.GroupCalendar = {
 				{
 					return;
 				}
-				
+
 				// go to edit/add screen
 				window.location.href = $base + '/add?start=' + start + '&end=' + end;
 			}
@@ -209,11 +209,11 @@ HUB.Plugins.GroupCalendar = {
 			$(this).parents('tr').toggle();
 		});
 	},
-	
+
 	calendarPicker: function()
 	{
 		var $ = this.jQuery;
-	
+
 		//fancy select box for cal picker
 		if ($('#calendar-picker').length)
 		{
@@ -228,40 +228,53 @@ HUB.Plugins.GroupCalendar = {
 	filterEvents: function()
 	{
 		var $ = this.jQuery;
-		
 		var value = $('#calendar-picker').val();
-		
+
 		if (value == 0)
 		{
-			$('.fc-event-container').show();
+			var x = 0;
+			for (x = 0; x <= value; x++)
+			{
+				$('.calendar-' + x).show();
+			}
 		}
 		else
 		{
-			$('.fc-event-container').hide();
-			$('.calendar-' + value).parent('.fc-event-container').show();
+			var x = 0;
+			for (x = 0; x <= value; x++)
+			{
+				if (x != value)
+				{
+					$('.calendar-' + x).hide();
+				}
+				else
+				{
+					$('.calendar-' + x).show();
+				}
+			}
 		}
 	},
-	
+
 	subscribeUrl: function()
 	{
 		var $ = this.jQuery;
-		
+
 		//select subscribe url when clicking in field
 		$('.group_calendar').on('click', '#subscribe-link input[type=text]', function(event) {
 			$(this).select();
 		});
-		
+
 		//adjust url and subscribe button url when editing calendar choices
 		$('.group_calendar').on('click', '.subscribe-content input[type=checkbox]', function(event) {
 			var calendars = [],
 				calendarParamString = '';
-			$('.subscribe-content :checkbox:checked').map(function() { 
+			$('.subscribe-content :checkbox:checked').map(function() {
 				calendars.push( $(this).val() );
 			});
-			
+
 			//build calendar param string from selected calendars
 			calendarParamString = calendars.join(',');
-			
+
 			//we can only subscribe to a calendar if we have one selected
 			if (calendarParamString == '')
 			{
@@ -271,30 +284,30 @@ HUB.Plugins.GroupCalendar = {
 			{
 				$('#subscribe-link').slideDown();
 			}
-			
+
 			//get rid of protocol off current url
 			var newSubscribeUrl = window.location.href.replace(window.location.protocol + '//', '');
-			
+
 			//remove anything after /calendar in current url
 			newSubscribeUrl = newSubscribeUrl.replace(/calendar.+/, 'calendar');
-			
+
 			//append subscribe and calendar param string
 			newSubscribeUrl = newSubscribeUrl + '/subscribe/' + calendarParamString + '.ics';
-			
+
 			//set the subscribe value and webcal button
 			$('#subscribe-link input[type=text]').val('https://' + newSubscribeUrl);
 			$('#subscribe-link a.https').attr('href', 'https://' + newSubscribeUrl)
 			$('#subscribe-link a.webcal').attr('href', 'webcal://' + newSubscribeUrl)
 		});
 	},
-	
+
 	editEvent: function()
 	{
 		var $ = this.jQuery;
 
 		// handle repeating events details
 		HUB.Plugins.GroupCalendar.repeatingEvents();
-		
+
 		//show date picker for end and start
 		if ($('#event_start_date, #event_end_date').length)
 		{
@@ -343,7 +356,7 @@ HUB.Plugins.GroupCalendar = {
 						// hide time field
 						$('#event_start_time').attr('disabled', true).hide();
 						$('#event_end_time').attr('disabled', true).hide();
-					} 
+					}
 					else
 					{
 						// show timepicker
@@ -369,7 +382,7 @@ HUB.Plugins.GroupCalendar = {
 				}
 			}
 		}
-		
+
 		//show date picker for register by
 		if ($('#event_registerby').length)
 		{
@@ -384,21 +397,21 @@ HUB.Plugins.GroupCalendar = {
     			}
 			});
 		}
-		
+
 		//make calendar picker fancy select
 		if ($('#event-calendar-picker').length)
 		{
 			$('#event-calendar-picker').HUBfancyselect();
 		}
-		
+
 		//show/hide registration fields
 		$('#include-registration-toggle').on('change', function(event) {
 			$('#registration-fields').slideToggle();
 		});
-		
+
 		//remove tooltips from registration fields labels
 		$('.group_calendar #hubForm table.paramlist td label').removeClass('hasTip');
-		
+
 		//file uploader
 		if ($('#import').length)
 		{
@@ -409,7 +422,7 @@ HUB.Plugins.GroupCalendar = {
 				forceIframeTransport: false,
 				add: function(e, data) {
 					var file = data.files[0];
-					
+
 					//make sure we only allow ics files
 					if (file.type != 'text/calendar')
 					{
@@ -435,7 +448,7 @@ HUB.Plugins.GroupCalendar = {
 						interval = eventDetails.recurrence.INTERVAL,
 						count    = eventDetails.recurrence.COUNT,
 						until    = eventDetails.recurrence.UNTIL;
-					
+
 					if (repeat)
 					{
 						$('.event_recurrence_freq').val(repeat.toLowerCase()).trigger('change');
@@ -468,14 +481,14 @@ HUB.Plugins.GroupCalendar = {
 						$('.event_recurrence_end_count').val('');
 						$('.event_recurrence_end_date').val('');
 					}
-					
+
 				},
 				fail: function(e, data) {
 					console.log('fail');
 					console.log(data);
 				}
 			});
-			
+
 			//drag & drop
 			$(document)
 				.on('dragenter', '.upload', function(event) {
@@ -497,7 +510,7 @@ HUB.Plugins.GroupCalendar = {
 			return;
 		}
 
-		// show 
+		// show
 		$('.reccurance .ends').hide();
 
 		// repeating events end
