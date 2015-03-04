@@ -248,7 +248,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_ITEM_RELEASED_SUCCESSFULLY')
+			JText::_('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY')
 		);
 	}
 
