@@ -91,7 +91,7 @@ class JMenu extends JObject
 			//Load the router object
 			$info = JApplicationHelper::getClientInfo($client, true);
 
-			$path = $info->path . '/menu.php';
+			$path = $info->bootstrap . '/menu.php';
 			if (file_exists($path))
 			{
 				include_once $path;

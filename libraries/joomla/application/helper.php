@@ -79,25 +79,29 @@ class JApplicationHelper
 			// Site Client
 			$obj->id = 0;
 			$obj->name = 'site';
-			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site'; //JPATH_SITE;
+			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site';
+			$obj->path = JPATH_SITE;
 			self::$_clients[0] = clone $obj;
 
 			// Administrator Client
 			$obj->id = 1;
 			$obj->name = 'administrator';
-			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'administrator';//JPATH_ADMINISTRATOR;
+			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'administrator';
+			$obj->path = JPATH_ADMINISTRATOR;
 			self::$_clients[1] = clone $obj;
 
 			// Installation Client
 			$obj->id = 2;
 			$obj->name = 'installation';
-			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'installation'; //JPATH_INSTALLATION;
+			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'installation';
+			$obj->path = JPATH_INSTALLATION;
 			self::$_clients[2] = clone $obj;
 
 			// HUBzero API Client
 			$obj->id = 4;
 			$obj->name = 'api';
-			$obj->path = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'api'; //JPATH_SITE . DS . 'api';
+			$obj->bootstrap = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'api';
+			$obj->path = JPATH_SITE . DS . 'api';
 			self::$_clients[4] = clone $obj;
 		}
 
