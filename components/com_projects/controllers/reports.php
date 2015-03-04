@@ -51,7 +51,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Is user in special admin group to view advanced stats?
-		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
+		$admin = $this->_checkReviewerAuth('general');
 
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
@@ -132,7 +132,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$obj   = new Components\Projects\Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
-		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
+		$admin = $this->_checkReviewerAuth('general');
 
 		// Check authorization
 		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
@@ -229,7 +229,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$obj   = new Components\Projects\Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
-		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
+		$admin = $this->_checkReviewerAuth('general');
 
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();

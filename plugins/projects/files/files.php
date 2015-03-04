@@ -1274,16 +1274,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do virus check
-		if (file_exists($where) && ProjectsHelper::virusCheck($where))
+		if (file_exists($where) && \Components\Projects\Helpers\Html::virusCheck($where))
 		{
 			if ($exists && !$expand)
 			{
 				// Discard uploaded change
 				$this->_git->callGit($this->path, 'checkout ' . $fpath);
-			}
-			else
-			{
-				unlink($where);
 			}
 
 			// Store in session
@@ -1580,16 +1576,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					else
 					{
 						// Do virus check
-						if (ProjectsHelper::virusCheck($prefix . $this->path . DS . $file))
+						if (\Components\Projects\Helpers\Html::virusCheck($prefix . $this->path . DS . $file))
 						{
 							if ($exists)
 							{
 								// Discard uploaded change
 								$this->_git->callGit($this->path, 'checkout ' . $file);
-							}
-							else
-							{
-								unlink($prefix . $this->path . DS . $file);
 							}
 
 							$this->setError(JText::_('Virus detected, refusing to upload'));
@@ -1711,7 +1703,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Do virus check
-		if (ProjectsHelper::virusCheck($tmp_name))
+		if (\Components\Projects\Helpers\Html::virusCheck($tmp_name))
 		{
 			$this->setError(JText::_('Virus detected, refusing to upload'));
 			return false;
@@ -1855,7 +1847,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->params->get('reservedNames'));
 
 		// Do virus check
-		if (ProjectsHelper::virusCheck($tmp_name))
+		if (\Components\Projects\Helpers\Html::virusCheck($tmp_name))
 		{
 			$this->setError(JText::_('Virus detected, refusing to upload'));
 			return false;

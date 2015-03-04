@@ -206,6 +206,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			$this->_msg,
 			'warning'
 		);
+		return;
 	}
 
 	/**
@@ -283,6 +284,64 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		}
 
 		return false;
+	}
+
+	/**
+	 * Authorize reviewer
+	 *
+	 * @return     void
+	 */
+	protected function _checkReviewerAuth($reviewer)
+	{
+		$reviewers = array('sponsored', 'sensitive', 'general');
+		if (!in_array($reviewer, $reviewers))
+		{
+			return false;
+		}
+
+		// Needs to be logged in
+		if ($this->juser->get('guest'))
+		{
+			return false;
+		}
+
+		$sdata_group 	= $this->config->get('sdata_group', '');
+		$ginfo_group 	= $this->config->get('ginfo_group', '');
+		$admingroup 	= $this->config->get('admingroup', '');
+		$group      	= '';
+		$authorized 	= false;
+
+		// Get authorized group
+		if ($reviewer == 'sensitive' && $sdata_group)
+		{
+			$group = \Hubzero\User\Group::getInstance($sdata_group);
+		}
+		elseif ($reviewer == 'sponsored' && $ginfo_group)
+		{
+			$group = \Hubzero\User\Group::getInstance($ginfo_group);
+		}
+		elseif ($reviewer == 'general' && $admingroup)
+		{
+			$group = \Hubzero\User\Group::getInstance($admingroup);
+		}
+
+		if ($group)
+		{
+			// Check if they're a member of this group
+			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+			if ($ugs && count($ugs) > 0)
+			{
+				foreach ($ugs as $ug)
+				{
+					if ($group && $ug->cn == $group->get('cn'))
+					{
+						$authorized = true;
+					}
+				}
+			}
+		}
+
+		return $authorized;
 	}
 
 	/**
@@ -696,9 +755,10 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 
 		if (isset($this->project) && is_object($this->project) && $this->project->id && $activity)
 		{
-			$objAA->recordActivity( $this->project->id, $this->juser->get('id'),
+			return $objAA->recordActivity( $this->project->id, $this->juser->get('id'),
 				$activity, $this->project->id, $underline, $url, $class
 			);
 		}
+		return false;
 	}
 }

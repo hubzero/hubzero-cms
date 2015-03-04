@@ -1058,7 +1058,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$title   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
 		$title   = urldecode($title);
 
-		$suggested = ProjectsHelper::suggestAlias($title);
+		$suggested = \Components\Projects\Helpers\Html::suggestAlias($title);
 		$maxLength = $this->config->get('max_name_length', 30);
 		$maxLength = $maxLength > 30 ? 30 : $maxLength;
 

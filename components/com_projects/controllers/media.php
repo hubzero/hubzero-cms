@@ -154,9 +154,8 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
 
-			if (ProjectsHelper::virusCheck($temp))
+			if (\Components\Projects\Helpers\Html::virusCheck($temp))
 			{
-				\JFile::delete($temp);
 				echo json_encode(array('error' => \JText::_('Virus detected, refusing to upload')));
 				return;
 			}

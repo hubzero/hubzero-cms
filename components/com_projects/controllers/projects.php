@@ -246,7 +246,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 				return;
 			}
 
-			if (!ProjectsHelper::checkReviewerAuth($reviewer, $this->config))
+			if (!$this->_checkReviewerAuth($reviewer))
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
 				$this->view->error  = \JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
@@ -665,7 +665,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 			$this->view->pub 	   = isset($pub) ? $pub : '';
 			$this->view->team 	   = $objO->getOwnerNames($this->_identifier);
-			$this->view->suggested = ProjectsHelper::suggestAlias($pub->title);
+			$this->view->suggested = \Components\Projects\Helpers\Html::suggestAlias($pub->title);
 			$this->view->verified  = $this->model->check($this->view->suggested, $pid, 0);
 			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
 		}
@@ -675,9 +675,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		{
 			if (!$this->project->lastvisit )
 			{
-				$aid = $objAA->recordActivity( $pid, $this->juser->get('id'),
-					\JText::_('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), $this->juser->get('id'),
-					'', '', 'team', 1 );
+				$aid = $this->_postActivity(\JText::_('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), '', '', 'team');
 				if ($aid)
 				{
 					$objO->saveParam ( $pid, $this->juser->get('id'), $param = 'join_activityid', $value = $aid );
@@ -1275,7 +1273,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$objAA 		= new \Components\Projects\Tables\Activity ( $this->database );
 
 		// Check authorization
-		$authorized = ProjectsHelper::checkReviewerAuth($reviewer, $this->config);
+		$authorized = $this->_checkReviewerAuth($reviewer);
 		if (!$authorized)
 		{
 			$this->setError( \JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS') );

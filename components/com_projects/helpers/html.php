@@ -1284,4 +1284,42 @@ class Html
 
 		return $suggestions;
 	}
+
+	/**
+	 * Suggest alias name from title
+	 *
+	 * @param  string $title
+	 * @return     void
+	 */
+	public static function suggestAlias ($title = '', $maxLength = 30)
+	{
+		if ($title)
+		{
+			$name = preg_replace('/ /', '', $title);
+			$name = strtolower($name);
+			$name = preg_replace('/[^a-z0-9]/', '', $name);
+			$name = substr($name, 0, $maxLength);
+			return $name;
+		}
+		return false;
+	}
+
+	/**
+	 * Check file for viruses
+	 *
+	 * @param      string 	$fpath		Full path to scanned file
+	 *
+	 * @return     mixed
+	 */
+	public static function virusCheck( $fpath = '' )
+	{
+		jimport('joomla.filesystem.file');
+		if (!\JFile::isSafe($fpath))
+		{
+			\JFile::delete($fpath);
+			return true;
+		}
+
+		return false;
+	}
 }

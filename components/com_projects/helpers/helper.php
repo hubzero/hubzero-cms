@@ -149,25 +149,6 @@ class ProjectsHelper extends JObject {
 	}
 
 	/**
-	 * Suggest alias name from title
-	 *
-	 * @param  string $title
-	 * @return     void
-	 */
-	public static function suggestAlias ($title = '', $maxLength = 30)
-	{
-		if ($title)
-		{
-			$name = preg_replace('/ /', '', $title);
-			$name = strtolower($name);
-			$name = preg_replace('/[^a-z0-9]/', '', $name);
-			$name = substr($name, 0, $maxLength);
-			return $name;
-		}
-		return false;
-	}
-
-	/**
 	 * Send hub message
 	 *
 	 * @param      string 	$option
@@ -249,81 +230,5 @@ class ProjectsHelper extends JObject {
 				$option
 			)
 		);
-	}
-
-	/**
-	 * Check file for viruses
-	 *
-	 * @param      string 	$fpath		Full path to scanned file
-	 *
-	 * @return     mixed
-	 */
-	public static function virusCheck( $fpath = '' )
-	{
-		jimport('joomla.filesystem.file');
-		if (!JFile::isSafe($fpath))
-		{
-			unlink($fpath);
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Authorize reviewer
-	 *
-	 * @return     void
-	 */
-	public static function checkReviewerAuth($reviewer, $config)
-	{
-		if ($reviewer != 'sponsored' && $reviewer != 'sensitive' && $reviewer != 'general')
-		{
-			return false;
-		}
-
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
-		{
-			return false;
-		}
-
-		$sdata_group 	= $config->get('sdata_group', '');
-		$ginfo_group 	= $config->get('ginfo_group', '');
-		$admingroup 	= $config->get('admingroup', '');
-		$group      	= '';
-		$authorized 	= false;
-
-		// Get authorized group
-		if ($reviewer == 'sensitive' && $sdata_group)
-		{
-			$group = \Hubzero\User\Group::getInstance($sdata_group);
-		}
-		elseif ($reviewer == 'sponsored' && $ginfo_group)
-		{
-			$group = \Hubzero\User\Group::getInstance($ginfo_group);
-		}
-		elseif ($reviewer == 'general' && $admingroup)
-		{
-			$group = \Hubzero\User\Group::getInstance($admingroup);
-		}
-
-		if ($group)
-		{
-			// Check if they're a member of this group
-			$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
-			if ($ugs && count($ugs) > 0)
-			{
-				foreach ($ugs as $ug)
-				{
-					if ($group && $ug->cn == $group->get('cn'))
-					{
-						$authorized = true;
-					}
-				}
-			}
-		}
-
-		return $authorized;
 	}
 }
