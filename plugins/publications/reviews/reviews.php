@@ -273,7 +273,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$ra = new ReportAbuse( $database );
+		$ra = new \Components\Support\Tables\ReportAbuse( $database );
 		return $ra->getCount( array('id'=>$item, 'category'=>$category) );
 	}
 

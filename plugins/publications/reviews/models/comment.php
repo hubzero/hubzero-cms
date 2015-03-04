@@ -146,7 +146,7 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
+				$ra = new \Components\Support\Tables\ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'),
 					'category' => 'pubreview',

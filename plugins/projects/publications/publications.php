@@ -2464,7 +2464,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				// Load the support config
 				$sparams = JComponentHelper::getParams('com_support');
 
-				$row = new SupportTicket( $this->_database );
+				$row = new \Components\Support\Tables\Ticket( $this->_database );
 				$row->created = JFactory::getDate()->toSql();
 				$row->login = $juser->get('username');
 				$row->email = $juser->get('email');
