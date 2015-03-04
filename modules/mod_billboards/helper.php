@@ -84,13 +84,13 @@ class Helper extends Module
 
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
-		if (!$this->multiple_instances)
+		if (!self::$multiple_instances)
 		{
 			// Push some CSS to the template
 			$this->css();
 			$this->js();
 		}
-		$this->multiple_instances++;
+		self::$multiple_instances++;
 
 		// Get the billboard slides
 		$this->slides = $this->_getList();

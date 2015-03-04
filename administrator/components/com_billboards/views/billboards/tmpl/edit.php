@@ -72,7 +72,7 @@ jQuery(document).ready(function($){
 
 	styling.on('click', function(e) {
 		e.preventDefault();
-		slider.toggle();
+		slider.slideToggle();
 	});
 });
 </script>
@@ -106,9 +106,7 @@ jQuery(document).ready(function($){
 			</div>
 			<div class="input-wrap">
 				<label for="billboard[text]"><?php echo JText::_('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
-				<?php
-					echo JEditor::getInstance()->display('billboard[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 13, false);
-				?>
+				<?php echo JFactory::getEditor()->display('billboard[text]', $this->escape(stripslashes($this->row->text)), '', '', '45', '13', false, 'billboard-text'); ?>
 			</div>
 		</fieldset>
 	</div>
@@ -148,9 +146,7 @@ jQuery(document).ready(function($){
 				</div>
 				<div class="input-wrap">
 					<label for="billboard[css]"><?php echo JText::_('COM_BILLBOARDS_FIELD_CSS'); ?>:</label><br />
-					<?php
-						echo JEditor::getInstance()->display('billboard[css]', $this->escape(stripslashes($this->row->css)), '', '', 45, 13, false);
-					?>
+					<textarea name="billboard[css]" cols="45" rows="13"><?php echo $this->escape(stripslashes($this->row->css)); ?></textarea>
 				</div>
 			</div>
 		</fieldset>

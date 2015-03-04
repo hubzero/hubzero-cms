@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="slider">
-	<div class="banner" id="<?php echo $modbillboards->collection; ?>">
-		<?php foreach ($modbillboards->slides as $slide) {
+	<div class="banner" id="<?php echo $this->collection; ?>">
+		<?php foreach ($this->slides as $slide) {
 			if ($slide->learn_more_location == 'relative')
 			{
 				$tag = '<p class="relative">';
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<div class="slide" id="<?php echo $slide->alias; ?>">
 				<h3><?php echo $slide->header; ?></h3>
-				<p><?php echo $slide->text; ?></p>
+				<?php echo $slide->text; ?>
 				<?php echo $tag; ?>
 					<a class="<?php echo $slide->learn_more_class; ?>" href="<?php echo $slide->learn_more_target; ?>">
 						<?php echo $slide->learn_more_text; ?>
@@ -57,5 +57,5 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 	</div>
 	<!-- @TODO: let's make this whole line an if statement -->
-	<div <?php echo ($modbillboards->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo($modbillboards->pager); ?>"></div>
+	<div <?php echo ($this->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo($this->pager); ?>"></div>
 </div>
