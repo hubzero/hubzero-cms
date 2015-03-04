@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,44 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for watching a ticket
  */
-class SupportTableWatching extends JTable
+class Watching extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ticket_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -71,8 +49,8 @@ class SupportTableWatching extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=null, $user_id=null)
 	{
@@ -102,21 +80,24 @@ class SupportTableWatching extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->ticket_id = intval($this->ticket_id);
 		if (!$this->ticket_id)
 		{
-			$this->setError(JText::_('A ticket ID must be provided.'));
-			return false;
+			$this->setError(\JText::_('A ticket ID must be provided.'));
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(JText::_('A user ID must be provided.'));
+			$this->setError(\JText::_('A user ID must be provided.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -126,13 +107,12 @@ class SupportTableWatching extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function _buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS w";
-					//JOIN #__users AS u ON w.user_id=u.id";
 
 		$where = array();
 
@@ -171,8 +151,8 @@ class SupportTableWatching extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -184,8 +164,8 @@ class SupportTableWatching extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

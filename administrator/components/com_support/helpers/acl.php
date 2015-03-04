@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Helpers;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'acos.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'aros_acos.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'aros.php');
+use Hubzero\Base\Object;
+use Hubzero\User\Helper as UserHelper;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'acos.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'aros_acos.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'aros.php');
 
 /**
  * Helper class for support ACL
  */
-class SupportACL extends JObject
+class ACL extends Object
 {
 	/**
 	 * Current user
@@ -69,33 +71,33 @@ class SupportACL extends JObject
 	private $_user_groups;
 
 	/**
-	 * constructor
+	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		$this->_juser = JFactory::getUser();
-		$this->_db = JFactory::getDBO();
+		$this->_juser = \JFactory::getUser();
+		$this->_db = \JFactory::getDBO();
 
 		$sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
-				FROM #__support_acl_aros_acos AS m
-				LEFT JOIN #__support_acl_aros AS r ON m.aro_id=r.id
-				LEFT JOIN #__support_acl_acos AS c ON m.aco_id=c.id";
+				FROM `#__support_acl_aros_acos` AS m
+				LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
+				LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id";
 
 		$this->_db->setQuery($sql);
 		$this->_raw_data = $this->_db->loadAssocList();
 
 		if (!$this->_juser->get('guest'))
 		{
-			$this->_user_groups = \Hubzero\User\Helper::getGroups($this->_juser->get('id'));
+			$this->_user_groups = UserHelper::getGroups($this->_juser->get('id'));
 		}
 	}
 
 	/**
 	 * Get the support ACL, creating if not already exists
 	 *
-	 * @return     object SupportACL
+	 * @return  object
 	 */
 	public static function &getACL()
 	{
@@ -103,7 +105,7 @@ class SupportACL extends JObject
 
 		if (!is_object($instance))
 		{
-			$instance = new SupportACL();
+			$instance = new self();
 		}
 
 		return $instance;
@@ -112,11 +114,11 @@ class SupportACL extends JObject
 	/**
 	 * Check permissions
 	 *
-	 * @param      string  $action          Action to check permissions for
-	 * @param      string  $aco             ACO model (comment, ticket, etc)
-	 * @param      integer $aco_foreign_key Parameter description (if any) ...
-	 * @param      integer $aro_foreign_key User ID
-	 * @return     integer 1 = allowed, 0 = not allowed
+	 * @param   string   $action           Action to check permissions for
+	 * @param   string   $aco              ACO model (comment, ticket, etc)
+	 * @param   integer  $aco_foreign_key  Parameter description (if any) ...
+	 * @param   integer  $aro_foreign_key  User ID
+	 * @return  integer  1 = allowed, 0 = not allowed
 	 */
 	public function check($action=null, $aco=null, $aco_foreign_key=null, $aro_foreign_key=null)
 	{
@@ -211,8 +213,8 @@ class SupportACL extends JObject
 	/**
 	 * Set a specific user to check permissions for
 	 *
-	 * @param      integer $aro_foreign_key User ID
-	 * @return     void
+	 * @param   integer  $aro_foreign_key  User ID
+	 * @return  void
 	 */
 	public function setUser($aro_foreign_key=null)
 	{
@@ -220,8 +222,8 @@ class SupportACL extends JObject
 		{
 			if ($this->_juser->get('id') != $aro_foreign_key)
 			{
-				$this->_juser = JUser::getInstance($aro_foreign_key);
-				$this->_user_groups = \Hubzero\User\Helper::getGroups($this->_juser->get('id'));
+				$this->_juser = \JUser::getInstance($aro_foreign_key);
+				$this->_user_groups = UserHelper::getGroups($this->_juser->get('id'));
 			}
 		}
 	}
@@ -229,12 +231,12 @@ class SupportACL extends JObject
 	/**
 	 * Set the permissions for an action
 	 *
-	 * @param      string  $action          Action to check permissions for
-	 * @param      string  $aco             ACO model (comment, ticket, etc)
-	 * @param      integer $permission      Permission to set
-	 * @param      integer $aco_foreign_key Parameter description (if any) ...
-	 * @param      integer $aro_foreign_key User ID
-	 * @return     void
+	 * @param   string   $action           Action to check permissions for
+	 * @param   string   $aco              ACO model (comment, ticket, etc)
+	 * @param   integer  $permission       Permission to set
+	 * @param   integer  $aco_foreign_key  Parameter description (if any) ...
+	 * @param   integer  $aro_foreign_key  User ID
+	 * @return  void
 	 */
 	public function setAccess($action=null, $aco=null, $permission=null, $aco_foreign_key=null, $aro_foreign_key=null)
 	{
@@ -284,8 +286,8 @@ class SupportACL extends JObject
 	/**
 	 * Check if a user is in a group
 	 *
-	 * @param      string $group Group to check
-	 * @return     boolean True if in group
+	 * @param   string   $group  Group to check
+	 * @return  boolean  True if in group
 	 */
 	public function authorize($group=null)
 	{

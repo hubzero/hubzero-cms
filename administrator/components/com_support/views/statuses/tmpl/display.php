@@ -47,7 +47,7 @@ JToolBarHelper::deleteList();
 }*/
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-open"><?php echo JText::_('COM_SUPPORT_FILTER_FOR'); ?>:</label> 
 		<select name="open" id="filter-open" onchange="document.adminForm.submit( );">
@@ -95,8 +95,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td><?php echo ($row->open ? JText::_('COM_SUPPORT_FOR_OPEN') : JText::_('COM_SUPPORT_FOR_CLOSED')); ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->alias)); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->alias)); ?></a></td>
 				<td><span style="display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color:<?php echo ($row->color ? '#' . $row->color : 'transparent'); ?>"><?php echo $row->color; ?></span></td>
 			</tr>
 <?php

@@ -92,7 +92,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer from a Support Ticket
 			case 'ticket':
-				$row = new SupportModelTicket($from_id);
+				$row = new \Components\Support\Models\Ticket($from_id);
 
 				if ($row->exists())
 				{
@@ -163,16 +163,16 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 						$row->ranking = 0;
 
 						// also delete all previous votes for this wish
-						$objR = new WishRank($database);
+						$objR = new \Components\Wishlist\Tables\Rank($database);
 						$objR->remove_vote($from_id);
 					}
 
 					// get owner
-					$objG = new WishlistOwnerGroup($database);
+					$objG = new \Components\Wishlist\Tables\OwnerGroup($database);
 					$nativegroups = $objG->get_owner_groups($row->wishlist, $admingroup, '',1);
 					$owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup) ? $nativegroups[0] : ''; // tool group
 
-					$objWishlist = new Wishlist($database);
+					$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
 					$wishlist = $objWishlist->get_wishlist($row->wishlist);
 					if (isset($wishlist->resource) && isset($wishlist->resource->alias))
 					{
@@ -203,7 +203,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer to a Support Ticket
 			case 'ticket':
-				$newrow = new SupportModelTicket();
+				$newrow = new \Components\Support\Models\Ticket();
 				$newrow->set('open', 1);
 				$newrow->set('status', 0);
 				$newrow->set('created', $today);
@@ -232,7 +232,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'wish':
-				$newrow = new WishlistModelWish();
+				$newrow = new \Components\Wishlist\Models\Wish();
 				$newrow->set('subject', $subject);
 				$newrow->set('about', $body);
 				$newrow->set('proposed', $today);
@@ -241,7 +241,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				$newrow->set('anonymous', $anonymous);
 
 				// which wishlist?
-				$objWishlist = new Wishlist($database);
+				$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
 				$mainlist = $objWishlist->get_wishlistID(1, 'general');
 				$listid = 0;
 				if (!$rid && $owner)
@@ -330,7 +330,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 					case 'wish':
 						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
-						$WE = new WishlistEconomy($database);
+						$WE = new \Components\Wishlist\Helpers\Economy($database);
 						$WE->cleanupBonus($from_id);
 					break;
 				}

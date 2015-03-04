@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,20 +24,36 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Models\Status;
+use Components\Support\Tables;
 
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'status.php');
 
 /**
  * Support controller class for managing ticket statuses
  */
-class SupportControllerStatuses extends \Hubzero\Component\AdminController
+class Statuses extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of records
 	 *
@@ -46,43 +62,44 @@ class SupportControllerStatuses extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			JFactory::getConfig()->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				\JFactory::getConfig()->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'open' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.open',
+				'open',
+				-1,
+				'int'
+			),
+			// Get sorting variables
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'open'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			)
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['open'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.open',
-			'open',
-			-1,
-			'int'
-		);
+
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
-		// Get sorting variables
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'open'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-
-		$obj = new SupportTableStatus($this->database);
+		$obj = new Tables\Status($this->database);
 
 		// Record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -95,37 +112,26 @@ class SupportControllerStatuses extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new record
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			$id = (is_array($id) ? $id[0] : $id);
 
 			// Initiate database class and load info
-			$this->view->row = new SupportModelStatus($id);
+			$row = new Status($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -138,30 +144,20 @@ class SupportControllerStatuses extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a record and return to edit form
-	 *
-	 * @return	void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save changes to a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
-		$row = new SupportModelStatus($fields);
+		$row = new Status($fields);
 
 		// Store new content
 		if (!$row->store(true))
@@ -172,37 +168,37 @@ class SupportControllerStatuses extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED')
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'),
 				'error'
 			);
 			return;
@@ -211,14 +207,14 @@ class SupportControllerStatuses extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Delete message
-			$row = new SupportModelStatus(intval($id));
+			$row = new Status(intval($id));
 			$row->delete();
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_SUPPORT_STATUS_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 }

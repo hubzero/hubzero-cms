@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,45 +24,61 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Tables\Message;
 
 /**
  * Support controller class for message templates
  */
-class SupportControllerMessages extends \Hubzero\Component\AdminController
+class Messages extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Get paging variables
-		$this->view->filter = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.messages.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.messages.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.messages.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.messages.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		$model = new SupportMessage($this->database);
+		$model = new Message($this->database);
 
 		// Record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -70,17 +86,10 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 		// Fetch results
 		$this->view->rows  = $model->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
-		if ($this->getError()) {
-			$this->view->setError($this->getError());
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -88,41 +97,30 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new record
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Display a form for adding/editing a record
 	 *
-	 * @return	void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Initiate database class and load info
-			$this->view->row = new SupportMessage($this->database);
-			$this->view->row->load($id);
+			$row = new Message($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -131,35 +129,27 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
-	}
-
-	/**
-	 * Save changes to a record and return to edit form
-	 *
-	 * @return	void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save changes to a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$msg = JRequest::getVar('msg', array(), 'post');
+		$msg = \JRequest::getVar('msg', array(), 'post');
 		$msg = array_map('trim', $msg);
 
 		// Initiate class and bind posted items to database fields
-		$row = new SupportMessage($this->database);
+		$row = new Message($this->database);
 		if (!$row->bind($msg))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -187,38 +177,38 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Output messsage and redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED')
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Output messsage and redirect
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'),
 				'error'
 			);
 			return;
@@ -227,26 +217,14 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Delete message
-			$msg = new SupportMessage($this->database);
+			$msg = new Message($this->database);
 			$msg->delete(intval($id));
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_SUPPORT_MESSAGE_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 }

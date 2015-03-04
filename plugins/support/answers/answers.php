@@ -372,7 +372,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 							$zuser = JUser::getInstance($r);
 							if (is_object($zuser))
 							{
-								if (SupportUtilities::checkValidEmail($zuser->get('email')) && $email)
+								if (\Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email')) && $email)
 								{
 									$jconfig = JFactory::getConfig();
 
@@ -388,7 +388,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 									$mes .= '----------------------------' . "\r\n\r\n";
 									$mes .= JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
-									SupportUtilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
+									\Components\Support\Helpers\Utilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
 								}
 							}
 						}

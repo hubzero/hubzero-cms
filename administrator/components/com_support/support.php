@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,80 +24,77 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support;
 
-$option = 'com_support';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_support'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'ticket.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'watching.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'comment.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'message.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'resolution.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'acl.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'ticket.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'watching.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'comment.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'message.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'resolution.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'attachment.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'category.php');
+include_once(__DIR__ . DS . 'helpers' . DS . 'utilities.php');
+include_once(__DIR__ . DS . 'helpers' . DS . 'acl.php');
 
-$controllerName = JRequest::getCmd('controller', 'tickets');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'tickets');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tickets';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_TICKETS'),
-	'index.php?option=com_support&controller=tickets',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_TICKETS'),
+	\JRoute::_('index.php?option=com_support&controller=tickets'),
 	$controllerName == 'tickets'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_CATEGORIES'),
-	'index.php?option=com_support&controller=categories',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_CATEGORIES'),
+	\JRoute::_('index.php?option=com_support&controller=categories'),
 	$controllerName == 'categories'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_QUERIES'),
-	'index.php?option=com_support&controller=queries',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_QUERIES'),
+	\JRoute::_('index.php?option=com_support&controller=queries'),
 	$controllerName == 'queries'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_MESSAGES'),
-	'index.php?option=com_support&controller=messages',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_MESSAGES'),
+	\JRoute::_('index.php?option=com_support&controller=messages'),
 	$controllerName == 'messages'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_STATUSES'),
-	'index.php?option=com_support&controller=statuses',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_STATUSES'),
+	\JRoute::_('index.php?option=com_support&controller=statuses'),
 	$controllerName == 'statuses'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_ABUSE_REPORTS'),
-	'index.php?option=com_support&controller=abusereports',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_ABUSE_REPORTS'),
+	\JRoute::_('index.php?option=com_support&controller=abusereports'),
 	$controllerName == 'abusereports'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_STATS'),
-	'index.php?option=com_support&controller=stats',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_STATS'),
+	\JRoute::_('index.php?option=com_support&controller=stats'),
 	$controllerName == 'stats'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_ACL'),
-	'index.php?option=com_support&controller=acl',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SUPPORT_ACL'),
+	\JRoute::_('index.php?option=com_support&controller=acl'),
 	$controllerName == 'acl'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'SupportController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

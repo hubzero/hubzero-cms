@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Components\Support\Helpers\Utilities;
+use Components\Support\Tables\ReportAbuse;
+use Hubzero\Component\AdminController;
+use Hubzero\Mail\Message;
+use Hubzero\Mail\View;
+use Exception;
 
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'reportabuse.php');
 
 /**
  * Support cotnroller for Abuse Reports
  */
-class SupportControllerAbusereports extends \Hubzero\Component\AdminController
+class Abusereports extends AdminController
 {
 	/**
 	 * Displays a list of records
@@ -46,14 +52,14 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				JFactory::getConfig()->get('list_limit'),
+				\JFactory::getConfig()->get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -68,7 +74,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 				0,
 				'int'
 			),
-			'sortby' => JRequest::getVar('sortby', 'a.created DESC')
+			'sortby' => \JRequest::getVar('sortby', 'a.created DESC')
 		);
 
 		$model = new ReportAbuse($this->database);
@@ -79,20 +85,6 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows  = $model->getRecords($this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -100,21 +92,21 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	/**
 	 * Display a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function viewTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		$cat = JRequest::getVar('cat', '');
+		$id = \JRequest::getInt('id', 0);
+		$cat = \JRequest::getVar('cat', '');
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -124,8 +116,8 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$report->load($id);
 
 		// Load plugins
-		JPluginHelper::importPlugin('support');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('support');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get the parent ID
 		$results = $dispatcher->trigger('getParentId', array(
@@ -191,9 +183,9 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$this->view->title = $title;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -203,22 +195,22 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	/**
 	 * Release a record from being marked as abusive
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function releaseTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		$parentid = JRequest::getInt('parentid', 0);
+		$id = \JRequest::getInt('id', 0);
+		$parentid = \JRequest::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -227,16 +219,15 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 		$report->state = 1;
-		$report->reviewed = JFactory::getDate()->toSql();
+		$report->reviewed = \JFactory::getDate()->toSql();
 		$report->reviewed_by = $this->juser->get('id');
 		if (!$report->store())
 		{
-			JError::raiseError(500, $report->getError());
-			return;
+			throw new Exception($report->getError(), 500);
 		}
 
-		JPluginHelper::importPlugin('support');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('support');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Remove the reported item and any other related processes that need be performed
 		$results = $dispatcher->trigger('releaseReportedItem', array(
@@ -247,8 +238,8 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_ITEM_RELEASED_SUCCESSFULLY')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_REPORT_ITEM_RELEASED_SUCCESSFULLY')
 		);
 	}
 
@@ -271,17 +262,17 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	public function removeTask($isSpam=false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		$parentid = JRequest::getInt('parentid', 0);
+		$id = \JRequest::getInt('id', 0);
+		$parentid = \JRequest::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -294,13 +285,13 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$report = new ReportAbuse($this->database);
 		$report->load($id);
 
-		$report->reviewed = JFactory::getDate()->toSql();
+		$report->reviewed = \JFactory::getDate()->toSql();
 		$report->reviewed_by = $this->juser->get('id');
-		$report->note = JRequest::getVar('note', '');
+		$report->note = \JRequest::getVar('note', '');
 
 		// Load plugins
-		JPluginHelper::importPlugin('support');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('support');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get the reported item
 		$results = $dispatcher->trigger('getReportedItem', array(
@@ -343,7 +334,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 
 		if ($isSpam)
 		{
-			JPluginHelper::importPlugin('antispam');
+			\JPluginHelper::importPlugin('antispam');
 			$results = $dispatcher->trigger('onAntispamTrain', array(
 				$reported->text,
 				$isSpam
@@ -354,28 +345,28 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		$report->state = 2;
 		if (!$report->store())
 		{
-			JError::raiseError(500, $report->getError());
-			return;
+			throw new Exception($report->getError(), 500);
 		}
 
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Notify item owner
 		if ($email)
 		{
-			$juser = JUser::getInstance($reported->author);
+			$juser = \JUser::getInstance($reported->author);
 
 			// Email "from" info
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['multipart'] = md5(date('U'));
+			$from = array(
+				'name' => $jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_SUPPORT'),
+				'email' => $jconfig->getValue('config.mailfrom'),
+				'multipart' => md5(date('U'))
+			);
 
 			// Email subject
-			$subject = JText::sprintf('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
+			$subject = \JText::sprintf('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
 
 			// Plain text
-			$eview = new \Hubzero\Mail\View(array(
+			$eview = new View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
@@ -396,7 +387,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$html = str_replace("\n", "\r\n", $html);
 
 			// Build message
-			$message = new \Hubzero\Mail\Message();
+			$message = new Message();
 			$message->setSubject($subject)
 			        ->addFrom($from['email'], $from['name'])
 			        ->addTo($juser->get('email'), $juser->get('name'))
@@ -408,14 +399,14 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$message->addPart($html, 'text/html');
 
 			// Send the email
-			if (SupportUtilities::checkValidEmail($juser->get('email')))
+			if (Utilities::checkValidEmail($juser->get('email')))
 			{
 				$message->send();
 			}
 		}
 
 		// Check the HUB configuration to see if banking is turned on
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = \JComponentHelper::getParams('com_members');
 		$banking = $upconfig->get('bankAccounts');
 
 		// Give some points to whoever reported abuse
@@ -425,31 +416,19 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
-				$ruser = JUser::getInstance($report->created_by);
+				$ruser = \JUser::getInstance($report->created_by);
 				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new \Hubzero\Bank\Teller($this->database, $ruser->get('id'));
-					$BTL->deposit($ar, JText::_('COM_SUPPORT_ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
+					$BTL->deposit($ar, \JText::_('COM_SUPPORT_ACKNOWLEDGMENT_FOR_VALID_REPORT'), 'abusereport', $id);
 				}
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JTexT::_('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
 		);
 	}
 }

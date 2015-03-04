@@ -120,8 +120,11 @@ function getMonthName($month)
 	}
 	return $monthname;
 }
+
+$base = str_replace('/administrator', '', JURI::base(true));
+$base = rtrim($base, '/');
 ?>
-<form action="index.php" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<div id="ticket-stats">
 		<fieldset id="filter-bar" class="support-stats-filter">
 			<label for="ticket-group">
@@ -183,11 +186,11 @@ function getMonthName($month)
 					$openeddata = implode(',', $o);
 				}
 			?>
-			<script src="../media/system/js/flot/jquery.flot.min.js"></script>
-			<script src="../media/system/js/flot/jquery.flot.tooltip.min.js"></script>
-			<script src="../media/system/js/flot/jquery.flot.pie.min.js"></script>
-			<script src="../media/system/js/flot/jquery.flot.resize.js"></script>
-			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.pie.min.js"></script>
+			<script src="<?php echo $base; ?>/media/system/js/flot/jquery.flot.resize.js"></script>
+			<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="<?php echo $base; ?>/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 			<script type="text/javascript">
 				if (!jq) {
 					var jq = $;
@@ -274,7 +277,7 @@ function getMonthName($month)
 							<td><?php echo $this->opened['closed']; ?></td>
 							<td class="block">
 								<?php
-								$lifetime = SupportUtilities::calculateAverageLife($this->closedTickets);
+								$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($this->closedTickets);
 								?>
 								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
 								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>
@@ -324,7 +327,7 @@ function getMonthName($month)
 									'#3a3a3a'
 								);
 
-								$severities = SupportUtilities::getSeverities($this->config->get('severities'));
+								$severities = \Components\Support\Helpers\Utilities::getSeverities($this->config->get('severities'));
 
 								$cls = 'odd';
 								$data = array();
@@ -397,7 +400,7 @@ function getMonthName($month)
 								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
 						<?php
-							$sr = new SupportTableStatus($database);
+							$sr = new \Components\Support\Tables\Status($database);
 							$resolutions = $sr->find('list', array('open' => 0));
 
 							$cls = 'odd';
@@ -590,7 +593,7 @@ function getMonthName($month)
 							<td><?php echo number_format($user->total); ?></td>
 							<td class="block">
 								<?php
-								$lifetime = SupportUtilities::calculateAverageLife($user->tickets);
+								$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
 								?>
 								<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
 								<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>

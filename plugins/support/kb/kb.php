@@ -95,7 +95,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
 
-		$comment = new KbModelComment($refid);
+		$comment = new \Components\Kb\Models\Comment($refid);
 		$comment->set('state', 3);
 		$comment->store(false);
 
@@ -119,7 +119,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
 
-		$comment = new KbModelComment($refid);
+		$comment = new \Components\Kb\Models\Comment($refid);
 		$comment->set('state', 1);
 		$comment->store(false);
 
@@ -144,7 +144,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'comment.php');
 
-		$comment = new KbModelComment($refid);
+		$comment = new \Components\Kb\Models\Comment($refid);
 		$comment->set('state', 2);
 		$comment->store(false);
 

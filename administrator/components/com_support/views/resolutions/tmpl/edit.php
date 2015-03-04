@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<div class="input-wrap">
 			<label for="field-title"><?php echo JText::_('COM_SUPPORT_RESOLUTION_TEXT'); ?>:</label><br />

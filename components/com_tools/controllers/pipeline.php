@@ -1877,14 +1877,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$summary = '';
 
 		// Make sure ticket is tied to the tool group
-		$row = new SupportModelTicket($ticketid);
+		$row = new \Components\Support\Models\Ticket($ticketid);
 		if ($row->exists() && isset($newstuff['toolname']))
 		{
 			$row->set('group', $this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
 			$row->store();
 		}
 
-		$rowc = new SupportModelComment();
+		$rowc = new \Components\Support\Models\Comment();
 		$rowc->set('ticket', $ticketid);
 
 		// see what changed
@@ -2074,7 +2074,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$summary = '';
 
-		$rowc = new SupportModelComment();
+		$rowc = new \Components\Support\Models\Comment();
 		$rowc->set('ticket', $obj->getTicketId($toolid));
 
 		// see what changed
@@ -2249,7 +2249,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	private function _createTicket($toolid, $tool)
 	{
-		$row = new SupportModelTicket();
+		$row = new \Components\Support\Models\Ticket();
 		$row->set('open', 1);
 		$row->set('status', 0);
 		$row->set('created', JFactory::getDate()->toSql());

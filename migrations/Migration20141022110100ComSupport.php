@@ -25,7 +25,14 @@ class Migration20141022110100ComSupport extends Base
 				// Update the query
 				foreach ($records as $record)
 				{
-					$row = new SupportTicket($this->db);
+					if (class_exists('SupportTicket'))
+					{
+						$row = new SupportTicket($this->db);
+					}
+					else
+					{
+						$row = new \Components\Support\Tables\Ticket($this->db);
+					}
 					$row->bind($record);
 					$row->report = str_replace('&quot;', '"', $row->report);
 					$row->report = stripslashes($row->report);

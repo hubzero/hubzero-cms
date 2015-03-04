@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Tables;
 
 /**
  * Support controller class for managing ticket sections
  */
-class SupportControllerSections extends \Hubzero\Component\AdminController
+class Sections extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of records
 	 *
@@ -44,25 +59,26 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.sections.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.sections.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.sections.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.sections.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		$model = new SupportSection($this->database);
+		$model = new Tables\Section($this->database);
 
 		// Record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -89,42 +105,31 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new record
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->view->setLayout('edit');
-		$this->editTask();
-	}
-
-	/**
 	 * Display a form for adding/editing a record
 	 *
 	 * @return	void
 	 */
 	public function editTask($row=null)
 	{
-		if (is_object($edit))
-		{
-			$this->view->row = $row;
-		}
-		else
+		\JRequest::setVar('hidemainmenu', 1);
+
+		if (!is_object($edit))
 		{
 			// Incoming
 			$id = JRequest::getInt('id', 0);
 
 			// Initiate database class and load info
-			$this->view->row = new SupportSection($this->database);
-			$this->view->row->load($id);
+			$row = new SupportSection($this->database);
+			$row->load($id);
 
 			// Set action
-			if (!$this->view->row->id)
+			if (!$row->id)
 			{
-				$this->view->row->section = '';
+				$row->section = '';
 			}
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -139,22 +144,23 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to a record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$sec = JRequest::getVar('sec', array(), 'post');
+		$sec = \JRequest::getVar('sec', array(), 'post');
 		$sec = array_map('trim', $sec);
 
 		// Initiate class and bind posted items to database fields
-		$row = new SupportSection($this->database);
+		$row = new Tables\Section($this->database);
 		if (!$row->bind($sec))
 		{
-			JError::raiseError(500, $row->getError());
+			$this->setError($row->getError());
+			$this->editTask($row);
 			return;
 		}
 
@@ -178,8 +184,10 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::_('SECTION_SUCCESSFULLY_SAVED');
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('SECTION_SUCCESSFULLY_SAVED')
+		);
 	}
 
 	/**
@@ -190,10 +198,10 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = \JRequest::getVar('id', array(0));
 		if (!is_array($ids))
 		{
 			$ids = array(0);
@@ -202,30 +210,24 @@ class SupportControllerSections extends \Hubzero\Component\AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-			$this->_message = JText::_('SUPPORT_ERROR_SELECT_SECTION_TO_DELETE');
+			$this->setRedirect(
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('SUPPORT_ERROR_SELECT_SECTION_TO_DELETE')
+			);
 			return;
 		}
 
 		foreach ($ids as $id)
 		{
 			// Delete message
-			$cat = new SupportSection($this->database);
+			$cat = new Tables\Section($this->database);
 			$cat->delete(intval($id));
 		}
 
 		// Output messsage and redirect
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
-		$this->_message = JText::sprintf('SECTION_SUCCESSFULLY_DELETED', count($ids));
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('SECTION_SUCCESSFULLY_DELETED', count($ids))
+		);
 	}
 }

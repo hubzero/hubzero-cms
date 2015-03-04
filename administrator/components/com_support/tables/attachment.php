@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support attachments (tickets, comments)
  */
-class SupportAttachment extends JTable
+class Attachment extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $ticket      = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $filename    = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $comment_id  = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by  = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,27 +49,31 @@ class SupportAttachment extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->ticket = intval($this->ticket);
 		if (!$this->ticket)
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_NO_TICKET_ID'));
-			return false;
+			$this->setError(\JText::_('SUPPORT_ERROR_NO_TICKET_ID'));
 		}
 		if (trim($this->filename) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_NO_FILENAME'));
+			$this->setError(\JText::_('SUPPORT_ERROR_NO_FILENAME'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
+
 		$this->comment_id = intval($this->comment_id);
 
 		if (!$this->id)
 		{
-			$this->created_by = JFactory::getUser()->get('id');
-			$this->created = JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -128,7 +82,7 @@ class SupportAttachment extends JTable
 	/**
 	 * Get the ID of a record
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function getID()
 	{
@@ -140,8 +94,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Scan text for attachment macros {attachment#}
 	 *
-	 * @param      string $text Text to search
-	 * @return     string HTML
+	 * @param   string  $text  Text to search
+	 * @return  string  HTML
 	 */
 	public function parse($text)
 	{
@@ -152,14 +106,14 @@ class SupportAttachment extends JTable
 	/**
 	 * Process an attachment macro and output a link to the file
 	 *
-	 * @param      array $matches Macro info
-	 * @return     string HTML
+	 * @param   array   $matches  Macro info
+	 * @return  string  HTML
 	 */
 	public function getAttachment($matches)
 	{
-		$match = $matches[0];
+		$match  = $matches[0];
 		$tokens = explode('#', $match);
-		$id = intval(end($tokens));
+		$id     = intval(end($tokens));
 
 		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
@@ -171,8 +125,8 @@ class SupportAttachment extends JTable
 
 		if (is_file($this->uppath . DS . $a[0]))
 		{
-			$juri = JURI::getInstance();
-			$sef = JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
+			$juri = \JURI::getInstance();
+			$sef = \JRoute::_('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
 			$url = $juri->base() . trim($sef, DS);
 			$url = str_replace('/administrator/administrator', '/administrator', $url);
 
@@ -196,7 +150,9 @@ class SupportAttachment extends JTable
 				$html .= '</a>';
 				return $html;
 			}
-		} else {
+		}
+		else
+		{
 			return '[attachment #' . $id . ' not found]';
 		}
 	}
@@ -204,10 +160,10 @@ class SupportAttachment extends JTable
 	/**
 	 * Delete a record based on filename and ticket number
 	 *
-	 * @param      integer $filename File name
-	 * @param      integer $ticket   Ticket ID
-	 * @param      integer $comment  Comment ID
-	 * @return     boolean True on success
+	 * @param   integer  $filename  File name
+	 * @param   integer  $ticket    Ticket ID
+	 * @param   integer  $comment   Comment ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteAttachment($filename, $ticket, $comment=0)
 	{
@@ -222,8 +178,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Delete all records based on ticket number
 	 *
-	 * @param      integer $ticket   Ticket ID
-	 * @return     boolean True on success
+	 * @param   integer  $ticket  Ticket ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteAllForTicket($ticket)
 	{
@@ -234,14 +190,14 @@ class SupportAttachment extends JTable
 			return false;
 		}
 
-		$config = JComponentHelper::getParams('com_support');
-		$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
+		$config = \JComponentHelper::getParams('com_support');
+		$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
 		if (is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::delete($path))
+			if (!\JFolder::delete($path))
 			{
-				$this->setError(JText::_('Unable to delete path'));
+				$this->setError(\JText::_('Unable to delete path'));
 				return false;
 			}
 		}
@@ -251,10 +207,10 @@ class SupportAttachment extends JTable
 	/**
 	 * Load a record based on filename and ticket number and bind to $this
 	 *
-	 * @param      integer $filename File name
-	 * @param      integer $ticket   Ticket ID
-	 * @param      integer $comment  Comment ID
-	 * @return     boolean True on success
+	 * @param   integer  $filename  File name
+	 * @param   integer  $ticket    Ticket ID
+	 * @param   integer  $comment   Comment ID
+	 * @return  boolean  True on success
 	 */
 	public function loadAttachment($filename=NULL, $ticket=NULL, $comment=0)
 	{
@@ -273,8 +229,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Update the comment ID for multiple records
 	 *
-	 * @param   integer $before Old ID
-	 * @param   integer $after  New ID
+	 * @param   integer  $before  Old ID
+	 * @param   integer  $after   New ID
 	 * @return  boolean  True on success.
 	 */
 	public function updateCommentId($before, $after)
@@ -291,8 +247,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Update the ticket ID for multiple records
 	 *
-	 * @param   integer $before Old ID
-	 * @param   integer $after  New ID
+	 * @param   integer  $before  Old ID
+	 * @param   integer  $after   New ID
 	 * @return  boolean  True on success.
 	 */
 	public function updateTicketId($before, $after)
@@ -309,8 +265,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function find($what='list', $filters=array())
 	{
@@ -357,8 +313,8 @@ class SupportAttachment extends JTable
 	/**
 	 * Build a query from filters passed
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters)
 	{

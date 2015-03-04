@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,100 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for abuse items
  */
-class ReportAbuse extends JTable
+class ReportAbuse extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var unknown
-	 */
-	var $report   		= NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by 	= NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state      	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $referenceid    = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $category		= NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $subject		= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $reviewed		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $reviewed_by    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $note    = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db J Database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -127,13 +49,13 @@ class ReportAbuse extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->report) == '' && trim($this->subject) == JText::_('OTHER'))
+		if (trim($this->report) == '' && trim($this->subject) == \JText::_('OTHER'))
 		{
-			$this->setError(JText::_('Please describe the issue.'));
+			$this->setError(\JText::_('Please describe the issue.'));
 			return false;
 		}
 		return true;
@@ -142,8 +64,8 @@ class ReportAbuse extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -180,8 +102,8 @@ class ReportAbuse extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -196,8 +118,8 @@ class ReportAbuse extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

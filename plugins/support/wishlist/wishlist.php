@@ -297,11 +297,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
 
 				// Delete the wish
-				$wish = new Wish($database);
+				$wish = new \Components\Wishlist\Tables\Wish($database);
 				$wish->delete_wish($referenceid);
 
 				// also delete all votes for this wish
-				$objR = new WishRank($database);
+				$objR = new \Components\Wishlist\Tables\Rank($database);
 				$objR->remove_vote($referenceid);
 
 				$message .= JText::sprintf('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);

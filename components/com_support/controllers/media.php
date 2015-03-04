@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Components\Support\Models\Attachment;
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\Number;
+use Hubzero\Component\View;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 /**
  * Collections controller class for media
  */
-class SupportControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxUploadTask()
 	{
@@ -88,7 +92,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
 				echo json_encode(array('error' => \JText::_('Error uploading. Unable to create path.')));
 				return;
@@ -109,7 +113,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		}
 		if ($size > $sizeLimit)
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
 			echo json_encode(array('error' => \JText::sprintf('File is too large. Max file upload size is %s', $max)));
 			return;
 		}
@@ -164,14 +168,14 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			{
 				echo json_encode(array(
 					'success' => false,
-					'error'  => \JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
+					'error'   => \JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
 				));
 				return;
 			}
 		}
 
 		// Create database entry
-		$asset = new SupportModelAttachment($this->database);
+		$asset = new Attachment();
 		$asset->bind(array(
 			'id'          => 0,
 			'ticket'      => $ticket,
@@ -183,12 +187,12 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		{
 			echo json_encode(array(
 				'success' => false,
-				'error' => $asset->getError()
+				'error'   => $asset->getError()
 			));
 			return;
 		}
 
-		$view = new \Hubzero\Component\View(array(
+		$view = new View(array(
 			'name'   => 'media',
 			'layout' => '_asset'
 		));
@@ -304,7 +308,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			}
 
 			// Create database entry
-			$asset = new SupportAttachment($this->database);
+			$asset = new Attachment();
 			$asset->bind(array(
 				'id'          => 0,
 				'ticket'      => $ticket,
@@ -313,7 +317,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 				'description' => \JRequest::getVar('description', '')
 			));
 
-			if (!$asset->store())
+			if (!$asset->store(true))
 			{
 				$this->setError($asset->getError());
 			}
@@ -345,7 +349,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		// Incoming asset
 		$id = \JRequest::getInt('asset', 0, 'get');
 
-		$model = new SupportModelAttachment($id);
+		$model = new Attachment($id);
 
 		if ($model->exists())
 		{
@@ -368,7 +372,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 
 		if ($id)
 		{
-			$model = new SupportModelAttachment($id);
+			$model = new Attachment($id);
 
 			if ($model->exists())
 			{
@@ -393,7 +397,7 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Display a list of files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -408,11 +412,11 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 
 		if ($comment)
 		{
-			$model = new SupportModelComment($comment);
+			$model = new Comment($comment);
 		}
 		else
 		{
-			$model = new SupportModelTicket($ticket);
+			$model = new Ticket($ticket);
 		}
 
 		$this->view->model   = $model;

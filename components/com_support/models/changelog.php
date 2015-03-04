@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,20 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Models;
+
+use Hubzero\Base\Object;
+use Hubzero\Utility\Validate;
+use InvalidArgumentException;
+use stdClass;
 
 /**
  * Support mdoel for a ticket changelog
  */
-class SupportModelChangelog extends \Hubzero\Base\Object
+class Changelog extends Object
 {
 	/**
-	 * \Hubzero\ItemList
+	 * ItemList
 	 *
 	 * @var object
 	 */
@@ -104,7 +108,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 					{
 						$obj = array(
 							'role'    => 'commenter',
-							'name'    => JText::_('COM_SUPPORT_NONE'),
+							'name'    => \JText::_('COM_SUPPORT_NONE'),
 							'address' => trim($matches[1])
 						);
 					}
@@ -112,7 +116,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 					{
 						$obj = array(
 							'role'    => trim($matches[1]),
-							'name'    => JText::_('COM_SUPPORT_NONE'),
+							'name'    => \JText::_('COM_SUPPORT_NONE'),
 							'address' => trim($matches[2])
 						);
 					}
@@ -139,11 +143,11 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 							if (isset($obj['field']))
 							{
 								$obj['before'] = trim($matches[1]);
-								$obj['after'] = trim($matches[2]);
+								$obj['after']  = trim($matches[2]);
 							}
 							else
 							{
-								$obj['name'] = trim($matches[1]);
+								$obj['name']    = trim($matches[1]);
 								$obj['address'] = trim($matches[2]);
 							}
 						}
@@ -155,7 +159,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 							}
 							else
 							{
-								$obj['name'] = JText::_('COM_SUPPORT_NONE');
+								$obj['name']    = \JText::_('COM_SUPPORT_NONE');
 								$obj['address'] = trim($matches[2]);
 							}
 						}
@@ -240,7 +244,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string  $as What format to return
+	 * @param   string  $as  What format to return
 	 * @return  boolean
 	 */
 	public function render()
@@ -260,11 +264,11 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				{
 					if ($type == 'changes' && $items['before'] != $items['after'])
 					{
-						$clog[] = '<li>' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
+						$clog[] = '<li>' . \JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
 					}
 					else if ($type == 'notifications')
 					{
-						$clog[] = '<li>' . JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . '</li>';
+						$clog[] = '<li>' . \JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . '</li>';
 					}
 				}
 				$clog[] = '</ul>';
@@ -272,7 +276,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		}
 		if (!count($clog))
 		{
-			$clog[] = '<ul class="changes"><li>' . JText::_('COM_SUPPORT_CHANGELOG_NONE_MADE') . '</li></ul>';
+			$clog[] = '<ul class="changes"><li>' . \JText::_('COM_SUPPORT_CHANGELOG_NONE_MADE') . '</li></ul>';
 		}
 		return implode("\n", $clog);
 	}
@@ -280,9 +284,9 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add an entry to the change log
 	 *
-	 * @param   string $field  Field name
-	 * @param   string $before Old value (if any)
-	 * @param   string $after  New value (if any)
+	 * @param   string  $field   Field name
+	 * @param   string  $before  Old value (if any)
+	 * @param   string  $after   New value (if any)
 	 * @return  object
 	 */
 	public function changed($field, $before='', $after='')
@@ -300,7 +304,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add CC info to the log
 	 *
-	 * @param   string  $val Value to log
+	 * @param   string  $val  Value to log
 	 * @return  object
 	 */
 	public function cced($val)
@@ -321,7 +325,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 			{
 				// Username or user ID - load the user
 				$acc = (is_string($acc)) ? strtolower($acc) : $acc;
-				$juser = JUser::getInstance($acc);
+				$juser = \JUser::getInstance($acc);
 
 				// Did we find an account?
 				if (is_object($juser))
@@ -335,7 +339,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				}
 			}
 			// Make sure it's a valid e-mail address
-			else if (\Hubzero\Utility\Validate::email($acc))
+			else if (Validate::email($acc))
 			{
 				$this->_log['cc'][] = $acc;
 			}
@@ -347,9 +351,9 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add an entry to the notifications list
 	 *
-	 * @param   string $role    User role
-	 * @param   string $name    User name
-	 * @param   string $address User email
+	 * @param   string  $role     User role
+	 * @param   string  $name     User name
+	 * @param   string  $address  User email
 	 * @return  object
 	 */
 	public function notified($role, $name, $address)
@@ -367,17 +371,17 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Get a count of or list of attachments on this model
 	 *
-	 * @param   string $to     Category
-	 * @param   string $field  Field name
-	 * @param   string $before Old value (if any)
-	 * @param   string $after  New value (if any)
+	 * @param   string  $to      Category
+	 * @param   string  $field   Field name
+	 * @param   string  $before  Old value (if any)
+	 * @param   string  $after   New value (if any)
 	 * @return  object
 	 */
 	public function add($to, $field, $before='', $after='')
 	{
 		if (!isset($this->_log[$to]))
 		{
-			throw new InvalidArgumentException(JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $to));
+			throw new InvalidArgumentException(\JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $to));
 		}
 
 		switch ($to)
@@ -401,15 +405,15 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Remove an item form the log
 	 *
-	 * @param   string $from  Area to remove from
-	 * @param   string $field Field to remove
+	 * @param   string  $from   Area to remove from
+	 * @param   string  $field  Field to remove
 	 * @return  object
 	 */
 	public function remove($from, $field)
 	{
 		if (!isset($this->_log[$from]))
 		{
-			throw new InvalidArgumentException(JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
+			throw new InvalidArgumentException(\JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
 		}
 
 		foreach ($this->_log[$from] as $key => $item)
@@ -426,8 +430,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Log changes from one version of the ticket to the next
 	 *
-	 * @param   object $before
-	 * @param   object $after
+	 * @param   object  $before
+	 * @param   object  $after
 	 * @return  object
 	 */
 	public function diff($before, $after)
@@ -435,7 +439,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		if ($after->get('group') != $before->get('group'))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
 				$before->get('group'),
 				$after->get('group')
 			);
@@ -443,7 +447,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		if ($after->get('severity') != $before->get('severity'))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_SEVERITY'),
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_SEVERITY'),
 				$before->get('severity'),
 				$after->get('severity')
 			);
@@ -451,23 +455,23 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		if (intval($after->get('owner')) != intval($before->get('owner')))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
-				$before->owner('username', JText::_('COM_SUPPORT_NONE')),
-				$after->owner('username', JText::_('COM_SUPPORT_NONE'))
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
+				$before->owner('username', \JText::_('COM_SUPPORT_NONE')),
+				$after->owner('username', \JText::_('COM_SUPPORT_NONE'))
 			);
 		}
 		/*if ($after->get('resolved') != $before->get('resolved'))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_RESOLUTION'),
-				$before->get('resolved', JText::_('COM_SUPPORT_UNRESOLVED')),
-				$after->get('resolved', JText::_('COM_SUPPORT_UNRESOLVED'))
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_RESOLUTION'),
+				$before->get('resolved', \JText::_('COM_SUPPORT_UNRESOLVED')),
+				$after->get('resolved', \JText::_('COM_SUPPORT_UNRESOLVED'))
 			);
 		}*/
 		if (intval($after->get('status')) != intval($before->get('status')))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
 				$before->status('text'),
 				$after->status('text')
 			);
@@ -475,18 +479,18 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		if ($after->get('category') != $before->get('category'))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_CATEGORY'),
-				$before->get('category', JText::_('COM_SUPPORT_BLANK')),
-				$after->get('category', JText::_('COM_SUPPORT_BLANK'))
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_CATEGORY'),
+				$before->get('category', \JText::_('COM_SUPPORT_BLANK')),
+				$after->get('category', \JText::_('COM_SUPPORT_BLANK'))
 			);
 		}
 
 		if ($after->get('tags') != $before->get('tags'))
 		{
 			$this->changed(
-				JText::_('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
-				($before->get('tags') ? $before->get('tags') : JText::_('COM_SUPPORT_BLANK')),
-				($after->get('tags')  ? $after->get('tags')  : JText::_('COM_SUPPORT_BLANK'))
+				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
+				($before->get('tags') ? $before->get('tags') : \JText::_('COM_SUPPORT_BLANK')),
+				($after->get('tags')  ? $after->get('tags')  : \JText::_('COM_SUPPORT_BLANK'))
 			);
 		}
 

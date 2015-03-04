@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 </script>
 <?php } ?>
 
-<form action="index.php" method="post" name="adminForm" id="<?php echo ($tmpl == 'component' ? 'component' : 'item'); ?>-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component' ? 'component' : 'item'); ?>-form">
 	<?php if ($tmpl == 'component') { ?>
 		<script type="text/javascript">
 			Joomla.submitbutton = function(task)

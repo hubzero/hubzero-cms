@@ -47,7 +47,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter-state"><?php echo JText::_('COM_SUPPORT_SHOW'); ?>:</label>
 		<select name="state" id="filter-state" onchange="document.adminForm.submit( );">
@@ -77,7 +77,16 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -103,7 +112,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo $row->id;  ?></td>
 				<td><?php echo $status;  ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=view&amp;id=<?php echo $row->id; ?>&amp;cat=<?php echo $row->category; ?>"><?php echo ($row->category.' #'.$row->referenceid); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category); ?>"><?php echo ($row->category . ' #' . $row->referenceid); ?></a></td>
 				<td><?php echo $this->escape($row->subject); ?></td>
 				<td><?php echo $this->escape($juser->get('username')); ?></td>
 				<td><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></td>

@@ -70,7 +70,7 @@ $this->css()
 					<ul id="watch-list">
 						<li id="folder_watching" class="open">
 							<span class="icon-watch folder"><?php echo JText::_('COM_SUPPORT_WATCH_LIST'); ?></span>
-							<ul id="queries_watching" class="queries">
+							<ul id="queries_watching" class="wqueries">
 								<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
 									<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
 										<?php echo $this->escape(JText::_('COM_SUPPORT_WATCH_LIST_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
@@ -211,8 +211,8 @@ $this->css()
 						<tbody>
 					<?php
 					$k = 0;
-					$sc = new SupportComment($this->database);
-					$st = new SupportModelTags();
+					$sc = new \Components\Support\Tables\Comment($this->database);
+					$st = new \Components\Support\Models\Tags();
 
 					// Collect all the IDs
 					$ids = array();
@@ -237,9 +237,9 @@ $this->css()
 						{
 							$row = &$this->rows[$i];
 
-							if (!($row instanceof SupportModelTicket))
+							if (!($row instanceof \Components\Support\Models\Ticket))
 							{
-								$row = new SupportModelTicket($row);
+								$row = new \Components\Support\Models\Ticket($row);
 							}
 
 							// Was there any activity on this item?

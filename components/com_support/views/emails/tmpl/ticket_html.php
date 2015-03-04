@@ -34,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-if (!($this->ticket instanceof SupportModelTicket))
+if (!($this->ticket instanceof \Components\Support\Models\Ticket))
 {
-	$this->ticket = new SupportModelTicket($this->ticket);
+	$this->ticket = new \Components\Support\Models\Ticket($this->ticket);
 }
 
 $base = rtrim($juri->base(), DS);

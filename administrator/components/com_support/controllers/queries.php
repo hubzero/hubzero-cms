@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,10 +21,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Models\Conditions;
+use Components\Support\Helpers\Utilities;
+use Components\Support\Tables\Ticket;
+use Components\Support\Tables\Resolution;
+use Components\Support\Tables\Query;
+use Components\Support\Tables\QueryFolder;
+use stdClass;
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'ticket.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'query.php');
@@ -36,46 +46,47 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'queryfolder.p
 /**
  * Support controller class for ticket queries
  */
-class SupportControllerQueries extends \Hubzero\Component\AdminController
+class Queries extends AdminController
 {
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'iscore' => array(4, 2, 1)
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['iscore']   = array(4, 2, 1);
 
-		$obj = new SupportQuery($this->database);
+		$obj = new Query($this->database);
 
 		// Record count
 		$this->view->total = $obj->find('count', $this->view->filters);
@@ -83,21 +94,10 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		// Fetch results
 		$this->view->rows  = $obj->find('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -121,25 +121,23 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
+		\JRequest::setVar('hidemainmenu', 1);
 
 		$this->view->lists = array();
 
 		// Get resolutions
-		$sr = new SupportResolution($this->database);
+		$sr = new Resolution($this->database);
 		$this->view->lists['resolutions'] = $sr->getResolutions();
 
-		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		$id = JRequest::getVar('id', array(0));
+		$id = \JRequest::getVar('id', array(0));
 		if (is_array($id))
 		{
 			$id = (!empty($id) ? $id[0] : 0);
 		}
 
-		$this->view->row = new SupportQuery($this->database);
+		$this->view->row = new Query($this->database);
 		$this->view->row->load($id);
 		if (!$this->view->row->sort)
 		{
@@ -151,20 +149,19 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		}
 
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'conditions.php');
-		$con = new SupportModelConditions();
+		$con = new Conditions();
 		$this->view->conditions = $con->getConditions();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -175,14 +172,14 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = JRequest::getVar('fields', array(), 'post');
-		$no_html = JRequest::getInt('no_html', 0);
-		$tmpl    = JRequest::getVar('component', '');
+		$fields  = \JRequest::getVar('fields', array(), 'post');
+		$no_html = \JRequest::getInt('no_html', 0);
+		$tmpl    = \JRequest::getVar('component', '');
 
-		$row = new SupportQuery($this->database);
+		$row = new Query($this->database);
 		if (!$row->bind($fields))
 		{
 			if (!$no_html && $tmpl != 'component')
@@ -233,8 +230,8 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED')
 			);
 		}
 		else
@@ -250,17 +247,17 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	 */
 	public function listTask()
 	{
-		$obj = new SupportTicket($this->database);
+		$obj = new Ticket($this->database);
 
 		// Get query list
-		$sf = new SupportTableQueryFolder($this->database);
+		$sf = new QueryFolder($this->database);
 		$this->view->folders = $sf->find('list', array(
 			'user_id'  => $this->juser->get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
 
-		$sq = new SupportQuery($this->database);
+		$sq = new Query($this->database);
 		$queries = $sq->find('list', array(
 			'user_id'  => $this->juser->get('id'),
 			'sort'     => 'ordering',
@@ -307,14 +304,14 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$no_html = JRequest::getInt('no_html', 0);
-		$tmpl    = JRequest::getVar('component', '');
+		$no_html = \JRequest::getInt('no_html', 0);
+		$tmpl    = \JRequest::getVar('component', '');
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -322,15 +319,15 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			if (!$no_html && $tmpl != 'component')
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					\JText::_('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'),
 					'error'
 				);
 			}
 			return;
 		}
 
-		$row = new SupportQuery($this->database);
+		$row = new Query($this->database);
 		foreach ($ids as $id)
 		{
 			// Delete message
@@ -341,8 +338,8 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', count($ids))
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::sprintf('COM_SUPPORT_QUERY_SUCCESSFULLY_DELETED', count($ids))
 			);
 		}
 		else
@@ -352,21 +349,9 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-		);
-	}
-
-	/**
 	 * Create a new folder
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addfolderTask()
 	{
@@ -376,39 +361,36 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	/**
 	 * Display a form for adding/editing a folder
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editfolderTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$this->view->row = $row;
-		}
-		else
-		{
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
 			}
 
-			$this->view->row = new SupportTableQueryFolder($this->database);
-			$this->view->row->load($id);
+			$row = new QueryFolder($this->database);
+			$row->load($id);
 		}
 
+		$this->view->row = $row;
+
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('editfolder')->display();
+		$this->view
+			->setLayout('editfolder')
+			->display();
 	}
 
 	/**
@@ -429,18 +411,18 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = JRequest::getVar('fields', array());
-		$no_html = JRequest::getInt('no_html', 0);
-		$tmpl    = JRequest::getVar('component', '');
+		$fields  = \JRequest::getVar('fields', array());
+		$no_html = \JRequest::getInt('no_html', 0);
+		$tmpl    = \JRequest::getVar('component', '');
 
 		$response = new stdClass;
 		$response->success = 1;
 		$response->message = '';
 
-		$row = new SupportTableQueryFolder($this->database);
+		$row = new QueryFolder($this->database);
 		if (!$row->bind($fields))
 		{
 			if (!$no_html && $tmpl != 'component')
@@ -497,18 +479,12 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 			{
 				// Output messsage and redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					\JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
 			}
 			else
 			{
-				/*$response->id       = $row->id;
-				$response->title    = $row->title;
-				$response->ordering = $row->ordering;
-				$response->message  = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED');
-
-				echo json_encode($response);*/
 				$this->listTask();
 			}
 			return;
@@ -525,20 +501,20 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (is_array($ids) ?: array($ids));
 
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = \JRequest::getInt('no_html', 0);
 
 		foreach ($ids as $id)
 		{
-			$row = new SupportQuery($this->database);
+			$row = new Query($this->database);
 			$row->deleteByFolder(intval($id));
 
-			$row = new SupportTableQueryFolder($this->database);
+			$row = new QueryFolder($this->database);
 			$row->delete(intval($id));
 		}
 
@@ -546,16 +522,11 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
 		}
 
-		/*$response = new stdClass;
-		$response->success = 1;
-		$response->message = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED');
-
-		echo json_encode($response);*/
 		$this->listTask();
 	}
 
@@ -567,17 +538,17 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$folders = JRequest::getVar('folder', array());
-		$queries = JRequest::getVar('queries', array());
+		$folders = \JRequest::getVar('folder', array());
+		$queries = \JRequest::getVar('queries', array());
 
 		if (is_array($folders))
 		{
 			foreach ($folders as $key => $folder)
 			{
-				$row = new SupportTableQueryFolder($this->database);
+				$row = new QueryFolder($this->database);
 				$row->load(intval($folder));
 				$row->ordering = $key + 1;
 				$row->store();
@@ -602,7 +573,7 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 					$i = 0;
 				}
 
-				$row = new SupportQuery($this->database);
+				$row = new Query($this->database);
 				$row->load($id);
 				$row->folder_id = $fd;
 				$row->ordering  = $i + 1;
@@ -616,14 +587,14 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
 		}
 
 		$response = new stdClass;
 		$response->success = 1;
-		$response->message = JText::_('COM_SUPPORT_QUERY_FOLDER_ORDERING_UPDATED');
+		$response->message = \JText::_('COM_SUPPORT_QUERY_FOLDER_ORDERING_UPDATED');
 
 		echo json_encode($response);
 	}

@@ -128,7 +128,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$sef = JRoute::_($base . $ticket->id);
 			$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
-			$st = new SupportModelTags($ticket->id);
+			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
 			?>
 			<table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['critical']; ?>; background: <?php echo $bgcolor['critical']; ?>; font-size: 0.9em; line-height: 1.6em;
@@ -219,7 +219,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			$sef = JRoute::_($base . $ticket->id);
 			$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
-			$st = new SupportModelTags($ticket->id);
+			$st = new \Components\Support\Models\Tags($ticket->id);
 			$tags = $st->render('string');
 			?>
 			<table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['major']; ?>; background: <?php echo $bgcolor['major']; ?>; font-size: 0.9em; line-height: 1.6em;

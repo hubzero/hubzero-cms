@@ -58,7 +58,7 @@ class JElementTicketmessage extends JElement
 		$html[] = '<select name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '">';
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
-		$sr = new SupportMessage($db);
+		$sr = new \Components\Support\Tables\Message($db);
 
 		$messages = $sr->getMessages();
 

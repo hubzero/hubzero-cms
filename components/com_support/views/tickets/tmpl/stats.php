@@ -321,7 +321,7 @@ function getMonthName($month)
 						<td><?php echo $this->opened['closed']; ?></td>
 						<td class="block">
 							<?php
-							$lifetime = SupportUtilities::calculateAverageLife($this->closedTickets);
+							$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($this->closedTickets);
 							?>
 							<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
 							<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>
@@ -372,7 +372,7 @@ function getMonthName($month)
 									'#99B1A5' //'#6a6a6a',
 								);
 
-								$severities = SupportUtilities::getSeverities($this->config->get('severities'));
+								$severities = \Components\Support\Helpers\Utilities::getSeverities($this->config->get('severities'));
 
 								$cls = 'odd';
 								$data = array();
@@ -463,7 +463,7 @@ function getMonthName($month)
 								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
 						<?php
-							$sr = new SupportTableStatus($database);
+							$sr = new \Components\Support\Tables\Status($database);
 							$resolutions = $sr->find('list', array('open' => 0));
 
 							$cls = 'odd';
@@ -673,7 +673,7 @@ function getMonthName($month)
 						<td><?php echo number_format($user->total); ?></td>
 						<td class="block">
 							<?php
-							$lifetime = SupportUtilities::calculateAverageLife($user->tickets);
+							$lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
 							?>
 							<?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_DAYS'); ?></span>
 							<?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo JText::_('COM_SUPPORT_STATS_HOURS'); ?></span>

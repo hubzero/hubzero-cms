@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Models;
+
+use Components\Tags\Models\Cloud;
+use Components\Tags\Models\Tag;
+use Hubzero\Base\ItemList;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Support Tagging class
  */
-class SupportModelTags extends \Components\Tags\Models\Cloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -60,7 +63,7 @@ class SupportModelTags extends \Components\Tags\Models\Cloud
 			$bits = array();
 			foreach ($this->tags('list', $filters, $clear) as $tag)
 			{
-				$bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . JRoute::_('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . stripslashes($tag->get('raw_tag')) . '</a>';
+				$bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . \JRoute::_('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . stripslashes($tag->get('raw_tag')) . '</a>';
 			}
 			return implode(', ', $bits);
 		}
@@ -115,7 +118,7 @@ class SupportModelTags extends \Components\Tags\Models\Cloud
 	{
 		if (!isset($this->_cache['tags']))
 		{
-			$this->_cache['tags'] = new \Hubzero\Base\ItemList(array());
+			$this->_cache['tags'] = new ItemList(array());
 		}
 
 		if (!$tag)
@@ -123,9 +126,9 @@ class SupportModelTags extends \Components\Tags\Models\Cloud
 			return;
 		}
 
-		if (!($tag instanceof \Components\Tags\Models\Tag))
+		if (!($tag instanceof Tag))
 		{
-			$tg = new \Components\Tags\Models\Tag($tag);
+			$tg = new Tag($tag);
 			$tg->set('raw_tag', $tag);
 
 			$tag = $tg;

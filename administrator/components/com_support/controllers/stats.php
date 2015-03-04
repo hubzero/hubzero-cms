@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,48 +24,50 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Tables;
 
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'status.php');
 
 /**
  * Support controller class for ticket stats
  */
-class SupportControllerStats extends \Hubzero\Component\AdminController
+class Stats extends AdminController
 {
 	/**
 	 * Displays some overview stats of tickets
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Instantiate a new view
-		$this->view->title = JText::_(strtoupper($this->_name));
+		$this->view->title = \JText::_(strtoupper($this->_name));
 
-		$type = JRequest::getVar('type', 'submitted');
+		$type = \JRequest::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = JRequest::getVar('group', '');
+		$this->view->group = \JRequest::getVar('group', '');
 
-		$this->view->sort = JRequest::getVar('sort', 'name');
+		$this->view->sort = \JRequest::getVar('sort', 'name');
 
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 		$this->offset = $jconfig->getValue('config.offset');
 
-		$year  = JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = \JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->view->year = $year;
 		$this->view->opened = array();
 		$this->view->closed = array();
 
-		$st = new SupportTicket($this->database);
+		$st = new Tables\Ticket($this->database);
 
 		$sql = "SELECT DISTINCT(s.`group`), g.description
 				FROM #__support_tickets AS s
@@ -163,7 +165,7 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 
 		// Closed tickets
 		$sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
-				FROM #__support_tickets AS t
+				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
 				AND t.type=" . $this->database->Quote($this->view->type) . " AND t.open=0";
 		if (!$this->view->group || $this->view->group == '_none_')
@@ -310,13 +312,11 @@ class SupportControllerStats extends \Hubzero\Component\AdminController
 		$this->view->month  = $month;
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 }

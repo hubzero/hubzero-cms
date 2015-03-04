@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Support\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Support\Models\Status;
+use Components\Support\Tables\Resolution;
 
 /**
  * Support controller class for managing ticket resolutions
  */
-class SupportControllerResolutions extends \Hubzero\Component\AdminController
+class Resolutions extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of records
 	 *
@@ -44,39 +60,32 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.resolutions.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.resolutions.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.resolutions.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.resolutions.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		$obj = new SupportResolution($this->database);
+		$obj = new Resolution($this->database);
 
 		// Record count
 		$this->view->total = $obj->getCount($this->view->filters);
 
 		// Fetch results
 		$this->view->rows = $obj->getRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		if ($this->getError())
@@ -86,16 +95,6 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Create a new record
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -105,23 +104,19 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getInt('id', 0);
+			$id = \JRequest::getInt('id', 0);
 
 			// Initiate database class and load info
-			$this->view->row = new SupportResolution($this->database);
-			$this->view->row->load($id);
+			$row = new Resolution($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -130,7 +125,9 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -141,14 +138,14 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$res = JRequest::getVar('res', array(), 'post');
+		$res = \JRequest::getVar('res', array(), 'post');
 		$res = array_map('trim', $res);
 
 		// Initiate class and bind posted items to database fields
-		$row = new SupportResolution($this->database);
+		$row = new Resolution($this->database);
 		if (!$row->bind($res))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -174,8 +171,8 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_SAVED')
 		);
 	}
 
@@ -187,17 +184,17 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_ERROR_SELECT_RESOLUTION_TO_DELETE'),
 				'error'
 			);
 			return;
@@ -206,26 +203,14 @@ class SupportControllerResolutions extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Delete message
-			$msg = new SupportResolution($this->database);
+			$msg = new Resolution($this->database);
 			$msg->delete(intval($id));
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_DELETED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_SUPPORT_RESOLUTION_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 }

@@ -87,7 +87,7 @@ class plgCronSupport extends JPlugin
 		$params = $job->get('params');
 
 		$sconfig = JComponentHelper::getParams('com_support');
-		$path = JPATH_ROOT . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
+		$path = PATH_APP . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
 
 		$days = intval($params->get('support_tickettemp_age', '7'));
 
@@ -341,7 +341,7 @@ class plgCronSupport extends JPlugin
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
-			$message = new SupportMessage($database);
+			$message = new \Components\Support\Tables\Message($database);
 			$message->load($message_id);
 
 			// Make sure we have a message to send
@@ -368,7 +368,7 @@ class plgCronSupport extends JPlugin
 				$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
 				$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
 
-				$comment = new SupportModelComment();
+				$comment = new \Components\Support\Models\Comment();
 				$comment->set('created', JFactory::getDate()->toSql());
 				$comment->set('created_by', 0);
 				$comment->set('access', 0);
@@ -405,7 +405,7 @@ class plgCronSupport extends JPlugin
 						continue;
 					}
 
-					$old = new SupportModelTicket($submitter->id);
+					$old = new \Components\Support\Models\Ticket($submitter->id);
 					$old->set('open', 1);
 
 					$row = clone $old;
@@ -520,7 +520,7 @@ class plgCronSupport extends JPlugin
 		else
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-			$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
+			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
 		$tickets = array();
@@ -928,7 +928,7 @@ class plgCronSupport extends JPlugin
 		else
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-			$severities = SupportUtilities::getSeverities($sconfig->get('severities'));
+			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
 		$from = array();

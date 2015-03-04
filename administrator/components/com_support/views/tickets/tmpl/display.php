@@ -52,7 +52,7 @@ $this->css();
 				<ul id="watch-list">
 					<li id="folder_watching" class="open">
 						<span class="icon-watch folder"><?php echo JText::_('COM_SUPPORT_QUERIES_WATCHING'); ?></span>
-						<ul id="queries_watching" class="queries">
+						<ul id="queries_watching" class="wqueries">
 							<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
 								<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
 									<?php echo $this->escape(JText::_('COM_SUPPORT_QUERIES_WATCHING_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
@@ -183,8 +183,8 @@ $this->css();
 					<?php
 					$k = 0;
 					$database = JFactory::getDBO();
-					$sc = new SupportComment($database);
-					$st = new SupportModelTags();
+					$sc = new \Components\Support\Tables\Comment($database);
+					$st = new \Components\Support\Models\Tags();
 
 					// Collect all the IDs
 					$ids = array();
@@ -214,9 +214,9 @@ $this->css();
 					{
 						$row = &$this->rows[$i];
 
-						if (!($row instanceof SupportModelTicket))
+						if (!($row instanceof \Components\Support\Models\Ticket))
 						{
-							$row = new SupportModelTicket($row);
+							$row = new \Components\Support\Models\Ticket($row);
 						}
 
 						if ($tid && $row->get('id') != $tid)
@@ -313,7 +313,16 @@ $this->css();
 					?>
 					</ul>
 
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 
 					<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 					<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />

@@ -1,34 +1,39 @@
 <?php
 /**
- * @package     HUBzero CMS
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support queries
  */
-class SupportQuery extends JTable
+class Query extends \JTable
 {
 	/**
 	 * Constructor
@@ -51,17 +56,19 @@ class SupportQuery extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
-			return false;
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 		}
 
 		$this->conditions = trim($this->conditions);
 		if (!$this->conditions)
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
-		//$this->query = $this->getQuery($this->conditions);
 
 		$this->sort = trim($this->sort);
 		if (!$this->sort)
@@ -77,8 +84,7 @@ class SupportQuery extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
-			//$this->created_by = JFactory::getUser()->get('id');
+			$this->created = \JFactory::getDate()->toSql();
 		}
 		if ($this->iscore === null)
 		{
@@ -268,7 +274,7 @@ class SupportQuery extends JTable
 		}
 		if (!$user_id)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$user_id = $juser->get('id');
 		}
 		$filters = array(
@@ -304,7 +310,7 @@ class SupportQuery extends JTable
 		{
 			$condition = json_decode($condition);
 		}
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		$op = ' ' . strtoupper($condition->operator) . ' ';
 
@@ -423,7 +429,7 @@ class SupportQuery extends JTable
 				}
 				else if (strtolower($expr->fldval) == 'owner')
 				{
-					$user = JUser::getInstance($expr->val);
+					$user = \JUser::getInstance($expr->val);
 					if ($user)
 					{
 						$expr->val = $user->get('id');
@@ -600,7 +606,7 @@ class SupportQuery extends JTable
 			break;
 
 			default:
-				$this->setError(JText::_('Unsupported type'));
+				$this->setError(\JText::_('Unsupported type'));
 				return false;
 			break;
 		}

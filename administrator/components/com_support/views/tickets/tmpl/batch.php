@@ -72,7 +72,7 @@ function saveAndUpdate()
 	});
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
 	<?php if ($this->tmpl == 'component') { ?>
 		<fieldset>
 			<div class="configuration">
@@ -138,7 +138,7 @@ function saveAndUpdate()
 					<label for="field-status"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
 					<select name="fields[status]" id="field-status">
 						<option value=""><?php echo JText::_('Select...'); ?></option>
-						<?php $row = new SupportModelTicket(); ?>
+						<?php $row = new \Components\Support\Models\Ticket(); ?>
 						<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
 							<?php foreach ($row->statuses('open') as $status) { ?>
 								<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>

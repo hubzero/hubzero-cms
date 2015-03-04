@@ -1,34 +1,39 @@
 <?php
 /**
- * @package     HUBzero CMS
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support query folders
  */
-class SupportTableQueryFolder extends JTable
+class QueryFolder extends \JTable
 {
 	/**
 	 * Constructor
@@ -51,7 +56,7 @@ class SupportTableQueryFolder extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
 
@@ -63,7 +68,7 @@ class SupportTableQueryFolder extends JTable
 
 		$this->user_id = intval($this->user_id);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->user_id)
 		{
 			$this->user_id = $juser->get('id');
@@ -71,7 +76,7 @@ class SupportTableQueryFolder extends JTable
 
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 
 			$this->_db->setQuery("SELECT `ordering` FROM $this->_tbl WHERE `user_id`=" . $this->user_id . " ORDER BY `ordering` DESC LIMIT 1");
@@ -81,7 +86,7 @@ class SupportTableQueryFolder extends JTable
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 
@@ -204,7 +209,7 @@ class SupportTableQueryFolder extends JTable
 			'iscore'   => 1
 		));
 
-		$sq = new SupportQuery($this->_db);
+		$sq = new Query($this->_db);
 
 		if (count($folders) <= 0)
 		{
@@ -219,7 +224,7 @@ class SupportTableQueryFolder extends JTable
 
 				foreach ($fldrs as $fldr)
 				{
-					$f = new SupportTableQueryFolder($this->_db);
+					$f = new self($this->_db);
 					$f->iscore = $iscore;
 					$f->title = $fldr;
 					$f->check();
@@ -252,17 +257,17 @@ class SupportTableQueryFolder extends JTable
 			}
 		}
 
-		$user_id = $user_id ?: JFactory::getUser();
+		$user_id = $user_id ?: \JFactory::getUser();
 		$fid = 0;
 
 		// Loop through each folder
 		foreach ($folders as $k => $folder)
 		{
 			// Copy the folder for the user
-			$stqf = new SupportTableQueryFolder($this->_db);
+			$stqf = new self($this->_db);
 			$stqf->bind($folder);
 			$stqf->created_by = $user_id;
-			$stqf->created    = JFactory::getDate()->toSql();
+			$stqf->created    = \JFactory::getDate()->toSql();
 			$stqf->id         = null;
 			$stqf->user_id    = $user_id;
 			$stqf->iscore      = 0;
@@ -275,10 +280,10 @@ class SupportTableQueryFolder extends JTable
 			// Copy all the queries from the folder to the user
 			foreach ($queries as $query)
 			{
-				$stq = new SupportQuery($this->_db);
+				$stq = new Query($this->_db);
 				$stq->bind($query);
 				$stq->created_by = $user_id;
-				$stq->created    = JFactory::getDate()->toSql();
+				$stq->created    = \JFactory::getDate()->toSql();
 				$stq->id         = null;
 				$stq->user_id    = $user_id;
 				$stq->folder_id  = $stqf->get('id');

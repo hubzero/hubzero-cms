@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support ticket comment
  */
-class SupportComment extends JTable
+class Comment extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ticket     = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $comment    = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $changelog  = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $access     = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,32 +49,35 @@ class SupportComment extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->comment = trim($this->comment);
 		if (!$this->comment && trim($this->changelog) == '')
 		{
-			$this->setError(JText::_('COM_SUPPORT_ERROR_BLANK_COMMENT'));
-			return false;
+			$this->setError(\JText::_('COM_SUPPORT_ERROR_BLANK_COMMENT'));
 		}
 
 		$this->ticket = intval($this->ticket);
 		if (!$this->ticket)
 		{
-			$this->setError(JText::_('COM_SUPPORT_ERROR_BLANK_TICKET'));
+			$this->setError(\JText::_('COM_SUPPORT_ERROR_BLANK_TICKET'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		if (!$this->created_by)
 		{
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		if ($this->created_by && is_string($this->created_by))
 		{
-			$owner = JUser::getInstance($this->created_by);
+			$owner = \JUser::getInstance($this->created_by);
 			if ($owner && $owner->get('id'))
 			{
 				$this->created_by = (int) $owner->get('id');
@@ -133,7 +86,7 @@ class SupportComment extends JTable
 
 		if (!$this->created)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -142,11 +95,11 @@ class SupportComment extends JTable
 	/**
 	 * Get comments on a ticket
 	 *
-	 * @param      integer $authorized Administrator access?
-	 * @param      integer $ticket     Ticket ID
-	 * @param      string  $sort       Field to sort by
-	 * @param      string  $dir        Direction to sort
-	 * @return     array
+	 * @param   integer  $authorized  Administrator access?
+	 * @param   integer  $ticket      Ticket ID
+	 * @param   string   $sort        Field to sort by
+	 * @param   string   $dir         Direction to sort
+	 * @return  array
 	 */
 	public function getComments($authorized, $ticket=NULL, $sort='id', $dir='ASC')
 	{
@@ -176,9 +129,9 @@ class SupportComment extends JTable
 	/**
 	 * Get a count of comments on a ticket
 	 *
-	 * @param      integer $authorized Administrator access?
-	 * @param      integer $ticket     Ticket ID
-	 * @return     integer
+	 * @param   integer  $authorized  Administrator access?
+	 * @param   integer  $ticket      Ticket ID
+	 * @return  integer
 	 */
 	public function countComments($authorized, $ticket=NULL)
 	{
@@ -201,9 +154,9 @@ class SupportComment extends JTable
 	/**
 	 * Get the newest comment on a ticket
 	 *
-	 * @param      integer $authorized Administrator access?
-	 * @param      integer $ticket     Ticket ID
-	 * @return     object
+	 * @param   integer  $authorized  Administrator access?
+	 * @param   integer  $ticket      Ticket ID
+	 * @return  object
 	 */
 	public function newestComment($authorized, $ticket=NULL)
 	{
@@ -226,9 +179,9 @@ class SupportComment extends JTable
 	/**
 	 * Get the newest comment on a ticket
 	 *
-	 * @param      integer $authorized Administrator access?
-	 * @param      integer $ticket     Ticket ID
-	 * @return     object
+	 * @param   integer  $authorized  Administrator access?
+	 * @param   integer  $ticket      Ticket ID
+	 * @return  object
 	 */
 	public function newestCommentsForTickets($authorized, $ticket=NULL)
 	{
@@ -256,8 +209,8 @@ class SupportComment extends JTable
 	/**
 	 * Delete comments based on parent ticket ID
 	 *
-	 * @param      integer $ticket Ticket ID
-	 * @return     boolean True on success
+	 * @param   integer  $ticket  Ticket ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteComments($ticket=NULL)
 	{

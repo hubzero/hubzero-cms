@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,28 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Models;
+
+use Components\Support\Tables;
+use Hubzero\Base\Model;
+use Hubzero\User\Profile;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+use Hubzero\Utility\Validate;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'changelog.php');
+require_once(__DIR__ . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'changelog.php');
 
 /**
  * Support mdoel for a ticket comment
  */
-class SupportModelComment extends \Hubzero\Base\Model
+class Comment extends Model
 {
 	/**
 	 * Table name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'SupportComment';
+	protected $_tbl_name = '\\Components\\Support\\Tables\\Comment';
 
 	/**
 	 * Cached data
@@ -83,7 +89,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Is the question open?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isPrivate()
 	{
@@ -97,19 +103,19 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string  $as  What format to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -125,18 +131,18 @@ class SupportModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string  $property  Property to retrieve
+	 * @param   mixed   $default   Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile;
+				$this->_creator = new Profile;
 			}
 		}
 		if ($property)
@@ -154,10 +160,10 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get a count of or list of attachments on this model
 	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
-	 * @param      array   $filters Filters to apply to the query
-	 * @param      boolean $clear   Clear data cache?
-	 * @return     mixed
+	 * @param   string   $rtrn     Data to return state in [count, list]
+	 * @param   array    $filters  Filters to apply to the query
+	 * @param   boolean  $clear    Clear data cache?
+	 * @return  mixed
 	 */
 	public function attachments($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -175,7 +181,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 			case 'count':
 				if (!isset($this->_cache['attachments.count']) || $clear)
 				{
-					$tbl = new SupportAttachment($this->_db);
+					$tbl = new Tables\Attachment($this->_db);
 					$this->_cache['attachments.count'] = $tbl->find('count', $filters);
 				}
 				return $this->_cache['attachments.count'];
@@ -184,21 +190,21 @@ class SupportModelComment extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['attachments.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['attachments.list'] instanceof ItemList) || $clear)
 				{
-					$tbl = new SupportAttachment($this->_db);
+					$tbl = new Tables\Attachment($this->_db);
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new SupportModelAttachment($result);
+							$results[$key] = new Attachment($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['attachments.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['attachments.list'] = new ItemList($results);
 				}
 				return $this->_cache['attachments.list'];
 			break;
@@ -208,9 +214,9 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get the content of the entry is various formats
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed   String or Integer
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  mixed    String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -228,10 +234,10 @@ class SupportModelComment extends \Hubzero\Base\Model
 				{
 					if (!$attach)
 					{
-						$config = JComponentHelper::getParams('com_support');
+						$config = \JComponentHelper::getParams('com_support');
 						$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('ticket');
 
-						$webpath = str_replace('//', '/', rtrim(JURI::getInstance()->base(), '/') . '/' . $path);
+						$webpath = str_replace('//', '/', rtrim(\JURI::getInstance()->base(), '/') . '/' . $path);
 						if (isset($_SERVER['HTTPS']))
 						{
 							$webpath = str_replace('http:', 'https:', $webpath);
@@ -241,9 +247,9 @@ class SupportModelComment extends \Hubzero\Base\Model
 							$webpath = str_replace(':/', '://', $webpath);
 						}
 
-						$attach = new SupportAttachment($this->_db);
+						$attach = new Tables\Attachment($this->_db);
 						$attach->webpath = $webpath;
-						$attach->uppath  = JPATH_ROOT . DS . $path;
+						$attach->uppath  = PATH_APP . DS . $path;
 						$attach->output  = 'web';
 					}
 
@@ -257,7 +263,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 						$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
 						$comment = preg_replace('/  /', ' &nbsp;', $comment);
 					//}
-					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . JRoute::_("index.php?option=com_support&task=ticket&id=$1") . '">' . JText::sprintf('ticket #%s', "$1") . '</a>', $comment);
+					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . \JRoute::_("index.php?option=com_support&task=ticket&id=$1") . '">' . \JText::sprintf('ticket #%s', "$1") . '</a>', $comment);
 
 					$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
 					$this->set('comment.parsed', $comment);
@@ -281,7 +287,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -289,15 +295,15 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Process an attachment macro and output a link to the file
 	 *
-	 * @param      array $matches Macro info
-	 * @return     string HTML
+	 * @param   array   $matches  Macro info
+	 * @return  string  HTML
 	 */
 	protected function _getAttachment($matches)
 	{
 		$tokens = explode('#', $matches[0]);
 		$id = intval(end($tokens));
 
-		$attach = new SupportAttachment($this->_db);
+		$attach = new Tables\Attachment($this->_db);
 		$attach->load($id);
 		if ($attach->id && !$attach->comment_id)
 		{
@@ -307,12 +313,12 @@ class SupportModelComment extends \Hubzero\Base\Model
 			$attach->store();
 		}
 
-		if (!($this->_cache['attachments.list'] instanceof \Hubzero\Base\ItemList))
+		if (!($this->_cache['attachments.list'] instanceof ItemList))
 		{
-			$this->_cache['attachments.list'] = new \Hubzero\Base\ItemList(array());
+			$this->_cache['attachments.list'] = new ItemList(array());
 		}
 
-		$this->_cache['attachments.list']->add(new SupportModelAttachment($attach));
+		$this->_cache['attachments.list']->add(new Attachment($attach));
 
 		return '';
 	}
@@ -320,16 +326,12 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @param     boolean $check Validate data?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean  $check  Validate data?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
 		$this->set('changelog', $this->changelog()->__toString());
-		/*if (!$this->get('comment'))
-		{
-			$this->set('access', 1);
-		}*/
 
 		return parent::store($check);
 	}
@@ -337,7 +339,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean  False if error, True on success
 	 */
 	public function delete()
 	{
@@ -363,13 +365,13 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get the changelog
 	 *
-	 * @return    object
+	 * @return  object
 	 */
 	public function changelog()
 	{
-		if (!($this->_log instanceof SupportModelChangelog))
+		if (!($this->_log instanceof Changelog))
 		{
-			$this->_log = new SupportModelChangelog($this->get('changelog'));
+			$this->_log = new Changelog($this->get('changelog'));
 		}
 		return $this->_log;
 	}
@@ -378,8 +380,8 @@ class SupportModelComment extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type  The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -409,7 +411,9 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Add to the recipient list
 	 *
-	 * @return    object
+	 * @param   string  $to
+	 * @param   string  $role
+	 * @return  object
 	 */
 	public function addTo($to, $role='')
 	{
@@ -418,7 +422,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 		// User ID
 		if (is_numeric($to))
 		{
-			$user = JUser::getInstance($to);
+			$user = \JUser::getInstance($to);
 			if (is_object($user) && $user->get('id'))
 			{
 				if (isset($this->_cache['recipients.added'][$user->get('email')]))
@@ -437,7 +441,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 		else if (is_string($to))
 		{
 			// Email
-			if (strstr($to, '@') && \Hubzero\Utility\Validate::email($to))
+			if (strstr($to, '@') && Validate::email($to))
 			{
 				if (isset($this->_cache['recipients.added'][$to]))
 				{
@@ -445,7 +449,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 				}
 				$this->_cache['recipients.added'][$to] = array(
 					'role'    => $role,
-					'name'    => JText::_('COM_SUPPORT_UNKNOWN'),
+					'name'    => \JText::_('COM_SUPPORT_UNKNOWN'),
 					'email'   => $to,
 					'id'      => 0
 				);
@@ -454,7 +458,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 			// Username
 			else
 			{
-				$user = JUser::getInstance($to);
+				$user = \JUser::getInstance($to);
 				if (is_object($user) && $user->get('id'))
 				{
 					if (isset($this->_cache['recipients.added'][$user->get('email')]))
@@ -492,7 +496,8 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get the recipient list
 	 *
-	 * @return    array
+	 * @param   string  $to
+	 * @return  array
 	 */
 	public function to($who='')
 	{

@@ -48,7 +48,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -59,7 +59,15 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="3"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="3"><?php
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $this->pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -72,7 +80,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>"><?php echo $this->escape($row->section); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape($row->section); ?></a></td>
 			</tr>
 <?php
 	$k = 1 - $k;

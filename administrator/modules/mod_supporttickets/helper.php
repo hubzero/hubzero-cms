@@ -30,7 +30,10 @@
 
 namespace Modules\Supporttickets;
 
+use Components\Support\Tables\Query;
+use Components\Support\Tables\Ticket;
 use Hubzero\Module\Module;
+use stdClass;
 
 /**
  * Module class for com_support ticket data
@@ -51,9 +54,9 @@ class Helper extends Module
 		$database = \JFactory::getDBO();
 		$jconfig  = \JFactory::getConfig();
 
-		$st = new \SupportTicket($database);
+		$st = new Ticket($database);
 
-		$sq = new \SupportQuery($database);
+		$sq = new Query($database);
 		$types = array(
 			'common' => $sq->getCommon()
 			//'mine'   => $sq->getMine()
@@ -63,15 +66,15 @@ class Helper extends Module
 		{
 			if (!is_array($queries) || count($queries) <= 0)
 			{
-				$one = new \stdClass;
+				$one = new stdClass;
 				$one->count = 0;
 				$one->id    = 0;
 
-				$two = new \stdClass;
+				$two = new stdClass;
 				$two->count = 0;
 				$two->id    = 0;
 
-				$three = new \stdClass;
+				$three = new stdClass;
 				$three->count = 0;
 				$three->id    = 0;
 

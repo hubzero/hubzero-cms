@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Components\Support\Helpers\ACL;
+use Components\Support\Helpers\Utilities;
+use Components\Support\Models\Ticket;
+use Components\Support\Models\Comment;
+use Components\Support\Models\Tags;
+use Components\Support\Tables;
+use Hubzero\Component\AdminController;
+use Hubzero\Browser\Detector;
+use Hubzero\User\Profile;
+use Hubzero\Content\Server;
+use Hubzero\Utility\Validate;
+use Exception;
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'query.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'queryfolder.php');
@@ -38,7 +50,7 @@ include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ticket.php');
 /**
  * Support controller class for tickets
  */
-class SupportControllerTickets extends \Hubzero\Component\AdminController
+class Tickets extends AdminController
 {
 	/**
 	 * Displays a list of tickets
@@ -48,10 +60,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
-		$obj = new SupportTicket($this->database);
+		$obj = new Tables\Ticket($this->database);
 
 		// Get filters
 		$this->view->total = 0;
@@ -84,7 +96,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		);
 
 		// Get query list
-		$sf = new SupportTableQueryFolder($this->database);
+		$sf = new Tables\QueryFolder($this->database);
 		$this->view->folders = $sf->find('list', array(
 			'user_id'  => $this->juser->get('id'),
 			'sort'     => 'ordering',
@@ -98,7 +110,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$this->view->folders = $sf->cloneCore($this->juser->get('id'));
 		}
 
-		$sq = new SupportQuery($this->database);
+		$sq = new Tables\Query($this->database);
 		$queries = $sq->getRecords(array(
 			'user_id'  => $this->juser->get('id'),
 			'sort'     => 'ordering',
@@ -173,7 +185,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				}
 				else
 				{	// for no custom queries.
-					$query = new SupportQuery($this->database);
+					$query = new Tables\Query($this->database);
 					$query->count = 0;
 				}
 			}
@@ -204,7 +216,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		}
 
-		$watching = new SupportTableWatching($this->database);
+		$watching = new Tables\Watching($this->database);
 		$this->view->watch = array(
 			'open' => $watching->count(array(
 				'user_id' => $this->juser->get('id'),
@@ -249,14 +261,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -285,15 +289,15 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($comment = null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		$layout = 'edit';
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Initiate database class and load info
-		$row = SupportModelTicket::getInstance($id);
+		$row = Ticket::getInstance($id);
 
 		// Editing or creating a ticket?
 		if (!$row->exists())
@@ -303,7 +307,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Creating a new ticket
 			$row->set('severity', 'normal');
 			$row->set('status', 0);
-			$row->set('created', JFactory::getDate()->toSql());
+			$row->set('created', \JFactory::getDate()->toSql());
 			$row->set('login', $this->juser->get('username'));
 			$row->set('name', $this->juser->get('name'));
 			$row->set('email', $this->juser->get('email'));
@@ -314,34 +318,34 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
 			$row->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->set('uas', JRequest::getVar('HTTP_USER_AGENT','','server'));
+			$row->set('uas', \JRequest::getVar('HTTP_USER_AGENT','','server'));
 
-			$row->set('ip', JRequest::ip());
-			$row->set('hostname', gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server')));
+			$row->set('ip', \JRequest::ip());
+			$row->set('hostname', gethostbyaddr(\JRequest::getVar('REMOTE_ADDR','','server')));
 			$row->set('section', 1);
 		}
 
-		$this->view->filters = SupportUtilities::getFilters();
+		$this->view->filters = Utilities::getFilters();
 		$this->view->lists = array();
 
 		// Get resolutions
-		$sr = new SupportResolution($this->database);
+		$sr = new Tables\Resolution($this->database);
 		$this->view->lists['resolutions'] = $sr->getResolutions();
 
 		// Get messages
-		$sm = new SupportMessage($this->database);
+		$sm = new Tables\Message($this->database);
 		$this->view->lists['messages'] = $sm->getMessages();
 
 		// Get sections
-		//$ss = new SupportSection($this->database);
+		//$ss = new Tables\Section($this->database);
 		//$this->view->lists['sections'] = $ss->getSections();
 
 		// Get categories
-		$sa = new SupportCategory($this->database);
+		$sa = new Tables\Category($this->database);
 		$this->view->lists['categories'] = $sa->find('list');
 
 		// Get severities
-		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		if (trim($row->get('group')))
 		{
@@ -358,7 +362,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		$this->view->row = $row;
 
-		if ($watch = JRequest::getWord('watch', ''))
+		if ($watch = \JRequest::getWord('watch', ''))
 		{
 			$watch = strtolower($watch);
 
@@ -380,7 +384,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$this->view->row->watch($this->juser);
 					if (!$this->view->row->isWatching($this->juser, true))
 					{
-						$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
+						$this->setError(\JText::_('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}
 				}
 			}
@@ -388,7 +392,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		if (!$comment)
 		{
-			$comment = new SupportModelComment();
+			$comment = new Comment();
 		}
 		$this->view->comment = $comment;
 
@@ -421,39 +425,35 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$isNew = true;
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if ($id)
 		{
 			$isNew = false;
 		}
 
 		// Load the old ticket so we can compare for the changelog
-		$old = new SupportModelTicket($id);
+		$old = new Ticket($id);
 		$old->set('tags', $old->tags('string'));
 
-		// Trim and addslashes all posted items
-		//$_POST = array_map('trim', $_POST);
-
 		// Initiate class and bind posted items to database fields
-		$row = new SupportModelTicket($id);
+		$row = new Ticket($id);
 		if (!$row->bind($_POST))
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
-		$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
-		$rowc = new SupportModelComment();
+		$comment = \JRequest::getVar('comment', '', 'post', 'none', 2);
+		$rowc = new Comment();
 		$rowc->set('ticket', $id);
 
 		// Check if changes were made inbetween the time the comment was started and posted
 		if ($id)
 		{
-			$started = JRequest::getVar('started', JFactory::getDate()->toSql(), 'post');
+			$started = \JRequest::getVar('started', \JFactory::getDate()->toSql(), 'post');
 			$lastcomment = $row->comments('list', array(
 				'sort'     => 'created',
 				'sort_Dir' => 'DESC',
@@ -464,7 +464,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if ($lastcomment->created() >= $started)
 			{
 				$rowc->set('comment', $comment);
-				JFactory::getApplication()->enqueueMessage(JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
+				\JFactory::getApplication()->enqueueMessage(\JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
 				return $this->editTask($rowc);
 			}
 		}
@@ -472,36 +472,34 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		if ($id && isset($_POST['status']) && $_POST['status'] == 0)
 		{
 			$row->set('open', 0);
-			$row->set('resolved', JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
+			$row->set('resolved', \JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
 		}
 
 		// If an existing ticket AND closed AND previously open
 		if ($id && !$row->get('open') && $row->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$row->set('closed', JFactory::getDate()->toSql());
+			$row->set('closed', \JFactory::getDate()->toSql());
 		}
 
 		// Check content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Save the tags
-		$row->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
+		$row->tag(\JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
 		$row->set('tags', $row->tags('string'));
 
-		$juri = JURI::getInstance();
-		$jconfig = JFactory::getConfig();
+		$juri = \JURI::getInstance();
+		$jconfig = \JFactory::getConfig();
 
 		$base = $juri->base();
 		if (substr($base, -14) == 'administrator/')
@@ -534,10 +532,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			{
 				// Get some email settings
 				$msg = new \Hubzero\Mail\Message();
-				$msg->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT') . ', ' . JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->get('id')));
+				$msg->setSubject($jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_SUPPORT') . ', ' . \JText::sprintf('COM_SUPPORT_TICKET_NUMBER', $row->get('id')));
 				$msg->addFrom(
 					$jconfig->getValue('config.mailfrom'),
-					$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_option))
+					$jconfig->getValue('config.sitename') . ' ' . \JText::_(strtoupper($this->_option))
 				);
 
 				// Plain text email
@@ -591,7 +589,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 						$def = $jconfig->getValue('config.mailfrom');
 					}
 					// Check for a valid address
-					if (\Hubzero\Utility\Validate::email($def))
+					if (Validate::email($def))
 					{
 						// Send e-mail
 						$msg->setTo(array($def));
@@ -612,29 +610,28 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// Create a new support comment object and populate it
-		$access = JRequest::getInt('access', 0);
+		$access = \JRequest::getInt('access', 0);
 
-		//$rowc = new SupportModelComment();
+		//$rowc = new Comment();
 		$rowc->set('ticket', $row->get('id'));
 		$rowc->set('comment', nl2br($comment));
-		$rowc->set('created', JFactory::getDate()->toSql());
+		$rowc->set('created', \JFactory::getDate()->toSql());
 		$rowc->set('created_by', $this->juser->get('id'));
 		$rowc->set('access', $access);
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$rowc->changelog()->diff($old, $row);
 
-		$rowc->changelog()->cced(JRequest::getVar('cc', ''));
+		$rowc->changelog()->cced(\JRequest::getVar('cc', ''));
 
 		// Save the data
 		if (!$rowc->store())
 		{
-			JError::raiseError(500, $rowc->getError());
-			return;
+			throw new Exception($rowc->getError(), 500);
 		}
 
-		JPluginHelper::importPlugin('support');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('support');
+		$dispatcher = \JDispatcher::getInstance();
 		$dispatcher->trigger('onTicketUpdate', array($row, $rowc));
 
 		if (!$isNew)
@@ -647,14 +644,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner') || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
-			if (JRequest::getInt('email_submitter', 0) == 1)
+			if (\JRequest::getInt('email_submitter', 0) == 1)
 			{
 				// Is the comment private? If so, we do NOT send e-mail to the
 				// submitter regardless of the above setting
 				if (!$rowc->isPrivate())
 				{
 					$rowc->addTo(array(
-						'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
+						'role'  => \JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
 						'name'  => $row->submitter('name'),
 						'email' => $row->submitter('email'),
 						'id'    => $row->submitter('id')
@@ -663,12 +660,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 
 			// Send e-mail to ticket owner?
-			if (JRequest::getInt('email_owner', 0) == 1)
+			if (\JRequest::getInt('email_owner', 0) == 1)
 			{
 				if ($row->get('owner'))
 				{
 					$rowc->addTo(array(
-						'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
+						'role'  => \JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
 						'name'  => $row->owner('name'),
 						'email' => $row->owner('email'),
 						'id'    => $row->owner('id')
@@ -679,12 +676,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Add any CCs to the e-mail list
 			foreach ($rowc->changelog()->get('cc') as $cc)
 			{
-				$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+				$rowc->addTo($cc, \JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 			}
 
 			// Message people watching this ticket,
 			// but ONLY if the comment was NOT marked private
-			$this->acl = SupportACL::getACL();
+			$this->acl = ACL::getACL();
 			foreach ($row->watchers() as $watcher)
 			{
 				$this->acl->setUser($watcher->user_id);
@@ -698,10 +695,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			if (count($rowc->to()))
 			{
 				// Build e-mail components
-				$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+				$subject = \JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 				$from = array(
-					'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
+					'name'      => \JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
 					'email'     => $jconfig->getValue('config.mailfrom'),
 					'multipart' => md5(date('U'))  // Html email
 				);
@@ -737,7 +734,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				}
 
 				// Send e-mail to admin?
-				JPluginHelper::importPlugin('xmessage');
+				\JPluginHelper::importPlugin('xmessage');
 
 				foreach ($rowc->to('ids') as $to)
 				{
@@ -751,7 +748,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					// Get the user's email address
 					if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 					{
-						$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+						$this->setError(\JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 					}
 
 					// Watching should be anonymous
@@ -778,12 +775,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 						);
 
 						// In this case each item in email in an array, 1- To, 2:reply to address
-						SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+						Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 					}
 					else
 					{
 						// Email is just a plain 'ol string
-						SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+						Utilities::sendEmail($to['email'], $subject, $message, $from);
 					}
 
 					// Watching should be anonymous
@@ -813,8 +810,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				// Save the data
 				if (!$rowc->store())
 				{
-					JError::raiseError(500, $rowc->getError());
-					return;
+					throw new Exception($rowc->getError(), 500);
 				}
 			}
 		}
@@ -822,13 +818,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// output messsage and redirect
 		if ($redirect)
 		{
-			$filters = JRequest::getVar('filters', '');
+			$filters = \JRequest::getVar('filters', '');
 			$filters = str_replace('&amp;','&', $filters);
 
 			// Redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''),
-				JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->get('id'))
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''), false),
+				\JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->get('id'))
 			);
 			return;
 		}
@@ -844,25 +840,25 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	 */
 	public function batchTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$this->view->ids = JRequest::getVar('id', array());
-		$this->view->tmpl = JRequest::getVar('tmpl', '');
+		$this->view->ids = \JRequest::getVar('id', array());
+		$this->view->tmpl = \JRequest::getVar('tmpl', '');
 
-		$this->view->filters = SupportUtilities::getFilters();
+		$this->view->filters = Utilities::getFilters();
 		$this->view->lists = array();
 
 		// Get resolutions
-		$sr = new SupportResolution($this->database);
+		$sr = new Tables\Resolution($this->database);
 		$this->view->lists['resolutions'] = $sr->getResolutions();
 
 		// Get categories
-		$sa = new SupportCategory($this->database);
+		$sa = new Tables\Category($this->database);
 		$this->view->lists['categories'] = $sa->find('list');
 
 		// Get severities
-		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
 		$this->view->lists['owner'] = $this->_userSelect('owner', '', 1);
 
@@ -878,22 +874,22 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function processTask()
 	{
 		// Incoming
-		$tmpl    = JRequest::getVar('tmpl');
+		$tmpl    = \JRequest::getVar('tmpl');
 
-		$ids     = JRequest::getVar('id', array());
-		$fields  = JRequest::getVar('fields', array());
-		$tags    = JRequest::getVar('tags', '');
+		$ids     = \JRequest::getVar('id', array());
+		$fields  = \JRequest::getVar('fields', array());
+		$tags    = \JRequest::getVar('tags', '');
 		$access  = 1;
 
-		$fields['owner'] = JRequest::getVar('owner', '');
-		/*$comment = nl2br(JRequest::getVar('comment', '', 'post', 'none', 2));
-		$cc      = JRequest::getVar('cc', '');
-		$access  = JRequest::getInt('access', 0);
-		$email_submitter = JRequest::getInt('email_submitter', 0);
-		$email_owner = JRequest::getInt('email_owner', 0);
+		$fields['owner'] = \JRequest::getVar('owner', '');
+		/*$comment = nl2br(\JRequest::getVar('comment', '', 'post', 'none', 2));
+		$cc      = \JRequest::getVar('cc', '');
+		$access  = \JRequest::getInt('access', 0);
+		$email_submitter = \JRequest::getInt('email_submitter', 0);
+		$email_owner = \JRequest::getInt('email_owner', 0);
 
-		$juri    = JURI::getInstance();
-		$jconfig = JFactory::getConfig();
+		$juri    = \JURI::getInstance();
+		$jconfig = \JFactory::getConfig();
 
 		$base = $juri->base();
 		if (substr($base, -14) == 'administrator/')
@@ -935,13 +931,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 
 			// Initiate class and bind posted items to database fields
-			$row = new SupportModelTicket($id);
+			$row = new Ticket($id);
 			if (!$row->exists())
 			{
 				continue;
 			}
 
-			$old = new SupportModelTicket($id);
+			$old = new Ticket($id);
 			$old->set('tags', $old->tags('string'));
 
 			if (!$row->bind($fields))
@@ -968,10 +964,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 
 			// Create a new support comment object and populate it
-			$rowc = new SupportModelComment();
+			$rowc = new Comment();
 			$rowc->set('ticket', $id);
 			$rowc->set('comment', $comment);
-			$rowc->set('created', JFactory::getDate()->toSql());
+			$rowc->set('created', \JFactory::getDate()->toSql());
 			$rowc->set('created_by', $this->juser->get('id'));
 			//$rowc->set('access', $access);
 
@@ -1031,10 +1027,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				if (count($rowc->to()))
 				{
 					// Build e-mail components
-					$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+					$subject = \JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 					$from = array(
-						'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
+						'name'      => \JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
 						'email'     => $jconfig->getValue('config.mailfrom'),
 						'multipart' => md5(date('U'))  // Html email
 					);
@@ -1075,7 +1071,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 						// Get the user's email address
 						if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
 						{
-							$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+							$this->setError(\JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 						}
 						$rowc->changelog()->notified(
 							$to['role'],
@@ -1096,12 +1092,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							);
 
 							// In this case each item in email in an array, 1- To, 2:reply to address
-							SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+							Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 						}
 						else
 						{
 							// email is just a plain 'ol string
-							SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+							Utilities::sendEmail($to['email'], $subject, $message, $from);
 						}
 
 						$rowc->changelog()->notified(
@@ -1128,14 +1124,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		if ($tmpl)
 		{
-			echo JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($processed));
+			echo \JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($processed));
 			return;
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . (JRequest::getInt('no_html', 0) ? '&no_html=1' : ''),
-			JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (\JRequest::getInt('no_html', 0) ? '&no_html=1' : ''), false),
+			\JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
 		);
 	}
 
@@ -1147,17 +1143,17 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'),
 				'error'
 			);
 			return;
@@ -1168,38 +1164,26 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$id = intval($id);
 
 			// Delete tags
-			$tags = new SupportModelTags($id);
+			$tags = new Tags($id);
 			$tags->removeAll();
 
 			// Delete comments
-			$comment = new SupportComment($this->database);
+			$comment = new Tables\Comment($this->database);
 			$comment->deleteComments($id);
 
 			// Delete attachments
-			$attach = new SupportAttachment($this->database);
+			$attach = new Tables\Attachment($this->database);
 			$attach->deleteAllForTicket($id);
 
 			// Delete ticket
-			$ticket = new SupportTicket($this->database);
+			$ticket = new Tables\Ticket($this->database);
 			$ticket->delete($id);
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 
@@ -1224,7 +1208,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
+			$users[] = \JHTML::_('select.option', '0', \JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
 		}
 		else
@@ -1252,13 +1236,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 			foreach ($groups as $nme => $gusers)
 			{
-				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
+				$users[] = \JHTML::_('select.optgroup', \JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
 				$users = array_merge($users, $gusers);
-				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
+				$users[] = \JHTML::_('select.optgroup', \JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
 			}
 		}
 
-		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
+		$users = \JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
@@ -1278,7 +1262,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$users = array();
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
+			$users[] = \JHTML::_('select.option', '0', \JText::_('COM_SUPPORT_NO_USER'), 'value', 'text');
 		}
 
 		if (strstr($group, ','))
@@ -1295,16 +1279,16 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 						$members = $hzg->get('members');
 
 						//$users[] = '<optgroup title="'.stripslashes($hzg->description).'">';
-						$users[] = JHTML::_('select.optgroup', stripslashes($hzg->description));
+						$users[] = \JHTML::_('select.optgroup', stripslashes($hzg->description));
 						foreach ($members as $member)
 						{
-							$u = JUser::getInstance($member);
+							$u = \JUser::getInstance($member);
 							if (!is_object($u))
 							{
 								continue;
 							}
 
-							$m = new stdClass();
+							$m = new \stdClass();
 							$m->value = $u->get('id');
 							$m->text  = $u->get('name');
 							$m->groupname = $g;
@@ -1312,7 +1296,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 							$users[] = $m;
 						}
 						//$users[] = '</optgroup>';
-						$users[] = JHTML::_('select.option', '</OPTGROUP>');
+						$users[] = \JHTML::_('select.option', '</OPTGROUP>');
 					}
 				}
 			}
@@ -1327,13 +1311,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 				foreach ($members as $member)
 				{
-					$u = JUser::getInstance($member);
+					$u = \JUser::getInstance($member);
 					if (!is_object($u))
 					{
 						continue;
 					}
 
-					$m = new stdClass();
+					$m = new \stdClass();
 					$m->value = $u->get('id');
 					$m->text  = $u->get('name');
 					$m->groupname = $group;
@@ -1348,7 +1332,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			ksort($users);
 		}
 
-		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		$users = \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
@@ -1361,14 +1345,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function downloadTask()
 	{
 		// Get the ID of the file requested
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Instantiate an attachment object
-		$attach = new SupportAttachment($this->database);
+		$attach = new Tables\Attachment($this->database);
 		$attach->load($id);
 		if (!$attach->filename)
 		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'));
+			throw new Exception(\JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'), 404);
 			return;
 		}
 		$file = $attach->filename;
@@ -1376,8 +1360,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Ensure we have a path
 		if (empty($file))
 		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND'), 404);
 		}
 
 		// Get the configured upload path
@@ -1395,14 +1378,13 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$file = $basePath . $file;
 		}
 
-		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $file;
+		// Add root path
+		$filename = PATH_APP . $file;
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND') . ' ' . $filename);
-			return;
+			throw new Exception(\JText::_('COM_SUPPORT_ERROR_FILE_NOT_FOUND') . ' ' . $filename, 404);
 		}
 
 		// Initiate a new content server and serve up the file
@@ -1414,7 +1396,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_SUPPORT_SERVER_ERROR'));
+			throw new Exception(\JText::_('COM_SUPPORT_SERVER_ERROR'), 404);
 		}
 		else
 		{
@@ -1432,42 +1414,42 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	public function uploadTask($listdir, $comment = 0)
 	{
 		// Incoming
-		$description = JRequest::getVar('description', '');
+		$description = \JRequest::getVar('description', '');
 
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_SUPPORT_ERROR_NO_ID'));
+			$this->setError(\JText::_('COM_SUPPORT_ERROR_NO_ID'));
 			return '';
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_SUPPORT_ERROR_NO_FILE'));
+			$this->setError(\JText::_('COM_SUPPORT_ERROR_NO_FILE'));
 			return '';
 		}
 
 		// Construct our file path
-		$file_path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
+		$file_path = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $listdir;
 
 		if (!is_dir($file_path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($file_path))
+			if (!\JFolder::create($file_path))
 			{
-				$this->setError(JText::_('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_SUPPORT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return '';
 			}
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
-		$ext = strtolower(JFile::getExt($file['name']));
+		$ext = strtolower(\JFile::getExt($file['name']));
 
-		$filename = JFile::stripExt($file['name']);
+		$filename = \JFile::stripExt($file['name']);
 		while (file_exists($file_path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -1476,7 +1458,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$finalfile = $file_path . DS . $filename . '.' . $ext;
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $finalfile))
+		if (!\JFile::upload($file['tmp_name'], $finalfile))
 		{
 			$this->setError(JText::_('COM_SUPPORT_ERROR_UPLOADING'));
 			return '';
@@ -1486,11 +1468,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Scan for viruses
 			//$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
 
-			if (!JFile::isSafe($finalfile))
+			if (!\JFile::isSafe($finalfile))
 			{
-				if (JFile::delete($finalfile))
+				if (\JFile::delete($finalfile))
 				{
-					$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_SECURITY_SCAN'));
+					$this->setError(\JText::_('COM_SUPPORT_ERROR_FAILED_SECURITY_SCAN'));
 					return '';
 				}
 			}
@@ -1499,7 +1481,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Create database entry
 			$description = htmlspecialchars($description);
 
-			$row = new SupportAttachment($this->database);
+			$row = new Tables\Attachment($this->database);
 			$row->bind(array(
 				'id'          => 0,
 				'ticket'      => $listdir,

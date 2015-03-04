@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,51 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support ACL ARO
  */
-class SupportAro extends JTable
+class Aro extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var itneger
-	 */
-	var $id      = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $model   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $foreign_key = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $alias   = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,18 +49,21 @@ class SupportAro extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->model) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': model');
-			return false;
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': model');
 		}
 		if (trim($this->foreign_key) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': foreign_key');
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -99,8 +73,8 @@ class SupportAro extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -116,12 +90,12 @@ class SupportAro extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)" . $this->_buildQuery($filters);
+		$query = "SELECT COUNT(*)" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -129,12 +103,12 @@ class SupportAro extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT *" . $this->_buildQuery($filters);
+		$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}

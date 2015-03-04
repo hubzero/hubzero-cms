@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,27 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Models;
+
+use Hubzero\Base\Model;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'attachment.php');
 
 /**
  * Support mdoel for a ticket resolution
  */
-class SupportModelAttachment extends \Hubzero\Base\Model
+class Attachment extends Model
 {
 	/**
 	 * Table name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'SupportAttachment';
+	protected $_tbl_name = '\\Components\\Support\\Tables\\Attachment';
 
 	/**
 	 * URL for this entry
@@ -195,8 +196,8 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon type desired
 	 *
-	 * @param   string  $type     The type of link to return
-	 * @param   boolean $absolute Get the URL absolute to the domain?
+	 * @param   string   $type      The type of link to return
+	 * @param   boolean  $absolute  Get the URL absolute to the domain?
 	 * @return  string
 	 */
 	public function link($type='', $absolute=false)
@@ -216,7 +217,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 			case 'filepath':
 				if (!$path)
 				{
-					$config = JComponentHelper::getParams('com_support');
+					$config = \JComponentHelper::getParams('com_support');
 					$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/tickets'), DS);
 				}
 				return $path . DS . $this->get('ticket') . DS . $this->get('filename');
@@ -230,7 +231,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 		if ($absolute)
 		{
-			$link = rtrim(JURI::getInstance()->base(), '/') . '/' . trim(JRoute::_($link), '/');
+			$link = rtrim(\JURI::getInstance()->base(), '/') . '/' . trim(\JRoute::_($link), '/');
 		}
 
 		return $link;
@@ -254,9 +255,9 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 			$path = $this->link('filepath');
 
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path))
+			if (!\JFile::delete($path))
 			{
-				$this->setError(JText::sprintf('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
+				$this->setError(\JText::sprintf('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
 				return false;
 			}
 		}

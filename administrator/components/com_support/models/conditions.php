@@ -1,11 +1,8 @@
 <?php
 /**
- * @package	 hubzero-cms
- * @author	  Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license	 http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +21,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Models;
+
+use Components\Support\Tables\Category;
+use Components\Support\Helpers\Utilities;
+use Hubzero\Base\Traits\Escapable;
+use Hubzero\Base\Object;
+use InvalidArgumentException;
+use stdClass;
+
+include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'status.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 
 /*
  * Support model class for query conditions
  */
-class SupportModelConditions extends \Hubzero\Base\Object
+class Conditions extends Object
 {
-	use \Hubzero\Base\Traits\Escapable;
+	use Escapable;
 
 	/**
 	 * JDatabase
@@ -68,8 +80,8 @@ class SupportModelConditions extends \Hubzero\Base\Object
 		{
 			$this->setRecord($record);
 		}*/
-		$this->database = JFactory::getDBO();
-		$this->config = JComponentHelper::getParams('com_support');
+		$this->database = \JFactory::getDBO();
+		$this->config = \JComponentHelper::getParams('com_support');
 	}
 
 	/**
@@ -89,7 +101,7 @@ class SupportModelConditions extends \Hubzero\Base\Object
 		}
 		else
 		{
-			throw new InvalidArgumentException(JText::_(__METHOD__ . '; Record must be JSON encoded string or object.'), 500);
+			throw new InvalidArgumentException(\JText::_(__METHOD__ . '; Record must be JSON encoded string or object.'), 500);
 		}
 
 		return $this;
@@ -119,9 +131,9 @@ class SupportModelConditions extends \Hubzero\Base\Object
 
 		// Groups
 		$items = array(
-			$this->_value('*', JText::_('(any of mine)'), true)
+			$this->_value('*', \JText::_('(any of mine)'), true)
 		);
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if ($xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members'))
 		{
 			foreach ($xgroups as $xgroup)
@@ -190,19 +202,8 @@ class SupportModelConditions extends \Hubzero\Base\Object
 				$this->_value('0', 'closed', false)
 			)
 		);
-		/*$conditions->status = $this->_expression(
-			array(
-				$this->_operator('=', 'is', true),
-				$this->_operator('!=', 'is not', false)
-			),
-			array(
-				$this->_value('0', 'new', false),
-				$this->_value('1', 'open', true),
-				$this->_value('2', 'waiting', false)
-			)
-		);*/
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
-		$sr = new SupportTableStatus($this->database);
+
+		$sr = new \Components\Support\Tables\Status($this->database);
 		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));
 		$items = array();
 		$items[] = $this->_value(0, $this->escape('open: New'), true);
@@ -253,8 +254,7 @@ class SupportModelConditions extends \Hubzero\Base\Object
 			)
 		);
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-		$severities = SupportUtilities::getSeverities($this->config->get('severities'));
+		$severities = Utilities::getSeverities($this->config->get('severities'));
 		$items = 'text';
 		if (isset($severities) && is_array($severities))
 		{
@@ -277,33 +277,7 @@ class SupportModelConditions extends \Hubzero\Base\Object
 			$items
 		);
 
-		/*include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'resolution.php');
-		$sr = new SupportResolution($this->database);
-		$resolutions = $sr->getResolutions();
-		$items = 'text';
-		if (isset($resolutions) && is_array($resolutions))
-		{
-			$items = array();
-			foreach ($resolutions as $anode)
-			{
-				$sel = false;
-				if ($anode->alias == 'fixed')
-				{
-					$sel = true;
-				}
-				$items[] = $this->_value($this->escape($anode->alias), $this->escape(stripslashes($anode->title)), $sel);
-			}
-		}
-		$conditions->resolved = $this->_expression(
-			array(
-				$this->_operator('=', 'is', true),
-				$this->_operator('!=', 'is not', false)
-			),
-			$items
-		);*/
-
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'category.php');
-		$sc = new SupportCategory($this->database);
+		$sc = new Category($this->database);
 		$categories = $sc->find('list');
 		$items = 'text';
 		if (isset($categories) && is_array($categories))

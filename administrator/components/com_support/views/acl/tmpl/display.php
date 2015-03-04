@@ -65,7 +65,7 @@ function checkAllOptions()
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -206,7 +206,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=read&amp;value=<?php echo $data['tickets']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['tickets']['read'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -220,7 +220,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=update&amp;value=<?php echo $data['tickets']['update'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=update&value=' . ($data['tickets']['update'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -234,7 +234,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['tickets']['id']; ?>&amp;action=delete&amp;value=<?php echo $data['tickets']['delete'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=delete&value=' . ($data['tickets']['delete'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -249,7 +249,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=create&value=' . ($data['comments']['create'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -263,7 +263,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['comments']['read'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -278,7 +278,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=create&amp;value=<?php echo $data['private_comments']['create'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=create&value=' . ($data['private_comments']['create'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
@@ -292,7 +292,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						$cls = 'publish';
 					}
 					?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;id=<?php echo $data['private_comments']['id']; ?>&amp;action=read&amp;value=<?php echo $data['private_comments']['read'] ? '0' : '1' ?>&amp;<?php //echo JUtility::getToken(); ?>vfd=1">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&id=' . $data['tickets']['id'] . '&action=read&value=' . ($data['private_comments']['read'] ? '0' : '1') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>

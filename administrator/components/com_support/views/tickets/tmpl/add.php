@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -134,7 +134,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-status"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?></label>
 					<select name="status" id="field-status">
-						<?php $row = new SupportModelTicket(); ?>
+						<?php $row = new \Components\Support\Models\Ticket(); ?>
 						<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
 							<option value="0" selected="selected"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_NEW'); ?></option>
 							<?php foreach ($this->row->statuses('open') as $status) { ?>

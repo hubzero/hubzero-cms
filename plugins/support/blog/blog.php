@@ -85,7 +85,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
 
-				$entry = new BlogModelEntry($rows[$key]->entry_id);
+				$entry = new \Components\Blog\Models\Entry($rows[$key]->entry_id);
 
 				$rows[$key]->text = strip_tags($rows[$key]->text);
 				$rows[$key]->href = JRoute::_($entry->link() . '#c' . $rows[$key]->id);
@@ -112,7 +112,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new BlogTableComment($database);
+		$comment = new \Components\Blog\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->state = 3;
 		$comment->store();
@@ -139,7 +139,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new BlogTableComment($database);
+		$comment = new \Components\Blog\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->state = 1;
 		$comment->store();
@@ -167,7 +167,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new BlogTableComment($database);
+		$comment = new \Components\Blog\Tables\Comment($database);
 		$comment->load($refid);
 		$comment->state = 2;
 		$comment->store();

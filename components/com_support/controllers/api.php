@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,10 +24,8 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
 JLoader::import('Hubzero.Api.Controller');
@@ -59,7 +57,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$this->database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
-		$this->acl = SupportACL::getACL();
+		$this->acl = \Components\Support\Helpers\ACL::getACL();
 		$this->acl->setUser($userid);
 
 		switch ($this->segments[0])
@@ -295,7 +293,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$stats->tickets->opened = array();
 		$stats->tickets->closed = array();
 
-		$st = new SupportTicket($this->database);
+		$st = new \Components\Support\Tables\Ticket($this->database);
 
 
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
@@ -417,7 +415,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			return $this->errorMessage(403, JText::_('Permission denied.'));
 		}
 
-		$obj = new SupportTicket($this->database);
+		$obj = new \Components\Support\Tables\Ticket($this->database);
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),
@@ -442,7 +440,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$response->tickets = array();
 
 		// Get a list of all statuses
-		$sobj = new SupportTableStatus($this->database);
+		$sobj = new \Components\Support\Tables\Status($this->database);
 
 		$statuses = array();
 		if ($data = $sobj->find('all'))
@@ -523,7 +521,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$ticket_id = JRequest::getInt('ticket', $id);
 
 		// Initiate class and bind data to database fields
-		$ticket = new SupportModelTicket($ticket_id);
+		$ticket = new \Components\Support\Models\Ticket($ticket_id);
 
 		$response = new stdClass;
 		$response->id = $ticket->get('id');
@@ -587,7 +585,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		if ($result === false) return $this->not_found();
 
 		// Initiate class and bind data to database fields
-		$ticket = new SupportModelTicket();
+		$ticket = new \Components\Support\Models\Ticket();
 
 		// Set the created date
 		$ticket->set('created', JFactory::getDate()->toSql());
@@ -663,7 +661,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$id = JRequest::getInt('comment', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = new SupportModelComment($id);
+		$ticket = new \Components\Support\Models\Comment($id);
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');
@@ -695,7 +693,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$ticket_id = JRequest::getInt('ticket', 0, 'post');
 
 		// Load the old ticket so we can compare for the changelog
-		$old = new SupportModelTicket($ticket_id);
+		$old = new \Components\Support\Models\Ticket($ticket_id);
 		$old->set('tags', $old->tags('string'));
 
 		if (!$old->exists())
@@ -705,7 +703,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate class and bind posted items to database fields
-		$ticket = new SupportModelTicket($ticket_id);
+		$ticket = new \Components\Support\Models\Ticket($ticket_id);
 		$ticket->set('status',   JRequest::getInt('status', $ticket->get('status'), 'post'));
 		$ticket->set('open',     JRequest::getInt('open', $ticket->get('open'), 'post'));
 		$ticket->set('category', JRequest::getInt('category', $ticket->get('category'), 'post'));
@@ -735,7 +733,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Create a new comment
-		$comment = new SupportModelComment();
+		$comment = new \Components\Support\Models\Comment();
 		$comment->set('ticket', $ticket->get('id'));
 		$comment->set('comment', nl2br(JRequest::getVar('comment', '', 'post', 'none', 2)));
 		if ($comment->get('comment'))
@@ -864,12 +862,12 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 					);
 
 					// In this case each item in email in an array, 1- To, 2:reply to address
-					SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+					\Components\Support\Helpers\Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 				}
 				else
 				{
 					// email is just a plain 'ol string
-					SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+					\Components\Support\Helpers\Utilities::sendEmail($to['email'], $subject, $message, $from);
 				}
 
 				$comment->changelog()->notified(

@@ -205,7 +205,7 @@ if (!$tmpl && !$no_html) {
 					$database = JFactory::getDBO();
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
-					$sr = new SupportTableQueryFolder($database);
+					$sr = new \Components\Support\Tables\QueryFolder($database);
 					$folders = $sr->find('list', array(
 						'user_id'  => JFactory::getUser()->get('id'),
 						'sort'     => 'ordering',

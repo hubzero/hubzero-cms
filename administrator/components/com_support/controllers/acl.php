@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,56 +24,58 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Controllers;
+
+use Components\Support\Helpers\ACL as TheACL;
+use Components\Support\Tables\Aro;
+use Components\Support\Tables\Aco;
+use Components\Support\Tables\AroAco;
+use Hubzero\Component\AdminController;
+use Exception;
 
 /**
  * Support controller class for defining permissions
  */
-class SupportControllerAcl extends \Hubzero\Component\AdminController
+class Acl extends AdminController
 {
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Instantiate a new view
-		$this->view->acl = SupportACL::getACL();
+		$this->view->acl = TheACL::getACL();
 		$this->view->database = $this->database;
 
 		// Fetch results
-		$aro = new SupportAro($this->database);
+		$aro = new Aro($this->database);
 		$this->view->rows = $aro->getRecords();
 
 		// Output HTML
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
 		$this->view->display();
 	}
 
 	/**
 	 * Update an existing record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
 		// Check for request forgeries
-		//JRequest::checkToken('get') or jexit('Invalid Token');
+		//\JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$id     = JRequest::getInt('id', 0);
-		$action = JRequest::getVar('action', '');
-		$value  = JRequest::getInt('value', 0);
+		$id     = \JRequest::getInt('id', 0);
+		$action = \JRequest::getVar('action', '');
+		$value  = \JRequest::getInt('value', 0);
 
-		$row = new SupportAroAco($this->database);
+		$row = new AroAco($this->database);
 		$row->load($id);
 
 		switch ($action)
@@ -87,21 +89,19 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_ACL_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_ACL_SAVED')
 		);
 	}
 
@@ -113,59 +113,56 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 
 		foreach ($ids as $id)
 		{
-			$row = new SupportAro($this->database);
+			$row = new Aro($this->database);
 			$row->load(intval($id));
 
 			if ($row->id)
 			{
-				$aro_aco = new SupportAroAco($this->database);
+				$aro_aco = new AroAco($this->database);
 				if (!$aro_aco->deleteRecordsByAro($row->id))
 				{
-					JError::raiseError(500, $aro_aco->getError());
-					return;
+					throw new Exception($aro_aco->getError(), 500);
 				}
 			}
 
 			if (!$row->delete())
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_ACL_REMOVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_ACL_REMOVED')
 		);
 	}
 
 	/**
 	 * Save a new record
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$aro = JRequest::getVar('aro', array(), 'post');
+		$aro = \JRequest::getVar('aro', array(), 'post');
 		$aro = array_map('trim', $aro);
 
 		// Initiate class and bind posted items to database fields
-		$row = new SupportAro($this->database);
+		$row = new Aro($this->database);
 		if (!$row->bind($aro))
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		if ($row->foreign_key)
@@ -173,11 +170,10 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 			switch ($row->model)
 			{
 				case 'user':
-					$user = JUser::getInstance($row->foreign_key);
+					$user = \JUser::getInstance($row->foreign_key);
 					if (!is_object($user))
 					{
-						JError::raiseError(500, JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'));
-						return;
+						throw new Exception(\JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_USER'), 500);
 					}
 					$row->foreign_key = intval($user->get('id'));
 					$row->alias = $user->get('username');
@@ -187,8 +183,7 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 					$group = \Hubzero\User\Group::getInstance($row->foreign_key);
 					if (!is_object($group))
 					{
-						JError::raiseError(500, JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'));
-						return;
+						throw new Exception(\JText::_('COM_SUPPORT_ACL_ERROR_UNKNOWN_GROUP'), 500);
 					}
 					$row->foreign_key = intval($group->gidNumber);
 					$row->alias = $group->cn;
@@ -199,15 +194,13 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		if (!$row->id)
@@ -216,50 +209,35 @@ class SupportControllerAcl extends \Hubzero\Component\AdminController
 		}
 
 		// Trim and addslashes all posted items
-		$map = JRequest::getVar('map', array(), 'post');
+		$map = \JRequest::getVar('map', array(), 'post');
 
 		foreach ($map as $k => $v)
 		{
 			// Initiate class and bind posted items to database fields
-			$aroaco = new SupportAroAco($this->database);
+			$aroaco = new AroAco($this->database);
 			if (!$aroaco->bind($v))
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($aroaco->getError(), 500);
 			}
 			$aroaco->aro_id = (!$aroaco->aro_id) ? $row->id : $aroaco->aro_id;
 
 			// Check content
 			if (!$aroaco->check())
 			{
-				JError::raiseError(500, $aroaco->getError());
-				return;
+				throw new Exception($aroaco->getError(), 500);
 			}
 
 			// Store new content
 			if (!$aroaco->store())
 			{
-				JError::raiseError(500, $aroaco->getError());
-				return;
+				throw new Exception($aroaco->getError(), 500);
 			}
 		}
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_ACL_SAVED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SUPPORT_ACL_SAVED')
 		);
 	}
 }

@@ -71,11 +71,11 @@ else
 $prev = null;
 $next = null;
 
-$sq = new SupportQuery($this->database);
+$sq = new \Components\Support\Tables\Query($this->database);
 $sq->load($this->filters['show']);
 if ($sq->conditions)
 {
-	$tbl = new SupportTicket($this->database);
+	$tbl = new \Components\Support\Tables\Ticket($this->database);
 
 	$sq->query = $sq->getQuery($sq->conditions);
 

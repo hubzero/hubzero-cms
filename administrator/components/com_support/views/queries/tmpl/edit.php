@@ -50,7 +50,7 @@ if (!$tmpl)
 $juser = JFactory::getUser();
 ?>
 <?php if (!$tmpl) { ?>
-	<form action="index.php" method="post" name="adminForm" id="item-form">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 		<div class="col width-100">
 			<fieldset class="adminform">
 				<legend><?php echo JText::_('JDETAILS'); ?></legend>
@@ -169,7 +169,7 @@ $juser = JFactory::getUser();
 		$this->row->title .= ' ' . JText::_('COM_SUPPORT_COPY');
 	}
 ?>
-	<form action="index.php" method="post" name="adminForm" id="component-form">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="component-form">
 		<fieldset>
 			<div class="configuration">
 				<div class="configuration-options">
@@ -213,7 +213,7 @@ $juser = JFactory::getUser();
 						$database = JFactory::getDBO();
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
-						$sr = new SupportTableQueryFolder($database);
+						$sr = new \Components\Support\Tables\QueryFolder($database);
 						$folders = $sr->find('list', array(
 							'user_id'  => JFactory::getUser()->get('id'),
 							'sort'     => 'ordering',

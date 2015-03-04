@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Tables;
 
 /**
  * Table class for support ACL ARO/ACO map
  */
-class SupportAroAco extends JTable
+class AroAco extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $aro_id  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $aco_id  = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $action_create = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $action_read   = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $action_update = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $action_delete = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,18 +49,21 @@ class SupportAroAco extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->aro_id) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
-			return false;
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aro_id');
 		}
 		if (trim($this->aco_id) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
+			$this->setError(\JText::_('SUPPORT_ERROR_BLANK_FIELD') . ': aco_id');
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -120,14 +73,14 @@ class SupportAroAco extends JTable
 	/**
 	 * Delete records by ARO
 	 *
-	 * @param      integer $aro_id ARO ID
-	 * @return     boolean True on success
+	 * @param   integer  $aro_id  ARO ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteRecordsByAro($aro_id=0)
 	{
 		if (!$aro_id)
 		{
-			$this->setError(JText::_('Missing ARO ID'));
+			$this->setError(\JText::_('Missing ARO ID'));
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aro_id=" . $this->_db->Quote($aro_id));
@@ -142,14 +95,14 @@ class SupportAroAco extends JTable
 	/**
 	 * Delete records by ACO
 	 *
-	 * @param      integer $aco_id ACO ID
-	 * @return     boolean True on success
+	 * @param   integer  $aco_id  ACO ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteRecordsByAco($aco_id=0)
 	{
 		if (!$aco_id)
 		{
-			$this->setError(JText::_('Missing ACO ID'));
+			$this->setError(\JText::_('Missing ACO ID'));
 			return false;
 		}
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE aco_id=" . $this->_db->Quote($aco_id));
@@ -164,8 +117,8 @@ class SupportAroAco extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -181,12 +134,12 @@ class SupportAroAco extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
-		$query  = "SELECT COUNT(*)" . $this->_buildQuery($filters);
+		$query = "SELECT COUNT(*)" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
@@ -194,12 +147,12 @@ class SupportAroAco extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT *" . $this->_buildQuery($filters);
+		$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
