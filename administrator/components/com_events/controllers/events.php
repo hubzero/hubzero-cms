@@ -251,8 +251,17 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			$start_publish = JHTML::_('date', $this->view->row->publish_up, 'Y-m-d');
 			$start_time = JHTML::_('date', $this->view->row->publish_up, 'H:i');
 
-			$stop_publish = JHTML::_('date', $this->view->row->publish_down, 'Y-m-d');
-			$end_time = JHTML::_('date', $this->view->row->publish_down, 'H:i');
+			// make sure the never setting doesn't throw an error
+			if ($this->view->row->publish_down != 'Never')
+			{
+				$stop_publish = JHTML::_('date', $this->view->row->publish_down, 'Y-m-d');
+				$end_time = JHTML::_('date', $this->view->row->publish_down, 'H:i');
+			}
+			else
+			{
+				$end_time = '00:00';
+				$stop_publish = '0000-00-00';
+			}
 		}
 		else
 		{
