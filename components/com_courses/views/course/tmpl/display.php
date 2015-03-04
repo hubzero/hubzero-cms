@@ -38,6 +38,7 @@ if ($this->course->isManager())
 {
 	$filters = array(
 		'available' => false,
+		'state'     => array(0, 1, 3),
 		'sort'      => 'publish_up',
 		'sort_Dir'  => 'DESC'
 	);
@@ -529,7 +530,7 @@ $this->css('course.css')
 							if (!$dflt->exists())
 							{
 								// No default? Get the first in the list
-								if (!$offering->sections()->total())
+								if (!$offering->sections($filters, true)->total())
 								{
 									$offering->makeSection();
 								}
@@ -537,7 +538,7 @@ $this->css('course.css')
 								$offering->section($dflt);
 							}
 
-							$sections = $offering->sections($filters);
+							$sections = $offering->sections($filters, true);
 							if ($this->course->isManager() && $sections->total() > 0)
 							{
 								$this->view('_button')

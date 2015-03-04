@@ -292,9 +292,17 @@ class CoursesTableOffering extends JTable
 			$filters['state'] = 1;
 		}
 
-		if (isset($filters['state']) && $filters['state'] >= 0)
+		if (isset($filters['state']))
 		{
-			$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "ci.state IN (" . implode(',', $filters['state']) . ")";
+			}
+			else if ($filters['state'] >= 0)
+			{
+				$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
+			}
 		}
 
 		if (isset($filters['search']) && $filters['search'])
