@@ -753,7 +753,7 @@ class ProjectsConnectHelper extends JObject {
 				return false;
 			}
 
-			$oauth2 = new Google_Auth_OAuth2($client);
+			$oauth2 = new Google_Service_Oauth2($client);
 			try
 			{
 				$user = $oauth2->userinfo->get();
