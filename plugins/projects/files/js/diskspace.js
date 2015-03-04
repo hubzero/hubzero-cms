@@ -37,6 +37,7 @@ HUB.ProjectFilesDiskSpace = {
 			if ($('#disk-usage')) {
 				var measurein = '%';
 			}
+
 			$('#indicator-area').css('width', percentage + measurein);				
 		}
 		
@@ -52,6 +53,7 @@ HUB.ProjectFilesDiskSpace = {
 			if ($('#disk-usage')) {
 				var measurein = '%';
 			}
+
 			$('#actual-area').css('width', percentage + measurein);				
 		}
 
