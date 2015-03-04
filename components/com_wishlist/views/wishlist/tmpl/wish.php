@@ -198,7 +198,7 @@ $this->css()
 					}
 				?>
 				<ul class="wish-options">
-					<?php if ($this->wishlist->access('admin') && $this->wishlist->get('admin')!=3) { ?>
+					<?php if ($this->wishlist->access('admin') && $this->wishlist->get('admin') != 3) { ?>
 						<?php if (!$this->wish->isGranted()) { ?>
 							<li>
 								<a class="changestatus" href="<?php echo JRoute::_($this->wish->link('changestatus')); ?>">
@@ -225,10 +225,10 @@ $this->css()
 							</li>
 						<?php } ?>
 					<?php } ?>
-					<?php if ($this->wishlist->access('manage') || $this->juser->get('id') == $this->wish->get('proposed_by')) { ?>
+					<?php if (($this->wishlist->access('manage') && $this->wishlist->get('admin') != 3) || $this->juser->get('id') == $this->wish->get('proposed_by')) { ?>
 						<li>
 							<a class="edit" href="<?php echo JRoute::_($this->wish->link('edit')); ?>">
-								<?php echo JText::_('COM_WISHLIST_ACTION_EDIT'); ?>
+								<?php echo ucfirst(JText::_('COM_WISHLIST_ACTION_EDIT')); ?>
 							</a>
 						</li>
 					<?php } ?>
@@ -246,7 +246,7 @@ $this->css()
 					<?php } ?>
 				</ul>
 
-			<?php if ($this->wishlist->access('manage') && !$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
+			<?php if ($this->wishlist->access('manage') && !$this->wish->isDeleted() && !$this->wish->isWithdrawn() && $voters > 0) { ?>
 				<div class="container">
 					<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="rankingform" id="rankForm">
 						<table class="wish-priority" id="priority">
@@ -363,12 +363,6 @@ $this->css()
 								}
 								else
 								{
-									if ($this->wish->get('num_votes', 0)
-									 && $this->wish->get('num_skipped_votes', 0)
-									 && $this->wish->get('num_votes') == $this->wish->get('num_skipped_votes'))
-									{
-										$this->wish->set('average_effort', 7);
-									}
 									?>
 									<td>
 										<?php echo WishlistHtml::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort'); ?>

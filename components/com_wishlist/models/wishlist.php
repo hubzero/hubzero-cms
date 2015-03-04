@@ -705,6 +705,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					{
 						$this->config()->set('access-edit-' . $assetType, true);
 						$this->config()->set('access-edit-state-' . $assetType, true);
+						$this->config()->set('access-manage-' . $assetType, true);
 
 						$this->set('admin', 3);  // advisory committee member
 					}
@@ -733,6 +734,10 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			$advisory = $this->owners('advisory');
 
 			$voters = array_merge($managers, $advisory);
+			if (!count($voters))
+			{
+				return false;
+			}
 
 			foreach ($this->wishes() as $item)
 			{

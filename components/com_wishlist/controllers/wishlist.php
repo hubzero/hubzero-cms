@@ -414,6 +414,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					$divisor 	= 0;
 					$co_adv 	= 0.8;
 					$co_reg 	= 0.2;
+					$effort		= 0;
+					$counter    = 0;
 
 					foreach ($votes as $vote)
 					{
@@ -421,16 +423,38 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 						{
 							$imp += $vote->get('importance') * $co_adv;
 							$divisor += $co_adv;
+							if ($vote->get('effort') != 6)
+							{
+								$effort += $vote->get('effort') * $co_adv;
+							}
 						}
 						else
 						{
 							$imp += $vote->get('importance') * $co_reg;
 							$divisor += $co_reg;
+							if ($vote->get('effort') != 6)
+							{
+								$effort += $vote->get('effort') * $co_reg;
+							}
+						}
+						if ($vote->get('effort') != 6)
+						{
+							$counter++;
 						}
 					}
 
 					// weighted average
 					$wish->set('average_imp', ($imp/$divisor));
+
+					// Set average effort
+					if ($counter)
+					{
+						$wish->set('average_effort', ($effort/$counter));
+					}
+					else
+					{
+						$wish->set('average_effort', 7);
+					}
 				}
 			}
 
@@ -1783,9 +1807,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		//$this->authorize_admin($listid);
 
 		// Need to be list admin
-		if (!$wishlist->access('manage'))
+		if (!$wishlist->access('manage') || $wishlist->get('admin') == 1)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
+			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
 			return;
 		}
 
