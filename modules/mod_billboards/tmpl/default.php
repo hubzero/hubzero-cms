@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<div class="slide" id="<?php echo $slide->alias; ?>">
 				<h3><?php echo $slide->header; ?></h3>
-					<p><?php echo $slide->text; ?></p>
+					<?php echo $slide->text; ?>
 						<?php echo $tag; ?>
 							<a class="<?php echo $slide->learn_more_class; ?>" href="<?php echo $slide->learn_more_target; ?>">
 								<?php echo $slide->learn_more_text; ?>

@@ -176,19 +176,15 @@ class BillboardsBillboard extends JTable
 	 */
 	public function check()
 	{
-		// Do some cleanup, trying to make to keep people from making mistakes
-		// Strip <p> tags from billboard text and convert closing </p> tags to break tags
-		$this->text = str_replace("</p>", "<br />", str_replace("<p>", "", $this->text));
-
 		// Give an arbitrary billboard alias/CSS ID name when one isn't provided
 		if (!$this->alias)
 		{
-			$this->alias = strtolower(str_replace(" ", "", $this->name));
+			$this->alias = strtolower(preg_replace("/[^[:alnum:]]/ui", "", $this->name));
 		}
 		else
 		{
 			// Even if they provide one, we should get rid of caps and spaces
-			$this->alias = strtolower(str_replace(" ", "", $this->alias));
+			$this->alias = strtolower(preg_replace("/[^[:alnum:]]/ui", "", $this->alias));
 		}
 
 		return true;
