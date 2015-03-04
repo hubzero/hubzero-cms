@@ -124,6 +124,10 @@ class typeNotes extends JObject
 		$this->_database = $db;
 		$this->_project  = $project;
 		$this->_data 	 = $data;
+
+		// Include note model
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'models' . DS . 'note.php');
 	}
 
 	/**
@@ -220,14 +224,14 @@ class typeNotes extends JObject
 		// Incoming data
 		$item = $this->__get('item');
 
-		// Get helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-
 		$config = JComponentHelper::getParams( 'com_projects' );
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
-		$note = $projectsHelper->getSelectedNote($item, $group, $masterscope);
+		// Get our model
+		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+
+		$note = $model->getSelectedNote($item);
 		$title = $note ? $note->title : '';
 
 		return $title;
@@ -273,10 +277,10 @@ class typeNotes extends JObject
 		$group_prefix 	= $config->get('group_prefix', 'pr-');
 		$group 			= $group_prefix . $this->_project->alias;
 
-		// Get projects helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
+		// Get our model
+		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
 
-		if (!$projectsHelper->getSelectedNote($pageid, $group, $masterscope))
+		if (!$model->getSelectedNote($pageid))
 		{
 			return true;
 		}
@@ -303,9 +307,10 @@ class typeNotes extends JObject
 		$group_prefix 	= $config->get('group_prefix', 'pr-');
 		$group 			= $group_prefix . $this->_project->alias;
 
-		// Get projects helper
-		$projectsHelper = new ProjectsHelper( $this->_database );
-		$note = $projectsHelper->getSelectedNote($pageid, $group, $masterscope);
+		// Get our model
+		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+
+		$note = $model->getSelectedNote($pageid);
 
 		if (!$note)
 		{
@@ -343,9 +348,6 @@ class typeNotes extends JObject
 
 		if (isset($selections['notes']) && count($selections['notes']) > 0)
 		{
-			// Get helper
-			$projectsHelper = new ProjectsHelper( $this->_database );
-
 			// Load component configs
 			$pubconfig = JComponentHelper::getParams( 'com_publications' );
 			$config    = JComponentHelper::getParams( 'com_projects' );
@@ -353,13 +355,16 @@ class typeNotes extends JObject
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
+			// Get our model
+			$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+
 			$objPA = new PublicationAttachment( $this->_database );
 
 			// Attach every selected file
 			foreach ($selections['notes'] as $pageId)
 			{
 				// get project note
-				$note = $projectsHelper->getSelectedNote($pageId, $group, $masterscope);
+				$note = $model->getSelectedNote($pageId);
 
 				if (!$note)
 				{

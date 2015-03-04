@@ -25,17 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get helper
-$projectsHelper = new ProjectsHelper( $this->database );
-
 $masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
 
 // Set project (system) group
 $group_prefix = $this->config->get('group_prefix', 'pr-');
 $group = $group_prefix . $this->project->alias;
 
+// Get our model
+$model = new ProjectModelNote($masterscope, $group, $this->project->id);
+
 // Get notes to choose from
-$items = $projectsHelper->getNotes($group, $masterscope);
+$items = $model->getNotes();
 
 // Sort notes to display hierarchy by scope
 $notes = array();
