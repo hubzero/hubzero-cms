@@ -207,7 +207,7 @@ class plgEditorCkeditor extends JPlugin
 		// Load modal popup behavior
 		JHtml::_('behavior.modal', 'a.modal-button');
 
-		$args['name'] = $name;
+		$args['name']  = $name;
 		$args['event'] = 'onGetInsertMethod';
 
 		$return = '';
@@ -225,24 +225,19 @@ class plgEditorCkeditor extends JPlugin
 		{
 			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
-			/*
-			 * This will allow plugins to attach buttons or change the behavior on the fly using AJAX
-			 */
+			// This will allow plugins to attach buttons or change the behavior on the fly using AJAX
 			$return .= "\n<div id=\"editor-xtd-buttons\">\n";
 
 			foreach ($results as $button)
 			{
-				/*
-				 * Results should be an object
-				 */
-				if ( $button->get('name') ) {
-					$modal		= ($button->get('modal')) ? ' class="modal-button"' : null;
-					$href		= ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
-					$onclick	= ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
-					$title      = ($button->get('title')) ? $button->get('title') : $button->get('text');
-					$return .= '<div class="button2-left"><div class="' . $button->get('name')
-						. '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
-						. '">' . $button->get('text') . "</a></div></div>\n";
+				// Results should be an object
+				if ($button->get('name'))
+				{
+					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
+					$href    = ($button->get('link')) ? ' href="'.JURI::base().$button->get('link').'"' : null;
+					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="IeCursorFix(); return false;"';
+					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
+					$return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
 				}
 			}
 
@@ -305,7 +300,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->removePlugins                 = '';
 		$config->resize_enabled                = true;
 		$config->emailProtection               = '';
-		$config->protectedSource               = array('/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi');
+		$config->protectedSource               = array('/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi', '/<map[^>]*>(.|\n)*<\/map>/ig', '/<area([^>]*)\/?>/ig');
 		$config->extraAllowedContent           = 'style(*)[*]; mark(*)[*]; span(*)[*]; *(*)[*]{*}';
 		$config->specialChars                  = array('!', '&quot;', '#', '$', '%', '&amp;', "'", '(', ')', '*', '+', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '&lt;', '=', '&gt;', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', "&euro;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&ndash;", "&mdash;", "&iexcl;", "&cent;", "&pound;", "&curren;", "&yen;", "&brvbar;", "&sect;", "&uml;", "&copy;", "&ordf;", "&laquo;", "&not;", "&reg;", "&macr;", "&deg;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&para;", "&middot;", "&cedil;", "&sup1;", "&ordm;", "&raquo;", "&frac14;", "&frac12;", "&frac34;", "&iquest;", "&Agrave;", "&Aacute;", "&Acirc;", "&Atilde;", "&Auml;", "&Aring;", "&AElig;", "&Ccedil;", "&Egrave;", "&Eacute;", "&Ecirc;", "&Euml;", "&Igrave;", "&Iacute;", "&Icirc;", "&Iuml;", "&ETH;", "&Ntilde;", "&Ograve;", "&Oacute;", "&Ocirc;", "&Otilde;", "&Ouml;", "&times;", "&Oslash;", "&Ugrave;", "&Uacute;", "&Ucirc;", "&Uuml;", "&Yacute;", "&THORN;", "&szlig;", "&agrave;", "&aacute;", "&acirc;", "&atilde;", "&auml;", "&aring;", "&aelig;", "&ccedil;", "&egrave;", "&eacute;", "&ecirc;", "&euml;", "&igrave;", "&iacute;", "&icirc;", "&iuml;", "&eth;", "&ntilde;", "&ograve;", "&oacute;", "&ocirc;", "&otilde;", "&ouml;", "&divide;", "&oslash;", "&ugrave;", "&uacute;", "&ucirc;", "&uuml;", "&yacute;", "&thorn;", "&yuml;", "&OElig;", "&oelig;", "&#372;", "&#374", "&#373", "&#375;", "&sbquo;", "&#8219;", "&bdquo;", "&hellip;", "&trade;", "&#9658;", "&bull;", "&rarr;", "&rArr;", "&hArr;", "&diams;", "&asymp;", "&Omega;");
 		$config->disableNativeSpellChecker     = false;
@@ -539,6 +534,11 @@ class plgEditorCkeditor extends JPlugin
 
 		// set editor skin
 		$config->skin = $this->params->get('skin', 'moono');
+
+		if (JFactory::getUser()->authorise('core.manage', 'com_system'))
+		{
+			$config->allowedContent = true;
+		}
 
 		return $config;
 	}
