@@ -890,22 +890,23 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @param   string   $tags
+	 * @param   integer  $user_id
+	 * @param   integer  $admin
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		if (!$this->_data->get('cloud'))
-		{
-			$this->_data->set('cloud', new SupportModelTags($this->get('id')));
-		}
+		$cloud = new SupportModelTags($this->get('id'));
 
-		return $this->_data->get('cloud')->setTags($tags, $user_id, $admin);
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @param   string   $tag
+	 * @return  boolean
 	 */
 	public function appendTag($tag)
 	{
