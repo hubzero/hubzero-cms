@@ -213,6 +213,10 @@ class ProjectsRouter extends \Hubzero\Component\Router\Base
 			elseif (in_array($segments[0], $tasks))
 			{
 				$vars['task'] = $segments[0];
+				if (!empty($segments[1]))
+				{
+					$vars['action']  = $segments[1];
+				}
 				return $vars;
 			}
 			elseif ($segments[0] == 'media')
