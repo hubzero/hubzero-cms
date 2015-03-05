@@ -182,9 +182,9 @@ class MembersHelperUtility
 	 */
 	public static function validname($name)
 	{
-		// Look for all printable characters except for ':'
+		// Exclude all non-printable characters and the ':'
 		// ':' can mess up ldap entries
-		if (preg_match("/^[\x20-\x39\x3B-\x7F]*$/u", $name))
+		if (preg_match("/^[^:]*$/u", $name))
 		{
 			return(1);
 		}
