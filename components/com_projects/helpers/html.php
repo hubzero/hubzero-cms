@@ -74,14 +74,14 @@ class ProjectsHtml
 	{
 		$parsed 		= date_parse($time);
 		$timestamp		= strtotime($time);
-		$current_time 	= $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
+		$current_time 	= $utc ? JFactory::getDate() : date('c');
 		$current  		= date_parse($current_time);
-		$lapsed 		= $current_time - $timestamp;
+		$lapsed 		= strtotime($current_time) - $timestamp;
 		if ($lapsed < 30)
 		{
 			return JText::_('just now');
 		}
-		elseif ($lapsed > 86400 && $current['year'] == $parsed['year'])
+		elseif ($lapsed > 86400 && $current['year'] != $parsed['year'])
 		{
 			return JHTML::_('date', $timestamp, 'M j, Y', false);
 		}
