@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,7 +40,7 @@ $sitename = $jconfig->getValue('config.sitename');
 
 $base = $this->wishlist->link();
 
-$cloud = new WishlistModelTags($this->wishlist->get('id'));
+$cloud = new \Components\Wishlist\Models\Tags($this->wishlist->get('id'));
 $total = $this->wishlist->wishes('list', $this->filters);
 
 /* Wish List */
@@ -183,7 +183,7 @@ if ($this->wishlist->exists())
 								<?php echo JText::_('COM_WISHLIST_FILTER_'.strtoupper($this->filters['filterby'])); ?>
 								<?php echo ($this->filters['tag'] != '') ? JText::sprintf('COM_WISHLIST_WISHES_TAGGED_WITH', $this->filters['tag']) : ''; ?>
 								<span>
-									(<?php echo ($this->pageNav->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishlist->wishes()->total(); ?> of <?php echo $this->pageNav->total; ?>)
+									(<?php echo ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start']; ?> - <?php echo $this->filters['start'] + $this->wishlist->wishes()->total(); ?> of <?php echo $this->total; ?>)
 								</span>
 							</caption>
 							<tbody>
@@ -359,15 +359,22 @@ if ($this->wishlist->exists())
 						</table>
 						<?php
 						// Page navigation
-						$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-						$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-						$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
-						$this->pageNav->setAdditionalUrlParam('newsearch', 0);
+						// Initiate paging
+						jimport('joomla.html.pagination');
+						$pageNav = new JPagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+						);
+						$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+						$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+						$pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+						$pageNav->setAdditionalUrlParam('newsearch', 0);
 						if ($this->filters['search'])
 						{
-							$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+							$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 						}
-						echo $this->pageNav->getListFooter();
+						echo $pageNav->getListFooter();
 						?>
 						<div class="clearfix"></div>
 					</div><!-- / .container -->

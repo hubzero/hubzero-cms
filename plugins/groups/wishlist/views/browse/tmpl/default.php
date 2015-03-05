@@ -167,12 +167,12 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 						<td class="voting">
 							<?php
 								$view = new \Hubzero\Component\View(array(
-									'name'      => 'wishlist',
+									'name'      => 'wishlists',
 									'layout'    => '_vote',
 									'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wishlist'
 								));
 								$view->set('option', 'com_wishlist')
-								     ->set('item',  new WishlistModelWish($item))
+								     ->set('item',  new \Components\Wishlist\Models\Wish($item))
 								     ->set('listid', $this->wishlist->id)
 								     ->set('plugin', 0)
 								     ->set('admin', 0)

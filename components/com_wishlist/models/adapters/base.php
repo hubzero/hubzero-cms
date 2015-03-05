@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models\Adapters;
+
+use Hubzero\Base\Object;
 
 /**
  * Abstract adapter class for a wishlist
  */
-abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
+abstract class Base extends Object
 {
 	/**
 	 * The object the referenceid references
@@ -60,8 +61,8 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $referenceid Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer  $referenceid  Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($referenceid=0)
 	{
@@ -71,18 +72,18 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Generate and return the title for this wishlist
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function title()
 	{
-		return JText::_('COM_WISHLIST');
+		return \JText::_('COM_WISHLIST');
 	}
 
 	/**
 	 * Retrieve a property from the internal item object
 	 *
-	 * @param      string $key Property to retrieve
-	 * @return     string
+	 * @param   string  $key  Property to retrieve
+	 * @return  string
 	 */
 	public function item($key='')
 	{
@@ -96,7 +97,7 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Does the item exists?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function exists()
 	{
@@ -111,9 +112,9 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -123,8 +124,8 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Flatten array of segments into querystring
 	 *
-	 * @param      array $segments An associative array of querystring bits
-	 * @return     string
+	 * @param   array   $segments  An associative array of querystring bits
+	 * @return  string
 	 */
 	protected function _build(array $segments)
 	{
@@ -143,18 +144,18 @@ abstract class WishlistModelAdapterAbstract extends \Hubzero\Base\Object
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
 	 *
-	 * @param      string $title Breadcrumb title
-	 * @param      string $url   Breadcrumb URL
-	 * @return     string
+	 * @param   string  $title  Breadcrumb title
+	 * @param   string  $url    Breadcrumb URL
+	 * @return  string
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->get('option'))),
+				\JText::_(strtoupper($this->get('option'))),
 				'index.php?option=' . $this->get('option')
 			);
 		}

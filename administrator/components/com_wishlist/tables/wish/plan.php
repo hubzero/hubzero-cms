@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Tables\Wish;
 
 /**
  * Table class for wishlist plan
  */
-class WishlistPlan extends JTable
+class Plan extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,8 +56,7 @@ class WishlistPlan extends JTable
 		$this->pagetext = rtrim($this->pagetext);
 		if (!$this->pagetext)
 		{
-			$this->setError(JText::_('Please provide a plan'));
-			return false;
+			$this->setError(\JText::_('Please provide a plan'));
 		}
 
 		$this->version = intval($this->version);
@@ -66,14 +64,18 @@ class WishlistPlan extends JTable
 		$this->wishid = intval($this->wishid);
 		if (!$this->wishid)
 		{
-			$this->setError(JText::_('Please provide a wish ID'));
+			$this->setError(\JText::_('Please provide a wish ID'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		return true;

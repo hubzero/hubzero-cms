@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Tables;
 
 /**
  * Table class for wishlist owner
  */
-class WishlistOwner extends JTable
+class Owner extends \JTable
 {
 	/**
 	 * Constructor
@@ -64,7 +63,7 @@ class WishlistOwner extends JTable
 
 		$nativeowners = $this->get_owners($listid, $admingroup, 1);
 
-		$quser = JUser::getInstance($uid);
+		$quser = \JUser::getInstance($uid);
 
 		// cannot delete "native" owner (e.g. resource contributor)
 		if (is_object($quser) && !in_array($quser->get('id'), $nativeowners, true))
@@ -97,7 +96,7 @@ class WishlistOwner extends JTable
 		{
 			foreach ($newowners as $no)
 			{
-				$quser = JUser::getInstance($no);
+				$quser = \JUser::getInstance($no);
 				if (is_object($quser)
 				 && !in_array($quser->get('id'), $owners['individuals'], true)
 				 && !in_array($quser->get('id'), $owners['advisory'], true))
@@ -109,33 +108,33 @@ class WishlistOwner extends JTable
 
 					if (!$this->store())
 					{
-						$this->setError(JText::_('Failed to add a user.'));
+						$this->setError(\JText::_('Failed to add a user.'));
 						return false;
 					}
 
 					// send email to added user
-					$jconfig = JFactory::getConfig();
+					$jconfig = \JFactory::getConfig();
 					$admin_email = $jconfig->getValue('config.mailfrom');
 
-					$kind = $type==2 ? JText::_('member of Advisory Committee') : JText::_('list administrator');
-					$subject = JText::_('Wish List') . ', ' . JText::_('You have been added as a') . ' ' . $kind . ' ' . JText::_('FOR') . ' ' . JText::_('Wish List') . ' #' . $listid;
+					$kind = $type==2 ? \JText::_('member of Advisory Committee') : \JText::_('list administrator');
+					$subject = \JText::_('Wish List') . ', ' . \JText::_('You have been added as a') . ' ' . $kind . ' ' . \JText::_('FOR') . ' ' . \JText::_('Wish List') . ' #' . $listid;
 
 					$from = array(
-						'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Wish List'),
+						'name'  => $jconfig->getValue('config.sitename') . ' ' . \JText::_('Wish List'),
 						'email' => $jconfig->getValue('config.mailfrom')
 					);
 
 					$message  = $subject . '. ';
 					$message .= "\r\n\r\n";
 					$message .= '----------------------------' . "\r\n";
-					$url = JURI::base() . JRoute::_('index.php?option=com_wishlist&id=' . $listid);
-					$message .= JText::sprintf('Please go to %s to view the wish list and rank new wishes.', $url);
+					$url = \JURI::base() . \JRoute::_('index.php?option=com_wishlist&id=' . $listid);
+					$message .= \JText::sprintf('Please go to %s to view the wish list and rank new wishes.', $url);
 
-					JPluginHelper::importPlugin('xmessage');
-					$dispatcher = JDispatcher::getInstance();
+					\JPluginHelper::importPlugin('xmessage');
+					$dispatcher = \JDispatcher::getInstance();
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_owner', $subject, $message, $from, array($quser->get('id')), 'com_wishlist')))
 					{
-						$this->setError(JText::_('Failed to message new wish list owner.'));
+						$this->setError(\JText::_('Failed to message new wish list owner.'));
 					}
 				}
 			}
@@ -162,7 +161,7 @@ class WishlistOwner extends JTable
 		}
 
 		$obj  = new Wishlist($this->_db);
-		$objG = new WishlistOwnerGroup($this->_db);
+		$objG = new OwnerGroup($this->_db);
 		if (!$wishlist)
 		{
 			$wishlist = $obj->get_wishlist($listid);
@@ -230,7 +229,7 @@ class WishlistOwner extends JTable
 		sort($owners);
 
 		// Are we also including advisory committee?
-		$wconfig = JComponentHelper::getParams('com_wishlist');
+		$wconfig = \JComponentHelper::getParams('com_wishlist');
 
 		$advisory = array();
 

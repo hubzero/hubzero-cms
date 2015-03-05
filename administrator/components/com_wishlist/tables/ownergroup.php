@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Tables;
+
+use Hubzero\User\Group;
 
 /**
  * Table class for wishlist owner group
  */
-class WishlistOwnerGroup extends JTable
+class OwnerGroup extends \JTable
 {
 	/**
 	 * Constructor
@@ -85,7 +86,7 @@ class WishlistOwnerGroup extends JTable
 		// if primary list, add all site admins
 		if ($controlgroup && $wishlist->category == 'general')
 		{
-			$instance = \Hubzero\User\Group::getInstance($controlgroup);
+			$instance = Group::getInstance($controlgroup);
 
 			if (is_object($instance))
 			{
@@ -115,7 +116,7 @@ class WishlistOwnerGroup extends JTable
 			{
 				foreach ($wishgroups as $wg)
 				{
-					if (\Hubzero\User\Group::exists($wg->groupid))
+					if (Group::exists($wg->groupid))
 					{
 						$groups[] = $wg->groupid;
 					}
@@ -146,7 +147,7 @@ class WishlistOwnerGroup extends JTable
 		$nativegroups = $this->get_owner_groups($listid, $admingroup, '', 1);
 
 		// cannot delete "native" owners (e.g. tool dev group)
-		if (\Hubzero\User\Group::exists($groupid)
+		if (Group::exists($groupid)
 		 && !in_array($groupid, $nativegroups, true))
 		{
 			$query = "DELETE FROM $this->_tbl WHERE wishlist=" . $this->_db->Quote($listid) . " AND groupid=" . $this->_db->Quote($groupid);
@@ -177,7 +178,7 @@ class WishlistOwnerGroup extends JTable
 		{
 			foreach ($newgroups as $ng)
 			{
-				$instance = \Hubzero\User\Group::getInstance($ng);
+				$instance = Group::getInstance($ng);
 				if (is_object($instance))
 				{
 					$gid = $instance->get('gidNumber');
@@ -190,7 +191,7 @@ class WishlistOwnerGroup extends JTable
 
 						if (!$this->store())
 						{
-							$this->setError(JText::_('Failed to add a user.'));
+							$this->setError(\JText::_('Failed to add a user.'));
 							return false;
 						}
 					}

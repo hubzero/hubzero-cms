@@ -28,58 +28,32 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Wishlist\Models;
-
-require_once(__DIR__ . DS . 'base.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
-
-/**
- * Wishlist class for a owner model
- */
-class Owner extends Base
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+?>
+<ol class="comments" id="t<?php echo (isset($this->parent) ? $this->parent : '0'); ?>">
+<?php
+if (isset($this->comments))// && $this->comments instanceof \Hubzero\Base\ItemList)
 {
-	/**
-	 * Table class name
-	 *
-	 * @var object
-	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Owner';
-
-	/**
-	 * Returns a reference to this model
-	 *
-	 * @param   mixed   $oid  ID (int) or array or object
-	 * @return  object
-	 */
-	static function &getInstance($oid=0)
+	$cls = 'odd';
+	if (isset($this->cls))
 	{
-		static $instances;
+		$cls = ($this->cls == 'odd') ? 'even' : 'odd';
+	}
 
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
+	$this->depth++;
 
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+	foreach ($this->comments as $comment)
+	{
+		$this->view('_comment')
+		     ->set('option', $this->option)
+		     ->set('comment', $comment)
+		     ->set('depth', $this->depth)
+		     ->set('cls', $cls)
+		     ->set('wish', $this->wish)
+		     ->set('wishlist', $this->wishlist)
+		     ->display();
 	}
 }
-
+?>
+</ol>

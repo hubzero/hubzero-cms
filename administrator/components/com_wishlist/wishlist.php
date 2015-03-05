@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,55 +24,52 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-$option = JRequest::getCmd('option', 'com_wishlist');
+namespace Components\Wishlist;
 
 // Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_wishlist'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.plan.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owner.group.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.rank.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.attachment.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'wishlist.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'owner.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'ownergroup.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'wish.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
+include_once(__DIR__ . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
+include_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = JRequest::getCmd('controller', 'lists');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'lists');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'lists';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_WISHLIST_LISTS'),
-	JRoute::_('index.php?option=' .  $option . '&controller=lists'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_WISHLIST_LISTS'),
+	\JRoute::_('index.php?option=com_wishlist&controller=lists'),
 	($controllerName == 'lists')
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_WISHLIST_WISHES'),
-	JRoute::_('index.php?option=' .  $option . '&controller=wishes&wishlist=-1'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_WISHLIST_WISHES'),
+	\JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=-1'),
 	($controllerName == 'wishes')
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_WISHLIST_COMMENTS'),
-	JRoute::_('index.php?option=' .  $option . '&controller=comments&wish=-1'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_WISHLIST_COMMENTS'),
+	\JRoute::_('index.php?option=com_wishlist&controller=comments&wish=-1'),
 	($controllerName == 'comments')
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'WishlistController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();

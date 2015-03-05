@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models;
 
+use Hubzero\User\Profile;
+use Hubzero\Utility\String;
+use Hubzero\Base\ItemList;
+use Components\Wishlist\Tables;
+
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'attachment.php');
+require_once(__DIR__ . DS . 'comment.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'plan.php');
+require_once(__DIR__ . DS . 'vote.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'comment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'plan.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'vote.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 
 /**
  * Wishlist model class for a wish
  */
-class WishlistModelWish extends WishlistModelAbstract
+class Wish extends Base
 {
 	/**
 	 * Open state
@@ -99,7 +103,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'Wish';
+	protected $_tbl_name = '\\Components\Wishlist\\Tables\\Wish';
 
 	/**
 	 * Model context
@@ -109,21 +113,21 @@ class WishlistModelWish extends WishlistModelAbstract
 	protected $_context = 'com_wishlist.wish.about';
 
 	/**
-	 * WishlistModelAttachment
+	 * Attachment
 	 *
 	 * @var object
 	 */
 	protected $_attachment = null;
 
 	/**
-	 * WishlistModelAdapter
+	 * Adapter
 	 *
 	 * @var object
 	 */
 	private $_adapter = null;
 
 	/**
-	 * WishlistModelPlan
+	 * Plan
 	 *
 	 * @var object
 	 */
@@ -163,7 +167,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
 	 * @return  void
 	 */
 	public function __construct($oid=null)
@@ -186,8 +190,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param   mixed  $oid ID (int) or array or object
-	 * @return  object WishlistModelWish
+	 * @param   mixed   $oid  ID (int) or array or object
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -226,18 +230,18 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function proposer($property=null, $default=null)
 	{
-		if (!($this->_proposer instanceof \Hubzero\User\Profile))
+		if (!($this->_proposer instanceof Profile))
 		{
-			$this->_proposer = \Hubzero\User\Profile::getInstance($this->get('proposed_by'));
+			$this->_proposer = Profile::getInstance($this->get('proposed_by'));
 			if (!$this->_proposer)
 			{
-				$this->_proposer = new \Hubzero\User\Profile();
+				$this->_proposer = new Profile();
 			}
 		}
 		if ($property)
@@ -259,18 +263,18 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function owner($property=null, $default=null)
 	{
-		if (!($this->_owner instanceof \Hubzero\User\Profile))
+		if (!($this->_owner instanceof Profile))
 		{
-			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('assigned'));
+			$this->_owner = Profile::getInstance($this->get('assigned'));
 			if (!$this->_owner)
 			{
-				$this->_owner = new \Hubzero\User\Profile();
+				$this->_owner = new Profile();
 			}
 		}
 		if ($property)
@@ -294,7 +298,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	{
 		if (!isset($this->_attachment))
 		{
-			$this->_attachment = WishlistModelAttachment::getInstance(0, $this->get('id'));
+			$this->_attachment = Attachment::getInstance(0, $this->get('id'));
 		}
 		return $this->_attachment;
 	}
@@ -302,7 +306,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the proposed datetime
 	 *
-	 * @param   string $rtrn What data to return
+	 * @param   string   $rtrn  What data to return
 	 * @return  boolean
 	 */
 	public function proposed($rtrn='')
@@ -313,7 +317,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the granted datetime
 	 *
-	 * @param   string $rtrn What data to return
+	 * @param   string   $rtrn  What data to return
 	 * @return  boolean
 	 */
 	public function granted($rtrn='')
@@ -324,7 +328,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the due datetime
 	 *
-	 * @param   string $rtrn What data to return
+	 * @param   string   $rtrn  What data to return
 	 * @return  boolean
 	 */
 	public function due($rtrn='')
@@ -335,8 +339,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string $key  Field name to use
-	 * @param   string $rtrn What data to return
+	 * @param   string  $key   Field name to use
+	 * @param   string  $rtrn  What data to return
 	 * @return  string
 	 */
 	public function _date($key, $rtrn='')
@@ -344,11 +348,11 @@ class WishlistModelWish extends WishlistModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -472,8 +476,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return wish status in various formats
 	 *
-	 * @param   string $as Format to return data in [text, alias, note, number]
-	 * @return  mixed  string|integer
+	 * @param   string  $as  Format to return data in [text, alias, note, number]
+	 * @return  mixed   string|integer
 	 */
 	public function status($as='')
 	{
@@ -485,14 +489,14 @@ class WishlistModelWish extends WishlistModelAbstract
 				$ky = 'COM_WISHLIST_WISH_STATUS_';
 				switch ($this->get('status'))
 				{
-					case static::WISH_STATE_ACCEPTED:  $state = JText::_($ky . 'ACCEPTED');  break;
-					case static::WISH_STATE_WITHDRAWN: $state = JText::_($ky . 'WITHDRAWN'); break;
-					case static::WISH_STATE_REJECTED:  $state = JText::_($ky . 'REJECTED');  break;
-					case static::WISH_STATE_DELETED:   $state = JText::_($ky . 'DELETED');   break;
-					case static::WISH_STATE_GRANTED:   $state = JText::_($ky . 'GRANTED');   break;
+					case static::WISH_STATE_ACCEPTED:  $state = \JText::_($ky . 'ACCEPTED');  break;
+					case static::WISH_STATE_WITHDRAWN: $state = \JText::_($ky . 'WITHDRAWN'); break;
+					case static::WISH_STATE_REJECTED:  $state = \JText::_($ky . 'REJECTED');  break;
+					case static::WISH_STATE_DELETED:   $state = \JText::_($ky . 'DELETED');   break;
+					case static::WISH_STATE_GRANTED:   $state = \JText::_($ky . 'GRANTED');   break;
 					case static::WISH_STATE_OPEN:
 					default:
-						$state = ($this->get('accepted') == 1) ? JText::_($ky . 'ACCEPTED') : JText::_($ky . 'PENDING');
+						$state = ($this->get('accepted') == 1) ? \JText::_($ky . 'ACCEPTED') : \JText::_($ky . 'PENDING');
 						/*if (!$this->get('ranked'))
 						{
 							$state = JText::_($ky . 'NEW');
@@ -524,26 +528,26 @@ class WishlistModelWish extends WishlistModelAbstract
 				switch ($this->get('status'))
 				{
 					case static::WISH_STATE_ACCEPTED:
-						$state  = JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
+						$state  = \JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
 						$state .= $this->plan()->exists()
-								? '; ' . JText::_('COM_WISHLIST_WISH_PLAN_STARTED')
+								? '; ' . \JText::_('COM_WISHLIST_WISH_PLAN_STARTED')
 								: '';
 						$state .= $this->due() != '0000-00-00 00:00:00'
-								? '; ' . JText::_('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
+								? '; ' . \JText::_('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
 								: '';
 					break;
-					case static::WISH_STATE_WITHDRAWN: $state = JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
-					case static::WISH_STATE_REJECTED:  $state = JText::_('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
-					case static::WISH_STATE_DELETED:   $state = JText::_('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
+					case static::WISH_STATE_WITHDRAWN: $state = \JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
+					case static::WISH_STATE_REJECTED:  $state = \JText::_('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
+					case static::WISH_STATE_DELETED:   $state = \JText::_('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
 					case static::WISH_STATE_GRANTED:
-						$user = JUser::getInstance($this->get('granted_by'));
+						$user = \JUser::getInstance($this->get('granted_by'));
 						$state = $this->granted() != '0000-00-00 00:00:00'
-								? JText::sprintf('on %s by %s', $this->granted('date'), $user->get('name'))
+								? \JText::sprintf('on %s by %s', $this->granted('date'), $user->get('name'))
 								: '';
 					break;
 					case static::WISH_STATE_OPEN:
 					default:
-						$state = JText::_('COM_WISHLIST_WISH_STATUS_PENDING_INFO');
+						$state = \JText::_('COM_WISHLIST_WISH_STATUS_PENDING_INFO');
 					break;
 				}
 			break;
@@ -561,8 +565,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params String or array of extra params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  String or array of extra params to append
 	 * @return  string
 	 */
 	public function link($type='', $params=null)
@@ -582,14 +586,14 @@ class WishlistModelWish extends WishlistModelAbstract
 		{
 			if (!$this->get('referenceid') || !$this->get('category'))
 			{
-				$wishlist = WishlistModelWishlist::getInstance($this->get('wishlist'));
+				$wishlist = Wishlist::getInstance($this->get('wishlist'));
 				$this->set('referenceid', $wishlist->get('referenceid'));
 				$this->set('category', $wishlist->get('category'));
 			}
 
 			$scope = strtolower($this->get('category'));
 
-			$cls = 'WishlistModelAdapter' . ucfirst($scope);
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{
@@ -611,8 +615,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Store changes to this offering
 	 *
-	 * @param   boolean $check Perform data validation check?
-	 * @return  boolean False if error, True on success
+	 * @param   boolean  $check  Perform data validation check?
+	 * @return  boolean  False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -632,8 +636,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get tags on an entry
 	 *
-	 * @param   string  $what  Data format to return (string, array, cloud)
-	 * @param   integer $admin Get admin tags? 0=no, 1=yes
+	 * @param   string   $what   Data format to return (string, array, cloud)
+	 * @param   integer  $admin  Get admin tags? 0=no, 1=yes
 	 * @return  mixed
 	 */
 	public function tags($what='cloud', $admin=0)
@@ -655,9 +659,9 @@ class WishlistModelWish extends WishlistModelAbstract
 			}
 		}
 
-		if (!($this->_cache['tag.cloud'] instanceof WishlistModelTags))
+		if (!($this->_cache['tag.cloud'] instanceof Tags))
 		{
-			$this->_cache['tag.cloud'] = new WishlistModelTags($this->get('id'));
+			$this->_cache['tag.cloud'] = new Tags($this->get('id'));
 		}
 
 		return $this->_cache['tag.cloud']->render($what, array('admin' => $admin));
@@ -666,16 +670,16 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Tag the entry
 	 *
-	 * @param   string  $tags    Tags to apply
-	 * @param   integer $user_id ID of tagger
-	 * @param   integer $admin   Tag as admin? 0=no, 1=yes
+	 * @param   string   $tags     Tags to apply
+	 * @param   integer  $user_id  ID of tagger
+	 * @param   integer  $admin    Tag as admin? 0=no, 1=yes
 	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		if (!($this->_cache['tag.cloud'] instanceof WishlistModelTags))
+		if (!($this->_cache['tag.cloud'] instanceof Tags))
 		{
-			$this->_cache['tag.cloud'] = new WishlistModelTags($this->get('id'));
+			$this->_cache['tag.cloud'] = new Tags($this->get('id'));
 		}
 
 		return $this->_cache['tag.cloud']->setTags($tags, $user_id, $admin);
@@ -684,9 +688,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param   string  $as      Format to return state in [text, number]
-	 * @param   integer $shorten Number of characters to shorten text to
-	 * @return  mixed String or Integer
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  mixed    String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -740,7 +744,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -748,13 +752,13 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get the plan for this wish
 	 *
-	 * @return  object WishlistModelPlan
+	 * @return  object
 	 */
 	public function plan()
 	{
-		if (!($this->_plan instanceof WishlistModelPlan))
+		if (!($this->_plan instanceof Plan))
 		{
-			$this->_plan = new WishlistModelPlan(0, $this->get('id'));
+			$this->_plan = new Plan(0, $this->get('id'));
 		}
 
 		return $this->_plan;
@@ -764,9 +768,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * Get the record either immediately before or after the current one
 	 * in a listing of records. 
 	 *
-	 * @param   string  $directtion [prev|next]
-	 * @param   array   $filters    Filters to apply
-	 * @param   integer $user_id    A user ID
+	 * @param   string   $directtion  [prev|next]
+	 * @param   array    $filters     Filters to apply
+	 * @param   integer  $user_id     A user ID
 	 * @return  boolean
 	 */
 	public function neighbor($direction, $filters=array(), $user_id=null)
@@ -779,7 +783,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 		if ($user_id === null)
 		{
-			$user_id = JFactory::getUser()->get('id');
+			$user_id = \JFactory::getUser()->get('id');
 		}
 
 		return $this->_tbl->getWishId(
@@ -795,20 +799,20 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Rank an entry
 	 *
-	 * @param   integer $effort
-	 * @param   integer $importance
+	 * @param   integer  $effort
+	 * @param   integer  $importance
 	 * @return  boolean
 	 */
 	public function rank($effort, $importance)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
-		$tbl = new WishRank($this->_db);
+		$tbl = new Tables\Wish\Rank($this->_db);
 		$tbl->load_vote($juser->get('id'), $this->get('id'));
 
 		$tbl->wishid     = $this->get('id');
 		$tbl->userid     = $juser->get('id');
-		$tbl->voted      = JFactory::getDate()->toSql();
+		$tbl->voted      = \JFactory::getDate()->toSql();
 		$tbl->importance = $importance;
 		$tbl->effort     = $effort;
 
@@ -836,19 +840,19 @@ class WishlistModelWish extends WishlistModelAbstract
 	{
 		if (!$this->isOpen())
 		{
-			$this->setError(JText::_('Cannot vote for closed wishes.'));
+			$this->setError(\JText::_('Cannot vote for closed wishes.'));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		if ($this->get('proposed_by') == $juser->get('id'))
 		{
-			$this->setError(JText::_('Cannot vote for your own entry.'));
+			$this->setError(\JText::_('Cannot vote for your own entry.'));
 			return false;
 		}
 
-		$tbl = new Vote($this->_db);
+		$tbl = new \Components\Answers\Tables\Vote($this->_db);
 
 		$vote = strtolower($vote);
 
@@ -865,8 +869,8 @@ class WishlistModelWish extends WishlistModelAbstract
 		$tbl->referenceid = $this->get('id');
 		$tbl->category    = 'wish';
 		$tbl->voter       = $juser->get('id');
-		$tbl->ip          = JRequest::ip();
-		$tbl->voted       = JFactory::getDate()->toSql();
+		$tbl->ip          = \JRequest::ip();
+		$tbl->voted       = \JFactory::getDate()->toSql();
 		$tbl->helpful     = $vote;
 
 		if (!$tbl->check())
@@ -886,9 +890,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of votes
 	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function votes($rtrn='list', $filters=array(), $clear = false)
@@ -932,7 +936,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['votes.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['votes.list'] instanceof ItemList) || $clear)
 				{
 					$tbl = new \Components\Answers\Tables\Vote($this->_db);
 
@@ -941,7 +945,7 @@ class WishlistModelWish extends WishlistModelAbstract
 					{
 						$results = array();
 					}
-					$this->_cache['votes.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['votes.list'] = new ItemList($results);
 				}
 				return $this->_cache['votes.list'];
 			break;
@@ -951,9 +955,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)
@@ -1042,20 +1046,20 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['comments.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['comments.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WishlistModelComment($result);
+							$results[$key] = new Comment($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['comments.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['comments.list'] = new ItemList($results);
 				}
 				return $this->_cache['comments.list'];
 			break;
@@ -1065,14 +1069,14 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of ranks
 	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function rankings($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new WishRank($this->_db);
+		$tbl = new Tables\Wish\Rank($this->_db);
 
 		if (!isset($filters['wish']))
 		{
@@ -1088,20 +1092,20 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['ranks.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['ranks.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->get_votes($this->get('id')))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WishlistModelVote($result);
+							$results[$key] = new Vote($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['ranks.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['ranks.list'] = new ItemList($results);
 				}
 				return $this->_cache['ranks.list'];
 			break;
@@ -1111,15 +1115,15 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a ranking
 	 *
-	 * @param   string $rtrn Data format to return
+	 * @param   string  $rtrn  Data format to return
 	 * @return  mixed
 	 */
 	public function ranking($rtrn='importance')
 	{
 		if (!$this->get('myranking', null))
 		{
-			$tbl = new WishRank($this->_db);
-			$tbl->load_vote(JFactory::getUser()->get('id'), $this->get('id'));
+			$tbl = new Tables\Wish\Rank($this->_db);
+			$tbl->load_vote(\JFactory::getUser()->get('id'), $this->get('id'));
 
 			$this->set('myranking', $tbl);
 		}
@@ -1135,10 +1139,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param   string  $action    Action to check
-	 * @param   string  $assetType Type of asset to check
-	 * @param   integer $assetId   ID of item to check access on
-	 * @return  boolean True if authorized, false if not
+	 * @param   string   $action     Action to check
+	 * @param   string   $assetType  Type of asset to check
+	 * @param   integer  $assetId    ID of item to check access on
+	 * @return  boolean  True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='wish', $assetId=null)
 	{
@@ -1149,7 +1153,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			// Has the list access check been performed?
 			if (!$this->config()->get('access-check-list-done', false))
 			{
-				$wishlist = WishlistModelWishlist::getInstance($this->get('wishlist'));
+				$wishlist = Wishlist::getInstance($this->get('wishlist'));
 				$wishlist->access($action, 'list');
 			}
 
@@ -1184,7 +1188,7 @@ class WishlistModelWish extends WishlistModelAbstract
 					}
 
 					// Is the user logged in?
-					$juser = JFactory::getUser();
+					$juser = \JFactory::getUser();
 					if (!$juser->get('guest'))
 					{
 						// Is the user the wish proposer?
@@ -1209,8 +1213,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Purge data associated with this wish
 	 *
-	 * @param   string  $what What to purge
-	 * @return  boolean True on success, false if not
+	 * @param   string   $what  What to purge
+	 * @return  boolean  True on success, false if not
 	 */
 	public function purge($what)
 	{
@@ -1221,7 +1225,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'rank':
 			case 'ranks':
 			case 'rankings':
-				$objR = new WishRank($this->_db);
+				$objR = new Tables\Wish\Rank($this->_db);
 				if (!$objR->remove_vote($this->get('id')))
 				{
 					$this->setError($objR->getError());

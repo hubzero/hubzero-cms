@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,27 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
+use Hubzero\User\Profile;
+
+require_once(__DIR__ . DS . 'base.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
 
 /**
  * Wishlist model class for a vote
  */
-class WishlistModelVote extends WishlistModelAbstract
+class Vote extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'WishRank';
+	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wish\\Rank';
 
 	/**
 	 * Hubzero\User\Profile
@@ -56,7 +57,7 @@ class WishlistModelVote extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @param   mixed  $oid  Integer (ID), string (alias), object or array
 	 * @return  void
 	 */
 	public function __construct($oid=null, $wish=null)
@@ -106,18 +107,18 @@ class WishlistModelVote extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('userid'));
+			$this->_creator = Profile::getInstance($this->get('userid'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -134,7 +135,7 @@ class WishlistModelVote extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string  $rtrn What data to return
+	 * @param   string   $rtrn  What data to return
 	 * @return  boolean
 	 */
 	public function created($rtrn='')
@@ -142,11 +143,11 @@ class WishlistModelVote extends WishlistModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

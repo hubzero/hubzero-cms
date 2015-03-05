@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,27 +23,26 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Helpers;
 
 /**
  * Wishlist helper class for misc. HTML
  */
-class WishlistHtml
+class Html
 {
 	/**
 	 * Generate a select form
 	 *
-	 * @param      string $name  Field name
-	 * @param      array  $array Data to populate select with
-	 * @param      mixed  $value Value to select
-	 * @param      string $class Class to add
-	 * @return     string HTML
+	 * @param   string  $name   Field name
+	 * @param   array   $array  Data to populate select with
+	 * @param   mixed   $value  Value to select
+	 * @param   string  $class  Class to add
+	 * @return  string  HTML
 	 */
 	public static function formSelect($name, $array, $value, $class='')
 	{
@@ -63,10 +62,10 @@ class WishlistHtml
 	/**
 	 * Convert a numerical vote value to a readable text value
 	 *
-	 * @param      integer $rawnum   Vote value
-	 * @param      string  $category Vote type
-	 * @param      string  $output   Value to append to
-	 * @return     string
+	 * @param   integer  $rawnum    Vote value
+	 * @param   string   $category  Vote type
+	 * @param   string   $output    Value to append to
+	 * @return  string
 	 */
 	public static function convertVote($rawnum, $category, $output='')
 	{
@@ -75,26 +74,26 @@ class WishlistHtml
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = JText::_('COM_WISHLIST_RUBBISH');     break;
-				case 1: $output = JText::_('COM_WISHLIST_MAYBE');       break;
-				case 2: $output = JText::_('COM_WISHLIST_INTERESTING'); break;
-				case 3: $output = JText::_('COM_WISHLIST_GOODIDEA');    break;
-				case 4: $output = JText::_('COM_WISHLIST_IMPORTANT');   break;
-				case 5: $output = JText::_('COM_WISHLIST_CRITICAL');    break;
+				case 0: $output = \JText::_('COM_WISHLIST_RUBBISH');     break;
+				case 1: $output = \JText::_('COM_WISHLIST_MAYBE');       break;
+				case 2: $output = \JText::_('COM_WISHLIST_INTERESTING'); break;
+				case 3: $output = \JText::_('COM_WISHLIST_GOODIDEA');    break;
+				case 4: $output = \JText::_('COM_WISHLIST_IMPORTANT');   break;
+				case 5: $output = \JText::_('COM_WISHLIST_CRITICAL');    break;
 			}
 		}
 		else if ($category == 'effort')
 		{
 			switch ($rawnum)
 			{
-				case 0: $output = JText::_('COM_WISHLIST_TWOMONTHS');   break;
-				case 1: $output = JText::_('COM_WISHLIST_TWOWEEKS');    break;
-				case 2: $output = JText::_('COM_WISHLIST_ONEWEEK');     break;
-				case 3: $output = JText::_('COM_WISHLIST_TWODAYS');     break;
-				case 4: $output = JText::_('COM_WISHLIST_ONEDAY');      break;
-				case 5: $output = JText::_('COM_WISHLIST_FOURHOURS');   break;
-				case 6: $output = JText::_('COM_WISHLIST_DONT_KNOW'); 	break;
-				case 7: $output = JText::_('COM_WISHLIST_NA');         	break;
+				case 0: $output = \JText::_('COM_WISHLIST_TWOMONTHS');   break;
+				case 1: $output = \JText::_('COM_WISHLIST_TWOWEEKS');    break;
+				case 2: $output = \JText::_('COM_WISHLIST_ONEWEEK');     break;
+				case 3: $output = \JText::_('COM_WISHLIST_TWODAYS');     break;
+				case 4: $output = \JText::_('COM_WISHLIST_ONEDAY');      break;
+				case 5: $output = \JText::_('COM_WISHLIST_FOURHOURS');   break;
+				case 6: $output = \JText::_('COM_WISHLIST_DONT_KNOW'); 	break;
+				case 7: $output = \JText::_('COM_WISHLIST_NA');         	break;
 			}
 		}
 
@@ -104,14 +103,14 @@ class WishlistHtml
 	/**
 	 * Convert a timestamp to a more human readable string such as "3 days ago"
 	 *
-	 * @param      string $date Timestamp
-	 * @return     string
+	 * @param   string  $date  Timestamp
+	 * @return  string
 	 */
 	public static function nicetime($date)
 	{
 		if (empty($date))
 		{
-			return JText::_('No date provided');
+			return \JText::_('No date provided');
 		}
 
 		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
@@ -120,10 +119,10 @@ class WishlistHtml
 		$now = time();
 		$unix_date = strtotime($date);
 
-		   // check validity of date
+		// check validity of date
 		if (empty($unix_date))
 		{
-			return JText::_('Bad date');
+			return \JText::_('Bad date');
 		}
 
 		// is it future date or past date

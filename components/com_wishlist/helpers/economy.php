@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,31 +24,35 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Helpers;
+
+use Components\Wishlist\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Bank\Teller;
+use Hubzero\Bank\Transaction;
 
 /**
  * Wishlist Economy class:
  * Stores economy funtions for wishlists
  */
-class WishlistEconomy extends JObject
+class Economy extends Object
 {
 	/**
 	 * JDatabase
 	 *
 	 * @var object
 	 */
-	var $_db = NULL;
+	private $_db = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -58,8 +62,8 @@ class WishlistEconomy extends JObject
 	/**
 	 * Get a list of payees for a wish
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @return     array
+	 * @param   integer  $wishid  Wish ID
+	 * @return  array
 	 */
 	public function getPayees($wishid)
 	{
@@ -67,7 +71,7 @@ class WishlistEconomy extends JObject
 		{
 			return null;
 		}
-		$sql = "SELECT DISTINCT uid FROM #__users_transactions WHERE category='wish' AND referenceid=$wishid AND type='hold'";
+		$sql = "SELECT DISTINCT uid FROM `#__users_transactions` WHERE category='wish' AND referenceid=$wishid AND type='hold'";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
@@ -75,9 +79,9 @@ class WishlistEconomy extends JObject
 	/**
 	 * Get total payment for a wish and user
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @param      integer $uid    User ID
-	 * @return     integer
+	 * @param   integer  $wishid  Wish ID
+	 * @param   integer  $uid     User ID
+	 * @return  integer
 	 */
 	public function getTotalPayment($wishid, $uid)
 	{
@@ -85,7 +89,7 @@ class WishlistEconomy extends JObject
 		{
 			return null;
 		}
-		$sql = "SELECT SUM(amount) FROM #__users_transactions WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
+		$sql = "SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
@@ -93,8 +97,8 @@ class WishlistEconomy extends JObject
 	/**
 	 * Adjust credits for a wish with a bonus assigned
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @return     void
+	 * @param   integer  $wishid  Wish ID
+	 * @return  void
 	 */
 	public function cleanupBonus($wishid)
 	{
@@ -103,7 +107,7 @@ class WishlistEconomy extends JObject
 			return null;
 		}
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		$objWish = new Wish($this->_db);
+		$objWish = new Tables\Wish($this->_db);
 		$wish = $objWish->get_wish($wishid, '', 1);
 
 		if ($wish->bonus > 0)
@@ -114,7 +118,7 @@ class WishlistEconomy extends JObject
 			{
 				foreach ($payees as $p)
 				{
-					$BTL = new \Hubzero\Bank\Teller($this->_db , $p->uid);
+					$BTL = new Teller($this->_db , $p->uid);
 					$hold = $this->getTotalPayment($wishid, $p->uid);
 					if ($hold)
 					{
@@ -125,7 +129,7 @@ class WishlistEconomy extends JObject
 				}
 			}
 			 // Delete holds
-			$BT = new \Hubzero\Bank\Transaction($this->_db);
+			$BT = new Transaction($this->_db);
 			$BT->deleteRecords('wish', 'hold', $wishid);
 		}
 	}
@@ -133,10 +137,10 @@ class WishlistEconomy extends JObject
 	/**
 	 * Distribute points
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @param      string  $type   Transaction type
-	 * @param      number  $points Points to distribute
-	 * @return     void
+	 * @param   integer  $wishid  Wish ID
+	 * @param   string   $type    Transaction type
+	 * @param   number   $points  Points to distribute
+	 * @return  void
 	 */
 	public function distribute_points($wishid, $type='grant', $points=0)
 	{
@@ -146,7 +150,7 @@ class WishlistEconomy extends JObject
 		}
 
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		$objWish = new Wish($this->_db);
+		$objWish = new Tables\Wish($this->_db);
 		$wish = $objWish->get_wish ($wishid);
 
 		$points = !$points ? $wish->bonus : $points;
@@ -155,11 +159,11 @@ class WishlistEconomy extends JObject
 		if ($points > 0 && $type!='royalty')
 		{
 			// Get the component parameters
-			$wconfig = JComponentHelper::getParams('com_wishlist');
+			$wconfig = \JComponentHelper::getParams('com_wishlist');
 			$admingroup = $wconfig->get('group', 'hubadmin');
 
 			// get list owners
-			$objOwner = new WishlistOwner( $this->_db);
+			$objOwner = new Tables\Owner( $this->_db);
 			$owners   = $objOwner->get_owners($wish->wishlist, $admingroup, '', 0, $wishid);
 			$owners   = $owners['individuals'];
 
@@ -171,20 +175,20 @@ class WishlistEconomy extends JObject
 			{
 				foreach ($owners as $owner)
 				{
-					$o = JUser::getInstance($owner);
+					$o = \JUser::getInstance($owner);
 					if (!is_object($o) || !$o->get('id'))
 					{
 						continue;
 					}
-					$BTLO = new \Hubzero\Bank\Teller($this->_db , $owner);
+					$BTLO = new Teller($this->_db , $owner);
 					if ($wish->assigned && $wish->assigned == $owner)
 					{
-						//$BTLO->deposit($mainshare, JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
+						//$BTLO->deposit($mainshare, \JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.\JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
 						$mainshare += $commonshare;
 					}
 					else
 					{
-						$BTLO->deposit($commonshare, JText::sprintf('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+						$BTLO->deposit($commonshare, \JText::sprintf('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 					}
 				}
 			}
@@ -196,11 +200,11 @@ class WishlistEconomy extends JObject
 			// give main share
 			if ($wish->assigned && $mainshare)
 			{
-				$o = JUser::getInstance($wish->assigned);
+				$o = \JUser::getInstance($wish->assigned);
 				if (is_object($o) && $o->get('id'))
 				{
-					$BTLM = new \Hubzero\Bank\Teller($this->_db , $wish->assigned);
-					$BTLM->deposit($mainshare, JText::sprintf('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+					$BTLM = new Teller($this->_db , $wish->assigned);
+					$BTLM->deposit($mainshare, \JText::sprintf('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 				}
 			}
 
@@ -210,13 +214,13 @@ class WishlistEconomy extends JObject
 			{
 				foreach ($payees as $p)
 				{
-					$o = JUser::getInstance($p->uid);
+					$o = \JUser::getInstance($p->uid);
 					if (!is_object($o) || !$o->get('id'))
 					{
 						continue;
 					}
 
-					$BTL = new \Hubzero\Bank\Teller($this->_db, $p->uid);
+					$BTL = new Teller($this->_db, $p->uid);
 					$hold = $this->getTotalPayment($wishid, $p->uid);
 					if ($hold)
 					{
@@ -225,7 +229,7 @@ class WishlistEconomy extends JObject
 						$BTL->credit_adjustment($adjusted);
 
 						// withdraw bonus amount
-						$BTL->withdraw($hold, JText::sprintf('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+						$BTL->withdraw($hold, \JText::sprintf('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 					}
 				}
 			}
@@ -233,20 +237,20 @@ class WishlistEconomy extends JObject
 			// Remove holds if exist
 			if ($wish->bonus)
 			{
-				$BT = new \Hubzero\Bank\Transaction($this->_db);
+				$BT = new Transaction($this->_db);
 				$BT->deleteRecords('wish', 'hold', $wishid);
 			}
 		}
 
 		// Points for wish author (needs to be granted by another person)
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if ($wish->ranking > 0 && $wish->proposed_by != $juser->get('id') && $wish->proposed_by)
 		{
-			$o = JUser::getInstance($wish->proposed_by);
+			$o = \JUser::getInstance($wish->proposed_by);
 			if (is_object($o) && $o->get('id'))
 			{
-				$BTLA = new \Hubzero\Bank\Teller($this->_db , $wish->proposed_by);
-				$BTLA->deposit($wish->ranking, JText::sprintf('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
+				$BTLA = new Teller($this->_db , $wish->proposed_by);
+				$BTLA->deposit($wish->ranking, \JText::sprintf('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
 			}
 		}
 	}

@@ -28,13 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\Item\Comment;
+use Components\Wishlist\Tables\Wishlist;
+use Components\Wishlist\Tables\Wish;
+use Exception;
 
 /**
  * Cotnroller class for wishes
  */
-class WishlistControllerComments extends \Hubzero\Component\AdminController
+class Comments extends AdminController
 {
 	/**
 	 * Execute a task
@@ -56,13 +61,13 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Get filters
 		$this->view->filters = array(
@@ -106,8 +111,8 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		if (!$this->view->filters['wish'])
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option,
-				JText::_('Missing wish ID'),
+				\JRoute::_('index.php?option=' . $this->_option, false),
+				\JText::_('Missing wish ID'),
 				'error'
 			);
 			return;
@@ -119,7 +124,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$this->view->wishlist = new Wishlist($this->database);
 		$this->view->wishlist->load($this->view->wish->wishlist);
 
-		$obj = new \Hubzero\Item\Comment($this->database);
+		$obj = new Comment($this->database);
 
 		// Get records
 		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
@@ -192,20 +197,6 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$this->view->total = count($comments);
 		$this->view->rows  = $comments;
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -213,18 +204,19 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a category
 	 *
-	 * @return     void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->wish = JRequest::getInt('wish', 0);
+		$this->view->wish = \JRequest::getInt('wish', 0);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -232,7 +224,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$row = new \Hubzero\Item\Comment($this->database);
+			$row = new Comment($this->database);
 			$row->load($id);
 		}
 
@@ -242,7 +234,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		{
 			$this->view->row->item_type  = 'wish';
 			$this->view->row->item_id    = $this->view->wish;
-			$this->view->row->created    = JFactory::getDate()->toSql();
+			$this->view->row->created    = \JFactory::getDate()->toSql();
 			$this->view->row->created_by = $this->juser->get('id');
 		}
 
@@ -266,14 +258,14 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new \Hubzero\Item\Comment($this->database);
+		$row = new Comment($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->setMessage($row->getError(), 'error');
@@ -306,8 +298,8 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false),
-			JText::_('COM_WISHLIST_COMMENT_SAVED')
+			\JRoute::_('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false),
+			\JText::_('COM_WISHLIST_COMMENT_SAVED')
 		);
 	}
 
@@ -319,17 +311,17 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$wish = JRequest::getInt('wish', 0);
-		$ids  = JRequest::getVar('id', array());
+		$wish = \JRequest::getInt('wish', 0);
+		$ids  = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
 		{
-			$tbl = new \Hubzero\Item\Comment($this->database);
+			$tbl = new Comment($this->database);
 
 			// Loop through each ID
 			foreach ($ids as $id)
@@ -338,16 +330,15 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 				if (!$tbl->delete($id))
 				{
-					JError::raiseError(500, $tbl->getError());
-					return;
+					throw new Exception($tbl->getError(), 500);
 				}
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false),
-			JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false),
+			\JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', count($ids))
 		);
 	}
 
@@ -359,21 +350,21 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
-		$wish = JRequest::getInt('wish', 0);
-		$ids  = JRequest::getVar('id', array());
+		$wish = \JRequest::getInt('wish', 0);
+		$ids  = \JRequest::getVar('id', array());
 		$ids  = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
-				($state == 1 ? JText::_('COM_WISHLIST_SELECT_PUBLISH') : JText::_('COM_WISHLIST_SELECT_UNPUBLISH')),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
+				($state == 1 ? \JText::_('COM_WISHLIST_SELECT_PUBLISH') : \JText::_('COM_WISHLIST_SELECT_UNPUBLISH')),
 				'error'
 			);
 			return;
@@ -383,7 +374,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new \Hubzero\Item\Comment($this->database);
+			$row = new Comment($this->database);
 			$row->load($id);
 			$row->state = $state;
 			$row->store();
@@ -393,19 +384,19 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
+				$message = \JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_WISHLIST_PUBLISHED', count($ids));
+				$message = \JText::sprintf('COM_WISHLIST_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_WISHLIST_UNPUBLISHED', count($ids));
+				$message = \JText::sprintf('COM_WISHLIST_UNPUBLISHED', count($ids));
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
 			$message
 		);
 	}
@@ -418,20 +409,20 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	public function anonTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
 
 		$state = $this->getTask() == 'anonymize' ? 1 : 0;
 
 		// Incoming
-		$wish = JRequest::getInt('wish', 0);
-		$ids  = JRequest::getVar('id', array());
+		$wish = \JRequest::getInt('wish', 0);
+		$ids  = \JRequest::getVar('id', array());
 		$ids  = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
 			);
 			return;
 		}
@@ -440,7 +431,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Updating a category
-			$row = new \Hubzero\Item\Comment($this->database);
+			$row = new Comment($this->database);
 			$row->load($id);
 			$row->anonymous = $state;
 			$row->store();
@@ -448,7 +439,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
 		);
 	}
 
@@ -459,11 +450,11 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$wish = JRequest::getInt('wish', 0);
+		$wish = \JRequest::getInt('wish', 0);
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false)
 		);
 	}
 }

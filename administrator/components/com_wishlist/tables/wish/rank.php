@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Tables\Wish;
 
 /**
  * Table class for wish ranking
  */
-class WishRank extends JTable
+class Rank extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,7 +55,7 @@ class WishRank extends JTable
 	{
 		if (trim($this->wishid) == '')
 		{
-			$this->setError(JText::_('WISHLIST_ERROR_NO_WISHID'));
+			$this->setError(\JText::_('WISHLIST_ERROR_NO_WISHID'));
 			return false;
 		}
 
@@ -77,7 +76,7 @@ class WishRank extends JTable
 
 		if ($userid === NULL or $wishid === NULL)
 		{
-			$this->setError(JText::_('Missing wish or user ID'));
+			$this->setError(\JText::_('Missing wish or user ID'));
 			return false;
 		}
 
@@ -99,7 +98,7 @@ class WishRank extends JTable
 
 		if ($wishid === NULL)
 		{
-			$this->setError(JText::_('Missing wish ID'));
+			$this->setError(\JText::_('Missing wish ID'));
 			return false;
 		}
 
@@ -121,7 +120,7 @@ class WishRank extends JTable
 
 		if ($wishid === NULL)
 		{
-			$this->setError(JText::_('Missing wish ID'));
+			$this->setError(\JText::_('Missing wish ID'));
 			return false;
 		}
 

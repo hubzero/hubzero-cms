@@ -110,19 +110,19 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 		// Include some classes & scripts
 		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'wishlist.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlist.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Configure controller
-		$controller = new WishlistControllerWishlist();
+		$controller = new \Components\Wishlist\Controllers\Wishlists();
 
 		// Get filters
 		$filters = $controller->getFilters(0);
 		$filters['limit'] = $this->params->get('limit');
 
 		// Load some objects
-		$obj = new Wishlist($database);
-		$objWish = new Wish($database);
-		$objOwner = new WishlistOwner($database);
+		$obj = new \Components\Wishlist\Tables\Wishlist($database);
+		$objWish = new \Components\Wishlist\Tables\Wish($database);
+		$objOwner = new \Components\Wishlist\Tables\Owner($database);
 
 		// Get wishlist id
 		$id = $obj->get_wishlistID($refid, $cat);

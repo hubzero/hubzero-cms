@@ -28,29 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 
 /**
  * Model class for a wish attachment
  */
-class WishlistModelAttachment extends WishlistModelAbstract
+class Attachment extends Base
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'WishAttachment';
+	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wish\\Attachment';
 
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed    $oid     ID (int), alias (string), array, or object
+	 * @param   integer  $wishid  Wish ID
+	 * @return  void
 	 */
 	public function __construct($oid=null, $wishid=null)
 	{
@@ -95,9 +95,9 @@ class WishlistModelAttachment extends WishlistModelAbstract
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param   mixed   $oid    ID (int), alias (string), array, or object
-	 * @param   integer $wishid Wish ID
-	 * @return  object  WishlistModelAttachment
+	 * @param   mixed    $oid     ID (int), alias (string), array, or object
+	 * @param   integer  $wishid  Wish ID
+	 * @return  object
 	 */
 	static function &getInstance($oid=0, $wishid=null)
 	{
@@ -132,7 +132,7 @@ class WishlistModelAttachment extends WishlistModelAbstract
 	/**
 	 * Returns a link or path to the file
 	 *
-	 * @param   string $type
+	 * @param   string  $type
 	 * @return  string
 	 */
 	public function link($type)
@@ -142,16 +142,16 @@ class WishlistModelAttachment extends WishlistModelAbstract
 		switch ($type)
 		{
 			case 'download':
-				return JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish'));
+				return \JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish'));
 			break;
 
 			case 'dir':
-				return JPATH_ROOT . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish');
+				return PATH_APP . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish');
 			break;
 
 			case 'file':
 			case 'server':
-				return JPATH_ROOT . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish') . '/' . ltrim($this->get('filename'), '/');
+				return PATH_APP . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish') . '/' . ltrim($this->get('filename'), '/');
 			break;
 		}
 	}
@@ -160,12 +160,12 @@ class WishlistModelAttachment extends WishlistModelAbstract
 	 * Checks the file type and determines if it's in the
 	 * whitelist of allowed extensions
 	 *
-	 * @return  boolean True if allowed file type
+	 * @return  boolean  True if allowed file type
 	 */
 	public function isAllowedType()
 	{
 		jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($this->get('filename')));
+		$ext = strtolower(\JFile::getExt($this->get('filename')));
 
 		if (!in_array($ext, explode(',', $this->config('file_ext', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'))))
 		{

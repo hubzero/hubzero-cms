@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models;
+
+use Hubzero\User\Profile;
+use Hubzero\Base\ItemList;
+use Components\Wishlist\Tables;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wish.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'owner.php');
+require_once(__DIR__ . DS . 'wish.php');
+require_once(__DIR__ . DS . 'owner.php');
 
 /**
  * Wishlist model class
  */
-class WishlistModelWishlist extends WishlistModelAbstract
+class Wishlist extends Base
 {
 	/**
 	 * Open state
@@ -59,7 +62,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'Wishlist';
+	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Wishlist';
 
 	/**
 	 * Container for interally cached data
@@ -76,7 +79,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	);
 
 	/**
-	 * WishlistModelAdapter
+	 * Adapter
 	 *
 	 * @var object
 	 */
@@ -85,25 +88,25 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $oid   Integer, array, or object
-	 * @param   integer $scope Scope type [group, etc.]
+	 * @param   string   $oid    Integer, array, or object
+	 * @param   integer  $scope  Scope type [group, etc.]
 	 * @return  void
 	 */
 	public function __construct($oid=null, $scope=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		if ($this->_tbl_name)
 		{
 			$cls = $this->_tbl_name;
 			$this->_tbl = new $cls($this->_db);
 
-			if (!($this->_tbl instanceof JTable))
+			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
 					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
 				);
-				throw new LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid))
@@ -144,9 +147,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param   string  $oid   Integer, array, or object
-	 * @param   integer $scope Scope type [group, etc.]
-	 * @return  object  WishlistModelWishlist
+	 * @param   string   $oid    Integer, array, or object
+	 * @param   integer  $scope  Scope type [group, etc.]
+	 * @return  object
 	 */
 	static function &getInstance($oid=null, $scope=null)
 	{
@@ -182,7 +185,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Get the underlying item the list is tied to (group, etc.)
 	 *
-	 * @param   string $key
+	 * @param   string  $key
 	 * @return  string
 	 */
 	public function item($key=null)
@@ -204,8 +207,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param   string $type   The type of link to return
-	 * @param   mixed  $params String or array of extra params to append
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  String or array of extra params to append
 	 * @return  string
 	 */
 	public function link($type='', $params=null)
@@ -217,8 +220,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
 	 *
-	 * @param   string $title Breadcrumb title
-	 * @param   string $url   Breadcrumb URL
+	 * @param   string  $title  Breadcrumb title
+	 * @param   string  $url    Breadcrumb URL
 	 * @return  string
 	 */
 	public function pathway($title=null, $pathway=null)
@@ -238,14 +241,14 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		{
 			$scope = strtolower($this->get('category'));
 
-			$cls = 'WishlistModelAdapter' . ucfirst($scope);
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(JText::sprintf('Invalid category of "%s"', $scope));
+					throw new \InvalidArgumentException(\JText::sprintf('Invalid category of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -270,7 +273,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 		if (!$this->_adapter()->exists())
 		{
-			$this->setError(JText::sprintf('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
+			$this->setError(\JText::sprintf('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
 			return false;
 		}
 
@@ -286,7 +289,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 		if (!$this->get('id'))
 		{
-			$this->setError(JText::sprintf('Failed to create wishlist for category "%s" and ID of "%s".', $this->get('category'), $this->get('referenceid')));
+			$this->setError(\JText::sprintf('Failed to create wishlist for category "%s" and ID of "%s".', $this->get('category'), $this->get('referenceid')));
 			return false;
 		}
 
@@ -296,7 +299,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Determine if wishlist is public or private
 	 *
-	 * @return  boolean True if public, false if not
+	 * @return  boolean  True if public, false if not
 	 */
 	public function isPublic()
 	{
@@ -310,17 +313,17 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Set and get a specific wish
 	 *
-	 * @param   integer $id Wish ID
+	 * @param   integer  $id  Wish ID
 	 * @return  object
 	 */
 	public function wish($id=null)
 	{
-		if (!($this->_cache['wish'] instanceof WishlistModelWish)
+		if (!($this->_cache['wish'] instanceof Wish)
 		 || ($id !== null && (int) $this->_cache['wish']->get('id') != $id))
 		{
 			$this->_cache['wish'] = null;
 
-			if ($this->_cache['wishes.list'] instanceof \Hubzero\Base\ItemList)
+			if ($this->_cache['wishes.list'] instanceof ItemList)
 			{
 				foreach ($this->_cache['wishes.list'] as $key => $wish)
 				{
@@ -334,7 +337,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 			if (!$this->_cache['wish'])
 			{
-				$this->_cache['wish'] = WishlistModelWish::getInstance($id, $this->get('scope'), $this->get('scope_id'));
+				$this->_cache['wish'] = Wish::getInstance($id, $this->get('scope'), $this->get('scope_id'));
 			}
 
 			if (!$this->_cache['wish']->exists())
@@ -350,9 +353,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Get a count or list of wishes
 	 *
-	 * @param   string  $rtrn    What data to return [count, list, first]
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     What data to return [count, list, first]
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function wishes($rtrn='', $filters=array(), $clear=false)
@@ -361,9 +364,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		{
 			$filters['wishlist'] = (int) $this->get('id');
 		}
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
-		$tbl = new Wish($this->_db);
+		$tbl = new Tables\Wish($this->_db);
 
 		switch (strtolower($rtrn))
 		{
@@ -378,20 +381,20 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['wishes.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['wishes.list'] instanceof ItemList) || $clear)
 				{
 					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), $juser))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WishlistModelWish($result);
+							$results[$key] = new Wish($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['wishes.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['wishes.list'] = new ItemList($results);
 				}
 				return $this->_cache['wishes.list'];
 			break;
@@ -401,13 +404,13 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Get a list of owners
 	 *
-	 * @param   string  $rtrn   What data to return [count, list, first]
-	 * @param   integer $native
+	 * @param   string   $rtrn    What data to return [count, list, first]
+	 * @param   integer  $native
 	 * @return  array
 	 */
 	public function owners($rtrn='', $native=0)
 	{
-		$tbl = new WishlistOwner($this->_db);
+		$tbl = new Tables\Owner($this->_db);
 
 		if (!is_array($this->_cache['owners.list' . $native]))
 		{
@@ -439,8 +442,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Remove one or more owners
 	 *
-	 * @param   string $what Owner type to remove
-	 * @param   mixed  $data integer|string|array
+	 * @param   string  $what  Owner type to remove
+	 * @param   mixed   $data  integer|string|array
 	 * @return  object
 	 */
 	public function remove($what, $data)
@@ -453,15 +456,15 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		{
 			case 'advisory':
 			case 'individuals':
-				$tbl = new WishlistOwner($this->_db);
+				$tbl = new Tables\Owner($this->_db);
 			break;
 
 			case 'groups':
-				$tbl = new WishlistOwnerGroup($this->_db);
+				$tbl = new Tables\OwnerGroup($this->_db);
 			break;
 
 			default:
-				throw new InvalidArgumentException(JText::_('Owner type not supported.'));
+				throw new \InvalidArgumentException(\JText::_('Owner type not supported.'));
 			break;
 		}
 
@@ -502,8 +505,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Add one or more owners
 	 *
-	 * @param   string $what Owner type to add
-	 * @param   mixed  $data integer|string|array
+	 * @param   string  $what  Owner type to add
+	 * @param   mixed   $data  integer|string|array
 	 * @return  object
 	 */
 	public function add($what, $data)
@@ -517,7 +520,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			case 'advisory':
 				if ($this->config('allow_advisory', 0))
 				{
-					$tbl = new WishlistOwner($this->_db);
+					$tbl = new Tables\Owner($this->_db);
 
 					if (!$tbl->save_owners($this->get('id'), $this->config(), $data, 2))
 					{
@@ -527,7 +530,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			break;
 
 			case 'individuals':
-				$tbl = new WishlistOwner($this->_db);
+				$tbl = new Tables\Owner($this->_db);
 
 				if (!$tbl->save_owners($this->get('id'), $this->config(), $data))
 				{
@@ -536,7 +539,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			break;
 
 			case 'groups':
-				$tbl = new WishlistOwnerGroup($this->_db);
+				$tbl = new Tables\OwnerGroup($this->_db);
 
 				if (!$tbl->save_owner_groups($this->get('id'), $this->config(), $data))
 				{
@@ -545,7 +548,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			break;
 
 			default:
-				throw new InvalidArgumentException(JText::_('Owner type not supported.'));
+				throw new \InvalidArgumentException(\JText::_('Owner type not supported.'));
 			break;
 		}
 
@@ -559,7 +562,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Turn a comma or space deliniated string into an array
 	 *
-	 * @param   string $string
+	 * @param   string  $string
 	 * @return  array
 	 */
 	public function _toArray($string='')
@@ -592,7 +595,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Return an ID for a user
 	 *
-	 * @param  mixed   $user User ID or username
+	 * @param  mixed   $user  User ID or username
 	 * @return integer
 	 */
 	private function _userId($user)
@@ -615,7 +618,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Return an ID for a group
 	 *
-	 * @param   mixed   $group Group ID or cn
+	 * @param   mixed   $group  Group ID or cn
 	 * @return  integer
 	 */
 	private function _groupId($group)
@@ -638,16 +641,16 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param   string  $action    Action to check
-	 * @param   string  $assetType Type of asset to check
-	 * @param   integer $assetId   ID of item to check access on
-	 * @return  boolean True if authorized, false if not
+	 * @param   string   $action     Action to check
+	 * @param   string   $assetType  Type of asset to check
+	 * @param   integer  $assetId    ID of item to check access on
+	 * @return  boolean  True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='list', $assetId=null)
 	{
 		if (!$this->config()->get('access-check-list-done', false))
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 
 			$this->set('admin', 0);
 			$this->config()->set('access-view-' . $assetType, true);

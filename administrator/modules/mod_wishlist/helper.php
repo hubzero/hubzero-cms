@@ -31,6 +31,7 @@
 namespace Modules\Wishlist;
 
 use Hubzero\Module\Module;
+use Components\Wishlist\Models\Wishlist;
 
 /**
  * Module class for com_wishlist data
@@ -49,7 +50,7 @@ class Helper extends Module
 		$wishlist = intval($this->params->get('wishlist', 0));
 		if (!$wishlist)
 		{
-			$model = \WishlistModelWishlist::getInstance(1, 'general');
+			$model = Wishlist::getInstance(1, 'general');
 			if (!$model->exists())
 			{
 				return false;

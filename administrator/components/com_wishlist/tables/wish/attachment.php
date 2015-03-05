@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Tables\Wish;
 
 /**
  * Table class for wish attachments
  */
-class WishAttachment extends JTable
+class Attachment extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,14 +55,17 @@ class WishAttachment extends JTable
 	{
 		if (!$this->wish)
 		{
-			$this->setError(JText::_('Error: wish not found.'));
-			return false;
+			$this->setError(\JText::_('Error: wish not found.'));
 		}
 
 		$this->filename = trim($this->filename);
 		if ($this->filename == '')
 		{
-			$this->setError(JText::_('Error: attachment not found.'));
+			$this->setError(\JText::_('Error: attachment not found.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -124,7 +126,7 @@ class WishAttachment extends JTable
 		{
 			if (is_file($this->uppath . DS . $a[0]))
 			{
-				$path = rtrim(JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $a[3] . '&rid=' . $a[4] . '&wishid=' . $a[2]), DS);
+				$path = rtrim(\JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $a[3] . '&rid=' . $a[4] . '&wishid=' . $a[2]), DS);
 
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0]))
 				{

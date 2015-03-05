@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   GNU General Public License, version 2 (GPLv2)
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Controllers;
+
+use Components\Wishlist\Models\Wishlist;
+use Components\Wishlist\Models\Wish;
+use Components\Wishlist\Models\Attachment;
+use Components\Wishlist\Models\Comment;
+use Components\Wishlist\Models\Plan;
+use Components\Wishlist\Tables;
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\String;
+use Hubzero\Content\Server;
+use Hubzero\Bank\Teller;
+use Exception;
 
 /**
  * Wishlist controller class
  */
-class WishlistControllerWishlist extends \Hubzero\Component\SiteController
+class Wishlists extends SiteController
 {
 	/**
 	 * Determine task and execute
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = \JComponentHelper::getParams('com_members');
 		$this->banking = $this->config->get('banking', $upconfig->get('bankAccounts', 0));
 
 		$this->registerTask('__default', 'wishlist');
@@ -62,7 +73,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 
 		if ($this->_list_title)
 		{
@@ -70,9 +81,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 		if ($this->_task && in_array($this->_task, array('settings', 'add')))
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -84,10 +95,10 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway($wishlist)
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		$pathway->setPathway(array());
 
-		$comtitle  = JText::_(strtoupper($this->_option));
+		$comtitle  = \JText::_(strtoupper($this->_option));
 		$comtitle .= $this->_list_title ? ' - ' . $this->_list_title : '';
 
 		$wishlist->pathway();
@@ -112,7 +123,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				break;
 				case 'settings':
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option . '_' . $this->_task)),
+						\JText::_(strtoupper($this->_option . '_' . $this->_task)),
 						'index.php?option=' . $this->_option . '&task=settings&id=' . $this->_listid
 					);
 				break;
@@ -136,7 +147,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				default:
 					// XSS fix, passing raw user supplied/maniuplatable data to function that creates link. See ticket 1420
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+						\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . htmlentities($this->_task)
 					);
 				break;
@@ -151,11 +162,11 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function loginTask()
 	{
-		if (JFactory::getUser()->get('guest'))
+		if (\JFactory::getUser()->get('guest'))
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
-			JFactory::getApplication()->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return),
+			$return = base64_encode(\JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
+			\JFactory::getApplication()->redirect(
+				\JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
 				'warning'
 			);
@@ -171,10 +182,10 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	public function wishlistTask()
 	{
 		// Incoming
-		$id     = JRequest::getInt('id', 0);
-		$refid  = JRequest::getInt('rid', 1);
-		$cat   	= JRequest::getVar('category', 'general');
-		$saved  = JRequest::getInt('saved', 0);
+		$id     = \JRequest::getInt('id', 0);
+		$refid  = \JRequest::getInt('rid', 1);
+		$cat   	= \JRequest::getVar('category', 'general');
+		$saved  = \JRequest::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
 		$plugin = (isset($this->plugin) && $this->plugin!='') ? $this->plugin : '';
@@ -184,18 +195,18 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		{
 			// oups, this looks like a wrong URL
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
 		if ($id)
 		{
-			$model = WishlistModelWishlist::getInstance($id);
+			$model = Wishlist::getInstance($id);
 		}
 		else
 		{
-			$model = WishlistModelWishlist::getInstance($refid, $cat);
+			$model = Wishlist::getInstance($refid, $cat);
 			if (!$model->exists())
 			{
 				$model->set('referenceid', $refid);
@@ -207,7 +218,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if (!$model->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -246,15 +257,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		{
 			if (!$plugin)
 			{
-				$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+				$this->_msg = \JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
 				$this->loginTask();
 				return;
 			}
 			else
 			{
 				// not authorized
-				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-				return;
+				throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH'), 403);
 			}
 			return;
 		}
@@ -277,15 +287,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$model->set('banking', ($this->banking ? $this->banking : 0));
 		$model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking)); // do not allow points for individual wish lists
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		JRequest::setVar('id', $id);
+		\JRequest::setVar('id', $id);
 
 		$this->view->setLayout('display');
 		$this->view->title    = $this->_title;
@@ -294,49 +296,46 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$this->view->task     = $this->_task;
 		$this->view->juser    = $this->juser;
 		$this->view->wishlist = $model;
+		$this->view->total    = $total;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Show an entry and associated content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function wishTask()
 	{
-		$wishid  	= JRequest::getInt('wishid', 0);
-		$id  		= JRequest::getInt('id', 0);
-		$refid  	= JRequest::getInt('rid', 0);
-		$cat   		= JRequest::getVar('category', '');
-		$action     = JRequest::getVar('action', '');
-		$com   		= JRequest::getInt('com', 0, 'get');
-		$canedit 	= false;
-		$saved  	= JRequest::getInt('saved', 0);
+		$wishid  = \JRequest::getInt('wishid', 0);
+		$id      = \JRequest::getInt('id', 0);
+		$refid   = \JRequest::getInt('rid', 0);
+		$cat     = \JRequest::getVar('category', '');
+		$action  = \JRequest::getVar('action', '');
+		$com     = \JRequest::getInt('com', 0, 'get');
+		$canedit = false;
+		$saved   = \JRequest::getInt('saved', 0);
 
 		//$wishid = $this->wishid && !$wishid ? $this->wishid : $wishid;
 
-		$wish = WishlistModelWish::getInstance($wishid);
+		$wish = Wish::getInstance($wishid);
 
 		if (!$wish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// Get wishlist info
-		$wishlist = WishlistModelWishlist::getInstance($wish->get('wishlist'));
+		$wishlist = Wishlist::getInstance($wish->get('wishlist'));
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// Pass off some data
@@ -356,14 +355,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$this->_buildTitle();
 
 			// Set the pathway
-			$this->_wishpath  = $wish->link(); //'index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid='.$wishid;
-			$this->_wishtitle = \Hubzero\Utility\String::truncate($wish->get('subject'), 80);
+			$this->_wishpath  = $wish->link();
+			$this->_wishtitle = String::truncate($wish->get('subject'), 80);
 			$this->_buildPathway($wishlist);
 
 			// Go through some access checks
 			if ($this->juser->get('guest') && $action)
 			{
-				$this->_msg = ($action=="addbonus") ? JText::_('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
+				$this->_msg = ($action=="addbonus") ? \JText::_('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
 				$this->loginTask();
 				return;
 			}
@@ -371,7 +370,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			if (!$wishlist->isPublic() && $this->juser->get('guest'))
 			{
 				// need to log in to private list
-				$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+				$this->_msg = \JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
 				$this->loginTask();
 				return;
 			}
@@ -379,7 +378,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			if ($wish->isPrivate() && $this->juser->get('guest'))
 			{
 				// need to log in to view private wish
-				$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
+				$this->_msg = \JText::_('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
 				$this->loginTask();
 				return;
 			}
@@ -387,15 +386,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Deleted wish
 			if ($wish->isDeleted() && !$wish->access('manage'))
 			{
-				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-				return;
+				throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 			}
 
 			// Need to be admin to view private wish
 			if ($wish->isPrivate() && !$wish->access('view'))
 			{
-				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-				return;
+				throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH'), 403);
 			}
 
 			// Get list filters
@@ -404,18 +401,18 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Update average value for importance (this is tricky MySQL)
 			if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
 			{
-				//$objR = new WishRank($this->database);
+				//$objR = new Tables\Wish\Rank($this->database);
 				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
 
 				// first consider votes by list owners
 				if ($votes && count($votes) > 0)
 				{
-					$imp 		= 0;
-					$divisor 	= 0;
-					$co_adv 	= 0.8;
-					$co_reg 	= 0.2;
-					$effort		= 0;
-					$counter    = 0;
+					$imp     = 0;
+					$divisor = 0;
+					$co_adv  = 0.8;
+					$co_reg  = 0.2;
+					$effort  = 0;
+					$counter = 0;
 
 					foreach ($votes as $vote)
 					{
@@ -479,11 +476,11 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// check available user funds
 			if ($action == 'addbonus' && $this->banking)
 			{
-				$BTL 		= new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
-				$balance 	= $BTL->summary();
-				$credit 	= $BTL->credit_summary();
-				$funds 		= $balance - $credit;
-				$funds 		= ($funds > 0) ? $funds : '0';
+				$BTL = new Teller($this->database, $this->juser->get('id'));
+				$balance = $BTL->summary();
+				$credit  = $BTL->credit_summary();
+				$funds   = $balance - $credit;
+				$funds   = ($funds > 0) ? $funds : '0';
 				$wish->set('funds', $funds);
 			}
 
@@ -529,33 +526,33 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	public function savesettingsTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$listid  = JRequest::getInt('listid', 0);
-		$action  = JRequest::getVar('action', '');
+		$listid  = \JRequest::getInt('listid', 0);
+		$action  = \JRequest::getVar('action', '');
 
 		// Make sure we have list id
 		if (!$listid)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
-		$wishlist = WishlistModelWishlist::getInstance($listid);
+		$wishlist = Wishlist::getInstance($listid);
 
 		if (!$wishlist->access('manage'))
 		{
-			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
+			JError::raiseError(403, \JText::_('COM_WISHLIST_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Deeleting a user/group
 		if ($action == 'delete')
 		{
-			$user  = JRequest::getInt('user', 0);
-			$group = JRequest::getInt('group', 0);
+			$user  = \JRequest::getInt('user', 0);
+			$group = \JRequest::getInt('group', 0);
 
 			if ($user)
 			{
@@ -570,12 +567,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$wishlist->rank();
 
 			$this->setRedirect(
-				JRoute::_($wishlist->link('', '&saved=1'))
+				\JRoute::_($wishlist->link('', '&saved=1'))
 			);
 			return;
 		}
 
-		if (!$wishlist->bind(JRequest::getVar('fields', array(), 'post')))
+		if (!$wishlist->bind(\JRequest::getVar('fields', array(), 'post')))
 		{
 			JError::raiseError(500, $obj->getError());
 			return;
@@ -589,15 +586,15 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// Save new owners
-		if ($newowners = JRequest::getVar('newowners', '', 'post'))
+		if ($newowners = \JRequest::getVar('newowners', '', 'post'))
 		{
 			$wishlist->add('individuals', $newowners);
 		}
-		if ($newadvisory = JRequest::getVar('newadvisory', '', 'post'))
+		if ($newadvisory = \JRequest::getVar('newadvisory', '', 'post'))
 		{
 			$wishlist->add('advisory', $newadvisory);
 		}
-		if ($newgroups = JRequest::getVar('newgroups', '', 'post'))
+		if ($newgroups = \JRequest::getVar('newgroups', '', 'post'))
 		{
 			$wishlist->add('groups', $newgroups);
 		}
@@ -606,7 +603,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$wishlist->rank();
 
 		$this->setRedirect(
-			JRoute::_($wishlist->link('', '&saved=1'))
+			\JRoute::_($wishlist->link('', '&saved=1'))
 		);
 	}
 
@@ -618,14 +615,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	public function settingsTask()
 	{
 		// get list id
-		$id  = JRequest::getInt('id', 0);
+		$id  = \JRequest::getInt('id', 0);
 
-		$wishlist = new WishlistModelWishlist($id);
+		$wishlist = new Wishlist($id);
 
 		if (!$wishlist->exists())
 		{
 			// list not found
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
+			JError::raiseError(404, \JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
 			return;
 		}
 
@@ -645,7 +642,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Login required
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_LOGIN_MANAGE_SETTINGS');
 			$this->loginTask();
 			return;
 		}
@@ -667,28 +664,25 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function saveplanTask()
 	{
-		$wishid = JRequest::getInt('wishid', 0);
+		$wishid = \JRequest::getInt('wishid', 0);
 
 		// Make sure we have wish id
 		if (!$wishid)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
-		$objWish = new WishlistModelWish($wishid);
+		$objWish = new Wish($wishid);
 		if (!$objWish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
-		$wishlist = WishlistModelWishlist::getInstance($objWish->get('wishlist'));
+		$wishlist = Wishlist::getInstance($objWish->get('wishlist'));
 		if (!$wishlist->exists())
 		{
 			// list not found
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// Get List Title
@@ -711,15 +705,15 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$pageid = JRequest::getInt('pageid', 0, 'post');
+		$pageid = \JRequest::getInt('pageid', 0, 'post');
 
 		// Initiate extended database class
-		$page = new WishlistModelPlan($pageid);
-		$old  = new WishlistModelPlan($pageid);
+		$page = new Plan($pageid);
+		$old  = new Plan($pageid);
 
-		$page->set('version', JRequest::getInt('version', 1, 'post'));
+		$page->set('version', \JRequest::getInt('version', 1, 'post'));
 
-		$create_revision = JRequest::getInt('create_revision', 0, 'post');
+		$create_revision = \JRequest::getInt('create_revision', 0, 'post');
 		if ($create_revision)
 		{
 			$page->set('id', 0);
@@ -727,10 +721,10 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		$page->set('wishid', $wishid);
-		$page->set('created_by', JRequest::getInt('created_by', $this->juser->get('id'), 'post'));
-		$page->set('created', JFactory::getDate()->toSql());
+		$page->set('created_by', \JRequest::getInt('created_by', $this->juser->get('id'), 'post'));
+		$page->set('created', \JFactory::getDate()->toSql());
 		$page->set('approved', 1);
-		$page->set('pagetext', JRequest::getVar('pagetext', '', 'post', 'none'));
+		$page->set('pagetext', \JRequest::getVar('pagetext', '', 'post', 'none'));
 
 		// Stripslashes just to make sure
 		$oldpagetext = rtrim(stripslashes($old->get('pagetext')));
@@ -745,23 +739,22 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Store content
 			if (!$page->store())
 			{
-				JError::raiseError(500, $page->getError());
-				return;
+				throw new Exception($page->getError(), 500);
 			}
 		}
 
 		// do we have a due date?
-		$isdue  = JRequest::getInt('isdue', 0);
-		$due    = JRequest::getVar('publish_up', '');
+		$isdue  = \JRequest::getInt('isdue', 0);
+		$due    = \JRequest::getVar('publish_up', '');
 
 		if ($due)
 		{
 			$publishtime = $due . ' 00:00:00';
-			$due = JFactory::getDate(strtotime($publishtime))->toSql();
+			$due = \JFactory::getDate(strtotime($publishtime))->toSql();
 		}
 
 		//is this wish assigned to anyone?
-		$assignedto = JRequest::getInt('assigned', 0);
+		$assignedto = \JRequest::getInt('assigned', 0);
 
 		$new_assignee = ($assignedto && $objWish->get('assigned') != $assignedto) ? 1 : 0;
 
@@ -771,20 +764,19 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// store our due date
 		if (!$objWish->store())
 		{
-			JError::raiseError(500, $objWish->getError());
-			return;
+			throw new Exception($objWish->getError(), 500);
 		}
 		else if ($new_assignee)
 		{
 			// Build e-mail components
-			$jconfig = JFactory::getConfig();
+			$jconfig = \JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// to wish assignee
-			$subject = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . JText::_('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
+			$subject = \JText::_(strtoupper($this->_name)) . ', ' . \JText::_('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . \JText::_('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . \JText::_(strtoupper($this->_name)),
 				'email' => $jconfig->getValue('config.mailfrom')
 			);
 
@@ -811,17 +803,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			// Send message
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin('xmessage');
+			$dispatcher = \JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject, $message, $from, array($objWish->get('assigned')), $this->_option)))
 			{
-				$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
+				$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 			}
 		}
 
 		$this->setRedirect(
-			JRoute::_($objWish->link('plan'))
+			\JRoute::_($objWish->link('plan'))
 		);
 	}
 
@@ -833,22 +825,21 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	public function addwishTask()
 	{
 		// Incoming
-		$wishid   = JRequest::getInt('wishid', 0);
-		$listid   = JRequest::getInt('id', 0);
-		$refid    = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('category', '');
+		$wishid   = \JRequest::getInt('wishid', 0);
+		$listid   = \JRequest::getInt('id', 0);
+		$refid    = \JRequest::getInt('rid', 0);
+		$category = \JRequest::getVar('category', '');
 
-		$wish = new WishlistModelWish($wishid);
+		$wish = new Wish($wishid);
 
 		if (!$listid && $refid)
 		{
 			if (!$category)
 			{
-				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-				return;
+				throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 			}
 
-			$wishlist = WishlistModelWishlist::getInstance($refid, $category);
+			$wishlist = Wishlist::getInstance($refid, $category);
 			if (!$wishlist->exists())
 			{
 				$wishlist->set('category', $category);
@@ -858,14 +849,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$wishlist = WishlistModelWishlist::getInstance($listid);
+			$wishlist = Wishlist::getInstance($listid);
 		}
 
 		if (!$wishlist->exists())
 		{
 			// list not found
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// Build page title
@@ -877,14 +867,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 							? $wish->link('edit')
 							: 'index.php?option=' . $this->_option . '&task=add&category=' . $category . '&rid=' . $refid;
 		$this->_taskname = $wish->exists()
-							? JText::_('COM_WISHLIST_EDITWISH')
-							: JText::_('COM_WISHLIST_ADD');
+							? \JText::_('COM_WISHLIST_EDITWISH')
+							: \JText::_('COM_WISHLIST_ADD');
 		$this->_buildPathway($wishlist);
 
 		// Login required
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->loginTask();
 			return;
 		}
@@ -892,8 +882,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// get admin priviliges
 		if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 		{
-			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH'), 403);
 		}
 
 		// Get some defaults
@@ -915,7 +904,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$funds = 0;
 		if ($this->banking)
 		{
-			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, $this->juser->get('id'));
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;
@@ -931,8 +920,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$this->view->wish     = $wish;
 
 		// Get URL to page explaining virtual economy
-		$aconfig = JComponentHelper::getParams('com_answers');
-		$this->view->infolink = $aconfig->get('infolink', JURI::base(true) . '/kb/points/');
+		$aconfig = \JComponentHelper::getParams('com_answers');
+		$this->view->infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
 		$this->view->funds    = $funds;
 		$this->view->banking  = $this->banking;
 
@@ -950,47 +939,46 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function savewishTask()
 	{
-		$listid = JRequest::getInt('wishlist', 0);
-		$wishid = JRequest::getInt('id', 0);
-		$reward = JRequest::getVar('reward', '');
-		$funds  = JRequest::getVar('funds', '0');
-		$tags   = JRequest::getVar('tags', '');
+		$listid = \JRequest::getInt('wishlist', 0);
+		$wishid = \JRequest::getInt('id', 0);
+		$reward = \JRequest::getVar('reward', '');
+		$funds  = \JRequest::getVar('funds', '0');
+		$tags   = \JRequest::getVar('tags', '');
 
 		// Login required
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->loginTask();
 			return;
 		}
 
 		// Get wish list info
-		$wishlist = WishlistModelWishlist::getInstance($listid);
+		$wishlist = Wishlist::getInstance($listid);
 		if (!$wishlist->exists())
 		{
 			// list not found
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// trim and addslashes all posted items
 		$_POST = array_map('trim', $_POST);
 
 		// initiate class and bind posted items to database fields
-		$row = new WishlistModelWish($_POST);
+		$row = new Wish($_POST);
 
 		// If we are editing
-		$by = JRequest::getVar('by', '', 'post');
+		$by = \JRequest::getVar('by', '', 'post');
 		if ($by)
 		{
-			$ruser = JUser::getInstance($by);
+			$ruser = \JUser::getInstance($by);
 			if (is_object($ruser))
 			{
 				$row->set('proposed_by', $ruser->get('id'));
 			}
 			else
 			{
-				$this->setError(JText::_('COM_WISHLIST_ERROR_INVALID_USER_NAME'));
+				$this->setError(\JText::_('COM_WISHLIST_ERROR_INVALID_USER_NAME'));
 			}
 		}
 
@@ -1000,12 +988,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Is it an actual number?
 			if (!is_numeric($reward))
 			{
-				$this->setError(JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
+				$this->setError(\JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
 			}
 			// Are they offering more than they can afford?
 			if ($reward > $funds)
 			{
-				$this->setError(JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
+				$this->setError(\JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
 			}
 		}
 
@@ -1019,15 +1007,15 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 							: 'index.php?option=' . $this->_option . '&task=add&category='
 							. $wishlist->get('category') . '&rid=' . $wishlist->get('referenceid');
 			$this->_taskname = $wishid
-								? JText::_('COM_WISHLIST_EDITWISH')
-								: JText::_('COM_WISHLIST_ADD');
+								? \JText::_('COM_WISHLIST_EDITWISH')
+								: \JText::_('COM_WISHLIST_ADD');
 			$this->_buildPathway($wishlist);
 
 			// Get URL to page explaining virtual economy
-			$aconfig = JComponentHelper::getParams('com_answers');
-			$infolink = $aconfig->get('infolink', JURI::base(true) . '/kb/points/');
+			$aconfig = \JComponentHelper::getParams('com_answers');
+			$infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
 
-			$this->view->title    = JText::_(strtoupper($this->_name));
+			$this->view->title    = \JText::_(strtoupper($this->_name));
 			$this->view->config   = $this->config;
 			$this->view->admin    = $this->_admin;
 			$this->view->juser    = $this->juser;
@@ -1041,16 +1029,15 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$row->set('anonymous', JRequest::getInt('anonymous', 0));
-		$row->set('private', JRequest::getInt('private', 0));
-		//$row->set('about', \Hubzero\Utility\Sanitize::clean($row->get('about')));
-		$row->set('proposed', ($wishid ? $row->get('proposed') : JFactory::getDate()->toSql()));
+		$row->set('anonymous', \JRequest::getInt('anonymous', 0));
+		$row->set('private', \JRequest::getInt('private', 0));
+		//$row->set('about', Sanitize::clean($row->get('about')));
+		$row->set('proposed', ($wishid ? $row->get('proposed') : \JFactory::getDate()->toSql()));
 
 		// store new content
 		if (!$row->store(true))
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Add/change the tags
@@ -1060,24 +1047,24 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if (!$wishid)
 		{
 			// Build e-mail components
-			$jconfig = JFactory::getConfig();
+			$jconfig = \JFactory::getConfig();
 			$admin_email = $jconfig->getValue('config.mailfrom');
 
 			// Get author name
-			$name  = $row->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
-			$login = $row->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
+			$name  = $row->proposer('name', \JText::_('COM_WISHLIST_UNKNOWN'));
+			$login = $row->proposer('username', \JText::_('COM_WISHLIST_UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
-				$name  = JText::_('COM_WISHLIST_ANONYMOUS');
-				$login = JText::_('COM_WISHLIST_ANONYMOUS');
+				$name  = \JText::_('COM_WISHLIST_ANONYMOUS');
+				$login = \JText::_('COM_WISHLIST_ANONYMOUS');
 			}
 
 			$this->_list_title = $wishlist->get('title');
 
-			$subject = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '. $this->_list_title.' '.JText::_('from').' '.$name;
+			$subject = \JText::_(strtoupper($this->_name)).', '.\JText::_('COM_WISHLIST_NEW_WISH').' '.\JText::_('COM_WISHLIST_FOR').' '. $this->_list_title.' '.\JText::_('from').' '.$name;
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . \JText::_(strtoupper($this->_name)),
 				'email' => $jconfig->getValue('config.mailfrom')
 			);
 
@@ -1103,25 +1090,25 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin('xmessage');
+			$dispatcher = \JDispatcher::getInstance();
 
 			if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject, $message, $from, $wishlist->owners('individuals'), $this->_option)))
 			{
-				$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
+				$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 			}
 		}
 
 		if ($reward && $this->banking)
 		{
 			// put the  amount on hold
-			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
-			$BTL->hold($reward, JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
+			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL->hold($reward, \JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . \JText::_('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
 		}
 
 		$saved = $wishid ? 2 : 3;
 		$this->setRedirect(
-			JRoute::_($row->link('permalink', array('saved' => $saved)))
+			\JRoute::_($row->link('permalink', array('saved' => $saved)))
 		);
 	}
 
@@ -1132,32 +1119,30 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function editwishTask()
 	{
-		$refid  = JRequest::getInt('rid', 0);
-		$cat    = JRequest::getVar('category', '');
-		$status = JRequest::getVar('status', '');
-		$vid    = JRequest::getInt('vid', 0);
+		$refid  = \JRequest::getInt('rid', 0);
+		$cat    = \JRequest::getVar('category', '');
+		$status = \JRequest::getVar('status', '');
+		$vid    = \JRequest::getInt('vid', 0);
 
 		// Check if wish exists on this list
-		if ($id = JRequest::getInt('id', 0))
+		if ($id = \JRequest::getInt('id', 0))
 		{
-			$wishlist = WishlistModelWishlist::getInstance(JRequest::getInt('id', 0));
+			$wishlist = Wishlist::getInstance(\JRequest::getInt('id', 0));
 		}
 		else
 		{
-			$wishlist = WishlistModelWishlist::getInstance($refid, $cat);
+			$wishlist = Wishlist::getInstance($refid, $cat);
 		}
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// load wish
-		$wish = new WishlistModelWish(JRequest::getInt('wishid', 0));
+		$wish = new Wish(\JRequest::getInt('wishid', 0));
 		if (!$wish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		$changed = false;
@@ -1171,7 +1156,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 			// Set the pathway
 			$this->_taskpath = $wish->link();
-			$this->_taskname = JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_taskname = \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			$this->_buildPathway($wishlist);
 			$this->loginTask();
 			return;
@@ -1179,13 +1164,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 		if (!$wishlist->access('manage') && $wish->get('proposed_by') != $this->juser->get('id'))
 		{
-			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH'), 403);
 		}
 
 		if ($this->_task == 'editprivacy')
 		{
-			$private = JRequest::getInt('private', 0, 'get');
+			$private = \JRequest::getInt('private', 0, 'get');
 			if ($wish->get('private') != $private)
 			{
 				$wish->set('private', $private);
@@ -1193,7 +1177,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if ($this->_task == 'editwish' && ($status = JRequest::getVar('status', '')))
+		if ($this->_task == 'editwish' && ($status = \JRequest::getVar('status', '')))
 		{
 			$former_status   = $wish->get('status');
 			$former_accepted = $wish->get('accepted');
@@ -1217,25 +1201,25 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					// return bonuses
 					if ($this->banking)
 					{
-						$WE = new WishlistEconomy($this->database);
+						$WE = new Economy($this->database);
 						$WE->cleanupBonus($wish->get('id'));
 					}
 				break;
 
 				case 'granted':
 					$wish->set('status', 1);
-					$wish->set('granted', JFactory::getDate()->toSql());
+					$wish->set('granted', \JFactory::getDate()->toSql());
 					$wish->set('granted_by', $this->juser->get('id'));
 					$wish->set('granted_vid', ($vid ? $vid : 0));
 
-					$objWish = new Wish($this->database);
+					$objWish = new Tables\Wish($this->database);
 					$w = $objWish->get_wish($wish->get('id'), $this->juser->get('id'));
 					$wish->set('points', $w->bonus);
 
 					if ($this->banking)
 					{
 						// Distribute bonus and earned points
-						$WE = new WishlistEconomy($this->database);
+						$WE = new Economy($this->database);
 						$WE->distribute_points($wish->get('id'));
 					}
 				break;
@@ -1250,17 +1234,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			if ($changed)
 			{
 				// Build e-mail components
-				$jconfig = JFactory::getConfig();
+				$jconfig = \JFactory::getConfig();
 				//$admin_email = $jconfig->getValue('config.mailfrom');
 
 				// to wish author
-				$subject1 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
+				$subject1 = \JText::_(strtoupper($this->_name)) . ', ' . \JText::_('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
 
 				// to wish assignee
-				$subject2 = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . JText::_('COM_WISHLIST_HAS_BEEN') . ' ' . JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+				$subject2 = \JText::_(strtoupper($this->_name)) . ', ' . \JText::_('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . \JText::_('COM_WISHLIST_HAS_BEEN') . ' ' . \JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 				$from = array(
-					'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+					'name'  => $jconfig->getValue('config.sitename') . ' ' . \JText::_(strtoupper($this->_name)),
 					'email' => $jconfig->getValue('config.mailfrom')
 				);
 
@@ -1300,17 +1284,16 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// save changes
 			if (!$wish->store())
 			{
-				JError::raiseError(500, $wish->getError());
-				return;
+				throw new Exception($wish->getError(), 500);
 			}
 			else if ($this->_task == 'editwish')
 			{
-				JPluginHelper::importPlugin('xmessage');
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin('xmessage');
+				$dispatcher = \JDispatcher::getInstance();
 
 				if (!$dispatcher->trigger('onSendMessage', array('wishlist_status_changed', $subject1, $message, $from, array($wish->get('proposed_by')), $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
 
 				if ($wish->get('assigned')
@@ -1319,14 +1302,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				{
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_wish_assigned', $subject2, $as_mes, $from, array($wish->get('assigned')), $this->_option)))
 					{
-						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
+						$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 					}
 				}
 			}
 		}
 
 		$this->setRedirect(
-			JRoute::_($wish->link())
+			\JRoute::_($wish->link())
 		);
 	}
 
@@ -1337,27 +1320,26 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function movewishTask()
 	{
-		$listid   = JRequest::getInt('wishlist', 0);
-		$wishid   = JRequest::getInt('wish', 0);
-		$category = JRequest::getVar('type', '');
-		$refid    = JRequest::getInt('resource', 0);
+		$listid   = \JRequest::getInt('wishlist', 0);
+		$wishid   = \JRequest::getInt('wish', 0);
+		$category = \JRequest::getVar('type', '');
+		$refid    = \JRequest::getInt('resource', 0);
 		if ($category == 'group')
 		{
-			$refid    = JRequest::getVar('group', '');
+			$refid    = \JRequest::getVar('group', '');
 		}
 
 		// some transfer options
 		$options = array();
-		$options['keepplan']     = JRequest::getInt('keepplan', 0);
-		$options['keepcomments'] = JRequest::getInt('keepcomments', 0);
-		$options['keepstatus']   = JRequest::getInt('keepstatus', 0);
-		$options['keepfeedback'] = JRequest::getInt('keepfeedback', 0);
+		$options['keepplan']     = \JRequest::getInt('keepplan', 0);
+		$options['keepcomments'] = \JRequest::getInt('keepcomments', 0);
+		$options['keepstatus']   = \JRequest::getInt('keepstatus', 0);
+		$options['keepfeedback'] = \JRequest::getInt('keepfeedback', 0);
 
 		// missing wish id
 		if (!$wishid)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// missing or invalid resource ID
@@ -1369,8 +1351,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if ($category == 'question' or $category == 'ticket')
 		{
 			// move to a question or a ticket
-			JPluginHelper::importPlugin('support' , 'transfer');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin('support' , 'transfer');
+			$dispatcher = \JDispatcher::getInstance();
 			$dispatcher->trigger('transferItem', array(
 					'wish',
 					$wishid,
@@ -1382,31 +1364,29 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		else
 		{
 			// moving to another list
-			$oldlist = WishlistModelWishlist::getInstance($listid);
+			$oldlist = Wishlist::getInstance($listid);
 
 			// Where do we put this wish?
-			$newlist = WishlistModelWishlist::getInstance($refid, $category);
+			$newlist = Wishlist::getInstance($refid, $category);
 			if (!$newlist->exists())
 			{
 				// Create wishlist for resource if doesn't exist
 				if (!$newlist->setup())
 				{
-					JError::raiseError(500, $newlist->getError());
-					return;
+					throw new Exception($newlist->getError(), 500);
 				}
 			}
 
 			// cannot add a wish to a non-found list
 			if (!$newlist->exists())
 			{
-				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-				return;
+				throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 			}
 
 			if ($listid != $newlist->get('id'))
 			{
 				// Transfer wish
-				$wish = new WishlistModelWish($wishid);
+				$wish = new Wish($wishid);
 				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
@@ -1421,15 +1401,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 				if (!$wish->store())
 				{
-					JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
-					return;
+					throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
 				}
 
 				// also delete all previous owner votes for this wish
 				if (!$wish->purge('rankings'))
 				{
-					JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
-					return;
+					throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
 				}
 
 				// delete plan if option chosen
@@ -1437,8 +1415,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				{
 					if (!$wish->purge('plan'))
 					{
-						JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
-						return;
+						throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
 					}
 				}
 
@@ -1447,8 +1424,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				{
 					if (!$wish->purge('comments'))
 					{
-						JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
-						return;
+						throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
 					}
 				}
 
@@ -1457,30 +1433,29 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				{
 					if (!$wish->purge('votes'))
 					{
-						JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'));
-						return;
+						throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_MOVE_FAILED'), 500);
 					}
 				}
 
 					// send message about transferred wish
-				$jconfig = JFactory::getConfig();
+				$jconfig = \JFactory::getConfig();
 
 				$oldtitle = $oldlist->get('title'); //$objWishlist->getTitle($listid);
 				$newtitle = $newlist->get('title'); //$objWishlist->getTitle($newlist);
 
-				$name  = $wish->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
-				$login = $wish->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
+				$name  = $wish->proposer('name', \JText::_('COM_WISHLIST_UNKNOWN'));
+				$login = $wish->proposer('username', \JText::_('COM_WISHLIST_UNKNOWN'));
 
 				if ($wish->get('anonymous'))
 				{
-					$name = JText::_('COM_WISHLIST_ANONYMOUS');
+					$name = \JText::_('COM_WISHLIST_ANONYMOUS');
 				}
 
-				$subject1 = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_NEW_WISH').' '.JText::_('COM_WISHLIST_FOR').' '.$newtitle.' '.JText::_('COM_WISHLIST_FROM').' '.$name.' - '.JText::_('COM_WISHLIST_TRANSFERRED');
-				$subject2 = JText::_(strtoupper($this->_name)).', '.JText::_('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.JText::_('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
+				$subject1 = \JText::_(strtoupper($this->_name)).', '.\JText::_('COM_WISHLIST_NEW_WISH').' '.\JText::_('COM_WISHLIST_FOR').' '.$newtitle.' '.\JText::_('COM_WISHLIST_FROM').' '.$name.' - '.\JText::_('COM_WISHLIST_TRANSFERRED');
+				$subject2 = \JText::_(strtoupper($this->_name)).', '.\JText::_('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.\JText::_('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
 				$from = array(
-					'name'  => $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($this->_name)),
+					'name'  => $jconfig->getValue('config.sitename').' '.\JText::_(strtoupper($this->_name)),
 					'email' => $jconfig->getValue('config.mailfrom')
 				);
 
@@ -1508,17 +1483,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 
-				JPluginHelper::importPlugin('xmessage');
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin('xmessage');
+				$dispatcher = \JDispatcher::getInstance();
 
 				if (!$dispatcher->trigger('onSendMessage', array('wishlist_new_wish', $subject1, $message, $from, $newlist->owners('individuals'), $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
 				}
 
 				if (!$dispatcher->trigger('onSendMessage', array('support_item_transferred', $subject2, $message, $from, array($wish->get('proposed_by')), $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
 			}
 
@@ -1540,41 +1515,36 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function addbonusTask()
 	{
-		//$listid = JRequest::getInt('wishlist', 0);
-		$wishid = JRequest::getInt('wish', 0);
-		$amount = JRequest::getInt('amount', 0);
+		//$listid = \JRequest::getInt('wishlist', 0);
+		$wishid = \JRequest::getInt('wish', 0);
+		$amount = \JRequest::getInt('amount', 0);
 
 		// missing wish id
 		/*if (!$wishid or !$listid)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+			JError::raiseError(404, \JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}*/
 
 		//$objWishlist = new Wishlist($this->database);
 		//$objWish = new Wish($this->database);
 
-		$wishlist = new WishlistModelWishlist(JRequest::getInt('wishlist', 0));
+		$wishlist = new Wishlist(\JRequest::getInt('wishlist', 0));
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
-		$wish = new WishlistModelWish(JRequest::getInt('wish', 0));
+		$wish = new Wish(\JRequest::getInt('wish', 0));
 		if (!$wish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// Login required
 		if ($this->juser->get('guest'))
 		{
 			// Set page title
-			/*$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7'  && isset($wishlist->resource->alias))
-						? 'tool "' . $wishlist->resource->alias . '"'
-						: $wishlist->get('title');*/
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 			{
 				$this->_list_title = '';
@@ -1597,31 +1567,28 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// missing amount
 		if ($amount == 0)
 		{
-			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_INVALID_AMOUNT'), 500);
 		}
 		if ($amount < 0)
 		{
-			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_NEGATIVE_BONUS'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_NEGATIVE_BONUS'), 500);
 		}
 		else if ($amount > $funds)
 		{
-			JError::raiseError(500, JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_NO_FUNDS'), 500);
 		}
 
 		// put the  amount on hold
-		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, $this->juser->get('id'));
 		$BTL->hold(
 			$amount,
-			JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
+			\JText::_('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . \JText::_('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
 			'wish',
 			$wish->get('id')
 		);
 
 		$this->setRedirect(
-			JRoute::_($wish->link())
+			\JRoute::_($wish->link())
 		);
 	}
 
@@ -1633,30 +1600,25 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	public function deletewishTask()
 	{
 		// Check if wish exists on this list
-		$wishlist = new WishlistModelWishlist(
-			JRequest::getInt('rid', 0),
-			JRequest::getVar('category', '')
+		$wishlist = new Wishlist(
+			\JRequest::getInt('rid', 0),
+			\JRequest::getVar('category', '')
 		);
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
 		}
 
-		$wish = new WishlistModelWish(JRequest::getInt('wishid', 0));
+		$wish = new Wish(\JRequest::getInt('wishid', 0));
 		if (!$wish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// Login required
 		if ($this->juser->get('guest'))
 		{
 			// Set page title
-			/*$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
-						? 'tool "' . $wishlist->item('alias') . '"'
-						: $wishlist->title;*/
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 			{
 				$this->_list_title = '';
@@ -1675,8 +1637,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		//$objWish->load($wishid);
 		if (!$wishlist->access('manage') && $wish->get('proposed_by') != $this->juser->get('id'))
 		{
-			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH'), 403);
 		}
 
 		//$withdraw = 0; //$this->_task=='withdraw' ? 1 : 0; /* [!] zooley - Mark as deleted instead of withdrawn? Seems to cause confusion if wish still appears in lists. */
@@ -1697,13 +1658,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// return bonuses
 			if ($this->banking)
 			{
-				$WE = new WishlistEconomy($this->database);
+				$WE = new Economy($this->database);
 				$WE->cleanupBonus($wish->get('id'));
 			}
 		}
 		else
 		{
-			$this->setError(JText::_('COM_WISHLIST_ERROR_WISH_DELETE_FAILED'));
+			$this->setError(\JText::_('COM_WISHLIST_ERROR_WISH_DELETE_FAILED'));
 		}
 
 		// go back to the wishlist
@@ -1721,33 +1682,31 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function savevoteTask()
 	{
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		//$this->database =& JFactory::getDBO();
-		//$juser =& JFactory::getUser();
+		//$this->database =& \JFactory::getDBO();
+		//$juser =& \JFactory::getUser();
 
-		$refid    = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('category', '');
+		$refid    = \JRequest::getInt('rid', 0);
+		$category = \JRequest::getVar('category', '');
 
-		$wishlist = WishlistModelWishlist::getInstance($refid, $category);
+		$wishlist = Wishlist::getInstance($refid, $category);
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
-		$wishid   = JRequest::getInt('wishid', 0);
+		$wishid   = \JRequest::getInt('wishid', 0);
 
-		$wish = WishlistModelWish::getInstance($wishid);
+		$wish = Wish::getInstance($wishid);
 		if (!$wish->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
 		}
 
-		//$objWishlist = new Wishlist($this->database);
-		//$objWish = new Wish($this->database);
-		//$objR = new WishRank($this->database);
+		//$objWishlist = new Tables\Wishlist($this->database);
+		//$objWish = new Tables\Wish($this->database);
+		//$objR = new Tables\Wish\Rank($this->database);
 
 		// figure list id
 		/*if ($category && $refid)
@@ -1758,8 +1717,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// cannot rank a wish if list/wish is not found
 		if (!$listid or !$wishid)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		$wishlist = $objWishlist->get_wishlist($listid);
@@ -1768,28 +1726,23 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// cannot proceed if wish id is not found
 		if (!$wishlist or !$item)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
 		// is this wish on correct list?
 		if ($listid != $wishlist->id)
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
 		}*/
 
 		// get vote
-		$effort     = JRequest::getVar('effort', '', 'post');
-		$importance = JRequest::getVar('importance', '', 'post');
+		$effort     = \JRequest::getVar('effort', '', 'post');
+		$importance = \JRequest::getVar('importance', '', 'post');
 
 		// Login required
 		if ($this->juser->get('guest'))
 		{
 			// Set page title
-			/*$this->_list_title =(isset($wishlist->resource) && $wishlist->resource->type=='7' && isset($wishlist->resource->alias))
-						? 'tool "' . $wishlist->resource->alias . '"'
-						: $wishlist->title;*/
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
 			{
 				$this->_list_title = '';
@@ -1798,47 +1751,33 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_RANK');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_LOGIN_TO_RANK');
 			$this->loginTask();
 			return;
 		}
 
-		// get admin priviliges
-		//$this->authorize_admin($listid);
-
 		// Need to be list admin
 		if (!$wishlist->access('manage') || $wishlist->get('admin') == 1)
 		{
-			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ALERTNOTAUTH_ACTION'), 403);
 		}
 
 		// did user make selections?
 		if (!$effort or !$importance)
 		{
 			$this->setRedirect(
-				JRoute::_($wish->link()),
-				JText::_('Please be sure to provide both an importance and an effort'),
+				\JRoute::_($wish->link()),
+				\JText::_('Please be sure to provide both an importance and an effort'),
 				'error'
 			);
 			return;
 		}
 
 		// is the wish ranked already?
-		/*if (isset($item->ranked) && !$item->ranked)
-		{
-			$objR->wishid = $wishid;
-			$objR->userid = $juser->get('id');
-		}
-		else
-		{
-			// edit rating
-			$objR->load_vote($juser->get('id'), $wishid);
-		}*/
 		if (!$wish->rank($effort, $importance))
 		{
 			$this->setRedirect(
-				JRoute::_($wish->link()),
+				\JRoute::_($wish->link()),
 				$wish->getError(),
 				'error'
 			);
@@ -1848,12 +1787,11 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// update priority on all wishes
 		if (!$wishlist->rank())
 		{
-			JError::raiseError(500, $wishlist->getError());
-			return;
+			throw new Exception($wishlist->getError(), 500);
 		}
 
 		$this->setRedirect(
-			JRoute::_($wish->link())
+			\JRoute::_($wish->link())
 		);
 	}
 
@@ -1864,26 +1802,25 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function savereplyTask()
 	{
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = JRequest::getInt('referenceid', 0);
-		$listid   = JRequest::getInt('listid', 0);
-		$wishid   = JRequest::getInt('wishid', 0);
-		$ajax     = JRequest::getInt('ajax', 0);
-		$category = JRequest::getVar('cat', '');
-		$when     = JFactory::getDate()->toSql();
+		$id       = \JRequest::getInt('referenceid', 0);
+		$listid   = \JRequest::getInt('listid', 0);
+		$wishid   = \JRequest::getInt('wishid', 0);
+		$ajax     = \JRequest::getInt('ajax', 0);
+		$category = \JRequest::getVar('cat', '');
+		$when     = \JFactory::getDate()->toSql();
 
 		// Get wishlist info
-		$wishlist = WishlistModelWishlist::getInstance($listid);
+		$wishlist = Wishlist::getInstance($listid);
 
 		if (!$wishlist->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
-		$objWish = new WishlistModelWish($wishid);
+		$objWish = new Wish($wishid);
 
 		// Get List Title
 		$this->_list_title = $wishlist->get('title');
@@ -1897,32 +1834,30 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if (!$id && !$ajax)
 		{
 			// cannot proceed
-			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// is the user logged in?
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
 			$this->loginTask();
 			return;
 		}
 
 		if ($id && $category)
 		{
-			$row = new WishlistModelComment();
+			$row = new Comment();
 			if (!$row->bind($_POST))
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 
 			// Perform some text cleaning, etc.
 			$row->set(
 				'content',
 				(
-					$row->get('content') == JText::_('COM_WISHLIST_ENTER_COMMENTS')
+					$row->get('content') == \JText::_('COM_WISHLIST_ENTER_COMMENTS')
 						? ''
 						: $row->get('content')
 				)
@@ -1934,7 +1869,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			}
 
 			$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
-			$row->set('added', JFactory::getDate()->toSql());
+			$row->set('added', \JFactory::getDate()->toSql());
 			$row->set('state', 0);
 			$row->set('category', $category);
 			$row->set('added_by', $this->juser->get('id'));
@@ -1942,40 +1877,39 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Save the data
 			if (!$row->store(true))
 			{
-				JError::raiseError(500, $row->getError());
-				return;
+				throw new Exception($row->getError(), 500);
 			}
 
 			// Build e-mail components
-			$jconfig = JFactory::getConfig();
+			$jconfig = \JFactory::getConfig();
 
-			$name  = $row->creator('name', JText::_('UNKNOWN'));
-			$login = $row->creator('username', JText::_('UNKNOWN'));
+			$name  = $row->creator('name', \JText::_('UNKNOWN'));
+			$login = $row->creator('username', \JText::_('UNKNOWN'));
 
 			if ($row->get('anonymous'))
 			{
-				$name = JText::_('ANONYMOUS');
+				$name = \JText::_('ANONYMOUS');
 			}
 
-			$subject = JText::_(strtoupper($this->_name)) . ', ' . JText::_('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . JText::_('BY') . ' ' . $name;
+			$subject = \JText::_(strtoupper($this->_name)) . ', ' . \JText::_('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . \JText::_('BY') . ' ' . $name;
 
 			// email components
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . \JText::_(strtoupper($this->_name)),
 				'email' => $jconfig->getValue('config.mailfrom')
 			);
 
 			// for the wish owner
-			$subject1 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
+			$subject1 = \JText::_(strtoupper($this->_name)).', '.$name.' '.\JText::_('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH').' #'.$wishid;
 
 			// for the person to whom wish is assigned
-			$subject2 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+			$subject2 = \JText::_(strtoupper($this->_name)).', '.$name.' '.\JText::_('COM_WISHLIST_MSG_COMMENTED_ON_WISH').' #'.$wishid.' '.\JText::_('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 			// for original commentor
-			$subject3 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
+			$subject3 = \JText::_(strtoupper($this->_name)).', '.$name.' '.\JText::_('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT').' #'.$wishid;
 
 			// for others included in the conversation thread.
-			$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
+			$subject4 = \JText::_(strtoupper($this->_name)).', '.$name.' '.\JText::_('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 
 			$message = array();
 
@@ -1999,8 +1933,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message['multipart'] = $eview->loadTemplate();
 			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin('xmessage');
+			$dispatcher = \JDispatcher::getInstance();
 
 			// collect ids of people who were already emailed
 			$contacted = array();
@@ -2012,7 +1946,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				// send message to wish owner
 				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject1, $message, $from, array($objWish->get('proposed_by')), $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
 				}
 			} // -- end send to wish author
 
@@ -2025,14 +1959,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				// send message to person to who wish is assigned
 				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_posted', $subject2, $message, $from, array($objWish->get('assigned')), $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
 				}
 			} // -- end send message to person to who wish is assigned
 
 			// get comment author if reply is posted to a comment
 			if ($category == 'wishcomment')
 			{
-				$parent = new WishlistModelComment($id);
+				$parent = new Comment($id);
 
 				// send message to comment author
 				if ($parent->get('added_by') != $row->get('added_by')
@@ -2041,7 +1975,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					$contacted[] = $parent->get('added_by');
 					if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject3, $message, $from, array($parent->get('added_by')), $this->_option)))
 					{
-						$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
+						$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 					}
 				}
 			}
@@ -2054,40 +1988,40 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			{
 				if (!$dispatcher->trigger('onSendMessage', array('wishlist_comment_thread', $subject4, $message, $from, $comm, $this->_option)))
 				{
-					$this->setError(JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
+					$this->setError(\JText::_('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
 				}
 			}
 		} // -- end if id & category
 
 		$this->setRedirect(
-			JRoute::_($objWish->link())
+			\JRoute::_($objWish->link())
 		);
 	}
 
 	/**
 	 * Delete a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletereplyTask()
 	{
 		// Incoming
-		$row = new WishlistModelComment(
-			JRequest::getInt('replyid', 0)
+		$row = new Comment(
+			\JRequest::getInt('replyid', 0)
 		);
 
 		// Do we have a reply ID?
 		if (!$row->exists())
 		{
-			$this->setError(JText::_('COM_WISHLIST_ERROR_REPLY_NOT_FOUND'));
+			$this->setError(\JText::_('COM_WISHLIST_ERROR_REPLY_NOT_FOUND'));
 			return;
 		}
 
 		if ($row->get('added_by') != $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				JRequest::getVar('HTTP_REFERER', NULL, 'server'),
-				JText::_('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
+				\JRequest::getVar('HTTP_REFERER', NULL, 'server'),
+				\JText::_('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
 			return;
@@ -2098,13 +2032,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 
 		// Go back to the page
 		$this->setRedirect(
-			JRequest::getVar('HTTP_REFERER', NULL, 'server')
+			\JRequest::getVar('HTTP_REFERER', NULL, 'server')
 		);
 	}
 
@@ -2119,9 +2052,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			// Get wishlist info
-			$wishlist = new WishlistModelWishlist(
-				JRequest::getInt('refid', 0),
-				JRequest::getVar('cat', '')
+			$wishlist = new Wishlist(
+				\JRequest::getInt('refid', 0),
+				\JRequest::getVar('cat', '')
 			);
 
 			// Set page title
@@ -2130,7 +2063,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_LOGIN_TO_ADD_COMMENT');
 			$this->loginTask();
 			return;
 		}
@@ -2145,8 +2078,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function rateitemTask()
 	{
-		$wish = new WishlistModelWish(
-			JRequest::getInt('refid', 1)
+		$wish = new Wish(
+			\JRequest::getInt('refid', 1)
 		);
 
 		if (!$wish->exists())
@@ -2156,7 +2089,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// Load the wishlist
-		$wishlist = WishlistModelWishlist::getInstance($wish->get('wishlist'));
+		$wishlist = Wishlist::getInstance($wish->get('wishlist'));
 
 		// Login required
 		if ($this->juser->get('guest'))
@@ -2168,14 +2101,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// Set the pathway
 			$this->_buildPathway($wishlist);
 
-			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
+			$this->_msg = \JText::_('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
 			$this->loginTask();
 			return;
 		}
 
 		// Incoming
-		$page = JRequest::getVar('page', 'wishlist');
-		$vote = JRequest::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
+		$page = \JRequest::getVar('page', 'wishlist');
+		$vote = \JRequest::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
 
 		//$this->authorize_admin($listid);
 		$filters = self::getFilters($wishlist->access('manage'));
@@ -2186,7 +2119,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// update display
-		if (JRequest::getInt('ajax', 0))
+		if (\JRequest::getInt('ajax', 0))
 		{
 			$this->view->setLayout('_vote');
 
@@ -2203,13 +2136,13 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if ($page == 'wishlist')
 		{
 			$this->setRedirect(
-				str_replace('&amp;', '&', JRoute::_($wishlist->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
+				str_replace('&amp;', '&', \JRoute::_($wishlist->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				str_replace('&amp;', '&', JRoute::_($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
+				str_replace('&amp;', '&', \JRoute::_($wish->link() . '&filterby='.$filters['filterby'].'&sortby='.$filters['sortby'].'&limitstart='.$filters['start'].'&limit='.$filters['limit'].'&tags='.$filters['tag']))
 			);
 		}
 	}
@@ -2217,17 +2150,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	/**
 	 * Get an array of filters from the request
 	 *
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     array
+	 * @param   integer  $admin
+	 * @return  array
 	 */
 	public function getFilters($admin=0)
 	{
 		// Query filters defaults
 		$filters = array();
-		$filters['sortby']   = JRequest::getVar('sortby', '');
-		$filters['filterby'] = JRequest::getVar('filterby', 'all');
-		$filters['search']   = JRequest::getVar('search', '');
-		$filters['tag']      = JRequest::getVar('tags', '');
+		$filters['sortby']   = \JRequest::getVar('sortby', '');
+		$filters['filterby'] = \JRequest::getVar('filterby', 'all');
+		$filters['search']   = \JRequest::getVar('search', '');
+		$filters['tag']      = \JRequest::getVar('tags', '');
 
 		if ($admin)
 		{
@@ -2240,14 +2173,14 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		}
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Paging vars
-		$filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$filters['start']    = JRequest::getInt('limitstart', 0);
-		$filters['new']      = JRequest::getInt('newsearch', 0);
+		$filters['limit']    = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$filters['start']    = \JRequest::getInt('limitstart', 0);
+		$filters['new']      = \JRequest::getInt('newsearch', 0);
 		$filters['start']    = $filters['new'] ? 0 : $filters['start'];
-		$filters['comments'] = JRequest::getVar('comments', 1, 'get');
+		$filters['comments'] = \JRequest::getVar('comments', 1, 'get');
 
 		// Return the array
 		return $filters;
@@ -2256,9 +2189,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	/**
 	 * Authorize administrator access
 	 *
-	 * @param      integer $listid Wish list ID
-	 * @param      integer $admin  If the use ris an admin
-	 * @return     void
+	 * @param   integer  $listid  Wish list ID
+	 * @param   integer  $admin   If the use ris an admin
+	 * @return  void
 	 */
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
@@ -2273,7 +2206,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$admingroup = $this->config->get('group', 'hubadmin');
 
 			// Get list administrators
-			$objOwner = new WishlistOwner($this->database);
+			$objOwner = new Tables\Owner($this->database);
 			$owners = $objOwner->get_owners($listid,  $admingroup);
 			$managers =  $owners['individuals'];
 			$advisory =  $owners['advisory'];
@@ -2307,7 +2240,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function userSelect($name, $ownerids, $active, $nouser=0, $javascript=NULL, $order='a.name')
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$query = "SELECT a.id AS value, a.name AS text"
 			  . "\n FROM #__users AS a"
@@ -2333,7 +2266,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', 'No User', 'value', 'text');
+			$users[] = \JHTML::_('select.option', '', 'No User', 'value', 'text');
 			$users = array_merge($users, $database->loadObjectList());
 		}
 		else
@@ -2341,7 +2274,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$users = $database->loadObjectList();
 		}
 
-		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
+		$users = \JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
 	}
@@ -2356,15 +2289,15 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	{
 		if (!$listdir)
 		{
-			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_UPLOAD_DIRECTORY'));
+			$this->setError(\JText::_('COM_WISHLIST_ERROR_NO_UPLOAD_DIRECTORY'));
 			return '';
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_FILE'));
+			$this->setError(\JText::_('COM_WISHLIST_ERROR_NO_FILE'));
 			return '';
 		}
 
@@ -2374,9 +2307,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		//make sure that file is acceptable type
-		$attachment = new WishlistModelAttachment(array(
+		$attachment = new Attachment(array(
 			'id'          => 0,
-			'description' => JRequest::getVar('description', ''),
+			'description' => \JRequest::getVar('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
 		));
@@ -2384,8 +2317,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// make sure that file is acceptable type
 		if (!$attachment->isAllowedType())
 		{
-			$this->setError(JText::_('ATTACHMENT: Incorrect file type.'));
-			return JText::_('ATTACHMENT: Incorrect file type.');
+			$this->setError(\JText::_('ATTACHMENT: Incorrect file type.'));
+			return \JText::_('ATTACHMENT: Incorrect file type.');
 		}
 
 		$path = $attachment->link('dir');
@@ -2394,30 +2327,30 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				return 'ATTACHMENT: ' . JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
+				$this->setError(\JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				return 'ATTACHMENT: ' . \JText::_('COM_WISHLIST_UNABLE_TO_CREATE_UPLOAD_PATH');
 			}
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_WISHLIST_ERROR_UPLOADING'));
-			return 'ATTACHMENT: ' . JText::_('COM_WISHLIST_ERROR_UPLOADING');
+			$this->setError(\JText::_('COM_WISHLIST_ERROR_UPLOADING'));
+			return 'ATTACHMENT: ' . \JText::_('COM_WISHLIST_ERROR_UPLOADING');
 		}
 		else
 		{
 			// Scan for viruses
 			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
 
-			if (!JFile::isSafe($path))
+			if (!\JFile::isSafe($path))
 			{
-				if (JFile::delete($path))
+				if (\JFile::delete($path))
 				{
-					$this->setError(JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
-					return JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.');
+					$this->setError(\JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.'));
+					return \JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.');
 				}
 			}
 
@@ -2437,32 +2370,29 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function downloadTask()
 	{
-		$file   = JRequest::getVar('file', '');
-		$wishid = JRequest::getInt('wishid', 0);
+		$file   = \JRequest::getVar('file', '');
+		$wishid = \JRequest::getInt('wishid', 0);
 
-		$wish = new WishlistModelWish($wishid);
+		$wish = new Wish($wishid);
 
 		// Ensure we have a path
 		if (!$wish->exists() || $wish->isDeleted() || $wish->isWithdrawn())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_FILE_NOT_FOUND'), 404);
 		}
 
-		$attachment = new WishlistModelAttachment($file, $wishid);
+		$attachment = new Attachment($file, $wishid);
 
 		// Ensure we have a path
 		if (!$attachment->exists())
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_FILE_NOT_FOUND'), 404);
 		}
 
 		//make sure that file is acceptable type
 		if (!$attachment->isAllowedType())
 		{
-			JError::raiseError(404, JText::_('Unknown file type.'));
-			return;
+			throw new Exception(\JText::_('Unknown file type.'), 404);
 		}
 
 		// Add JPATH_ROOT
@@ -2471,12 +2401,11 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_WISHLIST_FILE_NOT_FOUND') . ' ' . $filename);
-			return;
+			throw new Exception(\JText::_('COM_WISHLIST_FILE_NOT_FOUND') . ' ' . $filename, 404);
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
+		$xserver = new Server();
 		$xserver->filename($filename);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -2484,7 +2413,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(500, JText::_('COM_WISHLIST_SERVER_ERROR'));
+			throw new Exception(\JText::_('COM_WISHLIST_SERVER_ERROR'), 500);
 		}
 		else
 		{
@@ -2536,8 +2465,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			break; // 4 hours
 		}
 
-		$due['immediate'] = JFactory::getDate(time() + $i)->toSql();
-		$due['warning']   = JFactory::getDate(time() + $w)->toSql();
+		$due['immediate'] = \JFactory::getDate(time() + $i)->toSql();
+		$due['warning']   = \JFactory::getDate(time() + $w)->toSql();
 
 		return $due;
 	}

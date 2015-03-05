@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Wishlist\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
+use Components\Wishlist\Tables;
+use Hubzero\User\Profile;
+use Hubzero\Base\ItemList;
+use Hubzero\Utility\String;
+
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Wishlist class for a wish comment model
  */
-class WishlistModelComment extends WishlistModelAbstract
+class Comment extends Base
 {
 	/**
 	 * Table
@@ -72,8 +76,8 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param      mixed  $oid ID (int) or alias (string)
-	 * @return     object WishlistModelComment
+	 * @param   mixed   $oid  ID (int) or alias (string)
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -95,7 +99,7 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Has this comment been reported
 	 *
-	 * @return  boolean True if reported, False if not
+	 * @return  boolean  True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -109,7 +113,7 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param   string $as What format to return
+	 * @param   string  $as  What format to return
 	 * @return  string
 	 */
 	public function created($as='')
@@ -117,11 +121,11 @@ class WishlistModelComment extends WishlistModelAbstract
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -137,18 +141,18 @@ class WishlistModelComment extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param   string $property What data to return
-	 * @param   mixed  $default  Default value
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
 	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -166,9 +170,9 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Get a list or count of replies
 	 *
-	 * @param   string  $rtrn    Data format to return
-	 * @param   array   $filters Filters to apply to data fetch
-	 * @param   boolean $clear   Clear cached data?
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
 	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
@@ -223,7 +227,7 @@ class WishlistModelComment extends WishlistModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!($this->_cache['comments.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['comments.list'] instanceof ItemList) || $clear)
 				{
 					if ($this->get('replies', null) !== null)
 					{
@@ -238,14 +242,14 @@ class WishlistModelComment extends WishlistModelAbstract
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new WishlistModelComment($result);
+							$results[$key] = new self($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_cache['comments.list'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['comments.list'] = new ItemList($results);
 				}
 				return $this->_cache['comments.list'];
 			break;
@@ -255,8 +259,8 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param   string  $as      Format to return state in [text, number]
-	 * @param   integer $shorten Number of characters to shorten text to
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
 	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
@@ -289,9 +293,9 @@ class WishlistModelComment extends WishlistModelAbstract
 						&$config
 					));
 
-					$attach = new WishAttachment($this->_db);
+					$attach = new Tables\Wish\Attachment($this->_db);
 					$attach->output = 'web';
-					$attach->uppath = JPATH_ROOT . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('item_id');
+					$attach->uppath = PATH_APP . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('item_id');
 					$attach->webpath = $this->config('webpath');
 
 					$this->set('content.parsed', $attach->parse($this->get('content')));
@@ -317,7 +321,7 @@ class WishlistModelComment extends WishlistModelAbstract
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -368,7 +372,7 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Delete an entry and its associated content
 	 *
-	 * @return  boolean True on success, false if not
+	 * @return  boolean  True on success, false if not
 	 */
 	public function delete()
 	{

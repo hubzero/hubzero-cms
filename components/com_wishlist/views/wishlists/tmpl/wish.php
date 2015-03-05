@@ -301,7 +301,7 @@ $this->css()
 									);
 									?>
 									<td>
-										<?php echo WishlistHtml::formSelect('importance', $importance, $this->wish->ranking('importance'), 'rankchoices'); ?>
+										<?php echo \Components\Wishlist\Helpers\Html::formSelect('importance', $importance, $this->wish->ranking('importance'), 'rankchoices'); ?>
 									</td>
 									<?php
 								}
@@ -314,7 +314,7 @@ $this->css()
 								else
 								{
 									?>
-									<td><?php echo WishlistHtml::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance'); ?></td>
+									<td><?php echo \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance'); ?></td>
 									<?php
 								}
 								?>
@@ -350,7 +350,7 @@ $this->css()
 									);
 									?>
 									<td>
-										<?php echo WishlistHtml::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices'); ?>
+										<?php echo \Components\Wishlist\Helpers\Html::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices'); ?>
 									</td>
 									<?php
 								}
@@ -365,7 +365,7 @@ $this->css()
 								{
 									?>
 									<td>
-										<?php echo WishlistHtml::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort'); ?>
+										<?php echo \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort'); ?>
 									</td>
 									<?php
 								}

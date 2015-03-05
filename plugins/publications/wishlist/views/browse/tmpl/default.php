@@ -126,12 +126,12 @@ $this->css();
 					<td class="voting">
 					<?php
 						$view = new \Hubzero\Component\View(array(
-							'name'      =>'wishlist',
+							'name'      =>'wishlists',
 							'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->option,
 							'layout'    => '_vote'
 						));
 						$view->set('option', 'com_wishlist')
-						     ->set('item',  new WishlistModelWish($item))
+						     ->set('item',  new \Components\Wishlist\Models\Wish($item))
 						     ->set('listid', $this->wishlist->id)
 						     ->set('plugin', 0)
 						     ->set('admin', 0)

@@ -154,7 +154,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 		//include com_wishlist files
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Get the component parameters
 		$this->config = JComponentHelper::getParams('com_wishlist');
@@ -169,16 +169,16 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$admin = 0;
 
 		// Configure controller
-		$controller = new WishlistControllerWishlist();
+		$controller = new \Components\Wishlist\Controllers\Wishlists();
 
 		// Get filters
 		$filters = $controller->getFilters(0);
 		$filters['limit'] = $this->params->get('limit');
 
 		// Load some objects
-		$obj = new Wishlist($this->database);
-		$objWish = new Wish($this->database);
-		$objOwner = new WishlistOwner($this->database);
+		$obj = new \Components\Wishlist\Tables\Wishlist($this->database);
+		$objWish = new \Components\Wishlist\Tables\Wish($this->database);
+		$objOwner = new \Components\Wishlist\Tables\Owner($this->database);
 
 		// Get wishlist id
 		$id = $obj->get_wishlistID($gid, $category);
@@ -287,8 +287,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 		// Load some objects
 		$database = JFactory::getDBO();
-		$wishlist = new Wishlist($database);
-		$wish     = new Wish($database);
+		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
+		$wish     = new \Components\Wishlist\Tables\Wish($database);
 
 		// Get wishlist id
 		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
@@ -321,8 +321,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 		// Load some objects
 		$database = JFactory::getDBO();
-		$wishlist = new Wishlist($database);
-		$wish     = new Wish($database);
+		$wishlist = new \Components\Wishlist\Tables\Wishlist($database);
+		$wish     = new \Components\Wishlist\Tables\Wish($database);
 
 		// Get wishlist id
 		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
