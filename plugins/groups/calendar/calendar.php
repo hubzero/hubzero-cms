@@ -418,8 +418,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			array_push($events, $event);
-		}
+			// accounts for how humans keep time.
+			if ($event->allDay)
+			{
+				$end_day = strtotime($event->end . '+ 48 hours');
+				$down = date('Y-m-d H:i:s', $end_day);
+				$event->end = $down;
+			}
+
+				array_push($events, $event);
+			}
 
 		// output events
 		echo json_encode($events);
@@ -672,14 +680,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// really it should be midnight of the next day that the event ends.
-		if ($allday)
-		{
-			$end_day = strtotime($event['publish_down'] . '+ 24 hours');
-			$down = date('Y-m-d H:i:s', $end_day);
-			$eventsModelEvent->set('publish_down', $down);
-		}
-
 		//make sure registration email is valid
 		if ($registration && isset($event['email']) && $event['email'] != '' && !filter_var($event['email'], FILTER_VALIDATE_EMAIL))
 		{
@@ -806,15 +806,6 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//load event data
 		$view->event = new EventsModelEvent( $eventId );
-
-		// human factor for all day events
-		if ($view->event->get('allday') == 1)
-		{
-			$publish_down = $view->event->get('publish_down');
-			$down = strtotime($publish_down . '-24 hours');
-			$end_day = date('Y-m-d H:i:s', $down);
-			$view->event->set('publish_down', $end_day);
-		}
 
 		// make sure we have event
 		if (!$view->event->get('id'))
