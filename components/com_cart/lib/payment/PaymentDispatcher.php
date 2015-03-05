@@ -101,7 +101,7 @@ class PaymentDispatcher
 				return('cm');
 			break;
 			case "UPAY":
-				return('tid');
+				return('tId');
 			break;
 			case "DUMMY AUTO PAYMENT":
 			default:

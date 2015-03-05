@@ -83,29 +83,25 @@ class CartControllerOrder extends ComponentController
 		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 		$verificationVar = PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
-		// Check the GET values passed
-		$customVar = JRequest::getVar($verificationVar, '');
+        if ($verificationVar) {
+            // Check the GET values passed
+            $customVar = JRequest::getVar($verificationVar, '');
 
-		$tId = false;
-		if (strstr($customVar, '-'))
-		{
-			$customData = explode('-', $customVar);
-			$token = $customData[0];
-			$tId = $customData[1];
-		}
-		else
-		{
-			$token = $customVar;
-		}
-		//print_r($tId); die;
+            $tId = false;
+            if (strstr($customVar, '-')) {
+                $customData = explode('-', $customVar);
+                $token = $customData[0];
+                $tId = $customData[1];
+            } else {
+                $token = $customVar;
+            }
+            /* Lookup the order */
 
-		/* Lookup the order */
-
-		// Verify token
-		if (!$token || !CartModelCart::verifySecurityToken($token, $tId))
-		{
-			die('Error processing your order. Failed to verify security token.');
-		}
+            // Verify token
+            if (!$token || !CartModelCart::verifySecurityToken($token, $tId)) {
+                die('Error processing your order. Failed to verify security token.');
+            }
+        }
 
 		// Get transaction info
 		$tInfo = CartModelCart::getTransactionFacts($tId);
