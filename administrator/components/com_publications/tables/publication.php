@@ -516,7 +516,7 @@ class Publication extends JTable
 	{
 		$sql  = "SELECT V.*, C.id as id, C.category, C.project_id, C.access as master_access,
 				C.checked_out, C.checked_out_time, C.rating as master_rating,
-				C.group_owner, C.master_type,
+				C.group_owner, C.master_type, C.master_doi,
 				C.ranking as master_ranking, C.times_rated as master_times_rated,
 				C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias,
 				t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title,
@@ -598,7 +598,7 @@ class Publication extends JTable
 		$alias = str_replace( ':', '-', $alias );
 
 		$sql  = "SELECT V.*, C.id as id, C.category, C.master_type,
-				C.project_id, C.access as master_access,
+				C.project_id, C.access as master_access, C.master_doi,
 				C.checked_out, C.checked_out_time, C.rating as master_rating,
 				C.ranking as master_ranking, C.times_rated as master_times_rated,
 				C.alias, V.id as version_id, C.group_owner,
