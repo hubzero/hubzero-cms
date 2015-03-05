@@ -37,11 +37,6 @@ $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CR
 
 // Menu items
 JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
-
-$bar = JToolBar::getInstance('toolbar');
-// Add an upload button.
-$bar->appendButton('Popup', 'upload', JText::_('COM_BILLBOARDS_IMAGES'), JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder=' . $this->media_path), 640, 520);
-
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
@@ -88,11 +83,23 @@ jQuery(document).ready(function($){
 			</div>
 			<div class="input-wrap">
 				<label for="billboardcollection"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION'); ?>:</label><br />
-				<?php echo $this->clist; ?>
+				<select name="billboard[collection_id]">
+					<?php foreach (Collection::all() as $collection) : ?>
+						<option value="<?php echo $collection->id; ?>"<?php echo ($collection->id == $this->row->collection_id) ? ' selected="selected"' : ''; ?>>
+							<?php echo $collection->name; ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
 			</div>
 			<div class="input-wrap">
 				<label for="ordering"><?php echo JText::_('COM_BILLBOARDS_FIELD_ORDERING'); ?>:</label><br />
-				<?php echo $this->row->ordering; ?>
+				<?php if ($this->row->id) : ?>
+					<?php $query = Billboard::select('ordering', 'value')->select('name', 'text')->whereEquals('collection_id', $this->row->collection_id)->toString(); ?>
+					<?php echo JHTML::_('list.ordering', 'billboard[ordering]', $query, null, $this->row->id); ?>
+				<?php else : ?>
+					<input type="hidden" name="billboard[ordering]" value="" />
+					<span class="readonly"><?php echo JText::_('COM_BILLBOARDS_ASC'); ?></span>
+				<?php endif; ?>
 			</div>
 			<div class="input-wrap">
 				<label for="billboardheader"><?php echo JText::_('COM_BILLBOARDS_FIELD_HEADER'); ?>:</label><br />
@@ -100,9 +107,6 @@ jQuery(document).ready(function($){
 			</div>
 			<div class="input-wrap">
 				<label for="billboardbackgroundimg"><?php echo JText::_('COM_BILLBOARDS_FIELD_BACKGROUND_IMG'); ?>:</label><br />
-				<?php echo $this->image_location; ?>
-				<input type="text" name="billboard[background_img]" id="billboardbackgroundimg" value="<?php echo $this->escape(stripslashes($this->row->background_img)); ?>" size="25" />
-				<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder=' . $this->media_path); ?>" data-rel="{handler: 'iframe', size: {x: 640, y: 520}}"><?php echo JText::_('COM_BILLBOARDS_UPLOAD_IMAGE'); ?></a>
 			</div>
 			<div class="input-wrap">
 				<label for="billboard[text]"><?php echo JText::_('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
@@ -127,7 +131,23 @@ jQuery(document).ready(function($){
 			</div>
 			<div class="input-wrap">
 				<label for="billboardlearnmorelocation"><?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION'); ?>:</label><br />
-				<?php echo $this->learnmorelocation; ?>
+				<select name="billboard[learn_more_location]">
+					<option value="topleft"<?php echo ($this->row->learn_more_location == 'topleft') ? 'selected="selected"' : ''; ?>>
+						<?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_TOP_LEFT'); ?>
+					</option>
+					<option value="topright"<?php echo ($this->row->learn_more_location == 'topright') ? 'selected="selected"' : ''; ?>>
+						<?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_TOP_RIGHT'); ?>
+					</option>
+					<option value="bottomleft"<?php echo ($this->row->learn_more_location == 'bottomleft') ? 'selected="selected"' : ''; ?>>
+						<?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_BOTTOM_LEFT'); ?>
+					</option>
+					<option value="bottomright"<?php echo ($this->row->learn_more_location == 'bottomright') ? 'selected="selected"' : ''; ?>>
+						<?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_BOTTOM_RIGHT'); ?>
+					</option>
+					<option value="relative"<?php echo ($this->row->learn_more_location == 'relative') ? 'selected="selected"' : ''; ?>>
+						<?php echo JText::_('COM_BILLBOARDS_FIELD_LEARN_MORE_LOCATION_RELATIVE'); ?>
+					</option>
+				</select>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">

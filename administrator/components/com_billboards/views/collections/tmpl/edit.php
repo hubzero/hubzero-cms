@@ -61,10 +61,10 @@ function submitbutton(pressbutton)
 
 		<div class="input-wrap">
 			<label for="field-name"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-			<input type="text" name="collection[name]" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
+			<input type="text" name="name" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>
-	<input type="hidden" name="collection[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />

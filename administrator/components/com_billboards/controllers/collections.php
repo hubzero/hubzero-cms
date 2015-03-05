@@ -43,96 +43,53 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
-
-		// Get paging variables
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.collections.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.collections.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		// Get an object
-		$collections = new BillboardsCollection($this->database);
-
-		// Get a record count
-		$this->view->total = $collections->getCount($this->view->filters);
-
-		// Grab the results
-		$this->view->rows = $collections->getRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		// Output the HTML
+		$this->view->rows = Collection::all()->paginated()->ordered();
 		$this->view->display();
 	}
 
 	/**
-	 * Create a billboard
+	 * Create a new collection
 	 *
 	 * @return void
 	 */
 	public function addTask()
 	{
+		$this->view->setLayout('edit');
+		$this->view->task = 'edit';
 		$this->editTask();
 	}
 
 	/**
-	 * Edit a billboards collection
+	 * Edit a collection
 	 *
+	 * @param  object $collection
 	 * @return void
 	 */
-	public function editTask()
+	public function editTask($collection=null)
 	{
 		// Hide the menu, force users to save or cancel
 		JRequest::setVar('hidemainmenu', 1);
 
-		// Incoming (expecting an array)
-		$id = JRequest::getVar('id', array(0));
-		if (!is_array($id))
+		if (!isset($collection) || !is_object($collection))
 		{
-			$id = array($id);
-		}
-		$cid = $id[0];
+			// Incoming (expecting an array)
+			$id = JRequest::getVar('id', array(0));
+			if (!is_array($id))
+			{
+				$id = array($id);
+			}
+			$cid = $id[0];
 
-		// Initiate a class and load the info
-		$this->view->row = new BillboardsCollection($this->database);
-		$this->view->row->load($cid);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$collection = Collection::oneOrNew($cid);
 		}
 
-		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		// Display
+		$this->view->row = $collection;
+		$this->view->display();
 	}
 
 	/**
-	 * Save a billboard collection
+	 * Save a collection
 	 *
 	 * @return void
 	 */
@@ -141,25 +98,22 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		// Trim all posted items (we don't need to allow HTML here)
-		$collection = JRequest::getVar('collection', array(), 'post');
-		$collection = array_map('trim', $collection);
+		// Create object
+		$collection = Collection::oneOrNew(JRequest::getInt('id'))->set(array(
+			'name' => JRequest::getVar('name')
+		));
 
-		// Initiate class and bind posted items to database fields
-		$row = new BillboardsCollection($this->database);
-		if (!$row->bind($collection))
+		if (!$collection->save())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		if (!$row->check())
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		if (!$row->store())
-		{
-			JError::raiseError(500, $row->getError());
+			// Something went wrong...return errors
+			foreach ($collection->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+
+			$this->view->setLayout('edit');
+			$this->view->task = 'edit';
+			$this->editTask($collection);
 			return;
 		}
 
@@ -175,7 +129,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	 *
 	 * @return void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -191,9 +145,10 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		// @TODO: maybe we should warn people if trying to delete a collection with associated billboards?
 		foreach ($ids as $id)
 		{
-			// Delete collection
-			$collection = new BillboardsCollection($this->database);
-			$collection->delete($id);
+			$collection = Collection::oneOrFail($id);
+
+			// Delete record
+			$collection->destroy();
 		}
 
 		// Output messsage and redirect
@@ -214,35 +169,5 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Build the select list for ordering of a specified Table
-	 *
-	 * @return $ordering
-	 */
-	protected function ordering(&$row, $id, $query, $neworder = 0)
-	{
-		$db = JFactory::getDBO();
-
-		if ($id)
-		{
-			$order = JHTML::_('list.genericordering', $query);
-			$ordering = JHTML::_('select.genericlist', $order, 'billboard[ordering]', 'class="inputbox" size="1"', 'value', 'text', intval($row->ordering));
-		}
-		else
-		{
-			if ($neworder)
-			{
-				$text = JText::_('descNewItemsFirst');
-			}
-			else
-			{
-				$text = JText::_('descNewItemsLast');
-			}
-			$ordering = '<input type="hidden" name="billboard[ordering]" value="' . $row->ordering . '" />' . $text;
-		}
-
-		return $ordering;
 	}
 }

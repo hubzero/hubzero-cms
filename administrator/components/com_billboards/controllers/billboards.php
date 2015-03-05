@@ -43,50 +43,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
-
-		// Incoming
-		$this->view->filters = array(
-			'limit' => $app->getUserStateFromRequest(
-				$this->_option . '.billboards.limit',
-				'limit',
-				$config->getValue('config.list_limit'),
-				'int'
-			),
-			'start' => $app->getUserStateFromRequest(
-				$this->_option . '.billboards.limitstart',
-				'limitstart',
-				0,
-				'int'
-			)
-		);
-
-		// Get a billboard object
-		$billboards = new BillboardsBillboard($this->database);
-
-		// Get a record count
-		$this->view->total = $billboards->getCount($this->view->filters);
-
-		// Grab all the records
-		$this->view->rows = $billboards->getRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
-		}
-
-		// Output the HTML
+		$this->view->rows = Billboard::all()->paginated()->ordered()->rows();
 		$this->view->display();
 	}
 
@@ -97,100 +54,56 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	 */
 	public function addTask()
 	{
+		$this->view->setLayout('edit');
+		$this->view->task = 'edit';
 		$this->editTask();
 	}
 
 	/**
 	 * Edit a billboard
 	 *
+	 * @param  object $billboard
 	 * @return void
 	 */
-	public function editTask()
+	public function editTask($billboard=null)
 	{
 		// Hide the menu, force users to save or cancel
 		JRequest::setVar('hidemainmenu', 1);
 
-		// Incoming - expecting an array
-		$cid = JRequest::getVar('cid', array(0));
-		if (!is_array($cid))
+		if (!isset($billboard) || !is_object($billboard))
 		{
-			$cid = array($cid);
+			// Incoming - expecting an array
+			$cid = JRequest::getVar('cid', array(0));
+			if (!is_array($cid))
+			{
+				$cid = array($cid);
+			}
+			$uid = $cid[0];
+
+			$billboard = Billboard::oneOrNew($uid);
 		}
-		$uid = $cid[0];
 
-		// Load the billboard and the collection (we need the collection to grab the collection name)
-		$this->view->row = new BillboardsBillboard($this->database);
-		$this->view->row->load($uid);
-		$this->view->collection = new BillboardsCollection($this->database);
-		$this->view->collection->load($this->view->row->collection_id);
-
-		// Fail if not checked out by 'me'
-		if ($this->view->row->checked_out && $this->view->row->checked_out != $this->juser->get('id'))
+		// Fail if not checked out by current user
+		if ($billboard->isCheckedOut())
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
+				JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
+				'warning'
 			);
 			return;
 		}
 
-		// Build the html select list for ordering
-		$query = $this->view->row->buildOrderingQuery($this->view->row->collection_id);
-
 		// Are we editing an existing entry?
-		if ($uid)
+		if ($billboard->id)
 		{
 			// Yes, we should check it out first
-			$this->view->row->checkout($this->juser->get('id'));
-
-			// Build the ordering info
-			$this->view->row->ordering = $this->ordering($this->view->row, $uid, $query);
-		}
-		else
-		{
-			// Set some defaults
-			$this->view->row->ordering = $this->ordering($this->view->row, '', $query);
-		}
-
-		// Grab the file location for the background images
-		$params = JComponentHelper::getParams('com_billboards');
-		$this->view->image_location = $params->get('image_location', '/site/media/images/billboards/');
-
-		if (!is_dir(JPATH_ROOT . DS . ltrim($this->view->image_location, DS)))
-		{
-			jimport('joomla.file.folder');
-			JFolder::create(JPATH_ROOT . DS . ltrim($this->view->image_location, DS));
-		}
-
-		// Get the relative image location for building the links to the media manager
-		$mparams = JComponentHelper::getParams('com_media');
-		$this->view->media_path = $mparams->get('image_path', 'site/media/images');
-
-		// Make sure the image path is in the format that we need (i.e. remove any leading or trailing "/")
-		if (substr($this->view->media_path, 0, 1) != DS)
-		{
-			$this->view->media_path = DS.$this->view->media_path;
-		}
-		if (substr($this->view->media_path, -1, 1) != DS)
-		{
-			$this->view->media_path = $this->view->media_path.DS;
-		}
-		$this->view->media_path = rtrim(str_replace($this->view->media_path, "", $this->view->image_location), DS);
-
-		// Build the collection select list
-		$this->view->clist = BillboardsHelperHtml::buildCollectionsList($this->view->row->collection_id);
-
-		// Build the select list for possible learn-more locations
-		$this->view->learnmorelocation = BillboardsHelperHtml::buildLearnMoreList($this->view->row->learn_more_location);
-
-		// Set any errors
-		if ($this->getError())
-		{
-			$this->view->setError($this->getError());
+			$billboard->checkout($this->juser->get('id'));
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view->row = $billboard;
+		$this->view->display();
 	}
 
 	/**
@@ -204,37 +117,27 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming, make sure to allow HTML to pass through
-		$billboard = JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
-		$billboard = array_map('trim', $billboard);
+		$data = JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 
-		$row = new BillboardsBillboard($this->database);
+		// Create object
+		$billboard = Billboard::oneOrNew($data['id'])->set($data);
 
-		// If this is a new item, let's order it last
-		if ($billboard['id'] == 0)
+		if (!$billboard->save())
 		{
-			$new_id = $row->getNextOrdering($billboard['collection_id']);
-			$billboard['ordering'] = $new_id;
-		}
+			// Something went wrong...return errors
+			foreach ($billboard->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
 
-		// Save the billboard
-		if (!$row->bind($billboard))
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		if (!$row->check())
-		{
-			JError::raiseError(500, $row->getError());
-			return;
-		}
-		if (!$row->store())
-		{
-			JError::raiseError(500, $row->getError());
+			$this->view->setLayout('edit');
+			$this->view->task = 'edit';
+			$this->editTask($billboard);
 			return;
 		}
 
 		// Check in the billboard now that we've saved it
-		$row->checkin();
+		$billboard->checkin();
 
 		// Redirect
 		$this->setRedirect(
@@ -256,8 +159,6 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Initialize variables
 		$cid   = JRequest::getVar('cid', array(), 'post', 'array');
 		$order = JRequest::getVar('order', array(), 'post', 'array');
-		$total = count($cid);
-		$row   = new BillboardsBillboard($this->database);
 
 		// Make sure we have something to work with
 		if (empty($cid))
@@ -267,15 +168,15 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		}
 
 		// Update ordering values
-		for ($i = 0; $i < $total; $i++)
+		for ($i = 0; $i < count($cid); $i++)
 		{
-			$row->load($cid[$i]);
-			if ($row->ordering != $order[$i])
+			$billboard = Billboard::oneOrFail($cid[$i]);
+			if ($billboard->ordering != $order[$i])
 			{
-				$row->ordering = $order[$i];
-				if (!$row->store())
+				$billboard->set('ordering', $order[$i]);
+				if (!$billboard->save())
 				{
-					JError::raiseError(500, $row->getError());
+					JError::raiseError(500, $billboard->getError());
 					return;
 				}
 			}
@@ -297,7 +198,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	 *
 	 * @return void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -312,12 +213,13 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Make sure we have IDs to work with
 		if (count($ids) > 0)
 		{
-			$billboard = new BillboardsBillboard($this->database);
-
 			// Loop through the array of ID's and delete
 			foreach ($ids as $id)
 			{
-				if (!$billboard->delete($id))
+				$billboard = Billboard::oneOrFail($id);
+
+				// Delete record
+				if (!$billboard->destroy())
 				{
 					$this->setRedirect(
 						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -363,12 +265,11 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		// Incoming - we need an id so that we can check it back in
-		$billboard = JRequest::getVar('billboard', array(), 'post');
+		$fields = JRequest::getVar('billboard', array(), 'post');
 
 		// Check the billboard back in
-		$row = new BillboardsBillboard($this->database);
-		$row->bind($billboard);
-		$row->checkin();
+		$billboard = Billboard::oneOrNew($fields['id']);
+		$billboard->checkin();
 
 		// Redirect
 		$this->setRedirect(
@@ -398,26 +299,26 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the billboard
-			$row = new BillboardsBillboard($this->database);
-			$row->load($id);
+			$row = Billboard::oneOrFail($id);
 
 			// Only alter items not checked out or checked out by 'me'
-			if ($row->checked_out == 0 || $row->checked_out == $this->juser->get('id'))
+			if (!$row->isCheckedOut())
 			{
-				$row->published = $publish;
-				if (!$row->store($publish))
+				$row->set('published', $publish);
+				if (!$row->save())
 				{
 					JError::raiseError(500, $row->getError());
 					return;
 				}
 				// Check it back in
-				$row->checkin($id);
+				$row->checkin();
 			}
 			else
 			{
 				$this->setRedirect(
 					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
+					JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
+					'warning'
 				);
 				return;
 			}
@@ -427,35 +328,5 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Build the select list for ordering of a specified Table
-	 *
-	 * @return $ordering
-	 */
-	protected function ordering(&$row, $id, $query, $neworder = 0)
-	{
-		$db = JFactory::getDBO();
-
-		if ($id)
-		{
-			$order = JHTML::_('list.genericordering', $query);
-			$ordering = JHTML::_('select.genericlist', $order, 'billboard[ordering]', 'class="inputbox" size="1"', 'value', 'text', intval($row->ordering));
-		}
-		else
-		{
-			if ($neworder)
-			{
-				$text = JText::_('COM_BILLBOARDS_DESC');
-			}
-			else
-			{
-				$text = JText::_('COM_BILLBOARDS_ASC');
-			}
-			$ordering = '<input type="hidden" name="billboard[ordering]" value="' . $row->ordering . '" />' . $text;
-		}
-
-		return $ordering;
 	}
 }

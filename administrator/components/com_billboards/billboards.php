@@ -41,7 +41,9 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 // Include needed tables and controller
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'billboard.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'collection.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'billboard.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'collection.php';
 
 $controllerName = JRequest::getCmd('controller', 'billboards');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

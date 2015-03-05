@@ -42,44 +42,37 @@ JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'), 'delete');
+JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'));
 JToolBarHelper::spacer();
 JToolBarHelper::help('billboards');
-
-$juser = JFactory::getUser();
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows); ?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_NAME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows); ?></th>
+				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows->toArray()); ?></th>
 				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="6"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
 <?php
-	$k = 0;
-	for ($i=0, $n=count($this->rows); $i < $n; $i++)
+	$i = 0;
+	foreach ($this->rows as $row)
 	{
-		$row =& $this->rows[$i];
-
 		// See if the billboard is being edited by someone else
 		if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 		{
 			$checked = JHtml::_('jgrid.checkedout', $row, JFactory::getUser($row->checked_out)->get('name'), $row->checked_out_time);
-			$info = ($row->checked_out_time != '0000-00-00 00:00:00')
-					 ? JText::_('CHECKED_OUT').': '.JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_HZ1')).'<br />'
-					 : '';
 		}
 		else
 		{
@@ -90,7 +83,7 @@ $juser = JFactory::getUser();
 		$class = $row->published ? 'publish' : 'unpublish';
 		$alt   = $row->published ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
 ?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$i"; ?>">
 				<td>
 					<?php echo $checked; ?>
 				</td>
@@ -101,7 +94,7 @@ $juser = JFactory::getUser();
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
 				</td>
 				<td>
-					<?php echo $row->bcollection; ?>
+					<?php echo $row->collection->name; ?>
 				</td>
 				<td class="order">
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
@@ -112,7 +105,7 @@ $juser = JFactory::getUser();
 					</a>
 				</td>
 			</tr>
-<?php $k = 1 - $k; } ?>
+<?php $i++; } ?>
 		</tbody>
 	</table>
 
