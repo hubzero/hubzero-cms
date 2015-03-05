@@ -113,7 +113,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		$lang->load('com_wishlist');
 
 		// Configure controller
-		$controller = new \Components\Wishlist\Models\Wishlists();
+		$controller = new \Components\Wishlist\Controllers\Wishlists();
 
 		// Get filters
 		$filters = $controller->getFilters(0);
