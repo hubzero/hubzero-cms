@@ -108,6 +108,12 @@ class MembersRouter extends \Hubzero\Component\Router\Base
 					return $vars;
 				break;
 
+				case 'contributors':
+					$vars['controller'] = 'profiles';
+					$vars['task'] = 'browse';
+					$vars['show'] = 'contributors';
+				break;
+
 				case 'register':
 					$vars['controller'] = $segments[0];
 					if (isset($segments[1]))
