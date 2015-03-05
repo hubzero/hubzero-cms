@@ -270,8 +270,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 		$juser 	= JFactory::getUser();
-
-		if (is_array($areas) && $limit)
+		if (is_array($areas) && $limit && count($this->onMembersContributionsAreas()) > 0)
 		{
 			if (!isset($areas[$this->_name])
 			  && !in_array($this->_name, $areas)
