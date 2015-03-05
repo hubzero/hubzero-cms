@@ -655,7 +655,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			return $this->edit();
 		}
 
-		//check to make sure end time is greater then start time
+		//check to make sure end time is greater than start time
 		if (isset($event['publish_down']) && $event['publish_down'] != '0000-00-00 00:00:00' && $event['publish_down'] != '')
 		{
 			$up     = strtotime($event['publish_up']);
@@ -670,6 +670,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				$this->event = $eventsModelEvent;
 				return $this->edit();
 			}
+		}
+
+		// really it should be midnight of the next day that the event ends.
+		if ($allday)
+		{
+			$end_day = strtotime($event['publish_down'] . '+ 24 hours');
+			$down = date('Y-m-d H:i:s', $end_day);
+			$eventsModelEvent->set('publish_down', $down);
 		}
 
 		//make sure registration email is valid
@@ -798,6 +806,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//load event data
 		$view->event = new EventsModelEvent( $eventId );
+
+		// human factor for all day events
+		if ($view->event->get('allday') == 1)
+		{
+			$publish_down = $view->event->get('publish_down');
+			$down = strtotime($publish_down . '-24 hours');
+			$end_day = date('Y-m-d H:i:s', $down);
+			$view->event->set('publish_down', $end_day);
+		}
 
 		// make sure we have event
 		if (!$view->event->get('id'))
