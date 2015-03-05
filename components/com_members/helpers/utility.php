@@ -184,7 +184,7 @@ class MembersHelperUtility
 	{
 		// Exclude all non-printable characters and the ':'
 		// ':' can mess up ldap entries
-		if (preg_match("/^[^:]*$/u", $name))
+		if (preg_match("/^[^:\p{C}]*$/u", $name))
 		{
 			return(1);
 		}
