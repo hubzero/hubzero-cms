@@ -79,4 +79,15 @@ trait ErrorBag
 	{
 		return $this->errors;
 	}
+
+	/**
+	 * Returns the first error
+	 *
+	 * @return string
+	 * @since  1.3.2
+	 **/
+	public function getError()
+	{
+		return (isset($this->errors[0])) ? $this->errors[0] : '';
+	}
 }
