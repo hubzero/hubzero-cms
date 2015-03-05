@@ -53,21 +53,17 @@ class Helper extends Module
 	 */
 	private function _getList()
 	{
-		$db = JFactory::getDBO();
-
 		// Get the correct billboards collection to display from the parameters
 		$collection = (int) $this->params->get('collection', 1);
 
-		// Query to grab all the buildboards associated with the selected collection
+		// Grab all the buildboards associated with the selected collection
 		// Make sure we only grab published billboards
-		$query = 'SELECT b.*, c.*' .
-			' FROM #__billboards as b, #__billboard_collection as c' .
-			' WHERE c.id = b.collection_id' .
-			' AND published = 1' .
-			' AND b.collection_id = ' . $collection .
-			' ORDER BY `ordering` ASC';
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+		require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+
+		$rows = \Billboard::whereEquals('published', 1)
+		                 ->whereEquals('collection_id', $collection)
+		                 ->order('ordering', 'asc')
+		                 ->rows();
 
 		return $rows;
 	}
