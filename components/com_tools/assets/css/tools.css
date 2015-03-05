@@ -96,6 +96,11 @@
 		float: left;
 		position: relative;
 		background: #000;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 		-webkit-border-radius: 0.27em;
 		   -moz-border-radius: 0.27em;
 		    -ms-border-radius: 0.27em;
@@ -106,6 +111,13 @@
 		    -ms-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
 		     -o-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
 		        box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+	}
+	#app-wrap * {
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 	}
 	#app-content {
 		outline: 0;
@@ -190,6 +202,7 @@
 		border: none;
 	}
 	#app-header h2 {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		font-weight: bold;
 		font-size: 1em;
 		line-height: 1.2em;
@@ -346,11 +359,6 @@
 		        border-radius: 0 0.27em 0 0;
 	}
 	.ui-resizable-handle {
-		-webkit-box-sizing: border-box;
-		   -moz-box-sizing: border-box;
-		    -ms-box-sizing: border-box;
-		     -o-box-sizing: border-box;
-		        box-sizing: border-box;
 		position: absolute;
 		right: 0;
 		bottom: -3.2em; /* -37px */
@@ -541,19 +549,16 @@
 		background-position: 8px -326px;
 	}
 
-	#app-footer a.refresh span,
-	#app-footer a.popout span {
-		width: 2px;
-		padding-right: 0px;
-		text-indent: 555em;
+	#app-header a.options span,
+	#app-footer a.refresh span {
 		white-space: nowrap;
-	}
-	#app-header a.options span {
-		width: 0.8em;
-		padding: 0.2em 0.3em;
-		white-space: nowrap;
-		font-size: 2em;
 		line-height: 1;
+	}
+
+	#app-header a.options span {
+		width: 1.3em;
+		padding: 0.2em 0.3em;
+		font-size: 2em;
 	}
 	#app-header a.options span:before {
 		content: "\2699";
@@ -565,12 +570,21 @@
 		color: #fff;
 		font-weight: normal;
 	}
+	/* Refresh */
 	#app-footer a.refresh span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -86px no-repeat;
+		width: 1.7em;
+		padding: 0.4em 0.5em;
+		font-size: 1.6em;
+	}
+	#app-footer a.refresh span:before {
+		content: "\21BB";
+		font-family: "Fontcons";
+		margin-right: 5em;
 	}
 	#app-footer a.refresh:hover span {
 		background-position: 8px -134px;
 	}
+	/* Resize */
 	#app-footer a.resize,
 	.ui-resizable-handle {
 		cursor: move;
@@ -580,6 +594,13 @@
 	}
 	#app-footer a.resize:hover span {
 		background-position: 8px -38px;
+	}
+	/* Popout */
+	#app-footer a.popout span {
+		width: 2px;
+		padding-right: 0px;
+		text-indent: 555em;
+		white-space: nowrap;
 	}
 	#app-footer a.popout span {
 		background: url("/components/com_tools/assets/img/session.png") 8px -374px no-repeat;
