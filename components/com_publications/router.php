@@ -104,7 +104,7 @@ function PublicationsBuildRoute(&$query)
 function PublicationsParseRoute($segments)
 {
 	$vars = array();
-	$vars['controller'] = 'publications';
+	//$vars['controller'] = 'publications';
 
 	// Valid tasks not requiring id
 	$tasks = array(	'browse', 'start', 'submit', 'edit', 'publication');
