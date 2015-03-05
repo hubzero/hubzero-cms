@@ -662,7 +662,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$down   = strtotime($event['publish_down']);
 			$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
 
-			// make sure up greater then down when not all day
+			// make sure up greater than down when not all day
 			// when all day event up can equal down
 			if (($up >= $down && !$allday) || ($allday && $up > $down))
 			{
