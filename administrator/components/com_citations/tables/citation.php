@@ -447,18 +447,6 @@ class Citation extends \JTable
 			$query .= " AND r.id=" . $filter['id'];
 		}
 
-		//group by
-		if (isset($filter['tag']) && $filter['tag'] != '')
-		{
-			$query .= " GROUP BY r.id HAVING uniques=" . count($tags);
-		}
-
-		//if we had a search term lets order by search match
-		if (isset($filter['search']) && $filter['search'] != '')
-		{
-			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) DESC";
-		}
-
 		// scope & scope Id
 		if (isset($filter['scope']) && $filter['scope'] != '')
 		{
@@ -476,6 +464,19 @@ class Citation extends \JTable
 		else
 		{
 			$query .= " AND r.scope_id is NULL OR r.scope_id=''";
+		}
+
+		//group by
+		if (isset($filter['tag']) && $filter['tag'] != '')
+		{
+			$query .= " GROUP BY r.id HAVING uniques=" . count($tags);
+		}
+
+		//if we had a search term lets order by search match
+		if (isset($filter['search']) && $filter['search'] != '')
+		{
+			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) DESC";
+			$filter['sort'] = '';
 		}
 
 		//sort filter
@@ -664,7 +665,6 @@ class Citation extends \JTable
 	 */
 	public function getEarliestYear()
 	{
-		//
 		$query = "SELECT c.year FROM " . $this->_tbl . " as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$earliest_year = $this->_db->loadResult();
@@ -682,6 +682,8 @@ class Citation extends \JTable
 	 */
 	public function getLastCitationDate($tbl, $oid)
 	{
+		require_once(__DIR__ . DS . 'association.php');
+
 		$ca = new Association($this->_db);
 
 		$sql = "SELECT c.created "
@@ -691,6 +693,26 @@ class Citation extends \JTable
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get a list of authors
+	 *
+	 * @param   integer  $id  Optional citation ID
+	 * @return  array
+	 */
+	public function authors($id=null)
+	{
+		require_once(__DIR__ . DS . 'author.php');
+
+		if (is_null($id))
+		{
+			$id = $this->id;
+		}
+
+		$ca = new Author($this->_db);
+
+		return $ca->getRecords(array('cid' => $id));
 	}
 }
 

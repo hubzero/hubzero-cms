@@ -148,5 +148,34 @@ class Association extends \JTable
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Delete entries for a specific citation
+	 *
+	 * @param   integer  $cid  Citation ID
+	 * @return  boolean  True on success, False on error
+	 */
+	public function deleteForCitation($cid=null)
+	{
+		if ($cid === null)
+		{
+			$cid = $this->cid;
+		}
+
+		if (!$cid)
+		{
+			$this->setError(\JText::_('Missing argument'));
+			return false;
+		}
+
+		// Remove any types in the remove list
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->Quote(intval($cid)));
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
+	}
 }
 

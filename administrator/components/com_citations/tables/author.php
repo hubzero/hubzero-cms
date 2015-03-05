@@ -66,6 +66,15 @@ class Author extends \JTable
 		{
 			return false;
 		}
+
+		if (!$this->id)
+		{
+			$sql = "SELECT ordering from $this->_tbl WHERE `cid`=" . $this->_db->Quote(intval($this->cid)) . " ORDER BY ordering DESC LIMIT 1";
+			$this->_db->setQuery($sql);
+			$this->ordering = intval($this->_db->loadResult());
+			$this->ordering++;
+		}
+
 		return true;
 	}
 
@@ -130,10 +139,44 @@ class Author extends \JTable
 	 */
 	public function getRecords($filters=array())
 	{
+		if (!isset($filters['sort']) || $filters['sort'] == '')
+		{
+			$filters['sort'] = 'ordering ASC';
+		}
+
 		$query  = "SELECT * FROM $this->_tbl AS r" . $this->buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Delete entries for a specific citation
+	 *
+	 * @param   integer  $cid  Citation ID
+	 * @return  boolean  True on success, False on error
+	 */
+	public function deleteForCitation($cid=null)
+	{
+		if ($cid === null)
+		{
+			$cid = $this->cid;
+		}
+
+		if (!$cid)
+		{
+			$this->setError(\JText::_('Missing argument'));
+			return false;
+		}
+
+		// Remove any types in the remove list
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `cid`=" . $this->_db->Quote(intval($cid)));
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 }
 
