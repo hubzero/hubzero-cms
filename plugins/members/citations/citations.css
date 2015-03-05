@@ -1,0 +1,190 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/citations/citations.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Citations plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+	.legend table {
+		max-width: 100px;
+	}
+	.legendColorBox {
+		max-width: 14px;
+	}
+	.citations .citation-label .type {
+		font-weight: bold;
+	}
+	.citation-details .badges {
+		float: right;
+	}
+	.citation-details .badges a {
+		background: #8e6e59 !important;
+		color: #FFF !important;
+	}
+	.citation-details .badges a:before {
+		border-color: transparent #8e6e59 transparent transparent !important;
+	}
+	.citation-details .tags li {
+		padding: 0;
+		border: none;
+	}
+
+	.com_members .member_citations .entries thead th {
+		padding-top: 0.618em;
+		padding-bottom: 0.618em;
+		text-align: left;
+		background-color: #eff;
+	}
+	.com_members .member_citations .entries thead th:first-child {
+		text-align: center;
+	}
+
+	.entries .col-options {
+		white-space: nowrap;
+	}
+	.entries .edit,
+	.entries .delete {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1.2em;
+		border: none;
+		color: #ccc;
+		margin-left: 0.2em;
+	}
+	.entries .edit:hover {
+		color: #222;
+	}
+	.entries .delete:hover {
+		color: red;
+	}
+
+	#hubForm .author-manager .span2 {
+		text-align: right;
+	}
+	#hubForm .author-manager .author-instructions {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	#hubForm .author-manager button {
+		margin-top: 2.4em;
+	}
+
+/* Instructions */
+	.introduction {
+		width: 32em;
+		margin: 3em auto;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		border: 1px solid #ddd\9; /* [!] IE 8 */
+		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
+	}
+	.introduction .introduction-message {
+		padding: 1em 1.4em;
+		text-align: center;
+		font-size: 1.2em;
+	}
+	.introduction .introduction-message:before {
+		content: "\275D";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 7em;
+		line-height: 1;
+		color: #ccc;
+		margin: 0.1em 0;
+	}
+	.introduction .introduction-questions {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+	.introduction ol {
+		list-style: decimal;
+	}
+
+	#hubForm .citation-author {
+		background: #f7f7f7;
+		border-radius: 0.25em;
+		position: relative;
+		margin: 0 0 0.5em 0;
+		padding: 1em;
+	}
+	#hubForm .citation-author .author-name {
+		margin-right: 4em;
+		display: inline-block;
+		width: 80%;
+	}
+	#hubForm .citation-author .author-handle {
+		margin-right: 1em;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		position: relative;
+	}
+	#hubForm .citation-author .author-handle:after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.2em;
+		left: 0;
+		content: "\f0dc";
+		font-family: "Fontcons";
+		font-size: 16px;
+		line-height: 1;
+		color: #ccc;
+	}
+	#hubForm .citation-author:hover .author-handle,
+	#hubForm .citation-author:hover .author-handle:after,
+	#hubForm .citation-author .author-handle:hover:after,
+	#hubForm .citation-author .author-handle:after:hover {
+		cursor: move;
+		color: #333;
+	}
+	#hubForm .citation-author span.author-description {
+		position: absolute;
+		right: 1em;
+		top: 25%;
+		font-size: 90%;
+	}
+	#hubForm .citation-author .delete {
+		font-size: 1.7em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+	}
+	#hubForm .citation-author .delete:before {
+		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
+	}
+
+/* Hide the sidebar if the page is too narrow */
+@media only screen and (max-width: 1080px) {
+	.member_citations .aside,
+	.member_citations .subject {
+		float: none;
+	}
+	.member_citations .aside {
+		display: none;
+	}
+	.member_citations .subject {
+		padding-left: 0;
+		padding-right: 0;
+		margin-right: 0;
+	}
+}
