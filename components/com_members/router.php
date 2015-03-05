@@ -112,6 +112,12 @@ function membersParseRoute($segments)
 				return $vars;
 			break;
 
+			case 'contributors':
+				$vars['controller'] = 'profiles';
+				$vars['task'] = 'browse';
+				$vars['show'] = 'contributors';
+			break;
+
 			case 'myaccount':
 				$juser = JFactory::getUser();
 				if (!$juser->get('guest'))
