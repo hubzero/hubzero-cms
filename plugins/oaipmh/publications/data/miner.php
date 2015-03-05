@@ -240,7 +240,7 @@ class Miner extends Object implements Provider
 		$this->database->setQuery(
 			"SELECT pa.name
 			FROM `#__publication_authors` pa, `#__publication_versions` pv, `#__publications` p
-			WHERE pa.publication_version_id = pv.id AND pv.publication_id = p.id AND p.id=" . $this->database->quote($id) . "
+			WHERE pa.publication_version_id = pv.id AND pa.role != 'submitter' AND pv.publication_id = p.id AND p.id=" . $this->database->quote($id) . "
 			ORDER BY pa.name"
 		);
 		$record->creator = $this->database->loadResultArray();
