@@ -594,7 +594,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function isNew()
 	{
-		return !$this->hasAttribute($this->getPrimaryKey());
+		return (!$this->hasAttribute($this->getPrimaryKey()) || !$this->{$this->getPrimaryKey()});
 	}
 
 	/**
@@ -974,6 +974,49 @@ class Relational implements \IteratorAggregate
 			$this->getPrimaryKey(),
 			$this->getPkValue()
 		);
+	}
+
+	/**
+	 * Checks out the current model to the provided user
+	 *
+	 * @param  string $userId optional userId for whome the row should be checked out
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function checkout($userId=null)
+	{
+		$userId = $userId ?: \JFactory::getUser()->get('id');
+		$this->set('checked_out', $userId)
+		     ->set('checked_out_time', \JFactory::getDate()->toSql())
+		     ->save();
+	}
+
+	/**
+	 * Checks back in the current model
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function checkin()
+	{
+		// @FIXME: need to be able to get database null date format here?
+		if (!$this->isNew())
+		{
+			$this->set('checked_out', '0')
+			     ->set('checked_out_time', '0000-00-00 00:00:00')
+			     ->save();
+		}
+	}
+
+	/**
+	 * Checks to see if the current model is checked out by someone else
+	 *
+	 * @return bool
+	 * @since  1.3.2
+	 **/
+	public function isCheckedOut()
+	{
+		return ($this->checked_out && $this->checked_out != \JFactory::getUser()->get('id'));
 	}
 
 	/**
