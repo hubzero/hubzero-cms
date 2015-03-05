@@ -314,7 +314,7 @@ class File extends Object
 	{
 		if (!isset($this->paths['override']))
 		{
-			$this->paths['override']  = JPATH_ROOT . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'html';
+			$this->paths['override']  = JPATH_BASE . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'html';
 			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
 		}
 		return $this->paths['override'];
