@@ -205,15 +205,15 @@ class ResourcesHtml
 		{
 			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option
 				. '&id=' . $publication->id . '&active=supportingdocs')
-				.'" title="' . JText::_('View All') . ' ' . $docs.' ' . JText::_('Supporting Documents').' ">'
-				. $otherdocs . ' ' . JText::_('more') . ' &rsaquo;</a></li>' . "\n";
+				.'" title="' . JText::_('COM_RESOURCES_VIEW_ALL') . ' ' . $docs.' ' . JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS').' ">'
+				. $otherdocs . ' ' . JText::_('COM_RESOURCES_MORE') . '</a></li>' . "\n";
 		}
 
 		if (!$sdocs && $docs > 0)
 		{
 			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option='
 				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">'
-				. JText::_('Additional materials available') . ' (' . $docs .')</a></p>'."\n";
+				. JText::_('COM_RESOURCES_ADDITIONAL_MATERIALS_AVAILABLE') . ' (' . $docs .')</a></p>'."\n";
 		}
 
 		$supln .= '</ul>'."\n";

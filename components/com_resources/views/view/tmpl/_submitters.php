@@ -90,7 +90,7 @@ if ($this->contributors)
 			$profile = \Hubzero\User\Profile::getInstance($contributor->id);
 			if ($profile && $profile->get('public'))
 			{
-				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('View the profile of %s', $name) . '">' . $name . '</a>';
+				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';
 			}
 		}
 
