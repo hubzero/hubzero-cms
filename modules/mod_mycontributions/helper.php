@@ -133,11 +133,12 @@ class Helper extends Module
 					if ($show_wishes)
 					{
 						// Get open wishes
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
+						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlists.php');
+						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
 
-						$objWishlist = new \Wishlist($database);
-						$objWish = new \Wish($database);
+						$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
+						$objWish = new \Components\Wishlist\Tables\Wish($database);
 						$listid = $objWishlist->get_wishlistID($rid, 'resource');
 
 						$rows[$i]->w = 0;
@@ -145,7 +146,7 @@ class Helper extends Module
 
 						if ($listid)
 						{
-							$controller = new \WishlistControllerWishlist();
+							$controller = new \Components\Wishlist\Controllers\Wishlists();
 							$filters = $controller->getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
