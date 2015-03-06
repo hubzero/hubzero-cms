@@ -381,6 +381,9 @@ class Relational implements \IteratorAggregate
 	 * This will not retrieve properties directly attached to the model,
 	 * even if they are public - those should be accessed directly!
 	 *
+	 * Also, make sure to access properties in transformers using the get method.
+	 * Otherwise you'll just get stuck in a loop!
+	 *
 	 * @param  string $key the attribute key to get
 	 * @param  mixed  $default the value to provide, should the key be non-existent
 	 * @return mixed
@@ -523,7 +526,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function hasTransformer($name)
 	{
-		return in_array('transform' . ucfirst($name), $this->methods);
+		return in_array('transform' . ucfirst($this->snakeToCamel($name)), $this->methods);
 	}
 
 	/**
@@ -536,7 +539,26 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function callTransformer($name, $arguments=array())
 	{
-		return call_user_func_array(array($this, 'transform' . ucfirst($name)), $arguments);
+		return call_user_func_array(array($this, 'transform' . ucfirst($this->snakeToCamel($name))), $arguments);
+	}
+
+	/**
+	 * Takes a snake-cased string and camel cases it
+	 *
+	 * @param  string $text the string to camel case
+	 * @return string
+	 * @since  1.3.2
+	 **/
+	public function snakeToCamel($text)
+	{
+		if (strpos($text, '_') !== false)
+		{
+			$bits = explode('_', $text);
+			$bits = array_map('ucfirst', $bits);
+			$text = lcfirst(implode('', $bits));
+		}
+
+		return $text;
 	}
 
 	/**
