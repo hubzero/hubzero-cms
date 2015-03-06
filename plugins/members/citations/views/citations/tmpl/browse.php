@@ -122,7 +122,7 @@ $juser = JFactory::getUser();
 						<?php foreach ($this->sorts as $k => $v) : ?>
 						<li>
 							<?php $sel = ($k == $this->filters['sort']) ? 'class="active"' : ''; ?>
-							<a <?php echo $sel; ?> href="<?php echo JRoute::_($base . '&sort=' . $k . ($this->filters['type'] ? '&type=' . $this->filters['type'] : '')); ?>" title="<?php echo JText::sprintf('Sort by %s', $v); ?>">&darr; <?php echo $v; ?></a>
+							<a <?php echo $sel; ?> href="<?php echo JRoute::_($base . '&sort=' . $k . ($this->filters['type'] ? '&type=' . $this->filters['type'] : '')); ?>" title="<?php echo JText::sprintf('PLG_MEMBERS_CITATIONS_SORT_BY', $v); ?>">&darr; <?php echo $v; ?></a>
 						</li>
 						<?php endforeach; ?>
 					</ul>
