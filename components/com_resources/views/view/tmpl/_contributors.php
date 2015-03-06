@@ -81,7 +81,7 @@ if ($this->contributors)
 			$profile = \Hubzero\User\Profile::getInstance($contributor->id);
 			if ($profile && $profile->get('public'))
 			{
-				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('View the profile of %s', $name) . '">' . $name . '</a>';
+				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';
 			}
 		}
 
@@ -111,16 +111,12 @@ if ($this->contributors)
 
 	if (count($names) > 0)
 	{
-		$html = '<p>'.ucfirst(JText::_('By')).' ';
-		//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
-		$html .= count($this->contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
-		$html .= '</p>';
+		$html = '<p>' . JText::sprintf('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s))) . '</p>';
 	}
 
 	if (count($orgs) > 0)
 	{
 		$html .= '<p class="orgs">';
-		//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
 		$html .= count($this->contributors) > 1 ? $orgsln : $orgsln_s;
 		$html .= '</p>';
 	}
