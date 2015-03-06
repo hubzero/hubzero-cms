@@ -582,6 +582,7 @@ class typeDatabases extends JObject
 				if (count($hi->getErrors()) == 0)
 				{
 					$hi->resize(100, false, false, true);
+					$hi->save($publishPath . DS . $thumb);
 				}
 				else
 				{
@@ -597,6 +598,7 @@ class typeDatabases extends JObject
 				if (count($hi->getErrors()) == 0)
 				{
 					$hi->resize(800, false, false, true);
+					$hi->save($publishPath . DS . $thumb);
 				}
 				else
 				{

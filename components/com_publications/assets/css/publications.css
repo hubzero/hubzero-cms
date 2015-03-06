@@ -291,6 +291,9 @@
 		left: 0;
 		position: relative;
 	}
+	.showcase-pane img {
+		max-width: 80px;
+	}
 
 /* Author list */
 

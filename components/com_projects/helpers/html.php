@@ -35,7 +35,7 @@ use Exception;
 /**
  * Html helper class
  */
-class Html
+class Html extends \JObject
 {
 	/**
 	 * Show time since present moment or an actual date
@@ -208,8 +208,9 @@ class Html
 		{
 			return 0;
 		}
+		$fileSystem = new \Hubzero\Filesystem\Filesystem();
 
-		return \Hubzero\Filesystem\Size($directory);
+		return $fileSystem->size($directory);
 	}
 
 	/**
@@ -567,6 +568,22 @@ class Html
 	}
 
 	/**
+	 * Check if file is binary
+	 *
+	 * @param      string	$file
+	 *
+	 * @return     integer
+	 */
+	public static function isBinary($file)
+	{
+		// MIME types
+		$mt = new \Hubzero\Content\Mimetypes();
+		$mime = $mt->getMimeType( $file );
+
+		return substr($mime, 0, 4) == 'text' ? false : true;
+	}
+
+	/**
 	 * Replace with emotion icons
 	 *
 	 * @param      string $text
@@ -662,7 +679,7 @@ class Html
 	 * @param      string $ext
 	 * @return     string
 	 */
-	public static function createThumbName( $image = null, $tn = '_thumb', $ext = '' )
+	public static function createThumbName( $image = null, $tn = '_thumb', $ext = 'png' )
 	{
 		return \JFile::stripExt($image) . $tn . '.' . $ext;
 	}
@@ -1410,7 +1427,7 @@ class Html
 	 * @param      string $case
 	 * @return     string
 	 */
-	public static function getProjectRepoPath( $projectAlias = '', $case = 'files' )
+	public static function getProjectRepoPath( $projectAlias = '', $case = 'files', $exists = true )
 	{
 		if (!trim($projectAlias))
 		{
@@ -1423,7 +1440,11 @@ class Html
 		// Build repo path
 		$path   = DS . trim($config->get('webpath'), DS) . DS . strtolower(trim($projectAlias));
 		$path  .= $case ? DS . $case : '';
-		return is_dir($path) ? $path : false;
+		if (!$config->get('offroot', 0))
+		{
+			$path = PATH_APP . $path;
+		}
+		return (is_dir($path) || $exists == false) ? $path : false;
 	}
 
 	/**

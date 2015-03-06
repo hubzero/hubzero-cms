@@ -422,6 +422,7 @@ class PublicationHelper extends JObject
 						if (count($hi->getErrors()) == 0)
 						{
 							$hi->resize(100, false, true, true);
+							$hi->save(JPATH_ROOT . $path . DS . 'thumb.gif');
 							return $path . DS . 'thumb.gif';
 						}
 						else

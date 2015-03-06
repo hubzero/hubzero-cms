@@ -286,6 +286,9 @@
 		text-align: center;
 		position: relative;
 	}
+	.item-image img {
+		max-width: 70px;
+	}
 	.item-order {
 		width: 25px;
 		height: 25px;

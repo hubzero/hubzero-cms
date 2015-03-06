@@ -6033,10 +6033,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$file = urldecode($file);
 
 				// Include Git Helper
-				$this->getGitHelper();
+				$this->_getGitHelper($fpath);
 
 				// Get Git hash
-				$hash = $this->_git->gitLog($fpath, $file, '' , 'hash');
+				$hash = $this->_git->gitLog($file, '' , 'hash');
 				$src = $this->_createScreenshot ( $file, $hash, $from_path, $gallery_path, 'name' );
 
 				if ($pScreenshot->loadFromFilename($file, $vid))
@@ -6143,10 +6143,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$fpath =  \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 			// Include Git Helper
-			$this->getGitHelper();
+			$this->_getGitHelper($fpath);
 
 			// Get Git hash
-			$hash = $this->_git->gitLog($fpath, $ima, '' , 'hash');
+			$hash = $this->_git->gitLog($ima, '' , 'hash');
 
 			// Get full & thumb image names
 			$view->file = \Components\Projects\Helpers\Html::createThumbName($filename, '-'.substr($hash, 0, 3));
@@ -6244,10 +6244,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$from_path = $prefix . $fpath;
 
 			// Include Git Helper
-			$this->getGitHelper();
+			$this->_getGitHelper($fpath);
 
 			// Get Git hash
-			$hash = $this->_git->gitLog($fpath, $ima, '' , 'hash');
+			$hash = $this->_git->gitLog($ima, '' , 'hash');
 
 			$src = $this->_createScreenshot ( $ima, $hash, $from_path, $gallery_path );
 			$title = basename($ima);
@@ -6373,6 +6373,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					if (count($hi->getErrors()) == 0)
 					{
 						$hi->resize(100, false, false, true);
+						$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
 						$src = $gallery_path. DS . $thumb;
 					}
 					else
@@ -7095,13 +7096,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$memberPath = $this->_getMemberPath();
 
 		// Get project path
-		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias, 'files', false);
 
-		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-
-		if (!is_dir( $prefix . $path ))
+		if (!is_dir( $path ))
 		{
-			if (!JFolder::create( $prefix . $path ))
+			if (!JFolder::create( $path ))
 			{
 				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -7109,18 +7108,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build .git repo
-		$gitRepoBase = $prefix . $path. DS .'.git';
+		$gitRepoBase = $path. DS .'.git';
 
-		if (!is_dir( $gitRepoBase ))
-		{
-			// Include Git Helper
-			$this->getGitHelper();
+		// Include Git Helper
+		$this->_getGitHelper($path);
 
-			// Initialize Git
-			$this->_git->iniGit($path);
-		}
-
-		$path = $prefix . $path;
+		// Initialize Git
+		$this->_git->iniGit();
 
 		// Copy files from member directory
 		if (!JFolder::copy($memberPath, $path, '', true))
@@ -7137,28 +7131,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Check-in copied files
 		if ($get)
 		{
-			// cd
-			chdir($path);
-
-			// Get git path
-			$gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
-
-			// Get author profile (for Git comments)
-			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-
-			$name = $profile->get('name');
-			$email = $profile->get('email');
-			$author = escapeshellarg($name.' <'.$email.'> ');
-
 			foreach ($get as $file)
 			{
 				if (is_file($path . DS . $file))
 				{
 					// Git add
-					exec($gitpath.' add '.escapeshellarg($file).' 2>&1', $out);
-
-					// Git commit
-					exec($gitpath.' commit -m "Added file '.escapeshellarg($file).'" --author="'.$author.'" 2>&1', $out);
+					$commitMsg = '';
+					$this->_git->gitAdd($file, $commitMsg);
+					$this->_git->gitCommit($commitMsg);
 					$checkedin++;
 				}
 			}
@@ -7608,18 +7588,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     void
 	 */
-	protected function getGitHelper()
+	protected function _getGitHelper($path)
 	{
 		if (!isset($this->_git))
 		{
 			// Git helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
 				. DS . 'helpers' . DS . 'githelper.php' );
-			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'),
-				0,
-				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
-			);
+			$this->_git = new \Components\Projects\Helpers\Git($path);
+		}
+		elseif ($path)
+		{
+			$this->_git->set('_path');
 		}
 	}
 

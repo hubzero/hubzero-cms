@@ -100,7 +100,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		$thumbName = $this->_imgHelper->createThumbName(
+		$thumbName = PublicationsHtml::createThumbName(
 			basename($path),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat
@@ -168,6 +168,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			if (count($hi->getErrors()) == 0)
 			{
 				$hi->resize(100, false, true, true);
+				$hi->save($copyToThumb);
 			}
 		}
 		else
@@ -390,8 +391,9 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$hi = new \Hubzero\Image\Processor($thumbPath);
 			if (count($hi->getErrors()) == 0)
 			{
-				$square = $this->_config->params->thumbWidth == $this->_config->params->thumbHeight ? true : false;
-				$hi->resize($this->_config->params->thumbWidth, false, $square, true);
+				//$square = $this->_config->params->thumbWidth == $this->_config->params->thumbHeight ? true : false;
+				$hi->resize($this->_config->params->thumbWidth, false, true, true);
+				$hi->save($thumbPath);
 			}
 			else
 			{

@@ -1135,24 +1135,4 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
 		return;
 	}
-
-	/**
-	 * Get Git helper
-	 *
-	 *
-	 * @return     void
-	 */
-	protected function getGitHelper()
-	{
-		if (!isset($this->_git))
-		{
-			// Git helper
-			include_once(JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php');
-			$this->_git = new ProjectsGitHelper(
-				$this->_config->get('gitpath', '/opt/local/bin/git'),
-				0,
-				$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
-			);
-		}
-	}
 }

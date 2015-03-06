@@ -2106,8 +2106,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Include needed classes
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
 			. 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
-			. 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 

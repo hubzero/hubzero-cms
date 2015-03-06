@@ -2048,6 +2048,7 @@ class ProjectsConnectHelper extends JObject {
 					if (count($hi->getErrors()) == 0)
 					{
 						$hi->resize(180, false, false, true);
+						$hi->save(PATH_APP . $to_path . DS . $thumb);
 					}
 					else
 					{

@@ -309,16 +309,12 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			. DS . 'models' . DS . 'types.php' );
 
 		// Get project repo path
-		$projectConfig 		= JComponentHelper::getParams( 'com_projects' );
 		$this->projectPath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 
 		// Git helper
 		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new ProjectsGitHelper(
-			$projectConfig->get('gitpath', '/opt/local/bin/git'),
-			$this->_uid
-		);
+		$this->_git = new \Components\Projects\Helpers\Git($this->projectPath);
 
 		// Parse data
 		$items = array();
@@ -642,7 +638,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$pid = $pub->id;
 
 		// Get latest Git hash
-		$vcs_hash = $this->_git->gitLog($this->projectPath, $attachment->path, '', 'hash');
+		$vcs_hash = $this->_git->gitLog($attachment->path, '', 'hash');
 
 		// Create attachment record
 		if ($this->curationModel || $fileRecord['type'] != 'gallery')
@@ -771,6 +767,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			if (count($hi->getErrors()) == 0)
 			{
 				$hi->resize(100, false, false, true);
+				$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
 
 				// Create screenshot record
 				$pScreenshot = new PublicationScreenshot( $this->database );

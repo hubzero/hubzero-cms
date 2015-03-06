@@ -399,18 +399,13 @@ class typeFiles extends JObject
 		// Go through file selections
 		if (isset($selections['files']) && count($selections['files']) > 0)
 		{
-			// Load component configs
-			$config = JComponentHelper::getParams( 'com_projects' );
-
-			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-			$git = new ProjectsGitHelper(
-				$config->get('gitpath', '/opt/local/bin/git'),
-				$uid
-			);
-
 			// Get project file path
 			$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
+
+			// Git helper
+			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+				. DS . 'helpers' . DS . 'githelper.php' );
+			$git = new \Components\Projects\Helpers\Git($fpath);
 
 			$objPA = new PublicationAttachment( $this->_database );
 
@@ -420,7 +415,7 @@ class typeFiles extends JObject
 				$path = urldecode($file);
 
 				// Get Git hash
-				$vcs_hash = $git->gitLog($fpath, urldecode($file), '', 'hash');
+				$vcs_hash = $git->gitLog(urldecode($file), '', 'hash');
 
 				$originalHash = $objPA->vcs_hash;
 
@@ -490,7 +485,6 @@ class typeFiles extends JObject
 		$base_path 	= $pubconfig->get('webpath');
 		$devpath 	= $helper->buildDevPath($this->_project->alias);
 		$newpath 	= $helper->buildPath($pid, $vid, $base_path, $secret, 1);
-		$gitpath 	= $config->get('gitpath', '/opt/local/bin/git');
 
 		// Create new version path
 		if (!is_dir( $newpath ))
@@ -590,9 +584,6 @@ class typeFiles extends JObject
 		{
 			// Load component configs
 			$config = JComponentHelper::getParams( 'com_projects' );
-
-			// Git path
-			$gitpath  = $config->get('gitpath', '/opt/local/bin/git');
 		}
 
 		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
@@ -642,7 +633,6 @@ class typeFiles extends JObject
 		$base_path 	= $pubconfig->get('webpath');
 		$devpath 	= $helper->buildDevPath($this->_project->alias);
 		$newpath 	= $helper->buildPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
-		$gitpath 	= $config->get('gitpath', '/opt/local/bin/git');
 
 		// Create new version path
 		if (!is_dir( $newpath ))

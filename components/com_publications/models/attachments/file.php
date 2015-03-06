@@ -914,12 +914,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Git helper
-		$config = JComponentHelper::getParams( 'com_projects' );
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new ProjectsGitHelper(
-			$config->get('gitpath', '/opt/local/bin/git'),
-			$uid
-		);
+		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+			. DS . 'helpers' . DS . 'githelper.php' );
+		$this->_git = new \Components\Projects\Helpers\Git($configs->path);
 
 		// Counter
 		$i = 0;
@@ -1161,7 +1158,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Get latest Git hash
-		$vcs_hash = $this->_git->gitLog($configs->path, $filePath, '', 'hash');
+		$vcs_hash = $this->_git->gitLog($filePath, '', 'hash');
 
 		$new = 0;
 		$update = 0;

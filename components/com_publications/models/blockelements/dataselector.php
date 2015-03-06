@@ -62,7 +62,6 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$html = '';
 
 		// Get project path
-		$config 	= JComponentHelper::getParams( 'com_projects' );
 		$this->path = \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
 		$showElement 	= $master->props['showElement'];
@@ -76,10 +75,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		{
 			include_once( JPATH_ROOT . DS . 'components' . DS
 				. 'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-			$this->_git = new ProjectsGitHelper(
-				$config->get('gitpath', '/opt/local/bin/git'),
-				0,
-				$config->get('offroot', 0) ? '' : JPATH_ROOT);
+			$this->_git = new \Components\Projects\Helpers\Git($this->path);
 		}
 
 		// Do we need to collapse inactive elements?

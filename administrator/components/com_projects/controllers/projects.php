@@ -724,7 +724,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Delete base dir for .git repos
-		$prefix  = $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		$prefix  = $this->config->get('offroot', 0) ? '' : PATH_APP ;
 		$repodir = trim($this->config->get('webpath'), DS);
 		$path    = $prefix . DS . $repodir . DS . $obj->alias . DS . 'files';
 
@@ -737,18 +737,15 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Git helper
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
-		$gitHelper = new ProjectsGitHelper(
-			$this->config->get('gitpath', '/opt/local/bin/git'),
-			$obj->owned_by_user,
-			$this->config->get('offroot', 0) ? '' : JPATH_ROOT
-		);
+		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+			. DS . 'helpers' . DS . 'githelper.php' );
+		$gitHelper = new \Components\Projects\Helpers\Git($path);
 
 		$commitMsg = '';
 
 		// Git add & commit
-		$gitHelper->gitAdd($path, $file, $commitMsg);
-		$gitHelper->gitCommit($path, $commitMsg);
+		$gitHelper->gitAdd($file, $commitMsg);
+		$gitHelper->gitCommit($commitMsg);
 
 		// Redirect
 		$this->setRedirect(

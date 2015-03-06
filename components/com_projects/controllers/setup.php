@@ -609,7 +609,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		}
 
 		// Build project repo path
-		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias, 'files', false);
 
 		// Create project repo path
 		if (!is_dir( $path ))
@@ -624,12 +624,8 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		// Git ini
 		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new ProjectsGitHelper(
-			$this->config->get('gitpath', '/opt/local/bin/git'),
-			0,
-			$this->config->get('offroot', 0) ? '' : PATH_APP
-		);
-		$this->_git->iniGit($path);
+		$this->_git = new \Components\Projects\Helpers\Git($path);
+		$this->_git->iniGit();
 	}
 
 	/**

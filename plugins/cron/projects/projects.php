@@ -212,7 +212,12 @@ class plgCronProjects extends JPlugin
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+			. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
+		include_once(PATH_CORE . DS . 'components' . DS .'com_projects'
+			. DS . 'helpers' . DS . 'githelper.php');
+		include_once(PATH_CORE . DS . 'components' . DS .'com_projects'
+			. DS . 'helpers' . DS . 'html.php');
 
 		// Get all projects
 		$obj = new \Components\Projects\Tables\Project( $database );
@@ -223,28 +228,18 @@ class plgCronProjects extends JPlugin
 			return true;
 		}
 
-		$prefix = $pconfig->get('offroot', 0) ? '' : JPATH_ROOT;
-		$webdir = DS . trim($pconfig->get('webpath'), DS);
-
-		include_once(JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php');
-		$git = new ProjectsGitHelper(
-			$pconfig->get('gitpath', '/opt/local/bin/git'),
-			0,
-			$pconfig->get('offroot', 0) ? '' : JPATH_ROOT
-		);
-
 		foreach ($projects as $project)
 		{
-			$path = $prefix . $webdir . DS . strtolower($project) . DS . 'files';
+			$path = \Components\Projects\Helpers\Html::getProjectRepoPath(strtolower($project), 'files');
 
 			// Make sure there is .git directory
-			if (!is_dir($path . DS . '.git'))
+			if (!$path || !is_dir($path . DS . '.git'))
 			{
 				continue;
 			}
+			$git = new \Components\Projects\Helpers\Git($path);
 
-			$command = 'gc --aggressive';
-			$git->callGit($path, $command);
+			$git->callGit('gc --aggressive');
 		}
 
 		return true;
