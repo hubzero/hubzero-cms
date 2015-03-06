@@ -2098,6 +2098,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				// Get Files JS
 				\Hubzero\Document\Assets::addPluginScript('projects', 'files');
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
 				break;
 
 			case 'description':
@@ -2204,6 +2205,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$view->fpath = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), 1);
 				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
 				break;
 
 			case 'tags':

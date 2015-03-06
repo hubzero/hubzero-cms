@@ -33,84 +33,84 @@ if (!jq) {
 HUB.ProjectPublications = {
 	jQuery: jq,
 	typingTimer: '',
-	
-	initialize: function() 
+
+	initialize: function()
 	{
 		var $ = this.jQuery;
-				
+
 		// Which section is active?
 		var section = '';
-		if ($('#section').length) 
+		if ($('#section').length)
 		{
 			section = $('#section').val();
 		}
-		
+
 		// Enable js specific to each panel
-		if (section == 'version') 
-		{						
+		if (section == 'version')
+		{
 			HUB.ProjectPublications.panelVersion();
 		}
-		if (section == 'content' || section == 'gallery') 
-		{						
+		if (section == 'content' || section == 'gallery')
+		{
 			var gallery = section == 'gallery' ? 1 : 0;
 			HUB.ProjectPublications.panelContent(gallery);
 		}
-		if (section == 'description') 
-		{						
+		if (section == 'description')
+		{
 			HUB.ProjectPublications.panelDescription();
 		}
-		if (section == 'authors') 
-		{						
+		if (section == 'authors')
+		{
 			HUB.ProjectPublications.panelAuthors();
 		}
-		if (section == 'tags') 
-		{						
+		if (section == 'tags')
+		{
 			HUB.ProjectPublications.panelTags();
 		}
-		if (section == 'license') 
-		{						
+		if (section == 'license')
+		{
 			HUB.ProjectPublications.panelLicense();
 		}
-		if (section == 'audience') 
-		{						
+		if (section == 'audience')
+		{
 			HUB.ProjectPublications.panelAudience();
 		}
-		if (section == 'access') 
-		{						
+		if (section == 'access')
+		{
 			HUB.ProjectPublications.panelAccess();
 		}
-		if (section == 'notes') 
-		{						
+		if (section == 'notes')
+		{
 			HUB.ProjectPublications.panelNotes();
 		}
-		if (section == 'citations') 
-		{						
+		if (section == 'citations')
+		{
 			HUB.ProjectPublications.panelCitations();
 		}
-		
+
 		// Enable/disable save button
-		HUB.ProjectPublications.checkBtn();	
-		
+		HUB.ProjectPublications.checkBtn();
+
 		// Review
-		HUB.ProjectPublications.submitReview();		
+		HUB.ProjectPublications.submitReview();
 	},
-	
+
 	// Publication submission
 	submitReview: function()
 	{
 		var $ = this.jQuery;
 		var sreview = $('#submit-review');
-		if (sreview.length && $("#status-msg").length && HUB.Projects) 
+		if (sreview.length && $("#status-msg").length && HUB.Projects)
 		{
 			// Edit version label (dev)
 			sreview.on('click', function(e)
-			{ 
+			{
 				$('#status-msg').empty().addClass('ajax-loading');
 				$('#status-msg').html(HUB.Projects.loadingIma("Processing request. Please wait..."));
-				$('#status-msg').css({'opacity':100});													
+				$('#status-msg').css({'opacity':100});
 			});
 		}
-		
+
 		if ($('#publish_date').length > 0) {
 			$( "#publish_date" ).datepicker({
 				dateFormat: 'yy-mm-dd',
@@ -119,52 +119,52 @@ HUB.ProjectPublications = {
 			});
 		}
 	},
-	
+
 	// VERSION
 	panelVersion: function()
 	{
 		var $ = this.jQuery;
 		var vlabel = $('#edit-vlabel');
-		if (vlabel.length) 
+		if (vlabel.length)
 		{
 			// Edit version label (dev)
 			vlabel.on('click', function(e)
-			{ 
+			{
 				var original = vlabel.html();
 				HUB.ProjectPublications.addEditForm (vlabel, original);
-				if ($('#v-label') && !$('#v-label').hasClass('hidden')) 
+				if ($('#v-label') && !$('#v-label').hasClass('hidden'))
 				{
 					$('#v-label').addClass('hidden');
-				}														
+				}
 			});
 		}
 	},
-	
+
 	// CITATIONS
 	panelCitations: function()
 	{
 		var $ = this.jQuery;
-		
+
 		// Confirm delete
 		$('.c-delete').each(function(i, el) {
 			var link = $(el).find("a");
-			
+
 			var coord = $($(link).parent().parent()).position();
-			
-			$(link).on('click', function(e) {	
+
+			$(link).on('click', function(e) {
 				e.preventDefault();
 				if (HUB.Projects) {
 					HUB.Projects.addConfirm($(link), 'Permanently delete this entry?', 'yes, delete', 'cancel');
 					if ($('#confirm-box')) {
 						$('#confirm-box').css('font-size', '1em');
 						$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
-					}					
+					}
 				}
 			});
 		});
-		
+
 	},
-		
+
 	// CONTENT
 	panelContent: function(gallery)
 	{
@@ -172,30 +172,30 @@ HUB.ProjectPublications = {
 		var primary = $('#primary').length ? $('#primary').val() : 1;
 		var active 	= $('#base').length ? $('#base').val() : 'files';
 		var tabs 	= $('.c-tab');
-		
+
 		// Container of selected content items
 		var cselected = new Array();
-		
+
 		// Check preselected items
 		var cd = $('.c-drag');
-		if (cd.length > 0) 
+		if (cd.length > 0)
 		{
-			cd.each(function(i, item) {	
-				var id = $(item).attr('id').replace('clone-', '');			
+			cd.each(function(i, item) {
+				var id = $(item).attr('id').replace('clone-', '');
 				cselected.push(id);
-			});		
+			});
 		}
 		HUB.ProjectPublications.showNoSel(cselected);
-		
+
 		// Load content choice
 		if($('#c-show')) {
 
 			var vid = $('#vid') ? $('#vid').val() : 0;
-			
+
 			// Build ajax url
-			var url = HUB.ProjectPublications.getPubUrl(1);
-			url = url + '&versionid=' + vid;
-			
+			var mUrl = HUB.ProjectPublications.getPubUrl(1);
+			url = mUrl + '&versionid=' + vid;
+
 			// Build URL
 			if (gallery)
 			{
@@ -203,184 +203,200 @@ HUB.ProjectPublications = {
 			}
 			else
 			{
-				url = url + '&active=' + active + '&action=browser';				
+				url = url + '&active=' + active + '&action=browser';
 				url = url + '&primary=' + primary;
 			}
-						
+
 			$('#c-show').empty();
 			$('#c-show').append('<p id="loading-content">' + HUB.ProjectPublications.loadingIma('') + '</p>');
-			$.post(url, {}, function(data) 
+			$.post(url, {}, function(data)
 			{
-				if (data) 
+				if (data)
 				{
 					$('#c-show').html(data);
-					
+
 					// Content item selection
 					var cl = $('.c-click');
 					var cf = $('#c-filelist');
-					if (cl.length > 0 && cf.length) 
+					var gallery = $('#section').length && $('#section').val() == 'gallery' ? 1 : 0;
+					var multi   = $('#base').length && $('#base').val() == 'files' ? 1 : 0;
+					var vid 	= $('#vid') ? $('#vid').val() : 0;
+					var move 	= $('#move') ? $('#move').val() : 0;
+					var selOff  = $('#base').length && ($('#base').val() == 'databases' || $('#base').val() == 'tools') && vid ? 1 : 0;
+
+					if (gallery)
 					{
-						cl.each(function(i, item) 
-						{	
-							var it = $(item).attr('id');
-							HUB.ProjectPublications.attachEventsContent(item, cselected, it);
-						});
+						url = mUrl + '&vid=' + vid + '&move=' + move + '&action=showimage&ima=';
+					}
+					else
+					{
+						url = mUrl + '&vid=' + vid + '&move=' + move + '&action=showitem&item=';
 					}
 					
+					if (cl.length > 0 && cf.length)
+					{
+						cl.each(function(i, item)
+						{
+							var it = $(item).attr('id');
+							HUB.ProjectPublications.attachEventsContent(item, cselected, it, url + it, multi, selOff, cl);
+						});
+					}
+
 					HUB.ProjectPublications.afterAjaxContent();
 				}
 			});
 		}
-	
+
 	},
-	
+
 	// DESCRIPTION
 	panelDescription: function()
 	{
 		var $ = this.jQuery;
-		
+
 		HUB.ProjectPublications.checkBtn();
-		
+
 		// Check if required fields are filled in
 		var required_inputs = $('.pubinput');
-		if (required_inputs.length > 0) 
+		if (required_inputs.length > 0)
 		{
-			required_inputs.each(function(i, item) 
+			required_inputs.each(function(i, item)
 			{
-				$(item).on('keyup', function(e) 
-				{ 
+				$(item).on('keyup', function(e)
+				{
 					// Enable/disable save button
 					HUB.ProjectPublications.checkBtn();
 				});
 			});
 		}
-		
+
 		// Check abstract length
 		if($('#pub_abstract').length > 0)
 		{
-			$('#pub_abstract').on('keyup', function(e) 
+			$('#pub_abstract').on('keyup', function(e)
 			{
 				HUB.Projects.setCounter($('#pub_abstract'), $('#counter_abstract'));
-			});				
-		}	
+			});
+		}
 	},
-	
+
 	// AUTHORS
 	panelAuthors: function()
 	{
 		var $ = this.jQuery;
-		
+
 		// Container of selected content items
 		var cselected = new Array();
-		
+
 		// Check preselected items
 		var cd = $('.c-drag');
-		if (cd.length > 0) 
+		if (cd.length > 0)
 		{
-			cd.each(function(i, item) {	
-				var owner = $(item).attr('id').replace('clone-author::', '');			
+			cd.each(function(i, item) {
+				var owner = $(item).attr('id').replace('clone-author::', '');
 				cselected.push(owner);
-			});		
+			});
 		}
-		else if ($('#nosel').length && $('#nosel').hasClass('hidden')) 
+		else if ($('#nosel').length && $('#nosel').hasClass('hidden'))
 		{
 			// Show 'no items' message
 			$('#nosel').removeClass('hidden');
 		}
-		
+
 		// Load authors choice
 		if($('#c-show')) {
 
 			var vid = $('#vid') ? $('#vid').val() : 0;
-			
+
 			// Build ajax url
 			var url = HUB.ProjectPublications.getPubUrl(1);
 			url = url + '&versionid=' + vid;
 			url = url + '&active=team';
 			url = url + '&action=authors';
-			
+
 			$('#c-show').empty();
 			$('#c-show').append('<p id="loading-content">' + HUB.ProjectPublications.loadingIma('') + '</p>');
-			$.post(url, {}, function(data) 
+			$.post(url, {}, function(data)
 			{
-				if (data) 
+				if (data)
 				{
 					$('#c-show').html(data);
-					
+
 					// Content item selection
 					var cl = $('.c-click');
 					var cf = $('#c-authors');
-					if (cl.length > 0 && cf.length) 
+
+					if (cl.length > 0 && cf.length)
 					{
-						cl.each(function(i, item) 
-						{	
+						cl.each(function(i, item)
+						{
 							var owner = $(item).attr('id').replace('owner:', '');
 							HUB.ProjectPublications.attachEventsAuthors(item, cselected, owner);
 						});
 					}
-					
+
 					HUB.ProjectPublications.afterAjaxAuthors();
 				}
 			});
 		}
 	},
-	
+
 	// TAGS
 	panelTags: function()
 	{
 		var $ = this.jQuery;
-		
-		if ($('#pick-tags').length) 
+
+		if ($('#pick-tags').length)
 		{
 			HUB.ProjectPublications.suggestTags();
 		}
 	},
-	
+
 	// LICENSE
 	panelLicense: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var license = $('#license');
-		
+
 		// Check original choice
-		if (license.length) 
+		if (license.length)
 		{
 			var original = $('#lic-' + license.val());
 			HUB.ProjectPublications.checkLicense(original, license);
 		}
-							
+
 		// On click choice
 		var ac = $('.c-radio');
-		if (ac.length > 0) 
+		if (ac.length > 0)
 		{
-			ac.each(function(i, item) 
+			ac.each(function(i, item)
 			{
 				$(item).on('click', function(e)
-				{ 
+				{
 					e.preventDefault();
-					
+
 					var sel = $(item).attr('id').replace('lic-', '');
 					license.val(sel);
 					HUB.ProjectPublications.checkLicense(item);
-					HUB.ProjectPublications.checkBtn();	
-				});		
-			});	
-		}	
+					HUB.ProjectPublications.checkBtn();
+				});
+			});
+		}
 	},
-	
+
 	// AUDIENCE
 	panelAudience: function()
 	{
 		var $ = this.jQuery;
-		
+
 		var audience = $('#audience').length ? $('#audience').val() : '';
 		var picked = new Array(); // container of selected items
-		
+
 		// Check original choice
 		if (audience.length) {
 			picked = audience.split('-');
-			if (picked.length > 0) 
+			if (picked.length > 0)
 			{
 				for (var i = 0; i < picked.length; i++)
 			    {
@@ -390,7 +406,7 @@ HUB.ProjectPublications = {
 			    }
 			}
 		}
-		
+
 		HUB.ProjectPublications.checkAudience(picked, $('#no-audience').attr('checked'));
 
 		// Do not show audience checkbox
@@ -402,26 +418,26 @@ HUB.ProjectPublications = {
 				}
 				HUB.ProjectPublications.checkAudience(picked, $('#no-audience').attr('checked'));
 			});
-		}		
-		
+		}
+
 		// On click choice
 		var ac = $('.c-click');
 		if(ac.length > 0) {
-			ac.each(function(i, item)  
+			ac.each(function(i, item)
 			{
-				$(item).on('click', function(e) 
+				$(item).on('click', function(e)
 				{
 					e.preventDefault();
 					var sel = $(item).attr('id');
 					//var idx = picked.indexOf(sel);
 					var idx = HUB.Projects.getArrayIndex(sel, picked);
-					
+
 					if ($('#no-audience')) {
 						$('#no-audience').removeAttr("checked");
 					}
 					if (idx==-1) {
 						picked.push(sel);
-						
+
 						if (!$(item).hasClass('c-picked')) {
 							$(item).addClass('c-picked');
 						}
@@ -431,245 +447,223 @@ HUB.ProjectPublications = {
 						$(item).removeClass('c-picked');
 					}
 					HUB.ProjectPublications.checkAudience(picked, $('#no-audience').attr('checked'));
-				});		
-			});	
-		}	
+				});
+			});
+		}
 	},
-	
+
 	// ACCESS
 	panelAccess: function()
 	{
 		var $ = this.jQuery;
-		
+
 		// Check original choice
 		HUB.ProjectPublications.checkAccess();
-					
+
 		// On click choice
 		var ac = $('.c-radio');
 		if(ac.length > 0) {
-			ac.each(function(i, item) 
-			{	
-				$(item).on('click', function(e) 
+			ac.each(function(i, item)
+			{
+				$(item).on('click', function(e)
 				{
-					e.preventDefault();		
+					e.preventDefault();
 					var sel = $(item).attr('id');
 					$('#access').val(HUB.ProjectPublications.getAccess(sel));
 					HUB.ProjectPublications.checkAccess();
-				});			
-			});	
+				});
+			});
 		}
 	},
-	
+
 	// NOTES
 	panelNotes: function()
 	{
-		var $ = this.jQuery;	
+		var $ = this.jQuery;
 	},
-	
+
 	// CONTENT
 	// Get all Ajax stuff working after screen update
-	afterAjaxContent: function() 
+	afterAjaxContent: function()
 	{
 		var $ = this.jQuery;
-		
+
 		HUB.ProjectPublications.displayOrdering();
 		HUB.ProjectPublications.addBtnContent();
 		HUB.Projects.initialize();
 		HUB.ProjectPublications.addDrag($('#c-filelist'));
 		HUB.ProjectPublications.checkBtn();
 		HUB.ProjectPublications.addPrimaryOptions('');
-		
+
 		if (HUB.ProjectLinks)
 		{
 			HUB.ProjectLinks.initialize();
-		}	
+		}
+
+		// Enable searching
+		HUB.ProjectPublications.enableSearchFilter();
 	},
-	
+
 	// AUTHORS
 	// Get all Ajax stuff working after screen update
-	afterAjaxAuthors: function() 
+	afterAjaxAuthors: function()
 	{
 		var $ = this.jQuery;
-		
+
 		HUB.ProjectPublications.displayOrdering();
 		HUB.ProjectPublications.addBtnAuthors();
 		HUB.Projects.initialize();
-		HUB.ProjectPublications.addDrag($('#c-authors'));	
-		HUB.ProjectPublications.checkBtn();	
+		HUB.ProjectPublications.addDrag($('#c-authors'));
+		HUB.ProjectPublications.checkBtn();
 	},
-		
+
 	// CONTENT
 	// item selection
-	attachEventsContent: function(item, cselected, it) 
+	attachEventsContent: function(item, cselected, it, url, multi, selOff, cl)
 	{
 		var $ = this.jQuery;
-		var primary = $('#primary').length ? $('#primary').val() : 0;
-		var gallery = $('#section').length && $('#section').val() == 'gallery' ? 1 : 0;
-		var multi   = $('#base').length && $('#base').val() == 'files' ? 1 : 0;
-		var vid 	= $('#vid') ? $('#vid').val() : 0;
-		var move 	= $('#move') ? $('#move').val() : 0;
-		var selOff  = $('#base').length && ($('#base').val() == 'databases' || $('#base').val() == 'tools') && vid ? 1 : 0; 
-				
+
 		// Marking as selected
-	//	var idx = cselected.indexOf(it);
 		var idx = HUB.Projects.getArrayIndex(it, cselected);
 		var order = $(item).index() + 1;
-		
-		if (idx!=-1) 
+
+		if (idx!=-1)
 		{
-			if (!$(item).hasClass('c-picked')) 
+			if (!$(item).hasClass('c-picked'))
 			{
 				$(item).addClass('c-picked');
 			}
-			var cloned = $('#c-filelist li.attached-' + (idx + 1));
-			if (cloned.length) {
-				cloned.addClass('clone-' + order);
-			}
 		}
-		
+
 		// Cannot select items
 		if (selOff == 1)
 		{
 			return;
 		}
-		
+
 		// Selecting items
-		$(item).on('click', function(e) 
-		{																
+		$(item).on('click', function(e)
+		{
 			//var idx = cselected.indexOf(it);
 			var idx = HUB.Projects.getArrayIndex(it, cselected);
 			var order = $(item).index() + 1;
-			
+
 			// Only one selection possible?
 			if (multi == 0)
 			{
-				var cl = $('.c-click');
-				if (cl.length > 0) 
+				if (cl.length > 0)
 				{
-					cl.each(function(i, ii) 
-					{	
+					cl.each(function(i, ii)
+					{
 						$(ii).removeClass('c-picked');
 						var iorder = $(ii).index() + 1;
 						var iit = $(ii).attr('id');
 						var iidx = HUB.Projects.getArrayIndex(iit, cselected);
-						//var iidx = cselected.indexOf(iit);
-												
-						if (iidx != -1) 
-						{					
+
+						if (iidx != -1)
+						{
 							cselected.splice(iidx, 1);
-							var icloned = $('#c-filelist li.clone-' + iorder);
-							icloned.remove();
+
+							var icloned = document.getElementById('#clone-' + iit);
+							$(icloned).remove();
 							HUB.ProjectPublications.showNoSel(cselected);
 							HUB.ProjectPublications.afterAjaxContent();
-						}					
+						}
 					});
 				}
-			}				
+			}
 
-			if (idx == -1) 
+			if (idx == -1)
 			{
 				cselected.push(it);
 				HUB.ProjectPublications.showNoSel(cselected);
-				
+
 				var missing = $(item).hasClass('i-missing') ? ' i-missing' : '';
-				
+
 				// Add clone
-				$('#c-filelist').append ('<li class="clone-' + order + missing + ' c-drag" id="clone-' + it + '"></li>');
-				
-				var cloned = $('#c-filelist li.clone-' + order);
-				cloned.empty().addClass('loading-content');
-				cloned.html(HUB.ProjectPublications.loadingIma(''));
-									
-				// Build ajax url
-				var url = HUB.ProjectPublications.getPubUrl(1);
-				
-				if (gallery)
+				$('#c-filelist').append('<li class="' + missing + ' c-drag" id="clone-' + it + '"></li>');
+
+				var cloned = document.getElementById("clone-" + it);
+				$(cloned).empty().addClass('loading-content');
+				$(cloned).html(HUB.ProjectPublications.loadingIma(''));
+
+				$.post(url, {}, function(data)
 				{
-					url = url + '&vid=' + vid + '&move=' + move + '&action=showimage&ima=' + it;
-				}
-				else
-				{
-					url = url + '&vid=' + vid + '&move=' + move + '&action=showitem&item=' + it;
-				}					
-				
-				$.post(url, {}, function(data) 
-				{
-					if (data) 
+					if (data)
 					{
-						cloned.html(data);
-						cloned.removeClass('loading-content');
+						$(cloned).html(data);
+						$(cloned).removeClass('loading-content');
 						HUB.ProjectPublications.afterAjaxContent();
 					}
 				});
-				
-				if (!$(item).hasClass('c-picked')) 
+
+				if (!$(item).hasClass('c-picked'))
 				{
 					$(item).addClass('c-picked');
 				}
-			}							
-			else 
+			}
+			else
 			{
 				$(item).removeClass('c-picked');
-				if (idx != -1) 
-				{					
-					var cloned = $('#c-filelist li.clone-' + order);
-					cloned.remove();
-										
+				if (idx != -1)
+				{
+					var cloned = document.getElementById("clone-" + it);
+					$(cloned).remove();
+
 					cselected.splice(idx, 1);
 					HUB.ProjectPublications.showNoSel(cselected);
 					HUB.ProjectPublications.afterAjaxContent();
 				}
-			}					
+			}
 		});
 	},
-		
 
 	// AUTHORS
 	// item selection
-	attachEventsAuthors: function(item, cselected, owner) 
+	attachEventsAuthors: function(item, cselected, owner)
 	{
 		var $ = this.jQuery;
-		
+
 		// Marking as selected
 	//	var idx = cselected.indexOf(owner);
 		var idx = HUB.Projects.getArrayIndex(owner, cselected);
-		if (idx!=-1) 
+		if (idx!=-1)
 		{
-			if (!$(item).hasClass('c-picked')) 
+			if (!$(item).hasClass('c-picked'))
 			{
 				$(item).addClass('c-picked');
 			}
 		}
-		
+
 		// Selecting authors
-		$(item).on('click', function(e) 
-		{																
+		$(item).on('click', function(e)
+		{
 		//	var idx = cselected.indexOf(owner);
 			var idx = HUB.Projects.getArrayIndex(owner, cselected);
 
-			if (!$(item).hasClass('c-picked')) 
+			if (!$(item).hasClass('c-picked'))
 			{
 				$(item).addClass('c-picked');
-				if (idx == -1) 
+				if (idx == -1)
 				{
 					cselected.push(owner);
 					HUB.ProjectPublications.showNoSel(cselected);
-					
+
 					// Add clone
 					$('#c-authors').append ('<li class="clone-' + owner + ' c-drag" id="clone-author::' + owner + '"></li>');
 					var rclone = $('#c-authors li.clone-' + owner);
-					
+
 					rclone.empty().addClass('loading-content');
 					rclone.html(HUB.ProjectPublications.loadingIma(''));
-							
+
 					// Build ajax url
 					var vid 		= $('#vid') ? $('#vid').val() : 0;
 					var move 		= $('#move') ? $('#move').val() : 0;
 					var url = HUB.ProjectPublications.getPubUrl(1);
 					url = url + '&vid=' + vid + '&move=' + move + '&action=showauthor&owner=' + owner;
-					$.post(url, {}, function(data) 
+					$.post(url, {}, function(data)
 					{
-						if (data) 
+						if (data)
 						{
 							rclone.html(data);
 							rclone.removeClass('loading-content');
@@ -678,32 +672,32 @@ HUB.ProjectPublications = {
 					});
 				}
 			}
-			else 
+			else
 			{
 				$(item).removeClass('c-picked');
-				if (idx != -1) 
+				if (idx != -1)
 				{
 					var rclone = $('#c-authors li.clone-' + owner);
 					rclone.remove();
-					
+
 					cselected.splice(idx, 1);
 					HUB.ProjectPublications.showNoSel(cselected);
 					HUB.ProjectPublications.afterAjaxAuthors();
 				}
-			}					
+			}
 		});
 	},
-	
-	refreshOptionsContent: function() 
+
+	refreshOptionsContent: function()
 	{
 		var $ = this.jQuery;
 		var serveas = $('.serve_option');
 
-		if (serveas.length > 0) 
+		if (serveas.length > 0)
 		{
-			serveas.each(function(i, item) 
+			serveas.each(function(i, item)
 			{
-				$(item).on('click', function(e) 
+				$(item).on('click', function(e)
 				{
 					e.preventDefault();
 					HUB.ProjectPublications.addPrimaryOptions($(item).val());
@@ -711,37 +705,37 @@ HUB.ProjectPublications = {
 			});
 		}
 	},
-	
+
 	addPrimaryOptions: function(picked)
 	{
 		var $ = this.jQuery;
-		
+
 		// Get selections
-		selections = HUB.ProjectPublications.gatherSelections('clone-'); 
+		selections = HUB.ProjectPublications.gatherSelections('clone-');
 		selections = selections.substring(0, 500);
 
 		var pubop = $('#pub-options');
-		if (!pubop.length) 
+		if (!pubop.length)
 		{
 			return;
 		}
-		
+
 		var vid   = $('#vid') ? $('#vid').val() : 0;
 		var base  = $('#base') ? $('#base').val() : 'files';
-				
+
 		var href = HUB.ProjectPublications.getPubUrl(1);
 		href     = href + '&vid=' + vid;
 		href	 = href + '&action=showoptions&selections=' + escape(selections);
-		
-		if (picked) 
+
+		if (picked)
 		{
 			href = href + '&serveas=' + picked;
 		}
 		href = href + '&base=' + base;
-							
-		$.post(href, {}, function(data) 
+
+		$.post(href, {}, function(data)
 		{
-			if (data) 
+			if (data)
 			{
 				pubop.html(data);
 				HUB.ProjectPublications.refreshOptionsContent();
@@ -749,39 +743,166 @@ HUB.ProjectPublications = {
 			}
 		});
 	},
-	
+
+	enableSearchFilter: function()
+	{
+		var $ = this.jQuery;
+		var searchbox = $('#item-search');
+		var keyupTimer = '';
+
+		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
+
+		if (!searchbox.length || !url)
+		{
+			return false;
+		}
+
+		$(searchbox).on('keyup', function(e)
+		{
+			// Get filtered data
+			keyupTimer = setTimeout((function() {
+
+				HUB.ProjectPublications.refreshData(true);
+
+				clearTimeout(keyupTimer);
+
+			}), 2000);
+		});
+
+		$(searchbox).on('keydown', function(e)
+		{
+			clearTimeout(keyupTimer);
+		});
+	},
+
+	refreshData: function(useLoader)
+	{
+		var $ = this.jQuery;
+
+		var searchbox = $('#item-search');
+		var output = $('#c-show');
+
+		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
+
+		if (!searchbox.length || !output.length)
+		{
+			return false;
+		}
+
+		url = url + '&filter=' + encodeURI($(searchbox).val());
+		var prev = $(output).html();
+
+		if (useLoader)
+		{
+			// Show nothing while search is performed
+			var show = '';
+			if (HUB.Projects)
+			{
+				show = '<p class="content-loader"> ' + HUB.Projects.loadingIma('') + '</p>';
+			}
+			$(output).html(show);
+		}
+
+		// Ajax call to get current status of a block
+		$.post(url, {},
+		function (response)
+		{
+			if (response)
+			{
+				$(output).html(response);
+
+			}
+			else
+			{
+				$(output).html(prev);
+			}
+
+			HUB.ProjectPublications.onAfterRefreshData();
+
+		});
+	},
+
+	onAfterRefreshData: function()
+	{
+		// Container of selected content items
+		var cselected = new Array();
+
+		// Check preselected items
+		var cd = $('.c-drag');
+		if (cd.length > 0)
+		{
+			cd.each(function(i, item) {
+				var id = $(item).attr('id').replace('clone-', '');
+				cselected.push(id);
+			});
+		}
+		HUB.ProjectPublications.showNoSel(cselected);
+
+		// Content item selection
+		var cl = $('.c-click');
+		var cf = $('#c-filelist');
+		var gallery = $('#section').length && $('#section').val() == 'gallery' ? 1 : 0;
+		var multi   = $('#base').length && $('#base').val() == 'files' ? 1 : 0;
+		var vid 	= $('#vid') ? $('#vid').val() : 0;
+		var move 	= $('#move') ? $('#move').val() : 0;
+		var selOff  = $('#base').length && ($('#base').val() == 'databases' || $('#base').val() == 'tools') && vid ? 1 : 0;
+
+		// Build ajax url
+		var url = HUB.ProjectPublications.getPubUrl(1);
+
+		if (gallery)
+		{
+			url = url + '&vid=' + vid + '&move=' + move + '&action=showimage&ima=';
+		}
+		else
+		{
+			url = url + '&vid=' + vid + '&move=' + move + '&action=showitem&item=';
+		}
+
+		if (cl.length > 0 && cf.length)
+		{
+			cl.each(function(i, item)
+			{
+				var it = $(item).attr('id');
+				HUB.ProjectPublications.attachEventsContent(item, cselected, it, url + it, multi, selOff, cl);
+			});
+		}
+
+		HUB.ProjectPublications.afterAjaxContent();
+	},
+
 	// Upload content button
-	addBtnContent: function() 
+	addBtnContent: function()
 	{
 		var $ = this.jQuery;
 		var bu = $('#b-upload');
-		var gallery = $('#section').length && $('#section').val() == 'gallery' ? 1 : 0;	
-		var proceed = 1;	
-		
+		var gallery = $('#section').length && $('#section').val() == 'gallery' ? 1 : 0;
+		var proceed = 1;
+
 		if (bu.length > 0)
 		{
-			bu.on('click', function(e) 
+			bu.on('click', function(e)
 			{
 				e.preventDefault();
-				
-				if ($('#uploader').val() != '') 
+
+				if ($('#uploader').val() != '')
 				{
 					// Check file format
 					var format = HUB.ProjectPublications.checkFormat($('#uploader').val());
 
-					if (format == 'archive') 
+					if (format == 'archive')
 					{
 						// Confirm further action - extract files?
-						if (HUB.ProjectFiles) 
+						if (HUB.ProjectFiles)
 						{
-							HUB.ProjectFiles.addQuestion();	
+							HUB.ProjectFiles.addQuestion();
 						}
 					}
-					else if ($('#upload-form')) 
-					{		
-						if (gallery) 
+					else if ($('#upload-form'))
+					{
+						if (gallery)
 						{
-							if (format != 'image' && format != 'video') 
+							if (format != 'image' && format != 'video')
 							{
 								if ($('#statusmsg')) {
 									$('#statusmsg').html('Please upload an image or video file in one of accepted formats.');
@@ -790,42 +911,42 @@ HUB.ProjectPublications = {
 								}
 							}
 						}
-						if (proceed == 1) 
+						if (proceed == 1)
 						{
-							HUB.ProjectFiles.submitViaAjax('Uploading file(s)... Please wait');	
-							$('#upload-form').submit();						
-						}					
-					}				
+							HUB.ProjectFiles.submitViaAjax('Uploading file(s)... Please wait');
+							$('#upload-form').submit();
+						}
+					}
 				}
 			});
-		}	
+		}
 	},
-	
+
 	// Add authors button
-	addBtnAuthors: function() 
+	addBtnAuthors: function()
 	{
 		var $ = this.jQuery;
 		var bu = $('#add-author');
-		
+
 		if (bu.length)
 		{
-			bu.on('click', function(e) 
+			bu.on('click', function(e)
 			{
 				e.preventDefault();
-				
-				if ($('#confirm-box').length) 
+
+				if ($('#confirm-box').length)
 				{
-					$('#confirm-box').remove();	
+					$('#confirm-box').remove();
 				}
-				
-				if ($('#newmember') && $('#newmember').val()) 
+
+				if ($('#newmember') && $('#newmember').val())
 				{
 					var vid 		= $('#vid') ? $('#vid').val() : 0;
 					var move 		= $('#move') ? $('#move').val() : 0;
 					var url = HUB.ProjectPublications.getPubUrl(1);
 					url = url + '&vid=' + vid + '&move=' + move;
 					url = url + '&action=editauthor' + '&new=' + escape($('#newmember').val());
-					
+
 					// Modal box for actions
 					$.fancybox(this,{
 						type: 'ajax',
@@ -850,47 +971,47 @@ HUB.ProjectPublications = {
 						}
 					});
 				}
-				
+
 			});
 		}
 	},
-	
-	suggestTags: function() 
-	{	
+
+	suggestTags: function()
+	{
 		var $ = this.jQuery;
 		var show 		= $('#pick-tags');
 		var vid 		= $('#vid') ? $('#vid').val() : 0;
 		var newtag 		= $('#actags').length ? $('#actags').val() : '';
-				
+
 		// Build ajax url
 		var url = HUB.ProjectPublications.getPubUrl(1);
 		url = url + '&vid=' + vid + '&action=loadtags' + '&tags=' + escape(newtag);
-		
+
 		$('#pick-tags').empty().addClass('loading-content');
 		$('#pick-tags').html(HUB.ProjectPublications.loadingIma(''));
-		
-		$.post(url, {}, function(data) 
+
+		$.post(url, {}, function(data)
 		{
-			if (data) 
+			if (data)
 			{
 				$('#pick-tags').html(data);
 				$('#pick-tags').removeClass('loading-content');
 				HUB.ProjectPublications.afterAjaxTags();
 			}
-		});	
+		});
 	},
-	
+
 	getSelectedTags: function()
 	{
 		var $ = this.jQuery;
-		
+
 		// Get selected tags
 		var selected = '';
 		var tags = $('.token-input-token-act p');
-		
+
 		if (tags.length > 0)
 		{
-			tags.each(function(i, item)  
+			tags.each(function(i, item)
 			{
 				selected = selected ? selected + ',' + $(item).html() : $(item).html();
 			});
@@ -898,190 +1019,185 @@ HUB.ProjectPublications = {
 
 		$('#actags').val(selected);
 	},
-	
-	afterAjaxTags: function() 
-	{	
+
+	afterAjaxTags: function()
+	{
 		var $ = this.jQuery;
-		
+
 		HUB.ProjectPublications.getSelectedTags();
-						
+
 		// Content item selection
 		var cl = $('.c-click');
-		if (cl.length > 0) 
+		if (cl.length > 0)
 		{
-			cl.each(function(i, item) 
+			cl.each(function(i, item)
 			{
 				$(item).unbind(); // clean-up past events
-				$(item).on('click', function(e) 
+				$(item).on('click', function(e)
 				{
 					var tag = '';
 					var classes = $(item).attr('class').split(" ");
-					
-					for ( i=classes.length-1; i>=0; i-- ) 
+
+					for ( i=classes.length-1; i>=0; i-- )
 					{
 						if (classes[i].search("tag:") >= 0 )
 						{
 							tag = classes[i].split(":")[1];
 						}
 					}
-					
+
 					tagtxt = unescape(tag.replace(/\+/g, " "));
 					var lastindex = $('.token-input-list-act li').index() + 1;
-					
+
 					$('.token-input-input-token-act').before('<li class="token-input-token-act" id="t-' + lastindex + '">' +
 					'<p>' + tagtxt + '</p>' +
-					'<span class="token-input-delete-token-act" id="tdel-' + lastindex + '">×</span>' + 
-					'</li>'); 
-						
+					'<span class="token-input-delete-token-act" id="tdel-' + lastindex + '">×</span>' +
+					'</li>');
+
 					HUB.ProjectPublications.removeTag(lastindex, tagtxt);
-					HUB.ProjectPublications.suggestTags();	
-					HUB.ProjectPublications.checkBtn();				
-				});	
-			});	
+					HUB.ProjectPublications.suggestTags();
+					HUB.ProjectPublications.checkBtn();
+				});
+			});
 		}
-		
+
 		// More tags
 		if ($('#more-tags').length > 0)
 		{
-			$('#more-tags').on('click', function(e) 
+			$('#more-tags').on('click', function(e)
 			{
 				e.preventDefault();
 				HUB.ProjectPublications.suggestTags();
 			});
 		}
 	},
-	
-	removeTag: function(idx, tagtxt) 
-	{		
+
+	removeTag: function(idx, tagtxt)
+	{
 		var tdel = $('#tdel-' + idx);
 		if (tdel.length > 0)
 		{
-			tdel.on('click', function(e) 
+			tdel.on('click', function(e)
 			{
 				tdel.parent().remove();
 				HUB.ProjectPublications.checkBtn();
 			});
 		}
 	},
-	
-	changeTags: function() 
-	{		
-		alert($('.token-input-token-act p').length);
-	},
-	
-	checkLicense: function(sel) 
+
+	checkLicense: function(sel)
 	{
 		var $ = this.jQuery;
 		var license = $('#license');
-	
+
 		var ac = $('.c-radio');
 		var extra = $('.c-extra');
 		var chosen = $('#c-sel-license');
-		
+
 		// uncheck all
-		if (ac.length > 0) 
+		if (ac.length > 0)
 		{
-			ac.each(function(i, item) 
+			ac.each(function(i, item)
 			{
 				if ($(item).hasClass('c-picked')) {
 					$(item).removeClass('c-picked');
-				}	
-			});	
+				}
+			});
 		}
-		
+
 		// hide all details
-		if(extra.length > 0) 
+		if(extra.length > 0)
 		{
-			extra.each(function(i, item) 
-			{	
-				if(!$(item).hasClass('hidden')) 
+			extra.each(function(i, item)
+			{
+				if(!$(item).hasClass('hidden'))
 				{
 					$(item).addClass('hidden');
-				}	
-			});	
+				}
+			});
 		}
-		
+
 		// check selected
-		if(license && license.val() != '' && license.val() != 0) 
+		if(license && license.val() != '' && license.val() != 0)
 		{
-			if ($(sel)) 
+			if ($(sel))
 			{
 				$(sel).addClass('c-picked');
-				
+
 				// show selected on the right
-				if (chosen && chosen.hasClass('hidden')) 
+				if (chosen && chosen.hasClass('hidden'))
 				{
 					chosen.removeClass('hidden');
 				}
-				if (chosen) 
+				if (chosen)
 				{
-					chosen.html($(sel).attr('title'));	
+					chosen.html($(sel).attr('title'));
 				}
-				
+
 				// Hide instructions
-				if ($('#nosel') && !$('#nosel').hasClass('hidden')) 
+				if ($('#nosel') && !$('#nosel').hasClass('hidden'))
 				{
 					$('#nosel').addClass('hidden');
 				}
 
 				// show extra options
 				var divextra = '#extra-' + license.val();
-				if ($(divextra) && $(divextra).hasClass('hidden')) 
+				if ($(divextra) && $(divextra).hasClass('hidden'))
 				{
 					$(divextra).removeClass('hidden');
 				}
-			}			
+			}
 		}
-		else if ($('#nosel') && $('#nosel').hasClass('hidden')) 
+		else if ($('#nosel') && $('#nosel').hasClass('hidden'))
 		{
 			$('#nosel').removeClass('hidden');
 		}
-		
+
 		var ltext = $('#license-text-' + license.val());
 		var agree = $('#agree-' + license.val());
-		
-		if (ltext.length) 
+
+		if (ltext.length)
 		{
 			ltext.unbind();
-			ltext.on('keyup', function(e) 
+			ltext.on('keyup', function(e)
 			{
 				HUB.ProjectPublications.checkBtn();
 			});
 		}
-		
+
 		if (agree.length) {
 			agree.unbind();
-			agree.on('click', function(e) 
+			agree.on('click', function(e)
 			{
 				HUB.ProjectPublications.checkBtn();
 			});
 		}
-		
+
 		// Load template text
 		var reload 	 = $('#reload-' + license.val());
 		var template = $('#template-' + license.val());
-		if (reload.length && template.length && ltext.length) 
+		if (reload.length && template.length && ltext.length)
 		{
 			reload.on('click', function(e)
 			{
 				ltext.val(template.html());
 				HUB.ProjectPublications.checkBtn();
 			});
-		}	
+		}
 	},
-	
-	addEditForm: function (el, original) 
-	{		
+
+	addEditForm: function (el, original)
+	{
 		var $ = this.jQuery;
-		
+
 		if ($('#editv').length > 0) {
 			return;
 		}
-		
+
 		$(el).addClass('hidden');
-				
+
 		// Add form
-		$(el).parent().append('<label id="editv">' + 
+		$(el).parent().append('<label id="editv">' +
 			'<input type="text" name="label" value="' + original + '" maxlength="10" class="vlabel" />' +
 			'<input type="submit" value="save" />' +
 			'<input type="button" value="cancel" class="cancel" id="cancel-rename" />' +
@@ -1094,11 +1210,11 @@ HUB.ProjectPublications = {
 			if($('#v-label') && $('#v-label').hasClass('hidden')) {
 				$('#v-label').removeClass('hidden');
 			}
-		});		
+		});
 	},
-	
+
 	// Enable/disable save & continue button
-	checkBtn: function() 
+	checkBtn: function()
 	{
 		var $ = this.jQuery;
 		var con 		= $('#c-continue');
@@ -1107,14 +1223,14 @@ HUB.ProjectPublications = {
 		var section 	= $('#section').length ? $('#section').val() : '';
 		var block 		= $('#block').length ? $('#block').val() : '';
 		var required 	= $('#required').length ? $('#required').val() : 0;
-		
+
 		// We need to have the button on page
-		if (!con.length) 
+		if (!con.length)
 		{
 			return false;
 		}
 		con.unbind();
-		
+
 		// Gather selections
 		if (section == 'content' || section == 'gallery')
 		{
@@ -1124,18 +1240,18 @@ HUB.ProjectPublications = {
 		{
 			selections = HUB.ProjectPublications.gatherSelections('clone-author::');
 		}
-		
+
 		// Section not required to be filled - enable save button
 		if (required == 0)
 		{
 			enable = 1;
-		}		
+		}
 		// Diferent behavior for different sections
 		else if (section == 'content' || section == 'gallery')
-		{			
+		{
 			var primary = $('#primary').length ? $('#primary').val() : 0;
 			var used 	= $('#used').length ? $('#used').val() : 0;
-						
+
 			if ((primary == 1 && !selections) || (primary == 1 && used == 1) || block || (section == 'gallery' && !selections))
 			{
 				enable = 0;
@@ -1144,12 +1260,12 @@ HUB.ProjectPublications = {
 		else if (section == 'description')
 		{
 			var required = $('.pubinput');
-			if (required.length > 0) 
+			if (required.length > 0)
 			{
-				required.each(function(i, item)  
+				required.each(function(i, item)
 				{
 					if ($(item).val() == '') {
-						enable = 0;	
+						enable = 0;
 					}
 				});
 			}
@@ -1162,72 +1278,72 @@ HUB.ProjectPublications = {
 		else if (section == 'tags')
 		{
 			enable = 1;
-		}		
+		}
 		else if (section == 'license')
 		{
 			var license = $('#license');
 			var ltext = $('#license-text-' + license.val());
 			var agree = $('#agree-' + license.val());
-			
-			if ((license.val() == '' || license.val() == 0)) 
+
+			if ((license.val() == '' || license.val() == 0))
 			{
-				enable = 0;	
+				enable = 0;
 			}
-			else if (license.val()) 
+			else if (license.val())
 			{
 				// Check for default text
 				if (ltext.length && !ltext.parent().parent().hasClass('hidden')
 					&& !HUB.ProjectPublications.checkLicenseText(ltext.val())) {
-					enable = 0;				
+					enable = 0;
 				}
-				if (agree.length && !agree.parent().parent().hasClass('hidden') 
+				if (agree.length && !agree.parent().parent().hasClass('hidden')
 					&& agree.attr('checked') != 'checked') {
 					enable = 0;
-				}	
+				}
 			}
 		}
 		else if (section == 'audience')
-		{			
+		{
 			if ($('#no-audience').attr('checked') != 'checked' && $('.c-picked').length == 0)
 			{
 				enable = 0;
 			}
 		}
-		
+
 		// Style button appropriately
-		if (enable == 1) 
+		if (enable == 1)
 		{
 			con.removeClass('disabled');
 		}
-		else if (!con.hasClass('disabled')) 
+		else if (!con.hasClass('disabled'))
 		{
 			con.addClass('disabled');
 		}
-		
-		// On-click action	
-		con.on('click', function(e) 
+
+		// On-click action
+		con.on('click', function(e)
 		{
 			e.preventDefault();
 
-			if (!con.hasClass('disabled')) 
-			{ 
-				if ($('#plg-form').length) 
-				{	
+			if (!con.hasClass('disabled'))
+			{
+				if ($('#plg-form').length)
+				{
 					if ($('#selections').length)
 					{
-						$('#selections').val(selections);	
-					}			
+						$('#selections').val(selections);
+					}
 					$('#plg-form').submit();
 				}
 			}
 		});
 	},
-	
+
 	loadingIma: function(txt)
 	{
 		var $ = this.jQuery;
-		
-		var html = '<span id="fbwrap">' + 
+
+		var html = '<span id="fbwrap">' +
 			'<span id="facebookG">' +
 			' <span id="blockG_1" class="facebook_blockG"></span>' +
 			' <span id="blockG_2" class="facebook_blockG"></span>' +
@@ -1235,134 +1351,134 @@ HUB.ProjectPublications = {
 			txt +
 			'</span>' +
 		'</span>';
-		
+
 		return html;
 	},
-	
-	checkLicenseText: function(text) 
+
+	checkLicenseText: function(text)
 	{
 		var $ = this.jQuery;
 		if(text == '') {
 			return false;
 		}
-		var defaults = [ 
+		var defaults = [
 			'YEAR',
 			'OWNER',
 			'ORGANIZATION',
 			'ONE LINE DESCRIPTION',
-			'URL'  
+			'URL'
 		];
-		
-		var matches = /YEAR/;		
+
+		var matches = /YEAR/;
 		if(text.match(matches) != null) {
 			return false;
 		}
-		var matches = /OWNER/;		
+		var matches = /OWNER/;
 		if(text.match(matches) != null) {
 			return false;
 		}
-		var matches = /ORGANIZATION/;		
+		var matches = /ORGANIZATION/;
 		if(text.match(matches) != null) {
 			return false;
 		}
-		var matches = /URL/;		
+		var matches = /URL/;
 		if(text.match(matches) != null) {
 			return false;
 		}
-		var matches = /ONE LINE DESCRIPTION/;		
+		var matches = /ONE LINE DESCRIPTION/;
 		if(text.match(matches) != null) {
 			return false;
 		}
-			
-		return true;		
+
+		return true;
 	},
-	
-	addDrag: function(list) 
+
+	addDrag: function(list)
 	{
 		var $ = this.jQuery;
 		var numitems = $('.c-drag').length;
 		var step = 0;
-		
-		if (numitems == 0) 
+
+		if (numitems == 0)
 		{
 			return false;
 		}
-		if ($(list).length == 0 || $(list).hasClass('noedit')) 
+		if ($(list).length == 0 || $(list).hasClass('noedit'))
 		{
 			return false;
 		}
-		
-		// Drag items	 
+
+		// Drag items
 		$(list).sortable(
 		{
-		   	update: function() 
+		   	update: function()
 			{
 			    HUB.ProjectPublications.displayOrdering();
 				HUB.ProjectPublications.checkBtn();
 		   	}
 		});
 	},
-	
+
 	displayOrdering: function()
 	{
 		var nums = $('.a-ordernum');
 		var o	 = 1;
-		
+
 		if (nums.length > 0)
 		{
-			nums.each(function(i, item) 
-			{	
+			nums.each(function(i, item)
+			{
 				$(item).html(o);
 				o++;
 			});
 		}
 	},
-	
-	gatherSelections: function(replacement) 
+
+	gatherSelections: function(replacement)
 	{
 		var $ = this.jQuery;
 		var items = $('.c-drag');
-		var selections = ''; 
-				
+		var selections = '';
+
 		if(items.length > 0) {
-			items.each(function(i, item)  
+			items.each(function(i, item)
 			{
 				var id = $(item).attr('id');
-				
+
 				if (replacement)
 				{
 					id = id.replace(replacement, '');
 				}
-				
-				if (id != '' && id != ' ') 
+
+				if (id != '' && id != ' ')
 				{
-					selections = selections + id + '##' ;	
-				}				
+					selections = selections + id + '##' ;
+				}
 			});
 		}
 		return selections;
 	},
-	
-	checkAudience: function(picked, noshow) 
+
+	checkAudience: function(picked, noshow)
 	{
 		var $ = this.jQuery;
 		var ac  = $('.c-click');
 		var out = $('#c-sel-audience');
 		var con = $('#c-continue');
 
-		if (noshow == 'checked') 
+		if (noshow == 'checked')
 		{
 			// uncheck all
 			if(ac.length > 0) {
-				ac.each(function(i, item)  
-				{	
+				ac.each(function(i, item)
+				{
 					if($(item).hasClass('c-picked')) {
 						$(item).removeClass('c-picked');
-					}	
-				});	
-			}			
+					}
+				});
+			}
 		}
-		
+
 		// Collect selections
 		selections = '';
 		if (picked.length > 0) {
@@ -1371,23 +1487,23 @@ HUB.ProjectPublications = {
 			}
 		}
 		$('#audience').val(selections);
-		
+
 		var vid 		= $('#vid') ? $('#vid').val() : 0;
-		var newtag 		= $('#actags').length ? $('#actags').val() : '';		
+		var newtag 		= $('#actags').length ? $('#actags').val() : '';
 
 		// Build ajax url
 		var url = HUB.ProjectPublications.getPubUrl(1);
-		url = url + '&vid=' + vid + '&action=showaudience&audience=' + selections + '&no_audience=' + noshow;	
-				
+		url = url + '&vid=' + vid + '&action=showaudience&audience=' + selections + '&no_audience=' + noshow;
+
 		$.post( url, {}, function(data) {
 			if(data)
 			{
 				out.html(data);
 			}
 		});
-		
+
 		// Show/Hide instructions
-		if (picked.length > 0 || noshow == 'checked') 
+		if (picked.length > 0 || noshow == 'checked')
 		{
 			if($('#nosel').length && !$('#nosel').hasClass('hidden')) {
 				$('#nosel').addClass('hidden');
@@ -1405,39 +1521,39 @@ HUB.ProjectPublications = {
 				out.addClass('hidden');
 			}
 		}
-		
+
 		HUB.ProjectPublications.checkBtn();
 
 	},
-	
+
 	// When no selection is made
 	showNoSel: function(cselected)
 	{
 		var $ = this.jQuery;
-		
-		if (cselected.length > 0 && $('#nosel').length && !$('#nosel').hasClass('hidden')) 
+
+		if (cselected.length > 0 && $('#nosel').length && !$('#nosel').hasClass('hidden'))
 		{
 			$('#nosel').addClass('hidden');
 		}
-		if (cselected.length == 0 && $('#nosel').length && $('#nosel').hasClass('hidden')) 
+		if (cselected.length == 0 && $('#nosel').length && $('#nosel').hasClass('hidden'))
 		{
 			$('#nosel').removeClass('hidden');
-		}	
+		}
 	},
-	
-	checkFormat: function(filename) 
+
+	checkFormat: function(filename)
 	{
 		var $ = this.jQuery;
 		var re = /[^.]+$/;
 	    var extt = filename.match(re);
-	
+
 		if (!extt) {
 			return 'other';
 		}
 		else {
 			var ext = extt.toString().toLowerCase();
 		}
-		
+
 		// Compressed file extensions
 		var tar = {
 		  'gz'  	: 1,
@@ -1448,7 +1564,7 @@ HUB.ProjectPublications = {
 		  'sitx' 	: 1,
 		  'rar' 	: 1
 		};
-		
+
 		// Video file extensions
 		var video = {
 		  'avi'  	: 1,
@@ -1460,7 +1576,7 @@ HUB.ProjectPublications = {
 		  'ogg'  	: 1,
 		  'wmv'  	: 1
 		};
-		
+
 		// Image file extensions
 		var image = {
 		  'bmp'  : 1,
@@ -1472,7 +1588,7 @@ HUB.ProjectPublications = {
 		  'tif'  : 1,
 		  'tiff' : 1
 		};
-		
+
 		if (tar[ext]) {
 			return 'archive';
 		}
@@ -1484,13 +1600,13 @@ HUB.ProjectPublications = {
 		}
 		else {
 			return 'other';
-		}			
+		}
 	},
-	
-	getPubUrl: function(no_html) 
-	{		
+
+	getPubUrl: function(no_html)
+	{
 		var $ = this.jQuery;
-		
+
 		var projectid = $('#projectid') ? $('#projectid').val() : 0;
 		var pid = $('#pid') ? $('#pid').val() : 0;
 		var provisioned = $('#provisioned') ? $('#provisioned').val() : 0;
@@ -1499,15 +1615,15 @@ HUB.ProjectPublications = {
 			var url = '/publications/submit/?pid=' +  pid;
 		}
 		else {
-			var url = '/projects/' + projectid + '/publications/?pid=' +  pid;					
+			var url = '/projects/' + projectid + '/publications/?pid=' +  pid;
 		}
 		if (no_html == 1) {
-			url = url + '&no_html=1&ajax=1';	
+			url = url + '&no_html=1&ajax=1';
 		}
 		return url;
 	},
 
-	checkAccess: function() 
+	checkAccess: function()
 	{
 		var $ = this.jQuery;
 		var ac 		= $('.c-radio');
@@ -1515,29 +1631,29 @@ HUB.ProjectPublications = {
 		var chosen 	= $('#c-sel-access');
 		var text 	= '';
 		var access  = $('#access');
-		
+
 		// uncheck all
 		if(ac.length > 0) {
-			ac.each(function(i, item) 
-			{	
+			ac.each(function(i, item)
+			{
 				if($(item).hasClass('c-picked')) {
 					$(item).removeClass('c-picked');
-				}	
-			});	
+				}
+			});
 		}
-		
+
 		// hide all tips
 		if(extra.length > 0) {
-			extra.each(function(i, item)  
-			{	
+			extra.each(function(i, item)
+			{
 				if(!$(item).hasClass('hidden')) {
 					$(item).addClass('hidden');
-				}	
-			});	
+				}
+			});
 		}
-				
+
 		// check selected
-		if (access && access.val() != '') 
+		if (access && access.val() != '')
 		{
 			if(access.val() == 0 && $('#access-public').length) {
 				$('#access-public').addClass('c-picked');
@@ -1554,15 +1670,15 @@ HUB.ProjectPublications = {
 			if($('#nosel') && !$('#nosel').hasClass('hidden')) {
 				$('#nosel').addClass('hidden');
 			}
-			
+
 			// show selected on the right
 			if(chosen && chosen.hasClass('hidden')) {
 				chosen.removeClass('hidden');
 			}
 			if (chosen) {
-				chosen.html(text);	
+				chosen.html(text);
 			}
-			
+
 			// show tips & extra options
 			var divextra = '#extra-' + access.val();
 			if (divextra == '#extra-3') {
@@ -1570,14 +1686,14 @@ HUB.ProjectPublications = {
 			}
 			if ($(divextra) && $(divextra).hasClass('hidden')) {
 				$(divextra).removeClass('hidden');
-			}			
+			}
 		}
 		else if($('#nosel') && $('#nosel').hasClass('hidden')) {
 			$('#nosel').removeClass('hidden');
 		}
 	},
-	
-	getAccess: function(access) 
+
+	getAccess: function(access)
 	{
 		var num = 0;
 		if(access == 'access-public') {
@@ -1589,10 +1705,10 @@ HUB.ProjectPublications = {
 		if(access == 'access-restricted') {
 			num = 2;
 		}
-		return num;		
+		return num;
 	}
 }
 
 jQuery(document).ready(function($){
 	HUB.ProjectPublications.initialize();
-});	
+});

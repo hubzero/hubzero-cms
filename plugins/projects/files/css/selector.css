@@ -186,6 +186,17 @@
 		width: 180px;
 		margin: 0;
 	}
+	.myselector .search-filter {
+		float: none;
+		width: 100%;
+		margin: 1em 0 2em 0;
+	}
+	.myselector .search-filter label {
+		position: relative;
+	}
+	.myselector .search-filter input {
+		width: 90%;
+	}
 	.search-filter label {		
 		margin: 0.5em;
 		position: absolute;

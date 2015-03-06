@@ -701,6 +701,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$images 	= JRequest::getInt('images', 0);
 		$pid 		= JRequest::getInt('pid', 0);
 
+		$this->filter = urldecode(JRequest::getVar( 'filter', '' ));
+		$this->limit  = $this->params->get('maxList', '500');
+
 		if (!$ajax)
 		{
 			return false;
@@ -723,29 +726,47 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->subdir = '';
 		}
 
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'files',
-				'name'		=>'browser'
-			)
-		);
-
 		// Get file list
 		if (!$this->_project->id)
 		{
-			$view->files = $this->getMemberFiles($this->path, $this->subdir);
+			$files = $this->getMemberFiles($this->path, $this->subdir);
+			$layout = 'default';
 		}
 		elseif (in_array($content, $this->_valid_cases))
 		{
-			$view->files = $this->getFiles($this->path, $this->subdir, 0, 0, 0, 0, '', 'ASC', true);
+			// Get files count
+			$total = $this->getCount($this->_project->alias, 'files');
+
+			if ($total >= $this->limit)
+			{
+				// We got too many files for js to handle
+				$this->minimal = true;
+				$files = $this->filter ? $this->getFiles($this->path, $this->subdir, 0, 0, $this->limit, 0, '', 'ASC', true) : array();
+				$layout = 'search';
+			}
+			else
+			{
+				$files = $this->getFiles($this->path, $this->subdir, 0, 0, 0, 0, '', 'ASC', true);
+				$layout = 'default';
+			}
 		}
 		else
 		{
 			$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
 			return;
 		}
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'files',
+				'name'		=>'browser',
+				'layout'	=> $layout
+			)
+		);
+		$view->files  = $files;
+		$view->filter = $this->filter;
 
 		// Does the publication exist?
 		$versionid 	= JRequest::getInt('versionid', 0);
@@ -801,6 +822,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->config 		= $this->_config;
 		$view->pid 			= $pid;
 		$view->title		= $this->_area['title'];
+		$view->filters		= $filters;
+		$view->versionid	= $versionid;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -5110,6 +5133,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$subdir = trim($subdir, DS);
 		$fullpath = $subdir ? $path . DS . $subdir : $path;
 
+		// Incoming filter
+		$filter  = isset($this->filter) ? $this->filter : urldecode(JRequest::getVar( 'filter', '' ));
+
 		$files 		= array();
 		$sorting 	= array();
 		$i			= 0;
@@ -5171,6 +5197,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$arr = explode("\t", $line);
 	            $fpath = $arr[0];
 				$base = basename($fpath);
+
+				if ($filter
+					&& strpos(strtolower(trim($fpath)), strtolower(trim($filter))) === false
+					&& strpos(strtolower(trim($fpath)), strtolower(trim($filter))) === false)
+				{
+					continue;
+				}
 
 				// Do not show files in child directories
 				if ($norecurse == true)
@@ -7366,7 +7399,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
-		if ($hash && !file_exists($fullPath))
+		elseif ($hash && !file_exists($fullPath))
 		{
 			$obj->size 		= $this->_git->gitLog($this->path, $obj->localPath, $hash, 'size');
 		}
