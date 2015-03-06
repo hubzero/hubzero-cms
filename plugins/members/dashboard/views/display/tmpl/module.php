@@ -36,6 +36,10 @@ $params = new JRegistry($this->module->params);
 $fields = new JForm($this->module->module);
 $fields->loadFile(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . $this->module->module . '.xml', true, 'config/fields');
 
+// This is done first as the 'renderModule' method loads the language file
+// which is needed when rendering the params below
+$module = JModuleHelper::renderModule($this->module, array('style' => 'none'));
+
 // create settings sub view
 $view = $this->view('parameters');
 $view->admin  = $this->admin;
@@ -84,10 +88,8 @@ $settingsHtml = trim($view->loadTemplate());
 				}
 				else
 				{
-					$rparams            = array();
-					$rparams['style']   = 'none';
 					$this->module->user = false;
-					echo JModuleHelper::renderModule($this->module, $rparams);
+					echo $module;
 				}
 			?>
 		</div>

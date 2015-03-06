@@ -46,7 +46,7 @@ if ($count < 1 || $this->admin)
 }
 ?>
 <div class="module-settings">
-	<h4><?php echo JText::sprintf('%s Settings', $this->escape($this->module->title)); ?></h4>
+	<h4><?php echo JText::sprintf('PLG_MEMBERS_DASHBOARD_MODULES_SETTINGS', $this->escape($this->module->title)); ?></h4>
 	<form action="index.php" method="post">
 		<?php $i = 0; ?>
 		<?php foreach ($this->fields as $field) : ?>
