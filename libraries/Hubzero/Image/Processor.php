@@ -519,6 +519,26 @@ class Processor extends Object
 	}
 
 	/**
+	 * Display an image inline
+	 *
+	 * @return string
+	 **/
+	public function inline()
+	{
+		// Start buffer and grab output
+		ob_start();
+		$this->output(null);
+		$image_data = ob_get_contents();
+		ob_end_clean();
+
+		// Encode and build data uri
+		$base64 = base64_encode($image_data);
+		$image_atts = getimagesize($this->source);
+
+		return 'data:' . $image_atts['mime'] . ';base64,' . $base64;;
+	}
+
+	/**
 	 * Save an image
 	 *
 	 * @param      string  $save_path  Path to save image
