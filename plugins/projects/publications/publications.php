@@ -3306,8 +3306,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						// Roll back
 						$this->_project->delete();
 						$objP->delete();
-
-						JError::raiseError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
+						JError::raiseError( 500, $this->getError() );
+					//	JError::raiseError( 500, JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
 						return false;
 					}
 					else
@@ -3349,7 +3349,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Roll back
 					$objP->delete();
 
-					JError::raiseError( $row->getError() );
+					JError::raiseError( 500, $row->getError() );
 					return false;
 				}
 				if (!$row->id)
@@ -3487,7 +3487,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if (!$row->store())
 					{
-						JError::raiseError( $row->getError() );
+						JError::raiseError( 500, $row->getError() );
 						return false;
 					}
 
@@ -3541,7 +3541,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$row->access = $access;
 					if (!$row->store())
 					{
-						JError::raiseError( $row->getError() );
+						JError::raiseError( 500, $row->getError() );
 						return false;
 					}
 
@@ -3577,7 +3577,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							$row->license_type = $selected_license->id;
 							if (!$row->store())
 							{
-								JError::raiseError( $row->getError() );
+								JError::raiseError( 500, $row->getError() );
 								return false;
 							}
 							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SAVED');
@@ -3630,7 +3630,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$row->release_notes = $notes;
 					if (!$row->store())
 					{
-						JError::raiseError( $row->getError() );
+						JError::raiseError( 500, $row->getError() );
 						return false;
 					}
 					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_NOTES_SAVED');
@@ -7057,28 +7057,22 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _getMemberPath()
 	{
 		// Get members config
-		$mconfig = JComponentHelper::getParams( 'com_members' );
+		$mconfig = \JComponentHelper::getParams( 'com_members' );
 
 		// Build upload path
 		$dir  = \Hubzero\Utility\String::pad( $this->_uid );
-		$path = JPATH_ROOT;
-		if (substr($mconfig->get('webpath', '/site/members'), 0, 1) != DS)
-		{
-			$path .= DS;
-		}
-		$path .= $mconfig->get('webpath', '/site/members'). DS .$dir. DS .'files';
+		$path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
-		if (!is_dir( $path ))
+		if (!is_dir( PATH_APP . $path ))
 		{
-			jimport('joomla.filesystem.folder');
-			if (!JFolder::create( $path ))
+			if (!\JFolder::create( PATH_APP . $path ))
 			{
-				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError(\JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
 			}
 		}
 
-		return $path;
+		return PATH_APP . $path;
 	}
 
 	/**
@@ -7091,6 +7085,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _prepDir($force = true)
 	{
 		jimport('joomla.filesystem.folder');
+
+		if (empty($this->_project) || !$this->_project->alias)
+		{
+			$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+			return;
+		}
 
 		// Get member files path
 		$memberPath = $this->_getMemberPath();
@@ -7107,9 +7107,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Build .git repo
-		$gitRepoBase = $path. DS .'.git';
-
 		// Include Git Helper
 		$this->_getGitHelper($path);
 
@@ -7124,7 +7121,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Read copied files
-		$get = $this->_readDir($path, $path);
+		$fileSystem = new \Hubzero\Filesystem\Filesystem();
+		$get = $fileSystem->files($path);
+
 		$num = count($get);
 		$checkedin = 0;
 
@@ -7133,6 +7132,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($get as $file)
 			{
+				$file = str_replace($path . DS, '', $file);
 				if (is_file($path . DS . $file))
 				{
 					// Git add
@@ -7147,54 +7147,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			// Clean up member files
 			JFolder::delete($memberPath);
-
 			return true;
 		}
 
 		return false;
-	}
-
-	/**
-	 * Read directory
-	 *
-	 * @param      string  		$path
-	 * @param      string  		$dirpath
-	 * @param      string  		$filter
-	 * @param      boolean  	$recurse
-	 * @param      array  		$exclude
-	 *
-	 * @return     array
-	 */
-	protected function _readDir($path, $dirpath = '', $filter = '.', $recurse = true, $exclude = array('.svn', 'CVS'))
-	{
-		$arr = array();
-		$handle = opendir($path);
-
-		while (($file = readdir($handle)) !== false)
-		{
-			if (($file != '.') && ($file != '..') && (!in_array($file, $exclude)))
-			{
-				$dir = $path . DS . $file;
-				$isDir = is_dir($dir);
-				if ($isDir)
-				{
-					$arr2 = $this->_readDir($dir, $dirpath);
-					$arr = array_merge($arr, $arr2);
-				}
-				else
-				{
-					if (preg_match("/$filter/", $file))
-					{
-						$file = $path . DS . $file;
-						$file = str_replace($dirpath.DS, '', $file);
-						$arr[] = $file;
-					}
-				}
-			}
-		}
-		closedir($handle);
-
-		return $arr;
 	}
 
 	/**

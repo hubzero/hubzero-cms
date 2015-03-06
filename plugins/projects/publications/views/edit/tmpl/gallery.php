@@ -136,6 +136,5 @@ else
 		 		</div>
 			</form>
 		</div>
-			<iframe id="upload_target" name="upload_target" src="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?action=blank'.a.'no_html=1'.a.'ajax=1'; ?>" class="iframe"></iframe>
 	</div>
 </div>

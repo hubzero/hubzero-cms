@@ -145,14 +145,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Publishing enabled?
-		$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
-
 		// Is the user logged in?
 		if (!$authorized && !$project->owner)
 		{
 			return $arr;
 		}
+
+		// Publishing enabled?
+		$this->_publishing = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 		$this->_project  = $project;
 		$this->_tool	 = NULL;
@@ -311,10 +311,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$arr['html'] 	= $this->diskspace(
 						$option, $project, $this->_case,
 						$this->_uid, $this->_task, $this->_config, $this->_tool);
-					break;
-
-				case 'blank':
-					$arr['html'] 	= $this->blank();
 					break;
 
 				case 'compile':
@@ -3170,8 +3166,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			if ($rename == 'dir')
 			{
-				//$ret = system('find ' . escapeshellarg($newpath));
-
 				//if (!empty($ret))
 				if (file_exists($newpath))
 				{
@@ -4922,56 +4916,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Read directory
-	 *
-	 * @param      string	$path
-	 * @param      string  	$dirpath
-	 * @param      string   $filter
-	 * @param      boolean  $recurse
-	 * @param      array 	$exclude
-	 *
-	 * @return     array
-	 */
-	protected function _readDir($path, $dirpath = '', $filter = '.', $recurse = true, $exclude = array(' .svn', 'CVS'))
-	{
-		$arr = array();
-
-		if (!is_dir($path))
-		{
-			return $arr;
-		}
-
-		if ($handle = opendir($path))
-		{
-			while (false !== ($file = readdir($handle)))
-			{
-				if (($file != '.') && ($file != '..') && (!in_array($file, $exclude)))
-				{
-					$dir = $path . DS . $file;
-					$isDir = is_dir($dir);
-					if ($isDir)
-					{
-						$arr2 = $this->_readDir($dir, $dirpath);
-						$arr = array_merge($arr, $arr2);
-					}
-					else
-					{
-						if (preg_match("/$filter/", $file)) {
-							$file = $path . DS . $file;
-							$file = str_replace($dirpath . DS, '', $file);
-							$arr[] = $file;
-						}
-					}
-				}
-			}
-
-			closedir($handle);
-		}
-
-		return $arr;
-	}
-
-	/**
 	 * Get files from Git repository
 	 *
 	 * @param      string	$path
@@ -5187,16 +5131,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		return $combined;
-	}
-
-	/**
-	 * Blank screen (for iframe)
-	 *
-	 * @return     string
-	 */
-	public function blank()
-	{
-		return 'blank';
 	}
 
 	/**

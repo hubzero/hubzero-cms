@@ -149,5 +149,4 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 			</div>
 			</form>
 		 </div>
-	<iframe id="upload_target" name="upload_target" src="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=files').'/?action=blank&no_html=1&ajax=1'; ?>" class="iframe"></iframe>
 	</div>
