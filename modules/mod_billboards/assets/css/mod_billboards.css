@@ -16,6 +16,7 @@
 /* Container Styling */
 	.slider {
 		position: relative;
+		background: #EEEEEE;
 	}
 	.banner,
 	.slide {
@@ -37,7 +38,7 @@
 	.slider .pager a {
 		float: left;
 		text-indent: -555em;
-		background: #FFF;
+		background: #CCCCCC;
 		width: 9px;
 		height: 9px;
 		-webkit-border-radius: 4px;
@@ -52,19 +53,12 @@
 	}
 
 /* Standard billboard styling (could override here, or on a per-billboard basis) */
-	.slide h3 {
-		text-transform: uppercase;
-		font-weight: normal;
-		letter-spacing: 1px;
-		color: #fff;
-		text-shadow: #000 0px 2px 2px;
-		font-size: 2em;
-		margin-top: 1em;
+	.slide {
+		background-repeat: repeat;
 	}
 	.slide p {
 		font-size: 1.2em;
-		color: #aaa;
-		text-shadow: #000 0px 1px 2px;
+		color: #AAAAAA;
 	}
 
 /* Standard Learn more link styling */

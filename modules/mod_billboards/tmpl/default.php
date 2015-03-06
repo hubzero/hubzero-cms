@@ -34,28 +34,17 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="slider">
 	<div class="banner" id="<?php echo $this->collection; ?>">
-		<?php foreach ($this->slides as $slide) {
-			if ($slide->learn_more_location == 'relative')
-			{
-				$tag = '<p class="relative">';
-			}
-			else
-			{
-				$tag = '<div class="' . $slide->learn_more_location . '">';
-			}
-			$closingtag = ($slide->learn_more_location == 'relative') ? '</p>' : '</div>';	?>
-
+		<?php foreach ($this->slides as $slide) : ?>
 			<div class="slide" id="<?php echo $slide->alias; ?>">
 				<h3><?php echo $slide->header; ?></h3>
 				<?php echo $slide->text; ?>
-				<?php echo $tag; ?>
+				<div class="<?php echo $slide->learn_more_location; ?>">
 					<a class="<?php echo $slide->learn_more_class; ?>" href="<?php echo $slide->learn_more_target; ?>">
 						<?php echo $slide->learn_more_text; ?>
 					</a>
-				<?php echo $closingtag; ?>
+				</div>
 			</div>
-		<?php } ?>
+		<?php endforeach; ?>
 	</div>
-	<!-- @TODO: let's make this whole line an if statement -->
 	<div <?php echo ($this->pager == 'null') ? '' : 'class="pager"'; ?> id="<?php echo($this->pager); ?>"></div>
 </div>

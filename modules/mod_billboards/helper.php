@@ -42,16 +42,16 @@ class Helper extends Module
 	/**
 	 * Tracker for number of instances
 	 *
-	 * @var  integer
+	 * @var integer
 	 */
 	public static $multiple_instances = 0;
 
 	/**
 	 * Get the list of billboads in the selected collection
 	 *
-	 * @return  array  Retrieved rows
+	 * @return array
 	 */
-	private function _getList()
+	private function getList()
 	{
 		// Get the correct billboards collection to display from the parameters
 		$collection = (int) $this->params->get('collection', 1);
@@ -70,9 +70,10 @@ class Helper extends Module
 
 	/**
 	 * Display method
+	 *
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	public function display()
 	{
@@ -89,7 +90,7 @@ class Helper extends Module
 		self::$multiple_instances++;
 
 		// Get the billboard slides
-		$this->slides = $this->_getList();
+		$this->slides = $this->getList();
 
 		// Get some parameters
 		$transition       = $this->params->get('transition', 'scrollHorz');
@@ -99,21 +100,17 @@ class Helper extends Module
 		$this->collection = $this->params->get('collection', 1);
 		$this->pager      = $this->params->get('pager', 'pager');
 
-		// Get the billboard background location from the billboards parameters
-		$params = JComponentHelper::getParams('com_billboards');
-		$image_location = $params->get('image_location', '/site/media/images/billboards/');
-
 		// Add the CSS to the template for each billboard
 		foreach ($this->slides as $slide)
 		{
-			$background = (!empty($slide->background_img)) ? "background: url('$image_location$slide->background_img') no-repeat 0 0;" : '';
-			$padding    = (!empty($slide->padding)) ? "padding: $slide->padding;" : '';
+			$background = $slide->background_img ? "background-image: url('{$slide->background_img}');" : '';
+			$padding    = $slide->padding        ? "padding: {$slide->padding};"                        : '';
 
 			$css =
-				"#$slide->alias {
+				"#{$slide->alias} {
 					$background
 					}
-				#$slide->alias p {
+				#{$slide->alias} p {
 					$padding
 					}";
 			$this->css($css);
@@ -125,10 +122,10 @@ class Helper extends Module
 		// @TODO: there should be a better way of doing this
 		if ($this->pager != 'null')
 		{
-			$js_pager    = "'#$this->pager$this->collection'";
+			$js_pager    = "'#{$this->pager}{$this->collection}'";
 			$this->pager = $this->pager . $this->collection;
 			$pager =
-				".slider #$this->pager a.activeSlide {
+				".slider #{$this->pager} a.activeSlide {
 					opacity:1.0;
 					}";
 			$this->css($pager);
