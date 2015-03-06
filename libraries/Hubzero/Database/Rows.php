@@ -80,7 +80,15 @@ class Rows implements Iterator
 	 **/
 	public function push(Relational $model)
 	{
-		$this->rows[$model->getPkValue()] = $model;
+		// Index by primary key if possible, otherwise plain incremental array
+		if ($model->getPkValue())
+		{
+			$this->rows[$model->getPkValue()] = $model;
+		}
+		else
+		{
+			$this->rows[] = $model;
+		}
 	}
 
 	/**
