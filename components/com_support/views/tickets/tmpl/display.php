@@ -405,7 +405,7 @@ jQuery(document).ready(function($){
 
 			var folder = $('#' + $(this).attr('data-id') + '-title');
 
-			var title = prompt('<?php echo JText::_('Folder name'); ?>', folder.text());
+			var title = prompt('<?php echo JText::_('COM_SUPPORT_FOLDER_NAME'); ?>', folder.text());
 			if (title) {
 				$.get($(this).attr('data-href').nohtml() + '&fields[title]=' + title, function(response){
 					folder.text(title);
@@ -436,7 +436,7 @@ jQuery(document).ready(function($){
 	$('#new-folder').on('click', function(e) {
 		e.preventDefault();
 
-		var title = prompt('<?php echo JText::_('Folder name'); ?>');
+		var title = prompt('<?php echo JText::_('COM_SUPPORT_FOLDER_NAME'); ?>');
 		if (title) {
 			if (_DEBUG) {
 				window.console && console.log('Calling: ' + $(this).attr('data-href').nohtml() + '&fields[title]=' + title);
@@ -515,7 +515,7 @@ jQuery(document).ready(function($){
 					e.preventDefault();
 
 					if (!$('#field-title').val()) {
-						alert('<?php echo JText::_('Please provide a title.'); ?>');
+						alert('<?php echo JText::_('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE'); ?>');
 						return false;
 					}
 
