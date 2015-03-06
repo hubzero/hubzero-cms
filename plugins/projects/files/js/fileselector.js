@@ -27,6 +27,9 @@ HUB.ProjectFilesFileSelect = {
 	queued: 0,
 	processed: 0,
 	selections: new Array(),
+	min: $('#minitems').length ? $('#minitems').val() : 0,
+	max: $('#maxitems').length ? $('#maxitems').val() : 0,
+	btn: $('#b-filesave'),
 
 	initialize: function() {
 		var $ = this.jQuery;
@@ -57,7 +60,7 @@ HUB.ProjectFilesFileSelect = {
 	{
 		var $ = this.jQuery;
 
-		var items = $('#file-selector li');
+		var items = $('#file-selector').find('li');
 		if (!items.length)
 		{
 			return false;
@@ -159,13 +162,12 @@ HUB.ProjectFilesFileSelect = {
 			jQuery(document).trigger('ajaxLoad');
 
 		});
-
 	},
 
 	enableSave: function()
 	{
 		var $ = this.jQuery;
-		var btn  = $('#b-filesave');
+		var btn  = this.btn;
 		var form = $('#select-form');
 
 		if (!btn.length || !form.length)
@@ -405,22 +407,22 @@ HUB.ProjectFilesFileSelect = {
 	fadeMessage: function()
 	{
 		var $ = this.jQuery;
+		var statusbox = $('#status-box');
 
-		if (!$('#status-box').length)
+		if (!statusbox.length)
 		{
 			return false;
 		}
-		$("#status-box").animate({opacity:0.0}, 2000, function() {
-		    $('#status-box').html('');
-			$("#status-box").css('opacity', '1.0');
+		statusbox.animate({opacity:0.0}, 2000, function() {
+		    statusbox.html('');
+			statusbox.css('opacity', '1.0');
 		});
 	},
 
 	enableButton: function()
 	{
 		var $ = this.jQuery;
-		var btn = $('#b-filesave');
-		var selection = $('#selecteditems').length ? $('#selecteditems').val() : '' ;
+		var btn = this.btn;
 
 		if (!btn.length)
 		{
@@ -434,20 +436,12 @@ HUB.ProjectFilesFileSelect = {
 			{
 				btn.removeClass('disabled');
 			}
-			if ($('#req').length && !$('#req').hasClass('success'))
-			{
-				//$('#req').addClass('success');
-			}
 		}
 		else
 		{
 			if (!btn.hasClass('disabled'))
 			{
 				btn.addClass('disabled');
-			}
-			if ($('#req').length && $('#req').hasClass('success'))
-			{
-				//$('#req').removeClass('success');
 			}
 		}
 	},
@@ -472,7 +466,7 @@ HUB.ProjectFilesFileSelect = {
 	selector: function ()
 	{
 		var $ = this.jQuery;
-		var max = $('#maxitems').length ? $('#maxitems').val() : 0;
+		var max = this.max;
 
 		if (!$('#file-selector').length)
 		{
@@ -525,7 +519,7 @@ HUB.ProjectFilesFileSelect = {
 	checkMinimum: function(num)
 	{
 		var $ = this.jQuery;
-		var min = $('#minitems').length ? $('#minitems').val() : 0;
+		var min = this.min;
 
 		if (min > 0)
 		{
@@ -545,7 +539,7 @@ HUB.ProjectFilesFileSelect = {
 	checkMaximum: function(num)
 	{
 		var $ = this.jQuery;
-		var max = $('#maxitems').length ? $('#maxitems').val() : 0;
+		var max = this.max;
 
 		if (max > 0)
 		{
