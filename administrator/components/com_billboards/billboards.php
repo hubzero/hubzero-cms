@@ -38,10 +38,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-// Include needed tables and controller
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'billboard.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'collection.php');
-
+// Include needed models and controller
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'billboard.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'collection.php';
 

@@ -72,7 +72,7 @@ jQuery(document).ready(function($){
 });
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_BILLBOARDS_CONTENT'); ?></span></legend>
@@ -106,7 +106,8 @@ jQuery(document).ready(function($){
 				<input type="text" name="billboard[header]" id="billboardheader" value="<?php echo $this->escape(stripslashes($this->row->header)); ?>" size="50" />
 			</div>
 			<div class="input-wrap">
-				<label for="billboardbackgroundimg"><?php echo JText::_('COM_BILLBOARDS_FIELD_BACKGROUND_IMG'); ?>:</label><br />
+				<label for="billboard-image"><?php echo JText::_('COM_BILLBOARDS_FIELD_BACKGROUND_IMG'); ?>:</label><br />
+				<input type="file" name="billboard-image" id="billboard-image" />
 			</div>
 			<div class="input-wrap">
 				<label for="billboard[text]"><?php echo JText::_('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
@@ -150,6 +151,16 @@ jQuery(document).ready(function($){
 				</select>
 			</div>
 		</fieldset>
+		<?php if ($this->row->get('background_img', false)) : ?>
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('COM_BILLBOARDS_CURRENT_IMG'); ?></span></legend>
+				<?php $image = new \Hubzero\Image\Processor(JPATH_ROOT . DS . $this->row->background_img); ?>
+				<?php if (count($image->getErrors()) == 0) : ?>
+					<?php $image->resize(500); ?>
+					<div style="padding: 10px;"><img src="<?php echo $image->inline(); ?>" alt="billboard image" /></div>
+				<?php endif; ?>
+			</fieldset>
+		<?php endif; ?>
 		<fieldset class="adminform">
 			<!-- @TODO: remove inline styles -->
 			<legend id="styling" style="cursor:pointer;"><?php echo JText::_('COM_BILLBOARDS_STYLING'); ?></legend>

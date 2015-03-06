@@ -107,4 +107,18 @@ class Billboard extends \Hubzero\Database\Relational
 	{
 		return $this->belongsToOne('Collection');
 	}
+
+	/**
+	 * Gets the background image url
+	 *
+	 * @return string
+	 * @since  1.3.2
+	 */
+	public function transformBackgroundImg()
+	{
+		$params = \JComponentHelper::getParams('com_billboards');
+		$base   = $params->get('image_location', DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards' . DS);
+
+		return DS . trim($base, DS) . DS . $this->get('background_img');
+	}
 }

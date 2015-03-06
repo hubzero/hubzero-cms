@@ -8,93 +8,99 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
-			case 'index':		$this->index();			break;
-			case 'collection':	$this->collection();	break;
-			default:			$this->index();
+			case 'index':       $this->index();      break;
+			case 'collection':  $this->collection(); break;
+			default:            $this->index();
 		}
 	}
-
 
 	private function not_found()
 	{
 		$response = $this->getResponse();
-		$response->setErrorMessage(404,'Not Found');
+		$response->setErrorMessage(404, 'Not Found');
 	}
 
-
-	function index()
+	private function index()
 	{
-		//get the userid
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-
-		//if we dont have a user return nothing
-		if ($userid == null)
+		// If we dont have a user, return an error
+		if (JFactory::getApplication()->getAuthn('user_id') == null)
 		{
 			return $this->not_found();
 		}
 
-		//get the request vars
-		$limit = JRequest::getVar("limit", 25);
+		// Get the request vars
+		$limit      = JRequest::getVar("limit", 25);
 		$limitstart = JRequest::getVar("limitstart", 0);
 
-		//load up the
-		$database = JFactory::getDBO();
-		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'tables' . DS . 'collection.php' );
-		$BillboardsCollections = new BillboardsCollection( $database );
-		$collections = $BillboardsCollections->getRecords( array("limit" => $limit, "start" => $limitstart) );
+		// Load up the entries
+		require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'collection.php';
+		$collections = Collection::start($limitstart)->limit($limit)->rows();
 
-		$obj = new stdClass();
-		$obj->collections = $collections;
 		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		$this->setMessage(array('collections' => $collections->toArray()));
 	}
 
-	function collection()
+	private function collection()
 	{
-		//get the userid
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-
-		//if we dont have a user return nothing
-		if ($userid == null)
+		// If we dont have a user, return an error
+		if (JFactory::getApplication()->getAuthn('user_id') == null)
 		{
 			return $this->not_found();
 		}
 
+		// Get the collection id
 		$collection = 0;
-		if(isset($this->segments[1]))
+		if (isset($this->segments[1]))
 		{
 			$collection = $this->segments[1];
 		}
-		$collection_query = JRequest::getVar("collection");
-		if(isset($collection_query))
-		{
-			$collection = $collection_query;
-		}
+		$collection = JRequest::getVar("collection", $collection);
 
-		//load up the
-		$database = JFactory::getDBO();
-		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'tables' . DS . 'collection.php' );
-		$BillboardsCollections = new BillboardsCollection( $database );
-		$BillboardsCollections->load($collection);
+		// Load up the collection
+		require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'collection.php';
+		require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
+		$collection = Collection::oneOrNew($collection);
 
-		//make sure we found a collection
-		if(!$BillboardsCollections->name)
+		// Make sure we found a collection
+		if ($collection->isNew())
 		{
 			return $this->not_found();
 		}
 
-		//get the collection and its billboards
+		$billboards = $collection->billboards()
+		                         ->select('id')
+		                         ->select('name')
+		                         ->select('learn_more_target')
+		                         ->select('background_img')
+		                         ->whereEquals('published', 1)
+		                         ->rows();
+
+		foreach ($billboards as $billboard)
+		{
+			$image = $billboard->get('background_img');
+			$billboard->set('retina_background_img', $image);
+
+			if (is_file(JPATH_ROOT . DS . $image))
+			{
+				$image_info   = pathinfo($image);
+				$retina_image = $image_info['dirname'] . DS . $image_info['filename'] . "@2x." . $image_info['extension'];
+				if (file_exists(JPATH_ROOT . DS . $retina_image))
+				{
+					$billboard->set('retina_background_img', $retina_image);
+				}
+			}
+		}
+
+		// Get the collection and its billboards
 		$collection = array(
-			'id' => $BillboardsCollections->id,
-			'name' => $BillboardsCollections->name,
-			'billboards' => $BillboardsCollections->getBillboards( array("collection"=>$BillboardsCollections->id, "published"=>1, "include_retina" => true) )
+			'id'         => $collection->id,
+			'name'       => $collection->name,
+			'billboards' => $billboards->toArray()
 		);
 
-		$obj = new stdClass();
-		$obj->collection = $collection;
 		$this->setMessageType("application/json");
-		$this->setMessage($obj);
+		$this->setMessage(array('collection' => $collection));
 	}
 }

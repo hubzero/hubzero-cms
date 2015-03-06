@@ -136,6 +136,54 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// See if we have an image coming in as well
+		$billboard_image = JRequest::getVar('billboard-image', false, 'files', 'array');
+
+		// If so, proceed with saving the image
+		if (isset($billboard_image['name']) && $billboard_image['name'])
+		{
+			// Build the upload path if it doesn't exist
+			$image_location  = $this->config->get('image_location', 'site' . DS . 'media' . DS . 'images' . DS . 'billboards');
+			$uploadDirectory = JPATH_ROOT . DS . trim($image_location, DS) . DS;
+
+			// Make sure upload directory exists and is writable
+			if (!is_dir($uploadDirectory))
+			{
+				if (!JFolder::create($uploadDirectory))
+				{
+					$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+					$this->view->setLayout('edit');
+					$this->view->task = 'edit';
+					$this->editTask($billboard);
+					return;
+				}
+			}
+
+			// Scan for viruses
+			if (!JFile::isSafe($billboard_image['tmp_name']))
+			{
+				$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
+				$this->view->setLayout('edit');
+				$this->view->task = 'edit';
+				$this->editTask($billboard);
+				return;
+			}
+
+			if (!move_uploaded_file($billboard_image['tmp_name'], $uploadDirectory . $billboard_image['name']))
+			{
+				$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
+				$this->view->setLayout('edit');
+				$this->view->task = 'edit';
+				$this->editTask($billboard);
+				return;
+			}
+			else
+			{
+				// Move successful, save the image url to the billboard entry
+				$billboard->set('background_img', $billboard_image['name'])->save();
+			}
+		}
+
 		// Check in the billboard now that we've saved it
 		$billboard->checkin();
 
