@@ -2,10 +2,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_myquestions/mod_myquestions.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,14 +27,14 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>My Questions</name>
-	<author>snowwitje</author>
+	<name>mod_myquestions</name>
+	<author>HUBzero</author>
 	<creationDate>Jan 2009</creationDate>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>alisa@purdue.edu</authorEmail>
-	<version>1</version>
-	<description>This module will display a list of questions submitted by the user, as well as those user can answer.</description>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<version>1.2.0</version>
+	<description>MOD_MYQUESTIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_myquestions">mod_myquestions.php</filename>
 		<filename>index.html</filename>
@@ -44,29 +44,29 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>images/heart.png</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_mod_myquestions.ini</language>
+		<language tag="en-GB">en-GB.mod_myquestions.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="show_assigned" type="list" default="0" label="Show Assigned Questions" description="Display assigned questions." member_dashboard="1">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYQUESTIONS_PARAM_CLASS_LABEL" description="MOD_MYQUESTIONS_PARAM_CLASS_DESC" />
+				<field name="show_assigned" type="list" default="0" label="MOD_MYQUESTIONS_PARAM_SHOWASSIGNED_LABEL" description="MOD_MYQUESTIONS_PARAM_SHOWASSIGNED_DESC" member_dashboard="1">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="show_interests" type="list" default="0" label="Show Relavent Questions" description="Display questions matching my interests." member_dashboard="1">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="show_interests" type="list" default="0" label="MOD_MYQUESTIONS_PARAM_SHOWINTERESTS_LABEL" description="MOD_MYQUESTIONS_PARAM_SHOWINTERESTS_DESC" member_dashboard="1">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="button_show_all" type="list" default="1" label="Show All Questions Button" description="Select wether to show the link to the all questions listing.">
+				<field name="button_show_all" type="list" default="1" label="MOD_MYQUESTIONS_PARAM_SHOWALL_LABEL" description="MOD_MYQUESTIONS_PARAM_SHOWALL_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
-				<field name="button_show_add" type="list" default="1" label="Show New Question Button" description="Select wether to show the link to the create question form.">
+				<field name="button_show_add" type="list" default="1" label="MOD_MYQUESTIONS_PARAM_SHOWADD_LABEL" description="MOD_MYQUESTIONS_PARAM_SHOWADD_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
+				<field name="limit" type="text" default="5" label="MOD_MYQUESTIONS_PARAM_LIMIT_LABEL" description="MOD_MYQUESTIONS_PARAM_LIMIT_DESC" member_dashboard="1" />
 			</fieldset>
 		</fields>
 	</config>

@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_myprojects/mod_myprojects.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,28 +28,29 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>My Projects</name>
+	<name>mod_myprojects</name>
 	<author>Alissa Nedossekina</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module displays a list of projects the user belongs, their role in the project and the number of updates since last visit.</description>
+	<description>MOD_MYPROJECTS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_myprojects">mod_myprojects.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_myprojects.css</filename>
+		<filename>assets/css/mod_myprojects.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
-				<field name="button_show_all" type="list" default="1" label="Show All Projects Button" description="Select wether to show the link to the all projects listing.">
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYPROJECTS_PARAM_CLASS_LABEL" description="MOD_MYPROJECTS_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_MYPROJECTS_PARAM_LIMIT_LABEL" description="MOD_MYPROJECTS_PARAM_LIMIT_DESC" member_dashboard="1" />
+				<field name="button_show_all" type="list" default="1" label="MOD_MYPROJECTS_PARAM_SHOWALL_LABEL" description="MOD_MYPROJECTS_PARAM_SHOWALL_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
-				<field name="button_show_add" type="list" default="1" label="Show New Project Button" description="Select wether to show the link to the create project form.">
+				<field name="button_show_add" type="list" default="1" label="MOD_MYPROJECTS_PARAM_SHOWADD_LABEL" description="MOD_MYPROJECTS_PARAM_SHOWADD_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>
