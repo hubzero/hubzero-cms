@@ -70,7 +70,6 @@ class BillboardsControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		$billboards = $collection->billboards()
-		                         ->select('id')
 		                         ->select('name')
 		                         ->select('learn_more_target')
 		                         ->select('background_img')
