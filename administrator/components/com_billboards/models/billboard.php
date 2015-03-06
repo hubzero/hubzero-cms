@@ -38,8 +38,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class Billboard extends \Hubzero\Database\Relational
 {
-	// @FIXME: rename tables to follow convention
-	//         should be jos_billboards_billboards
+	/**
+	 * The table namespace
+	 *
+	 * @var string
+	 **/
+	protected $namespace = 'billboards';
 
 	/**
 	 * Fields and their validation criteria

@@ -38,8 +38,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class Collection extends \Hubzero\Database\Relational
 {
-	// @FIXME: rename tables to get rid of this...
-	protected $table = '#__billboard_collection';
+	/**
+	 * The table namespace
+	 *
+	 * @var string
+	 **/
+	protected $namespace = 'billboards';
 
 	/**
 	 * Fields and their validation criteria

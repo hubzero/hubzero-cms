@@ -50,7 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="collection" type="sql" default="1" label="MOD_BILLBOARDS_PARAM_COLLECTION_LABEL" description="MOD_BILLBOARDS_PARAM_COLLECTION_DESC" query="SELECT id AS value, name AS collection FROM #__billboard_collection" />
+				<field name="collection" type="sql" default="1" label="MOD_BILLBOARDS_PARAM_COLLECTION_LABEL" description="MOD_BILLBOARDS_PARAM_COLLECTION_DESC" query="SELECT id AS value, name AS collection FROM #__billboards_collections" />
 				<field name="transition" type="list" default="scrollHorz" label="MOD_BILLBOARDS_PARAM_TRANSITION_LABEL" description="MOD_BILLBOARDS_PARAM_TRANSITION_DESC">
 					<option value="scrollHorz">MOD_BILLBOARDS_PARAM_TRANSITION_SCROLLHORZ</option>
 					<option value="scrollVert">MOD_BILLBOARDS_PARAM_TRANSITION_SCROLLVERT</option>
