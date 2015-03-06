@@ -96,7 +96,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		array(
 			'type'     => 'text',
 			'question' => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM',
-			'answer'   => 'eye'
+			'answer'   => 'PLG_SUPPORT_TEXTCAPTCHA_EYE_ANKLE_ARM_ANSWER'
 		),
 		array(
 			'type'     => 'list',
