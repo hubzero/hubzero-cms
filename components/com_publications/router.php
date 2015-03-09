@@ -221,6 +221,7 @@ class PublicationsRouter extends \Hubzero\Component\Router\Base
 				case 'feed.rss': $vars['task'] = 'feed';     break;
 				case 'feed':     $vars['task'] = 'feed';     break;
 				case 'license':  $vars['task'] = 'license';  break;
+				case 'main':     $vars['task'] = 'main';     break;
 
 				default:
 					if ($segments[0] == 'browse')

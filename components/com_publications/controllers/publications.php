@@ -289,6 +289,22 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	}
 
 	/**
+	 * View for main DOI
+	 *
+	 * @return     void
+	 */
+	public function mainTask()
+	{
+		$goto = $this->_id ? '&id=' . $this->_id : '&alias=' . $this->_alias;
+
+		// Redirect to version panel of current version (TEMP)
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . $goto . '&active=versions')
+		);
+		return;
+	}
+
+	/**
 	 * Intro to publications (main view)
 	 *
 	 * @return     void
