@@ -1203,17 +1203,17 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 									: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 								// Master DOI should link to /main
-								$masterMetadata = array(
-									'url' => $livesite . DS . 'publications' . DS . $row->publication_id . DS . 'main'
-								);
+								$metadata['url'] = $livesite . DS . 'publications'
+												. DS . $row->publication_id . DS . 'main';
 
 								// Register DOI with data from version being published
 								$masterDoi = PublicationUtilities::registerDoi(
 									$row,
 									$authors,
 									$this->config,
-									$masterMetadata,
-									$doierr
+									$metadata,
+									$doierr,
+									1
 								);
 
 								// Save master DOI
