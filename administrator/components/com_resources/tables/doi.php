@@ -259,7 +259,7 @@ class ResourcesDoi extends JTable
 
 		// Collect metadata
 		$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $jconfig->getValue('config.sitename')));
-		$metadata['pubYear']   = isset($metadata['pubYear']) ? $metadata['pubYear'] : date('Y');
+		$metadata['pubYear']   = empty($metadata['pubYear']) ?  date('Y') : $metadata['pubYear'];
 		$metadata['language']  = 'en';
 
 		// Clean up paths
@@ -286,11 +286,18 @@ class ResourcesDoi extends JTable
 		}
 
 		// Get first author / creator name
-		if ($authors && count($authors) > 0)
+		if (!empty($authors) && is_array($authors))
 		{
-			$creatorName = $authors[0]->name;
+			foreach ($authors as $auth)
+			{
+				if (!empty($auth->name))
+				{
+					$creatorName = $auth->name;
+					break;
+				}
+			}
 		}
-		else
+		if (empty($creatorName))
 		{
 			$juser = JFactory::getUser();
 			$creatorName = $juser->get('name');
