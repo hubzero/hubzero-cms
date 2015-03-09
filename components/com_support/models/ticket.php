@@ -892,7 +892,7 @@ class Ticket extends Model
 	{
 		$cloud = new Tags($this->get('id'));
 
-		return $this->_data->get('cloud')->setTags($tags, $user_id, $admin);
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**

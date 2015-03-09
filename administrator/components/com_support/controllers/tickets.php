@@ -441,6 +441,7 @@ class Tickets extends AdminController
 
 		// Initiate class and bind posted items to database fields
 		$row = new Ticket($id);
+
 		if (!$row->bind($_POST))
 		{
 			throw new Exception($row->getError(), 500);
@@ -461,7 +462,8 @@ class Tickets extends AdminController
 				'start'    => 0,
 				'ticket'   => $id
 			))->first();
-			if ($lastcomment->created() >= $started)
+
+			if (isset($lastcomment) && $lastcomment->created() >= $started)
 			{
 				$rowc->set('comment', $comment);
 				\JFactory::getApplication()->enqueueMessage(\JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
