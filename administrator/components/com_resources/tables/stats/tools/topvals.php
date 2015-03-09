@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,77 +24,70 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables\Stats\Tools;
 
 /**
- * Table class for resource import hooks
+ * Resources table class for tool top value stats
  */
-class ResourcesTableImportHook extends JTable
+class Topvals extends \JTable
 {
 	/**
-	 * Constructor
+	 * Construct
 	 *
 	 * @param   object  &$db  JDatabase
 	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__resource_import_hooks', 'id', $db);
+		parent::__construct('#__resource_stats_tools_topvals', 'id', $db);
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return  boolean  True if data is valid
+	 * @return  boolean  True if valid, False if not
 	 */
 	public function check()
 	{
+		if (trim($this->name) == '')
+		{
+			$this->setError(\JText::_('Your entry must have a name.'));
+			return false;
+		}
 		return true;
 	}
 
 	/**
-	 * Return a list of records
+	 * Get top countries for a resource
 	 *
-	 * @param   array  $filters  Filters to build query from
-	 * @return  array
+	 * @param   integer  $id   Resource Id
+	 * @param   integer  $top  Top value
+	 * @return  mixed    False on error, Array on success
 	 */
-	public function find($filters = array())
+	public function getTopCountryRes($id=NULL, $top=NULL)
 	{
-		$sql = "SELECT * FROM {$this->_tbl}" . $this->_buildQuery($filters);
+		if ($id == NULL)
+		{
+			$id = $this->id;
+		}
+		if ($id == NULL)
+		{
+			return false;
+		}
+		if ($top == NULL)
+		{
+			$top = $this->top;
+		}
+		if ($top == NULL)
+		{
+			return false;
+		}
 
-		$this->_db->setQuery($sql);
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($id) . " AND top=" . $this->_db->Quote($top) . " ORDER BY rank");
 		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Build a query from filters
-	 *
-	 * @param   array   $filters  Filters to build query from
-	 * @return  string  SQL
-	 */
-	private function _buildQuery($filters = array())
-	{
-		// var to hold conditions
-		$where = array();
-		$sql   = '';
-
-		// published
-		if (isset($filters['state']) && is_array($filters['state']))
-		{
-			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
-		}
-
-		// if we have and conditions
-		if (count($where) > 0)
-		{
-			$sql = " WHERE " . implode(" AND ", $where);
-		}
-
-		return $sql;
 	}
 }

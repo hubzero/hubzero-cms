@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('type');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-				<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
+				<?php echo \Components\Resources\Helpers\Html::selectType($this->categories, 'category', $this->row->category, JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="field-contributable"><?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
@@ -179,7 +179,7 @@ function submitbutton(pressbutton)
 				<tbody id="field-items">
 				<?php
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-				$elements = new ResourcesElements('', $this->row->customFields);
+				$elements = new \Components\Resources\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 
 				if (!is_object($schema))

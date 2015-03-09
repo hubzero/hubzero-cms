@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Import\Iterators;
+namespace Components\Resources\Import\Iterators;
 
 /**
  *  XML Reader Iterator Class implemeting interator

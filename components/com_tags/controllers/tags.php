@@ -549,7 +549,7 @@ class Tags extends SiteController
 
 				if (isset($row->data3) || isset($row->rcount))
 				{
-					$resourceEx = new \ResourcesHelper($row->id, $this->database);
+					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();

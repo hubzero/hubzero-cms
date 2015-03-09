@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
 
 /**
  * Resources helper class for HTML
  */
-class ResourcesHtml
+class Html
 {
 	/**
 	 * Display a message and go back tot he previous page
@@ -55,16 +54,16 @@ class ResourcesHtml
 	public static function statusKey()
 	{
 		?>
-			<p><?php echo JText::_('Published status: (click icon above to toggle state)'); ?></p>
+			<p><?php echo \JText::_('Published status: (click icon above to toggle state)'); ?></p>
 			<ul class="key">
-				<li class="draftinternal"><span>draft (internal)</span> = <?php echo JText::_('Draft (internal production)'); ?></li>
-				<li class="draftexternal"><span>draft (external)</span> = <?php echo JText::_('Draft (user created)'); ?></li>
-				<li class="submitted"><span>new</span> = <?php echo JText::_('New, awaiting approval'); ?></li>
-				<li class="pending"><span>pending</span> = <?php echo JText::_('Published, but is Coming'); ?></li>
-				<li class="published"><span>current</span> = <?php echo JText::_('Published and is Current'); ?></li>
-				<li class="expired"><span>finished</span> = <?php echo JText::_('Published, but has Finished'); ?></li>
-				<li class="unpublished"><span>unpublished</span> = <?php echo JText::_('Unpublished'); ?></li>
-				<li class="deleted"><span>deleted</span> = <?php echo JText::_('Delete/Removed'); ?></li>
+				<li class="draftinternal"><span>draft (internal)</span> = <?php echo \JText::_('Draft (internal production)'); ?></li>
+				<li class="draftexternal"><span>draft (external)</span> = <?php echo \JText::_('Draft (user created)'); ?></li>
+				<li class="submitted"><span>new</span> = <?php echo \JText::_('New, awaiting approval'); ?></li>
+				<li class="pending"><span>pending</span> = <?php echo \JText::_('Published, but is Coming'); ?></li>
+				<li class="published"><span>current</span> = <?php echo \JText::_('Published and is Current'); ?></li>
+				<li class="expired"><span>finished</span> = <?php echo \JText::_('Published, but has Finished'); ?></li>
+				<li class="unpublished"><span>unpublished</span> = <?php echo \JText::_('Unpublished'); ?></li>
+				<li class="deleted"><span>deleted</span> = <?php echo \JText::_('Delete/Removed'); ?></li>
 			</ul>
 		<?php
 	}
@@ -108,7 +107,7 @@ class ResourcesHtml
 			$dir_year  = date('Y');
 			$dir_month = date('m');
 		}
-		$dir_id = ResourcesHtml::niceidformat($id);
+		$dir_id = self::niceidformat($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 
@@ -184,7 +183,7 @@ class ResourcesHtml
 			$html .= ' disabled="disabled"';
 		}
 		$html .= '>' . "\n";
-		$html .= ' <option value="">' . JText::_('Select group ...') . '</option>' . "\n";
+		$html .= ' <option value="">' . \JText::_('Select group ...') . '</option>' . "\n";
 		if ($groups)
 		{
 			foreach ($groups as $group)
@@ -217,7 +216,7 @@ class ResourcesHtml
 		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		$html .= ' <option value="0"';
 		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
-		$html .= '>' . JText::_('[ none ]') . '</option>' . "\n";
+		$html .= '>' . \JText::_('[ none ]') . '</option>' . "\n";
 		foreach ($array as $anode)
 		{
 			$selected = ($anode->id == $value || $anode->type == $value)

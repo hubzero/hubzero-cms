@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,50 +24,53 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model\Import;
+namespace Components\Resources\Models\Import;
 
-use JFactory;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Object;
 
 // include models
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import' . DS . 'run.php';
+require_once dirname(__DIR__) . DS . 'import.php';
+require_once __DIR__ . DS . 'run.php';
 
 /**
  * Import archive model
  */
-class Archive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
 	 * JDatabase
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * Import list
-	 * @var Hubzero\ItemList
+	 *
+	 * @var  object
 	 */
 	private $_imports = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
 	 * Get Instance of Page Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   mixed  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -89,28 +92,28 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get a list of imports
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $boolean  Clear cached data?
+	 * @return  mixed
 	 */
-	public function imports( $rtrn = 'list', $filters = array(), $clear = false )
+	public function imports($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
 			case 'list':
 			default:
-				if (!($this->_imports instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_imports instanceof ItemList) || $clear)
 				{
-					$tbl = new \ResourcesTableImport($this->_db);
+					$tbl = new \Components\Resources\Tables\Import($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new \Resources\Model\Import($result);
+							$results[$key] = new \Components\Resources\Models\Import($result);
 						}
 					}
-					$this->_imports = new \Hubzero\Base\Model\ItemList($results);
+					$this->_imports = new ItemList($results);
 				}
 				return $this->_imports;
 			break;

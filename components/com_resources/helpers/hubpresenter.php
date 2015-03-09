@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
+
+use Hubzero\Base\Object;
 
 /**
  * Helper class for HUB Presenter
  */
-class HUBpresenterHelper extends JObject
+class Hubpresenter extends Object
 {
 	/**
 	 * Generates JSON Manifest from XML doc uploaded
@@ -86,23 +87,23 @@ class HUBpresenterHelper extends JObject
 				$media = array();
 
 				$media[0]['source'] = $orig_media;
-				$media[0]['type']   = PresenterHelper::getExt($orig_media);
+				$media[0]['type']   = self::getExt($orig_media);
 
-				$name = PresenterHelper::getName($orig_media);
+				$name = self::getName($orig_media);
 
-				if (file_exists(JPATH_ROOT . DS . $resource_path . DS . 'content' . DS . $name . '.webm'))
+				if (file_exists(PATH_APP . DS . $resource_path . DS . 'content' . DS . $name . '.webm'))
 				{
 					$media[1]['source'] = $name . '.webm';
 					$media[1]['type']   = 'webm';
 				}
 
-				if (file_exists(JPATH_ROOT . DS . $resource_path . DS . 'content' . DS . $name . '.ogv'))
+				if (file_exists(PATH_APP . DS . $resource_path . DS . 'content' . DS . $name . '.ogv'))
 				{
 					$media[2]['source'] = $name . '.ogv';
 					$media[2]['type']   = 'ogg';
 				}
 
-				if (file_exists(JPATH_ROOT . DS . $resource_path . DS . 'content' . DS . $name . '.png'))
+				if (file_exists(PATH_APP . DS . $resource_path . DS . 'content' . DS . $name . '.png'))
 				{
 					$media[3]['source'] = $name . '.png';
 					$media[3]['type']   = 'imagereplacement';
@@ -128,7 +129,7 @@ class HUBpresenterHelper extends JObject
 
 		$json = json_encode($data);
 
-		$new_file    = JPATH_ROOT . DS . $resource_path . DS . 'presentation.json';
+		$new_file    = PATH_APP . DS . $resource_path . DS . 'presentation.json';
 		$file_handle = fopen($new_file, 'w') or die("An Error Occured While Trying to Create the Presentation Manifest.");
 		fwrite($file_handle, $json);
 	}

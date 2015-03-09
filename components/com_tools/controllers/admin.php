@@ -475,7 +475,7 @@ class ToolsControllerAdmin extends \Hubzero\Component\SiteController
 			$url = $juri->base() . ltrim(JRoute::_('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
 
 			// Check if DOI exists for this revision
-			$objDOI = new ResourcesDoi($this->database);
+			$objDOI = new \Components\Resources\Tables\Doi($this->database);
 			$bingo = $objDOI->getDoi($status['resourceid'], $status['revision'], '', 1);
 
 			// DOI already exists for this revision

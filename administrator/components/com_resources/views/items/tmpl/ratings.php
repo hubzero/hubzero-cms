@@ -55,7 +55,7 @@ if ($this->getError()) { ?>
 			</tr>
 			<tr>
 				<th><?php echo JText::_('COM_RESOURCES_RATING_VALUE'); ?>:</th>
-				<td><?php echo ResourcesHtml::writeRating($row->rating); ?></td>
+				<td><?php echo \Components\Resources\Helpers\Html::writeRating($row->rating); ?></td>
 			</tr>
 			<tr>
 				<th><?php echo JText::_('COM_RESOURCES_RATING_CREATED'); ?>:</th>

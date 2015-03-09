@@ -36,7 +36,7 @@ $database = JFactory::getDBO();
 $juser = JFactory::getUser();
 
 // Instantiate a helper object
-$helper = new ResourcesHelper($this->line->id, $database);
+$helper = new \Components\Resources\Helpers\Helper($this->line->id, $database);
 $helper->getContributors();
 $helper->getContributorIDs();
 
@@ -134,11 +134,11 @@ if ($this->config->get('supportedtag'))
 					<?php
 					if ($this->line->type == 7)
 					{
-						$stats = new ToolStats($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
+						$stats = new \Components\Resources\Tables\Usage\Tools($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
 					}
 					else
 					{
-						$stats = new AndmoreStats($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
+						$stats = new \Components\Resources\Tables\Usage\Andmore($database, $this->line->id, $this->line->type, $this->line->rating, $helper->citationsCount, $helper->lastCitationDate);
 					}
 					echo $stats->display();
 					?>

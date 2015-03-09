@@ -300,7 +300,7 @@ class ToolsHelperUtils
 		$path = DS . trim($resourceParams->get("uploadpath"), DS);
 
 		//build path based on resource creation date and id
-		$path .= ResourcesHtml::build_path( $createdDate, $resourceId, '');
+		$path .= \Components\Resources\Helpers\Html::build_path( $createdDate, $resourceId, '');
 
 		//append version id if we have one
 		if ($versionId)

@@ -1,39 +1,46 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Models;
 
-include_once(dirname(__FILE__) . DS . 'format.php');
-include_once(dirname(__FILE__) . DS . 'element.php');
+use stdClass;
+
+include_once(__DIR__ . DS . 'format.php');
+include_once(__DIR__ . DS . 'element.php');
 
 /**
  * Resources elements class
  * Used for rendering custom resources fields
  *
  */
-class ResourcesElements
+class Elements
 {
 	/**
 	 * @var    string  The raw params string
@@ -70,7 +77,7 @@ class ResourcesElements
 	 */
 	public function __construct($data = null, $setup = null)
 	{
-		$this->_elementPath[] = dirname(__FILE__) . DS . 'element';
+		$this->_elementPath[] = __DIR__ . DS . 'element';
 
 		$this->_raw = $data;
 
@@ -228,7 +235,7 @@ class ResourcesElements
 
 		if (empty ($instances[$id]))
 		{
-			$instances[$id] = new ResourcesElements;
+			$instances[$id] = new self;
 		}
 
 		return $instances[$id];
@@ -272,7 +279,7 @@ class ResourcesElements
 	{
 		// Get the contents of the file
 		jimport('joomla.filesystem.file');
-		$data = JFile::read($file);
+		$data = \JFile::read($file);
 
 		return $this->loadString($data, $format, $options);
 	}
@@ -288,7 +295,7 @@ class ResourcesElements
 	public function loadString($data, $format = 'JSON', $options = array())
 	{
 		// Load a string into the given namespace [or default namespace if not given]
-		$handler = ResourcesElementsFormat::getInstance($format);
+		$handler = Format::getInstance($format);
 
 		$obj = $handler->stringToObject($data, $options);
 		$this->loadObject($obj);
@@ -337,7 +344,7 @@ class ResourcesElements
 			}
 			else
 			{
-				$handler = ResourcesElementsFormat::getInstance('JSON');
+				$handler = Format::getInstance('JSON');
 				if ($obj = $handler->stringToObject($setup, array()))
 				{
 					$this->_schema[$group] = $obj;
@@ -358,7 +365,7 @@ class ResourcesElements
 	 */
 	public function merge(&$source)
 	{
-		if ($source instanceof ResourcesElements)
+		if ($source instanceof Elements)
 		{
 			// Load the variables into the registry's default namespace.
 			foreach ($source->toArray() as $k => $v)
@@ -437,7 +444,7 @@ class ResourcesElements
 	public function toString($format = 'JSON', $options = array())
 	{
 		// Return a namespace in a given format
-		$handler = ResourcesElementsFormat::getInstance($format);
+		$handler = Format::getInstance($format);
 
 		return $handler->objectToString($this->data, $options);
 	}
@@ -523,9 +530,12 @@ class ResourcesElements
 	 */
 	public function isAssociative($array)
 	{
-		if (is_array($array)) {
-			foreach (array_keys($array) as $k => $v) {
-				if ($k !== $v) {
+		if (is_array($array))
+		{
+			foreach (array_keys($array) as $k => $v)
+			{
+				if ($k !== $v)
+				{
 					return true;
 				}
 			}
@@ -580,8 +590,8 @@ class ResourcesElements
 		/*if ($description = $this->_schema[$group]->description)
 		{
 			// Add the params description to the display
-			$desc	= JText::_($description);
-			$html[]	= '<p class="paramrow_desc">'.$desc.'</p>';
+			$desc   = \JText::_($description);
+			$html[] = '<p class="paramrow_desc">'.$desc.'</p>';
 		}*/
 
 		if (count($fields) > 0)
@@ -711,13 +721,13 @@ class ResourcesElements
 		if ($element === false)
 		{
 			$result = new stdClass;
-			$result->label = $node->label;
-			$result->element = JText::_('Element not defined for type').' = '.$type;
+			$result->label    = $node->label;
+			$result->element = \JText::_('Element not defined for type').' = '.$type;
 			$result->description = '';
-			$result->text = $result->label;
-			$result->name = $result->name;
+			$result->text    = $result->label;
+			$result->name    = $result->name;
 			$result->default = '';
-			$result->type = $type;
+			$result->type    = $type;
 			return $result;
 		}
 
@@ -746,13 +756,13 @@ class ResourcesElements
 		if ($element === false)
 		{
 			$result = new stdClass;
-			$result->label = $node->label;
-			$result->element = JText::_('Element not defined for type').' = '.$type;
+			$result->label   = $node->label;
+			$result->element = \JText::_('Element not defined for type').' = '.$type;
 			$result->description = '';
-			$result->text = $result->label;
-			$result->name = $result->name;
+			$result->text    = $result->label;
+			$result->name    = $result->label;
 			$result->default = '';
-			$result->type = $type;
+			$result->type    = $type;
 			return $result;
 		}
 
@@ -771,14 +781,19 @@ class ResourcesElements
 	 */
 	public function loadElement($type, $new = false)
 	{
+		if ($type == 'list')
+		{
+			$type = 'select';
+		}
+
 		$signature = md5($type);
 
 		if ((isset($this->_elements[$signature]) && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))  && $new === false)
 		{
-			return	$this->_elements[$signature];
+			return $this->_elements[$signature];
 		}
 
-		$elementClass = 'ResourcesElement' . $type;
+		$elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_elementPath))
@@ -790,10 +805,10 @@ class ResourcesElements
 				$dirs = array();
 			}
 
-			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
+			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file))
+			if ($elementFile = \JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

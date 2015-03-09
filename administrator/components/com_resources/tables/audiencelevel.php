@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,51 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Table class for resource audience level
  */
-class ResourceAudienceLevel extends JTable
+class AudienceLevel extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       		= NULL;
-
-	/**
-	 * varchar(11)
-	 *
-	 * @var string
-	 */
-	var $label 			= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title 			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description 	= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -77,9 +49,9 @@ class ResourceAudienceLevel extends JTable
 	/**
 	 * Get records to a determined level
 	 *
-	 * @param      integer $numlevels Number of levels to return
-	 * @param      array   $levels    Array to populate
-	 * @return     array
+	 * @param   integer  $numlevels  Number of levels to return
+	 * @param   array    $levels     Array to populate
+	 * @return  array
 	 */
 	public function getLevels($numlevels = 4, $levels = array())
 	{

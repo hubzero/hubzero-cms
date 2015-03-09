@@ -138,7 +138,7 @@ class ResourcesRouter extends \Hubzero\Component\Router\Base
 
 			$database = JFactory::getDBO();
 
-			$t = new ResourcesType($database);
+			$t = new \Components\Resources\Tables\Type($database);
 			$types = $t->getMajorTypes();
 
 			// Normalize the title

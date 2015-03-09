@@ -97,8 +97,8 @@ $this->css('introduction.css', 'system')
 				</thead>
 				<tbody>
 				<?php
-					$ra = new ResourcesAssoc($database);
-					$rc = new ResourcesContributor($database);
+					$ra = new \Components\Resources\Tables\Assoc($database);
+					$rc = new \Components\Resources\Tables\Contributor($database);
 					$cls = 'even';
 					foreach ($submissions as $submission)
 					{
@@ -115,7 +115,7 @@ $this->css('introduction.css', 'system')
 
 						$authors = $rc->getCount($submission->id, 'resources');
 
-						$rt = new ResourcesTags($submission->id);
+						$rt = new \Components\Resources\Helpers\Tags($submission->id);
 						$tags = $rt->tags('count');
 					?>
 					<tr class="<?php echo $cls; ?>">
@@ -165,7 +165,7 @@ $this->css('introduction.css', 'system')
 	</div><!-- / .grid -->
 
 <?php
-$t = new ResourcesType( $database );
+$t = new \Components\Resources\Tables\Type( $database );
 $categories = $t->getMajorTypes();
 if ($categories) {
 ?>

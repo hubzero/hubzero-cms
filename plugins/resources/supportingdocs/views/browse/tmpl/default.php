@@ -75,10 +75,10 @@ else
 					}
 					else
 					{
-						$rt = ResourcesType::getRecordInstance($child->type);
+						$rt = \Components\Resources\Tables\Type::getRecordInstance($child->type);
 						$tparams = new JRegistry($rt->params);
 
-						$lt = ResourcesType::getRecordInstance($child->logicaltype);
+						$lt = \Components\Resources\Tables\Type::getRecordInstance($child->logicaltype);
 						$ltparams = new JRegistry($lt->params);
 
 						// Check the link action by child's type
@@ -182,7 +182,7 @@ else
 						$title = ($child->logicaltitle) ? $child->logicaltitle : stripslashes($child->title);
 					}
 
-					$url = ResourcesHtml::processPath($this->option, $child, $this->model->resource->id, $linkAction);
+					$url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->resource->id, $linkAction);
 
 					//$child->title = str_replace('"', '&quot;', $child->title);
 					//$child->title = str_replace('&amp;', '&', $child->title);
@@ -219,7 +219,7 @@ else
 							}
 
 							// Add JPATH_ROOT
-							$filename = JPATH_ROOT . $filename;
+							$filename = PATH_APP . $filename;
 
 							list($width, $height) = getimagesize($filename);
 							if ($width > 0 && $height > 0)
@@ -246,7 +246,7 @@ else
 					}
 					?>
 					<li<?php echo $liclass; ?>>
-						<?php echo ResourcesHtml::getFileAttribs($child->path, $base, 0); ?>
+						<?php echo \Components\Resources\Helpers\Html::getFileAttribs($child->path, $base, 0); ?>
 						<a<?php echo ($class) ? ' class="' . $class . '"' : '';?> href="<?php echo $url; ?>" title="<?php echo $this->escape(stripslashes($child->title)); ?>" <?php echo ($action)  ? ' ' . $action : ''; ?>>
 							<?php echo $title; ?>
 						</a>

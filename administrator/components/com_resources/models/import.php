@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model;
+namespace Components\Resources\Models;
 
+use Components\Resources\Models\Import;
+use Components\Resources\Tables;
+use Hubzero\Base\ItemList;
 use Exception;
-use JText;
-use JFactory;
-use JComponentHelper;
 
 // include tables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'import.php';
 
 /**
  * Resource Import Model
@@ -44,36 +44,36 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_r
 class Import extends \Hubzero\Base\Model
 {
 	/**
-	 * JTable
+	 * Table
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl = null;
 
 	/**
 	 * Table name
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = 'ResourcesTableImport';
+	protected $_tbl_name = '\\Components\\Resources\\Tables\\Import';
 
 	/**
 	 * List of import runs
-	 * @var \Hubzero\Base\ItemList
+	 *
+	 * @var  object
 	 */
 	protected $_runs;
 
 	/**
 	 * Constructor
 	 *
-	 * @access public
-	 * @param  ResourcesTableImport Object Id
-	 * @return void
+	 * @param   object  $oid  Object Id
+	 * @return  void
 	 */
-	public function __construct( $oid = null )
+	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -81,38 +81,35 @@ class Import extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
 	/**
 	 * Return raw import data
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
 	 */
 	public function getData()
 	{
-		// retun file contents
 		return file_get_contents($this->getDataPath());
 	}
 
 	/**
 	 * Return path to imports data file
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
 	 */
 	public function getDataPath()
 	{
 		// make sure we have file
 		if (!$file = $this->get('file'))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_REQUIRED_FILE'));
+			throw new Exception(\JText::_('COM_RESOURCES_IMPORT_MODEL_REQUIRED_FILE'));
 		}
 
 		// build path to file
@@ -121,13 +118,13 @@ class Import extends \Hubzero\Base\Model
 		// make sure file exists
 		if (!file_exists($filePath))
 		{
-			throw new Exception(JText::sprintf('COM_RESOURCES_IMPORT_MODEL_FILE_MISSING', $filePath));
+			throw new Exception(\JText::sprintf('COM_RESOURCES_IMPORT_MODEL_FILE_MISSING', $filePath));
 		}
 
 		// make sure we can read the file
 		if (!is_readable($filePath))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_MODEL_FILE_NOTREADABLE'));
+			throw new Exception(\JText::_('COM_RESOURCES_IMPORT_MODEL_FILE_NOTREADABLE'));
 		}
 
 		return $filePath;
@@ -142,11 +139,11 @@ class Import extends \Hubzero\Base\Model
 	public function fileSpacePath()
 	{
 		// get com resources params
-		$params = JComponentHelper::getParams('com_resources');
+		$params = \JComponentHelper::getParams('com_resources');
 
 		// build upload path
 		$uploadPath = $params->get('import_uploadpath', '/site/resources/import');
-		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
+		$uploadPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;
@@ -163,7 +160,7 @@ class Import extends \Hubzero\Base\Model
 		switch (strtolower($rtrn))
 		{
 			case 'current':
-				if (!($this->_runs instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_runs instanceof ItemList) || $clear)
 				{
 					$this->_runs = $this->runs('list', $filters, $clear);
 				}
@@ -172,17 +169,17 @@ class Import extends \Hubzero\Base\Model
 
 			case 'list':
 			default:
-				if (!($this->_runs instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_runs instanceof ItemList) || $clear)
 				{
-					$tbl = new \ResourcesTableImportRun($this->_db);
+					$tbl = new Tables\Import\Run($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new \Resources\Model\Import\Run($result);
+							$results[$key] = new Run($result);
 						}
 					}
-					$this->_runs = new \Hubzero\Base\ItemList($results);
+					$this->_runs = new ItemList($results);
 				}
 				return $this->_runs;
 		}
@@ -196,11 +193,11 @@ class Import extends \Hubzero\Base\Model
 	 */
 	public function markRun($dryRun = 1)
 	{
-		$importRun = new \Resources\Model\Import\Run();
+		$importRun = new Run();
 		$importRun->set('import_id', $this->get('id'));
 		$importRun->set('count', $this->get('count'));
-		$importRun->set('ran_by', JFactory::getUser()->get('id'));
-		$importRun->set('ran_at', JFactory::getDate()->toSql());
+		$importRun->set('ran_by', \JFactory::getUser()->get('id'));
+		$importRun->set('ran_at', \JFactory::getDate()->toSql());
 		$importRun->set('dry_run', $dryRun);
 		$importRun->store();
 	}

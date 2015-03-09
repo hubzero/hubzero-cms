@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Helpers\Tags as TagCloud;
+use Hubzero\Component\AdminController;
+use stdClass;
 
 /**
  * Manage resource entry tags
  */
-class ResourcesControllerTags extends \Hubzero\Component\AdminController
+class Tags extends AdminController
 {
 	/**
 	 * Manage tags on a resource
@@ -43,10 +47,10 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		// Get resource title
-		$this->view->row = new ResourcesResource($this->database);
+		$this->view->row = new Resource($this->database);
 		$this->view->row->load($this->view->id);
 
 		// Get all tags
@@ -60,7 +64,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 		}
 
 		// Get tags for this resource
-		$rt = new ResourcesTags($this->view->id);
+		$rt = new TagCloud($this->view->id);
 
 		$mytagarray    = array();
 		$myrawtagarray = array();
@@ -93,15 +97,15 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = JRequest::getInt('id', 0);
-		$entered  = JRequest::getVar('tags', '');
-		$selected = JRequest::getVar('tgs', array(0));
+		$id       = \JRequest::getInt('id', 0);
+		$entered  = \JRequest::getVar('tags', '');
+		$selected = \JRequest::getVar('tgs', array(0));
 
 		// Process tags
-		$tagging = new ResourcesTags($id);
+		$tagging = new TagCloud($id);
 		$tagArray  = $tagging->parseTags($entered);
 		$tagArray2 = $tagging->parseTags($entered, 1);
 
@@ -115,8 +119,8 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=items', false),
-			JText::sprintf('COM_RESOURCES_TAGS_UPDATED', $id)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=items', false),
+			\JText::sprintf('COM_RESOURCES_TAGS_UPDATED', $id)
 		);
 	}
 
@@ -128,7 +132,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=items', false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=items', false)
 		);
 	}
 }

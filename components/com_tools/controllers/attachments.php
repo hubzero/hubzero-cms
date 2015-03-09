@@ -88,7 +88,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Get the element moving down - item 1
-		$resource1 = new ResourcesAssoc($this->database);
+		$resource1 = new \Components\Resources\Tables\Assoc($this->database);
 		$resource1->loadAssoc($pid, $id);
 
 		// Get the element directly after it in ordering - item 2
@@ -138,7 +138,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		// Ensure we have everything we need
 		if ($id && $name != '')
 		{
-			$r = new ResourcesResource($this->database);
+			$r = new \Components\Resources\Tables\Resource($this->database);
 			$r->load($id);
 			$r->title = $name;
 			$r->store();
@@ -197,7 +197,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a new resource object
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
@@ -237,7 +237,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Build the path
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir = ResourcesHtml::build_path($row->created, $row->id, '');
+		$listdir = \Components\Resources\Tables\Html::build_path($row->created, $row->id, '');
 		$path = $this->_buildUploadPath($listdir, '');
 
 		// Make sure the upload path exist
@@ -281,8 +281,8 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Instantiate a ResourcesAssoc object
-		$assoc = new ResourcesAssoc($this->database);
+		// Instantiate a Resources Assoc object
+		$assoc = new \Components\Resources\Tables\Assoc($this->database);
 
 		// Get the last child in the ordering
 		$order = $assoc->getLastOrder($pid);
@@ -349,7 +349,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		jimport('joomla.filesystem.folder');
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($id);
 
 		// Check for stored file
@@ -362,7 +362,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Get resource path
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir = ResourcesHtml::build_path($row->created, $id, '');
+		$listdir = \Components\Resources\Helpers\Html::build_path($row->created, $id, '');
 
 		// Build the path
 		$path = $this->_buildUploadPath($listdir, '');
@@ -417,11 +417,11 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->id = $id;
 		$this->view->allowupload = JRequest::getInt('allowupload', 1);
 
-		$this->view->resource = new ResourcesResource($this->database);
+		$this->view->resource = new \Components\Resources\Tables\Resource($this->database);
 		$this->view->resource->load($id);
 
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new \Components\Resources\Helpers\Helper($id, $this->database);
 		$helper->getChildren();
 
 		// get config
@@ -474,7 +474,7 @@ class ToolsControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		return JPATH_ROOT . $listdir . $subdir;
+		return PATH_APP . $listdir . $subdir;
 	}
 
 	/**

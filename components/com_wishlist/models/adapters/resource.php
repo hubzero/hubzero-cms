@@ -60,7 +60,7 @@ class Resource extends Base
 		     ->set('option', $this->_segments['option']);
 
 		$database = \JFactory::getDBO();
-		$this->_item = new \ResourcesResource($database);
+		$this->_item = new \Components\Resources\Tables\Resource($database);
 		$this->_item->load($this->get('referenceid'));
 		$this->_item->typetitle = $this->_item->getTypeTitle();
 

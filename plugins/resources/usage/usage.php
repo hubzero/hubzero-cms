@@ -120,15 +120,15 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $option . DS . 'tables' . DS . 'stats.php');
 		if ($model->isTool())
 		{
-			$stats = new ResourcesStatsTools($database);
+			$stats = new \Components\Resources\Tables\Stats\Tools($database);
 		}
 		else
 		{
-			$stats = new ResourcesStats($database);
+			$stats = new \Components\Resources\Tables\Stats($database);
 		}
 		$stats->loadStats($model->resource->id, $period); //, $dthis);
 
-		$clusters = new ResourcesStatsClusters($database);
+		$clusters = new \Components\Resources\Tables\Stats\Clusters($database);
 		$clusters->loadStats($model->resource->id);
 
 		// Are we returning HTML?
@@ -187,7 +187,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			{
 				$arr['metadata'] = '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS', $stats->users) . '</p>';
 			}
-			if ($clusters->users && $clusters->classes)
+			if (isset($clusters->users) && $clusters->users && isset($clusters->classes) && $clusters->classes)
 			{
 				$arr['metadata'] .= '<p class="usage">' . JText::sprintf('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
 			}

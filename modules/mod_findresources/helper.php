@@ -32,7 +32,6 @@ namespace Modules\FindResources;
 
 use Hubzero\Module\Module;
 use Components\Tags\Tables\Tag;
-use ResourcesType;
 
 /**
  * Module class for displaying ways to find resources
@@ -56,7 +55,7 @@ class Helper extends Module
 		$this->tags = $obj->getTopTags(intval($this->params->get('limit', 25)));
 
 		// Get major types
-		$t = new ResourcesType($database);
+		$t = new \Components\Resources\Tables\Type($database);
 		$this->categories = $t->getMajorTypes();
 
 		require $this->getLayoutPath();

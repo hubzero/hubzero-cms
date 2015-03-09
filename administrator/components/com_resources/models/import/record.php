@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,17 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model\Import;
+namespace Components\Resources\Models\Import;
 
+use Components\Resources\Tables;
+use Components\Resources\Helpers\Tags;
+use Hubzero\Base\Object;
 use Exception;
 use stdClass;
-use JText;
-use JFactory;
-use JRoute;
-use JURI;
-use JParameter;
 
 // include elements model
 include_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php';
@@ -44,7 +42,7 @@ include_once JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'model
 /**
  * Resource Import Record Model
  */
-class Record extends \Hubzero\Base\Object
+class Record extends Object
 {
 	CONST TITLE_MATCH = 10;
 
@@ -69,13 +67,13 @@ class Record extends \Hubzero\Base\Object
 		$this->_mode    = $mode;
 
 		// create core objects
-		$this->_database = JFactory::getDBO();
-		$this->_user     = JFactory::getUser();
+		$this->_database = \JFactory::getDBO();
+		$this->_user     = \JFactory::getUser();
 
 		// create resource objects
 		$this->record               = new stdClass;
-		$this->record->resource     = new \ResourcesResource($this->_database);
-		$this->record->type         = new \ResourcesType($this->_database);
+		$this->record->resource     = new Tables\Resource($this->_database);
+		$this->record->type         = new Tables\Type($this->_database);
 		$this->record->children     = array();
 		$this->record->tags         = array();
 		$this->record->contributors = array();
@@ -211,7 +209,7 @@ class Record extends \Hubzero\Base\Object
 		// make sure we have a type
 		if (!isset($this->raw->type))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_MUSTHAVETYPE'));
+			throw new Exception(\JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_MUSTHAVETYPE'));
 		}
 
 		// load type
@@ -220,7 +218,7 @@ class Record extends \Hubzero\Base\Object
 		// make sure we have a valid type
 		if (!$this->record->type->id)
 		{
-			throw new Exception(JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_LOADTYPE', $this->raw->type));
+			throw new Exception(\JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_LOADTYPE', $this->raw->type));
 		}
 	}
 
@@ -244,7 +242,7 @@ class Record extends \Hubzero\Base\Object
 			if (count($results) > 1)
 			{
 				$ids = implode(", ", array_keys($results));
-				throw new Exception(JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_DETECTDUPLICATE', $ids));
+				throw new Exception(\JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_DETECTDUPLICATE', $ids));
 			}
 
 			// if we only have one were all good
@@ -255,9 +253,9 @@ class Record extends \Hubzero\Base\Object
 				$this->raw->id = $resource->id;
 
 				// add a notice with link to resource matched
-				$resourceLink = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'resources' . DS . $resource->id;
+				$resourceLink = rtrim(str_replace('administrator', '', \JURI::base()), DS) . DS . 'resources' . DS . $resource->id;
 				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
-				array_push($this->record->notices, JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
+				array_push($this->record->notices, \JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
 			}
 		}
 
@@ -270,13 +268,13 @@ class Record extends \Hubzero\Base\Object
 		else
 		{
 			$this->raw->standalone = 1;
-			$this->raw->created    = JFactory::getDate()->toSql();
+			$this->raw->created    = \JFactory::getDate()->toSql();
 			$this->raw->created_by = $this->_user->get('id');
 
 			// publish up/down
 			if (!isset($this->raw->publish_up))
 			{
-				$this->raw->publish_up = JFactory::getDate()->toSql();
+				$this->raw->publish_up = \JFactory::getDate()->toSql();
 			}
 			if (!isset($this->raw->publish_down))
 			{
@@ -285,7 +283,7 @@ class Record extends \Hubzero\Base\Object
 		}
 
 		// set modified date/user
-		$this->raw->modified    = JFactory::getDate()->toSql();
+		$this->raw->modified    = \JFactory::getDate()->toSql();
 		$this->raw->modified_by = $this->_user->get('id');
 
 		// set status
@@ -310,12 +308,12 @@ class Record extends \Hubzero\Base\Object
 		$this->record->resource->bind($this->raw);
 
 		// resource params
-		$params = new JParameter();
+		$params = new \JRegistry();
 		$params->bind($this->record->resource->params);
 		$this->record->resource->params = $params->toString();
 
 		// resource attributes
-		$attribs = new JParameter();
+		$attribs = new \JRegistry();
 		$attribs->bind($this->record->resource->attribs);
 		$this->record->resource->attribs = $attribs->toString();
 
@@ -370,7 +368,7 @@ class Record extends \Hubzero\Base\Object
 		// save main resource
 		if (!$this->record->resource->save($this->record->resource))
 		{
-			throw new Exception(JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVERESOURCE'));
+			throw new Exception(\JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVERESOURCE'));
 		}
 	}
 
@@ -387,7 +385,7 @@ class Record extends \Hubzero\Base\Object
 			// loop through each child resource and bind as a resource object
 			foreach ($this->raw->children as $child)
 			{
-				$childResource = new \ResourcesResource($this->_database);
+				$childResource = new Tables\Resource($this->_database);
 				$childResource->bind($child);
 
 				// add this child to
@@ -411,7 +409,7 @@ class Record extends \Hubzero\Base\Object
 			foreach ($children as $child)
 			{
 				$rconfig = \JComponentHelper::getParams('com_resources');
-				$base = JPATH_ROOT . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
+				$base = PATH_APP . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
 				$file = $base . DS . $child->path;
 
 				//get file info
@@ -456,11 +454,11 @@ class Record extends \Hubzero\Base\Object
 			// save child
 			if (!$child->store())
 			{
-				throw new Exception(JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVECHILD'));
+				throw new Exception(\JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVECHILD'));
 			}
 
 			// create parent - child association
-			$assoc = new \ResourcesAssoc($this->_database);
+			$assoc = new Tables\Assoc($this->_database);
 			$assoc->ordering = $assoc->getLastOrder($this->record->resource->id);
 			$assoc->ordering = ($assoc->ordering) ? $assoc->ordering : 0;
 			$assoc->ordering++;
@@ -469,7 +467,7 @@ class Record extends \Hubzero\Base\Object
 			$assoc->grouping  = 0;
 			if (!$assoc->store(true))
 			{
-				throw new Exception(JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVECHILDASSOC'));
+				throw new Exception(\JText::_('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVECHILDASSOC'));
 			}
 		}
 	}
@@ -485,7 +483,7 @@ class Record extends \Hubzero\Base\Object
 		$contributors = (isset($this->raw->contributors)) ? $this->raw->contributors : new stdClass;
 
 		// get roles for resource type
-		$contributorRoles = new \ResourcesContributorRoleType($this->_database);
+		$contributorRoles = new Tables\Contributor\RoleType($this->_database);
 		$rolesForType     = $contributorRoles->getRolesForType($this->record->resource->type);
 		$rolesForType     = (is_array($rolesForType)) ? $rolesForType : array();
 
@@ -511,7 +509,7 @@ class Record extends \Hubzero\Base\Object
 		foreach ($contributors as $contributor)
 		{
 			// create resource contributor object
-			$resourceContributor = new \ResourcesContributor($this->_database);
+			$resourceContributor = new Tables\Contributor($this->_database);
 
 			// check to see if we have an author id
 			$authorid = (isset($contributor->authorid)) ? $contributor->authorid : null;
@@ -590,7 +588,7 @@ class Record extends \Hubzero\Base\Object
 	private function _saveTagsData()
 	{
 		// save tags
-		$resourcesTags = new \ResourcesTags($this->record->resource->id);
+		$resourcesTags = new Tags($this->record->resource->id);
 		$resourcesTags->setTags($this->record->tags, $this->_user->get('id'), 1, 1);
 	}
 

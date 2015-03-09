@@ -103,18 +103,18 @@ $juser = JFactory::getUser();
 						// get launch button
 						$firstchild = $this->model->children(0);
 
-						$html .= $this->tab != 'play' && is_object($firstchild) ? ResourcesHtml::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
+						$html .= $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstchild, '') : '';
 
 						// Display some supporting documents
 						$children = $this->model->children();
 
 						// Sort out supporting docs
 						$html .= $children && count($children) > 1
-							   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children )
+							   ? \Components\Resources\Helpers\Html::sortSupportingDocs( $this->model->resource, $this->option, $children )
 							   : '';
 
 						//$html .= $feeds ? $feeds : '';
-						$html .= $this->tab != 'play' ? ResourcesHtml::license($this->model->params->get('license', '')) : '';
+						$html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
 					} // --- end else (if group check passed)
 					echo $html;
 					?>
@@ -148,8 +148,8 @@ $juser = JFactory::getUser();
 <?php if ($this->model->access('view')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php

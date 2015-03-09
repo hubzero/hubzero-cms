@@ -60,12 +60,12 @@ if ($this->results) {
 			default:  $class = ' no-stars';      break;
 		}
 
-		$helper = new ResourcesHelper( $line->id, $database );
+		$helper = new \Components\Resources\Helpers\Helper( $line->id, $database );
 		$helper->getContributors();
 
 		// If the user is logged in, get their rating for this resource
 		if (!$juser->get('guest')) {
-			$mr = new ResourcesReview( $database );
+			$mr = new \Components\Resources\Tables\Review( $database );
 			$myrating = $mr->loadUserRating( $line->id, $juser->get('id') );
 		} else {
 			$myrating = 0;

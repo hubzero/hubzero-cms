@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
+
+use Components\Tags\Models\Cloud;
+use Components\Tags\Tables\Tag;
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Resources Tagging class
  */
-class ResourcesTags extends \Components\Tags\Models\Cloud
+class Tags extends Cloud
 {
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
@@ -55,8 +57,8 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 	 */
 	public function get_tags_with_objects($id=0, $type=0, $tag='')
 	{
-		$juser = JFactory::getUser();
-		$now = JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
+		$now = \JFactory::getDate()->toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_scope'");
 		$objs = $this->_db->loadObjectList();
@@ -187,8 +189,8 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 	 */
 	public function get_objects_on_tag($tag='', $id=0, $type=0, $sortby='title', $tag2='', $filterby=array())
 	{
-		$juser = JFactory::getUser();
-		$now  = JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
+		$now  = \JFactory::getDate()->toSql();
 
 		if ($tag || $tag2)
 		{
@@ -433,8 +435,7 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
-		$t = new \Components\Tags\Tables\Tag($this->_db);
-		//$tags = $t->getCloud($this->_tbl, $admin, null);
+		$t = new Tag($this->_db);
 		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 
 		return $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
@@ -450,7 +451,7 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 	 */
 	public function getTopTags($limit)
 	{
-		$t = new \Components\Tags\Tables\Tag($this->_db);
+		$t = new Tag($this->_db);
 		return $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 	}
 
@@ -464,7 +465,7 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 	 */
 	public function getTopTagString($limit)
 	{
-		$t = new \Components\Tags\Tables\Tag($this->_db);
+		$t = new Tag($this->_db);
 
 		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 
@@ -610,11 +611,11 @@ class ResourcesTags extends \Components\Tags\Models\Cloud
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . \JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				else
 				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(\JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
 			if ($sort == 'alpha')

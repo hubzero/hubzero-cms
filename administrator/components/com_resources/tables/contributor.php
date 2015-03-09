@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Table class for resource contributor
  */
-class ResourcesContributor extends JTable
+class Contributor extends \JTable
 {
-	/**
-	 * varchar(50) Primary Key
-	 *
-	 * @var string
-	 */
-	var $subtable = NULL;
-
-	/**
-	 * int(11) Primary Key
-	 *
-	 * @var integer
-	 */
-	var $subid    = NULL;
-
-	/**
-	 * int(11) Primary Key
-	 *
-	 * @var integer
-	 */
-	var $authorid = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $role     = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $name     = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $organization = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,19 +49,22 @@ class ResourcesContributor extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (!$this->authorid)
 		{
-			$this->setError(JText::_('Must have an author ID.'));
-			return false;
+			$this->setError(\JText::_('Must have an author ID.'));
 		}
 
 		if (!$this->subid)
 		{
-			$this->setError(JText::_('Must have an item ID.'));
+			$this->setError(\JText::_('Must have an item ID.'));
+		}
+
+		if (!$this->getError())
+		{
 			return false;
 		}
 
@@ -121,10 +74,10 @@ class ResourcesContributor extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $authorid Member ID
-	 * @param      integer $subid    Object ID
-	 * @param      string  $subtable Object type (resource)
-	 * @return     boolean True on success
+	 * @param   integer  $authorid  Member ID
+	 * @param   integer  $subid     Object ID
+	 * @param   string   $subtable  Object type (resource)
+	 * @return  boolean  True on success
 	 */
 	public function loadAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
@@ -167,8 +120,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Delete all associations for a user
 	 *
-	 * @param      integer $id User ID
-	 * @return     boolean True on success
+	 * @param   integer  $id  User ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteAssociations($id=NULL)
 	{
@@ -189,10 +142,10 @@ class ResourcesContributor extends JTable
 	/**
 	 * Delete a record by user and resource
 	 *
-	 * @param      integer $authorid Member ID
-	 * @param      integer $subid    Object ID
-	 * @param      string  $subtable Object type (resource)
-	 * @return     boolean True on success
+	 * @param   integer  $authorid  Member ID
+	 * @param   integer  $subid     Object ID
+	 * @param   string   $subtable  Object type (resource)
+	 * @return  boolean  True on success
 	 */
 	public function deleteAssociation($authorid=NULL, $subid=NULL, $subtable='')
 	{
@@ -234,7 +187,7 @@ class ResourcesContributor extends JTable
 	/**
 	 * Create a new record
 	 *
-	 * @return     boolean True on success
+	 * @return  boolean  True on success
 	 */
 	public function createAssociation()
 	{
@@ -252,7 +205,7 @@ class ResourcesContributor extends JTable
 	/**
 	 * Update a record
 	 *
-	 * @return     boolean True on success
+	 * @return  boolean  True on success
 	 */
 	public function updateAssociation()
 	{
@@ -271,9 +224,9 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get a record count for a resource
 	 *
-	 * @param      integer $subid    Object ID
-	 * @param      string  $subtable Object type ('resource')
-	 * @return     integer
+	 * @param   integer  $subid     Object ID
+	 * @param   string   $subtable  Object type ('resource')
+	 * @return  integer
 	 */
 	public function getCount($subid=NULL, $subtable=null)
 	{
@@ -300,9 +253,9 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get the last number in an ordering
 	 *
-	 * @param      integer $subid    Object ID
-	 * @param      string  $subtable Object type ('resource')
-	 * @return     integer
+	 * @param   integer  $subid     Object ID
+	 * @param   string   $subtable  Object type ('resource')
+	 * @return  integer
 	 */
 	public function getLastOrder($subid=NULL, $subtable=null)
 	{
@@ -329,8 +282,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get the record directly before or after this record
 	 *
-	 * @param      string $move Direction to look
-	 * @return     boolean True on success
+	 * @param   string   $move  Direction to look
+	 * @return  boolean  True on success
 	 */
 	public function getNeighbor($move)
 	{
@@ -359,7 +312,7 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get the last ID
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function getLastUserId()
 	{
@@ -370,8 +323,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get the user ID for a name
 	 *
-	 * @param      string $name Name to look up
-	 * @return     integer
+	 * @param   string   $name  Name to look up
+	 * @return  integer
 	 */
 	public function getUserId($name)
 	{
@@ -382,7 +335,7 @@ class ResourcesContributor extends JTable
 			$uid = $this->getLastUserId();
 
 			// Check for potentially conflicting profile
-			$this->_db->setQuery("SELECT uidNumber FROM #__xprofiles ORDER BY uidNumber ASC LIMIT 1");
+			$this->_db->setQuery("SELECT uidNumber FROM `#__xprofiles` ORDER BY uidNumber ASC LIMIT 1");
 			$pid = $this->_db->loadResult();
 			if ($pid < $uid)
 			{
@@ -401,8 +354,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -450,8 +403,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getAuthorCount($filters=array())
 	{
@@ -465,8 +418,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getAuthorRecords($filters=array())
 	{
@@ -479,8 +432,8 @@ class ResourcesContributor extends JTable
 	/**
 	 * Get records for a specific author
 	 *
-	 * @param      integer $authorid Author ID
-	 * @return     array
+	 * @param   integer  $authorid  Author ID
+	 * @return  array
 	 */
 	public function getRecordsForAuthor($authorid)
 	{

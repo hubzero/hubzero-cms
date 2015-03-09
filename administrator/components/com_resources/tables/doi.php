@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,65 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Resource table for DOI
  */
-class ResourcesDoi extends JTable
+class Doi extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $local_revision = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $doi_label      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $rid            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $versionid      = NULL;
-
-	/**
-	 * varchar(30)
-	 *
-	 * @var string
-	 */
-	var $alias          = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $doi            = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -98,7 +55,7 @@ class ResourcesDoi extends JTable
 	{
 		if (trim($this->rid) == '')
 		{
-			$this->setError(JText::_('Your entry must have a resource ID.'));
+			$this->setError(\JText::_('Your entry must have a resource ID.'));
 			return false;
 		}
 		return true;
@@ -107,11 +64,11 @@ class ResourcesDoi extends JTable
 	/**
 	 * Get the DOI for a resource revision
 	 *
-	 * @param      integer $id           Resource ID
-	 * @param      integer $revision     Resource revision
-	 * @param      integer $versionid    Resource version
-	 * @param      integer $get_full_doi Get the full DOI label?
-	 * @return     mixed False if error, string on success
+	 * @param   integer  $id            Resource ID
+	 * @param   integer  $revision      Resource revision
+	 * @param   integer  $versionid     Resource version
+	 * @param   integer  $get_full_doi  Get the full DOI label?
+	 * @return  mixed    False if error, string on success
 	 */
 	public function getDoi($id = NULL, $revision = NULL, $versionid = 0, $get_full_doi = 0)
 	{
@@ -145,9 +102,9 @@ class ResourcesDoi extends JTable
 	/**
 	 * Get the latest DOI for a resource
 	 *
-	 * @param      integer $id           Resource ID
-	 * @param      integer $get_full_doi Get the full FOI label?
-	 * @return     mixed False if error, string on success
+	 * @param   integer  $id            Resource ID
+	 * @param   integer  $get_full_doi  Get the full FOI label?
+	 * @return  mixed    False if error, string on success
 	 */
 	public function getLatestDoi($id = NULL, $get_full_doi = 0)
 	{
@@ -171,9 +128,9 @@ class ResourcesDoi extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $rid      Resource ID
-	 * @param      mixed   $revision Resource revision
-	 * @return     boolean True on success
+	 * @param   integer  $rid       Resource ID
+	 * @param   mixed    $revision  Resource revision
+	 * @return  boolean  True on success
 	 */
 	public function loadDoi($rid = NULL, $revision = 0)
 	{
@@ -197,13 +154,13 @@ class ResourcesDoi extends JTable
 	/**
 	 * Create a new DOI record
 	 *
-	 * @param      integer $revision  Resource revision
-	 * @param      mixed   $newlabel  New label
-	 * @param      integer $rid       Resource ID
-	 * @param      string  $alias     Resource alias
-	 * @param      integer $versionid Resource version
-	 * @param      string  $doi       DOI
-	 * @return     boolean True on success
+	 * @param   integer  $revision   Resource revision
+	 * @param   mixed    $newlabel   New label
+	 * @param   integer  $rid        Resource ID
+	 * @param   string   $alias      Resource alias
+	 * @param   integer  $versionid  Resource version
+	 * @param   string   $doi        DOI
+	 * @return  boolean  True on success
 	 */
 	public function saveDOI($revision = 0, $newlabel = 1, $rid = NULL, $alias='', $versionid = 0, $doi = '')
 	{
@@ -228,11 +185,11 @@ class ResourcesDoi extends JTable
 	/**
 	 * Register a DOI
 	 *
-	 * @param      array  $authors  Authors of a resource
-	 * @param      object $config   JParameter
-	 * @param      array  $metadata Metadata
-	 * @param      string &$doierr  Container for error messages
-	 * @return     mixed False if error, string on success
+	 * @param   array   $authors   Authors of a resource
+	 * @param   object  $config    JParameter
+	 * @param   array   $metadata  Metadata
+	 * @param   string  &$doierr   Container for error messages
+	 * @return  mixed   False if error, string on success
 	 */
 	public function registerDOI($authors, $config, $metadata = array(), &$doierr='')
 	{
@@ -242,14 +199,14 @@ class ResourcesDoi extends JTable
 		}
 
 		// Get configs
-		$jconfig 	= JFactory::getConfig();
+		$jconfig    = \JFactory::getConfig();
 		$shoulder   = $config->get('doi_shoulder');
 		$service    = $config->get('doi_newservice');
 		$prefix     = $config->get('doi_newprefix');
-		$userpw   	= $config->get('doi_userpw');
-		$xmlschema 	= trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
+		$userpw     = $config->get('doi_userpw');
+		$xmlschema  = trim($config->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 		$handle     = '';
-		$doi 		= '';
+		$doi        = '';
 
 		if (!$shoulder || !$service)
 		{
@@ -277,7 +234,7 @@ class ResourcesDoi extends JTable
 		$call .= $prefix ? DS . $prefix : DS;
 
 		// Get config
-		$live_site = rtrim(JURI::base(),'/');
+		$live_site = rtrim(\JURI::base(),'/');
 
 		if (!$live_site || !isset($metadata['targetURL']) || !isset($metadata['title']))
 		{
@@ -292,7 +249,7 @@ class ResourcesDoi extends JTable
 		}
 		else
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$creatorName = $juser->get('name');
 		}
 
@@ -348,7 +305,7 @@ class ResourcesDoi extends JTable
 		// Prepare XML data
 		if ($handle)
 		{
-			$xdoc = new DomDocument;
+			$xdoc = new \DomDocument;
 			$xmlfile = $this->getXml($authors, $metadata, $doi);
 
 			//Load the xml document in the DOMDocument object
@@ -395,10 +352,10 @@ class ResourcesDoi extends JTable
 	/**
 	 * Generate the XML for creating a DOI
 	 *
-	 * @param      array  $authors  Authors of a resource
-	 * @param      array  $metadata Metadata to build XML from
-	 * @param      string $doi      DOI
-	 * @return     string XML
+	 * @param   array   $authors   Authors of a resource
+	 * @param   array   $metadata  Metadata to build XML from
+	 * @param   string  $doi       DOI
+	 * @return  string  XML
 	 */
 	public function getXml($authors, $metadata, $doi = 0)
 	{
@@ -413,7 +370,7 @@ class ResourcesDoi extends JTable
 		{
 			foreach ($authors as $author)
 			{
-				$nameParts    = explode(' ', $author->name);
+				$nameParts = explode(' ', $author->name);
 				$name  = end($nameParts);
 				$name .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
 				$xmlfile .= '<creator>';
@@ -427,30 +384,28 @@ class ResourcesDoi extends JTable
 			$xmlfile .= '	<creatorName>' . $metadata['creator'] . '</creatorName>';
 			$xmlfile .= '</creator>';
 		}
-	    $xmlfile .= '</creators>';
-	    $xmlfile .= '<titles>
-	        <title>' . $metadata['title'] . '</title>
-	    </titles>
-	    <publisher>' . $metadata['publisher'] . '</publisher>
-	    <publicationYear>' . $metadata['pubYear'] . '</publicationYear>
-	    <dates>
-	        <date dateType="Valid">' . $datePublished . '</date>
-	        <date dateType="Accepted">' . $dateAccepted . '</date>
-	    </dates>
-	    <language>' . $metadata['language'].'</language>';
+		$xmlfile .= '</creators>';
+		$xmlfile .= '<titles>';
+		$xmlfile .= '	<title>' . $metadata['title'] . '</title>';
+		$xmlfile .= '</titles>';
+		$xmlfile .= '<publisher>' . $metadata['publisher'] . '</publisher>';
+		$xmlfile .= '<publicationYear>' . $metadata['pubYear'] . '</publicationYear>';
+		$xmlfile .= '<dates>';
+		$xmlfile .= '	<date dateType="Valid">' . $datePublished . '</date>';
+		$xmlfile .= '	<date dateType="Accepted">' . $dateAccepted . '</date>';
+		$xmlfile .= '</dates>';
+		$xmlfile .= '<language>' . $metadata['language'] . '</language>';
 
-		$xmlfile.= '<resourceType resourceTypeGeneral="Software">Simulation Tool</resourceType>';
+		$xmlfile .= '<resourceType resourceTypeGeneral="Software">Simulation Tool</resourceType>';
 		if (isset($metadata['version']) && $metadata['version'] != '')
 		{
-			$xmlfile.= '<version>' . $metadata['version'] . '</version>';
+			$xmlfile .= '<version>' . $metadata['version'] . '</version>';
 		}
 		if (isset($metadata['abstract']) && $metadata['abstract'] != '')
 		{
-			$xmlfile .= '<descriptions>
-		        <description descriptionType="Other">';
-			$xmlfile .= $metadata['abstract'];
-			$xmlfile .= '</description>
-			    </descriptions>';
+			$xmlfile .= '<descriptions>';
+			$xmlfile .= '	<description descriptionType="Other">' . $metadata['abstract'] . '</description>';
+			$xmlfile .= '</descriptions>';
 		}
 
 		$xmlfile .= '</resource>';

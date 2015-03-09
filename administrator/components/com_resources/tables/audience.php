@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,107 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Table class for resource audience
  */
-class ResourceAudience extends JTable
+class Audience extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $rid 		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $versionid 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level0 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level1 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level2 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level3 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level4 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level5 	= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $comments 	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $addedBy	= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $added		= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -133,13 +49,13 @@ class ResourceAudience extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->rid) == '')
 		{
-			$this->setError(JText::_('Missing resource ID'));
+			$this->setError(\JText::_('Missing resource ID'));
 			return false;
 		}
 		return true;
@@ -148,11 +64,11 @@ class ResourceAudience extends JTable
 	/**
 	 * Get the audience for a resource
 	 *
-	 * @param      integer $rid       Resource ID
-	 * @param      integer $versionid Resource version ID
-	 * @param      integer $getlabels Get labels or not (1 = yes, 0 = no)
-	 * @param      integer $numlevels Number of levels to return
-	 * @return     mixed False if error, Object on success
+	 * @param   integer  $rid        Resource ID
+	 * @param   integer  $versionid  Resource version ID
+	 * @param   integer  $getlabels  Get labels or not (1 = yes, 0 = no)
+	 * @param   integer  $numlevels  Number of levels to return
+	 * @return  mixed    False if error, Object on success
 	 */
 	public function getAudience($rid, $versionid = 0, $getlabels = 1, $numlevels = 5)
 	{

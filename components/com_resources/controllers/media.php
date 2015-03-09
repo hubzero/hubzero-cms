@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\MediaTracking;
+use Components\Resources\Tables\MediaTrackingDetailed;
+use Components\Resources\Helpers\Html;
+use Hubzero\Component\SiteController;
+use stdClass;
 
 /**
  * Resources controller class for media
  */
-class ResourcesControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Upload a file or create a new folder
@@ -44,57 +50,57 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$resource = JRequest::getInt('resource', 0, 'post');
+		$resource = \JRequest::getInt('resource', 0, 'post');
 		if (!$resource)
 		{
-			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->setError(\JText::_('RESOURCES_NO_LISTDIR'));
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming sub-directory
-		//$subdir = JRequest::getVar('dirPath', '', 'post');
+		//$subdir = \JRequest::getVar('dirPath', '', 'post');
 
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($resource);
 
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$path =  PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
+		$path =  PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
 				return;
 			}
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('RESOURCES_NO_FILE'));
+			$this->setError(\JText::_('RESOURCES_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		// Ensure file names fit.
-		$ext = JFile::getExt($file['name']);
+		$ext = \JFile::getExt($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -103,18 +109,18 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(\JText::_('ERROR_UPLOADING'));
 		}
 
 		$fpath = $path . DS . $file['name'];
 
-		if (!JFile::isSafe($fpath))
+		if (!\JFile::isSafe($fpath))
 		{
-			JFile::delete($fpath);
+			\JFile::delete($fpath);
 
-			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+			$this->setError(\JText::_('File rejected because the anti-virus scan failed.'));
 			$this->displayTask();
 			return;
 		}
@@ -131,47 +137,47 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$resource = JRequest::getInt('resource', 0);
+		$resource = \JRequest::getInt('resource', 0);
 		if (!$resource)
 		{
-			$this->setError(JText::_('RESOURCES_NO_LISTDIR'));
+			$this->setError(\JText::_('RESOURCES_NO_LISTDIR'));
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming sub-directory
-		//$subdir = JRequest::getVar('dirPath', '', 'post');
-		$row = new ResourcesResource($this->database);
+		//$subdir = \JRequest::getVar('dirPath', '', 'post');
+		$row = new Resource($this->database);
 		$row->load($resource);
 
 		// Incoming sub-directory
-		//$subdir = JRequest::getVar('subdir', '');
+		//$subdir = \JRequest::getVar('subdir', '');
 
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $resource, '') . DS . 'media';
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $resource, '') . DS . 'media';
 
 		// Make sure the listdir follows YYYY/MM/#
 		$parts = explode('/', $path);
 		if (count($parts) < 4)
 		{
-			$this->setError(JText::_('DIRECTORY_NOT_FOUND'));
+			$this->setError(\JText::_('DIRECTORY_NOT_FOUND'));
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file to delete
-		$file = JRequest::getVar('file', '');
+		$file = \JRequest::getVar('file', '');
 		if (!$file)
 		{
-			$this->setError(JText::_('RESOURCES_NO_FILE'));
+			$this->setError(\JText::_('RESOURCES_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -179,15 +185,15 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		// Check if the file even exists
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(\JText::_('FILE_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!\JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(\JText::_('UNABLE_TO_DELETE_FILE'));
 			}
 		}
 
@@ -205,28 +211,28 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$this->view->resource = JRequest::getInt('resource', 0);
+		$this->view->resource = \JRequest::getInt('resource', 0);
 		if (!$this->view->resource)
 		{
-			echo '<p class="error">' . JText::_('No resource ID provided.') . '</p>';
+			echo '<p class="error">' . \JText::_('No resource ID provided.') . '</p>';
 			return;
 		}
 
 		// Incoming sub-directory
-		$this->view->subdir = JRequest::getVar('subdir', '');
+		$this->view->subdir = \JRequest::getVar('subdir', '');
 
 		// Build the path
-		//$this->view->path = ResourcesUtilities::buildUploadPath($this->view->listdir, $this->view->subdir);
-		$row = new ResourcesResource($this->database);
+		//$this->view->path = Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
+		$row = new Resource($this->database);
 		$row->load($this->view->resource);
 
 		// allow for temp resource uploads
 		if (!$row->created || $row->created == '0000-00-00 00:00:00')
 		{
-			$row->created = JFactory::getDate()->format('Y-m-d 00:00:00');
+			$row->created = \JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 
-		$this->view->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $this->view->resource, '') . DS . 'media';
+		$this->view->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $this->view->resource, '') . DS . 'media';
 
 		$folders = array();
 		$docs    = array();
@@ -234,7 +240,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		if (is_dir($this->view->path))
 		{
 			// Loop through all files and separate them into arrays of images, folders, and other
-			$dirIterator = new DirectoryIterator($this->view->path);
+			$dirIterator = new \DirectoryIterator($this->view->path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -319,20 +325,20 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 	public function trackingTask()
 	{
 		// Include need media tracking library
-		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php';
-		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.detailed.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'mediatracking.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'mediatrackingdetailed.php';
 
 		// Instantiate objects
-		$juser    = JFactory::getUser();
-		$database = JFactory::getDBO();
-		$session  = JFactory::getSession();
+		$juser    = \JFactory::getUser();
+		$database = \JFactory::getDBO();
+		$session  = \JFactory::getSession();
 
 		// Get request vars
-		$time       = JRequest::getVar('time', 0);
-		$duration   = JRequest::getVar('duration', 0);
-		$event      = JRequest::getVar('event', 'update');
-		$resourceid = JRequest::getVar('resourceid', 0);
-		$detailedId = JRequest::getVar('detailedTrackingId', 0);
+		$time       = \JRequest::getVar('time', 0);
+		$duration   = \JRequest::getVar('duration', 0);
+		$event      = \JRequest::getVar('event', 'update');
+		$resourceid = \JRequest::getVar('resourceid', 0);
+		$detailedId = \JRequest::getVar('detailedTrackingId', 0);
 		$ipAddress  = $_SERVER['REMOTE_ADDR'];
 
 		// Check for resource id
@@ -343,8 +349,8 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate new media tracking object
-		$mediaTracking         = new ResourceMediaTracking($database);
-		$mediaTrackingDetailed = new ResourceMediaTrackingDetailed($database);
+		$mediaTracking         = new MediaTracking($database);
+		$mediaTrackingDetailed = new MediaTrackingDetailed($database);
 
 		// Load tracking information for user for this resource
 		$trackingInformation         = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid);
@@ -362,8 +368,8 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = JFactory::getDate()->toSql();
-			$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformation->current_position_timestamp  = \JFactory::getDate()->toSql();
+			$trackingInformation->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
 			$trackingInformation->total_viewing_time          = 0;
@@ -382,7 +388,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 
 			// Set the new current position
 			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformation->current_position_timestamp = \JFactory::getDate()->toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -394,7 +400,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
 				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
+				$trackingInformation->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			}
 
 			// If event type is start, means we need to increment view count
@@ -422,15 +428,15 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = JFactory::getDate()->toSql();
-			$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformationDetailed->current_position_timestamp  = \JFactory::getDate()->toSql();
+			$trackingInformationDetailed->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			$trackingInformationDetailed->completed                   = 0;
 		}
 		else
 		{
 			// Set the new current position
 			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformationDetailed->current_position_timestamp = \JFactory::getDate()->toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -442,7 +448,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\SiteController
 			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
+				$trackingInformationDetailed->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			}
 
 			// If event type is end, we need to increment completed count

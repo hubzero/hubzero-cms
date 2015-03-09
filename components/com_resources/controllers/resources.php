@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\Type;
+use Components\Resources\Tables\Doi;
+use Components\Resources\Tables\License;
+use Components\Resources\Tables\AudienceLevel;
+use Components\Resources\Tables\MediaTracking;
+use Components\Resources\Tables\MediaTrackingDetailed;
+use Components\Resources\Helpers\Html;
+use Components\Resources\Helpers\Tags;
+use Components\Resources\Helpers\Hubpresenter;
+use Components\Resources\Helpers\Helper;
+use Components\Resources\Models;
+use Hubzero\Component\SiteController;
+use stdClass;
 
 /**
  * Resources controller class
  */
-class ResourcesControllerResources extends \Hubzero\Component\SiteController
+class Resources extends SiteController
 {
 	/**
 	 * Constructor
@@ -72,18 +86,18 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		$task  = JRequest::getVar('task', '');
-		$this->_id    = JRequest::getInt('id', 0);
-		$this->_alias = JRequest::getVar('alias', '');
-		$this->_resid = JRequest::getInt('resid', 0);
+		$task  = \JRequest::getVar('task', '');
+		$this->_id    = \JRequest::getInt('id', 0);
+		$this->_alias = \JRequest::getVar('alias', '');
+		$this->_resid = \JRequest::getInt('resid', 0);
 
 		if ($this->_resid && !$task)
 		{
-			JRequest::setVar('task', 'play');
+			\JRequest::setVar('task', 'play');
 		}
 		if (($this->_id || $this->_alias) && !$task)
 		{
-			JRequest::setVar('task', 'view');
+			\JRequest::setVar('task', 'view');
 		}
 
 		parent::execute();
@@ -96,12 +110,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -129,7 +143,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				break;
 				default:
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+						\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);
 				break;
@@ -146,7 +160,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	{
 		if (!$this->_title)
 		{
-			$this->_title = JText::_(strtoupper($this->_option));
+			$this->_title = \JText::_(strtoupper($this->_option));
 			if ($this->_task)
 			{
 				switch ($this->_task)
@@ -159,12 +173,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 						}
 					break;
 					default:
-						$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+						$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 					break;
 				}
 			}
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -182,19 +196,17 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Get major types
-		$t = new ResourcesType($this->database);
+		$t = new Type($this->database);
 		$this->view->categories = $t->getMajorTypes();
 
 		$this->view->title = $this->_title;
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->setName('intro')
 					->setLayout('default')
 					->display();
@@ -215,23 +227,23 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
-			'type'   => JRequest::getVar('type', ''),
-			'sortby' => JRequest::getCmd('sortby', $default_sort),
-			'limit'  => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'  => JRequest::getInt('limitstart', 0),
-			'search' => JRequest::getVar('search', ''),
-			'tag'    => trim(JRequest::getVar('tag', '', 'request', 'none', 2)),
+			'type'   => \JRequest::getVar('type', ''),
+			'sortby' => \JRequest::getCmd('sortby', $default_sort),
+			'limit'  => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'  => \JRequest::getInt('limitstart', 0),
+			'search' => \JRequest::getVar('search', ''),
+			'tag'    => trim(\JRequest::getVar('tag', '', 'request', 'none', 2)),
 			'tag_ignored' => array()
 		);
 
 		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$tagging = new ResourcesTags(0);
+			$tagging = new Tags(0);
 			$tags = $tagging->parseTags($this->view->filters['tag']);
 			if (count($tags) > 5)
 			{
@@ -255,7 +267,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->authorized = $this->_authorize();
 
 		// Get major types
-		$t = new ResourcesType($this->database);
+		$t = new Type($this->database);
 		$this->view->types = $t->getMajorTypes();
 
 		if (!is_numeric($this->view->filters['type']))
@@ -276,7 +288,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a resource object
-		$rr = new ResourcesResource($this->database);
+		$rr = new Resource($this->database);
 
 		// Execute count query
 		$results = $rr->getCount($this->view->filters);
@@ -287,14 +299,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Get type if not given
-		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
+		$this->_title = \JText::_(strtoupper($this->_option)) . ': ';
 		if ($this->view->filters['type'] != '')
 		{
 			$t->load($t->normalize($this->view->filters['type']));
@@ -303,8 +315,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->_title .= JText::_('COM_RESOURCES_ALL');
-			$this->_task_title = JText::_('COM_RESOURCES_ALL');
+			$this->_title .= \JText::_('COM_RESOURCES_ALL');
+			$this->_task_title = \JText::_('COM_RESOURCES_ALL');
 		}
 
 		// Set page title
@@ -316,13 +328,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->title = $this->_title;
 		$this->view->config = $this->config;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->setName('browse')
 					->setLayout('default')
 					->display();
@@ -342,9 +353,9 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$this->view->tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(JRequest::getVar('tag', '')));
-		$this->view->tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(JRequest::getVar('with', '')));
-		$this->view->type = strtolower(JRequest::getVar('type', 'tools'));
+		$this->view->tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(\JRequest::getVar('tag', '')));
+		$this->view->tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(\JRequest::getVar('with', '')));
+		$this->view->type = strtolower(\JRequest::getVar('type', 'tools'));
 
 		// default tag in tag browser is config var
 		$this->view->supportedtag = $this->config->get('supportedtag');
@@ -355,7 +366,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Get major types
-		$t = new ResourcesType($this->database);
+		$t = new Type($this->database);
 		$this->view->types = $t->getMajorTypes();
 
 		// Normalize the title
@@ -376,12 +387,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Ensure we have a type to display
 		if (!$activetype)
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option);
 			return;
 		}
 
 		// Instantiate a resource object
-		$rr = new ResourcesResource($this->database);
+		$rr = new Resource($this->database);
 
 		// Determine if user can edit
 		$this->view->authorized = $this->_authorize();
@@ -412,7 +423,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->_task_title = JText::_('COM_RESOURCES_ALL');
+			$this->_task_title = \JText::_('COM_RESOURCES_ALL');
 		}
 
 		// Set page title
@@ -423,13 +434,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->title = $this->_title;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->config = $this->config;
 		$this->view->setName('browse')
 					->setLayout('tags')
@@ -445,7 +455,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function browserTask()
 	{
 		// Incoming
-		$level = JRequest::getInt('level', 0);
+		$level = \JRequest::getInt('level', 0);
 
 		// A container for info to pass to the HTML for the view
 		$bits = array();
@@ -456,12 +466,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			case 1:
 				// Incoming
-				$bits['type'] = JRequest::getInt('type', 7);
-				$bits['id']   = JRequest::getInt('id', 0);
-				$bits['tg']   = JRequest::getVar('input', '');
-				$bits['tg2']  = JRequest::getVar('input2', '');
+				$bits['type'] = \JRequest::getInt('type', 7);
+				$bits['id']   = \JRequest::getInt('id', 0);
+				$bits['tg']   = \JRequest::getVar('input', '');
+				$bits['tg2']  = \JRequest::getVar('input2', '');
 
-				$rt = new ResourcesTags($bits['id']);
+				$rt = new Tags($bits['id']);
 
 				// Get tags that have been assigned
 				$bits['tags'] = $rt->get_tags_with_objects($bits['id'], $bits['type'], $bits['tg2']);
@@ -469,12 +479,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 			case 2:
 				// Incoming
-				$bits['type'] = JRequest::getInt('type', 7);
-				$bits['id'] = JRequest::getInt('id', 0);
-				$bits['tag'] = JRequest::getVar('input', '');
-				$bits['tag2'] = JRequest::getVar('input2', '');
-				$bits['sortby'] = JRequest::getVar('sortby', 'title');
-				$bits['filter']  = JRequest::getVar('filter', array('level0','level1','level2','level3','level4'));
+				$bits['type'] = \JRequest::getInt('type', 7);
+				$bits['id'] = \JRequest::getInt('id', 0);
+				$bits['tag'] = \JRequest::getVar('input', '');
+				$bits['tag2'] = \JRequest::getVar('input2', '');
+				$bits['sortby'] = \JRequest::getVar('sortby', 'title');
+				$bits['filter']  = \JRequest::getVar('filter', array('level0','level1','level2','level3','level4'));
 
 				if ($bits['tag'] == $bits['tag2'])
 				{
@@ -490,11 +500,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				{
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'audience.php');
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'tables' . DS . 'audience.level.php');
-					$rL = new ResourceAudienceLevel($this->database);
+					$rL = new AudienceLevel($this->database);
 					$bits['filters'] = $rL->getLevels();
 				}
 
-				$rt = new ResourcesTags($bits['id']);
+				$rt = new Tags($bits['id']);
 				$bits['rt'] = $rt;
 
 				// Get resources assigned to this tag
@@ -508,12 +518,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				);
 
 				// Set the typetitle
-				$bits['typetitle'] = JText::_('COM_RESOURCES');
+				$bits['typetitle'] = \JText::_('COM_RESOURCES');
 
 				// See if we can load the type so we can set the typetitle
 				if (isset($bits['type']) && $bits['type'] != 0)
 				{
-					$t = new ResourcesType($this->database);
+					$t = new Type($this->database);
 					$t->load($bits['type']);
 					$bits['typetitle'] = stripslashes($t->type);
 				}
@@ -523,12 +533,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 			case 3:
 				// Incoming (should be a resource ID)
-				$id = JRequest::getInt('input', 0);
+				$id = \JRequest::getInt('input', 0);
 
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
-				$model = ResourcesModelResource::getInstance($id);
+				$model = Models\Resource::getInstance($id);
 
-				$rt = new ResourcesTags($id);
+				$rt = new Tags($id);
 				$bits['rt'] = $rt;
 				$bits['config'] = $this->config;
 				$bits['params'] = $model->params;
@@ -539,15 +549,15 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				// Generate the SEF
 				if ($model->resource->alias)
 				{
-					$sef = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $model->resource->alias);
+					$sef = \JRoute::_('index.php?option=' . $this->_option . '&alias=' . $model->resource->alias);
 				}
 				else
 				{
-					$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $model->resource->id);
+					$sef = \JRoute::_('index.php?option=' . $this->_option . '&id=' . $model->resource->id);
 				}
 
 				// Get resource helper
-				$helper = new ResourcesHelper($model->resource->id, $this->database);
+				$helper = new Helper($model->resource->id, $this->database);
 				//$helper->getFirstChild();
 
 				//$helper->getContributorIDs();
@@ -558,12 +568,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				// Get the first child
 				if ($firstChild || $model->isTool())
 				{
-					$bits['primary_child'] = ResourcesHtml::primary_child($this->_option, $model->resource, $firstChild, '');
+					$bits['primary_child'] = Html::primary_child($this->_option, $model->resource, $firstChild, '');
 				}
 
 				// Get Resources plugins
-				JPluginHelper::importPlugin('resources');
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin('resources');
+				$dispatcher = \JDispatcher::getInstance();
 
 				// Get the sections
 				$bits['sections'] = $dispatcher->trigger('onResources', array($model, $this->_option, array('about'), 'metadata'));
@@ -581,13 +591,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->view->bits   = $bits;
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->setName('browse')
 					->setLayout('tags_list')
 					->display();
@@ -602,10 +610,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function playTask()
 	{
 		// Incoming
-		$this->resid = JRequest::getInt('resid', 0);
-		$id = JRequest::getInt('id', 0);
+		$this->resid = \JRequest::getInt('resid', 0);
+		$id = \JRequest::getInt('id', 0);
 
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new Helper($id, $this->database);
 
 		// Do we have a child ID?
 		if (!$this->resid)
@@ -617,7 +625,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// We have an ID, load it
-		$activechild = new ResourcesResource($this->database);
+		$activechild = new Resource($this->database);
 		$activechild->load($this->resid);
 
 		// Do some work on the child's path to make sure it's kosher
@@ -650,10 +658,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->activechild = $activechild;
 
 		// Viewing via AJAX?
-		$no_html = JRequest::getInt('no_html', 0);
+		$no_html = \JRequest::getInt('no_html', 0);
 		if ($no_html)
 		{
-			$resource = new ResourcesResource($this->database);
+			$resource = new Resource($this->database);
 			$resource->load($id);
 
 			// Instantiate a new view
@@ -669,13 +677,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$this->view->fsize = 0;
 
 			// Output HTML
-			if ($this->getError())
+			foreach ($this->getErrors() as $error)
 			{
-				foreach ($this->getErrors() as $error)
-				{
-					$this->view->setError($error);
-				}
+				$this->view->setError($error);
 			}
+
 			$this->view->display();
 			return;
 		}
@@ -691,14 +697,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	protected function selectPresentation()
 	{
-		$presentation = JRequest::getVar('presentation', 0);
+		$presentation = \JRequest::getVar('presentation', 0);
 
-		$helper = new ResourcesHelper($presentation, $this->database);
+		$helper = new Helper($presentation, $this->database);
 		$helper->getFirstChild();
 		$resid = $helper->firstChild->id;
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
+			\JRoute::_('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
 		);
 		return;
 	}
@@ -717,15 +723,15 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'hubpresenter.php');
 
 		//get the presentation id
-		//$id = JRequest::getVar('id', '');
-		$resid = JRequest::getVar('resid', '');
+		//$id = \JRequest::getVar('id', '');
+		$resid = \JRequest::getVar('resid', '');
 		if (!$resid)
 		{
-			$this->setError(JText::_('Unable to find presentation.'));
+			$this->setError(\JText::_('Unable to find presentation.'));
 		}
 
 		//load resource
-		$activechild = new ResourcesResource($this->database);
+		$activechild = new Resource($this->database);
 		$activechild->load($resid);
 
 		$path = '';
@@ -743,13 +749,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$base = DS . trim($this->config->get('uploadpath', '/site/resources'), DS);
 
 		//build the rest of the resource path and combine with base
-		$path = $path ? $path : ResourcesHtml::build_path($activechild->created, $activechild->id, '');
+		$path = $path ? $path : Html::build_path($activechild->created, $activechild->id, '');
 		$path = $base . $path;
 
 		// we must have a folder
-		if (!JFolder::exists(PATH_APP . DS . $path))
+		if (!\JFolder::exists(PATH_APP . DS . $path))
 		{
-			$this->setError(JText::_('Folder containing assets does nto exist.'));
+			$this->setError(\JText::_('Folder containing assets does nto exist.'));
 
 			$return = array();
 			$return['errors'] = $this->getErrors();
@@ -760,7 +766,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
 		//$manifest_path_json = PATH_APP . $path . DS . 'presentation.json';
-		$manifests = JFolder::files(PATH_APP . DS . $path, '.json');
+		$manifests = \JFolder::files(PATH_APP . DS . $path, '.json');
 		$manifest_path_json = (isset($manifests[0])) ? $manifests[0] : null;
 		$manifest_path_xml  = PATH_APP . $path . DS . 'presentation.xml';
 
@@ -770,11 +776,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			//check to see if we just havent converted yet
 			if (!file_exists($manifest_path_xml))
 			{
-				$this->setError(JText::_('Missing outline used to build presentation.'));
+				$this->setError(\JText::_('Missing outline used to build presentation.'));
 			}
 			else
 			{
-				$job = HUBpresenterHelper::createJsonManifest($path, $manifest_path_xml);
+				$job = Hubpresenter::createJsonManifest($path, $manifest_path_xml);
 				if ($job != '')
 				{
 					$this->setError($job);
@@ -788,12 +794,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		//check if path exists
 		if (!is_dir($media_path))
 		{
-			$this->setError(JText::_('Path to media does not exist.'));
+			$this->setError(\JText::_('Path to media does not exist.'));
 		}
 		else
 		{
 			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
+			$media = \JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3|.ogg', false, false);
 			$ext = array();
 			foreach ($media as $m)
 			{
@@ -804,12 +810,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			//if we dont have all the necessary media formats
 			if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2))
 			{
-				$this->setError(JText::_('Missing necessary media formats for video or audio.'));
+				$this->setError(\JText::_('Missing necessary media formats for video or audio.'));
 			}
 
 			//make sure if any slides are video we have three formats of video and backup image for mobile
 			$slide_path = $media_path . DS . 'slides';
-			$slides = JFolder::files($slide_path, '', false, false);
+			$slides = \JFolder::files($slide_path, '', false, false);
 
 			//array to hold slides with video clips
 			$slide_video = array();
@@ -836,12 +842,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			{
 				if (count($v) < 3)
 				{
-					$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
+					$this->setError(\JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
 				}
 
 				if (!file_exists($slide_path . DS . $k .'.png') && !file_exists($slide_path . DS . $k .'.jpg'))
 				{
-					$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "' . $k . '.png" or "' . $k . '.jpg".'));
+					$this->setError(\JText::_('Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "' . $k . '.png" or "' . $k . '.jpg".'));
 				}
 			}
 		}
@@ -862,28 +868,28 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function watchTask()
 	{
 		$parent = $this->_id;
-		$child = JRequest::getVar('resid', '');
+		$child = \JRequest::getVar('resid', '');
 
 		//document object
-		$document = JFactory::getDocument();
-		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
+		$document = \JFactory::getDocument();
+		$database = \JFactory::getDBO();
+		$juser = \JFactory::getUser();
 
 		//media tracking object
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
-		$mediaTracking = new ResourceMediaTracking($database);
+		$mediaTracking = new MediaTracking($database);
 
 		//get tracking for this user for this resource
 		$tracking = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $child);
 
 		//check to see if we already have a time query param
-		$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+		$hasTime = (\JRequest::getVar('time', '') != '') ? true : false;
 
 		//do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
 			$redirect = 'index.php?option=com_resources&task=watch&id='.$parent.'&resid='.$child;
-			if (JRequest::getVar('tmpl', '') == 'component')
+			if (\JRequest::getVar('tmpl', '') == 'component')
 			{
 				$redirect .= '&tmpl=component';
 			}
@@ -892,12 +898,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_($redirect, false), '','',false);
+			$app = \JFactory::getApplication();
+			$app->redirect(\JRoute::_($redirect, false), '','',false);
 		}
 
 		//do we have javascript?
-		$js = JRequest::getVar('tmpl', '');
+		$js = \JRequest::getVar('tmpl', '');
 		if ($js != '')
 		{
 			$pre = $this->preWatch();
@@ -963,14 +969,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function videoTask()
 	{
 		//get the document to push resources to
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 
 		//get the request vars
-		$parent = JRequest::getInt("id", "");
-		$child = JRequest::getVar("resid", "");
+		$parent = \JRequest::getInt("id", "");
+		$child = \JRequest::getVar("resid", "");
 
 		//load resource
-		$activechild = new ResourcesResource($this->database);
+		$activechild = new Resource($this->database);
 		$activechild->load($child);
 
 		// check to see if we have a manifest
@@ -985,19 +991,19 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		//media tracking object
 		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
-		$mediaTracking = new ResourceMediaTracking($this->database);
+		$mediaTracking = new MediaTracking($this->database);
 
 		//get tracking for this user for this resource
 		$tracking = $mediaTracking->getTrackingInformationForUserAndResource($this->juser->get('id'), $activechild->id);
 
 		//check to see if we already have a time query param
-		$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+		$hasTime = (\JRequest::getVar('time', '') != '') ? true : false;
 
 		//do we want to redirect user with time added to url
 		if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
 		{
 			$redirect = 'index.php?option=com_resources&task=video&id='.$parent.'&resid='.$child;
-			if (JRequest::getVar('tmpl', '') == 'component')
+			if (\JRequest::getVar('tmpl', '') == 'component')
 			{
 				$redirect .= '&tmpl=component';
 			}
@@ -1006,8 +1012,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$redirect .= "&time=" . gmdate("H:i:s", $tracking->current_position);
 
 			//redirect
-			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_($redirect, false), '','',false);
+			$app = \JFactory::getApplication();
+			$app->redirect(\JRoute::_($redirect, false), '','',false);
 		}
 
 		// Instantiate a new view
@@ -1055,10 +1061,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		//build the rest of the resource path and combine with base
-		$path = $path ? $path : ResourcesHtml::build_path($resource->created, $resource->id, '');
+		$path = $path ? $path : Html::build_path($resource->created, $resource->id, '');
 
 		//get manifests
-		$manifests = JFolder::files(PATH_APP . DS . $base . $path, '.json');
+		$manifests = \JFolder::files(PATH_APP . DS . $base . $path, '.json');
 
 		//return path to manifest if we have one
 		return (count($manifests) > 0) ? $base . $path . DS . $manifests[0] : array();
@@ -1070,10 +1076,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 * @param      $resource     HUB Resource
 	 * @return     BOOL
 	 */
-	private function videoManifestExistsForResource( $resource )
+	private function videoManifestExistsForResource($resource)
 	{
 		//get video manifest
-		$manifest = $this->getVideoManifestForResource( $resource );
+		$manifest = $this->getVideoManifestForResource($resource);
 
 		//do we have a manifest already?
 		return (count($manifest) < 1) ? false : true;
@@ -1091,10 +1097,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$base = DS . trim($this->config->get('uploadpath'), DS);
 
 		//build the rest of the resource path and combine with base
-		$path = ResourcesHtml::build_path($resource->created, $resource->id, '');
+		$path = Html::build_path($resource->created, $resource->id, '');
 
 		//instantiate params object then parse resource attributes
-		$attributes  = new JRegistry($resource->attribs);
+		$attributes  = new \JRegistry($resource->attribs);
 
 		//var to hold manifest data
 		$manifest                          = new stdClass;
@@ -1108,7 +1114,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$manifest->presentation->subtitles = array();
 
 		//get the videos
-		$videos = JFolder::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
+		$videos = \JFolder::files(PATH_APP . DS . $base . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
 
 		//add each video to manifest
 		foreach ($videos as $k => $video)
@@ -1126,7 +1132,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		//get the subs
-		$subtitles = JFolder::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
+		$subtitles = \JFolder::files(PATH_APP . DS . $base . $path, '.srt|.SRT');
 
 		//add each subtitle to manifest
 		foreach ($subtitles as $k => $subtitle)
@@ -1155,7 +1161,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$manifest = json_encode($manifest, JSON_PRETTY_PRINT);
 
 		// attempt to create manifest file
-		if (!JFile::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
+		if (!\JFile::write(PATH_APP . DS . $base . $path . DS . 'presentation.json', $manifest))
 		{
 			return false;
 		}
@@ -1171,61 +1177,61 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$id       = JRequest::getInt('id', 0);            // Rsource ID (primary method of identifying a resource)
-		$alias    = JRequest::getVar('alias', '');        // Alternate method of identifying a resource
-		$fsize    = JRequest::getVar('fsize', '');        // A parameter to see file size without formatting
+		$id       = \JRequest::getInt('id', 0);            // Rsource ID (primary method of identifying a resource)
+		$alias    = \JRequest::getVar('alias', '');        // Alternate method of identifying a resource
+		$fsize    = \JRequest::getVar('fsize', '');        // A parameter to see file size without formatting
 
 		// XSS fix. Revision gets pumped all over and dumped in URLs via plugins, easier to fix at the input instead of risking missing an output. See ticket 1416
-		$revision = htmlentities(JRequest::getVar('rev', ''));          // Get svk revision of a tool
+		$revision = htmlentities(\JRequest::getVar('rev', ''));          // Get svk revision of a tool
 
-		$tab      = JRequest::getVar('active', 'about');  // The active tab (section)
+		$tab      = \JRequest::getVar('active', 'about');  // The active tab (section)
 
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
 		// Load the resource
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
-		$this->model = ResourcesModelResource::getInstance(($alias ? $alias : $id), $revision);
+		$this->model = Models\Resource::getInstance(($alias ? $alias : $id), $revision);
 
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->deleted())
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Make sure the resource is published and standalone
 		if (!$this->model->resource->standalone) // || !$this->model->published())
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Is the visitor authorized to view this resource?
 		if (!$this->model->access('view'))
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// // Make sure they have access to view this resource
 		// if ($this->checkGroupAccess($this->model->resource))
 		// {
-		// 	JError::raiseError(403, JText::sprintf('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
+		// 	JError::raiseError(403, \JText::sprintf('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->resource->group_owner, \JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)));
 		// 	return;
 		// }
 
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper($this->model->resource->id, $this->database);
+		$helper = new Helper($this->model->resource->id, $this->database);
 
 		// Build the pathway
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 		$pathway = $app->getPathway();
 		if ($this->model->inGroup())
 		{
@@ -1238,26 +1244,26 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 				$pathway->addItem(
 					'Groups',
-					JRoute::_('index.php?option=com_groups')
+					\JRoute::_('index.php?option=com_groups')
 				);
 				$pathway->addItem(
 					stripslashes($group->get('description')),
-					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
+					\JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
 				);
 				$pathway->addItem(
 					'Resources',
-					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
+					\JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
 				);
 				$pathway->addItem(
 					stripslashes($this->model->type->type),
-					JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
+					\JRoute::_('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
 				);
 			}
 			else
 			{
 				$pathway->addItem(
 					stripslashes($this->model->type->type),
-					JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
+					\JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 				);
 			}
 		}
@@ -1265,14 +1271,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			$pathway->addItem(
 				stripslashes($this->model->type->type),
-				JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
+				\JRoute::_('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 			);
 		}
 
 		// Tool development version requested
 		if ($this->juser->get('guest') && $revision == 'dev')
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1290,7 +1296,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				if (!$this->_checkToolaccess($toolid))
 				{
 					// Denied, punk! How do you like them apples?!
-					JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+					\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 					return;
 				}
 			}
@@ -1300,11 +1306,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Let's get down to business...
 
 		// Get contribtool params
-		$tconfig = JComponentHelper::getParams('com_tools');
+		$tconfig = \JComponentHelper::getParams('com_tools');
 
 		// Get Resources plugins
-		JPluginHelper::importPlugin('resources');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('resources');
+		$dispatcher = \JDispatcher::getInstance();
 
 		$sections = array();
 		$cats = array();
@@ -1402,7 +1408,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$body = $view->loadTemplate();
 
 			$cats[] = array(
-				'play' => JText::_('COM_RESOURCES_PLAY')
+				'play' => \JText::_('COM_RESOURCES_PLAY')
 			);
 			$sections[] = array(
 				'html'     => $body,
@@ -1450,8 +1456,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$view->manifest       = $manifest;
 				$view->content_folder = $content_folder;
 				$view->pid            = $id;
-				$view->resid          = JRequest::getVar('resid', '');
-				$view->doc            = JFactory::getDocument();
+				$view->resid          = \JRequest::getVar('resid', '');
+				$view->doc            = \JFactory::getDocument();
 
 				// Output HTML
 				if ($this->getError())
@@ -1465,7 +1471,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			}
 
 			$cats[] = array(
-				'watch' => JText::_('Watch Presentation')
+				'watch' => \JText::_('Watch Presentation')
 			);
 			$sections[] = array(
 				'html'     => $body,
@@ -1476,14 +1482,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Write title
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
+		$document = \JFactory::getDocument();
+		$document->setTitle(\JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->model->resource->title));
 
 		if ($canonical = $this->model->attribs->get('canonical', ''))
 		{
 			if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $canonical))
 			{
-				$juri = JURI::getInstance();
+				$juri = \JURI::getInstance();
 				$canonical = rtrim($juri->base(), DS) . DS . ltrim($canonical, DS);
 			}
 			$document->addHeadLink($canonical, 'canonical');
@@ -1491,7 +1497,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		$pathway->addItem(
 			stripslashes($this->model->resource->title),
-			JRoute::_('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
+			\JRoute::_('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
 		);
 
 		// Normalize the title
@@ -1502,7 +1508,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Determine the layout we're using
 		$layout = 'default';
 
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 		if ($type_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
 			|| is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php')))
@@ -1550,29 +1556,29 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
+		$jdoc = \JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
 		$doc = new \Hubzero\Document\Feed;
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 		$params = $app->getParams();
 
 		// Incoming
-		$id    = JRequest::getInt('id', 0);
-		$alias = JRequest::getVar('alias', '');
+		$id    = \JRequest::getInt('id', 0);
+		$alias = \JRequest::getVar('alias', '');
 
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				\JRoute::_('index.php?option=' . $this->_option)
 			);
 			return;
 		}
 
 		// Load the resource
-		$resource = new ResourcesResource($this->database);
+		$resource = new Resource($this->database);
 		if ($alias)
 		{
 			$resource->load($alias);
@@ -1587,21 +1593,21 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Make sure we got a result from the database
 		if (!$resource)
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Make sure the resource is published and standalone
 		if ($resource->published == 0 || $resource->standalone != 1)
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
 		// Make sure they have access to view this resource
 		if ($this->checkGroupAccess($resource))
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -1609,28 +1615,28 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$filters = array();
 		if ($resource->type == 2)
 		{
-			$filters['sortby'] = JRequest::getVar('sortby', 'ordering');
+			$filters['sortby'] = \JRequest::getVar('sortby', 'ordering');
 		}
 		else
 		{
-			$filters['sortby'] = JRequest::getVar('sortby', 'ranking');
+			$filters['sortby'] = \JRequest::getVar('sortby', 'ranking');
 		}
-		$filters['limit'] = JRequest::getInt('limit', 100);
-		$filters['start'] = JRequest::getInt('limitstart', 0);
-		$filters['year']  = JRequest::getInt('year', 0);
+		$filters['limit'] = \JRequest::getInt('limit', 100);
+		$filters['start'] = \JRequest::getInt('limitstart', 0);
+		$filters['year']  = \JRequest::getInt('year', 0);
 		$filters['id']    = $resource->id;
 
-		$feedtype = JRequest::getVar('format', 'audio');
+		$feedtype = \JRequest::getVar('format', 'audio');
 
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper($resource->id, $this->database);
+		$helper = new Helper($resource->id, $this->database);
 
 		$rows = $helper->getStandaloneChildren($filters);
 
 		// Get HUB configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
 
 		$title = $resource->title;
@@ -1644,11 +1650,11 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 
 		$doc->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle), 250));
 		$doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
-		$doc->copyright = JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category = JText::_('COM_RESOURCES_RSS_CATEGORY');
-		$doc->link = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);
+		$doc->copyright = \JText::sprintf('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category = \JText::_('COM_RESOURCES_RSS_CATEGORY');
+		$doc->link = \JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);
 
-		$rt = new ResourcesTags($resource->id);
+		$rt = new Tags($resource->id);
 		$rtags = $rt->tags();
 		$tagarray = array();
 		$categories = array();
@@ -1713,7 +1719,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			$dimage = new \Hubzero\Document\Feed\Image();
 			$dimage->url = $dimg;
-			$dimage->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle . ' ' . JText::_('COM_RESOURCES_RSS_ARTWORK')), 250));
+			$dimage->title = trim(\Hubzero\Utility\String::truncate(html_entity_decode($dtitle . ' ' . \JText::_('COM_RESOURCES_RSS_ARTWORK')), 250));
 			$dimage->link = $base.$doc->link;
 			$doc->itunes_image = $dimage;
 		}
@@ -1734,7 +1740,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$title = html_entity_decode($title);
 
 				// URL link to resource
-				$link = DS . ltrim(JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id), DS);
+				$link = DS . ltrim(\JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id), DS);
 
 				// Strip html from feed item description text
 				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->introtext)));
@@ -1742,18 +1748,18 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
 				// Instantiate a resource helper
-				$rhelper = new ResourcesHelper($row->id, $this->database);
+				$rhelper = new Helper($row->id, $this->database);
 
 				// Get any podcast/vodcast files
 				$podcast = '';
 
-				$type_model            = new ResourcesType($this->database);
+				$type_model            = new Type($this->database);
 				$all_logical_types     = $type_model->getTypes(28);    // 28 means 'logical' types.
 				$queried_logical_types = @explode(' ', $feedtype);
 
 				if (is_null($queried_logical_types) || !is_array($queried_logical_types))
 				{
-					JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
+					\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
 					return;
 				}
 
@@ -1807,7 +1813,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$rhelper->getContributors();
 				$author = strip_tags($rhelper->contributors);
 
-				$rtt = new ResourcesTags($row->id);
+				$rtt = new Tags($row->id);
 				$rtags = $rtt->render('string');
 				if (trim($rtags))
 				{
@@ -1838,7 +1844,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					{
 						$image = new \Hubzero\Document\Feed\Image();
 						$image->url = $img;
-						$image->title = $title.' '.JText::_('COM_RESOURCES_RSS_ARTWORK');
+						$image->title = $title.' '.\JText::_('COM_RESOURCES_RSS_ARTWORK');
 						$image->link = $base.$link;
 
 						$item->itunes_image = $image;
@@ -1872,9 +1878,9 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 						{
 							$fs = filesize($podcastp);
 
-							$enclosure = new \Hubzero\Document\Feed\Enclosure; //JObject;
+							$enclosure = new \Hubzero\Document\Feed\Enclosure;
 							$enclosure->url = $podcast;
-							switch (ResourcesHtml::getFileExtension($podcast))
+							switch (Html::getFileExtension($podcast))
 							{
 								case 'm4v': $enclosure->type = 'video/x-m4v'; break;
 								case 'mp4': $enclosure->type = 'video/mp4'; break;
@@ -1932,7 +1938,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	private function _checkForImage($filename, $upath, $created, $id)
 	{
-		$path = ResourcesHtml::build_path($created, $id, '');
+		$path = Html::build_path($created, $id, '');
 
 		// Ensure the path has format of /path
 		$path = DS . trim($path, DS);
@@ -1981,7 +1987,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			return '';
 		}
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 
 		// http://base/upath/path/img
 		return rtrim($juri->base(), DS) . $upath . $path . DS . $img;
@@ -1996,18 +2002,18 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(JRequest::getVar('trigger', ''));
+		$trigger = trim(\JRequest::getVar('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
 		{
-			echo '<p class="error">' . JText::_('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
+			echo '<p class="error">' . \JText::_('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
 			return;
 		}
 
 		// Get Resources plugins
-		JPluginHelper::importPlugin('resources');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('resources');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Call the trigger
 		$results = $dispatcher->trigger($trigger, array($this->_option));
@@ -2028,17 +2034,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 */
 	public function downloadTask()
 	{
-		// Ensure we have a database object
-		if (!$this->database)
-		{
-			JError::raiseError(500, JText::_('COM_RESOURCES_DATABASE_NOT_FOUND'));
-			return;
-		}
-
 		// Incoming
-		$id    = JRequest::getInt('id',0);
-		$alias = JRequest::getVar('alias','');
-		$d     = JRequest::getVar('d', 'inline');
+		$id    = \JRequest::getInt('id',0);
+		$alias = \JRequest::getVar('alias','');
+		$d     = \JRequest::getVar('d', 'inline');
 
 		//make sure we have a proper disposition
 		if ($d != "inline" && $d != "attachment")
@@ -2047,10 +2046,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Load the resource
-		$resource = new ResourcesResource($this->database);
+		$resource = new Resource($this->database);
 		if ($alias && !$resource->loadAlias($alias))
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 		// allow for temp resource uploads
@@ -2059,38 +2058,38 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			$resource->id         = $id;
 			$resource->standalone = 1;
 			$resource->path       = null;
-			$resource->created    = JFactory::getDate()->format('Y-m-d 00:00:00');
+			$resource->created    = \JFactory::getDate()->format('Y-m-d 00:00:00');
 		}
 		elseif (!$resource->load($id))
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		if (($token = JRequest::getVar('token', '', 'get')))
+		if (($token = \JRequest::getVar('token', '', 'get')))
 		{
 			$token = base64_decode($token);
 
 			jimport('joomla.utilities.simplecrypt');
-			$crypter = new JSimpleCrypt();
+			$crypter = new \JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
 
-			$session = Hubzero\Session\Helper::getSession($session_id);
+			$session = \Hubzero\Session\Helper::getSession($session_id);
 
-			$juser = JFactory::getUser($session->userid);
+			$juser = \JFactory::getUser($session->userid);
 			$juser->guest = 0;
 			$juser->id = $session->userid;
 			$juser->usertype = $session->usertype;
 		}
 		else
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 		}
 
 		if ($resource->access == 1 && $juser->get('guest'))
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -2101,14 +2100,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			if ($this->checkGroupAccess($resource, $juser))
 			{
-				JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+				\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 				return;
 			}
 		}
 
 		if ($resource->standalone && !$resource->path)
 		{
-			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($resource->created, $resource->id, '') . DS . 'media' . DS . JRequest::getVar('file');
+			$resource->path = DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($resource->created, $resource->id, '') . DS . 'media' . DS . \JRequest::getVar('file');
 		}
 
 		$resource->path = trim($resource->path);
@@ -2116,7 +2115,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Ensure we have a path
 		if (empty($resource->path))
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
 		}
 
@@ -2149,12 +2148,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $filename);
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $filename);
 			return;
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = strtolower(JFile::getExt($filename));
+		$ext = strtolower(\JFile::getExt($filename));
 		if (!in_array($ext, array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml')))
 		{
 			$d = 'attachment';
@@ -2169,7 +2168,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_RESOURCES_SERVER_ERROR'));
+			throw new Exception(\JText::_('COM_RESOURCES_SERVER_ERROR'), 500);
 		}
 		else
 		{
@@ -2186,24 +2185,24 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function sourcecodeTask()
 	{
 		// Get tool instance
-		$tool = JRequest::getVar('tool', 0);
+		$tool = \JRequest::getVar('tool', 0);
 
 		// Ensure we have a tool
 		if (!$tool)
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		// Load the tool version
-		$tv = new ToolVersion($this->database);
+		$tv = new \ToolVersion($this->database);
 		$tv->loadFromInstance($tool);
 
 		// Concat tarball name for this version
 		$tarname = $tv->toolname . '-r' . $tv->revision . '.tar.gz';
 
 		// Get contribtool params
-		$tparams = JComponentHelper::getParams('com_tools');
+		$tparams = \JComponentHelper::getParams('com_tools');
 		$tarball_path = $tparams->get('sourcecodePath');
 		if (empty($tarball_path))
 		{
@@ -2221,14 +2220,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if (!file_exists($tarpath . $tarname))
 		{
 			// File not found
-			JError::raiseError(404, JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_FILE_NOT_FOUND'));
 			return;
 		}
 
 		if (!$opencode)
 		{
 			// This tool is not open source
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+			\JError::raiseError(403, \JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
 		}
 
@@ -2240,7 +2239,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$xserver->saveas($tarname);
 		if (!$xserver->serve_attachment($tarpath . $tarname, $tarname, false))
 		{ // @TODO fix byte range support
-			JError::raiseError(404, JText::_('COM_RESOURCES_SERVER_ERROR'));
+			throw new Exception(\JText::_('COM_RESOURCES_SERVER_ERROR'), 500);
 		}
 		else
 		{
@@ -2257,30 +2256,30 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	public function licenseTask()
 	{
 		// Get tool instance
-		$resource = JRequest::getInt('resource', 0);
-		$tool     = JRequest::getVar('tool', '');
+		$resource = \JRequest::getInt('resource', 0);
+		$tool     = \JRequest::getVar('tool', '');
 
 		// Ensure we have a tool to work with
 		if (!$tool && !$resource)
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 		if ($tool)
 		{
 			// Load the tool version
-			$row = new ToolVersion($this->database);
+			$row = new \ToolVersion($this->database);
 			$row->loadFromInstance($tool);
 		}
 		else
 		{
-			$row = new ResourcesResource($this->database);
+			$row = new Resource($this->database);
 			$row->load($resource);
 
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
-			$rt = new ResourcesLicense($this->database);
+			$rt = new License($this->database);
 			$rt->load('custom' . $resource);
 
 			$row->license = stripslashes($rt->text);
@@ -2289,23 +2288,23 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Output HTML
 		if (!$row)
 		{
-			JError::raiseError(404, JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
+			\JError::raiseError(404, \JText::_('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 			return;
 		}
 
 
 			// Set the page title
-		$this->view->title = stripslashes($row->title) . ': ' . JText::_('COM_RESOURCES_LICENSE');
+		$this->view->title = stripslashes($row->title) . ': ' . \JText::_('COM_RESOURCES_LICENSE');
 
 		// Write title
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Instantiate a new view
 		$this->view->config  = $this->config;
 		$this->view->row     = $row;
 		$this->view->tool    = $tool;
-		$this->view->no_html = JRequest::getVar('no_html', 0);
+		$this->view->no_html = \JRequest::getVar('no_html', 0);
 
 		// Output HTML
 		if ($this->getError())
@@ -2332,18 +2331,18 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$tz = false;
 
 		// Get contribtool params
-		$tconfig = JComponentHelper::getParams('com_tools');
+		$tconfig = \JComponentHelper::getParams('com_tools');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		$format = JRequest::getVar('format', 'bibtex');
+		$id = \JRequest::getInt('id', 0);
+		$format = \JRequest::getVar('format', 'bibtex');
 
 		// Append DOI handle
-		$revision = JRequest::getVar('rev', 0);
+		$revision = \JRequest::getVar('rev', 0);
 		$handle = '';
 		if ($revision)
 		{
-			$rdoi = new ResourcesDoi($this->database);
+			$rdoi = new Doi($this->database);
 			$rdoi->loadDoi($id, $revision);
 
 			if (isset($rdoi->doi) && $rdoi->doi && $tconfig->get('doi_shoulder'))
@@ -2357,14 +2356,14 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Load the resource
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		$thedate = ($row->publish_up != '0000-00-00 00:00:00')
 				 ? $row->publish_up
 				 : $row->created;
 
-		$helper = new ResourcesHelper($row->id, $this->database);
+		$helper = new Helper($row->id, $this->database);
 		$helper->getUnlinkedContributors();
 		$row->author = $helper->ul_contributors;
 
@@ -2383,16 +2382,16 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
 				$this->setError('Error. Unable to create path.');
 			}
 		}
 
 		// Build the URL for this resource
-		$sef = JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
+		$sef = \JRoute::_('index.php?option=' . $this->_option . '&id=' . $row->id);
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 		$url = $juri->base() . ltrim($sef, DS);
 
 		// Choose the format
@@ -2404,10 +2403,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				{
 					case 'misc':
 					default:
-						$doc .= "%0 " . JText::_('COM_RESOURCES_GENERIC') . "\r\n";
+						$doc .= "%0 " . \JText::_('COM_RESOURCES_GENERIC') . "\r\n";
 						break; // generic
 				}
-				$doc .= "%D " . JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
+				$doc .= "%D " . \JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($row->title)) . "\r\n";
 
 				$author_array = explode(';', $row->author);
@@ -2426,7 +2425,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate)
 				{
-					$doc .= "%8 " . JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
+					$doc .= "%8 " . \JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
 				}
 				//$doc .= "\r\n";
 				if ($handle)
@@ -2443,7 +2442,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			default:
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php');
 
-				$bibtex = new Structures_BibTex();
+				$bibtex = new \Structures_BibTex();
 				$addarray = array();
 				$addarray['type']  = 'misc';
 				$addarray['cite']  = $this->_config['sitename'] . $row->id;
@@ -2471,9 +2470,9 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 						$addarray['author'][$i]['last']  = ($last) ? trim($last) : '';
 					}
 				}
-				$addarray['month'] = JHTML::_('date', $thedate, $monthFormat, $tz);
+				$addarray['month'] = \JHTML::_('date', $thedate, $monthFormat, $tz);
 				$addarray['url']   = $url;
-				$addarray['year']  = JHTML::_('date', $thedate, $yearFormat, $tz);
+				$addarray['year']  = \JHTML::_('date', $thedate, $yearFormat, $tz);
 				if ($handle)
 				{
 					$addarray['doi'] = $handle;
@@ -2618,7 +2617,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	 * Check if a user has access to a group-owned resource
 	 * Uses current user session if no user object is supplied
 	 *
-	 * @param      object $resource ResourcesResource
+	 * @param      object $resource Resource
 	 * @param      object $juser    JUser (optional)
 	 * @return     boolean True if user has access to a group-owned resource
 	 */
@@ -2626,7 +2625,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	{
 		if (!$juser)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 		}
 		if (!$juser->get('guest'))
 		{
@@ -2651,12 +2650,12 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$allowedgroups = $resource->getGroups();
 		if ($resource->standalone != 1)
 		{
-			$helper = new ResourcesHelper($resource->id, $this->database);
+			$helper = new Helper($resource->id, $this->database);
 			$helper->getParents();
 			$parents = $helper->parents;
 			if (count($parents) == 1)
 			{
-				$p = new ResourcesResource($this->database);
+				$p = new Resource($this->database);
 				$p->load($parents[0]->id);
 				$allowedgroups = $p->getGroups();
 			}
@@ -2692,7 +2691,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			if (!isset($p) && isset($parents) && count($parents) == 1)
 			{
-				$p = new ResourcesResource($this->database);
+				$p = new Resource($this->database);
 				$p->load($parents[0]->id);
 			}
 			if (isset($p) && ($p->access == 4 || $p->access == 3) && count($common) < 1)
@@ -2743,7 +2742,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		 || substr($path, 0, 7) == 'file://'
 		 || substr($path, 0, 7) == 'news://'
 		 || substr($path, 0, 7) == 'feed://'
-		 || substr($path, 0, 6) == 'mms://') {
+		 || substr($path, 0, 6) == 'mms://')
+		{
 			// Do nothing
 		}
 		else
@@ -2761,7 +2761,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 
 		return rtrim($juri->base(), DS) . $path;
 	}
@@ -2781,7 +2781,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Create a Tool object
-		$obj = new Tool($this->database);
+		$obj = new \Tool($this->database);
 		// check if user in tool dev team
 		$developers = $obj->getToolDevelopers($toolid);
 		if ($developers)

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables\Contributor;
 
 /**
  * Table class for resource contributor role
  */
-class ResourcesContributorRole extends JTable
+class Role extends \JTable
 {
 	/**
 	 * Constructor
@@ -58,7 +57,7 @@ class ResourcesContributorRole extends JTable
 
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(\JText::_('Please provide a title.'));
 			return false;
 		}
 
@@ -68,15 +67,15 @@ class ResourcesContributorRole extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created    = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified    = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 
@@ -187,7 +186,7 @@ class ResourcesContributorRole extends JTable
 
 		if ($type_id === null)
 		{
-			$this->setError(JText::_('Missing argument'));
+			$this->setError(\JText::_('Missing argument'));
 			return false;
 		}
 
@@ -213,7 +212,7 @@ class ResourcesContributorRole extends JTable
 
 		if (!$role_id)
 		{
-			$this->setError(JText::_('Missing argument'));
+			$this->setError(\JText::_('Missing argument'));
 			return false;
 		}
 
@@ -241,9 +240,9 @@ class ResourcesContributorRole extends JTable
 			$role_id = $this->id;
 		}
 
-		include_once(__DIR__ . DS . 'role.type.php');
+		include_once(__DIR__ . DS . 'roletype.php');
 
-		$rt = new ResourcesContributorRoleType($this->_db);
+		$rt = new RoleType($this->_db);
 
 		return $rt->setTypesForRole($role_id, $current);
 	}
@@ -261,9 +260,9 @@ class ResourcesContributorRole extends JTable
 			$oid = $this->id;
 		}
 
-		include_once(__DIR__ . DS . 'role.type.php');
+		include_once(__DIR__ . DS . 'roletype.php');
 
-		$rt = new ResourcesContributorRoleType($this->_db);
+		$rt = new RoleType($this->_db);
 		if (!$rt->deleteForRole($oid))
 		{
 			$this->setError($rt->getError());

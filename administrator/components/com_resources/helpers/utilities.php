@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,48 +24,48 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
+
+use Exception;
 
 /**
  * Utility methods
  */
-class ResourcesUtilities
+class Utilities
 {
 	/**
 	 * Cleans, normalizes, and constructs full path to media directory
 	 *
-	 * @param      string $dir Primary directory for media
-	 * @param      string $subdir  Sub-directory of primary (optional)
-	 * @return     string Return full system path
+	 * @param   string  $dir     Primary directory for media
+	 * @param   string  $subdir  Sub-directory of primary (optional)
+	 * @return  string  Return full system path
 	 */
 	public static function buildUploadPath($dir, $subdir='')
 	{
-		$config = JComponentHelper::getParams('com_resources');
+		$config = \JComponentHelper::getParams('com_resources');
 
 		if ($subdir)
 		{
 			// Normalize path
-			$subdir = ResourcesUtilities::normalizePath($subdir);
+			$subdir = self::normalizePath($subdir);
 		}
 
 		// Get the configured upload path
-		$base = $config->get('uploadpath', DS . 'site' . DS . 'resources');
-		$base = ResourcesUtilities::normalizePath($base);
+		$base = $config->get('uploadpath', '/site/resources');
+		$base = self::normalizePath($base);
 
 		// Normalize path
-		$dir = ResourcesUtilities::normalizePath($dir);
+		$dir = self::normalizePath($dir);
 
 		// Does the beginning of the $dir match the config path?
 		if (substr($dir, 0, strlen($base)) == $base)
 		{
 			// Yes - ... this really shouldn't happen
-			JError::raiseError(500, JText::_('Paths match.'));
-			return;
+			throw new Exception(\JText::_('Paths match.'), 500);
 		}
 		else
 		{
@@ -74,20 +74,20 @@ class ResourcesUtilities
 		}
 
 		// Build the path
-		return JPATH_ROOT . $dir . $subdir;
+		return PATH_APP . $dir . $subdir;
 	}
 
 	/**
 	 * Strips trailing slashes and ensures path begins with a slash
 	 *
-	 * @param      string $path Path to normalize
-	 * @return     string
+	 * @param   string  $path  Path to normalize
+	 * @return  string
 	 */
 	public static function normalizePath($path)
 	{
 		jimport('joomla.filesystem.path');
 
-		$path = JPath::clean($path);
+		$path = \JPath::clean($path);
 
 		// Make sure the path doesn't end with a slash
 		$path = rtrim($path, DS);

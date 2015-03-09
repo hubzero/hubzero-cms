@@ -106,7 +106,7 @@ class Resources extends GenericItem
 		{
 			$alias = \JRequest::getVar('alias', '');
 
-			$resource = new \ResourcesResource($this->_db);
+			$resource = new \Components\Resources\Tables\Resource($this->_db);
 			$resource->loadAlias($alias);
 			$id = $resource->id;
 		}
@@ -120,7 +120,7 @@ class Resources extends GenericItem
 
 		if (!$resource)
 		{
-			$resource = new \ResourcesResource($this->_db);
+			$resource = new \Components\Resources\Tables\Resource($this->_db);
 			$resource->load($id);
 		}
 

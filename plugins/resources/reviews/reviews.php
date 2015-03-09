@@ -93,7 +93,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = JFactory::getDBO();
-		$resource = new ResourcesResource($database);
+		$resource = new \Components\Resources\Tables\Resource($database);
 		$resource->load($id);
 
 		$h = new PlgResourcesReviewsHelper();
@@ -153,7 +153,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
 		// Get reviews for this resource
 		$database = JFactory::getDBO();
-		$r = new ResourcesReview($database);
+		$r = new \Components\Resources\Tables\Review($database);
 		$reviews = $r->getRatings($model->resource->id);
 		if (!$reviews)
 		{
@@ -476,7 +476,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 
 		// Load answer
-		$rev = new ResourcesReview($database);
+		$rev = new \Components\Resources\Tables\Review($database);
 		$rev->load($id);
 		$voted = $rev->getVote($id, $cat, $juser->get('id'));
 
@@ -556,7 +556,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		$database = JFactory::getDBO();
 
-		$review = new ResourcesReview($database);
+		$review = new \Components\Resources\Tables\Review($database);
 		$review->loadUserReview($resource->id, $juser->get('id'));
 		if (!$review->id)
 		{
@@ -570,7 +570,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			// Editing a review, do some prep work
 			$review->comment = str_replace('<br />', '', $review->comment);
 
-			$RE = new ResourcesHelper($resource->id, $database);
+			$RE = new \Components\Resources\Helpers\Helper($resource->id, $database);
 			$RE->getTagsForEditing($review->user_id);
 			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
 		}
@@ -602,7 +602,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$database = JFactory::getDBO();
 
 		// Bind the form data to our object
-		$row = new ResourcesReview($database);
+		$row = new \Components\Resources\Tables\Review($database);
 		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
@@ -641,12 +641,12 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		$tags = trim(JRequest::getVar('review_tags', ''));
 		if ($tags)
 		{
-			$rt = new ResourcesTags($resource_id);
+			$rt = new \Components\Resources\Helpers\Tags($resource_id);
 			$rt->setTags($tags, $row->user_id);
 		}
 
 		// Instantiate a helper object and get all the contributor IDs
-		$helper = new ResourcesHelper($resource->id, $database);
+		$helper = new \Components\Resources\Helpers\Helper($resource->id, $database);
 		$helper->getContributorIDs();
 		$users = $helper->contributorIDs;
 
@@ -712,7 +712,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 			return;
 		}
 
-		$review = new ResourcesReview($database);
+		$review = new \Components\Resources\Tables\Review($database);
 		$review->load($reviewid);
 
 		// Permissions check

@@ -38,9 +38,9 @@ $state = 'draft';
 if ($this->resource->id)
 {
 	$database = JFactory::getDBO();
-	$ra = new ResourcesAssoc($database);
-	$rc = new ResourcesContributor($database);
-	$rt = new ResourcesTags($this->resource->id);
+	$ra = new \Components\Resources\Tables\Assoc($database);
+	$rc = new \Components\Resources\Tables\Contributor($database);
+	$rt = new \Components\Resources\Helpers\Tags($this->resource->id);
 
 	switch ($this->resource->published)
 	{

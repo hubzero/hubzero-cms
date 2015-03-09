@@ -296,7 +296,7 @@ class ToolAuthor extends  JTable
 			// development version is updated
 			$to_delete = array_diff($dev_authors, $authors);
 
-			$rc = new ResourcesContributor($this->_db);
+			$rc = new \Components\Resources\Tables\Contributor($this->_db);
 			$rc->subtable = 'resources';
 			$rc->subid = $rid;
 

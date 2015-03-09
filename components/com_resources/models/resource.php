@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Models;
+
+use Components\Resources\Tables;
+use Components\Resources\Helpers;
+use Hubzero\Base\Object;
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 /**
  * Information retrieval for items/info linked to a resource
  */
-class ResourcesModelResource extends \Hubzero\Base\Object
+class Resource extends Object
 {
 	/**
 	 * Resource ID
@@ -68,15 +71,15 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 */
 	public function __construct($oid, $revision=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->resource = new ResourcesResource($this->_db);
+		$this->resource = new Tables\Resource($this->_db);
 		$this->resource->load($oid);
 
-		$this->params = JComponentHelper::getParams('com_resources');
-		$this->params->merge(new JRegistry($this->resource->params));
+		$this->params = \JComponentHelper::getParams('com_resources');
+		$this->params->merge(new \JRegistry($this->resource->params));
 
-		$this->attribs = new JRegistry($this->resource->attribs);
+		$this->attribs = new \JRegistry($this->resource->attribs);
 
 		if ($this->isTool())
 		{
@@ -88,7 +91,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 			if (in_array($table, $tables))
 			{
-				$tv = new ToolVersion($this->_db);
+				$tv = new \ToolVersion($this->_db);
 				//$tv->getToolVersions('', $alltools, $this->resource->alias);
 
 				if ($this->revisions()) //$alltools)
@@ -130,27 +133,24 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 					}
 				}
 
-				$tconfig = JComponentHelper::getParams('com_tools');
+				$tconfig = \JComponentHelper::getParams('com_tools');
 				// Replace resource info with requested version
 				$tv->compileResource($this->thistool, $this->curtool, $this->resource, $revision, $tconfig);
 			}
 			$this->revision = $revision;
 		}
 
-		$this->type = new ResourcesType($this->_db);
+		$this->type = new Tables\Type($this->_db);
 		$this->type->bind($this->types($this->resource->type));
-		$this->type->params = new JRegistry($this->type->params);
+		$this->type->params = new \JRegistry($this->type->params);
 	}
 
 	/**
 	 * Returns a reference to a wiki page object
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
 	 * @param      string $pagename The page to load
 	 * @param      string $scope    The page scope
-	 * @return     object ResourcesModelResource
+	 * @return     object
 	 */
 	static function &getInstance($oid=null, $revision=null)
 	{
@@ -163,7 +163,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 		if (!isset($instances[$oid]))
 		{
-			$inst = new ResourcesModelResource($oid, $revision);
+			$inst = new self($oid, $revision);
 
 			$instances[$oid] = $inst;
 		}
@@ -257,7 +257,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			return false;
 		}
 
-		$now = JFactory::getDate();
+		$now = \JFactory::getDate();
 
 		if ($this->resource->publish_up
 		 && $this->resource->publish_up != $this->_db->getNullDate()
@@ -298,7 +298,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 	 */
 	private function _authorize()
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// NOT logged in
 		if ($juser->get('guest'))
@@ -319,7 +319,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 		if ($this->isTool())
 		{
-			$tconfig = JComponentHelper::getParams('com_tools');
+			$tconfig = \JComponentHelper::getParams('com_tools');
 
 			if (($admingroup = trim($tconfig->get('admingroup', ''))))
 			{
@@ -550,7 +550,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		{
 			$this->types = array();
 
-			$rt = new ResourcesType($this->_db);
+			$rt = new Tables\Type($this->_db);
 			if (($types = $rt->getMajorTypes()))
 			{
 				foreach ($types as $key => $type)
@@ -587,7 +587,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 					}
 				}
 			}
-			$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+			$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 			return false;
 		}
 
@@ -638,7 +638,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				}
 				else
 				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -817,7 +817,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				}
 				else
 				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -925,7 +925,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			}
 			else
 			{
-				$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+				$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 				return false;
 			}
 		}
@@ -955,7 +955,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-			$rt = new ResourcesTags($this->resource->id);
+			$rt = new Helpers\Tags($this->resource->id);
 			if ($results = $rt->tags('list')) // get_tags_on_object
 			{
 				$this->tags = $results;
@@ -972,7 +972,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				}
 				else
 				{
-					$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -1047,7 +1047,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			}
 			else
 			{
-				$this->setError(JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+				$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 				return false;
 			}
 		}
@@ -1075,7 +1075,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 			$this->revisions = array();
 
 			$alltools = array();
-			$tv = new ToolVersion($this->_db);
+			$tv = new \ToolVersion($this->_db);
 			$tv->getToolVersions('', $alltools, $this->resource->alias);
 
 			if ($alltools)
@@ -1175,7 +1175,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => JRequest::getCmd('option', 'com_resources'),
+						'option'   => \JRequest::getCmd('option', 'com_resources'),
 						'scope'    => 'resources' . DS . $this->resource->id,
 						'pagename' => 'resources',
 						'pageid'   => $this->resource->id,

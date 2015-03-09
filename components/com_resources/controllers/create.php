@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\License;
+use Components\Resources\Tables\Assoc;
+use Components\Resources\Tables\Type;
+use Components\Resources\Tables\Contributor;
+use Components\Resources\Tables\Contributor\Role;
+use Components\Resources\Tables\Contributor\RoleType;
+use Components\Resources\Models\Elements;
+use Components\Resources\Helpers\Helper;
+use Components\Resources\Helpers\Tags;
+use Components\Resources\Helpers\Html;
+use Hubzero\Component\SiteController;
+use Hubzero\User\Profile;
+use Hubzero\Utility\String;
+use Exception;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor.php');
 
 /**
  * Resources controller for creating a resource
  */
-class ResourcesControllerCreate extends \Hubzero\Component\SiteController
+class Create extends SiteController
 {
 	/**
 	 * Container for steps
@@ -57,23 +72,23 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->registerTask('start', 'draft');
 
 		// Load the com_resources component config
-		$this->config = JComponentHelper::getParams('com_resources');
+		$this->config = \JComponentHelper::getParams('com_resources');
 
 		// Get the task at hand
-		$task = JRequest::getVar('task', '');
-		$this->step = JRequest::getInt('step', 0);
+		$task = \JRequest::getVar('task', '');
+		$this->step = \JRequest::getInt('step', 0);
 		if ($this->step && !$task)
 		{
-			JRequest::setVar('task', 'draft');
+			\JRequest::setVar('task', 'draft');
 		}
 
 		if ($this->juser->get('guest'))
 		{
-			JRequest::setVar('task', 'login');
+			\JRequest::setVar('task', 'login');
 		}
 
-		$row = new ResourcesResource($this->database);
-		if ($id = JRequest::getInt('id', 0))
+		$row = new Resource($this->database);
+		if ($id = \JRequest::getInt('id', 0))
 		{
 			// Instantiate a new resource object
 			$row->load($id);
@@ -95,40 +110,40 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function _buildPathway($row)
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($row->id && $row->published == 1)
 		{
 			$pathway->addItem(
-				JText::_('COM_CONTRIBUTE_EDIT'),
+				\JText::_('COM_CONTRIBUTE_EDIT'),
 				'index.php?option=' . $this->_option . '&task=new'
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				JText::_('COM_CONTRIBUTE_NEW'),
+				\JText::_('COM_CONTRIBUTE_NEW'),
 				'index.php?option=' . $this->_option . '&task=new'
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
+				\JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
 		if ($this->step)
 		{
 			$pathway->addItem(
-				JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step])),
+				\JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . \JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step])),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step
 			);
 		}
@@ -141,25 +156,25 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function _buildTitle($row)
 	{
-		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
+		$this->_title = \JText::_(strtoupper($this->_option)) . ': ';
 		if ($row->id && $row->published == 1)
 		{
-			$this->_title .= JText::_('COM_CONTRIBUTE_EDIT');
+			$this->_title .= \JText::_('COM_CONTRIBUTE_EDIT');
 		}
 		else
 		{
-			$this->_title .= JText::_('COM_CONTRIBUTE_NEW');
+			$this->_title .= \JText::_('COM_CONTRIBUTE_NEW');
 		}
 		if ($this->_task)
 		{
-			$this->_title .= ': ' . JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_('COM_CONTRIBUTE' . '_' . strtoupper($this->_task));
 		}
 		if ($this->step)
 		{
-			$this->_title .= ': ' . JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
+			$this->_title .= ': ' . \JText::sprintf('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . \JText::_('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
 		}
 
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -170,9 +185,9 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller), 'server');
+		$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_controller), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+			\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
 	}
@@ -185,13 +200,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		$this->view->title = $this->_title;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -273,7 +287,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		if (!$this->getError())
 		{
 			// Check the progress
-			$this->_checkProgress(JRequest::getInt('id', 0));
+			$this->_checkProgress(\JRequest::getInt('id', 0));
 
 			$this->view->progress = $this->progress;
 
@@ -289,12 +303,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function step_type()
 	{
-		$this->view->group = JRequest::getVar('group', '');
+		$this->view->group = \JRequest::getVar('group', '');
 		$this->view->step = $this->step;
 		$this->view->step++;
 
 		// Get available resource types
-		$rt = new ResourcesType($this->database);
+		$rt = new Type($this->database);
 		$this->view->types = $rt->getMajorTypes();
 
 		// Output HTML
@@ -311,29 +325,29 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	/**
 	 * Display a form for composing the title, abstract, etc.
 	 *
-	 * @param      object $row ResourcesResource
+	 * @param      object $row Resource
 	 * @return     void
 	 */
 	public function step_compose($row=null)
 	{
-		$group = JRequest::getVar('group', '');
-		$type = JRequest::getInt('type', '');
+		$group = \JRequest::getVar('group', '');
+		$type = \JRequest::getInt('type', '');
 
 		if ($type == '7')
 		{
-			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_tools&task=create'), '', 'message', true);
+			$app = \JFactory::getApplication();
+			$app->redirect(\JRoute::_('index.php?option=com_tools&task=create'), '', 'message', true);
 		}
 
 		$this->view->next_step = $this->step + 1;
 
 		// Incoming
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		if (!is_object($row))
 		{
 			// Instantiate a new resource object
-			$row = new ResourcesResource($this->database);
+			$row = new Resource($this->database);
 			if ($this->view->id)
 			{
 				// Load the resource
@@ -347,7 +361,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$row->group_owner = $group;
 
 				// generate a random number for file uploader
-				$session = JFactory::getSession();
+				$session = \JFactory::getSession();
 				if (!$session->get('resources_temp_id'))
 				{
 					$row->id = '9999' . rand(1000,10000);
@@ -364,13 +378,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->row  = $row;
 		$this->view->task = 'draft';
 		$this->view->progress = $this->progress;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -385,29 +398,27 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		//$next_step = $step+1;
 
 		// Incoming
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('COM_CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Load the resource
-		$this->view->row = new ResourcesResource($this->database);
+		$this->view->row = new Resource($this->database);
 		$this->view->row->load($this->view->id);
 
 		// Output HTML
 		$this->view->next_step = $this->step + 1;
 		$this->view->task = 'draft';
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -419,17 +430,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function step_authors()
 	{
 		// Incoming
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('COM_CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Load the resource
-		$this->view->row = new ResourcesResource($this->database);
+		$this->view->row = new Resource($this->database);
 		$this->view->row->load($this->view->id);
 
 		// Get groups
@@ -445,13 +455,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$this->view->progress = $this->progress;
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -528,13 +536,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$this->setView('steps', 'tags');
 		}
 		// Incoming
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('COM_CONTRIBUTE_NO_ID'), 500);
 		}
 
 		if (!isset($this->progress))
@@ -546,7 +553,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Load the resource
-		$this->view->row = new ResourcesResource($this->database);
+		$this->view->row = new Resource($this->database);
 		$this->view->row->load($this->view->id);
 
 		$this->database->setQuery('SELECT type FROM #__resources WHERE id = ' . $this->view->id);
@@ -563,7 +570,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 
 		// Get all the tags on this resource
-		$tagcloud = new ResourcesTags($this->view->id);
+		$tagcloud = new Tags($this->view->id);
 		$tags_men = $tagcloud->tags();
 
 		$mytagarray = array();
@@ -573,15 +580,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 		$tags = implode(', ', $mytagarray);
 
-		$etags = JRequest::getVar('tags', '');
+		$etags = \JRequest::getVar('tags', '');
 		if (!$tags)
 		{
 			$tags = $etags;
 		}
 
-		if ($err = JRequest::getInt('err', 0))
+		if ($err = \JRequest::getInt('err', 0))
 		{
-			$this->setError(JText::_('Please select one of the focus areas.'));
+			$this->setError(\JText::_('Please select one of the focus areas.'));
 		}
 
 		// Output HTML
@@ -589,13 +596,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->next_step = $this->step + 1;
 		$this->view->task      = 'draft';
 		$this->view->existing  = $existing;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -621,13 +627,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$this->view->id = JRequest::getInt('id', 0);
+		$this->view->id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$this->view->id)
 		{
-			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('COM_CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Get some needed libraries
@@ -635,7 +640,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
 		// Load resource info
-		$this->view->resource = new ResourcesResource($this->database);
+		$this->view->resource = new Resource($this->database);
 		$this->view->resource->load($this->view->id);
 
 		if (!$this->juser->get('guest'))
@@ -653,16 +658,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->next_step = $this->step + 1;
 		$this->view->task = 'submit';
 
-		$rl = new ResourcesLicense($this->database);
+		$rl = new License($this->database);
 		$this->view->licenses = $rl->getLicenses($this->view->id);
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -706,16 +709,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function step_compose_process()
 	{
 		// Initiate extended database class
-		$row = new ResourcesResource($this->database);
-		$row->load(JRequest::getInt('id', 0));
+		$row = new Resource($this->database);
+		$row->load(\JRequest::getInt('id', 0));
 		if (!$row->bind($_POST))
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			throw new Exception($row->getError(), 500);
 		}
 		$isNew = $row->id < 1 || substr($row->id, 0, 4) == '9999';
 
-		$row->created    = ($row->created)    ? $row->created    : JFactory::getDate()->toSql();
+		$row->created    = ($row->created)    ? $row->created    : \JFactory::getDate()->toSql();
 		$row->created_by = ($row->created_by) ? $row->created_by : $this->juser->get('id');
 
 		// Set status to "composing"
@@ -727,22 +729,22 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			$row->published = ($row->published ?: 2);
 		}
-		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : JFactory::getDate()->toSql());
+		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ? $row->publish_up : \JFactory::getDate()->toSql());
 		$row->publish_down = ($row->publish_down && $row->publish_down != '0000-00-00 00:00:00' ? $row->publish_down : '0000-00-00 00:00:00');
-		$row->modified     = JFactory::getDate()->toSql();
+		$row->modified     = \JFactory::getDate()->toSql();
 		$row->modified_by  = $this->juser->get('id');
 		$row->access       = ($row->access ?: 0);
 
 		$row->fulltxt   = trim($row->fulltxt);
-		$row->introtext = \Hubzero\Utility\String::truncate(strip_tags($row->fulltxt), 500);
+		$row->introtext = String::truncate(strip_tags($row->fulltxt), 500);
 		//$row->fulltxt   = $this->_txtAutoP($row->fulltxt, 1);
 
 		// Get custom areas, add wrapper tags, and compile into fulltxt
-		$type = new ResourcesType($this->database);
+		$type = new Type($this->database);
 		$type->load($row->type);
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-		$elements = new ResourcesElements(array(), $type->customFields);
+		$elements = new Elements(array(), $type->customFields);
 		$schema = $elements->getSchema();
 
 		$fields = array();
@@ -790,7 +792,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 			if (!$f && isset($fields[$tagname]) && $fields[$tagname]->required)
 			{
-				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
+				$this->setError(\JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $fields[$tagname]->label));
 			}
 
 			$found[] = $tagname;
@@ -801,7 +803,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			if (!in_array($field->name, $found) && $field->required)
 			{
 				$found[] = $field->name;
-				$this->setError(JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
+				$this->setError(\JText::sprintf('COM_CONTRIBUTE_REQUIRED_FIELD_CHECK', $field->label));
 			}
 		}
 
@@ -841,7 +843,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error: Failed to store changes.'));
+			$this->setError(\JText::_('Error: Failed to store changes.'));
 			$this->step--;
 			$this->view->step = $this->step;
 			$this->view->setLayout('compose');
@@ -850,15 +852,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// build path to temp upload folder and future permanent folder
-		$session = JFactory::getSession();
-		$created = JFactory::getDate()->format('Y-m-d 00:00:00');
-		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($created, $session->get('resources_temp_id') ,'');
-		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . ResourcesHtml::build_path($row->created, $row->id, '');
+		$session = \JFactory::getSession();
+		$created = \JFactory::getDate()->format('Y-m-d 00:00:00');
+		$oldPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($created, $session->get('resources_temp_id') ,'');
+		$newPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/resources'), DS) . Html::build_path($row->created, $row->id, '');
 
 		// if we have a temp dir, move it to permanent location
 		if (is_dir($oldPath))
 		{
-			JFolder::move($oldPath, $newPath);
+			\JFolder::move($oldPath, $newPath);
 
 			$old = DS . $session->get('resources_temp_id') . DS;
 			$new = DS . $row->id . DS;
@@ -885,12 +887,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			}
 
 			// Automatically attach this user as the first author
-			JRequest::setVar('pid', $row->id);
-			JRequest::setVar('id', $row->id);
-			JRequest::setVar('authid', $this->juser->get('id'));
+			\JRequest::setVar('pid', $row->id);
+			\JRequest::setVar('id', $row->id);
+			\JRequest::setVar('authid', $this->juser->get('id'));
 
-			include_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'authors.php');
-			$authors = new ResourcesControllerAuthors();
+			include_once(__DIR__ . DS . 'authors.php');
+			$authors = new Authors();
 			$authors->saveTask(0);
 		}
 	}
@@ -913,7 +915,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function step_authors_process()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -922,16 +924,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Load the resource
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		// Set the group and access level
-		$row->group_owner = JRequest::getVar('group_owner', '');
-		$row->access = JRequest::getInt('access', 0);
+		$row->group_owner = \JRequest::getVar('group_owner', '');
+		$row->access = \JRequest::getInt('access', 0);
 
 		if ($row->access > 0 && !$row->group_owner)
 		{
-			$this->setError(JText::_('Please select a group to restrict access to.'));
+			$this->setError(\JText::_('Please select a group to restrict access to.'));
 			$this->step--;
 			$this->view->step = $this->step;
 			$this->view->setLayout('authors');
@@ -953,7 +955,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error: Failed to store changes.'));
+			$this->setError(\JText::_('Error: Failed to store changes.'));
 			$this->step--;
 			$this->view->step = $this->step;
 			$this->view->setLayout('authors');
@@ -969,9 +971,9 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function step_tags_process()
 	{
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
-		$user = JFactory::getUser();
+		$user = \JFactory::getUser();
 
 		$this->database->setQuery(
 			'SELECT 1 FROM #__author_assoc WHERE authorid = ' . $this->juser->id . ' AND subtable = \'resources\' AND subid = ' . $id . '
@@ -986,7 +988,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		if (!$this->database->loadResult())
 		{
-			JError::raiseError(403, 'Forbidden');
+			\JError::raiseError(403, 'Forbidden');
 			return;
 		}
 
@@ -1134,7 +1136,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 		$tags = implode(', ', $tags);
 
-		$rt = new ResourcesTags($id);
+		$rt = new Tags($id);
 		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 		$this->database->setQuery('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		$this->database->execute();
@@ -1167,17 +1169,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function submitTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('COM_CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('COM_CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Load resource info
-		$resource = new ResourcesResource($this->database);
+		$resource = new Resource($this->database);
 		$resource->load($id);
 
 		// Set a flag for if the resource was already published or not
@@ -1188,10 +1189,10 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Check if a newly submitted resource was authorized to be published
-		$authorized = JRequest::getInt('authorization', 0);
+		$authorized = \JRequest::getInt('authorization', 0);
 		if (!$authorized && !$published)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_CONTRIBUTION_NOT_AUTHORIZED'));
 			$this->_checkProgress($id);
 			$this->step_review();
 			return;
@@ -1206,7 +1207,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			{
 				// Set status to published
 				$resource->published = 1;
-				$resource->publish_up = JFactory::getDate()->toSql();
+				$resource->publish_up = \JFactory::getDate()->toSql();
 			}
 			else
 			{
@@ -1218,7 +1219,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				{
 					// Set status to published
 					$resource->published = 1;
-					$resource->publish_up = JFactory::getDate()->toSql();
+					$resource->publish_up = \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -1228,14 +1229,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			}
 
 			// Get the resource's contributors
-			$helper = new ResourcesHelper($id, $this->database);
+			$helper = new Helper($id, $this->database);
 			$helper->getCons();
 
 			$contributors = $helper->_contributors;
 
 			if (!$contributors || count($contributors) <= 0)
 			{
-				$this->setError(JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
+				$this->setError(\JText::_('COM_CONTRIBUTE_CONTRIBUTION_HAS_NO_AUTHORS'));
 				$this->_checkProgress($id);
 				$this->step_review();
 				return;
@@ -1245,16 +1246,16 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Is this resource licensed under Creative Commons?
 		if ($this->config->get('cc_license'))
 		{
-			$license = JRequest::getVar('license', '');
+			$license = \JRequest::getVar('license', '');
 
 			if ($license == 'custom')
 			{
 				$license .= $resource->id;
 
-				$licenseText = JRequest::getVar('license-text', '');
+				$licenseText = \JRequest::getVar('license-text', '');
 				if ($licenseText == '[ENTER LICENSE HERE]')
 				{
-					$this->setError(JText::_('Please enter a license.'));
+					$this->setError(\JText::_('Please enter a license.'));
 					$this->_checkProgress($id);
 					$this->step_review();
 					return;
@@ -1262,7 +1263,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
 
-				$rl = new ResourcesLicense($this->database);
+				$rl = new License($this->database);
 				$rl->load($license);
 				$rl->name = $license;
 				$rl->text = $licenseText;
@@ -1272,7 +1273,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			}
 
 			// set license
-			$params = new JParameter($resource->params);
+			$params = new \JParameter($resource->params);
 			$params->set('license', $license);
 			$resource->params = $params->toString();
 		}
@@ -1286,11 +1287,11 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		{
 			if ($resource->alias)
 			{
-				$url = JRoute::_('index.php?option=com_resources&alias=' . $resource->alias);
+				$url = \JRoute::_('index.php?option=com_resources&alias=' . $resource->alias);
 			}
 			else
 			{
-				$url = JRoute::_('index.php?option=com_resources&id=' . $resource->id);
+				$url = \JRoute::_('index.php?option=com_resources&id=' . $resource->id);
 			}
 			$this->setRedirect($url);
 			return;
@@ -1301,13 +1302,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		$this->view->title    = $this->_title;
 		$this->view->config   = $this->config;
 		$this->view->resource = $resource;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
@@ -1319,19 +1319,19 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function deleteTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=new')
+				\JRoute::_('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
 		}
 
 		// Incoming step
-		$step = JRequest::getVar('step', 1);
+		$step = \JRequest::getVar('step', 1);
 
 		// Perform step
 		switch ($step)
@@ -1341,7 +1341,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				$this->_checkProgress($id);
 
 				// Load the resource
-				$this->view->row = new ResourcesResource($this->database);
+				$this->view->row = new \Components\Resources\Tables\Resource($this->database);
 				$this->view->row->load($id);
 				$this->view->row->typetitle = $this->view->row->getTypeTitle(0);
 
@@ -1363,18 +1363,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 			case 2:
 				// Incoming confirmation flag
-				$confirm = JRequest::getVar('confirm', '', 'post');
+				$confirm = \JRequest::getVar('confirm', '', 'post');
 
 				// Did they confirm the deletion?
 				if ($confirm != 'confirmed')
 				{
-					$this->setError(JText::_('Please confirm.'));
+					$this->setError(\JText::_('Please confirm.'));
 
 					// Check progress
 					$this->_checkProgress($id);
 
 					// Load the resource
-					$this->view->row = new ResourcesResource($this->database);
+					$this->view->row = new Resource($this->database);
 					$this->view->row->load($id);
 					$this->view->row->typetitle = $this->view->row->getTypeTitle(0);
 
@@ -1384,19 +1384,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					$this->view->steps    = $this->steps;
 					$this->view->id       = $id;
 					$this->view->progress = $this->progress;
-					if ($this->getError())
+
+					foreach ($this->getErrors() as $error)
 					{
-						foreach ($this->getErrors() as $error)
-						{
-							$this->view->setError($error);
-						}
+						$this->view->setError($error);
 					}
+
 					$this->view->display();
 					return;
 				}
 
 				// Load the resource
-				$resource = new ResourcesResource($this->database);
+				$resource = new Resource($this->database);
 				$resource->load($id);
 
 				// Check if the resource was "published"
@@ -1405,8 +1404,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					// It was, so we can only mark it as "deleted"
 					if (!$this->_markRemovedContribution($id))
 					{
-						JError::raiseError(500, $this->getError());
-						return;
+						throw new Exception($this->getError(), 500);
 					}
 				}
 				else
@@ -1414,14 +1412,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					// It wasn't. Attempt to delete the resource
 					if (!$this->_deleteContribution($id))
 					{
-						JError::raiseError(500, $this->getError());
-						return;
+						throw new Exception($this->getError(), 500);
 					}
 				}
 
 				// Redirect to the start page
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&task=new')
+					\JRoute::_('index.php?option=' . $this->_option . '&task=new')
 				);
 			break;
 		}
@@ -1435,19 +1432,19 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function retractTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=new')
+				\JRoute::_('index.php?option=' . $this->_option . '&task=new')
 			);
 			return;
 		}
 
 		// Load the resource
-		$resource = new ResourcesResource($this->database);
+		$resource = new Resource($this->database);
 		$resource->load($id);
 
 		// Check if it's in pending status
@@ -1461,7 +1458,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=new')
+			\JRoute::_('index.php?option=' . $this->_option . '&task=new')
 		);
 	}
 
@@ -1476,12 +1473,12 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Make sure we have a record to pull
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
 		}
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		// Mark resource as deleted
@@ -1507,18 +1504,18 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Make sure we have a record to pull
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_NO_ID'));
 			return false;
 		}
 
 		jimport('joomla.filesystem.folder');
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		// Get the resource's children
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new Helper($id, $this->database);
 		$helper->getChildren();
 		$children = $helper->children;
 
@@ -1548,14 +1545,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				// Build the path
 				$path = $this->_buildUploadPath($listdir, '');
 
-				$base   = JPATH_ROOT . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-				$baseY = $base . '/'. JFactory::getDate($child->created)->format("Y");
-				$baseM = $baseY . '/' . JFactory::getDate($child->created)->format("m");
+				$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
+				$baseY = $base . '/'. \JFactory::getDate($child->created)->format("Y");
+				$baseM = $baseY . '/' . \JFactory::getDate($child->created)->format("m");
 
 				// Check if the folder even exists
 				if (!is_dir($path) or !$path)
 				{
-					$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
+					$this->setError(\JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 				}
 				else
 				{
@@ -1563,14 +1560,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 					 || $path == $baseY
 					 || $path == $baseM)
 					{
-						$this->setError(JText::_('Invalid directory.'));
+						$this->setError(\JText::_('Invalid directory.'));
 					}
 					else
 					{
 						// Attempt to delete the folder
-						if (!JFolder::delete($path))
+						if (!\JFolder::delete($path))
 						{
-							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
+							$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
 					}
 				}
@@ -1600,14 +1597,14 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		// Check if the folder even exists
 		if (!is_dir($path) or !$path)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the folder
-			if (!JFolder::delete($path))
+			if (!\JFolder::delete($path))
 			{
-				$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		}
 
@@ -1655,7 +1652,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		return JPATH_ROOT . $listdir . $subdir;
+		return PATH_APP . $listdir . $subdir;
 	}
 
 	/**
@@ -1690,7 +1687,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	{
 		if ($id)
 		{
-			$ra = new ResourcesAssoc($this->database);
+			$ra = new Assoc($this->database);
 			$total = $ra->getCount($id);
 		}
 		else
@@ -1710,7 +1707,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	{
 		if ($id)
 		{
-			$rc = new ResourcesContributor($this->database);
+			$rc = new Contributor($this->database);
 			$contributors = $rc->getCount($id, 'resources');
 		}
 		else
@@ -1729,7 +1726,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function step_tags_check($id)
 	{
-		$rt = new ResourcesTags($id);
+		$rt = new Tags($id);
 		$tags = $rt->tags('count');
 
 		if ($tags > 0)
@@ -1748,7 +1745,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function step_review_check($id)
 	{
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		if ($row->published == 1)
@@ -1878,15 +1875,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 		if ($date)
 		{
-			$dir_year  = JFactory::getDate($date)->format('Y');
-			$dir_month = JFactory::getDate($date)->format('m');
+			$dir_year  = \JFactory::getDate($date)->format('Y');
+			$dir_month = \JFactory::getDate($date)->format('m');
 		}
 		else
 		{
-			$dir_year  = JFactory::getDate()->format('Y');
-			$dir_month = JFactory::getDate()->format('m');
+			$dir_year  = \JFactory::getDate()->format('Y');
+			$dir_month = \JFactory::getDate()->format('m');
 		}
-		$dir_id = \Hubzero\Utility\String::pad($id);
+		$dir_id = String::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

@@ -97,7 +97,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		{
 			// Get categories
 			$database = JFactory::getDBO();
-			$rt = new ResourcesType($database);
+			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
 		}
@@ -186,7 +186,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate some needed objects
-		$rr = new ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -201,7 +201,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$categories = $this->_cats;
 		if (!is_array($categories))
 		{
-			$rt = new ResourcesType($database);
+			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 		}
 
@@ -332,7 +332,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate a helper object
-		$helper = new ResourcesHelper($row->id, $database);
+		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
@@ -384,11 +384,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
 			if ($row->category == 7)
 			{
-				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			else
 			{
-				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			$statshtml = $stats->display();
 

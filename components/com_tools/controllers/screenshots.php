@@ -108,7 +108,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$neworder_toright = $order_toright + 1;
 
 		// Instantiate a new screenshot object
-		$ss = new ResourcesScreenshot($this->database);
+		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$shot1 = $ss->getScreenshot($file_toright, $pid, $vid);
 		$shot2 = $ss->getScreenshot($file_toleft, $pid, $vid);
 
@@ -163,7 +163,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($pid);
 
 		// Get version id
@@ -179,12 +179,12 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Build the path
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir  = ResourcesHtml::build_path($row->created, $pid, '') . DS . $vid;
+		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '') . DS . $vid;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . DS . $listdir;
 		$this->view->upath = $this->_buildUploadPath($listdir, '');
 
 		// Instantiate a new screenshot object
-		$ss = new ResourcesScreenshot($this->database);
+		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$this->view->shot = $ss->getScreenshot($this->view->file, $pid, $vid);
 
 		// Get the app
@@ -234,7 +234,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$title = preg_replace('/\s+/', ' ', JRequest::getVar('title', ''));
 
 		// Instantiate a new screenshot object
-		$ss = new ResourcesScreenshot($this->database);
+		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$shot = $ss->getScreenshot($file, $pid, $vid);
 		$files = $ss->getFiles($pid, $vid);
 
@@ -293,7 +293,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		jimport('joomla.filesystem.file');
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($pid);
 
 		// Get version id
@@ -310,7 +310,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		// Build the path
-		$listdir  = ResourcesHtml::build_path($row->created, $pid, '');
+		$listdir  = \Components\Resources\Helpers\Html::build_path($row->created, $pid, '');
 		$listdir .= DS.$vid;
 		$path = $this->_buildUploadPath($listdir, '');
 
@@ -338,11 +338,11 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			else
 			{
 				// Delete thumbnail
-				$tn = ResourcesHtml::thumbnail($file);
+				$tn = \Components\Resources\Helpers\Html::thumbnail($file);
 				JFile::delete($path . DS . $tn);
 
 				// Instantiate a new screenshot object
-				$ss = new ResourcesScreenshot($this->database);
+				$ss = new \Components\Resources\Tables\Screenshot($this->database);
 				$ss->deleteScreenshot($file, $pid, $vid);
 			}
 		}
@@ -381,7 +381,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Get resource information
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->load($pid);
 
 		// Incoming file
@@ -421,7 +421,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a new screenshot object
-		$row = new ResourcesScreenshot($this->database);
+		$row = new \Components\Resources\Tables\Screenshot($this->database);
 
 		// Check if file with the same name already exists
 		$files = $row->getFiles($pid, $vid);
@@ -456,7 +456,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 
 		// Build the path
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
-		$listdir  = ResourcesHtml::build_path($resource->created, $pid, '');
+		$listdir  = \Components\Resources\Helpers\Html::build_path($resource->created, $pid, '');
 		$listdir .= DS . $vid;
 		$path = $this->_buildUploadPath($listdir, '');
 
@@ -496,7 +496,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			$ss_height = (intval($this->config->get('screenshot_maxheight', 58)) > 30) ? intval($this->config->get('screenshot_maxheight', 58)) : 58;
 			$ss_width  = (intval($this->config->get('screenshot_maxwidth', 91)) > 80)  ? intval($this->config->get('screenshot_maxwidth', 91))  : 91;
 
-			$tn = ResourcesHtml::thumbnail($file['name']);
+			$tn = \Components\Resources\Helpers\Html::thumbnail($file['name']);
 			if ($file_ext != '.swf')
 			{
 				$this->_createThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
@@ -715,17 +715,17 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$xlog->debug(__FUNCTION__ . '()');
 
 		// Get resource information
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->load($rid);
 
 		// Get screenshot information
-		$ss = new ResourcesScreenshot($this->database);
+		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$shots = $ss->getFiles($rid, $sourceid);
 
 		// Build the path
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
-		$listdir = ResourcesHtml::build_path($resource->created, $rid, '');
+		$listdir = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
 		$srcdir  = $listdir . DS . $sourceid;
 		$destdir = $listdir . DS . $destid;
 		$src     = $this->_buildUploadPath($srcdir, '');
@@ -798,7 +798,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 			return;
 		}
 		// Get resource information
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->load($rid);
 
 		// Get version id
@@ -809,13 +809,13 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		$this->view->published = $objV->getCurrentVersionProperty($resource->alias, 'id');
 
 		// Get screenshot information for this resource
-		$ss = new ResourcesScreenshot($this->database);
+		$ss = new \Components\Resources\Tables\Screenshot($this->database);
 		$this->view->shots = $ss->getScreenshots($rid, $vid);
 
 		// Build paths
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
-		$path = ResourcesHtml::build_path($resource->created, $rid, '');
+		$path = \Components\Resources\Helpers\Html::build_path($resource->created, $rid, '');
 		$this->view->upath = JPATH_ROOT . DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		$this->view->wpath = DS . trim($this->rconfig->get('uploadpath'), DS) . $path;
 		if ($vid)
@@ -880,7 +880,7 @@ class ToolsControllerScreenshots extends \Hubzero\Component\SiteController
 		}
 
 		// Build the path
-		return JPATH_ROOT . $listdir . $subdir;
+		return PATH_APP . $listdir . $subdir;
 	}
 
 	/**

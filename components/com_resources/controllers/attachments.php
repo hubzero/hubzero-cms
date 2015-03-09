@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,13 +23,20 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\Assoc;
+use Components\Resources\Helpers\Helper;
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\Validate;
+use Hubzero\Utility\String;
+use Hubzero\Utility\Number;
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'assoc.php');
@@ -38,7 +45,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 /**
  * Controller class for contributing a tool
  */
-class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
+class Attachments extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -50,12 +57,12 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			JError::raiseError(403, JText::_('You must be logged in to access.'));
+			\JError::raiseError(403, \JText::_('You must be logged in to access.'));
 			return;
 		}
 
 		// Load the com_resources component config
-		$rconfig = JComponentHelper::getParams('com_resources');
+		$rconfig = \JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();
@@ -68,7 +75,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
@@ -81,22 +88,22 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we have an ID to work with
-		$pid = JRequest::getInt('pid', 0, 'post');
+		$pid = \JRequest::getInt('pid', 0, 'post');
 		if (!$pid)
 		{
-			$this->setError(JText::_('COM_COLLECTIONS_NO_ID'));
+			$this->setError(\JText::_('COM_COLLECTIONS_NO_ID'));
 			$this->displayTask();
 			return;
 		}
 
 		// Create database entry
-		$asset = new ResourcesResource($this->database);
+		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $row->title;
-		$asset->created      = JFactory::getDate()->toSql();
+		$asset->created      = \JFactory::getDate()->toSql();
 		$asset->created_by   = $this->juser->get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = JFactory::getDate()->toSql();
+		$asset->publish_up   = \JFactory::getDate()->toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->path         = 'http://'; // make sure no path is specified just yet
@@ -114,8 +121,8 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Instantiate a ResourcesAssoc object
-		$assoc = new ResourcesAssoc($this->database);
+		// Instantiate a Resources Assoc object
+		$assoc = new Assoc($this->database);
 
 		// Get the last child in the ordering
 		$assoc->ordering = $assoc->getLastOrder($pid);
@@ -150,38 +157,38 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => \JText::_('Must be logged in.')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$pid = strtolower(JRequest::getInt('pid', 0));
+		$pid = strtolower(\JRequest::getInt('pid', 0));
 		if (!$pid)
 		{
-			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
+			echo json_encode(array('error' => \JText::_('COM_RESOURCES_NO_ID')));
 			return;
 		}
 
 		// Create database entry
-		$asset = new ResourcesResource($this->database);
+		$asset = new Resource($this->database);
 		$asset->title        = 'A link';
 		$asset->introtext    = $asset->title;
-		$asset->created      = JFactory::getDate()->toSql();
+		$asset->created      = \JFactory::getDate()->toSql();
 		$asset->created_by   = $this->juser->get('id');
 		$asset->published    = 1;
-		$asset->publish_up   = JFactory::getDate()->toSql();
+		$asset->publish_up   = \JFactory::getDate()->toSql();
 		$asset->publish_down = '0000-00-00 00:00:00';
 		$asset->standalone   = 0;
 		$asset->access       = 0;
-		$asset->path         = urldecode(JRequest::getVar('url', 'http://'));
+		$asset->path         = urldecode(\JRequest::getVar('url', 'http://'));
 		$asset->type         = 11;
 
 		$asset->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $asset->path);
-		if (!\Hubzero\Utility\Validate::url($asset->path))
+		if (!Validate::url($asset->path))
 		{
 			echo json_encode(array(
 				'success'   => false,
-				'errors'    => array(JText::_('Link provided is not a valid URL.')),
+				'errors'    => array(\JText::_('Link provided is not a valid URL.')),
 				'file'      => $asset->path,
 				'directory' => '',
 				'parent'    => $pid,
@@ -214,8 +221,8 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Instantiate a ResourcesAssoc object
-		$assoc = new ResourcesAssoc($this->database);
+		// Instantiate a Resources Assoc object
+		$assoc = new Assoc($this->database);
 
 		// Get the last child in the ordering
 		$assoc->ordering = $assoc->getLastOrder($pid);
@@ -274,15 +281,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => \JText::_('Must be logged in.')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$pid = strtolower(JRequest::getInt('pid', 0));
+		$pid = strtolower(\JRequest::getInt('pid', 0));
 		if (!$pid)
 		{
-			echo json_encode(array('error' => JText::_('COM_RESOURCES_NO_ID')));
+			echo json_encode(array('error' => \JText::_('COM_RESOURCES_NO_ID')));
 			return;
 		}
 
@@ -306,7 +313,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => \JText::_('File not found')));
 			return;
 		}
 
@@ -314,15 +321,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		if ($size == 0)
 		{
 			echo json_encode(array(
-				'error' => JText::_('File is empty')
+				'error' => \JText::_('File is empty')
 			));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
 			echo json_encode(array(
-				'error' => JText::sprintf('File is too large. Max file upload size is %s', $max)
+				'error' => \JText::sprintf('File is too large. Max file upload size is %s', $max)
 			));
 			return;
 		}
@@ -334,7 +341,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = \JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -344,13 +351,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}*/
 
 		// Instantiate a new resource object
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->title        = $filename . '.' . $ext;
 		$row->introtext    = $row->title;
-		$row->created      = JFactory::getDate()->toSql();
+		$row->created      = \JFactory::getDate()->toSql();
 		$row->created_by   = $this->juser->get('id');
 		$row->published    = 1;
-		$row->publish_up   = JFactory::getDate()->toSql();
+		$row->publish_up   = \JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->access       = 0;
@@ -379,7 +386,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		if ($row->loadByFile($filename, $pid))
 		{
 			echo json_encode(array(
-				'error' => JText::_('A file with this name and type appears to already exist.')
+				'error' => \JText::_('A file with this name and type appears to already exist.')
 			));
 			return;
 		}
@@ -407,7 +414,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			if (!JFolder::create($path))
 			{
 				echo json_encode(array(
-					'error' => JText::_('Error uploading. Unable to create path.')
+					'error' => \JText::_('Error uploading. Unable to create path.')
 				));
 				return;
 			}
@@ -416,7 +423,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		if (!is_writable($path))
 		{
 			echo json_encode(array(
-				'error' => JText::_('Server error. Upload directory isn\'t writable.')
+				'error' => \JText::_('Server error. Upload directory isn\'t writable.')
 			));
 			return;
 		}
@@ -442,7 +449,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		$assoc = new ResourcesAssoc($this->database);
+		$assoc = new Assoc($this->database);
 
 		// Get the last child in the ordering
 		$assoc->ordering = $assoc->getLastOrder($pid);
@@ -478,9 +485,9 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		if (!JFile::isSafe($file))
+		if (!\JFile::isSafe($file))
 		{
-			if (JFile::delete($file))
+			if (\JFile::delete($file))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -489,7 +496,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 				$row->delete();
 			}
 
-			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+			$this->setError(\JText::_('File rejected because the anti-virus scan failed.'));
 
 			echo json_encode(array(
 				'success'   => false,
@@ -543,14 +550,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	public function reorderTask()
 	{
 		// Incoming
-		$id   = JRequest::getInt('id', 0);
-		$pid  = JRequest::getInt('pid', 0);
-		$move = 'order' . JRequest::getVar('move', 'down');
+		$id   = \JRequest::getInt('id', 0);
+		$pid  = \JRequest::getInt('pid', 0);
+		$move = 'order' . \JRequest::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -558,13 +565,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
 
 		// Get the element moving down - item 1
-		$resource1 = new ResourcesAssoc($this->database);
+		$resource1 = new Assoc($this->database);
 		$resource1->loadAssoc($pid, $id);
 
 		// Get the element directly after it in ordering - item 2
@@ -608,13 +615,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	public function renameTask()
 	{
 		// Incoming
-		$id   = JRequest::getInt('id', 0);
-		$name = JRequest::getVar('name', '');
+		$id   = \JRequest::getInt('id', 0);
+		$name = \JRequest::getVar('name', '');
 
 		// Ensure we have everything we need
 		if ($id && $name != '')
 		{
-			$r = new ResourcesResource($this->database);
+			$r = new Resource($this->database);
 			$r->load($id);
 			$r->title = $name;
 			$r->store();
@@ -631,34 +638,34 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
-		if (JRequest::getVar('no_html', 0))
+		if (\JRequest::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Incoming
-		$pid = JRequest::getInt('pid', 0);
+		$pid = \JRequest::getInt('pid', 0);
 		if (!$pid)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_FILE'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_FILE'));
 			$this->displayTask($pid);
 			return;
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		// Ensure file names fit.
-		$ext = JFile::getExt($file['name']);
+		$ext = \JFile::getExt($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -667,7 +674,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate a new resource object
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		if (!$row->bind($_POST))
 		{
 			$this->setError($row->getError());
@@ -676,10 +683,10 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 		$row->title        = ($row->title) ? $row->title : $file['name'];
 		$row->introtext    = $row->title;
-		$row->created      = JFactory::getDate()->toSql();
+		$row->created      = \JFactory::getDate()->toSql();
 		$row->created_by   = $this->juser->get('id');
 		$row->published    = 1;
-		$row->publish_up   = JFactory::getDate()->toSql();
+		$row->publish_up   = \JFactory::getDate()->toSql();
 		$row->publish_down = '0000-00-00 00:00:00';
 		$row->standalone   = 0;
 		$row->path         = ''; // make sure no path is specified just yet
@@ -695,7 +702,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// File already exists
 		if ($row->loadByFile($file['name'], $pid))
 		{
-			$this->setError(JText::_('A file with this name and type appears to already exist.'));
+			$this->setError(\JText::_('A file with this name and type appears to already exist.'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -723,16 +730,16 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($pid);
 				return;
 			}
 		}
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_ERROR_UPLOADING'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_ERROR_UPLOADING'));
 		}
 		else
 		{
@@ -750,7 +757,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 				if (!extension_loaded('zlib'))
 				{
-					$this->setError(JText::_('COM_CONTRIBUTE_ZLIB_PACKAGE_REQUIRED'));
+					$this->setError(\JText::_('COM_CONTRIBUTE_ZLIB_PACKAGE_REQUIRED'));
 				}
 				else
 				{
@@ -796,7 +803,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 						$do = $zip->extract($path);
 						if (!$do)
 						{
-							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_EXTRACT_PACKAGE'));
+							$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_EXTRACT_PACKAGE'));
 						}
 						else
 						{
@@ -814,9 +821,9 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		// Scan for viruses
 		$fpath = $path . DS . $file['name'];
 
-		if (!JFile::isSafe($fpath))
+		if (!\JFile::isSafe($fpath))
 		{
-			if (JFile::delete($fpath))
+			if (\JFile::delete($fpath))
 			{
 				// Delete associations to the resource
 				$row->deleteExistence();
@@ -825,7 +832,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 				$row->delete();
 			}
 
-			$this->setError(JText::_('File rejected because the anti-virus scan failed.'));
+			$this->setError(\JText::_('File rejected because the anti-virus scan failed.'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -844,8 +851,8 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Instantiate a ResourcesAssoc object
-		$assoc = new ResourcesAssoc($this->database);
+		// Instantiate a Resources Assoc object
+		$assoc = new Assoc($this->database);
 
 		// Get the last child in the ordering
 		$assoc->ordering = $assoc->getLastOrder($pid);
@@ -899,19 +906,19 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	public function deleteTask()
 	{
 		// Incoming parent ID
-		$pid = JRequest::getInt('pid', 0);
+		$pid = \JRequest::getInt('pid', 0);
 		if (!$pid)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
 
 		// Incoming child ID
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -920,7 +927,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		jimport('joomla.filesystem.file');
 
 		// Load resource info
-		$row = new ResourcesResource($this->database);
+		$row = new Resource($this->database);
 		$row->load($id);
 
 		// Check for stored file
@@ -938,13 +945,13 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$path = $this->_buildUploadPath($listdir, '');
 
 		$base  = PATH_APP . '/' . trim($this->config->get('webpath', '/site/resources'), '/');
-		$baseY = $base . '/'. JFactory::getDate($row->created)->format("Y");
-		$baseM = $baseY . '/' . JFactory::getDate($row->created)->format("m");
+		$baseY = $base . '/'. \JFactory::getDate($row->created)->format("Y");
+		$baseM = $baseY . '/' . \JFactory::getDate($row->created)->format("m");
 
 		// Check if the folder even exists
 		if (!file_exists($path) or !$path or substr($row->path, 0, strlen('http')) == 'http')
 		{
-			//$this->setError(JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
+			//$this->setError(\JText::_('COM_CONTRIBUTE_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -952,14 +959,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			 || $path == $baseY
 			 || $path == $baseM)
 			{
-				$this->setError(JText::_('Invalid directory.'));
+				$this->setError(\JText::_('Invalid directory.'));
 			}
 			else
 			{
 				// Attempt to delete the folder
 				if (!JFile::delete($path))
 				{
-					$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE'));
+					$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_FILE'));
 				}
 			}
 		}
@@ -1014,14 +1021,14 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 					 or rtrim($npath, '/') == $baseY
 					 or rtrim($npath, '/') == $baseM)
 					{
-						$this->setError(JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
+						$this->setError(\JText::_('COM_CONTRIBUTE_DIRECTORY_NOT_FOUND'));
 					}
 					else
 					{
 						// Attempt to delete the folder
 						if (!JFolder::delete($npath))
 						{
-							$this->setError(JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
+							$this->setError(\JText::_('COM_CONTRIBUTE_UNABLE_TO_DELETE_DIRECTORY'));
 						}
 					}
 				}
@@ -1047,23 +1054,20 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask($id=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$id)
 		{
-			$id = JRequest::getInt('id', 0);
+			$id = \JRequest::getInt('id', 0);
 		}
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Initiate a resource helper class
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new Helper($id, $this->database);
 		$helper->getChildren();
 
 		// get config
@@ -1073,16 +1077,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$this->view->id       = $id;
 
 		// Set errors to view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -1130,7 +1133,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 	{
 		jimport('joomla.filesystem.file');
 
-		$ftype = strtolower(JFile::getExt($filename));
+		$ftype = strtolower(\JFile::getExt($filename));
 
 		switch ($ftype)
 		{
@@ -1165,15 +1168,15 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		}
 		if ($date)
 		{
-			$dir_year  = JFactory::getDate($date)->format('Y');
-			$dir_month = JFactory::getDate($date)->format('m');
+			$dir_year  = \JFactory::getDate($date)->format('Y');
+			$dir_month = \JFactory::getDate($date)->format('m');
 		}
 		else
 		{
-			$dir_year  = JFactory::getDate()->format('Y');
-			$dir_month = JFactory::getDate()->format('m');
+			$dir_year  = \JFactory::getDate()->format('Y');
+			$dir_month = \JFactory::getDate()->format('m');
 		}
-		$dir_id = \Hubzero\Utility\String::pad($id);
+		$dir_id = String::pad($id);
 
 		$path = $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
 

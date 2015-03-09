@@ -65,11 +65,11 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		// Incoming sub-directory
 		$subdir = JRequest::getVar('dirPath', '', 'post');
 
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($resource);
 
-		$path = ResourcesHtml::dateToPath($row->created) . DS . ResourcesHtml::niceidformat($resource);
-		$path = ResourcesUtilities::buildUploadPath($path, $subdir) . DS . 'media';
+		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($resource);
+		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $subdir) . DS . 'media';
 
 		// Make sure the upload path exist
 		if (!is_dir($path))
@@ -146,10 +146,10 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 
 		// Incoming sub-directory
 		//$subdir = JRequest::getVar('dirPath', '', 'post');
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($resource);
 
-		$path = ResourcesHtml::dateToPath($row->created) . DS . ResourcesHtml::niceidformat($resource);
+		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($resource);
 
 		// Make sure the listdir follows YYYY/MM/#
 		$parts = explode('/', $path);
@@ -164,7 +164,7 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$subdir = JRequest::getVar('subdir', '');
 
 		// Build the path
-		$path = ResourcesUtilities::buildUploadPath($path, $subdir) . DS . 'media';
+		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $subdir) . DS . 'media';
 
 		// Incoming file to delete
 		$file = JRequest::getVar('file', '');
@@ -215,12 +215,12 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->subdir = JRequest::getVar('subdir', '');
 
 		// Build the path
-		//$this->view->path = ResourcesUtilities::buildUploadPath($this->view->listdir, $this->view->subdir);
-		$row = new ResourcesResource($this->database);
+		//$this->view->path = \Components\Resources\Helpers\Utilities::buildUploadPath($this->view->listdir, $this->view->subdir);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($this->view->resource);
 
-		$path = ResourcesHtml::dateToPath($row->created) . DS . ResourcesHtml::niceidformat($this->view->resource);
-		$this->view->path = ResourcesUtilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
+		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($this->view->resource);
+		$this->view->path =\Components\Resources\Helpers\Utilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
 
 		// Get list of directories
 		/*$dirs = $this->_recursiveListDir($this->view->path);
@@ -327,11 +327,11 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->subdir = JRequest::getVar('subdir', '');
 
 		// Build the path
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->load($this->view->resource);
 
-		$path = ResourcesHtml::dateToPath($row->created) . DS . ResourcesHtml::niceidformat($this->view->resource);
-		$path = ResourcesUtilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
+		$path = \Components\Resources\Helpers\Html::dateToPath($row->created) . DS . \Components\Resources\Helpers\Html::niceidformat($this->view->resource);
+		$path = \Components\Resources\Helpers\Utilities::buildUploadPath($path, $this->view->subdir) . DS . 'media';
 
 		$folders = array();
 		$docs    = array();

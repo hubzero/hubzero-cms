@@ -118,7 +118,7 @@ class Resources extends GroupMacro
 		$database = \JFactory::getDBO();
 
 		// Instantiate some needed objects
-		$rr = new \ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -132,7 +132,7 @@ class Resources extends GroupMacro
 		$filters['limitstart'] = 0;
 
 		// Get categories
-		$rt = new \ResourcesType($database);
+		$rt = new \Components\Resources\Tables\Type($database);
 		$categories = $rt->getMajorTypes();
 
 		// Normalize the category names

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,13 +23,20 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Resource;
+use Components\Resources\Tables\Contributor;
+use Components\Resources\Tables\Contributor\Role;
+use Components\Resources\Tables\Contributor\RoleType;
+use Components\Resources\Helpers\Helper;
+use Hubzero\Component\SiteController;
+use Hubzero\User\Profile;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
@@ -41,7 +48,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 /**
  * Controller class for contributing a tool
  */
-class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
+class Authors extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -52,12 +59,12 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			JError::raiseError(403, JText::_('You must be logged in to access.'));
+			\JError::raiseError(403, \JText::_('You must be logged in to access.'));
 			return;
 		}
 
 		// Load the com_resources component config
-		$rconfig = JComponentHelper::getParams('com_resources');
+		$rconfig = \JComponentHelper::getParams('com_resources');
 		$this->rconfig = $rconfig;
 
 		parent::execute();
@@ -76,11 +83,11 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		// Incoming resource ID
 		if (!$id)
 		{
-			$id = JRequest::getInt('pid', 0);
+			$id = \JRequest::getInt('pid', 0);
 		}
 		if (!$id)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_ID'));
 			if ($show)
 			{
 				$this->displayTask($id);
@@ -89,15 +96,15 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming authors
-		$authid = JRequest::getInt('authid', 0, 'post');
-		$authorsNewstr = trim(JRequest::getVar('new_authors', '', 'post'));
-		$role = JRequest::getVar('role', '', 'post');
+		$authid = \JRequest::getInt('authid', 0, 'post');
+		$authorsNewstr = trim(\JRequest::getVar('new_authors', '', 'post'));
+		$role = \JRequest::getVar('role', '', 'post');
 
 		// Turn the string into an array of usernames
 		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
 
 		// Instantiate a resource/contributor association object
-		$rc = new ResourcesContributor($this->database);
+		$rc = new Contributor($this->database);
 		$rc->subtable = 'resources';
 		$rc->subid = $id;
 
@@ -118,12 +125,12 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 			$rc->loadAssociation($authid, $id, 'resources');
 			if ($rc->authorid)
 			{
-				$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rc->name));
+				$this->setError(\JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rc->name));
 			}
 			else
 			{
 				// Perform a check to see if they have a contributors page. If not, we'll need to make one
-				$xprofile = new \Hubzero\User\Profile();
+				$xprofile = new Profile();
 				$xprofile->load($authid);
 				if ($xprofile)
 				{
@@ -165,12 +172,12 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 						$cid = addslashes(trim($cid));
 						// No account
 						// This should mean we have an author that is not a site member
-						$rcc = new ResourcesContributor($this->database);
+						$rcc = new Contributor($this->database);
 						// Check to see if they're already an author
 						$rcc->loadAssociation($cid, $id, 'resources');
 						if ($rcc->authorid)
 						{
-							$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
+							$this->setError(\JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
 							continue;
 						}
 						// No name. Can't save record, so pass over it.
@@ -186,17 +193,17 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 						$rcc->name     = $cid;
 						$rcc->role     = addslashes($role);
 						$rcc->createAssociation();
-						//$this->setError(JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
+						//$this->setError(\JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 						$order++;
 						continue;
 					}
 				}
 
 				// We should only get to this part if the author is also a site member
-				$juser = JUser::getInstance($uid);
+				$juser = \JUser::getInstance($uid);
 				if (!is_object($juser))
 				{
-					$this->setError( JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
+					$this->setError(\JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 					continue;
 				}
 
@@ -204,22 +211,22 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 				if (!$uid)
 				{
-					$this->setError(JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
+					$this->setError(\JText::sprintf('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
 					continue;
 				}
 
 				// Check if they're already linked to this resource
-				$rcc = new ResourcesContributor($this->database);
+				$rcc = new Contributor($this->database);
 				$rcc->loadAssociation($uid, $id, 'resources');
 				if ($rcc->authorid)
 				{
-					$this->setError(JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rcc->name));
+					$this->setError(\JText::sprintf('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $rcc->name));
 					continue;
 				}
 
 				$this->_authorCheck($uid);
 
-				$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$xprofile = Profile::getInstance($juser->get('id'));
 				$rcc->subtable     = 'resources';
 				$rcc->subid        = $id;
 				$rcc->authorid     = $uid;
@@ -251,7 +258,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	 */
 	private function _authorCheck($id)
 	{
-		$xprofile = \Hubzero\User\Profile::getInstance($id);
+		$xprofile = Profile::getInstance($id);
 		if ($xprofile->get('givenName') == ''
 		 && $xprofile->get('middleName') == ''
 		 && $xprofile->get('surname') == '')
@@ -277,13 +284,13 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	public function removeTask()
 	{
 		// Incoming
-		$id  = JRequest::getInt('id', 0);
-		$pid = JRequest::getInt('pid', 0);
+		$id  = \JRequest::getInt('id', 0);
+		$pid = \JRequest::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid)
 		{
-			$this->setError(JText::_('CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -291,7 +298,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		// Ensure we have the contributor's ID ($id)
 		if ($id)
 		{
-			$rc = new ResourcesContributor($this->database);
+			$rc = new Contributor($this->database);
 			if (!$rc->deleteAssociation($id, $pid, 'resources'))
 			{
 				$this->setError($rc->getError());
@@ -310,13 +317,13 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	public function updateTask()
 	{
 		// Incoming
-		$ids = JRequest::getVar('authors', array(), 'post');
-		$pid = JRequest::getInt('pid', 0);
+		$ids = \JRequest::getVar('authors', array(), 'post');
+		$pid = \JRequest::getInt('pid', 0);
 
 		// Ensure we have a resource ID ($pid) to work with
 		if (!$pid)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_NO_ID'));
 			$this->displayTask();
 			return;
 		}
@@ -326,7 +333,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		{
 			foreach ($ids as $id => $data)
 			{
-				$rc = new ResourcesContributor($this->database);
+				$rc = new Contributor($this->database);
 				$rc->loadAssociation($id, $pid, 'resources');
 				$rc->organization = $data['organization'];
 				$rc->role = $data['role'];
@@ -346,14 +353,14 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 	public function reorderTask()
 	{
 		// Incoming
-		$id   = JRequest::getInt('id', 0);
-		$pid  = JRequest::getInt('pid', 0);
-		$move = 'order' . JRequest::getVar('move', 'down');
+		$id   = \JRequest::getInt('id', 0);
+		$pid  = \JRequest::getInt('pid', 0);
+		$move = 'order' . \JRequest::getVar('move', 'down');
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_CHILD_ID'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid);
 			return;
 		}
@@ -361,13 +368,13 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
-			$this->setError(JText::_('COM_CONTRIBUTE_NO_ID'));
+			$this->setError(\JText::_('COM_CONTRIBUTE_NO_ID'));
 			$this->displayTask($pid);
 			return;
 		}
 
 		// Get the element moving down - item 1
-		$author1 = new ResourcesContributor($this->database);
+		$author1 = new Contributor($this->database);
 		$author1->loadAssociation($id, $pid, 'resources');
 
 		// Get the element directly after it in ordering - item 2
@@ -416,30 +423,29 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 		// Incoming
 		if (!$id)
 		{
-			$id = JRequest::getInt('id', 0);
+			$id = \JRequest::getInt('id', 0);
 		}
 
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('CONTRIBUTE_NO_ID'));
-			return;
+			throw new Exception(\JText::_('CONTRIBUTE_NO_ID'), 500);
 		}
 
 		// Get all contributors of this resource
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new Helper($id, $this->database);
 		$helper->getCons();
 
 		// Get a list of all existing contributors
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 
-		$resource = new ResourcesResource($this->database);
+		$resource = new Resource($this->database);
 		$resource->load($id);
 
-		$rt = new ResourcesContributorRoleType($this->database);
+		$rt = new RoleType($this->database);
 
 		// Output HTML
 		$this->view->config = $this->config;
@@ -448,12 +454,9 @@ class ResourcesControllerAuthors extends \Hubzero\Component\SiteController
 
 		$this->view->roles = $rt->getRolesForType($resource->type);
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();

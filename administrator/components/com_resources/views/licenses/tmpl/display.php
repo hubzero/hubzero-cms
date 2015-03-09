@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('license');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('license');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_LICENSES'), 'addedit.png');
 if ($canDo->get('core.create'))
@@ -68,7 +68,16 @@ if ($canDo->get('core.delete'))
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php
+				// initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -111,10 +120,10 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td class="order">
 					<span>
-						<?php echo $this->pageNav->orderUpIcon( $i, (isset($this->rows[$i-1]->ordering)) ); ?>
+						<?php echo $pageNav->orderUpIcon($i, isset($this->rows[$i-1]->ordering)); ?>
 					</span>
 					<span>
-						<?php echo $this->pageNav->orderDownIcon( $i, $n, (isset($this->rows[$i+1]->ordering))); ?>
+						<?php echo $pageNav->orderDownIcon($i, $n, isset($this->rows[$i+1]->ordering)); ?>
 					</span>
 					<input type="hidden" name="order[]" value="<?php echo $this->escape($row->ordering); ?>" />
 				</td>

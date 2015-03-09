@@ -35,7 +35,7 @@ $database = JFactory::getDBO();
 
 $this->status['fulltxt'] = stripslashes($this->status['fulltxt']);
 
-$type = new ResourcesType($database);
+$type = new \Components\Resources\Tables\Type($database);
 $type->load(7);
 
 $data = array();
@@ -53,7 +53,7 @@ $this->status['fulltxt'] = trim($this->status['fulltxt']);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
-$elements = new ResourcesElements($data, $type->customFields);
+$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();
 
 ?>

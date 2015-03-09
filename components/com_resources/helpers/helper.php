@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
+
+use Hubzero\Base\Object;
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 
 /**
  * Information retrieval for items/info linked to a resource
  */
-class ResourcesHelper extends JObject
+class Helper extends Object
 {
 	/**
 	 * Resource ID
@@ -62,9 +63,9 @@ class ResourcesHelper extends JObject
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Resource ID
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   integer  $id   Resource ID
+	 * @param   object   &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($id, &$db)
 	{
@@ -274,7 +275,7 @@ class ResourcesHelper extends JObject
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else
 				{
@@ -324,7 +325,7 @@ class ResourcesHelper extends JObject
 			{
 				if (count($names) > 0)
 				{
-					$html = '<p>'.ucfirst(JText::_('By')).' ';
+					$html = '<p>'.ucfirst(\JText::_('By')).' ';
 					//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= count($contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
@@ -411,7 +412,7 @@ class ResourcesHelper extends JObject
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else
 				{
@@ -422,7 +423,7 @@ class ResourcesHelper extends JObject
 				{
 					if ($badges)
 					{
-						$xuser = JUser::getInstance($contributor->id);
+						$xuser = \JUser::getInstance($contributor->id);
 						if (is_object($xuser) && $xuser->get('name'))
 						{
 							$types = array(23 => 'manager', 24 => 'administrator', 25 => 'super administrator', 21 => 'publisher', 20 => 'editor');
@@ -436,8 +437,8 @@ class ResourcesHelper extends JObject
 					if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 					{
 						$orgs[$i-1] = trim($contributor->org);
-						$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
-						$orgsln_s 	.= trim($contributor->org).' ';
+						$orgsln    .= $i . '. ' . trim($contributor->org) . ' ';
+						$orgsln_s  .= trim($contributor->org).' ';
 						$k = $i;
 						$i++;
 					}
@@ -606,9 +607,9 @@ class ResourcesHelper extends JObject
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(__DIR__ . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_id);
+		$rt = new Tags($this->_id);
 		$filters = array();
 		if ($tagger_id)
 		{
@@ -640,9 +641,9 @@ class ResourcesHelper extends JObject
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(__DIR__ . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_id);
+		$rt = new Tags($this->_id);
 		$filters = array();
 		if ($tagger_id)
 		{
@@ -669,9 +670,9 @@ class ResourcesHelper extends JObject
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+		include_once(__DIR__ . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_id);
+		$rt = new Tags($this->_id);
 		$this->tagCloud = $rt->render('cloud');
 		return $this->tagCloud;
 	}
@@ -839,7 +840,7 @@ class ResourcesHelper extends JObject
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
-		$rr = new ResourcesReview($this->_db);
+		$rr = new Review($this->_db);
 
 		$this->reviews = $rr->getRatings($this->_id);
 

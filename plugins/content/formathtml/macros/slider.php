@@ -95,11 +95,11 @@ class Slider extends Macro
 			break;
 
 			case 'com_resources':
-				$row = new \ResourcesResource($db);
+				$row = new \Components\Resources\Tables\Resource($db);
 				$row->load($this->pageid);
 
 				$base_url  = DS . trim($config->get('uploadpath', 'site/resources'), DS) . DS;
-				$base_url .= \ResourcesHtml::build_path($row->created, $this->pageid, '') . DS . 'media';
+				$base_url .= \Components\Resources\Helpers\Html::build_path($row->created, $this->pageid, '') . DS . 'media';
 			break;
 		}
 
@@ -118,7 +118,7 @@ class Slider extends Macro
 				$slide = trim($slide);
 
 				//check if internal file actually exists
-				if (is_file(JPATH_ROOT . $base_url . DS . $slide))
+				if (is_file(PATH_APP . $base_url . DS . $slide))
 				{
 					$final_slides[] = $base_url . DS . $slide;
 				}

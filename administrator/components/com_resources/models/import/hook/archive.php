@@ -28,9 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model\Import\Hook;
+namespace Components\Resources\Models\Import\Hook;
 
-use JFactory;
+use Components\Resources\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\Model\ItemList;
 
 // include models
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import' . DS . 'hook.php';
@@ -38,7 +40,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import' . DS 
 /**
  * Import archive model
  */
-class Archive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
 	 * JDatabase
@@ -49,24 +51,26 @@ class Archive extends \Hubzero\Base\Object
 
 	/**
 	 * Import list
-	 * @var Hubzero\ItemList
+	 *
+	 * @var  object
 	 */
 	private $_hooks = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
 	 * Get Instance of Page Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   mixed  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -88,28 +92,28 @@ class Archive extends \Hubzero\Base\Object
 	/**
 	 * Get a list of imports
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $boolean  Clear cached data?
+	 * @return  mixed
 	 */
-	public function hooks( $rtrn = 'list', $filters = array(), $clear = false )
+	public function hooks($rtrn = 'list', $filters = array(), $clear = false )
 	{
 		switch (strtolower($rtrn))
 		{
 			case 'list':
 			default:
-				if (!($this->_hooks instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_hooks instanceof ItemList) || $clear)
 				{
-					$tbl = new \ResourcesTableImportHook($this->_db);
+					$tbl = new Tables\Import\Hook($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new \Resources\Model\Import\Hook($result);
+							$results[$key] = new \Components\Resources\Model\Import\Hook($result);
 						}
 					}
-					$this->_hooks = new \Hubzero\Base\Model\ItemList($results);
+					$this->_hooks = new ItemList($results);
 				}
 				return $this->_hooks;
 			break;

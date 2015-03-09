@@ -104,7 +104,7 @@ switch ($this->level)
 			$sortbys['jobs'] = JText::_('COM_RESOURCES_SORT_BY').' '.JText::_('COM_RESOURCES_JOBS');
 		}
 
-		$html .= '<h3>'.JText::_('COM_RESOURCES').' '.ResourcesHtml::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
+		$html .= '<h3>'.JText::_('COM_RESOURCES').' '.\Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"').'</h3>';
 		$html .= '<ul id="ulitems">';
 		if ($tools && count($tools) > 0) {
 			//$database = JFactory::getDBO();
@@ -168,9 +168,9 @@ switch ($this->level)
 			$helper->getLastCitationDate();
 
 			if ($resource->type == 7) {
-				$stats = new ToolStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Tables\Usage\Tools($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
 			} else {
-				$stats = new AndmoreStats($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Tables\Usage\Andmore($database, $resource->id, $resource->type, $resource->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 
 			$statshtml = $stats->display();
@@ -196,7 +196,7 @@ switch ($this->level)
 		if (!$juser->get('guest')) {
 			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
 			// Get the groups the user has access to
-			$usersgroups = ResourcesControllerResources::getUsersGroups($xgroups);
+			$usersgroups = \Components\Resources\Controllers\Resources::getUsersGroups($xgroups);
 		} else {
 			$usersgroups = array();
 		}
@@ -226,8 +226,8 @@ switch ($this->level)
 
 		if ($params->get('show_audience')) {
 			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.php');
-			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audience.level.php');
-			$ra = new ResourceAudience( $database );
+			include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'audiencelevel.php');
+			$ra = new \Components\Resources\Tables\Audience($database);
 			$audience = $ra->getAudience($resource->id, 0, 1, 4);
 
 			$view = $this->view('_audience', 'view')
@@ -239,7 +239,7 @@ switch ($this->level)
 		}
 		if ($this->bits['supportedtag'] && $supported) {
 			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-			$tag = new \Components\Tags\Tables\Tag( $database );
+			$tag = new \Components\Tags\Tables\Tag($database);
 			$tag->loadTag($config->get('supportedtag'));
 
 			$sl = $config->get('supportedlink');
@@ -256,7 +256,7 @@ switch ($this->level)
 			$view = $this->view('_metadata', 'view');
 			$view->option = 'com_resources';
 			$view->sections = $sections;
-			$view->model = ResourcesModelResource::getInstance($resource->id);
+			$view->model = \Components\Resources\Models\Resource::getInstance($resource->id);
 
 			$html .= $view->loadTemplate();
 		}

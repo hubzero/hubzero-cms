@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Contributor\Role;
+use Components\Resources\Tables\Contributor;
+use Hubzero\Component\AdminController;
 
 /**
  * Manage resource authors
  */
-class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
+class Authors extends AdminController
 {
 	/**
 	 * Execute a task
@@ -57,8 +60,8 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Get filters
 		$this->view->filters = array(
@@ -93,21 +96,13 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 			)
 		);
 
-		$obj = new ResourcesContributor($this->database);
+		$obj = new Contributor($this->database);
 
 		// Get record count
 		$this->view->total = $obj->getAuthorCount($this->view->filters);
 
 		// Get records
 		$this->view->rows = $obj->getAuthorRecords($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		$this->view->display();
 	}
@@ -119,30 +114,30 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($rows=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
-		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
+		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'role.php');
+		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 
 		$authorid = 0;
 		if (!is_array($rows))
 		{
 			// Incoming
-			$authorid = JRequest::getVar('id', array(0));
+			$authorid = \JRequest::getVar('id', array(0));
 			if (is_array($authorid))
 			{
 				$authorid = (!empty($authorid) ? $authorid[0] : 0);
 			}
 
 			// Load category
-			$obj = new ResourcesContributor($this->database);
+			$obj = new Contributor($this->database);
 			$rows = $obj->getRecordsForAuthor($authorid);
 		}
 
 		$this->view->rows = $rows;
 		$this->view->authorid = $authorid;
 
-		$model = new ResourcesContributorRole($this->database);
+		$model = new Role($this->database);
 		$this->view->roles = $model->getRecords(array('sort' => 'title'));
 
 		// Set any errors
@@ -165,17 +160,17 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
-		$authorid = JRequest::getVar('authorid', 0);
-		$id = JRequest::getVar('id', 0);
+		$fields   = \JRequest::getVar('fields', array(), 'post');
+		$authorid = \JRequest::getVar('authorid', 0);
+		$id       = \JRequest::getVar('id', 0);
 
 		if (!$authorid)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -185,7 +180,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		{
 			foreach ($fields as $fieldset)
 			{
-				$rc = new ResourcesContributor($this->database);
+				$rc = new Contributor($this->database);
 				$rc->subtable     = 'resources';
 				$rc->subid        = trim($fieldset['subid']);
 				$rc->authorid     = $authorid;
@@ -217,7 +212,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		}
 
 		// Instantiate a resource/contributor association object
-		$rc = new ResourcesContributor($this->database);
+		$rc = new Contributor($this->database);
 
 		if ($this->_task == 'apply')
 		{
@@ -225,19 +220,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

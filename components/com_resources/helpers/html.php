@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
 /**
  * Resources helper class for misc. HTML and display
  */
-class ResourcesHtml
+class Html
 {
 	/**
 	 * Generate a select form
@@ -92,19 +91,19 @@ class ResourcesHtml
 		}
 		if ($date)
 		{
-			$dir_year  = JFactory::getDate($date)->format('Y');
-			$dir_month = JFactory::getDate($date)->format('m');
+			$dir_year  = \JFactory::getDate($date)->format('Y');
+			$dir_month = \JFactory::getDate($date)->format('m');
 
 			if (!is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id) && intval($dir_year) <= 2013 && intval($dir_month) <= 11)
 			{
-				$dir_year  = JHTML::_('date', $date, 'Y');
-				$dir_month = JHTML::_('date', $date, 'm');
+				$dir_year  = \JHTML::_('date', $date, 'Y');
+				$dir_month = \JHTML::_('date', $date, 'm');
 			}
 		}
 		else
 		{
-			$dir_year  = JFactory::getDate()->format('Y');
-			$dir_month = JFactory::getDate()->format('m');
+			$dir_year  = \JFactory::getDate()->format('Y');
+			$dir_month = \JFactory::getDate()->format('m');
 		}
 
 		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
@@ -143,7 +142,7 @@ class ResourcesHtml
 						? stripslashes($child->logicaltitle)
 						: stripslashes($child->title);
 
-				$params = new JRegistry( $child->params );
+				$params = new \JRegistry( $child->params );
 
 				$ftype 	  = self::getFileExtension($child->path);
 				//$class    = $params->get('class', $ftype);
@@ -161,8 +160,8 @@ class ResourcesHtml
 					 && !in_array($item, $shown))
 					{
 						$class = str_replace(' ', '', strtolower($item));
-						$childParams  = new JRegistry($child->params);
-						$childAttribs = new JRegistry($child->attribs);
+						$childParams  = new \JRegistry($child->params);
+						$childAttribs = new \JRegistry($child->attribs);
 						$linkAction = $childParams->get('link_action', 0);
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
@@ -203,17 +202,17 @@ class ResourcesHtml
 		// View more link?
 		if ($docs > 0 && $otherdocs > 0)
 		{
-			$supln .= ' <li class="otherdocs"><a href="' . JRoute::_('index.php?option=' . $option
+			$supln .= ' <li class="otherdocs"><a href="' . \JRoute::_('index.php?option=' . $option
 				. '&id=' . $publication->id . '&active=supportingdocs')
-				.'" title="' . JText::_('COM_RESOURCES_VIEW_ALL') . ' ' . $docs.' ' . JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS').' ">'
-				. $otherdocs . ' ' . JText::_('COM_RESOURCES_MORE') . '</a></li>' . "\n";
+				.'" title="' . \JText::_('COM_RESOURCES_VIEW_ALL') . ' ' . $docs.' ' . \JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS').' ">'
+				. $otherdocs . ' ' . \JText::_('COM_RESOURCES_MORE') . '</a></li>' . "\n";
 		}
 
 		if (!$sdocs && $docs > 0)
 		{
-			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . JRoute::_('index.php?option='
+			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . \JRoute::_('index.php?option='
 				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">'
-				. JText::_('COM_RESOURCES_ADDITIONAL_MATERIALS_AVAILABLE') . ' (' . $docs .')</a></p>'."\n";
+				. \JText::_('COM_RESOURCES_ADDITIONAL_MATERIALS_AVAILABLE') . ' (' . $docs .')</a></p>'."\n";
 		}
 
 		$supln .= '</ul>'."\n";
@@ -230,7 +229,7 @@ class ResourcesHtml
 	public static function thumbnail($pic)
 	{
 		jimport('joomla.filesystem.file');
-		return JFile::stripExt($pic) . '-tn.gif';
+		return \JFile::stripExt($pic) . '-tn.gif';
 	}
 
 	/**
@@ -246,8 +245,8 @@ class ResourcesHtml
 		$license = str_replace(' ', '-', strtolower($license));
 		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
 
-		$database = JFactory::getDBO();
-		$rl = new ResourcesLicense($database);
+		$database = \JFactory::getDBO();
+		$rl = new \Components\Resources\Tables\License($database);
 		$rl->load($license);
 
 		$html = '';
@@ -268,7 +267,7 @@ class ResourcesHtml
 			}
 			else
 			{
-				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . JRoute::_('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
+				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . \JRoute::_('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
 			}
 		}
 		return $html;
@@ -340,21 +339,21 @@ class ResourcesHtml
 			{
 				if ($alias)
 				{
-					$url = JRoute::_('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
+					$url = \JRoute::_('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
 				}
 				else
 				{
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
+					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
 				}
 				if (strtolower($name) == $active)
 				{
-					$app = JFactory::getApplication();
+					$app = \JFactory::getApplication();
 					$pathway = $app->getPathway();
 					$pathway->addItem($cat[$name],$url);
 
 					if ($active != 'about')
 					{
-						$document = JFactory::getDocument();
+						$document = \JFactory::getDocument();
 						$title = $document->getTitle();
 						$document->setTitle($title . ': ' . $cat[$name]);
 					}
@@ -374,9 +373,9 @@ class ResourcesHtml
 	 * Generate COins microformat
 	 *
 	 * @param      object $cite     Resource citation data
-	 * @param      object $resource ResourcesResource
+	 * @param      object $resource Resource
 	 * @param      object $config   Component config
-	 * @param      object $helper   ResourcesHelper
+	 * @param      object $helper   Helper
 	 * @return     string HTML
 	 */
 	//public static function citationCOins($cite, $resource, $config, $helper)
@@ -390,7 +389,7 @@ class ResourcesHtml
 		$html  = '<span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
 
 		// Get contribtool params
-		$tconfig = JComponentHelper::getParams('com_tools');
+		$tconfig = \JComponentHelper::getParams('com_tools');
 		$doi = '';
 
 		/*
@@ -469,7 +468,7 @@ class ResourcesHtml
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
-		$html  = '<p>' . JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
+		$html  = '<p>' . \JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
 		if (trim($citations))
 		{
 			$html .= '<ul class="citations results">' . "\n";
@@ -486,8 +485,8 @@ class ResourcesHtml
 			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev'))
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . \JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . \JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
 				$html .= "\t\t" . '</p>' . "\n";
 			}
 			$html .= "\t" . '</li>' . "\n";
@@ -497,10 +496,10 @@ class ResourcesHtml
 
 		/*if ($type == 7)
 		{
-			$html .= '<p>'.JText::_('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
+			$html .= '<p>'.\JText::_('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
 			$html .= '<ul class="citations results">' . "\n";
 			$html .= "\t".'<li>' . "\n";
-			$html .= "\t\t".'<p>'.JText::_('Simulation services for results presented here were provided by the Network for Computational Nanotechnology (NCN) at nanoHUB.org').'</p>' . "\n";
+			$html .= "\t\t".'<p>'.\JText::_('Simulation services for results presented here were provided by the Network for Computational Nanotechnology (NCN) at nanoHUB.org').'</p>' . "\n";
 			$html .= "\t".'</li>' . "\n";
 			$html .= '</ul>' . "\n";
 		}*/
@@ -542,7 +541,7 @@ class ResourcesHtml
 	public static function getFileExtension($url)
 	{
 		jimport('joomla.filesystem.file');
-		return JFile::getExt($url);
+		return \JFile::getExt($url);
 	}
 
 	/**
@@ -556,17 +555,17 @@ class ResourcesHtml
 	 */
 	public static function processPath($option, $item, $pid=0, $action=0)
 	{
-		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
+		$database = \JFactory::getDBO();
+		$juser = \JFactory::getUser();
 
-		//$rt = new ResourcesType($database);
+		//$rt = new \Components\Resources\Tables\Type($database);
 		//$rt->load($item->type);
-		$rt = ResourcesType::getRecordInstance($item->type);
+		$rt = \Components\Resources\Tables\Type::getRecordInstance($item->type);
 		$type = $rt->alias;
 
 		if ($item->standalone == 1)
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
+			$url = \JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
 		}
 		else
 		{
@@ -581,26 +580,26 @@ class ResourcesHtml
 					else
 					{
 						// internal link but a resource
-						$url = JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
+						$url = \JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
 					}
 				break;
 
 				case 'video':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
+					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
 				break;
 
 				case 'hubpresenter':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
+					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
 				break;
 
 				case 'breeze':
-					$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 				break;
 
 				default:
 					if ($action == 2)
 					{
-						$url = JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+						$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 					}
 					else
 					{
@@ -610,7 +609,7 @@ class ResourcesHtml
 						}
 						else
 						{
-							$url = JRoute::_('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
+							$url = \JRoute::_('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
 						}
 					}
 				break;
@@ -625,15 +624,15 @@ class ResourcesHtml
 	 * Tools are the only exception in which case the button launches a tool session
 	 *
 	 * @param      string $option     Component name
-	 * @param      object $resource   ResourcesResource
+	 * @param      object $resource   Resource
 	 * @param      object $firstChild First resource child
 	 * @param      string $xact       Extra parameters to add
 	 * @return     string
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
-		$juser    = JFactory::getUser();
-		$database = JFactory::getDBO();
+		$juser    = \JFactory::getUser();
+		$database = \JFactory::getDBO();
 
 		$html = '';
 
@@ -642,16 +641,16 @@ class ResourcesHtml
 			case 7:
 				$authorized = $juser->authorise('core.manage', 'com_tools.' . $resource->id);
 
-				$juser = JFactory::getUser();
+				$juser = \JFactory::getUser();
 
-				$mconfig = JComponentHelper::getParams('com_tools');
+				$mconfig = \JComponentHelper::getParams('com_tools');
 
 				// Ensure we have a connection to the middleware
 				if (!$mconfig->get('mw_on')
 				 || ($mconfig->get('mw_on') > 1 && !$authorized))
 				{
-					$pop   = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 					return $html;
 				}
 
@@ -659,12 +658,12 @@ class ResourcesHtml
 				$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 				//get tool params
-				$params = JComponentHelper::getParams('com_tools');
+				$params = \JComponentHelper::getParams('com_tools');
 				$launchOnIpad = $params->get('launch_ipad', 0);
 
 				// Generate the URL that launches a tool session
 				$lurl ='';
-				$database = JFactory::getDBO();
+				$database = \JFactory::getDBO();
 				$tables = $database->getTableList();
 				$table = $database->getPrefix() . 'tool_version';
 
@@ -713,8 +712,8 @@ class ResourcesHtml
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 				// Create some tool objects
-				$hztv = ToolsModelVersion::getInstance($resource->tool);
-				$ht = ToolsModelTool::getInstance($hztv->toolid);
+				$hztv = \ToolsModelVersion::getInstance($resource->tool);
+				$ht = \ToolsModelTool::getInstance($hztv->toolid);
 				if ($ht)
 				{ // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
 					$toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->tool);
@@ -731,7 +730,7 @@ class ResourcesHtml
 						$groups[] = $xgroup->cn;
 					}
 					// Check if they're in the admin tool group
-					$admingroup = JComponentHelper::getParams('com_tools')->get('admingroup');
+					$admingroup = \JComponentHelper::getParams('com_tools')->get('admingroup');
 					if ($admingroup && in_array($admingroup, $groups))
 					{
 						$ingroup = true;
@@ -755,31 +754,31 @@ class ResourcesHtml
 
 				if (!$juser->get('guest') && !$ingroup && $toolgroups)
 				{ // see if tool is restricted to a group and if current user is in that group
-					$pop = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision))
 				{ // dev or published tool
 					//if ($juser->get('guest')) {
 						// Not logged-in = show message
-						//$html .= self::primaryButton('launchtool disabled', $lurl, JText::_('COM_RESOURCES_LAUNCH_TOOL'));
-						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
+						//$html .= self::primaryButton('launchtool disabled', $lurl, \JText::_('COM_RESOURCES_LAUNCH_TOOL'));
+						//$html .= self::warning('You must <a href="'.\JRoute::_('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
-						$pop = ($juser->get('guest')) ? '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
-						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
-						$html .= self::primaryButton('launchtool', $lurl, JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
+						$pop = ($juser->get('guest')) ? '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
+						$pop = ($resource->revision =='dev') ? '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
+						$html .= self::primaryButton('launchtool', $lurl, \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
 					//}
 				}
 				else
 				{ // tool unpublished
-					$pop   = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 			break;
 
 			case 4:
 				// write primary button and downloads for a Learning Module
-				$html .= self::primaryButton('', JRoute::_('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
+				$html .= self::primaryButton('', \JRoute::_('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
 			break;
 
 			case 6:
@@ -787,11 +786,11 @@ class ResourcesHtml
 			case 31:
 			case 2:
 				// do nothing
-				$mesg  = JText::_('COM_RESOURCES_VIEW') . ' ';
+				$mesg  = \JText::_('COM_RESOURCES_VIEW') . ' ';
 				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
 				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
 				$mesg .= $resource->type == 6 ? '' : 'Series';
-				$html .= self::primaryButton('download', JRoute::_('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
+				$html .= self::primaryButton('download', \JRoute::_('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
 			break;
 
 			default:
@@ -804,15 +803,15 @@ class ResourcesHtml
 				$action = '';
 				$xtra   = '';
 
-				//$lt = new ResourcesType($database);
+				//$lt = new \Components\Resources\Tables\Type($database);
 				//$lt->load($firstChild->logicaltype);
-				$lt = ResourcesType::getRecordInstance($firstChild->logicaltype);
-				$ltparams = new JRegistry($lt->params);
+				$lt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->logicaltype);
+				$ltparams = new \JRegistry($lt->params);
 
-				//$rt = new ResourcesType($database);
+				//$rt = new \Components\Resources\Tables\Type($database);
 				//$rt->load($firstChild->type);
-				$rt = ResourcesType::getRecordInstance($firstChild->type);
-				$tparams = new JRegistry($rt->params);
+				$rt = \Components\Resources\Tables\Type::getRecordInstance($firstChild->type);
+				$tparams = new \JRegistry($rt->params);
 
 				if ($firstChild->logicaltype)
 				{
@@ -826,14 +825,14 @@ class ResourcesHtml
 				switch ($rtLinkAction)
 				{
 					case 'download':
-						$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
+						$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
 						$class = 'download';
 						//$action = 'rel="download"';
 						$linkAction = 3;
 					break;
 
 					case 'lightbox':
-						$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
+						$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
 						$class = 'play';
 						//$action = 'rel="internal"';
 						$linkAction = 2;
@@ -841,7 +840,7 @@ class ResourcesHtml
 
 					case 'newwindow':
 					case 'external':
-						$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
+						$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
 						//$class = 'popup';
 						$action = 'rel="external"';
 						$linkAction = 1;
@@ -856,12 +855,12 @@ class ResourcesHtml
 
 						if (in_array($lt->alias, $downtypes))
 						{
-							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 						elseif (in_array($rt->alias, $mediatypes))
 						{
-							$mesg  = JText::_('COM_RESOURCES_VIEW_PRESENTATION');
+							$mesg  = \JText::_('COM_RESOURCES_VIEW_PRESENTATION');
 							$mediatypes = array('flash_paper','breeze','32','26');
 							if (in_array($firstChild->type, $mediatypes))
 							{
@@ -870,13 +869,13 @@ class ResourcesHtml
 						}
 						else
 						{
-							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 
 						if ($firstChild->standalone == 1)
 						{
-							$mesg  = JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg  = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							$class = ''; //'play';
 						}
 
@@ -890,7 +889,7 @@ class ResourcesHtml
 						 || substr($firstChild->path, 0, 7) == 'feed://'
 						 || substr($firstChild->path, 0, 6) == 'mms://')
 						{
-							$mesg  = JText::_('COM_RESOURCES_VIEW_LINK');
+							$mesg  = \JText::_('COM_RESOURCES_VIEW_LINK');
 						}
 					break;
 				}
@@ -899,12 +898,12 @@ class ResourcesHtml
 				if ($firstChild->access==1 && $juser->get('guest'))
 				{
 					// first child is for registered users only and the visitor is not logged in
-					$pop  = '<p class="warning">' . JText::_('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
+					$pop  = '<p class="warning">' . \JText::_('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
+					$html .= self::primaryButton($class . ' disabled', \JRoute::_('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{
-					$childParams = new JRegistry($firstChild->params);
+					$childParams = new \JRegistry($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
 					$url = self::processPath($option, $firstChild, $resource->id, $linkAction);
@@ -912,17 +911,17 @@ class ResourcesHtml
 					switch ($linkAction)
 					{
 						case 3:
-							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						break;
 
 						case 2:
-							$mesg  = JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg  = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							$class = 'play';
 						break;
 
 						case 1:
-							$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							//$class = 'popup';
 							$action = 'rel="external"';
 						break;
@@ -933,7 +932,7 @@ class ResourcesHtml
 						break;
 					}
 
-					$attribs = new JRegistry($firstChild->attribs);
+					$attribs = new \JRegistry($firstChild->attribs);
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0)
@@ -947,7 +946,7 @@ class ResourcesHtml
 					//}
 
 					//load a resouce type object on child resource type
-					//$rt = new ResourcesType($database);
+					//$rt = new \Components\Resources\Tables\Type($database);
 					//$rt->load($firstChild->type);
 
 					//if we are a hubpresenter resource type, do not show file type in button
@@ -967,7 +966,7 @@ class ResourcesHtml
 						$class = 'video';
 					}
 
-					$pt = ResourcesType::getRecordInstance($resource->type);
+					$pt = \Components\Resources\Tables\Type::getRecordInstance($resource->type);
 					if ($pt->alias == 'databases')
 					{
 						$mesg = "Dataview";
@@ -1067,7 +1066,7 @@ class ResourcesHtml
 			$path = PATH_APP . $path;
 
 			jimport('joomla.filesystem.file');
-			$type = strtoupper(JFile::getExt($path));
+			$type = strtoupper(\JFile::getExt($path));
 
 			//check to see if we have a json file (HUBpresenter)
 			if ($type == 'JSON')

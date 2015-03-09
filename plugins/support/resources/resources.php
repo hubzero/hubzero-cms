@@ -202,7 +202,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new ResourcesReview($database);
+		$comment = new \Components\Resources\Tables\Review($database);
 		$comment->load($refid);
 		$comment->state = 3;
 		$comment->store();
@@ -229,7 +229,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$comment = new ResourcesReview($database);
+		$comment = new \Components\Resources\Tables\Review($database);
 		$comment->load($refid);
 		$comment->state = 1;
 		$comment->store();
@@ -264,13 +264,13 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
 
 				// Delete the review
-				$review = new ResourcesReview($database);
+				$review = new \Components\Resources\Tables\Review($database);
 				$review->load($referenceid);
 				$review->state = 2;
 				$review->store();
 
 				// Recalculate the average rating for the parent resource
-				$resource = new ResourcesResource($database);
+				$resource = new \Components\Resources\Tables\Resource($database);
 				$resource->load($parentid);
 				$resource->calculateRating();
 				if (!$resource->store())

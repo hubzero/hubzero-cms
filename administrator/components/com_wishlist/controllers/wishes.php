@@ -218,7 +218,7 @@ class Wishes extends AdminController
 				if ($list->category == 'resource')
 				{
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-					$list->resource = new \ResourcesResource($this->database);
+					$list->resource = new \Components\Resources\Tables\Resource($this->database);
 					$list->resource->load($list->referenceid);
 				}
 				$this->view->ownerassignees[$list->id] = array();

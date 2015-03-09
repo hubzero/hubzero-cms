@@ -44,22 +44,22 @@ $database = JFactory::getDBO();
 		{
 			if ($line->section != 'Topic')
 			{
-				$class = ResourcesHtml::getRatingClass($line->rating);
+				$class = \Components\Resources\Helpers\Html::getRatingClass($line->rating);
 
-				$resourceEx = new ResourcesHelper($line->id, $database);
+				$resourceEx = new \Components\Resources\Helpers\Helper($line->id, $database);
 				$resourceEx->getContributors();
 
 				// If the user is logged in, get their rating for this resource
 				if (!$juser->get('guest'))
 				{
-					$mr = new ResourcesReview($database);
+					$mr = new \Components\Resources\Tables\Review($database);
 					$myrating = $mr->loadUserRating($line->id, $juser->get('id'));
 				}
 				else
 				{
 					$myrating = 0;
 				}
-				$myclass = ResourcesHtml::getRatingClass($myrating);
+				$myclass = \Components\Resources\Helpers\Html::getRatingClass($myrating);
 
 				// Get the SEF for the resource
 				if ($line->alias)

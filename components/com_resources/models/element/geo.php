@@ -1,34 +1,41 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Models\Element;
+
+use Components\Resources\Models\Element as Base;
 
 /**
  * Renders a geolocation element
  */
-class ResourcesElementGeo extends ResourcesElement
+class Geo extends Base
 {
 	/**
 	* Element name
@@ -59,14 +66,14 @@ class ResourcesElementGeo extends ResourcesElement
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description)
 		{
-			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
+			$output .= ' class="hasTip" title="' . \JText::_($label) . '::' . \JText::_($description) . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= JText::_($label) . ' <span class="hint">' . JText::_('(street, city, state/province postal-code, country)') . '</span>';
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('JOPTION_REQUIRED') . '</span>' : '';
+		$output .= \JText::_($label) . ' <span class="hint">' . \JText::_('(street, city, state/province postal-code, country)') . '</span>';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . \JText::_('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -85,9 +92,9 @@ class ResourcesElementGeo extends ResourcesElement
 	{
 		if (!$this->_script)
 		{
-			$document = JFactory::getDocument();
+			$document = \JFactory::getDocument();
 			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
-			$document->addScript(JURI::base(true) . '/components/com_resources/models/element/geo.js');
+			$document->addScript(\JURI::base(true) . '/components/com_resources/models/element/geo.js');
 			$this->_script = true;
 		}
 

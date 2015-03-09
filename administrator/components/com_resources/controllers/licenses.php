@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\License;
+use Hubzero\Component\AdminController;
 
 /**
  * Manage resource types
  */
-class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
+class Licenses extends AdminController
 {
 	/**
 	 * Executes a task
@@ -59,8 +61,8 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
@@ -94,21 +96,13 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		);
 
 		// Instantiate an object
-		$rt = new ResourcesLicense($this->database);
+		$rt = new License($this->database);
 
 		// Get a record count
 		$this->view->total = $rt->getCount($this->view->filters);
 
 		// Get records
 		$this->view->rows = $rt->getRecords($this->view->filters);
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		if (!$this->view->total)
 		{
@@ -128,12 +122,6 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -145,21 +133,21 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		$this->view;
 
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Load the object
-			$row = new ResourcesLicense($this->database);
+			$row = new License($this->database);
 			$row->load($id);
 		}
 
@@ -185,13 +173,13 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new ResourcesLicense($this->database);
+		$row = new License($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -222,8 +210,8 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_RESOURCES_ITEM_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
 
@@ -235,10 +223,10 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -246,14 +234,14 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
 		}
 
-		$rt = new ResourcesLicense($this->database);
+		$rt = new License($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -263,8 +251,8 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
 
@@ -277,34 +265,22 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		$dir = $this->_task == 'orderup' ? -1 : 1;
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
+		$id = \JRequest::getVar('id', array(0), '', 'array');
 
 		// Load row
-		$row = new ResourcesLicense($this->database);
+		$row = new License($this->database);
 		$row->load((int) $id[0]);
 
 		// Update order
 		$row->move($dir);
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

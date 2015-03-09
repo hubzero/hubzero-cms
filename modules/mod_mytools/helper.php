@@ -34,7 +34,6 @@ use Hubzero\Module\Module;
 use ToolsModelVersion;
 use ToolsModelTool;
 use RecentTool;
-use ResourcesTags;
 use JRequest;
 use JFactory;
 use JComponentHelper;
@@ -287,7 +286,7 @@ class Helper extends Module
 		if ($this->supportedtag)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$this->rt = new ResourcesTags(0);
+			$this->rt = new \Components\Resources\Helpers\Tags(0);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
 

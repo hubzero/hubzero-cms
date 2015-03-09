@@ -32,8 +32,6 @@
 namespace Modules\Featuredresource;
 
 use Hubzero\Module\Module;
-use ResourcesResource;
-use ResourcesHtml;
 use ToolVersion;
 use JComponentHelper;
 use JFactory;
@@ -78,7 +76,7 @@ class Helper extends Module
 
 		// No - so we need to randomly choose one
 		// Initiate a resource object
-		$rr = new ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Get records
 		$rows = $rr->getRecords($filters, false);
@@ -101,7 +99,7 @@ class Helper extends Module
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
-			$path = ResourcesHtml::build_path($row->created, $row->id, $path);
+			$path = \Components\Resources\Helpers\Html::build_path($row->created, $row->id, $path);
 
 			if ($row->type == 7)
 			{
@@ -120,7 +118,7 @@ class Helper extends Module
 
 			$thumb = $path . DS . $picture;
 
-			if (!is_file(JPATH_ROOT . $thumb))
+			if (!is_file(PATH_APP . $thumb))
 			{
 				$thumb = DS . trim($config->get('defaultpic'));
 			}
@@ -176,7 +174,7 @@ class Helper extends Module
 	 */
 	private function getImage($path)
 	{
-		$d = @dir(JPATH_ROOT . $path);
+		$d = @dir(PATH_APP . $path);
 
 		$images = array();
 
@@ -185,7 +183,7 @@ class Helper extends Module
 			while (false !== ($entry = $d->read()))
 			{
 				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $img_file)
+				if (is_file(PATH_APP . $path . DS . $img_file)
 				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{

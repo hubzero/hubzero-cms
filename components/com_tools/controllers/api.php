@@ -97,7 +97,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$resource_tags = new ResourcesTags(0);
+		$resource_tags = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
 		//create list of tools
@@ -186,14 +186,14 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$this->rt = new ResourcesTags(0);
+		$this->rt = new \Components\Resources\Helpers\Tags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		$ts = new ResourcesScreenshot($database);
+		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new ToolVersion($database);
 		$vid = $tv->getVersionIdFromResource($tool_info->id, $version);
 		$shots = $ts->getScreenshots($tool_info->id, $vid);

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Hubzero\Component\AdminController;
+use Exception;
 
 /**
  * Manage resource types
  */
-class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
+class Plugins extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -43,12 +45,12 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		$task = JRequest::getVar('task', '');
-		$plugin = JRequest::getVar('plugin', '');
+		$task = \JRequest::getVar('task', '');
+		$plugin = \JRequest::getVar('plugin', '');
 		if ($plugin && $task && $task != 'manage')
 		{
-			JRequest::setVar('action', $task);
-			JRequest::setVar('task', 'manage');
+			\JRequest::setVar('action', $task);
+			\JRequest::setVar('task', 'manage');
 		}
 
 		$this->registerTask('add', 'edit');
@@ -74,8 +76,8 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
@@ -116,7 +118,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		);
 
 		$where = array();
-		$this->client = JRequest::getWord('filter_client', 'site');
+		$this->client = \JRequest::getWord('filter_client', 'site');
 
 		if ($this->client == 'admin')
 		{
@@ -158,13 +160,6 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		$this->view->total = $this->database->loadResult();
 
-		jimport('joomla.html.pagination');
-		$this->view->pagination = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
 			. ' FROM #__extensions AS p'
 			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
@@ -173,15 +168,14 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			. ' GROUP BY p.extension_id'
 			. $orderby;
 
-		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);
+		$this->database->setQuery($query, $this->view->filters['start'], $this->view->filters['limit']);
 		$this->view->rows = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
 		{
-			JError::raiseError(500, $this->database->stderr());
-			return false;
+			throw new Exception($this->database->stderr(), 500);
 		}
 
-		$lang = JFactory::getLanguage();
+		$lang = \JFactory::getLanguage();
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as &$item)
@@ -192,19 +186,19 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 				||	$lang->load($extension . '.sys', $source, null, false, false)
 				||	$lang->load($extension . '.sys', JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 				||	$lang->load($extension . '.sys', $source, $lang->getDefault(), false, false);
-				$item->name = JText::_($item->name);
+				$item->name = \JText::_($item->name);
 			}
 		}
 
 		// Get related plugins
-		JPluginHelper::importPlugin('resources');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('resources');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Show related content
 		$this->view->manage = $dispatcher->trigger('onCanManage');
 
 		$this->view->client = $this->client;
-		$this->view->states = JHTML::_('grid.state', $this->view->filters['state']);
+		$this->view->states = \JHTML::_('grid.state', $this->view->filters['state']);
 		$this->view->user = $this->juser;
 
 		// Set any errors
@@ -225,21 +219,21 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function manageTask()
 	{
 		// Incoming (expecting an array)
-		$plugin = JRequest::getVar('plugin', '');
+		$plugin = \JRequest::getVar('plugin', '');
 
 		if (!$plugin)
 		{
 			// Redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
 			);
 			return;
 		}
 
 		// Get related plugins
-		JPluginHelper::importPlugin('resources', $plugin);
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('resources', $plugin);
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Show related content
 		$out = $dispatcher->trigger(
@@ -247,7 +241,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			array(
 				$this->_option,
 				$this->_controller,
-				JRequest::getVar('action', 'default')
+				\JRequest::getVar('action', 'default')
 			)
 		);
 
@@ -279,7 +273,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -291,11 +285,11 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row = null)
 	{
-		$cid = JRequest::getVar('cid', array(0), '', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		$cid = \JRequest::getVar('cid', array(0), '', 'array');
+		\JArrayHelper::toInteger($cid, array(0));
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
+			\JRoute::_('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
 		);
 	}
 
@@ -307,13 +301,13 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$client = JRequest::getWord('filter_client', 'site');
+		$client = \JRequest::getWord('filter_client', 'site');
 
 		// Bind data
-		$row = JTable::getInstance('extension');
-		if (!$row->bind(JRequest::get('post')))
+		$row = \JTable::getInstance('extension');
+		if (!$row->bind(\JRequest::get('post')))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
@@ -348,16 +342,16 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		{
 			case 'apply':
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid=' . $row->id, false),
-					JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid=' . $row->id, false),
+					\JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
 			break;
 
 			case 'save':
 			default:
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
-					JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
+					\JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
 			break;
 		}
@@ -371,23 +365,23 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
-		JArrayHelper::toInteger($id, array(0));
+		$id = \JRequest::getVar('id', array(0), '', 'array');
+		\JArrayHelper::toInteger($id, array(0));
 
-		$client = JRequest::getWord('filter_client', 'site');
+		$client = \JRequest::getWord('filter_client', 'site');
 
 		if (count($id) < 1)
 		{
-			$action = $state ? JText::_('COM_RESOURCES_PUBLISH') : JText::_('COM_RESOURCES_UNPUBLISH');
+			$action = $state ? \JText::_('COM_RESOURCES_PUBLISH') : \JText::_('COM_RESOURCES_UNPUBLISH');
 
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
-				JText::sprintf('COM_RESOURCES_ERROR_SELECT_TO', $action),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
+				\JText::sprintf('COM_RESOURCES_ERROR_SELECT_TO', $action),
 				'error'
 			);
 			return;
@@ -401,7 +395,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$this->database->query())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				$this->database->getErrorMsg(),
 				'error'
 			);
@@ -410,12 +404,12 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		if (count($id) == 1)
 		{
-			$row = JTable::getInstance('extension');
+			$row = \JTable::getInstance('extension');
 			$row->checkin($id[0]);
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
 		);
 	}
 
@@ -428,14 +422,14 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function orderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid    = JRequest::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		$cid    = \JRequest::getVar('id', array(0), 'post', 'array');
+		\JArrayHelper::toInteger($cid, array(0));
 
 		$uid    = $cid[0];
 		$inc    = ($this->_task == 'orderup' ? -1 : 1);
-		$client = JRequest::getWord('filter_client', 'site');
+		$client = \JRequest::getWord('filter_client', 'site');
 
 		// Currently Unsupported
 		if ($client == 'admin')
@@ -447,12 +441,12 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			$where = "client_id = 0";
 		}
 
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 		$row->load($uid);
 		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -464,7 +458,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
 
 		switch ($this->_task)
 		{
@@ -474,11 +468,11 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		}
 
 		// Incoming
-		$cid = JRequest::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		$cid = \JRequest::getVar('id', array(0), 'post', 'array');
+		\JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 		$row->load($cid[0]);
 
 		// Set the access
@@ -488,7 +482,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->check())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -499,7 +493,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -508,7 +502,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -520,16 +514,16 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid = JRequest::getVar('id', array(0), 'post', 'array');
-		JArrayHelper::toInteger($cid, array(0));
+		$cid = \JRequest::getVar('id', array(0), 'post', 'array');
+		\JArrayHelper::toInteger($cid, array(0));
 
 		$total = count($cid);
-		$order = JRequest::getVar('order', array(0), 'post', 'array');
-		JArrayHelper::toInteger($order, array(0));
+		$order = \JRequest::getVar('order', array(0), 'post', 'array');
+		\JArrayHelper::toInteger($order, array(0));
 
-		$row = JTable::getInstance('extension');
+		$row = \JTable::getInstance('extension');
 
 		$conditions = array();
 
@@ -543,7 +537,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 				if (!$row->store())
 				{
 					$this->setRedirect(
-						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						$this->database->getErrorMsg(),
 						'error'
 					);
@@ -573,8 +567,8 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_RESOURCES_ORDERING_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_RESOURCES_ORDERING_SAVED')
 		);
 	}
 }

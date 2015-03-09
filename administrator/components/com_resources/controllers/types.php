@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Type;
+use Hubzero\Component\AdminController;
+use stdClass;
 
 /**
  * Manage resource types
  */
-class ResourcesControllerTypes extends \Hubzero\Component\AdminController
+class Types extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -57,42 +60,43 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.types.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.types.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.types.sort',
-			'filter_order',
-			'category'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.types.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['category'] = $app->getUserStateFromRequest(
-			$this->_option . '.types.category',
-			'category',
-			27,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.types.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.types.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.types.sort',
+				'filter_order',
+				'category'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.types.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'category' => $app->getUserStateFromRequest(
+				$this->_option . '.types.category',
+				'category',
+				27,
+				'int'
+			)
 		);
 
 		// Instantiate an object
-		$rt = new ResourcesType($this->database);
+		$rt = new Type($this->database);
 
 		// Get a record count
 		$this->view->total = $rt->getAllCount($this->view->filters);
@@ -100,22 +104,8 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows = $rt->getAllTypes($this->view->filters);
 
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Get the category names
 		$this->view->cats = $rt->getTypes('0');
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -128,19 +118,19 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
 			}
 
 			// Load the object
-			$row = new ResourcesType($this->database);
+			$row = new Type($this->database);
 			$row->load($id);
 		}
 
@@ -170,10 +160,10 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Initiate extended database class
-		$row = new ResourcesType($this->database);
+		$row = new Type($this->database);
 		if (!$row->bind($_POST))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -182,7 +172,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Get the custom fields
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields))
 		{
 			$elements = new stdClass();
@@ -224,20 +214,20 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			}
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-			$re = new ResourcesElements($elements);
+			$re = new \ResourcesElements($elements);
 			$row->customFields = $re->toString();
 		}
 
 		// Get parameters
-		$p = new JRegistry('');
-		$p->loadArray(JRequest::getVar('params', array(), 'post'));
+		$p = new \JRegistry('');
+		$p->loadArray(\JRequest::getVar('params', array(), 'post'));
 
 		$row->params = $p->toString();
 
 		// Make sure a category is set
 		if (!$row->category)
 		{
-			$this->addComponentMessage(JText::_('COM_RESOURCES_ERROR_SELECT_CATEGORY'), 'error');
+			$this->addComponentMessage(\JText::_('COM_RESOURCES_ERROR_SELECT_CATEGORY'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -265,8 +255,8 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_RESOURCES_ITEM_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
 
@@ -295,10 +285,10 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -306,14 +296,14 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
 		}
 
-		$rt = new ResourcesType($this->database);
+		$rt = new Type($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -324,8 +314,8 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			{
 				// Redirect with error message
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					JText::sprintf('COM_RESOURCES_TYPE_BEING_USED', $id),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					\JText::sprintf('COM_RESOURCES_TYPE_BEING_USED', $id),
 					'error'
 				);
 				return;
@@ -337,20 +327,8 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
 
@@ -361,27 +339,27 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	 */
 	public function elementTask()
 	{
-		$ctrl = JRequest::getVar('ctrl', 'fields');
+		$ctrl = \JRequest::getVar('ctrl', 'fields');
 
 		$option = new stdClass;
 		$option->label = '';
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label       = JRequest::getVar('name', 0);
+		$field->label       = \JRequest::getVar('name', 0);
 		$field->element     = '';
 		$field->description = '';
 		$field->text        = $field->label;
 		$field->name        = $field->label;
 		$field->default     = '';
-		$field->type        = JRequest::getVar('type', '');
+		$field->type        = \JRequest::getVar('type', '');
 		$field->options     = array(
 			$option,
 			$option
 		);
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-		$elements = new ResourcesElements();
+		$elements = new \Components\Resources\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}
 }

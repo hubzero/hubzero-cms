@@ -28,77 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Plugins\Resources\Sponsors\Tables;
 
 /**
  * Table class for resource sponsor
  */
-class ResourcesSponsor extends JTable
+class Sponsor extends \JTable
 {
-	/**
-	 * Description for 'id'
-	 *
-	 * @var unknown
-	 */
-	var $id       		= NULL;  // @var int(11) Primary key
-
-	/**
-	 * Description for 'alias'
-	 *
-	 * @var unknown
-	 */
-	var $alias	  		= NULL;	 // @var varchar(100)
-
-	/**
-	 * Description for 'type'
-	 *
-	 * @var unknown
-	 */
-	var $title     		= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'state'
-	 *
-	 * @var unknown
-	 */
-	var $state 		= NULL;  // @var int(3)
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $created = NULL;  // @var text
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $created_by = NULL;  // @var text
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $modified = NULL;  // @var text
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $modified_by = NULL;  // @var text
-
-	/**
-	 * Description for 'description'
-	 *
-	 * @var unknown
-	 */
-	var $description 	= NULL;  // @var text
-
 	/**
 	 * Constructor
 	 *
@@ -122,7 +58,7 @@ class ResourcesSponsor extends JTable
 
 		if (!$this->title)
 		{
-			$this->setError(JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
+			$this->setError(\JText::_('PLG_RESOURCES_SPONSORS_MISSING_TITLE'));
 			return false;
 		}
 
@@ -132,15 +68,15 @@ class ResourcesSponsor extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 

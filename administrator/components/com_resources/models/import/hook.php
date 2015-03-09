@@ -24,27 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model\Import;
+namespace Components\Resources\Models\Import;
 
-use JFactory;
-use JComponentHelper;
+use Hubzero\Base\Model;
 
 // included needed tables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import.hook.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import' . DS . 'hook.php';
 
 /**
  * Import Runs Model
  */
-class Hook extends \Hubzero\Base\Model
+class Hook extends Model
 {
 	/**
 	 * JTable
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl = null;
 
@@ -53,19 +52,18 @@ class Hook extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'ResourcesTableImportHook';
+	protected $_tbl_name = '\\Components\\Resources\\Tables\\Import\\Hook';
 
 	/**
 	 * Constructor
 	 *
-	 * @access public
-	 * @param  ResourcesTableImportRun Object Id
-	 * @return void
+	 * @param   mixed  $oid  Object Id
+	 * @return  void
 	 */
-	public function __construct( $oid = null )
+	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -73,28 +71,27 @@ class Hook extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
 	/**
 	 * Return imports filespace path
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
 	 */
 	public function fileSpacePath()
 	{
 		// get com resources params
-		$params = JComponentHelper::getParams('com_resources');
+		$params = \JComponentHelper::getParams('com_resources');
 
 		// build upload path
 		$uploadPath = $params->get('import_hooks_uploadpath', '/site/resources/import/hooks');
-		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
+		$uploadPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;

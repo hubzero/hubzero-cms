@@ -53,7 +53,7 @@ $this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
 $this->model->resource->fulltxt = ($this->model->resource->fulltxt) ? trim($this->model->resource->fulltxt) : trim($this->model->resource->introtext);
 
 // Parse for <nb:field> tags
-$type = new ResourcesType($this->database);
+$type = new \Components\Resources\Tables\Type($this->database);
 $type->load($this->model->resource->type);
 
 $data = array();
@@ -69,7 +69,7 @@ $this->model->resource->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", 
 $this->model->resource->fulltxt = trim($this->model->resource->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-$elements = new ResourcesElements($data, $this->model->type->customFields);
+$elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
 $schema = $elements->getSchema();
 
 // Set the document description
@@ -90,7 +90,7 @@ $maintext = $this->model->description('parsed');
 			//$shots = null;
 		} else {
 			// Screenshots
-			$ss = new ResourcesScreenshot($this->database);
+			$ss = new \Components\Resources\Tables\Screenshot($this->database);
 
 			$this->view('_screenshots')
 			     ->set('id', $this->model->resource->id)
@@ -227,8 +227,8 @@ $maintext = $this->model->description('parsed');
 					$cite = null;
 				}
 
-				$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
-				$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model);
+				$citeinstruct  = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
+				$citeinstruct .= \Components\Resources\Helpers\Html::citationCOins($cite, $this->model);
 				?>
 				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
 				<div class="resource-content">
@@ -291,7 +291,7 @@ $maintext = $this->model->description('parsed');
 
 		<?php if ($this->model->params->get('show_assocs')) { ?>
 			<?php
-			$tagger = new ResourcesTags($this->model->resource->id);
+			$tagger = new \Components\Resources\Helpers\Tags($this->model->resource->id);
 			if ($tags = $tagger->render('cloud', ($this->model->access('edit') ? array() : array('admin' => 0)))) { ?>
 				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">

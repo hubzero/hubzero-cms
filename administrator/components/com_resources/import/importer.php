@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Import;
+namespace Components\Resources\Import;
 
 // needed files
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'interfaces' . DS . 'adapter.php';
@@ -39,8 +39,8 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'import' . DS 
 /**
  * Import Importer class
  */
-class Importer {
-
+class Importer
+{
 	/**
 	 * ResourceImportInterface Object
 	 *
@@ -98,7 +98,7 @@ class Importer {
 	private function bootAdapters()
 	{
 		// include all adapters
-		foreach (glob(JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'adapters' . DS . '*.php') as $adapter)
+		foreach (glob(__DIR__ . DS . 'adapters' . DS . '*.php') as $adapter)
 		{
 			require_once $adapter;
 		}
@@ -106,7 +106,7 @@ class Importer {
 		// anonymous function to get adapters
 		$isAdapterClass = function($class) {
 
-			return (in_array('Resources\Import\Interfaces\Adapter', class_implements($class)));
+			return (in_array('Components\Resources\Import\Interfaces\Adapter', class_implements($class)));
 		};
 
 		// set our adapters (any declared class implementing the ResourcesImportInterface)
@@ -120,7 +120,7 @@ class Importer {
 	 * @param  ResourcesImportInterface Object
 	 * @return void
 	 */
-	public function setAdapter(\Resources\Import\Interfaces\Adapter $adapter)
+	public function setAdapter(\Components\Resources\Import\Interfaces\Adapter $adapter)
 	{
 		$this->adapter = $adapter;
 	}
@@ -143,7 +143,7 @@ class Importer {
 	 * @param  ResourcesImportInterface Object
 	 * @return void
 	 */
-	private function autoDetectAdapter(\Resources\Model\Import $import)
+	private function autoDetectAdapter(\Components\Resources\Models\Import $import)
 	{
 		// make sure we dont already have an adapter
 		if ($this->adapter)
@@ -173,7 +173,7 @@ class Importer {
 		// do we still not have adapter
 		if (!$this->adapter)
 		{
-			throw new \Exception( \JText::_('Resource Import: No adapter found to count import data.') );
+			throw new \Exception(\JText::_('Resource Import: No adapter found to count import data.'));
 		}
 	}
 
@@ -183,7 +183,7 @@ class Importer {
 	 * @access public
 	 * @return void
 	 */
-	public function count(\Resources\Model\Import $import)
+	public function count(\Components\Resources\Models\Import $import)
 	{
 		// autodetect adapter
 		$this->autoDetectAdapter($import);
@@ -199,7 +199,7 @@ class Importer {
 	 * @param  Closure Object
 	 * @return void
 	 */
-	public function process(\Resources\Model\Import $import, array $callbacks, $dryRun = 1)
+	public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun = 1)
 	{
 		// autodetect adapter
 		$this->autoDetectAdapter($import);

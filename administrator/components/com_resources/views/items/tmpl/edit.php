@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('resource');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') . ' #' . $this->row->id : JText::_('JACTION_CREATE'));
 
@@ -46,7 +46,7 @@ if ($this->row->standalone == 1)
 {
 	$database = JFactory::getDBO();
 
-	$type = new ResourcesType($database);
+	$type = new \Components\Resources\Tables\Type($database);
 	$type->load($this->row->type);
 
 	$data = array();
@@ -66,9 +66,9 @@ if ($this->row->standalone == 1)
 }
 
 // Build the path for uploading files
-$path = ResourcesHtml::dateToPath($this->row->created);
+$path = \Components\Resources\Helpers\Html::dateToPath($this->row->created);
 if ($this->row->id) {
-	$dir_id = ResourcesHtml::niceidformat($this->row->id);
+	$dir_id = \Components\Resources\Helpers\Html::niceidformat($this->row->id);
 } else {
 	$dir_id = time().rand(0,10000);
 }
@@ -291,7 +291,7 @@ function popratings()
 
 			<div class="input-wrap" id="resource-custom-fields">
 				<?php
-				$elements = new ResourcesElements($data, $type->customFields);
+				$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 				echo $elements->render();
 				?>
 			</div>

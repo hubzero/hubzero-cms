@@ -23,10 +23,16 @@ class Migration20141022103600PlgResourcesAbout extends Base
 			{
 				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
+				$tbl = '\\Components\\Resources\\Tables\\Type';
+				if (class_exists('ResourcesType'))
+				{
+					$tbl = 'ResourcesType';
+				}
+
 				// Update the query
 				foreach ($records as $record)
 				{
-					$row = new ResourcesType($this->db);
+					$row = new $tbl($this->db);
 					$row->bind($record);
 
 					$p = new JRegistry($row->params);

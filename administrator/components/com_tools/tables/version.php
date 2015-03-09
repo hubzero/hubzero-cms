@@ -311,7 +311,7 @@ class ToolVersion extends  JTable
 			return false;
 		}
 
-		$rd = new ResourcesDoi($this->_db);
+		$rd = new \Components\Resources\Tables\Doi($this->_db);
 
 		$query  = "SELECT v.*, d.* ";
 		$query .= "FROM $this->_tbl as v ";

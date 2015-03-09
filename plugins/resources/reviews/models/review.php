@@ -44,7 +44,7 @@ class ResourcesModelReview extends \Hubzero\Base\Model
 	 *
 	 * @var object
 	 */
-	protected $_tbl_name = 'ResourcesReview';
+	protected $_tbl_name = '\\Components\\Resources\\Tables\\Review';
 
 	/**
 	 * Model context

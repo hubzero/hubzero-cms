@@ -37,13 +37,13 @@ if ($canonical = $this->model->attribs->get('canonical', ''))
 
 	if (preg_match('/^(\/?resources\/(.+))/i', $canonical, $matches))
 	{
-		$model = ResourcesModelResource::getInstance($matches[2]);
+		$model = \Components\Resources\Models\Resource::getInstance($matches[2]);
 		$title = $model->resource->title;
 		$url   = JRoute::_('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
 	}
 	else if (is_numeric($canonical))
 	{
-		$model = ResourcesModelResource::getInstance(intval($canonical));
+		$model = \Components\Resources\Models\Resource::getInstance(intval($canonical));
 		$title = $model->resource->title;
 		$url   = JRoute::_('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
 	}

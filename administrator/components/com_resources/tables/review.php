@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Resources class for reviews
  */
-class ResourcesReview extends JTable
+class Review extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,22 +55,25 @@ class ResourcesReview extends JTable
 	{
 		if (trim($this->rating) == '')
 		{
-			$this->setError(JText::_('Your review must have a rating.'));
-			return false;
+			$this->setError(\JText::_('Your review must have a rating.'));
 		}
 
 		if (!$this->resource_id)
 		{
-			$this->setError(JText::_('Review entry missing Resource ID.'));
+			$this->setError(\JText::_('Review entry missing Resource ID.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
 		if (!$this->created || $this->created == '0000-00-00 00:00:00')
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 		}
 
-		$this->user_id = $this->user_id ?: JFactory::getUser()->get('id');
+		$this->user_id = $this->user_id ?: \JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -112,7 +114,7 @@ class ResourcesReview extends JTable
 	 */
 	public function getRatings($resource_id=NULL)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		$resource_id = $resource_id ?: $this->resource_id;
 
@@ -143,7 +145,7 @@ class ResourcesReview extends JTable
 	{
 		if (!$userid)
 		{
-			$userid = JFactory::getUser()->get('id');
+			$userid = \JFactory::getUser()->get('id');
 		}
 
 		$id = $id ?: $this->resource_id;

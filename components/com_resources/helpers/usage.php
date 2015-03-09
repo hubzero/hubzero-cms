@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Helpers;
+
+include_once(__DIR__ . DS . 'usage' . DS . 'tools.php');
+include_once(__DIR__ . DS . 'usage' . DS . 'andmore.php');
 
 /**
  * Base class for resource usage
  */
-class ResourcesUsage
+class Usage
 {
 	/**
 	 * JDatabase
@@ -119,7 +121,7 @@ class ResourcesUsage
 		$this->cites    = $cites;
 		$this->lastcite = $lastcite;
 
-		$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
+		$this->dateFormat = \JText::_('DATE_FORMAT_HZ1');
 	}
 
 	/**
@@ -134,23 +136,23 @@ class ResourcesUsage
 		{
 			case 'CURR':
 				$period  = 1;
-				$caption = JText::_('Current Month');
+				$caption = \JText::_('Current Month');
 			break;
 
 			case 'LAST':
 				$period  = 2;
-				$caption = JText::_('Last Month');
+				$caption = \JText::_('Last Month');
 			break;
 
 			case 'YEAR':
 				$period  = 12;
-				$caption = JText::_('Last 12 Months');
+				$caption = \JText::_('Last 12 Months');
 			break;
 
 			case 'ALL':
 			default:
 				$period  = 14;
-				$caption = JText::_('Total');
+				$caption = \JText::_('Total');
 			break;
 		}
 
@@ -281,321 +283,3 @@ class ResourcesUsage
 		return $class;
 	}
 }
-
-/**
- * Extended resource stats class (Tools)
- */
-class ToolStats extends ResourcesUsage
-{
-	/**
-	 * Number of jobs
-	 *
-	 * @var string
-	 */
-	var $jobs     = 'unavailable';
-
-	/**
-	 * Average wall time
-	 *
-	 * @var string
-	 */
-	var $avg_wall = 'unavailable';
-
-	/**
-	 * Total wall time
-	 *
-	 * @var string
-	 */
-	var $tot_wall = 'unavailable';
-
-	/**
-	 * Average CPU time
-	 *
-	 * @var mixed
-	 */
-	var $avg_cpu  = 'unavailable';
-
-	/**
-	 * Total CPU time
-	 *
-	 * @var mixed
-	 */
-	var $tot_cpu  = 'unavailable';
-
-	/**
-	 * Average execution time
-	 *
-	 * @var string
-	 */
-	var $avg_exec = 'unavailable';
-
-	/**
-	 * Total execution time
-	 *
-	 * @var string
-	 */
-	var $tot_exec = 'unavailable';
-
-	/**
-	 * Constructor
-	 *
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $resid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
-	 * @return     void
-	 */
-	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
-	{
-		parent::__construct($db, $resid, $type, $rating, $cites, $lastcite);
-	}
-
-	/**
-	 * Display formatted results for a given time range
-	 *
-	 * @param      string $disp Time range [curr, last, year, all]
-	 * @return     string
-	 */
-	public function display($disp='ALL')
-	{
-		list($caption, $period) = $this->fetch($disp);
-
-		$html = '';
-		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable')
-		{
-			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
-			$html .= ' <caption>' . JText::_('Usage Stats') . '</caption>' . "\n";
-			$html .= ' <tfoot>' . "\n";
-			$html .= '  <tr>' . "\n";
-			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime)
-			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
-			}
-			$html .= '</td>' . "\n";
-			$html .= '  </tr>' . "\n";
-			$html .= ' </tfoot>' . "\n";
-			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
-				$html .= '   <td>' . $this->users . '</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			if ($this->jobs != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.JText::_('Jobs').':</th>' . "\n";
-				$html .= '   <td>' . $this->jobs . '</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			if ($this->avg_exec != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> <abbr title="execution">exec.</abbr> time:</th>' . "\n";
-				$html .= '   <td>' . $this->valfmt($this->avg_exec) . '</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			$html .= ' </tbody>' . "\n";
-			$html .= '</table>' . "\n";
-		}
-		$html .= $this->display_substats();
-
-		return $html;
-	}
-
-	/**
-	 * Push database results to $this for internal use
-	 *
-	 * @param      array &$result Database records
-	 * @return     boolean False if errors, true on success
-	 */
-	public function process($result)
-	{
-		if ($result)
-		{
-			foreach ($result as $row)
-			{
-				$this->users    = $row->users;
-				$this->jobs     = $row->jobs;
-				$this->avg_wall = $row->avg_wall;
-				$this->tot_wall = $row->tot_wall;
-				$this->avg_cpu  = $row->avg_cpu;
-				$this->tot_cpu  = $row->tot_cpu;
-				$this->datetime = $row->processed_on;
-
-				// Changed by Swaroop on 06/25/2007: Avg. exec. time = Avg. wall time
-				if ($this->avg_cpu == 0)
-				{
-					$this->avg_exec = $this->avg_wall;
-				}
-				else
-				{
-					$this->avg_exec = $this->avg_cpu;
-				}
-				# $this->avg_exec = $this->avg_wall;
-
-				if ($this->tot_cpu == 0)
-				{
-					$this->tot_exec = $this->tot_wall;
-				}
-				else
-				{
-					$this->tot_exec = $this->tot_cpu;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-}
-
-/**
- * Extended resource stats class (And More)
- */
-class AndmoreStats extends ResourcesUsage
-{
-	/**
-	 * Number of views
-	 *
-	 * @var string
-	 */
-	var $views    = 'unavailable';
-
-	/**
-	 * Average view time
-	 *
-	 * @var string
-	 */
-	var $avg_view = 'unavailable';
-
-	/**
-	 * Total views
-	 *
-	 * @var string
-	 */
-	var $tot_view = 'unavailable';
-
-	/**
-	 * Constructor
-	 *
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $resid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
-	 * @return     void
-	 */
-	public function __construct(&$db, $resid, $type, $rating=0, $cites=0, $lastcite='')
-	{
-		parent::__construct($db, $resid, $type, $rating, $cites, $lastcite);
-	}
-
-	/**
-	 * Display formatted results for a given time range
-	 *
-	 * @param      string $disp Time range [curr, last, year, all]
-	 * @return     string
-	 */
-	public function display($disp='ALL')
-	{
-		list($caption, $period) = $this->fetch($disp);
-
-		if ($this->_type == 1)
-		{
-			$vlabel  = JText::_('Views');
-			$avlabel = JText::_('Avg. view time');
-		}
-		else
-		{
-			$vlabel = JText::_('Downloads');
-			$avlabel = JText::_('Avg. downloads');
-		}
-
-		$html = '';
-		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
-		{
-			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this resource') . '">' . "\n";
-			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
-			$html .= ' <tfoot>' . "\n";
-			$html .= '  <tr>' . "\n";
-			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime)
-			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
-			}
-			$html .= '</td>' . "\n";
-			$html .= '  </tr>' . "\n";
-			$html .= ' </tfoot>' . "\n";
-			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
-				$html .= '   <td>' . $this->users . '</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			/*if ($this->views != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->views.'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			if ($this->avg_view != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->valfmt($this->avg_view).'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}*/
-			$html .= ' </tbody>' . "\n";
-			$html .= '</table>' . "\n";
-		}
-		$html .= $this->display_substats();
-
-		return $html;
-	}
-
-	/**
-	 * Push database results to $this for internal use
-	 *
-	 * @param      array &$result Database results
-	 * @return     void
-	 */
-	public function process($result)
-	{
-		if ($result)
-		{
-			foreach ($result as $row)
-			{
-				$this->users    = $row->users;
-				$this->views    = $row->jobs;
-				$this->datetime = $row->processed_on;
-
-				if ($row->avg_cpu == 0)
-				{
-					$this->avg_view = $row->avg_wall;
-				}
-				else
-				{
-					$this->avg_view = $row->avg_cpu;
-				}
-
-				if ($row->tot_cpu == 0)
-				{
-					$this->tot_view = $row->tot_wall;
-				}
-				else
-				{
-					$this->tot_view = $row->tot_cpu;
-				}
-			}
-		}
-	}
-}
-

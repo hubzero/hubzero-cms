@@ -108,7 +108,7 @@ $juser = JFactory::getUser();
 
 					if ($ccount > 0)
 					{
-						echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
+						echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, '', '');
 					}
 
 					// get launch button
@@ -119,7 +119,7 @@ $juser = JFactory::getUser();
 
 					// Sort out supporting docs
 					$html .= $children && count($children) > 1
-						   ? ResourcesHtml::sortSupportingDocs( $this->model->resource, $this->option, $children )
+						   ? \Components\Resources\Helpers\Html::sortSupportingDocs( $this->model->resource, $this->option, $children )
 						   : '';
 
 					echo $html;
@@ -132,7 +132,7 @@ $juser = JFactory::getUser();
 						<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
 					</p>
 					<?php
-					echo $this->tab != 'play' ? ResourcesHtml::license( $this->model->params->get( 'license', '' ) ) : '';
+					echo $this->tab != 'play' ? \Components\Resources\Helpers\Html::license( $this->model->params->get( 'license', '' ) ) : '';
 				} // --- end else (if group check passed)
 				?>
 			</div><!-- / .aside launcharea -->
@@ -164,8 +164,8 @@ $juser = JFactory::getUser();
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section noborder">
 		<div class="subject tabbed">
-			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
 		</div><!-- / .subject -->
 		<div class="aside extracontent">
 			<?php
@@ -229,7 +229,7 @@ $juser = JFactory::getUser();
 				foreach ($schildren as $child)
 				{
 					// Retrieve the grandchildren
-					$this->helper = new ResourcesHelper($child->id, $this->database);
+					$this->helper = new \Components\Resources\Helpers\Helper($child->id, $this->database);
 					$this->helper->getChildren();
 
 					$child_params = new JRegistry($child->params);
@@ -256,20 +256,20 @@ $juser = JFactory::getUser();
 					$html .= '</td>'."\n";
 					if ($this->helper->children && count($this->helper->children) > 0)
 					{
-						$videoi   		= '';
-						$breeze    		= '';
-						$hubpresenter 	= '';
-						$pdf       		= '';
-						$video     		= '';
-						$exercises 		= '';
-						$supp      		= '';
-						$grandchildren 	= $this->helper->children;
+						$videoi       = '';
+						$breeze       = '';
+						$hubpresenter = '';
+						$pdf          = '';
+						$video        = '';
+						$exercises    = '';
+						$supp         = '';
+						$grandchildren = $this->helper->children;
 						foreach ($grandchildren as $grandchild)
 						{
 							$grandchild->title = $this->escape($grandchild->title);
-							$grandchild->path = ResourcesHtml::processPath($this->option, $grandchild, $child->id);
+							$grandchild->path = \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id);
 
-							$grandchild_rt = new ResourcesType( $this->database );
+							$grandchild_rt = new \Components\Resources\Tables\Type( $this->database );
 							$grandchild_rt->load($grandchild->type);
 							$alias = $grandchild_rt->alias;
 

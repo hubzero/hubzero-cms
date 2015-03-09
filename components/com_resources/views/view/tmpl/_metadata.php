@@ -60,11 +60,11 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 			if ($this->model->isTool())
 			{
-				$stats = new ToolStats($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Tables\Usage\Tools($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
 			}
 			else
 			{
-				$stats = new AndmoreStats($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
+				$stats = new \Components\Resources\Tables\Usage\Andmore($database, $this->model->resource->id, $this->model->resource->type, $this->model->resource->rating, count($this->model->citations()), $lastCitation->created);
 			}
 
 			$rank = round($this->model->resource->ranking, 1);
@@ -90,8 +90,8 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 		if ($this->model->params->get('show_audience'))
 		{
 			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.level.php');
-			$ra = new ResourceAudience($database);
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audiencelevel.php');
+			$ra = new \Components\Resources\Tables\Audience($database);
 			$audience = $ra->getAudience($this->model->resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);
 
 			$this->view('_audience', 'view')
@@ -104,7 +104,7 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 		if ($this->model->params->get('supportedtag'))
 		{
-			$rt = new ResourcesTags($this->model->resource->id);
+			$rt = new \Components\Resources\Helpers\Tags($this->model->resource->id);
 			if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id))
 			{
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');

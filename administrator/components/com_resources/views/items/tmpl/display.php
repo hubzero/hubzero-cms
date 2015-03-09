@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('resource');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES'), 'resources.png');
 if ($canDo->get('core.admin'))
@@ -103,7 +103,7 @@ function submitbutton(pressbutton)
 			</select>
 
 			<label for="type"><?php echo JText::_('COM_RESOURCES_FILTER_TYPE'); ?>:</label>
-			<?php echo ResourcesHtml::selectType($this->types, 'type', $this->filters['type'], JText::_('COM_RESOURCES_FILTER_TYPE_ALL'), '', ' onchange="this.form.submit();"', ''); ?>
+			<?php echo \Components\Resources\Helpers\Html::selectType($this->types, 'type', $this->filters['type'], JText::_('COM_RESOURCES_FILTER_TYPE_ALL'), '', ' onchange="this.form.submit();"', ''); ?>
 		</div>
 	</fieldset>
 	<div class="clr"></div>
@@ -125,7 +125,16 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="10"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -233,7 +242,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// Get the tags on this item
-	$rt = new ResourcesTags($row->id);
+	$rt = new \Components\Resources\Helpers\Tags($row->id);
 	$tags = $rt->tags('count');
 
 	// See if it's checked out or not

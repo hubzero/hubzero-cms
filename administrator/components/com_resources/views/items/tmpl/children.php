@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('resource');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_CHILDREN'), 'resources.png');
 if ($this->filters['parent_id'] > 0)
@@ -115,11 +115,20 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo $colspan; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo $colspan; ?>"><?php
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 			<?php /*<tr>
 				<td colspan="9">
-					ResourcesHtml::statusKey();
+					\Components\Resources\Helpers\Html::statusKey();
 				</td>
 			</tr> */ ?>
 		</tfoot>
@@ -301,10 +310,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 			<?php if ($this->filters['parent_id'] > 0) { ?>
 				<td>
-					<?php echo $this->pageNav->orderUpIcon( $i, ($row->position == @$rows[$i-1]->position) ); ?>
+					<?php echo $pageNav->orderUpIcon($i, ($row->position == @$rows[$i-1]->position)); ?>
 				</td>
 				<td>
-					<?php echo $this->pageNav->orderDownIcon( $i, $n, ($row->position == @$rows[$i+1]->position) ); ?>
+					<?php echo $pageNav->orderDownIcon($i, $n, ($row->position == @$rows[$i+1]->position)); ?>
 				</td>
 				<td>
 					<?php echo $row->ordering; ?>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,46 +24,45 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Model\Import;
+namespace Components\Resources\Models\Import;
 
-use JFactory;
+use Hubzero\Base\Model;
 
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import.run.php';
+require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'import' . DS . 'run.php';
 
 /**
  * Import Runs Model
  */
-class Run extends \Hubzero\Base\Model
+class Run extends Model
 {
 	/**
 	 * JTable
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_tbl = null;
 
 	/**
 	 * Table name
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = 'ResourcesTableImportRun';
+	protected $_tbl_name = '\\Components\\Resources\\Tables\\Import\\Run';
 
 	/**
 	 * Constructor
 	 *
-	 * @access public
-	 * @param  ResourcesTableImportRun Object Id
-	 * @return void
+	 * @param   mixed  $oid Object Id
+	 * @return  void
 	 */
-	public function __construct( $oid = null )
+	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -71,18 +70,18 @@ class Run extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
 	/**
 	 * Add to the processed number on this run
-	 * @param  integer $number Number to increpemnt by
-	 * @return void
+	 * @param   integer  $number  Number to increpemnt by
+	 * @return  void
 	 */
 	public function processed($number = 1)
 	{

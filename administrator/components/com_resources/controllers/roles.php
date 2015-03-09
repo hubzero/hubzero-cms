@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Tables\Contributor\Role;
+use Components\Resources\Tables\Type;
+use Hubzero\Component\AdminController;
 
 /**
  * Manage resource author roles
  */
-class ResourcesControllerRoles extends \Hubzero\Component\AdminController
+class Roles extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -57,8 +60,8 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
@@ -92,7 +95,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		);
 
 		// Instantiate an object
-		$model = new ResourcesContributorRole($this->database);
+		$model = new Role($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -106,14 +109,6 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 				$this->view->rows[$key]->types = $model->getTypesForRole($row->id);
 			}
 		}
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -132,19 +127,19 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Load the object
-			$row = new ResourcesContributorRole($this->database);
+			$row = new Role($this->database);
 			$row->load($id);
 		}
 
@@ -153,7 +148,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		if (!$this->view->row->id)
 		{
 			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created = JFactory::getDate()->toSql();
+			$this->view->row->created = \JFactory::getDate()->toSql();
 		}
 
 		$types = $this->view->row->getTypesForRole();
@@ -171,7 +166,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 			$this->view->row->types = array();
 		}
 
-		$types = new ResourcesType($this->database);
+		$types = new Type($this->database);
 		$this->view->types = $types->getMajorTypes();
 
 		// Set any errors
@@ -194,13 +189,13 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new ResourcesContributorRole($this->database);
+		$row = new Role($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -224,7 +219,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$types = JRequest::getVar('types', array(), 'post');
+		$types = \JRequest::getVar('types', array(), 'post');
 		$types = array_map('trim', $types);
 
 		if (!$row->setTypesForRole($row->id, $types))
@@ -241,8 +236,8 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_RESOURCES_ITEM_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
 
@@ -254,10 +249,10 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -265,14 +260,14 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
 		}
 
-		$rt = new ResourcesContributorRole($this->database);
+		$rt = new Role($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -282,20 +277,8 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
 }

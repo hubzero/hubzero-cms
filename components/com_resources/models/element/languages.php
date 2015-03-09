@@ -1,34 +1,41 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * HUBzero CMS
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
- * This program is distributed in the hope that it will be useful,
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Models\Element;
+
+use Components\Resources\Models\Element as Base;
 
 /**
  * Renders a languages element
  */
-class ResourcesElementLanguages extends ResourcesElement
+class Languages extends Base
 {
 	/**
 	* Element name
@@ -243,7 +250,7 @@ class ResourcesElementLanguages extends ResourcesElement
 		if (!$value)
 		{
 			jimport('joomla.language.helper');
-			$language = JLanguageHelper::detectLanguage();
+			$language = \JLanguageHelper::detectLanguage();
 			$language = explode('-', $language);
 			$value = $language[0];
 		}
@@ -251,12 +258,12 @@ class ResourcesElementLanguages extends ResourcesElement
 		$languages = array();
 		foreach ($this->_codes as $code => $lang)
 		{
-			$languages[] = JHTML::_('select.option', $code, $lang);
+			$languages[] = \JHTML::_('select.option', $code, $lang);
 		}
 
-		array_unshift($languages, JHTML::_('select.option', '', '- '.JText::_('Select Language').' -'));
+		array_unshift($languages, \JHTML::_('select.option', '', '- '.\JText::_('Select Language').' -'));
 
-		return '<span class="field-wrap">' . JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . \JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

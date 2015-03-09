@@ -45,7 +45,7 @@ $params->merge($rparams);
 $attribs = new JParameter($this->resource->attribs);
 
 // Get the resource's children
-$helper = new ResourcesHelper($this->resource->id, $database);
+$helper = new \Components\Resources\Helpers\Helper($this->resource->id, $database);
 
 $this->css('resource.css')
      ->css('resources', 'com_resources')

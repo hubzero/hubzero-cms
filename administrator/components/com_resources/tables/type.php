@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,79 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Table class for resource type
  */
-class ResourcesType extends JTable
+class Type extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       		= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $alias	  		= NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $type     		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $category		= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description 	= NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $contributable 	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $customFields 	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params 		= NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -106,14 +49,14 @@ class ResourcesType extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->type = trim($this->type);
 		if ($this->type == '')
 		{
-			$this->setError(JText::_('Your resource type must contain text.'));
+			$this->setError(\JText::_('Your resource type must contain text.'));
 			return false;
 		}
 
@@ -129,13 +72,10 @@ class ResourcesType extends JTable
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to this object
 	 *
-	 * This method must be invoked as:
-	 *     $page = ResourcesType::getRecordInstance($id);
-	 *
-	 * @param      integer $id The record to load
-	 * @return     object
+	 * @param   integer  $id  The record to load
+	 * @return  object
 	 */
 	public static function getRecordInstance($id)
 	{
@@ -148,7 +88,7 @@ class ResourcesType extends JTable
 
 		if (!isset($instances[$id]))
 		{
-			$db = JFactory::getDBO();
+			$db = \JFactory::getDBO();
 
 			$tbl = new self($db);
 			$tbl->load($id);
@@ -162,7 +102,8 @@ class ResourcesType extends JTable
 	/**
 	 * Strip disallowed characters and make lowercase
 	 *
-	 * @return     string
+	 * @param   string  $txt
+	 * @return  string
 	 */
 	public function normalize($txt)
 	{
@@ -172,7 +113,7 @@ class ResourcesType extends JTable
 	/**
 	 * Get all the major types
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getMajorTypes()
 	{
@@ -182,8 +123,8 @@ class ResourcesType extends JTable
 	/**
 	 * Get a count of all records for a specific category (optional)
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array   $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getAllCount($filters=array())
 	{
@@ -205,8 +146,8 @@ class ResourcesType extends JTable
 	 * Get all records for a specific category (optional)
 	 * Different from the method below in that it adds limit for paging
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getAllTypes($filters=array())
 	{
@@ -229,8 +170,8 @@ class ResourcesType extends JTable
 	/**
 	 * Get all records for a specific category
 	 *
-	 * @param      integer $cat Category ID
-	 * @return     array
+	 * @param   integer  $cat  Category ID
+	 * @return  array
 	 */
 	public function getTypes($cat='0')
 	{
@@ -241,8 +182,8 @@ class ResourcesType extends JTable
 	/**
 	 * Check if a type is being used
 	 *
-	 * @param      integer $id Record ID
-	 * @return     integer
+	 * @param   integer  $id  Record ID
+	 * @return  integer
 	 */
 	public function checkUsage($id=NULL)
 	{
@@ -255,9 +196,9 @@ class ResourcesType extends JTable
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(__DIR__ . DS . 'resource.php');
 
-		$r = new ResourcesResource($this->_db);
+		$r = new Resource($this->_db);
 
 		$this->_db->setQuery("SELECT count(*) FROM $r->_tbl WHERE type=" . $this->_db->Quote($id) . " OR logical_type=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();
@@ -266,8 +207,8 @@ class ResourcesType extends JTable
 	/**
 	 * Get all the roles associated with a specific type
 	 *
-	 * @param      integer $type_id Type ID
-	 * @return     array
+	 * @param   integer  $type_id  Type ID
+	 * @return  array
 	 */
 	public function getRolesForType($type_id=null)
 	{
@@ -278,7 +219,7 @@ class ResourcesType extends JTable
 
 		if ($type_id === null)
 		{
-			$this->setError(JText::_('Missing argument'));
+			$this->setError(\JText::_('Missing argument'));
 			return false;
 		}
 
@@ -296,8 +237,8 @@ class ResourcesType extends JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     boolean True on success
+	 * @param   integer  $oid  Record ID
+	 * @return  boolean  True on success
 	 */
 	public function delete($oid=null)
 	{
@@ -306,9 +247,9 @@ class ResourcesType extends JTable
 			$oid = $this->id;
 		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		include_once(__DIR__ . DS . 'contributor' . DS . 'roletype.php');
 
-		$rt = new ResourcesContributorRoleType($this->_db);
+		$rt = new Contributor\RoleType($this->_db);
 		if (!$rt->deleteForType($oid))
 		{
 			$this->setError($rt->getError());

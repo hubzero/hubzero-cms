@@ -429,7 +429,7 @@ class Results extends SiteController
 
 				if (isset($row->ranking) || isset($row->rating))
 				{
-					$resourceEx = new \ResourcesHelper($row->id, $this->database);
+					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();

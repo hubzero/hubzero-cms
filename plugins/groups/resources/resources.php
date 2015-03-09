@@ -379,7 +379,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 			foreach ($ids as $id)
 			{
 				// Disassociate the resource from the group and unpublish it
-				$rr = new ResourcesResource($database);
+				$rr = new \Components\Resources\Tables\Resource($database);
 				$rr->load($id->id);
 				$rr->group_owner = '';
 				$rr->published = 0;
@@ -423,7 +423,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		}
 		$database = JFactory::getDBO();
 
-		$rr = new ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		$database->setQuery("SELECT id FROM ".$rr->getTableName()." AS r WHERE r.group_owner=".$database->quote($gid));
 		return $database->loadObjectList();
@@ -447,7 +447,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		{
 			// Get categories
 			$database = JFactory::getDBO();
-			$rt = new ResourcesType($database);
+			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 			$this->_cats = $categories;
 		}
@@ -506,7 +506,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate some needed objects
-		$rr = new ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -521,7 +521,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$categories = $this->_cats;
 		if (!is_array($categories))
 		{
-			$rt = new ResourcesType($database);
+			$rt = new \Components\Resources\Tables\Type($database);
 			$categories = $rt->getMajorTypes();
 		}
 

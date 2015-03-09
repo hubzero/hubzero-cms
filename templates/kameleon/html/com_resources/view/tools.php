@@ -118,7 +118,7 @@ if ($mode != 'preview')
 						// get launch button
 						//$helper->getFirstChild();
 						$firstChild = $this->model->children(0);
-						echo ResourcesHtml::primary_child($this->option, $this->model->resource, $firstChild, '');
+						echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, $firstChild, '');
 
 						$html = '';
 
@@ -198,7 +198,7 @@ if ($mode != 'preview')
 									}
 								}
 							}
-							$url = $guide ? ResourcesHtml::processPath($this->option, $guide, $this->model->resource->id) : '';
+							$url = $guide ? \Components\Resources\Helpers\Html::processPath($this->option, $guide, $this->model->resource->id) : '';
 							$html .= "\t\t".'<p class="supdocs">'."\n";
 							if ($url) {
 								$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE').'</a></span></span>'."\n";
@@ -262,8 +262,8 @@ if ($mode != 'preview')
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php

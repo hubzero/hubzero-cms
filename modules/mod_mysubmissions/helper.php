@@ -31,11 +31,6 @@
 namespace Modules\MySubmissions;
 
 use Hubzero\Module\Module;
-use ResourcesAssoc;
-use ResourcesTags;
-use ResourcesContributor;
-use ResourcesType;
-use ResourcesResource;
 use JFactory;
 
 /**
@@ -76,7 +71,7 @@ class Helper extends Module
 		if ($id)
 		{
 			$database = JFactory::getDBO();
-			$ra = new ResourcesAssoc($database);
+			$ra = new \Components\Resources\Tables\Assoc($database);
 			$total = $ra->getCount($id);
 		}
 		else
@@ -97,7 +92,7 @@ class Helper extends Module
 		if ($id)
 		{
 			$database = JFactory::getDBO();
-			$rc = new ResourcesContributor($database);
+			$rc = new \Components\Resources\Tables\Contributor($database);
 			$contributors = $rc->getCount($id, 'resources');
 		}
 		else
@@ -118,7 +113,7 @@ class Helper extends Module
 	{
 		$database = JFactory::getDBO();
 
-		$rt = new ResourcesTags($id);
+		$rt = new \Components\Resources\Helpers\Tags($id);
 		$tags = $rt->tags('count');
 
 		if ($tags > 0)
@@ -160,8 +155,8 @@ class Helper extends Module
 
 		$database = JFactory::getDBO();
 
-		$rr = new ResourcesResource($database);
-		$rt = new ResourcesType($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
+		$rt = new \Components\Resources\Tables\Type($database);
 
 		$query = "SELECT r.*, t.type AS typetitle
 			FROM " . $rr->getTableName() . " AS r

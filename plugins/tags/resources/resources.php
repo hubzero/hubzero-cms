@@ -80,7 +80,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = JFactory::getDBO();
-		$rt = new ResourcesType($database);
+		$rt = new \Components\Resources\Tables\Type($database);
 		foreach ($rt->getMajorTypes() as $category)
 		{
 			$response['children'][$category->alias] = array(
@@ -105,7 +105,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate some needed objects
-		$rr = new ResourcesResource($database);
+		$rr = new \Components\Resources\Tables\Resource($database);
 
 		// Build query
 		$filters = array();
@@ -192,7 +192,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		$rt = new ResourcesType($database);
+		$rt = new \Components\Resources\Tables\Type($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
@@ -307,7 +307,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate a helper object
-		$helper = new ResourcesHelper($row->id, $database);
+		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
@@ -357,11 +357,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 			if ($row->category == 'Tools')
 			{
-				$stats = new ToolStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Tools($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			else
 			{
-				$stats = new AndmoreStats($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
+				$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $row->id, $row->category, $row->rating, $helper->citationsCount, $helper->lastCitationDate);
 			}
 			$statshtml = $stats->display();
 

@@ -227,7 +227,7 @@ function submitbutton(pressbutton)
 				</label>
 				<?php
 					$rconfig = JComponentHelper::getParams('com_resources');
-					echo ResourcesHtml::selectAccess($rconfig->get('accesses'), $this->params->get('access', 0), 'params[access]');
+					echo \Components\Resources\Helpers\Html::selectAccess($rconfig->get('accesses'), $this->params->get('access', 0), 'params[access]');
 				?>
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?></span>
 			</div>
@@ -235,7 +235,7 @@ function submitbutton(pressbutton)
 				<label for="import-group">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP'); ?>
 				</label>
-				<?php echo ResourcesHtml::selectGroup($this->groups, $this->params->get('group', ''), 'params[group]' ,'import-group'); ?>
+				<?php echo \Components\Resources\Helpers\Html::selectGroup($this->groups, $this->params->get('group', ''), 'params[group]' ,'import-group'); ?>
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?></span>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?>">

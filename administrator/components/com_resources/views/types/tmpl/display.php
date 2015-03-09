@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ResourcesHelperPermissions::getActions('type');
+$canDo = \Components\Resources\Helpers\Permissions::getActions('type');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES_TYPES'), 'addedit.png');
 if ($canDo->get('core.create'))
@@ -50,7 +50,7 @@ if ($canDo->get('core.delete'))
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="category"><?php echo JText::_('COM_RESOURCES_FILTER_CATEGORY'); ?>:</label>
-		<?php echo ResourcesHtml::selectType($this->cats, 'category', $this->filters['category'], JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
+		<?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
@@ -68,7 +68,16 @@ if ($canDo->get('core.delete'))
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5"><?php
+				// initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>

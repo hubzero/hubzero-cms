@@ -37,7 +37,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpe
 $database = JFactory::getDBO();
 
 // Instantiate a helper object
-$RE = new ResourcesHelper($this->row->id, $database);
+$RE = new \Components\Resources\Helpers\Helper($this->row->id, $database);
 $RE->getContributors();
 
 // Get the component params and merge with resource params
@@ -98,11 +98,11 @@ switch ($this->row->access)
 
 						if ($this->row->category == 7)
 						{
-							$stats = new ToolStats($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
+							$stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
 						}
 						else
 						{
-							$stats = new AndmoreStats($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
+							$stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->row->id, $this->row->category, $this->row->rating, $RE->citationsCount, $RE->lastCitationDate);
 						}
 						echo $stats->display();
 						?>

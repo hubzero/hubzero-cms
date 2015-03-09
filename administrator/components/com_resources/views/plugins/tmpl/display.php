@@ -73,7 +73,15 @@ JToolBarHelper::unpublishList();
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td>
+				<td colspan="8"><?php
+				jimport('joomla.html.pagination');
+				$pagination = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pagination->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -147,8 +155,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon($i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
+					<span><?php echo $pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
+					<span><?php echo $pagination->orderDownIcon($i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo ($row->ordering ? '' : 'disabled="disabled"'); ?> class="text_area" style="text-align: center" />
 				</td>
 				<td align="center">

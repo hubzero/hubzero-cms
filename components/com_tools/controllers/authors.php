@@ -101,7 +101,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		$authorsNew = empty($authorsNew) ? explode(',', $authorsNewstr) : $authorsNew;
 
 		// Instantiate a resource/contributor association object
-		$rc = new ResourcesContributor($this->database);
+		$rc = new \Components\Resources\Tables\Contributor($this->database);
 		$rc->subtable = 'resources';
 		$rc->subid = $id;
 
@@ -182,7 +182,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 				}
 
 				// Check if they're already linked to this resource
-				$rcc = new ResourcesContributor($this->database);
+				$rcc = new \Components\Resources\Tables\Contributor($this->database);
 				$rcc->loadAssociation($uid, $id, 'resources');
 				if ($rcc->authorid)
 				{
@@ -264,7 +264,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		// Ensure we have the contributor's ID ($id)
 		if ($id)
 		{
-			$rc = new ResourcesContributor($this->database);
+			$rc = new \Components\Resources\Tables\Contributor($this->database);
 			if (!$rc->deleteAssociation($id, $pid, 'resources'))
 			{
 				$this->setError($rc->getError());
@@ -299,7 +299,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		{
 			foreach ($ids as $id => $data)
 			{
-				$rc = new ResourcesContributor($this->database);
+				$rc = new \Components\Resources\Tables\Contributor($this->database);
 				$rc->loadAssociation($id, $pid, 'resources');
 				$rc->organization = $data['organization'];
 				$rc->role = $data['role'];
@@ -340,7 +340,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Get the element moving down - item 1
-		$author1 = new ResourcesContributor($this->database);
+		$author1 = new \Components\Resources\Tables\Contributor($this->database);
 		$author1->loadAssociation($id, $pid, 'resources');
 
 		// Get the element directly after it in ordering - item 2
@@ -402,7 +402,7 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		}
 
 		// Get all contributors of this resource
-		$helper = new ResourcesHelper($id, $this->database);
+		$helper = new \Components\Resources\Helpers\Helper($id, $this->database);
 		if ($this->view->version == 'dev')
 		{
 			$helper->getCons();
@@ -422,12 +422,12 @@ class ToolsControllerAuthors extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->load($id);
 
-		$rt = new ResourcesContributorRoleType($this->database);
+		$rt = new \Components\Resources\Tables\Contributor\RoleType($this->database);
 
 		// Output HTML
 		$this->view->config = $this->config;

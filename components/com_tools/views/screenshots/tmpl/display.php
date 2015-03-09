@@ -86,7 +86,7 @@ if ($images)
 {
 	foreach ($images as $key => $value)
 	{
-		$tn = ResourcesHtml::thumbnail($value);
+		$tn = \Components\Resources\Helpers\Html::thumbnail($value);
 		if (!is_file($this->upath . DS . $tn))
 		{
 			unset($images[$key]);
@@ -144,7 +144,7 @@ $k = 0;
 $g = 0;
 for ($i=0, $n=count($images); $i < $n; $i++)
 {
-	$tn = ResourcesHtml::thumbnail($images[$i]['img']);
+	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
 
 	if (is_file($this->upath . DS . $tn))
 	{

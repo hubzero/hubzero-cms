@@ -140,7 +140,7 @@ class Helper extends Module
 			{
 				case 'resources':
 					// Initiate a resource object
-					$rr = new \ResourcesResource($this->database);
+					$rr = new \Components\Resources\Tables\Resource($this->database);
 					$filters['start'] = 0;
 					$filters['type'] = $spot;
 					$filters['sortby'] = 'random';
@@ -199,7 +199,7 @@ class Helper extends Module
 
 				case 'itunes':
 					// Initiate a resource object
-					$rr = new \ResourcesResource($this->database);
+					$rr = new \Components\Resources\Tables\Resource($this->database);
 					$filters['start'] = 0;
 					$filters['sortby'] = 'random';
 					$filters['tag'] = trim($this->params->get('itunes_tag'));

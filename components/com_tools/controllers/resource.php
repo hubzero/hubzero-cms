@@ -107,7 +107,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// get resource information
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->loadAlias($alias);
 		$row->alias = ($row->alias) ? $row->alias : $alias;
 		if (!$status['fulltxt'])
@@ -147,11 +147,11 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 			}
 
 			// Get custom areas, add wrapper tags, and compile into fulltxt
-			$type = new ResourcesType($this->database);
+			$type = new \Components\Resources\Tables\Type($this->database);
 			$type->load($row->type);
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
-			$elements = new ResourcesElements(array(), $type->customFields);
+			$elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
 			$schema = $elements->getSchema();
 
 			$fields = array();
@@ -217,8 +217,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 
 			if (!$hztv->update())
 			{
-				JError::raiseError(500, JText::_('COM_TOOLS_ERROR_UPDATING_TOOL'));
-				return;
+				throw new Exception(JText::_('COM_TOOLS_ERROR_UPDATING_TOOL'), 500);
 			}
 			else
 			{
@@ -262,7 +261,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$fa10 = $tconfig->get('focus_area_10');
 
 		// Instantiate our tag object
-		$tagcloud = new ResourcesTags($row->id);
+		$tagcloud = new \Components\Resources\Helpers\Tags($row->id);
 
 		// Normalize the focus areas
 		$tagfa1  = $tagcloud->normalize($fa1);
@@ -415,7 +414,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 			return false;
 		}
 
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->load($rid);
 		if (count($status) > 0)
 		{
@@ -483,7 +482,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$params[] = 'st_method=com_narwhal';
 
 		// Initiate extended database class
-		$row = new ResourcesResource($this->database);
+		$row = new \Components\Resources\Tables\Resource($this->database);
 		$row->created_by = $this->juser->get('id');
 		$row->created    = JFactory::getDate()->toSql();
 		$row->published  = 2;  // draft state
@@ -541,7 +540,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// Instantiate our tag object
-		$tagcloud = new ResourcesTags($rid);
+		$tagcloud = new \Components\Resources\Helpers\Tags($rid);
 		$tags  = JRequest::getVar('tags', '', 'post');
 		$tagfa = JRequest::getVar('tagfa', '', 'post');
 		// Process new tags
@@ -560,7 +559,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		// Load the resource object
-		$resource = new ResourcesResource($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
 		$resource->loadAlias($alias);
 
 		if (!$this->juser->get('guest'))

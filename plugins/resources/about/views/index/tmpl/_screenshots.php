@@ -36,7 +36,7 @@ $wpath = (isset($this->wpath) ? $this->wpath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
 
-$path = Resourceshtml::build_path($this->created, $this->id, '');
+$path = \Components\Resources\Helpers\html::build_path($this->created, $this->id, '');
 
 // Get contribtool parameters
 $tconfig = JComponentHelper::getParams('com_tools');
@@ -48,7 +48,7 @@ if ($versionid && $allowversions)
 	$path .= DS . $versionid;
 }
 
-$d = @dir(JPATH_ROOT . $upath . $path);
+$d = @dir(PATH_APP . $upath . $path);
 
 $images = array();
 $tns = array();
@@ -61,7 +61,7 @@ if ($d)
 	while (false !== ($entry = $d->read()))
 	{
 		$img_file = $entry;
-		if (is_file(JPATH_ROOT . $upath . $path . DS . $img_file)
+		if (is_file(PATH_APP . $upath . $path . DS . $img_file)
 		 && substr($entry, 0, 1) != '.'
 		 && strtolower($entry) !== 'index.html')
 		{
@@ -126,10 +126,10 @@ $k = 0;
 $g = 0;
 for ($i=0, $n=count($images); $i < $n; $i++)
 {
-	$tn = ResourcesHtml::thumbnail($images[$i]['img']);
+	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
 	$els .=  ($this->slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
 
-	if (is_file(JPATH_ROOT . $upath . $path . DS . $tn))
+	if (is_file(PATH_APP . $upath . $path . DS . $tn))
 	{
 		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{

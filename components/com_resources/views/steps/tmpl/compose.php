@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt): stripslashes($this->row->introtext);
 
-$type = new ResourcesType( $this->database );
+$type = new \Components\Resources\Tables\Type( $this->database );
 $type->load( $this->row->type );
 
 $data = array();
@@ -42,7 +42,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = ResourcesControllerCreate::_txtUnpee($match[2]);
+		$data[$match[1]] = \Components\Resources\Controllers\Create::_txtUnpee($match[2]);
 	}
 }
 
@@ -51,7 +51,7 @@ $this->row->fulltxt = trim($this->row->fulltxt);
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'elements.php');
 
-$elements = new ResourcesElements($data, $type->customFields);
+$elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();
 
 $this->css('create.css')

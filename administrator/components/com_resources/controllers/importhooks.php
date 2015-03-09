@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Controllers;
+
+use Components\Resources\Models;
+use Components\Resources\Import\Importer;
+use Hubzero\Component\AdminController;
 
 /**
  * Resource importer
  */
-class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
+class ImportHooks extends AdminController
 {
 	/**
 	 * Display imports
@@ -43,26 +46,16 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// set layout
-		$this->view->setLayout('display');
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
 		// get all imports from archive
-		$hooksArchive = \Resources\Model\Import\Hook\Archive::getInstance();
+		$hooksArchive = Models\Import\Hook\Archive::getInstance();
 		$this->view->hooks = $hooksArchive->hooks('list', array(
 			'state' => array(1)
 		));
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -82,17 +75,17 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$id = JRequest::getVar('id', array());
+		$id = \JRequest::getVar('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : null;
 		}
 
 		// get the import object
-		$this->view->hook = new Resources\Model\Import\Hook($id);
+		$this->view->hook = new Models\Import\Hook($id);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -114,14 +107,14 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		\JSession::checkToken() or die('Invalid Token');
 
 		// get request vars
-		$hook = JRequest::getVar('hook', array());
-		$file = JRequest::getVar('file', array(), 'FILES');
+		$hook = \JRequest::getVar('hook', array());
+		$file = \JRequest::getVar('file', array(), 'FILES');
 
 		// create hook model object
-		$this->hook = new Resources\Model\Import\Hook();
+		$this->hook = new Models\Import\Hook();
 
 		// bind input to model
 		if (!$this->hook->bind( $hook ))
@@ -137,8 +130,8 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 			$isNew = true;
 
 			// set the created by/at
-			$this->hook->set('created_by', JFactory::getUser()->get('id'));
-			$this->hook->set('created', JFactory::getDate()->toSql());
+			$this->hook->set('created_by', \JFactory::getUser()->get('id'));
+			$this->hook->set('created', \JFactory::getDate()->toSql());
 		}
 
 		// attempt to save
@@ -166,8 +159,8 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			JText::_('COM_RESOURCES_IMPORTHOOK_CREATED'),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
+			\JText::_('COM_RESOURCES_IMPORTHOOK_CREATED'),
 			'passed'
 		);
 	}
@@ -180,14 +173,14 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	public function rawTask()
 	{
 		// get request vars
-		$id = JRequest::getVar('id', array());
+		$id = \JRequest::getVar('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : null;
 		}
 
 		// create hook model object
-		$this->hook = new Resources\Model\Import\Hook($id);
+		$this->hook = new Models\Import\Hook($id);
 
 		// get path to file
 		$file = $this->hook->fileSpacePath() . DS . $this->hook->get('file');
@@ -215,17 +208,17 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		\JSession::checkToken() or die('Invalid Token');
 
 		// get request vars
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
 		foreach ($ids as $id)
 		{
 			// make sure we have an object
-			if (!$hook = new \Resources\Model\Import\Hook($id))
+			if (!$hook = new Models\Import\Hook($id))
 			{
 				continue;
 			}
@@ -235,7 +228,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 			if (!$hook->store(true))
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$hook->getError(),
 					'error'
 				);
@@ -245,8 +238,8 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-			JText::_('COM_RESOURCES_IMPORTHOOK_REMOVED'),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
+			\JText::_('COM_RESOURCES_IMPORTHOOK_REMOVED'),
 			'passed'
 		);
 	}
@@ -254,10 +247,10 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Method to create import filespace if needed
 	 *
-	 * @param   object   $hook  Resources\Model\Import\Hook
+	 * @param   object   $hook  Models\Import\Hook
 	 * @return  boolean
 	 */
-	private function _createImportFilespace(Resources\Model\Import\Hook $hook)
+	private function _createImportFilespace(Models\Import\Hook $hook)
 	{
 		// upload path
 		$uploadPath = $hook->fileSpacePath();
@@ -265,7 +258,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		// if we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			JFolder::create($uploadPath, 0775);
+			\JFolder::create($uploadPath, 0775);
 		}
 
 		// all set

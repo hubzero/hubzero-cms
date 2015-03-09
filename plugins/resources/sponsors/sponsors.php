@@ -101,7 +101,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
 		$this->sponsors = array();
 
-		$model = new ResourcesSponsor($this->database);
+		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 		$records = $model->getRecords(array('state' => 1));
 		if (!$records)
 		{
@@ -114,7 +114,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		}
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$rt = new ResourcesTags($resource->id);
+		$rt = new \Components\Resources\Helpers\Tags($resource->id);
 		$tags = $rt->tags();
 
 		if ($tags)
@@ -223,7 +223,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			'ASC'
 		));
 
-		$model = new ResourcesSponsor($this->database);
+		$model = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 
 		// Get a record count
 		$this->view->total = $model->getCount($this->view->filters);
@@ -286,7 +286,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			$id = JRequest::getInt('id', 0);
 
 			// Load the object
-			$this->view->row = new ResourcesSponsor($this->database);
+			$this->view->row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -314,7 +314,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
-		$row = new ResourcesSponsor($this->database);
+		$row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
@@ -382,7 +382,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$rt = new ResourcesSponsor($this->database);
+		$rt = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -447,7 +447,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		foreach ($ids as $id)
 		{
 			// Update record(s)
-			$row = new ResourcesSponsor($this->database);
+			$row = new \Plugins\Resources\Sponsors\Tables\Sponsor($this->database);
 			$row->load(intval($id));
 			$row->state = $state;
 			if (!$row->store())

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Resources table class for screenshot
  */
-class ResourcesScreenshot extends  JTable
+class Screenshot extends \JTable
 {
 	/**
 	 * Construct
@@ -57,7 +56,7 @@ class ResourcesScreenshot extends  JTable
 		$this->filename = trim($this->filename);
 		if ($this->filename == '')
 		{
-			$this->setError('Missing filename');
+			$this->setError(\JText::_('Missing filename'));
 			return false;
 		}
 

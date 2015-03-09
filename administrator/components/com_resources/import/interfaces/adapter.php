@@ -27,14 +27,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Import\Interfaces;
+namespace Components\Resources\Import\Interfaces;
 
 /**
  * Interface for Resource Importer
  */
 interface Adapter
 {
-	public static function accepts( $mime );
-	public function count( \Resources\Model\Import $import );
-	public function process( \Resources\Model\Import $import, array $callbacks, $dryRun );
+	public static function accepts($mime);
+	public function count(\Components\Resources\Models\Import $import);
+	public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun);
 }

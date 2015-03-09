@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Resources\Import\Adapters;
+namespace Components\Resources\Import\Adapters;
 
 // include xml iterator
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'iterators' . DS . 'xml.php';
@@ -35,7 +35,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'import' . DS . 'iterators' . 
 /**
  * Xml Resource Importer
  */
-class Xml implements \Resources\Import\Interfaces\Adapter
+class Xml implements \Components\Resources\Import\Interfaces\Adapter
 {
 	/**
 	 * XML key that holds each resource item
@@ -72,10 +72,10 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	 * @access public
 	 * @return int
 	 */
-	public function count(\Resources\Model\Import $import)
+	public function count(\Components\Resources\Models\Import $import)
 	{
 		// instantiate iterator
-		$xmlIterator = new \Resources\Import\Iterators\Xml($import->getDatapath(), $this->key);
+		$xmlIterator = new \Components\Resources\Import\Iterators\Xml($import->getDatapath(), $this->key);
 
 		// count records
 		$this->data_count = iterator_count($xmlIterator);
@@ -90,10 +90,10 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 	 * @access public
 	 * @param  Closure Object
 	 */
-	public function process(\Resources\Model\Import $import, array $callbacks, $dryRun)
+	public function process(\Components\Resources\Models\Import $import, array $callbacks, $dryRun)
 	{
 		// create new xml reader
-		$iterator = new \Resources\Import\Iterators\Xml($import->getDataPath(), $this->key);
+		$iterator = new \Components\Resources\Import\Iterators\Xml($import->getDataPath(), $this->key);
 
 		// get the import params
 		$options = new \JParameter($import->get('params'));
@@ -108,7 +108,7 @@ class Xml implements \Resources\Import\Interfaces\Adapter
 			$record = $this->map($record, $callbacks['postparse'], $dryRun);
 
 			// convert to resource objects
-			$resource = new \Resources\Model\Import\record($record, $options->toArray(), $mode);
+			$resource = new \Components\Resources\Models\Import\record($record, $options->toArray(), $mode);
 
 			// do we have a post map callback ?
 			$resource = $this->map($resource, $callbacks['postmap'], $dryRun);

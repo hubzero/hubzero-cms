@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Resources\Tables;
 
 /**
  * Table class for resources
  */
-class ResourcesResource extends JTable
+class Resource extends \JTable
 {
 	/**
 	 * Constructor
@@ -109,7 +108,7 @@ class ResourcesResource extends JTable
 		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
-			$this->setError('Your Resource must contain a title.');
+			$this->setError(\JText::_('Your Resource must contain a title.'));
 			return false;
 		}
 
@@ -119,13 +118,13 @@ class ResourcesResource extends JTable
 
 		if (!$this->id)
 		{
-			$this->created    = $this->created    ?: JFactory::getDate()->toSql();
-			$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
+			$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
+			$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
 		}
 		else
 		{
-			$this->modified    = $this->modified    ?: JFactory::getDate()->toSql();
-			$this->modified_by = $this->modified_by ?: JFactory::getUser()->get('id');
+			$this->modified    = $this->modified    ?: \JFactory::getDate()->toSql();
+			$this->modified_by = $this->modified_by ?: \JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -276,8 +275,8 @@ class ResourcesResource extends JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser = JFactory::getUser();
-		$now = JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
+		$now = \JFactory::getDate()->toSql();
 
 		$query  = "";
 		if (isset($filters['tag']) && $filters['tag'] != '')
@@ -387,7 +386,7 @@ class ResourcesResource extends JTable
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$tagging = new ResourcesTags($this->_db);
+			$tagging = new \Components\Resources\Helpers\Tags();
 			$tags = $tagging->parseTags($filters['tag']);
 
 			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')"; //" OR TA.alias IN ('" . implode("','", $tags) . "'))";
@@ -481,11 +480,11 @@ class ResourcesResource extends JTable
 	 */
 	public function buildPluginQuery($filters=array())
 	{
-		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
+		$database = \JFactory::getDBO();
+		$juser = \JFactory::getUser();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
-		$rt = new ResourcesType($database);
+		include_once(__DIR__ . DS . 'type.php');
+		$rt = new Type($database);
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{

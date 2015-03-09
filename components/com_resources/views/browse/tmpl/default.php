@@ -79,7 +79,7 @@ $this->css()
 						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 						$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
 
-						$rt = new ResourcesTags(0);
+						$rt = new \Components\Resources\Helpers\Tags(0);
 						$tags = $rt->parseTopTags($this->filters['tag']);
 						foreach ($tags as $tag)
 						{
@@ -195,7 +195,7 @@ $this->css()
 			<div class="container">
 				<h3><?php echo JText::_('COM_RESOURCES_POPULAR_TAGS'); ?></h3>
 				<?php
-				$rt = new ResourcesTags(0);
+				$rt = new \Components\Resources\Helpers\Tags(0);
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
 				<p><?php echo JText::_('COM_RESOURCES_POPULAR_TAGS_HINT'); ?></p>

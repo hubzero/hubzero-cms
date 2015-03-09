@@ -100,7 +100,7 @@ $juser = JFactory::getUser();
 
 						if ($ccount > 0)
 						{
-							echo ResourcesHtml::primary_child($this->option, $this->model->resource, '', '');
+							echo \Components\Resources\Helpers\Html::primary_child($this->option, $this->model->resource, '', '');
 						}
 
 						$video = 0;
@@ -113,7 +113,7 @@ $juser = JFactory::getUser();
 						{
 							foreach ($children as $child)
 							{
-								$rhelper = new ResourcesHelper($child->id, $this->database);
+								$rhelper = new \Components\Resources\Helpers\Helper($child->id, $this->database);
 
 								$rhelper->getChildren();
 
@@ -121,7 +121,7 @@ $juser = JFactory::getUser();
 								{
 									foreach ($rhelper->children as $grandchild)
 									{
-										switch (ResourcesHtml::getFileExtension($grandchild->path))
+										switch (\Components\Resources\Helpers\Html::getFileExtension($grandchild->path))
 										{
 											case 'm4v':
 											case 'mp4':
@@ -181,7 +181,7 @@ $juser = JFactory::getUser();
 						}
 						if ($this->tab != 'play')
 						{
-							echo ResourcesHtml::license($this->model->params->get('license', ''));
+							echo \Components\Resources\Helpers\Html::license($this->model->params->get('license', ''));
 						}
 					} // --- end else (if group check passed)
 					?>
@@ -215,8 +215,8 @@ $juser = JFactory::getUser();
 <?php if ($this->model->access('view-all')) { ?>
 	<section class="main section">
 		<div class="subject tabbed">
-			<?php echo ResourcesHtml::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
-			<?php echo ResourcesHtml::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
+			<?php echo \Components\Resources\Helpers\Html::tabs($this->option, $this->model->resource->id, $this->cats, $this->tab, $this->model->resource->alias); ?>
+			<?php echo \Components\Resources\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main'); ?>
 		</div><!-- / .subject -->
 		<aside class="aside extracontent">
 			<?php
@@ -313,7 +313,7 @@ $juser = JFactory::getUser();
 					<fieldset class="controls">
 						<label for="sortby">
 							<?php echo JText::_('COM_RESOURCES_SORT_BY'); ?>:
-							<?php echo ResourcesHtml::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
+							<?php echo \Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
 						</label>
 						<p class="submit">
 							<input type="submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />

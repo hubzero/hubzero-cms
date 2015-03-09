@@ -137,7 +137,7 @@ class ResourcesControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.plugin.helper');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'finder.php');
 
-		$whatsnew = WhatsnewHelperFinder::getWhatsNewBasedOnPeriodAndCategory($period, $category, $limit);
+		$whatsnew = \Components\Whatsnew\Helpers\Finder::getWhatsNewBasedOnPeriodAndCategory($period, $category, $limit);
 
 		// encode results and return response
 		$object = new stdClass();

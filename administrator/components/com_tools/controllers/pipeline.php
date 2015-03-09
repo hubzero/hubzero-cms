@@ -253,8 +253,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		$failed = array();
 
 		// Initiate extended database classes
-		$resource = new ResourcesResource($this->database);
-		$objDOI = new ResourcesDoi ($this->database);
+		$resource = new \Components\Resources\Tables\Resource($this->database);
+		$objDOI = new \Components\Resources\Tables\Doi($this->database);
 		$objV = new ToolVersion($this->database);
 		$objA = new ToolAuthor($this->database);
 
