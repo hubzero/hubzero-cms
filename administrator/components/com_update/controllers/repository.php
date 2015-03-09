@@ -138,14 +138,15 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 	 */
 	public function updateTask()
 	{
-		$env        = \JFactory::getConfig()->getValue('config.application_env', 'production');
-		$source     = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
-		$allowNonFf = ($env == 'production') ? false : true;
-		$response   = cli::update(false, $allowNonFf, $source);
-		$response   = json_decode($response);
-		$response   = $response[0];
-		$message    = 'Update complete!';
-		$type       = 'success';
+		$env         = \JFactory::getConfig()->getValue('config.application_env', 'production');
+		$source      = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
+		$autoPushRef = \JComponentHelper::getParams('com_update')->get('git_auto_push_ref', null);
+		$allowNonFf  = ($env == 'production') ? false : true;
+		$response    = cli::update(false, $allowNonFf, $source, $autoPushRef);
+		$response    = json_decode($response);
+		$response    = $response[0];
+		$message     = 'Update complete!';
+		$type        = 'success';
 
 		if (!empty($response) && stripos($response, 'fix conflicts and then commit the result') === false)
 		{

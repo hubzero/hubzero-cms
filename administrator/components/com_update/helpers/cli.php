@@ -136,9 +136,10 @@ class cli
 	 * @param  bool   $dryRun whether or not to do a dry run
 	 * @param  bool   $allowNonFf whether or not to allow non fast forward pulls
 	 * @param  string $source the repo source to update from
+	 * @param  string $autoPushRef the ref to auto push to after an update
 	 * @return string
 	 **/
-	public static function update($dryRun=true, $allowNonFf=false, $source=null)
+	public static function update($dryRun=true, $allowNonFf=false, $source=null, $autoPushRef=null)
 	{
 		$args = array();
 		if (!$dryRun)
@@ -154,6 +155,11 @@ class cli
 		if (isset($source))
 		{
 			$args[] = '--source=' . escapeshellarg($source);
+		}
+
+		if (isset($autoPushRef))
+		{
+			$args[] = '--git-auto-push-ref=' . escapeshellarg($autoPushRef);
 		}
 
 		return self::call('update', 'repository', $args);
