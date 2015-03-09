@@ -3700,9 +3700,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Instantiate project publication
-		$objP = new Publication( $this->_database );
-
 		// Check against quota
 		if ($this->_overQuota())
 		{
@@ -3905,6 +3902,37 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if (!$doi || $doierr)
 			{
 				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+			}
+
+			// Issue master DOI?
+			if ($state == 1 && $row->version_number == 1
+				&& $this->_pubconfig->get('master_doi') && !$pub->master_doi)
+			{
+				$jconfig = \JFactory::getConfig();
+				$juri = \JURI::getInstance();
+				$livesite = $jconfig->getValue('config.live_site')
+					? $jconfig->getValue('config.live_site')
+					: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+
+				// Master DOI should link to /main
+				$metadata['url'] = $livesite . DS . 'publications'
+								. DS . $pub->id . DS . 'main';
+
+				// Register DOI with data from version being published
+				$masterDoi = PublicationUtilities::registerDoi(
+					$row,
+					$pub->_authors,
+					$this->_pubconfig,
+					$metadata,
+					$doierr,
+					1
+				);
+				// Save with publication record
+				if ($masterDoi && $objP->load($pub->id))
+				{
+					$objP->master_doi = $masterDoi;
+					$objP->store();
+				}
 			}
 		}
 
@@ -4401,6 +4429,37 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				if (!$doi || $doierr)
 				{
 					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+				}
+
+				// Issue master DOI?
+				if ($state == 1 && $row->version_number == 1
+					&& $this->_pubconfig->get('master_doi') && !$pub->master_doi)
+				{
+					$jconfig = \JFactory::getConfig();
+					$juri = \JURI::getInstance();
+					$livesite = $jconfig->getValue('config.live_site')
+						? $jconfig->getValue('config.live_site')
+						: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+
+					// Master DOI should link to /main
+					$metadata['url'] = $livesite . DS . 'publications'
+									. DS . $pid . DS . 'main';
+
+					// Register DOI with data from version being published
+					$masterDoi = PublicationUtilities::registerDoi(
+						$row,
+						$authors,
+						$this->_pubconfig,
+						$metadata,
+						$doierr,
+						1
+					);
+					// Save with publication record
+					if ($masterDoi && $objP->load($pid))
+					{
+						$objP->master_doi = $masterDoi;
+						$objP->store();
+					}
 				}
 			}
 
