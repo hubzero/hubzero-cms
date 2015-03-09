@@ -282,14 +282,43 @@ class Repository extends Base implements CommandInterface
 			$response = $this->mechanism->update(false, $allowNonFf);
 			if ($response['status'] == 'success')
 			{
-				if ($mode != 'minimal')
+				// Now, check to see whether or not we need to go ahead and push this merge elsewhere
+				if ($ref = $this->arguments->getOpt('git-auto-push-ref', false))
 				{
-					$this->output->addLine(
-						'complete',
-						array(
-							'color' => 'green'
-						)
-					);
+					$response = $this->mechanism->push($ref);
+					if ($response['status'] === 'success')
+					{
+						if ($mode != 'minimal')
+						{
+							$this->output->addLine(
+								'complete',
+								array(
+									'color' => 'green'
+								)
+							);
+						}
+					}
+					else
+					{
+						$this->output->addLine(
+							strtolower($response['message']),
+							array(
+								'color' => 'red'
+							)
+						);
+					}
+				}
+				else
+				{
+					if ($mode != 'minimal')
+					{
+						$this->output->addLine(
+							'complete',
+							array(
+								'color' => 'green'
+							)
+						);
+					}
 				}
 			}
 			else if ($response['status'] == 'fatal')

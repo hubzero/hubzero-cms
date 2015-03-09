@@ -427,6 +427,40 @@ class Git
 	}
 
 	/**
+	 * Pushes the local repository to the remote destination
+	 *
+	 * @param  string $ref       the ref to push from/to (the same name unless $remoteRef is provided)
+	 * @param  string $remote    the remote name to push to
+	 * @param  string $remoteRef the remote ref if it differs in name from the local one
+	 * @return mixed
+	 **/
+	public function push($ref='master', $remote='origin', $remoteRef=null)
+	{
+		$ref      = (isset($remoteRef)) ? $ref . ':' . $remoteRef : $ref;
+		$response = $this->call('push', array($remote, $ref));
+
+		$response = trim($response);
+		$return   = array();
+
+		if (stripos($response, 'error: failed to push some refs') !== false)
+		{
+			$return['status']  = 'fatal';
+			$return['message'] = $response;
+		}
+		else if (stripos($response, 'everything up-to-date') !== false)
+		{
+			$return['status']  = 'success';
+			$return['message'] = $response;
+		}
+		else
+		{
+			$return['status'] = 'success';
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Create a rollback point for restoration in the event of a problem during the update
 	 *
 	 * @return (string) $response - response from tag method
