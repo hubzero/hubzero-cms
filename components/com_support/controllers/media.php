@@ -50,11 +50,11 @@ class Media extends SiteController
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		/*if ($this->juser->get('guest'))
 		{
 			echo json_encode(array('error' => \JText::_('Must be logged in.')));
 			return;
-		}
+		}*/
 
 		// Ensure we have an ID to work with
 		$ticket  = \JRequest::getInt('ticket', 0);
@@ -220,11 +220,11 @@ class Media extends SiteController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		/*if ($this->juser->get('guest'))
 		{
 			$this->displayTask();
 			return;
-		}
+		}*/
 
 		if (\JRequest::getVar('no_html', 0))
 		{
@@ -339,13 +339,6 @@ class Media extends SiteController
 			return $this->ajaxDeleteTask();
 		}
 
-		// Check if they're logged in
-		if ($this->juser->get('guest'))
-		{
-			$this->displayTask();
-			return;
-		}
-
 		// Incoming asset
 		$id = \JRequest::getInt('asset', 0, 'get');
 
@@ -353,6 +346,14 @@ class Media extends SiteController
 
 		if ($model->exists())
 		{
+			// Check if they're logged in when the ticket ID
+			// is > 0. This means it's an attachment on a real
+			// ticket, not a temp.
+			if ($model->get('ticket') > 0 && $this->juser->get('guest'))
+			{
+				$this->displayTask();
+				return;
+			}
 			$model->delete();
 		}
 
