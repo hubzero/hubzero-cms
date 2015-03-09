@@ -408,10 +408,18 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		$alias 	 = trim(\JRequest::getVar( 'alias', '' ));
 		$source	 = NULL;
 		$redirect= false;
+		$dir	 = 'preview';
 
 		if (!$alias)
 		{
 			return false;
+		}
+
+		$uri = JRequest::getVar('SCRIPT_URL', '', 'server');
+		if (strstr($uri, 'Compiled:'))
+		{
+			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));
+			$dir   = 'compiled';
 		}
 
 		// Show project thumbnail
@@ -434,8 +442,14 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			}
 			else
 			{
+				// Athorization required
+				if (!$this->_authorize())
+				{
+					return;
+				}
+
 				$path 	= trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source = $path . DS . $alias . DS . 'preview' . DS . $media;
+				$source = $path . DS . $alias . DS . $dir . DS . $media;
 				$redirect = true;
 			}
 		}

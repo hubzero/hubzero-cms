@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
 <div id="abox-content">
@@ -58,11 +58,11 @@ if (!$this->getError()) {
 		$view->action		= 'compile';
 		$view->multi		= NULL;
 
-		if ($this->ext == 'tex' && is_file(JPATH_ROOT . $this->outputDir . DS . $this->embed))
+		if ($this->ext == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed))
 		{
 			$view->extras  = '<span class="rightfloat">';
-			$view->extras .= '<a href="' . $this->url . '/?' . $this->do . '=compile' . $subdirlink . a . 'download=1' . a . 'file=' . $this->item . '" class="i-download">' . JText::_('COM_PROJECTS_DOWNLOAD') . ' PDF</a> ';
-			$view->extras .= '<a href="' . $this->url . '/?' . $this->do . '=compile' . $subdirlink . a . 'commit=1' . a . 'file=' . $this->item . '" class="i-commit">' . JText::_('COM_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . JText::_('COM_PROJECTS_DOWNLOAD') . ' PDF</a> ';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . JText::_('COM_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
 			$view->extras .= '</span>';
 		}
 		echo $view->loadTemplate();
@@ -73,15 +73,17 @@ if (!$this->getError()) {
 
 	// Clean up data from Windows characters - important!
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
-
 ?>
 	<pre><?php echo htmlentities($this->data); ?></pre>
-<?php } elseif ($this->embed && file_exists(JPATH_ROOT . $this->outputDir . DS . $this->embed)) { ?>
-	<div id="compiled-doc" embed-src="<?php echo $this->outputDir . DS . $this->embed; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
-	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $this->outputDir . DS . $this->embed; ?>" id="pdf_content">
-		<p>File preview doesn't load in your browser or shows partial file? <a href="<?php echo $this->url . '/?' . $this->do . '=compile' . $subdirlink . a . 'download=1' . a . 'file=' . $this->item; ?>">Download file</a>
+<?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) { 
+		$source = JRoute::_('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->embed );
+	?>
+	<div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
+	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $source; ?>" id="pdf_content">
+		<embed src="<?php echo $source; ?>" type="application/pdf" />
+		<p><?php echo JText::_('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
 		<?php if ($this->image) { ?>
-			<img alt="" src="<?php echo $this->image; ?>" />
+			<img alt="" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->image ); ?>" />
 		<?php } ?>
 		</p>
 	  </object>

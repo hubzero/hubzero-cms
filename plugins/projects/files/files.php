@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 	. DS . 'helpers' . DS . 'githelper.php' );
 
 /**
@@ -241,7 +241,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_getGitHelper();
 
 			// Compiler Helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+			include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 				. DS . 'helpers' . DS . 'compiler.php' );
 
 			// File actions
@@ -2880,7 +2880,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$new['text'] = $this->_git->gitLog($new['fpath'], $new['hash'], 'blob');
 
 			// Diff class
-			include_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS
+			include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS
 				. 'files' . DS . 'php-diff' . DS . 'Diff.php' );
 
 			$context = ($old['text'] == $new['text'] || $full == 1) ? count($old['text']) : 10;
@@ -2893,7 +2893,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($mode == 'side-by-side')
 			{
-				include_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'files'
+				include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
 					. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php' );
 
 				// Generate a side by side diff
@@ -2902,7 +2902,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			elseif ($mode == 'inline')
 			{
-				include_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'files'
+				include_once( PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
 					. DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php' );
 
 				// Generate inline diff
@@ -3495,7 +3495,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$image  = ($render == 'thumb' || $render == 'medium')
 					? $this->getFilePreview($file, $hash, $this->path, $this->subdir, $remote, $medium)
 					: $this->path . DS . $fpath;
-			$image = ($render == 'thumb' || $render == 'medium') ? JPATH_ROOT . $image : $image;
+			$image = ($render == 'thumb' || $render == 'medium') ? PATH_APP . $image : $image;
 
 			// Serve image
 			if ($image && file_exists($image))
@@ -3801,11 +3801,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$outputDir = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'compiled';
 
 		// Make sure output dir exists
-		if (!is_dir( JPATH_ROOT . DS . $outputDir ))
+		if (!is_dir( PATH_APP . DS . $outputDir ))
 		{
 			jimport('joomla.filesystem.folder');
 
-			if (!\JFolder::create( JPATH_ROOT . DS . $outputDir ))
+			if (!\JFolder::create( PATH_APP . DS . $outputDir ))
 			{
 				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
@@ -3933,13 +3933,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Compile and get path to PDF
 				$content = $compiler->compileTex ($this->path . DS . $fpath,
-					$data, $texpath, JPATH_ROOT . $outputDir, 1, $tempBase);
+					$data, $texpath, PATH_APP . $outputDir, 1, $tempBase);
 
 				// Read log (to show in case of error)
 				$logFile = $tempBase . '.log';
-				if (file_exists(JPATH_ROOT . $outputDir . DS . $logFile ))
+				if (file_exists(PATH_APP . $outputDir . DS . $logFile ))
 				{
-					$log = $this->_readFile(JPATH_ROOT . $outputDir . DS . $logFile, '', true);
+					$log = $this->_readFile(PATH_APP . $outputDir . DS . $logFile, '', true);
 				}
 
 				if (!$content)
@@ -3952,7 +3952,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$tempBase = ProjectsGoogleHelper::getImportFilename($remote, $cExt);
 
 				// Write content to temp file
-				$this->_connect->fetchFile($data, $tempBase, JPATH_ROOT . $outputDir);
+				$this->_connect->fetchFile($data, $tempBase, PATH_APP . $outputDir);
 				$content = $tempBase;
 			}
 			// Local file
@@ -3961,21 +3961,21 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Make sure we can handle preview of this type of file
 				if ($ext == 'pdf' || in_array($cType, $formats['images']) || !$binary)
 				{
-					\JFile::copy($this->path . DS . $fpath, JPATH_ROOT . $outputDir . DS . $tempBase);
+					\JFile::copy($this->path . DS . $fpath, PATH_APP . $outputDir . DS . $tempBase);
 					$content = $tempBase;
 				}
 			}
 		}
 
-		if ($content && file_exists(JPATH_ROOT . $outputDir . DS . $content))
+		if ($content && file_exists(PATH_APP . $outputDir . DS . $content))
 		{
-			$mTypeParts = explode(';', $mt->getMimeType(JPATH_ROOT . $outputDir . DS . $content));
+			$mTypeParts = explode(';', $mt->getMimeType(PATH_APP . $outputDir . DS . $content));
 			$cType = $mTypeParts[0];
 
 			// Fix up object width & height
 			if (in_array($cType, $formats['images']))
 			{
-				list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $outputDir . DS . $content);
+				list($width, $height, $type, $attr) = getimagesize(PATH_APP . $outputDir . DS . $content);
 
 				$xRatio	= $view->oWidth / $width;
 				$yRatio	= $view->oHeight / $height;
@@ -3999,11 +3999,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Serve up file
 				$xserver = new \Hubzero\Content\Server();
-				$xserver->filename(JPATH_ROOT . $outputDir . DS . $content);
+				$xserver->filename(PATH_APP . $outputDir . DS . $content);
 				$xserver->disposition('attachment');
 				$xserver->acceptranges(false);
 				$xserver->saveas($pdfName);
-				$result = $xserver->serve_attachment(JPATH_ROOT . $outputDir . DS . $content, $pdfName, false);
+				$result = $xserver->serve_attachment(PATH_APP . $outputDir . DS . $content, $pdfName, false);
 
 				if (!$result)
 				{
@@ -4022,7 +4022,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$pdfName = str_replace('temp__', '', basename($content));
 				$where 	 = $this->subdir ? $this->subdir. DS . $pdfName : $pdfName;
 
-				if (\JFile::copy(JPATH_ROOT . $outputDir . DS . $content, $this->path . DS . $where))
+				if (\JFile::copy(PATH_APP . $outputDir . DS . $content, $this->path . DS . $where))
 				{
 					// Git add & commit
 					$commitMsg = \JText::_('COM_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
@@ -4058,27 +4058,27 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$gspath = DS . $gspath . DS;
 
 					$pdfName 	= $tex ? str_replace('temp__', '', basename($content)) : basename($content);
-					$pdfPath 	= JPATH_ROOT . $outputDir . DS . $content;
-					$exportPath = JPATH_ROOT . $outputDir . DS . $tempBase . '%d.jpg';
+					$pdfPath 	= PATH_APP . $outputDir . DS . $content;
+					$exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
 					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out );
 
-					if (is_file(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg'))
+					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
 					{
-						$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg');
+						$hi = new \Hubzero\Image\Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
 						if (count($hi->getErrors()) == 0)
 						{
 							$hi->resize($view->oWidth, false, false, true);
-							$hi->save(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg');
+							$hi->save(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
 						}
 						else
 						{
 							return false;
 						}
 					}
-					if (is_file(JPATH_ROOT . $outputDir . DS . $tempBase . '1.jpg'))
+					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
 					{
-						$image = $outputDir . DS . $tempBase . '1.jpg';
+						$image = $tempBase . '1.jpg';
 					}
 				}
 			}
@@ -4101,11 +4101,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->case 		= $this->_case;
 		$view->option 		= $this->_option;
 		$view->image		= $image;
-		$view->binary		= is_file ( JPATH_ROOT . $outputDir . DS . $content )
-							? \Components\Projects\Helpers\Html::isBinary(JPATH_ROOT . $outputDir . DS . $content)
+		$view->project		= $this->_project;
+		$view->binary		= is_file ( PATH_APP . $outputDir . DS . $content )
+							? \Components\Projects\Helpers\Html::isBinary(PATH_APP . $outputDir . DS . $content)
 							: $binary;
-
-		$view->do   = ($this->_case != 'files' && $this->_tool->name) ? 'do' : 'action';
 
 		if ($this->getError())
 		{
@@ -4491,9 +4490,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->params = new \JParameter( $project->params );
 
 		// Get publication usage
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php')
-			&& \JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
+		if (\JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
 		{
 			$filters 					= array();
 			$filters['project']  		= $project->id;
