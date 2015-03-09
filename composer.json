@@ -67,6 +67,7 @@
         "predis/predis": "0.8.6",
         "phpoffice/phpexcel": "1.8.0",
         "symfony/yaml": "2.5.*",
+        "symfony/http-foundation": "2.5.5",
         "simshaun/recurr": "0.3.2",
         "pelago/emogrifier": "dev-master",
         "aferrandini/phpqrcode": "1.0.1",

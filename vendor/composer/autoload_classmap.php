@@ -2781,6 +2781,7 @@ return array(
     'LogException' => $baseDir . '/libraries/joomla/log/logexception.php',
     'PDF417' => $vendorDir . '/tecnick.com/tcpdf/include/barcodes/pdf417.php',
     'QRcode' => $vendorDir . '/tecnick.com/tcpdf/include/barcodes/qrcode.php',
+    'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'TCPDF' => $vendorDir . '/tecnick.com/tcpdf/tcpdf.php',
     'TCPDF2DBarcode' => $vendorDir . '/tecnick.com/tcpdf/tcpdf_barcodes_2d.php',
     'TCPDFBarcode' => $vendorDir . '/tecnick.com/tcpdf/tcpdf_barcodes_1d.php',
