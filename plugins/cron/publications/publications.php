@@ -295,8 +295,15 @@ class plgCronPublications extends JPlugin
 			return;
 		}
 
-		$aipBasePath = $config->get('aip_path', NULL);
-		$aipBasePath = $aipBasePath && is_dir($aipBasePath) ? $aipBasePath : NULL;
+		$aipBasePath = trim($config->get('aip_path', NULL), DS);
+		$aipBasePath = $aipBasePath && is_dir(DS . $aipBasePath) ? DS . $aipBasePath : NULL;
+
+		// Check for base path
+		if (!$aipBasePath)
+		{
+			$this->setError('Missing archival base directory');
+			return;
+		}
 
 		// Get all unarchived publication versions
 		$query  = "SELECT V.*, C.id as id, V.id as version_id ";
@@ -319,23 +326,32 @@ class plgCronPublications extends JPlugin
 
 		foreach ($rows as $row)
 		{
-			$doiParts = explode('/', $row->doi);
-			$aipName = count($doiParts) > 1 ? $doiParts[0] . '__' . $doiParts[1] : '';
-			if ($aipBasePath && $aipName && is_dir($aipBasePath . DS . $aipName))
-			{
-				// Do not overwrite existing archives !!
-				continue;
-			}
 			// Grace period unexpired?
 			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
 			if (strtotime($monthFrom) > strtotime(JFactory::getDate()))
 			{
 				continue;
 			}
+
 			// Load version
 			$pv = new PublicationVersion($database);
 			if (!$pv->load($row->version_id))
 			{
+				continue;
+			}
+
+			// Create aip path
+			$doiParts = explode('/', $row->doi);
+			$aipName = count($doiParts) > 1 ? $doiParts[0] . '__' . $doiParts[1] : '';
+
+			// Archival package exists?
+			if ($aipBasePath && $aipName && is_dir($aipBasePath . DS . $aipName))
+			{
+				// Save approved date and archive date
+				$pv->archived = $pv->accepted;
+				$pv->store();
+
+				// Do not overwrite existing archives !!
 				continue;
 			}
 
