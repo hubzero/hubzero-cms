@@ -288,7 +288,9 @@ class Application extends Container
 		JPROFILE ? $_PROFILER->mark('afterLoad') : null;
 
 		// Initialise the application.
-		$app->initialise();
+		$app->initialise(
+			$app->isAdmin() ? array('language' => $app->getUserState('application.lang')) : array()
+		);
 
 		// Mark afterIntialise in the profiler.
 		JPROFILE ? $_PROFILER->mark('afterInitialise') : null;

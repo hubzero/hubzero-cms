@@ -1,50 +1,72 @@
 <?php
 /**
- * @package		Joomla.Site
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Set flag that this is a parent file.
+/*
+|--------------------------------------------------------------------------
+| Parent Flag
+|--------------------------------------------------------------------------
+|
+| Set flag that this is a parent file.
+|
+*/
 define('_JEXEC', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
-if (!defined('_JDEFINES')) {
-	define('JPATH_BASE', dirname(__FILE__));
-	require_once JPATH_BASE.'/core/bootstrap/site/defines.php';
-}
+/*
+|--------------------------------------------------------------------------
+| Define directories
+|--------------------------------------------------------------------------
+|
+| First thing we need to do is set some constants for the app's directory
+| and the path to the parent directory containing the app and core.
+|
+*/
 
-require_once JPATH_BASE.'/core/bootstrap/site/framework.php';
+define('JPATH_BASE', __DIR__);
 
-// Mark afterLoad in the profiler.
-JPROFILE ? $_PROFILER->mark('afterLoad') : null;
+require_once JPATH_BASE . DS . 'core' . DS . 'bootstrap' . DS . 'site' . DS . 'defines.php';
 
-// Instantiate the application.
-$app = JFactory::getApplication('site');
+/*
+|--------------------------------------------------------------------------
+| Load The Framework
+|--------------------------------------------------------------------------
+|
+| Here we will load the framework. We'll keep this is in a
+| separate location so we can isolate the creation of an application
+| from the actual running of the application with a given request.
+|
+*/
 
-// Initialise the application.
-$app->initialise();
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'framework.php';
 
-// Mark afterIntialise in the profiler.
-JPROFILE ? $_PROFILER->mark('afterInitialise') : null;
+/*
+|--------------------------------------------------------------------------
+| Load The Application
+|--------------------------------------------------------------------------
+|
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser.
+|
+*/
 
-// Route the application.
-$app->route();
+$app = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'start.php';
 
-// Mark afterRoute in the profiler.
-JPROFILE ? $_PROFILER->mark('afterRoute') : null;
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can simply call the run method,
+| which will execute the request and send the response back to
+| the client's browser.
+|
+*/
 
-// Dispatch the application.
-$app->dispatch();
-
-// Mark afterDispatch in the profiler.
-JPROFILE ? $_PROFILER->mark('afterDispatch') : null;
-
-// Render the application.
-$app->render();
-
-// Mark afterRender in the profiler.
-JPROFILE ? $_PROFILER->mark('afterRender') : null;
-
-// Return the response.
-echo $app;
+$app->run();
