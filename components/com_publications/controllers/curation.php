@@ -720,6 +720,38 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			{
 				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
 			}
+
+			// Issue master DOI
+			if ($row->version_number == 1
+				&& $this->config->get('master_doi')
+				&& !$pub->master_doi)
+			{
+				$jconfig = \JFactory::getConfig();
+				$juri = \JURI::getInstance();
+				$livesite = $jconfig->getValue('config.live_site')
+					? $jconfig->getValue('config.live_site')
+					: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+
+				// Master DOI should link to /main
+				$metadata['url'] = $livesite . DS . 'publications'
+								. DS . $pub->id . DS . 'main';
+
+				// Register DOI with data from version being published
+				$masterDoi = PublicationUtilities::registerDoi(
+					$row,
+					$pub->_authors,
+					$this->config,
+					$metadata,
+					$doierr,
+					1
+				);
+				// Save with publication record
+				if ($masterDoi && $objP->load($oub->id))
+				{
+					$objP->master_doi = $masterDoi;
+					$objP->store();
+				}
+			}
 		}
 
 		// Mark as curated
