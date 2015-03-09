@@ -500,6 +500,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		// Initiate class and bind posted items to database fields
 		$row = new SupportModelTicket($id);
+
 		if (!$row->bind($_POST))
 		{
 			JError::raiseError(500, $row->getError());
@@ -521,7 +522,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				'start'    => 0,
 				'ticket'   => $id
 			))->first();
-			if ($lastcomment->created() >= $started)
+
+			if (isset($lastcomment) && $lastcomment->created() >= $started)
 			{
 				$rowc->set('comment', $comment);
 				JFactory::getApplication()->enqueueMessage(JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
@@ -742,7 +744,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 			}
 
-			// Message people watching this ticket, 
+			// Message people watching this ticket,
 			// but ONLY if the comment was NOT marked private
 			$this->acl = SupportACL::getACL();
 			foreach ($row->watchers() as $watcher)
@@ -1079,7 +1081,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 				}
 
-				// Message people watching this ticket, 
+				// Message people watching this ticket,
 				// but ONLY if the comment was NOT marked private
 				if (!$rowc->isPrivate())
 				{
