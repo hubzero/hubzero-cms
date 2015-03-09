@@ -417,7 +417,6 @@ class SupportTicket extends JTable
 				$filter .= " AND f.closed >= " . $this->_db->Quote($filters['closed']);
 			}
 		}
-
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
 			$filter .= " AND `group`=" . $this->_db->quote($filters['group']);
@@ -425,18 +424,21 @@ class SupportTicket extends JTable
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != ''))
 		{
 			$juser = JFactory::getUser();
-			$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
-			$groups = '';
-			if ($xgroups)
+			if (!$juser->get('guest'))
 			{
-				$g = array();
-				foreach ($xgroups as $xgroup)
+				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
+				$groups = '';
+				if ($xgroups)
 				{
-					$g[] = $this->_db->quote($xgroup->cn);
+					$g = array();
+					foreach ($xgroups as $xgroup)
+					{
+						$g[] = $this->_db->quote($xgroup->cn);
+					}
+					$groups = implode(",", $g);
 				}
-				$groups = implode(",", $g);
+				$filter .= ($groups) ? " OR `group` IN ($groups)" : ")";
 			}
-			$filter .= ($groups) ? " OR `group` IN ($groups)" : ")";
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
