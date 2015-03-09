@@ -49,6 +49,8 @@ jQuery(document).ready(function(jq){
 			});
 		}
 
+		var running = 0;
+
 		var uploader = new qq.FileUploader({
 			element: attach[0],
 			action: attach.attr("data-action"),
@@ -60,7 +62,12 @@ jQuery(document).ready(function(jq){
 						'<div class="qq-upload-drop-area"><span>' + attach.attr('data-txt-instructions') + '</span></div>' +
 						'<ul class="qq-upload-list"></ul>' + 
 					'</div>',
+			onSubmit: function(id, file) {
+				running++;
+			},
 			onComplete: function(id, file, response) {
+				running--;
+
 				if (response.id != $('#field-dir').val()) {
 					$('#field-id').val(response.id);
 					$('#field-dir').val(response.id);
@@ -72,6 +79,10 @@ jQuery(document).ready(function(jq){
 				response.html = response.html.replace(/&gt;/g, '>');
 				response.html = response.html.replace(/&lt;/g, '<');
 				$('#ajax-uploader-list').append(response.html);
+
+				if (running == 0) {
+					$('ul.qq-upload-list').empty();
+				}
 			}
 		});
 	}
