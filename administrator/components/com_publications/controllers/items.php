@@ -958,6 +958,19 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		if ($useBlocks)
+		{
+			// Get master type info
+			$mt = new PublicationMasterType( $this->database );
+			$pub->_type = $mt->getType($pub->base);
+
+			// Get curation model
+			$pub->_curationModel = new PublicationsCuration(
+				$this->database,
+				$pub->_type->curation
+			);
+		}
+
 		// Set redirect URL
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
@@ -1139,8 +1152,17 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					// Collect DOI metadata
 					$metadata = $this->_collectMetadata($row, $objP, $authors);
 
+					// Is DOI required?
+					$requireDoi = true;
+					if ($useBlocks && !empty($pub->_curationModel))
+					{
+						// Require DOI?
+						$requireDoi   = isset($pub->_curationModel->_manifest->params->require_doi)
+									  ? $pub->_curationModel->_manifest->params->require_doi : 1;
+					}
+
 					// Issue a DOI
-					if ($this->config->get('doi_service')
+					if ($requireDoi && $this->config->get('doi_service')
 						&& $this->config->get('doi_shoulder'))
 					{
 						if (!$row->doi)
@@ -1168,6 +1190,39 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 								);
 								return;
 							}
+
+							// Issue master DOI (first version only)
+							if ($row->version_number == 1
+								&& $this->config->get('master_doi', 0)
+								&& !$objP->master_doi)
+							{
+								$jconfig = \JFactory::getConfig();
+								$juri = \JURI::getInstance();
+								$livesite = $jconfig->getValue('config.live_site')
+									? $jconfig->getValue('config.live_site')
+									: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+
+								// Master DOI should link to /main
+								$masterMetadata = array(
+									'url' => $livesite . DS . 'publications' . DS . $row->publication_id . DS . 'main'
+								);
+
+								// Register DOI with data from version being published
+								$masterDoi = PublicationUtilities::registerDoi(
+									$row,
+									$authors,
+									$this->config,
+									$masterMetadata,
+									$doierr
+								);
+
+								// Save master DOI
+								if ($masterDoi)
+								{
+									$objP->master_doi = $masterDoi;
+									$objP->store();
+								}
+							}
 						}
 						else
 						{
@@ -1185,18 +1240,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					{
 						$row->accepted = JFactory::getDate()->toSql();
 
-						if ($useBlocks)
+						if ($useBlocks && !empty($pub->_curationModel))
 						{
-							// Get master type info
-							$mt = new PublicationMasterType( $this->database );
-							$pub->_type = $mt->getType($pub->base);
-
-							// Get curation model
-							$pub->_curationModel = new PublicationsCuration(
-								$this->database,
-								$pub->_type->curation
-							);
-
 							// Store curation manifest
 							$row->curation = json_encode($pub->_curationModel->_manifest);
 						}
