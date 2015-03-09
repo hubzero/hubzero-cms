@@ -47,7 +47,8 @@ class PublicationUtilities
 	 * @param      int 		$reserve 	Reserving DOI? (no extended XML metadata)
 	 * @return     true on success or false on error
 	 */
-	public static function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
+	public static function registerDoi( $row, $authors, $config,
+		$metadata = array(), &$doierr = '', $reserve = 0 )
 	{
 		// Get configs
 		$jconfig  = JFactory::getConfig();
@@ -65,41 +66,41 @@ class PublicationUtilities
 		$handle = '';
 		$doi    = '';
 
-		// Collect metadata
-		$metadata['publisher'] = $config->get('doi_publisher', '' );
-		$metadata['pubYear']   = date( 'Y' );
+		// Collect metadata if not passed
+		$metadata['publisher'] = empty($metadata['publisher']) ? $config->get('doi_publisher', $jconfig->getValue('config.sitename') ) : $metadata['publisher'];
+		$metadata['pubYear']   = empty($metadata['pubYear']) ?  date( 'Y' ) : $metadata['pubYear'];
+		$metadata['title'] 	   = empty($metadata['title']) ? stripslashes(htmlspecialchars($row->title)) : htmlspecialchars($metadata['title']);
 
 		// Make service path
 		$call  = $service . DS . 'shoulder' . DS . 'doi:' . $shoulder;
 		$call .= $prefix ? DS . $prefix : DS;
 
-		// Get publisher name
-		if (!$metadata['publisher'])
-		{
-			$metadata['publisher'] = $jconfig->getValue('config.sitename');
-		}
-
 		$juri = JURI::getInstance();
 
 		// Get config
-		$livesite = $jconfig->getValue('config.live_site')
-			? $jconfig->getValue('config.live_site')
-			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite)
+		if (empty($metadata['url']))
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
-			return false;
-		}
+			$livesite = $jconfig->getValue('config.live_site')
+				? $jconfig->getValue('config.live_site')
+				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+			if (!$livesite)
+			{
+				$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
+				return false;
+			}
 
-		$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . $row->version_number;
+			$metadata['url'] = $livesite . DS . 'publications'. DS . $row->publication_id . DS . $row->version_number;	
+		}
 
 		// Get first author / creator name
 		if (count($authors) > 0)
 		{
-			$creatorName = $authors[0]->name;
+			$creatorName = $authors[0]->name ? $authors[0]->name : $authors[0]->firstName . ' ' . $authors[0]->lastName;
 			$creatorOrcid = (isset($authors[0]->orcid) ? $authors[0]->orcid : '');
 		}
-		else
+
+		// Use creator account if no authors
+		if (empty($creatorName))
 		{
 			$creator = \Hubzero\User\Profile::getInstance($row->created_by);
 			$creatorName = $creator->get('name');
@@ -111,8 +112,6 @@ class PublicationUtilities
 		$metadata['creator']  = end($nameParts);
 		$metadata['creator'] .= count($nameParts) > 1 ? ', ' . $nameParts[0] : '';
 		$metadata['creatorOrcid'] = $creatorOrcid;
-
-		$metadata['title'] = stripslashes(htmlspecialchars($row->title));
 
 		// Start input
 		$input  = "_target: " . $metadata['url'] ."\n";
