@@ -3991,6 +3991,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
 		$action .= ' ' . $row->version_label . ' ';
 		$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle).'"';
+		$emailAction = $action;
 		$action  = htmlentities($action, ENT_QUOTES, "UTF-8");
 
 		// Record activity
@@ -4013,7 +4014,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$juri 	 = JURI::getInstance();
 		$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
 		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
-		$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
+		$message = $actor . ' ' . $emailAction . '  - ' . $link;
 
 		// Notify admin group
 		if ($notify)
