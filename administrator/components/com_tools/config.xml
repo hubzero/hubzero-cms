@@ -97,6 +97,10 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<param name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<param name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<param name="master_doi" type="list" default="0" label="Issue master DOI?" description="Master DOI links to /main page listing all previously published versions">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</param>
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="exec_pu" type="radio" default="1" label="Include PU" description="Include Purdue campus as a tool access restriction">
 			<option value="0">No</option>
@@ -207,5 +211,9 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (use full HUB name) for DOI service" />
 		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
 		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<field name="master_doi" type="list" default="0" label="Issue master DOI?" description="Master DOI links to /main page listing all previously published versions">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	</fieldset>
 </config>
