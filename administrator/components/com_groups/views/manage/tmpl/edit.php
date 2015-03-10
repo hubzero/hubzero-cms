@@ -62,6 +62,7 @@ $membership_control   = $gparams->get('membership_control', 1);
 $display_system_users = $gparams->get('display_system_users', 'global');
 $comments             = $gparams->get('page_comments', $params->get('page_comments', 0));
 $author               = $gparams->get('page_author', $params->get('page_author', 0));
+$trusted              = $gparams->get('page_trusted', $params->get('page_trusted', 0));
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -134,6 +135,14 @@ function submitbutton(pressbutton)
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_GROUPS_PAGE_SETTINGS'); ?></span></legend>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT'); ?>">
+				<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT'); ?>:</label>
+				<select name="group[params][page_trusted]">
+					<option <?php if ($trusted == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO'); ?></option>
+					<option <?php if ($trusted == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_YES'); ?></option>
+				</select>
+			</div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT'); ?>">
 				<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:</label>

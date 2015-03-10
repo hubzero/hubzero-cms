@@ -333,6 +333,12 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			return;
 		}
 
+		if (!is_object($this->group->params))
+		{
+			$this->group->params = new JRegistry($this->group->params);
+		}
+		$this->version->set('page_trusted', $this->group->params->get('page_trusted', 0));
+
 		// get currrent version #
 		$currentVersionNumber = ($this->page->version()) ? $this->page->version()->get('version') : 0;
 
@@ -340,7 +346,11 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$contentChanged = false;
 		$oldContent = ($this->page->version()) ? trim($this->page->version()->get('content')) : '';
 		$newContent = (isset($version['content'])) ? trim($version['content']) : '';
-		$newContent = GroupsModelPageVersion::purify($newContent, $this->group->isSuperGroup());
+
+		if (!$this->version->get('page_trusted', 0))
+		{
+			$newContent = GroupsModelPageVersion::purify($newContent, $this->group->isSuperGroup());
+		}
 
 		// is the new and old content different?
 		if ($oldContent != $newContent)
