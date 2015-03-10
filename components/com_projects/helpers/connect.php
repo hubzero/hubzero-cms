@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Projects Connect helper class
  */
-class ProjectsConnectHelper extends JObject {
+class ProjectsConnectHelper extends \JObject {
 
 	/**
 	 * Project
@@ -124,7 +124,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$userid)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$this->_uid = $juser->get('id');
 		}
 
@@ -248,7 +248,7 @@ class ProjectsConnectHelper extends JObject {
 	public function setConfigs()
 	{
 		// Make up redirection URL for Google service
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 		$redirectUri = trim($juri->base(), DS) . DS . 'projects' . DS . 'auth';
 
 		// Scope for Google service
@@ -259,11 +259,11 @@ class ProjectsConnectHelper extends JObject {
 		);
 
 		// We will use files plugin params
-		$plugin				= JPluginHelper::getPlugin( 'projects', 'files' );
-		$filesParams		= new JParameter($plugin->params);
+		$plugin		 = \JPluginHelper::getPlugin( 'projects', 'files' );
+		$filesParams = new \JParameter($plugin->params);
 
 		// Get project params
-		$pparams = new JParameter( $this->_project->params );
+		$pparams = new \JParameter( $this->_project->params );
 
 		$connect = array(
 			'google' => array(
@@ -308,7 +308,7 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!isset($this->_connect[$service]))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -344,35 +344,35 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
 		$config = $this->_connect[$service];
-		$jsession = JFactory::getSession();
+		$jsession = \JFactory::getSession();
 
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
 		// Connect to google (OAUTH2)
 		if ($service == 'google')
 		{
-			$code  = JRequest::getVar( 'code', '', 'get' );
+			$code  = \JRequest::getVar( 'code', '', 'get' );
 			$refresh_token = '';
 
 			// We got here from the redirect from a successful authorization grant, fetch the access token
 			if ($code)
 			{
 				$postvals = array(
-					'grant_type' => 'authorization_code',
-					'client_id' => $config['clientId'],
-					'client_secret' => $config['clientSecret'],
-					'code' => $code,
-					'redirect_uri' => $config['redirectUri']
+					'grant_type' 		=> 'authorization_code',
+					'client_id' 		=> $config['clientId'],
+					'client_secret' 	=> $config['clientSecret'],
+					'code' 				=> $code,
+					'redirect_uri' 		=> $config['redirectUri']
 				);
 
 				// get JSON access token object (with refresh_token parameter)
@@ -388,7 +388,7 @@ class ProjectsConnectHelper extends JObject {
 					// Store master token for project
 					if ($this->_uid == $this->_project->owned_by_user)
 					{
-						$obj = new Components\Projects\Tables\Project( $this->_db );
+						$obj = new \Components\Projects\Tables\Project( $this->_db );
 						$obj->saveParam($this->_project->id, $service . '_token', $token->refresh_token);
 					}
 				}
@@ -436,7 +436,7 @@ class ProjectsConnectHelper extends JObject {
 		if ($service == 'dropbox')
 		{
 			// TBD
-			$this->setError('Dropbox service is not yet available');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_DROPBOX_UNAVAIL'));
 			return false;
 		}
 	}
@@ -465,7 +465,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 
 			// Acting user - get token from session
-			$jsession = JFactory::getSession();
+			$jsession = \JFactory::getSession();
 			$access_token = $jsession->get('projects.' . $service . '.token');
 		}
 
@@ -487,7 +487,7 @@ class ProjectsConnectHelper extends JObject {
 
 			if (!$refresh_token)
 			{
-				$this->setError('Authentication error');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_AUTH_ERROR'));
 				return false;
 			}
 
@@ -504,7 +504,7 @@ class ProjectsConnectHelper extends JObject {
 		// Need access token to proceed
 		if (!$access_token)
 		{
-			$this->setError('Oups! Authentication error. Token invalid or expired. User needs to re-authenticate');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_AUTH_ERROR_DETAILED'));
 			return false;
 		}
 
@@ -549,7 +549,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -558,7 +558,7 @@ class ProjectsConnectHelper extends JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -594,7 +594,7 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -603,7 +603,7 @@ class ProjectsConnectHelper extends JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -637,7 +637,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -679,7 +679,7 @@ class ProjectsConnectHelper extends JObject {
 				$folderID = $createdFolder['id'];
 				if ($folderID)
 				{
-					$obj	= new Components\Projects\Tables\Project( $this->_db );
+					$obj	= new \Components\Projects\Tables\Project( $this->_db );
 					$obj->saveParam($this->_project->id, $service . '_dir_id', $folderID);
 				}
 			}
@@ -718,7 +718,7 @@ class ProjectsConnectHelper extends JObject {
 						}
 						catch (Exception $e)
 						{
-							$this->setError('Failed to set correct permissions');
+							$this->setError(\JText::_('COM_PROJECTS_SYNC_FAILED_SET_PERMISSIONS'));
 						}
 					}
 				}
@@ -767,7 +767,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Failed to retrieve remote service profile information');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_FAILED_RETRIEVE_PROFILE'));
 				return false;
 			}
 		}
@@ -798,7 +798,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -836,7 +836,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -934,7 +934,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -986,8 +986,8 @@ class ProjectsConnectHelper extends JObject {
 				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : NULL;
 		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
 		$converted			= isset($metadata)
-								&& preg_match("/google-apps/", $remote_format)
-								&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
+							&& preg_match("/google-apps/", $remote_format)
+							&& !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
 		// Update connection record
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
@@ -1026,7 +1026,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1038,7 +1038,13 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, $newTitle, '', $metadata);
+			$success = ProjectsGoogleHelper::patchFile(
+				$apiService,
+				$remoteid,
+				$newTitle,
+				'',
+				$metadata
+			);
 		}
 
 		if (!$success)
@@ -1046,17 +1052,34 @@ class ProjectsConnectHelper extends JObject {
 			return false;
 		}
 
-		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : NULL;
+		$remote_md5			= isset($metadata) && isset($metadata['md5Checksum'])
+							? $metadata['md5Checksum']
+							: NULL;
 		$remote_modified	= isset($metadata) && isset($metadata['modifiedDate'])
-				? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate'])) : NULL;
-		$remote_format		= isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : NULL;
+							? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
+							: NULL;
+		$remote_format		= isset($metadata) && isset($metadata['mimeType'])
+							? $metadata['mimeType']
+							: NULL;
 
 		// Update connection record
-		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
+		$objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
 
-		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
-			$local['local_path'], $local['type'], $uid, $parentId, $newTitle, $remote_md5,
-			$local['md5'], $local['converted'], $remote_format, $local['mimeType'], $remote_modified
+		$update = $objRFile->updateRecord(
+			$projectid,
+			$service,
+			$remoteid,
+			$local['local_path'],
+			$local['type'],
+			$uid,
+			$parentId,
+			$newTitle,
+			$remote_md5,
+			$local['md5'],
+			$local['converted'],
+			$remote_format,
+			$local['mimeType'],
+			$remote_modified
 		);
 
 		return $success;
@@ -1088,7 +1111,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1115,9 +1138,21 @@ class ProjectsConnectHelper extends JObject {
 		// Update connection record
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
-		$update = $objRFile->updateRecord( $projectid, $service, $remoteid,
-			$local['local_path'], $local['type'], $uid, $parentId, $metadata['title'], $remote_md5,
-			$local['md5'], $local['converted'], $remote_format, $local['mimeType'], $remote_modified
+		$update = $objRFile->updateRecord(
+			$projectid,
+			$service,
+			$remoteid,
+			$local['local_path'],
+			$local['type'],
+			$uid,
+			$parentId,
+			$metadata['title'],
+			$remote_md5,
+			$local['md5'],
+			$local['converted'],
+			$remote_format,
+			$local['mimeType'],
+			$remote_modified
 		);
 
 		return $success;
@@ -1134,7 +1169,9 @@ class ProjectsConnectHelper extends JObject {
 	 *
 	 * @return	   array
 	 */
-	public function deleteRemoteItem ($projectid = NULL, $service = 'google', $uid = 0, $remoteid = 0, $permanent = false)
+	public function deleteRemoteItem ($projectid = NULL, $service = 'google',
+		$uid = 0, $remoteid = 0, $permanent = false
+	)
 	{
 		if (!$projectid || !$remoteid)
 		{
@@ -1146,7 +1183,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1157,20 +1194,6 @@ class ProjectsConnectHelper extends JObject {
 		{
 			$success = ProjectsGoogleHelper::deleteItem ($apiService, $remoteid, $permanent);
 			$success = ProjectsGoogleHelper::deleteAllParents ($apiService, $remoteid);
-
-			// NEW: simple deletion does not work now when owner different from project creator
-			if (!$success)
-			{
-				// Service config
-				//$config = $this->_connect[$service];
-
-				// Get ID of user's remote project folder
-				//$folderId = $config['remote_dir_id'];
-
-				// Removing parent ID from file so that the file gets removed from project folder
-				//$success = ProjectsGoogleHelper::deleteParent ($apiService, $remoteid, $folderId);
-
-			}
 		}
 
 		// Delete connection record
@@ -1217,7 +1240,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1258,15 +1281,23 @@ class ProjectsConnectHelper extends JObject {
 			// Add newly create folder to remoteFolders array
 			$remoteFolders[$path] = array(
 				'remoteid' => $newParentId,
-				'status' => 'A',
-				'parentid'=> $parentId
+				'status'   => 'A',
+				'parentid' => $parentId
 			);
 
 			// Update connection record
 			$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
 
-			$update = $objRFile->updateRecord( $projectid, $service, $newParentId,
-				$path, 'folder', $this->_uid, $parentId, $title );
+			$update = $objRFile->updateRecord(
+				$projectid,
+				$service,
+				$newParentId,
+				$path,
+				'folder',
+				$this->_uid,
+				$parentId,
+				$title
+			);
 
 			return $newParentId;
 		}
@@ -1285,7 +1316,9 @@ class ProjectsConnectHelper extends JObject {
 	 *
 	 * @return	   integer
 	 */
-	public function prepRemoteParent ($projectid = NULL, $service = 'google', $uid = 0, $local = array(), &$remoteFolders = array())
+	public function prepRemoteParent ($projectid = NULL, $service = 'google',
+		$uid = 0, $local = array(), &$remoteFolders = array()
+	)
 	{
 		if (!$projectid)
 		{
@@ -1323,7 +1356,7 @@ class ProjectsConnectHelper extends JObject {
 
 			$parentId = $this->createRemoteFolder(
 				$projectid, $service, $uid,
-				$title, $path,	$parentId, $remoteFolders
+				$title, $path, $parentId, $remoteFolders
 			);
 		}
 
@@ -1346,7 +1379,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1376,7 +1409,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Failed to retrieve revisions for remote file ID ' . $id);
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
 				return false;
 			}
 		}
@@ -1401,7 +1434,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1420,16 +1453,15 @@ class ProjectsConnectHelper extends JObject {
 				if ($data)
 				{
 					$entry = array();
-					$entry['url']			= isset($data['downloadUrl']) ? $data['downloadUrl'] : '';
-					$entry['export']		= isset($data['exportLinks']) ? $data['exportLinks'] : array();
-					$entry['mimeType']		= $data['mimeType'];
+					$entry['url']      = isset($data['downloadUrl']) ? $data['downloadUrl'] : '';
+					$entry['export']   = isset($data['exportLinks']) ? $data['exportLinks'] : array();
+					$entry['mimeType'] = $data['mimeType'];
 					return json_decode(json_encode($entry));
 				}
-
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Failed to retrieve revisions for remote file ID ' . $id);
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
 				return false;
 			}
 		}
@@ -1479,16 +1511,19 @@ class ProjectsConnectHelper extends JObject {
 				// If remote, make sure current version is remote
 				if ($converted == 1 && $order == 'last')
 				{
-					$timestamps[]	= strtotime(JFactory::getDate());
+					$timestamps[]	= strtotime(\JFactory::getDate());
 				}
 				else
 				{
 					$timestamps[]	= strtotime($rev['modifiedDate']);
 				}
+
 				$author = isset($rev['lastModifyingUser']['displayName'])
 					? strtolower($rev['lastModifyingUser']['displayName'])
 					: NULL;
-				$author = !$author && isset($rev['lastModifyingUserName']) ? strtolower($rev['lastModifyingUserName']) : NULL;
+				$author = !$author && isset($rev['lastModifyingUserName'])
+					? strtolower($rev['lastModifyingUserName'])
+					: NULL;
 
 				if (!$author && $order == 'last')
 				{
@@ -1513,7 +1548,7 @@ class ProjectsConnectHelper extends JObject {
 					'change'		=> '',
 					'movedTo'		=> '',
 					'size'			=> '',
-					'name'			=> JText::_('COM_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
+					'name'			=> \JText::_('COM_PROJECTS_FILES_REMOTE_FILE_' . strtoupper($service)),
 					'order'			=> $order,
 					'count'			=> count($revisions),
 					'commitStatus'	=> $r == count($revisions) ? 'A' : 'M'
@@ -1592,15 +1627,25 @@ class ProjectsConnectHelper extends JObject {
 				// Delete record
 				if ($action == 'D')
 				{
-					$objRFile->deleteRecord( $this->_project->id, $service, $c['remote_id']);
+					$objRFile->deleteRecord(
+						$this->_project->id,
+						$service,
+						$c['remote_id']
+					);
 				}
 				elseif ($newdir)
 				{
 					// Update dir path
 					$fpath = $newdir . DS . basename($c['path']);
 
-					$update = $objRFile->updateRecord( $this->_project->id, $service, $c['remote_id'],
-						$fpath, $c['type'] , $uid, $parentId
+					$update = $objRFile->updateRecord(
+						$this->_project->id,
+						$service,
+						$c['remote_id'],
+						$fpath,
+						$c['type'],
+						$uid,
+						$parentId
 					);
 				}
 			}
@@ -1630,7 +1675,7 @@ class ProjectsConnectHelper extends JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError('API service unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1668,7 +1713,7 @@ class ProjectsConnectHelper extends JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError('API service unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1681,7 +1726,7 @@ class ProjectsConnectHelper extends JObject {
 			// Need remote folder
 			if (!$folderID)
 			{
-				$this->setError('Sync failed: remote service currently unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_FAILED_SERVICE_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1697,7 +1742,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Sync failed: remote folder unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_FOLDER_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1705,8 +1750,15 @@ class ProjectsConnectHelper extends JObject {
 			$duplicates = array();
 
 			// Get files in main project remote directory
-			$remotes = ProjectsGoogleHelper::getFolderContent ($apiService, $folderID,
-				$remotes, '', $since, $connections, $duplicates);
+			$remotes = ProjectsGoogleHelper::getFolderContent(
+				$apiService,
+				$folderID,
+				$remotes,
+				'',
+				$since,
+				$connections,
+				$duplicates
+			);
 		}
 
 		return $remotes;
@@ -1732,7 +1784,7 @@ class ProjectsConnectHelper extends JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError('API service unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1755,13 +1807,13 @@ class ProjectsConnectHelper extends JObject {
 				if ($folder && $folder['title'] != $folderName)
 				{
 					// Save renamed reference
-					$obj	= new Components\Projects\Tables\Project( $this->_db );
+					$obj	= new \Components\Projects\Tables\Project( $this->_db );
 					$obj->saveParam($this->_project->id, $service . '_dir', $folder['title']);
 				}
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Remote service folder unavailable');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_SERVICE_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1794,7 +1846,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1842,7 +1894,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -2029,7 +2081,7 @@ class ProjectsConnectHelper extends JObject {
 		$imagepath = trim($config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($alias) . DS . 'preview';
 
-		if (is_dir(PATH_APP . $to_path) && !is_file(PATH_APP. $to_path . DS . $thumb))
+		if (is_dir(PATH_APP . $to_path) && !is_file(PATH_APP . $to_path . DS . $thumb))
 		{
 			// Get thumnail
 			$fc = $this->sendHttpRequest($service, $uid, $remote['thumb']);
@@ -2072,7 +2124,7 @@ class ProjectsConnectHelper extends JObject {
 		$uid = $uid ? $uid : $this->_uid;
 		$objO = new \Components\Projects\Tables\Owner( $this->_db );
 		$objO->loadOwner ($this->_project->id, $uid);
-		$params = new JParameter( $objO->params );
+		$params = new \JParameter( $objO->params );
 		return $params->get($param);
 	}
 
@@ -2149,7 +2201,7 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -2158,7 +2210,7 @@ class ProjectsConnectHelper extends JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -2175,8 +2227,7 @@ class ProjectsConnectHelper extends JObject {
 				'approval_prompt=' . urlencode($config['approvalPrompt'])
 			);
 
-			$return = $return ? $return : JRoute::_('index.php?option=com_projects' . a
-				. 'alias=' . $this->_project->alias . a . 'active=files');
+			$return = $return ? $return : JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias . '&active=files');
 
 			$array = array(
 				'alias'	 => $this->_project->alias,
@@ -2205,21 +2256,21 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
 		$config = $this->_connect[$service];
 		if (!$refreshToken)
 		{
-			$this->setError('Missing refresh token for service');
+			$this->setError(\JText::_('Missing refresh token for service'));
 			return false;
 		}
 
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -2239,7 +2290,7 @@ class ProjectsConnectHelper extends JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError('Oups! There was an authentication error with the remote service.');
+				$this->setError(\JText::_('COM_PROJECTS_SYNC_AUTH_ERROR'));
 				return false;
 			}
 		}
@@ -2320,7 +2371,7 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -2343,7 +2394,7 @@ class ProjectsConnectHelper extends JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError('Missing or invalid service name');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -2352,19 +2403,20 @@ class ProjectsConnectHelper extends JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError('Missing service configuration or connection service turned off');
+			$this->setError(\JText::_('COM_PROJECTS_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
-		$obj = new Components\Projects\Tables\Project( $this->_db );
+		// Load project
+		$obj = new \Components\Projects\Tables\Project( $this->_db );
 		if (!$obj->loadProject($this->_project->id))
 		{
-			$this->setError( JText::_('Oups! There was a problem loading project data.') );
+			$this->setError( \JText::_('COM_PROJECTS_SYNC_PROBLEM_LOADING_DATA') );
 			return false;
 		}
 
 		// Get project params
-		$pparams = new JParameter( $this->_project->params );
+		$pparams = new \JParameter( $this->_project->params );
 
 		// Remove all connection info and remote data
 		$remoteid = $pparams->get($service . '_dir_id');
