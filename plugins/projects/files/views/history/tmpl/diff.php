@@ -41,13 +41,13 @@ if ($this->subdir && count($desect_path) > 0)
 	}
 }
 
-$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history' . a .'asset=' . urlencode($this->file) . a . 'subdir=' . $this->subdir . '">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
+$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?' . $this->do . '=history&amp;asset=' . urlencode($this->file) . '&amp;subdir=' . $this->subdir . '">' . JText::_('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
 
 ?>
 
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_FILES_SHOW_HISTORY_DIFF'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF'); ?></h3>
 <?php
 // Display error
 if ($this->getError()) {
@@ -60,7 +60,7 @@ if ($this->getError()) {
 	<?php if (!$this->ajax && $this->case == 'files') { ?>
 		<div id="plg-header">
 			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
+				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
 			<?php echo $endPath; ?>
 			</h3>
 		</div>
@@ -78,17 +78,17 @@ if ($this->getError()) {
 
 		<?php if (!$this->getError()) { ?>
 		<div class="diff-legend">
-			<span class="prominent"><?php echo JText::_('COM_PROJECTS_FILES_DIFF'); ?>:</span>
-			<label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->mode == 'side-by-side') { echo 'checked="checked"'; } ?>  /> <?php echo JText::_('COM_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
+			<span class="prominent"><?php echo JText::_('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
+			<label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->mode == 'side-by-side') { echo 'checked="checked"'; } ?>  /> <?php echo JText::_('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
 			</label>
-			<label><input type="radio" value="inline" name="mode" <?php if ($this->mode == 'inline') { echo 'checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_FILES_DIFF_INLINE'); ?>
+			<label><input type="radio" value="inline" name="mode" <?php if ($this->mode == 'inline') { echo 'checked="checked"'; } ?> /> <?php echo JText::_('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
 			</label>
 			<input type="submit" value="Update" id="diff-update" class="btn" />
 			<dl>
-	            <dt class="diff-unmod"></dt><dd><?php echo JText::_('COM_PROJECTS_FILES_DIFF_UNMODIFIED'); ?></dd>
-	            <dt class="diff-add"></dt><dd><?php echo JText::_('COM_PROJECTS_FILES_DIFF_ADDED'); ?></dd>
-	            <dt class="diff-rem"></dt><dd><?php echo JText::_('COM_PROJECTS_FILES_DIFF_REMOVED'); ?></dd>
-	            <dt class="diff-mod"></dt><dd><?php echo JText::_('COM_PROJECTS_FILES_DIFF_MODIFIED'); ?></dd>
+	            <dt class="diff-unmod"></dt><dd><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_UNMODIFIED'); ?></dd>
+	            <dt class="diff-add"></dt><dd><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_ADDED'); ?></dd>
+	            <dt class="diff-rem"></dt><dd><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_REMOVED'); ?></dd>
+	            <dt class="diff-mod"></dt><dd><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_MODIFIED'); ?></dd>
 			 </dl>
 		</div>
 		<?php } ?>
@@ -111,14 +111,14 @@ if ($this->getError()) {
 			<table id="table-diff" class="diff diffSideBySide">
 			 <thead>
 				<tr>
-					<th colspan="2"><?php echo JText::_('COM_PROJECTS_FILES_REV') . ' @' . $this->old['rev'] . ' (' . $this->old['hash'] . ')'; ?></th>
-					<th colspan="2"><?php echo JText::_('COM_PROJECTS_FILES_REV') . ' @' . $this->new['rev'] . ' (' . $this->new['hash'] . ')'; ?></th>
+					<th colspan="2"><?php echo JText::_('PLG_PROJECTS_FILES_REV') . ' @' . $this->old['rev'] . ' (' . $this->old['hash'] . ')'; ?></th>
+					<th colspan="2"><?php echo JText::_('PLG_PROJECTS_FILES_REV') . ' @' . $this->new['rev'] . ' (' . $this->new['hash'] . ')'; ?></th>
 				</tr>
 			 </thead>
 
 			<?php if ($this->diff) { echo $this->diff; } else {  ?>
 				<tr>
-					<td colspan="4"><?php echo JText::_('COM_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
+					<td colspan="4"><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
 				</tr>
 			<?php } ?>
 			</table>
@@ -128,15 +128,15 @@ if ($this->getError()) {
 			<table id="table-diff" class="diff diffInline">
 			 <thead>
 				<tr>
-					<th><?php echo JText::_('COM_PROJECTS_FILES_REV') . ' @' . $this->old['rev']; ?></th>
-					<th><?php echo JText::_('COM_PROJECTS_FILES_REV') . ' @' . $this->new['rev']; ?></th>
-					<th><?php echo JText::_('COM_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
+					<th><?php echo JText::_('PLG_PROJECTS_FILES_REV') . ' @' . $this->old['rev']; ?></th>
+					<th><?php echo JText::_('PLG_PROJECTS_FILES_REV') . ' @' . $this->new['rev']; ?></th>
+					<th><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
 				</tr>
 			 </thead>
 
 			<?php if ($this->diff) { echo $this->diff; } else {  ?>
 				<tr>
-					<td colspan="4"><?php echo JText::_('COM_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
+					<td colspan="4"><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
 				</tr>
 			<?php } ?>
 			</table>
@@ -147,9 +147,9 @@ if ($this->getError()) {
 				?>
 				<div class="diffGit">
 					<h5>
-					<?php echo JText::_('COM_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->old['rev'] . ' (' . $this->old['hash'] . ') and @' . $this->new['rev'] . ' (' . $this->new['hash'] . ') '; ?></h5>
+					<?php echo JText::_('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->old['rev'] . ' (' . $this->old['hash'] . ') and @' . $this->new['rev'] . ' (' . $this->new['hash'] . ') '; ?></h5>
 					<?php if ($this->diff) { echo '<pre>' . $this->diff . '</pre>'; } else {  ?>
-					<pre><?php echo JText::_('COM_PROJECTS_FILES_DIFF_EMPTY_IDENTICAL'); ?></pre>
+					<pre><?php echo JText::_('PLG_PROJECTS_FILES_DIFF_EMPTY_IDENTICAL'); ?></pre>
 				<?php } ?>
 				</div>
 			<?php } ?>
@@ -160,6 +160,6 @@ if ($this->getError()) {
 		</fieldset>
 </form>
 
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 </div>
 <?php } ?>

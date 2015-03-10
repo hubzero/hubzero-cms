@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 $f = 1;
 $i = 1;
 $skipped = 0;
@@ -31,11 +32,11 @@ $skipped = 0;
 // Get remote connection
 $objRFile = new \Components\Projects\Tables\RemoteFile ($this->database);
 
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_DELETE_PROJECT_FILES'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_DELETE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
@@ -55,7 +56,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-		<p><?php echo JText::_('COM_PROJECTS_DELETE_FILES_CONFIRM'); ?></p>
+		<p><?php echo JText::_('PLG_PROJECTS_FILES_DELETE_FILES_CONFIRM'); ?></p>
 
 		<ul class="sample">
 		<?php foreach ($this->items as $element)
@@ -96,15 +97,15 @@ if (!$this->getError()) {
 		</ul>
 
 		<?php if (!empty($this->services) && $skipped > 0)  { ?>
-			<p class="notice"><?php echo JText::_('COM_PROJECTS_FILES_DELETE_REMOTE_NEED_CONNECTION'); ?></p>
+			<p class="notice"><?php echo JText::_('PLG_PROJECTS_FILES_DELETE_REMOTE_NEED_CONNECTION'); ?></p>
 		<?php } ?>
 
 		<p class="submitarea">
-			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" id="submit-ajaxform" />
+			<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE'); ?>" id="submit-ajaxform" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
-					<a id="cancel-action" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+					<a id="cancel-action" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</fieldset>

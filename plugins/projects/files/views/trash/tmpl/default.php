@@ -25,13 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
 
-<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
 	<fieldset >
 <?php if (empty($this->files)) { ?>
 	<p class="warning"><?php echo JText::_('PLG_PROJECTS_FILES_TRASH_EMPTY'); ?></p>
@@ -64,7 +64,7 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 						<?php echo \Components\Projects\Helpers\Html::formatTime($file['date'], true, true); ?>
 						<span class="block"><?php echo $file['author']; ?></span>
 					</td>
-					<td><a href="<?php echo $this->url . '/?' . $this->do . '=restore' . a . 'asset=' . urlencode($filename) . a . 'hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo JText::_('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
+					<td><a href="<?php echo $this->url . '/?' . $this->do . '=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo JText::_('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
 				</tr>
 			<?php } ?>
 			</tbody>
@@ -74,7 +74,7 @@ $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 			<?php if ($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CLOSE'); ?>" />
 			<?php } else {  ?>
-			<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('Go back'); ?></a>
+			<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
 			<?php } ?>
 		</p>
 

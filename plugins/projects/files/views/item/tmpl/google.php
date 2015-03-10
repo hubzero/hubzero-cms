@@ -29,7 +29,7 @@ $item = $this->item;
 
 $img = \Components\Projects\Helpers\Html::getGoogleIcon($item->remote_format);
 
-$url = $this->url . '/?action=open' . a . 'subdir='.urlencode($this->subdir) . a . 'file=' . urlencode(basename($item->local_path));
+$url = $this->url . '/?action=open&amp;subdir='.urlencode($this->subdir) . '&amp;file=' . urlencode(basename($item->local_path));
 
 $when = \Components\Projects\Helpers\Html::formatTime(date ('c', strtotime($item->remote_modified .  ' UTC')));
 
@@ -70,15 +70,15 @@ $me = ($author == utf8_decode($this->oparams->get('google_name')) || $author == 
 	<td><input type="checkbox" value="<?php echo urlencode(basename($item->local_path)); ?>" name="asset[]" class="checkasset js remote service-google" /></td>
 	<td class="sharing"><img src="<?php echo $img; ?>" alt="<?php echo urlencode($item->remote_title); ?>" />
 		<a href="<?php echo $url; ?>"
-		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . JText::_('COM_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 50); ?></a>
+		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . JText::_('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 50); ?></a>
 	</td>
 	<td class="shrinked"></td>
 	<td class="shrinked"></td>
-	<td class="shrinked"><a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
-	<td class="shrinked pale"><?php echo $me ? JText::_('COM_PROJECTS_FILES_ME') : $author; ?></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir)
-	. a . 'asset='.urlencode(basename($item->local_path)); ?>"
-	 title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
+	<td class="shrinked"><a href="<?php echo $this->url . '/?' . $this->do . '=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
+	<td class="shrinked pale"><?php echo $me ? JText::_('PLG_PROJECTS_FILES_ME') : $author; ?></td>
+	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete&amp;subdir='.urlencode($this->subdir)
+	. '&amp;asset='.urlencode(basename($item->local_path)); ?>"
+	 title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
 	<?php if ($this->publishing) { ?>
 	<td class="shrinked"></td>
 	<?php } ?>

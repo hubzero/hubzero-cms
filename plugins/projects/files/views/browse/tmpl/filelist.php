@@ -48,26 +48,9 @@ if ($this->subdir && count($desect_path) > 0)
 }
 
 $class = $this->case == 'tools' ? 'tools' : 'files';
-$publishing = $this->publishing && $this->case == 'files' ? 1 : 0;
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
-
-// Check used space against quota (percentage)
-$inuse = round(($this->dirsize * 100 ) / $this->quota);
-if ($inuse < 1)
-{
-	$inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
-	if ($inuse < 0.1)
-	{
-		$inuse = 0.0;
-	}
-}
-$inuse = ($inuse > 100) ? 100 : $inuse;
-$approachingQuota = $this->config->get('approachingQuota', 85);
-$approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
-$warning 		  = ($inuse > $approachingQuota) ? 1 : 0;
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 $lastsync = '';
-
 $connected = $this->oparams->get('google_token') ? true : false;
 
 ?>
@@ -84,6 +67,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 	<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 	<input type="hidden" name="sharing" id="sharing" value="<?php echo $this->sharing; ?>" />
 <?php if ($this->sharing && !empty($this->services)) {
+
 		foreach ($this->services as $service)
 		{
 			$lastsync = $this->rSync['status'] == 'complete' ? date("c") : $this->params->get($service . '_sync', '');
@@ -105,48 +89,43 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			<?php if ($this->subdir) { ?><a href="<?php echo $this->url; ?>"><?php } ?>
 			<?php echo $this->title; ?>
 			<?php if ($this->subdir) { ?></a><?php echo $path_bc; ?><?php } ?>
-			<?php if($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('COM_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>
+			<?php if ($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('PLG_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>
 		</h3>
 	</div>
 	<?php
 	} ?>
 
-	<?php if ($this->tool && $this->tool->name )
-	{
-		echo \Components\Projects\Helpers\Html::toolDevHeader( $this->option, $this->config, $this->project, $this->tool, 'source', $path_bc);
-	} ?>
-	<?php if (!$this->tool) { ?>
-		<?php
-			// NEW: connections to external services
-			$this->view('link', 'connect')
-			     ->set('option', $this->option)
-			     ->set('project', $this->project)
-			     ->set('uid', $this->uid)
-			     ->set('database', $this->database)
-			     ->set('connect', $this->connect)
-			     ->set('oparams', $this->oparams)
-			     ->set('params', $this->fileparams)
-			     ->set('sizelimit', $this->sizelimit)
-			     ->display();
-		 ?>
-	<?php } ?>
+	<?php
+		// NEW: connections to external services
+		$this->view('link', 'connect')
+		     ->set('option', $this->option)
+		     ->set('project', $this->project)
+		     ->set('uid', $this->uid)
+		     ->set('database', $this->database)
+		     ->set('connect', $this->connect)
+		     ->set('oparams', $this->oparams)
+		     ->set('params', $this->fileparams)
+		     ->set('sizelimit', $this->sizelimit)
+		     ->display();
+	 ?>
+
 	<div class="list-editing">
 		<p>
 			<span id="manage_assets">
-				<a href="<?php echo $this->url . '/?' . $this->do . '=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo JText::_('COM_PROJECTS_UPLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_UPLOAD'); ?></span></a>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo JText::_('COM_PROJECTS_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?></span></a>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=download' . $subdirlink; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('COM_PROJECTS_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DOWNLOAD'); ?></span></a>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_MOVE'); ?></span></a>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_DELETE'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo JText::_('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if ($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=download' . $subdirlink; ?>" class="fmanage js" id="a-download" title="<?php echo JText::_('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=move' . $subdirlink; ?>" class="fmanage js" id="a-move" title="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_MOVE'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=delete' . $subdirlink; ?>" class="fmanage js" id="a-delete" title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_DELETE'); ?></span></a>
 				<?php if ($this->sharing && in_array('google', $this->services) && $connected) { ?>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=share' . $subdirlink; ?>" id="a-share" title="<?php echo JText::_('COM_PROJECTS_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo JText::_('COM_PROJECTS_FILES_SHARE'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=share' . $subdirlink; ?>" id="a-share" title="<?php echo JText::_('PLG_PROJECTS_FILES_SHARE_TOOLTIP'); ?>" class="fmanage js" ><span><?php echo JText::_('PLG_PROJECTS_FILES_SHARE'); ?></span></a>
 				<?php } ?>
 				<?php if ($this->fileparams->get('latex')) { ?>
-				<a href="<?php echo $this->url . '/?' . $this->do . '=compile' . $subdirlink; ?>" class="fmanage js" id="a-compile" title="<?php echo JText::_('COM_PROJECTS_COMPILE_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_COMPILE'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=compile' . $subdirlink; ?>" class="fmanage js" id="a-compile" title="<?php echo JText::_('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_COMPILE'); ?></span></a>
 				<?php } ?>
 			</span>
 				<noscript>
-					<span class="faded ipadded">Enable JavaScript in your browser for advanced file management.</span>
+					<span class="faded ipadded"><?php echo JText::_('Enable JavaScript in your browser for advanced file management.'); ?></span>
 				</noscript>
 			<?php if ($this->sharing) { ?>
 			<span class="rightfloat">
@@ -154,7 +133,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			</span>
 			<span id="manage_sync">
 				<span id="sync-wrap">
-				<a href="<?php echo $this->url . '/?' . $this->do . '=sync' . $subdirlink; ?>" id="a-sync" title="<?php echo JText::_('COM_PROJECTS_SYNC_TOOLTIP'); ?>"><span><?php echo JText::_('COM_PROJECTS_SYNC'); ?></span></a>
+				<a href="<?php echo $this->url . '/?' . $this->do . '=sync' . $subdirlink; ?>" id="a-sync" title="<?php echo JText::_('PLG_PROJECTS_FILES_SYNC_TOOLTIP'); ?>"><span><?php echo JText::_('PLG_PROJECTS_FILES_SYNC'); ?></span></a>
 				</span>
 			</span>
 			<?php } ?>
@@ -164,22 +143,21 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		<thead>
 			<tr>
 				<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
-				<th class="asset_doc <?php if($this->filters['sortby'] == 'filename') { echo ' activesort'; } ?>">
-					<a href="<?php echo $this->url . '/?' . $this->do . '=browse' . a . 'sortby=filename'
-					. a . 'sortdir='.$sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_NAME'); ?>">
-					<?php echo JText::_('COM_PROJECTS_NAME'); ?></a>
+				<th class="asset_doc <?php if ($this->filters['sortby'] == 'filename') { echo ' activesort'; } ?>">
+					<a href="<?php echo $this->url . '/?' . $this->do . '=browse&amp;sortby=filename&amp;sortdir='.$sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('PLG_PROJECTS_FILES_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_FILES_NAME'); ?>">
+					<?php echo JText::_('PLG_PROJECTS_FILES_NAME'); ?></a>
 				</th>
 				<th class="centeralign"></th>
-				<th <?php if($this->filters['sortby'] == 'sizes') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo $this->url . '/?' . $this->do . '=browse' . a . 'sortby=sizes' . a . 'sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_SIZE'); ?>"><?php echo JText::_('COM_PROJECTS_SIZE'); ?></a>
+				<th <?php if ($this->filters['sortby'] == 'sizes') { echo 'class="activesort"'; } ?>>
+					<a href="<?php echo $this->url . '/?' . $this->do . '=browse&amp;sortby=sizes&amp;sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('PLG_PROJECTS_FILES_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_FILES_SIZE'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_SIZE'); ?></a>
 				</th>
-				<th <?php if($this->filters['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
-					<a href="<?php echo $this->url . '/?' . $this->do . '=browse' . a . 'sortby=modified' . a . 'sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . ucfirst(JText::_('COM_PROJECTS_MODIFIED')); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_MODIFIED')); ?></a>
+				<th <?php if ($this->filters['sortby'] == 'modified') { echo 'class="activesort"'; } ?>>
+					<a href="<?php echo $this->url . '/?' . $this->do . '=browse&amp;sortby=modified&amp;sortdir=' . $sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo JText::_('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(JText::_('PLG_PROJECTS_FILES_MODIFIED')); ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_FILES_MODIFIED')); ?></a>
 				</th>
-				<th><?php echo ucfirst(JText::_('COM_PROJECTS_BY')); ?></th>
+				<th><?php echo ucfirst(JText::_('PLG_PROJECTS_FILES_BY')); ?></th>
 				<th class="centeralign nojs"></th>
-				<?php if ($publishing) { ?>
-				<th><?php echo JText::_('COM_PROJECTS_FILES_PUBLISHED'); ?></th>
+				<?php if ($this->publishing) { ?>
+				<th><?php echo JText::_('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
 				<?php } ?>
 			</tr>
 		</thead>
@@ -188,16 +166,16 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			if ($this->task == 'newdir') { ?>
 				<tr class="newfolder">
 					<td></td>
-					<td colspan="<?php echo $publishing ? 7 : 6; ?>">
+					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>">
 							<fieldset>
 								<input type="hidden" name="<?php echo ($this->tool && $this->tool->name ) ? 'do' : 'action'; ?>" value="savedir" />
 								<label>
-									<span class="mini block prominent ipadded"><?php echo JText::_('COM_PROJECTS_NEW_FOLDER'); ?>:</span>
+									<span class="mini block prominent ipadded"><?php echo JText::_('PLG_PROJECTS_FILES_NEW_FOLDER'); ?>:</span>
 									<img src="/plugins/projects/files/images/folder.gif" alt="" />
 									<input type="text" name="newdir" maxlength="100" value="untitled" />
 								</label>
-								<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
-								<span class="btn btncancel mini"><a href="<?php echo $this->url . '/?' . $this->do . '=view' . $subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_SAVE'); ?>" />
+								<span class="btn btncancel mini"><a href="<?php echo $this->url . '/?' . $this->do . '=view' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a></span>
 							</fieldset>
 					</td>
 				</tr>
@@ -208,8 +186,8 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			{ ?>
 				<tr>
 					<td></td>
-					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini">
-						<a href="<?php echo $this->url . '/?' . $this->do . '=browse' . a . 'subdir=' . $parent; ?>" class="uptoparent"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
+					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>" class="mini">
+						<a href="<?php echo $this->url . '/?' . $this->do . '=browse&amp;subdir=' . $parent; ?>" class="uptoparent"><?php echo JText::_('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
 			<?php
@@ -236,7 +214,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('juser', $this->juser)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
-						     ->set('publishing', $publishing)
+						     ->set('publishing', $this->publishing)
 						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
@@ -249,11 +227,11 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						$file = $item['item'];
 
 						// Hide gitignore file
-						if($file['name'] == '.gitignore')
+						if ($file['name'] == '.gitignore')
 						{
 							if (count($this->items) == 1)
 							{
-								$empty = 1;
+								$empty = true;
 							}
 							continue;
 						}
@@ -267,7 +245,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('juser', $this->juser)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
-						     ->set('publishing', $publishing)
+						     ->set('publishing', $this->publishing)
 						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
@@ -286,7 +264,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('juser', $this->juser)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
-						     ->set('publishing', $publishing)
+						     ->set('publishing', $this->publishing)
 						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
@@ -301,20 +279,19 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			// Show directory as empty
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
-					<td colspan="<?php echo $publishing ? 7 : 6; ?>" class="mini faded">
+					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>" class="mini faded">
 						<?php if ($this->subdir || $this->tool)
 							{
-								echo JText::_('COM_PROJECTS_THIS_DIRECTORY_IS_EMPTY');
+								echo JText::_('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY');
 								if (!$this->tool)
 								{
-									echo ' <a href="' . $this->url . '/?' . $this->do . '=deletedir' . a
-									. 'dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">'
-									. JText::_('COM_PROJECTS_DELETE_THIS_DIRECTORY') . '</a>';
+									echo ' <a href="' . $this->url . '/?' . $this->do . '=deletedir&amp;dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">'
+									. JText::_('PLG_PROJECTS_FILES_DELETE_THIS_DIRECTORY') . '</a>';
 								}
 							}
 							else
 							{
-								echo JText::_('COM_PROJECTS_FILES_PROJECT_HAS_NO_FILES');
+								echo JText::_('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES');
 							}
 						?>
 					</td>
@@ -326,15 +303,22 @@ $connected = $this->oparams->get('google_token') ? true : false;
 	<p class="extras">
 		<?php if ($this->case == 'files') { ?>
 		<span class="leftfloat">
-		<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE'); ?>
-		<a href="<?php echo $this->url . '/?' . $this->do . '=diskspace'; ?>" title="<?php echo JText::_('COM_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('COM_PROJECTS_FILES_USED'); ?></span></span></span></a>
-			 <span class="show-quota"><?php echo JText::_('COM_PROJECTS_FILES_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
+		<?php 
+			// Disc space indicator
+			$this->view('_mini', 'diskspace')
+			     ->set('quota', $this->quota)
+			     ->set('dirsize', $this->dirsize)
+			     ->set('config', $this->config)
+			     ->set('url', $this->url)
+			     ->set('do', $this->do)
+			     ->display();
+		?>
 		</span>
 		<?php } ?>
 		<span class="rightfloat">
 			<a href="<?php echo $this->url . '/?' . $this->do . '=trash'; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
 			|
-			<a href="<?php echo $this->url . '/?' . $this->do . '=status'; ?>" class="showinbox"><?php echo JText::_('COM_PROJECTS_FILES_GIT_STATUS'); ?></a>
+			<a href="<?php echo $this->url . '/?' . $this->do . '=status'; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_FILES_GIT_STATUS'); ?></a>
 		</span>
 	</p>
  </form>

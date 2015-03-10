@@ -44,32 +44,32 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 		<td class="top_valign nobsp">
 			<img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
 			<a href="<?php echo $this->url
-			. '/?' . $this->do . '=download' . a . 'subdir='.urlencode($this->subdir)
-			. a . 'file='.urlencode($file['name']); ?>"
+			. '/?' . $this->do . '=download&amp;subdir='.urlencode($this->subdir)
+			. '&amp;file='.urlencode($file['name']); ?>"
 			<?php if ($file['untracked'] == 0) { ?>
 			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
 			<?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name'], 50); ?></a>
 
 			<?php if ($file['untracked'] == 0) { ?>
-			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>
+			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('PLG_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>
 			<?php } else { ?>
-				<span class="fileoptions"><?php echo JText::_('untracked file'); ?></span>
+				<span class="fileoptions"><?php echo JText::_('PLG_PROJECTS_FILES_UNTRACKED'); ?></span>
 			<?php } ?>
 		</td>
 		<td class="shrinked"></td>
 		<td class="shrinked"><?php echo $file['size']; ?></td>
 		<td class="shrinked"><?php if ($file['untracked'] == 0) { ?>
-		<a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<a href="<?php echo $this->url . '/?' . $this->do . '=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
 		<?php } ?></td>
-		<td class="shrinked pale"><?php if ($me) { echo JText::_('COM_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
+		<td class="shrinked pale"><?php if ($me) { echo JText::_('PLG_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
-		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir)
-		. a . 'asset='.urlencode($file['name']); ?>"
-		 title="<?php echo JText::_('COM_PROJECTS_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
-		<a href="<?php echo $this->url . '/?' . $this->do . '=move' . a . 'subdir='.urlencode($this->subdir)
-		. a . 'asset='.urlencode($file['name']); ?>"
-		 title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
+		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . '&amp;subdir='.urlencode($this->subdir)
+		. '&amp;asset='.urlencode($file['name']); ?>"
+		 title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
+		<a href="<?php echo $this->url . '/?' . $this->do . '=move&amp;subdir='.urlencode($this->subdir)
+		. '&amp;asset='.urlencode($file['name']); ?>"
+		 title="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
 		<?php if ($this->publishing) { ?>
-		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . 'alias=' . $this->project->alias . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
+		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&active=publications&alias=' . $this->project->alias . '&pid=' . $file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
 		<?php } ?>
 	</tr>

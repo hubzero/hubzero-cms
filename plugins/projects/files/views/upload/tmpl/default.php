@@ -88,7 +88,7 @@ if (!$this->getError()) {
 		<div class="field-wrap">
 			<div class="asset-uploader">
 		<?php if (!$basic) { ?>
-					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1'  . $subdirlink; ?>" >
+					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>" >
 						<label class="addnew">
 							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 							<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>

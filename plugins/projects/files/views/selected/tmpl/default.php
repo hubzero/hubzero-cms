@@ -58,10 +58,10 @@ if (in_array($ext, $native))
 
 if ($this->remote && $this->remote['converted'] == 1)
 {
-	$slabel = $this->type == 'folder' ? JText::_('COM_PROJECTS_FILES_REMOTE_FOLDER') : JText::_('COM_PROJECTS_FILES_REMOTE_FILE');
+	$slabel = $this->type == 'folder' ? JText::_('PLG_PROJECTS_FILES_REMOTE_FOLDER') : JText::_('PLG_PROJECTS_FILES_REMOTE_FILE');
 	if ($this->remote['service'] == 'google')
 	{
-		$slabel = $this->type == 'folder' ? JText::_('COM_PROJECTS_FILES_REMOTE_FOLDER_GOOGLE') : JText::_('COM_PROJECTS_FILES_REMOTE_FILE_GOOGLE');
+		$slabel = $this->type == 'folder' ? JText::_('PLG_PROJECTS_FILES_REMOTE_FOLDER_GOOGLE') : JText::_('PLG_PROJECTS_FILES_REMOTE_FILE_GOOGLE');
 	}
 }
 
@@ -75,9 +75,9 @@ $fpath = isset($this->subdir) && $this->subdir ? $this->subdir. DS . urldecode($
 <li><img src="<?php echo $img; ?>" alt="<?php echo $name; ?>" />
 <?php echo $fpath; ?>
 <?php if ($this->remote && $this->remote['converted'] == 1) { echo '<span class="remote-file">' . $slabel . '</span>'; } ?>
-<?php if ($this->remote && $this->remote['original_path'] && $this->remote['converted'] == 1) { echo '<span class="remote-file faded">' . JText::_('COM_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</span>'; } ?>
+<?php if ($this->remote && $this->remote['original_path'] && $this->remote['converted'] == 1) { echo '<span class="remote-file faded">' . JText::_('PLG_PROJECTS_FILES_CONVERTED_FROM_ORIGINAL'). ' ' . basename($this->remote['original_path']); if ($this->remote['original_format']) { echo ' (' . $this->remote['original_format']. ')'; } echo '</span>'; } ?>
 
-<?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . JText::_('COM_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
+<?php if (isset($this->skip) && $this->skip == true) { echo '<span class="file-skipped">' . JText::_('PLG_PROJECTS_FILES_SKIPPED') . '</span>'; } ?>
 <?php echo $this->type == 'folder'
 	? '<input type="hidden" name="folder' . $multi . '" value="'.$this->item.'" />'
 	: '<input type="hidden" name="asset' . $multi . '" value="'.$this->item.'" />'; ?>

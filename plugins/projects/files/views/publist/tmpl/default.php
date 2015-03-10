@@ -34,14 +34,14 @@ $objSt 		= new \Components\Projects\Tables\Stamp( $database );
 // Get listed public files
 $items = $objSt->getPubList($this->project->id, 'files');
 
-$link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
+$link = JRoute::_('index.php?option=com_projects&task=get') . '/?s=';
 
 // Load component configs
 $config = JComponentHelper::getParams('com_projects');
 
 // Get project path
 $path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
-$prefix = $config->get('offroot', 0) ? '' : JPATH_ROOT;
+$prefix = $config->get('offroot', 0) ? '' : PATH_APP;
 
 if ($items) {
 ?>

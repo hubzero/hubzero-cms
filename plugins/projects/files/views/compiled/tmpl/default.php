@@ -32,7 +32,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 <?php
 // Display error or success message
 if ($this->getError()) { ?>
-	<h3><?php echo JText::_('COM_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
+	<h3><?php echo JText::_('PLG_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
 	<?php
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 
@@ -61,8 +61,8 @@ if (!$this->getError()) {
 		if ($this->ext == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed))
 		{
 			$view->extras  = '<span class="rightfloat">';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . JText::_('COM_PROJECTS_DOWNLOAD') . ' PDF</a> ';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . JText::_('COM_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . JText::_('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . JText::_('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
 			$view->extras .= '</span>';
 		}
 		echo $view->loadTemplate();

@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 $f = 1;
 $i = 1;
 $skipped = 0;
@@ -32,7 +33,7 @@ $maxlevel = 100;
 // Get remote connection
 $objRFile = new \Components\Projects\Tables\RemoteFile ($this->database);
 
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 // Get all parents
 $dirs = array();
@@ -46,7 +47,7 @@ foreach ($this->list as $item)
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_MOVE_PROJECT_FILES'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
@@ -65,7 +66,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<p><?php echo JText::_('COM_PROJECTS_MOVE_FILES_CONFIRM'); ?></p>
+		<p><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_FILES_CONFIRM'); ?></p>
 
 		<ul class="sample">
 		<?php foreach ($this->items as $element)
@@ -105,11 +106,11 @@ if (!$this->getError()) {
 		</ul>
 
 		<div id="dirs" class="dirs">
-			<h4><?php echo JText::_('COM_PROJECTS_MOVE_WHERE'); ?></h4>
+			<h4><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_WHERE'); ?></h4>
 			<?php if (count($dirs) > 0) {  echo '<ul class="dirtree">';
 			?>
 				<li>
-					<input type="radio" name="newpath" value="" <?php if(!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo JText::_('COM_PROJECTS_HOME_DIRECTORY'); ?></span>
+					<input type="radio" name="newpath" value="" <?php if (!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo JText::_('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
 				</li>
 			<?php
 			for ($i= 0; $i < count($dirs); $i++) {
@@ -124,7 +125,7 @@ if (!$this->getError()) {
 					$leftMargin = ($level * 15) . 'px';
 				 ?>
 				<li style="margin-left:<?php echo $leftMargin; ?>">
-					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
+					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
 				</li>
 			<?php }
 			echo '</ul>'; }
@@ -132,19 +133,19 @@ if (!$this->getError()) {
 			<?php if (count($dirs) > 0) { ?>
 				<div class="or"><?php echo JText::_('COM_PROJECTS_OR'); ?></div>
 			<?php }  ?>
-			<label><span class="block"><?php echo JText::_('COM_PROJECTS_MOVE_TO_NEW_DIRECTORY'); ?></span>
-				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir.DS : ''; ?></span>
+			<label><span class="block"><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
+				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir . DS : ''; ?></span>
 				<input type="text" name="newdir" maxlength="50" value="" />
 			</label>
 			<?php }  ?>
 		</div>
 		<p class="submitarea">
-			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_MOVE'); ?>" />
+			<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
 				<span>
-					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>

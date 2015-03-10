@@ -30,7 +30,7 @@ $sendTo = $this->sendTo;
 
 ?>
 <div id="abox-content">
-<h3><?php echo $sendTo == 'local' ? JText::_('COM_PROJECTS_UNSHARE_PROJECT_FILES') : JText::_('COM_PROJECTS_SHARE_PROJECT_FILES'); ?></h3>
+<h3><?php echo $sendTo == 'local' ? JText::_('PLG_PROJECTS_UNSHARE_PROJECT_FILES') : JText::_('PLG_PROJECTS_SHARE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
@@ -40,7 +40,7 @@ if ($this->getError()) {
 <?php
 if (!$this->getError()) {
 ?>
-<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
+<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id='.$this->project->id); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="shareit" />
@@ -109,8 +109,8 @@ if (!$this->getError()) {
 					$configs = $this->connect->getConfigs($servicename);
 		?>
 			<label class="sharing-option">
-				<input type="radio" name="service" value="<?php echo $servicename; ?>" <?php if($i == 0) { echo 'checked="checked"'; } ?> />
-				<?php echo JText::_('COM_PROJECTS_SHARE_FILES_WITH')
+				<input type="radio" name="service" value="<?php echo $servicename; ?>" <?php if ($i == 0) { echo 'checked="checked"'; } ?> />
+				<?php echo JText::_('PLG_PROJECTS_FILES_SHARE_FILES_WITH')
 					. ' <span class="' . $servicename . '">' . $configs['servicename'] . '</span>'; ?>
 			</label>
 
@@ -121,12 +121,12 @@ if (!$this->getError()) {
 			<div class="sharing-option-extra">
 				<label class="sharing-option">
 					<input type="radio" name="convert" value="1" />
-					<?php echo JText::_('COM_PROJECTS_FILES_SHARE_GOOGLE_CONVERT'); ?>
+					<?php echo JText::_('PLG_PROJECTS_FILES_SHARE_GOOGLE_CONVERT'); ?>
 				</label>
-				<span class="faded ipadded mini block"><?php echo JText::_('COM_PROJECTS_FILES_SHARE_GOOGLE_CONVERT_NOTE'); ?></span>
+				<span class="faded ipadded mini block"><?php echo JText::_('PLG_PROJECTS_FILES_SHARE_GOOGLE_CONVERT_NOTE'); ?></span>
 				<label class="sharing-option">
 					<input type="radio" name="convert" value="0" checked="checked" />
-					<?php echo JText::_('COM_PROJECTS_FILES_SHARE_GOOGLE_NO_CONVERT'); ?>
+					<?php echo JText::_('PLG_PROJECTS_FILES_SHARE_GOOGLE_NO_CONVERT'); ?>
 				</label>
 			</div>
 			<?php }
@@ -147,7 +147,7 @@ if (!$this->getError()) {
 					if (!empty($formats))
 					{
 			?>
-				<h4><?php echo JText::_('COM_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
+				<h4><?php echo JText::_('PLG_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
 				<div class="sharing-option-extra">
 			<?php
 						$i = 0;
@@ -155,7 +155,7 @@ if (!$this->getError()) {
 						{
 			?>
 							<label>
-								<input type="radio" name="format" value="<?php echo $format; ?>" <?php if($i == 0) { echo 'checked="checked"'; }?> />
+								<input type="radio" name="format" value="<?php echo $format; ?>" <?php if ($i == 0) { echo 'checked="checked"'; }?> />
 								<?php echo $format; ?>
 							</label>
 			<?php
@@ -168,13 +168,13 @@ if (!$this->getError()) {
 				}
 	 		}
 		 } else { // multiple ?>
-			<p class="notice"><?php echo JText::_('COM_PROJECTS_FILES_SHARING_MULTIPLE_NOTE_CONVERSION'); ?></p>
+			<p class="notice"><?php echo JText::_('PLG_PROJECTS_FILES_SHARING_MULTIPLE_NOTE_CONVERSION'); ?></p>
 		<?php } ?>
 		<p class="submitarea">
 			<input type="submit" value="<?php echo $sendTo == 'local'
-			? JText::_('COM_PROJECTS_FILES_ACTION_UNSHARE')
-			: JText::_('COM_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
-			<input type="reset" id="cancel-action"  class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			? JText::_('PLG_PROJECTS_FILES_ACTION_UNSHARE')
+			: JText::_('PLG_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
+			<input type="reset" id="cancel-action"  class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 		</p>
 	</fieldset>
 </form>

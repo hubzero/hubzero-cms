@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 $v = count($this->versions);
 
 // Directory path breadcrumbs
@@ -44,12 +45,12 @@ if ($this->subdir && count($desect_path) > 0)
 
 $i = 0;
 
-$endPath = '&raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
+$endPath = '&raquo; <span class="subheader">' . JText::_('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
 
 ?>
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_FILES_SHOW_HISTORY'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_SHOW_HISTORY'); ?></h3>
 <?php
 // Display error
 if ($this->getError()) {
@@ -65,7 +66,7 @@ if (!$this->getError())
 	<?php if (!$this->ajax && $this->case == 'files') { ?>
 		<div id="plg-header">
 			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
+				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
 			<?php echo $endPath; ?>
 			</h3>
 		</div>
@@ -95,13 +96,13 @@ if (!$this->getError())
 			<table class="revisions">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_OWNER'); ?></th>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_DIFF'); ?></th>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_OPTIONS'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_OWNER'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_DIFF'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_OPTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
-			<?php foreach($this->versions as $version) {
+			<?php foreach ($this->versions as $version) {
 
 				if ($version['hide'] == 1)
 				{
@@ -110,8 +111,8 @@ if (!$this->getError())
 				$last 		= $i == 0 ? true : false;
 				$first 		= $i == (count($this->versions) - 1) ? true : false;
 				$status		= $version['remote']
-					? '<span class="commit-type">[' . JText::_('COM_PROJECTS_FILE_STATUS_REMOTE') . ']</span> '
-					: '<span class="commit-type">[' . JText::_('COM_PROJECTS_FILE_STATUS_LOCAL') . ']</span> ';
+					? '<span class="commit-type">[' . JText::_('PLG_PROJECTS_FILES_FILE_STATUS_REMOTE') . ']</span> '
+					: '<span class="commit-type">[' . JText::_('PLG_PROJECTS_FILES_FILE_STATUS_LOCAL') . ']</span> ';
 				$name		= $version['remote'] && $this->remote ? $this->remote['title'] : $version['name'];
 
 				// Get url, name and status
@@ -124,7 +125,7 @@ if (!$this->getError())
 					if ($this->connected && $last == true)
 					{
 						$action  = '<a href="' . $url .'" class="open_file" title="'
-							. JText::_('COM_PROJECTS_FILES_REMOTE_OPEN') .'" target="_blank">&nbsp;</a>';
+							. JText::_('PLG_PROJECTS_FILES_REMOTE_OPEN') .'" target="_blank">&nbsp;</a>';
 					}
 					else
 					{
@@ -137,7 +138,7 @@ if (!$this->getError())
 						.'/?file='.urlencode($version['name'])
 						. '&amp;' . $this->do . '=download&amp;hash='.$version['hash'];
 					$action = (in_array($version['commitStatus'], array('A', 'M')))
-						? '<a href="' . $url .'" class="download_file" title="' . JText::_('COM_PROJECTS_DOWNLOAD') . '" >&nbsp;</a>'
+						? '<a href="' . $url .'" class="download_file" title="' . JText::_('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
 						: '';
 				}
 
@@ -149,7 +150,7 @@ if (!$this->getError())
 
 				if ($last)
 				{
-					$status .= ' <span class="crev">' . JText::_('COM_PROJECTS_FILE_STATUS_CURRENT') . '</span>';
+					$status .= ' <span class="crev">' . JText::_('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT') . '</span>';
 
 				}
 
@@ -159,7 +160,7 @@ if (!$this->getError())
 				$trclass = $version['commitStatus'] == 'D' ? 'deleted-revision' : $trclass;
 
 				?>
-				<tr <?php if($trclass) { echo 'class="' . $trclass . '"'; } ?>>
+				<tr <?php if ($trclass) { echo 'class="' . $trclass . '"'; } ?>>
 					<td class="commit-actor"><span class="prominent"><?php echo \Components\Projects\Helpers\Html::formatTime($version['date'], true); ?></span>
 						<span class="block"><?php echo $version['author'] ? $version['author'] : $version['email']; ?></span>
 					</td>
@@ -176,20 +177,20 @@ if (!$this->getError())
 							echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
 							if ($over)
 							{
-								echo '<p class="showaslink showmore js">' . JText::_('COM_PROJECTS_FILES_SHOW_MORE') . '</p>';
+								echo '<p class="showaslink showmore js">' . JText::_('PLG_PROJECTS_FILES_SHOW_MORE') . '</p>';
 							}
 							echo '</div>';
 							if ($over)
 							{
 								echo '<div class="long-txt hidden" id="long-' . $i . '"><pre>' . $version['content'] . '</pre>';
-								echo '<p class="showaslink showless">' . JText::_('COM_PROJECTS_FILES_SHOW_LESS') . '</p>';
+								echo '<p class="showaslink showless">' . JText::_('PLG_PROJECTS_FILES_SHOW_LESS') . '</p>';
 								echo '</div>';
 							}
 						}
 						?>
-						<?php if ($version['preview'] && is_file(JPATH_ROOT . $version['preview']) && $version['commitStatus'] != 'D') { ?>
+						<?php if ($version['preview'] && is_file(PATH_APP . $version['preview']) && $version['commitStatus'] != 'D') { ?>
 							<div id="preview-image">
-								<img src="<?php echo $version['preview']; ?>" alt="<?php echo JText::_('COM_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+								<img src="<?php echo $version['preview']; ?>" alt="<?php echo JText::_('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
 							</div>
 						<?php } ?>
 						</div>
@@ -204,6 +205,6 @@ if (!$this->getError())
 		</fieldset>
 </form>
 <?php } ?>
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 </div>
 <?php } ?>

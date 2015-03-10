@@ -998,7 +998,7 @@ class Git extends \JObject
 		}
 
 		// Commit change
-		if ($this->gitCommit(\JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($dir)))
+		if ($this->gitCommit(\JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY') . '  ' . escapeshellarg($dir)))
 		{
 			return true;
 		}
@@ -1313,13 +1313,13 @@ class Git extends \JObject
 			// Deleted?
 			if ($current['commitStatus'] == 'D')
 			{
-				$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_DELETED');
+				$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_DELETED');
 			}
 
 			// First sdded?
 			if ($current['commitStatus'] == 'A' && $k == (count($versions) - 1))
 			{
-				$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_ADDED');
+				$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_ADDED');
 			}
 
 			// Modified?
@@ -1329,7 +1329,7 @@ class Git extends \JObject
 					|| ($next && $next['remote'] && $next['remote']) || !$next
 				)
 				{
-					$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_MODIFIED');
+					$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
 				}
 			}
 
@@ -1340,18 +1340,18 @@ class Git extends \JObject
 			{
 				if ($versions[$k - 1]['size'] != $versions[$k]['size'])
 				{
-					$versions[$k - 1]['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_RENAMED_AND_MODIFIED');
+					$versions[$k - 1]['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED_AND_MODIFIED');
 				}
 				else
 				{
-					$versions[$k - 1]['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_RENAMED');
+					$versions[$k - 1]['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED');
 				}
 				$versions[$k - 1]['commitStatus'] = 'R';
 			}
 
 			if (preg_match("/\bRenamed\b/i", $current['message']) && $current['commitStatus'] == 'A')
 			{
-				$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_RENAMED');
+				$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_RENAMED');
 				$current['commitStatus'] = 'R';
 			}
 
@@ -1361,24 +1361,24 @@ class Git extends \JObject
 				&& $versions[$k]['local'] && $versions[$k - 1]['local']
 			)
 			{
-				$versions[$k - 1]['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_RESTORED');
+				$versions[$k - 1]['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_RESTORED');
 			}
 
-			if (preg_match("/" . \JText::_('COM_PROJECTS_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next)
+			if (preg_match("/" . \JText::_('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next)
 			{
-				$versions[$k + 1]['change']  = \JText::_('COM_PROJECTS_FILE_STATUS_SENT_REMOTE');
+				$versions[$k + 1]['change']  = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_SENT_REMOTE');
 				$versions[$k + 1]['movedTo'] = 'remote';
 				$versions[$k + 1]['author']	 = $current['author'];
 				$current['hide'] = 1;
 			}
-			if (preg_match("/" . \JText::_('COM_PROJECTS_FILES_SHARE_IMPORTED') . "/", $current['message']))
+			if (preg_match("/" . \JText::_('PLG_PROJECTS_FILES_FILES_SHARE_IMPORTED') . "/", $current['message']))
 			{
-				$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_SENT_LOCAL');
+				$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_SENT_LOCAL');
 				$current['movedTo'] = 'local';
 			}
 			if ($current['remote'] && $current['commitStatus'] == 'M')
 			{
-				$current['change'] = \JText::_('COM_PROJECTS_FILE_STATUS_MODIFIED');
+				$current['change'] = \JText::_('PLG_PROJECTS_FILES_FILE_STATUS_MODIFIED');
 			}
 
 			$versions[$k] = $current;

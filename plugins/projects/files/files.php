@@ -915,7 +915,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$activity  = $message . ' ' . strtolower(\JText::_('COM_PROJECTS_IN_PROJECT_FILES')) ;
+			$activity  = $message . ' ' . strtolower(\JText::_('PLG_PROJECTS_FILES_IN_PROJECT_FILES')) ;
 
 			$message = 'Successfully ' . $message;
 			$message.= $failed ? ' There was a problem uploading ' . $failed : '';
@@ -1012,8 +1012,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Record activity
 			$aid = $objAA->recordActivity( $this->_project->id,
 				$this->_uid, $activity,
-				$parsedRef, 'project files', \JRoute::_('index.php?option=' . $this->_option . a .
-				'alias=' . $this->_project->alias . a . 'active=files'), 'files', 1 );
+				$parsedRef, 'project files',
+				\JRoute::_('index.php?option=' . $this->_option
+					. '&alias=' . $this->_project->alias . '&active=files'), 'files', 1 
+			);
 		}
 	}
 
@@ -1391,7 +1393,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (empty($files['name']) or $files['name'][0] == '')
 		{
-			$this->setError(\JText::_('COM_PROJECTS_NO_FILES'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_NO_FILES'));
 		}
 
 		// Collect output
@@ -1453,8 +1455,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if ( $files['size'][$i] > intval($this->params->get('maxUpload', '104857600')))
 				{
-					$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
-						. $sizelimit . '. ' . \JText::_('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
+					$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
+						. $sizelimit . '. ' . \JText::_('PLG_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
 				}
 
 				// Combined size
@@ -1466,7 +1468,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Check against quota
 				if ($cSize > $unused)
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_OVER_QUOTA'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
 					break;
 				}
 
@@ -1519,7 +1521,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					if (!\JFile::upload($tmp_name, $this->path . DS . $file))
 					{
-						$this->setError(\JText::_('COM_PROJECTS_ERROR_UPLOADING'));
+						$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_UPLOADING'));
 					}
 					else
 					{
@@ -1689,7 +1691,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Check against quota
 				if ($cSize > $unused)
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_OVER_QUOTA'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
 					break;
 				}
 
@@ -1712,7 +1714,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					{
 						if ($this->_git->makeEmptyFolder($afile))
 						{
-							$commitMsgZip .= \JText::_('COM_PROJECTS_CREATED_DIRECTORY')
+							$commitMsgZip .= \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
 								. '  ' . escapeshellarg($afile) ."\n";
 						}
 					}
@@ -1851,7 +1853,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						{
 							if ($this->_git->makeEmptyFolder($afile))
 							{
-								$commitMsgZip .= \JText::_('COM_PROJECTS_CREATED_DIRECTORY')
+								$commitMsgZip .= \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
 									. '  ' . escapeshellarg($afile) ."\n";
 							}
 						}
@@ -1874,7 +1876,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							{
 								if ($this->_git->makeEmptyFolder($adir))
 								{
-									$commitMsgZip .= \JText::_('COM_PROJECTS_CREATED_DIRECTORY')
+									$commitMsgZip .= \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
 										. '  ' . escapeshellarg($adir) ."\n";
 								}
 							}
@@ -1908,7 +1910,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Check against quota
 						if ($cSize > $unused)
 						{
-							$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_OVER_QUOTA'));
+							$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_OVER_QUOTA'));
 							break;
 						}
 					}
@@ -2014,26 +2016,26 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$newdir)
 		{
 			// Check that we have directory to create
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_DIR_TO_CREATE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_CREATE'));
 		}
 		elseif (dirname($createdir) == '.' && in_array(strtolower($createdir), $reserved))
 		{
 			// Check that we directory name is not reserved for other purposes
-			$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
+			$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_DIR_RESERVED_NAME') );
 		}
 		elseif (!is_dir($this->path . DS . $createdir))
 		{
 			if (!\JFolder::create($this->path . DS . $createdir ))
 			{
 				// Failed to create directory
-				$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
 			}
 			else
 			{
 				// Success
 				if ($this->_git->makeEmptyFolder($createdir))
 				{
-					$this->_msg = \JText::_('COM_PROJECTS_CREATED_DIRECTORY') . ': ' . $newdir;
+					$this->_msg = \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY') . ': ' . $newdir;
 
 					// Force sync
 					$sync = 1;
@@ -2041,15 +2043,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				else
 				{
 					// Failed to create directory
-					$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
+					$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
 				}
 			}
 		}
 		else
 		{
 			// Directory already exists
-			$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newdir . '". '
-			. \JText::_('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
+			$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newdir . '". '
+			. \JText::_('PLG_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS') );
 		}
 
 		// Pass success or error message
@@ -2096,7 +2098,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Check that we have directory to delete
 		if (!$dir || !is_dir($this->path . DS . $dir) || $dir == '.git' || $dir == '.')
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_DIR_TO_DELETE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_DIR_TO_DELETE'));
 		}
 		else
 		{
@@ -2111,7 +2113,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if (!file_exists($this->path . DS . $dir))
 			{
-				$this->_msg = \JText::_('COM_PROJECTS_DELETED_DIRECTORY');
+				$this->_msg = \JText::_('PLG_PROJECTS_FILES_DELETED_DIRECTORY');
 
 				// Force sync
 				$sync = 1;
@@ -2153,7 +2155,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (empty($items))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_DELETE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
 		}
 
 		// cd
@@ -2294,7 +2296,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (empty($items))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_MOVE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
 		}
 
 		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
@@ -2364,7 +2366,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Create new directory
 				if (!\JFolder::create( $this->path . DS . $newdir ))
 				{
-					$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
+					$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				}
 			}
 
@@ -2405,7 +2407,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			elseif (!$this->getError())
 			{
-				$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_NEW_FILE_LOCATION'));
+				$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION'));
 			}
 
 			// After successful move actions
@@ -2432,12 +2434,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$sync = 1;
 
 				// Output message
-				$this->_msg = \JText::_('COM_PROJECTS_MOVED'). ' '
-					. count($moved) . ' ' . \JText::_('COM_PROJECTS_FILES_S');
+				$this->_msg = \JText::_('PLG_PROJECTS_FILES_MOVED'). ' '
+					. count($moved) . ' ' . \JText::_('PLG_PROJECTS_FILES_S');
 			}
 			elseif (empty($moved))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_ERROR_NO_NEW_FILE_LOCATION') );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_NO_NEW_FILE_LOCATION') );
 			}
 
 			// Pass success or error message
@@ -2480,12 +2482,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (empty($items))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_SHARE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
 		}
 
 		if (empty($this->_rServices))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_REMOTE_NOT_ENABLED'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_REMOTE_NOT_ENABLED'));
 		}
 
 		$type 	= key($items[0]);
@@ -2516,10 +2518,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if (!$connected)
 					{
 						// Redirect to connect screen
-						$this->_message = array('message' => \JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'),
+						$this->_message = array('message' => \JText::_('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
 							'type' => 'success');
 						$url  = \JRoute::_('index.php?option=' . $this->_option
-							 . a . 'alias=' . $this->_project->alias . a . 'active=files');
+							 . '&alias=' . $this->_project->alias . '&active=files');
 						$url .= '/?action=connect';
 						$this->_referer = $url;
 						return;
@@ -2532,7 +2534,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$remote)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_SHARING_NO_REMOTE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
 		}
 
 		// Confirmation screen
@@ -2592,7 +2594,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if (!$resource)
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_SHARING_NO_REMOTE'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
 				}
 				else
 				{
@@ -2634,7 +2636,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$newpath, $localPath, $importExt ))
 					{
 						// Git add & commit
-						$commitMsg = \JText::_('COM_PROJECTS_FILES_SHARE_IMPORTED') . "\n";
+						$commitMsg = \JText::_('PLG_PROJECTS_FILES_SHARE_IMPORTED') . "\n";
 						$this->_git->gitAdd($newpath, $commitMsg);
 						$this->_git->gitCommit($commitMsg);
 
@@ -2673,7 +2675,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					}
 
 					// Output message
-					$this->_msg = \JText::_('COM_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title;
+					$this->_msg = \JText::_('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title;
 
 					// Force sync
 					$sync = 1;
@@ -2685,7 +2687,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Check that local file exists
 				if (!file_exists($localPath . DS . $remote['fpath']))
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
 				}
 
 				$mTypeParts = explode(';', $mt->getMimeType($localPath . DS . $remote['fpath']));
@@ -2697,7 +2699,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Check format
 				if (!in_array($ext, $formats) && !$tex)
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_SHARING_NOT_CONVERTABLE'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_SHARING_NOT_CONVERTABLE'));
 				}
 
 				if (!$this->getError())
@@ -2737,7 +2739,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						$shared[] = $added;
 
 						// Remove original local file
-						$commitMsg = \JText::_('COM_PROJECTS_FILES_SHARE_EXPORTED') . "\n";
+						$commitMsg = \JText::_('PLG_PROJECTS_FILES_SHARE_EXPORTED') . "\n";
 						$deleted = $this->_git->gitDelete($remote['fpath'], 'file', $commitMsg);
 						$this->_git->gitCommit($commitMsg);
 
@@ -2757,7 +2759,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						);
 
 						// Output message
-						$this->_msg = \JText::_('COM_PROJECTS_FILES_SHARE_SUCCESS');
+						$this->_msg = \JText::_('PLG_PROJECTS_FILES_SHARE_SUCCESS');
 
 						// Force sync
 						$sync = 1;
@@ -2765,7 +2767,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					else
 					{
 						// Something went wrong
-						$this->setError(\JText::_('COM_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
+						$this->setError(\JText::_('PLG_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
 
 						if ($this->_connect->getError())
 						{
@@ -2787,8 +2789,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = \JRoute::_('index.php?option=' . $this->_option . a
-			. 'alias=' . $this->_project->alias . a . 'active=files');
+		$url  = \JRoute::_('index.php?option=' . $this->_option
+			. '&alias=' . $this->_project->alias . '&active=files');
 		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
 		if ($sync && $this->_case == 'files')
@@ -2832,17 +2834,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (count($nParts) <= 2 || count($oParts) <= 2)
 		{
 			$fpath = NULL;
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_DIFF_NO_CONTENT'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_DIFF_NO_CONTENT'));
 		}
 		elseif (!$file)
 		{
 			$fpath = NULL;
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
 		}
 		elseif ($binary)
 		{
 			$fpath = NULL;
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_DIFF_BINARY'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_DIFF_BINARY'));
 		}
 		else
 		{
@@ -2991,7 +2993,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$file)
 		{
 			$fpath = NULL;
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_SHOW_HISTORY'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
 		}
 		else
 		{
@@ -3121,12 +3123,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$newname)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_NO_NAME'));
 		}
 
 		if (!$oldname)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 		}
 
 		// Make dir/file name safe
@@ -3142,7 +3144,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Compare new and old name
 		if ($newname == $oldname)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
 		}
 
 		// Set paths
@@ -3159,11 +3161,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				//if (!empty($ret))
 				if (file_exists($newpath))
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $newpath);
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_DIR') . ' ' . $newpath);
 				}
 				if (!is_dir($this->path . DS . $oldpath))
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				}
 			}
 			else
@@ -3180,12 +3182,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if (file_exists($newpath))
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
 				}
 
 				if (!is_file( $this->path . DS . $oldpath))
 				{
-					$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 				}
 			}
 		}
@@ -3198,7 +3200,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_git->gitCommit($commitMsg);
 
 			// Output message
-			$this->_msg = \JText::_('COM_PROJECTS_FILES_RENAMED_SUCCESS');
+			$this->_msg = \JText::_('PLG_PROJECTS_FILES_RENAMED_SUCCESS');
 
 			// Force sync
 			$sync = 1;
@@ -3286,7 +3288,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!\JFolder::create( $tempPath ))
 				{
 					// Throw error
-					\JError::raiseError( 404, \JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 					return;
 				}
 			}
@@ -3311,7 +3313,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!file_exists($serve))
 		{
 			// Throw error
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+			\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
 			return;
 		}
 
@@ -3333,7 +3335,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$result)
 		{
 			// Should only get here on error
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_SERVER_ERROR') );
+			\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
 		}
 		else
 		{
@@ -3426,7 +3428,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			if (empty($items))
 			{
-				$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_NO_SELECTIONS_TO_DOWNLOAD'));
+				$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_SELECTIONS_TO_DOWNLOAD'));
 			}
 			elseif (count($items) == 1)
 			{
@@ -3449,7 +3451,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if (!$archive)
 				{
-					$this->setError($this->getError() . ' ' .\JText::_('COM_PROJECTS_FILES_ARCHIVE_ERROR'));
+					$this->setError($this->getError() . ' ' .\JText::_('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
 				}
 			}
 		}
@@ -3506,7 +3508,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Need a file to preview
 			if (!$file)
 			{
-				$this->setError(\JText::_('COM_PROJECTS_ERROR_FILE_INFO_NOT_FOUND'));
+				$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_FILE_INFO_NOT_FOUND'));
 
 				// Output error
 				$view = new \Hubzero\Plugin\View(
@@ -3606,10 +3608,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if (!$connected)
 					{
 						// Redirect to connect screen
-						$this->_message = array('message' => \JText::_('COM_PROJECTS_REMOTE_PLEASE_CONNECT'),
+						$this->_message = array('message' => \JText::_('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
 							'type' => 'success');
 						$url  = \JRoute::_('index.php?option=' . $this->_option
-							 . a . 'alias=' . $this->_project->alias . a . 'active=files');
+							 . '&alias=' . $this->_project->alias . '&active=files');
 						$url .= '/?action=connect';
 						$this->_referer = $url;
 						return;
@@ -3625,7 +3627,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if (!$openLink)
 					{
 						// Throw error
-						\JError::raiseError( 404, \JText::_('COM_PROJECTS_FILE_NOT_FOUND') . ' ' . $file );
+						\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file );
 						return;
 					}
 					$this->_referer = $openLink;
@@ -3690,7 +3692,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!file_exists($fullpath))
 			{
 				// Throw error
-				\JError::raiseError( 404, \JText::_('COM_PROJECTS_FILE_NOT_FOUND') . ' ' . $fullpath );
+				\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $fullpath );
 				return;
 			}
 
@@ -3725,7 +3727,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					\JError::raiseError( 404, \JText::_('COM_PROJECTS_SERVER_ERROR') );
+					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
 				}
 				else
 				{
@@ -3771,7 +3773,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('latex'))
 		{
-			$this->setError( \JText::_('COM_PROJECTS_FILES_COMPILE_NOTALOWWED') );
+			$this->setError( \JText::_('PLG_PROJECTS_FILES_COMPILE_NOTALOWWED') );
 			return;
 		}
 
@@ -3796,7 +3798,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if (!\JFolder::create( PATH_APP . DS . $outputDir ))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
 			}
 		}
@@ -3846,7 +3848,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make sure we have a file to work with
 		if (!$file)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NO_FILES_TO_COMPILE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_COMPILE'));
 		}
 		else
 		{
@@ -3908,7 +3910,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->setError(\JText::_('COM_PROJECTS_ERROR_COMPILE_NO_DATA'));
+				$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_COMPILE_NO_DATA'));
 			}
 
 			// Build temp name
@@ -3933,7 +3935,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if (!$content)
 				{
-					$this->setError(\JText::_('COM_PROJECTS_ERROR_COMPILE_TEX_FAILED'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_COMPILE_TEX_FAILED'));
 				}
 			}
 			elseif ($remote && $remote['converted'] == 1)
@@ -3997,7 +3999,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					\JError::raiseError( 404, \JText::_('COM_PROJECTS_SERVER_ERROR') );
+					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
 				}
 				else
 				{
@@ -4014,7 +4016,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (\JFile::copy(PATH_APP . $outputDir . DS . $content, $this->path . DS . $where))
 				{
 					// Git add & commit
-					$commitMsg = \JText::_('COM_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
+					$commitMsg = \JText::_('PLG_PROJECTS_FILES_COMPILED_COMMITTED') . "\n";
 					$this->_git->gitAdd($where, $commitMsg);
 					$this->_git->gitCommit($commitMsg);
 
@@ -4025,7 +4027,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					}
 
 					$this->_message = array(
-						'message' => \JText::_('COM_PROJECTS_FILES_SUCCESS_COMPILED'),
+						'message' => \JText::_('PLG_PROJECTS_FILES_SUCCESS_COMPILED'),
 						'type' => 'success'
 					);
 
@@ -4074,7 +4076,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		elseif (!$this->getError())
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_COMPILE_PREVIEW_FAILED'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_COMPILE_PREVIEW_FAILED'));
 		}
 
 		$view->item 		= $file;
@@ -4316,7 +4318,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			if (!\JFolder::create( $base_path ))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_TEMP_PATH') );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_TEMP_PATH') );
 				return false;
 			}
 		}
@@ -4351,7 +4353,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Check against maximum allowable size
 						if ($combinedSize > $maxDownload)
 						{
-							$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT') );
+							$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_OVER_DOWNLOAD_LIMIT') );
 							return false;
 						}
 
@@ -4365,7 +4367,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($i == 0)
 			{
-				$this->setError( \JText::_('COM_PROJECTS_SERVER_ERROR') );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
 				return false;
 			}
 
@@ -6112,7 +6114,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if (\JFolder::create( $this->path . DS . $local_dir ))
 					{
 						$created = $this->_git->makeEmptyFolder($local_dir, false);
-						$commitMsg = \JText::_('COM_PROJECTS_CREATED_DIRECTORY')
+						$commitMsg = \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
 							. '  ' . escapeshellarg($local_dir);
 						$this->_git->gitCommit($commitMsg, $author, $cDate);
 					}
@@ -6253,7 +6255,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							if (\JFolder::create( $this->path . DS . $filename ))
 							{
 								$created = $this->_git->makeEmptyFolder($filename, false);
-								$commitMsg = \JText::_('COM_PROJECTS_CREATED_DIRECTORY')
+								$commitMsg = \JText::_('PLG_PROJECTS_FILES_CREATED_DIRECTORY')
 									. '  ' . escapeshellarg($filename);
 								$this->_git->gitCommit($commitMsg, $author, $cDate);
 								$output .= '++ created local folder: '. $filename . "\n";
@@ -6754,20 +6756,20 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Compare new and old name
 		if ($newpath == $oldpath)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_SAME_NAMES'));
 			return false;
 		}
 
 		// If another file with the same name exists in this path
 		if (is_file($this->path . DS . $newpath))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_ALREADY_EXISTS_FILE'));
 			return false;
 		}
 
 		if (!is_file($this->path . DS . $oldpath))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
+			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
 			return false;
 		}
 
@@ -6943,7 +6945,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!\JFolder::create( $this->path . DS . $this->subdir ))
 				{
 					// Failed to create directory
-					$this->setError( \JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
+					$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_DIR_CREATE') );
 				}
 				else
 				{
@@ -7172,7 +7174,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($this->_audience == 'external')
 		{
 			$obj->md5hash		= hash_file('md5', $fullPath);
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
 			$objSt = new \Components\Projects\Tables\Stamp( $this->_database );
@@ -7238,7 +7240,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$case || !$identifier )
 		{
-			$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_GET_PROJECT_PATH') );
+			$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_GET_PROJECT_PATH') );
 			return false;
 		}
 
@@ -7258,7 +7260,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Create path
 			if (!\JFolder::create( $path ))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $path ;
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_CREATE_UPLOAD_PATH') ) . $path ;
 				return false;
 			}
 		}

@@ -25,21 +25,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
+// Check used space against quota (percentage)
+$inuse = round(($this->dirsize * 100 ) / $this->quota);
+if ($inuse < 1)
+{
+	$inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
+	if ($inuse < 0.1)
+	{
+		$inuse = 0.0;
+	}
+}
+$inuse = ($inuse > 100) ? 100 : $inuse;
+$approachingQuota = $this->config->get('approachingQuota', 85);
+$approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
+$warning 		  = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
-<div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_GIT_STATUS'); ?></h3>
-<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
-	<fieldset >
-		<?php echo $this->status; ?>
-		<p class="submitarea">
-			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
-			<?php } else {  ?>
-				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
-			<?php } ?>
-		</p>
-	</fieldset>
-</form>
-</div>
+<?php echo JText::_('PLG_PROJECTS_FILES_DISK_SPACE'); ?>
+<a href="<?php echo $this->url . '/?' . $this->do . '=diskspace'; ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('PLG_PROJECTS_FILES_USED'); ?></span></span></span></a>
+	 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_FILES_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>

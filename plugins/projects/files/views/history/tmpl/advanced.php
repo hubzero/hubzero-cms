@@ -60,7 +60,7 @@ foreach ($this->versions as $version) {
 	}
 }
 
-$endPath = ' &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">' . JText::_('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></span>';
 
 $ext = \Components\Projects\Helpers\Html::getFileExtension($this->file);
 
@@ -69,7 +69,7 @@ $allowDiff = ($this->binary || ($this->remote && $this->remote['converted'] == 1
 ?>
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_FILES_SHOW_HISTORY'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_SHOW_HISTORY'); ?></h3>
 <?php
 // Display error
 if ($this->getError()) {
@@ -106,7 +106,7 @@ if ($this->getError()) {
 
 					if ($allowDiff && !$this->getError())
 					{
-						$view->extras = '<input type="submit" id="rundiff" value="Diff Revisions" class="btn rightfloat" />';
+						$view->extras = '<input type="submit" id="rundiff" value="' . JText::_('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />';
 					}
 					echo $view->loadTemplate();
 				?>
@@ -119,12 +119,12 @@ if ($this->getError()) {
 						<?php if ($allowDiff) { ?>
 						<th>Rev</th>
 						<?php } ?>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_OWNER'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_OWNER'); ?></th>
 						<?php if ($allowDiff) { ?>
 						<th class="diffing">Diff</th>
 						<?php } ?>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_DIFF'); ?></th>
-						<th><?php echo JText::_('COM_PROJECTS_FILES_REVISION_OPTIONS'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_DIFF'); ?></th>
+						<th><?php echo JText::_('PLG_PROJECTS_FILES_REVISION_OPTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -138,8 +138,8 @@ if ($this->getError()) {
 				$last 		= $i == 0 ? true : false;
 
 				$origin		= $version['remote']
-					? JText::_('COM_PROJECTS_FILE_STATUS_REMOTE')
-					: JText::_('COM_PROJECTS_FILE_STATUS_LOCAL');
+					? JText::_('PLG_PROJECTS_FILES_FILE_STATUS_REMOTE')
+					: JText::_('PLG_PROJECTS_FILES_FILE_STATUS_LOCAL');
 				if (!$version['remote'] && preg_match("/[SFTP]/", $version['message']))
 				{
 					$origin = 'SFTP';
@@ -151,13 +151,13 @@ if ($this->getError()) {
 				if ($version['remote'])
 				{
 					$url = $this->url
-						. '/?action=open' . a . 'subdir='.urlencode($this->subdir)
-						. a . 'file='.urlencode($version['file']);
+						. '/?action=open&amp;subdir='.urlencode($this->subdir)
+						. '&amp;file='.urlencode($version['file']);
 
 					if ($this->connected && $last == true)
 					{
 						$action  = '<a href="' . $url .'" class="open_file" title="'
-							. JText::_('COM_PROJECTS_FILES_REMOTE_OPEN') .'" target="_blank">&nbsp;</a>';
+							. JText::_('PLG_PROJECTS_FILES_REMOTE_OPEN') .'" target="_blank">&nbsp;</a>';
 					}
 					else
 					{
@@ -170,7 +170,7 @@ if ($this->getError()) {
 						.'/?file='.urlencode($version['name'])
 						. '&amp;' . $this->do . '=download&amp;hash='.$version['hash'];
 					$action = (in_array($version['commitStatus'], array('A', 'M', 'R', 'W')))
-						? '<a href="' . $url .'" class="download_file" title="' . JText::_('COM_PROJECTS_DOWNLOAD') . '" >&nbsp;</a>'
+						? '<a href="' . $url .'" class="download_file" title="' . JText::_('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
 						: '';
 				}
 
@@ -182,7 +182,7 @@ if ($this->getError()) {
 
 				if ($last)
 				{
-					$status .= ' <span class="crev">' . JText::_('COM_PROJECTS_FILE_STATUS_CURRENT') . '</span>';
+					$status .= ' <span class="crev">' . JText::_('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT') . '</span>';
 				}
 
 				$charLimit = $last == true ? 400 : 400;
@@ -239,20 +239,20 @@ if ($this->getError()) {
 							echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
 							if ($over)
 							{
-								echo '<p class="showaslink showmore js">' . JText::_('COM_PROJECTS_FILES_SHOW_MORE') . '</p>';
+								echo '<p class="showaslink showmore js">' . JText::_('PLG_PROJECTS_FILES_SHOW_MORE') . '</p>';
 							}
 							echo '</div>';
 							if ($over)
 							{
 								echo '<div class="long-txt hidden" id="long-' . $i . '"><pre>' . $version['content'] . '</pre>';
-								echo '<p class="showaslink showless">' . JText::_('COM_PROJECTS_FILES_SHOW_LESS') . '</p>';
+								echo '<p class="showaslink showless">' . JText::_('PLG_PROJECTS_FILES_SHOW_LESS') . '</p>';
 								echo '</div>';
 							}
 						}
 						?>
 						<?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
 							<div id="preview-image">
-								<img src="<?php echo $version['preview']; ?>" alt="<?php echo JText::_('COM_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+								<img src="<?php echo $version['preview']; ?>" alt="<?php echo JText::_('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
 							</div>
 						<?php } ?>
 						</div>

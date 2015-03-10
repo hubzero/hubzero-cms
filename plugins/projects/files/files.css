@@ -1061,24 +1061,10 @@
 		margin-top: -3.5em;
 		display: block;
 		font-size: 0.9em;
-		padding: 0.2em 0.5em 0.2em 0;
+		padding: 0.2em 1em 0.2em 0.5em;
 		border: 1px solid #7dddee;
 		background: #eff8f9;
 		width: auto;
-		min-width: 150px;
-		*width: 150px;
-		*padding: 0.2em 4em 0.2em 1em;
-	}
-	#connector .i-new  {
-		font-size: 0.9em;
-		margin-top: 0.2em;
-	}
-	#connector .i-new-container {
-		float: right;
-		width: 30px;
-		padding-left: 1em;
-		margin-left: 1em;
-		display: block;
 	}
 	.connect-email {
 		white-space: nowrap;

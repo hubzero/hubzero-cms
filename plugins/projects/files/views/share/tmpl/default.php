@@ -29,7 +29,7 @@ $remoteControl = $this->remote && $this->remote['converted'] == 1 ? 1 : 0;
 
 ?>
 <div id="abox-content">
-<h3><?php echo $remoteControl ? JText::_('COM_PROJECTS_UNSHARE_PROJECT_FILES') : JText::_('COM_PROJECTS_SHARE_PROJECT_FILES'); ?></h3>
+<h3><?php echo $remoteControl ? JText::_('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES') : JText::_('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
@@ -40,9 +40,9 @@ if ($this->getError()) {
 if (!$this->getError()) {
 ?>
 
-<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option='.$this->option.a.'id='.$this->project->id); ?>">
+<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id='.$this->project->id); ?>">
 	<p class="notice">
-	<?php echo $remoteControl ? JText::_('COM_PROJECTS_UNSHARE_FILES_CONFIRM') : JText::_('COM_PROJECTS_SHARE_FILES_CONFIRM');  ?>
+	<?php echo $remoteControl ? JText::_('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : JText::_('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM');  ?>
 	</p>
 
 	<fieldset >
@@ -91,7 +91,7 @@ if (!$this->getError()) {
 				if (!empty($formats))
 				{
 			?>
-				<h4><?php echo JText::_('COM_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
+				<h4><?php echo JText::_('PLG_PROJECTS_FILES_SHARING_CHOOSE_CONVERSION_FORMAT'); ?></h4>
 				<div class="sharing-option-extra">
 			<?php
 				$i = 0;
@@ -116,8 +116,8 @@ if (!$this->getError()) {
 			<?php echo $this->type == 'folder'
 				? '<input type="hidden" name="folder" value="'.$this->item.'" />'
 				: '<input type="hidden" name="asset" value="'.$this->item.'" />'; ?>
-			<input type="submit" value="<?php echo $remoteControl ? JText::_('COM_PROJECTS_FILES_ACTION_UNSHARE') : JText::_('COM_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
-			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<input type="submit" value="<?php echo $remoteControl ? JText::_('PLG_PROJECTS_FILES_ACTION_UNSHARE') : JText::_('PLG_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
+			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 		</p>
 	</fieldset>
 </form>
