@@ -6522,7 +6522,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_rSync['status'] = 'complete';
 
 			// Clean up status
-			$this->_writeToFile('PLG_PROJECTS_FILES_SYNC_COMPLETE');
+			$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
 
 			// Repeat sync? (another request in queue)
 			if ($syncQueue > 0)
