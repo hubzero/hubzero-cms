@@ -141,6 +141,7 @@ class Wishlists extends SiteController
 				case 'withdraw':
 				case 'addbonus':
 				case 'wishlist':
+				case 'display':
 					// nothing
 				break;
 
