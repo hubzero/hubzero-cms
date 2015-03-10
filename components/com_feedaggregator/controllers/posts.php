@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,45 +23,47 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author   Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedaggregator\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'feeds.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'posts.php');
-
+use Components\Feedaggregator\Models;
+use Hubzero\Component\SiteController;
 use Guzzle\Http\Client;
+use Exception;
+
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'feeds.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'posts.php');
 
 /**
  *  Feed Aggregator controller class
  */
-class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
+class Posts extends SiteController
 {
-
 	/**
 	 * Default component view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask($posts = NULL)
 	{
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$userId = $this->juser->id;
-		$authlevel = JAccess::getAuthorisedViewLevels($userId);
+		$authlevel = \JAccess::getAuthorisedViewLevels($userId);
 		$access_level = 3; //author_level
-		if (in_array($access_level,$authlevel) && $this->juser->get('id'))
+
+		if (in_array($access_level, $authlevel) && $this->juser->get('id'))
 		{
 			if (isset($posts))
 			{
 				$this->view->filters = array(
-					'limit'    => JRequest::getInt('limit', 25),
-					'start'    => JRequest::getInt('limitstart', 0),
-					'time'     => JRequest::getString('timesort', ''),
-					'filterby' => JRequest::getString('filterby', 'all')
+					'limit'    => \JRequest::getInt('limit', 25),
+					'start'    => \JRequest::getInt('limitstart', 0),
+					'time'     => \JRequest::getString('timesort', ''),
+					'filterby' => \JRequest::getString('filterby', 'all')
 				);
 
 				$this->setView('posts','display');
@@ -73,10 +75,10 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$this->view->setLayout('display');
 				// Incoming
 				$this->view->filters = array(
-					'limit'    => JRequest::getInt('limit', 25),
-					'start'    => JRequest::getInt('limitstart', 0),
-					'time'     => JRequest::getString('timesort', ''),
-					'filterby' => JRequest::getString('filterby', 'all')
+					'limit'    => \JRequest::getInt('limit', 25),
+					'start'    => \JRequest::getInt('limitstart', 0),
+					'time'     => \JRequest::getString('timesort', ''),
+					'filterby' => \JRequest::getString('filterby', 'all')
 				);
 
 				// Don't have a 0, because then it won't return anything. Doing mysql-workbench default
@@ -88,7 +90,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				$feeds = array(); //page on websites
 				$posts = array();
 
-				$model = new FeedAggregatorModelPosts;
+				$model = new Models\Posts;
 
 				switch ($this->view->filters['filterby'])
 				{
@@ -114,7 +116,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 					break;
 					default:
 						//load stored posts
-						$model = new FeedAggregatorModelPosts;
+						$model = new Models\Posts;
 						$posts = $model->loadAllPosts($this->view->filters['limit'], $this->view->filters['start']);
 						$this->view->total = intval($model->loadRowCount());
 					break;
@@ -122,7 +124,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 				// Initiate paging
 				jimport('joomla.html.pagination');
-				$this->view->pageNav = new JPagination(
+				$this->view->pageNav = new \JPagination(
 					$this->view->total,
 					$this->view->filters['start'],
 					$this->view->filters['limit']
@@ -147,7 +149,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 				$epoch = $post->created;
 				// convert UNIX timestamp to PHP DateTime
-				$dt = new DateTime("@$epoch");
+				$dt = new \DateTime("@$epoch");
 				// output = 2012-08-15 00:00:00
 				$post->created =  $dt->format('m-d-y h:i A');
 
@@ -171,21 +173,22 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 				} //end switch
 			} //end foreach
 			$this->view->posts = $posts;
-			$this->view->title =  JText::_('COM_FEEDAGGREGATOR');
+			$this->view->title = \JText::_('COM_FEEDAGGREGATOR');
 			$this->view->display();
 		}
 		else if ($this->juser->get('id'))
 		{
-			$this->view->setLayout('feedurl');
-			$this->view->title =  JText::_('COM_FEEDAGGREGATOR');
-			$this->view->display();
+			$this->view
+				->set('title', \JText::_('COM_FEEDAGGREGATOR'))
+				->setLayout('feedurl')
+				->display();
 		}
 		else if ($this->juser->get('id') == FALSE) // have person login
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
 			);
 		}
@@ -198,9 +201,9 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 	 */
 	public function updateStatusTask()
 	{
-		$id = JRequest::getVar('id', '');
-		$action = JRequest::getVar('action', '');
-		$model = new FeedAggregatorModelPosts;
+		$id = \JRequest::getVar('id', '');
+		$action = \JRequest::getVar('action', '');
+		$model = new Models\Posts;
 
 		switch ($action)
 		{
@@ -226,12 +229,12 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 	/**
 	 * Displays posts within a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function PostsByIdTask()
 	{
-		$model = new FeedAggregatorModelPosts;
-		$posts = $model->loadPostsByFeedId(JRequest::getVar('id', ''));
+		$model = new Models\Posts;
+		$posts = $model->loadPostsByFeedId(\JRequest::getVar('id', ''));
 
 		$this->displayTask($posts);
 	}
@@ -239,15 +242,16 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 	/**
 	 * Saves posts from enabled Source Feeds
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function RetrieveNewPostsTask()
 	{
-		$model = new FeedAggregatorModelFeeds;
+		$model = new Models\Feeds;
 		$feeds = $model->loadAll();
 
-		$model = new FeedAggregatorModelPosts;
+		$model = new Models\Posts;
 		$savedURLS = $model->loadURLs();
+
 		try
 		{
 			foreach ($feeds as $feed)
@@ -287,7 +291,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 							if (in_array($link, $savedURLS) == FALSE) //checks to see if we have this item
 							{
-								$post = new FeedAggregatorModelPosts; //create post object
+								$post = new Models\Posts; //create post object
 								$post->set('title', html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
@@ -312,7 +316,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 						{
 							if (in_array($item->link, $savedURLS) == FALSE) //checks to see if we have this item
 							{
-								$post = new FeedAggregatorModelPosts; //create post object
+								$post = new Models\Posts; //create post object
 								$post->set('title',  (string) html_entity_decode(strip_tags($item->title)));
 								$post->set('feed_id', (integer) $feed->id);
 								$post->set('status', 0);  //force new status
@@ -330,7 +334,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
-				JText::_('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
+				\JText::_('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
 			);
 		} //end try
 		catch (Exception $e)
@@ -343,28 +347,28 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 	/**
 	 * Generates RSS feed when called by URL
 	 *
-	 * @return     XML document
+	 * @return  void
 	 */
 	public function generateFeedTask()
 	{
 		// Get the approved posts
-		$model = new FeedAggregatorModelPosts;
+		$model = new Models\Posts;
 		$posts = $model->getPostsByStatus(1000,0,2);
 
 		// Set the mime encoding for the document
-		$doc = JFactory::getDocument();
+		$doc = \JFactory::getDocument();
 		$doc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
+		$doc = new \JDocumentFeed;
 
 		// Build some basic RSS document information
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
-		$doc->title       = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED');
-		$doc->description = JText::_($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
-		$doc->copyright   = JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = JText::_('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
+		$doc->title       = $jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED');
+		$doc->description = \JText::_($jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
+		$doc->copyright   = \JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = \JText::_('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
 
 		// Start outputing results if any found
 		if (count($posts) > 0)
@@ -372,19 +376,19 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 			foreach ($posts as $post)
 			{
 				// Load individual item creator class
-				$item = new JFeedItem();
+				$item = new \JFeedItem();
 
 				// sanitize ouput
-				$title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
-				$item->title       = (string) html_entity_decode(strip_tags($title));
+				$item->title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
+				$item->title = (string) html_entity_decode(strip_tags($item->title));
 
-				//encapsulate link in unparseable
-				$item->link        = '<![CDATA[' . $post->link . ']]>';
-				$item->date        = date($post->created);
+				// encapsulate link in unparseable
+				$item->link = '<![CDATA[' . $post->link . ']]>';
+				$item->date = date($post->created);
 
 				// sanitize ouput
-				$description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
-				$item->description = (string) html_entity_decode(strip_tags($description, '<img>'));
+				$item->description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
+				$item->description = (string) html_entity_decode(strip_tags($item->description, '<img>'));
 
 				$doc->addItem($item);
 			}

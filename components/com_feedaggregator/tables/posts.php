@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,72 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedaggregator\Tables;
 
 /**
  * Feeds table
  */
-class FeedAggregatorTablePosts extends JTable
+class Posts extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $title = NULL;
-
-	/**
-	 * int
-	 *
-	 * @var date
-	 */
-	var $created = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var varchar
-	 */
-	var $url = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var text
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var int
-	 */
-	var $feed_id = NULL;
-
-	/**
-	 * varchar(45)
-	 *
-	 * @var int
-	 */
-	var $status = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,9 +49,9 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Get all posts with respect to the limit of posts per page
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @return     object list
+	 * @param   integer  $limit   number of posts per page
+	 * @param   integer  $offset  offset for the nth page * limit.
+	 * @return  object   list
 	 */
 	public function getAllPosts($limit = 10, $offset = 0)
 	{
@@ -117,10 +67,10 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Get all posts with respect to the limit of posts per page AND status category
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @param      integer $status the category a post (new,apporved,under review, remove)
-	 * @return     object list
+	 * @param   integer  $limit   number of posts per page
+	 * @param   integer  $offset  offset for the nth page * limit.
+	 * @param   integer  $status  the category a post (new,apporved,under review, remove)
+	 * @return  object   list
 	 */
 	public function getPostsByStatus($limit = 10, $offset = 0, $status = 0)
 	{
@@ -137,10 +87,10 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Get a single post by its ID
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @param      integer $status the category a post (new,apporved,under review, remove)
-	 * @return     object list
+	 * @param   integer  $limit   number of posts per page
+	 * @param   integer  $offset  offset for the nth page * limit.
+	 * @param   integer  $status  the category a post (new,apporved,under review, remove)
+	 * @return  object   list
 	 */
 	public function getPostById($id = NULL)
 	{
@@ -156,9 +106,9 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Update the status of a single post
 	 *
-	 * @param      integer $id id of the post to be updated
-	 * @param      integer $status corresponding number assigned to status
-	 * @return 	   void
+	 * @param   integer  $id      id of the post to be updated
+	 * @param   integer  $status  corresponding number assigned to status
+	 * @return  void
 	 */
 	public function updateStatus($id = NULL, $status = NULL)
 	{
@@ -170,8 +120,8 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Get posts with the specified feed id
 	 *
-	 * @param      integer $id ID of the feed
-	 * @return     object list
+	 * @param   integer  $id  ID of the feed
+	 * @return  object   list
 	 */
 	public function getPostsbyFeedId($id = NULL)
 	{
@@ -187,7 +137,7 @@ class FeedAggregatorTablePosts extends JTable
 	/**
 	 * Returns an array of post URLs
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getURLs()
 	{
@@ -197,9 +147,10 @@ class FeedAggregatorTablePosts extends JTable
 	}
 
 	/**
-	 *  Counts the number of posts in a specified category.
-	 * @param      integer $status of category
-	 * @return     integer
+	 * Counts the number of posts in a specified category.
+	 *
+	 * @param   integer  $status  Status of category
+	 * @return  integer
 	 */
 	public function getRowCount($status = NULL)
 	{

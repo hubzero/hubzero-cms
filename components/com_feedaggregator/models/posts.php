@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,34 +23,35 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Kevin Wojkvich <kevinw@purdu.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedaggregator\Models;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'tables' . DS . 'posts.php');
+use Hubzero\Base\Model;
+
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'posts.php');
 
 /**
- * Courses model class for a course
+ * Feed posts model
  */
-class FeedAggregatorModelPosts extends \Hubzero\Base\Model
+class Posts extends Model
 {
 	/**
 	 * Object scope
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = 'FeedAggregatorTablePosts';
+	protected $_tbl_name = '\\Components\\FeedAggregator\\Tables\\Posts';
 
 	/**
 	 * Get all posts with respect to the limit of posts per page
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @return     object list
+	 * @param   integer  $limit   Number of posts per page
+	 * @param   integer  $offset  Offset for the nth page * limit.
+	 * @return  object   list
 	 */
 	public function loadAllPosts($limit, $offset)
 	{
@@ -60,10 +61,10 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	/**
 	 * Get a single post by its ID
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @param      integer $status the category a post (new,apporved,under review, remove)
-	 * @return     object list
+	 * @param   integer  $limit   Number of posts per page
+	 * @param   integer  $offset  Offset for the nth page * limit.
+	 * @param   integer  $status  The category a post (new,apporved,under review, remove)
+	 * @return  object   list
 	 */
 	public function loadPostById($id = NULL)
 	{
@@ -73,9 +74,9 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	/**
 	 * Update the status of a single post
 	 *
-	 * @param      integer $id id of the post to be updated
-	 * @param      integer $status corresponding number assigned to status
-	 * @return 	   void
+	 * @param   integer  $id      ID of the post to be updated
+	 * @param   integer  $status  Corresponding number assigned to status
+	 * @return  void
 	 */
 	public function updateStatus($id = NULL, $status = NULL)
 	{
@@ -85,10 +86,10 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	/**
 	 * Get all posts with respect to the limit of posts per page AND status category
 	 *
-	 * @param      integer $limit number of posts per page
-	 * @param      integer $offset offset for the nth page * limit.
-	 * @param      integer $status the category a post (new,apporved,under review, remove)
-	 * @return     object list
+	 * @param   integer  $limit   Number of posts per page
+	 * @param   integer  $offset  Offset for the nth page * limit.
+	 * @param   integer  $status  Status the category a post (new,apporved,under review, remove)
+	 * @return  object   list
 	 */
 	public function getPostsByStatus($limit = 10, $offset = 0, $status = 0)
 	{
@@ -98,8 +99,8 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	/**
 	 * Get posts with the specified feed id
 	 *
-	 * @param      integer $id ID of the feed
-	 * @return     object list
+	 * @param   integer  $id   ID of the feed
+	 * @return  object   list
 	 */
 	public function loadPostsByFeedId($id = NULL)
 	{
@@ -109,7 +110,7 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	/**
 	 * Returns an array of post URLs
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function loadURLs()
 	{
@@ -117,14 +118,14 @@ class FeedAggregatorModelPosts extends \Hubzero\Base\Model
 	}
 
 	/**
-	 *  Counts the number of posts in a specified category.
-	 * @param      integer $status of category
-	 * @return     integer
+	 * Counts the number of posts in a specified category.
+	 *
+	 * @param   integer  $status   Status of category
+	 * @return  integer
 	 */
 	public function loadRowCount($status = NULL)
 	{
 		return intval($this->_tbl->getRowCount($status));
 	}
 }
-
 

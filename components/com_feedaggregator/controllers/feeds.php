@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,54 +23,56 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author   Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @author    Kevin Wojkovich <kevinw@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedaggregator\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'feeds.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedaggregator' . DS . 'models' . DS . 'posts.php');
+use Components\Feedaggregator\Models;
+use Hubzero\Component\SiteController;
+
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'feeds.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'posts.php');
 
 /**
  *  Feed Aggregator controller class
  */
-class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
+class Feeds extends SiteController
 {
 	/**
 	 * Default component view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$authlevel = JAccess::getAuthorisedViewLevels($this->juser->get('id'));
+		$authlevel = \JAccess::getAuthorisedViewLevels($this->juser->get('id'));
 		$access_level = 3; //author_level
 
 		if (in_array($access_level, $authlevel) && $this->juser->get('id'))
 		{
-			$model = new FeedAggregatorModelFeeds;
+			$model = new Models\Feeds;
 
 			$this->view->feeds = $model->loadAll();
-			$this->view->title = JText::_('COM_FEEDAGGREGATOR');
+			$this->view->title = \JText::_('COM_FEEDAGGREGATOR');
 			$this->view->display();
 		}
 		else if ($this->juser->get('id'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_feedaggregator'),
-				JText::_('COM_FEEDAGGREGATOR_NOT_AUTH'),
+				\JRoute::_('index.php?option=com_feedaggregator'),
+				\JText::_('COM_FEEDAGGREGATOR_NOT_AUTH'),
 				'warning'
 			);
 		}
 		else if ($this->juser->get('guest')) // have person login
 		{
-			$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				\JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
 			);
 		}
@@ -79,49 +81,50 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	/**
 	 * Edit source feed form, load appropriate record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
 		//isset ID kinda deal
-		$model = new FeedAggregatorModelFeeds;
+		$model = new Models\Feeds;
 
-		$this->view->feed  = $model->loadbyId(JRequest::getInt('id', 0));
+		$this->view->feed  = $model->loadbyId(\JRequest::getInt('id', 0));
 		$this->view->user  = $this->juser;
-		$this->view->title = JText::_('COM_FEEDAGGREGATOR_EDIT_FEEDS');
+		$this->view->title = \JText::_('COM_FEEDAGGREGATOR_EDIT_FEEDS');
 		$this->view->display();
 	}
 
 	/**
 	 * Displays empty form for adding source feed
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newTask()
 	{
-		$this->view->setLayout('edit');
-		$this->view->title = JText::_('COM_FEEDAGGREGATOR_ADD_FEED');
-		$this->view->display();
+		$this->view
+			->set('title', \JText::_('COM_FEEDAGGREGATOR_ADD_FEED'))
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Enables or disables a source feed
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function statusTask()
 	{
-		$id = JRequest::getInt('id');
-		$action = JRequest::getVar('action');
-		$model = new FeedAggregatorModelFeeds();
+		$id = \JRequest::getInt('id');
+		$action = \JRequest::getVar('action');
+		$model = new Models\Feeds();
 
 		if ($action == 'enable')
 		{
 			$model->updateActive($id, 1);
 			// Output messsage and redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				JText::_('COM_FEEDAGGREGATOR_FEED_ENABLED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				\JText::_('COM_FEEDAGGREGATOR_FEED_ENABLED')
 			);
 		}
 		elseif ($action == 'disable')
@@ -130,15 +133,15 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 
 			// Output messsage and redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				JText::_('COM_FEEDAGGREGATOR_FEED_DISABLED')
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				\JText::_('COM_FEEDAGGREGATOR_FEED_DISABLED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				JText::_('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				\JText::_('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
 				'error'
 			);
 		}
@@ -147,19 +150,19 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 	/**
 	 * Save Source Feed form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
-		//do a JRequest instead of a bind()
-		$feed = new FeedAggregatorModelFeeds;
+		//do a \JRequest instead of a bind()
+		$feed = new Models\Feeds;
 
 		//get the URL first in order to validate
-		$feed->set('url', JRequest::getVar('url'));
-		$feed->set('name', JRequest::getVar('name'));
-		$feed->set('id', JRequest::getVar('id'));
-		$feed->set('enabled', JRequest::getVar('enabled'));
-		$feed->set('description', JRequest::getVar('description'));
+		$feed->set('url', \JRequest::getVar('url'));
+		$feed->set('name', \JRequest::getVar('name'));
+		$feed->set('id', \JRequest::getVar('id'));
+		$feed->set('enabled', \JRequest::getVar('enabled'));
+		$feed->set('description', \JRequest::getVar('description'));
 
 		//validate url
 		if (!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
@@ -168,8 +171,8 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 
 			//redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
-				JText::_('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
+				\JText::_('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
 				'warning'
 			);
 		}
@@ -179,15 +182,15 @@ class FeedaggregatorControllerFeeds extends \Hubzero\Component\SiteController
 			{
 				// Output messsage and redirect
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					JText::_('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					\JText::_('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
 				);
 			}
 			else
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					JText::_('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
+					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					\JText::_('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
 					'warning'
 				);
 			}

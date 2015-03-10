@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,66 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedaggregator\Tables;
 
 /**
  * Feeds table
  */
-class FeedAggregatorTableFeeds extends JTable
+class Feeds extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var integer
-	 */
-	var $name = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var integer
-	 */
-	var $url    = NULL;
-
-	/**
-	 * date
-	 *
-	 * @var date
-	 */
-	var $created = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var integer
-	 */
-	var $description = NULL;
-
-	/**
-	 * varchar(45)
-	 *
-	 * @var integer
-	 */
-	var $enabled = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
-	 *
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -91,8 +47,9 @@ class FeedAggregatorTableFeeds extends JTable
 	}
 
 	/**
-	*  Returns all source feeds
-	* @return     object list of source feeds
+	* Returns all source feeds
+	*
+	* @return  object  list of source feeds
 	*/
 	public function getRecords()
 	{
@@ -102,9 +59,10 @@ class FeedAggregatorTableFeeds extends JTable
 	}
 
 	/**
-	 *  Returns feed as selected by ID
-	 * @param      integer $id
-	 * @return     object list of feed
+	 * Returns feed as selected by ID
+	 *
+	 * @param   integer  $id
+	 * @return  object   list of feed
 	 */
 	public function getById($id = NULL)
 	{
@@ -114,10 +72,11 @@ class FeedAggregatorTableFeeds extends JTable
 	}
 
 	/**
-	 *  Enables or disables a feed
-	 * @param 	   integer $id of feed
-	 * @param      integer $status of category
-	 * @return     void
+	 * Enables or disables a feed
+	 *
+	 * @param   integer  $id      ID of feed
+	 * @param   integer  $status  Status of category
+	 * @return  void
 	 */
 	public function updateActive($id, $status)
 	{

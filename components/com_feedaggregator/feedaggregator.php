@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die( 'Restricted access' );
+namespace Components\Feedaggregator;
 
-$controllerName = JRequest::getCmd('controller', 'posts');
-
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'posts'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'feeds';
 }
-
-// this adds the controller to the component's path
-require_once(JPATH_COMPONENT. DS . 'controllers' . DS . $controllerName . '.php');
-
-$controllerName = 'FeedaggregatorController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__. DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();
