@@ -56,6 +56,7 @@ class Application extends Container
 	private static $baseServices = array(
 		'Hubzero\Events\EventServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
+		'Hubzero\Log\LogServiceProvider',
 	);
 
 	/**
@@ -67,6 +68,7 @@ class Application extends Container
 		'App'   => 'Hubzero\Facades\App',
 		'Route' => 'Hubzero\Facades\Route',
 		'Lang'  => 'Hubzero\Facades\Lang',
+		'Log'   => 'Hubzero\Facades\Log',
 	);
 
 	/**
@@ -112,6 +114,25 @@ class Application extends Container
 	{
 		$this[$key] = $value;
 	}
+
+	/**
+	 * Handle dynamic, static calls to the object.
+	 *
+	 * @param   string  $method
+	 * @param   array   $args
+	 * @return  mixed
+	 */
+	/*public function __call($method, $args)
+	{
+		$method = strtolower($method);
+		if (substr($method, 0, 2) == 'is')
+		{
+			$client = substr($method, 2);
+			return ($this['client'] == $client);
+		}
+
+		throw new RuntimeException(sprintf('Method [%s] not found.', $method));
+	}*/
 
 	/**
 	 * Register all of the base service providers.

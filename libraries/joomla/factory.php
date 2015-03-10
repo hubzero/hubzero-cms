@@ -568,9 +568,9 @@ abstract class JFactory
 	 *
 	 * @return     object
 	 */
-	public static function &getLogger()
+	public static function getLogger()
 	{
-		static $instance;
+		/*static $instance;
 
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
@@ -588,7 +588,8 @@ abstract class JFactory
 			$instance->useFiles($path . '/cmsdebug.log', 'debug', '', 'Y-m-d H:i:s', 0640);
 		}
 
-		return $instance;
+		return $instance;*/
+		return \App::get('log.debug');
 	}
 
 	/**
@@ -598,9 +599,9 @@ abstract class JFactory
 	 *
 	 * @return     object
 	 */
-	public static function &getAuthLogger()
+	public static function getAuthLogger()
 	{
-		static $instance;
+		/*static $instance;
 
 		if (!($instance instanceof \Hubzero\Log\Writer))
 		{
@@ -618,7 +619,8 @@ abstract class JFactory
 			$instance->useFiles($path . '/cmsauth.log', 'info', "%datetime% %message%\n", 'Y-m-d H:i:s', 0640);
 		}
 
-		return $instance;
+		return $instance;*/
+		return \App::get('log.auth');
 	}
 
 	/**
