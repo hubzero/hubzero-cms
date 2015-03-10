@@ -209,7 +209,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$answer = JRequest::getVar('answer', array(), 'post');
+		$answer = JRequest::getVar('answer', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new AnswersModelResponse(intval($answer['id']));
