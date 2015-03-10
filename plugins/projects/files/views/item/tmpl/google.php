@@ -48,7 +48,7 @@ if (basename($item->local_path) != $item->remote_title)
 }
 
 // Do not display Google native extension
-$native = ProjectsGoogleHelper::getGoogleNativeExts();
+$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
 if (in_array($ext, $native))
 {
 	$name = preg_replace("/.".$ext."\z/", "", $name);

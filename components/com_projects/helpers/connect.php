@@ -28,13 +28,23 @@
  * @license	  http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Helpers;
+
+use Exception;
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
+use Google_Service_Drive_Permission;
+use Google_Service_Oauth2;
+use Google_Http_Request;
+
+require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
+		. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
 
 /**
  * Projects Connect helper class
  */
-class ProjectsConnectHelper extends \JObject {
+class Connect extends \JObject {
 
 	/**
 	 * Project
@@ -804,7 +814,7 @@ class ProjectsConnectHelper extends \JObject {
 
 		if ($service == 'google')
 		{
-			$resource = ProjectsGoogleHelper::loadFile ($apiService, $id);
+			$resource = Google::loadFile ($apiService, $id);
 		}
 
 		return $resource;
@@ -854,7 +864,7 @@ class ProjectsConnectHelper extends \JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+			$newItemId = Google::insertFile ($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 		}
 
 		// Error!
@@ -874,13 +884,13 @@ class ProjectsConnectHelper extends \JObject {
 		if ($convert == true && !$converted)
 		{
 			// Retreat
-			ProjectsGoogleHelper::deleteItem ($apiService, $newItemId, true);
+			Google::deleteItem ($apiService, $newItemId, true);
 			return false;
 		}
 
 		if ($converted)
 		{
-			$g_ext = ProjectsGoogleHelper::getGoogleConversionFormat($metadata['mimeType'], false, true);
+			$g_ext = Google::getGoogleConversionFormat($metadata['mimeType'], false, true);
 
 			$dir = dirname($fpath) != '.' ? dirname($fpath) : '';
 			$name = basename($fpath);
@@ -957,7 +967,7 @@ class ProjectsConnectHelper extends \JObject {
 
 				if ($check['labels']['trashed'])
 				{
-					$success = ProjectsGoogleHelper::untrashItem ($apiService, $remoteid);
+					$success = Google::untrashItem ($apiService, $remoteid);
 				}
 				elseif ($check && isset($check['md5Checksum']) && isset($local['md5Checksum']) && $check['md5Checksum'] == $local['md5Checksum'])
 				{
@@ -972,7 +982,7 @@ class ProjectsConnectHelper extends \JObject {
 			// There was a change in content, update
 			if (!$success)
 			{
-				$success = ProjectsGoogleHelper::updateFile ($apiService, $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+				$success = Google::updateFile ($apiService, $this->_client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 			}
 		}
 
@@ -1038,7 +1048,7 @@ class ProjectsConnectHelper extends \JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::patchFile(
+			$success = Google::patchFile(
 				$apiService,
 				$remoteid,
 				$newTitle,
@@ -1122,7 +1132,7 @@ class ProjectsConnectHelper extends \JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::patchFile ($apiService, $remoteid, '', $parentId, $metadata);
+			$success = Google::patchFile ($apiService, $remoteid, '', $parentId, $metadata);
 		}
 
 		if (!$success)
@@ -1192,8 +1202,8 @@ class ProjectsConnectHelper extends \JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$success = ProjectsGoogleHelper::deleteItem ($apiService, $remoteid, $permanent);
-			$success = ProjectsGoogleHelper::deleteAllParents ($apiService, $remoteid);
+			$success = Google::deleteItem ($apiService, $remoteid, $permanent);
+			$success = Google::deleteAllParents ($apiService, $remoteid);
 		}
 
 		// Delete connection record
@@ -1252,7 +1262,7 @@ class ProjectsConnectHelper extends \JObject {
 				// Untrash
 				if ($service == 'google')
 				{
-					ProjectsGoogleHelper::untrashItem($apiService, $remoteFolders[$path]['remoteid']);
+					Google::untrashItem($apiService, $remoteFolders[$path]['remoteid']);
 				}
 			}
 
@@ -1269,7 +1279,7 @@ class ProjectsConnectHelper extends \JObject {
 			// Perform request
 			if ($service == 'google')
 			{
-				$newParentId = ProjectsGoogleHelper::createFolder ($apiService, $title, $parentId, $metadata);
+				$newParentId = Google::createFolder ($apiService, $title, $parentId, $metadata);
 			}
 
 			// Error!
@@ -1687,7 +1697,7 @@ class ProjectsConnectHelper extends \JObject {
 			// Get remote folder ID
 			$folderID = $this->getConfigParam($service, 'remote_dir_id');
 
-			$changeID = ProjectsGoogleHelper::collectChanges ($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);
+			$changeID = Google::collectChanges ($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);
 		}
 
 		return $changeID;
@@ -1737,7 +1747,7 @@ class ProjectsConnectHelper extends \JObject {
 				if ($folder && $folder['labels']['trashed'] == 1)
 				{
 					// Untrash
-					ProjectsGoogleHelper::untrashItem($apiService, $folderID);
+					Google::untrashItem($apiService, $folderID);
 				}
 			}
 			catch (Exception $e)
@@ -1750,7 +1760,7 @@ class ProjectsConnectHelper extends \JObject {
 			$duplicates = array();
 
 			// Get files in main project remote directory
-			$remotes = ProjectsGoogleHelper::getFolderContent(
+			$remotes = Google::getFolderContent(
 				$apiService,
 				$folderID,
 				$remotes,
@@ -1802,7 +1812,7 @@ class ProjectsConnectHelper extends \JObject {
 				if ($folder && $folder['labels']['trashed'] == 1)
 				{
 					// Untrash
-					ProjectsGoogleHelper::untrashItem($apiService, $folderID);
+					Google::untrashItem($apiService, $folderID);
 				}
 				if ($folder && $folder['title'] != $folderName)
 				{
@@ -1817,7 +1827,7 @@ class ProjectsConnectHelper extends \JObject {
 				return false;
 			}
 
-			ProjectsGoogleHelper::getFolders ($apiService, $folderID, $remoteFolders, $path);
+			Google::getFolders ($apiService, $folderID, $remoteFolders, $path);
 		}
 
 		return true;
@@ -1993,7 +2003,7 @@ class ProjectsConnectHelper extends \JObject {
 		}
 
 		$url = '';
-		$default_type = ProjectsGoogleHelper::getGoogleExportType($ext);
+		$default_type = Google::getGoogleExportType($ext);
 		foreach ($remote['exportLinks'] as $type => $link)
 		{
 			if ($type == $default_type)
@@ -2378,7 +2388,7 @@ class ProjectsConnectHelper extends \JObject {
 		// Remove permission
 		if ($service == 'google' && !$creator)
 		{
-			ProjectsGoogleHelper::clearPermissions($apiService, array($name => $email), $remoteid);
+			Google::clearPermissions($apiService, array($name => $email), $remoteid);
 		}
 	}
 

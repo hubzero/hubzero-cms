@@ -28,13 +28,18 @@
  * @license	  http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Helpers;
+
+use Exception;
+use Google_Service_Drive_Permission;
+use Google_Service_Drive_DriveFile;
+use Google_Service_Drive_ParentReference;
+use Google_Http_MediaFileUpload;
 
 /**
  * Projects Google Drive helper class
  */
-class ProjectsGoogleHelper extends JObject
+class Google extends \JObject
 {
 	/**
 	 * Load file metadata
@@ -321,7 +326,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return	 string (id) or false
 	 */
-	public static function updateFile ($apiService, $id = 0, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function updateFile ($apiService, $client, $id = 0, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -380,22 +385,42 @@ class ProjectsGoogleHelper extends JObject
 		try
 		{
 			$chunkSizeBytes = 1 * 1024 * 1024;
-			$media = new Google_MediaFileUpload('text/plain', null, true, $chunkSizeBytes);
-			$media->setFileSize($size);
 
-			$result = $apiService->files->update($id, $file, array('mediaUpload' => $media));
+			// Call the API with the media upload, defer so it doesn't immediately return.
+			$client->setDefer(true);
+			$request = $apiService->files->update($id, $file);
+
+			$media = new Google_Http_MediaFileUpload(
+				$client,
+				$request,
+				$mimeType,
+				null,
+				true,
+				$chunkSizeBytes
+			);
+			$media->setFileSize($size);
 
 			$status = false;
 			$handle = fopen($localPath, "rb");
 			while (!$status && !feof($handle))
 			{
 				$chunk = fread($handle, $chunkSizeBytes);
-				$status = $media->nextChunk($result, $chunk);
+				$status = $media->nextChunk($chunk);
 			}
 
+			$result = false;
+			if ($status != false)
+			{
+				$result = $status;
+			}	
+
 			fclose($handle);
-			$metadata = $status;
-			return isset($status['id']) ? $status['id'] : NULL;
+
+			// Reset to the client to execute requests immediately in the future.
+			$client->setDefer(false);
+
+			$metadata = $result;
+			return isset($result['id']) ? $result['id'] : NULL;
 		}
 		catch (Exception $e)
 		{
@@ -620,7 +645,7 @@ class ProjectsGoogleHelper extends JObject
 
 			if (!empty($data['items']))
 			{
-				ProjectsGoogleHelper::getFolderChange($data['items'], $folderID, $remotes, $deletes, $path, $connections, $duplicates);
+				self::getFolderChange($data['items'], $folderID, $remotes, $deletes, $path, $connections, $duplicates);
 			}
 			$newChangeID = $data['largestChangeId'];
 		}
@@ -699,7 +724,7 @@ class ProjectsGoogleHelper extends JObject
 
 						if ($converted)
 						{
-							$g_ext = ProjectsGoogleHelper::getGoogleConversionFormat($doc['mimeType'], false, true);
+							$g_ext = self::getGoogleConversionFormat($doc['mimeType'], false, true);
 							if ($g_ext && $ext != $g_ext)
 							{
 								$title = $title . '.' . $g_ext;
@@ -721,7 +746,7 @@ class ProjectsGoogleHelper extends JObject
 					$fileSize		= isset($doc['fileSize']) ? $doc['fileSize'] : NULL;
 
 					// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'],
+					$fpath = self::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'],
 						$connections, $remotes, $duplicates);
 
 					// Detect a rename or move
@@ -754,7 +779,7 @@ class ProjectsGoogleHelper extends JObject
 						'remoteid'		=> $doc['id'],
 						'title'			=> $doc['title'],
 						'converted'		=> $converted,
-						'rParent'		=> ProjectsGoogleHelper::getParentID($doc['parents']),
+						'rParent'		=> self::getParentID($doc['parents']),
 						'url'			=> $url,
 						'original'		=> $original,
 						'author'		=> $author,
@@ -769,7 +794,7 @@ class ProjectsGoogleHelper extends JObject
 					if (preg_match("/.folder/", $doc['mimeType']))
 					{
 						// Recurse
-						ProjectsGoogleHelper::getFolderChange($items, $doc['id'], $remotes,	 $deletes, $fpath, $connections, $duplicates );
+						self::getFolderChange($items, $doc['id'], $remotes,	 $deletes, $fpath, $connections, $duplicates );
 					}
 				}
 			}
@@ -792,7 +817,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		if (isset($resource['exportLinks']))
 		{
-			$default_type = ProjectsGoogleHelper::getGoogleExportType($ext);
+			$default_type = self::getGoogleExportType($ext);
 			foreach ($resource['exportLinks'] as $type => $link)
 			{
 				if ($type == $default_type)
@@ -855,7 +880,7 @@ class ProjectsGoogleHelper extends JObject
 			$fpath = \Components\Projects\Helpers\Html::fixFileName($fpath, '-' . $num);
 
 			// Check that new path isn't used either
-			return ProjectsGoogleHelper::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);
+			return self::buildDuplicatePath($id, $fpath, $format, $connections, $remotes, $duplicates);
 		}
 		else
 		{
@@ -912,11 +937,11 @@ class ProjectsGoogleHelper extends JObject
 					$remoteFolders[$fpath] = array(
 						'remoteid' => $item['id'],
 						'status' => $status,
-						'rParent'=> ProjectsGoogleHelper::getParentID($item['parents'])
+						'rParent'=> self::getParentID($item['parents'])
 					);
 
 					// Recurse
-					ProjectsGoogleHelper::getFolders($apiService, $item['id'], $remoteFolders, $fpath);
+					self::getFolders($apiService, $item['id'], $remoteFolders, $fpath);
 				}
 			}
 		}
@@ -1011,7 +1036,7 @@ class ProjectsGoogleHelper extends JObject
 
 						if ($converted)
 						{
-							$ext = ProjectsGoogleHelper::getGoogleConversionFormat($item['mimeType'], false, true);
+							$ext = self::getGoogleConversionFormat($item['mimeType'], false, true);
 							if ($ext)
 							{
 								$title = $title . '.' . $ext;
@@ -1033,7 +1058,7 @@ class ProjectsGoogleHelper extends JObject
 					$fileSize	 = isset($item['fileSize']) ? $item['fileSize'] : NULL;
 
 					/// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-					$fpath = ProjectsGoogleHelper::buildDuplicatePath($item['id'], $fpath, $item['mimeType'],
+					$fpath = self::buildDuplicatePath($item['id'], $fpath, $item['mimeType'],
 						$connections, $remotes, $duplicates);
 
 					// Detect a rename or move
@@ -1083,7 +1108,7 @@ class ProjectsGoogleHelper extends JObject
 							'remoteid'		=> $item['id'],
 							'title'			=> $item['title'],
 							'converted'		=> $converted,
-							'rParent'		=> ProjectsGoogleHelper::getParentID($item['parents']),
+							'rParent'		=> self::getParentID($item['parents']),
 							'url'			=> $url,
 							'original'		=> $original,
 							'author'		=> $author,
@@ -1099,7 +1124,7 @@ class ProjectsGoogleHelper extends JObject
 					if (preg_match("/.folder/", $item['mimeType']))
 					{
 						// Recurse
-						$remotes = ProjectsGoogleHelper::getFolderContent($apiService, $item['id'],
+						$remotes = self::getFolderContent($apiService, $item['id'],
 							$remotes, $fpath, $since, $connections, $duplicates);
 					}
 				}

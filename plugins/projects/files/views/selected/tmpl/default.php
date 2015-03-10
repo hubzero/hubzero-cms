@@ -50,7 +50,7 @@ if ($this->remote && $this->item != $this->remote['title'])
 }
 
 // Do not display Google native extension
-$native = ProjectsGoogleHelper::getGoogleNativeExts();
+$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
 if (in_array($ext, $native))
 {
 	$name = preg_replace("/.".$ext."\z/", "", $name);

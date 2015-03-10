@@ -143,7 +143,7 @@ if (!$this->getError()) {
 				if ($remote_resource->googleFormat)
 				{
 					// Get all available export formats for the MIME type
-					$formats = ProjectsGoogleHelper::getGoogleConversionFormat($remote_resource->mimeType, true);
+					$formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat($remote_resource->mimeType, true);
 					if (!empty($formats))
 					{
 			?>

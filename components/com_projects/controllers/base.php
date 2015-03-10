@@ -137,8 +137,6 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				. 'helpers' . DS . 'connect.php' );
 		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
 	}
 
 	/**

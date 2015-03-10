@@ -81,10 +81,10 @@ if (!$this->getError()) {
 				if ($original)
 				{
 					// Get file extention
-					$ext = ProjectsGoogleHelper::getImportExt($original);
+					$ext = \Components\Projects\Helpers\Google::getImportExt($original);
 				}
 
-				$formats = ProjectsGoogleHelper::getGoogleConversionFormat($this->remote['mimeType'], false, false, true, $ext);
+				$formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat($this->remote['mimeType'], false, false, true, $ext);
 
 				$first = isset($formats[$ext]) ? 0 : 1;
 

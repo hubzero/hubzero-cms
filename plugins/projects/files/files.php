@@ -221,7 +221,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			//  Establish connection to external services
 			if (is_object($this->_project) && $this->_project->id && !$this->_project->provisioned)
 			{
-				$this->_connect = new ProjectsConnectHelper($this->_database, $this->_project, $this->_uid, $zone);
+				$this->_connect = new \Components\Projects\Helpers\Connect($this->_database, $this->_project, $this->_uid, $zone);
 
 				// Get services the project is connected to
 				$this->_rServices = $this->_connect->getActive();
@@ -1404,9 +1404,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Archive formats
 		$archive_formats = array('zip', 'tar', 'gz');
 
-		// Start commit message
-		$commitMsg = '';
-
 		// Provisioned project scenario
 		if ($this->_task == 'saveprov')
 		{
@@ -2103,7 +2100,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$commitMsg = '';
 			$deleted = $this->_git->gitDelete($dir, 'folder', $commitMsg);
 			$this->_git->gitCommit($commitMsg);
 
@@ -2211,9 +2207,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$skipped 	= 0;
 			$failed 	= 0;
 			$sync 		= 0;
-
-			// Start commit message
-			$commitMsg = '';
 
 			// Delete checked items
 			foreach ($items as $element)
@@ -2374,9 +2367,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 				}
 			}
-
-			// Start commit message
-			$commitMsg = '';
 
 			// Process request
 			if (($newpath != $this->subdir || $newdir) && !$this->getError())
@@ -2592,7 +2582,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$title = $file;
 
 			// Get convertable formats
-			$formats = ProjectsGoogleHelper::getGoogleConversionExts();
+			$formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
 
 			// Import remote file
 			if ($remote['converted'] == 1)
@@ -3203,7 +3193,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Proceed with renaming
 		if (!$this->getError() && $this->_task == 'renameit')
 		{
-			$commitMsg = '';
 			$type = $rename == 'dir' ? 'folder' : 'file';
 			$this->_git->gitMove($oldpath, $newpath, $type, $commitMsg);
 			$this->_git->gitCommit($commitMsg);
@@ -3656,15 +3645,15 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					// Tex file?
 					$tex    = Components\Projects\Helpers\Compiler::isTexFile($remote['title'], $remote['original_format']);
 
-					$cExt   = $tex ? 'tex' : ProjectsGoogleHelper::getGoogleImportExt($resource['mimeType']);
-					$url    = ProjectsGoogleHelper::getDownloadUrl($resource, $cExt);
+					$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
+					$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
 					$data = $this->_connect->sendHttpRequest($remote['service'], $this->_project->created_by_user, $url);
 
 					// Clean up data from Windows characters - important!
 					$data = $tex ? preg_replace('/[^(\x20-\x7F)\x0A]*/','', $data) : $data;
 
-					$ftname = ProjectsGoogleHelper::getImportFilename($remote, $cExt);
+					$ftname = \Components\Projects\Helpers\Google::getImportFilename($remote, $cExt);
 
 					$this->_connect->fetchFile($data, $ftname, $temp_path);
 					$fullpath = $temp_path . DS . $ftname;
@@ -3866,7 +3855,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$ext   = count($parts) > 1 ? array_pop($parts) : '';
 
 			// Take out Google native extension
-			$native = ProjectsGoogleHelper::getGoogleNativeExts();
+			$native = \Components\Projects\Helpers\Google::getGoogleNativeExts();
 			if (in_array($ext, $native))
 			{
 				$filename = preg_replace("/.".$ext."\z/", "", $file);
@@ -3906,9 +3895,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_connect->setUser($this->_project->created_by_user);
 				$resource = $this->_connect->loadRemoteResource($remote['service'], $this->_project->created_by_user, $remote['id']);
 
-				$cExt   = $tex ? 'tex' : ProjectsGoogleHelper::getGoogleImportExt($resource['mimeType']);
+				$cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($resource['mimeType']);
 				$cExt  	= in_array($cExt, array('tex', 'jpeg')) ? $cExt : 'pdf';
-				$url    = ProjectsGoogleHelper::getDownloadUrl($resource, $cExt);
+				$url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
 				// Get data
 				$data = $this->_connect->sendHttpRequest($remote['service'], $this->_project->created_by_user, $url);
@@ -3949,7 +3938,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 			elseif ($remote && $remote['converted'] == 1)
 			{
-				$tempBase = ProjectsGoogleHelper::getImportFilename($remote, $cExt);
+				$tempBase = \Components\Projects\Helpers\Google::getImportFilename($remote, $cExt);
 
 				// Write content to temp file
 				$this->_connect->fetchFile($data, $tempBase, PATH_APP . $outputDir);
@@ -6065,9 +6054,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Examine each change
 			foreach ($remotes as $filename => $remote)
 			{
-				// Record sync status
-				$this->_writeToFile(\JText::_('Syncing ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
-
 				$output .= ' * Remote change ' . $filename . ' - ' . $remote['status'] . ' - ' . $remote['modified'];
 				$output .= $remote['fileSize'] ? ' - ' . $remote['fileSize'] . ' bytes' : '';
 				$output .= "\n";
@@ -6115,6 +6101,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Set Git author date (GIT_AUTHOR_DATE)
 				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
+
+				// Record sync status
+				$this->_writeToFile(\JText::_('Syncing ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
@@ -6783,7 +6772,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Move file
-		$commitMsg = '';
 		$this->_git->gitMove($oldpath, $newpath, 'file', $commitMsg);
 		$this->_git->gitCommit($commitMsg);
 
