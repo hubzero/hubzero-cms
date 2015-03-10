@@ -130,6 +130,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				case 'withdraw':
 				case 'addbonus':
 				case 'wishlist':
+				case 'display':
 					// nothing
 				break;
 
