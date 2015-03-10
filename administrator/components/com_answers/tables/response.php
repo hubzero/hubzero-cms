@@ -70,7 +70,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		$this->answer     = nl2br($this->answer);
+		//$this->answer     = nl2br($this->answer);
 		$this->helpful    = intval($this->helpful);
 		$this->nothelpful = intval($this->nothelpful);
 		$this->state      = intval($this->state);

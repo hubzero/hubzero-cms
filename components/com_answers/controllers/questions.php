@@ -173,7 +173,7 @@ class Questions extends SiteController
 			}
 
 			// Perform some text cleaning, etc.
-			$row->set('content', nl2br($row->get('content')));
+			//$row->set('content', nl2br($row->get('content')));
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 			$row->set('created', \JFactory::getDate()->toSql());
 			$row->set('state', 0);
