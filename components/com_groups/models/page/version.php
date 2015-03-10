@@ -104,14 +104,17 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 		$content = $this->get('content');
 
 		// if content is not trusted, strip php and scripts
-		if (!$trustedContent)
+		if (!$this->get('page_trusted', 0))
 		{
-			$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
-			$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
-		}
+			if (!$trustedContent)
+			{
+				$content = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $content);
+				$content = preg_replace('/<\?[\s\S]*?\?>/', '', $content);
+			}
 
-		// purify content
-		$content = $this->purify($content, $trustedContent);
+			// purify content
+			$content = $this->purify($content, $trustedContent);
+		}
 
 		// set the purified content
 		$this->set('content', $content);
