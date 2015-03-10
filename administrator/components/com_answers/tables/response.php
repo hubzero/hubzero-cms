@@ -130,7 +130,7 @@ class AnswersTableResponse extends JTable
 			$this->setError(JText::_('Your response must contain text.'));
 			return false;
 		}
-		$this->answer = nl2br($this->answer);
+		//$this->answer = nl2br($this->answer);
 
 		$this->helpful    = intval($this->helpful);
 		$this->nothelpful = intval($this->nothelpful);
