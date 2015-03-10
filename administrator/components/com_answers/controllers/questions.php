@@ -214,7 +214,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming data
-		$fields = JRequest::getVar('question', array(), 'post');
+		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
 		// Initiate model
 		$row = new AnswersModelQuestion($fields['id']);
