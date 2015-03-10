@@ -4804,7 +4804,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						}
 						if ($sortby == 'modified')
 						{
-							//$sorting[] = strtotime(JFactory::getDate(strtotime($r->remote_modified))->format('Y-m-d H:i:s'));
 							$sorting[] = strtotime($r->remote_modified); // already UTC
 						}
 						else
@@ -5375,7 +5374,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$configFile 	= $gitConfigPath . DS . 'projects.conf';
 
 		// Load psystem configs
-		$sysconfig = \JComponentHelper::getParams( 'com_system' );
+		$sysconfig = \JComponentHelper::getParams('com_system');
 
 		// We need the config path set up by admin beforehand
 		if ( !is_dir($gitConfigPath) )
@@ -5457,7 +5456,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				if ($this->_connect->disconnect($service, $removeData))
 				{
-					$this->_msg = \JText::_('You got disconnected from ') . $configs['servicename'];
+					$this->_msg = \JText::_('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS') . ' ' . $configs['servicename'];
 				}
 				else
 				{
@@ -5481,7 +5480,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->_msg = \JText::_('Successfully connected');
+					$this->_msg = \JText::_('PLG_PROJECTS_FILES_CONNECT_SUCCESS');
 				}
 			}
 
@@ -5492,9 +5491,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
+				'folder' =>'projects',
 				'element'=>'files',
-				'name'=>'connect'
+				'name'   =>'connect'
 			)
 		);
 
@@ -5586,7 +5585,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Success message
-				$this->_rSync['message'] = \JText::_('Successfully synced');
+				$this->_rSync['message'] = \JText::_('PLG_PROJECTS_FILES_SYNC_SUCCESS');
 			}
 		}
 
@@ -5681,7 +5680,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Start debug output
 		$output  = ucfirst($service) . "\n";
-		$output .= $synced != 1 ? 'Last sync (local): ' . $synced . ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
+		$output .= $synced != 1 ? 'Last sync (local): ' . $synced
+				. ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
 		$output .= 'Previous sync ID: ' . $prevSyncId . "\n";
 		$output .= 'Current sync ID: ' . $lastSyncId . "\n";
 		$output .= 'Last synced remote change: '.  $lastRemoteChange . "\n";
@@ -5693,7 +5693,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$output .= ']' . "\n";
 
 		// Record sync status
-		$this->_writeToFile(\JText::_('Getting remote directory structure') );
+		$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_STRUCTURE_REMOTE') );
 
 		// Get stored remote connections
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
@@ -5703,7 +5703,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_connect->getFolderStructure($service, $projectCreator, $remoteFolders);
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Collecting local changes') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_COLLECT_LOCAL') );
 
 		// Collector for local renames
 		$localRenames = array();
@@ -5714,7 +5714,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$locals = $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections );
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Collecting remote changes') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_COLLECT_REMOTE') );
 
 		// Get all remote files that changed since last sync
 		$newSyncId  = 0;
@@ -5733,7 +5733,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Verifying remote changes') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_VERIFY_REMOTE') );
 
 		// Possible that we've missed a change?
 		if ( $newSyncId > $lastSyncId )
@@ -5776,7 +5776,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					: 'Mixing in timed changes ' . "\n";
 
 				$remotes = array_merge($timedRemotes, $remotes);
-				//array_unique($remotes);
 			}
 		}
 		else
@@ -5787,7 +5786,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($this->_connect->getError())
 		{
 			$this->_writeToFile( '' );
-			$this->_rSync['error'] = 'Oups! Sync error: ' . $this->_connect->getError();
+			$this->_rSync['error'] = \JText::_('PLG_PROJECTS_FILES_SYNC_ERROR_OUPS') . ' ' . $this->_connect->getError();
 			$this->lockSync($service, true);
 			return false;
 		}
@@ -5798,7 +5797,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$conflicts			= array();
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Exporting local changes') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_EXPORTING_LOCAL') );
 
 		$output .= 'Local changes:' . "\n";
 
@@ -5835,7 +5834,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 				// Record sync status
-				$this->_writeToFile(\JText::_('Syncing ') . ' '
+				$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' '
 					. \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 				// Item renamed
@@ -5999,7 +5998,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$newRemotes   = array();
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Refreshing remote file list') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_REFRESHING_REMOTE') );
 
 		// Get new change ID after local changes got sent to remote
 		if (!empty($locals))
@@ -6029,7 +6028,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Generate local thumbnail
 				if ($nR['thumb'])
 				{
-					$this->_writeToFile(\JText::_('Getting thumbnail for ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
+					$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 					$this->_connect->generateThumbnail($service, $projectCreator,
 						$nR, $this->_config, $this->_project->alias);
 				}
@@ -6042,7 +6041,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Importing remote changes') );
+		$this->_writeToFile( \JText::_('PLG_PROJECTS_FILES_SYNC_IMPORTING_REMOTE') );
 
 		$output .= 'Remote changes:' . "\n";
 
@@ -6078,7 +6077,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				$updated 	= 0;
 				$deleted   	= 0;
-				$commitMsg 	= 'Sync with ' . $service . ' (from change ID ' . $lastSyncId . ')' . "\n";
 
 				// Get change author for Git
 				$email = 'sync@sync.org';
@@ -6105,7 +6103,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$cDate = date('c', $remote['time']); // Important! Needs to be local time, NOT UTC
 
 				// Record sync status
-				$this->_writeToFile(\JText::_('Syncing ') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
+				$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_SYNCING') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
 
 				// Item in directory? Make sure we have correct local dir structure
 				$local_dir = dirname($filename) != '.' ? dirname($filename) : '';
@@ -6218,11 +6216,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							}
 							else
 							{
-								// Check file size against quota ??
-
 								// Download remote file
-								if ($this->_connect->downloadFileCurl($service, $remote['url'], $this->path . DS . $remote['local_path']))
-								//if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->path ))
+								if ($this->_connect->downloadFileCurl(
+									$service,
+									$remote['url'],
+									$this->path . DS . $remote['local_path'])
+								)
 								{
 									// Git add & commit
 									$this->_git->gitAdd($filename, $commitMsg);
@@ -6279,11 +6278,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 								$output .= '[error] not enough space for '. $filename . ' (' . $remote['fileSize']
 										. ' bytes) avail space:' . $checkAvail . "\n";
 								$failed[] = $filename;
-
-								// Record sync status
-								$this->_writeToFile(\JText::_('Skipping (size over limit)')
-									. ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 30) );
-
 								continue;
 							}
 							else
@@ -6293,8 +6287,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 							}
 
 							// Download remote file
-							if ($this->_connect->downloadFileCurl($service, $remote['url'], $this->path . DS . $remote['local_path']))
-							//if ($this->_connect->downloadFile($service, $projectCreator, $remote, $this->path ))
+							if ($this->_connect->downloadFileCurl(
+								$service,
+								$remote['url'],
+								$this->path . DS . $remote['local_path'])
+							)
 							{
 								// Git add & commit
 								$this->_git->gitAdd($filename, $commitMsg);
@@ -6332,7 +6329,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					// Generate local thumbnail
 					if ($remote['thumb'] && $remote['status'] != 'D')
 					{
-						$this->_writeToFile(\JText::_('Getting thumbnail for ') . ' '
+						$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' '
 						. \Components\Projects\Helpers\Html::shortenFileName($filename, 15) );
 						$this->_connect->generateThumbnail($service, $projectCreator, $remote,
 							$this->_config, $this->_project->alias);
@@ -6393,13 +6390,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_writeToFile($output, $temp . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log', true);
 
 		// Record sync status
-		$this->_writeToFile( \JText::_('Sync complete! Updating view...') );
+		$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_COMPLETE_UPDATE_VIEW') );
 
 		// Unlock sync
 		$this->lockSync($service, true);
 
 		// Clean up status
-		$this->_writeToFile('Sync complete');
+		$this->_writeToFile(\JText::_('PLG_PROJECTS_FILES_SYNC_COMPLETE'));
 
 		$this->_rSync['status'] = 'success';
 		return true;
@@ -6415,7 +6412,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$service 	= \JRequest::getVar('service', 'google');
 
 		$this->_writeToFile( '' );
-		$this->_rSync['error'] = 'There was a problem syncing one or more files';
+		$this->_rSync['error'] = \JText::_('PLG_PROJECTS_FILES_SYNC_ERROR');
 		$this->lockSync($service, true);
 		return;
 	}
@@ -6436,7 +6433,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$rFile = $this->_readFile();
 
 		// Report sync progress
-		if ($rFile && $rFile != 'Sync complete')
+		if ($rFile && $rFile != \JText::_('PLG_PROJECTS_FILES_SYNC_COMPLETE'))
 		{
 			$status = array('status' => 'progress', 'msg' => $rFile, 'output' => '');
 		}
@@ -6451,8 +6448,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Report last sync time
 			$msg = $synced && $synced != 1
-				? '<span class="faded">Last sync: '
-				. \Components\Projects\Helpers\Html::timeAgo($synced, false)
+				? '<span class="faded">' . \JText::_('PLG_PROJECTS_FILES_LAST_SYNC')
+				. ' ' . \Components\Projects\Helpers\Html::timeAgo($synced, false)
 				. ' ' . \JText::_('COM_PROJECTS_AGO') . ' </span>'
 				: '';
 			$status = array('status' => 'complete', 'msg' => $msg);
@@ -6525,16 +6522,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_rSync['status'] = 'complete';
 
 			// Clean up status
-			$this->_writeToFile('Sync complete');
+			$this->_writeToFile('PLG_PROJECTS_FILES_SYNC_COMPLETE');
 
 			// Repeat sync? (another request in queue)
 			if ($syncQueue > 0)
 			{
 				// Clean up queue
 				$obj->saveParam($this->_project->id, $service . '_sync_queue', 0);
-
-				// Sync request
-				//$this->_sync( $service, '', false, true);
 			}
 
 			return true;
@@ -6903,7 +6897,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				if (!$tempFile)
 				{
-					$this->setError(\JText::_('There was a problem creating a temp file for remote data'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_TEMP_PATH'));
 					return false;
 				}
 
@@ -6915,13 +6909,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 					if ($success !== 200)
 					{
-						$this->setError(\JText::_('Error: failed to download data file'));
+						$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_FAILED_DOWNLOAD_DATA'));
 						unlink($tempPath);
 					}
 				}
 				else
 				{
-					$this->setError(\JText::_('Error: failed to locate or access data path.'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_ACCESS_DATA_PATH'));
 				}
 
 				// Close connections
@@ -6934,7 +6928,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Have file?
 			if (!is_file($dataPath))
 			{
-				$this->setError(\JText::_('Error: source data file not found.'));
+				$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_SOURCE'));
 				return false;
 			}
 
@@ -6961,7 +6955,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				if (!\JFile::copy($dataPath, $fullPath))
 				{
-					$this->setError(\JText::_('Error inserting file into project'));
+					$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_INSERT'));
 					return false;
 				}
 				elseif ($tempPath && is_file($tempPath))
@@ -7250,7 +7244,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$webdir = DS . trim($this->_config->get('webpath'), DS);
 			if ($this->_config->get('offroot') && !is_dir($webdir))
 			{
-				$this->setError( \JText::_('Master directory does not exist. Administrator must fix this! ')  . $webdir );
+				$this->setError( \JText::_('PLG_PROJECTS_FILES_ERROR_NO_MASTERDIR')  . ' ' . $webdir );
 				return false;
 			}
 		}

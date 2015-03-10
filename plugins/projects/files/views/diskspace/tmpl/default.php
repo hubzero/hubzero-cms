@@ -69,12 +69,6 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 		<h3 class="<?php echo $class; ?>"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias='.$this->project->alias . '&active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_FILES_DISK_USAGE'); ?></span></h3>
 	</div>
 	<?php } ?>
-	<?php if ($this->tool && $this->tool->name)
-	{
-		echo \Components\Projects\Helpers\Html::toolDevHeader( $this->option, $this->config,
-				$this->project, $this->tool, 'source', '&raquo; <span class="subheader">'
-				. JText::_('PLG_PROJECTS_FILES_DISK_USAGE') . '</span>');
-	} ?>
 <?php } ?>
 	<div id="disk-usage" <?php if ($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">
@@ -89,7 +83,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 					<?php } ?>
 			</div>
 			<div id="usage-labels">
-					<span class="l-actual">&nbsp;</span><?php echo JText::_('Files') . ' ('.\Hubzero\Utility\Number::formatBytes($working) . ')'; ?>
+					<span class="l-actual">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_FILES') . ' ('.\Hubzero\Utility\Number::formatBytes($working) . ')'; ?>
 					<?php if ($versions > 0) { ?>
 					<span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? JText::_('Versions') : JText::_('Version History*') ; echo ' (' . $versions . ')'; ?>
 					<?php } ?>
@@ -97,19 +91,19 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 			</div>
 			<?php } else { ?>
 			<div id="usage-labels" class="usage-admin">
-				<span class="l-h"><?php echo JText::_('Project Files'); ?>
+				<span class="l-h"><?php echo JText::_('PLG_PROJECTS_FILES_PROJECT_FILES'); ?>
 					<span class="l-actual">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_FILES').': '.\Hubzero\Utility\Number::formatBytes($working); ?>
-					<span class="l-regular">&nbsp;</span><?php echo JText::_('History') . ': ' . $versions; ?>
-					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') . ': ' . $unused; ?>
+					<span class="l-regular">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_HISTORY') . ': ' . $versions; ?>
+					<span class="l-unused">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_AVAILABLE') . ': ' . $unused; ?>
 				<span>
 				<?php if (isset($this->pubDiskUsage))
 				{
 					$unusedPub = $this->pubQuota - $this->pubDiskUsage;
 					$unusedPub = $unusedPub <= 0 ? 'none' : \Hubzero\Utility\Number::formatBytes($unusedPub);
 				?>
-				<span class="l-h"><?php echo JText::_('Publications'); ?>
-					<span class="l-pub">&nbsp;</span><?php echo JText::_('Published') .': ' . \Hubzero\Utility\Number::formatBytes($this->pubDiskUsage); ?>
-					<span class="l-unused">&nbsp;</span><?php echo JText::_('Available') .': ' . $unusedPub; ?>
+				<span class="l-h"><?php echo JText::_('PLG_PROJECTS_FILES_PUBLICATIONS'); ?>
+					<span class="l-pub">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_SPACE_PUBLISHED') .': ' . \Hubzero\Utility\Number::formatBytes($this->pubDiskUsage); ?>
+					<span class="l-unused">&nbsp;</span><?php echo JText::_('PLG_PROJECTS_FILES_AVAILABLE') .': ' . $unusedPub; ?>
 				<span>
 				<?php } ?>
 			</div>

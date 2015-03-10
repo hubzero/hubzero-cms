@@ -28,8 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 $rUrl = $this->url . '?a=1' . $subdirlink;
 
-$slimit = \Hubzero\Utility\Number::formatBytes($this->sizelimit);
-
 // Incoming
 $basic   = JRequest::getInt('basic', 0);
 
@@ -52,7 +50,7 @@ if (count($desect_path) > 0)
 ?>
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
-<h3><?php echo JText::_('COM_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
 <?php } ?>
 <?php
 // Display error or success message
@@ -69,19 +67,19 @@ if (!$this->getError()) {
 		<div id="plg-header">
 			<h3 class="files">
 				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
-			&raquo; <span class="subheader"><?php echo JText::_('COM_PROJECTS_FILES_UPLOAD_FILES'); ?></span>
+			&raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></span>
 			</h3>
 		</div>
 	<?php } ?>
 	<fieldset class="uploader">
-		<p id="upload-instruct"><?php echo JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
+		<p id="upload-instruct"><?php echo JText::_('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
 			if ($this->subdir)
 			{
-				echo JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . JText::_('COM_PROJECTS_FILES_DIR') . ':';
+				echo JText::_('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . JText::_('PLG_PROJECTS_FILES_DIR') . ':';
 			}
 			else
 			{
-				echo ' ' . JText::_('COM_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME') . ' ' . JText::_('COM_PROJECTS_FILES_DIR') . ':';
+				echo ' ' . JText::_('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME') . ' ' . JText::_('PLG_PROJECTS_FILES_DIR') . ':';
 			} ?>
 		</p>
 
@@ -91,7 +89,7 @@ if (!$this->getError()) {
 					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>" >
 						<label class="addnew">
 							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-							<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>
+							<p class="hint ipadded"><?php echo JText::_('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
 						</label>
 						<div id="upload-body">
 							<ul id="u-selected" class="qq-upload-list">
@@ -104,7 +102,7 @@ if (!$this->getError()) {
 		<?php } else { ?>
 				<label class="addnew">
 					<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-					<p class="hint ipadded"><?php echo JText::_('COM_PROJECTS_FILES_MAX_UPLOAD').' '.$slimit; ?></p>
+					<p class="hint ipadded"><?php echo JText::_('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
 				</label>
 		<?php } ?>
 			</div>
@@ -115,7 +113,7 @@ if (!$this->getError()) {
 		<div class="sharing-option-extra" id="archiveCheck">
 			<label class="sharing-option">
 				<input type="checkbox" name="expand_zip" id="expand_zip" value="1" />
-				<?php echo JText::_('COM_PROJECTS_FILES_UPLOAD_UNZIP_ARCHIVES'); ?>
+				<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_UNZIP_ARCHIVES'); ?>
 			</label>
 		</div>
 		<?php } ?>
@@ -138,16 +136,16 @@ if (!$this->getError()) {
 
 		<div id="upload-submit">
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
+			<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 		</div>
 		<?php if (!$basic) { ?>
-			<p class="hint rightfloat mini faded">Having trouble with the file upload? Try using <a href="<?php echo $this->url . '?action=upload&basic=1' .$subdirlink; ?>">basic upload</a>.</p>
+			<p class="hint rightfloat mini faded"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'); ?> <a href="<?php echo $this->url . '?action=upload&basic=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD'); ?></a>.</p>
 		<?php } ?>
 	</fieldset>
 </form>
