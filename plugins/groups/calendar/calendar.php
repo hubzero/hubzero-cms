@@ -427,7 +427,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 
 				array_push($events, $event);
-			}
+		}
 
 		// output events
 		echo json_encode($events);
