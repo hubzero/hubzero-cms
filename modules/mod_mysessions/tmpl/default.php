@@ -44,21 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 					$bit = (count($bits) > 1) ? array_pop($bits) : '';
 					$appname = implode('_',$bits);
 
-					//are we on the iPad
-					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
-
-					//get tool params
-					$launchOnIpad = $this->toolsConfig->get('launch_ipad', 0);
-
-					//are we launching on iPad?
-					if ($isiPad && $launchOnIpad)
-					{
-						$resumeLink = 'nanohub://tools/session/' . $session->sessnum;
-					}
-					else
-					{
-						$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
-					}
+					$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
 
 					//terminate & disconnect links
 					$terminateLink  = JRoute::_('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname);
