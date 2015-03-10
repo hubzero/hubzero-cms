@@ -69,7 +69,7 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 	public function onToolSessionView($tool, $session, $readOnly=false)
 	{
 		$us = JFactory::getSession();
-
+		$us->set('tool_viewer', null);
 		$declared = JRequest::getWord('viewer');
 		$viewer = ($declared ? $declared : $us->get('tool_viewer'));
 
@@ -88,7 +88,7 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 
 		if (!$declared)
 		{
-			$us->set('tool_viewer', $this->_name);
+			//$us->set('tool_viewer', $this->_name);
 		}
 
 		$view = new \Hubzero\Plugin\View(array(
@@ -120,6 +120,8 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 		{
 			$browsers = array();
 
+			$allowed = str_replace("\r", '', $allowed);
+			$allowed = str_replace('\n', "\n", $allowed);
 			$allowed = explode("\n", $allowed);
 			foreach ($allowed as $allow)
 			{
@@ -151,12 +153,14 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				if ($minimum->major < $browser->major())
+				// If we get to here, we have a matching OS and browser
+
+				if ($minimum->major > $browser->major())
 				{
 					return false;
 				}
 
-				if ($minimum->minor < $browser->minor())
+				if ($minimum->major == $browser->major() && $minimum->minor > $browser->minor())
 				{
 					return false;
 				}
@@ -172,6 +176,8 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 
 		if ($regexes = trim($this->params->get('regexes')))
 		{
+			$regexes = str_replace("\r", '', $regexes);
+			$regexes = str_replace('\n', "\n", $regexes);
 			$regexes = explode("\n", $regexes);
 			foreach ($regexes as $disallow)
 			{

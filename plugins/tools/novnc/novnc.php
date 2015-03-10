@@ -69,13 +69,14 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 	public function onToolSessionView($tool, $session, $readOnly=false)
 	{
 		$us = JFactory::getSession();
-
+		$us->set('tool_viewer', null);
 		$declared = JRequest::getWord('viewer');
 		$viewer = ($declared ? $declared : $us->get('tool_viewer'));
 
 		if ((isset($session->rendered) && $session->rendered)
 		 || ($viewer && $viewer != $this->_name))
 		{
+			echo $viewer;
 			return;
 		}
 
@@ -88,7 +89,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 
 		if (!$declared)
 		{
-			$us->set('tool_viewer', $this->_name);
+			//$us->set('tool_viewer', $this->_name);
 		}
 
 		$view = new \Hubzero\Plugin\View(array(
