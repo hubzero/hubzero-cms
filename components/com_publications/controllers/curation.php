@@ -746,7 +746,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					1
 				);
 				// Save with publication record
-				if ($masterDoi && $objP->load($oub->id))
+				if ($masterDoi && $objP->load($pub->id))
 				{
 					$objP->master_doi = $masterDoi;
 					$objP->store();
