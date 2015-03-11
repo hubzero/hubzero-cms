@@ -79,6 +79,14 @@ CREATE TABLE `fileperm` (
   PRIMARY KEY (`sessnum`,`fileuser`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `hg_update_queue` (
+  `action` enum('INSERT','UPDATE','DELETE') NOT NULL,
+  `table_name` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL,
+  `other_id` int(11) DEFAULT NULL,
+  `note` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `host` (
   `hostname` varchar(40) NOT NULL DEFAULT '',
   `provisions` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -250,6 +258,7 @@ CREATE TABLE `#__auth_link` (
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__author_assoc` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `subtable` varchar(50) NOT NULL DEFAULT '',
   `subid` int(11) NOT NULL DEFAULT '0',
   `authorid` int(11) NOT NULL DEFAULT '0',
@@ -257,8 +266,11 @@ CREATE TABLE `#__author_assoc` (
   `role` varchar(50) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `organization` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`subtable`,`subid`,`authorid`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_subtable_subid_authorid` (`subtable`,`subid`,`authorid`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `#__author_role_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -345,18 +357,19 @@ CREATE TABLE `#__blog_entries` (
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `params` tinytext NOT NULL,
-  `group_id` int(11) NOT NULL DEFAULT '0',
+  `scope_id` int(11) NOT NULL DEFAULT '0',
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `allow_comments` tinyint(2) NOT NULL DEFAULT '0',
   `scope` varchar(100) NOT NULL DEFAULT '',
+  `access` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_created_by` (`created_by`),
-  KEY `idx_group_id` (`group_id`),
   KEY `idx_alias` (`alias`),
+  KEY `idx_scope_id` (`scope_id`),
   FULLTEXT KEY `ftidx_title` (`title`),
   FULLTEXT KEY `ftidx_content` (`content`),
   FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -522,6 +535,12 @@ CREATE TABLE `#__citations` (
   `params` text,
   `formatted` text,
   `format` varchar(11) DEFAULT NULL,
+  `scope` varchar(45) DEFAULT NULL,
+  `scope_id` varchar(45) DEFAULT NULL,
+  `custom1` text,
+  `custom2` text,
+  `custom3` varchar(45) DEFAULT NULL,
+  `custom4` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_title_isbn_doi_abstract` (`title`,`isbn`,`doi`,`abstract`),
   FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
@@ -580,6 +599,14 @@ CREATE TABLE `#__citations_secondary` (
   `cid` int(11) NOT NULL,
   `sec_cits_cnt` int(11) DEFAULT NULL,
   `search_string` tinytext,
+  `scope` varchar(250) DEFAULT NULL,
+  `scope_id` int(11) DEFAULT NULL,
+  `link1_url` tinytext,
+  `link1_title` varchar(60) DEFAULT NULL,
+  `link2_url` tinytext,
+  `link2_title` varchar(60) DEFAULT NULL,
+  `link3_url` tinytext,
+  `link3_title` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -622,6 +649,8 @@ CREATE TABLE `#__collections` (
   `description` mediumtext NOT NULL,
   `positive` int(11) NOT NULL DEFAULT '0',
   `negative` int(11) NOT NULL DEFAULT '0',
+  `sort` varchar(50) NOT NULL DEFAULT 'created',
+  `layout` varchar(50) NOT NULL DEFAULT 'grid',
   PRIMARY KEY (`id`),
   KEY `idx_object_type_object_id` (`object_type`,`object_id`),
   KEY `idx_state` (`state`),
@@ -686,6 +715,7 @@ CREATE TABLE `#__collections_posts` (
   `item_id` int(11) NOT NULL DEFAULT '0',
   `description` mediumtext NOT NULL,
   `original` tinyint(2) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_collection_id` (`collection_id`),
   KEY `idx_item_id` (`item_id`),
@@ -716,6 +746,8 @@ CREATE TABLE `#__courses` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `params` text NOT NULL,
+  `length` varchar(255) DEFAULT NULL,
+  `effort` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_alias_title_blurb` (`alias`,`title`,`blurb`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
@@ -813,6 +845,7 @@ CREATE TABLE `#__courses_assets` (
   `course_id` int(11) NOT NULL DEFAULT '0',
   `graded` tinyint(2) DEFAULT NULL,
   `grade_weight` varchar(255) NOT NULL DEFAULT '',
+  `path` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_course_id` (`course_id`),
   KEY `idx_created_by` (`created_by`)
@@ -1494,6 +1527,7 @@ CREATE TABLE `#__forum_attachments` (
   `post_id` int(11) NOT NULL DEFAULT '0',
   `filename` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `idx_filename_post_id` (`filename`,`post_id`),
   KEY `idx_parent` (`parent`),
@@ -1587,6 +1621,47 @@ CREATE TABLE `#__forum_sections` (
   KEY `idx_object_id` (`object_id`),
   KEY `idx_access` (`access`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__import_hooks` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `event` varchar(25) DEFAULT NULL,
+  `type` varchar(150) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `notes` text,
+  `file` varchar(100) DEFAULT NULL,
+  `state` int(11) NOT NULL DEFAULT '1',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__import_runs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `import_id` int(11) DEFAULT NULL,
+  `processed` int(11) DEFAULT NULL,
+  `count` int(11) DEFAULT NULL,
+  `ran_by` int(11) DEFAULT NULL,
+  `ran_at` datetime DEFAULT NULL,
+  `dry_run` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__imports` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(150) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `notes` text,
+  `file` varchar(255) DEFAULT '',
+  `count` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `state` int(11) unsigned NOT NULL DEFAULT '1',
+  `mode` varchar(10) DEFAULT 'UPDATE',
+  `params` text,
+  `hooks` text,
+  `fields` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_group_label_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -2018,14 +2093,6 @@ CREATE TABLE `#__newsletters` (
   `modified_by` int(11) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   `params` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `#__oaipmh_dcspecs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `query` text NOT NULL,
-  `display` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -2535,6 +2602,7 @@ CREATE TABLE `#__publication_curation_history` (
   `curator` tinyint(3) NOT NULL DEFAULT '0',
   `oldstatus` int(11) NOT NULL DEFAULT '0',
   `newstatus` int(11) NOT NULL DEFAULT '0',
+  `comment` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -2578,6 +2646,10 @@ CREATE TABLE `#__publication_logs` (
   `page_views` int(11) DEFAULT '0',
   `primary_accesses` int(11) DEFAULT '0',
   `support_accesses` int(11) DEFAULT '0',
+  `page_views_unfiltered` int(11) DEFAULT NULL,
+  `primary_accesses_unfiltered` int(11) DEFAULT NULL,
+  `page_views_unique` int(11) DEFAULT NULL,
+  `primary_accesses_unique` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -2653,6 +2725,7 @@ CREATE TABLE `#__publication_versions` (
   `published_down` datetime DEFAULT NULL,
   `modified` datetime DEFAULT '0000-00-00 00:00:00',
   `accepted` datetime DEFAULT '0000-00-00 00:00:00',
+  `archived` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `submitted` datetime DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) DEFAULT '0',
   `version_label` varchar(100) NOT NULL DEFAULT '1.0',
@@ -2669,8 +2742,12 @@ CREATE TABLE `#__publication_versions` (
   `curation` text,
   `reviewed` datetime DEFAULT NULL,
   `reviewed_by` int(11) DEFAULT NULL,
+  `curator` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  FULLTEXT KEY `idx_fulltxt_title_description_abstract` (`title`,`description`,`abstract`)
+  FULLTEXT KEY `idx_fulltxt_title_description_abstract` (`title`,`description`,`abstract`),
+  FULLTEXT KEY `ftidx_title` (`title`),
+  FULLTEXT KEY `ftidx_abstract_description` (`abstract`,`description`),
+  FULLTEXT KEY `ftidx_title_abstract_description` (`title`,`abstract`,`description`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publications` (
@@ -2688,6 +2765,7 @@ CREATE TABLE `#__publications` (
   `alias` varchar(100) NOT NULL DEFAULT '',
   `ranking` float NOT NULL DEFAULT '0',
   `group_owner` int(11) NOT NULL DEFAULT '0',
+  `master_doi` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -2720,10 +2798,13 @@ CREATE TABLE `#__redirection` (
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_assoc` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `child_id` int(11) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   `grouping` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
   KEY `idx_parent_id_child_id` (`parent_id`,`child_id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -3281,9 +3362,26 @@ CREATE TABLE `#__support_queries` (
   `sort_dir` varchar(100) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `iscore` int(3) NOT NULL DEFAULT '0',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `folder_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_iscore` (`iscore`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__support_query_folders` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(200) NOT NULL DEFAULT '',
+  `alias` varchar(200) NOT NULL DEFAULT '',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `iscore` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_resolutions` (
@@ -3364,16 +3462,6 @@ CREATE TABLE `#__tags` (
   FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `#__tags_group` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `groupid` int(11) unsigned NOT NULL DEFAULT '0',
-  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
-  `priority` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_tagid` (`tagid`),
-  KEY `idx_groupid` (`groupid`)
-) ENGINE=MYISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `#__tags_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -3444,7 +3532,8 @@ CREATE TABLE `#__time_records` (
   `task_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `time` double NOT NULL,
-  `date` date NOT NULL,
+  `date` datetime NOT NULL,
+  `end` datetime NOT NULL,
   `description` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
@@ -3751,6 +3840,15 @@ CREATE TABLE `#__users_quotas_classes` (
   `hard_blocks` int(11) NOT NULL,
   `soft_blocks` int(11) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `#__users_quotas_classes_groups` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_class_id` (`class_id`),
+  KEY `idx_group_id` (`group_id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_quotas_log` (
@@ -4113,9 +4211,12 @@ CREATE TABLE `#__xgroups_memberoption` (
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_members` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
-  PRIMARY KEY (`gidNumber`,`uidNumber`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `idx_gidNumber_uidNumber` (`gidNumber`,`uidNumber`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_modules` (
@@ -4146,14 +4247,18 @@ CREATE TABLE `#__xgroups_modules_menu` (
 CREATE TABLE `#__xgroups_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gidNumber` int(11) DEFAULT NULL,
+  `parent` int(11) DEFAULT '0',
+  `lft` int(11) DEFAULT NULL,
+  `rgt` int(11) DEFAULT NULL,
+  `depth` int(11) DEFAULT '1',
   `category` int(11) DEFAULT NULL,
   `template` varchar(100) DEFAULT NULL,
   `alias` varchar(100) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
-  `ordering` int(11) DEFAULT NULL,
   `state` int(11) DEFAULT '1',
   `privacy` varchar(10) DEFAULT NULL,
   `home` int(11) DEFAULT '0',
+  `comments` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
@@ -4636,7 +4741,8 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1037,'com_collections', 'component', 'com_collections', '', 1, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (1038,'com_feedaggregator', 'component', 'com_feedaggregator', '', 1, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
 (1039,'com_update', 'component', 'com_update', '', 1, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
-(1040,'com_time', 'component', 'com_time', '', 1, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(1040,'com_time', 'component', 'com_time', '', 1, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1041,'com_hubgraph','component','com_hubgraph','',1,1,1,0,'','{\"host\":\"unix:\\/\\/\\/var\\/run\\/hubgraph-server.sock\",\"port\":null,\"showTagCloud\":true,\"enabledOptions\":\"\"}','','',0,'0000-00-00 00:00:00',0,0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1400,'Authentication - Facebook','plugin','facebook','authentication',0,0,1,0,'','app_id=\napp_secret=\n','','',0,'0000-00-00 00:00:00',2,0),
@@ -4708,7 +4814,6 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1470,'Projects - Team','plugin','team','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
 (1471,'Projects - Todo','plugin','todo','projects',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',4,0),
 (1472,'Resources - About','plugin','about','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
-(1473,'Resources - About (tool)','plugin','abouttool','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',9,0),
 (1474,'Resources - Citations','plugin','citations','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',10,0),
 (1476,'Resources - Questions','plugin','questions','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',11,0),
 (1477,'Resources - Recommendations','plugin','recommendations','resources',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
@@ -4783,9 +4888,6 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1546,'plg_search_weightcontributor','plugin','weightcontributor','search',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1547,'plg_search_weighttools','plugin','weighttools','search',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1548,'plg_search_wishlists','plugin','wishlists','search',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
-(1549,'plg_content_collect', 'plugin', 'collect', 'content', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Content - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a resource to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1550,'plg_resources_collect', 'plugin', 'collect', 'resources', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Resource - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a resource to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1551,'plg_wiki_collect', 'plugin', 'collect', 'wiki', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Wiki - Collect\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a link allowing a wiki page to be favorited\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1554,'plg_support_forum', 'plugin', 'forum', 'support', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Support - Forum Abuse reports\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Various functions for the Report Abuse Component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1555,'plg_courses_memberoptions', 'plugin', 'memberoptions', 'courses', '0', '0', '1', '0', '{\"legacy\":true,\"name\":\"Courses - Member options\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2012 by Purdue Research Foundation, West Lafayette, IN 47906\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display a course\'s member options\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1558,'plg_cron_users', 'plugin', 'users', 'cron', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Cron - Users\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2013 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Cron events for users\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
@@ -4803,7 +4905,6 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1571,'plg_publications_versions', 'plugin', 'versions', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - versions\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays all versions of a publication\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1572,'plg_publications_wishlist', 'plugin', 'wishlist', 'publications', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Publication - Wishlist\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Alissa Nedossekina\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Displays publication wishlist\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1573,'plg_resources_groups', 'plugin', 'groups', 'resources', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Resource - Group\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display group ownership for a resource\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1574,'plg_system_indent', 'plugin', 'indent', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Indent\",\"type\":\"plugin\",\"creationDate\":\"March 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5\",\"description\":\"Indent HTML correctly\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1575,'plg_system_mobile', 'plugin', 'mobile', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Mobile\",\"type\":\"plugin\",\"creationDate\":\"December 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright (c) Purdue University, 2013. All rights reserved\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"PLG_SYSTEM_MOBILE_DESC\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1582,'plg_courses_syllabus', 'plugin', 'syllabus', 'courses', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 16, 0),
 (1584,'plg_courses_faq', 'plugin', 'faq', 'courses', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 18, 0),
@@ -4844,8 +4945,8 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1619,'plg_resources_findthistext', 'plugin', 'findthistext', 'resources', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 15, 0),
 (1620,'plg_cron_projects', 'plugin', 'projects', 'cron', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 7, 0),
 (1621,'plg_cron_publications', 'plugin', 'publications', 'cron', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 8, 0),
-(1622,'plg_content_formatwiki', 'plugin', 'formatwiki', 'content', 0, 1, 1, 0, '', '{\"applyFormat\":\"1\",\"convertFormat\":\"0\"}', '', '', 0, '0000-00-00 00:00:00', 8, 0),
-(1623,'plg_content_formathtml', 'plugin', 'formathtml', 'content', 0, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 9, 0),
+(1622,'plg_content_formatwiki', 'plugin', 'formatwiki', 'content', 0, 1, 1, 0, '', '{\"applyFormat\":1,\"convertFormat\":1}', '', '', 0, '0000-00-00 00:00:00', 8, 0),
+(1623,'plg_content_formathtml', 'plugin', 'formathtml', 'content', 0, 0, 1, 0, '', '{\"applyFormat\":1,\"convertFormat\":0,\"sanitizeBefore\":0}', '', '', 0, '0000-00-00 00:00:00', 9, 0),
 (1624,'plg_editors_wikitoolbar', 'plugin', 'wikitoolbar', 'editors', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 5, 0),
 (1625,'plg_editors_wikiwyg', 'plugin', 'wikiwyg', 'editors', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 6, 0),
 (1626,'plg_projects_links', 'plugin', 'links', 'projects', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 7, 0),
@@ -4865,7 +4966,15 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1640,'plg_time_summary', 'plugin', 'summary', 'time', 0, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (1641,'plg_tools_java', 'plugin', 'java', 'tools', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (1642,'plg_tools_novnc', 'plugin', 'novnc', 'tools', 0, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
-(1643,'plg_whatsnew_publications', 'plugin', 'publications', 'whatsnew', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 6, 0);
+(1643,'plg_whatsnew_publications', 'plugin', 'publications', 'whatsnew', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 6, 0),
+(1644,'plg_groups_citations','plugin','citations','groups',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',15,0),
+(1645,'plg_oaipmh_publications','plugin','publications','oaipmh',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
+(1646,'plg_user_geo','plugin','geo','user',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',8,0),
+(1647,'plg_user_middleware','plugin','middleware','user',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',7,0),
+(1648,'plg_oaipmh_resources','plugin','resources','oaipmh',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
+(1649,'plg_system_certificate','plugin','certificate','system',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',14,0),
+(1650,'plg_authentication_certificate','plugin','certificate','authentication',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',7,0),
+(1651,'plg_time_csv','plugin','csv','time',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',2,0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1700, 'hubbasic', 'template', 'hubbasic', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
@@ -4930,7 +5039,6 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1252, 'mod_twitterfeed', 'module', 'mod_twitterfeed', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Twitter Feed\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"Loads the Twitter feed of the specified Twitter ID\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1253, 'mod_whatsnew', 'module', 'mod_whatsnew', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"What\'s New\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Lists the newest resources and events on the site.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1254, 'mod_wishvoters', 'module', 'mod_wishvoters', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Wish Voters\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module will display a list of most active wish voters\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1255, 'mod_xwhosonline', 'module', 'mod_xwhosonline', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Extended Who is Online\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"The Who\'s Online module displays the number of anonymous (that is, Guest) users and Registered users, (those that are logged in) that are currently accessing the web site.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1256, 'mod_youtube', 'module', 'mod_youtube', '', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"YouTube\",\"type\":\"module\",\"creationDate\":\"March 2011\",\"author\":\"HUBzero\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.0.0\",\"description\":\"This module allows to display a youtube feed\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1257, 'mod_grouppages', 'module', 'mod_grouppages', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 
@@ -4946,7 +5054,12 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1308, 'mod_tools', 'module', 'mod_tools', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Tools\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1309, 'mod_whosonline', 'module', 'mod_whosonline', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Show Online Users\",\"type\":\"module\",\"creationDate\":\"January 2005\",\"author\":\"Christopher Smoak\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"csmoak@purdue.edu\",\"authorUrl\":\"https:\\/\\/hubzero.org\",\"version\":\"1.0.0\",\"description\":\"This module shows a list of the currently logged in users\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1310, 'mod_wishlist', 'module', 'mod_wishlist', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Wishlist\",\"type\":\"module\",\"creationDate\":\"Unknown\",\"author\":\"Unknown\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"This module shows on the Admin area Home Page and displays items that administrator needs to watch for.\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1311, 'mod_supportactivity', 'module', 'mod_supportactivity', '', 1, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+(1311, 'mod_supportactivity', 'module', 'mod_supportactivity', '', 1, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
+(1312, 'mod_mycuration','module','mod_mycuration','',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1313, 'mod_users','module','mod_users','',1,0,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1314, 'mod_collect','module','mod_collect','',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1315, 'mod_courses','module','mod_courses','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
+(1316, 'mod_mytodos','module','mod_mytodos','',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0);
 
 UPDATE `#__template_styles` SET home=0;
 INSERT INTO `#__template_styles` VALUES (7,'hubbasic',0,'0','HUBzero Standard Site Template - 2011','{}');
@@ -5031,25 +5144,6 @@ INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `ne
 INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) VALUES ('Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '');
 INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 0, 0, '');
 
-INSERT INTO `#__oaipmh_dcspecs` (`id`, `name`, `query`, `display`) VALUES
-						(1, 'resource IDs', 'SELECT p.id FROM #__publications p, #__publication_versions pv WHERE p.id = pv.publication_id AND pv.state = 1', 1),
-						(2, 'specify sets', '', 1),
-						(3, 'title', 'SELECT pv.title FROM #__publication_versions pv, #__publications p WHERE p.id = pv.publication_id AND p.id = \$id LIMIT 1', 1),
-						(4, 'creator', 'SELECT pa.name FROM #__publication_authors pa, #__publication_versions pv, #__publications p WHERE pa.publication_version_id = pv.id AND pv.publication_id = p.id AND p.id = \$id LIMIT 1', 1),
-						(5, 'subject', 'SELECT t.raw_tag FROM #__tags t, #__tags_object tos WHERE t.id = tos.tagid AND tos.objectid = \$id ORDER BY t.raw_tag', 1),
-						(6, 'date', 'SELECT pv.submitted FROM #__publication_versions pv, #__publications p WHERE p.id = pv.publication_id AND p.id = \$id ORDER BY pv.submitted LIMIT 1', 1),
-						(7, 'identifier', 'SELECT pv.doi FROM #__publication_versions pv, #__publications p WHERE p.id = pv.publication_id AND pv.state = 1 AND p.id = \$id', 1),
-						(8, 'description', 'SELECT pv.description FROM #__publication_versions pv, #__publications p WHERE p.id = pv.publication_id AND p.id = \$id LIMIT 1', 1),
-						(9, 'type', 'Dataset', 1),
-						(10, 'publisher', 'myhub', 1),
-						(11, 'rights', 'SELECT pl.title FROM #__publications p, #__publication_versions pv, #__publication_licenses pl WHERE pl.id = pv.license_type AND pv.publication_id = p.id AND p.id = \$id LIMIT 1', 1),
-						(12, 'contributor', 'SELECT pa.name FROM #__publication_authors pa, #__publication_versions pv, #__publications p WHERE pa.publication_version_id = pv.id AND pv.publication_id = p.id AND p.id = \$id AND pv.state = 1', 1),
-						(13, 'relation', 'SELECT DISTINCT path FROM #__publication_attachments pa WHERE publication_id = \$id AND role = 1 ORDER BY path', 1),
-						(14, 'format', '', 1),
-						(15, 'coverage', '', 1),
-						(16, 'language', '', 1),
-						(17, 'source', '', 1);
-
 INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('1','Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1');
 INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('2','Workshops','Event','workshop','workshops','A collection of lectures, seminars, and materials that were presented at a workshop.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
 INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('3','Publications','Dataset','publication','publications','A publication is a paper relevant to the community that has been published in some manner.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');
@@ -5084,3 +5178,9 @@ INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contrib
 INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('custom','[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]','Custom','http://creativecommons.org/about/cc0','Custom license','3','1','0','0','0','1','/components/com_publications/assets/img/logos/license.gif');
 INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0','CC0 enables scientists, educators, artists and other creators and owners of copyright- or database-protected content to waive those interests in their works and thereby place them as completely as possible in the public domain, so that others may freely build upon, enhance and reuse the works for any purposes without restriction under copyright or database law.','2','1','0','1','1','0','/components/com_publications/assets/img/logos/cc.gif');
 INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('standard','All rights reserved.','Standard HUB License','http://nanohub.org','Standard HUB license.','1','0','0','0','0','0','/components/com_publications/images/logos/license.gif');
+
+INSERT INTO `#__support_query_folders` VALUES (1,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,1);
+INSERT INTO `#__support_query_folders` VALUES (2,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,1);
+INSERT INTO `#__support_query_folders` VALUES (3,0,'Custom','custom','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,3,1);
+INSERT INTO `#__support_query_folders` VALUES (4,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,2);
+INSERT INTO `#__support_query_folders` VALUES (5,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,2);
