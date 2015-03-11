@@ -727,7 +727,7 @@ class Attachment extends \JTable
 		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
 		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
 		$query.= " WHERE P.project_id=" . $this->_db->Quote($projectid)
-				. " AND a.type=" . $this->_db->Quote($role);
+				. " AND a.type=" . $this->_db->Quote($type);
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " GROUP BY a.path ";
 		$query.= " ORDER BY v.id DESC ";
