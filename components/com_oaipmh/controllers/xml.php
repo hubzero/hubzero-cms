@@ -45,17 +45,16 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$identifier = JRequest::getVar('identifier', 'https://zooley.hubzero.org/resources/2');
-		$metadata   = JRequest::getVar('metadataPrefix', 'oai_dc');
-		$from       = JRequest::getVar('from');
-		$until      = JRequest::getVar('until');
-		$set        = JRequest::getVar('set');
-		$resumption = JRequest::getVar('resumptionToken');
+		$metadata   = \JRequest::getVar('metadataPrefix', 'oai_dc');
+		$from       = \JRequest::getVar('from');
+		$until      = \JRequest::getVar('until');
+		$set        = \JRequest::getVar('set');
+		$resumption = \JRequest::getVar('resumptionToken');
 
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
 
-		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', JURI::base())), '/');
+		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \JURI::base())), '/');
 
 		$service = new \Components\Oaipmh\Models\Service($metadata);
 		$service->set('metadataPrefix', $metadata)
@@ -72,11 +71,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);
 
-		$verb = JRequest::getVar('verb');
+		$verb = \JRequest::getVar('verb');
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$service->record($identifier);
+				$service->record(\JRequest::getVar('identifier'));
 			break;
 
 			case 'Identify':
@@ -88,7 +87,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			case 'ListIdentifiers':
-				$service->identifiers($this->from, $this->until);
+				$service->identifiers($from, $until, $set);
 			break;
 
 			case 'ListRecords':
@@ -99,7 +98,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					$service->error($service::ERROR_BAD_RESUMPTION_TOKEN);
 				}
 
-				$service->records($this->from, $this->until);
+				$service->records($from, $until, $set);
 			break;
 
 			case 'ListSets':

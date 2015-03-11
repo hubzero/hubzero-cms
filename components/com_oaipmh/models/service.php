@@ -464,9 +464,9 @@ class Service extends Object
 	 * @param   string  $until  Timestamp
 	 * @return  object  $this
 	 */
-	public function identifiers($from, $until)
+	public function identifiers($from, $until, $set = null)
 	{
-		return $this->records($from, $until, 'ListIdentifiers');
+		return $this->records($from, $until, $set, 'ListIdentifiers');
 	}
 
 	/**
@@ -477,13 +477,13 @@ class Service extends Object
 	 * @param   string  $verb
 	 * @return  object  $this
 	 */
-	public function records($from, $until, $verb = 'ListRecords')
+	public function records($from, $until, $set = null, $verb = 'ListRecords')
 	{
 		$queries = array();
 
 		foreach ($this->providers as $provider)
 		{
-			if (!($query = $provider->records(array('from' => $from, 'until' => $until))))
+			if (!($query = $provider->records(array('from' => $from, 'until' => $until, 'set' => $set))))
 			{
 				continue;
 			}
