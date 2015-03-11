@@ -132,6 +132,18 @@ class Miner extends Object implements Provider
 	 */
 	public function records($filters = array())
 	{
+		if (isset($filters['set']) && $filters['set'])
+		{
+			if (!preg_match('/^publications\:(.+)/i', $filters['set'], $matches))
+			{
+				return '';
+			}
+
+			$set = trim($matches[1]);
+			$this->database->setQuery("SELECT t.id FROM `#__publication_master_types` AS t WHERE t.alias=" . $this->database->quote($set));
+			$this->set('type', $this->database->loadResult());
+		}
+
 		$query = "SELECT p.id, " . $this->database->quote($this->name()) . " AS `base`
 				FROM `#__publications` p, `#__publication_versions` pv
 				WHERE p.id = pv.publication_id

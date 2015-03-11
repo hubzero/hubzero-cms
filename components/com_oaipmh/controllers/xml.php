@@ -48,7 +48,6 @@ class Xml extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$identifier = \JRequest::getVar('identifier', 'https://zooley.hubzero.org/resources/2');
 		$metadata   = \JRequest::getVar('metadataPrefix', 'oai_dc');
 		$from       = \JRequest::getVar('from');
 		$until      = \JRequest::getVar('until');
@@ -79,7 +78,7 @@ class Xml extends SiteController
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$service->record($identifier);
+				$service->record(\JRequest::getVar('identifier'));
 			break;
 
 			case 'Identify':
@@ -91,7 +90,7 @@ class Xml extends SiteController
 			break;
 
 			case 'ListIdentifiers':
-				$service->identifiers($this->from, $this->until);
+				$service->identifiers($from, $until, $set);
 			break;
 
 			case 'ListRecords':
@@ -102,7 +101,7 @@ class Xml extends SiteController
 					$service->error($service::ERROR_BAD_RESUMPTION_TOKEN);
 				}
 
-				$service->records($this->from, $this->until);
+				$service->records($from, $until, $set);
 			break;
 
 			case 'ListSets':
