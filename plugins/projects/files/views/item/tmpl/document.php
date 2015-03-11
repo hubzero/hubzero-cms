@@ -44,7 +44,7 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 		<td class="top_valign nobsp">
 			<img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
 			<a href="<?php echo $this->url
-			. '/?' . $this->do . '=download&amp;subdir='.urlencode($this->subdir)
+			. '/?action=download&amp;subdir='.urlencode($this->subdir)
 			. '&amp;file='.urlencode($file['name']); ?>"
 			<?php if ($file['untracked'] == 0) { ?>
 			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
@@ -59,14 +59,14 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 		<td class="shrinked"></td>
 		<td class="shrinked"><?php echo $file['size']; ?></td>
 		<td class="shrinked"><?php if ($file['untracked'] == 0) { ?>
-		<a href="<?php echo $this->url . '/?' . $this->do . '=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<a href="<?php echo $this->url . '/?action=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
 		<?php } ?></td>
 		<td class="shrinked pale"><?php if ($me) { echo JText::_('PLG_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
-		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . '&amp;subdir='.urlencode($this->subdir)
+		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete' . '&amp;subdir='.urlencode($this->subdir)
 		. '&amp;asset='.urlencode($file['name']); ?>"
 		 title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
-		<a href="<?php echo $this->url . '/?' . $this->do . '=move&amp;subdir='.urlencode($this->subdir)
+		<a href="<?php echo $this->url . '/?action=move&amp;subdir='.urlencode($this->subdir)
 		. '&amp;asset='.urlencode($file['name']); ?>"
 		 title="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
 		<?php if ($this->publishing) { ?>

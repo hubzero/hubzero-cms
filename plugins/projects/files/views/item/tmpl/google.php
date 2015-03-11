@@ -74,9 +74,9 @@ $me = ($author == utf8_decode($this->oparams->get('google_name')) || $author == 
 	</td>
 	<td class="shrinked"></td>
 	<td class="shrinked"></td>
-	<td class="shrinked"><a href="<?php echo $this->url . '/?' . $this->do . '=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
+	<td class="shrinked"><a href="<?php echo $this->url . '/?action=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
 	<td class="shrinked pale"><?php echo $me ? JText::_('PLG_PROJECTS_FILES_ME') : $author; ?></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete&amp;subdir='.urlencode($this->subdir)
+	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete&amp;subdir='.urlencode($this->subdir)
 	. '&amp;asset='.urlencode(basename($item->local_path)); ?>"
 	 title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
 	<?php if ($this->publishing) { ?>

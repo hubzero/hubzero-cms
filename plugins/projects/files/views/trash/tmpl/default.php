@@ -64,7 +64,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 						<?php echo \Components\Projects\Helpers\Html::formatTime($file['date'], true, true); ?>
 						<span class="block"><?php echo $file['author']; ?></span>
 					</td>
-					<td><a href="<?php echo $this->url . '/?' . $this->do . '=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo JText::_('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
+					<td><a href="<?php echo $this->url . '/?action=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo JText::_('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
 				</tr>
 			<?php } ?>
 			</tbody>

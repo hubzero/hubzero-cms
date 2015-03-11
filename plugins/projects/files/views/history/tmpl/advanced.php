@@ -168,7 +168,7 @@ if ($this->getError()) {
 				{
 					$url = $this->url
 						.'/?file='.urlencode($version['name'])
-						. '&amp;' . $this->do . '=download&amp;hash='.$version['hash'];
+						. '&amp;action=download&amp;hash='.$version['hash'];
 					$action = (in_array($version['commitStatus'], array('A', 'M', 'R', 'W')))
 						? '<a href="' . $url .'" class="download_file" title="' . JText::_('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
 						: '';
