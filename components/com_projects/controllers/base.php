@@ -463,7 +463,7 @@ class Base extends SiteController
 			if ($project->provisioned == 1)
 			{
 				$pathway->addItem(
-					stripslashes(JText::_('COM_PROJECTS_PROVISIONED_PROJECT')),
+					stripslashes(\JText::_('COM_PROJECTS_PROVISIONED_PROJECT')),
 					\JRoute::_('index.php?option=' . $this->_option . '&alias='
 					.$project->alias . '&action=activate')
 				);
@@ -511,7 +511,7 @@ class Base extends SiteController
 
 						default:
 							$pathway->addItem(
-								ucfirst(JText::_('COM_PROJECTS_TAB_'.strtoupper($this->active))),
+								ucfirst(\JText::_('COM_PROJECTS_TAB_'.strtoupper($this->active))),
 								\JRoute::_('index.php?option=' . $this->_option . '&alias='
 								. $project->alias . '&active=' . $this->active)
 							);
