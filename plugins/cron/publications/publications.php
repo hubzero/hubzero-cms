@@ -65,6 +65,16 @@ class plgCronPublications extends JPlugin
 				'name'   => 'runMkAip',
 				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ARCHIVE'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'issueMasterDoi',
+				'label'  => JText::_('PLG_CRON_PUBLICATIONS_MASTER_DOI'),
+				'params' => ''
+			),
+			array(
+				'name'   => 'convertToCuration',
+				'label'  => JText::_('PLG_CRON_PUBLICATIONS_CURATION_CONVERT'),
+				'params' => ''
 			)
 		);
 
@@ -403,5 +413,111 @@ class plgCronPublications extends JPlugin
 
 		// All done
 		return true;
+	}
+
+	/**
+	 * Issue master DOI for publications if does not exist
+	 *
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
+	 */
+	public function issueMasterDoi(CronModelJob $job)
+	{
+		$database = JFactory::getDBO();
+		$config   = JComponentHelper::getParams('com_publications');
+		$jconfig  = JFactory::getConfig();
+		$juri     = JURI::getInstance();
+
+		// Is config to issue master DOI turned ON?
+		if (!$config->get('master_doi'))
+		{
+			return true;
+		}
+
+		// Get all publications without master DOI
+		$sql  = "SELECT V.* FROM #__publication_versions as V, #__publications as C";
+		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)"
+		$sql .= " AND V.state=1 GROUP BY C.id";
+
+		$database->setQuery( $sql );
+		if (!($rows = $database->loadObjectList()))
+		{
+			// No applicable results
+			return true;
+		}
+
+		// Get site url
+		$livesite = $jconfig->getValue('config.live_site')
+			? $jconfig->getValue('config.live_site')
+			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
+		if (!$livesite)
+		{
+			return true;
+		}
+
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'author.php');
+
+		// Go through records
+		foreach ($rows as $row)
+		{
+			$objP  = new Publication( $database );
+
+			// Get first published version
+			$pub = $objP->getPublication($row->publication_id, 1);
+
+			if (!$pub)
+			{
+				continue;
+			}
+
+			// Get authors
+			$pAuthors 			= new PublicationAuthor( $database );
+			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
+
+			// Collect DOI metadata
+			$metadata = PublicationUtilities::collectMetadata($pub);
+			$pointer = $pub->alias ? $pub->alias : $pub->id;
+
+			// Master DOI should link to /main
+			$metadata['url'] = $livesite . DS . 'publications'
+							. DS . $pointer . DS . 'main';
+
+			// Register DOI with data from version being published
+			$masterDoi = PublicationUtilities::registerDoi(
+				$pub,
+				$pub->_authors,
+				$config,
+				$metadata,
+				$doierr,
+				1
+			);
+
+			// Save with publication record
+			if ($masterDoi && $objP->load($pub->id))
+			{
+				$objP->master_doi = $masterDoi;
+				$objP->store();
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Convert old-flow publications to curated
+	 *
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
+	 */
+	public function convertToCuration(CronModelJob $job)
+	{
+		$database = JFactory::getDBO();
+		$config = JComponentHelper::getParams('com_publications');
+		$jconfig = JFactory::getConfig();
 	}
 }
