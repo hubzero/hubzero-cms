@@ -455,10 +455,18 @@ class plgCronPublications extends JPlugin
 			return true;
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'category.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'license.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS .'com_publications' . DS . 'tables' . DS . 'author.php');
 
