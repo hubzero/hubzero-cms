@@ -344,67 +344,67 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$wish->set('category', $wishlist->get('category'));
 		$wish->set('referenceid', $wishlist->get('referenceid'));
 
-			// get admin priviliges
-			$this->authorize_admin();
+		// get admin priviliges
+		$this->authorize_admin();
 
-			// Set page title
-			$this->_list_title = $wishlist->title();
+		// Set page title
+		$this->_list_title = $wishlist->title();
 
-			if (!$wishlist->isPublic() && !$this->_admin)
-			{
-				$this->_list_title = '';
-			}
-			$this->_buildTitle();
+		if (!$wishlist->isPublic() && !$this->_admin)
+		{
+			$this->_list_title = '';
+		}
+		$this->_buildTitle();
 
-			// Set the pathway
-			$this->_wishpath  = $wish->link(); //'index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid='.$wishid;
-			$this->_wishtitle = \Hubzero\Utility\String::truncate($wish->get('subject'), 80);
-			$this->_buildPathway($wishlist);
+		// Set the pathway
+		$this->_wishpath  = $wish->link(); //'index.php?option=' . $this->_option . '&task=wish&category=' . $cat . '&rid=' . $refid . '&wishid='.$wishid;
+		$this->_wishtitle = \Hubzero\Utility\String::truncate($wish->get('subject'), 80);
+		$this->_buildPathway($wishlist);
 
-			// Go through some access checks
-			if ($this->juser->get('guest') && $action)
-			{
-				$this->_msg = ($action=="addbonus") ? JText::_('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
-				$this->loginTask();
-				return;
-			}
+		// Go through some access checks
+		if ($this->juser->get('guest') && $action)
+		{
+			$this->_msg = ($action=="addbonus") ? JText::_('COM_WISHLIST_MSG_LOGIN_TO_ADD_POINTS') : '';
+			$this->loginTask();
+			return;
+		}
 
-			if (!$wishlist->isPublic() && $this->juser->get('guest'))
-			{
-				// need to log in to private list
-				$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
-				$this->loginTask();
-				return;
-			}
+		if (!$wishlist->isPublic() && $this->juser->get('guest'))
+		{
+			// need to log in to private list
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
+			$this->loginTask();
+			return;
+		}
 
-			if ($wish->isPrivate() && $this->juser->get('guest'))
-			{
-				// need to log in to view private wish
-				$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
-				$this->loginTask();
-				return;
-			}
+		if ($wish->isPrivate() && $this->juser->get('guest'))
+		{
+			// need to log in to view private wish
+			$this->_msg = JText::_('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
+			$this->loginTask();
+			return;
+		}
 
-			// Deleted wish
-			if ($wish->isDeleted() && !$wish->access('manage'))
-			{
-				JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
-				return;
-			}
+		// Deleted wish
+		if ($wish->isDeleted() && !$wish->access('manage'))
+		{
+			JError::raiseError(404, JText::_('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+			return;
+		}
 
-			// Need to be admin to view private wish
-			if ($wish->isPrivate() && !$wish->access('view'))
-			{
-				JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
-				return;
-			}
+		// Need to be admin to view private wish
+		if ($wish->isPrivate() && !$wish->access('view'))
+		{
+			JError::raiseError(403, JText::_('COM_WISHLIST_ALERTNOTAUTH'));
+			return;
+		}
 
-			// Get list filters
-			$filters = self::getFilters($wish->get('admin'));
+		// Get list filters
+		$filters = self::getFilters($wish->get('admin'));
 
 			// Update average value for importance (this is tricky MySQL)
-			if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
-			{
+		//	if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
+		//	{
 				//$objR = new WishRank($this->database);
 				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
 
@@ -420,26 +420,19 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 					foreach ($votes as $vote)
 					{
-						if (in_array($vote->get('userid'), $wishlist->owners('advisory')))
+						if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $wishlist->owners('advisory')))
 						{
 							$imp += $vote->get('importance') * $co_adv;
 							$divisor += $co_adv;
-							if ($vote->get('effort') != 6)
-							{
-								$effort += $vote->get('effort') * $co_adv;
-							}
 						}
 						else
 						{
 							$imp += $vote->get('importance') * $co_reg;
 							$divisor += $co_reg;
-							if ($vote->get('effort') != 6)
-							{
-								$effort += $vote->get('effort') * $co_reg;
-							}
 						}
 						if ($vote->get('effort') != 6)
 						{
+							$effort += $vote->get('effort');
 							$counter++;
 						}
 					}
@@ -457,7 +450,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 						$wish->set('average_effort', 7);
 					}
 				}
-			}
+		//	}
 
 			// Build owners drop-down for assigning wishes
 			$wish->set('assignlist', $this->userSelect('assigned', $wishlist->owners('individuals'), $wish->get('assigned'), 1));
@@ -529,9 +522,6 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function savesettingsTask()
 	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
-
 		$listid  = JRequest::getInt('listid', 0);
 		$action  = JRequest::getVar('action', '');
 
@@ -552,7 +542,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Deeleting a user/group
+		// Deleting a user/group
 		if ($action == 'delete')
 		{
 			$user  = JRequest::getInt('user', 0);
@@ -575,6 +565,9 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		if (!$wishlist->bind(JRequest::getVar('fields', array(), 'post')))
 		{
