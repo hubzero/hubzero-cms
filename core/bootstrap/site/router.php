@@ -662,8 +662,9 @@ class JRouterSite extends JRouter
 
 			// Use the component routing handler if it exists
 			$path = JPATH_SITE . '/components/' . $component . '/router.php';
+			$path2 = JPATH_SITE . '/components/' . $component . '/site/router.php';
 
-			if (file_exists($path) && count($segments)) {
+			if ((file_exists($path) || file_exists($path2)) && count($segments)) {
 				if ($component != "com_search") { // Cheap fix on searches
 					//decode the route segments
 					/* START: HUBzero Extension: don't do : to - conversion except in com_content */
@@ -761,11 +762,11 @@ class JRouterSite extends JRouter
 			}
 
 			$query['option'] = 'com_content';
-			$parts = $this->_encodeSegments($parts);
-			$result	= implode('/', $parts);
-			$tmp	= ($result != "") ? '/'.$result : '';
+			$parts  = $this->_encodeSegments($parts);
+			$result = implode('/', $parts);
+			$tmp    = ($result != '') ? '/' . $result : '';
 			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
-			$route .= '/'.$tmp;
+			$route .= '/' . $tmp;
 
 			// Unset unneeded query information
 			unset($query['Itemid']);
@@ -778,20 +779,21 @@ class JRouterSite extends JRouter
 			return;
 		}
 
-		$app	= JApplication::getInstance('site');
-		$menu	= $app->getMenu();
+		$app  = JApplication::getInstance('site');
+		$menu = $app->getMenu();
 
 		/*
 		 * Build the component route
 		 */
-		$component	= preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
-		$tmp		= '';
+		$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $query['option']);
+		$tmp       = '';
 
 		// Use the component routing handler if it exists
-		$path = JPATH_SITE . '/components/' . $component . '/router.php';
+		$path  = JPATH_SITE . '/components/' . $component . '/router.php';
+		$path2 = JPATH_SITE . '/components/' . $component . '/site/router.php';
 
 		// Use the custom routing handler if it exists
-		if (file_exists($path) && !empty($query)) {
+		if ((file_exists($path) || file_exists($path2)) && !empty($query)) {
 			/*require_once $path;
 			$function	= substr($component, 4).'BuildRoute';
 			$function   = str_replace(array("-", "."), "", $function);
@@ -1144,19 +1146,27 @@ class JRouterSite extends JRouter
 		{
 			$compname = ucfirst(substr($component, 4));
 
-			if (!class_exists($compname . 'Router'))
+			$client = \JFactory::getApplication()->isAdmin() ? 'Admin' : 'Site';
+
+			$name  = $compname . 'Router';
+			$name2 = '\\Components\\' . $compname . '\\' . $client . '\\Router';
+
+			if (!class_exists($name) && !class_exists($name2))
 			{
 				// Use the component routing handler if it exists
 				$path = JPATH_SITE . '/components/' . $component . '/router.php';
+				$path2 = JPATH_SITE . '/components/' . $component . '/' . strtolower($client) . '/router.php';
 
 				// Use the custom routing handler if it exists
 				if (file_exists($path))
 				{
 					require_once $path;
 				}
+				else if (file_exists($path2))
+				{
+					require_once $path2;
+				}
 			}
-
-			$name = $compname . 'Router';
 
 			if (class_exists($name))
 			{
@@ -1165,6 +1175,15 @@ class JRouterSite extends JRouter
 				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
 				{
 					$this->componentRouters[$component] = new $name;
+				}
+			}
+			else if (class_exists($name2))
+			{
+				$reflection = new ReflectionClass($name2);
+
+				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				{
+					$this->componentRouters[$component] = new $name2;
 				}
 			}
 

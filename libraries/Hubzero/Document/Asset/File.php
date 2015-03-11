@@ -268,6 +268,7 @@ class File extends Object
 			{
 				$paths = array();
 				$base  = JPATH_SITE;
+				$client = 'site';
 
 				if ($this->extensionType() == 'plugins')
 				{
@@ -284,10 +285,15 @@ class File extends Object
 					if (\JFactory::getApplication()->isAdmin())
 					{
 						$base = JPATH_ADMINISTRATOR;
+						$client = 'admin';
 					}
 					$base .= DS . $this->extensionType() . DS . $this->extensionName();
 				}
 
+				if ($this->extensionType() == 'components')
+				{
+					$paths[] = JPATH_ROOT . DS . $this->extensionType() . DS . $this->extensionName() . DS . $client . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+				}
 				$paths[] = $base . DS . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
 				$paths[] = $base . DS . $this->file();
 
