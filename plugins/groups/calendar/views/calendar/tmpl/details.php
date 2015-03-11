@@ -104,6 +104,17 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			// used for repeating events
 			$start = JRequest::getInt('start', NULL, 'get');
 			$end   = JRequest::getInt('end', NULL, 'get');
+
+
+			// daylight savings time compensation
+			// this removes the adjustment based if the timezone is set correctly on the hub
+			// I don't particularly agree with this, but I have work to do.
+			if ((int) date('I', $start) && (int) date('I', $end))
+			{
+				$end = strtotime($end . '- 1 hour');
+				$start = strtotime($start . '- 1 hour');
+			}
+
 			if ($start || ($start && $end))
 			{
 				$publish_up   = JFactory::getDate($start)->toSql();
@@ -111,7 +122,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			}
 		?>
 		<?php if ($allday_event) : ?>
-			
+
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
