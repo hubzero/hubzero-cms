@@ -461,7 +461,7 @@ class Page extends SiteController
 			$this->view->preview = $this->preview;
 
 			$pageid = $this->page->get('id');
-			$lid = JRequest::getInt('lid', 0, 'post');
+			$lid = \JRequest::getInt('lid', 0, 'post');
 			if ($lid != $this->page->get('id'))
 			{
 				$pageid = $lid;
