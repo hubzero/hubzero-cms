@@ -116,11 +116,11 @@ class plgSearchResources extends SearchPlugin
 		if ($groups)
 		{
 			$group_list = '(\'' . join('\', \'', $groups) . '\')';
-			$access = '(access IN (' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
+			$access = '(access IN (0,' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
 		}
 		else
 		{
-			$access = '(access IN (' . $viewlevels . '))';
+			$access = '(access IN (0,' . $viewlevels . '))';
 		}
 
 		$term_parser = $request->get_terms();
