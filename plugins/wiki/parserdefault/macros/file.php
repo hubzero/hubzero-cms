@@ -644,7 +644,9 @@ class FileMacro extends WikiMacro
 						$size = filesize($this->_path($file, true));
 					}
 
-					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['alt'] . '">' . $attr['desc'] . '</a>';
+					$attr['tile'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);
+
+					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['title'] . '">' . $attr['desc'] . '</a>';
 					if ($size !== null)
 					{
 						$html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
