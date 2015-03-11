@@ -384,10 +384,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$filters['sortby']   = \JRequest::getVar( 'sortby', 'filename');
 		$filters['sortdir']  = \JRequest::getVar( 'sortdir', 'ASC');
 
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/diskspace');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/uploader');
-		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/diskspace');
-
 		// Something is wrong
 		if (!$this->_path)
 		{
@@ -611,11 +607,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$this->minimal = true;
 			$view->items = $this->getList();
-		}
-
-		if (!$ajax)
-		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
 		}
 
 		$view->option 		= $this->_option;
@@ -1020,12 +1011,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$ajax 	= \JRequest::getInt('ajax', 0);
 		$pid 	= \JRequest::getInt('pid', 0);
-
-		// Add uploader css
-		if (!$ajax)
-		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/uploader');
-		}
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -4346,12 +4331,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				'name'=>'diskspace'
 			)
 		);
-
-		if ($by != 'admin')
-		{
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/diskspace');
-			\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/diskspace');
-		}
 
 		// Get path and initialize Git
 		if ($by == 'admin')

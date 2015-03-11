@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('css/diskspace')
+     ->js('js/diskspace');
+
 $class = $this->case == 'tools' ? 'tools' : 'files';
 
 $minGitSize = 61440;

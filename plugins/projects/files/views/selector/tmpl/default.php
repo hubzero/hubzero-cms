@@ -25,6 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->ajax)
+{
+	$this->css('css/selector');
+}
+
 // Get attachment type model
 $attModel = new PublicationsModelAttachments($this->database);
 

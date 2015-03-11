@@ -25,6 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->ajax)
+{
+	$this->css('css/uploader');
+}
+
 $subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
 $rUrl = $this->url . '?a=1' . $subdirlink;
 

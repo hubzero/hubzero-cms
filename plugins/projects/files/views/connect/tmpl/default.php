@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js();
+
 // Project creator?
 $creator = ($this->project->owned_by_user == $this->uid) ? 1 : 0;
 

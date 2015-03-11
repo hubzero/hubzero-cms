@@ -26,6 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
+	 ->css('css/uploader')
+	 ->css('css/diskspace')
+	 ->js('js/diskspace')
      ->js();
 
 // Sorting

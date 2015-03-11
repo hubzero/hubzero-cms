@@ -24,6 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+     ->js();
+
 $v = count($this->versions) + 1;
 
 // Directory path breadcrumbs
@@ -91,7 +95,7 @@ if ($this->getError()) {
 	<fieldset >
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
-		<input type="hidden" name="<?php echo $this->do ?>" value="diff" />
+		<input type="hidden" name="action" value="diff" />
 			<ul class="sample">
 				<?php
 					// Display list item with file data

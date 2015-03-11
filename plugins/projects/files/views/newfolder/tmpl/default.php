@@ -40,7 +40,7 @@ if ($this->getError()) {
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 		<fieldset>
 			<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
-			<input type="hidden" name="<?php echo $this->do ?>" value="savedir" />
+			<input type="hidden" name="action" value="savedir" />
 			<label>
 				<span class="block">&nbsp;</span>
 				<img src="/plugins/projects/files/images/folder.gif" alt="" />

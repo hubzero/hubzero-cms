@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js();
+
 // Directory path breadcrumbs
 $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
@@ -69,7 +72,7 @@ if ($this->getError()) {
 	<fieldset class="diff-form">
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
-		<input type="hidden" name="<?php echo $this->do ?>" value="diff" />
+		<input type="hidden" name="action" value="diff" />
 
 		<?php if (!$this->getError()) { ?>
 		<input type="hidden" name="old" value="<?php echo $this->old['val']; ?>" />

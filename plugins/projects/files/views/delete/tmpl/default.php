@@ -49,7 +49,7 @@ if (!$this->getError()) {
 <form id="hubForm-ajax" method="post" class="" action="<?php echo $this->url; ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
-		<input type="hidden" name="<?php echo $this->do ?>" value="removeit" />
+		<input type="hidden" name="action" value="removeit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
