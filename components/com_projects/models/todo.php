@@ -23,24 +23,24 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
 
-require_once(__DIR__ . '/todoentry.php');
+require_once(__DIR__ . DS . 'todoentry.php');
+require_once(__DIR__ . DS . 'comment.php');
 
 use Hubzero\Base\Model;
 
 /**
  * Project Todo model
  */
-class ProjectModelTodo extends Model
+class Todo extends Model
 {
 	/**
 	 * Table class name
@@ -50,7 +50,7 @@ class ProjectModelTodo extends Model
 	protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
 
 	/**
-	 * ProjectModelTodoEntry
+	 * Entry
 	 *
 	 * @var object
 	 */
@@ -77,18 +77,18 @@ class ProjectModelTodo extends Model
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
-		$this->config = JComponentHelper::getParams('com_projects');
+		$this->config = \JComponentHelper::getParams('com_projects');
 	}
 
 	/**
 	 * Returns a reference to a todo model
 	 *
 	 * @param      mixed $oid TODO ID
-	 * @return     object KbModelArticle
+	 * @return     object Todo
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -153,7 +153,7 @@ class ProjectModelTodo extends Model
 		if (!isset($this->_entry)
 		 || ($id !== null && (int) $this->_entry->get('id') != $id))
 		{
-			$this->_entry = ProjectModelTodoEntry::getInstance($id);
+			$this->_entry = Entry::getInstance($id);
 		}
 		return $this->_entry;
 	}
@@ -185,7 +185,7 @@ class ProjectModelTodo extends Model
 				{
 					foreach ($results as $key => $result)
 					{
-						$results[$key] = new ProjectModelTodoEntry($result);
+						$results[$key] = new Entry($result);
 					}
 				}
 				else

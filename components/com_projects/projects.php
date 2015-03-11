@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects;
 
 require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php' );
@@ -39,19 +38,18 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comm
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
-
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
-
-include_once( JPATH_COMPONENT . DS . 'models' . DS . 'project.php' );
 include_once( JPATH_COMPONENT . DS . 'models' . DS . 'tags.php' );
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'projects'));
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+require_once(__DIR__ . DS . 'models' . DS . 'project.php');
+
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'projects'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'projects';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ProjectsController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

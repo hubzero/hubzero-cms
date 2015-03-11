@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Controllers;
+
+use Components\Projects\Tables;
 
 /**
  * Projects setup controller class
  */
-class ProjectsControllerSetup extends ProjectsControllerBase
+class Setup extends Base
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -75,7 +76,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$this->_task = 'setup';
 
 		// Instantiate a project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 
 		// Get project information
 		if ($this->_identifier)
@@ -152,7 +153,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 			$this->_gid = $this->group->get('gidNumber');
 
 			// Make sure we have up-to-date group membership information
-			$objO = new \Components\Projects\Tables\Owner( $this->database );
+			$objO = new Tables\Owner( $this->database );
 			$objO->reconcileGroups($obj->id);
 		}
 
@@ -250,10 +251,10 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	public function saveTask()
 	{
 		// Incoming
-		$step       = \JRequest::getInt( 'step', '0'); // Where do we go next?
+		$step = \JRequest::getInt( 'step', '0'); // Where do we go next?
 
 		// Instantiate a project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 
 		if ($this->_identifier && !$obj->loadProject($this->_identifier))
 		{
@@ -388,7 +389,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$state				= 1;
 
 		// Load project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
 			$this->setError( \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
@@ -517,7 +518,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$active = $obj->state == 1 ? 1 : 0;
 
 		// Sync with system group
-		$objO = new \Components\Projects\Tables\Owner( $this->database );
+		$objO = new Tables\Owner( $this->database );
 		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
 
 		// Activate project
@@ -636,7 +637,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 	protected function _process()
 	{
 		// Load project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		$obj->loadProject($this->_identifier);
 
 		// New project?
@@ -706,7 +707,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 				if ($setup && !$obj->id)
 				{
 					// Copy params from default project type
-					$objT 	= new \Components\Projects\Tables\Type( $this->database );
+					$objT 	= new Tables\Type( $this->database );
 					$obj->params = $objT->getParams ($obj->type);
 				}
 
@@ -727,7 +728,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 					$this->_identifier = $obj->alias;
 
 					// Group owners
-					$objO 	= new \Components\Projects\Tables\Owner( $this->database );
+					$objO 	= new Tables\Owner( $this->database );
 					if ($this->_gid)
 					{
 						if (!$objO->saveOwners (
@@ -926,7 +927,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 
 		// Which section are we editing?
 		$sections = array('info', 'team', 'settings');

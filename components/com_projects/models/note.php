@@ -23,22 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'editor.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+
+use Components\Projects\Tables;
 
 /**
  * Project Note model
  */
-class ProjectModelNote extends Components\Wiki\Models\Book
+class Note extends \Components\Wiki\Models\Book
 {
 	/**
 	 * Project group cn
@@ -62,7 +63,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 	 */
 	public function __construct($scope = '__site__', $group_cn = '', $project_id = 0)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 		$this->_scope = $scope;
 		$this->_tbl = new \Components\Wiki\Tables\Page($this->_db);
 		$this->_group_cn = $group_cn;
@@ -80,7 +81,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 	public function page($id=null, $scope = '')
 	{
 		$scope = $scope ? $scope : $this->_scope;
-		$this->_cache['page'] = Components\Wiki\Models\Page::getInstance($id, $scope);
+		$this->_cache['page'] = \Components\Wiki\Models\Page::getInstance($id, $scope);
 
 		return $this->_cache['page'];
 	}
@@ -92,7 +93,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 	 */
 	public function getPublicStamp( $id = 0, $register = false, $listed = NULL )
 	{
-		if (!is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		if (!is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php') )
 		{
 			return false;
@@ -105,10 +106,10 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 			return false;
 		}
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
-		$objSt = new \Components\Projects\Tables\Stamp( $this->_db );
+		$objSt = new Tables\Stamp( $this->_db );
 
 		// Build reference for latest revision of page
 		$reference = array(
@@ -325,7 +326,7 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 	public function getWikiPath( $id = 0)
 	{
 		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('lid', 0);
+		$listdir = \JRequest::getInt('lid', 0);
 		$id = $id ? $id : $listdir;
 
 		if (!$id)
@@ -334,14 +335,14 @@ class ProjectModelNote extends Components\Wiki\Models\Book
 		}
 
 		// Load wiki configs
-		$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+		$wiki_config = \JComponentHelper::getParams( 'com_wiki' );
 
 		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 
-		if (!is_dir(JPATH_ROOT . $path))
+		if (!is_dir(PATH_APP . $path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path))
+			if (!\JFolder::create(PATH_APP . $path))
 			{
 				return false;
 			}

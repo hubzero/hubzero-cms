@@ -28,17 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 
 use Hubzero\Base\Model;
+use Components\Projects\Tables;
 
 /**
  * Project model
  */
-class ProjectsModelProject extends Model
+class Project extends Model
 {
 	/**
 	 * Table class name
@@ -131,11 +131,11 @@ class ProjectsModelProject extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -169,7 +169,7 @@ class ProjectsModelProject extends Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => JRequest::getCmd('option', 'com_projects'),
+						'option'   => \JRequest::getCmd('option', 'com_projects'),
 						'scope'    => $this->get('alias') . DS . 'notes',
 						'pagename' => 'projects',
 						'pageid'   => $this->get('id'),
@@ -222,7 +222,7 @@ class ProjectsModelProject extends Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->_config = \JComponentHelper::getParams('com_projects');
 		}
 		if ($key)
 		{
@@ -279,21 +279,21 @@ class ProjectsModelProject extends Model
 		if (!$name)
 		{
 			// Cannot be empty
-			$this->setError( JText::_('COM_PROJECTS_ERROR_NAME_EMPTY'));
+			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_EMPTY'));
 		}
 		elseif (strlen($name) < intval($minLength))
 		{
 			// Check for length
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_TOO_SHORT'));
+			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_TOO_SHORT'));
 		}
 		elseif (strlen($name) > intval($maxLength))
 		{
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG'));
+			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG'));
 		}
 		elseif (preg_match('/[^a-z0-9]/', $name))
 		{
 			// Check for illegal characters
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_INVALID'));
+			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_INVALID'));
 		}
 		elseif (is_numeric($name))
 		{
@@ -303,13 +303,13 @@ class ProjectsModelProject extends Model
 		else
 		{
 			// Verify name uniqueness
-			$database = JFactory::getDBO();
-			$obj = new Components\Projects\Tables\Project( $database );
+			$database = \JFactory::getDBO();
+			$obj = new Tables\Project( $database );
 			if (!$obj->checkUniqueName( $name, $pid )
 				|| in_array( $name, $reserved ) ||
 				in_array( $name, $tasks ))
 			{
-				$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
+				$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
 			}
 		}
 		if ($this->getError())

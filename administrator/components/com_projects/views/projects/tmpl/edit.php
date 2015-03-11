@@ -116,7 +116,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="about"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?>:</label>
 				<?php 
-					$project = new ProjectsModelProject($this->obj);
+					$project = new \Components\Projects\Models\Project($this->obj);
 					echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null);
 				?>
 			</div>

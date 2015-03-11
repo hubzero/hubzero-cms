@@ -23,23 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'comment.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'comment.php');
 
 use Hubzero\Base\Model;
+use Components\Projects\Tables;
 
 /**
  * Model class for a todo entry
  */
-class ProjectModelTodoEntry extends Model
+class Entry extends Model
 {
 	/**
 	 * Table name
@@ -56,7 +56,7 @@ class ProjectModelTodoEntry extends Model
 	protected $_context = 'com_projects.todo.details';
 
 	/**
-	 * BlogModelComment
+	 * Comment
 	 *
 	 * @var object
 	 */
@@ -105,9 +105,9 @@ class ProjectModelTodoEntry extends Model
 	 */
 	public function __construct($oid)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
+		$this->_tbl = new Tables\Todo($this->_db);
 
 		if ($oid)
 		{
@@ -123,10 +123,10 @@ class ProjectModelTodoEntry extends Model
 	}
 
 	/**
-	 * Returns a reference to a blog entry model
+	 * Returns a reference to a todo entry model
 	 *
 	 * @param   mixed    $oid       ID (int) or alias (string)
-	 * @return  object   ProjectModelTodoEntry
+	 * @return  object   Entry
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -198,7 +198,7 @@ class ProjectModelTodoEntry extends Model
 	 */
 	public function isOverdue()
 	{
-		if ($this->get('duedate') != '0000-00-00 00:00:00' && $this->get('duedate') < JFactory::getDate())
+		if ($this->get('duedate') != '0000-00-00 00:00:00' && $this->get('duedate') < \JFactory::getDate())
 		{
 			return true;
 		}
@@ -235,11 +235,11 @@ class ProjectModelTodoEntry extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -387,7 +387,7 @@ class ProjectModelTodoEntry extends Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new ProjectModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('option', 'com_projects');
 							$results[$key]->set('scope', '');
 							$results[$key]->set('alias', '');

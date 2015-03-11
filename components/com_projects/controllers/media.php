@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Controllers;
+
+use Components\Projects\Tables;
 
 /**
  * Projects media controller class
  */
-class ProjectsControllerMedia extends ProjectsControllerBase
+class Media extends Base
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -111,7 +112,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		$file = \JFile::makeSafe($file);
 
 		// Load project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
 			echo json_encode(array('error' => \JText::_('Error loading project')));
@@ -271,7 +272,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 
 		// Load project
-		$obj = new Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		$obj->loadProject($this->_identifier);
 
 		if ($obj->alias)
@@ -415,7 +416,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			return false;
 		}
 
-		$uri = JRequest::getVar('SCRIPT_URL', '', 'server');
+		$uri = \JRequest::getVar('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Compiled:'))
 		{
 			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));
@@ -429,7 +430,7 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		}
 		elseif ($media)
 		{
-			$obj = new Components\Projects\Tables\Project( $this->database );
+			$obj = new Tables\Project( $this->database );
 			if (!$obj->loadProject($alias))
 			{
 				return false;

@@ -119,7 +119,7 @@ $this->view('_title')
 					<legend><?php echo JText::_('COM_PROJECTS_DESCRIBE_PROJECT'); ?></legend>
 					<label for="field-about"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 						<?php 
-							$model = new ProjectsModelProject($this->project);
+							$model = new \Components\Projects\Models\Project($this->project);
 							echo \JFactory::getEditor()->display('about', $this->escape($model->about('raw')), '', '', 35, 25, false, 'field-about', null, null, array('class' => 'minimal no-footer'));
 						?>
 					</label>

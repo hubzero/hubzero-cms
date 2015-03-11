@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Controllers;
+
+use Components\Projects\Tables;
 
 /**
  * Projects Public links controller class
  */
-class ProjectsControllerGet extends \Hubzero\Component\SiteController
+class Get extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Pub view for project files, notes etc.
@@ -62,7 +63,7 @@ class ProjectsControllerGet extends \Hubzero\Component\SiteController
 		$stamp  = preg_replace($regex, '', $stamp);
 
 		// Load item reference
-		$objSt = new \Components\Projects\Tables\Stamp( $this->database );
+		$objSt = new Tables\Stamp( $this->database );
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			$this->setRedirect(

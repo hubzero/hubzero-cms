@@ -33,7 +33,7 @@ $this->css()
 // Do some text cleanup
 $this->project->title = $this->escape($this->project->title);
 
-$project = new ProjectsModelProject($this->project);
+$project = new \Components\Projects\Models\Project($this->project);
 $this->project->about = $project->about('parsed');
 
 // Get project params

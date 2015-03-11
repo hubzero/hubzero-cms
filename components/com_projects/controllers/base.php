@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Projects\Tables;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
  */
-class ProjectsControllerBase extends \Hubzero\Component\SiteController
+class Base extends SiteController
 {
 	/**
 	 * Execute function
@@ -65,11 +67,11 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		$this->_identifier = $id ? $id : $alias;
 
 		// Incoming
-		$this->_task = strtolower(JRequest::getWord( 'task', '' ));
+		$this->_task = strtolower(\JRequest::getWord( 'task', '' ));
 		$this->_gid  = \JRequest::getVar( 'gid', 0 );
 
 		// Model
-		$this->model = new ProjectsModelProject();
+		$this->model = new \Components\Projects\Models\Project();
 
 		// Execute the task
 		parent::execute();
@@ -241,7 +243,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		// Check whether user belongs to the project
 		if ($this->_identifier)
 		{
-			$pOwner = new \Components\Projects\Tables\Owner( $this->database );
+			$pOwner = new Tables\Owner( $this->database );
 			if ($result = $pOwner->isOwner($this->juser->get('id'), $this->_identifier))
 			{
 				return $result;
@@ -598,7 +600,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		$juri = \JURI::getInstance();
 
 		// Log activity
-		$objLog  				= new \Components\Projects\Tables\Log( $this->database );
+		$objLog  				= new Tables\Log( $this->database );
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
@@ -638,7 +640,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		// Get project
 		if (!isset($this->project) || !is_object($this->project) || !$this->project->alias)
 		{
-			$obj 		= new Components\Projects\Tables\Project( $this->database );
+			$obj 		= new Tables\Project( $this->database );
 			$this->project 	= $obj->getProject($this->_identifier, $this->juser->get('id'));
 			if (!$this->project)
 			{
@@ -659,7 +661,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			$filters['role'] = 1;
 		}
 		// Get team
-		$objO = new \Components\Projects\Tables\Owner( $this->database );
+		$objO = new Tables\Owner( $this->database );
 		$team = $objO->getOwners( $this->_identifier, $filters );
 
 		// Must have addressees
@@ -749,7 +751,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 	 */
 	protected function _postActivity($activity = '', $underline = '', $url = '', $class = 'project')
 	{
-		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
+		$objAA = new Tables\Activity ( $this->database );
 
 		if (isset($this->project) && is_object($this->project) && $this->project->id && $activity)
 		{

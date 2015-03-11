@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$project = new ProjectsModelProject($this->info->project);
+$project = new \Components\Projects\Models\Project($this->info->project);
 
 $this->info->project->about = $project->about('parsed');
 $privacy = $this->info->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');

@@ -151,10 +151,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Include model
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
 
 		// Get our model
-		$this->model = new ProjectModelTodo();
+		$this->model = new \Components\Projects\Models\Todo();
 
 		// Are we returning HTML?
 		if ($returnhtml)

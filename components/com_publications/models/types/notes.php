@@ -229,7 +229,7 @@ class typeNotes extends JObject
 		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
 		// Get our model
-		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+		$model = new \Components\Projects\Models\Note($masterscope, $group, $this->_project->id);
 
 		$note = $model->getSelectedNote($item);
 		$title = $note ? $note->title : '';
@@ -278,7 +278,7 @@ class typeNotes extends JObject
 		$group 			= $group_prefix . $this->_project->alias;
 
 		// Get our model
-		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+		$model = new \Components\Projects\Models\Note($masterscope, $group, $this->_project->id);
 
 		if (!$model->getSelectedNote($pageid))
 		{
@@ -308,7 +308,7 @@ class typeNotes extends JObject
 		$group 			= $group_prefix . $this->_project->alias;
 
 		// Get our model
-		$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+		$model = new \Components\Projects\Models\Note($masterscope, $group, $this->_project->id);
 
 		$note = $model->getSelectedNote($pageid);
 
@@ -358,7 +358,7 @@ class typeNotes extends JObject
 			$objPA = new PublicationAttachment( $this->_database );
 
 			// Get our model
-			$model = new ProjectModelNote($masterscope, $group, $this->_project->id);
+			$model = new \Components\Projects\Models\Note($masterscope, $group, $this->_project->id);
 
 			// Attach every selected file
 			foreach ($selections['notes'] as $pageId)

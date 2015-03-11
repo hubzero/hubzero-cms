@@ -85,6 +85,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected $_case = 'files';
 
 	/**
+	 * Url for project
+	 *
+	 * @var	   array
+	 */
+	protected $_route = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -6545,6 +6552,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_audience = 'external';
 		$this->_data	 = $data;
 		$this->_format	 = $format;
+
+		// Set routing
+		$this->_route       = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
 
 		// MIME types
 		$this->mt = new \Hubzero\Content\Mimetypes();

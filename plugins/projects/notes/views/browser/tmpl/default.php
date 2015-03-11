@@ -32,7 +32,7 @@ $group_prefix = $this->config->get('group_prefix', 'pr-');
 $group = $group_prefix . $this->project->alias;
 
 // Get our model
-$model = new ProjectModelNote($masterscope, $group, $this->project->id);
+$model = new \Components\Projects\Models\Note($masterscope, $group, $this->project->id);
 
 // Get notes to choose from
 $items = $model->getNotes();

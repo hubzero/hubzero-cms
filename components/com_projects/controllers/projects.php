@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Controllers;
+
+use Components\Projects\Tables;
 
 /**
  * Primary component controller
  */
-class ProjectsControllerProjects extends ProjectsControllerBase
+class Projects extends Base
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -71,7 +72,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		);
 
 		// Get a record count
-		$obj = new \Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 
 		// Get records
 		$rows = $obj->getRecords(
@@ -136,7 +137,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$this->view->filters['sortby'] 	= 'myprojects';
 
 		// Get a record count
-		$obj = new \Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		$this->view->total = $obj->getCount(
 			$this->view->filters,
 			$admin = false,
@@ -287,7 +288,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Get a record count
-		$obj = new \Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 
 		// Get count
 		$this->view->total = $obj->getCount(
@@ -368,9 +369,9 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj  	= new \Components\Projects\Tables\Project( $this->database );
-		$objO 	= new \Components\Projects\Tables\Owner( $this->database );
-		$objAA 	= new \Components\Projects\Tables\Activity( $this->database );
+		$obj  	= new Tables\Project( $this->database );
+		$objO 	= new Tables\Owner( $this->database );
+		$objAA 	= new Tables\Activity( $this->database );
 
 		// Is user invited to project?
 		$confirmcode = \JRequest::getVar( 'confirm', '' );
@@ -898,8 +899,8 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate needed classes
-		$obj  = new \Components\Projects\Tables\Project( $this->database );
-		$objO = new \Components\Projects\Tables\Owner( $this->database );
+		$obj  = new Tables\Project( $this->database );
+		$objO = new Tables\Owner( $this->database );
 
 		// Get Project
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
@@ -1059,8 +1060,8 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj = new \Components\Projects\Tables\Project( $this->database );
-		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
+		$obj = new Tables\Project( $this->database );
+		$objAA = new Tables\Activity ( $this->database );
 
 		// Load project
 		if (!$obj->loadProject($this->_identifier))
@@ -1125,7 +1126,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 			$obj->owned_by_group = 0;
 
 			// Make sure creator is still in team
-			$objO = new \Components\Projects\Tables\Owner( $this->database );
+			$objO = new Tables\Owner( $this->database );
 			$objO->saveOwners ( $obj->id, $this->juser->get('id'), $this->juser->get('id'), 0, 1, 1, 1 );
 
 			// Remove owner group affiliation for all team members
@@ -1218,7 +1219,7 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$this->_identifier = $json->alias;
 
 		// Load project
-		$obj = new \Components\Projects\Tables\Project( $this->database );
+		$obj = new Tables\Project( $this->database );
 		if (!$this->_identifier || !$obj->loadProject($this->_identifier) )
 		{
 			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
@@ -1267,8 +1268,8 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 		$notify 	= \JRequest::getVar( 'notify', 0, 'post' );
 
 		// Instantiate a project and related classes
-		$obj 		= new \Components\Projects\Tables\Project( $this->database );
-		$objAA 		= new \Components\Projects\Tables\Activity ( $this->database );
+		$obj 		= new Tables\Project( $this->database );
+		$objAA 		= new Tables\Activity ( $this->database );
 
 		// Check authorization
 		$authorized = $this->_checkReviewerAuth($reviewer);
@@ -1485,20 +1486,20 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 
 					if ($activity)
 					{
-						$objAA = new \Components\Projects\Tables\Activity( $this->database );
+						$objAA = new Tables\Activity( $this->database );
 						$aid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
 							$activity, $obj->id, '', '', 'admin', 0, 1, 1 );
 
 						// Append comment to activity
 						if ($comment && $aid)
 						{
-							$objC = new \Components\Projects\Tables\Comment( $this->database );
+							$objC = new Tables\Comment( $this->database );
 							$cid = $objC->addComment( $aid, 'activity', $comment,
 							$this->juser->get('id'), $aid, 1 );
 
 							if ($cid)
 							{
-								$objAA = new \Components\Projects\Tables\Activity( $this->database );
+								$objAA = new Tables\Activity( $this->database );
 								$caid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
 									\JText::_('COM_PROJECTS_COMMENTED') . ' '
 									. \JText::_('COM_PROJECTS_ON') . ' '

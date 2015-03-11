@@ -132,7 +132,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
-		$this->model = new ProjectModelNote($scope, $groupname, $project->id);
+		$this->model = new \Components\Projects\Models\Note($scope, $groupname, $project->id);
 
 		$counts['notes'] = $this->model->getNoteCount();
 
@@ -232,7 +232,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				. DS . 'models' . DS . 'note.php');
 
 			// Get our model
-			$this->model = new ProjectModelNote($this->_masterScope, $this->_group, $this->_project->id);
+			$this->model = new \Components\Projects\Models\Note($this->_masterScope, $this->_group, $this->_project->id);
 
 			// What's the task?
 			$this->_task = $action ? $action : JRequest::getVar('action', 'view');
@@ -768,13 +768,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
-		$this->model = new ProjectModelNote($scope, $groupname, $projectid);
+		$this->model = new \Components\Projects\Models\Note($scope, $groupname, $projectid);
 
 		// Fix pathway (com_wiki screws it up)
 		$this->fixupPathway();
 
 		// URL to project
-		$url 	= JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias);
+		$url = JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias);
 
 		// Load requested page
 		$page = $this->model->page($data->pageid);

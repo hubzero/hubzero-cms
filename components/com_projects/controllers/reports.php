@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Controllers;
+
+use Components\Projects\Tables;
 
 /**
  * Projects Reports controller class
  */
-class ProjectsControllerReports extends ProjectsControllerBase
+class Reports extends Base
 {
 	/**
 	 * Display reports
@@ -47,8 +48,8 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$period = \JRequest::getVar( 'period', 'alltime');
 
 		// Instantiate a project and related classes
-		$obj   = new Components\Projects\Tables\Project( $this->database );
-		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
+		$obj   = new Tables\Project( $this->database );
+		$objAA = new Tables\Activity ( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = $this->_checkReviewerAuth('general');
@@ -69,7 +70,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
-			$objStats = new \Components\Projects\Tables\Stats($this->database);
+			$objStats = new Tables\Stats($this->database);
 
 			$monthly = $objStats->monthlyStats(2, true);
 			$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
@@ -109,7 +110,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$data   = \JRequest::getVar( 'data', array(), 'post', 'array' );
 		$from   = \JRequest::getVar( 'fromdate', \JHTML::_('date', \JFactory::getDate('-1 month')->toSql(), 'Y-m') );
 		$to     = \JRequest::getVar( 'todate', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m') );
-		$filter = JRequest::getVar( 'searchterm', '');
+		$filter = \JRequest::getVar( 'searchterm', '');
 
 		if (empty($data))
 		{
@@ -129,7 +130,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		}
 
 		// Instantiate a project and related classes
-		$obj   = new Components\Projects\Tables\Project( $this->database );
+		$obj   = new Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = $this->_checkReviewerAuth('general');
@@ -226,7 +227,7 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$this->view->setLayout('custom');
 
 		// Instantiate a project and related classes
-		$obj   = new Components\Projects\Tables\Project( $this->database );
+		$obj   = new Tables\Project( $this->database );
 
 		// Is user in special admin group to view advanced stats?
 		$admin = $this->_checkReviewerAuth('general');

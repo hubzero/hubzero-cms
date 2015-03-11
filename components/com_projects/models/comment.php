@@ -28,17 +28,16 @@
  * @license	  http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Projects\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
 
 use Hubzero\Base\Model;
 
 /**
  * Comments model class for a project
  */
-class ProjectModelComment extends Model
+class Comment extends Model
 {
 	/**
 	 * ForumTablePost
@@ -78,11 +77,9 @@ class ProjectModelComment extends Model
 	/**
 	 * Returns a reference to a blog comment model
 	 *
-	 * This method must be invoked as:
-	 *	   $comment = BlogModelComment::getInstance($id);
 	 *
 	 * @param	   mixed $oid ID (int) or alias (string)
-	 * @return	   object BlogModelComment
+	 * @return	   object Comment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -95,7 +92,7 @@ class ProjectModelComment extends Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new ProjectModelComment($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -112,11 +109,11 @@ class ProjectModelComment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -287,7 +284,7 @@ class ProjectModelComment extends Model
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new BlogModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('option', $this->get('option'));
 							$results[$key]->set('scope', $this->get('scope'));
 							$results[$key]->set('alias', $this->get('alias'));

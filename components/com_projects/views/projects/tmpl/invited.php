@@ -34,7 +34,7 @@ $html  = '';
 $this->project->title = $this->escape($this->project->title);
 $this->project->about = rtrim(stripslashes($this->escape($this->project->about)));
 
-$project = new ProjectsModelProject($this->project);
+$project = new \Components\Projects\Models\Project($this->project);
 
 $this->project->about = $project->about('parsed');
 

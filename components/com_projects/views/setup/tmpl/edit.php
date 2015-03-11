@@ -166,7 +166,7 @@ else
 											<td>
 												<span class="clear"></span>
 												<?php
-													$project = new ProjectsModelProject($this->project);
+													$project = new \Components\Projects\Models\Project($this->project);
 													echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 												?>
 											</td>
