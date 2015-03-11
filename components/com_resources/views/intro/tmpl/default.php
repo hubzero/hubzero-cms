@@ -79,13 +79,11 @@ $this->css('introduction.css', 'system')
 		<div class="col span9 omega">
 			<div class="grid">
 				<div class="col span-half">
-					<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="search">
+					<form action="<?php echo JRoute::_('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
 						<fieldset>
 							<p>
 								<label for="rsearch"><?php echo JText::_('COM_RESOURCES_SEARCH_LABEL'); ?></label>
-								<input type="text" name="terms" id="rsearch" value="" />
-								<input type="hidden" name="domains[]" value="resources" />
-								<input type="hidden" name="section" value="resources" />
+								<input type="text" name="search" id="rsearch" value="" />
 								<input type="submit" value="<?php echo JText::_('COM_RESOURCES_SEARCH'); ?>" />
 							</p>
 						</fieldset>
