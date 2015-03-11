@@ -201,6 +201,25 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * View for main DOI
+	 *
+	 * @return     void
+	 */
+	public function mainTask()
+	{
+		$id       = JRequest::getInt('id', 0);
+		$alias    = JRequest::getVar('alias', '');
+
+		$goto = $id ? '&id=' . $id : '&alias=' . $alias;
+
+		// Redirect to version panel of current version (TEMP)
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . $goto . '&active=versions')
+		);
+		return;
+	}
+
+	/**
 	 * Browse entries
 	 *
 	 * @return     void

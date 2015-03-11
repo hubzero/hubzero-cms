@@ -182,6 +182,7 @@ function ResourcesParseRoute($segments)
 			case 'citation': $vars['task'] = 'citation'; break;
 			case 'feed.rss': $vars['task'] = 'feed';     break;
 			case 'feed':     $vars['task'] = 'feed';     break;
+			case 'main':     $vars['task'] = 'main';     break;
 
 			case 'license':
 			case 'sourcecode':
