@@ -436,7 +436,7 @@ class plgCronPublications extends JPlugin
 
 		// Get all publications without master DOI
 		$sql  = "SELECT V.* FROM #__publication_versions as V, #__publications as C";
-		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)"
+		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)";
 		$sql .= " AND V.state=1 GROUP BY C.id";
 
 		$database->setQuery( $sql );
