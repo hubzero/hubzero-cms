@@ -408,7 +408,7 @@ else if ($this->authorized == 3)
 				<?php if ($this->pubconfig->get('show_audience')) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE')); ?></p>
 					<?php
-						$ra 		= new PublicationAudience( $this->database );
+						$ra 		= new \Components\Publications\Tables\Audience( $this->database );
 						$audience 	= $ra->getAudience($this->pub->id, $this->pub->version_id , $getlabels = 1, $numlevels = 4);
 						echo $audience
 						? PublicationsHtml::showSkillLevel($audience, $numlevels = 4)

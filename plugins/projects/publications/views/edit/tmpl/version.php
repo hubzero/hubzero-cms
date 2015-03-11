@@ -53,7 +53,7 @@ if ($this->pub->doi)
 	$cite->date 	= '';
 
 	// Get version authors
-	$pa = new PublicationAuthor( $this->database );
+	$pa = new \Components\Publications\Tables\Author( $this->database );
 	$authors = $pa->getAuthors($this->pub->version_id);
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;

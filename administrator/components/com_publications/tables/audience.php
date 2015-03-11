@@ -27,98 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication audience
  */
-class PublicationAudience extends JTable
+class Audience extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_id 			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id 	= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level0 					= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level1 					= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level2 					= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level3 					= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level4 					= NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var integer
-	 */
-	var $level5 					= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $comments 					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created					= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -142,17 +57,10 @@ class PublicationAudience extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE publication_version_id=".$versionid." LIMIT 1");
 
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind( $result );
-		}
-		else
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
+		return parent::load(array(
+			'publication_version_id' => (int) $versionid
+		));
 	}
 
 	/**
@@ -193,8 +101,8 @@ class PublicationAudience extends JTable
 				$sql .= "\n JOIN #__publication_audience_levels AS L5 on L5.label='level5' ";
 			}
 		}
-		$sql .= " WHERE  a.publication_id=$pid ";
-		$sql .= $versionid ? " AND  a.publication_version_id=$versionid " : "";
+		$sql .= " WHERE  a.publication_id=" . $this->_db->Quote($pid);
+		$sql .= $versionid ? " AND  a.publication_version_id=" . $this->_db->Quote($versionid) : "";
 		$sql .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $sql );
@@ -215,7 +123,7 @@ class PublicationAudience extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id = '".$versionid."'";
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($versionid);
 		$this->_db->setQuery( $query );
 
 		if (!$this->_db->query())

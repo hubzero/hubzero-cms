@@ -367,7 +367,7 @@ class typeTools extends JObject
 
 		if (isset($selections['tools']) && count($selections['tools']) > 0)
 		{
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Attach every selected tool
 			foreach ($selections['tools'] as $toolname)
@@ -389,7 +389,7 @@ class typeTools extends JObject
 				}
 				else
 				{
-					$objPA = new PublicationAttachment( $this->_database );
+					$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 					$objPA->publication_id 			= $pid;
 					$objPA->publication_version_id 	= $vid;
 					$objPA->path 					= '';

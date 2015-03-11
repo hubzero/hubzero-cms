@@ -68,14 +68,14 @@ else
 	// Show audience
 	if ($this->params->get('show_audience'))
 	{
-		$ra 		= new PublicationAudience( $this->database );
+		$ra 		= new \Components\Publications\Tables\Audience( $this->database );
 		$audience 	= $ra->getAudience(
 			$this->publication->id,
 			$this->publication->version_id,
 			$getlabels = 1,
 			$numlevels = 4
 		);
-		$ral 		= new PublicationAudienceLevel ( $this->database );
+		$ral 		= new \Components\Publications\Tables\AudienceLevel( $this->database );
 		$levels 	= $ral->getLevels( 4, array(), 0 );
 		$skillpop 	=  PublicationsHtml::skillLevelPopup($levels, $this->params->get('audiencelink'));
 		$xtra 	   .= PublicationsHtml::showSkillLevel($audience, $numlevels = 4, $skillpop);

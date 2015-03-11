@@ -308,7 +308,7 @@ class typeLinks extends JObject
 
 		if (isset($selections[$this->_base]) && count($selections[$this->_base]) > 0)
 		{
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Attach every selected file
 			foreach ($selections[$this->_base] as $link)
@@ -321,7 +321,7 @@ class typeLinks extends JObject
 				}
 				else
 				{
-					$objPA 							= new PublicationAttachment( $this->_database );
+					$objPA 							= new \Components\Publications\Tables\Attachment( $this->_database );
 					$objPA->publication_id 			= $pid;
 					$objPA->publication_version_id 	= $vid;
 					$objPA->path 					= $link;
@@ -367,7 +367,7 @@ class typeLinks extends JObject
 
 		if (!in_array(trim($old->path), $selections[$this->_base]))
 		{
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 			$objPA->deleteAttachment($vid, $old->path, $old->type);
 		}
 

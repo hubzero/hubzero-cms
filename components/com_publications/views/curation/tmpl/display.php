@@ -35,7 +35,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 // URL
 $route 	= 'index.php?option=' . $this->option . a . '&controller=curation';
 
-$pa = new PublicationAuthor( $this->database );
+$pa = new \Components\Publications\Tables\Author( $this->database );
 
 $this->css()
      ->js()

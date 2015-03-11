@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $database = JFactory::getDBO();
 
 // Get version authors
-$pa = new PublicationAuthor( $database );
+$pa = new \Components\Publications\Tables\Author( $database );
 ?>
 
 <ul class="mypubs">

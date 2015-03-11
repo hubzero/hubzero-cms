@@ -355,7 +355,7 @@ class typeNotes extends JObject
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Get our model
 			$model = new \Components\Projects\Models\Note($masterscope, $group, $this->_project->id);
@@ -379,7 +379,7 @@ class typeNotes extends JObject
 				}
 				else
 				{
-					$objPA 							= new PublicationAttachment( $this->_database );
+					$objPA 							= new \Components\Publications\Tables\Attachment( $this->_database );
 					$objPA->publication_id 			= $pid;
 					$objPA->publication_version_id 	= $vid;
 					$objPA->path 					= '';
@@ -431,7 +431,7 @@ class typeNotes extends JObject
 
 		if (!in_array(trim($old->object_id), $selections['notes']))
 		{
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 			$objPA->deleteAttachment($vid, $old->object_id, $old->type);
 		}
 

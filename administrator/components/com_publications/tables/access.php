@@ -28,35 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication access
  */
-class PublicationAccess extends JTable
+class Access extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         			= NULL;
-
-	/**
-	 * Publication version ID
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id = NULL;
-
-	/**
-	 * Group ID
-	 *
-	 * @var integer
-	 */
-	var $group_id = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -81,29 +59,19 @@ class PublicationAccess extends JTable
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid)
-		{
-			return false;
-		}
-		if (!$group_id)
+		if (!$vid || !$group_id)
 		{
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND group_id='".$group_id."'");
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind( $result );
-		}
-		else
-		{
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
+		return parent::load(array(
+			'publication_version_id' => (int) $vid,
+			'group_id'               => (int) $group_id
+		));
 	}
 
 	/**
-	 * Check record existance
+	 * Check record existence
 	 *
 	 * @param      integer 	$vid		pub version id
 	 * @param      integer 	$group_id	group id
@@ -115,17 +83,14 @@ class PublicationAccess extends JTable
 		{
 			$vid = $this->publication_version_id;
 		}
-		if (!$vid)
-		{
-			return false;
-		}
-		if (!$group_id)
+		if (!$vid || !$group_id)
 		{
 			return false;
 		}
 
 		$this->_db->setQuery( "SELECT publication_version_id FROM $this->_tbl
-			WHERE publication_version_id=".$vid." AND group_id='".$group_id."'");
+			WHERE publication_version_id=" . $this->_db->Quote($vid) . "
+			AND group_id=" . $this->_db->Quote($group_id));
 		return $this->_db->loadResult();
 	}
 
@@ -153,12 +118,12 @@ class PublicationAccess extends JTable
 		$query.= " JOIN #__xgroups AS X ON X.gidNumber = A.group_id ";
 		if ($vid)
 		{
-			$query .= "WHERE A.publication_version_id=".$vid;
+			$query .= "WHERE A.publication_version_id=" . $this->_db->Quote($vid);
 		}
 		else
 		{
 			$query .= " JOIN #__publication_versions AS V ON V.id=A.publication_version_id ";
-			$query .= " WHERE V.publication_id=".$pid;
+			$query .= " WHERE V.publication_id=" . $this->_db->Quote($pid);
 			if ($version == 'default' or $version == 'current' && $version == 'main')
 			{
 				$query.= " AND V.main=1 ";
@@ -169,7 +134,7 @@ class PublicationAccess extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
@@ -179,7 +144,7 @@ class PublicationAccess extends JTable
 		}
 		if ($sysgroup)
 		{
-			$query.= " AND X.cn != '$sysgroup' ";
+			$query.= " AND X.cn !=" . $this->_db->Quote($sysgroup);
 		}
 
 		$this->_db->setQuery( $query );
@@ -204,6 +169,7 @@ class PublicationAccess extends JTable
 		{
 			return false;
 		}
+
 		// Clean up
 		$this->deleteGroups($vid, $sysgroup);
 
@@ -235,7 +201,8 @@ class PublicationAccess extends JTable
 			}
 			else
 			{
-				$query = "INSERT INTO $this->_tbl (publication_version_id,group_id) VALUES($vid, $gid)";
+				$query = "INSERT INTO $this->_tbl (publication_version_id,group_id)
+				          VALUES($this->_db->Quote($vid), $this->_db->Quote($gid))";
 				$this->_db->setQuery( $query );
 				if ($this->_db->query())
 				{
@@ -266,8 +233,8 @@ class PublicationAccess extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
-		$query.= $sysgroup ? " AND group_id !=".$sysgroup : "";
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query.= $sysgroup ? " AND group_id !=" . $this->_db->Quote($sysgroup) : "";
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -275,6 +242,5 @@ class PublicationAccess extends JTable
 			return false;
 		}
 		return true;
-
 	}
 }

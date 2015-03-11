@@ -122,7 +122,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			);
 
 			// Get docs
-			$pContent = new PublicationAttachment( $database );
+			$pContent = new \Components\Publications\Tables\Attachment( $database );
 			$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => array(1,0,2), 'order' => 'a.role DESC, a.ordering ASC'));
 
 			// Get projects html helper

@@ -365,7 +365,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$helper 	= new PublicationHelper($database);
 
 		// Get version authors
-		$pa = new PublicationAuthor( $database );
+		$pa = new \Components\Publications\Tables\Author( $database );
 		$authors = $pa->getAuthors($row->version_id);
 
 		$html  = "\t" . '<li class="resource">' . "\n";

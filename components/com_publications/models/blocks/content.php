@@ -116,7 +116,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
 
@@ -175,7 +175,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
 
@@ -231,7 +231,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
 
@@ -297,7 +297,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
 
@@ -414,7 +414,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
 
 		// Load attachment
-		$row = new PublicationAttachment( $this->_parent->_db );
+		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 
 		// We need attachment record
 		if (!$aid || !$row->load($aid))
@@ -458,7 +458,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
 
 		// Load attachment
-		$row = new PublicationAttachment( $this->_parent->_db );
+		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 
 		// We need attachment record
 		if (!$aid || !$row->load($aid))

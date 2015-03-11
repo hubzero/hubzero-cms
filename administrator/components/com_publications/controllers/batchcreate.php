@@ -587,7 +587,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$error = NULL;
 
 		// Start new attachment record
-		$attach = new PublicationAttachment( $this->database );
+		$attach = new \Components\Publications\Tables\Attachment( $this->database );
 		$attach->path   	= trim($file->path, DS);
 		$attach->title  	= isset($file->title) ? trim($file->title) : '';
 		$attach->role		= $role;
@@ -683,7 +683,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			// Save params if applicable
 			if ($suffix)
 			{
-				$pa = new PublicationAttachment( $this->database );
+				$pa = new \Components\Publications\Tables\Attachment( $this->database );
 				$pa->saveParam($attachment, 'suffix', $suffix);
 			}
 			// Copy file into the right spot
@@ -858,7 +858,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			}
 		}
 
-		$pAuthor 					= new PublicationAuthor( $this->database );
+		$pAuthor 					= new \Components\Publications\Tables\Author( $this->database );
 		$pAuthor->user_id 			= trim($uid);
 		$pAuthor->ordering 			= $ordering;
 		$pAuthor->credit 			= '';

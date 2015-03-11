@@ -2089,7 +2089,7 @@ class PublicationsCuration extends JObject
 				if ($elAttach->element_id == 0)
 				{
 					// Save elementid
-					$row = new PublicationAttachment( $this->_db );
+					$row = new \Components\Publications\Tables\Attachment( $this->_db );
 					if ($row->load($elAttach->id))
 					{
 						$markId = $elAttach->role != 1 && $sElement ? $sElement->id : $elementId;
@@ -2138,12 +2138,12 @@ class PublicationsCuration extends JObject
 			{
 				foreach ($shots as $shot)
 				{
-					$objPA = new PublicationAttachment( $this->_db );
+					$objPA = new \Components\Publications\Tables\Attachment( $this->_db );
 					if (is_file($galleryPath . DS . $shot->srcfile)
 					&& !$objPA->loadElementAttachment($pub->version_id, array( 'path' => $shot->filename),
 						$element->id, 'file', $element->manifest->params->role))
 					{
-						$objPA = new PublicationAttachment( $this->_db );
+						$objPA = new \Components\Publications\Tables\Attachment( $this->_db );
 						$objPA->publication_id 			= $pub->id;
 						$objPA->publication_version_id 	= $pub->version_id;
 						$objPA->path 					= $shot->filename;

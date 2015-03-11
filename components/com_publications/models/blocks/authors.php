@@ -137,7 +137,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$added = 0;
 
 		// Load classes
-		$pAuthor  = new PublicationAuthor( $this->_parent->_db );
+		$pAuthor  = new \Components\Publications\Tables\Author( $this->_parent->_db );
 		$objO 	  = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
@@ -247,7 +247,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// Get authors
 		if (!isset($pub->_authors))
 		{
-			$pAuthors 			= new PublicationAuthor( $this->_parent->_db );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->_parent->_db );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
@@ -261,7 +261,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		foreach ($pub->_authors as $author)
 		{
-			$pAuthor 							= new PublicationAuthor( $this->_parent->_db );
+			$pAuthor 							= new \Components\Publications\Tables\Author( $this->_parent->_db );
 			$pAuthor->user_id 					= $author->user_id;
 			$pAuthor->ordering 					= $author->ordering;
 			$pAuthor->credit 					= $author->credit;
@@ -307,7 +307,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				continue;
 			}
 
-			$pAuthor = new PublicationAuthor( $this->_parent->_db );
+			$pAuthor = new \Components\Publications\Tables\Author( $this->_parent->_db );
 			if ($pAuthor->load($id))
 			{
 				$pAuthor->ordering = $o;
@@ -424,7 +424,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Get author information
-		$pAuthor = new PublicationAuthor( $this->_parent->_db );
+		$pAuthor = new \Components\Publications\Tables\Author( $this->_parent->_db );
 
 		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id ))
 		{
@@ -498,7 +498,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
 
 		// Load classes
-		$row  = new PublicationAuthor( $this->_parent->_db );
+		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );
 		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// We need attachment record
@@ -648,7 +648,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
 
 		// Load classes
-		$row  = new PublicationAuthor( $this->_parent->_db );
+		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );
 		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// We need attachment record
@@ -695,7 +695,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// Get authors
 		if (!isset($pub->_authors))
 		{
-			$pAuthors 			= new PublicationAuthor( $this->_parent->_db );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->_parent->_db );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
@@ -737,7 +737,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// Get authors
 		if (!isset($pub->_authors))
 		{
-			$pAuthors 			= new PublicationAuthor( $this->_parent->_db );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->_parent->_db );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}

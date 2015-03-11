@@ -297,7 +297,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 		$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
 
 		// Curation
@@ -324,7 +324,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Get pub authors
-		$pAuthors 			= new PublicationAuthor( $this->database );
+		$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 		$this->view->pub->_authors 		= $pAuthors->getAuthors($this->view->pub->version_id);
 		$this->view->pub->_submitter 	= $pAuthors->getSubmitter($this->view->pub->version_id, $this->view->pub->created_by);
 
@@ -421,7 +421,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->database );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 			$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
 
 			// Get manifest from either version record (published) or master type
@@ -520,7 +520,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$typeParams = new JParameter( $pub->_type->params );
 
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->database );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get manifest from either version record (published) or master type
@@ -545,7 +545,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			{
 				foreach ($attachments as $attachId => $attach )
 				{
-					$pContent = new PublicationAttachment( $this->database );
+					$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 					if ($pContent->load($attachId))
 					{
 						$pContent->title = $attach['title'];
@@ -588,7 +588,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		$this->view->setLayout('editauthor');
 
-		$this->view->author = new PublicationAuthor( $this->database );
+		$this->view->author = new \Components\Publications\Tables\Author( $this->database );
 		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
@@ -656,7 +656,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Incoming
 		$aid = JRequest::getInt( 'aid', 0 );
 
-		$pAuthor = new PublicationAuthor( $this->database );
+		$pAuthor = new \Components\Publications\Tables\Author( $this->database );
 		if (!$pAuthor->load($aid))
 		{
 			$this->setRedirect(
@@ -769,7 +769,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			if ($row && $row->doi)
 			{
 				// Get updated authors
-				$pAuthor = new PublicationAuthor( $this->database );
+				$pAuthor = new \Components\Publications\Tables\Author( $this->database );
 				$authors = $pAuthor->getAuthors($row->id);
 
 				// Collect DOI metadata
@@ -867,7 +867,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			if ($row && $row->doi)
 			{
 				// Get updated authors
-				$pAuthor = new PublicationAuthor( $this->database );
+				$pAuthor = new \Components\Publications\Tables\Author( $this->database );
 				$authors = $pAuthor->getAuthors($row->id);
 
 				// Collect DOI metadata
@@ -971,7 +971,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$old->load($vid);
 
 		// Get authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($vid);
 
 		// Checkin resource
@@ -1459,7 +1459,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get pub authors' ids
 		if (empty($authors))
 		{
-			$pa = new PublicationAuthor( $this->database );
+			$pa = new \Components\Publications\Tables\Author( $this->database );
 			$authors = $pa->getAuthors($row->id, 1, 1, 1);
 		}
 
@@ -1733,11 +1733,11 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	public function deleteVersionExistence($vid, $pid)
 	{
 		// Delete authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->deleteAssociations($vid);
 
 		// Delete attachments
-		$pContent = new PublicationAttachment( $this->database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 		$pContent->deleteAttachments($vid);
 
 		// Delete screenshots
@@ -1745,11 +1745,11 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pScreenshot->deleteScreenshots($vid);
 
 		// Delete access accosiations
-		$pAccess = new PublicationAccess( $this->database );
+		$pAccess = new \Components\Publications\Tables\Access( $this->database );
 		$pAccess->deleteGroups($vid);
 
 		// Delete audience
-		$pAudience = new PublicationAudience( $this->database );
+		$pAudience = new \Components\Publications\Tables\Audience( $this->database );
 		$pAudience->deleteAudience($vid);
 
 		// Get publications helper
@@ -1918,11 +1918,11 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$typeParams = new JParameter( $pub->_type->params );
 
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->database );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get authors
-			$pAuthors 			= new PublicationAuthor( $this->database );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Get manifest from either version record (published) or master type

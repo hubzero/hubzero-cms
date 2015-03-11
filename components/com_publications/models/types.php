@@ -273,7 +273,7 @@ class PublicationTypesHelper extends JObject
 		$attProperties	= $this->_helper->_attProperties;
 
 		// Instantiate pub attachment
-		$objPA = new PublicationAttachment( $this->_database );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 		if ($selections && $vid && isset($selections[$this->_base]) && !empty($selections[$this->_base]))
 		{

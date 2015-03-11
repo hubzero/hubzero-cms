@@ -371,7 +371,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->publication->_project 	= $this->_project;
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
@@ -453,7 +453,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get current attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$role 	= $primary ? '1' : '0';
 		$other 	= $primary ? '0' : '1';
 

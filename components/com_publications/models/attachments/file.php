@@ -624,7 +624,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
-			$pAttach = new PublicationAttachment( $this->_parent->_db );
+			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;
@@ -1163,7 +1163,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$new = 0;
 		$update = 0;
 
-		$objPA = new PublicationAttachment( $this->_parent->_db );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $filePath),
 			$elementId, $this->_name, $element->role))
 		{
@@ -1207,7 +1207,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$suffix = $this->checkForDuplicate($configs->path . DS . $filePath, $objPA, $configs);
 				if ($suffix)
 				{
-					$pa = new PublicationAttachment( $this->_parent->_db );
+					$pa = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 					$pa->saveParam($objPA, 'suffix', $suffix);
 				}
 			}
@@ -1221,7 +1221,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// Make default image (if applicable)
 			if ($configs->handler  && $configs->handler->getName() == 'imageviewer')
 			{
-				$currentDefault = new PublicationAttachment( $this->_parent->_db );
+				$currentDefault = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 
 				if (!$currentDefault->getDefault($pub->version_id))
 				{

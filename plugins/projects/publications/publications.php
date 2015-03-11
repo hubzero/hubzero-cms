@@ -1444,12 +1444,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_category->_params = new JParameter( $pub->_category->params );
 
 		// Get authors
-		$pAuthors 			= new PublicationAuthor( $this->_database );
+		$pAuthors 			= new \Components\Publications\Tables\Author( $this->_database );
 		$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 		$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 		// Get manifest from either version record (published) or master type
@@ -1560,14 +1560,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'editauthor')
 		{
 			// Get author information
-			$row 	= new PublicationAuthor( $this->_database );
+			$row 	= new \Components\Publications\Tables\Author( $this->_database );
 			$error 	= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
 			$layout = 'author';
 		}
 		else
 		{
 			// Load attachment
-			$row 	= new PublicationAttachment( $this->_database );
+			$row 	= new \Components\Publications\Tables\Attachment( $this->_database );
 			$error 	= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
 			$layout = 'attachment';
 		}
@@ -2207,12 +2207,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			case 'version':
 				// Get authors
-				$pa = new PublicationAuthor( $this->_database );
+				$pa = new \Components\Publications\Tables\Author( $this->_database );
 				$view->authors = $pa->getAuthors($row->id);
 				break;
 
 			case 'content':
-			    $pContent = new PublicationAttachment( $this->_database );
+			    $pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 				$role = $layout == 'primarycontent'  ? '1' : '0';
 				$view->attachments = $pContent->getAttachments ( $row->id, $filters = array('role' => $role) );
 				$view->base = $pub->base ? $pub->base : 'files';
@@ -2235,7 +2235,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'authors':
 				// Get authors
-				$pa = new PublicationAuthor( $this->_database );
+				$pa = new \Components\Publications\Tables\Author( $this->_database );
 				$view->authors = $pa->getAuthors($row->id);
 
 				// Showing submitter?
@@ -2259,7 +2259,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 
 				// Is access restricted?
-				$paccess = new PublicationAccess( $this->_database );
+				$paccess = new \Components\Publications\Tables\Access( $this->_database );
 				$view->access_groups = $paccess->getGroups($row->id, $row->publication_id, $version, $cn);
 				break;
 
@@ -2285,15 +2285,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'audience':
 				// Get audience info
-				$ra = new PublicationAudience( $this->_database );
+				$ra = new \Components\Publications\Tables\Audience( $this->_database );
 				$view->audience = $ra->getAudience($row->publication_id, $row->id, $getlabels = 1, $numlevels = 4);
 
 				// Get audience levels
-				$ral = new PublicationAudienceLevel ( $this->_database );
+				$ral = new \Components\Publications\Tables\AudienceLevel( $this->_database );
 				$view->levels = $ral->getLevels( 4, array(), 0 );
 				if (!($view->audience))
 				{
-					$view->audience = new PublicationAudience( $this->_database );
+					$view->audience = new \Components\Publications\Tables\Audience( $this->_database );
 				}
 				break;
 
@@ -2591,12 +2591,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 
 		// Get authors
-		$pAuthors 			= new PublicationAuthor( $this->_database );
+		$pAuthors 			= new \Components\Publications\Tables\Author( $this->_database );
 		$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 		$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 		// Transfer data
@@ -2735,7 +2735,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Get attachments
-					$pContent = new PublicationAttachment( $this->_database );
+					$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 					$attachments = $pContent->getAttachments( $oldid );
 
 					jimport('joomla.filesystem.file');
@@ -2757,7 +2757,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					{
 						foreach ($attachments as $att)
 						{
-							$pAttach = new PublicationAttachment( $this->_database );
+							$pAttach = new \Components\Publications\Tables\Attachment( $this->_database );
 							$pAttach->publication_id 		= $att->publication_id;
 							$pAttach->title 				= $att->title;
 							$pAttach->role 					= $att->role;
@@ -2794,7 +2794,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Get authors
-					$pa = new PublicationAuthor( $this->_database );
+					$pa = new \Components\Publications\Tables\Author( $this->_database );
 					$authors = $pa->getAuthors($oldid);
 
 					// Copy authors from default to new version
@@ -2802,7 +2802,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					{
 						foreach ($authors as $author)
 						{
-							$pAuthor 							= new PublicationAuthor( $this->_database );
+							$pAuthor 							= new \Components\Publications\Tables\Author( $this->_database );
 							$pAuthor->user_id 					= $author->user_id;
 							$pAuthor->ordering 					= $author->ordering;
 							$pAuthor->credit 					= $author->credit;
@@ -2856,13 +2856,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Copy access info
-					$pAccess = new PublicationAccess( $this->_database );
+					$pAccess = new \Components\Publications\Tables\Access( $this->_database );
 					$access_groups = $pAccess->getGroups($oldid);
 					if ($access_groups)
 					{
 						foreach ($access_groups as $ag)
 						{
-							$pNewAccess = new PublicationAccess( $this->_database );
+							$pNewAccess = new \Components\Publications\Tables\Access( $this->_database );
 							$pNewAccess->publication_version_id = $newid;
 							$pNewAccess->group_id = $ag->group_id;
 							if (!$pNewAccess->store())
@@ -2873,10 +2873,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Copy audience info
-					$pAudience = new PublicationAudience( $this->_database );
+					$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
 					if ($pAudience->loadByVersion($oldid))
 					{
-						$pAudienceNew = new PublicationAudience( $this->_database );
+						$pAudienceNew = new \Components\Publications\Tables\Audience( $this->_database );
 						$pAudienceNew = $pAudience;
 						$pAudienceNew->publication_version_id = $newid;
 						$pAudienceNew->store();
@@ -3059,11 +3059,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get detailed information
 		// Get authors
-		$pa = new PublicationAuthor( $this->_database );
+		$pa = new \Components\Publications\Tables\Author( $this->_database );
 		$view->authors = $pa->getAuthors($row->id);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$view->primary = $pContent->getAttachments( $row->id, $filters = array('role' => '1') );
 		$view->secondary = $pContent->getAttachments( $row->id, $filters = array('role' => '0') );
 
@@ -3100,7 +3100,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is access restricted?
-		$paccess = new PublicationAccess( $this->_database );
+		$paccess = new \Components\Publications\Tables\Access( $this->_database );
 		$view->access_groups = $paccess->getGroups($pub->version_id, $pub->id, $version, $cn);
 
 		// Get gallery images
@@ -3532,7 +3532,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							$sysgroup = \Hubzero\User\Group::getInstance( $cn );
 						}
 
-						$paccess = new PublicationAccess( $this->_database );
+						$paccess = new \Components\Publications\Tables\Access( $this->_database );
 						$paccess->saveGroups($row->id, $access_groups, $sysgroup->get('gidNumber'));
 						$private = JRequest::getVar( 'private', 0, 'post' );
 						$access = $private ? 3 : 2;
@@ -3957,7 +3957,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$row->submitted = JFactory::getDate()->toSql();
 
 			// Save submitter
-			$pa = new PublicationAuthor( $this->_database );
+			$pa = new \Components\Publications\Tables\Author( $this->_database );
 			$pa->saveSubmitter($row->id, $submitter, $this->_project->id);
 
 			if ($this->_pubconfig->get('autoapprove') == 1 )
@@ -4006,7 +4006,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$doierr   = NULL;
 
 			// Get authors
-			$pAuthors 			= new PublicationAuthor( $this->_database );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->_database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Issue a new DOI
@@ -4372,7 +4372,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$row->submitted = JFactory::getDate()->toSql();
 
 			// Save submitter
-			$pa = new PublicationAuthor( $this->_database );
+			$pa = new \Components\Publications\Tables\Author( $this->_database );
 			$pa->saveSubmitter($row->id, $submitter, $this->_project->id);
 
 			if ($this->_pubconfig->get('autoapprove') == 1 )
@@ -4496,7 +4496,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get authors
-			$pa = new PublicationAuthor( $this->_database );
+			$pa = new \Components\Publications\Tables\Author( $this->_database );
 			$authors = $pa->getAuthors($row->id);
 
 			// Get DOI
@@ -4689,11 +4689,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Delete authors
-					$pa = new PublicationAuthor( $this->_database );
+					$pa = new \Components\Publications\Tables\Author( $this->_database );
 					$authors = $pa->deleteAssociations($vid);
 
 					// Delete attachments
-					$pContent = new PublicationAttachment( $this->_database );
+					$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 					$pContent->deleteAttachments($vid);
 
 					// Delete screenshots
@@ -4720,11 +4720,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Delete access accosiations
-					$pAccess = new PublicationAccess( $this->_database );
+					$pAccess = new \Components\Publications\Tables\Access( $this->_database );
 					$pAccess->deleteGroups($vid);
 
 					// Delete audience
-					$pAudience = new PublicationAudience( $this->_database );
+					$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
 					$pAudience->deleteAudience($vid);
 
 					// Delete publication existence
@@ -4856,7 +4856,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get attachment information
-		$row= new PublicationAttachment( $this->_database );
+		$row= new \Components\Publications\Tables\Attachment( $this->_database );
 		$row->loadAttachment($vid, $item );
 
 		// Build pub url
@@ -4922,7 +4922,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$now = JFactory::getDate()->toSql();
 
-		$objPA = new PublicationAttachment( $this->_database );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 		if ($objPA->loadAttachment( $vid, $item ))
 		{
 			if ($title && $objPA->title != $title)
@@ -4934,7 +4934,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$objPA 							= new PublicationAttachment( $this->_database );
+			$objPA 							= new \Components\Publications\Tables\Attachment( $this->_database );
 			$objPA->publication_id 			= $pid;
 			$objPA->publication_version_id 	= $vid;
 			$objPA->path 					= $item;
@@ -5010,7 +5010,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$url = JRoute::_($route . a . 'pid=' . $pid);
 
 		// Get attachment info
-		$att = new PublicationAttachment( $this->_database );
+		$att = new \Components\Publications\Tables\Attachment( $this->_database );
 		$att->loadAttachment($vid, $item, $type );
 
 		// Get project file path
@@ -5058,7 +5058,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate pub attachment
-		$objPA = new PublicationAttachment( $this->_database );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 		// Get selections
 		$selections = JRequest::getVar( 'selections', '');
@@ -5169,7 +5169,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$added = 0;
 
-		$objPA = new PublicationAttachment( $this->_database );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 		// Get publications helper
 		$helper = new PublicationHelper($this->_database, $vid, $pid);
@@ -5244,7 +5244,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$attachments = $pContent->getAttachments( $row->id, $filters);
 
 		// Do we have attachments to publish?
@@ -5291,7 +5291,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _processAuthors( $vid, $selections )
 	{
-		$pAuthor = new PublicationAuthor( $this->_database );
+		$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
 		$now = JFactory::getDate()->toSql();
 
 		// Get original authors
@@ -5320,7 +5320,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$pAuthor = new PublicationAuthor( $this->_database );
+				$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
 
 				$profile = $pAuthor->getProfileInfoByOwner($sel);
 				$invited = $profile->invited_name ? $profile->invited_name : $profile->invited_email;
@@ -5388,7 +5388,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get author information
-		$pAuthor 		= new PublicationAuthor( $this->_database );
+		$pAuthor 		= new \Components\Publications\Tables\Author( $this->_database );
 		$view->author 	= $pAuthor->getAuthorByOwnerId($vid, $owner);
 		$view->owner 	= $owner;
 		$view->order 	= $pAuthor->getCount($vid);
@@ -5447,7 +5447,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get author information
-		$pAuthor = new PublicationAuthor( $this->_database );
+		$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
 		$view->author = $pAuthor->getAuthorByOwnerId($vid, $owner);
 
 		if (!$view->author)
@@ -5458,7 +5458,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$view->author = new PublicationAuthor( $this->_database );
+				$view->author = new \Components\Publications\Tables\Author( $this->_database );
 				$view->author->p_name 			= '';
 				$view->author->p_organization 	= '';
 				$view->author->invited_name 	= '';
@@ -5677,7 +5677,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version = $row->version_number;
 
 		// Get author information
-		$pAuthor = new PublicationAuthor( $this->_database );
+		$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
 		$exists = 0;
 		if ($pAuthor->loadAssociationByOwner( $owner, $vid ))
 		{
@@ -5902,7 +5902,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$picked = explode('-', $sel);
 		$result = 0;
 
-		$pAudience = new PublicationAudience( $this->_database );
+		$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
 		if (!$pAudience->loadByVersion($vid))
 		{
 			$pAudience->publication_id = $pid;
@@ -5952,8 +5952,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$picked = array();
 		$picked = explode('-', $sel);
 
-		$pAudience = new PublicationAudience( $this->_database );
-		$ral = new PublicationAudienceLevel ( $this->_database );
+		$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
+		$ral = new \Components\Publications\Tables\AudienceLevel( $this->_database );
 		$levels = $ral->getLevels( 4, array(), 0 );
 		$audience = array();
 		$result = 0;
@@ -6902,7 +6902,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'content')
 			{
 				// Get primary attachments
-				$pContent = new PublicationAttachment( $this->_database );
+				$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 				$attachments = $pContent->getAttachments ( $row->id, $filters = array('role' => 1) );
 
 				// Check content
@@ -6912,7 +6912,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'authors')
 			{
 				// Check authors
-				$pAuthor = new PublicationAuthor( $this->_database );
+				$pAuthor = new \Components\Publications\Tables\Author( $this->_database );
 				$checked['authors'] = $pAuthor->getCount($row->id) >= 1 ? 1 : 0;
 			}
 			elseif ($value == 'license')
@@ -6923,7 +6923,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'audience')
 			{
 				// Check audience
-				$pAudience = new PublicationAudience( $this->_database );
+				$pAudience = new \Components\Publications\Tables\Audience( $this->_database );
 				$checked['audience'] = $pAudience->loadByVersion($row->id) ? 1 : 0;
 			}
 			elseif ($value == 'access')
@@ -7311,7 +7311,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$readme .= 'Version ' . $objV->version_label . "\n ";
 
 		// Get authors
-		$pa = new PublicationAuthor( $database );
+		$pa = new \Components\Publications\Tables\Author( $database );
 		$authors = $pa->getAuthors($vid);
 
 		$tmpFile   = '';
@@ -7371,7 +7371,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$i = 0;
 
 			// Get attachments
-			$pContent 	= new PublicationAttachment( $database );
+			$pContent 	= new \Components\Publications\Tables\Attachment( $database );
 			$sDocs 		= $pContent->getAttachmentsArray( $vid, '4' );
 			$pDocs 		= $pContent->getAttachmentsArray( $vid, '1' );
 

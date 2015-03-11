@@ -222,7 +222,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		foreach ($attachments as $att)
 		{
 			// Make new attachment record
-			$pAttach = new PublicationAttachment( $this->_parent->_db );
+			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;

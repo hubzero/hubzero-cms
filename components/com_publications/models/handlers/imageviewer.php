@@ -177,7 +177,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		}
 
 		// Get current default
-		$currentDefault = new PublicationAttachment( $this->_parent->_db );
+		$currentDefault = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 		$currentDefault->getDefault($row->publication_version_id);
 
 		// Unmark as default

@@ -364,7 +364,7 @@ class typeFiles extends JObject
 
 		if (!in_array(trim($old->path), $selections['files']))
 		{
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 			$objPA->deleteAttachment($vid, $old->path, $old->type);
 
 			if ($secret)
@@ -407,7 +407,7 @@ class typeFiles extends JObject
 				. DS . 'helpers' . DS . 'githelper.php' );
 			$git = new \Components\Projects\Helpers\Git($fpath);
 
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Attach every selected file
 			foreach ($selections['files'] as $file)
@@ -428,7 +428,7 @@ class typeFiles extends JObject
 				}
 				else
 				{
-					$objPA 							= new PublicationAttachment( $this->_database );
+					$objPA 							= new \Components\Publications\Tables\Attachment( $this->_database );
 					$objPA->publication_id 			= $pid;
 					$objPA->publication_version_id 	= $vid;
 					$objPA->path 					= $path;
@@ -666,7 +666,7 @@ class typeFiles extends JObject
 			// Copy succeeded?
 			if (is_file($newpath. DS . $att->path))
 			{
-				$objAtt = new PublicationAttachment( $this->_database );
+				$objAtt = new \Components\Publications\Tables\Attachment( $this->_database );
 				$objAtt->load($att->id);
 				$objAtt->modified_by  = $uid;
 				$objAtt->modified 	  = JFactory::getDate()->toSql();

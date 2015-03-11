@@ -399,7 +399,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->team = $objO->getOwners($this->_project->id, $view->filters);
 
 		// Get current authors
-		$pa = new PublicationAuthor($this->_database);
+		$pa = new \Components\Publications\Tables\Author($this->_database);
 		$view->authors = $pa->getAuthors($vid);
 
 		// Exclude any owners?
@@ -470,7 +470,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->team = $objO->getOwners($this->_project->id, $view->filters);
 
 		// Get current authors
-		$pa = new PublicationAuthor($this->_database);
+		$pa = new \Components\Publications\Tables\Author($this->_database);
 		$view->authors = $pa->getAuthors($versionid);
 
 		// Exclude any owners?

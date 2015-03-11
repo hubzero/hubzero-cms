@@ -262,7 +262,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			}
 
 			// Make new attachment record
-			$pAttach = new PublicationAttachment( $this->_parent->_db );
+			$pAttach = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;
@@ -436,7 +436,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$objData->loadRecord($database_name);
 		$dbVersion = NULL;
 
-		$objPA = new PublicationAttachment( $this->_parent->_db );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 		if ($objPA->loadElementAttachment($pub->version_id, array( 'object_name' => $database_name),
 			$elementId, $this->_name, $element->role))
 		{

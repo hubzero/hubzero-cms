@@ -28,168 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication attachments
  */
-class PublicationAttachment extends JTable
+class Attachment extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         			= NULL;
-
-	/**
-	 * Publication version ID
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id = NULL;
-
-	/**
-	 * Publication  ID
-	 *
-	 * @var integer
-	 */
-	var $publication_id 		= NULL;
-
-	/**
-	 * ID of block element
-	 *
-	 * @var integer
-	 */
-	var $element_id 			= NULL;
-
-	/**
-	 * Attached object ID
-	 *
-	 * @var integer
-	 */
-	var $object_id 				= NULL;
-
-	/**
-	 * Attached object name
-	 *
-	 * @var integer
-	 */
-	var $object_name 			= NULL;
-
-	/**
-	 * Attached object instance ID
-	 *
-	 * @var integer
-	 */
-	var $object_instance 		= NULL;
-
-	/**
-	 * Attached object revision number
-	 *
-	 * @var integer
-	 */
-	var $object_revision 		= NULL;
-
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	var $title       			= NULL;
-
-	/**
-	 * Path
-	 *
-	 * @var string
-	 */
-	var $path       			= NULL;
-
-	/**
-	 * Type
-	 *
-	 * @var string
-	 */
-	var $type       			= NULL;
-
-	/**
-	 * Created by user ID
-	 *
-	 * @var integer
-	 */
-	var $created_by        		= NULL;
-
-	/**
-	 * Created, datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $created				= NULL;
-
-	/**
-	 * Modified by user ID
-	 *
-	 * @var integer
-	 */
-	var $modified_by        	= NULL;
-
-	/**
-	 * Modified, datetime (0000-00-00 00:00:00)
-	 *
-	 * @var datetime
-	 */
-	var $modified				= NULL;
-
-	/**
-	 * VCS revision
-	 *
-	 * @var string
-	 */
-	var $vcs_revision       	= NULL;
-
-	/**
-	 * VCS hash
-	 *
-	 * @var string
-	 */
-	var $vcs_hash       		= NULL;
-
-	/**
-	 * Content hash
-	 *
-	 * @var string
-	 */
-	var $content_hash       	= NULL;
-
-	/**
-	 * Ordering
-	 *
-	 * @var integer
-	 */
-	var $ordering       		= NULL;
-
-	/**
-	 * Role (primary - 1, secondary - 0)
-	 *
-	 * @var integer
-	 */
-	var $role       			= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params       			= NULL;
-
-	/**
-	 * Attributes
-	 *
-	 * @var text
-	 */
-	var $attribs       			= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -248,7 +93,7 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $versionid;
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($versionid);
 		$query .= " AND params LIKE '%pubThumb=1%' LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -300,7 +145,7 @@ class PublicationAttachment extends JTable
 							$in .= $extracted[0] . '=';
 							$default = isset($extracted[1]) ? $extracted[1] : 0;
 							$in .= $extracted[0] == $param ? $value : $default;
-							$in	.= n;
+							$in	.= "\n";
 							if ($extracted[0] == $param) {
 								$found = 1;
 							}
@@ -310,7 +155,7 @@ class PublicationAttachment extends JTable
 			}
 			if (!$found)
 			{
-				$in .= n . $param . '=' . $value;
+				$in .= "\n" . $param . '=' . $value;
 			}
 		}
 		else
@@ -332,8 +177,9 @@ class PublicationAttachment extends JTable
 	{
 		$query = "UPDATE $this->_tbl AS A ";
 		$query.= "JOIN #__publications AS B ON B.id=A.publication_id ";
-		$query.= " SET A." . $field . "='$to' ";
-		$query.= "WHERE A." . $field . "='$from' AND B.project_id=" . $projectid;
+		$query.= " SET A." . $field . "=" . $this->_db->Quote($to);
+		$query.= " WHERE A." . $field . "=" . $this->_db->Quote($from)
+				. " AND B.project_id=" . $this->_db->Quote($projectid);
 
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
@@ -361,10 +207,10 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query = "SELECT a.* ";
-		$query.= "FROM $this->_tbl AS a ";
-		$query.= "WHERE a.publication_version_id=" . $versionid;
-		$query .= " ORDER BY a.ordering ASC";
+		$query = "SELECT a.*";
+		$query.= " FROM $this->_tbl AS a";
+		$query.= " WHERE a.publication_version_id=" . $this->_db->Quote($versionid);
+		$query.= " ORDER BY a.ordering ASC";
 
 		$this->_db->setQuery( $query );
 		$results = $this->_db->loadObjectList();
@@ -434,13 +280,13 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid;
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property ."='" . $value . "'";
+			$query .= " AND " . $property . "=" . $this->_db->Quote($value);
 		}
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
@@ -499,13 +345,15 @@ class PublicationAttachment extends JTable
 		}
 		else
 		{
-			$query.= intval($project) ? " p.project_id=".$project : " a.publication_version_id=".$versionid;
+			$query.= intval($project)
+				? " p.project_id=" . $this->_db->Quote($project)
+				: " a.publication_version_id=" . $this->_db->Quote($versionid);
 		}
 		if ($element)
 		{
 			if (intval($element))
 			{
-				$query .= " AND a.element_id='".$element."' ";
+				$query .= " AND a.element_id=" . $this->_db->Quote($element);
 			}
 			elseif (is_array($element))
 			{
@@ -519,7 +367,7 @@ class PublicationAttachment extends JTable
 				$tquery = '';
 				foreach ($filters['role'] as $role)
 				{
-					$tquery .= "'" . $role . "',";
+					$tquery .= $this->_db->Quote($role) . ",";
 				}
 				$tquery = substr($tquery,0,strlen($tquery) - 1);
 				$query .= " AND (a.role IN (" . $tquery . ") ) ";
@@ -530,16 +378,16 @@ class PublicationAttachment extends JTable
 			}
 			else
 			{
-				$query .= " AND a.role='".$filters['role']."' ";
+				$query .= " AND a.role=" . $this->_db->Quote($filters['role']);
 			}
 		}
 		if ($type)
 		{
-			$query .= " AND a.type='".$type."' ";
+			$query .= " AND a.type=" . $this->_db->Quote($type);
 		}
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
-			$query .= " ORDER BY ".$filters['order'];
+			$query .= " ORDER BY " . $filters['order'];
 		}
 		else
 		{
@@ -547,12 +395,11 @@ class PublicationAttachment extends JTable
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0 && !$count)
 		{
-			$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
 		$this->_db->setQuery( $query );
 		return $count ? $this->_db->loadResult() : $this->_db->loadObjectList();
-
 	}
 
 	/**
@@ -575,7 +422,8 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
+				. " AND type=" . $this->_db->Quote($type);
 		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
 		if ($role)
@@ -585,7 +433,7 @@ class PublicationAttachment extends JTable
 
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property ."='" . $value . "'";
+			$query .= " AND " . $property ."=" . $this->_db->Quote($value);
 		}
 
 		$this->_db->setQuery( $query );
@@ -617,7 +465,8 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
+				. " AND type=" . $this->_db->Quote($type);
 		$query .= " AND (element_id=0 OR element_id=" . intval($elementId) . ")";
 
 		if ($role)
@@ -627,7 +476,7 @@ class PublicationAttachment extends JTable
 
 		foreach ($find as $property => $value )
 		{
-			$query .= " AND " . $property ."='" . $value . "'";
+			$query .= " AND " . $property ."=" . $this->_db->Quote($value);
 		}
 
 		$query .= " LIMIT 1";
@@ -667,7 +516,8 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $vid . " AND type='" . $type . "'";
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid)
+				. " AND type=" . $this->_db->Quote($type);
 
 		// Import required models
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
@@ -677,7 +527,7 @@ class PublicationAttachment extends JTable
 		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
 		$prop = $prop ? $prop : 'path';
 
-		$query .= " AND " . $prop . "='" . $identifier . "'";
+		$query .= " AND " . $prop . "=" . $this->_db->Quote($identifier);
 
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -698,7 +548,7 @@ class PublicationAttachment extends JTable
 	 */
 	public function copyAttachment( $att = NULL, $vid = NULL, $elementId = NULL, $uid = 0 )
 	{
-		$pAttach = new PublicationAttachment( $this->_db );
+		$pAttach = new self( $this->_db );
 		$pAttach->publication_id 		= $att->publication_id;
 		$pAttach->title 				= $att->title;
 		$pAttach->role 					= $att->role;
@@ -716,7 +566,7 @@ class PublicationAttachment extends JTable
 		$pAttach->ordering 				= $att->ordering;
 		$pAttach->publication_version_id= $vid;
 		$pAttach->created_by 			= $uid;
-		$pAttach->created 				= JFactory::getDate()->toSql();
+		$pAttach->created 				= \JFactory::getDate()->toSql();
 		if ($pAttach->store())
 		{
 			return $this->bind($pAttach);
@@ -754,8 +604,8 @@ class PublicationAttachment extends JTable
 		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
 		$prop = $prop ? $prop : 'path';
 
-		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
-		$query .= " AND " . $prop . "='" . $identifier . "'";
+		$query  = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
+		$query .= " AND " . $prop . "=" . $this->_db->Quote($identifier);
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
@@ -783,7 +633,7 @@ class PublicationAttachment extends JTable
 			return false;
 		}
 
-		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=".$vid;
+		$query = "DELETE FROM $this->_tbl WHERE publication_version_id=" . $this->_db->Quote($vid);
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -810,9 +660,11 @@ class PublicationAttachment extends JTable
 
 		$query = "SELECT A.*, V.version_label, V.version_number FROM $this->_tbl AS A ";
 		$query.= " JOIN #__publication_versions AS V ON A.publication_version_id = V.id ";
-		$query.= " WHERE A.publication_id = ".$pid." AND A.publication_version_id !=".$vid;
+		$query.= " WHERE A.publication_id = " . $this->_db->Quote($pid)
+				. " AND A.publication_version_id !=" . $this->_db->Quote($vid);
 		$query.= " AND V.state!='3' AND V.main=1 AND A.role=1 ";
 		$query.= " ORDER BY A.ordering";
+
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
@@ -836,18 +688,18 @@ class PublicationAttachment extends JTable
 		$query = "SELECT a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
 		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
 		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=".$projectid." ";
-		$query.= $hash ? "AND a.vcs_hash='".$hash."' " : "AND a.path='".$path."' ";
+		$query.= " WHERE P.project_id=" . $this->_db->Quote($projectid);
+		$query.= $hash ? " AND a.vcs_hash=" . $this->_db->Quote($hash) : " AND a.path=" . $this->_db->Quote($path);
 		$query.= $primary ? " AND a.role=1 " : "";
-		$query.= "ORDER BY v.id DESC LIMIT 1";
+		$query.= " ORDER BY v.id DESC LIMIT 1";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 
 		if ($result)
 		{
-			$pub['id'] = $result[0]->publication_id;
-			$pub['title'] = $result[0]->title;
-			$pub['version'] = $result[0]->version_number;
+			$pub['id']            = $result[0]->publication_id;
+			$pub['title']         = $result[0]->title;
+			$pub['version']       = $result[0]->version_number;
 			$pub['version_label'] = $result[0]->version_label;
 		}
 
@@ -874,7 +726,8 @@ class PublicationAttachment extends JTable
 		$query = "SELECT a.path, a.publication_id , v.title, v.version_number, v.version_label FROM $this->_tbl as a ";
 		$query.= "JOIN #__publication_versions AS v ON v.id=a.publication_version_id  ";
 		$query.= "JOIN #__publications AS P ON P.id=v.publication_id  ";
-		$query.= " WHERE P.project_id=".$projectid." AND a.type='$type' ";
+		$query.= " WHERE P.project_id=" . $this->_db->Quote($projectid)
+				. " AND a.type=" . $this->_db->Quote($role);
 		$query.= $primary ? " AND a.role=1 " : "";
 		$query.= " GROUP BY a.path ";
 		$query.= " ORDER BY v.id DESC ";
@@ -886,9 +739,9 @@ class PublicationAttachment extends JTable
 			foreach ($result as $r)
 			{
 				$pub = array();
-				$pub['id'] = $r->publication_id;
-				$pub['title'] = $r->title;
-				$pub['version'] = $r->version_number;
+				$pub['id']            = $r->publication_id;
+				$pub['title']         = $r->title;
+				$pub['version']       = $r->version_number;
 				$pub['version_label'] = $r->version_label;
 
 				$assoc[$r->path][] = $pub;

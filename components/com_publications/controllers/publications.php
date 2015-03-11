@@ -666,7 +666,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$helper = new PublicationHelper($this->database, $publication->version_id, $publication->id);
 
 		// Get version authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($publication->version_id);
 		$publication->_authors = $authors;
 
@@ -691,11 +691,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$publication->pubTypeHelper = new PublicationTypesHelper($this->database, $publication->_project);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 		$publication->_attachments = $pContent->sortAttachments ( $publication->version_id );
 
 		// Get content
-		$pContent = new PublicationAttachment($this->database);
+		$pContent = new \Components\Publications\Tables\Attachment($this->database);
 		$content = array();
 		$content['primary']   = isset($publication->_attachments[1]) ? $publication->_attachments[1] : NULL;
 		$content['secondary'] = isset($publication->_attachments[2]) ? $publication->_attachments[2] : NULL;
@@ -945,7 +945,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->publication->_project->load($this->publication->project_id);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 		$this->publication->_attachments = $pContent->sortAttachments ( $this->publication->version_id );
 
 		// We do need attachments
@@ -1072,7 +1072,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$license = $pLicense->getLicense($this->publication->license_type);
 
 		// Get version authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($this->publication->version_id);
 		$this->publication->_authors = $authors;
 
@@ -1259,7 +1259,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$helper = new PublicationHelper($this->database);
 
 		// Get primary attachments or requested attachment
-		$objPA = new PublicationAttachment( $this->database );
+		$objPA = new \Components\Publications\Tables\Attachment( $this->database );
 		$filters = $aid ? array('id' => $aid) : array('role' => 1);
 		$attachments = $objPA->getAttachments($publication->version_id, $filters);
 
@@ -1580,7 +1580,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			}
 
 			// Get primary attachment(s)
-			$objPA = new PublicationAttachment( $this->database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->database );
 			$filters = array('role' => 1);
 			$this->attachments = $objPA->getAttachments($this->publication->version_id, $filters);
 		}
@@ -1738,11 +1738,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$typeParams = new JParameter( $pub->_type->params );
 
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->database );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get authors
-			$pAuthors 			= new PublicationAuthor( $this->database );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Get manifest from either version record (published) or master type
@@ -1870,7 +1870,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$helper = new PublicationHelper($this->database, $publication->version_id, $id);
 
 		// Get version authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($publication->version_id);
 
 		// Build publication path
@@ -2517,7 +2517,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get the list of groups that can access this resource
-		$paccess = new PublicationAccess( $this->database );
+		$paccess = new \Components\Publications\Tables\Access( $this->database );
 		$allowedgroups = $paccess->getGroups( $publication->version_id, $publication->id, $version );
 		$allowedgroups = $this->getGroupProperty($allowedgroups);
 

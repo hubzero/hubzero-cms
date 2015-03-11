@@ -349,7 +349,7 @@ class typeDatabases extends JObject
 			// Get publications helper
 			$helper = new PublicationHelper($this->_database, $vid, $pid);
 
-			$objPA = new PublicationAttachment( $this->_database );
+			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Original database not found
 			if (!$objData->id)
@@ -415,7 +415,7 @@ class typeDatabases extends JObject
 			}
 			else
 			{
-				$objPA = new PublicationAttachment( $this->_database );
+				$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 				$objPA->publication_id 			= $pid;
 				$objPA->publication_version_id 	= $vid;
 				$objPA->type 					= $this->_attachmentType;
@@ -673,7 +673,7 @@ class typeDatabases extends JObject
 					// Make sure all data files are in the right location
 					$this->_publishDataFiles($objData, $publishPath);
 
-					$objAtt = new PublicationAttachment( $this->_database );
+					$objAtt = new \Components\Publications\Tables\Attachment( $this->_database );
 					$objAtt->load($att->id);
 					$objAtt->path 			 = 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
 												. DS . $database_name . DS . '?v=' . $dbVersion;

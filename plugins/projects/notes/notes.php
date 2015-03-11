@@ -690,7 +690,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get current attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$role 	= $primary ? '1' : '0';
 		$other 	= $primary ? '0' : '1';
 

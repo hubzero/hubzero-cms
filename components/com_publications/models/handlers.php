@@ -212,7 +212,7 @@ class PublicationsModelHandlers extends JObject
 		if (!isset($pub->_attachments))
 		{
 			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 		}
 

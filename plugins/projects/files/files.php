@@ -586,7 +586,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->publication->_project 	= $this->_project;
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->_database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
@@ -706,7 +706,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Does the publication exist?
 		$versionid 	= \JRequest::getInt('versionid', 0);
-		$pContent 	= new PublicationAttachment( $this->_database );
+		$pContent 	= new \Components\Publications\Tables\Attachment( $this->_database );
 		$role    	= $primary ? '1': '0';
 		$other 		= $primary ? '0' : '1';
 
@@ -4869,7 +4869,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get pub associations
 		if ($this->_publishing)
 		{
-			$pA = new PublicationAttachment( $this->_database );
+			$pA = new \Components\Publications\Tables\Attachment( $this->_database );
 			$this->_pubassoc = $pA->getPubAssociations($this->_project->id, 'file');
 		}
 

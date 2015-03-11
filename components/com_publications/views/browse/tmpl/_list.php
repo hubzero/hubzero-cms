@@ -35,7 +35,7 @@ switch ($this->filters['sortby'])
 }
 
 // Get version authors
-$pa = new PublicationAuthor( $database );
+$pa = new \Components\Publications\Tables\Author( $database );
 ?>
 
 <ol class="results" id="publications">

@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Load full record
-$pAuthor 	= new PublicationAuthor( $this->database );
+$pAuthor 	= new \Components\Publications\Tables\Author( $this->database );
 
 $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this->row->project_owner_id);
 

@@ -304,12 +304,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_category->_params = new JParameter( $pub->_category->params );
 
 		// Get authors
-		$pAuthors 			= new PublicationAuthor( $this->database );
+		$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 		$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 		$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 
 		// Get attachments
-		$pContent = new PublicationAttachment( $this->database );
+		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
 		$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 		// Get manifest from either version record (published) or master type
@@ -710,7 +710,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			$doierr   = NULL;
 
 			// Get authors
-			$pAuthors 			= new PublicationAuthor( $this->database );
+			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Update DOI with latest information
@@ -1014,7 +1014,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			: JText::_('COM_PUBLICATIONS_MSG_ADMIN_KICKED_BACK');
 
 		// Get authors
-		$pa = new PublicationAuthor( $this->database );
+		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($pub->version_id, 1, 1, 1);
 
 		// No authors – send to publication creator
