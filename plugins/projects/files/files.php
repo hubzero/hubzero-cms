@@ -994,7 +994,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_uid, $activity,
 				$parsedRef, 'project files',
 				\JRoute::_('index.php?option=' . $this->_option
-					. '&alias=' . $this->_project->alias . '&active=files'), 'files', 1 
+					. '&alias=' . $this->_project->alias . '&active=files'), 'files', 1
 			);
 		}
 	}
@@ -2228,7 +2228,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
 		}
-		
+
 		$url 	= \JRoute::_($this->_route . '&active=files');
 
 		// Confirmation screen
