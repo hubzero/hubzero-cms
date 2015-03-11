@@ -33,7 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 
 /**
@@ -299,7 +298,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 
 		// Get type info
-		$pub->_category = new PublicationCategory( $this->database );
+		$pub->_category = new \Components\Publications\Tables\Category( $this->database );
 		$pub->_category->load($pub->category);
 		$pub->_category->_params = new JParameter( $pub->_category->params );
 
@@ -329,7 +328,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->_pub = $pub;
 
 		// Get last history record (from author)
-		$obj = new PublicationCurationHistory($this->database);
+		$obj = new \Components\Publications\Tables\CurationHistory($this->database);
 		$this->view->history = $obj->getLastRecord($pub->version_id);
 
 		// Set page title
@@ -557,7 +556,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 				// Log assignment in history
 				if (!$this->getError() && $owner != $previousOwner)
 				{
-					$obj = new PublicationCurationHistory($this->database);
+					$obj = new \Components\Publications\Tables\CurationHistory($this->database);
 					if (isset($ownerProfile) && $ownerProfile)
 					{
 						$changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</p>';

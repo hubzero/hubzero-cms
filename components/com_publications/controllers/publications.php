@@ -346,7 +346,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->helper = $helper;
 
 		// Get major types
-		$t = new PublicationCategory( $this->database );
+		$t = new \Components\Publications\Tables\Category( $this->database );
 		$this->view->categories = $t->getCategories(array('itemCount' => 1));
 
 		if ($this->getError())
@@ -396,7 +396,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get major types
-		$t = new PublicationCategory( $this->database );
+		$t = new \Components\Publications\Tables\Category( $this->database );
 		$this->view->categories = $t->getCategories();
 
 		if (!is_int($this->view->filters['category']))
@@ -678,7 +678,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$dispatcher = JDispatcher::getInstance();
 
 		// Get category info
-		$publication->_category = new PublicationCategory( $this->database );
+		$publication->_category = new \Components\Publications\Tables\Category( $this->database );
 		$publication->_category->load($publication->category);
 		$publication->_category->_params = new JParameter( $publication->_category->params );
 
@@ -1047,7 +1047,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$dispatcher = JDispatcher::getInstance();
 
 		// Get type info
-		$this->publication->_category = new PublicationCategory( $this->database );
+		$this->publication->_category = new \Components\Publications\Tables\Category( $this->database );
 		$this->publication->_category->load($this->publication->category);
 		$this->publication->_category->_params = new JParameter( $this->publication->_category->params );
 

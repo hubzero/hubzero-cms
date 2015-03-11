@@ -126,7 +126,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Get <select> of types
 		// Get types
-		$rt = new PublicationCategory( $this->database );
+		$rt = new \Components\Publications\Tables\Category( $this->database );
 		$this->view->categories = $rt->getContribCategories();
 
 		// Set any errors
@@ -277,7 +277,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Get category
-		$this->view->pub->_category = new PublicationCategory( $this->database );
+		$this->view->pub->_category = new \Components\Publications\Tables\Category( $this->database );
 		$this->view->pub->_category->load($this->view->pub->category);
 		$this->view->pub->_category->_params = new JParameter( $this->view->pub->_category->params );
 
@@ -1004,7 +1004,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get metadata
 		if (isset($_POST['nbtag']))
 		{
-			$type = new PublicationCategory($this->database);
+			$type = new \Components\Publications\Tables\Category($this->database);
 			$type->load($pub->category);
 
 			$fields = array();
@@ -1403,7 +1403,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	private function _collectMetadata($row, $objP, $authors)
 	{
 		// Get type
-		$objT = new PublicationCategory($this->database);
+		$objT = new \Components\Publications\Tables\Category($this->database);
 		$objT->load($objP->category);
 		$typetitle = ucfirst($objT->alias);
 

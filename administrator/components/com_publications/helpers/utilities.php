@@ -439,7 +439,7 @@ class PublicationUtilities
 		if (!isset($pub->_category))
 		{
 			// Get type info
-			$pub->_category = new PublicationCategory( $database );
+			$pub->_category = new \Components\Publications\Tables\Category( $database );
 			$pub->_category->load($pub->category);
 			$pub->_category->_params = new JParameter( $pub->_category->params );
 		}

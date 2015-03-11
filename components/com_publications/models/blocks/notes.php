@@ -66,7 +66,7 @@ class PublicationsBlockNotes extends PublicationsBlockDescription
 	public function getManifest($new = false)
 	{
 		// Load config from db
-		$obj = new PublicationBlock($this->_parent->_db);
+		$obj = new \Components\Publications\Tables\Block($this->_parent->_db);
 		$manifest = $obj->getManifest($this->_name);
 
 		// Fall back

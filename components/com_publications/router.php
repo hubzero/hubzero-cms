@@ -166,7 +166,7 @@ class PublicationsRouter extends \Hubzero\Component\Router\Base
 
 			$database = JFactory::getDBO();
 
-			$t = new PublicationCategory( $database );
+			$t = new \Components\Publications\Tables\Category( $database );
 			$cats = $t->getCategories();
 
 			foreach ($cats as $cat)

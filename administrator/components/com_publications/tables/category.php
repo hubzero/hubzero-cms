@@ -28,84 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication category
  */
-class PublicationCategory extends JTable
+class Category extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         		= NULL;
-
-	/**
-	 * Category title displayed to the user
-	 *
-	 * @var string
-	 */
-	var $name       		= NULL;
-
-	/**
-	 * Alias referenced in code instead of the ID (e.g. tool) - for developers
-	 *
-	 * @var string
-	 */
-	var $alias       		= NULL;
-
-	/**
-	 * URL alias, varchar(200)
-	 *
-	 * @var string
-	 */
-	var $url_alias       	= NULL;
-
-	/**
-	 * DOI resourceType
-	 *
-	 * @var string
-	 */
-	var $dc_type       		= NULL;
-
-	/**
-	 * Description
-	 *
-	 * @var text
-	 */
-	var $description       	= NULL;
-
-	/**
-	 * Offer as category choice in publication contributions
-	 *
-	 * @var int
-	 */
-	var $contributable      = NULL;
-
-	/**
-	 * Category state (published/unpublished)
-	 *
-	 * @var int
-	 */
-	var $state      		= NULL;
-
-	/**
-	 * Customizable metadata areas
-	 *
-	 * @var text
-	 */
-	var $customFields      = NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params      = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -126,17 +55,17 @@ class PublicationCategory extends JTable
 	{
 		if (trim( $this->name ) == '')
 		{
-			$this->setError( JText::_('Your publication category name must contain text.') );
+			$this->setError( \JText::_('Your publication category name must contain text.') );
 			return false;
 		}
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( JText::_('Your publication category alias must contain text.') );
+			$this->setError( \JText::_('Your publication category alias must contain text.') );
 			return false;
 		}
 		if (trim( $this->url_alias ) == '')
 		{
-			$this->setError( JText::_('Your publication url alias name must contain text.') );
+			$this->setError( \JText::_('Your publication url alias name must contain text.') );
 			return false;
 		}
 		return true;
@@ -210,7 +139,7 @@ class PublicationCategory extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias='".$alias."' LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias)  . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -227,7 +156,7 @@ class PublicationCategory extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias='".$alias."' LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias)  . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -259,12 +188,7 @@ class PublicationCategory extends JTable
 			return false;
 		}
 
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_publications' . DS . 'tables' . DS . 'publication.php' );
-
-		$p = new Publication( $this->_db );
-
-		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE category=" . $id);
+		$this->_db->setQuery( "SELECT count(*) FROM #__publications WHERE category=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();
 	}
 }

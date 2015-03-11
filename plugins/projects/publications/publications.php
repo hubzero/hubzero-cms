@@ -863,7 +863,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Get type info
-		$pub->_category = new PublicationCategory( $this->_database );
+		$pub->_category = new \Components\Publications\Tables\Category( $this->_database );
 		$pub->_category->load($pub->category);
 		$pub->_category->_params = new JParameter( $pub->_category->params );
 
@@ -1244,7 +1244,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Determine publication type
-		$objT = new PublicationCategory( $this->_database );
+		$objT = new \Components\Publications\Tables\Category( $this->_database );
 
 		// Get type params
 		$mType = $mt->getType($mastertype);
@@ -1439,7 +1439,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 
 		// Get type info
-		$pub->_category = new PublicationCategory( $this->_database );
+		$pub->_category = new \Components\Publications\Tables\Category( $this->_database );
 		$pub->_category->load($pub->category);
 		$pub->_category->_params = new JParameter( $pub->_category->params );
 
@@ -2228,7 +2228,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'description':
 				// Get custom metadata fields (depending on type)
-				$rt = new PublicationCategory( $this->_database );
+				$rt = new \Components\Publications\Tables\Category( $this->_database );
 				$rt->load( $pub->category );
 				$view->customFields = $rt->customFields;
 				break;
@@ -2345,13 +2345,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$view->tags = implode(', ', $mytagarray);
 
 				// Get types
-				$rt = new PublicationCategory( $this->_database );
+				$rt = new \Components\Publications\Tables\Category( $this->_database );
 				$view->categories = $rt->getContribCategories();
 				break;
 		}
 
 		// Get type info
-		$view->_category = new PublicationCategory( $this->_database );
+		$view->_category = new \Components\Publications\Tables\Category( $this->_database );
 		$view->_category->load($pub->category);
 		$view->_category->_params = new JParameter( $view->_category->params );
 
@@ -3030,7 +3030,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$choices = $this->_getAllowedTypes($choices);
 
 		// Get type info
-		$view->_category = new PublicationCategory( $this->_database );
+		$view->_category = new \Components\Publications\Tables\Category( $this->_database );
 		$view->_category->load($pub->category);
 		$view->_category->_params = new JParameter( $view->_category->params );
 
@@ -3264,7 +3264,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 
 				// Determine publication type
-				$objT = new PublicationCategory( $this->_database );
+				$objT = new \Components\Publications\Tables\Category( $this->_database );
 
 				// Get type params
 				$mType 		= $mt->getType($mastertype);
@@ -3611,7 +3611,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SAVED');
 
 					// Save category
-					$objT = new PublicationCategory( $this->_database );
+					$objT = new \Components\Publications\Tables\Category( $this->_database );
 					$cat = JRequest::getInt( 'pubtype', 0 );
 					if ($cat && $objP->category != $cat)
 					{
@@ -4469,7 +4469,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$row->modified_by = $this->_uid;
 
 			// Get type
-			$objT = new PublicationCategory( $this->_database );
+			$objT = new \Components\Publications\Tables\Category( $this->_database );
 			$objT->load($pub->category);
 			$category = ucfirst($objT->alias);
 
@@ -5849,7 +5849,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$metadata = '';
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
-		$cat = new PublicationCategory( $this->_database );
+		$cat = new \Components\Publications\Tables\Category( $this->_database );
 		$cat->load( $rtype );
 
 		$fields = array();

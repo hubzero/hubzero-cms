@@ -27,86 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication building blocks
  */
-class PublicationBlock extends JTable
+class Block extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       			= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $block				= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $label				= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title				= NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var int
-	 */
-	var $status     		= NULL;
-
-	/**
-	 * int(1)
-	 * Minimum number required
-	 *
-	 * @var int
-	 */
-	var $minimum     		= NULL;
-
-	/**
-	 * int(1)
-	 * Maximum number allowed
-	 *
-	 * @var int
-	 */
-	var $maximum    		= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params      		= NULL;
-
-	/**
-	 * Ordering
-	 *
-	 * @var int
-	 */
-	var $ordering     		= NULL;
-
-	/**
-	 * Default manifest
-	 *
-	 * @var text
-	 */
-	var $manifest      		= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -130,7 +57,7 @@ class PublicationBlock extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE block='" . $name . "' LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE block=" . $this->_db->Quote($name)  . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -147,7 +74,7 @@ class PublicationBlock extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE block='" . $name . "' LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE block=" . $this->_db->Quote($name)  . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -193,13 +120,12 @@ class PublicationBlock extends JTable
 			return false;
 		}
 
-		$query = "SELECT manifest FROM $this->_tbl WHERE block='" . $name . "'";
+		$query = "SELECT manifest FROM $this->_tbl WHERE block=" . $this->_db->Quote($name);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();
 
 		return $result ? json_decode($result) : false;
-
 	}
 }

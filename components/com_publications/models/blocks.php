@@ -78,7 +78,7 @@ class PublicationsModelBlocks extends JObject
 		$this->_db 		 	= $db;
 		$this->_blockPath[] = dirname(__FILE__) . DS . 'blocks';
 
-		$this->_objBlock 	= new PublicationBlock($db);
+		$this->_objBlock 	= new \Components\Publications\Tables\Block($db);
 	}
 
 	/**

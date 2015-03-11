@@ -85,7 +85,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
-		$rt = new PublicationCategory($this->database);
+		$rt = new \Components\Publications\Tables\Category($this->database);
 
 		// Get a record count
 		$this->view->total = $rt->getCount($this->view->filters);
@@ -147,7 +147,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			}
 
 			// Load the object
-			$this->view->row = new PublicationCategory($this->database);
+			$this->view->row = new \Components\Publications\Tables\Category($this->database);
 			$this->view->row->load($id);
 		}
 
@@ -198,7 +198,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
 
 		// Initiate extended database class
-		$row = new PublicationCategory($this->database);
+		$row = new \Components\Publications\Tables\Category($this->database);
 		if (!$row->bind($prop))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -313,7 +313,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		$ids = JRequest::getVar('id', array(0), '', 'array');
 
 		// Initialize
-		$row = new PublicationCategory($this->database);
+		$row = new \Components\Publications\Tables\Category($this->database);
 
 		foreach ($ids as $id)
 		{

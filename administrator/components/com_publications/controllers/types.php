@@ -729,7 +729,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Get all active categories
-		$objC = new PublicationCategory($this->database);
+		$objC = new \Components\Publications\Tables\Category($this->database);
 		$this->view->cats = $objC->getCategories();
 
 		// Push some styles to the template

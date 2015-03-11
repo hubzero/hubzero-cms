@@ -304,7 +304,7 @@ class ProjectsRouter extends \Hubzero\Component\Router\Base
 								. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 							$database = JFactory::getDBO();
 
-							$b = new PublicationBlock($database);
+							$b = new \Components\Publications\Tables\Block($database);
 							$blocks = $b->getBlocks('block');
 						}
 

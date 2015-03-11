@@ -181,7 +181,7 @@ class ResourceMapGenerator
 		$pub = $resource->getPublication($this->id);
 
 		$type_id = $pub->category;
-		$typesData = new PublicationCategory($database);
+		$typesData = new \Components\Publications\Tables\Category($database);
 		$allTypes = $typesData->getCategories(array(
 				'state' => 'all'
 		));

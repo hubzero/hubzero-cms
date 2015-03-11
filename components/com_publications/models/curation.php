@@ -1600,7 +1600,7 @@ class PublicationsCuration extends JObject
 
 		$review = array();
 
-		$curation = new PublicationCuration($this->_db);
+		$curation = new \Components\Publications\Tables\Curation($this->_db);
 		$results = $curation->getRecords($versionId);
 
 		if ($results)
@@ -1735,7 +1735,7 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$obj = new PublicationCurationHistory($this->_db);
+		$obj = new \Components\Publications\Tables\CurationHistory($this->_db);
 
 		// Create new record
 		$obj->publication_version_id 	= $pub->version_id;
@@ -1764,7 +1764,7 @@ class PublicationsCuration extends JObject
 	 */
 	public function getHistory( $pub, $curator = 0 )
 	{
-		$obj = new PublicationCurationHistory($this->_db);
+		$obj = new \Components\Publications\Tables\CurationHistory($this->_db);
 
 		$history = $obj->getRecords($pub->version_id);
 
@@ -1782,7 +1782,7 @@ class PublicationsCuration extends JObject
 	 */
 	public function getLastUpdate( $elementId, $name, $pub, $sequence )
 	{
-		$curation = new PublicationCuration($this->_db);
+		$curation = new \Components\Publications\Tables\Curation($this->_db);
 		return $curation->getRecord($pub->id, $pub->version_id, $name, $sequence, $elementId);
 	}
 
@@ -1816,7 +1816,7 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$curation = new PublicationCuration($this->_db);
+		$curation = new \Components\Publications\Tables\Curation($this->_db);
 
 		// Load curation record if exists
 		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $sequence, $elementId))

@@ -55,7 +55,7 @@ JToolBarHelper::cancel();
 $database = JFactory::getDBO();
 
 // Get pub category
-$rt = new PublicationCategory( $database );
+$rt = new \Components\Publications\Tables\Category( $database );
 $rt->load( $this->pub->category );
 
 // Parse data

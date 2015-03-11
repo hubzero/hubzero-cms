@@ -254,7 +254,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$this->reader->XML($this->data);
 
 		// Load classes
-		$objCat = new PublicationCategory( $this->database );
+		$objCat = new \Components\Publications\Tables\Category( $this->database );
 		$objL = new PublicationLicense( $this->database );
 
 		// Get base type
