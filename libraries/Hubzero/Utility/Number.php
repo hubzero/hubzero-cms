@@ -57,11 +57,11 @@ class Number
 	public static function formatBytes($bytes = 0, $decimals = 0)
 	{
 		$quant = array(
-			'Tb' => 1099511627776,  // pow(1024, 4)
-			'Gb' => 1073741824,     // pow(1024, 3)
-			'Mb' => 1048576,        // pow(1024, 2)
-			'Kb' => 1024,           // pow(1024, 1)
-			'b ' => 1,              // pow(1024, 0)
+			'TB' => 1099511627776,  // pow(1024, 4)
+			'GB' => 1073741824,     // pow(1024, 3)
+			'MB' => 1048576,        // pow(1024, 2)
+			'KB' => 1024,           // pow(1024, 1)
+			'B ' => 1,              // pow(1024, 0)
 		);
 
 		foreach ($quant as $unit => $mag)
