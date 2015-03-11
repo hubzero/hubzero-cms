@@ -400,8 +400,8 @@ class Wishlists extends SiteController
 			$filters = self::getFilters($wish->get('admin'));
 
 			// Update average value for importance (this is tricky MySQL)
-			if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
-			{
+		//	if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0))
+		//	{
 				//$objR = new Tables\Wish\Rank($this->database);
 				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
 
@@ -417,26 +417,19 @@ class Wishlists extends SiteController
 
 					foreach ($votes as $vote)
 					{
-						if (in_array($vote->get('userid'), $wishlist->owners('advisory')))
+						if (count($wishlist->owners('advisory')) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $wishlist->owners('advisory')))
 						{
 							$imp += $vote->get('importance') * $co_adv;
 							$divisor += $co_adv;
-							if ($vote->get('effort') != 6)
-							{
-								$effort += $vote->get('effort') * $co_adv;
-							}
 						}
 						else
 						{
 							$imp += $vote->get('importance') * $co_reg;
 							$divisor += $co_reg;
-							if ($vote->get('effort') != 6)
-							{
-								$effort += $vote->get('effort') * $co_reg;
-							}
 						}
 						if ($vote->get('effort') != 6)
 						{
+							$effort += $vote->get('effort');
 							$counter++;
 						}
 					}
@@ -454,7 +447,7 @@ class Wishlists extends SiteController
 						$wish->set('average_effort', 7);
 					}
 				}
-			}
+		//	}
 
 			// Build owners drop-down for assigning wishes
 			$wish->set('assignlist', $this->userSelect('assigned', $wishlist->owners('individuals'), $wish->get('assigned'), 1));
@@ -526,9 +519,6 @@ class Wishlists extends SiteController
 	 */
 	public function savesettingsTask()
 	{
-		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
-
 		$listid  = \JRequest::getInt('listid', 0);
 		$action  = \JRequest::getVar('action', '');
 
@@ -572,6 +562,9 @@ class Wishlists extends SiteController
 			);
 			return;
 		}
+
+		// Check for request forgeries
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		if (!$wishlist->bind(\JRequest::getVar('fields', array(), 'post')))
 		{
