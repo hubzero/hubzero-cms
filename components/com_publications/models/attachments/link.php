@@ -341,7 +341,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 					&& stripos($pub->title, $defaultTitle) !== false )
 				{
 					// Load publication version
-					$row = new PublicationVersion( $this->_parent->_db );
+					$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
 					if (!$row->load($pub->version_id))
 					{
 						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));

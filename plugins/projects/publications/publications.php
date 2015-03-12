@@ -130,7 +130,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$database = JFactory::getDBO();
 
 			// Instantiate project publication
-			$objP = new Publication( $database );
+			$objP = new \Components\Publications\Tables\Publication( $database );
 
 			$filters = array();
 			$filters['project']  		= $project->id;
@@ -476,8 +476,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		));
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);
@@ -600,8 +600,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);
@@ -717,7 +717,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->setError(JText::_('Missing required input'));
 		}
 
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->load($vid))
 		{
 			$this->setError(JText::_('Failed to load version'));
@@ -759,8 +759,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
-		$row = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 
 		// Include models
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'status.php');
@@ -832,8 +832,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$move = JRequest::getVar( 'move', '' );
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$objV = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$objV = new \Components\Publications\Tables\Version( $this->_database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
@@ -1196,7 +1196,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$base = JRequest::getVar( 'base', 'files' );
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Determine publication master type
@@ -1319,7 +1319,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make a new dev version entry
-		$row 					= new PublicationVersion( $this->_database );
+		$row 					= new \Components\Publications\Tables\Version( $this->_database );
 		$row->publication_id 	= $pid;
 		$row->title 			= $row->getDefaultTitle($this->_project->id, $title);
 		$row->state 			= 3; // dev
@@ -1365,8 +1365,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$sequence  	= JRequest::getInt( 'step', 0 );
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$objV = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$objV = new \Components\Publications\Tables\Version( $this->_database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
@@ -1554,8 +1554,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
 		// Load classes
-		$objP = new Publication( $this->_database );
-		$objV = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$objV = new \Components\Publications\Tables\Version( $this->_database );
 
 		if ($this->_task == 'editauthor')
 		{
@@ -1698,7 +1698,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// Get all publications
 		$view->rows = $objP->getRecords($filters);
@@ -1844,11 +1844,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 		$view->pub = $objP;
 
 		// Instantiate publication version
-		$objPV = new PublicationVersion( $this->_database );
+		$objPV = new \Components\Publications\Tables\Version( $this->_database );
 		$view->row = $objPV;
 		$view->version = 'dev';
 		$view->move = 1;
@@ -1958,8 +1958,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version 	= JRequest::getVar( 'version', '' );
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$row  = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row  = new \Components\Publications\Tables\Version( $this->_database );
 
 		// Check that version exists
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
@@ -2050,8 +2050,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$inreview 	= JRequest::getInt( 'review', 0 );
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$row  = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row  = new \Components\Publications\Tables\Version( $this->_database );
 
 		// Check that version exists
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
@@ -2421,8 +2421,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
-		$row = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 
 		// If publication not found, raise error
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
@@ -2631,8 +2631,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$label = trim(JRequest::getVar( 'version_label', '', 'post' ));
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
-		$row  = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row  = new \Components\Publications\Tables\Version( $this->_database );
 
 		// If publication not found, raise error
 		$pub = $objP->getPublication($pid, 'default', $this->_project->id);
@@ -2699,7 +2699,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Create new version
-				$new 				=  new PublicationVersion( $this->_database );
+				$new 				=  new \Components\Publications\Tables\Version( $this->_database );
 				$new 				= $row; // copy of default version
 				$new->id 			= 0;
 				$new->created 		= $now;
@@ -2968,7 +2968,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'assets/css/calendar');
 
 		// Check that version number exists
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$version = $version && $row->checkVersion($pid, $version) ? $version : 'dev';
 
 		// Load default version preview for users with read-only access
@@ -2978,7 +2978,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// If publication not found, raise error
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
@@ -3182,7 +3182,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$now = JFactory::getDate()->toSql();
 
 		// Check that version exists
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
 
 		// Get selected content
@@ -3204,7 +3204,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// If publication not found, raise error
@@ -3327,7 +3327,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 
 				// Make a new dev version entry
-				$row 					= new PublicationVersion( $this->_database );
+				$row 					= new \Components\Publications\Tables\Version( $this->_database );
 				$row->publication_id 	= $pid;
 				$row->title 			= $title;
 				$row->state 			= 3; // dev
@@ -3394,7 +3394,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!$newpub && !$this->getError())
 		{
 			// Instantiate publication version
-			$row = new PublicationVersion( $this->_database );
+			$row = new \Components\Publications\Tables\Version( $this->_database );
 			if (!$row->loadVersion( $pid, $version ))
 			{
 				JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
@@ -3750,7 +3750,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _overQuota()
 	{
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// Get all publications
 		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));
@@ -3820,7 +3820,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// Check against quota
 		if ($this->_overQuota())
@@ -3835,8 +3835,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load publication & version classes
-		$objP = new Publication( $this->_database );
-		$row  = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$row  = new \Components\Publications\Tables\Version( $this->_database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
@@ -4307,7 +4307,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// Get all publications
 		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));
@@ -4344,7 +4344,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate publication version
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->loadVersion($pid, $version))
 		{
 			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
@@ -4589,7 +4589,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$url = JRoute::_($route . a . 'pid=' . $pid);
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 
 		// If publication not found, raise error
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
@@ -4608,7 +4608,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate publication version
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->loadVersion($pid, $version))
 		{
 			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
@@ -4636,7 +4636,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get published versions count
-		$objV = new PublicationVersion( $this->_database );
+		$objV = new \Components\Publications\Tables\Version( $this->_database );
 		$publishedCount = $objV->getPublishedCount($pid);
 
 		// Unpublish/delete version
@@ -4911,7 +4911,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get version label
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$row->load($vid);
 		$version = $row->version_number;
 
@@ -5672,7 +5672,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get version label
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$row->load($vid);
 		$version = $row->version_number;
 
@@ -6423,7 +6423,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get version label
-		$row = new PublicationVersion( $this->_database );
+		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$row->load($vid);
 		$version = $row->version_number;
 
@@ -6613,7 +6613,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$objP = new Publication( $this->_database );
+			$objP = new \Components\Publications\Tables\Publication( $this->_database );
 			$pub = $objP->getPublication($pid, 'default');
 			if (!$pub)
 			{
@@ -6663,8 +6663,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pid = $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
 
 		// Instantiate project publication
-		$objP = new Publication( $this->_database );
-		$objV = new PublicationVersion( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
+		$objV = new \Components\Publications\Tables\Version( $this->_database );
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -6760,7 +6760,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->filters['limit']  	= JRequest::getInt( 'limit', 3 );
 
 			// Get publications created by user
-			$objP = new Publication( $this->_database );
+			$objP = new \Components\Publications\Tables\Publication( $this->_database );
 			$view->mypubs = $objP->getRecords( $view->filters );
 
 			// Get pub count
@@ -7244,7 +7244,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$filters['dev']   	 		= 1; // get dev versions
 
 		// Instantiate project publication
-		$objP = new Publication( $database );
+		$objP = new \Components\Publications\Tables\Publication( $database );
 
 		// Get all publications
 		$view->rows = $objP->getRecords($filters);
@@ -7295,8 +7295,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 
 		// Load publication & version classes
-		$objP  = new Publication( $database );
-		$objV  = new PublicationVersion( $database );
+		$objP  = new \Components\Publications\Tables\Publication( $database );
+		$objV  = new \Components\Publications\Tables\Version( $database );
 
 		if (!$objP->load($pid) || !$objV->load($vid))
 		{

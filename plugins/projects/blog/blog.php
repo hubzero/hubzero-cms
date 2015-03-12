@@ -263,7 +263,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Get Publications
 		if (JPluginHelper::isEnabled('projects', 'publications'))
 		{
-			$objP = new Publication( $database );
+			$objP = new \Components\Publications\Tables\Publication( $database );
 			$pubs = $objP->getRecords($filters = array(
 				'sortby' => 'random', 'limit' => $limit, 'project' => $project->id,
 				'ignore_access' => 1, 'dev' => 1

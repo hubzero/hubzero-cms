@@ -250,7 +250,7 @@ class plgCronPublications extends JPlugin
 		$filters['start']  = 0;
 
 		// Instantiate a publication object
-		$rr = new Publication($database);
+		$rr = new \Components\Publications\Tables\Publication($database);
 
 		// Get publications
 		$pubs = $rr->getRecords($filters);
@@ -334,7 +334,7 @@ class plgCronPublications extends JPlugin
 			}
 
 			// Load version
-			$pv = new PublicationVersion($database);
+			$pv = new \Components\Publications\Tables\Version($database);
 			if (!$pv->load($row->version_id))
 			{
 				continue;

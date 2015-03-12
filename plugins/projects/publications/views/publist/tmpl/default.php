@@ -44,7 +44,7 @@ $filters['sortdir']  		= 'ASC';
 $filters['project']  		= $this->project->id;
 
 // Get project publications
-$objP  = new Publication($database);
+$objP  = new \Components\Publications\Tables\Publication($database);
 $items = $objP->getRecords($filters);
 
 // URL

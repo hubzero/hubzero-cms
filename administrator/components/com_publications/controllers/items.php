@@ -104,7 +104,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			''
 		));
 
-		$model = new Publication($this->database);
+		$model = new \Components\Publications\Tables\Publication($this->database);
 
 		// Get record count
 		$this->view->total = $model->getCount($this->view->filters, NULL, true);
@@ -189,10 +189,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->return['status'] 		= JRequest::getVar('status', '');
 
 		// Instantiate publication object
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Instantiate Version
-		$this->view->row = new PublicationVersion($this->database);
+		$this->view->row = new \Components\Publications\Tables\Version($this->database);
 
 		// Check that version exists
 		$version = $this->view->row->checkVersion($id, $version) ? $version : 'default';
@@ -387,7 +387,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$el 	= JRequest::getInt( 'el', 0 );
 		$v 		= JRequest::getInt( 'v', 0 );
 
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Get publication information
 		$this->view->pub = $objP->getPublication($id, $v);
@@ -482,9 +482,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$params  = JRequest::getVar( 'params', array(), 'request', 'array' );
 		$attachments = JRequest::getVar( 'attachments', array(), 'request', 'array' );
 
-		$row = new PublicationVersion($this->database);
+		$row = new \Components\Publications\Tables\Version($this->database);
 
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Get publication information
 		$pub = $objP->getPublication($id, $version);
@@ -598,8 +598,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Version ID
 		$vid = JRequest::getInt( 'vid', $this->view->author->publication_version_id );
 
-		$this->view->row = new PublicationVersion( $this->database );
-		$this->view->pub = new Publication( $this->database );
+		$this->view->row = new \Components\Publications\Tables\Version( $this->database );
+		$this->view->pub = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Load version
 		if (!$this->view->row->load($vid))
@@ -670,7 +670,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 
 		// Instantiate Version
-		$row = new PublicationVersion($this->database);
+		$row = new \Components\Publications\Tables\Version($this->database);
 		if ($row->load($pAuthor->publication_version_id))
 		{
 			$url .= '&task=edit' . '&id[]=' . $row->publication_id
@@ -724,7 +724,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Instantiate publication object
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 		if (!$objP->load($id))
 		{
 			$this->setRedirect(
@@ -762,7 +762,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		else
 		{
 			// Instantiate Version
-			$row = new PublicationVersion($this->database);
+			$row = new \Components\Publications\Tables\Version($this->database);
 			$row->load($pub->version_id);
 
 			// Update DOI in case of name change
@@ -814,7 +814,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
 
 		// Instantiate publication object
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 		if (!$objP->load($id))
 		{
 			$this->setRedirect(
@@ -860,7 +860,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		else
 		{
 			// Instantiate Version
-			$row = new PublicationVersion($this->database);
+			$row = new \Components\Publications\Tables\Version($this->database);
 			$row->load($pub->version_id);
 
 			// Update DOI in case of name change
@@ -933,10 +933,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$version 	= JRequest::getVar( 'version', '' );
 
 		// Instantiate publication object
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Instantiate Version
-		$row = new PublicationVersion($this->database);
+		$row = new \Components\Publications\Tables\Version($this->database);
 
 		if (!$row->bind($_POST))
 		{
@@ -967,7 +967,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->load($vid);
 
 		// Load version before changes
-		$old = new PublicationVersion($this->database);
+		$old = new \Components\Publications\Tables\Version($this->database);
 		$old->load($vid);
 
 		// Get authors
@@ -1556,8 +1556,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->return['status'] = JRequest::getVar('status', '');
 
 		// Instantiate project publication
-		$objP = new Publication( $this->database );
-		$objV = new PublicationVersion( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objV = new \Components\Publications\Tables\Version( $this->database );
 
 		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
@@ -1615,7 +1615,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load publication
-			$objP = new Publication( $this->database );
+			$objP = new \Components\Publications\Tables\Publication( $this->database );
 			if (!$objP->load($id))
 			{
 				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
@@ -1624,7 +1624,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 			$projectId = $objP->project_id;
 
-			$row = new PublicationVersion( $this->database );
+			$row = new \Components\Publications\Tables\Version( $this->database );
 
 			// Get versions
 			$versions = $row->getVersions( $id, $filters = array('withdev' => 1));
@@ -1668,7 +1668,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$i = 0;
 				foreach ($versions as $v)
 				{
-					$objV = new PublicationVersion( $this->database );
+					$objV = new \Components\Publications\Tables\Version( $this->database );
 					if ($objV->loadVersion($id, $v->version_number))
 					{
 						if ($erase == 1)
@@ -1781,7 +1781,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$id  = JRequest::getInt('id', 0);
 
 		// Checkin the resource
-		$row = new Publication($this->database);
+		$row = new \Components\Publications\Tables\Publication($this->database);
 		$row->load($id);
 		$row->checkin();
 
@@ -1811,7 +1811,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if ($id)
 		{
 			// Load the object, reset the ratings, save, checkin
-			$row = new Publication($this->database);
+			$row = new \Components\Publications\Tables\Publication($this->database);
 			$row->load($id);
 			$row->rating = '0.0';
 			$row->times_rated = '0';
@@ -1847,7 +1847,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if ($id)
 		{
 			// Load the object, reset the ratings, save, checkin
-			$row = new Publication($this->database);
+			$row = new \Components\Publications\Tables\Publication($this->database);
 			$row->load($id);
 			$row->ranking = '0';
 			$row->store();
@@ -1882,8 +1882,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			. 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$objV  = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$objV  = new \Components\Publications\Tables\Version( $this->database );
 		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Use new curation flow?
@@ -1981,7 +1981,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if ($id)
 		{
 			// Load the object and checkin
-			$row = new Publication($this->database);
+			$row = new \Components\Publications\Tables\Publication($this->database);
 			$row->load($id);
 			$row->checkin();
 		}

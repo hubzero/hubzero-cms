@@ -181,7 +181,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		}
 
 		// Load publication version
-		$row = new PublicationVersion( $this->_parent->_db );
+		$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
 
 		if (!$row->load($pub->version_id))
 		{

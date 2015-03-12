@@ -60,7 +60,7 @@ class Publication extends Base
 		     ->set('option', $this->_segments['option']);
 
 		$database = \JFactory::getDBO();
-		$objP = new \Publication($database);
+		$objP = new \Components\Publications\Tables\Publication($database);
 		$this->_item = $objP->getPublication($referenceid, 'default');
 
 		//$this->_segments['id']     = $this->_item->id;

@@ -1285,7 +1285,7 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$row = new PublicationVersion( $this->_db );
+		$row = new \Components\Publications\Tables\Version( $this->_db );
 
 		// Incoming
 		$label = trim(JRequest::getVar( 'label', '', 'post' ));
@@ -2181,7 +2181,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Check if published version has curation manifest saved
-		$row = new PublicationVersion( $this->_db );
+		$row = new \Components\Publications\Tables\Version( $this->_db );
 		if ($pub->state == 1 && !$pub->curation)
 		{
 			if ($row->load($pub->version_id))

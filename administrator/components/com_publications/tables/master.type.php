@@ -322,7 +322,7 @@ class MasterType extends \JTable
 		include_once( PATH_CORE . DS . 'administrator' . DS
 			. 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php' );
 
-		$p = new \Publication( $this->_db );
+		$p = new \Components\Publications\Tables\Publication( $this->_db );
 
 		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();

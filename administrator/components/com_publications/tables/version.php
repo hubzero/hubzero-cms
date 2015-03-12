@@ -27,251 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication version
  */
-class PublicationVersion extends JTable
+class Version extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_id 			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title						= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $description				= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $abstract					= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $metadata					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by				= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $published_up				= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $published_down				= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $submitted					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $accepted					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $archived					= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $version_label				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $version_number				= NULL;
-
-	/**
-	 * varchar(10)
-	 *
-	 * @var string
-	 */
-	var $secret						= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $doi						= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $license_type				= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $license_text				= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $reviewed					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $reviewed_by				= NULL;
-
-	/**
-	 * Int(1)
-	 *
-	 * @var integer
-	 * 0 - unpublished
-	 * 1 - published
-	 * 2 - deleted
-	 * 3 - dev
-	 * 4 - ready
-	 * 5 - pending approval
-	 */
-	var $state  					= NULL;
-
-	/**
-	 * Int(1)
-	 *
-	 * @var integer
-	 */
-	var $main 						= NULL;
-
-	/**
-	 * Int(11)
-	 *
-	 * @var integer
-	 */
-	var $access 					= NULL;
-
-	/**
-	 * Publication rating
-	 *
-	 * @var decimal
-	 */
-	var $rating				= NULL;
-
-	/**
-	 * Times rated
-	 *
-	 * @var integer
-	 */
-	var $times_rated        = NULL;
-
-	/**
-	 * Ranking
-	 *
-	 * @var float
-	 */
-	var $ranking        	= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params      				= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $release_notes				= NULL;
-
-	/**
-	 * Original curation manifest at time of publication approval
-	 *
-	 * @var text
-	 */
-	var $curation					= NULL;
-
-	/**
-	 * Assigned curator
-	 *
-	 * @var text
-	 */
-	var $curator					= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -301,7 +63,7 @@ class PublicationVersion extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id ='$pid' ";
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
 			$query.= " AND main=1 ";
@@ -312,14 +74,14 @@ class PublicationVersion extends JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number='".$version."' ";
+			$query.= " AND version_number=" . $this->_db->Quote($version);
 		}
 		else
 		{
 			// Error in supplied version value
 			$query.= " AND 1=2 ";
 		}
-		$query .= "LIMIT 1";
+		$query .= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 
@@ -359,7 +121,7 @@ class PublicationVersion extends JTable
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id = $pid ";
+		$query  = "UPDATE $this->_tbl SET $update = '".$new."' WHERE publication_id=" . $this->_db->Quote($pid);
 		$query .= $where ? " AND ".$where : "";
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
@@ -371,7 +133,7 @@ class PublicationVersion extends JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number='".$version."' ";
+			$query.= " AND version_number=" . $this->_db->Quote($version);
 		}
 		else
 		{
@@ -402,7 +164,7 @@ class PublicationVersion extends JTable
 		}
 		$labels = array();
 
-		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id = $pid ";
+		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
 
 		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main')
 		{
@@ -414,7 +176,7 @@ class PublicationVersion extends JTable
 		}
 		elseif (is_numeric($exclude))
 		{
-			$query.= " AND version_number!='".$exclude."' ";
+			$query.= " AND version_number!=" . $this->_db->Quote($exclude);
 		}
 
 		$this->_db->setQuery( $query );
@@ -454,7 +216,7 @@ class PublicationVersion extends JTable
 			return false;
 		}
 
-		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id = $pid ";
+		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid);
 
 		if ($version == 'default' or $version == 'current' && $version == 'main')
 		{
@@ -466,7 +228,7 @@ class PublicationVersion extends JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND version_number='".$version."' ";
+			$query.= " AND version_number=" . $this->_db->Quote($version);
 		}
 		else
 		{
@@ -505,10 +267,10 @@ class PublicationVersion extends JTable
 		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE publication_id = $pid ";
+		$query.= " WHERE publication_id=" . $this->_db->Quote($pid);
 		$query.= $withdev ? "" : " AND v.state!=3 ";
 		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
-		$query.= " ORDER BY ".$sortby;
+		$query.= " ORDER BY " . $sortby;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -533,14 +295,14 @@ class PublicationVersion extends JTable
 		}
 		if ($version == 'dev')
 		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND state = 3 LIMIT 1 ";
+			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 3 LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
 		}
 		if (is_numeric($version))
 		{
-			$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND version_number= $version LIMIT 1 ";
+			$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND version_number=" . $this->_db->Quote($version) . " LIMIT 1 ";
 			$this->_db->setQuery( $query );
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
@@ -561,7 +323,7 @@ class PublicationVersion extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT publication_id FROM $this->_tbl WHERE id = $vid LIMIT 1 ";
+		$query  = "SELECT publication_id FROM $this->_tbl WHERE id=" . $this->_db->Quote($vid) . " LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -578,7 +340,7 @@ class PublicationVersion extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND main = 1 LIMIT 1 ";
+		$query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND main = 1 LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -595,7 +357,7 @@ class PublicationVersion extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT version_number FROM $this->_tbl WHERE publication_id = $pid AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+		$query  = "SELECT version_number FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -612,7 +374,7 @@ class PublicationVersion extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id = $pid AND state = 1 ";
+		$query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -629,7 +391,7 @@ class PublicationVersion extends JTable
 		{
 			return false;
 		}
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id = $pid AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
@@ -650,7 +412,7 @@ class PublicationVersion extends JTable
 		}
 		$query  = "UPDATE $this->_tbl SET main = 0 ";
 		$query .= $unpublish ? ", state = 0 " : "";
-		$query .= "WHERE id = $vid AND main = 1 LIMIT 1 ";
+		$query .= "WHERE id=" . $this->_db->Quote($vid) . " AND main = 1 LIMIT 1 ";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}
@@ -671,7 +433,7 @@ class PublicationVersion extends JTable
 		$query  = "SELECT COUNT(*)";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " .$projectid . " AND v.state != 2";
+		$query.= " WHERE v.main=1 AND v.title LIKE '" . $title . "%' AND p.project_id = " . $this->_db->Quote($projectid). " AND v.state != 2";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadResult();
@@ -694,7 +456,7 @@ class PublicationVersion extends JTable
 	 */
 	public function createNewVersion( $dev, $state = 1, $secret = '', $version_number = 1, $main = 1 )
 	{
-		$new =  new PublicationVersion( $this->_db );
+		$new =  new self( $this->_db );
 		$new = $dev;
 		$new->id = 0;
 		$new->rating = '0.0';
@@ -745,7 +507,7 @@ class PublicationVersion extends JTable
 		}
 		elseif (is_numeric($version))
 		{
-			$query.= " AND v.version_number='".$version."' ";
+			$query.= " AND v.version_number=" . $this->_db->Quote($version);
 		}
 		else
 		{
@@ -800,10 +562,10 @@ class PublicationVersion extends JTable
 							$extracted = explode('=', $p);
 							if (!empty($extracted))
 							{
-								$in .= $extracted[0].'=';
+								$in .= $extracted[0] . '=';
 								$default = isset($extracted[1]) ? $extracted[1] : 0;
 								$in .= $extracted[0] == $param ? $value : $default;
-								$in	.= n;
+								$in	.= "\n";
 								if ($extracted[0] == $param)
 								{
 									$found = 1;
@@ -814,12 +576,12 @@ class PublicationVersion extends JTable
 				}
 				if (!$found)
 				{
-					$in .= n.$param.'='.$value;
+					$in .= "\n" . $param . '=' . $value;
 				}
 			}
 			else
 			{
-				$in = $param.'='.$value;
+				$in = $param . '=' . $value;
 			}
 			$this->params = $in;
 			$this->store();

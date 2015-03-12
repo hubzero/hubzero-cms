@@ -335,7 +335,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$item['authors']   	= array();
 
 				// Publication properties
-				$item['publication'] = new Publication( $this->database );
+				$item['publication'] = new \Components\Publications\Tables\Publication( $this->database );
 				$item['publication']->master_type 		= $mType->id;
 				$item['publication']->category 			= $catId ? $catId : $cat;
 				$item['publication']->project_id 		= $this->project->id;
@@ -344,7 +344,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$item['publication']->access 			= 0;
 
 				// Version properties
-				$item['version'] 		= new PublicationVersion( $this->database );
+				$item['version'] 		= new \Components\Publications\Tables\Version( $this->database );
 				$item['version']->title = isset($node->title) && trim($node->title)
 										? trim($node->title) : $title;
 				$item['version']->abstract 	= isset($node->synopsis) ? trim($node->synopsis) : '';

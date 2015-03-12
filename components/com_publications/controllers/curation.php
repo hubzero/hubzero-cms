@@ -117,7 +117,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->filters		= $filters;
 
 		// Instantiate project publication
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Get all publications
 		$this->view->rows = $objP->getRecords($filters);
@@ -233,8 +233,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		// Load publication & version classes
-		$objP = new Publication( $this->database );
-		$objV = new PublicationVersion( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objV = new \Components\Publications\Tables\Version( $this->database );
 		$mt   = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Check that version exists
@@ -365,8 +365,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$objV  = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$objV  = new \Components\Publications\Tables\Version( $this->database );
 		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Check that version exists
@@ -457,8 +457,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$ajax 		= JRequest::getInt( 'ajax', 0 );
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$row  = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$row  = new \Components\Publications\Tables\Version( $this->database );
 		if (!$vid || !$row->load($vid) || $row->publication_id != $pid || !$objP->load($pid))
 		{
 			if ($ajax)
@@ -630,8 +630,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$row   = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$row   = new \Components\Publications\Tables\Version( $this->database );
 		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Load version
@@ -754,8 +754,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$vid 	= JRequest::getInt('vid', 0);
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$row   = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$row   = new \Components\Publications\Tables\Version( $this->database );
 		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Load version
@@ -860,8 +860,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		// Load publication & version classes
-		$objP  = new Publication( $this->database );
-		$objV  = new PublicationVersion( $this->database );
+		$objP  = new \Components\Publications\Tables\Publication( $this->database );
+		$objV  = new \Components\Publications\Tables\Version( $this->database );
 		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		if (!$vid || !$objV->load($vid))

@@ -130,7 +130,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 		$types = ($type == 'all') ? array('view', 'primary') : array($type);
 
 		// Get all public versions
-		$row  = new PublicationVersion( $this->_db );
+		$row  = new \Components\Publications\Tables\Version( $this->_db );
 		$versions = $row->getVersions($pid, $filters = array('public' => 1));
 
 		if (!$versions)

@@ -431,7 +431,7 @@ class PublicationUtilities
 		$database = JFactory::getDBO();
 
 		// Load version
-		$row = new PublicationVersion($database);
+		$row = new \Components\Publications\Tables\Version($database);
 
 		// Collect metadata
 		$metadata = array();

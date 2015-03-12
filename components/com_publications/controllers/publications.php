@@ -332,7 +332,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 
 		// Instantiate a publication object
-		$rr = new Publication( $this->database );
+		$rr = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Get most recent pubs
 		$this->view->results = $rr->getRecords( $this->view->filters );
@@ -412,7 +412,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Instantiate a publication object
-		$rr = new Publication( $this->database );
+		$rr = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Execute count query
 		$results = $rr->getCount( $this->view->filters );
@@ -500,7 +500,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$id 	= $this->_id;
 		$alias 	= $this->_alias;
 
-		$objP   = new Publication( $this->database );
+		$objP   = new \Components\Publications\Tables\Publication( $this->database );
 
 		// Ensure we have an ID or alias to work with
 		if (!$id && !$alias)
@@ -528,7 +528,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Check that version number exists
-		$objV 	 = new PublicationVersion( $this->database );
+		$objV 	 = new \Components\Publications\Tables\Version( $this->database );
 		$version = in_array($version, array('dev', 'default')) ? $version : intval($version);
 		$version = $version && $objV->checkVersion($id, $version) ? $version : 'default';
 
@@ -566,7 +566,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get last public release info
-		$objV = new PublicationVersion( $this->database );
+		$objV = new \Components\Publications\Tables\Version( $this->database );
 		$lastPubRelease = $objV->getLastPubRelease($id);
 
 		// Check authorization
@@ -1173,7 +1173,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Load version by ID
-		$objPV 	  = new PublicationVersion( $this->database );
+		$objPV 	  = new \Components\Publications\Tables\Version( $this->database );
 		if ($vid && !$objPV->load($vid))
 		{
 			$this->setRedirect(
@@ -1193,7 +1193,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get publication
-		$objP 		 = new Publication( $this->database );
+		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
 		$publication = $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 
 		// Make sure we got a result from the database
@@ -1481,7 +1481,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get publication version
-		$objPV 		 = new PublicationVersion( $this->database );
+		$objPV 		 = new \Components\Publications\Tables\Version( $this->database );
 		if (!$objPV->load($vid))
 		{
 			$this->setRedirect(
@@ -1493,7 +1493,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get publication
-		$objP 		 = new Publication( $this->database );
+		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
 		$publication = $objP->getPublication($pid, $objPV->version_number);
 
 		// Make sure we got a result from the database
@@ -1570,7 +1570,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 			// Get publication
-			$objP 		 		= new Publication( $this->database );
+			$objP 		 		= new \Components\Publications\Tables\Publication( $this->database );
 			$this->publication 	= $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 
 			// Check if user has access to content
@@ -1786,7 +1786,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get publication
-		$objP 		 = new Publication( $this->database );
+		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
 		$publication = $objP->getPublication($id, $version);
 
 		// Make sure we got a result from the database
@@ -1843,7 +1843,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get the publication
-		$objP = new Publication( $this->database );
+		$objP = new \Components\Publications\Tables\Publication( $this->database );
 		$publication = $objP->getPublication($id, $version);
 
 		// Get HUB configuration

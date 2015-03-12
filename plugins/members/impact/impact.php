@@ -307,7 +307,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate some needed objects
-		$objP = new Publication($database);
+		$objP = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
 		$filters = array(

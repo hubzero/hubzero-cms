@@ -70,7 +70,7 @@ class Helper extends Module
 		);
 
 		// Instantiate
-		$objP = new Publication($database);
+		$objP = new \Components\Publications\Tables\Publication($database);
 
 		// Assigned curation
 		$this->rows = $objP->getRecords($filters);

@@ -219,7 +219,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Make sure this publication belongs to this project
-		$objP = new Publication( $this->_database );
+		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 		if (!$objP->load($pid) || $objP->project_id != $this->_project->id)
 		{
 			$this->setError( JText::_('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
@@ -678,8 +678,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);
@@ -808,8 +808,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);

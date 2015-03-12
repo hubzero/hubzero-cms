@@ -328,8 +328,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);

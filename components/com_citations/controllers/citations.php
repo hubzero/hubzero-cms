@@ -724,7 +724,7 @@ class Citations extends SiteController
 			if ($entry->tbl == 'publication')
 			{
 				$pubID = $entry->oid;
-				$objP = new \Publication($this->database);
+				$objP = new \Components\Publications\Tables\Publication($this->database);
 
 				if ($objP->load($pubID))
 				{

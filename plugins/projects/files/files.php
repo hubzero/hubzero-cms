@@ -539,8 +539,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);
@@ -4386,7 +4386,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$database = \JFactory::getDBO();
 
-			$objP 				= new Publication( $database );
+			$objP 				= new \Components\Publications\Tables\Publication( $database );
 			$pubs 				= $objP->getRecords($filters);
 			$helper 	        = new PublicationHelper($database);
 			$view->pubDiskUsage = $helper->getDiskUsage($project->id, $pubs);

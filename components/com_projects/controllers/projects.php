@@ -454,7 +454,7 @@ class Projects extends Base
 				return;
 			}
 
-			$objPub = new Publication($this->database);
+			$objPub = new \Components\Publications\Tables\Publication($this->database);
 			$pub = $objPub->getProvPublication($this->project->id);
 		}
 
@@ -935,7 +935,7 @@ class Projects extends Base
 		}
 
 		// Get publication of a provisioned project
-		$objPub = new Publication($this->database);
+		$objPub = new \Components\Publications\Tables\Publication($this->database);
 		$pub = $objPub->getProvPublication($this->project->id);
 
 		// Incoming

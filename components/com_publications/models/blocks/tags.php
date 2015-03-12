@@ -179,7 +179,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 		}
 
 		// Load publication version
-		$objP = new Publication( $this->_parent->_db );
+		$objP = new \Components\Publications\Tables\Publication( $this->_parent->_db );
 
 		if (!$objP->load($pub->id))
 		{

@@ -325,8 +325,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		$objP  			= new Publication( $this->_database );
-		$view->version 	= new PublicationVersion( $this->_database );
+		$objP  			= new \Components\Publications\Tables\Publication( $this->_database );
+		$view->version 	= new \Components\Publications\Tables\Version( $this->_database );
 
 		// Load publication version
 		$view->version->load($vid);
@@ -1080,7 +1080,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Email message subject
 		if ($project->provisioned == 1)
 		{
-			$objPub 	= new Publication($database);
+			$objPub 	= new \Components\Publications\Tables\Publication($database);
 			$pub 		= $objPub->getProvPublication($project->id);
 
 			if (!$pub || !$pub->id)
@@ -1173,8 +1173,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 
 		// Load publication & version classes
-		$objP = new Publication($this->_database);
-		$row  = new PublicationVersion($this->_database);
+		$objP = new \Components\Publications\Tables\Publication($this->_database);
+		$row  = new \Components\Publications\Tables\Version($this->_database);
 
 		// Make sure we have publication id
 		if (!$pid && $this->_project->provisioned == 1)

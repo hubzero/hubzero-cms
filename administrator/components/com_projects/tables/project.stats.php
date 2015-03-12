@@ -30,8 +30,6 @@
 
 namespace Components\Projects\Tables;
 
-use Publication;
-
 /**
  * Table class for project log history
  */
@@ -115,7 +113,7 @@ class Stats extends \JTable
 
 		$obj  = new Project( $this->_db );
 		$objO = new Owner( $this->_db );
-		$objP = new Publication( $this->_db );
+		$objP = new \Components\Publications\Tables\Publication( $this->_db );
 
 		$testProjects    = $obj->getTestProjects();
 		$validProjectIds = $obj->getValidProjects($testProjects, array(), NULL, false, 'id' );

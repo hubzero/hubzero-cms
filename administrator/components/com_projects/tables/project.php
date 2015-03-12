@@ -30,9 +30,6 @@
 
 namespace Components\Projects\Tables;
 
-use Publication;
-use PublicationVersion;
-
 /**
  * Table class for projects
  */
@@ -452,8 +449,8 @@ class Project extends \JTable
 		// Collect publication stats
 		if ($publishing)
 		{
-			$objP = new Publication( $this->_db );
-			$objPV = new PublicationVersion( $this->_db );
+			$objP = new \Components\Publications\Tables\Publication( $this->_db );
+			$objPV = new \Components\Publications\Tables\Version( $this->_db );
 			$prPub = $objP->getPubStats($validProjectIds, 'usage');
 			$perc = round(($prPub * 100)/$total) . '%';
 

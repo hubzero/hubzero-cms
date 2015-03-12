@@ -87,7 +87,7 @@ class ResourceMapGenerator
 		$this->resourceURL  = $this->componentURL . $this->id;
 
 		$database = JFactory::getDBO();
-		$pub = new Publication($database);
+		$pub = new \Components\Publications\Tables\Publication($database);
 		$publication = $pub->getPublication($this->id);
 		$this->resourceSite = JPATH_BASE . '/site/publications/' .
 				\Hubzero\Utility\String::pad($this->id) . DS .
@@ -108,7 +108,7 @@ class ResourceMapGenerator
 			// Grabs the database object
 			$database = JFactory::getDBO();
 			// Attempts to load $id on this database object.
-			$resource = new PublicationVersion($database);
+			$resource = new \Components\Publications\Tables\Version($database);
 
 			return $resource->getLastPubRelease($id);
 		}
@@ -142,7 +142,7 @@ class ResourceMapGenerator
 	{
 		// Grabs database object
 		$database = JFactory::getDBO();
-		$resource = new PublicationVersion($database);
+		$resource = new \Components\Publications\Tables\Version($database);
 		$resource = $resource->getLastPubRelease($this->id);
 
 		if (!$resource)
@@ -177,7 +177,7 @@ class ResourceMapGenerator
 		$this->version_id = $resource->id;
 
 		// Load the $types variable. In the form of array([type_id] => [type_name]).
-		$resource = new Publication($database);
+		$resource = new \Components\Publications\Tables\Publication($database);
 		$pub = $resource->getPublication($this->id);
 
 		$type_id = $pub->category;
