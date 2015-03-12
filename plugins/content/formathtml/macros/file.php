@@ -70,12 +70,15 @@ class File extends Macro
 				<li>align, border, width, height, alt, desc, title, longdesc, class, id and usemap</li>
 				<li><code>border</code> can only be a number</li>
 				<li><code>altimage</code> is only valid for CDF files. It is ignored for other file types.</li>
+				<li><code>details</code> indicates wether to display file information (size, etc.). Defaults to: on, Accepts: false, no, off, hide, hidden, none.<br />
+				The single attribute <code>nodetails</code> is an alternative.</li>
 			</ul>
 			<p>Examples:</p>
 			<ul>
 				<li><code>[[File(mydoc.pdf)]]</code> # simplest</li>
 				<li><code>[[File(mydoc.pdf, alt="My document")]]</code> # ALT text. For images, this is the "alt" attribute. For files, the "title" attribute.</li>
 				<li><code>[[File(mydoc.pdf, desc="My document")]]</code> # Link text. If none is provided, the filename will be used.</li>
+				<li><code>[[File(mydoc.pdf, details="off")]]</code> or <code>[[File(mydoc.pdf, nodetails)]]</code> to link a file and NOT display file metadata.</li>
 			</ul>
 			<p>Examples (CDF):</p>
 			<ul>
@@ -112,13 +115,13 @@ class File extends Macro
 
 		// Get single attributes
 		// EX: [[Image(myimage.png, nolink, right)]]
-		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
 		// Get quoted attribute/value pairs
 		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel)=(?:["\'])([^"\']*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=(?:["\'])([^"\']*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
 		// Get non-quoted attribute/value pairs
 		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+		$argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
 		$attr = $this->attr;
 
@@ -205,7 +208,7 @@ class File extends Macro
 		$val = trim($matches[2]);
 
 		$size   = '/^[0-9]+(%|px|em)+$/';
-		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel)=(.+)/';
+		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|nodetails)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
 		// Set width if just a pixel size is given
@@ -231,6 +234,26 @@ class File extends Macro
 		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
+			return;
+		}
+		// Specific call to NOT show file details
+		if ($key == 'details')
+		{
+			switch (strtolower($val))
+			{
+				case 'no':
+				case 'none':
+				case 'false':
+				case 'off':
+				case 'hide':
+				case 'hidden':
+					$this->attr['details'] = false;
+				break;
+
+				default:
+					$this->attr['details'] = true;
+				break;
+			}
 			return;
 		}
 		// Check for a specific link given
@@ -349,6 +372,14 @@ class File extends Macro
 		if ($key == 'nolink')
 		{
 			$this->attr['href'] = 'none';
+			return;
+		}
+
+		// Specific call to NOT link an image
+		// Links images by default
+		if ($key == 'nodetails')
+		{
+			$this->attr['details'] = false;
 			return;
 		}
 
@@ -645,10 +676,10 @@ class File extends Macro
 						$size = filesize($this->_path($file, true));
 					}
 
-					$attr['tile'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);
+					$attr['title'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);
 
 					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['title'] . '">' . $attr['desc'] . '</a>';
-					if ($size !== null)
+					if ($size !== null && $attr['details'])
 					{
 						$html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
 						if (isset($attr['created_by']))
