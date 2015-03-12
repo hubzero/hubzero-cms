@@ -43,7 +43,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'Publication';
+	protected $_tbl_name = '\\Components\\Publications\\Tables\\Publication';
 
 	/**
 	 * Returns a reference to an article model
