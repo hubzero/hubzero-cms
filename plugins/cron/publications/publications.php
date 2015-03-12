@@ -494,6 +494,8 @@ class plgCronPublications extends JPlugin
 			// Master DOI should link to /main
 			$metadata['url'] = $livesite . DS . 'publications'
 							. DS . $pointer . DS . 'main';
+			$metadata['pubYear'] = $row->published_up && $row->published_up != '0000-00-00 00:00:00'
+				? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
 
 			// Register DOI with data from version being published
 			$masterDoi = PublicationUtilities::registerDoi(
