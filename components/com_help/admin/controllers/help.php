@@ -28,9 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Help\Controllers;
+namespace Components\Help\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Components\Help\Helpers\Finder;
 
 /**
  * Help controller class
@@ -63,44 +64,7 @@ class Help extends AdminController
 		// Force help template
 		\JRequest::setVar('tmpl', 'help');
 
-		$tpl = \JFactory::getApplication()->getTemplate();
-		$lng = \JFactory::getLanguage()->getTag();
-
-		$paths = array();
-		// Template override help page
-		$paths[] = JPATH_ADMINISTRATOR . DS . 'templates' . DS . $tpl . DS .  'html' . DS . $component  . DS . 'help' . DS . $lng . DS . $page . '.phtml';
-		$paths[] = JPATH_ADMINISTRATOR . DS . 'templates' . DS . $tpl . DS .  'html' . DS . 'plg_' . str_replace('com_', '', $component) . '_' . $page . DS . 'help' . DS . $lng . DS . 'index.phtml';
-
-		// Path to help page
-		if (file_exists(JPATH_SITE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help'))
-		{
-			$paths[] = JPATH_SITE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . $lng . DS . $page . '.phtml';
-		}
-		else
-		{
-			$paths[] = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . $lng . DS . $page . '.phtml';
-		}
-		$paths[] = JPATH_ADMINISTRATOR . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $page . DS . 'help' . DS . $lng . DS . 'index.phtml';
-
-		// If we have an extension
-		if (isset($extension) && $extension != '')
-		{
-			$paths[] = JPATH_ADMINISTRATOR . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $extension . DS . 'help' . DS . $lng . DS . $page . '.phtml';
-			$paths[] = JPATH_ADMINISTRATOR . DS . 'templates' . DS . $tpl . DS .  'html' . DS . 'plg_' . str_replace('com_', '', $component) . '_' . $extension . DS . 'help' . DS . $lng . DS . $page . '.phtml';
-		}
-
-		// Store final page
-		$finalHelpPage = '';
-
-		// Determine path for help page, check template first
-		foreach ($paths as $path)
-		{
-			if (file_exists($path))
-			{
-				$finalHelpPage = $path;
-				break;
-			}
-		}
+		$finalHelpPage = Finder::page($component, $extension, $page);
 
 		// Var to hold content
 		$this->view->content = '';
@@ -116,7 +80,7 @@ class Help extends AdminController
 		else if (isset($component) && $component != '' && $page == 'index')
 		{
 			// Get list of component pages
-			$pages[] = $this->helpPagesForComponent($component);
+			$pages[] = Finder::pages($component);
 
 			// Display page
 			$this->view->content = $this->displayHelpPageIndexForPages($pages, 'h2');
@@ -124,7 +88,7 @@ class Help extends AdminController
 		else
 		{
 			// Raise error to avoid security bug
-			\JError::raiseError(404, \JText::_('COM_HELP_PAGE_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_HELP_PAGE_NOT_FOUND'));
 		}
 
 		// Set vars for views

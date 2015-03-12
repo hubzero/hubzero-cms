@@ -28,8 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Help;
+namespace Components\Help\Admin;
 
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'finder.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'help.php');
 
 // Instantiate controller and execute
