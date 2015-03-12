@@ -208,7 +208,7 @@ class FileMacro extends WikiMacro
 		$val = trim($matches[2]);
 
 		$size   = '/^[0-9]+(%|px|em)+$/';
-		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|nodetails)=(.+)/';
+		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|details)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
 		// Set width if just a pixel size is given
@@ -375,8 +375,7 @@ class FileMacro extends WikiMacro
 			return;
 		}
 
-		// Specific call to NOT link an image
-		// Links images by default
+		// Specific call to NOT display file metadata
 		if ($key == 'nodetails')
 		{
 			$this->attr['details'] = false;
@@ -663,6 +662,7 @@ class FileMacro extends WikiMacro
 				}
 				else
 				{
+					$attr['details'] = isset($attr['details']) ? $attr['details'] : true;
 					$attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->_link($file);
 					$attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
 

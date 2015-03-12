@@ -66,8 +66,8 @@ class File extends Macro
 				<li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are interpreted as the alignment for the file (currently, only applies to images)</li>
 				<li><code>link=some Link...</code> replaces the link to the file source by the one specified using <code>link</code>. If no value is specified, the link is simply removed.</li>
 				<li><code>nolink</code> means without link to image source (deprecated, use <code>link=</code>)</li>
-				<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for the file. Valid keys are:</li>
-				<li>align, border, width, height, alt, desc, title, longdesc, class, id and usemap</li>
+				<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for the file. Valid keys are:<br />
+				align, border, width, height, alt, desc, title, longdesc, class, id and usemap</li>
 				<li><code>border</code> can only be a number</li>
 				<li><code>altimage</code> is only valid for CDF files. It is ignored for other file types.</li>
 				<li><code>details</code> indicates wether to display file information (size, etc.). Defaults to: on, Accepts: false, no, off, hide, hidden, none.<br />
@@ -112,6 +112,7 @@ class File extends Macro
 		$this->attr   = array();
 		$this->attr['href']  = '';
 		$this->attr['style'] = array();
+		$this->attr['details'] = true;
 
 		// Get single attributes
 		// EX: [[Image(myimage.png, nolink, right)]]
@@ -208,7 +209,7 @@ class File extends Macro
 		$val = trim($matches[2]);
 
 		$size   = '/^[0-9]+(%|px|em)+$/';
-		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|nodetails)=(.+)/';
+		$attrs  = '/(alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|rel|details)=(.+)/';
 		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
 		// Set width if just a pixel size is given
@@ -663,6 +664,7 @@ class File extends Macro
 				}
 				else
 				{
+					$attr['details'] = isset($attr['details']) ? $attr['details'] : true;
 					$attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->_link($file);
 					$attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
 
