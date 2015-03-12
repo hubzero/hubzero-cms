@@ -38,8 +38,8 @@ use Hubzero\Base\Model;
 use Hubzero\Utility\String;
 use stdClass;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'article.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'vote.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'article.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
 require_once(__DIR__ . '/tags.php');
 require_once(__DIR__ . '/comment.php');
 if (!class_exists(__NAMESPACE__ . '\Category'))

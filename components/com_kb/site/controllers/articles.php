@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Kb\Controllers;
+namespace Components\Kb\Site\Controllers;
 
 use Components\Kb\Models\Archive;
 use Components\Kb\Models\Category;
@@ -69,7 +69,7 @@ class Articles extends SiteController
 
 		// Output HTML
 		$this->view->database = $this->database;
-		$this->view->title    = \JText::_('COM_KB');
+		$this->view->title    = Lang::txt('COM_KB');
 		$this->view->catid    = 0;
 		$this->view->config   = $this->config;
 		$this->view->archive  = $this->archive;
@@ -102,7 +102,7 @@ class Articles extends SiteController
 		if ($alias == 'all')
 		{
 			$this->view->category->set('alias', 'all');
-			$this->view->category->set('title', \JText::_('COM_KB_ALL_ARTICLES'));
+			$this->view->category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
 			$this->view->category->set('id', 0);
 			$this->view->category->set('state', 1);
 		}
@@ -123,7 +123,7 @@ class Articles extends SiteController
 
 		if (!$this->view->category->isPublished())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		// Get configuration
@@ -165,7 +165,7 @@ class Articles extends SiteController
 		$this->_buildTitle($this->view->section, $this->view->category, null);
 
 		// Output HTML
-		$this->view->title  = \JText::_('COM_KB');
+		$this->view->title  = Lang::txt('COM_KB');
 		$this->view->catid  = $sect;
 		$this->view->config = $this->config;
 		$this->view->juser  = $this->juser;
@@ -196,12 +196,12 @@ class Articles extends SiteController
 
 		if (!$this->view->article->exists())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		if (!$this->view->article->isPublished())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Is the user logged in?
@@ -225,14 +225,14 @@ class Articles extends SiteController
 		$this->view->section = new Category($this->view->article->get('section'));
 		if (!$this->view->section->isPublished())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Load the category object
 		$this->view->category = $this->view->article->category();
 		if ($this->view->category->exists() && !$this->view->category->isPublished())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Get all main categories for menu
@@ -249,7 +249,7 @@ class Articles extends SiteController
 		$this->_buildTitle($this->view->section, $this->view->category, $this->view->article);
 
 		// Output HTML
-		$this->view->title   = \JText::_('COM_KB');
+		$this->view->title   = Lang::txt('COM_KB');
 		$this->view->juser   = $this->juser;
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->get('id');
@@ -279,7 +279,7 @@ class Articles extends SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				\JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -327,7 +327,7 @@ class Articles extends SiteController
 	 */
 	protected function _buildTitle($section=null, $category=null, $article=null)
 	{
-		$this->_title = \JText::_(strtoupper($this->_option));
+		$this->_title = Lang::txt(strtoupper($this->_option));
 		if (is_object($section) && $section->get('title') != '')
 		{
 			$this->_title .= ': ' . stripslashes($section->get('title'));
@@ -355,9 +355,9 @@ class Articles extends SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$return = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
+			$return = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -371,7 +371,7 @@ class Articles extends SiteController
 		if (!$vote)
 		{
 			// Already voted
-			$this->setError(\JText::_('COM_KB_USER_DIDNT_VOTE'));
+			$this->setError(Lang::txt('COM_KB_USER_DIDNT_VOTE'));
 			$this->articleTask();
 			return;
 		}
@@ -379,7 +379,7 @@ class Articles extends SiteController
 		if (!in_array($type, array('entry', 'comment')))
 		{
 			// Already voted
-			$this->setError(\JText::_('COM_KB_WRONG_VOTE_TYPE'));
+			$this->setError(Lang::txt('COM_KB_WRONG_VOTE_TYPE'));
 			$this->displayTask();
 			return;
 		}
@@ -417,7 +417,7 @@ class Articles extends SiteController
 			if ($type == 'entry')
 			{
 				$this->setRedirect(
-					\JRoute::_($row->link())
+					Route::url($row->link())
 				);
 				return;
 			}
@@ -436,9 +436,9 @@ class Articles extends SiteController
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$return = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
+			$return = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -467,7 +467,7 @@ class Articles extends SiteController
 		}
 
 		$this->setRedirect(
-			\JRoute::_($row->link() . '#comments')
+			Route::url($row->link() . '#comments')
 		);
 	}
 
@@ -495,7 +495,7 @@ class Articles extends SiteController
 		$article = new Article(($alias ? $alias : $id), $category->get('id'));
 		if (!$article->exists())
 		{
-			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
@@ -508,15 +508,15 @@ class Articles extends SiteController
 
 		// Start a new feed object
 		$feed = new \JDocumentFeed;
-		$feed->link = \JRoute::_($article->link());
+		$feed->link = Route::url($article->link());
 
 		// Build some basic RSS document information
-		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
+		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$feed->title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
-		$feed->title .= ': ' . \JText::_('COM_KB_COMMENTS');
+		$feed->title .= ': ' . Lang::txt('COM_KB_COMMENTS');
 
-		$feed->description = \JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
-		$feed->copyright   = \JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$feed->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
+		$feed->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
 
 		// Start outputing results if any found
 		$feed = $this->_feedItem($feed, $article->comments('list'));
@@ -540,14 +540,14 @@ class Articles extends SiteController
 			// Load individual item creator class
 			$item = new \JFeedItem();
 
-			$item->author = \JText::_('COM_KB_ANONYMOUS');
+			$item->author = Lang::txt('COM_KB_ANONYMOUS');
 			if (!$comment->get('anonymous'))
 			{
 				$item->author = $comment->creator('name', $item->author);
 			}
 
 			// Prepare the title
-			$item->title = \JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
+			$item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
 			// URL link to article
 			$item->link = $feed->link . '#c' . $comment->get('id');
@@ -555,7 +555,7 @@ class Articles extends SiteController
 			// Strip html from feed item description text
 			if ($comment->isReported())
 			{
-				$item->description = \JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+				$item->description = Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 			}
 			else
 			{

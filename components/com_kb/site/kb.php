@@ -28,54 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Kb\Helpers;
+namespace Components\Kb\Site;
 
-/**
- * Table class for knowledge base permissions
- */
-class Permissions
-{
-	/**
-	 * Name of the component
-	 *
-	 * @var string
-	 */
-	public static $extension = 'com_kb';
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'articles.php');
 
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @param   string   $extension  The extension.
-	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   \JObject
-	 */
-	public static function getActions($assetType='component', $assetId = 0)
-	{
-		$assetName  = self::$extension;
-		$assetName .= '.' . $assetType;
-		if ($assetId)
-		{
-			$assetName .= '.' . (int) $assetId;
-		}
-
-		$actions = array(
-			'core.admin',
-			'core.manage',
-			'core.create',
-			'core.edit',
-			'core.edit.state',
-			'core.delete'
-		);
-
-		$user   = \JFactory::getUser();
-		$result = new \JObject;
-
-		foreach ($actions as $action)
-		{
-			$result->set($action, $user->authorise($action, $assetName));
-		}
-
-		return $result;
-	}
-}
-
+// Instantiate controller
+$controller = new Controllers\Articles();
+$controller->execute();
+$controller->redirect();

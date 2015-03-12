@@ -28,40 +28,56 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Kb;
+namespace Components\Kb\Admin\Helpers;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_kb'))
+use Hubzero\Base\Object;
+
+/**
+ * Table class for knowledge base permissions
+ */
+class Permissions
 {
-	throw new \Exception(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
+	/**
+	 * Name of the component
+	 *
+	 * @var string
+	 */
+	public static $extension = 'com_kb';
+
+	/**
+	 * Gets a list of the actions that can be performed.
+	 *
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   \JObject
+	 */
+	public static function getActions($assetType='component', $assetId = 0)
+	{
+		$assetName  = self::$extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
+		{
+			$assetName .= '.' . (int) $assetId;
+		}
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
+
+		$user   = \JFactory::getUser();
+		$result = new Object;
+
+		foreach ($actions as $action)
+		{
+			$result->set($action, $user->authorise($action, $assetName));
+		}
+
+		return $result;
+	}
 }
-
-// Include scripts
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
-
-$controllerName = \JRequest::getCmd('controller', 'categories');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'categories';
-}
-
-\JSubMenuHelper::addEntry(
-	\JText::_('COM_KB_CATEGORIES'),
-	\JRoute::_('index.php?option=com_kb&id=0', false),
-	$controllerName == 'categories'
-);
-\JSubMenuHelper::addEntry(
-	\JText::_('COM_KB_ARTICLES'),
-	\JRoute::_('index.php?option=com_kb&controller=articles&id=0', false),
-	$controllerName == 'articles'
-);
-
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
 

@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Site;
+
+use Hubzero\Component\Router\Base;
+use Components\Kb\Tables\Category;
+use Components\Kb\Tables\Article;
 
 /**
  * Routing class for the component
  */
-class KbRouter extends \Hubzero\Component\Router\Base
+class Router extends Base
 {
 	/**
 	 * Build the route for the component.
@@ -146,11 +149,11 @@ class KbRouter extends \Hubzero\Component\Router\Base
 				$title2 = urldecode($segments[1]);
 				$title2 = str_replace(':', '-', $title2);
 
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
+				include_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 
 				$db = \JFactory::getDBO();
 
-				$category = new \Components\Kb\Tables\Category($db);
+				$category = new Category($db);
 				$category->loadAlias($title2);
 
 				if ($category->id)
@@ -173,7 +176,7 @@ class KbRouter extends \Hubzero\Component\Router\Base
 					return $vars;
 				}
 
-				$article = new \Components\Kb\Tables\Article($db);
+				$article = new Article($db);
 				$article->loadAlias($title2, $category->id);
 
 				if ($article->id)

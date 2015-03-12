@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = \Components\Kb\Helpers\Permissions::getActions('category');
+$canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('category');
 
-JToolBarHelper::title(JText::_('COM_KB'), 'kb.png');
+JToolBarHelper::title(Lang::txt('COM_KB'), 'kb.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -72,19 +72,19 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-access"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>:</label>
+			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 			<select name="access" id="filter-access" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
@@ -129,17 +129,17 @@ foreach ($this->rows as $row)
 		case 1:
 			$class = 'publish';
 			$task = 'unpublish';
-			$alt = JText::_('COM_KB_PUBLISHED');
+			$alt = Lang::txt('COM_KB_PUBLISHED');
 			break;
 		case 2:
 			$class = 'expire';
 			$task = 'publish';
-			$alt = JText::_('COM_KB_TRASHED');
+			$alt = Lang::txt('COM_KB_TRASHED');
 			break;
 		case 0:
 			$class = 'unpublish';
 			$task = 'publish';
-			$alt = JText::_('COM_KB_UNPUBLISHED');
+			$alt = Lang::txt('COM_KB_UNPUBLISHED');
 			break;
 	}
 ?>
@@ -149,7 +149,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph category" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_EDIT_CATEGORY'); ?>">
+					<a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_CATEGORY'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</a>
 				<?php } else { ?>
@@ -160,7 +160,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -176,7 +176,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('categories', 0) > 0) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
 						<span><?php echo $row->get('categories', 0); ?></span>
 					</a>
 				<?php } else { ?>
@@ -187,8 +187,8 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('articles', 0) > 0) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id') . '&category=-1')); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
-						<span><?php echo $row->get('articles', 0) . ' ' . JText::_('COM_KB_ARTICLES'); ?></span>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id') . '&category=-1')); ?>" title="<?php echo Lang::txt('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
+						<span><?php echo $row->get('articles', 0) . ' ' . Lang::txt('COM_KB_ARTICLES'); ?></span>
 					</a>
 				<?php } else { ?>
 					<span>

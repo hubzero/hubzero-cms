@@ -30,15 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = \Components\Kb\Helpers\Permissions::getActions('article');
+$canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
-$ttle = JText::_('COM_KB_ARTICLES');
+$ttle = Lang::txt('COM_KB_ARTICLES');
 if ($this->filters['orphans'])
 {
-	$ttle .= JText::_('COM_KB_ARTICLES') . ' ' . JText::_('COM_KB_ORPHANS');
+	$ttle .= Lang::txt('COM_KB_ARTICLES') . ' ' . Lang::txt('COM_KB_ORPHANS');
 }
 
-JToolBarHelper::title(JText::_('COM_KB') . ': ' . $ttle, 'kb.png');
+JToolBarHelper::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb.png');
 if ($canDo->get('core.edit.state'))
 {
 	JToolBarHelper::publishList();
@@ -75,27 +75,27 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-60 fltrt">
-			<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
-			<?php echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
+			<label><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
+			<?php echo \Components\Kb\Admin\Helpers\Html::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
 
 			<?php if (isset($this->categories) && $this->categories->total() > 0) { ?>
-				<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
-				<?php echo KbHelperHtml::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
+				<label><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
+				<?php echo \Components\Kb\Admin\Helpers\Html::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
 			<?php } ?>
 
-			<label for="filter-access"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>:</label>
+			<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
 			<select name="access" id="filter-access" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
 			</select>
 		</div>
@@ -110,7 +110,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('COM_KB_VOTES'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -138,18 +138,18 @@ foreach ($this->rows as $row)
 		case 1:
 			$class = 'publish';
 			$task = 'unpublish';
-			$alt = JText::_('JPUBLISHED');
+			$alt = Lang::txt('JPUBLISHED');
 		break;
 		case 2:
 			$class = 'expire';
 			$task = 'publish';
-			$alt = JText::_('JTRASHED');
+			$alt = Lang::txt('JTRASHED');
 		break;
 		case 0:
 		default:
 			$class = 'unpublish';
 			$task = 'publish';
-			$alt = JText::_('JUNPUBLISHED');
+			$alt = Lang::txt('JUNPUBLISHED');
 		break;
 	}
 
@@ -180,12 +180,12 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
-							<span class="checkedout" title="<?php echo JText::_('JLIB_HTML_CHECKED_OUT'); ?> :: <?php echo $this->escape($row->get('editor')); ?>">
+							<span class="checkedout" title="<?php echo Lang::txt('JLIB_HTML_CHECKED_OUT'); ?> :: <?php echo $this->escape($row->get('editor')); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</span>
 					<?php } else { ?>
 						<?php if ($canDo->get('core.edit')) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
+							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_ARTICLE'); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</a>
 						<?php } else { ?>
@@ -195,7 +195,7 @@ foreach ($this->rows as $row)
 						<?php } ?>
 					<?php } ?>
 					<?php if ($tags) { ?>
-						<br /><span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
+						<br /><span><?php echo Lang::txt('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
 					<?php } ?>
 				</td>
 				<td>
@@ -211,7 +211,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php /*if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
+						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_CHANGE_ACCESS'); ?>">
 							<?php echo $row->get('groupname'); ?>
 						</a>
 					<?php } else {*/ ?>

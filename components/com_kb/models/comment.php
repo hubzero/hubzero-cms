@@ -36,8 +36,8 @@ use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'comment.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'vote.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
 
 /**
  * Knowledgebase model for a comment

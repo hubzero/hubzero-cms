@@ -34,7 +34,7 @@ use Components\Kb\Tables;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'category.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 require_once(__DIR__ . '/article.php');
 
 /**

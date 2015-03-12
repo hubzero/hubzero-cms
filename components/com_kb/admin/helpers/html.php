@@ -28,26 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Kb\Admin\Helpers;
 
 /**
  * Knowledgebase helper class for HTML
  */
-class KbHelperHtml
+class Html
 {
 	/**
 	 * Outputs a <select> element with a specific value chosen
 	 *
-	 * @param      array  $categories Data to populate list with
-	 * @param      mixed  $value      Chosen value
-	 * @param      string $name       Field name
-	 * @return     string HTML <select>
+	 * @param   array   $categories  Data to populate list with
+	 * @param   mixed   $value       Chosen value
+	 * @param   string  $name        Field name
+	 * @return  string  HTML <select>
 	 */
 	public static function sectionSelect($categories, $val, $name, $id='')
 	{
 		$out  = '<select name="' . $name . '" id="' . ($id ? $id : str_replace(array('[', ']'), '', $name)) . '">';
-		$out .= '<option value="">' . JText::_('COM_KB_SELECT_CATEGORY') . '</option>';
+		$out .= '<option value="">' . Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
 		foreach ($categories as $category)
 		{
 			$selected = ($category->get('id') == $val)

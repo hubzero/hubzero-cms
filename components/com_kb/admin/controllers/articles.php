@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Kb\Controllers;
+namespace Components\Kb\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Kb\Models\Archive;
@@ -181,8 +181,8 @@ class Articles extends AdminController
 		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out')  != $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::_('COM_KB_CHECKED_OUT'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_KB_CHECKED_OUT'),
 				'warning'
 			);
 			return;
@@ -281,8 +281,8 @@ class Articles extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::_('COM_KB_ARTICLE_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_KB_ARTICLE_SAVED')
 		);
 	}
 
@@ -313,8 +313,8 @@ class Articles extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::sprintf('COM_KB_ITEMS_REMOVED', count($ids))
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_KB_ITEMS_REMOVED', count($ids))
 		);
 	}
 
@@ -336,8 +336,8 @@ class Articles extends AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				($state == 1 ? \JText::_('COM_KB_SELECT_PUBLISH') : \JText::_('COM_KB_SELECT_UNPUBLISH')),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH')),
 				'error'
 			);
 			return;
@@ -356,19 +356,19 @@ class Articles extends AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = \JText::sprintf('COM_KB_ARCHIVED', count($ids));
+				$message = Lang::txt('COM_KB_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = \JText::sprintf('COM_KB_PUBLISHED', count($ids));
+				$message = Lang::txt('COM_KB_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = \JText::sprintf('COM_KB_UNPUBLISHED', count($ids));
+				$message = Lang::txt('COM_KB_UNPUBLISHED', count($ids));
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
 			$message
 		);
 	}
@@ -391,7 +391,7 @@ class Articles extends AdminController
 		}
 
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -410,8 +410,8 @@ class Articles extends AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::_('COM_KB_NO_ID'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_KB_NO_ID'),
 				'error'
 			);
 		}
@@ -423,7 +423,7 @@ class Articles extends AdminController
 		if (!$article->store())
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
 			);
@@ -432,7 +432,7 @@ class Articles extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -451,8 +451,8 @@ class Articles extends AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::_('COM_KB_NO_ID'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_KB_NO_ID'),
 				'error'
 			);
 		}
@@ -465,7 +465,7 @@ class Articles extends AdminController
 		if (!$article->store())
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
 			);
@@ -478,7 +478,7 @@ class Articles extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
