@@ -344,9 +344,6 @@ class Hubzero_API extends JApplication
 				array_shift($segments);
 			}
 
-			$filename = JPATH_SITE . DS . 'components' . DS . 'com_'
-				. $segments[0] . DS . 'controllers' . DS . 'api.php';
-
 			// Strip invalid characters from name
 			$segments[0] = preg_replace("/[^a-zA-Z0-9_]/", '', strtolower($segments[0]));
 
@@ -354,9 +351,17 @@ class Hubzero_API extends JApplication
 
 			if (!class_exists($classname))
 			{
-				if (is_file($filename))
+				$paths = array(
+					JPATH_SITE . DS . 'components' . DS . 'com_' . $segments[0] . DS . 'controllers' . DS . 'api.php',
+					JPATH_SITE . DS . 'components' . DS . 'com_' . $segments[0] . DS . 'api' . DS . 'controllers' . DS . 'api.php'
+				);
+				foreach ($paths as $filename)
 				{
-					require($filename);
+					if (is_file($filename))
+					{
+						require($filename);
+						break;
+					}
 				}
 			}
 
