@@ -364,7 +364,6 @@ class plgCronPublications extends JPlugin
 				$body .= $row->title . ' v.' . $row->version_label . ' (id #' . $row->id . ')' . "\n";
 			}
 		}
-		}
 
 		// Email update to admins
 		if ($counter > 0 && $aipGroup)
