@@ -618,8 +618,9 @@ class JRouterSite extends JRouter
 			}
 
 			$file = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.$segments[0].".php";
+			$file2 = JPATH_BASE.DS.'components'.DS.'com_'.$segments[0].DS.'site'.DS.$segments[0].".php";
 
-			if (file_exists($file))
+			if (file_exists($file) || file_exists($file2))
 			{
 				$vars['option'] = 'com_'.$segments[0];
 
