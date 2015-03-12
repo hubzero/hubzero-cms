@@ -36,9 +36,10 @@ JToolBarHelper::title( JText::_( 'Projects' ), 'user.png' );
 JToolBarHelper::preferences('com_projects', '550');
 JToolBarHelper::editList();
 
-include_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'grid.php');
+JHTML::_('behavior.tooltip');
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
+$now = JFactory::getDate()->toSql();
 
 $juri 	 = JURI::getInstance();
 $base 	 = rtrim($juri->base(), DS);
@@ -46,11 +47,11 @@ if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
 }
-
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
+	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
 		return;
@@ -59,7 +60,8 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
@@ -93,16 +95,22 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php 
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+			?></td>
 			</tr>
 		</tfoot>
 		<tbody>
 			<?php
 			$k = 0;
 			$filterstring  = ($this->filters['sortby'])   ? '&amp;sort='.$this->filters['sortby']     : '';
-
-			$database = JFactory::getDBO();
-			$now = JFactory::getDate()->toSql();
 
 			if ($this->rows)
 			{

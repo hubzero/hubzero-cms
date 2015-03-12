@@ -28,14 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects;
 
-$option = JRequest::getCmd('option','com_projects');
+$option = \JRequest::getCmd('option','com_projects');
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_projects'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -51,23 +50,19 @@ require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
 
-// Database development on?
-if (is_file(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php'))
-{
-	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php');
-	require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.version.php');
-}
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.version.php');
 
-$controllerName = JRequest::getCmd('controller', 'projects');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'projects');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'projects';
 }
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ProjectsController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-// Instantiate controller
+// initiate controller
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();

@@ -62,6 +62,8 @@ $pubQuota 	= $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertS
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 
+$this->css();
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
