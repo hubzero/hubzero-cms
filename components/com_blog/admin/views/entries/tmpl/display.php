@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = \Components\Blog\Helpers\Permissions::getActions('entry');
+$canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin'))

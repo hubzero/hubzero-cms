@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog\Controllers;
+namespace Components\Blog\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Entry;
@@ -273,8 +273,8 @@ class Comments extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false),
-			\JText::_('COM_BLOG_COMMENT_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false),
+			Lang::txt('COM_BLOG_COMMENT_SAVED')
 		);
 	}
 
@@ -293,7 +293,7 @@ class Comments extends AdminController
 
 		if (count($ids) > 0)
 		{
-			$this->setMessage(\JText::_('COM_BLOG_COMMENT_DELETED'));
+			$this->setMessage(Lang::txt('COM_BLOG_COMMENT_DELETED'));
 
 			// Loop through all the IDs
 			foreach ($ids as $id)
@@ -309,7 +309,7 @@ class Comments extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
 		);
 	}
 
@@ -322,7 +322,7 @@ class Comments extends AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
 		);
 	}
 }

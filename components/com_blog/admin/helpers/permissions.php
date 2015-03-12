@@ -28,20 +28,56 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog;
+namespace Components\Blog\Admin\Helpers;
 
-require_once(__DIR__ . DS . 'models' . DS . 'archive.php');
+use Hubzero\Base\Object;
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'entries'));
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Permissions helper
+ */
+class Permissions
 {
-	$controllerName = 'entries';
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+	/**
+	 * Name of the component
+	 *
+	 * @var  string
+	 */
+	public static $extension = 'com_blog';
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	/**
+	 * Gets a list of the actions that can be performed.
+	 *
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The category ID.
+	 * @return  object
+	 */
+	public static function getActions($assetType='component', $assetId = 0)
+	{
+		$assetName  = self::$extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
+		{
+			$assetName .= '.' . (int) $assetId;
+		}
+
+		$user = \JFactory::getUser();
+		$result = new Object;
+
+		$actions = array(
+			'admin',
+			'manage',
+			'create',
+			'edit',
+			'edit.state',
+			'delete'
+		);
+
+		foreach ($actions as $action)
+		{
+			$result->set('core.' . $action, $user->authorise($action, $assetName));
+		}
+
+		return $result;
+	}
+}
 

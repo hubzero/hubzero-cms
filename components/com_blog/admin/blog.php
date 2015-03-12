@@ -23,37 +23,38 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog;
+namespace Components\Blog\Admin;
 
 if (!\JFactory::getUser()->authorise('core.manage', 'com_blog'))
 {
-	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
 $scope = \JRequest::getCmd('scope', 'site');
 $controllerName = \JRequest::getCmd('controller', 'entries');
 
 \JSubMenuHelper::addEntry(
-	\JText::_('COM_BLOG_SCOPE_SITE'),
-	\JRoute::_('index.php?option=com_blog&controller=entries&scope=site'),
+	Lang::txt('COM_BLOG_SCOPE_SITE'),
+	Route::url('index.php?option=com_blog&controller=entries&scope=site'),
 	($controllerName == 'entries' && $scope == 'site')
 );
 \JSubMenuHelper::addEntry(
-	\JText::_('COM_BLOG_SCOPE_MEMBER'),
-	\JRoute::_('index.php?option=com_blog&controller=entries&scope=member'),
+	Lang::txt('COM_BLOG_SCOPE_MEMBER'),
+	Route::url('index.php?option=com_blog&controller=entries&scope=member'),
 	($controllerName == 'entries' && $scope == 'member')
 );
 \JSubMenuHelper::addEntry(
-	\JText::_('COM_BLOG_SCOPE_GROUP'),
-	\JRoute::_('index.php?option=com_blog&controller=entries&scope=group'),
+	Lang::txt('COM_BLOG_SCOPE_GROUP'),
+	Route::url('index.php?option=com_blog&controller=entries&scope=group'),
 	($controllerName == 'entries' && $scope == 'group')
 );
 

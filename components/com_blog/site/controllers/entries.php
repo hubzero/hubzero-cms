@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog\Controllers;
+namespace Components\Blog\Site\Controllers;
 
 use Components\Blog\Models\Archive;
 use Components\Blog\Models\Comment;

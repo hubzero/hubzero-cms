@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Blog\Site;
+
+use Hubzero\Component\Router\Base;
 
 /**
  * Routing class for the component
  */
-class BlogRouter extends \Hubzero\Component\Router\Base
+class Router extends Base
 {
 	/**
 	 * Build the route for the component.

@@ -28,54 +28,20 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog\Helpers;
+namespace Components\Blog\Site;
 
-/**
- * Permissions helper
- */
-class Permissions
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
+
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'entries'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	/**
-	 * Name of the component
-	 *
-	 * @var  string
-	 */
-	public static $extension = 'com_blog';
-
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @param   string   $extension  The extension.
-	 * @param   integer  $assetId    The category ID.
-	 * @return  object
-	 */
-	public static function getActions($assetType='component', $assetId = 0)
-	{
-		$assetName  = self::$extension;
-		$assetName .= '.' . $assetType;
-		if ($assetId)
-		{
-			$assetName .= '.' . (int) $assetId;
-		}
-
-		$user = \JFactory::getUser();
-		$result = new \JObject;
-
-		$actions = array(
-			'core.admin',
-			'core.manage',
-			'core.create',
-			'core.edit',
-			'core.edit.state',
-			'core.delete'
-		);
-
-		foreach ($actions as $action)
-		{
-			$result->set($action, $user->authorise($action, $assetName));
-		}
-
-		return $result;
-	}
+	$controllerName = 'entries';
 }
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
 

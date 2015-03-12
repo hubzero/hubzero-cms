@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,19 +23,19 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Blog\Admin\Models;
 
 jimport('joomla.application.component.modeladmin');
 
 /**
- * Blog comment model.
+ * Blog entry model
  */
-class BlogModelComment extends JModelAdmin
+class Entry extends \JModelAdmin
 {
 	/**
 	 * Stock method to auto-populate the model state.
@@ -46,12 +46,12 @@ class BlogModelComment extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = JRequest::getVar($key, array());
+		$pk = \JRequest::getVar($key, array());
 		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
@@ -59,23 +59,24 @@ class BlogModelComment extends JModelAdmin
 		$this->setState($this->getName() . '.id', $pk);
 
 		// Load the parameters.
-		$value = JComponentHelper::getParams($this->option);
+		$value = \JComponentHelper::getParams($this->option);
 		$this->setState('params', $value);
 	}
 
 	/**
 	 * Method to get the record form.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  mixed    A JForm object on success, false on failure
+	 * @since   1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_blog.comment', 'category', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		$form = $this->loadForm('com_blog.entry', 'entry', array('control' => 'jform', 'load_data' => $loadData));
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -83,29 +84,29 @@ class BlogModelComment extends JModelAdmin
 	}
 
 	/**
-		 * Returns a reference to the a Table object, always creating it.
-		 *
-		 * @param	type	The table type to instantiate
-		 * @param	string	A prefix for the table class name. Optional.
-		 * @param	array	Configuration array for model. Optional.
-		 * @return	JTable	A database object
-		 * @since	1.7
-		 */
-	public function getTable($type = 'Comment', $prefix = 'Blog', $config = array())
+	 * Returns a reference to the a Table object, always creating it.
+	 *
+	 * @param   string  The table type to instantiate
+	 * @param   string  A prefix for the table class name. Optional.
+	 * @param   array   Configuration array for model. Optional.
+	 * @return  object  A database object
+	 * @since   1.7
+	 */
+	public function getTable($type = 'Post', $prefix = 'Forum', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return \JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return  array    The default data is an empty array.
+	 * @return  array  The default data is an empty array.
 	 * @since   11.1
 	 */
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_blog.edit.comment.data', array());
+		$data = \JFactory::getApplication()->getUserState('com_blog.edit.entry.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

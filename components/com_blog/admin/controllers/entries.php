@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Blog\Controllers;
+namespace Components\Blog\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Blog\Models\Archive;
@@ -224,8 +224,8 @@ class Entries extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::_('COM_BLOG_ENTRY_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BLOG_ENTRY_SAVED')
 		);
 	}
 
@@ -258,8 +258,8 @@ class Entries extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::_('COM_BLOG_ENTRIES_DELETED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BLOG_ENTRIES_DELETED')
 		);
 	}
 
@@ -283,8 +283,8 @@ class Entries extends AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::sprintf('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
 				'error'
 			);
 			return;
@@ -310,19 +310,19 @@ class Entries extends AdminController
 		switch ($this->_task)
 		{
 			case 'publish':
-				$message = \JText::sprintf('COM_BLOG_ITEMS_PUBLISHED', $success);
+				$message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
 			break;
 			case 'unpublish':
-				$message = \JText::sprintf('COM_BLOG_ITEMS_UNPUBLISHED', $success);
+				$message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
 			break;
 			case 'archive':
-				$message = \JText::sprintf('COM_BLOG_ITEMS_ARCHIVED', $success);
+				$message = Lang::txt('COM_BLOG_ITEMS_ARCHIVED', $success);
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -346,8 +346,8 @@ class Entries extends AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::sprintf('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
 				'error'
 			);
 			return;
@@ -364,7 +364,7 @@ class Entries extends AdminController
 			if (!$row->store())
 			{
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$row->getError(),
 					'error'
 				);
@@ -375,17 +375,17 @@ class Entries extends AdminController
 		switch ($state)
 		{
 			case 1:
-				$message = \JText::sprintf('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
+				$message = Lang::txt('COM_BLOG_ITEMS_COMMENTS_ENABLED', count($ids));
 			break;
 			case 0:
 			default:
-				$message = \JText::sprintf('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
+				$message = Lang::txt('COM_BLOG_ITEMS_COMMENTS_DISABLED', count($ids));
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
