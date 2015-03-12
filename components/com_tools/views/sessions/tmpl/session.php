@@ -109,7 +109,7 @@ if (!$this->app->sess) {
 					<fieldset>
 						<?php
 						$declared = JRequest::getWord('viewer');
-						$viewer = ($declared ? $declared : JFactory::getSession()->get('tool_viewer'));
+						$viewer = ($declared ? $declared : $this->output->rendered); //JFactory::getSession()->get('tool_viewer'));
 						?>
 						<?php echo JText::sprintf('COM_TOOLS_SESSION_USING_VIEWER', JText::_('PLG_TOOLS_' . $viewer . '_TITLE')); ?>
 						<label for="app-viewer">

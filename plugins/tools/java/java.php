@@ -84,7 +84,7 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$session->rendered = true;
+		$session->rendered = $this->_name;
 
 		if (!$declared)
 		{
