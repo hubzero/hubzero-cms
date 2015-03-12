@@ -455,8 +455,13 @@ class JAccess
 	public static function getActions($component, $section = 'component')
 	{
 		JLog::add(__METHOD__ . ' is deprecated. Use JAccess::getActionsFromFile or JAcces::getActionsFromData instead.', JLog::WARNING, 'deprecated');
+		$path = JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml';
+		if (file_exists(JPATH_SITE . '/components/' . $component . '/config/access.xml'))
+		{
+			$path = JPATH_SITE . '/components/' . $component . '/config/access.xml';
+		}
 		$actions = self::getActionsFromFile(
-			JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml',
+			$path,
 			"/access/section[@name='" . $section . "']/"
 		);
 		if (empty($actions))

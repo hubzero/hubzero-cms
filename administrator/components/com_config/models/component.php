@@ -96,6 +96,7 @@ class Component extends \JModelForm
 			// Add the search path for the admin component config.xml file.
 			\JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . $this->getState('component.option'));
 		}
+		\JForm::addFormPath(JPATH_SITE . '/components/' . $this->getState('component.option') . '/config');
 
 		// Get the form.
 		$form = $this->loadForm(
