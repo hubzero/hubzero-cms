@@ -72,7 +72,14 @@ class Help extends AdminController
 		$paths[] = JPATH_ADMINISTRATOR . DS . 'templates' . DS . $tpl . DS .  'html' . DS . 'plg_' . str_replace('com_', '', $component) . '_' . $page . DS . 'help' . DS . $lng . DS . 'index.phtml';
 
 		// Path to help page
-		$paths[] = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . $lng . DS . $page . '.phtml';
+		if (file_exists(JPATH_SITE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help'))
+		{
+			$paths[] = JPATH_SITE . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . $lng . DS . $page . '.phtml';
+		}
+		else
+		{
+			$paths[] = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . $lng . DS . $page . '.phtml';
+		}
 		$paths[] = JPATH_ADMINISTRATOR . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $page . DS . 'help' . DS . $lng . DS . 'index.phtml';
 
 		// If we have an extension

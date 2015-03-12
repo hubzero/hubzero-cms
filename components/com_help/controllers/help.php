@@ -68,11 +68,19 @@ class Help extends SiteController
 		$paths = array(
 			// Template override help page
 			JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $page . DS . 'help' . DS . $lang . DS . 'index.' . $this->layoutExt,
-			JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . $component  . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt,
-			// Path to help page
-			JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt,
-			JPATH_ROOT . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . $this->layoutExt
+			JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . $component  . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt
 		);
+
+		// Path to help page
+		if (file_exists(JPATH_SITE . DS . 'components' . DS . $component . DS . 'site' . DS . 'help'))
+		{
+			$paths[] = JPATH_SITE . DS . 'components' . DS . $component . DS . 'site' . DS . 'help' . DS . $lng . DS . $page . '.' . $this->layoutExt;
+		}
+		else
+		{
+			$paths[] = JPATH_SITE . DS . 'components' . DS . $component . DS . 'help' . DS . $lng . DS . $page . '.' . $this->layoutExt;
+		}
+		$paths[] = JPATH_ROOT . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . $this->layoutExt;
 
 		// If we have an extension
 		if (isset($extension) && $extension != '')
