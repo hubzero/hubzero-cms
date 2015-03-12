@@ -44,7 +44,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 	 *
 	 * @var object
 	 */
-	protected $_tbl_name = 'PublicationReview';
+	protected $_tbl_name = '\\Components\\Publications\\Tables\\Review';
 
 	/**
 	 * Model context

@@ -514,7 +514,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load master type
-		$mt   							= new PublicationMasterType( $this->_database );
+		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
 		$view->publication->_project	= $this->_project;
 
@@ -640,7 +640,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/selector');
 
 		// Load master type
-		$mt   							= new PublicationMasterType( $this->_database );
+		$mt   							= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
 		$view->publication->_project	= $this->_project;
 
@@ -775,7 +775,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get manifest
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 		$pub->_type = $mt->getType($pub->base);
 
 		// Get curation model
@@ -834,7 +834,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load publication & version classes
 		$objP = new Publication( $this->_database );
 		$objV = new PublicationVersion( $this->_database );
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'dev';
@@ -1123,7 +1123,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function startDraft()
 	{
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('*', 1, 0, 'ordering', $this->_config);
 
 		// Contribute process outside of projects
@@ -1197,7 +1197,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Load publication & version classes
 		$objP = new Publication( $this->_database );
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Determine publication master type
 		$choices  	= $mt->getTypes('alias', 1);
@@ -1367,7 +1367,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load publication & version classes
 		$objP = new Publication( $this->_database );
 		$objV = new PublicationVersion( $this->_database );
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
@@ -1612,7 +1612,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load master type
-		$mt   			= new PublicationMasterType( $this->_database );
+		$mt   			= new \Components\Publications\Tables\MasterType( $this->_database );
 		$pub->_type   	= $mt->getType($pub->base);
 		$pub->_project 	= $this->_project;
 
@@ -1711,7 +1711,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->required = array('content', 'description', 'license', 'authors');
 
 		// Get master publication types
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/diskspace');
@@ -1754,7 +1754,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function start()
 	{
 		// Get master publication types
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('*', 1, 0, 'ordering', $this->_config);
 
 		// Contribute process outside of projects
@@ -1854,7 +1854,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->move = 1;
 
 		// Get master publication types
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->choices = $mt->getTypes('alias', 1);
 
 		// Check that choices apply to a particular project
@@ -1994,7 +1994,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
 
 		// Get pub stats for each publication
-		$pubLog = new PublicationLog($this->_database);
+		$pubLog = new \Components\Publications\Tables\Log($this->_database);
 		$view->pubstats = $pubLog->getPubStats($this->_project->id, $pid);
 
 		// Get date of first log
@@ -2089,7 +2089,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get master publication types
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 
 		// Check that choices apply to a particular project
@@ -2265,7 +2265,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'license':
 				// Get available licenses
-				$objL = new PublicationLicense( $this->_database);
+				$objL = new \Components\Publications\Tables\License( $this->_database);
 				$apps_only = $pub->master_type == 'tools' ? 1 : 0;
 				$view->licenses = $objL->getLicenses( $filters=array('apps_only' => $apps_only));
 
@@ -2318,7 +2318,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'gallery':
 				// Get screenshots
-				$pScreenshot = new PublicationScreenshot( $this->_database );
+				$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 				$view->shots = $pScreenshot->getScreenshots( $row->id );
 
 				// Get gallery path
@@ -2644,7 +2644,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load master type
-		$mt   			= new PublicationMasterType( $this->_database );
+		$mt   			= new \Components\Publications\Tables\MasterType( $this->_database );
 		$pub->_type   	= $mt->getType($pub->base);
 		$pub->_project 	= $this->_project;
 
@@ -2824,13 +2824,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Copy gallery images
 					if (!$this->useBlocks)
 					{
-						$pScreenshot = new PublicationScreenshot( $this->_database );
+						$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 						$screenshots = $pScreenshot->getScreenshots( $oldid );
 						if ($screenshots)
 						{
 							foreach ($screenshots as $shot)
 							{
-								$pShot 							= new PublicationScreenshot( $this->_database );
+								$pShot 							= new \Components\Publications\Tables\Screenshot( $this->_database );
 								$pShot->filename 				= $shot->filename;
 								$pShot->srcfile 				= $shot->srcfile;
 								$pShot->publication_id 			= $shot->publication_id;
@@ -3023,7 +3023,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get master publication types
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 
 		// Check that choices apply to a particular project
@@ -3088,7 +3088,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->tags = $view->helper->tagCloud;
 
 		// Get license info
-		$pLicense = new PublicationLicense( $this->_database );
+		$pLicense = new \Components\Publications\Tables\License( $this->_database );
 		$view->license = $pLicense->getLicense($pub->license_type);
 
 		// Sys group
@@ -3104,7 +3104,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->access_groups = $paccess->getGroups($pub->version_id, $pub->id, $version, $cn);
 
 		// Get gallery images
-		$pScreenshot = new PublicationScreenshot( $this->_database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		$gallery = $pScreenshot->getScreenshots( $pub->version_id );
 		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
 
@@ -3205,7 +3205,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Instantiate project publication
 		$objP = new Publication( $this->_database );
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// If publication not found, raise error
 		if (!$objP->load($pid) && $section != 'content')
@@ -3555,7 +3555,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$agree 	 = JRequest::getVar( 'agree', 0, 'post', 'array' );
 
 					// Get standard license info
-					$objL = new PublicationLicense( $this->_database);
+					$objL = new \Components\Publications\Tables\License( $this->_database);
 					$selected_license = $objL->getLicenseByName ($license);
 
 					if ($selected_license)
@@ -3837,7 +3837,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Load publication & version classes
 		$objP = new Publication( $this->_database );
 		$row  = new PublicationVersion( $this->_database );
-		$mt   = new PublicationMasterType( $this->_database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		// Check that version exists
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
@@ -4480,7 +4480,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$metadata['language'] = 'en';
 
 			// Get license type
-			$objL = new PublicationLicense( $this->_database);
+			$objL = new \Components\Publications\Tables\License( $this->_database);
 			if ($objL->loadLicense($row->license_type))
 			{
 				$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
@@ -4697,7 +4697,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pContent->deleteAttachments($vid);
 
 					// Delete screenshots
-					$pScreenshot = new PublicationScreenshot( $this->_database );
+					$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 					$pScreenshot->deleteScreenshots($vid);
 
 					jimport('joomla.filesystem.file');
@@ -6002,7 +6002,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _processGallery( $pid, $vid, $selections )
 	{
-		$pScreenshot = new PublicationScreenshot( $this->_database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		$now = JFactory::getDate()->toSql();
 
 		// Get original screenshots
@@ -6045,7 +6045,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 				elseif ($src)
 				{
-					$pScreenshot = new PublicationScreenshot( $this->_database );
+					$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 					$pScreenshot->filename = $file;
 					$pScreenshot->srcfile = $src;
 					$pScreenshot->publication_id = $pid;
@@ -6131,7 +6131,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load screenshot info if any
-		$pScreenshot = new PublicationScreenshot( $this->_database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		if ($pScreenshot->loadFromFilename($ima, $vid))
 		{
 			$view->file = $pScreenshot->srcfile;
@@ -6228,7 +6228,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$gallery_path = $helper->buildPath($pid, $vid, $webpath, 'gallery');
 
 		// Does screenshot already exist?
-		$pScreenshot = new PublicationScreenshot( $this->_database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		if ($pScreenshot->loadFromFilename($ima, $vid))
 		{
 			$thumb = \Components\Projects\Helpers\Html::createThumbName($pScreenshot->srcfile, '_tn', $extension = 'png');
@@ -6427,7 +6427,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row->load($vid);
 		$version = $row->version_number;
 
-		$pScreenshot = new PublicationScreenshot( $this->_database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		if ($pScreenshot->loadFromFilename( $ima, $vid ))
 		{
 			if ($title && $pScreenshot->title != $title)
@@ -6439,7 +6439,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$pScreenshot 							= new PublicationScreenshot( $this->_database );
+			$pScreenshot 							= new \Components\Publications\Tables\Screenshot( $this->_database );
 			$pScreenshot->filename 					= $ima;
 			$pScreenshot->srcfile 					= $srcfile;
 			$pScreenshot->publication_id 			= $pid;
@@ -6798,7 +6798,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$typeParams = NULL;
 		if ($base)
 		{
-			$mt = new PublicationMasterType( $this->_database );
+			$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 			$mType = $mt->getType($base);
 			$typeParams = new JParameter( $mType->params );
 		}
@@ -6934,7 +6934,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'gallery')
 			{
 				// Check sreenshots
-				$pScreenshot = new PublicationScreenshot( $this->_database );
+				$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 				$checked['gallery'] = count($pScreenshot->getScreenshots( $row->id )) > 0 ? 1 : 0;
 			}
 			elseif ($value == 'tags')
@@ -7022,7 +7022,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _parseSelections( $selections = '' )
 	{
-		$mt = new PublicationMasterType( $this->_database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 
 		if ($selections)
 		{
@@ -7338,7 +7338,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$readme .= 'License: ' . "\n ";
 
 		// Get license type
-		$objL = new PublicationLicense( $database);
+		$objL = new \Components\Publications\Tables\License( $database);
 		$license = '';
 		if ($objL->loadLicense($objV->license_type))
 		{
@@ -7446,7 +7446,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get gallery info
-			$pScreenshot = new PublicationScreenshot( $database );
+			$pScreenshot = new \Components\Publications\Tables\Screenshot( $database );
 			$gImages = $pScreenshot->getScreenshotArray( $vid );
 
 			// Add screenshots

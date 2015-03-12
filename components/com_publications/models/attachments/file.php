@@ -737,7 +737,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 					if ($pub->state == 1)
 					{
-						$pubLog = new PublicationLog($this->_parent->_db);
+						$pubLog = new \Components\Publications\Tables\Log($this->_parent->_db);
 						$aType  = $element->params->role == 1 ? 'primary' : 'support';
 						$pubLog->logAccess($pub, $aType, $configs->logPath);
 					}

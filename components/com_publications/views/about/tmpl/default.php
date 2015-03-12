@@ -101,7 +101,7 @@ $schema 	= $metaElements->getSchema();
 				'gallery'
 			);
 
-			$pScreenshot = new PublicationScreenshot($this->database);
+			$pScreenshot = new \Components\Publications\Tables\Screenshot($this->database);
 			$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );
 			$shots = PublicationsHtml::showGallery($gallery, $gallery_path, $this->publication->id, $this->publication->version_id);
 			if ($shots)

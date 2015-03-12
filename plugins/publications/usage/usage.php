@@ -130,7 +130,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		include_once( JPATH_ROOT . DS . 'administrator' .DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
 
-		$stats = new PublicationStats( $database );
+		$stats = new \Components\Publications\Tables\Stats( $database );
 		$stats->loadStats( $publication->id, $period, $dthis );
 
 		// Are we returning HTML?

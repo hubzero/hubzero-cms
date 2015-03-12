@@ -292,7 +292,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Get master type info
-		$mt = new PublicationMasterType( $this->database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->database );
 		$this->view->pub->_type = $mt->getType($this->view->pub->base);
 		$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
@@ -343,7 +343,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->tags = implode(', ', $mytagarray);
 
 		// Get selected license
-		$objL = new PublicationLicense( $this->database );
+		$objL = new \Components\Publications\Tables\License( $this->database );
 		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
 		$this->view->lists['licenses'] = PublicationsAdminHtml::selectLicense(
 			$objL->getLicenses(),
@@ -416,7 +416,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->pub->_project->load($this->view->pub->project_id);
 
 			// Get master type info
-			$mt = new PublicationMasterType( $this->database );
+			$mt = new \Components\Publications\Tables\MasterType( $this->database );
 			$this->view->pub->_type = $mt->getType($this->view->pub->base);
 			$this->view->typeParams = new JParameter( $this->view->pub->_type->params );
 
@@ -515,7 +515,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
-			$mt = new PublicationMasterType( $this->database );
+			$mt = new \Components\Publications\Tables\MasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
 			$typeParams = new JParameter( $pub->_type->params );
 
@@ -1188,7 +1188,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						if ($useBlocks)
 						{
 							// Get master type info
-							$mt = new PublicationMasterType( $this->database );
+							$mt = new \Components\Publications\Tables\MasterType( $this->database );
 							$pub->_type = $mt->getType($pub->base);
 
 							// Get curation model
@@ -1431,7 +1431,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Get license type
-		$objL = new PublicationLicense( $this->database);
+		$objL = new \Components\Publications\Tables\License( $this->database);
 		if ($objL->loadLicense($row->license_type))
 		{
 			$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
@@ -1741,7 +1741,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pContent->deleteAttachments($vid);
 
 		// Delete screenshots
-		$pScreenshot = new PublicationScreenshot( $this->database );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->database );
 		$pScreenshot->deleteScreenshots($vid);
 
 		// Delete access accosiations
@@ -1884,7 +1884,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$objV  = new PublicationVersion( $this->database );
-		$mt    = new PublicationMasterType( $this->database );
+		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
@@ -1913,7 +1913,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
-			$mt = new PublicationMasterType( $this->database );
+			$mt = new \Components\Publications\Tables\MasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
 			$typeParams = new JParameter( $pub->_type->params );
 

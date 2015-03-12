@@ -107,7 +107,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		if (($user->get('id') == $member->get('uidNumber') && $this->params->get('show_impact', 0) == 1) || $this->params->get('show_impact', 0) == 2)
 		{
 			// Check if user has any publications
-			$pubLog = new PublicationLog($this->_database);
+			$pubLog = new \Components\Publications\Tables\Log($this->_database);
 			$this->_stats = $pubLog->getAuthorStats($member->get('uidNumber'), 0, false );
 
 			if ($this->_stats)
@@ -191,7 +191,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get pub stats for each publication
-		$pubLog = new PublicationLog($this->_database);
+		$pubLog = new \Components\Publications\Tables\Log($this->_database);
 		$view->pubstats = $this->_stats ? $this->_stats : $pubLog->getAuthorStats($uid, 0, false);
 
 		// Get date of first log

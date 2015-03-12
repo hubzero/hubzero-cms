@@ -60,7 +60,7 @@ foreach ($this->related as $line)
 
 		// If the user is logged in, get their rating for this publication
 		if (!$juser->get('guest')) {
-			$mr = new PublicationReview( $database );
+			$mr = new \Components\Publications\Tables\Review( $database );
 			$myrating = $mr->loadUserRating( $line->id, $juser->get('id'), $line->version );
 		} else {
 			$myrating = 0;

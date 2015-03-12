@@ -140,7 +140,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 		// Get reviews for this publication
 		$database = JFactory::getDBO();
-		$r = new PublicationReview( $database );
+		$r = new \Components\Publications\Tables\Review( $database );
 		$reviews = $r->getRatings( $publication->id );
 
 		$arr['count'] = count($reviews);
@@ -520,7 +520,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		else
 		{
 			// Load answer
-			$rev = new PublicationReview( $database );
+			$rev = new \Components\Publications\Tables\Review( $database );
 			$rev->load( $id );
 			$voted = $rev->getVote ($id, $cat, $juser->get('id'));
 			//&& $rev->created_by != $juser->get('id')
@@ -601,7 +601,7 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		$database = JFactory::getDBO();
 
-		$review = new PublicationReview( $database );
+		$review = new \Components\Publications\Tables\Review( $database );
 		$review->loadUserReview( $publication->id, $juser->get('id'), $publication->version_id  );
 
 		if (!$review->id)
@@ -657,7 +657,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$database = JFactory::getDBO();
 
 		// Bind the form data to our object
-		$row = new PublicationReview( $database );
+		$row = new \Components\Publications\Tables\Review( $database );
 		if (!$row->bind( $_POST ))
 		{
 			$this->setError( $row->getError() );
@@ -777,7 +777,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			return;
 		}
 
-		$review = new PublicationReview( $database );
+		$review = new \Components\Publications\Tables\Review( $database );
 
 		// Delete the review's comments
 		$reply = new \Hubzero\Item\Comment( $database );

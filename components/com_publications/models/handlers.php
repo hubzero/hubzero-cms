@@ -118,7 +118,7 @@ class PublicationsModelHandlers extends JObject
 			return false;
 
 			// Load needed objects
-			$obj = new PublicationHandler($this->_db);
+			$obj = new \Components\Publications\Tables\Handler($this->_db);
 
 			// Get all available handlers
 			$all = $obj->getHandlers($pub->version_id, $elementid);
@@ -226,7 +226,7 @@ class PublicationsModelHandlers extends JObject
 		$editor->set('elementId', $elementId);
 
 		// Check if assigned and get association record
-		$objAssoc = new PublicationHandlerAssoc($this->_db);
+		$objAssoc = new \Components\Publications\Tables\HandlerAssoc($this->_db);
 		$association = $objAssoc->getAssociation($pub->version_id, $elementId, $handler->get('_name'));
 		$editor->set('assoc', $association);
 
@@ -472,7 +472,7 @@ class PublicationsModelHandlers extends JObject
 		// Get custom config from db
 		if (!$savedConfig  || empty($savedConfig))
 		{
-			$obj = new PublicationHandler($this->_db);
+			$obj = new \Components\Publications\Tables\Handler($this->_db);
 			$savedConfig = $obj->getConfig($name);
 		}
 

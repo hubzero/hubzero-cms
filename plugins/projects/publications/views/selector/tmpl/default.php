@@ -50,7 +50,7 @@ $selected 	= NULL;
 // Get selections
 if ($block == 'license')
 {
-	$objL 			= new PublicationLicense( $this->database);
+	$objL 			= new \Components\Publications\Tables\License( $this->database);
 	$selected 		= $objL->getPubLicense( $this->publication->version_id );
 	$selections 	= $objL->getBlockLicenses( $manifest, $selected );
 

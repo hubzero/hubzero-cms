@@ -366,7 +366,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load master type
-		$mt   				= new PublicationMasterType( $this->_database );
+		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
 		$view->publication->_project 	= $this->_project;
 

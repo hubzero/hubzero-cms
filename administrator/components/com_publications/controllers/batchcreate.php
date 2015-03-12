@@ -255,13 +255,13 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 
 		// Load classes
 		$objCat = new \Components\Publications\Tables\Category( $this->database );
-		$objL = new PublicationLicense( $this->database );
+		$objL = new \Components\Publications\Tables\License( $this->database );
 
 		// Get base type
 		$base = JRequest::getVar( 'base', 'files' );
 
 		// Determine publication master type
-		$mt 		= new PublicationMasterType( $this->database );
+		$mt 		= new \Components\Publications\Tables\MasterType( $this->database );
 		$choices  	= $mt->getTypes('alias', 1);
 		$mastertype = in_array($base, $choices) ? $base : 'files';
 
@@ -770,7 +770,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
 
 				// Create screenshot record
-				$pScreenshot = new PublicationScreenshot( $this->database );
+				$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->database );
 				$pScreenshot->filename 					= $attachment->path;
 				$pScreenshot->srcfile 					= $hashed;
 				$pScreenshot->publication_id 			= $pub->id;

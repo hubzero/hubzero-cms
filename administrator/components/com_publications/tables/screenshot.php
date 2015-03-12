@@ -27,91 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication screenshot
  */
-class PublicationScreenshot extends JTable
+class Screenshot extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_id 			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id 	= NULL;
-
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	var $title         				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering      				= NULL;
-
-	/**
-	 * Filename
-	 *
-	 * @var string
-	 */
-	var $filename      				= NULL;
-
-	/**
-	 * Source file
-	 *
-	 * @var string
-	 */
-	var $srcfile      				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by					= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by				= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified					= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -132,7 +54,7 @@ class PublicationScreenshot extends JTable
 	{
 		if (trim( $this->filename ) == '')
 		{
-			$this->setError( 'Missing filename');
+			$this->setError( \JText::_('Missing filename'));
 			return false;
 		}
 
@@ -173,20 +95,20 @@ class PublicationScreenshot extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=".$pid;
+			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id = '".$versionid."'";
+			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
 		}
-		$query.= " AND s.filename='".mysql_real_escape_string($filename)."' ";
+		$query.= " AND s.filename=" . $this->_db->Quote($filename);
 
 		$query.= " LIMIT 1";
 
@@ -236,20 +158,20 @@ class PublicationScreenshot extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=".$pid;
+			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id = '".$versionid."'";
+			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
 		}
-		$query.= " AND s.filename='".$filename."' ";
+		$query.= " AND s.filename=" . $this->_db->Quote($filename);
 
 		$query.= " LIMIT 1";
 
@@ -287,20 +209,20 @@ class PublicationScreenshot extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=".$pid;
+			$query .= " AND V.publication_id=" . $this->_db->Quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id = '".$versionid."'";
+			$query.= " WHERE s.publication_version_id =" . $this->_db->Quote($versionid);
 		}
-		$query.= "ORDER BY s.ordering DESC LIMIT 1";
+		$query.= " ORDER BY s.ordering DESC LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -328,9 +250,9 @@ class PublicationScreenshot extends JTable
 		}
 		if (!$new)
 		{
-			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=".$ordering."
-				WHERE filename='".mysql_real_escape_string($filename)."' AND publication_id='".$pid."'
-				AND publication_version_id='".mysql_real_escape_string($versionid)."'");
+			$this->_db->setQuery( "UPDATE $this->_tbl SET ordering=" . $this->_db->Quote($ordering) . "
+				WHERE filename=" . $this->_db->Quote($filename) . " AND publication_id="
+				. $this->_db->Quote($pid) . " AND publication_version_id=" . $this->_db->Quote($versionid));
 			if ($this->_db->query())
 			{
 				$ret = true;
@@ -342,15 +264,15 @@ class PublicationScreenshot extends JTable
 		}
 		else
 		{
-			$this->ordering = $ordering;
-			$this->publication_id = $pid;
+			$this->ordering               = $ordering;
+			$this->publication_id         = $pid;
 			$this->publication_version_id = $versionid;
-			$this->filename= mysql_real_escape_string($filename);
+			$this->filename               = $this->_db->Quote($filename);
 			$ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key );
 		}
 		if (!$ret)
 		{
-			$this->setError( strtolower(get_class( $this )).'::store failed <br />' . $this->_db->getErrorMsg() );
+			$this->setError( strtolower(get_class( $this )) . '::store failed <br />' . $this->_db->getErrorMsg() );
 			return false;
 		}
 		else
@@ -378,8 +300,8 @@ class PublicationScreenshot extends JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl ";
-		$query.= " WHERE publication_version_id = '".$versionid."'";
-		$query.= " AND filename='".$filename."' ";
+		$query.= " WHERE publication_version_id=" . $this->_db->Quote($versionid);
+		$query.= " AND filename=" . $this->_db->Quote($filename);
 		$this->_db->setQuery( $query );
 		$this->_db->query();
 	}
@@ -398,7 +320,7 @@ class PublicationScreenshot extends JTable
 		}
 
 		$query = "DELETE FROM $this->_tbl ";
-		$query.= " WHERE publication_version_id = '".$versionid."'";
+		$query.= " WHERE publication_version_id=" . $this->_db->Quote($versionid);
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
 		{
@@ -465,20 +387,20 @@ class PublicationScreenshot extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query = " AND V.publication_id=".$pid;
+			$query = " AND V.publication_id=" . $this->_db->Quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id = '".$versionid."'";
+			$query.= " WHERE s.publication_version_id=" . $this->_db->Quote($versionid);
 		}
-		$query.= "ORDER BY s.ordering ASC";
+		$query.= " ORDER BY s.ordering ASC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -514,88 +436,22 @@ class PublicationScreenshot extends JTable
 			}
 			elseif (intval($version))
 			{
-				$query.= " AND V.version_number='".$version."' ";
+				$query.= " AND V.version_number=" . $this->_db->Quote($version);
 			}
 			else
 			{
 				// Error in supplied version value
 				$query.= " AND 1=2 ";
 			}
-			$query .= " AND V.publication_id=".$pid;
+			$query = " AND V.publication_id=" . $this->_db->Quote($pid);
 		}
 		else
 		{
-			$query.= " WHERE s.publication_version_id = '".$versionid."'";
+			$query.= " WHERE s.publication_version_id=" . $this->_db->Quote($versionid);
 		}
 		$query.= "ORDER BY s.ordering ASC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Update files
-	 *
-	 * @param      integer  $pid 				Pub ID
-	 * @param      integer 	$from_version_id 	Pub version ID to copy from
-	 * @param      integer 	$to_version_id 		Pub version ID to copy to
-	 * @param      integer 	$copy
-	 * @return     boolean
-	 */
-	public function updateFiles( $pid = NULL, $from_version_id = NULL, $to_version_id = NULL, $copy = 0 )
-	{
-		if ($pid === NULL or $from_version_id === NULL or $to_version_id === NULL)
-		{
-			return false;
-		}
-
-		if ($copy)
-		{
-			$ss = $this->getScreenshots( $from_version_id );
-
-			if ($ss)
-			{
-				foreach ($ss as $s)
-				{
-					$this->id = 0;
-					$this->publication_version_id = $to_version_id;
-					$this->filename = 'new.gif';
-					$this->publication_id = $pid;
-
-					if (!$this->store())
-					{
-						$this->_error = $this->getError();
-						return false;
-					}
-
-					$this->checkin();
-					$newid = $this->id;
-
-					$query = "UPDATE $this->_tbl as t1, $this->_tbl as t2 ";
-					$query.= "SET t2.publication_version_id='".$to_version_id."',
-						t2.title=t1.title, t2.filename=t1.filename, t2.ordering=t1.ordering,
-						t2.publication_id=t1.publication_id";
-					$query.= " WHERE t1.id = '".$s->id."' ";
-					$query.= " AND t2.id ='".$newid."'";
-					$this->_db->setQuery( $query );
-					$this->_db->query();
-				}
-			}
-		}
-		else
-		{
-			$query = "UPDATE $this->_tbl SET publication_version_id='".$to_version_id."' WHERE ";
-			$query.= " publication_version_id = '".$from_version_id."' ";
-			$query.= " AND publication_id='".$pid."'";
-			$this->_db->setQuery( $query );
-			if ($this->_db->query())
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
 	}
 }

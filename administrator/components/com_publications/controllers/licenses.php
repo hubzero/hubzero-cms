@@ -83,7 +83,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
-		$rt = new PublicationLicense($this->database);
+		$rt = new \Components\Publications\Tables\License($this->database);
 
 		// Get a record count
 		$this->view->total = $rt->getCount($this->view->filters);
@@ -145,7 +145,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 			}
 
 			// Load the object
-			$this->view->row = new PublicationLicense($this->database);
+			$this->view->row = new \Components\Publications\Tables\License($this->database);
 			$this->view->row->loadLicense($id);
 		}
 
@@ -191,7 +191,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 			. $this->_controller . '&task=edit&id[]=' . $fields['id'];
 
 		// Initiate extended database class
-		$row = new PublicationLicense($this->database);
+		$row = new \Components\Publications\Tables\License($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -271,7 +271,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		$id = JRequest::getVar('id', array(0), '', 'array');
 
 		// Load row
-		$row = new PublicationLicense($this->database);
+		$row = new \Components\Publications\Tables\License($this->database);
 		$row->loadLicense( (int) $id[0]);
 
 		// Update order
@@ -306,7 +306,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		}
 
 		// Initialize
-		$row = new PublicationLicense($this->database);
+		$row = new \Components\Publications\Tables\License($this->database);
 
 		$id = intval($id[0]);
 
@@ -351,7 +351,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array(0), '', 'array');
 
 		// Initialize
-		$row = new PublicationLicense($this->database);
+		$row = new \Components\Publications\Tables\License($this->database);
 
 		foreach ($ids as $id)
 		{

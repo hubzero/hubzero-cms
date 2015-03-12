@@ -67,7 +67,7 @@ if ($this->pub->doi)
 $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
-$mt = new PublicationMasterType( $this->database );
+$mt = new \Components\Publications\Tables\MasterType( $this->database );
 $mType = $mt->getType($this->pub->base);
 $typeParams = new JParameter( $mType->params );
 

@@ -158,7 +158,7 @@ class Reports extends Base
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
-			$objLog = new PublicationLog($this->database);
+			$objLog = new \Components\Publications\Tables\Log($this->database);
 
 			// Get all test projects
 			$exclude = $obj->getTestProjects();

@@ -43,7 +43,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'PublicationLog';
+	protected $_tbl_name = '\\Components\\Publications\\Tables\\Log';
 
 	/**
 	 * JRegistry

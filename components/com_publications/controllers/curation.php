@@ -91,7 +91,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
 		// Check authorization
-		$mt  = new PublicationMasterType( $this->database );
+		$mt  = new \Components\Publications\Tables\MasterType( $this->database );
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Incoming
@@ -235,7 +235,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Load publication & version classes
 		$objP = new Publication( $this->database );
 		$objV = new PublicationVersion( $this->database );
-		$mt   = new PublicationMasterType( $this->database );
+		$mt   = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
@@ -367,7 +367,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$objV  = new PublicationVersion( $this->database );
-		$mt    = new PublicationMasterType( $this->database );
+		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
@@ -477,7 +477,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
 		// Check authorization
-		$mt  = new PublicationMasterType( $this->database );
+		$mt  = new \Components\Publications\Tables\MasterType( $this->database );
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Get all authorized types
@@ -632,7 +632,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$row   = new PublicationVersion( $this->database );
-		$mt    = new PublicationMasterType( $this->database );
+		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Load version
 		if (!$row->load($vid) || $row->publication_id != $pid)
@@ -756,7 +756,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$row   = new PublicationVersion( $this->database );
-		$mt    = new PublicationMasterType( $this->database );
+		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		// Load version
 		if (!$row->load($vid) || $row->publication_id != $pid)
@@ -862,7 +862,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Load publication & version classes
 		$objP  = new Publication( $this->database );
 		$objV  = new PublicationVersion( $this->database );
-		$mt    = new PublicationMasterType( $this->database );
+		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
 
 		if (!$vid || !$objV->load($vid))
 		{

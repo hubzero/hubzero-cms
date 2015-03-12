@@ -160,7 +160,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		$this->view->config = $this->config;
 
 		// Get all contributable master types
-		$objMT = new PublicationMasterType($this->database);
+		$objMT = new \Components\Publications\Tables\MasterType($this->database);
 		$this->view->types = $objMT->getTypes('alias', 1);
 
 		// Push some styles to the template

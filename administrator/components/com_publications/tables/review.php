@@ -27,70 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication review
  */
-class PublicationReview extends JTable
+class Review extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_id 			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id 	= NULL;
-
-	/**
-	 * Description for 'user_id'
-	 *
-	 * @var unknown
-	 */
-	var $created_by     = NULL;  // @var int(11)
-
-	/**
-	 * Description for 'rating'
-	 *
-	 * @var unknown
-	 */
-	var $rating      = NULL;  // @var decimal(2,1)
-
-	/**
-	 * Description for 'comment'
-	 *
-	 * @var unknown
-	 */
-	var $comment     = NULL;  // @var text
-
-	/**
-	 * Description for 'created'
-	 *
-	 * @var unknown
-	 */
-	var $created     = NULL;  // @var datetime(0000-00-00 00:00:00)
-
-	/**
-	 * Description for 'anonymous'
-	 *
-	 * @var unknown
-	 */
-	var $anonymous   = NULL;  // @var int(3)
-
 	/**
 	 * Constructor
 	 *
@@ -111,7 +54,7 @@ class PublicationReview extends JTable
 	{
 		if (trim( $this->rating ) == '')
 		{
-			$this->setError( JText::_('Your review must have a rating.') );
+			$this->setError( \JText::_('Your review must have a rating.') );
 			return false;
 		}
 		return true;
@@ -136,8 +79,9 @@ class PublicationReview extends JTable
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=".$pid." AND created_by=".$uid;
-		$query .= $versionid ? " AND publication_version_id=".$versionid : '';
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid)
+				. " AND created_by=" . $this->_db->Quote($uid);
+		$query .= $versionid ? " AND publication_version_id=" . $this->_db->Quote($versionid)  : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 
@@ -170,8 +114,9 @@ class PublicationReview extends JTable
 			return false;
 		}
 
-		$query  = "SELECT rating FROM $this->_tbl WHERE publication_id=".$pid." AND created_by=".$uid;
-		$query .= $versionid ? " AND publication_version_id=".$versionid : '';
+		$query  = "SELECT rating FROM $this->_tbl WHERE publication_id=" . $this->_db->Quote($pid)
+				. " AND created_by=" . $this->_db->Quote($uid);
+		$query .= $versionid ? " AND publication_version_id=" . $this->_db->Quote($versionid)  : '';
 		$query .= " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
@@ -198,7 +143,7 @@ class PublicationReview extends JTable
 		}
 		if (!$uid)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
@@ -207,9 +152,9 @@ class PublicationReview extends JTable
 			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
 			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' ";
-		$query.= "AND v.voter='".$uid."' ";
-		$query.= " WHERE rr.publication_id=".$pid;
-		$query.= $versionid ? " AND rr.publication_version_id=".$versionid : '';
+		$query.= "AND v.voter=" . $this->_db->Quote($uid);
+		$query.= " WHERE rr.publication_id=" . $this->_db->Quote($pid);
+		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
 		$query.= " ORDER BY rr.created DESC";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -236,18 +181,21 @@ class PublicationReview extends JTable
 
 		if (!$uid)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$uid = $juser->get('id');
 		}
 
 		$query = "SELECT rr.*, rr.id as id, v.helpful AS vote, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
+			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' 
+			AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
+			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' 
+			AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
 			."\n FROM $this->_tbl AS rr "
 			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' ";
-		$query.= "AND v.voter='".$uid."' ";
-		$query.= " WHERE rr.publication_id=".$pid." AND rr.created_by=".$uid;
-		$query.= $versionid ? " AND rr.publication_version_id=".$versionid : '';
+		$query.= "AND v.voter=" . $this->_db->Quote($uid);
+		$query.= " WHERE rr.publication_id=" . $this->_db->Quote($pid)
+				. " AND rr.created_by=" . $this->_db->Quote($uid);
+		$query.= $versionid ? " AND rr.publication_version_id=" . $this->_db->Quote($versionid) : '';
 		$query.= " ORDER BY rr.created DESC";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -275,7 +223,9 @@ class PublicationReview extends JTable
 
 		$query  = "SELECT v.helpful ";
 		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid = '".$id."' AND v.category='".$category."' AND v.voter='".$uid."' LIMIT 1";
+		$query .= "WHERE v.referenceid= " . $this->_db->Quote($id) . " 
+					AND v.category=" . $this->_db->Quote($category) . " 
+					AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 	}

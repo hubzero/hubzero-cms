@@ -27,70 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication stats
  */
-class PublicationStats extends JTable
+class Stats extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_id 			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_version 		= NULL;
-
-	/**
-	 * Description for 'users'
-	 *
-	 * @var unknown
-	 */
-	var $users    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var unknown
-	 */
-	var $downloads     = NULL;
-
-	/**
-	 * Timestamp
-	 *
-	 * @var unknown
-	 */
-	var $processed_on = NULL;
-
-	/**
-	 * Datetime
-	 *
-	 * @var unknown
-	 */
-	var $datetime = NULL;
-
-	/**
-	 * Description for 'period'
-	 *
-	 * @var unknown
-	 */
-	var $period   = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -111,7 +54,7 @@ class PublicationStats extends JTable
 	{
 		if (trim( $this->publication_id ) == '')
 		{
-			$this->setError( JText::_('Your entry must have a publication ID.') );
+			$this->setError( \JText::_('Your entry must have a publication ID.') );
 			return false;
 		}
 		return true;
@@ -138,8 +81,8 @@ class PublicationStats extends JTable
 
 		$sql = "SELECT *
 				FROM $this->_tbl
-				WHERE period = '" . $period . "'
-				AND publication_id = '" . $publication_id . "'";
+				WHERE period =" . $this->_db->Quote($period) . "
+				AND publication_id =" . $this->_db->Quote($publication_id);
 		$sql.= $dthis ? " AND datetime='" . $dthis . "-01 00:00:00'" : '';
 		$sql.= " ORDER BY processed_on DESC LIMIT 1";
 

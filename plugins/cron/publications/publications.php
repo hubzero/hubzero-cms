@@ -163,7 +163,7 @@ class plgCronPublications extends JPlugin
 			}
 
 			// Get pub stats for each author
-			$pubLog = new PublicationLog($database);
+			$pubLog = new \Components\Publications\Tables\Log($database);
 			$pubstats = $pubLog->getAuthorStats($author->user_id);
 
 			if (!$pubstats || !count($pubstats))

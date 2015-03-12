@@ -577,7 +577,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load master type
-		$mt   				= new PublicationMasterType( $this->_database );
+		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
 		$view->publication->_project 	= $this->_project;
 
@@ -719,7 +719,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$other = 1;
 
 			// Get current screenshots
-			$pScreenshot = new PublicationScreenshot( $this->_database );
+			$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 			$view->shots = $pScreenshot->getScreenshots($versionid);
 		}
 

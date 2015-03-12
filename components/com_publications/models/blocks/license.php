@@ -140,7 +140,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
 
-		$objL = new PublicationLicense( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
 		// Get selected license
 		$view->license = $objL->getPubLicense( $pub->version_id );
@@ -150,7 +150,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		// Pre-select single available license
 		if (!$view->license && count($view->selections) == 1)
 		{
-			$view->license = new PublicationLicense( $this->_parent->_db );;
+			$view->license = new \Components\Publications\Tables\License( $this->_parent->_db );;
 			$view->license->load($view->selections[0]->id);
 		}
 
@@ -193,7 +193,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$originalText = $row->license_text;
 
 		// Load license class
-		$objL = new PublicationLicense( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
 		// Incoming - license screen agreements
 		$license = JRequest::getInt( 'license', 0, 'post' );
@@ -328,7 +328,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$status->status = 1;
 
 		// Load license class
-		$objL = new PublicationLicense( $this->_parent->_db );
+		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
 		if ($pub->license_type && $objL->load($pub->license_type))
 		{

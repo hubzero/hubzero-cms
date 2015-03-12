@@ -85,7 +85,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
 		// Instantiate an object
-		$rt = new PublicationMasterType($this->database);
+		$rt = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Get a record count
 		$this->view->total = $rt->getCount($this->view->filters);
@@ -134,7 +134,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
-		$this->view->row = new PublicationMasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -196,7 +196,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$newblock = JRequest::getVar('newblock', '');
 		$before   = JRequest::getInt('before', 1);
 
-		$row = new PublicationMasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -301,7 +301,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
-		$this->view->row = new PublicationMasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -351,7 +351,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$curation 	= JRequest::getVar('curation', '', 'post', 'none', 2);
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 
-		$row 		= new PublicationMasterType($this->database);
+		$row 		= new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -410,7 +410,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$id 	  				= JRequest::getInt('id', 0);
 		$this->view->sequence 	= JRequest::getInt('bid', 0);
 
-		$this->view->row 		= new PublicationMasterType($this->database);
+		$this->view->row 		= new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -460,7 +460,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$id 	  	= JRequest::getInt('id', 0);
 		$sequence 	= JRequest::getInt('bid', 0);
 
-		$row 		= new PublicationMasterType($this->database);
+		$row 		= new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -557,7 +557,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 
-		$this->view->row = new PublicationMasterType($this->database);
+		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$this->view->row->load($id))
@@ -620,7 +620,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$neworder = JRequest::getVar('neworder', '');
 		$order 	  = explode('-', $neworder);
 
-		$row = new PublicationMasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 
 		// Load object
 		if (!$id || !$row->load($id))
@@ -697,7 +697,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			}
 
 			// Load the object
-			$this->view->row = new PublicationMasterType($this->database);
+			$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 			$this->view->row->load($id);
 
 			// Get curation
@@ -770,7 +770,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new PublicationMasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $fields['id'];
@@ -927,7 +927,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$id = JRequest::getVar('id', array(0), '', 'array');
 
 		// Load row
-		$row = new PublicationMasterType($this->database);
+		$row = new \Components\Publications\Tables\MasterType($this->database);
 		$row->load( (int) $id[0]);
 
 		// Update order
@@ -974,7 +974,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$rt = new PublicationMasterType($this->database);
+		$rt = new \Components\Publications\Tables\MasterType($this->database);
 
 		foreach ($ids as $id)
 		{

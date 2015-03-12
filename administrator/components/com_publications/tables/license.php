@@ -27,105 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication license
  */
-class PublicationLicense extends JTable
+class License extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id  			= NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $name     		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $text 			= NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title 			= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering 		= NULL;
-
-	/**
-	 * tinyint(3)
-	 *
-	 * @var integer
-	 */
-	var $apps_only 		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $main 			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $icon 			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url 			= NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $agreement  	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var text
-	 */
-	var $info  			= NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $active  		= NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $customizable  	= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -157,7 +65,7 @@ class PublicationLicense extends JTable
 
 		$oid = trim($oid);
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name='$oid'");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($oid));
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -285,7 +193,7 @@ class PublicationLicense extends JTable
 
 		$query = "SELECT * FROM $this->_tbl ";
 		$query.= " WHERE active=1 ";
-		$query.= " ORDER BY ".$sortby;
+		$query.= " ORDER BY " . $sortby;
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -373,7 +281,7 @@ class PublicationLicense extends JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE id='$id'";
+		$query.= " WHERE id=" . $this->_db->Quote($id);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -394,7 +302,7 @@ class PublicationLicense extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering='$ordering' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->Quote($ordering) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -417,7 +325,7 @@ class PublicationLicense extends JTable
 		$newOrder = $this->ordering + $dir;
 
 		// Load record in prev position
-		$old = new PublicationLicense( $this->_db );
+		$old = new self( $this->_db );
 		if ($old->loadByOrder($newOrder))
 		{
 			$old->ordering  = $this->ordering;
@@ -443,7 +351,7 @@ class PublicationLicense extends JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE name LIKE '$name'";
+		$query.= " WHERE name LIKE " . $this->_db->Quote($name);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -464,7 +372,7 @@ class PublicationLicense extends JTable
 			return false;
 		}
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= " WHERE title LIKE '$title'";
+		$query.= " WHERE title LIKE " . $this->_db->Quote($title);
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -485,8 +393,9 @@ class PublicationLicense extends JTable
 			return false;
 		}
 
-		$query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L, #__publication_versions AS v  ";
-		$query.= " WHERE v.id=".$vid." AND v.license_type=L.id";
+		$query = "SELECT L.*, v.license_type, v.license_text FROM $this->_tbl AS L,
+		          #__publication_versions AS v  ";
+		$query.= " WHERE v.id=" . $this->_db->Quote($vid) . " AND v.license_type=L.id";
 		$query.= " LIMIT 1";
 
 		$this->_db->setQuery( $query );
@@ -503,7 +412,7 @@ class PublicationLicense extends JTable
 	public function undefault ( $except = 0 )
 	{
 		$query = "UPDATE $this->_tbl SET main=0 ";
-		$query.= $except ? " WHERE id != ".$except : '';
+		$query.= $except ? " WHERE id != " . $this->_db->Quote($except) : '';
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{

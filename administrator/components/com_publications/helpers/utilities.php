@@ -490,7 +490,7 @@ class PublicationUtilities
 		}
 
 		// Get license type
-		$objL = new PublicationLicense( $database);
+		$objL = new \Components\Publications\Tables\License( $database);
 		if ($objL->loadLicense($pub->license_type))
 		{
 			$metadata['license']    = $objL->title;

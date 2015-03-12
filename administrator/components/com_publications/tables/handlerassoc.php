@@ -27,63 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication handler associations
  */
-class PublicationHandlerAssoc extends JTable
+class HandlerAssoc extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       					= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $publication_version_id 	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $element_id 				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $handler_id 				= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering 					= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var text
-	 */
-	var $params 					= NULL;
-
-	/**
-	 * Handler customization status - will not play unless status=1
-	 *
-	 * @var tinyint
-	 */
-	var $status 					= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -112,8 +62,8 @@ class PublicationHandlerAssoc extends JTable
 
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
 		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-		$query .= " WHERE A.publication_version_id=" . $vid;
-		$query .= " AND A.element_id=" . $elementid;
+		$query .= " WHERE A.publication_version_id=" . $this->_db->Quote($vid);
+		$query .= " AND A.element_id=" . $this->_db->Quote($elementid);
 		$query .= " ORDER BY A.ordering ASC";
 
 		$this->_db->setQuery( $query );
@@ -138,8 +88,8 @@ class PublicationHandlerAssoc extends JTable
 
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
 		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
-		$query .= " WHERE A.publication_version_id=" . $vid;
-		$query .= " AND A.element_id=" . $elementid;
+		$query .= " WHERE A.publication_version_id=" . $this->_db->Quote($vid);
+		$query .= " AND A.element_id=" . $this->_db->Quote($elementid);
 		$query .= " AND H.name=" . $this->_db->quote($handler);
 		$query .= " LIMIT 1";
 

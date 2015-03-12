@@ -1971,7 +1971,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Add license information
-		$objL = new PublicationLicense( $this->_db );
+		$objL = new \Components\Publications\Tables\License( $this->_db );
 		if ($objL->loadLicense($this->_pub->license_type) && $objL->id)
 		{
 			$readme .= "\n " . "\n ";
@@ -2111,7 +2111,7 @@ class PublicationsCuration extends JObject
 		$element = $elements ? $elements[0] : NULL;
 
 		// Retrieve screenshots
-		$pScreenshot = new PublicationScreenshot( $this->_db );
+		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_db );
 		$shots = $pScreenshot->getScreenshots( $pub->version_id );
 
 		// Transfer gallery files to the right location

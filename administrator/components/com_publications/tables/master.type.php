@@ -27,84 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for publication master type
  */
-class PublicationMasterType extends JTable
+class MasterType extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       			= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $type				= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $alias				= NULL;
-
-	/**
-	 * Text
-	 *
-	 * @var text
-	 */
-	var $description		= NULL;
-
-	/**
-	 * Offer as category choice in publication primary content contributions
-	 *
-	 * @var int
-	 */
-	var $contributable      = NULL;
-
-	/**
-	 * Offer as category choice in publication supporting docs
-	 *
-	 * @var int
-	 */
-	var $supporting     	= NULL;
-
-	/**
-	 * Ordering
-	 *
-	 * @var int
-	 */
-	var $ordering     		= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params      		= NULL;
-
-	/**
-	 * Curation group id
-	 *
-	 * @var int(11)
-	 */
-	var $curatorgroup      	= NULL;
-
-	/**
-	 * Curation flow
-	 *
-	 * @var text
-	 */
-	var $curation      		= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -125,12 +54,12 @@ class PublicationMasterType extends JTable
 	{
 		if (trim( $this->type ) == '')
 		{
-			$this->setError( JText::_('Your publication master type must contain text.') );
+			$this->setError( \JText::_('Your publication master type must contain text.') );
 			return false;
 		}
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( JText::_('Your publication master type alias must contain text.') );
+			$this->setError( \JText::_('Your publication master type alias must contain text.') );
 			return false;
 		}
 		return true;
@@ -150,7 +79,7 @@ class PublicationMasterType extends JTable
 		}
 		$field = is_numeric($id) ? 'id' : 'alias';
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field='".$id."' LIMIT 1" );
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $field=" . $this->_db->Quote($id) . " LIMIT 1" );
 		$result = $this->_db->loadObjectList();
 		return $result ? $result[0] : false;
 	}
@@ -161,13 +90,13 @@ class PublicationMasterType extends JTable
 	 * @param      string 		$alias
 	 * @return     integer
 	 */
-	public function getTypeId( $alias='' )
+	public function getTypeId( $alias = '' )
 	{
 		if (!$alias)
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias='".$alias."' LIMIT 1" );
+		$this->_db->setQuery( "SELECT id FROM $this->_tbl WHERE alias=" . $this->_db->Quote($alias) . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -183,7 +112,7 @@ class PublicationMasterType extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id='".$id."' LIMIT 1" );
+		$this->_db->setQuery( "SELECT alias FROM $this->_tbl WHERE id=" . $this->_db->Quote($id) . " LIMIT 1" );
 		return $this->_db->loadResult();
 	}
 
@@ -336,7 +265,6 @@ class PublicationMasterType extends JTable
 		return $this->_db->loadObjectList();
 	}
 
-
 	/**
 	 * Get record counts
 	 *
@@ -391,12 +319,12 @@ class PublicationMasterType extends JTable
 			return false;
 		}
 
-		include_once( JPATH_ROOT . DS . 'administrator' . DS
+		include_once( PATH_CORE . DS . 'administrator' . DS
 			. 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php' );
 
-		$p = new Publication( $this->_db );
+		$p = new \Publication( $this->_db );
 
-		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=".$id);
+		$this->_db->setQuery( "SELECT count(*) FROM $p->_tbl WHERE master_type=" . $this->_db->Quote($id));
 		return $this->_db->loadResult();
 	}
 
@@ -413,7 +341,7 @@ class PublicationMasterType extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering='$ordering' LIMIT 1");
+		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE ordering=" . $this->_db->Quote($ordering) . " LIMIT 1");
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
@@ -436,7 +364,7 @@ class PublicationMasterType extends JTable
 		$newOrder = $this->ordering + $dir;
 
 		// Load record in prev position
-		$old = new PublicationMasterType( $this->_db );
+		$old = new self( $this->_db );
 
 		if ($old->loadByOrder($newOrder))
 		{

@@ -683,7 +683,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$publication->_category->_params = new JParameter( $publication->_category->params );
 
 		// Get master type info
-		$publication->_mastertype = new PublicationMasterType( $this->database );
+		$publication->_mastertype = new \Components\Publications\Tables\MasterType( $this->database );
 		$publication->_mastertype->load($publication->master_type);
 		$publication->_mastertype->_params = new JParameter( $publication->_mastertype->params );
 
@@ -790,7 +790,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$params->merge( $rparams );
 
 		// Get license info
-		$pLicense = new PublicationLicense($this->database);
+		$pLicense = new \Components\Publications\Tables\License($this->database);
 		$license = $pLicense->getLicense($publication->license_type);
 
 		$body = '';
@@ -818,7 +818,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Log page view (public pubs only)
 			if ($this->_logging && $this->_task == 'view' && $publication->state == 1)
 			{
-				$pubLog = new PublicationLog($this->database);
+				$pubLog = new \Components\Publications\Tables\Log($this->database);
 				$pubLog->logAccess($publication, 'view', $logPath);
 			}
 		}
@@ -936,7 +936,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Load master type
-		$mt = new PublicationMasterType( $this->database );
+		$mt = new \Components\Publications\Tables\MasterType( $this->database );
 		$this->publication->_type = $mt->getType($this->publication->base);
 		$this->publication->version = $this->version;
 
@@ -1068,7 +1068,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->version, false, true) );
 
 		// Get license info
-		$pLicense = new PublicationLicense($this->database);
+		$pLicense = new \Components\Publications\Tables\License($this->database);
 		$license = $pLicense->getLicense($this->publication->license_type);
 
 		// Get version authors
@@ -1299,7 +1299,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Log access
 		if ($this->_logging && $publication->state == 1)
 		{
-			$pubLog = new PublicationLog($this->database);
+			$pubLog = new \Components\Publications\Tables\Log($this->database);
 			$aType  = $primary->role == 1 ? 'primary' : 'support';
 			$pubLog->logAccess($publication, $aType, $logPath);
 		}
@@ -1733,7 +1733,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
-			$mt = new PublicationMasterType( $this->database );
+			$mt = new \Components\Publications\Tables\MasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
 			$typeParams = new JParameter( $pub->_type->params );
 
@@ -1811,7 +1811,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->title 			= $title;
 
 		// Get license info
-		$pLicense = new PublicationLicense($this->database);
+		$pLicense = new \Components\Publications\Tables\License($this->database);
 		$this->view->license = $pLicense->getLicense($publication->license_type);
 
 		// Output HTML

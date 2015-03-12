@@ -394,7 +394,7 @@ class PublicationHelper extends JObject
 				. 'com_publications' . DS . 'tables' . DS . 'screenshot.php');
 
 			// Get screenshots
-			$pScreenshot = new PublicationScreenshot($this->_db);
+			$pScreenshot = new \Components\Publications\Tables\Screenshot($this->_db);
 			$shots = $pScreenshot->getScreenshots( $versionid );
 
 			if ($shots && count($shots) > 0)

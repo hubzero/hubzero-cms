@@ -27,63 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Tables;
 
 /**
  * Table class for available publication handlers
  */
-class PublicationHandler extends JTable
+class Handler extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       				= NULL;
-
-	/**
-	 * Name
-	 *
-	 * @var string
-	 */
-	var $name 					= NULL;
-
-	/**
-	 * Label
-	 *
-	 * @var string
-	 */
-	var $label 					= NULL;
-
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	var $title 					= NULL;
-
-	/**
-	 * About
-	 *
-	 * @var text
-	 */
-	var $about 					= NULL;
-
-	/**
-	 * Status
-	 *
-	 * @var integer
-	 */
-	var $status 				= NULL;
-
-	/**
-	 * Params
-	 *
-	 * @var text
-	 */
-	var $params 				= NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -109,7 +59,7 @@ class PublicationHandler extends JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
+		$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($name);
 		$query.= " LIMIT 1";
 		$this->_db->setQuery( $query );
 
@@ -141,7 +91,8 @@ class PublicationHandler extends JTable
 		$query  = "SELECT H.*, IFNULL(A.id, 0) as assigned, IFNULL(A.ordering, 0) as ordering,
 				A.params as assigned_params, A.status as active  FROM $this->_tbl as H ";
 		$query .= "LEFT JOIN #__publication_handler_assoc as A ON H.id=A.handler_id ";
-		$query .= " AND A.publication_version_id=" . $vid . " AND A.element_id=" . $elementid;
+		$query .= " AND A.publication_version_id=" . $this->_db->Quote($vid)
+				. " AND A.element_id=" . $this->_db->Quote($elementid);
 		$query .= " WHERE H.status = 1";
 		$query .= " ORDER BY assigned DESC, A.ordering ASC";
 
@@ -158,14 +109,14 @@ class PublicationHandler extends JTable
 	 */
 	public function getConfig( $name = NULL, $entry = NULL )
 	{
-		if ($name === NULL && $entry === NULL)
+		if ($name == NULL)
 		{
 			return false;
 		}
 
 		if (!$entry || !is_object($entry))
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
+			$query = "SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($name);
 			$query.= " LIMIT 1";
 
 			$this->_db->setQuery( $query );
