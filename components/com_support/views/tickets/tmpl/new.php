@@ -101,9 +101,6 @@ $group = JRequest::getVar('group', '');
 			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->problem['osver']); ?>" />
 			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->problem['browserver']); ?>" />
 			<input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->problem['short']); ?>" />
-			<?php if ($group) { ?>
-				<input type="hidden" name="group" value="<?php echo $group; ?>" />
-			<?php } ?>
 			<input type="hidden" name="no_html" value="0" />
 			<?php if ($this->verified) { ?>
 				<input type="hidden" name="botcheck" value="" />
@@ -224,7 +221,7 @@ $group = JRequest::getVar('group', '');
 						<label>
 							<?php echo JText::_('COM_SUPPORT_COMMENT_GROUP'); ?>:
 							<?php
-							$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', '', '', 'ticketowner')));
+							$gc = $dispatcher->trigger('onGetSingleEntryWithSelect', array(array('groups', 'problem[group]', 'acgroup', '', $group, '', 'ticketowner')));
 							if (count($gc) > 0) {
 								echo $gc[0];
 							} else { ?>
@@ -297,6 +294,10 @@ $group = JRequest::getVar('group', '');
 					<?php } ?>
 				</label>
 			</fieldset>
+		<?php } else { ?>
+			<?php if ($group) { ?>
+				<input type="hidden" name="group" value="<?php echo $group; ?>" />
+			<?php } ?>
 		<?php } ?>
 
 		<?php if (!$this->verified) { ?>
