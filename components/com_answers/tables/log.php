@@ -80,23 +80,23 @@ class Log extends \JTable
 		$this->response_id = intval($this->response_id);
 		if (!$this->response_id)
 		{
-			$this->setError(\JText::_('Missing response ID'));
+			$this->setError(Lang::txt('Missing response ID'));
 		}
 
 		$this->helpful = strtolower(trim($this->helpful));
 		if (!$this->helpful)
 		{
-			$this->setError(\JText::_('Missing vote'));
+			$this->setError(Lang::txt('Missing vote'));
 		}
 
 		if (!in_array($this->helpful, array(1, 'yes', 'like', 'up', -1, 'no', 'dislike', 'down')))
 		{
-			$this->setError(\JText::_('Invalid vote'));
+			$this->setError(Lang::txt('Invalid vote'));
 		}
 
 		if (!Validate::ip($this->ip))
 		{
-			$this->setError(\JText::_('Invalid IP address'));
+			$this->setError(Lang::txt('Invalid IP address'));
 		}
 
 		if ($this->getError())

@@ -117,12 +117,12 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
-					<?php echo JText::sprintf('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
+					<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
 				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo JText::sprintf('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_ANSWERS_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type', 'answer'); ?>" />

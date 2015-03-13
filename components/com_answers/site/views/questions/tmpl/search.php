@@ -149,14 +149,14 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 								if ($this->filters['q'] != '')
 								{
-									echo JText::sprintf('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
+									echo Lang::txt('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
 								}
 								else
 								{
 									echo Lang::txt('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby']));
 								}
 							?>
-							<span>(<?php echo JText::sprintf('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
+							<span>(<?php echo Lang::txt('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 						</caption>
 						<tbody>
 				<?php if (count($this->results) > 0) { ?>
@@ -192,7 +192,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 									</span><br />
 								<?php } ?>
 									<span class="entry-details">
-										<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?>
+										<?php echo Lang::txt('COM_ANSWERS_ASKED_BY', $name); ?>
 										<span class="entry-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
 										<span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
 										<span class="entry-date-on"><?php echo Lang::txt('COM_ANSWERS_DATETIME_ON'); ?></span>
@@ -203,7 +203,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										</span>
 										<span class="entry-details-divider">&bull;</span>
 										<span class="entry-comments">
-											<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->get('rcount')); ?>">
+											<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_RESPONSES_TO_THIS_QUESTION', $row->get('rcount')); ?>">
 												<?php echo $row->get('rcount'); ?>
 											</a>
 										</span>
@@ -214,7 +214,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								<?php if ($row->get('reward')) { ?>
 									<span class="entry-reward">
 										<?php echo $row->get('points'); ?>
-										<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
+										<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">
 											<?php echo Lang::txt('COM_ANSWERS_POINTS'); ?>
 										</a>
 									</span>
@@ -228,7 +228,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 											<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 										</span>
 									<?php } else { ?>
-										<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
+										<a class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $row->get('helpful')); ?>">
 											<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 										</a>
 									<?php } ?>
@@ -268,13 +268,13 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_ANSWERS_NEED_AN_ANSWER'); ?></h3>
 				<p>
-					<?php echo JText::sprintf('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . Route::url('index.php?option=com_kb') . '">' . Lang::txt('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
+					<?php echo Lang::txt('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . Route::url('index.php?option=com_kb') . '">' . Lang::txt('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
 				</p>
 			</div><!-- / .container -->
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_ANSWERS_GET_STARTED'); ?></h3>
 				<p>
-					<?php echo JText::sprintf('COM_ANSWERS_GET_STARTED_HELP', Route::url('index.php?option=com_help&component=answers&page=index')); ?>
+					<?php echo Lang::txt('COM_ANSWERS_GET_STARTED_HELP', Route::url('index.php?option=com_help&component=answers&page=index')); ?>
 				</p>
 			</div><!-- / .container -->
 		<?php if ($this->config->get('banking')) { ?>

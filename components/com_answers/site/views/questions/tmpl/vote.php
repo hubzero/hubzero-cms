@@ -50,7 +50,7 @@ $juser = JFactory::getUser();
 				<?php echo $votes; ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</span>
 		<?php } else { ?>
-			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->get('id') . '&vote=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $votes); ?>">
+			<a class="vote-button <?php echo ($votes > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=vote&id=' . $this->question->get('id') . '&vote=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $votes); ?>">
 				<?php echo $votes; ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 			</a>
 		<?php } ?>

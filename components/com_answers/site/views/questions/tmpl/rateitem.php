@@ -55,8 +55,8 @@ if ($this->item->get('vote', null))
 $juser = JFactory::getUser();
 if (!$juser->get('guest'))
 {
-	$like_title    = JText::sprintf('COM_ANSWERS_VOTE_LIKE_TITLE', $this->item->get('helpful', 0));
-	$dislike_title = JText::sprintf('COM_ANSWERS_VOTE_DISLIKE_TITLE', $this->item->get('nothelpful', 0));
+	$like_title    = Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $this->item->get('helpful', 0));
+	$dislike_title = Lang::txt('COM_ANSWERS_VOTE_DISLIKE_TITLE', $this->item->get('nothelpful', 0));
 	$cls = ' tooltips';
 }
 else

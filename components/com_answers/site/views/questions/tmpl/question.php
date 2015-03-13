@@ -211,7 +211,7 @@ if (!$this->question->get('anonymous'))
 						if ($resource)
 						{
 							?>
-							<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_resources&' . $resource) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
+							<p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_resources&' . $resource) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
 							<?php
 							break;
 						}
@@ -223,7 +223,7 @@ if (!$this->question->get('anonymous'))
 						if ($publication)
 						{
 							?>
-							<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_publications&' . $publication) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
+							<p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_publications&' . $publication) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
 							<?php
 							break;
 						}
@@ -232,13 +232,13 @@ if (!$this->question->get('anonymous'))
 
 				<?php if ($this->question->reward() && $this->question->isOpen() && $this->question->config('banking')) { ?>
 					<p class="intro">
-						<?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
+						<?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo Lang::txt('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
 					</p>
 				<?php } ?>
 
 				<?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->question->config('banking')) { ?>
 					<p class="youcanearn">
-						<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?>
+						<?php echo Lang::txt('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?>
 					</p>
 				<?php } ?>
 				</div><!-- / .status_display -->
@@ -372,7 +372,7 @@ if (!$this->question->get('anonymous'))
 						</form>
 						<?php } else { ?>
 							<p>
-								<?php echo JText::sprintf('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
+								<?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
 							</p>
 						<?php } ?>
 					</div><!-- / .subject -->

@@ -150,7 +150,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SET_STATE', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -173,7 +173,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				<td style="white-space: nowrap;">
 			<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 					<a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
-						<span><?php echo JText::sprintf('COM_ANSWERS_NUM_RESPONSES', $row->comments('count')); ?></span>
+						<span><?php echo Lang::txt('COM_ANSWERS_NUM_RESPONSES', $row->comments('count')); ?></span>
 					</a>
 			<?php } else { ?>
 					<a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
