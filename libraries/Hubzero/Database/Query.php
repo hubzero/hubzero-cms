@@ -31,6 +31,9 @@
 
 namespace Hubzero\Database;
 
+// @FIXME: dynamically determine syntax from connection
+use Hubzero\Database\Syntax\Mysql as Syntax;
+
 /**
  * Database query class
  *
@@ -46,11 +49,11 @@ class Query
 	private $connection = null;
 
 	/**
-	 * The query elements
+	 * The query syntax
 	 *
-	 * @var array
+	 * @var object
 	 **/
-	private $elements = array();
+	private $syntax = null;
 
 	/**
 	 * The debug state of the union
@@ -79,14 +82,6 @@ class Query
 	 * The elements of a basic select statement
 	 *
 	 * @var array
-	 * @see \Hubzero\Database\Query\Select for select syntax
-	 * @see \Hubzero\Database\Query\From   for from syntax
-	 * @see \Hubzero\Database\Query\Join   for join syntax
-	 * @see \Hubzero\Database\Query\Where  for where syntax
-	 * @see \Hubzero\Database\Query\Group  for group syntax
-	 * @see \Hubzero\Database\Query\Having for having syntax
-	 * @see \Hubzero\Database\Query\Order  for order syntax
-	 * @see \Hubzero\Database\Query\Limit  for limit syntax
 	 **/
 	private $select = array(
 		'select',
@@ -103,8 +98,6 @@ class Query
 	 * The elements of a basic insert statement
 	 *
 	 * @var array
-	 * @see \Hubzero\Database\Query\Insert for insert syntax
-	 * @see \Hubzero\Database\Query\Values for values syntax
 	 **/
 	private $insert = array(
 		'insert',
@@ -115,9 +108,6 @@ class Query
 	 * The elements of a basic update statement
 	 *
 	 * @var array
-	 * @see \Hubzero\Database\Query\Update for update syntax
-	 * @see \Hubzero\Database\Query\Set    for set syntax
-	 * @see \Hubzero\Database\Query\Where  for where syntax
 	 **/
 	private $update = array(
 		'update',
@@ -129,13 +119,9 @@ class Query
 	 * The elements of a basic delete statement
 	 *
 	 * @var array
-	 * @see \Hubzero\Database\Query\Delete for delete syntax
-	 * @see \Hubzero\Database\Query\From   for from syntax
-	 * @see \Hubzero\Database\Query\Where  for where syntax
 	 **/
 	private $delete = array(
 		'delete',
-		'from',
 		'where'
 	);
 
@@ -159,27 +145,27 @@ class Query
 	public function __construct($connection=null)
 	{
 		$this->connection = $connection ?: \JFactory::getDbo();
-		self::$debug      = (isset(self::$debug))
-							? self::$debug
-							: \Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false);
+		$this->reset();
+
+		// Set debugging
+		self::$debug = (isset(self::$debug))
+		             ? self::$debug
+		             : \Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false);
 	}
 
 	/**
-	 * Clones the query object, including its individual query elements
+	 * Clones the query object, including its individual syntax elements
 	 *
-	 * We want to duplicate our query elements, as well as the overall query object,
+	 * We want to duplicate our syntax elements, as well as the overall query object,
 	 * hence the need for this. Otherwise, PHP would only provide references to the
-	 * query elements, which is counter productive in this instance.
+	 * syntax elements, which is counter productive in this instance.
 	 *
 	 * @return void
 	 * @since  1.3.2
 	 **/
 	public function __clone()
 	{
-		foreach ($this->elements as $type => $element)
-		{
-			$this->elements[$type] = clone $element;
-		}
+		$this->syntax = clone $this->syntax;
 	}
 
 	/**
@@ -193,7 +179,7 @@ class Query
 	 **/
 	public function select($column, $as=null, $count=false)
 	{
-		$this->addElement('select', $column, $as, $count);
+		$this->syntax->setSelect($column, $as, $count);
 		$this->type = 'select';
 		return $this;
 	}
@@ -206,9 +192,9 @@ class Query
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function insert($table, $ignore)
+	public function insert($table, $ignore=false)
 	{
-		$this->addElement('insert', $table, $ignore);
+		$this->syntax->setInsert($table, $ignore);
 		$this->type = 'insert';
 		return $this;
 	}
@@ -222,7 +208,7 @@ class Query
 	 **/
 	public function update($table)
 	{
-		$this->addElement('update', $table);
+		$this->syntax->setUpdate($table);
 		$this->type = 'update';
 		return $this;
 	}
@@ -230,12 +216,13 @@ class Query
 	/**
 	 * Applies a delete statement to the pending query
 	 *
+	 * @param  string $table the table whose row will be deleted
 	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function delete()
+	public function delete($table)
 	{
-		$this->addElement('delete', null);
+		$this->syntax->setDelete($table);
 		$this->type = 'delete';
 		return $this;
 	}
@@ -248,7 +235,7 @@ class Query
 	 **/
 	public function from($table)
 	{
-		$this->addElement('from', $table);
+		$this->syntax->setFrom($table);
 		return $this;
 	}
 
@@ -263,7 +250,7 @@ class Query
 	 **/
 	public function join($table, $leftKey, $rightKey, $type='inner')
 	{
-		$this->addElement('join', $table, $leftKey, $rightKey, $type);
+		$this->syntax->setJoin($table, $leftKey, $rightKey, $type);
 		return $this;
 	}
 
@@ -280,7 +267,7 @@ class Query
 	 **/
 	public function where($column, $operator, $value, $logical='and', $depth=0)
 	{
-		$this->addElement('where', $column, $operator, $value, $logical, $depth);
+		$this->syntax->setWhere($column, $operator, $value, $logical, $depth);
 		return $this;
 	}
 
@@ -297,7 +284,7 @@ class Query
 	 **/
 	public function orWhere($column, $operator, $value, $logical='or', $depth=0)
 	{
-		$this->addElement('where', $column, $operator, $value, $logical, $depth);
+		$this->where($column, $operator, $value, $logical, $depth);
 		return $this;
 	}
 
@@ -384,7 +371,7 @@ class Query
 	 **/
 	public function order($column, $dir)
 	{
-		$this->addElement('order', $column, $dir);
+		$this->syntax->setOrder($column, $dir);
 		return $this;
 	}
 
@@ -397,7 +384,7 @@ class Query
 	 **/
 	public function start($start)
 	{
-		$this->addElement('limit', 'start', $start);
+		$this->syntax->setStart($start);
 		return $this;
 	}
 
@@ -410,7 +397,7 @@ class Query
 	 **/
 	public function limit($limit)
 	{
-		$this->addElement('limit', $limit);
+		$this->syntax->setLimit($limit);
 		return $this;
 	}
 
@@ -423,7 +410,7 @@ class Query
 	 **/
 	public function values($data)
 	{
-		$this->addElement('values', $data);
+		$this->syntax->setValues($data);
 		return $this;
 	}
 
@@ -436,7 +423,7 @@ class Query
 	 **/
 	public function set($data)
 	{
-		$this->addElement('set', $data);
+		$this->syntax->setSet($data);
 		return $this;
 	}
 
@@ -449,7 +436,7 @@ class Query
 	 **/
 	public function group($column)
 	{
-		$this->addElement('group', $column);
+		$this->syntax->setGroup($column);
 		return $this;
 	}
 
@@ -464,7 +451,7 @@ class Query
 	 **/
 	public function having($column, $operator, $value)
 	{
-		$this->addElement('having', $column, $operator, $value);
+		$this->syntax->setHaving($column, $operator, $value);
 		return $this;
 	}
 
@@ -559,7 +546,7 @@ class Query
 		}
 
 		// Add delete statement
-		$this->delete()
+		$this->delete($table)
 		     ->whereEquals($pkField, $pkValue);
 
 		// Return result of the query
@@ -605,9 +592,10 @@ class Query
 		$this->connection->setQuery($query);
 
 		$result = (strtolower($type) == 'select')
-					? $this->connection->{constant('self::' . strtoupper($structure))}()
-					: $this->connection->query();
+		        ? $this->connection->{constant('self::' . strtoupper($structure))}()
+		        : $this->connection->query();
 
+		// @FIXME: move to driver
 		if (self::$debug) Log::add($query, $this->connection->timer);
 
 		return $result;
@@ -639,37 +627,13 @@ class Query
 		foreach ($this->$type as $piece)
 		{
 			// If we have one of these elements, get its string value
-			if (isset($this->elements[$piece]))
+			if ($element = $this->syntax->build($piece))
 			{
-				$pieces[] = $this->elements[$piece]->toString();
+				$pieces[] = $element;
 			}
 		}
 
 		return implode("\n", $pieces);
-	}
-
-	/**
-	 * Adds query element to list of elements
-	 *
-	 * @param  string $type the query element type to be added
-	 * @return void
-	 * @since  1.3.2
-	 **/
-	private function addElement($type)
-	{
-		// See if we have an element of this type set already
-		if (!isset($this->elements[$type]))
-		{
-			$class = __NAMESPACE__ . '\\Query\\' . ucfirst($type);
-			$this->elements[$type] = new $class($this->connection);
-		}
-
-		// Get function arguments and remove type
-		$args = func_get_args();
-		unset($args[0]);
-
-		// Call the element constrain method to add the constraint
-		call_user_func_array(array($this->elements[$type], 'constrain'), $args);
 	}
 
 	/**
@@ -680,7 +644,7 @@ class Query
 	 **/
 	private function reset()
 	{
-		// Set a few default query elements
-		$this->elements = array();
+		// Reset the syntax element
+		$this->syntax = new Syntax($this->connection);
 	}
 }
