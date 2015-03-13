@@ -80,9 +80,9 @@ class Section extends Base
 		if (!($this->_tbl instanceof \JTable))
 		{
 			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 			);
-			throw new LogicException(\JText::_('Table class must be an instance of JTable.'));
+			throw new LogicException(Lang::txt('Table class must be an instance of JTable.'));
 		}
 
 		if ($oid)
@@ -276,7 +276,7 @@ class Section extends Base
 				break;
 
 				default:
-					$this->setError(\JText::sprintf('Property value of "%" not accepted', $what));
+					$this->setError(Lang::txt('Property value of "%" not accepted', $what));
 					return $this->_cache[$key];
 				break;
 			}

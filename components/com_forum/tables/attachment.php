@@ -84,13 +84,13 @@ class Attachment extends \JTable
 		$this->post_id = intval($this->post_id);
 		if (!$this->post_id)
 		{
-			$this->setError(\JText::_('COM_FORUM_ERROR_NO_POST_ID'));
+			$this->setError(Lang::txt('COM_FORUM_ERROR_NO_POST_ID'));
 		}
 
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(\JText::_('COM_FORUM_ERROR_NO_FILENAME'));
+			$this->setError(Lang::txt('COM_FORUM_ERROR_NO_FILENAME'));
 		}
 
 		if ($this->getError())
@@ -146,7 +146,7 @@ class Attachment extends \JTable
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
 		if ($this->filename && file_exists($path))
 		{
-			$url = \JRoute::_($url . $this->filename);
+			$url = Route::url($url . $this->filename);
 
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 
@@ -175,7 +175,7 @@ class Attachment extends \JTable
 					//$srcHeight = $originalHeight;
 					//$srcX = $srcY = 0;
 
-					$html .= '<a href="' . $url . '" title="'. \JText::_('Click for larger version') . '">';
+					$html .= '<a href="' . $url . '" title="'. Lang::txt('Click for larger version') . '">';
 					$html .= '<img src="' . $url . '" alt="' . $this->description . '" width="' . $targetWidth . '" height="' . $targetHeight . '" />';
 					$html .= '</a>';
 				}

@@ -32,7 +32,7 @@ namespace Components\Forum\Models\Adapters;
 
 use Hubzero\Utility\String;
 
-require_once(__DIR__ . '/base.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for a forum post link for course forum

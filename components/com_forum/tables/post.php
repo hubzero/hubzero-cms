@@ -143,7 +143,7 @@ class Post extends \JTable
 
 		if (!$this->comment)
 		{
-			$this->setError(\JText::_('Please provide a comment'));
+			$this->setError(Lang::txt('Please provide a comment'));
 			return false;
 		}
 
@@ -1094,7 +1094,7 @@ class Post extends \JTable
 
 			if (!$parent)
 			{
-				$this->setError(\JText::_('Parent node does not exist.'));
+				$this->setError(Lang::txt('Parent node does not exist.'));
 				return false;
 			}
 
@@ -1257,7 +1257,7 @@ class Post extends \JTable
 		// Check for a database error.
 		if ($this->_db->getErrorNum())
 		{
-			$this->setError(\JText::_('Failed to get tree.'));
+			$this->setError(Lang::txt('Failed to get tree.'));
 			return false;
 		}
 
@@ -1329,7 +1329,7 @@ class Post extends \JTable
 		// Check for a database error.
 		if ($this->_db->getErrorNum())
 		{
-			$this->setError(\JText::_('Failed to get tree.'));
+			$this->setError(Lang::txt('Failed to get tree.'));
 			return false;
 		}
 
@@ -1371,7 +1371,7 @@ class Post extends \JTable
 		// Check for a database error or no $row returned
 		if ((!$row) || ($this->_db->getErrorNum()))
 		{
-			$this->setError(\JText::_('Get node failed'));
+			$this->setError(Lang::txt('Get node failed'));
 			return false;
 		}
 

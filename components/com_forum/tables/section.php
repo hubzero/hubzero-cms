@@ -163,7 +163,7 @@ class Section extends \JTable
 	{
 		$result = array(
 			'id'         => 0,
-			'title'      => \JText::_('Categories'),
+			'title'      => Lang::txt('Categories'),
 			'created_by' => 0,
 			'scope'      => $scope,
 			'scope_id'   => $scope_id,
@@ -185,7 +185,7 @@ class Section extends \JTable
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(\JText::_('Please provide a title.'));
+			$this->setError(Lang::txt('Please provide a title.'));
 		}
 
 		if (!$this->alias)
@@ -195,7 +195,7 @@ class Section extends \JTable
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 		if (!$this->alias)
 		{
-			$this->setError(\JText::_('Alias cannot be all punctuation or blank.'));
+			$this->setError(Lang::txt('Alias cannot be all punctuation or blank.'));
 		}
 
 		if ($this->getError())

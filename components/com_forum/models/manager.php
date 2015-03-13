@@ -138,7 +138,7 @@ class Manager extends Base
 		// Create a default section
 		$section = new Section(0, $this->get('scope'), $this->get('scope_id'));
 		$section->bind(array(
-			'title'    => \JText::_('Default Section'),
+			'title'    => Lang::txt('Default Section'),
 			'scope'    => $this->get('scope'),
 			'scope_id' => $this->get('scope_id'),
 			'state'    => 1
@@ -152,8 +152,8 @@ class Manager extends Base
 		// Create a default category
 		$category = new Category(0);
 		$category->bind(array(
-			'title'       => \JText::_('Discussions'),
-			'description' => \JText::_('Default category for all discussions in this forum.'),
+			'title'       => Lang::txt('Discussions'),
+			'description' => Lang::txt('Default category for all discussions in this forum.'),
 			'section_id'  => $section->get('id'),
 			'scope'       => $this->get('scope'),
 			'scope_id'    => $this->get('scope_id'),
@@ -423,7 +423,7 @@ class Manager extends Base
 				break;
 
 				default:
-					$this->setError(\JText::sprintf('Property value of "%s" not accepted', $what));
+					$this->setError(Lang::txt('Property value of "%s" not accepted', $what));
 					return 0;
 				break;
 			}

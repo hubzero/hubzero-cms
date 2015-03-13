@@ -139,11 +139,11 @@ class Post extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

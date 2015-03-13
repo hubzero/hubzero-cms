@@ -171,8 +171,8 @@ class Category extends \JTable
 	{
 		$result = array(
 			'id'          => 0,
-			'title'       => \JText::_('Discussions'),
-			'description' => \JText::_('Default category for all discussions in this forum.'),
+			'title'       => Lang::txt('Discussions'),
+			'description' => Lang::txt('Default category for all discussions in this forum.'),
 			'section_id'  => 0,
 			'created_by'  => 0,
 			'scope'       => $scope,
@@ -197,7 +197,7 @@ class Category extends \JTable
 
 		if (!$this->title)
 		{
-			$this->setError(\JText::_('Please provide a title.'));
+			$this->setError(Lang::txt('Please provide a title.'));
 		}
 
 		if (!$this->alias)
@@ -207,7 +207,7 @@ class Category extends \JTable
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 		if (!$this->alias)
 		{
-			$this->setError(\JText::_('Alias cannot be all punctuation or blank.'));
+			$this->setError(Lang::txt('Alias cannot be all punctuation or blank.'));
 		}
 
 		if ($this->getError())

@@ -63,19 +63,19 @@ class Base extends Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     string
+	 * @param   string  $as  What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -91,9 +91,9 @@ class Base extends Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      string $property What data to return
-	 * @param      mixed  $default  Default value
-	 * @return     mixed
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -121,9 +121,9 @@ class Base extends Model
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param      string $key     Config property to retrieve
-	 * @param      mixed  $default Default value to return
-	 * @return     mixed
+	 * @param   string  $key      Config property to retrieve
+	 * @param   mixed   $default  Default value to return
+	 * @return  mixed
 	 */
 	public function config($key=null, $default=null)
 	{
@@ -158,7 +158,7 @@ class Base extends Model
 			$path = __DIR__ . '/adapters/' . $scope . '.php';
 			if (!is_file($path))
 			{
-				throw new InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+				throw new InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 			}
 			include_once($path);
 		}
