@@ -419,9 +419,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			// instantiate the helper class
 			$helper = new $helperClass($this->database);
 
-			//override sortings
-			$view->filters['sort'] = $helper->getCustomSort();
-
 		}
 
 		$view->citations = $citations->getRecords($view->filters, $view->isAdmin);
