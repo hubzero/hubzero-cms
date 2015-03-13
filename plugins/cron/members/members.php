@@ -104,7 +104,7 @@ class plgCronMembers extends JPlugin
 			require_once( JPATH_ROOT . DS . 'components'. DS .'com_resources' . DS . 'helpers' . DS . 'economy.php');
 		}
 
-		$AE = new AnswersEconomy($this->database);
+		$AE = new \Components\Answers\Helpers\Economy($this->database);
 		$accumulated = 0;
 
 		// Get Royalties on Answers
@@ -156,7 +156,7 @@ class plgCronMembers extends JPlugin
 		if (!$royaltyReviews)
 		{
 			// get eligible
-			$RE = new ReviewsEconomy($this->database);
+			$RE = new \Components\Resources\Helpers\Economy\Reviews($this->database);
 			$reviews = $RE->getReviews();
 
 			// do we have ratings on reviews enabled?
@@ -211,7 +211,7 @@ class plgCronMembers extends JPlugin
 		if (!$royaltyResources)
 		{
 			// get eligible
-			$ResE = new ResourcesEconomy($this->database);
+			$ResE = new \Components\Resources\Helpers\Economy($this->database);
 			$cons = $ResE->getCons();
 
 			$accumulated = 0;
