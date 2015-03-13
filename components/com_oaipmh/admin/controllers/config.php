@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Oaipmh\Controllers;
+namespace Components\Oaipmh\Admin\Controllers;
 
 use Components\Oaipmh\Models\Service;
 use Hubzero\Component\AdminController;
@@ -55,7 +55,7 @@ class Config extends AdminController
 	 */
 	public function schemasTask()
 	{
-		require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'service.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'service.php');
 
 		// display panel
 		$this->view

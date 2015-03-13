@@ -28,12 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Oaipmh\Controllers;
+namespace Components\Oaipmh\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Oaipmh\Models\Service;
-
-require_once(__DIR__ . '/../models/service.php');
 
 /**
  * OAIPMH controller for XML output

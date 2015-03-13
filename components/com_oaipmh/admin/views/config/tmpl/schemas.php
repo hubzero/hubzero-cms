@@ -29,7 +29,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_OAIPMH_SETTINGS'), 'generic.png');
+JToolBarHelper::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
 JToolBarHelper::preferences('com_oaipmh', 500);
 JToolBarHelper::spacer();
 JToolBarHelper::help('oaipmh');
@@ -39,13 +39,13 @@ $this->css();
 $lang = \JFactory::getLanguage()->getTag();
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('COM_OAIPMH_SCHEMA_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_OAIPMH_SCHEMA_PREFIX'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_OAIPMH_SCHEMA_FORMAT'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_OAIPMH_SCHEMA_NAME'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_OAIPMH_SCHEMA_PREFIX'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_OAIPMH_SCHEMA_FORMAT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

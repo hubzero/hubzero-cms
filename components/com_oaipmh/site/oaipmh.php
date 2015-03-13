@@ -23,29 +23,24 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Oaipmh\Site;
 
-JToolBarHelper::title(JText::_('COM_OAIPMH_SETTINGS'), 'generic.png');
-JToolBarHelper::preferences('com_oaipmh', 500);
-JToolBarHelper::spacer();
-JToolBarHelper::help('oaipmh');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'service.php');
 
-$this->css();
+$controllerName = \JRequest::getCmd('controller', 'xml');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'xml';
+}
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-$lang = \JFactory::getLanguage()->getTag();
-?>
-
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="task" value="save" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="boxchecked" value="0" />
-
-	<?php include_once(JPATH_COMPONENT . DS . 'help' . DS . $lang . DS . 'oaipmh.phtml'); ?>
-
-	<?php echo JHTML::_('form.token'); ?>
-</form>
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
