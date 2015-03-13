@@ -208,8 +208,7 @@ class ManyToMany extends Relationship
 			$deletes = array_diff($existing, $ids);
 			if (!empty($deletes))
 			{
-				$query->delete()
-				      ->from($this->associativeTable)
+				$query->delete($this->associativeTable)
 				      ->whereEquals($this->localKey, $localKeyValue)
 				      ->whereIn($this->relatedKey, $deletes)
 				      ->execute();
