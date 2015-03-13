@@ -30,6 +30,8 @@
 
 namespace Components\Cron\Helpers;
 
+use Hubzero\Base\Object;
+
 /**
  * Permissions helper
  */
@@ -59,7 +61,7 @@ class Permissions
 		}
 
 		$user = \JFactory::getUser();
-		$result = new \JObject;
+		$result = new Object;
 
 		$actions = array(
 			'core.admin',

@@ -28,32 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cron;
+namespace Components\Cron\Site;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_cron'))
-{
-	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
-}
-
-\JSubMenuHelper::addEntry(
-	\JText::_('COM_CRON_JOBS'),
-	\JRoute::_('index.php?option=com_cron'),
-	true
-);
-
-require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
-if (\PluginsHelper::getActions()->get('core.manage'))
-{
-	\JSubMenuHelper::addEntry(
-		\JText::_('COM_CRON_PLUGINS'),
-		\JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
-	);
-}
-
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'manager.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'jobs.php');
 
-$controller = new \Components\Cron\Controllers\Jobs();
+// Instantiate controller
+$controller = new Controllers\Jobs();
 $controller->execute();
 $controller->redirect();

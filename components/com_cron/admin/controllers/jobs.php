@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cron\Controllers;
+namespace Components\Cron\Admin\Controllers;
 
 use Components\Cron\Models\Manager;
 use Components\Cron\Models\Job;
@@ -272,8 +272,8 @@ class Jobs extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::_('COM_CRON_ITEM_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_CRON_ITEM_SAVED')
 		);
 	}
 
@@ -376,8 +376,8 @@ class Jobs extends AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option, false),
-				\JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
+				Route::url('index.php?option=' . $this->_option, false),
+				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
@@ -396,8 +396,8 @@ class Jobs extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option, false),
-			\JText::_('COM_CRON_ITEMS_DELETED')
+			Route::url('index.php?option=' . $this->_option, false),
+			Lang::txt('COM_CRON_ITEMS_DELETED')
 		);
 	}
 
@@ -424,8 +424,8 @@ class Jobs extends AdminController
 			$action = ($state == 1) ? \JText::_('COM_CRON_STATE_UNPUBLISH') : \JText::_('COM_CRON_STATE_PUBLISH');
 
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::sprintf('COM_CRON_ERROR_SELECT_ITEMS', $action),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action),
 				'error'
 			);
 			return;
@@ -449,15 +449,15 @@ class Jobs extends AdminController
 		// Set message
 		if ($state == 1)
 		{
-			$this->setMessage(\JText::sprintf('COM_CRON_ITEMS_PUBLISHED', $total));
+			$this->setMessage(Lang::txt('COM_CRON_ITEMS_PUBLISHED', $total));
 		}
 		else
 		{
-			$this->setMessage(\JText::sprintf('COM_CRON_ITEMS_UNPUBLISHED', $total));
+			$this->setMessage(Lang::txt('COM_CRON_ITEMS_UNPUBLISHED', $total));
 		}
 
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option, false)
+			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
 }

@@ -35,7 +35,7 @@ use Components\Cron\Tables\Job as Table;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 
-require_once(__DIR__ . '/job.php');
+require_once(__DIR__ . DS . 'job.php');
 
 /**
  * Table class for cron jobs

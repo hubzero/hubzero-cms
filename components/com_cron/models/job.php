@@ -36,8 +36,8 @@ use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'tables' . DS . 'job.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'job.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
 
 /**
  * Table class for a cron job model
@@ -49,7 +49,7 @@ class Job extends Model
 	 *
 	 * @var  string
 	 */
-	protected $_tbl_name = 'Components\\Cron\\Tables\\Job';
+	protected $_tbl_name = '\\Components\\Cron\\Tables\\Job';
 
 	/**
 	 * Cron expression

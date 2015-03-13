@@ -55,13 +55,13 @@ class Job extends \JTable
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(\JText::_('COM_CRON_ERROR_EMPTY_TITLE'));
+			$this->setError(Lang::txt('COM_CRON_ERROR_EMPTY_TITLE'));
 			return false;
 		}
 
 		if (!$this->recurrence)
 		{
-			$this->setError(\JText::_('COM_CRON_ERROR_EMPTY_RECURRENCE'));
+			$this->setError(Lang::txt('COM_CRON_ERROR_EMPTY_RECURRENCE'));
 			return false;
 		}
 
@@ -69,7 +69,7 @@ class Job extends \JTable
 
 		if (preg_match('/[^-,*\/ \\d]/', $this->recurrence) !== 0)
 		{
-			$this->setError(\JText::_('Cron String contains invalid character.'));
+			$this->setError(Lang::txt('Cron String contains invalid character.'));
 			return false;
 		}
 
@@ -81,14 +81,14 @@ class Job extends \JTable
 		}
 		if (!$this->event)
 		{
-			$this->setError(\JText::_('Missing plugin.'));
+			$this->setError(Lang::txt('Missing plugin.'));
 			return false;
 		}
 
 		$bits = @explode(' ', $this->recurrence);
 		if (count($bits) != 5)
 		{
-			$this->setError(\JText::_('Cron string is invalid. Too many or too little sections.'));
+			$this->setError(Lang::txt('Cron string is invalid. Too many or too little sections.'));
 			return false;
 		}
 

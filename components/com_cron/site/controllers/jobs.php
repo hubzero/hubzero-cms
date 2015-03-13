@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cron\Controllers;
+namespace Components\Cron\Site\Controllers;
 
 use Components\Cron\Models\Manager;
 use Hubzero\Component\SiteController;
