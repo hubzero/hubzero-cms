@@ -49,7 +49,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
 		$this->database = JFactory::getDBO();
 
