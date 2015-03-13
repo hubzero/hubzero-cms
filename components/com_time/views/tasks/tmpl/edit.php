@@ -119,11 +119,13 @@ $this->css()
 					<label for="assignee_id"><?php echo JText::_('COM_TIME_TASKS_ASSIGNEE'); ?>:</label>
 					<select name="assignee_id" id="assignee_id">
 						<option value="0"><?php echo JText::_('COM_TIME_NO_ASSIGNEE'); ?></option>
-						<?php foreach (\Hubzero\User\Group::getInstance($this->config->get('accessgroup', 'time'))->get('members') as $member) : ?>
-							<option value="<?php echo $member; ?>" <?php echo ($this->row->assignee_id == $member) ? 'selected="selected"': '';?>>
-								<?php echo JFactory::getUser($member)->get('name'); ?>
-							</option>
-						<?php endforeach; ?>
+						<?php if ($group = \Hubzero\User\Group::getInstance($this->config->get('accessgroup', 'time'))) : ?>
+							<?php foreach ($group->get('members') as $member) : ?>
+								<option value="<?php echo $member; ?>" <?php echo ($this->row->assignee_id == $member) ? 'selected="selected"': '';?>>
+									<?php echo JFactory::getUser($member)->get('name'); ?>
+								</option>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</select>
 				</div>
 
