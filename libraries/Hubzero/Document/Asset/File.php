@@ -411,7 +411,14 @@ class File extends Object
 		}
 		else
 		{
-			$relative = rtrim(\JURI::base(true), '/') . substr($output, strlen(JPATH_BASE));
+			if (substr($output, 0, strlen(JPATH_BASE)) == JPATH_BASE)
+			{
+				$relative = rtrim(\JURI::base(true), '/') . substr($output, strlen(JPATH_BASE));
+			}
+			else
+			{
+				$relative = rtrim(str_replace('/administrator', '', \JURI::base(true)), '/') . substr($output, strlen(JPATH_SITE));
+			}
 		}
 
 		return $relative . ($timestamp ? '?v=' . $this->lastModified() : '');
