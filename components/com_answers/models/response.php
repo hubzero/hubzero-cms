@@ -36,10 +36,10 @@ use Hubzero\Base\ItemList;
 use Hubzero\Item;
 use Hubzero\Utility\String;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-require_once(__DIR__ . '/base.php');
-require_once(__DIR__ . '/comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'response.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Answers model for a question response
@@ -328,7 +328,7 @@ class Response extends Base
 		/*$question = new Question($question_id);
 		if (!$question->exists())
 		{
-			$this->setError(\JText::_('Question not found.'));
+			$this->setError(Lang::txt('Question not found.'));
 			return false;
 		}
 		// Mark it at the chosen one
@@ -359,7 +359,7 @@ class Response extends Base
 		/*$question = new Question($question_id);
 		if (!$question->exists())
 		{
-			$this->setError(\JText::_('Question not found.'));
+			$this->setError(Lang::txt('Question not found.'));
 			return false;
 		}
 		// Mark it at the chosen one
@@ -421,7 +421,7 @@ class Response extends Base
 						))
 					)
 					{
-						$this->setError(\JText::_('Failed to remove alert.'));
+						$this->setError(Lang::txt('Failed to remove alert.'));
 					}
 				}
 				*/

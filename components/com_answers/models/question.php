@@ -37,14 +37,12 @@ use Hubzero\Utility\String;
 use Hubzero\Bank\Transaction;
 use Hubzero\Bank\Teller;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'questionslog.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'question.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
-
-require_once(__DIR__ . '/tags.php');
-require_once(__DIR__ . '/base.php');
-require_once(__DIR__ . '/response.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'base.php');
+require_once(__DIR__ . DS . 'response.php');
 
 /**
  * Answers mdoel class for a question
@@ -677,13 +675,13 @@ class Question extends Base
 	{
 		if (!$this->exists())
 		{
-			$this->setError(\JText::_('No record found'));
+			$this->setError(Lang::txt('No record found'));
 			return false;
 		}
 
 		if (!$vote)
 		{
-			$this->setError(\JText::_('No vote provided'));
+			$this->setError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -696,13 +694,13 @@ class Question extends Base
 
 		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
 		{
-			$this->setError(\JText::_('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
+			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_ALREADY_VOTED_FOR_QUESTION'));
 			return false;
 		}
 
 		if ($this->get('created_by') == $juser->get('username'))
 		{
-			$this->setError(\JText::_('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
+			$this->setError(Lang::txt('COM_ANSWERS_NOTICE_RECOMMEND_OWN_QUESTION'));
 			return false;
 		}
 
@@ -739,7 +737,7 @@ class Question extends Base
 	{
 		if (!$answer_id)
 		{
-			$this->setError(\JText::_('No answer ID provided.'));
+			$this->setError(Lang::txt('No answer ID provided.'));
 			return false;
 		}
 
@@ -747,7 +745,7 @@ class Question extends Base
 		$answer = new Response($answer_id);
 		if (!$answer->exists())
 		{
-			$this->setError(\JText::_('Answer not found.'));
+			$this->setError(Lang::txt('Answer not found.'));
 			return false;
 		}
 		// Mark it at the chosen one

@@ -126,10 +126,10 @@ class Helper extends Module
 
 		// Get some classes we need
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
 		$aq = new \Components\Answers\Tables\Question($database);
 		if ($this->banking)

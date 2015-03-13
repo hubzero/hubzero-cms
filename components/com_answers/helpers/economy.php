@@ -234,13 +234,13 @@ class Economy extends Object
 
 			if (intval($share) > 0)
 			{
-				$share_msg = ($type=='royalty') ? \JText::sprintf('Royalty payment for posting question #%s', $qid) : \JText::sprintf('Commission for posting question #%s', $qid);
+				$share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for posting question #%s', $qid) : Lang::txt('Commission for posting question #%s', $qid);
 				$BTL_Q->deposit($share, $share_msg, $cat, $qid);
 			}
 			// withdraw reward amount
 			if ($reward)
 			{
-				$BTL_Q->withdraw($reward, \JText::sprintf('Reward payment for your question #%s', $qid), $cat, $qid);
+				$BTL_Q->withdraw($reward, Lang::txt('Reward payment for your question #%s', $qid), $cat, $qid);
 			}
 		}
 
@@ -261,7 +261,7 @@ class Economy extends Object
 						$BTL_A = new Teller($this->_db , $auser->get('id'));
 						if (intval($A_owner_share) > 0)
 						{
-							$A_owner_share_msg = ($type=='royalty') ? \JText::sprintf('Royalty payment for answering question #%s', $qid) : \JText::sprintf('Answered question #%s that was recently closed', $qid);
+							$A_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
 							$BTL_A->deposit($A_owner_share, $A_owner_share_msg , $cat, $qid);
 						}
 					}
@@ -283,7 +283,7 @@ class Economy extends Object
 
 			if (intval($BA_owner_share) > 0)
 			{
-				$BA_owner_share_msg = ($type=='royalty') ? \JText::sprintf('Royalty payment for answering question #%s', $qid) : \JText::sprintf('Answer for question #%s was accepted', $qid);
+				$BA_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answer for question #%s was accepted', $qid);
 				$BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
 			}
 		}
