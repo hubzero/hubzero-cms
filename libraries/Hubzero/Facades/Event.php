@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Api\Facades;
+namespace Hubzero\Facades;
 
 /**
  * Event dispatcher facade
