@@ -66,15 +66,15 @@ $presentation = $presentation->presentation;
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
 							<?php if ($slide->type == 'Image') : ?>
-								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 							<?php else : ?>
 								<video class="slidevideo">
 									<?php foreach ($slide->media as $source): ?>
-										<source src="<?php echo $content_folder.DS.$source->source; ?>" />
+										<source src="<?php echo $content_folder . DS . $source->source; ?>" />
 									<?php endforeach; ?>
-									<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+									<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
-								<img src="<?php echo $content_folder.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+								<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -104,16 +104,16 @@ $presentation = $presentation->presentation;
 				<?php if (strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls">
 						<?php foreach ($presentation->media as $source): ?>
-						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" >
+						   	<source src="<?php echo $content_folder . DS . $source->source; ?>" >
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
+						<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer"></a>
 					</video>
 				<?php else : ?>
 					<audio id="player" preload="auto" controls="controls">
 						<?php foreach ($presentation->media as $source): ?>
-							<source src="<?php echo $content_folder.DS.$source->source; ?>" />
+							<source src="<?php echo $content_folder . DS . $source->source; ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>"></a>
+						<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>"></a>
 					</audio>
 				<?php endif; ?>
 			</div>
@@ -123,7 +123,7 @@ $presentation = $presentation->presentation;
 					<?php foreach ($presentation->slides as $slide) : ?>
 						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
-								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 								<span>
 									<?php
 										$num++;

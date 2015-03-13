@@ -60,6 +60,80 @@ if (!defined('n')) {
 class PublicationsHtml extends \JObject
 {
 	/**
+	 * Get publication path
+	 *
+	 * @param      string 	$pid
+	 * @param      string 	$vid
+	 * @param      string 	$base
+	 * @param      string 	$filedir
+	 * @param      boolean 	$root
+	 * @return     string
+	 */
+	public static function buildPubPath( $pid = NULL, $vid = NULL,
+		$base = '', $filedir = '', $root = 0 
+	)
+	{
+		if ($vid === NULL or $pid === NULL )
+		{
+			return false;
+		}
+		if (!$base)
+		{
+			$pubconfig = JComponentHelper::getParams( 'com_publications' );
+			$base = $pubconfig->get('webpath');
+		}
+
+		$base = DS . trim($base, DS);
+
+		$pub_dir     =  \Hubzero\Utility\String::pad( $pid );
+		$version_dir =  \Hubzero\Utility\String::pad( $vid );
+		$path        = $base . DS . $pub_dir . DS . $version_dir;
+		$path        = $filedir ? $path . DS . $filedir : $path;
+		$path        = $root ? PATH_APP . $path : $path;
+
+		return $path;
+	}
+
+	/**
+	 * Get publication thumbnail
+	 *
+	 * @param      int 		$pid
+	 * @param      int 		$versionid
+	 * @param      array 	$config
+	 * @param      boolean 	$force
+	 * @param      string	$cat
+	 * @return     string HTML
+	 */
+	public static function getThumb($pid = 0, $versionid = 0, $config = NULL,
+		$force = false, $cat = ''
+	)
+	{
+		if (empty($config))
+		{
+			$config = JComponentHelper::getParams( 'com_publications' );
+		}
+
+		// Get publication directory path
+		$webpath     = DS . trim($config->get('webpath', 'site/publications'), DS);
+		$path        = self::buildPubPath($pid, $versionid, $webpath);
+
+		// Get default picture
+		$default = $cat == 'tools'
+				? $config->get('toolpic', '/components/com_publications/assets/img/tool_thumb.gif')
+				: $config->get('defaultpic', '/components/com_publications/assets/img/resource_thumb.gif');
+
+		// Check for default image
+		if (is_file(PATH_APP . $path . DS . 'thumb.gif') && $force == false)
+		{
+			return $path . DS . 'thumb.gif';
+		}
+		else
+		{
+			return $default;
+		}
+	}
+
+	/**
 	 * Show contributors
 	 *
 	 * @param      array 	$contributors

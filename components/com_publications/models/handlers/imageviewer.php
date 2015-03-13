@@ -92,7 +92,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	 *
 	 * @return  void
 	 */
-	public function cleanup( $path )
+	public function cleanUp( $path, $configs = NULL, $md5 = NULL )
 	{
 		// Make sure we got config
 		if (!$this->_config)
@@ -109,7 +109,28 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		if (is_file($thumbPath))
 		{
+			$md5 = hash_file('sha256', $thumbPath);
 			JFile::delete($thumbPath);
+		}
+
+		// Get master and default thumb
+		if (!empty($configs))
+		{
+			$masterThumb  = $configs->pubBase . DS . 'thumb.gif';
+			$masterCover  = $configs->pubBase . DS . 'master.png';
+
+			// If image was used as default, delete it
+			if (is_file($masterThumb) &&  hash_file('sha256', $masterThumb) == $md5)
+			{
+				// Delete master thumbnail
+				JFile::delete($masterThumb);
+
+				// Remove master cover
+				if (is_file($masterCover))
+				{
+					JFile::delete($masterCover);
+				}
+			}
 		}
 
 		return true;
@@ -223,7 +244,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Get files directory
 		$directory = isset($params->directory) && $params->directory
 							? $params->directory : $pub->secret;
-		$pubPath = $pub->_helpers->pubHelper->buildPath($pub->id, $pub->version_id, '', $directory, 0);
+		$pubPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', $directory, 0);
 
 		$configs 		= new stdClass;
 		$configs->dirHierarchy = $dirHierarchy;

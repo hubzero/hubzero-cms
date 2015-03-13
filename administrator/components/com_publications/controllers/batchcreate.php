@@ -744,7 +744,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		}
 
 		// Get standard gallery path
-		$gallery_path = $this->_pubHelper->buildPath($pub->id, $pub->version_id, $this->config->get('webpath'), 'gallery');
+		$gallery_path = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $this->config->get('webpath'), 'gallery');
 
 		$filename = basename($attachment->path);
 		$hash = $attachment->vcs_hash;

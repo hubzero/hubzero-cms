@@ -68,7 +68,7 @@ if ($attributes) {
 $images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
 $files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 
-if (is_file(JPATH_ROOT.$firstattach->url))
+if (is_file(PATH_CORE . $firstattach->url))
 {
 	if ($firstattach->type == 'video' || $firstattach->ext == 'swf')
 	{

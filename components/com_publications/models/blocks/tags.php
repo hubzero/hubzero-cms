@@ -25,6 +25,8 @@
 // Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
 
+require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
+
 /**
  * Tags block
  */

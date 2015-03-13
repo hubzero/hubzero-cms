@@ -483,8 +483,8 @@ class typeFiles extends JObject
 
 		// Build publication path
 		$base_path 	= $pubconfig->get('webpath');
-		$devpath 	= $helper->buildDevPath($this->_project->alias);
-		$newpath 	= $helper->buildPath($pid, $vid, $base_path, $secret, 1);
+		$devpath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
+		$newpath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, $secret, 1);
 
 		// Create new version path
 		if (!is_dir( $newpath ))
@@ -497,17 +497,17 @@ class typeFiles extends JObject
 		}
 
 		// If parent dir does not exist, we must create it
-		if (!file_exists(dirname($newpath. DS .$fpath)))
+		if (!file_exists(dirname($newpath. DS . $fpath)))
 		{
-			JFolder::create(dirname($newpath. DS .$fpath));
+			JFolder::create(dirname($newpath. DS . $fpath));
 		}
 
 		// Copy file if there (will be at latest revision)
-		if (is_file($devpath. DS .$fpath))
+		if (is_file($devpath . DS . $fpath))
 		{
-			if (!is_file($newpath. DS .$fpath))
+			if (!is_file($newpath. DS . $fpath))
 			{
-				JFile::copy($devpath. DS .$fpath, $newpath. DS .$fpath);
+				JFile::copy($devpath . DS . $fpath, $newpath . DS . $fpath);
 			}
 		}
 
@@ -539,7 +539,7 @@ class typeFiles extends JObject
 
 		// Build publication path
 		$base_path  = $pubconfig->get('webpath');
-		$newpath 	= $helper->buildPath($pid, $vid, $base_path, $secret, 1);
+		$newpath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, $secret, 1);
 
 		if (is_dir( $newpath ))
 		{
@@ -631,8 +631,8 @@ class typeFiles extends JObject
 
 		// Build publication paths
 		$base_path 	= $pubconfig->get('webpath');
-		$devpath 	= $helper->buildDevPath($this->_project->alias);
-		$newpath 	= $helper->buildPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
+		$devpath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
+		$newpath 	= PublicationsHtml::buildPubPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
 
 		// Create new version path
 		if (!is_dir( $newpath ))

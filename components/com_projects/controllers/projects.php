@@ -994,15 +994,12 @@ class Projects extends Base
 			return;
 		}
 
-		// Get Publications helper
-		$helper = new PublicationHelper($this->database);
-
 		// Get project parent directory
-		$path 	 = $helper->buildDevPath($this->project->alias, '', '', '');
-		$newpath = $helper->buildDevPath($name, '', '', '');
+		$path    =  \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
+		$newpath =  \Components\Projects\Helpers\Html::getProjectRepoPath($name, 'files', true);
 
 		// Rename project parent directory
-		if (is_dir($path))
+		if ($path && is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
 			if (!\JFolder::copy($path, $newpath, '', true))

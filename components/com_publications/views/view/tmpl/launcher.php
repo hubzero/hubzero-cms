@@ -38,7 +38,7 @@ $attModel = new PublicationsModelAttachments($this->database);
 $authorized = ($this->restricted && !$this->authorized) ? false : true;
 
 $base_path = $this->config->get('webpath');
-$path = $this->publication->_helpers->pubHelper->buildPath(
+$path = PublicationsHtml::buildPubPath(
 	$this->publication->id,
 	$this->publication->version_id,
 	$base_path,
@@ -46,13 +46,13 @@ $path = $this->publication->_helpers->pubHelper->buildPath(
 );
 
 $masterImage = $path . DS . 'master.png';
-//$masterImage = NULL;
 
 // Build pub url
 $route = $this->publication->project_provisioned == 1
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
 $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . $this->version;
+
 ?>
 <!--[if gte IE 9]>
   <style type="text/css">
@@ -62,7 +62,7 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
   </style>
 <![endif]-->
 <div class="launcher-image">
-	<div class="imager" <?php if (is_file(JPATH_ROOT . $masterImage)) { ?> style="background-image:url('<?php echo $masterImage; ?>');" <?php } ?> > </div>
+	<div class="imager" <?php if (is_file(PATH_APP . $masterImage)) { ?> style="background-image:url('<?php echo $masterImage; ?>');" <?php } ?> > </div>
 </div>
 <section id="launcher" class="main section launcher grad-blue gradient">
 	<div class="grid">

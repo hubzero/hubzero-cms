@@ -259,12 +259,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->row->modified_by_name = '';
 		}
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->database, $this->view->row->id, $id);
-
 		// Build publication path
 		$base_path = $this->view->config->get('webpath');
-		$path = $helper->buildPath($id, $this->view->row->id, $base_path);
+		$path = PublicationsHtml::buildPubPath($id, $this->view->row->id, $base_path);
 
 		// Archival package?
 		$this->view->archPath = JPATH_ROOT . $path . DS
@@ -1752,11 +1749,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pAudience = new \Components\Publications\Tables\Audience( $this->database );
 		$pAudience->deleteAudience($vid);
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->database);
-
 		// Build publication path
-		$path = $helper->buildPath($pid, $vid, $this->config->get('webpath'), '', 1);
+		$path = PublicationsHtml::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
 
 		// Delete all files
 		if (is_dir($path))

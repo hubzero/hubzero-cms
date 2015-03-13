@@ -60,7 +60,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
 
 		// Log path
-		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// replace current attachments?
 		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');

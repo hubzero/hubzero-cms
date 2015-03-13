@@ -97,12 +97,12 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 		if (strtolower($file) == 'thumb')
 		{
 			// Get publication thumbnail
-			$source = $pubHelper->getThumb($pid, $vid, $this->config );
+			$source = PublicationsHtml::getThumb($pid, $vid, $this->config );
 		}
 		else
 		{
 			// Build publication path
-			$path = $pubHelper->buildPath($pid, $vid, $this->config->get('webpath'));
+			$path = PublicationsHtml::buildPubPath($pid, $vid, $this->config->get('webpath'));
 
 			if (strtolower($file) == 'master')
 			{

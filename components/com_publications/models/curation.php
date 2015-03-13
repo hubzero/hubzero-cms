@@ -1924,7 +1924,7 @@ class PublicationsCuration extends JObject
 		$helper = new PublicationHelper($this->_db, $this->_pub->version_id, $this->_pub->id);
 
 		// Get publication path
-		$pubBase = $helper->buildPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
+		$pubBase = PublicationsHtml::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
 
 		// Empty draft?
 		if (!file_exists($pubBase))
@@ -2126,7 +2126,7 @@ class PublicationsCuration extends JObject
 			);
 
 			// Get gallery path
-			$galleryPath 	= $pub->_helpers->pubHelper->buildPath(
+			$galleryPath 	= PublicationsHtml::buildPubPath(
 				$pub->id,
 				$pub->version_id,
 				'',

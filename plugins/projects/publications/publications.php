@@ -2322,7 +2322,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get gallery path
 				$webpath = $this->_pubconfig->get('webpath');
-				$view->gallery_path = $view->helper->buildPath($row->publication_id,
+				$view->gallery_path = PublicationsHtml::buildPubPath($row->publication_id,
 					$row->id, $webpath, 'gallery');
 
 				// Get project file path
@@ -2742,8 +2742,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					// Build publication path
 					$base_path = $this->_pubconfig->get('webpath');
-					$oldpath = $helper->buildPath($pid, $oldid, $base_path, $pub->secret, 1);
-					$newpath = $helper->buildPath($pid, $newid, $base_path, $new->secret, 1);
+					$oldpath = PublicationsHtml::buildPubPath($pid, $oldid, $base_path, $pub->secret, 1);
+					$newpath = PublicationsHtml::buildPubPath($pid, $newid, $base_path, $new->secret, 1);
 
 					// Create new path
 					if (!is_dir( $newpath ))
@@ -2846,8 +2846,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						}
 
 						// Copy image files
-						$g_oldpath = $helper->buildPath($pid, $oldid, $base_path, 'gallery', 1);
-						$g_newpath = $helper->buildPath($pid, $newid, $base_path, 'gallery', 1);
+						$g_oldpath = PublicationsHtml::buildPubPath($pid, $oldid, $base_path, 'gallery', 1);
+						$g_newpath = PublicationsHtml::buildPubPath($pid, $newid, $base_path, 'gallery', 1);
 						if (is_dir($g_oldpath))
 						{
 							JFolder::copy($g_oldpath, $g_newpath, '', true);
@@ -3070,13 +3070,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$base_path = $this->_pubconfig->get('webpath');
 		if ($version == 'dev')
 		{
-			$view->fpath = $helper->buildDevPath($pub->project_alias);
+			$view->fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($pub->project_alias);
 		}
 		else
 		{
-			$view->fpath = $view->helper->buildPath($pub->id, $pub->version_id, $base_path, $pub->secret, $root = 1);
+			$view->fpath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base_path, $pub->secret, $root = 1);
 		}
-		$gallery_path = $view->helper->buildPath($pub->id, $pub->version_id, $base_path, 'gallery');
+		$gallery_path = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base_path, 'gallery');
 
 		// Get project file path
 		$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
@@ -6021,7 +6021,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get project file path
 		$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
-		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		$prefix = $this->_config->get('offroot', 0) ? '' : PATH_APP ;
 		$from_path = $prefix.$fpath;
 
 		// Get files plugin
@@ -6033,7 +6033,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get publications helper
 		$helper = new PublicationHelper( $this->_database );
-		$gallery_path = $helper->buildPath($pid, $vid, $webpath, 'gallery');
+		$galleryPath = PublicationsHtml::buildPubPath($pid, $vid, $webpath, 'gallery');
 
 		if (isset($selections['files']) && count($selections['files']) > 0)
 		{
@@ -6047,7 +6047,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get Git hash
 				$hash = $this->_git->gitLog($file, '' , 'hash');
-				$src = $this->_createScreenshot ( $file, $hash, $from_path, $gallery_path, 'name' );
+				$src = $this->_createScreenshot ( $file, $hash, $from_path, $galleryPath, 'name' );
 
 				if ($pScreenshot->loadFromFilename($file, $vid))
 				{
@@ -6065,9 +6065,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$pScreenshot->created_by = $this->_uid;
 					$pScreenshot->ordering = $ordering;
 				}
-
-				// Create publication thumbnail from first screenshot
-				$pubthumb = $helper->getThumb($pid, $vid, $this->_pubconfig, true);
 
 				if ($pScreenshot->store())
 				{
@@ -6090,17 +6087,50 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					// Clean up files
 					$thumb = \Components\Projects\Helpers\Html::createThumbName($old->srcfile, '_tn', $extension = 'png');
-					if (is_file(JPATH_ROOT.$gallery_path. DS .$old->srcfile))
+					if (is_file(PATH_APP . $galleryPath . DS . $old->srcfile))
 					{
-						JFile::delete(JPATH_ROOT.$gallery_path. DS .$old->srcfile);
+						JFile::delete(PATH_APP . $galleryPath . DS . $old->srcfile);
 					}
-					if (is_file(JPATH_ROOT.$gallery_path. DS .$thumb))
+					if (is_file(PATH_APP . $galleryPath . DS . $thumb))
 					{
-						JFile::delete(JPATH_ROOT.$gallery_path. DS .$thumb);
+						JFile::delete(PATH_APP . $galleryPath . DS . $thumb);
 					}
 				}
 			}
 		}
+
+		// Path to publication thumb
+		$pubPath = PublicationsHtml::buildPubPath($pid, $vid, $webpath);
+		$thumb = PATH_APP . $pubPath . DS . 'thumb.gif';
+
+		// Get new screenshot list
+		$updated = $pScreenshot->getScreenshots( $vid );
+
+		// Remove pub thumbnail
+		if (empty($updated) && is_file($thumb))
+		{
+			JFile::delete($thumb);
+		}
+		else
+		{
+			// Refresh publication thumbnail
+			$firstScreenshot = empty($updated[0]) ? NULL : $updated[0];
+			if (is_object($firstScreenshot) && is_file(PATH_APP . $galleryPath . DS . $firstScreenshot->srcfile))
+			{
+				if (is_file($thumb))
+				{
+					JFile::delete($thumb);
+				}
+				JFile::copy(PATH_APP . $galleryPath . DS . $firstScreenshot->srcfile, $thumb);
+				$hi = new \Hubzero\Image\Processor($thumb);
+				if (count($hi->getErrors()) == 0)
+				{
+					$hi->resize(100, false, true, true);
+					$hi->save($thumb);
+				}
+			}
+		}
+
 		return true;
 	}
 
@@ -6235,7 +6265,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get publications helper
 		$helper = new PublicationHelper( $this->_database );
-		$gallery_path = $helper->buildPath($pid, $vid, $webpath, 'gallery');
+		$gallery_path = PublicationsHtml::buildPubPath($pid, $vid, $webpath, 'gallery');
 
 		// Does screenshot already exist?
 		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
@@ -7363,7 +7393,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build publication path
 		$base_path = $pubconfig->get('webpath');
-		$path = $helper->buildPath($pid, $vid, $base_path);
+		$path = PublicationsHtml::buildPubPath($pid, $vid, $base_path);
 
 		$galleryPath = JPATH_ROOT . $path . DS . 'gallery';
 		$dataPath 	 = JPATH_ROOT . $path . DS . 'data';
@@ -7645,7 +7675,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get referenced path
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base_path = $pubconfig->get('webpath');
-		$pubPath = PublicationHelper::buildPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
+		$pubPath = PublicationsHtml::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 
 		$serve = JPATH_ROOT . $pubPath . DS . $fpath;
 

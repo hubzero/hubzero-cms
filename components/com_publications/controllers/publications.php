@@ -744,10 +744,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path (to access attachments)
 		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($id, $publication->version_id, $base_path, $publication->secret);
+		$path = PublicationsHtml::buildPubPath($id, $publication->version_id, $base_path, $publication->secret);
 
 		// Build log path (access logs)
-		$logPath = $helper->buildPath($id, $publication->version_id, $base_path, 'logs');
+		$logPath = PublicationsHtml::buildPubPath($id, $publication->version_id, $base_path, 'logs');
 
 		// Start sections
 		$sections = array();
@@ -884,7 +884,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Archival package
 		$tarname  = JText::_('Publication').'_'.$publication->id.'.zip';
-		$this->view->archPath = JPATH_ROOT . $helper->buildPath($id, $publication->version_id, $base_path) . DS . $tarname;
+		$this->view->archPath = JPATH_ROOT . PublicationsHtml::buildPubPath($id, $publication->version_id, $base_path) . DS . $tarname;
 
 		if ($this->getError())
 		{
@@ -1078,7 +1078,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
+		$path = PublicationsHtml::buildPubPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
 
 		// Add the default "About" section to the beginning of the lists
 		$cat = array();
@@ -1275,10 +1275,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($this->_id, $publication->version_id, $base_path, $publication->secret);
+		$path = PublicationsHtml::buildPubPath($this->_id, $publication->version_id, $base_path, $publication->secret);
 
 		// Build log path (access logs)
-		$logPath = $helper->buildPath($this->_id, $publication->version_id, $base_path, 'logs');
+		$logPath = PublicationsHtml::buildPubPath($this->_id, $publication->version_id, $base_path, 'logs');
 
 		// First/requested attachment
 		$primary = $attachments[0];
@@ -1325,7 +1325,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			// Multi-file or archive
 			$tarname  = JText::_('Publication') . '_' . $publication->id . '.zip';
-			$archPath = $helper->buildPath($publication->id, $publication->version_id, $base_path);
+			$archPath = PublicationsHtml::buildPubPath($publication->id, $publication->version_id, $base_path);
 
 			// Get archival package
 			$downloadable = $this->_archiveFiles (
@@ -1423,13 +1423,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 
-		// Ensure valid path
-		if ($error = $helper->checkValidPath($downloadable['path']))
-		{
-			JError::raiseError( 404, $error );
-			return;
-		}
-
 		// Ensure the file exist
 		if (!file_exists($downloadable['path']))
 		{
@@ -1512,7 +1505,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication data path
 		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($pid, $vid, $base_path, 'data', $root = 0);
+		$path = PublicationsHtml::buildPubPath($pid, $vid, $base_path, 'data', $root = 0);
 
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . $path . DS . $file))
@@ -1875,7 +1868,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = JPATH_ROOT . $helper->buildPath($id, $publication->version_id, $base_path);
+		$path = PATH_APP . PublicationsHtml::buildPubPath($id, $publication->version_id, $base_path);
 
 		if (!is_dir( $path ))
 		{

@@ -63,7 +63,7 @@ if ($useBlocks)
 	$customFields = $this->publication->_curationModel->getMetaSchema();
 }
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
 $metaElements 	= new PublicationsElements($data, $customFields);
 $schema 	= $metaElements->getSchema();
@@ -88,7 +88,7 @@ $schema 	= $metaElements->getSchema();
 		else
 		{
 			// Get gallery path
-			$galleryPath 	= $this->helper->buildPath(
+			$galleryPath 	= PublicationsHtml::buildPubPath(
 				$this->publication->id,
 				$this->publication->version_id,
 				$webpath,
@@ -96,7 +96,7 @@ $schema 	= $metaElements->getSchema();
 			);
 			
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 				'name'      => 'view',
 				'layout'    => '_gallery',
 			));
@@ -138,7 +138,7 @@ $schema 	= $metaElements->getSchema();
 			{
 				$append = NULL;
 				// Get file path
-				$path 	= $this->helper->buildPath(
+				$path 	= PublicationsHtml::buildPubPath(
 					$this->publication->id,
 					$this->publication->version_id,
 					$webpath,

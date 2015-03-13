@@ -66,10 +66,10 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		$base = $pubconfig->get('webpath');
 
 		// Log path
-		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'logs', 0);
+		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
 
 		// Get publication path
-		$configs->pubBase = $helper->buildPath($pub->id, $pub->version_id, $base, '', 1);
+		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;

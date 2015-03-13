@@ -73,13 +73,13 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$base = $pubconfig->get('webpath');
 
 		// Log path
-		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'logs', 0);
+		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
 
 		// Get publication path
-		$configs->pubBase = $helper->buildPath($pub->id, $pub->version_id, $base, '', 1);
+		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
 
 		// Get publication path
-		$configs->dataPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'data', 1);
+		$configs->dataPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'data', 1);
 
 		// Serve path for data files
 		/*$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
@@ -233,7 +233,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		$newConfigs = new stdClass;
 		$newConfigs->path = $configs->path;
-		$newConfigs->dataPath = $pub->_helpers->pubHelper->buildPath(
+		$newConfigs->dataPath = PublicationsHtml::buildPubPath(
 			$pub->id,
 			$newVersion->id,
 			'',

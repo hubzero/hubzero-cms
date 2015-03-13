@@ -30,13 +30,14 @@ if (!$this->ajax)
 	$this->css('curation.css')
 		 ->js('curation.js');
 }
+
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
 
 ?>
 <div id="abox-content" class="curation-wrap">
 	<h3><?php echo JText::_('COM_PUBLICATIONS_CURATION_ASSIGN_VIEW'); ?></h3>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>" method="post" id="hubForm-ajax" name="curation-form" class="curation-history">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post" id="hubForm-ajax" name="curation-form" class="curation-history">
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->row->publication_id; ?>" />
 			<input type="hidden" name="vid" value="<?php echo $this->row->id; ?>" />
@@ -63,7 +64,7 @@ $dispatcher = JDispatcher::getInstance();
 			<?php if ($this->ajax) { ?>
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PUBLICATIONS_CANCEL'); ?>" />
 			<?php } else { ?>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PUBLICATIONS_CANCEL'); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PUBLICATIONS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 	</form>

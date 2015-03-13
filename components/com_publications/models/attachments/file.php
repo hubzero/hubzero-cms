@@ -126,11 +126,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
 
 		// Get publication paths
-		$configs->pubBase = $helper->buildPath($pub->id, $pub->version_id, '', '', 1);
-		$configs->pubPath = $helper->buildPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
+		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', '', 1);
+		$configs->pubPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
 
 		// Log path
-		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -603,7 +603,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 							? $directory . DS . $configs->subdir
 							: $directory;
 		// Build new path
-		$newPath = $pub->_helpers->pubHelper->buildPath(
+		$newPath = PublicationsHtml::buildPubPath(
 			$pub->id,
 			$newVersion->id,
 			'',
@@ -1369,7 +1369,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				// Remove any related files managed by handler
 				if ($configs->handler)
 				{
-					$configs->handler->cleanUp($deletePath);
+					$configs->handler->cleanUp($deletePath, $configs);
 				}
 			}
 			else

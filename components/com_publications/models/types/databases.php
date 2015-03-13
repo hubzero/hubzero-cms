@@ -368,7 +368,7 @@ class typeDatabases extends JObject
 
 			// Build publication path
 			$base_path 		= $pubconfig->get('webpath');
-			$publishPath 	= $helper->buildPath($pid, $vid, $base_path, 'data', 1);
+			$publishPath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, 'data', 1);
 			$pPath 			= JRoute::_('index.php?option=com_publications&id=' . $pid . '&vid=' . $vid . '&task=serve');
 
 			// Create new version path
@@ -640,7 +640,7 @@ class typeDatabases extends JObject
 			$database_rev  = $att->object_revision;
 
 			// Build publication path
-			$publishPath = $helper->buildPath($row->publication_id, $row->id, $base_path, 'data', 1);
+			$publishPath = PublicationsHtml::buildPubPath($row->publication_id, $row->id, $base_path, 'data', 1);
 			$pPath = JRoute::_('index.php?option=com_publications&id=' . $row->publication_id . '&vid=' . $row->id . '&task=serve');
 
 			// Get database object and load record

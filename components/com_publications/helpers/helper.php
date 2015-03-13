@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /**
  * Publication helper class
  */
-class PublicationHelper extends JObject
+class PublicationHelper extends \JObject
 {
 	/**
 	 * JDatabase
@@ -84,32 +84,6 @@ class PublicationHelper extends JObject
 	}
 
 	/**
-	 * Set
-	 *
-	 * @param      string 	$property
-	 * @param      string 	$value
-	 * @return     mixed
-	 */
-	public function __set($property, $value)
-	{
-		$this->_data[$property] = $value;
-	}
-
-	/**
-	 * Get
-	 *
-	 * @param      string 	$property
-	 * @return     mixed
-	 */
-	public function __get($property)
-	{
-		if (isset($this->_data[$property]))
-		{
-			return $this->_data[$property];
-		}
-	}
-
-	/**
 	 * Get publication path
 	 *
 	 * @param      string 	$pid
@@ -138,83 +112,6 @@ class PublicationHelper extends JObject
 		$path        = $base . DS . $pub_dir . DS . $version_dir;
 		$path        = $filedir ? $path . DS . $filedir : $path;
 		$path        = $root ? JPATH_ROOT . $path : $path;
-
-		return $path;
-	}
-
-	/**
-	 * Output tab controls for resource plugins (sub views)
-	 *
-	 * @param      string $path 	File path
-	 * @param      string $error
-	 *
-	 * @return     boolean False in valid, or error
-	 */
-	public static function checkValidPath( $path, $error = '' )
-	{
-		// Ensure we have a path
-		if (empty($path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND');
-		}
-		if (preg_match("/^\s*http[s]{0,1}:/i", $path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_BAD_FILE_PATH');
-		}
-		if (preg_match("/^\s*[\/]{0,1}index.php\?/i", $path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_BAD_FILE_PATH');
-		}
-		// Disallow windows drive letter
-		if (preg_match("/^\s*[.]:/", $path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_BAD_FILE_PATH');
-		}
-		// Disallow \
-		if (strpos('\\',$path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_BAD_FILE_PATH');
-		}
-		// Disallow ..
-		if (strpos('..',$path))
-		{
-			$error = JText::_('COM_PUBLICATIONS_BAD_FILE_PATH');
-		}
-		return $error ? $error : false;
-	}
-
-	/**
-	 * Get project path
-	 *
-	 * @param      string 	$project_alias
-	 * @param      string 	$base
-	 * @param      string 	$root
-	 * @param      string 	$case
-	 * @return     string
-	 */
-	public static function buildDevPath( $project_alias = '', $base = '', $root = '', $case = 'files'  )
-	{
-		if (!$project_alias)
-		{
-			return false;
-		}
-
-		$pconfig = JComponentHelper::getParams( 'com_projects' );
-		if (!$base)
-		{
-			$base = $pconfig->get('webpath');
-		}
-		if (!$root)
-		{
-			$root = $pconfig->get('offroot', 0) ? 0 : 1;
-		}
-
-		// Build upload path for project files
-		$dir = strtolower($project_alias);
-		$base = DS . trim($base, DS);
-		$path  = $base . DS . $dir . DS . $case;
-
-		$path = $root ? JPATH_ROOT . $path : $path;
 
 		return $path;
 	}
@@ -332,84 +229,6 @@ class PublicationHelper extends JObject
 			}
 		}
 		return $html;
-	}
-
-	//----------------------------------------------------------
-	// Publication thumbnail
-	//----------------------------------------------------------
-
-	/**
-	 * Get publication thumbnail
-	 *
-	 * @param      int 		$pid
-	 * @param      int 		$versionid
-	 * @param      array 	$config
-	 * @param      boolean 	$force
-	 * @param      string	$cat
-	 * @return     string HTML
-	 */
-	public function getThumb ($pid = 0, $versionid = 0, $config, $force = false, $cat = '')
-	{
-		// Get publication directory path
-		$webpath = $config->get('webpath', 'site/publications');
-		$path = $this->buildPath($pid, $versionid, $webpath);
-
-		// Get default picture
-		$default = $cat == 'tools'
-				? $config->get('toolpic', '/components/com_publications/assets/img/tool_thumb.gif')
-				: $config->get('defaultpic', '/components/com_publications/assets/img/resource_thumb.gif');
-
-		if (is_file(JPATH_ROOT.$path . DS . 'thumb.gif') && $force == false)
-		{
-			return $path . DS . 'thumb.gif';
-		}
-		else
-		{
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-				. 'com_publications' . DS . 'tables' . DS . 'screenshot.php');
-
-			// Get screenshots
-			$pScreenshot = new \Components\Publications\Tables\Screenshot($this->_db);
-			$shots = $pScreenshot->getScreenshots( $versionid );
-
-			if ($shots && count($shots) > 0)
-			{
-				$image = $path . DS . 'gallery' . DS . $shots[0]->srcfile;
-
-				jimport('joomla.filesystem.file');
-				if (is_file(JPATH_ROOT . $path . DS . 'thumb.gif'))
-				{
-					JFile::delete(JPATH_ROOT . $path . DS . 'thumb.gif');
-				}
-
-				// Make publication thumbnail
-				if (is_file(JPATH_ROOT.$image))
-				{
-					$image_ext = array('jpg', 'jpeg', 'gif', 'png');
-					$ext = explode('.', $shots[0]->srcfile);
-					$ext = end($ext);
-
-					if (in_array($ext, $image_ext))
-					{
-						JFile::copy(JPATH_ROOT . $image, JPATH_ROOT . $path . DS . 'thumb.gif');
-
-						$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $path . DS . 'thumb.gif');
-						if (count($hi->getErrors()) == 0)
-						{
-							$hi->resize(100, false, true, true);
-							$hi->save(JPATH_ROOT . $path . DS . 'thumb.gif');
-							return $path . DS . 'thumb.gif';
-						}
-						else
-						{
-							return false;
-						}
-					}
-				}
-			}
-
-			return $default;
-		}
 	}
 
 	//----------------------------------------------------------

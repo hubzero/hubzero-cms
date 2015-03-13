@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$database = JFactory::getDBO();
+$database = JFactory::getDbo();
 
 // Get version authors
 $pa = new \Components\Publications\Tables\Author( $database );
@@ -40,7 +40,7 @@ foreach ($this->results as $row)
 	$authors = $pa->getAuthors($row->version_id);
 
 	$info = array();
-	$info[] =  JHTML::_('date', $row->published_up, 'd M Y');
+	$info[] = JHTML::_('date', $row->published_up, 'd M Y');
 	$info[] = $row->cat_name;
 	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
 		. PublicationsHtml::showContributors( $authors, false, true );
