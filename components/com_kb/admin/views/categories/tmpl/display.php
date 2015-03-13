@@ -160,7 +160,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

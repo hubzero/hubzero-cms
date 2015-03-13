@@ -114,7 +114,7 @@ class Xml extends SiteController
 			break;
 
 			default:
-				$service->error($service::ERROR_BAD_VERB, \JText::_('COM_OAIPMH_ILLEGAL_VERB'));
+				$service->error($service::ERROR_BAD_VERB, Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
 			break;
 		}
 

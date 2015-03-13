@@ -110,7 +110,7 @@ class Articles extends SiteController
 		{
 			if ($this->view->category->get('section'))
 			{
-				//$this->view->section  = new KbModelCategory($this->view->category->get('section'));
+				//$this->view->section  = new Category($this->view->category->get('section'));
 
 				$sect = $this->view->category->get('section');
 				$cat  = $this->view->category->get('id');

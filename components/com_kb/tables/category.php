@@ -56,7 +56,7 @@ class Category extends \JTable
 		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
-			$this->setError(\JText::_('COM_KB_ERROR_EMPTY_TITLE'));
+			$this->setError(Lang::txt('COM_KB_ERROR_EMPTY_TITLE'));
 		}
 
 		if (!$this->alias)
@@ -75,7 +75,7 @@ class Category extends \JTable
 			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
 			if ($result = $this->_db->loadResult())
 			{
-				$this->setError(\JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
+				$this->setError(Lang::txt('COM_KB_ERROR_ALIAS_IN_USE'));
 			}
 		}
 

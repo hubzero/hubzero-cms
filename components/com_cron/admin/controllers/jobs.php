@@ -294,8 +294,8 @@ class Jobs extends AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				\JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
 			return;
@@ -421,7 +421,7 @@ class Jobs extends AdminController
 		// Check for an ID
 		if (count($ids) < 1)
 		{
-			$action = ($state == 1) ? \JText::_('COM_CRON_STATE_UNPUBLISH') : \JText::_('COM_CRON_STATE_PUBLISH');
+			$action = ($state == 1) ? Lang::txt('COM_CRON_STATE_UNPUBLISH') : Lang::txt('COM_CRON_STATE_PUBLISH');
 
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),

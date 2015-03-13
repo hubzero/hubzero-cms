@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = Components\Cron\Helpers\Permissions::getActions('component');
 
-JToolBarHelper::title(JText::_('COM_CRON') . ': ' . JText::_('COM_CRON_RUN'), 'cron.png');
+JToolBarHelper::title(Lang::txt('COM_CRON') . ': ' . Lang::txt('COM_CRON_RUN'), 'cron.png');
 
 function prettyPrint($json)
 {
@@ -103,7 +103,7 @@ function prettyPrint($json)
 }
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<tbody>

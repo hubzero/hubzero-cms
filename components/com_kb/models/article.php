@@ -40,11 +40,11 @@ use stdClass;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'article.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
-require_once(__DIR__ . '/tags.php');
-require_once(__DIR__ . '/comment.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'comment.php');
 if (!class_exists(__NAMESPACE__ . '\Category'))
 {
-	require_once(__DIR__ . '/category.php');
+	require_once(__DIR__ . DS . 'category.php');
 }
 
 /**
@@ -287,11 +287,11 @@ class Article extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -508,7 +508,7 @@ class Article extends Model
 			case 'feed':
 				$link .= '/comments.rss';
 
-				$feed = \JRoute::_($link);
+				$feed = Route::url($link);
 				if (substr($feed, 0, 4) != 'http')
 				{
 					$jconfig = \JFactory::getConfig();
@@ -634,7 +634,7 @@ class Article extends Model
 	{
 		if (!$this->exists())
 		{
-			$this->setError(\JText::_('No record found'));
+			$this->setError(Lang::txt('No record found'));
 			return false;
 		}
 
@@ -642,7 +642,7 @@ class Article extends Model
 
 		if ($vote === 0)
 		{
-			$this->setError(\JText::_('No vote provided'));
+			$this->setError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -685,7 +685,7 @@ class Article extends Model
 
 		if ($this->get('created_by') == $juser->get('id'))
 		{
-			$this->setError(\JText::_('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;
 		}
 

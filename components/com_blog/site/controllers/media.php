@@ -54,7 +54,7 @@ class Media extends SiteController
 		$entry = $archive->entry(\JRequest::getVar('alias', ''));
 		if (!$entry->exists() || !$entry->access('view'))
 		{
-			throw new Exception(\JText::_('Access denied.'), 403);
+			throw new Exception(Lang::txt('Access denied.'), 403);
 		}
 
 		if (!($file = \JRequest::getVar('file', '')))
@@ -81,7 +81,7 @@ class Media extends SiteController
 		// Ensure the file exist
 		if (!file_exists($file_path))
 		{
-			throw new InvalidArgumentException(\JText::_('The requested file could not be found: %s', $file), 404);
+			throw new InvalidArgumentException(Lang::txt('The requested file could not be found: %s', $file), 404);
 		}
 
 		// Serve up the image
@@ -94,7 +94,7 @@ class Media extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			throw new RuntimeException(\JText::_('An error occurred while trying to output the file'), 500);
+			throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
 		}
 		else
 		{
@@ -120,7 +120,7 @@ class Media extends SiteController
 		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(\JText::_('COM_BLOG_NO_FILE'));
+			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -139,7 +139,7 @@ class Media extends SiteController
 			jimport('joomla.filesystem.folder');
 			if (!\JFolder::create($path))
 			{
-				$this->setError(\JText::_('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
 				return;
 			}
@@ -161,7 +161,7 @@ class Media extends SiteController
 		// Perform the upload
 		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_UPLOADING'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
 		}
 
 		// Push through to the media view
@@ -189,7 +189,7 @@ class Media extends SiteController
 		$file = trim(\JRequest::getVar('folder', '', 'get'));
 		if (!$file)
 		{
-			$this->setError(\JText::_('COM_BLOG_NO_DIRECTORY'));
+			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
 			$this->displayTask();
 			return;
 		}
@@ -210,7 +210,7 @@ class Media extends SiteController
 			jimport('joomla.filesystem.file');
 			if (!\JFolder::delete($folder))
 			{
-				$this->setError(\JText::_('COM_BLOG_UNABLE_TO_DELETE_DIRECTORY'));
+				$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_DELETE_DIRECTORY'));
 			}
 		}
 
@@ -239,7 +239,7 @@ class Media extends SiteController
 		$file = trim(\JRequest::getVar('file', '', 'get'));
 		if (!$file)
 		{
-			$this->setError(\JText::_('COM_BLOG_NO_FILE'));
+			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
 			$this->displayTask();
 			return;
 		}
@@ -255,7 +255,7 @@ class Media extends SiteController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(\JText::_('COM_BLOG_FILE_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
 			$this->displayTask();
 			return;
 		}
@@ -264,7 +264,7 @@ class Media extends SiteController
 		jimport('joomla.filesystem.file');
 		if (!\JFile::delete($path . DS . $file))
 		{
-			$this->setError(\JText::_('COM_BLOG_UNABLE_TO_DELETE_FILE'));
+			$this->setError(Lang::txt('COM_BLOG_UNABLE_TO_DELETE_FILE'));
 		}
 
 		// Push through to the media view

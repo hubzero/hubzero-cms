@@ -482,7 +482,7 @@ class Entry extends Model
 			return call_user_func_array($callback, $arguments);
 		}
 
-		throw new \BadMethodCallException(\JText::sprintf('Method "%s" does not exist.', $method));
+		throw new \BadMethodCallException(Lang::txt('Method "%s" does not exist.', $method));
 	}
 
 	/**
@@ -504,7 +504,7 @@ class Entry extends Model
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -528,11 +528,11 @@ class Entry extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('publish_up'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('publish_up'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('publish_up'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('publish_up'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -703,7 +703,7 @@ class Entry extends Model
 		$cloud = new Tags($this->get('id'));
 		if (!$cloud->removeAll())
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
 			return false;
 		}
 

@@ -57,7 +57,7 @@ class Article extends \JTable
 
 		if (trim($this->title) == '')
 		{
-			$this->setError(\JText::_('COM_KB_ERROR_EMPTY_TITLE'));
+			$this->setError(Lang::txt('COM_KB_ERROR_EMPTY_TITLE'));
 		}
 
 		if (!$this->alias)
@@ -71,7 +71,7 @@ class Article extends \JTable
 			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq_categories` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
 			if ($result = $this->_db->loadResult())
 			{
-				$this->setError(\JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
+				$this->setError(Lang::txt('COM_KB_ERROR_ALIAS_IN_USE'));
 			}
 		}
 

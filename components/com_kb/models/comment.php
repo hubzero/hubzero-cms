@@ -121,11 +121,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -428,7 +428,7 @@ class Comment extends Model
 	{
 		if (!$this->exists())
 		{
-			$this->setError(\JText::_('No record found'));
+			$this->setError(Lang::txt('No record found'));
 			return false;
 		}
 
@@ -436,7 +436,7 @@ class Comment extends Model
 
 		if ($vote === 0)
 		{
-			$this->setError(\JText::_('No vote provided'));
+			$this->setError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -479,7 +479,7 @@ class Comment extends Model
 
 		if ($this->get('created_by') == $juser->get('id'))
 		{
-			$this->setError(\JText::_('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;
 		}
 

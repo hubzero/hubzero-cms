@@ -39,7 +39,7 @@ $this->css()
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_KB_MAIN'); ?></a>
+			<a class="icon-main main-page btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_KB_MAIN'); ?></a>
 		</p>
 	</div>
 </header>
@@ -50,14 +50,14 @@ $this->css()
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 		<div class="subject">
-			<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post">
+			<form action="<?php echo Route::url($this->category->link()); ?>" method="post">
 
 				<div class="container data-entry">
-					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_KB_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
-						<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
-						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
+						<legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
+						<label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 						<input type="hidden" name="section" value="<?php echo $this->escape($this->category->get('alias')); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -67,13 +67,13 @@ $this->css()
 				<div class="container">
 					<ul class="entries-menu">
 						<li>
-							<a<?php echo ($this->filters['sort'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&sort=popularity'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_POPULAR'); ?>">
-								<?php echo JText::_('COM_KB_SORT_POPULAR'); ?>
+							<a<?php echo ($this->filters['sort'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=popularity'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_POPULAR'); ?>">
+								<?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
 							</a>
 						</li>
 						<li>
-							<a<?php echo ($this->filters['sort'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link() . '&sort=recent'); ?>" title="<?php echo JText::_('COM_KB_SORT_BY_RECENT'); ?>">
-								<?php echo JText::_('COM_KB_SORT_RECENT'); ?>
+							<a<?php echo ($this->filters['sort'] == 'recent') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->category->link() . '&sort=recent'); ?>" title="<?php echo Lang::txt('COM_KB_SORT_BY_RECENT'); ?>">
+								<?php echo Lang::txt('COM_KB_SORT_RECENT'); ?>
 							</a>
 						</li>
 					</ul>
@@ -85,11 +85,11 @@ $this->css()
 							$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 							if ($this->filters['search'] != '')
 							{
-								echo JText::sprintf('COM_KB_SEARCH_FOR_IN', $this->filters['search'], $this->escape(stripslashes($this->category->get('title'))));
+								echo Lang::txt('COM_KB_SEARCH_FOR_IN', $this->filters['search'], $this->escape(stripslashes($this->category->get('title'))));
 							} else {
 								echo $this->escape(stripslashes($this->category->get('title')));
 							} ?>
-							<span>(<?php echo JText::sprintf('COM_KB_NUM_OF_TOTAL', $s . '-' . $e, $this->total); ?>)</span>
+							<span>(<?php echo Lang::txt('COM_KB_NUM_OF_TOTAL', $s . '-' . $e, $this->total); ?>)</span>
 						</caption>
 						<tbody>
 						<?php foreach ($this->articles as $row) { ?>
@@ -98,13 +98,13 @@ $this->css()
 									<span class="entry-id"><?php echo $row->get('id'); ?></span>
 								</th>
 								<td>
-									<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a><br />
+									<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a><br />
 									<span class="entry-details">
-										<?php if ($this->catid <= 0) { echo JText::sprintf('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle')))); } ?>
-										<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>
-										<span class="entry-time-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
+										<?php if ($this->catid <= 0) { echo Lang::txt('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle')))); } ?>
+										<?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>
+										<span class="entry-time-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
 										<span class="entry-time"><?php echo $row->modified('time'); ?></span>
-										<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
+										<span class="entry-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
 										<span class="entry-date"><?php echo $row->modified('date'); ?></span>
 									</span>
 								</td>
@@ -150,23 +150,23 @@ $this->css()
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<div class="container">
-				<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
+				<h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
 				<ul class="categories">
 					<li>
-						<a<?php if ($this->catid <= 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
-							<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
+						<a<?php if ($this->catid <= 0) { echo ' class="active"'; } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>">
+							<?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
 						</a>
 					</li>
 				<?php foreach ($this->categories as $row) { ?>
 					<li>
-						<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
+						<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 						</a>
 					<?php if ($row->children('count') > 0 && $this->catid == $row->get('id')) { ?>
 						<ul class="categories">
 						<?php foreach ($row->children() as $cat) { ?>
 							<li>
-								<a <?php if ($this->catid  == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($cat->link()); ?>">
+								<a <?php if ($this->catid  == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo Route::url($cat->link()); ?>">
 									<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
 								</a>
 							</li>

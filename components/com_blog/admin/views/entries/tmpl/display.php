@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
+JToolBarHelper::title(Lang::txt('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -75,14 +75,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
 			<?php if ($this->filters['scope'] == 'group') { ?>
-				<label for="filter_scope_id"><?php echo JText::_('COM_BLOG_SCOPE_GROUP'); ?>:</label>
+				<label for="filter_scope_id"><?php echo Lang::txt('COM_BLOG_SCOPE_GROUP'); ?>:</label>
 				<select name="scope_id" id="filter_scope_id">
 					<?php
 					$groups = \Hubzero\User\Group::find(array(
@@ -97,7 +97,7 @@ function submitbutton(pressbutton)
 					{
 						$html .= ' selected="selected"';
 					}
-					$html .= '>' . JText::_('JNONE') . '</option>' . "\n";
+					$html .= '>' . Lang::txt('JNONE') . '</option>' . "\n";
 					if ($groups)
 					{
 						foreach ($groups as $group)
@@ -115,17 +115,17 @@ function submitbutton(pressbutton)
 				</select>
 			<?php } ?>
 
-			<input type="submit" value="<?php echo JText::_('COM_BLOG_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo JText::_('COM_BLOG_FIELD_STATE'); ?>:</label>
+			<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
 			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value=""<?php if ($this->filters['state'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_ALL_STATES'); ?></option>
-				<option value="public"<?php if ($this->filters['state'] == 'public') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
-				<option value="registered"<?php if ($this->filters['state'] == 'registered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
-				<option value="private"<?php if ($this->filters['state'] == 'private') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
-				<option value="trashed"<?php if ($this->filters['state'] == 'trashed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
+				<option value=""<?php if ($this->filters['state'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_ALL_STATES'); ?></option>
+				<option value="public"<?php if ($this->filters['state'] == 'public') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+				<option value="registered"<?php if ($this->filters['state'] == 'registered') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+				<option value="private"<?php if ($this->filters['state'] == 'private') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+				<option value="trashed"<?php if ($this->filters['state'] == 'trashed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -179,31 +179,31 @@ foreach ($this->rows as $row)
 
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1)
 	{
-		$alt  = JText::_('JPUBLISHED');
+		$alt  = Lang::txt('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	}
 	else if (($now->toUnix() <= $publish_down->toUnix() || $row->get('publish_down') == $nullDate) && $row->get('state') == 1)
 	{
-		$alt  = JText::_('JPUBLISHED');
+		$alt  = Lang::txt('JPUBLISHED');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	}
 	else if ($now->toUnix() > $publish_down->toUnix() && $row->get('state') == 1)
 	{
-		$alt  = JText::_('JLIB_HTML_PUBLISHED_EXPIRED_ITEM');
+		$alt  = Lang::txt('JLIB_HTML_PUBLISHED_EXPIRED_ITEM');
 		$cls  = 'publish';
 		$task = 'unpublish';
 	}
 	else if ($row->get('state') == 0)
 	{
-		$alt  = JText::_('JUNPUBLISHED');
+		$alt  = Lang::txt('JUNPUBLISHED');
 		$task = 'publish';
 		$cls  = 'unpublish';
 	}
 	else if ($row->get('state') == -1)
 	{
-		$alt  = JText::_('JTRASHED');
+		$alt  = Lang::txt('JTRASHED');
 		$task = 'publish';
 		$cls  = 'trash';
 	}
@@ -213,34 +213,34 @@ foreach ($this->rows as $row)
 	{
 		if ($row->get('publish_up') == $nullDate)
 		{
-			$times .= JText::_('COM_BLOG_START') . ': ' . JText::_('COM_BLOG_ALWAYS');
+			$times .= Lang::txt('COM_BLOG_START') . ': ' . Lang::txt('COM_BLOG_ALWAYS');
 		}
 		else
 		{
-			$times .= JText::_('COM_BLOG_START') . ': ' . $publish_up->toSql();
+			$times .= Lang::txt('COM_BLOG_START') . ': ' . $publish_up->toSql();
 		}
 	}
 	if ($row->get('publish_down'))
 	{
 		if ($row->get('publish_down') == $nullDate)
 		{
-			$times .= '<br />' . JText::_('COM_BLOG_FINISH') . ': ' . JText::_('COM_BLOG_NO_EXPIRY');
+			$times .= '<br />' . Lang::txt('COM_BLOG_FINISH') . ': ' . Lang::txt('COM_BLOG_NO_EXPIRY');
 		}
 		else
 		{
-			$times .= '<br />' . JText::_('COM_BLOG_FINISH') . ': ' . $publish_down->toSql();
+			$times .= '<br />' . Lang::txt('COM_BLOG_FINISH') . ': ' . $publish_down->toSql();
 		}
 	}
 
 	if ($row->get('allow_comments') == 0)
 	{
-		$calt = JText::_('JOFF');
+		$calt = Lang::txt('JOFF');
 		$cls2 = 'off';
 		$state = 1;
 	}
 	else
 	{
-		$calt = JText::_('JON');
+		$calt = Lang::txt('JON');
 		$cls2 = 'on';
 		$state = 0;
 	}
@@ -254,7 +254,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -267,9 +267,9 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
+					<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
 						<?php if ($canDo->get('core.edit.state')) { ?>
-							<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 								<span><?php echo $alt; ?></span>
 							</a>
 						<?php } else { ?>
@@ -285,18 +285,18 @@ foreach ($this->rows as $row)
 					</time>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a class="comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
-							<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
+						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
+							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->get('comments')); ?>
 						</a>
 					<?php } else { ?>
 						<span class="comment">
-							<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
+							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->get('comments')); ?>
 						</span>
 					<?php } ?>
 				</td>

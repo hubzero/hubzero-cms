@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-JToolBarHelper::title(JText::_('COM_BLOG_TITLE') . ': ' . JText::_('COM_BLOG_COL_COMMENTS'), 'blog.png');
+JToolBarHelper::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS'), 'blog.png');
 
 if ($canDo->get('core.delete'))
 {
@@ -65,12 +65,12 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('COM_BLOG_GO'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -119,13 +119,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	if (!$row->get('anonymous'))
 	{
-		$calt = JText::_('JOFF');
+		$calt = Lang::txt('JOFF');
 		$cls2 = 'off';
 		$state = 1;
 	}
 	else
 	{
-		$calt = JText::_('JON');
+		$calt = Lang::txt('JON');
 		$cls2 = 'on';
 		$state = 0;
 	}
@@ -140,7 +140,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
 						</a>
 					<?php } else { ?>
@@ -153,7 +153,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>

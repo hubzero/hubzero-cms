@@ -59,7 +59,7 @@ class Element
 	{
 		if (null === $element->ownerDocument)
 		{
-			throw new LogicException(\JText::_('Owner document is not set'));
+			throw new LogicException(Lang::txt('Owner document is not set'));
 		}
 
 		$this->current = $element;
@@ -89,7 +89,7 @@ class Element
 	{
 		if (null === $this->current->parentNode)
 		{
-			throw new LogicException(\JText::_('Could not find parent node'));
+			throw new LogicException(Lang::txt('Could not find parent node'));
 		}
 
 		$this->current = $this->current->parentNode;

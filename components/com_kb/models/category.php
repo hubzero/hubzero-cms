@@ -35,7 +35,7 @@ use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
-require_once(__DIR__ . '/article.php');
+require_once(__DIR__ . DS . 'article.php');
 
 /**
  * Knowledgebase model for a category

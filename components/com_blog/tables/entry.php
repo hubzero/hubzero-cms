@@ -73,7 +73,7 @@ class Entry extends \JTable
 		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_PROVIDE_TITLE'));
 			return false;
 		}
 
@@ -96,7 +96,7 @@ class Entry extends \JTable
 		$this->content = trim($this->content);
 		if ($this->content == '')
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT'));
 			return false;
 		}
 

@@ -206,7 +206,7 @@ class Service extends Object
 
 		if (!$this->schema)
 		{
-			throw new Exception(\JText::sprintf('No schema handler found for schema "%s".', $this->schema));
+			throw new Exception(Lang::txt('No schema handler found for schema "%s".', $this->schema));
 		}
 
 		$this->schema->setService($this);

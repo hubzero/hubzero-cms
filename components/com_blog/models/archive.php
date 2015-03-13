@@ -207,7 +207,7 @@ class Archive extends Object
 			return call_user_func_array($callback, $arguments);
 		}
 
-		throw new \BadMethodCallException(\JText::sprintf('Method "%s" does not exist.', $method));
+		throw new \BadMethodCallException(Lang::txt('Method "%s" does not exist.', $method));
 	}
 
 	/**
@@ -230,7 +230,7 @@ class Archive extends Object
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}

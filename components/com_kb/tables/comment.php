@@ -56,13 +56,13 @@ class Comment extends \JTable
 		$this->content = trim($this->content);
 		if ($this->content == '')
 		{
-			$this->setError(\JText::_('Your comment must contain text.'));
+			$this->setError(Lang::txt('Your comment must contain text.'));
 		}
 
 		$this->entry_id = intval($this->entry_id);
 		if (!$this->entry_id)
 		{
-			$this->setError(\JText::_('Missing entry ID.'));
+			$this->setError(Lang::txt('Missing entry ID.'));
 		}
 
 		$juser = \JFactory::getUser();

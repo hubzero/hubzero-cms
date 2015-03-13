@@ -76,7 +76,7 @@ class Entries extends SiteController
 	{
 		$pathway = \JFactory::getApplication()->getPathway();
 
-		$title = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
+		$title = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
@@ -90,7 +90,7 @@ class Entries extends SiteController
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
 				$pathway->addItem(
-					\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
 			}
@@ -127,12 +127,12 @@ class Entries extends SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
+		$this->_title = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
 		if ($this->_task && $this->_task != 'display')
 		{
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
-				$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+				$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			}
 			$year = \JRequest::getInt('year', 0);
 			if ($year)
@@ -200,7 +200,7 @@ class Entries extends SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
 
 		// Get any errors for display
 		foreach ($this->getErrors() as $error)
@@ -227,7 +227,7 @@ class Entries extends SiteController
 		if (!$alias)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 			);
 			return;
 		}
@@ -236,13 +236,13 @@ class Entries extends SiteController
 
 		if (!$this->view->row->exists())
 		{
-			throw new Exception(\JText::_('COM_BLOG_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_BLOG_NOT_FOUND'), 404);
 		}
 
 		// Check authorization
 		if (!$this->view->row->access('view'))
 		{
-			throw new Exception(\JText::_('COM_BLOG_NOT_AUTH'), 403);
+			throw new Exception(Lang::txt('COM_BLOG_NOT_AUTH'), 403);
 		}
 
 		// Filters for returning results
@@ -269,7 +269,7 @@ class Entries extends SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -300,10 +300,10 @@ class Entries extends SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_BLOG_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -330,7 +330,7 @@ class Entries extends SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = $this->config->get('title', \JText::_(strtoupper($this->_option)));
+		$this->view->title = $this->config->get('title', Lang::txt(strtoupper($this->_option)));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -351,10 +351,10 @@ class Entries extends SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_BLOG_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -400,7 +400,7 @@ class Entries extends SiteController
 		}
 
 		$this->setRedirect(
-			\JRoute::_($row->link())
+			Route::url($row->link())
 		);
 	}
 
@@ -413,10 +413,10 @@ class Entries extends SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option, false, true), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_BLOG_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -425,8 +425,8 @@ class Entries extends SiteController
 		if (!$this->config->get('access-delete-entry'))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option),
-				\JText::_('COM_BLOG_NOT_AUTHORIZED'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_BLOG_NOT_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -450,7 +450,7 @@ class Entries extends SiteController
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->setError(\JText::_('COM_BLOG_ERROR_CONFIRM_DELETION'));
+				$this->setError(Lang::txt('COM_BLOG_ERROR_CONFIRM_DELETION'));
 			}
 
 			// Push some scripts to the template
@@ -458,7 +458,7 @@ class Entries extends SiteController
 			$this->_buildPathway();
 
 			// Output HTML
-			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : \JText::_(strtoupper($this->_option));
+			$this->view->title  = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
 			$this->view->entry  = $entry;
 			$this->view->config = $this->config;
 			if ($this->getError())
@@ -484,7 +484,7 @@ class Entries extends SiteController
 
 		// Return the topics list
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option)
+			Route::url('index.php?option=' . $this->_option)
 		);
 		return;
 	}
@@ -499,7 +499,7 @@ class Entries extends SiteController
 		if (!$this->config->get('feeds_enabled'))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -512,7 +512,7 @@ class Entries extends SiteController
 
 		// Start a new feed object
 		$doc = new \JDocumentFeed;
-		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
+		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Get configuration
 		$jconfig = \JFactory::getConfig();
@@ -541,13 +541,13 @@ class Entries extends SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$doc->title .= ($filters['year'])  ? ': ' . $filters['year'] : '';
 		$doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
-		$doc->description = \JText::sprintf('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = \JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = \JText::_('COM_BLOG_RSS_CATEGORY');
+		$doc->description = Lang::txt('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = Lang::txt('COM_BLOG_RSS_CATEGORY');
 
 		// Get the records
 		$rows = $this->model->entries('list', $filters);
@@ -569,7 +569,7 @@ class Entries extends SiteController
 
 				// Load individual item creator class
 				$item->title       = html_entity_decode(strip_tags($row->get('title')));
-				$item->link        = \JRoute::_($row->link());
+				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
 				$item->author      = $row->creator('name');
@@ -594,10 +594,10 @@ class Entries extends SiteController
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
+			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_BLOG_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
 				'warning'
 			);
 			return;
@@ -634,14 +634,14 @@ class Entries extends SiteController
 
 			// Build the "from" data for the e-mail
 			$from = array(
-				'name'  => $jconfig->get('sitename').' '.JText::_('PLG_MEMBERS_BLOG'),
+				'name'  => $jconfig->get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG'),
 				'email' => $jconfig->get('mailfrom')
 			);
 
-			$subject = JText::_('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
+			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
 			// Build the SEF referenced in the message
-			$sef = JRoute::_($entry->link() . '#comments);
+			$sef = Route::url($entry->link() . '#comments);
 
 			// Message
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
@@ -661,7 +661,7 @@ class Entries extends SiteController
 			JPluginHelper::importPlugin('xmessage');
 			if (!JDispatcher::getInstance()->trigger('onSendMessage', $activity)
 			{
-				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
+				$this->setError(Lang::txt('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}
 		}
 		*/
@@ -679,7 +679,7 @@ class Entries extends SiteController
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->setError(\JText::_('COM_BLOG_LOGIN_NOTICE'));
+			$this->setError(Lang::txt('COM_BLOG_LOGIN_NOTICE'));
 			return $this->entryTask();
 		}
 
@@ -692,7 +692,7 @@ class Entries extends SiteController
 		if (!$id)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
 		}
@@ -704,7 +704,7 @@ class Entries extends SiteController
 		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
+				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
 			);
 			return;
 		}
@@ -714,7 +714,7 @@ class Entries extends SiteController
 
 		// Return the topics list
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
+			Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : null)
 		);
@@ -729,7 +729,7 @@ class Entries extends SiteController
 	{
 		if (!$this->config->get('feeds_enabled'))
 		{
-			throw new Exception(\JText::_('Feed not found.'), 404);
+			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
@@ -740,20 +740,20 @@ class Entries extends SiteController
 
 		// Start a new feed object
 		$doc = new \JDocumentFeed;
-		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
+		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
 		$alias = \JRequest::getVar('alias', '');
 		if (!$alias)
 		{
-			throw new Exception(\JText::_('Feed not found.'), 404);
+			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
 		$this->entry = $this->model->entry($alias);
 
 		if (!$this->entry->isAvailable())
 		{
-			throw new Exception(\JText::_('Feed not found.'), 404);
+			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
 		$year  = \JRequest::getInt('year', date("Y"));
@@ -761,14 +761,14 @@ class Entries extends SiteController
 
 		// Build some basic RSS document information
 		$jconfig = \JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$doc->title .= ($year) ? ': ' . $year : '';
 		$doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';
 		$doc->title .= stripslashes($this->entry->get('title', ''));
-		$doc->title .= ': ' . \JText::_('Comments');
+		$doc->title .= ': ' . Lang::txt('Comments');
 
-		$doc->description = \JText::sprintf('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
-		$doc->copyright   = \JText::sprintf('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
+		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
 
 		$rows = $this->entry->comments('list');
 
@@ -799,12 +799,12 @@ class Entries extends SiteController
 	{
 		// Load individual item creator class
 		$item = new \JFeedItem();
-		$item->title = \JText::sprintf('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
-		$item->link  = \JRoute::_($this->entry->link()  . '#c' . $row->get('id'));
+		$item->title = Lang::txt('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+		$item->link  = Route::url($this->entry->link()  . '#c' . $row->get('id'));
 
 		if ($row->isReported())
 		{
-			$item->description = \JText::_('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
+			$item->description = Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');
 		}
 		else
 		{
@@ -813,7 +813,7 @@ class Entries extends SiteController
 
 		if ($row->get('anonymous'))
 		{
-			$item->author = \JText::_('COM_BLOG_ANONYMOUS');
+			$item->author = Lang::txt('COM_BLOG_ANONYMOUS');
 		}
 		else
 		{

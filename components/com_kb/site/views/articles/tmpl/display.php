@@ -44,13 +44,13 @@ $this->css()
 		<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
 	<?php } ?>
 		<div class="subject">
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
+			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
 				<div class="container data-entry">
-					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_KB_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
-						<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
-						<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
+						<legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
+						<label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
+						<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo Lang::txt('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="order" value="recent" />
 						<input type="hidden" name="task" value="category" />
 						<input type="hidden" name="section" value="all" />
@@ -65,8 +65,8 @@ $this->css()
 						<div class="grid">
 							<div class="col span-half">
 								<h4>
-									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-										<?php echo JText::_('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
+									<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
+										<?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
 									</a>
 								</h4>
 							<?php
@@ -75,20 +75,20 @@ $this->css()
 								<ul class="articles">
 								<?php foreach ($popular as $row) { ?>
 									<li>
-										<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
+										<a href="<?php echo $row->link(); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 										</a>
 									</li>
 								<?php } ?>
 								</ul>
 							<?php } else { ?>
-								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+								<p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
 							<?php } ?>
 							</div><!-- / .col span-half -->
 							<div class="col span-half omega">
 								<h4>
-									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
-										<?php echo JText::_('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
+									<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
+										<?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
 									</a>
 								</h4>
 							<?php
@@ -97,19 +97,19 @@ $this->css()
 								<ul class="articles">
 								<?php foreach ($recent as $row) { ?>
 									<li>
-										<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
+										<a href="<?php echo $row->link(); ?>" title="<?php echo Lang::txt('COM_KB_READ_ARTICLE'); ?>">
 											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 										</a>
 									</li>
 								<?php } ?>
 								</ul>
 							<?php } else { ?>
-								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+								<p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
 							<?php } ?>
 							</div><!-- / .col span-half -->
 						</div><!-- / .grid -->
 
-						<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
+						<h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
 						<div class="grid">
 						<?php
 							$i = 0;
@@ -134,7 +134,7 @@ $this->css()
 								?>
 							<div class="col span-half<?php echo $cls; ?>">
 								<h4>
-									<a href="<?php echo JRoute::_($row->link()); ?>">
+									<a href="<?php echo Route::url($row->link()); ?>">
 										<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span>(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
 									</a>
 								</h4>
@@ -149,7 +149,7 @@ $this->css()
 								<?php } ?>
 								</ul>
 							<?php } else { ?>
-								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+								<p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
 							<?php } ?>
 							</div><!-- / .col span-half <?php echo $cls; ?> -->
 							<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>
@@ -169,25 +169,25 @@ $this->css()
 		<aside class="aside">
 		<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
 			<div class="container">
-				<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
+				<h3><?php echo Lang::txt('COM_KB_COMMUNITY'); ?></h3>
 				<p>
-					<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
+					<?php echo Lang::txt('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo Lang::txt('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>'); ?>
 				</p>
 			</div><!-- / .container -->
 		<?php } ?>
 		<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
 			<div class="container">
-				<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
+				<h3><?php echo Lang::txt('COM_KB_FEATURE_REQUEST'); ?></h3>
 				<p>
-					<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
+					<?php echo Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_KB_FEATURE_TELL_US'); ?></a>
 				</p>
 			</div><!-- / .container -->
 		<?php } ?>
 		<?php if (JComponentHelper::isEnabled('com_support')) { ?>
 			<div class="container">
-				<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
+				<h3><?php echo Lang::txt('COM_KB_TROUBLE_REPORT'); ?></h3>
 				<p>
-					<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
+					<?php echo Lang::txt('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_KB_TROUBLE_TELL_US'); ?></a>
 				</p>
 			</div><!-- / .container -->
 		<?php } ?>

@@ -56,13 +56,13 @@ class Vote extends \JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
 		{
-			$this->setError(\JText::_('COM_KB_ERROR_MISSING_ARTICLE_ID'));
+			$this->setError(Lang::txt('COM_KB_ERROR_MISSING_ARTICLE_ID'));
 		}
 
 		$this->type = strtolower(trim($this->type));
 		if (!in_array($this->type, array('entry', 'comment')))
 		{
-			$this->setError(\JText::_('COM_KB_ERROR_UNKNOWN_TYPE'));
+			$this->setError(Lang::txt('COM_KB_ERROR_UNKNOWN_TYPE'));
 		}
 
 		if ($this->getError())

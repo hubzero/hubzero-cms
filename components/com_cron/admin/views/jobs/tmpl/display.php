@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = Components\Cron\Helpers\Permissions::getActions('component');
 
-JToolBarHelper::title(JText::_('COM_CRON'), 'cron.png');
+JToolBarHelper::title(Lang::txt('COM_CRON'), 'cron.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -71,7 +71,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
@@ -85,7 +85,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JText::_('COM_CRON_COL_RECURRENCE'); ?></th> -->
+				<!-- <th scope="col"><?php echo Lang::txt('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
 		<tfoot>
@@ -115,18 +115,18 @@ if ($this->results)
 		{
 			case '2': // Deleted
 				$task = 'publish';
-				$alt  = JText::_('JTRASHED');
+				$alt  = Lang::txt('JTRASHED');
 				$cls  = 'trash';
 			break;
 			case '1': // Published
 				$task = 'unpublish';
-				$alt  = JText::_('JPUBLISHED');
+				$alt  = Lang::txt('JPUBLISHED');
 				$cls  = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
 				$task = 'publish';
-				$alt  = JText::_('JUNPUBLISHED');
+				$alt  = Lang::txt('JUNPUBLISHED');
 				$cls  = 'unpublish';
 			break;
 		}
@@ -134,12 +134,12 @@ if ($this->results)
 		switch ($row->get('active'))
 		{
 			case '1': // Published
-				$alt2 = JText::_('COM_CRON_ACTIVE');
+				$alt2 = Lang::txt('COM_CRON_ACTIVE');
 				$cls2 = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
-				$alt2 = JText::_('COM_CRON_INACTIVE');
+				$alt2 = Lang::txt('COM_CRON_INACTIVE');
 				$cls2 = 'unpublish';
 			break;
 		}
@@ -153,7 +153,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -164,7 +164,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_CRON_SET_THIS_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -176,18 +176,18 @@ if ($this->results)
 				<td>
 					<span class="datetime">
 						<?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') { ?>
-							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo JFactory::getDate($row->get('publish_up'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						<?php } else { ?>
-							<?php echo JText::_('COM_CRON_NO_DATE_SET'); ?>
+							<?php echo Lang::txt('COM_CRON_NO_DATE_SET'); ?>
 						<?php } ?>
 					</span>
 				</td>
 				<td>
 					<span class="datetime">
 						<?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') { ?>
-							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo JFactory::getDate($row->get('publish_down'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						<?php } else { ?>
-							<?php echo JText::_('COM_CRON_NONE'); ?>
+							<?php echo Lang::txt('COM_CRON_NONE'); ?>
 						<?php } ?>
 					</span>
 				</td>

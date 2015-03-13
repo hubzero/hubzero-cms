@@ -56,13 +56,13 @@ class Comment extends \JTable
 		$this->content = trim($this->content);
 		if ($this->content == '')
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT='));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT='));
 			return false;
 		}
 
 		if (!$this->entry_id)
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 
@@ -416,7 +416,7 @@ class Comment extends \JTable
 	{
 		if (!$entry_id)
 		{
-			$this->setError(\JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+			$this->setError(Lang::txt('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
 			return false;
 		}
 

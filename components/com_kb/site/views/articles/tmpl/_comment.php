@@ -15,19 +15,19 @@ defined('_JEXEC') or die('Restricted access');
 		$cls .= ' chosen';
 	}
 
-	$name = JText::_('COM_KB_ANONYMOUS');
+	$name = Lang::txt('COM_KB_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
 		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
 		if ($this->comment->creator('public'))
 		{
-			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+			$name = '<a href="' . Route::url($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
 	if ($this->comment->isReported())
 	{
-		$comment = '<p class="warning">' . JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
+		$comment = '<p class="warning">' . Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') . '</p>';
 	}
 	else
 	{
@@ -65,10 +65,10 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('COM_KB_PERMALINK'); ?>">
-					<span class="comment-date-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
+				<a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_PERMALINK'); ?>">
+					<span class="comment-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-					<span class="comment-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
+					<span class="comment-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
 					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 				</a>
 			</p>
@@ -80,30 +80,30 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-options">
 			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo JText::_('COM_KB_DELETE'); ?><!--
+					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo Lang::txt('COM_KB_DELETE'); ?><!--
 					--></a>
 				<?php } ?>
 				<?php if ($this->config->get('access-edit-thread')) { ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo JText::_('COM_KB_EDIT'); ?><!--
+					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+						--><?php echo Lang::txt('COM_KB_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
 			<?php }*/ ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('COM_KB_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_KB_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('COM_KB_CANCEL'); ?><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_KB_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_KB_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('COM_KB_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('COM_KB_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('COM_KB_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
-					--><?php echo JText::_('COM_KB_REPLY'); ?><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('COM_KB_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_KB_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					--><?php echo Lang::txt('COM_KB_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" data-txt-flagged="<?php echo JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo JRoute::_($this->comment->link('report')); ?>"><!--
-					--><?php echo JText::_('COM_KB_REPORT_ABUSE'); ?><!--
+					<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+					--><?php echo Lang::txt('COM_KB_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
 			</p>
@@ -112,12 +112,12 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
-					<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base, false, true)))); ?>
+					<?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))); ?>
 				</p>
 				<?php } else { ?>
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
-						<legend><span><?php echo JText::sprintf('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('COM_KB_ANONYMOUS'))); ?></span></legend>
+						<legend><span><?php echo Lang::txt('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_KB_ANONYMOUS'))); ?></span></legend>
 
 						<input type="hidden" name="comment[id]" value="0" />
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->comment->get('id')); ?>" />
@@ -136,17 +136,17 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JHTML::_('form.token'); ?>
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-							<span class="label-text"><?php echo JText::_('COM_KB_ENTER_COMMENTS'); ?></span>
+							<span class="label-text"><?php echo Lang::txt('COM_KB_ENTER_COMMENTS'); ?></span>
 							<?php echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
 							<input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
-							<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
+							<?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
 						</label>
 
 						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('COM_KB_SUBMIT'); ?>" />
 						</p>
 					</fieldset>
 				</form>

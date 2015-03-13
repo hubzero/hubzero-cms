@@ -38,7 +38,7 @@ $this->css()
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
+		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
 	</div><!-- / #content-header-extra -->
 </header>
 
@@ -47,24 +47,24 @@ $this->css()
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
-		<form action="<?php echo JRoute::_($this->entry->link('delete')); ?>" method="post" id="hubForm">
+		<form action="<?php echo Route::url($this->entry->link('delete')); ?>" method="post" id="hubForm">
 			<div class="explaination">
 			<?php if ($this->config->get('access-create-entry')) { ?>
 				<p>
-					<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?></a>
+					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?></a>
 				</p>
 			<?php } ?>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('COM_BLOG_DELETE_HEADER'); ?></legend>
+				<legend><?php echo Lang::txt('COM_BLOG_DELETE_HEADER'); ?></legend>
 
 				<p class="warning">
-					<?php echo JText::sprintf('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
+					<?php echo Lang::txt('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
 				</p>
 
 				<label for="confirmdel">
 					<input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />
-					<?php echo JText::_('COM_BLOG_DELETE_CONFIRM'); ?>
+					<?php echo Lang::txt('COM_BLOG_DELETE_CONFIRM'); ?>
 				</label>
 			</fieldset>
 			<div class="clear"></div>
@@ -77,9 +77,9 @@ $this->css()
 			<?php echo JHTML::_('form.token'); ?>
 
 			<p class="submit">
-				<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_BLOG_DELETE'); ?>" />
+				<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>" />
 				<a class="btn btn-secondary" href="<?php echo $this->entry->link(); ?>">
-					<?php echo JText::_('COM_BLOG_CANCEL'); ?>
+					<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>
 				</a>
 			</p>
 		</form>

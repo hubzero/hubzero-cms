@@ -200,7 +200,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&section=' . $this->filters['section']); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+						<a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&section=' . $this->filters['section']); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -211,7 +211,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php /*if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_CHANGE_ACCESS'); ?>">
+						<a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_CHANGE_ACCESS'); ?>">
 							<?php echo $row->get('groupname'); ?>
 						</a>
 					<?php } else {*/ ?>

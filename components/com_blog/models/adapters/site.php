@@ -74,7 +74,7 @@ class Site extends Base
 		switch (strtolower($key))
 		{
 			case 'title':
-				return \JText::_('COM_BLOG');
+				return Lang::txt('COM_BLOG');
 			break;
 
 			case 'alias':

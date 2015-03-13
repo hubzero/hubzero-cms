@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $canDo = Components\Cron\Helpers\Permissions::getActions('component');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_CRON') . ': ' . $text, 'cron.png');
+JToolBarHelper::title(Lang::txt('COM_CRON') . ': ' . $text, 'cron.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -66,7 +66,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
-		alert( '<?php echo JText::_('CON_CRON_ERROR_MISSING_TITLE');?>' );
+		alert( '<?php echo Lang::txt('CON_CRON_ERROR_MISSING_TITLE');?>' );
 	} else {
 		submitform( pressbutton );
 	}
@@ -202,20 +202,20 @@ jQuery(document).ready(function($){
 	}
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_CRON_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-title"><?php echo Lang::txt('COM_CRON_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-event"><?php echo JText::_('COM_CRON_FIELD_EVENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-event"><?php echo Lang::txt('COM_CRON_FIELD_EVENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<select name="fields[event]" id="field-event">
-					<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_SELECT'); ?></option>
+					<option value=""<?php echo (!$this->row->get('plugin')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_SELECT'); ?></option>
 					<?php
 						if ($this->plugins)
 						{
@@ -290,11 +290,11 @@ jQuery(document).ready(function($){
 
 							if (!$out)
 							{
-								$out = '<div class="input-wrap"><p><i>' . JText::_('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
+								$out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
 							}
 							?>
 							<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
-								<legend><span><?php echo JText::_('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
+								<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
 								<?php echo $out; ?>
 							</fieldset>
 							<?php
@@ -305,36 +305,36 @@ jQuery(document).ready(function($){
 		?>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_CRON_FIELDSET_RECURRENCE'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_RECURRENCE'); ?></span></legend>
 
 			<div class="input-wrap">
-				<?php echo JText::_('COM_CRON_FIELD_COMMON'); ?>:<br />
+				<?php echo Lang::txt('COM_CRON_FIELD_COMMON'); ?>:<br />
 				<select name="fields[recurrence]" id="field-recurrence">
-					<option value=""<?php echo ($this->row->get('recurrence') == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_SELECT'); ?></option>
-					<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_CUSTOM'); ?></option>
-					<option value="0 0 1 1 *"<?php echo ($this->row->get('recurrence') == '0 0 1 1 *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_YEAR'); ?></option>
-					<option value="0 0 1 * *"<?php echo ($this->row->get('recurrence') == '0 0 1 * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_MONTH'); ?></option>
-					<option value="0 0 * * 0"<?php echo ($this->row->get('recurrence') == '0 0 * * 0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_WEEK'); ?></option>
-					<option value="0 0 * * *"<?php echo ($this->row->get('recurrence') == '0 0 * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_DAY'); ?></option>
-					<option value="0 * * * *"<?php echo ($this->row->get('recurrence') == '0 * * * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_AN_HOUR'); ?></option>
+					<option value=""<?php echo ($this->row->get('recurrence') == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_SELECT'); ?></option>
+					<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_CUSTOM'); ?></option>
+					<option value="0 0 1 1 *"<?php echo ($this->row->get('recurrence') == '0 0 1 1 *') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_ONCE_A_YEAR'); ?></option>
+					<option value="0 0 1 * *"<?php echo ($this->row->get('recurrence') == '0 0 1 * *') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_ONCE_A_MONTH'); ?></option>
+					<option value="0 0 * * 0"<?php echo ($this->row->get('recurrence') == '0 0 * * 0') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_ONCE_A_WEEK'); ?></option>
+					<option value="0 0 * * *"<?php echo ($this->row->get('recurrence') == '0 0 * * *') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_ONCE_A_DAY'); ?></option>
+					<option value="0 * * * *"<?php echo ($this->row->get('recurrence') == '0 * * * *') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_COMMON_OPT_ONCE_AN_HOUR'); ?></option>
 				</select>
 			</div>
 
 			<table class="admintable">
 				<tbody id="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? '' : ' class="hide"'; ?>>
 					<tr>
-						<td class="key"><label for="field-minute-c"><?php echo JText::_('COM_CRON_FIELD_MINUTE'); ?></label>:</td>
+						<td class="key"><label for="field-minute-c"><?php echo Lang::txt('COM_CRON_FIELD_MINUTE'); ?></label>:</td>
 						<td>
 							<input type="text" name="fields[minute][c]" id="field-minute-c" value="<?php echo $this->row->get('minute'); ?>" />
 						</td>
 						<td>
 							<select name="fields[minute][s]" id="field-minute-s">
-								<option value=""<?php if ($this->row->get('minute') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-								<option value="*"<?php if ($this->row->get('minute') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-								<option value="*/5"<?php if ($this->row->get('minute') == '*/5') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_FIVE'); ?></option>
-								<option value="*/10"<?php if ($this->row->get('minute') == '*/10') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_TEN'); ?></option>
-								<option value="*/15"<?php if ($this->row->get('minute') == '*/15') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
-								<option value="*/30"<?php if ($this->row->get('minute') == '*/30') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
+								<option value=""<?php if ($this->row->get('minute') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+								<option value="*"<?php if ($this->row->get('minute') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+								<option value="*/5"<?php if ($this->row->get('minute') == '*/5') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIVE'); ?></option>
+								<option value="*/10"<?php if ($this->row->get('minute') == '*/10') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_TEN'); ?></option>
+								<option value="*/15"<?php if ($this->row->get('minute') == '*/15') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
+								<option value="*/30"<?php if ($this->row->get('minute') == '*/30') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
 								<?php
 								for ($i=0, $n=60; $i < $n; $i++)
 								{
@@ -347,18 +347,18 @@ jQuery(document).ready(function($){
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-hour-c"><?php echo JText::_('COM_CRON_FIELD_HOUR'); ?></label>:</td>
+						<td class="key"><label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:</td>
 						<td style="width: 10%">
 							<input type="text" name="fields[hour][c]" id="field-hour-c" value="<?php echo $this->row->get('hour'); ?>" />
 						</td>
 						<td>
 							<select name="fields[hour][s]" id="field-hour-s">
-								<option value=""<?php if ($this->row->get('hour') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-								<option value="*"<?php if ($this->row->get('hour') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-								<option value="*/2"<?php if ($this->row->get('hour') == '*/2') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
-								<option value="*/4"<?php if ($this->row->get('hour') == '*/4') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_FOUR'); ?></option>
-								<option value="*/6"<?php if ($this->row->get('hour') == '*/6') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
-								<option value="0"<?php if ($this->row->get('hour') == "0") { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
+								<option value=""<?php if ($this->row->get('hour') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+								<option value="*"<?php if ($this->row->get('hour') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+								<option value="*/2"<?php if ($this->row->get('hour') == '*/2') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
+								<option value="*/4"<?php if ($this->row->get('hour') == '*/4') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FOUR'); ?></option>
+								<option value="*/6"<?php if ($this->row->get('hour') == '*/6') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
+								<option value="0"<?php if ($this->row->get('hour') == "0") { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
 								<?php
 								for ($i=1, $n=24; $i < $n; $i++)
 								{
@@ -371,14 +371,14 @@ jQuery(document).ready(function($){
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-day-c"><?php echo JText::_('COM_CRON_FIELD_DAY_OF_MONTH'); ?></label>:</td>
+						<td class="key"><label for="field-day-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_MONTH'); ?></label>:</td>
 						<td>
 							<input type="text" name="fields[day][c]" id="field-day-c" value="<?php echo $this->row->get('day'); ?>" />
 						</td>
 						<td>
 							<select name="fields[day][s]" id="field-day-s">
-								<option value=""<?php if ($this->row->get('day') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-								<option value="*"<?php if ($this->row->get('day') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+								<option value=""<?php if ($this->row->get('day') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+								<option value="*"<?php if ($this->row->get('day') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
 								<?php
 								for ($i=1, $n=32; $i < $n; $i++)
 								{
@@ -391,48 +391,48 @@ jQuery(document).ready(function($){
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-month-c"><?php echo JText::_('COM_CRON_FIELD_MONTH'); ?></label>:</td>
+						<td class="key"><label for="field-month-c"><?php echo Lang::txt('COM_CRON_FIELD_MONTH'); ?></label>:</td>
 						<td>
 							<input type="text" name="fields[month][c]" id="field-month-c" value="<?php echo $this->row->get('month'); ?>" />
 						</td>
 						<td>
 							<select name="fields[month][s]" id="field-month-s">
-								<option value=""<?php if ($this->row->get('month') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-								<option value="*"<?php if ($this->row->get('month') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-								<option value="*/2"<?php if ($this->row->get('month') == '*/2') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
-								<option value="*/3"<?php if ($this->row->get('month') == '*/4') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_THREE'); ?></option>
-								<option value="*/6"<?php if ($this->row->get('month') == '*/6') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
-								<option value="1"<?php if ($this->row->get('month') == '1') { echo ' selected="selected"'; } ?>><?php echo JText::_('JANUARY_SHORT'); ?></option>
-								<option value="2"<?php if ($this->row->get('month') == '2') { echo ' selected="selected"'; } ?>><?php echo JText::_('FEBRUARY_SHORT'); ?></option>
-								<option value="3"<?php if ($this->row->get('month') == '3') { echo ' selected="selected"'; } ?>><?php echo JText::_('MARCH_SHORT'); ?></option>
-								<option value="4"<?php if ($this->row->get('month') == '4') { echo ' selected="selected"'; } ?>><?php echo JText::_('APRIL_SHORT'); ?></option>
-								<option value="5"<?php if ($this->row->get('month') == '5') { echo ' selected="selected"'; } ?>><?php echo JText::_('MAY_SHORT'); ?></option>
-								<option value="6"<?php if ($this->row->get('month') == '6') { echo ' selected="selected"'; } ?>><?php echo JText::_('JUNE_SHORT'); ?></option>
-								<option value="7"<?php if ($this->row->get('month') == '7') { echo ' selected="selected"'; } ?>><?php echo JText::_('JULY_SHORT'); ?></option>
-								<option value="8"<?php if ($this->row->get('month') == '8') { echo ' selected="selected"'; } ?>><?php echo JText::_('AUGUST_SHORT'); ?></option>
-								<option value="9"<?php if ($this->row->get('month') == '9') { echo ' selected="selected"'; } ?>><?php echo JText::_('SEPTEMBER_SHORT'); ?></option>
-								<option value="10"<?php if ($this->row->get('month') == '10') { echo ' selected="selected"'; } ?>><?php echo JText::_('OCTOBER_SHORT'); ?></option>
-								<option value="11"<?php if ($this->row->get('month') == '11') { echo ' selected="selected"'; } ?>><?php echo JText::_('NOVEMBER_SHORT'); ?></option>
-								<option value="12"<?php if ($this->row->get('month') == '12') { echo ' selected="selected"'; } ?>><?php echo JText::_('DECEMBER_SHORT'); ?></option>
+								<option value=""<?php if ($this->row->get('month') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+								<option value="*"<?php if ($this->row->get('month') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+								<option value="*/2"<?php if ($this->row->get('month') == '*/2') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
+								<option value="*/3"<?php if ($this->row->get('month') == '*/4') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THREE'); ?></option>
+								<option value="*/6"<?php if ($this->row->get('month') == '*/6') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
+								<option value="1"<?php if ($this->row->get('month') == '1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JANUARY_SHORT'); ?></option>
+								<option value="2"<?php if ($this->row->get('month') == '2') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('FEBRUARY_SHORT'); ?></option>
+								<option value="3"<?php if ($this->row->get('month') == '3') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MARCH_SHORT'); ?></option>
+								<option value="4"<?php if ($this->row->get('month') == '4') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('APRIL_SHORT'); ?></option>
+								<option value="5"<?php if ($this->row->get('month') == '5') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MAY_SHORT'); ?></option>
+								<option value="6"<?php if ($this->row->get('month') == '6') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNE_SHORT'); ?></option>
+								<option value="7"<?php if ($this->row->get('month') == '7') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JULY_SHORT'); ?></option>
+								<option value="8"<?php if ($this->row->get('month') == '8') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('AUGUST_SHORT'); ?></option>
+								<option value="9"<?php if ($this->row->get('month') == '9') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SEPTEMBER_SHORT'); ?></option>
+								<option value="10"<?php if ($this->row->get('month') == '10') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('OCTOBER_SHORT'); ?></option>
+								<option value="11"<?php if ($this->row->get('month') == '11') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('NOVEMBER_SHORT'); ?></option>
+								<option value="12"<?php if ($this->row->get('month') == '12') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('DECEMBER_SHORT'); ?></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label for="field-dayofweek-c"><?php echo JText::_('COM_CRON_FIELD_DAY_OF_WEEK'); ?></label>:</td>
+						<td class="key"><label for="field-dayofweek-c"><?php echo Lang::txt('COM_CRON_FIELD_DAY_OF_WEEK'); ?></label>:</td>
 						<td>
 							<input type="text" name="fields[dayofweek][c]" id="field-dayofweek-c" value="<?php echo $this->row->get('dayofweek'); ?>" />
 						</td>
 						<td>
 							<select name="fields[dayofweek][s]" id="field-dayofweek-s">
-								<option value=""<?php if ($this->row->get('dayofweek') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-								<option value="*"<?php if ($this->row->get('dayofweek') == '*') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-								<option value="0"<?php if ($this->row->get('dayofweek') == '0') { echo ' selected="selected"'; } ?>><?php echo JText::_('SUN'); ?></option>
-								<option value="1"<?php if ($this->row->get('dayofweek') == '1') { echo ' selected="selected"'; } ?>><?php echo JText::_('MON'); ?></option>
-								<option value="2"<?php if ($this->row->get('dayofweek') == '2') { echo ' selected="selected"'; } ?>><?php echo JText::_('TUE'); ?></option>
-								<option value="3"<?php if ($this->row->get('dayofweek') == '3') { echo ' selected="selected"'; } ?>><?php echo JText::_('WED'); ?></option>
-								<option value="4"<?php if ($this->row->get('dayofweek') == '4') { echo ' selected="selected"'; } ?>><?php echo JText::_('THU'); ?></option>
-								<option value="5"<?php if ($this->row->get('dayofweek') == '5') { echo ' selected="selected"'; } ?>><?php echo JText::_('FRI'); ?></option>
-								<option value="6"<?php if ($this->row->get('dayofweek') == '6') { echo ' selected="selected"'; } ?>><?php echo JText::_('SAT'); ?></option>
+								<option value=""<?php if ($this->row->get('dayofweek') == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+								<option value="*"<?php if ($this->row->get('dayofweek') == '*') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+								<option value="0"<?php if ($this->row->get('dayofweek') == '0') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SUN'); ?></option>
+								<option value="1"<?php if ($this->row->get('dayofweek') == '1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('MON'); ?></option>
+								<option value="2"<?php if ($this->row->get('dayofweek') == '2') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('TUE'); ?></option>
+								<option value="3"<?php if ($this->row->get('dayofweek') == '3') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('WED'); ?></option>
+								<option value="4"<?php if ($this->row->get('dayofweek') == '4') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('THU'); ?></option>
+								<option value="5"<?php if ($this->row->get('dayofweek') == '5') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('FRI'); ?></option>
+								<option value="6"<?php if ($this->row->get('dayofweek') == '6') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('SAT'); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -444,14 +444,14 @@ jQuery(document).ready(function($){
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_ID'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('id')); ?>
 						<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_CREATOR'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
 						$editor = JUser::getInstance($this->row->get('created_by'));
@@ -461,7 +461,7 @@ jQuery(document).ready(function($){
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_CREATED'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('created')); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('created'), 'Y-m-d H:i:s')); ?>" />
@@ -469,7 +469,7 @@ jQuery(document).ready(function($){
 				</tr>
 			<?php if ($this->row->get('modified')) { ?>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_MODIFIER'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_MODIFIER'); ?>:</th>
 					<td>
 						<?php
 						$modifier = JUser::getInstance($this->row->get('modified_by'));
@@ -479,7 +479,7 @@ jQuery(document).ready(function($){
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_MODIFIED'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_MODIFIED'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('modified')); ?>
 						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape(JHTML::_('date', $this->row->get('modified'), 'Y-m-d H:i:s')); ?>" />
@@ -488,14 +488,14 @@ jQuery(document).ready(function($){
 			<?php } ?>
 			<?php if ($this->row->get('id')) { ?>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_LAST_RUN'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_LAST_RUN'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('last_run')); ?>
 						<input type="hidden" name="fields[last_run]" id="field-last_run" value="<?php echo $this->escape($this->row->get('last_run')); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_CRON_FIELD_NEXT_RUN'); ?>:</th>
+					<th class="key"><?php echo Lang::txt('COM_CRON_FIELD_NEXT_RUN'); ?>:</th>
 					<td>
 						<?php echo $this->escape($this->row->get('next_run')); ?>
 						<input type="hidden" name="fields[next_run]" id="field-next_run" value="<?php echo $this->escape($this->row->get('next_run')); ?>" />
@@ -506,24 +506,24 @@ jQuery(document).ready(function($){
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('COM_CRON_FIELD_STATE'); ?>:</label><br />
+				<label for="field-state"><?php echo Lang::txt('COM_CRON_FIELD_STATE'); ?>:</label><br />
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JUNPUBLISHED'); ?></option>
-					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JPUBLISHED'); ?></option>
-					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JTRASHED'); ?></option>
+					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+					<option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-publish_up"><?php echo JText::_('COM_CRON_FIELD_START_RUNNING'); ?>:</label><br />
+				<label for="field-publish_up"><?php echo Lang::txt('COM_CRON_FIELD_START_RUNNING'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_up') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_up'))), 'fields[publish_up]', 'field-publish_up'); ?>
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-publish_down"><?php echo JText::_('COM_CRON_FIELD_STOP_RUNNING'); ?>:</label><br />
+				<label for="field-publish_down"><?php echo Lang::txt('COM_CRON_FIELD_STOP_RUNNING'); ?>:</label><br />
 				<?php echo JHTML::_('calendar', $this->escape(($this->row->get('publish_down') == '0000-00-00 00:00:00' ? '' : $this->row->get('publish_down'))), 'fields[publish_down]', 'field-publish_down'); ?>
 			</div>
 		</fieldset>

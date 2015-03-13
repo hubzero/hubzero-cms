@@ -66,9 +66,9 @@ jimport('joomla.filesystem.file');
 	}
 </script>
 <div id="attachments">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist">
 		<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('COM_BLOG_NO_FILES_FOUND'); ?></p>
+			<p><?php echo Lang::txt('COM_BLOG_NO_FILES_FOUND'); ?></p>
 		<?php } else { ?>
 			<table>
 				<tbody>
@@ -99,8 +99,8 @@ jimport('joomla.filesystem.file');
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . $folder . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
-								<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . $folder . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>
 					</tr>
@@ -113,8 +113,8 @@ jimport('joomla.filesystem.file');
 							</span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . $doc . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
-								<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
+							<a class="icon-delete delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . $doc . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+								<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 							</a>
 						</td>
 					</tr>

@@ -51,7 +51,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<p><a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>"><?php echo JText::_('COM_BLOG_ARCHIVE'); ?></a></p>
+		<p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
 	</div>
 </header>
 
@@ -61,51 +61,51 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php }*/ ?>
 
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 			<div class="explaination">
-				<h4 id="files-header"><?php echo JText::_('COM_BLOG_FIELD_FILES'); ?></h4>
-				<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
+				<h4 id="files-header"><?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?></h4>
+				<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('COM_BLOG_EDIT_DETAILS'); ?></legend>
+				<legend><?php echo Lang::txt('COM_BLOG_EDIT_DETAILS'); ?></legend>
 
 				<label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
+					<?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
 					<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 				</label>
 				<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
-					<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
+					<p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
 				<?php } ?>
 
 				<label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) { echo ' class="fieldWithErrors"'; } ?>>
-					<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
+					<?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
 					<?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40); ?>
 				</label>
 				<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
-					<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
+					<p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
 				<?php } ?>
 
 				<label>
-					<?php echo JText::_('COM_BLOG_FIELD_TAGS'); ?>
+					<?php echo Lang::txt('COM_BLOG_FIELD_TAGS'); ?>
 					<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->entry->tags('string'))); ?>
-					<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
+					<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 				</label>
 
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-allow_comments">
 							<input type="checkbox" class="option" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
+							<?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
 						</label>
 					</div>
 
 					<div class="col span-half omega">
 						<label for="field-state">
-							<?php echo JText::_('COM_BLOG_FIELD_PRIVACY'); ?>
+							<?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
 							<select name="entry[state]" id="field-state">
-								<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-								<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-								<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+								<option value="1"<?php if ($this->entry->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
+								<option value="2"<?php if ($this->entry->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
+								<option value="0"<?php if ($this->entry->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
 							</select>
 						</label>
 					</div>
@@ -114,17 +114,17 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-publish_up">
-							<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_UP'); ?>
+							<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>
 							<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')) : ''); ?>" />
-							<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 
 					<div class="col span-half omega">
 						<label for="field-publish_down">
-							<?php echo JText::_('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
+							<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
 							<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
-							<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+							<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
 				</div>
@@ -146,10 +146,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 			<?php echo JHTML::_('form.token'); ?>
 
 			<p class="submit">
-				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_BLOG_SAVE'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_BLOG_SAVE'); ?>" />
 
-				<a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? JRoute::_($this->entry->link()) : JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_BLOG_CANCEL'); ?>
+				<a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? Route::url($this->entry->link()) : Route::url('index.php?option=' . $this->option); ?>">
+					<?php echo Lang::txt('COM_BLOG_CANCEL'); ?>
 				</a>
 			</p>
 		</form>

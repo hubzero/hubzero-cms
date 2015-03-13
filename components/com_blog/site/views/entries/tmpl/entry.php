@@ -67,8 +67,8 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=archive'); ?>">
-				<?php echo JText::_('COM_BLOG_ARCHIVE'); ?>
+			<a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=archive'); ?>">
+				<?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
 			</a>
 		</p>
 	</div>
@@ -107,7 +107,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				<dl class="entry-meta">
 					<dt>
 						<span>
-							<?php echo JText::sprintf('COM_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
+							<?php echo Lang::txt('COM_BLOG_ENTRY_NUMBER', $this->row->get('id')); ?>
 						</span>
 					</dt>
 					<dd class="date">
@@ -122,27 +122,27 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					</dd>
 				<?php if ($this->row->get('allow_comments')) { ?>
 					<dd class="comments">
-						<a href="<?php echo JRoute::_($this->row->link('comments')); ?>">
-							<?php echo JText::sprintf('COM_BLOG_NUM_COMMENTS', $this->row->comments('count')); ?>
+						<a href="<?php echo Route::url($this->row->link('comments')); ?>">
+							<?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $this->row->comments('count')); ?>
 						</a>
 					</dd>
 				<?php } else { ?>
 					<dd class="comments">
 						<span>
-							<?php echo JText::_('COM_BLOG_COMMENTS_OFF'); ?>
+							<?php echo Lang::txt('COM_BLOG_COMMENTS_OFF'); ?>
 						</span>
 					</dd>
 				<?php } ?>
 				<?php if ($juser->get('id') == $this->row->get('created_by')) { ?>
 					<dd class="state">
-						<?php echo JText::_('COM_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
+						<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 					</dd>
 					<dd class="entry-options">
-						<a class="edit" href="<?php echo JRoute::_($this->row->link('edit')); ?>" title="<?php echo JText::_('COM_BLOG_EDIT'); ?>">
-							<span><?php echo JText::_('COM_BLOG_EDIT'); ?></span>
+						<a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
+							<span><?php echo Lang::txt('COM_BLOG_EDIT'); ?></span>
 						</a>
-						<a class="delete" data-confirm="<?php echo JText::_('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($this->row->link('delete')); ?>" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
-							<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
+						<a class="delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+							<span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
 						</a>
 					</dd>
 				<?php } ?>
@@ -161,14 +161,14 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						$name = $this->escape(stripslashes($name));
 				?>
 					<div class="entry-author">
-						<h3><?php echo JText::_('COM_BLOG_AUTHOR_ABOUT'); ?></h3>
+						<h3><?php echo Lang::txt('COM_BLOG_AUTHOR_ABOUT'); ?></h3>
 						<p class="entry-author-photo">
 							<img src="<?php echo $this->row->creator('picture'); ?>" alt="" />
 						</p>
 						<div class="entry-author-content">
 							<h4>
 								<?php if ($this->row->creator()->get('public')) { ?>
-									<a href="<?php echo JRoute::_($this->row->creator()->getLink()); ?>">
+									<a href="<?php echo Route::url($this->row->creator()->getLink()); ?>">
 										<?php echo $name; ?>
 									</a>
 								<?php } else { ?>
@@ -179,7 +179,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 							<?php if ($this->row->creator('bio')) { ?>
 								<?php echo $this->row->creator()->getBio('parsed', 300); ?>
 							<?php } else { ?>
-								<em><?php echo JText::_('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
+								<em><?php echo Lang::txt('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
 							<?php } ?>
 							</div>
 							<div class="clearfix"></div>
@@ -196,14 +196,14 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 		<aside class="aside hide6">
 		<?php if ($this->config->get('access-create-entry')) { ?>
 			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-					<?php echo JText::_('COM_BLOG_NEW_ENTRY'); ?>
+				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+					<?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
 				</a>
 			</p>
 		<?php } ?>
 
 			<div class="container blog-entries-years">
-				<h4><?php echo JText::_('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
+				<h4><?php echo Lang::txt('COM_BLOG_ENTRIES_BY_YEAR'); ?></h4>
 				<ol>
 			<?php
 			if ($first->exists()) {
@@ -214,25 +214,25 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				{
 			?>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i); ?>">
 						<?php echo $i; ?>
 					</a>
 				<?php if ($i == $entry_year) { ?>
 					<ol>
 					<?php
 						$months = array(
-							'01' => JText::_('COM_BLOG_JANUARY'),
-							'02' => JText::_('COM_BLOG_FEBRUARY'),
-							'03' => JText::_('COM_BLOG_MARCH'),
-							'04' => JText::_('COM_BLOG_APRIL'),
-							'05' => JText::_('COM_BLOG_MAY'),
-							'06' => JText::_('COM_BLOG_JUNE'),
-							'07' => JText::_('COM_BLOG_JULY'),
-							'08' => JText::_('COM_BLOG_AUGUST'),
-							'09' => JText::_('COM_BLOG_SEPTEMBER'),
-							'10' => JText::_('COM_BLOG_OCTOBER'),
-							'11' => JText::_('COM_BLOG_NOVEMBER'),
-							'12' => JText::_('COM_BLOG_DECEMBER')
+							'01' => Lang::txt('COM_BLOG_JANUARY'),
+							'02' => Lang::txt('COM_BLOG_FEBRUARY'),
+							'03' => Lang::txt('COM_BLOG_MARCH'),
+							'04' => Lang::txt('COM_BLOG_APRIL'),
+							'05' => Lang::txt('COM_BLOG_MAY'),
+							'06' => Lang::txt('COM_BLOG_JUNE'),
+							'07' => Lang::txt('COM_BLOG_JULY'),
+							'08' => Lang::txt('COM_BLOG_AUGUST'),
+							'09' => Lang::txt('COM_BLOG_SEPTEMBER'),
+							'10' => Lang::txt('COM_BLOG_OCTOBER'),
+							'11' => Lang::txt('COM_BLOG_NOVEMBER'),
+							'12' => Lang::txt('COM_BLOG_DECEMBER')
 						);
 						foreach ($months as $key => $month)
 						{
@@ -240,7 +240,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 							{
 							?>
 						<li>
-							<a <?php if ($entry_month == $key) { echo 'class="active" '; } ?>href="<?php echo JRoute::_('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
+							<a <?php if ($entry_month == $key) { echo 'class="active" '; } ?>href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
 								<?php echo $month; ?>
 							</a>
 						</li>
@@ -259,19 +259,19 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			</div><!-- / .blog-entries-years -->
 
 			<div class="container blog-popular-entries">
-				<h4><?php echo JText::_('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
+				<h4><?php echo Lang::txt('COM_BLOG_POPULAR_ENTRIES'); ?></h4>
 			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
 				<ol>
 				<?php foreach ($popular as $row) { ?>
 					<li>
-						<a href="<?php echo JRoute::_($row->link()); ?>">
+						<a href="<?php echo Route::url($row->link()); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					</li>
 				<?php } ?>
 				</ol>
 			<?php } else { ?>
-				<p><?php echo JText::_('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
+				<p><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 		</aside><!-- / .aside -->
@@ -283,7 +283,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 	<div class="section-inner">
 		<div class="subject">
 			<h3>
-				<?php echo JText::_('COM_BLOG_COMMENTS_HEADER'); ?>
+				<?php echo Lang::txt('COM_BLOG_COMMENTS_HEADER'); ?>
 			</h3>
 
 		<?php if ($this->row->comments('count') > 0) { ?>
@@ -300,15 +300,15 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			?>
 		<?php } else { ?>
 			<p class="no-comments">
-				<?php echo JText::_('COM_BLOG_NO_COMMENTS'); ?>
+				<?php echo Lang::txt('COM_BLOG_NO_COMMENTS'); ?>
 			</p>
 		<?php } ?>
 
 			<h3>
-				<?php echo JText::_('COM_BLOG_POST_COMMENT'); ?>
+				<?php echo Lang::txt('COM_BLOG_POST_COMMENT'); ?>
 			</h3>
 
-			<form method="post" action="<?php echo JRoute::_($this->row->link()); ?>" id="commentform">
+			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
 					$jxuser = new \Hubzero\User\Profile; //::getInstance($juser->get('id'));
@@ -328,22 +328,22 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				{
 					if ($replyto->exists())
 					{
-						$name = JText::_('COM_BLOG_ANONYMOUS');
+						$name = Lang::txt('COM_BLOG_ANONYMOUS');
 						if (!$replyto->get('anonymous'))
 						{
 							$name = $this->escape(stripslashes($replyto->creator('name', $name)));
 							if ($replyto->creator('public'))
 							{
-								$name = '<a href="' . JRoute::_($replyto->creator()->getLink()) . '">' . $name . '</a>';
+								$name = '<a href="' . Route::url($replyto->creator()->getLink()) . '">' . $name . '</a>';
 							}
 						}
 					?>
 					<blockquote cite="c<?php echo $replyto->get('id'); ?>">
 						<p>
 							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo JText::_('COM_BLOG_AT'); ?></span>
+							<span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
 							<span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-							<span class="comment-date-on"><?php echo JText::_('COM_BLOG_ON'); ?></span>
+							<span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 						</p>
 						<p>
@@ -365,18 +365,18 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
 					<p class="warning">
-						<?php echo JText::sprintf('COM_BLOG_MUST_LOG_IN', '<a href="' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('COM_BLOG_LOG_IN') . '</a>'); ?>
+						<?php echo Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>'); ?>
 					</p>
 					<?php } ?>
 
 				<?php if (!$juser->get('guest')) { ?>
 					<label id="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-						<?php echo JText::_('COM_BLOG_POST_ANONYMOUS'); ?>
+						<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
 					</label>
 
 					<p class="submit">
-						<input type="submit" name="submit" value="<?php echo JText::_('COM_BLOG_SUBMIT'); ?>" />
+						<input type="submit" name="submit" value="<?php echo Lang::txt('COM_BLOG_SUBMIT'); ?>" />
 					</p>
 				<?php } ?>
 					<input type="hidden" name="comment[id]" value="0" />
@@ -392,7 +392,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
 					<div class="sidenote">
 						<p>
-							<strong><?php echo JText::_('COM_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
+							<strong><?php echo Lang::txt('COM_BLOG_COMMENTS_KEEP_POLITE'); ?></strong>
 						</p>
 					</div>
 				</fieldset>
@@ -401,13 +401,13 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
 		<aside class="aside">
 			<div class="container blog-entries-years">
-				<h4><?php echo JText::_('COM_BLOG_COMMENTS_FEED'); ?></h4>
+				<h4><?php echo Lang::txt('COM_BLOG_COMMENTS_FEED'); ?></h4>
 				<p>
-					<?php echo JText::_('COM_BLOG_COMMENTS_FEED_EXPLANATION'); ?>
+					<?php echo Lang::txt('COM_BLOG_COMMENTS_FEED_EXPLANATION'); ?>
 				</p>
 				<p>
 					<?php
-						$feed = JRoute::_($this->row->link() . '/comments.rss');
+						$feed = Route::url($this->row->link() . '/comments.rss');
 						if (substr($feed, 0, 4) != 'http')
 						{
 							$jconfig = JFactory::getConfig();
@@ -417,7 +417,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						}
 						$feed = str_replace('https:://', 'http://', $feed);
 					?>
-					<a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo JText::_('COM_BLOG_FEED'); ?></a>
+					<a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a>
 				</p>
 			</div>
 		</aside><!-- / .aside -->
