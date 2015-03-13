@@ -43,7 +43,7 @@ foreach ($this->results as $row)
 	$info[] =  JHTML::_('date', $row->published_up, 'd M Y');
 	$info[] = $row->cat_name;
 	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
-		. $this->helper->showContributors( $authors, false, true );
+		. PublicationsHtml::showContributors( $authors, false, true );
 
 	// Display List of items
 	$this->view('_item')

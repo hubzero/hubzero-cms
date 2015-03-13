@@ -54,12 +54,12 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 
 ?>
 	<?php echo $this->project->provisioned == 1
-				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route, $this->title)
-				: $this->helper->showPubTitle( $this->pub, $this->route); ?>
+				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route, $this->title)
+				: PublicationsHtml::showPubTitle( $this->pub, $this->route); ?>
 
 <?php
 	// Draw status bar
-	$this->contribHelper->drawStatusBar($this);
+	PublicationsHtml::drawStatusBar($this);
 
 // Section body starts:
 ?>

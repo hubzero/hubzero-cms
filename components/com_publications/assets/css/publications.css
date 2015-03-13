@@ -1118,154 +1118,142 @@
 		border: none;
 		}
 
-/* Audience skill level */
-	.audiencelevel {
+/* Publications - Audience skill level
+--------------------------------------------- */
+	.audiencelevel, #c-browser .audiencelevel, ul.c-list .audiencelevel {
 		list-style: none;
 		margin: 0;
 		padding: 2px 0 0 0;
 		margin-left: 2px;
-		}
-	.audiencelevel li {
+		display: inline;
+		font-size: 85%;
+	}
+	.audiencelevel li,
+	#c-browser .audiencelevel li,
+	ul.c-list .audiencelevel li {
 		display: inline;
 		padding: 0;
 		margin: 0;
-		padding-left: 10px;
-		margin-left: -1px;
-		background: url("../img/circlerating.gif") 0 2px no-repeat;
-		}
-	#level-3 ul.audiencelevel li {
-		margin-right: -10px;
-		padding-right: 0;
-		margin-left: 0;
-		padding-left: 0;
-		}
-	.audiencelevel li span {
-		margin: -1px;
-		padding: 0;
-		}
-	.audiencelevel li.level0 {
-		background-position: 0 2px;
-		padding-left: 17px;
-		margin-right: 0.3em;
-		}
-	.audiencelevel li.level1 {
-		background-position: -21px 2px;
-		}
-	.audiencelevel li.level2 {
-		background-position: -39px 2px;
-		}
-	.audiencelevel li.level3 {
-		background-position: -57px 2px;
-		}
-	.audiencelevel li.level4 {
-		background-position: -93px 2px;
-		}
-	.skill_level0,
-	.skill_level1 {
+		padding-left: 10px !important;
+		margin-left:-1px;
+		border: none;
+		background: url("../img/circlerating.gif") 0 2px no-repeat !important;
+	}
+	.audiencelevel li span,
+	#c-browser .audiencelevel li span,
+	ul.c-list audiencelevel li span {
+		margin:-1px;
+		padding:0;
+	}
+	.audiencelevel li.level0,
+	#c-browser .audiencelevel li.level0,
+	ul.c-list .audiencelevel li.level0  {
+		background-position: 0 2px !important;
+		padding-left:17px !important;
+		margin-right:0.3em;
+	}
+	.audiencelevel li.level1,
+	#c-browser .audiencelevel li.level1,
+	ul.c-list .audiencelevel li.level1  {
+		background-position: -21px 2px !important;
+	}
+	.audiencelevel li.level2,
+	#c-browser .audiencelevel li.level2,
+	ul.c-list .audiencelevel li.level2 {
+		background-position: -39px 2px !important;
+	}
+	.audiencelevel li.level3,
+	#c-browser .audiencelevel li.level3,
+	ul.c-list .audiencelevel li.level3 {
+		background-position: -57px 2px !important;
+	}
+	.audiencelevel li.level4,
+	#c-browser .audiencelevel li.level4,
+	ul.c-list .audiencelevel li.level4 {
+		background-position: -93px 2px !important;
+	}
+	.skill_level0, .skill_level1 {
 		color: #39b54a;
-		}
+	}
 	.skill_level2 {
 		color: #00aeef;
-		}
+	}
 	.skill_level3 {
 		color: #1b75bc;
-		}
+	}
 	.skill_level4 {
 		color: #000000;
-		}
-	.audiencelevel li.level0_isoff {
-		display:none;
-		}
-	.audiencelevel li.txtlabel {
+	}
+	.audiencelevel li.level0_isoff,
+	#tagbrowser .audiencelevel li.level0_isoff,
+	ul.c-list .audiencelevel li.level0_isoff {
+		display: none !important;
+	}
+	.audiencelevel li.txtlabel,
+	ul.c-list .audiencelevel li.txtlabel {
 		padding: 0;
 		padding-left: 5px;
-		vertical-align: top;
 		background: none !important;
 		color: #666666;
-		font-size: 85%;
-		}
-	.audiencelevel li.isoff {
-		background-position: -111px 2px;
-		}
-	.usagescale {
-		margin: 0;
-		padding: 0;
-		position: relative;
-		z-index: 998; /* different */
-		}
-	.usagescale table {
+	}
+	.audiencelevel li.isoff,
+	#c-browser .audiencelevel li.isoff,
+	ul.c-list .audiencelevel li.isoff {
+		background-position: -111px 2px !important;
 		border: none;
-		color: #333333;
-		font-weight: 500;
-		}
-	.secondcol {
-		color: #666;
-		font-weight: normal;
-		}
-	.usagescale table th,
-	.usagescale table td {
-		line-height: 1.2em;
-		padding: 5px 5px;
-		font-size: 85%;
-		border-bottom: 1px solid #e3e3e3;
-		}
-	.usagescale table thead td {
-		font-style: italic;
-		color: #999999;
-		font-weight: normal;
-		}
-	.usagescale table th {
-		text-align: right;
-		width: 30%;
-		}
-	.usagescale ul {
-		margin-top: -0.2em;
-		margin-bottom: 0.3em;
-		}
-	.learnmore {
-		text-align: right;
-		font-size: 85%;
-		}
+	}
+	#pubpane table.skillset td {
+		padding: 0.5em 0.5em 0.5em 1.5em;
+	}
+	table.skillset td.circle, .circle {
+		width: 70px;
+		padding: 0;
+	}
+	.audience_wrap {
+		display: block;
+		position: absolute;
+		width: 70px;
+	}
+	.aud-desc {
+		padding-left: 70px;
+	}
 	.explainscale {
 		padding: 1em;
 		position: absolute;
 		top: 20px;
-		left: -999em;
+		margin-left: -150px;
+		display: none;
 		width: 300px;
 		border: 1px solid #ccc;
 		background: #FFF;
-		/* Rounded corners */
 		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
 		-khtml-border-radius: 10px;
 		border-radius: 10px;
-		/* Shadows */
 		box-shadow: 0px 2px 4px #CCC;
-		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
-		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
-		}
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: #ccc 0px 2px 4px;
+		z-index: 1000;
+		font-size: 85%;
+	}
 	.usagescale .active {
-		left: -100px;
-		}
+		display: block;
+	}
 	.infopage {
 		width: 75%;
-		margin: 2em 0;
+		margin: 2em 0; 
 		border: 1px solid #cccccc;
 		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
 		-khtml-border-radius: 10px;
 		border-radius: 10px;
 		box-shadow: 0px 2px 4px #CCC;
-		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* length length length color */
-		-moz-box-shadow: #ccc 0px 2px 4px; /* color length length length */
-		}
+		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		-moz-box-shadow: #ccc 0px 2px 4px;
+	}
 	.infopage .usagescale {
 		z-index:auto;
-		}
-	.combtd {
-		text-align: center;
-		}
-
+	}
 /* Notice to authors */
 
 	.statusmsg {

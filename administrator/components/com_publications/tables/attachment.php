@@ -30,6 +30,8 @@
 
 namespace Components\Publications\Tables;
 
+use PublicationTypesHelper;
+
 /**
  * Table class for publication attachments
  */

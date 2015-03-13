@@ -38,8 +38,8 @@ else
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
-				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
+				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
 	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -62,7 +62,7 @@ else
 
 <?php
 	// Draw status bar
-	$this->contribHelper->drawStatusBar($this);
+	PublicationsHtml::drawStatusBar($this);
 
 	$canedit = (
 		$this->pub->state == 3

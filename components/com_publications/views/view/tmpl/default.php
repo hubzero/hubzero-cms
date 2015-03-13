@@ -26,6 +26,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
 	 ->css('jquery.fancybox.css', 'system')
      ->js();
+
 $authorized = ($this->restricted && !$this->authorized) ? false : true;
 $html = '';
 
@@ -54,58 +55,20 @@ else
 		<div class="aside rankarea">
 
 	<?php
-	// Show stats
-	$statshtml = '';
-	$this->helper->getCitations();
-	$this->helper->getLastCitationDate();
-	$stats = new AndmoreStats($this->database, $this->publication->id,
-		$this->publication->master_rating, count($this->helper->citations),
-		$this->helper->lastCitationDate);
-	$statshtml = $stats->display();
-
-	$xtra = '';
-
-	// Show audience
-	if ($this->params->get('show_audience'))
-	{
-		$ra 		= new \Components\Publications\Tables\Audience( $this->database );
-		$audience 	= $ra->getAudience(
-			$this->publication->id,
-			$this->publication->version_id,
-			$getlabels = 1,
-			$numlevels = 4
-		);
-		$ral 		= new \Components\Publications\Tables\AudienceLevel( $this->database );
-		$levels 	= $ral->getLevels( 4, array(), 0 );
-		$skillpop 	=  PublicationsHtml::skillLevelPopup($levels, $this->params->get('audiencelink'));
-		$xtra 	   .= PublicationsHtml::showSkillLevel($audience, $numlevels = 4, $skillpop);
-	}
-
-	// Supported publication?
-	$supported = null;
-	$rt = new PublicationTags( $this->database );
-	$supported = $rt->checkTagUsage( $this->config->get('supportedtag'), $this->publication->id );
-
-	if ($supported)
-	{
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
-		$tag = new \Components\Tags\Tables\Tag( $this->database );
-		$tag->loadTag($this->config->get('supportedtag'));
-
-		$sl = $this->config->get('supportedlink');
-		if ($sl) {
-			$link = $sl;
-		} else {
-			$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
-		}
-
-		$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
-	}
-
-	echo PublicationsHtml::metadata($this->option, $this->params, $this->publication,
-		$statshtml, $this->sections, $this->version, $xtra, $this->lastPubRelease); ?>
-
+	// Show metadata
+	$this->view('_metadata')
+	     ->set('option', $this->option)
+	     ->set('publication', $this->publication)
+	     ->set('config', $this->config)
+	     ->set('version', $this->version)
+	     ->set('sections', $this->sections)
+	     ->set('cats', $this->cats)
+	     ->set('params', $this->params)
+	     ->set('lastPubRelease', $this->lastPubRelease)
+	     ->display();
+?>
 	</div><!-- / .aside -->
+
 	<div class="subject">
 		<div class="overviewcontainer">
 			<?php echo PublicationsHtml::title( $this->option, $this->publication ); ?>
@@ -113,7 +76,7 @@ else
 	// Display authors
 	if ($this->params->get('show_authors') && $this->authors) { ?>
 		<div id="authorslist">
-			<?php echo $this->helper->showContributors($this->authors, true, false, false, false, $this->params->get('format_authors', 0)); ?>
+			<?php echo PublicationsHtml::showContributors($this->authors, true, false, false, false, $this->params->get('format_authors', 0)); ?>
 		</div>
 	<?php }	?>
 	<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
@@ -193,15 +156,22 @@ else
 	$html .= '</div><!-- / .subject -->'."\n";
 }
 
-if ($this->publication->access == 2 && (!$this->authorized && $this->restricted)) {
+// Part below
+if ($this->publication->access == 2 && (!$this->authorized && $this->restricted)) 
+{
 	// show nothing else
 	$html .= '</section><!-- / .main section -->'."\n";
-} else {
+	echo $html;
+	return;
+} 
+else 
+{
 	$html .= '<div class="clear sep"></div>'."\n";
 	$html .= '</section><!-- / .main section -->'."\n";
 
 	$html .= '<section class="main section noborder">'."\n";
 	$html .= ' <div class="subject tabbed">'."\n";
+
 	$html .= PublicationsHtml::tabs(
 		$this->option,
 		$this->publication->id,

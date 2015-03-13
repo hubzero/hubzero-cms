@@ -25,10 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$pubHelper 		= $this->pub->_helpers->pubHelper;
-
 $versionLabel 	= $this->pub->version_label ? $this->pub->version_label : '1.0';
-$status 	  	= $pubHelper->getPubStateProperty($this->pub, 'status');
+$status 	  	= PublicationsHtml::getPubStateProperty($this->pub, 'status');
 $version 		= $this->pub->version;
 $active 		= $this->active ? $this->active : 'status';
 $activenum 		= $this->activenum ? $this->activenum : NULL;
@@ -57,7 +55,7 @@ $i = 1;
 		<a href="<?php echo JRoute::_( $pubRoute) .'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
 		<a href="<?php echo JRoute::_( $pubRoute . '&version=' . $version); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$versionLabel.' (' . $status . ')'; ?></a>
 		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete) { ?>
-		- <a href="<?php echo JRoute::_( $pubRoute) . '/?action=review'. a . 'version='.$this->pub->version; ?>" class="readytosubmit"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
+		- <a href="<?php echo JRoute::_( $pubRoute) . '/?action=review&amp;version='.$this->pub->version; ?>" class="readytosubmit"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
 		<?php } ?>
     </p>
 <?php } ?>

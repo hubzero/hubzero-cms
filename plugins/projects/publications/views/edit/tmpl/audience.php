@@ -40,12 +40,12 @@ else
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
-				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
+				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar
-	$this->contribHelper->drawStatusBar($this);
+	PublicationsHtml::drawStatusBar($this);
 
 // Section body starts:
 $levels 	= array();
@@ -74,7 +74,7 @@ $canedit = (
 
 							$sel = $this->audience->$label == 1 ? $sel + 1 : $sel;
 							$picked .= $this->audience->$label == 1 ? $label.'-' : ''; ?>
-						<li id="<?php echo $level->label; ?>" class="c-click" title="<?php echo htmlentities($level->title); ?>">	<?php echo PublicationsHtml::skillLevelCircle($this->levels, $level->label); ?> <span class="aud-desc"><?php echo $level->description; ?></span></li>
+						<li id="<?php echo $label; ?>" class="c-click" title="<?php echo htmlentities($level->title); ?>">	<?php echo PublicationsHtml::skillLevelCircle($this->levels, $level->label); ?> <span class="aud-desc"><?php echo $level->description; ?></span></li>
 						<?php } ?>
 					</ul>
 				</div>
@@ -95,7 +95,19 @@ $canedit = (
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUDIENCE')); ?>: </h5>
 				<ul id="c-audience" class="c-list">
 					<li id="nosel" <?php if($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
-					<li id="c-sel-audience" class="prominent<?php if($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>"><?php echo $picked ? PublicationsHtml:: showSkillLevel($this->audience, $showtips = 0) : JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN'); ?></li>
+					<li id="c-sel-audience" class="prominent<?php if($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>">
+					<?php if ($picked) 
+					{
+						$view = new \Hubzero\Component\View(array(
+							'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+							'name'      => 'view',
+							'layout'    => '_audience',
+						));
+						$view->audience      = $this->audience;
+						$view->showtips      = false;
+						$view->numlevels     = 4;
+						echo $view->loadTemplate();
+					} else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN'); } ?></li>
 				</ul>
 		 </div>
 		</div>

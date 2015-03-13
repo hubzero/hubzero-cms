@@ -374,7 +374,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			  . stripslashes($row->cat_name);
 		if ($authors)
 		{
-			$html .= ' <span>|</span>' . JText::_('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. $helper->showContributors( $authors, false, true ) . "\n";
+			$html .= ' <span>|</span>' . JText::_('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. PublicationsHtml::showContributors( $authors, false, true ) . "\n";
 		}
 		if ($row->doi)
 		{

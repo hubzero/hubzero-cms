@@ -54,7 +54,7 @@ $presentation = $presentation->presentation;
 <div id="presenter-container">
 	<div id="presenter-header">
 		<div id="title"><?php echo $this->publication->title; ?></div>
-		<div id="author"><?php if ($this->authors) { echo 'by '.$this->helper->showContributors( $this->authors, false, true ); } ?></div>
+		<div id="author"><?php if ($this->authors) { echo 'by ' . PublicationsHtml::showContributors( $this->authors, false, true ); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
 

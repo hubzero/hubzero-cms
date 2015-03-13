@@ -106,7 +106,7 @@ if (($this->line->category && !intval($this->filters['category']))) {
 	$info[] = $this->line->cat_name;
 }
 if ($this->authors && $this->params->get('show_authors')) {
-	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $this->authors, false, true );
+	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. PublicationsHtml::showContributors( $this->authors, false, true );
 }
 if ($this->line->doi)
 {

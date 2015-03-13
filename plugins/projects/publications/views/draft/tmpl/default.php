@@ -25,9 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$pubHelper 		= $this->pub->_helpers->pubHelper;
-$htmlHelper 	= $this->pub->_helpers->htmlHelper;
-
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
@@ -42,15 +39,15 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status = $pubHelper->getPubStateProperty($this->pub, 'status');
-$class 	= $pubHelper->getPubStateProperty($this->pub, 'class');
+$status = PublicationsHtml::getPubStateProperty($this->pub, 'status');
+$class 	= PublicationsHtml::getPubStateProperty($this->pub, 'class');
 
 // Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
 ?>
 <?php echo $this->project->provisioned == 1
-			? $pubHelper->showPubTitleProvisioned( $this->pub, $this->route)
-			: $pubHelper->showPubTitle( $this->pub, $this->route, $this->title); ?>
+			? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
+			: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar

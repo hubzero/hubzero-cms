@@ -333,7 +333,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Get tags on this item
 		$tagsHelper = new PublicationTags( $this->database );
-		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0);
+		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0, true);
 
 		$mytagarray = array();
 		foreach ($tags_men as $tag_men)
@@ -1358,7 +1358,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Save the tags
 		$rt = new PublicationTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
+		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, true);
 
 		// Get ids of publication authors with accounts
 		$notify = $pa->getAuthors($row->id, 1, 1, 1, true);

@@ -48,11 +48,11 @@ $newCiteUrl   = $this->project->provisioned == 1
 
 ?>
 <?php echo $this->project->provisioned == 1
-			? $this->helper->showPubTitleProvisioned( $this->pub, $this->route, $this->title)
-			: $this->helper->showPubTitle( $this->pub, $this->route); ?>
+			? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route, $this->title)
+			: PublicationsHtml::showPubTitle( $this->pub, $this->route); ?>
 <?php
 	// Draw status bar
-	$this->contribHelper->drawStatusBar($this);
+	PublicationsHtml::drawStatusBar($this);
 
 // Section body starts:
 ?>

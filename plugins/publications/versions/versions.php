@@ -100,7 +100,7 @@ class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$objV = new PublicationVersion( $database );
+			$objV = new \Components\Publications\Tables\Version( $database );
 			$versions = $objV->getVersions( $publication->id, $filters = array('public' => 1));
 
 			// Instantiate a view

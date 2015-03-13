@@ -384,13 +384,15 @@ HUB.ProjectPublications = {
 			{
 				for (var i = 0; i < picked.length; i++)
 			    {
-			      if ($(picked[i])) {
-					 $(picked[i]).addClass('c-picked');
-				  }
+					var id = document.getElementById(picked[i]);
+					if ($(id)) 
+					{
+						$(id).addClass('c-picked');
+					}
 			    }
 			}
 		}
-		
+
 		HUB.ProjectPublications.checkAudience(picked, $('#no-audience').attr('checked'));
 
 		// Do not show audience checkbox

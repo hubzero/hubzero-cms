@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-$typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
@@ -60,15 +60,15 @@ $typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->p
 			$doi_notice = $doi ? $doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA');
 
 			// Version status
-			$status = PublicationHelper::getPubStateProperty($v, 'status');
-			$class = PublicationHelper::getPubStateProperty($v, 'class');
-			$date = PublicationHelper::getPubStateProperty($v, 'date');
+			$status = PublicationsHtml::getPubStateProperty($v, 'status');
+			$class  = PublicationsHtml::getPubStateProperty($v, 'class');
+			$date   = PublicationsHtml::getPubStateProperty($v, 'date');
 
 			$options = '<a href="'.$this->url.'?version='.$v->version_number.'">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION').'</a>';
 
 			$options .= '<span class="block"><a href="'.JRoute::_('index.php?option=com_publications'
-			.a.'id='.$this->pid).'?v='.$v->version_number.'">'
+			. '&id=' . $this->pid) . '?v=' . $v->version_number.'">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE').'</a></span>';
 
 			?>

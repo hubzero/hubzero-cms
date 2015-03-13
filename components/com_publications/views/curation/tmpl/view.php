@@ -34,9 +34,6 @@ $this->css()
 // Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
-$pubHelper 		= $this->pub->_helpers->pubHelper;
-$htmlHelper 	= $this->pub->_helpers->htmlHelper;
-
 $now = JFactory::getDate()->toSql();
 
 // Get creator name
@@ -44,10 +41,9 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status = $pubHelper->getPubStateProperty($this->pub, 'status');
-$class 	= $pubHelper->getPubStateProperty($this->pub, 'class');
-
-$typetitle = $pubHelper::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$status    = PublicationsHtml::getPubStateProperty($this->pub, 'status');
+$class 	   = PublicationsHtml::getPubStateProperty($this->pub, 'class');
+$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 
 $profile = \Hubzero\User\Profile::getInstance($this->pub->modified_by);
 $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
@@ -58,10 +54,10 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 </div><!-- / #content-header -->
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST'); ?></a></li>
+    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=curation'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>" method="post" id="curation-form" name="curation-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post" id="curation-form" name="curation-form">
 	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="vid" value="<?php echo $this->pub->version_id; ?>" />
@@ -128,7 +124,7 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 </form>
 <div class="hidden">
 	<div id="addnotice" class="addnotice">
-		<form id="notice-form" name="noticeForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>" method="post">
+		<form id="notice-form" name="noticeForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post">
 		 <fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
 			<input type="hidden" name="vid" value="<?php echo $this->pub->version_id; ?>" />

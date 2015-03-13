@@ -33,15 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $useBlocks 	= $this->config->get('curation', 0);
 $webpath 	= $this->config->get('webpath');
+
 $abstract	= stripslashes($this->publication->abstract);
 $authorized = (($this->restricted && !$this->authorized) || $this->publication->state == 0) ? false : true;
-
-// Set the document description
-if ($this->publication->abstract)
-{
-	$document = JFactory::getDocument();
-	$document->setDescription(PublicationsHtml::encode_html(strip_tags($abstract)));
-}
 
 $description = '';
 $model = new PublicationsModelPublication($this->publication);
@@ -94,23 +88,21 @@ $schema 	= $metaElements->getSchema();
 		else
 		{
 			// Get gallery path
-			$gallery_path 	= $this->helper->buildPath(
+			$galleryPath 	= $this->helper->buildPath(
 				$this->publication->id,
 				$this->publication->version_id,
 				$webpath,
 				'gallery'
 			);
-
-			$pScreenshot = new \Components\Publications\Tables\Screenshot($this->database);
-			$gallery = $pScreenshot->getScreenshots( $this->publication->version_id );
-			$shots = PublicationsHtml::showGallery($gallery, $gallery_path, $this->publication->id, $this->publication->version_id);
-			if ($shots)
-			{
-				$html  = ' <div class="sscontainer">'."\n";
-				$html .= $shots;
-				$html .= ' </div><!-- / .sscontainer -->'."\n";
-				echo $html;
-			}
+			
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+				'name'      => 'view',
+				'layout'    => '_gallery',
+			));
+			$view->publication   = $this->publication;
+			$view->path          = $galleryPath;
+			echo $view->loadTemplate();
 		}
 	}
 ?>

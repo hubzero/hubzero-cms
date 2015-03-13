@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-$typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 
 // Suggest new label
 $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->version_label + 1.0), 1, '.', '') : '';

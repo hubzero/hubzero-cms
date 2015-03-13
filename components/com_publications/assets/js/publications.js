@@ -99,20 +99,6 @@ HUB.Publications = {
 			});
 		});
 
-		// Audience info pop-up
-		$('.explainscale').each(function(k, ex) {
-			$('.usagescale').each(function(i, item) {
-				$(item).live('mouseover', function() {
-					$(ex).addClass('active');
-				});
-			});
-			$('.usagescale').each(function(i, item) {
-				$(item).live('mouseout', function() {
-					$(ex).removeClass('active');
-				});
-			});
-		});
-
 		// Primary-document info pop-up
 		if ($('#primary-document') && $('#primary-document_pop')) {
 			$('#primary-document').live('mouseover', function(e) {

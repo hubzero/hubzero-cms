@@ -260,8 +260,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications'
-			. DS . 'helpers' . DS . 'contrib.php' );
 
 		// Import required models
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
@@ -2286,7 +2284,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			case 'audience':
 				// Get audience info
 				$ra = new \Components\Publications\Tables\Audience( $this->_database );
-				$view->audience = $ra->getAudience($row->publication_id, $row->id, $getlabels = 1, $numlevels = 4);
+				$audience = $ra->getAudience($row->publication_id, $row->id, $getlabels = 1, $numlevels = 4);
+				$view->audience = $audience ? $audience[0] : NULL;
 
 				// Get audience levels
 				$ral = new \Components\Publications\Tables\AudienceLevel( $this->_database );
@@ -3104,9 +3103,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->access_groups = $paccess->getGroups($pub->version_id, $pub->id, $version, $cn);
 
 		// Get gallery images
+		/*
 		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		$gallery = $pScreenshot->getScreenshots( $pub->version_id );
 		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
+		*/
 
 		// Get JS
 		\Hubzero\Document\Assets::addComponentScript('com_publications', 'assets/js/publications');
@@ -5982,7 +5983,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if ($result == 1)
 		{
-			return PublicationsHtml::showSkillLevel($pAudience);
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+				'name'      => 'view',
+				'layout'    => '_audience',
+			));
+			$view->audience      = $pAudience;
+			$view->showtips      = false;
+			$view->numlevels     = 4;
+			$view->hideEmpty     = false;
+			return $view->loadTemplate();
 		}
 		else
 		{

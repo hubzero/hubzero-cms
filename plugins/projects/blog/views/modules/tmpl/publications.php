@@ -39,7 +39,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $pub) {
-			$status = PublicationHelper::getPubStateProperty($pub, 'status', 0);
+			$status = PublicationsHtml::getPubStateProperty($pub, 'status', 0);
 		?>
 	<li>
 		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications') . '/?pid=' . $pub->id; ?>" title="<?php echo $pub->title; ?>">

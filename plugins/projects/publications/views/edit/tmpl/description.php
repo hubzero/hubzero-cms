@@ -62,8 +62,8 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form">
 	<?php echo $this->project->provisioned == 1
-				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
-				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
+				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -87,7 +87,7 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 <?php
 
 	// Draw status bar
-	$this->contribHelper->drawStatusBar($this, 'abstract', $this->typeParams->get('show_metadata', 0));
+	PublicationsHtml::drawStatusBar($this, 'abstract', $this->typeParams->get('show_metadata', 0));
 
 	if ($this->move)
 	{

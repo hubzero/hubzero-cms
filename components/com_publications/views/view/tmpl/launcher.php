@@ -77,7 +77,7 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 			if ($this->params->get('show_authors')) {
 				if ($this->publication->_authors) {
 					$html  = '<div id="authorslist">'."\n";
-					$html .= $this->publication->_helpers->pubHelper->showContributors(
+					$html .= PublicationsHtml::showContributors(
 						$this->publication->_authors,
 						true,
 						false
@@ -135,16 +135,20 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 			<div class="meta">
 <?php
 
-	if ($this->publication->state == 1)
+	if ($this->publication->state == 1 && $this->publication->main == 1)
 	{
-		echo PublicationsHtml::drawMetadata(
-			$this->option,
-			$this->params,
-			$this->publication,
-			$this->sections,
-			$this->version,
-			$this->lastPubRelease
-		);
+		// Show metadata
+		$this->view('_metadata')
+		     ->set('option', $this->option)
+		     ->set('publication', $this->publication)
+		     ->set('config', $this->config)
+		     ->set('version', $this->version)
+		     ->set('sections', $this->sections)
+		     ->set('cats', $this->cats)
+		     ->set('params', $this->params)
+		     ->set('lastPubRelease', $this->lastPubRelease)
+		     ->set('launcherLayout', true)
+		     ->display();
 	}
 	 ?>
 			</div>

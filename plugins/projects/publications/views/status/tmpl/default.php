@@ -26,9 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $dateFormat = 'm/d/Y';
-
 $pubHelper 		= $this->pub->_helpers->pubHelper;
-$htmlHelper 	= $this->pub->_helpers->htmlHelper;
 
 // Get hub config
 $juri 	 = JURI::getInstance();
@@ -44,7 +42,7 @@ $v 		= $this->pub->version == 'default' ? '' : '?v=' . $this->pub->version;
 $citation = '';
 if ($this->pub->doi)
 {
-	include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
+	include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
 	$cite 		 	= new stdClass();
 	$cite->title 	= $this->pub->title;
@@ -66,8 +64,8 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status = $pubHelper->getPubStateProperty($this->pub, 'status');
-$class 	= $pubHelper->getPubStateProperty($this->pub, 'class');
+$status = PublicationsHtml::getPubStateProperty($this->pub, 'status');
+$class 	= PublicationsHtml::getPubStateProperty($this->pub, 'class');
 
 $complete 	= $this->pub->_curationModel->_progress->complete;
 
@@ -98,8 +96,8 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? $pubHelper->showPubTitleProvisioned( $this->pub, $this->route)
-				: $pubHelper->showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
+				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
@@ -198,7 +196,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_URL'); ?>:</td>
-							<td class="tbl-input"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/'.$this->pub->id.$v; ?></a></td>
+							<td class="tbl-input"><a href="<?php echo JRoute::_('index.php?option=com_publications&amp;id='.$this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/'.$this->pub->id.$v; ?></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -236,7 +234,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 							$admin = $objAA->checkActivity( $this->project->id, $activity);
 							 if ($admin != 1) { ?>
 							<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH')
-							. ' <a href="' . $this->url . '/?action=republish' . a . 'version=' . $this->pub->version . '">'
+							. ' <a href="' . $this->url . '/?action=republish&amp;version=' . $this->pub->version . '">'
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REPUBLISH').' &raquo;</a>';  ?></p></li>
 							<?php } ?>
 							<?php if ($admin == 1) { ?>
@@ -249,16 +247,16 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 							<?php if ($allowUnpublish) { ?>
 							<li id="next-cancel"><p>
 							<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISHED_UNPUBLISH');
-							echo ' <a href="' . $this->url . '/?action=cancel' . a . 'version=' . $this->pub->version . '">'
+							echo ' <a href="' . $this->url . '/?action=cancel&amp;version=' . $this->pub->version . '">'
 							.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION').' &raquo;</a> ';  ?></p></li>
 							<?php } ?>
 							<li id="next-usage"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS')
 							.' <strong>'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_USAGE_STATS').'</strong> '
 							.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_FOLLOW_FEEDBACK');  ?>
-								<span class="block italic"><a href="<?php echo $this->url . '/?action=stats' . a . 'version=' . $this->pub->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE'); ?> &raquo;</a></span></p></li>
+								<span class="block italic"><a href="<?php echo $this->url . '/?action=stats&amp;version=' . $this->pub->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE'); ?> &raquo;</a></span></p></li>
 							<?php if ($showCitations) { ?>
 							<li id="next-citation"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_ADD_CITATIONS');  ?>
-								<span class="block italic"><a href="<?php echo $this->url . '/?section=citations' . a . 'version=' . $this->pub->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS'); ?> &raquo;</a></span></p></li>
+								<span class="block italic"><a href="<?php echo $this->url . '/?section=citations&amp;version=' . $this->pub->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS'); ?> &raquo;</a></span></p></li>
 							<?php } ?>
 							<?php if ($this->pub->archived && $this->pub->archived != '0000-00-00 00:00:00') { echo '<li id="next-archive"><p class="info">' . JText::_('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_ON') . ' <strong class="highlighted">' . JHTML::_('date', $this->pub->archived, $dateFormat) . '</strong>. ' . JText::_('PLG_PROJECTS_PUBLICATIONS_ARCHIVED_NO_CHANGE') . '</p></li>'; } ?>
 							<?php if ($this->pub->dev_version_label && $this->pub->dev_version_label != $this->pub->version_label) { ?>
@@ -291,11 +289,11 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						case 7:
 							if ($complete) { ?>
 						<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_RESUBMIT');  ?></p>
-							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review'. a . 'version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_RESUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
+							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review&amp;version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_RESUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
 						<?php } else { ?>
 							<li id="next-edit">
 								<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_RESUBMIT'); ?></p>
-								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES'); ?></a></p>
+								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES'); ?></a></p>
 							</li>
 						<?php }
 						break;
@@ -316,15 +314,15 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						default: ?>
 						<?php if ($complete) { ?>
 						<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?></p>
-							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review'. a . 'version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
+							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review&amp;version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
 						<?php } else { ?>
 							<li id="next-edit">
 								<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_CURATE'); ?></p>
-								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a></p>
+								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a></p>
 							</li>
 						<?php } ?>
 
-						<li id="next-cancel"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEED_TO_CANCEL').' <a href="'.$this->url.'/?action=cancel' . a . 'version='.$this->pub->version.'">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL').'</a> '.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL_BEFORE');  ?></p></li>
+						<li id="next-cancel"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEED_TO_CANCEL').' <a href="'.$this->url.'/?action=cancel&amp;version='.$this->pub->version.'">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL').'</a> '.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL_BEFORE');  ?></p></li>
 				<?php		break;
 					}
 				?>

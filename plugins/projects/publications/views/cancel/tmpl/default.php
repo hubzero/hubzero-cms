@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-$typetitle = PublicationHelper::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 $draft = ($this->pub->state == 3 || $this->pub->state == 4) ? 1 : 0;
 
 $heading = $draft

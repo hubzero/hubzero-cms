@@ -106,8 +106,7 @@ class Audience extends \JTable
 		$sql .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $sql );
-		$result = $this->_db->loadObjectList();
-		return $result ? $result[0] : null;
+		return $this->_db->loadObjectList();
 	}
 
 	/**
