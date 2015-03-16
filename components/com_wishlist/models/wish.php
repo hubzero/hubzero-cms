@@ -41,7 +41,7 @@ require_once(__DIR__ . DS . 'comment.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'plan.php');
 require_once(__DIR__ . DS . 'vote.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 
 /**
@@ -348,11 +348,11 @@ class Wish extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -489,17 +489,17 @@ class Wish extends Base
 				$ky = 'COM_WISHLIST_WISH_STATUS_';
 				switch ($this->get('status'))
 				{
-					case static::WISH_STATE_ACCEPTED:  $state = \JText::_($ky . 'ACCEPTED');  break;
-					case static::WISH_STATE_WITHDRAWN: $state = \JText::_($ky . 'WITHDRAWN'); break;
-					case static::WISH_STATE_REJECTED:  $state = \JText::_($ky . 'REJECTED');  break;
-					case static::WISH_STATE_DELETED:   $state = \JText::_($ky . 'DELETED');   break;
-					case static::WISH_STATE_GRANTED:   $state = \JText::_($ky . 'GRANTED');   break;
+					case static::WISH_STATE_ACCEPTED:  $state = Lang::txt($ky . 'ACCEPTED');  break;
+					case static::WISH_STATE_WITHDRAWN: $state = Lang::txt($ky . 'WITHDRAWN'); break;
+					case static::WISH_STATE_REJECTED:  $state = Lang::txt($ky . 'REJECTED');  break;
+					case static::WISH_STATE_DELETED:   $state = Lang::txt($ky . 'DELETED');   break;
+					case static::WISH_STATE_GRANTED:   $state = Lang::txt($ky . 'GRANTED');   break;
 					case static::WISH_STATE_OPEN:
 					default:
-						$state = ($this->get('accepted') == 1) ? \JText::_($ky . 'ACCEPTED') : \JText::_($ky . 'PENDING');
+						$state = ($this->get('accepted') == 1) ? Lang::txt($ky . 'ACCEPTED') : Lang::txt($ky . 'PENDING');
 						/*if (!$this->get('ranked'))
 						{
-							$state = JText::_($ky . 'NEW');
+							$state = Lang::txt($ky . 'NEW');
 						}*/
 					break;
 				}
@@ -528,26 +528,26 @@ class Wish extends Base
 				switch ($this->get('status'))
 				{
 					case static::WISH_STATE_ACCEPTED:
-						$state  = \JText::_('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
+						$state  = Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED_INFO');
 						$state .= $this->plan()->exists()
-								? '; ' . \JText::_('COM_WISHLIST_WISH_PLAN_STARTED')
+								? '; ' . Lang::txt('COM_WISHLIST_WISH_PLAN_STARTED')
 								: '';
 						$state .= $this->due() != '0000-00-00 00:00:00'
-								? '; ' . \JText::_('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
+								? '; ' . Lang::txt('COM_WISHLIST_WISH_DUE_SET') . ' ' . $this->due()
 								: '';
 					break;
-					case static::WISH_STATE_WITHDRAWN: $state = \JText::_('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
-					case static::WISH_STATE_REJECTED:  $state = \JText::_('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
-					case static::WISH_STATE_DELETED:   $state = \JText::_('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
+					case static::WISH_STATE_WITHDRAWN: $state = Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN_INFO'); break;
+					case static::WISH_STATE_REJECTED:  $state = Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
+					case static::WISH_STATE_DELETED:   $state = Lang::txt('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
 					case static::WISH_STATE_GRANTED:
 						$user = \JUser::getInstance($this->get('granted_by'));
 						$state = $this->granted() != '0000-00-00 00:00:00'
-								? \JText::sprintf('on %s by %s', $this->granted('date'), $user->get('name'))
+								? Lang::txt('on %s by %s', $this->granted('date'), $user->get('name'))
 								: '';
 					break;
 					case static::WISH_STATE_OPEN:
 					default:
-						$state = \JText::_('COM_WISHLIST_WISH_STATUS_PENDING_INFO');
+						$state = Lang::txt('COM_WISHLIST_WISH_STATUS_PENDING_INFO');
 					break;
 				}
 			break;
@@ -600,7 +600,7 @@ class Wish extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid category of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -840,7 +840,7 @@ class Wish extends Base
 	{
 		if (!$this->isOpen())
 		{
-			$this->setError(\JText::_('Cannot vote for closed wishes.'));
+			$this->setError(Lang::txt('Cannot vote for closed wishes.'));
 			return false;
 		}
 
@@ -848,7 +848,7 @@ class Wish extends Base
 
 		if ($this->get('proposed_by') == $juser->get('id'))
 		{
-			$this->setError(\JText::_('Cannot vote for your own entry.'));
+			$this->setError(Lang::txt('Cannot vote for your own entry.'));
 			return false;
 		}
 

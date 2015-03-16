@@ -75,7 +75,7 @@ class Group extends Base
 	 */
 	public function title()
 	{
-		return $this->_item->get('cn') . ' ' . \JText::_('COM_WISHLIST_NAME_GROUP');
+		return $this->_item->get('cn') . ' ' . Lang::txt('COM_WISHLIST_NAME_GROUP');
 	}
 
 	/**
@@ -318,7 +318,7 @@ class Group extends Base
 		if (!$title)
 		{
 			$pathway->addItem(
-				\JText::_('Groups'),
+				Lang::txt('Groups'),
 				'index.php?option=' . $this->get('option')
 			);
 			$pathway->addItem(
@@ -326,7 +326,7 @@ class Group extends Base
 				'index.php?option=com_groups&cn=' . $this->_segments['cn']
 			);
 			$pathway->addItem(
-				\JText::_('Wishlist'),
+				Lang::txt('Wishlist'),
 				'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist'
 			);
 		}

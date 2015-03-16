@@ -34,7 +34,7 @@ use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Components\Wishlist\Tables;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wishlist.php');
 require_once(__DIR__ . DS . 'wish.php');
 require_once(__DIR__ . DS . 'owner.php');
 
@@ -104,9 +104,9 @@ class Wishlist extends Base
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid))
@@ -248,7 +248,7 @@ class Wishlist extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid category of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid category of "%s"', $scope));
 				}
 				include_once($path);
 			}
@@ -273,7 +273,7 @@ class Wishlist extends Base
 
 		if (!$this->_adapter()->exists())
 		{
-			$this->setError(\JText::sprintf('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
+			$this->setError(Lang::txt('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
 			return false;
 		}
 
@@ -289,7 +289,7 @@ class Wishlist extends Base
 
 		if (!$this->get('id'))
 		{
-			$this->setError(\JText::sprintf('Failed to create wishlist for category "%s" and ID of "%s".', $this->get('category'), $this->get('referenceid')));
+			$this->setError(Lang::txt('Failed to create wishlist for category "%s" and ID of "%s".', $this->get('category'), $this->get('referenceid')));
 			return false;
 		}
 
@@ -464,7 +464,7 @@ class Wishlist extends Base
 			break;
 
 			default:
-				throw new \InvalidArgumentException(\JText::_('Owner type not supported.'));
+				throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
 			break;
 		}
 
@@ -548,7 +548,7 @@ class Wishlist extends Base
 			break;
 
 			default:
-				throw new \InvalidArgumentException(\JText::_('Owner type not supported.'));
+				throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
 			break;
 		}
 

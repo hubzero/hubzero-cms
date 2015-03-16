@@ -80,8 +80,8 @@ class Resource extends Base
 	public function title()
 	{
 		return ($this->_item->type == 7 && isset($this->_item->alias))
-				? \JText::_('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
-				: \JText::_('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
+				? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
+				: Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
 	}
 
 	/**
@@ -295,7 +295,7 @@ class Resource extends Base
 		if (!$title)
 		{
 			$pathway->addItem(
-				\JText::_('Resources'),
+				Lang::txt('Resources'),
 				'index.php?option=com_resources'
 			);
 			$pathway->addItem(
@@ -303,7 +303,7 @@ class Resource extends Base
 				'index.php?option=com_resources&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
-				\JText::_('Wishlist'),
+				Lang::txt('Wishlist'),
 				'index.php?option=com_resources&active=wishlist&id=' . $this->get('referenceid')
 			);
 		}

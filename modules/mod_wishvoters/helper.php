@@ -32,9 +32,6 @@ namespace Modules\WishVoters;
 
 use Hubzero\Module\Module;
 use Components\Wishlist\Tables\Wishlist;
-use JFactory;
-use JRequest;
-use JText;
 
 /**
  * Module class for displaying top wish voters
@@ -48,23 +45,23 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-		$database = JFactory::getDBO();
+		$juser = \JFactory::getUser();
+		$database = \JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 
 		$objWishlist = new Wishlist($database);
 
 		// Which list is being viewed?
-		$listid   = JRequest::getInt('id', 0);
-		$refid    = JRequest::getInt('rid', 0);
-		$category = JRequest::getVar('category', '');
+		$listid   = \JRequest::getInt('id', 0);
+		$refid    = \JRequest::getInt('rid', 0);
+		$category = \JRequest::getVar('category', '');
 
 		// Figure list id
 		if ($category && $refid)
@@ -75,7 +72,7 @@ class Helper extends Module
 		// Cannot rank a wish if list/wish is not found
 		if (!$listid)
 		{
-			echo '<p class="warning">' . JText::_('MOD_WISHVOTERS_ERROR_LOADING') . '</p>';
+			echo '<p class="warning">' . \Lang::txt('MOD_WISHVOTERS_ERROR_LOADING') . '</p>';
 			return;
 		}
 
@@ -88,7 +85,7 @@ class Helper extends Module
 		if ($database->getErrorNum())
 		{
 			$this->setError($database->stderr());
-			return '<p class="error">' . JText::_('MOD_WISHVOTERS_ERROR_RETRIEVING') . '</p>';
+			return '<p class="error">' . \Lang::txt('MOD_WISHVOTERS_ERROR_RETRIEVING') . '</p>';
 		}
 
 		// Push the module CSS to the template

@@ -106,7 +106,7 @@ class Economy extends Object
 		{
 			return null;
 		}
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php');
 		$objWish = new Tables\Wish($this->_db);
 		$wish = $objWish->get_wish($wishid, '', 1);
 
@@ -149,7 +149,7 @@ class Economy extends Object
 			return null;
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php');
 		$objWish = new Tables\Wish($this->_db);
 		$wish = $objWish->get_wish ($wishid);
 
@@ -183,12 +183,12 @@ class Economy extends Object
 					$BTLO = new Teller($this->_db , $owner);
 					if ($wish->assigned && $wish->assigned == $owner)
 					{
-						//$BTLO->deposit($mainshare, \JText::_('Bonus for fulfilling assigned wish').' #'.$wishid.' '.\JText::_('on list').' #'.$wish->wishlist, 'wish', $wishid);
+						//$BTLO->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish').' #'.$wishid.' '.Lang::txt('on list').' #'.$wish->wishlist, 'wish', $wishid);
 						$mainshare += $commonshare;
 					}
 					else
 					{
-						$BTLO->deposit($commonshare, \JText::sprintf('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+						$BTLO->deposit($commonshare, Lang::txt('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 					}
 				}
 			}
@@ -204,7 +204,7 @@ class Economy extends Object
 				if (is_object($o) && $o->get('id'))
 				{
 					$BTLM = new Teller($this->_db , $wish->assigned);
-					$BTLM->deposit($mainshare, \JText::sprintf('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+					$BTLM->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 				}
 			}
 
@@ -229,7 +229,7 @@ class Economy extends Object
 						$BTL->credit_adjustment($adjusted);
 
 						// withdraw bonus amount
-						$BTL->withdraw($hold, \JText::sprintf('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+						$BTL->withdraw($hold, Lang::txt('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
 					}
 				}
 			}
@@ -250,7 +250,7 @@ class Economy extends Object
 			if (is_object($o) && $o->get('id'))
 			{
 				$BTLA = new Teller($this->_db , $wish->proposed_by);
-				$BTLA->deposit($wish->ranking, \JText::sprintf('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
+				$BTLA->deposit($wish->ranking, Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
 			}
 		}
 	}

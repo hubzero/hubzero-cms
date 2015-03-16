@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,14 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Components\Wishlist\Models;
 
 require_once(__DIR__ . DS . 'base.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 
 /**
  * Model class for a wish attachment
@@ -64,9 +64,9 @@ class Attachment extends Base
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -142,16 +142,16 @@ class Attachment extends Base
 		switch ($type)
 		{
 			case 'download':
-				return \JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish'));
+				return Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish'));
 			break;
 
 			case 'dir':
-				return PATH_APP . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish');
+				return PATH_APP . DS . trim($this->config('webpath'), '/') . DS . $this->get('wish');
 			break;
 
 			case 'file':
 			case 'server':
-				return PATH_APP . '/' . trim($this->config('webpath'), '/') . '/' . $this->get('wish') . '/' . ltrim($this->get('filename'), '/');
+				return PATH_APP . DS . trim($this->config('webpath'), '/') . DS . $this->get('wish') . DS . ltrim($this->get('filename'), '/');
 			break;
 		}
 	}

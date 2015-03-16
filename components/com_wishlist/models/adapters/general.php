@@ -101,7 +101,7 @@ class General extends Base
 	 */
 	public function title()
 	{
-		return \JText::_('COM_WISHLIST');
+		return Lang::txt('COM_WISHLIST');
 	}
 
 	/**
@@ -315,7 +315,7 @@ class General extends Base
 		if (!$title)
 		{
 			$pathway->addItem(
-				\JText::_(strtoupper($this->get('option'))),
+				Lang::txt(strtoupper($this->get('option'))),
 				'index.php?option=' . $this->get('option')
 			);
 		}

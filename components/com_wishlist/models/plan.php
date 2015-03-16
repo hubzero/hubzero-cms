@@ -34,7 +34,7 @@ use Hubzero\User\Profile;
 use Hubzero\Utility\String;
 
 require_once(__DIR__ . DS . 'base.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
 
 /**
  * Wishlist class for a wish plan model
@@ -87,9 +87,9 @@ class Plan extends Base
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if ($oid)
@@ -195,11 +195,11 @@ class Plan extends Base
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

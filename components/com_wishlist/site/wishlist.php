@@ -23,63 +23,27 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Wishlist\Models;
+namespace Components\Wishlist\Site;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ownergroup.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php');
 
-/**
- * Wishlist class for a owner model
- */
-class Owner extends Base
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'wishlists'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	/**
-	 * Table class name
-	 *
-	 * @var object
-	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Owner';
-
-	/**
-	 * Returns a reference to this model
-	 *
-	 * @param   mixed   $oid  ID (int) or array or object
-	 * @return  object
-	 */
-	static function &getInstance($oid=0)
-	{
-		static $instances;
-
-		if (!isset($instances))
-		{
-			$instances = array();
-		}
-
-		if (is_numeric($oid) || is_string($oid))
-		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
-	}
+	$controllerName = 'wishlists';
 }
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
 

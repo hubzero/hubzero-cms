@@ -287,7 +287,7 @@ class Publication extends Base
 		if (!$title)
 		{
 			$pathway->addItem(
-				\JText::_('Publications'),
+				Lang::txt('Publications'),
 				'index.php?option=com_publications'
 			);
 			$pathway->addItem(
@@ -295,7 +295,7 @@ class Publication extends Base
 				'index.php?option=com_publications&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
-				\JText::_('Wishlist'),
+				Lang::txt('Wishlist'),
 				'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
 			);
 		}

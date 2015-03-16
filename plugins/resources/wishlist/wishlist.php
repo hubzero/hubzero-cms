@@ -110,10 +110,10 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
 		// Include some classes & scripts
 		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'models' . DS . 'wishlist.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'controllers' . DS . 'wishlists.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . $option . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Configure controller
-		$controller = new \Components\Wishlist\Controllers\Wishlists();
+		$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 
 		// Get filters
 		$filters = $controller->getFilters(0);

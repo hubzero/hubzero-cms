@@ -154,7 +154,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 
 		//include com_wishlist files
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlists.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
 
 		// Get the component parameters
 		$this->config = JComponentHelper::getParams('com_wishlist');
@@ -169,7 +169,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		$admin = 0;
 
 		// Configure controller
-		$controller = new \Components\Wishlist\Controllers\Wishlists();
+		$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 
 		// Get filters
 		$filters = $controller->getFilters(0);

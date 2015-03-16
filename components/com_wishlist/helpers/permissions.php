@@ -23,63 +23,61 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Wishlist\Models;
+namespace Components\Wishlist\Helpers;
 
-require_once(__DIR__ . DS . 'base.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ownergroup.php');
+use Hubzero\Base\Object;
 
 /**
- * Wishlist class for a owner model
+ * Permissions helper
  */
-class Owner extends Base
+class Permissions
 {
 	/**
-	 * Table class name
+	 * Name of the component
 	 *
-	 * @var object
+	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Wishlist\\Tables\\Owner';
+	public static $extension = 'com_wishlist';
 
 	/**
-	 * Returns a reference to this model
+	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param   mixed   $oid  ID (int) or array or object
-	 * @return  object
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   Object
 	 */
-	static function &getInstance($oid=0)
+	public static function getActions($assetType='component', $assetId = 0)
 	{
-		static $instances;
-
-		if (!isset($instances))
+		$assetName  = self::$extension;
+		$assetName .= '.' . $assetType;
+		if ($assetId)
 		{
-			$instances = array();
+			$assetName .= '.' . (int) $assetId;
 		}
 
-		if (is_numeric($oid) || is_string($oid))
+		$user = \JFactory::getUser();
+		$result = new Object;
+
+		$actions = array(
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
+		);
+
+		foreach ($actions as $action)
 		{
-			$key = $oid;
-		}
-		else if (is_object($oid))
-		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
+			$result->set($action, $user->authorise($action, $assetName));
 		}
 
-		if (!isset($instances[$oid]))
-		{
-			$instances[$oid] = new self($oid);
-		}
-
-		return $instances[$oid];
+		return $result;
 	}
 }
 

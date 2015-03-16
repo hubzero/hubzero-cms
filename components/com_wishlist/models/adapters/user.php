@@ -71,7 +71,7 @@ class User extends Base
 	 */
 	public function title()
 	{
-		return \JText::_('COM_WISHLIST_NAME_MY_WISHLIST');
+		return Lang::txt('COM_WISHLIST_NAME_MY_WISHLIST');
 	}
 
 	/**
@@ -213,7 +213,7 @@ class User extends Base
 		if (!$title)
 		{
 			$pathway->addItem(
-				\JText::_('Members'),
+				Lang::txt('Members'),
 				'index.php?option=' . $this->get('option')
 			);
 			$pathway->addItem(
@@ -221,7 +221,7 @@ class User extends Base
 				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
-				\JText::_('Wishlist'),
+				Lang::txt('Wishlist'),
 				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
 			);
 		}
