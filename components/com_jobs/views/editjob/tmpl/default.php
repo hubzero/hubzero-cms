@@ -44,8 +44,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$profile = $this->profile;
 	$id = $this->jobid;
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, 'Y-m-d') : '';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, 'Y-m-d') : '';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', strtotime($job->startdate), 'Y-m-d') : '';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', strtotime($job->closedate), 'Y-m-d') : '';
 
 	$status = $this->task != 'addjob' ? $job->status : 4; // draft mode
 

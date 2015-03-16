@@ -92,6 +92,9 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 		</div>
 
 		<form id="hubForm" method="post" action="index.php?option=<?php echo $this->option; ?>">
+			<div class="explaination">
+				<p><?php echo JText::_('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
+			</div>
 			<fieldset>
 				<input type="hidden"  name="task" value="saveapp" />
 				<input type="hidden" id="code" name="code" value="<?php echo $job->code; ?>" />
@@ -103,9 +106,6 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $application->cover; ?></textarea>
 				</label>
 			</fieldset>
-			<div class="explaination">
-				<p><?php echo JText::_('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
-			</div>
 			<div class="clear"></div>
 
 			<div class="subject custom">
@@ -125,9 +125,9 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 				?>
 			</div>
 			<p class="submit">
-				<input type="submit" name="submit" value="<?php echo $this->task=='editapp' ? JText::_('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : JText::_('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
+				<input type="submit" class="btn" name="submit" value="<?php echo $this->task=='editapp' ? JText::_('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : JText::_('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
 				<span class="cancelaction">
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=job&id='.$job->code); ?>">
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=job&id='.$job->code); ?>" class="btn">
 						<?php echo JText::_('COM_JOBS_CANCEL'); ?>
 					</a>
 				</span>
