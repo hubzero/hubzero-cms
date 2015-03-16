@@ -9,16 +9,14 @@
 // Menus
 // --------------------------------------------------
 
-	// Main menu
+// Main menu
 	.main-navigation {
 		display: block;
 		font-size: 1em;
 		margin: 0 0 0 0;
-		padding: 0 2.23606798em;
 		background-color: #777;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 		zoom: 1;
-		.clearfix();
 
 		ul#menu,
 		ul#menu li,
@@ -29,19 +27,15 @@
 		}
 		ul#menu {
 			position: relative;
-			min-height: 3.8em;
 			padding: 0;
 			font-weight: normal;
-			border-left: 1px solid rgba(0, 0, 0, 0.1);
 
 			li {
-				float: left;
 				line-height: 1.3em;
 				vertical-align: middle;
 				padding: 0;
 				border: none;
 				color: #fff;
-				border-right: 1px solid rgba(0, 0, 0, 0.1);
 
 				&:hover,
 				&:focus {
@@ -50,44 +44,19 @@
 					cursor: default;
 				}
 			}
+
 			ul {
-				position: absolute;
-				top: 100%;
-				left: 0;
-				z-index: 598;
 				width: 100%;
 				display: none;
 				background: #373737;
 				padding: 0;
-				margin: 0 0 0 -1px;
 				border: none;
-				width: 13.5em;
-				.border-radius(0 0 0.25em 0.25em);
-
-				li {
-					float: none;
-					padding: 0 10px;
-					margin: 0;
-					background: #373737;
-					font-weight: normal;
-					border: none;
-				}
-				ul {
-					top: 1px;
-					left: 99%;
-					.border-radius(0.25em);
-				}
 			}
 
 			// Drop-Down Menu Theme
 			li:hover,
 			li:focus {
 				color: #FF9966;
-
-				&>ul,
-				&>ul {
-					display: block;
-				}
 			}
 			&>li.active>a,
 			li.active a {
@@ -97,6 +66,10 @@
 			li.active li a {
 				color: #000;
 				background: transparent;
+			}
+			&>li.active>ul,
+			li.active>ul {
+				display: block;
 			}
 			.separator span {
 				display: block;
@@ -131,15 +104,7 @@
 					}
 				}
 			}
-			ul li a {
-				padding: 0.61803399em;
-				color: #aaa;
-				color: rgba(255, 255, 255, 0.6);
-				font-weight: normal;
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-				.transition(all ease-in-out 0.2s);
-				border-radius: 0;
-			}
+
 			&>li:hover,
 			&>li:focus {
 				background-color: rgba(0, 0, 0, 0.2);
@@ -164,6 +129,67 @@
 			}
 			a:active { 
 				color: #ECECC4;
+			}
+		}
+	}
+
+@media (min-width: 600px) {
+	// Main menu
+	.main-navigation {
+		margin: 0;
+		padding: 0 8em 0 2.23606798em;
+		.clearfix();
+
+		ul#menu {
+			min-height: 3.8em;
+			border-left: 1px solid rgba(0, 0, 0, 0.1);
+
+			li {
+				float: left;
+				border-right: 1px solid rgba(0, 0, 0, 0.1);
+			}
+
+			ul {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				z-index: 598;
+				margin: 0 0 0 -1px;
+				width: 13.5em;
+				.border-radius(0 0 0.25em 0.25em);
+
+				li {
+					float: none;
+					padding: 0 10px;
+					margin: 0;
+					background: #373737;
+					font-weight: normal;
+					border: none;
+				}
+				ul {
+					top: 1px;
+					left: 99%;
+					.border-radius(0.25em);
+				}
+			}
+
+			// Drop-Down Menu Theme
+			li:hover,
+			li:focus {
+				&>ul,
+				&>ul {
+					display: block;
+				}
+			}
+
+			ul li a {
+				padding: 0.61803399em;
+				color: #aaa;
+				color: rgba(255, 255, 255, 0.6);
+				font-weight: normal;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				.transition(all ease-in-out 0.2s);
+				border-radius: 0;
 			}
 
 			li:first-child ul {
@@ -204,6 +230,27 @@
 			}
 		}
 	}
+}
+
+@media (max-width: 600px) {
+	.main-navigation {
+		position: absolute;
+		overflow: hidden;
+		border-right: 1px solid rgba(0, 0, 0, 0.1);
+		width: 200px;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1000;
+		left: -200px;
+	}
+
+	.menu-opened .main-navigation {
+		left: 0;
+	}
+}
 
 // Submenu
 	.sub-navigation {
