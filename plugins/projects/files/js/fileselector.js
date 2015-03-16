@@ -27,6 +27,7 @@ HUB.ProjectFilesFileSelect = {
 	queued: 0,
 	processed: 0,
 	selections: new Array(),
+	uploaded: new Array(),
 	min: $('#minitems').length ? $('#minitems').val() : 0,
 	max: $('#maxitems').length ? $('#maxitems').val() : 0,
 	btn: $('#b-filesave'),
@@ -54,6 +55,7 @@ HUB.ProjectFilesFileSelect = {
 
 		// Make zebra coloring
 		HUB.ProjectFilesFileSelect.showOddEven();
+
 	},
 
 	showOddEven: function ()
@@ -122,6 +124,7 @@ HUB.ProjectFilesFileSelect = {
 
 		var searchbox = $('#item-search');
 		var output = $('#content-selector');
+		var uploaded = this.uploaded;
 
 		var url = $('#filterUrl').length ? $('#filterUrl').val() : '';
 
@@ -151,7 +154,7 @@ HUB.ProjectFilesFileSelect = {
 			if (response)
 			{
 				$(output).html(response);
-
+				HUB.ProjectFilesFileSelect.markUploaded();
 			}
 			else
 			{
@@ -162,6 +165,28 @@ HUB.ProjectFilesFileSelect = {
 			jQuery(document).trigger('ajaxLoad');
 
 		});
+	},
+
+	markUploaded: function()
+	{
+		if (HUB.ProjectFilesFileSelect.uploaded.length > 0)
+		{
+			// Mark uploaded files as selected
+			for (var k = 0; k < HUB.ProjectFilesFileSelect.uploaded.length; k++)
+			{
+				var file = HUB.ProjectFilesFileSelect.uploaded[k];
+				file = escape(file);
+				if (file)
+				{
+					var el = document.getElementById(file);
+
+					if ($(el).length && $(el).parent().hasClass('allowed') && !$(el).parent().hasClass('selectedfilter'))
+					{
+						$(el).parent().addClass('selectedfilter');
+					}
+				}
+			}
+		}
 	},
 
 	enableSave: function()
@@ -234,7 +259,6 @@ HUB.ProjectFilesFileSelect = {
 				button: null,
 
 				onComplete: function(id, file, response) {
-
 					// All files processed?
 					HUB.ProjectFilesFileSelect.processed = HUB.ProjectFilesFileSelect.processed + 1;
 					if (HUB.ProjectFilesFileSelect.processed == HUB.ProjectFilesFileSelect.queued)
@@ -379,6 +403,14 @@ HUB.ProjectFilesFileSelect = {
 							{
 								success = 0;
 						    }
+						}
+						if (response.updated)
+						{
+							HUB.ProjectFilesFileSelect.uploaded.push(response.updated);
+						}
+						if (response.uploaded)
+						{
+							HUB.ProjectFilesFileSelect.uploaded.push(response.uploaded);
 						}
 
 						// Success or error

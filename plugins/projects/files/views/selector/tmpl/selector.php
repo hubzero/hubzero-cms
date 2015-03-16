@@ -25,6 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if ($this->limit > 0 && $this->total > $this->limit && count($this->items) == $this->limit)
+{
+	// Display only search box
+	echo '<p class="notice">' . JText::_('Showing a limited set of results') . ' (' . count($this->items) . '). Please use the search field above to look for files.' . '</p>';
+
+	$this->showLevels   = false;
+}
+
 ?>
 	<?php if (count($this->items) > 0) {
 
@@ -53,7 +61,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 				}
 			}
 		}
-
 	?>
 		<ul class="file-selector" id="file-selector">
 			<?php foreach ($this->items as $item)
@@ -109,12 +116,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$opened = !empty($openParents) && $item->type == 'folder'
 							&& in_array($item->localPath, $openParents) ? 1 : 0;
 
+					$name = (empty($this->showFullPath)) ? ProjectsHtml::shortenFileName($item->name, 80) : ProjectsHtml::shortenFileName($item->localPath, 50);
+
 				?>
 				<li class="<?php echo $item->type == 'folder' ? 'type-folder' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?><?php echo $opened ? ' opened' : ''; ?>" id="<?php echo $liId; ?>">
 					<span class="item-info"><?php echo $item->type == 'file' ? $item->formattedSize : ''; ?></span>
 					<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->localPath); ?>">
 						<?php if ($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
-						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo ProjectsHtml::shortenFileName($item->name, 50); ?></span>
+						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo $name; ?></span>
 					</span>
 
 				</li>

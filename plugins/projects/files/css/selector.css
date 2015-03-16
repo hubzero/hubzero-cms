@@ -182,32 +182,9 @@
 		position: absolute;
 	}
 	.search-filter {
-		float: right;
-		width: 180px;
-		margin: 0;
-	}
-	.myselector .search-filter {
-		float: none;
 		width: 100%;
-		margin: 1em 0 2em 0;
-	}
-	.myselector .search-filter label {
-		position: relative;
-	}
-	.myselector .search-filter input {
-		width: 90%;
-	}
-	.search-filter label {		
-		margin: 0.5em;
-		position: absolute;
-	}
-	.search-filter label input {
-		border-radius: 8px;
-		-moz-border-radius: 8px;
-		padding: 0.2em 0.5em;
-		font-size: 90%;
-		color: #666;
-		padding-left: 2em;
+		height: 40px;
+		margin: 0;
 	}
 	.search-filter label:before {
 		content: "\f002";
@@ -219,6 +196,31 @@
 		margin-right: 0.2em;
 		position: absolute;
 		margin-left: 0.5em;
+	}
+	.search-filter label {		
+		margin: 0.5em;
+		position: relative;
+		width: 100%;
+	}
+	.search-filter label input {
+		border-radius: 8px;
+		-moz-border-radius: 8px;
+		padding: 0.2em 0.5em;
+		font-size: 90%;
+		color: #666;
+		padding-left: 2em;
+		width: 95%;
+	}
+	.myselector .search-filter {
+		float: none;
+		width: 100%;
+		margin: 1em 0 2em 0;
+	}
+	.myselector .search-filter label {
+		position: relative;
+	}
+	.myselector .search-filter input {
+		width: 90%;
 	}
 	.asset-uploader h5 {
 		margin: 0 1em 1em 1em;

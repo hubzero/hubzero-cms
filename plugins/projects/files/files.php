@@ -562,6 +562,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$vid    = JRequest::getInt( 'vid', 0 );
 		$filter = urldecode(JRequest::getVar( 'filter', '' ));
 
+		// Check if limit is set (useful for large repos)
+		$this->limit  = $this->params->get('maxList');
+
 		// Parse props for curation
 		$parts   = explode('-', $props);
 		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'content';
@@ -646,12 +649,30 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
 
+		// Get element manifest
+		$blocks   = $view->publication->_curationModel->_progress->blocks;
+		$elements = $blocks->$step->manifest->elements;
+		$manifest = isset($elements->$element) ? $elements->$element: NULL;
+		$allowed  = empty($manifest->params->typeParams->allowed_ext) ? array() : $manifest->params->typeParams->allowed_ext;
+
+		// Filter by allowed extensions
+		if (!$filter && !empty($allowed))
+		{
+			foreach ($allowed as $al)
+			{
+				$filter .= $filter ? ' OR .' . $al : '.' . $al;
+			}
+			JRequest::setVar( 'filter', $filter );
+		}
+
 		// Get file list
-		$view->items = NULL;
+		$view->items = array();
+		$view->limit = $this->limit;
+		$view->total = $this->getCount($this->_project->alias, 'files');
 		if ($this->_project->id)
 		{
 			$this->minimal = true;
-			$view->items = $this->getList();
+			$view->items   = $this->getList();
 		}
 
 		if (!$ajax)
@@ -702,7 +723,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$pid 		= JRequest::getInt('pid', 0);
 
 		$this->filter = urldecode(JRequest::getVar( 'filter', '' ));
-		$this->limit  = $this->params->get('maxList', '500');
+		$this->limit  = $this->params->get('maxList');
 
 		if (!$ajax)
 		{
@@ -737,7 +758,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Get files count
 			$total = $this->getCount($this->_project->alias, 'files');
 
-			if ($total >= $this->limit)
+			if ($this->limit && $total >= $this->limit)
 			{
 				// We got too many files for js to handle
 				$this->minimal = true;
@@ -1432,7 +1453,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		return json_encode(array(
 			'success'   => 1,
-			'file'      => $file,
+			'file'      => urlencode($fpath),
 			'isNew'		=> $new
 		 )
 		);
@@ -1648,7 +1669,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			return json_encode(array(
 				'error'     => $this->getError(),
-				'success'	=> $this->_msg
+				'success'	=> $this->_msg,
+				'uploaded'	=> $uploaded,
+				'updated'	=> $updated
 			));
 		}
 
@@ -2398,9 +2421,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					'name'=>'move'
 				)
 			);
-
+			$this->minimal 		= true;
 			$view->list			= $this->getList();
-		//	$view->dirs 		= $this->getFolders($this->path, '', $this->prefix, 1, true);
 			$view->path 		= $this->prefix. $this->path;
 			$view->items 		= $items;
 			$view->database 	= $this->_database;
@@ -7071,6 +7093,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$sortby  = isset($this->_data->sortby) ? $this->_data->sortby : JRequest::getVar( 'sortby', 'name' );
 		$sortdir = isset($this->_data->sortdir) ? $this->_data->sortdir : JRequest::getVar( 'sortdir', 'ASC' );
 		$filter  = isset($this->_data->filter) ? $this->_data->filter : urldecode(JRequest::getVar( 'filter', '' ));
+		$limit   = isset($this->limit) ? $this->limit : 0;
 
 		// Get list of files from repo
 		$docs 	 = $this->_git->getFiles($this->path, $this->subdir);
@@ -7082,26 +7105,43 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$sorting 	= array();
 		$parents	= array();
 
+		$i = 0;
 		if ($docs)
 		{
 			foreach ($docs as $file)
 			{
+				if ($limit > 0 && $i >= $limit)
+				{
+					break;
+				}
 				$file = $this->subdir ? substr($file, strlen($this->subdir) +1) : $file;
 
 				$metadata = $this->getItemMetadata(trim($file));
 				if ($metadata)
 				{
+					// Filtered / over limit results display as a flat list
+					$getParents = (($limit > 0 && count($docs) > $limit) || $filter) ? 0 : 1;
+
 					// Search filter applied
-					$getParents = 1;
-					if ($filter
-						&& strpos(trim($metadata->name), trim($filter)) === false
-						&& strpos(trim($metadata->dirname), trim($filter)) === false)
+					$found = false;
+					$or = explode(' or ', strtolower($filter));
+					if (!empty($or))
+					{
+						foreach ($or as $al)
+						{
+							if (!trim($al))
+							{
+								continue;
+							}
+							if (strpos(trim(strtolower($metadata->name)), trim(strtolower($al))) !== false || strpos(trim(strtolower($metadata->dirname)), trim(strtolower($al))) !== false)
+							{
+								$found = true;
+							}
+						}
+					}
+					if ($filter && $filter != '*' && $found == false)
 					{
 						continue;
-					}
-					elseif ($filter)
-					{
-						$getParents = 0;
 					}
 
 					// Do we have a parent?
@@ -7126,6 +7166,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 					$items[] 	= $metadata;
 					$sorting[] 	= strtolower($metadata->localPath);
+					$i++;
 				}
 			}
 		}

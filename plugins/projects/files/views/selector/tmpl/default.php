@@ -154,6 +154,7 @@ if ($this->task == 'filter')
 			'layout'	=>'selector'
 		)
 	);
+	$view->filter		= $this->filter;
 	$view->option 		= $this->option;
 	$view->project 		= $this->project;
 	$view->items		= $this->items;
@@ -163,6 +164,8 @@ if ($this->task == 'filter')
 	$view->selected		= $selected;
 	$view->allowed		= $allowed;
 	$view->used			= $used;
+	$view->total		= $this->total;
+	$view->limit		= $this->limit;
 	echo $view->loadTemplate();
 
 	return;
@@ -213,11 +216,11 @@ foreach ($this->items as $item)
 			<input type="hidden" name="ajax" value="0" />
 		<?php }  ?>
 	</fieldset>
-	<div id="search-filter" class="search-filter">
-		<label><input type="text" value="<?php echo $this->filter; ?>" name="filter" id="item-search" /></label>
-	</div>
 
 	<p class="requirement" id="req"><?php echo $req; ?></p>
+	<div id="search-filter" class="search-filter">
+		<label><input type="text" value="<?php echo $this->filter; ?>" name="filter" placeholder="<?php echo JText::_('Type a search term'); ?>" id="item-search" /></label>
+	</div>
 	<div id="content-selector" class="content-selector">
 		<?php
 			// Show files
@@ -229,6 +232,7 @@ foreach ($this->items as $item)
 					'layout'	=>'selector'
 				)
 			);
+			$view->filter 		= $this->filter;
 			$view->option 		= $this->option;
 			$view->project 		= $this->project;
 			$view->items		= $this->items;
@@ -238,6 +242,8 @@ foreach ($this->items as $item)
 			$view->selected		= $selected;
 			$view->allowed		= $allowed;
 			$view->used			= $used;
+			$view->total		= $this->total;
+			$view->limit		= $this->limit;
 			echo $view->loadTemplate();
 		?>
 	</div>
