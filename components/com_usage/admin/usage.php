@@ -28,24 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Usage\Controllers;
+namespace Components\Usage\Admin;
 
-use Hubzero\Component\AdminController;
-
-/**
- * Controller class for usage
- */
-class Data extends AdminController
+// Authorization check
+if (!\JFactory::getUser()->authorise('core.manage', 'com_usage'))
 {
-	/**
-	 * Display primary page
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Output the HTML
-		$this->view->display();
-	}
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
+
+$controllerName = \JRequest::getCmd('controller', 'data');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'data';
+}
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();
 

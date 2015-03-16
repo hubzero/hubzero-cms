@@ -757,11 +757,11 @@ class Helper
 			$hr -= ($day * 24);
 			if ($day == 1)
 			{
-				$day = '1 ' . \JText::_('COM_USAGE_DAY') . ', ';
+				$day = '1 ' . Lang::txt('COM_USAGE_DAY') . ', ';
 			}
 			elseif ($day > 1)
 			{
-				$day = number_format($day) . ' ' . \JText::_('COM_USAGE_DAYS') . ', ';
+				$day = number_format($day) . ' ' . Lang::txt('COM_USAGE_DAYS') . ', ';
 			}
 			else
 			{

@@ -28,13 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Usage\Controllers;
+namespace Components\Usage\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Usage\Helpers\Helper;
 use Exception;
 
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php');
 
 /**
  * Usage controller class for results
@@ -85,7 +85,7 @@ class Results extends SiteController
 		$udb = Helper::getUDBO();
 		if (!is_object($udb))
 		{
-			throw new Exception(\JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
+			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
 		}
 
 		$this->view->no_html = \JRequest::getVar('no_html', 0);
@@ -112,14 +112,14 @@ class Results extends SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				\JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				\JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
+				Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -136,8 +136,8 @@ class Results extends SiteController
 		);
 
 		// Build the page title
-		$this->view->title  = \JText::_(strtoupper($this->_option));
-		$this->view->title .= ($this->_task) ? ': ' . \JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
+		$this->view->title  = Lang::txt(strtoupper($this->_option));
+		$this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
 
 		// Set the page title
 		\JFactory::getDocument()->setTitle($this->view->title);
