@@ -990,7 +990,7 @@ class Resources extends SiteController
 		$manifest = json_decode( file_get_contents( PATH_APP . $manifest ) );
 
 		//media tracking object
-		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'media.tracking.php');
+		require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'mediatracking.php');
 		$mediaTracking = new MediaTracking($this->database);
 
 		//get tracking for this user for this resource
