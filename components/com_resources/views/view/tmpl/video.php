@@ -49,6 +49,23 @@ $width  = (isset($presentation->width) && $presentation->width != 0) ? $presenta
 $height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
 ?>
 
+<script>
+/* Bug fix for Firefox bug. */
+/* Firefox fails to update the readyState and does not call the canplay and canplaythrough */
+/* Some background information: http://stackoverflow.com/questions/10235919/the-canplay-canplaythrough-events-for-an-html5-video-are-not-called-on-firefox */
+if(browser.contains("Mozilla"))
+{
+	setInterval(function(){ 
+		var vid = document.getElementById('video-player');
+		if (vid.readyState >= 2)
+			{
+				HUB.Video.doneLoading();
+				HUB.Video.locationHash();
+			};
+	}, 2000);
+}
+</script>
+
 <div id="video-container">
 	<?php if (count($presentation->media) > 0) : ?>
 		<video controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
