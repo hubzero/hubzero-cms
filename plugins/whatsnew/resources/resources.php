@@ -215,9 +215,16 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			// Did we get any results?
 			if ($rows)
 			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
+
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
+					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $database);
+					$resourceEx->getContributors();
+
+					$rows[$key]->authors = $resourceEx->contributors;
+
 					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
@@ -292,8 +299,13 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 
 		// Instantiate a helper object
-		$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
-		$helper->getContributors();
+		if (!isset($row->authors))
+		{
+			$helper = new \Components\Resources\Helpers\Helper($row->id, $database);
+			$helper->getContributors();
+
+			$row->authors = $helper->contributors;
+		}
 
 		// Get the component params and merge with resource params
 		$config = JComponentHelper::getParams('com_resources');
@@ -375,9 +387,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '</div>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($helper->contributors)
+		if ($row->authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $helper->contributors;
+			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_RESOURCES_CONTRIBUTORS') . ' ' . $row->authors;
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)

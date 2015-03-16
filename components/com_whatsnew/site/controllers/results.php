@@ -28,12 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Whatsnew\Controllers;
+namespace Components\Whatsnew\Site\Controllers;
 
 use Components\Whatsnew\Helpers\Period;
 use Hubzero\Component\SiteController;
-
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
 
 /**
  * Controller class for dipslaying what's new
@@ -50,6 +48,7 @@ class Results extends SiteController
 		\JPluginHelper::importPlugin('whatsnew');
 
 		$this->registerTask('feedrss', 'feed');
+		$this->registerTask('feed.rss', 'feed');
 
 		parent::execute();
 	}
@@ -220,7 +219,7 @@ class Results extends SiteController
 		}
 
 		// Set the page title
-		$this->view->title = \JText::_(strtoupper($this->_option)) . ': ' . $this->_jtext($this->view->period);
+		$this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($this->view->period);
 
 		$document = \JFactory::getDocument();
 		$document->setTitle($this->view->title);
@@ -230,35 +229,35 @@ class Results extends SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				\JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		$pathway->addItem(
-			$this->_jtext($this->view->period),
+			$this->_text($this->view->period),
 			'index.php?option=' . $this->_option . '&period=' . $this->view->period
 		);
 
 		// Build some options for the time period <select>
 		$this->view->periodlist = array();
-		$this->view->periodlist[] = \JHtml::_('select.option', 'week', \JText::_('COM_WHATSNEW_OPT_WEEK'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'month', \JText::_('COM_WHATSNEW_OPT_MONTH'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'quarter', \JText::_('COM_WHATSNEW_OPT_QUARTER'));
-		$this->view->periodlist[] = \JHtml::_('select.option', 'year', \JText::_('COM_WHATSNEW_OPT_YEAR'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'week', Lang::txt('COM_WHATSNEW_OPT_WEEK'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'month', Lang::txt('COM_WHATSNEW_OPT_MONTH'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'quarter', Lang::txt('COM_WHATSNEW_OPT_QUARTER'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'year', Lang::txt('COM_WHATSNEW_OPT_YEAR'));
 
 		$thisyear = strftime("%Y",time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/' . $y))
 			{
-				$this->view->periodlist[] = \JHtml::_('select.option', $y, \JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \JHtml::_('select.option', $y, Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
 			}
 		}
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('01/01/' . $y))
 			{
-				$this->view->periodlist[] = \JHtml::_('select.option', 'c_' . $y, \JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \JHtml::_('select.option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
 			}
 		}
 
@@ -287,7 +286,7 @@ class Results extends SiteController
 
 		// Start a new feed object
 		$doc = new \JDocumentFeed;
-		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
+		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
 		$period = \JRequest::getVar('period', 'month');
@@ -383,17 +382,15 @@ class Results extends SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
 		$doc->title .= ($area) ? ': ' . $area : '';
-		$doc->description = \JText::sprintf('COM_WHATSNEW_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = \JText::sprintf('COM_WHATSNEW_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = \JText::_('COM_WHATSNEW_RSS_CATEGORY');
+		$doc->description = Lang::txt('COM_WHATSNEW_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = Lang::txt('COM_WHATSNEW_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = Lang::txt('COM_WHATSNEW_RSS_CATEGORY');
 
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'helper.php');
-
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -414,7 +411,7 @@ class Results extends SiteController
 						}
 					}
 				}
-				$link = \JRoute::_($row->href);
+				$link = Route::url($row->href);
 
 				if (!isset($row->text) && isset($row->itext))
 				{
@@ -427,16 +424,6 @@ class Results extends SiteController
 				$author = '';
 				@$date = ($row->publish_up ? date('r', strtotime($row->publish_up)) : '');
 
-				if (isset($row->ranking) || isset($row->rating))
-				{
-					$resourceEx = new \Components\Resources\Helpers\Helper($row->id, $this->database);
-					$resourceEx->getCitationsCount();
-					$resourceEx->getLastCitationDate();
-					$resourceEx->getContributors();
-
-					$author = strip_tags($resourceEx->contributors);
-				}
-
 				// Load individual item creator class
 				$item = new \JFeedItem();
 				$item->title       = $title;
@@ -444,7 +431,10 @@ class Results extends SiteController
 				$item->description = $description;
 				$item->date        = $date;
 				$item->category    = (isset($row->typetitle)) ? $row->typetitle : '';
-				$item->author      = $author;
+				if (isset($row->authors))
+				{
+					$item->author  = strip_tags($row->authors);
+				}
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -461,14 +451,14 @@ class Results extends SiteController
 	 * @param   string  $period  Time period
 	 * @return  string
 	 */
-	private function _jtext($period)
+	private function _text($period)
 	{
 		switch ($period)
 		{
-			case 'week':    return \JText::_('COM_WHATSNEW_OPT_WEEK');    break;
-			case 'month':   return \JText::_('COM_WHATSNEW_OPT_MONTH');   break;
-			case 'quarter': return \JText::_('COM_WHATSNEW_OPT_QUARTER'); break;
-			case 'year':    return \JText::_('COM_WHATSNEW_OPT_YEAR');    break;
+			case 'week':    return Lang::txt('COM_WHATSNEW_OPT_WEEK');    break;
+			case 'month':   return Lang::txt('COM_WHATSNEW_OPT_MONTH');   break;
+			case 'quarter': return Lang::txt('COM_WHATSNEW_OPT_QUARTER'); break;
+			case 'year':    return Lang::txt('COM_WHATSNEW_OPT_YEAR');    break;
 			default:
 				$thisyear = strftime("%Y", time());
 				for ($y = $thisyear; $y >= 2002; $y--)
@@ -477,7 +467,7 @@ class Results extends SiteController
 					{
 						if ($y == $period)
 						{
-							return \JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
+							return Lang::txt('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
 						}
 					}
 				}
@@ -487,7 +477,7 @@ class Results extends SiteController
 					{
 						if ('c_' . $y == $period)
 						{
-							return \JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
+							return Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
 						}
 					}
 				}

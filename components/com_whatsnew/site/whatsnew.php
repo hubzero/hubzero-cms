@@ -28,7 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Whatsnew;
+namespace Components\Whatsnew\Site;
+
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
 
 $controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'results'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

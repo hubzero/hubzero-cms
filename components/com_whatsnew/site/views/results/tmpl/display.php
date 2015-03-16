@@ -36,7 +36,7 @@ $this->css();
 // Add the "all" category
 $all = array(
 	'category' => '',
-	'title'    => JText::_('COM_WHATSNEW_ALL_CATEGORIES'),
+	'title'    => Lang::txt('COM_WHATSNEW_ALL_CATEGORIES'),
 	'total'    => $this->total
 );
 
@@ -73,7 +73,7 @@ foreach ($this->cats as $cat)
 		}
 
 		// Build the HTML
-		$l = "\t" . '<li' . $a . '><a href="'.JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+		$l = "\t" . '<li' . $a . '><a href="'.Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub']))
 		{
@@ -111,7 +111,7 @@ foreach ($this->cats as $cat)
 					}
 
 					// Build the HTML
-					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 				}
 			}
 			// Do we actually have any links?
@@ -133,7 +133,7 @@ foreach ($this->cats as $cat)
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get" class="section-inner">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" class="section-inner">
 		<div class="subject">
 			<div class="container">
 			<?php
@@ -187,7 +187,7 @@ foreach ($this->cats as $cat)
 						}
 					}
 
-					$num = ($total > 1) ? JText::sprintf('COM_WHATSNEW_RESULTS', $total) : JText::sprintf('COM_WHATSNEW_RESULT', $total);
+					$num = ($total > 1) ? Lang::txt('COM_WHATSNEW_RESULTS', $total) : Lang::txt('COM_WHATSNEW_RESULT', $total);
 					$this->total = $num;
 
 					// A function for category specific items that may be needed
@@ -206,7 +206,7 @@ foreach ($this->cats as $cat)
 
 					$act = ($this->active) ? $this->active : $this->cats[$k]['category'];
 
-					$feed = JRoute::_('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
+					$feed = Route::url('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
 					if (substr($feed, 0, 4) != 'http')
 					{
 						if (substr($feed, 0, 1) != DS)
@@ -222,7 +222,7 @@ foreach ($this->cats as $cat)
 
 					// Build the category HTML
 					$html .= '<div class="container-block" id="' . $divid . '">' . "\n";
-					$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . JText::_('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
+					$html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . Lang::txt('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
 
 					// Does this category have custom output?
 					// Check if a function exist (using old style plugins)
@@ -261,7 +261,7 @@ foreach ($this->cats as $cat)
 						{
 							if (strstr( $row->href, 'index.php' ))
 							{
-								$row->href = JRoute::_($row->href);
+								$row->href = Route::url($row->href);
 							}
 							if (substr($row->href,0,1) == '/')
 							{
@@ -297,7 +297,7 @@ foreach ($this->cats as $cat)
 					}
 					else
 					{
-						$html .= '<p class="moreresults">' . JText::sprintf('COM_WHATSNEW_TOP_SHOWN', $amt);
+						$html .= '<p class="moreresults">' . Lang::txt('COM_WHATSNEW_TOP_SHOWN', $amt);
 						// Add a "more" link if necessary
 						$ttl = 0;
 						if (isset($this->totals[$k]))
@@ -316,7 +316,7 @@ foreach ($this->cats as $cat)
 						}
 						if ($ttl > 5)
 						{
-							$html .= ' | <a href="' . JRoute::_('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . JText::_('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
+							$html .= ' | <a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
 						}
 						$html .= '</p>' . "\n\n";
 					}
@@ -342,18 +342,18 @@ foreach ($this->cats as $cat)
 			echo $html;
 			?>
 			<?php if (!$foundresults) { ?>
-				<p class="warning"><?php echo JText::_('COM_WHATSNEW_NO_RESULTS'); ?></p>
+				<p class="warning"><?php echo Lang::txt('COM_WHATSNEW_NO_RESULTS'); ?></p>
 			<?php } ?>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<fieldset>
-				<legend><?php echo JText::_('COM_WHATSNEW_FILTER'); ?></legend>
+				<legend><?php echo Lang::txt('COM_WHATSNEW_FILTER'); ?></legend>
 				<label for="period">
-					<?php echo JText::_('COM_WHATSNEW_TIME_PERIOD'); ?>
+					<?php echo Lang::txt('COM_WHATSNEW_TIME_PERIOD'); ?>
 					<?php echo JHTMLSelect::genericlist($this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
 				</label>
-				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WHATSNEW_GO'); ?>" /></p>
+				<p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_WHATSNEW_GO'); ?>" /></p>
 			</fieldset>
 
 		<?php if (count($links) > 0) { ?>
