@@ -41,7 +41,7 @@ $this->draft = $this->draftInternal + $this->draftUser;
 ?>
 <div class="mod_resources">
 	<div class="overview-container">
-		<div id="resources-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
+		<div id="resources-container<?php echo $this->module->id; ?>" class="chrt"></div>
 
 		<script type="text/javascript">
 		if (!jq) {

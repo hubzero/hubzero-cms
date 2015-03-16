@@ -66,6 +66,8 @@ $browser = new \Hubzero\Browser\Detector();
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme; ?> ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $htheme . ' ' . $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
+		<meta name="viewport" content="width=device-width" />
+
 		<jdoc:include type="head" />
 
 		<script type="text/javascript" src="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/system/js/jquery.uniform.min.js"></script>

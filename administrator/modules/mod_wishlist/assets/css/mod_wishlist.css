@@ -109,3 +109,25 @@
 	.mod_wishlist .wishlist-stats-overview tbody tr td a:hover span {
 		color: #222;
 	}
+	.mod_wishlist .chrt {
+		min-width: 200px;
+		height: 200px;
+	}
+
+@media (max-width: 600px) {
+	.mod_wishlist .chrt {
+		min-width: 160px;
+	}
+}
+
+@media (max-width: 500px) {
+	.mod_wishlist .chrt {
+		min-width: 150px;
+	}
+	.mod_wishlist .overview-container {
+		width: 55%;
+	}
+	.mod_wishlist .wishlist-stats-overview {
+		width: 45%;
+	}
+}
