@@ -36,7 +36,7 @@ JHTML::_('behavior.chart', 'pie');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
-		<div id="<?php echo $this->module->module; ?>-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
+		<div id="<?php echo $this->module->module; ?>-container<?php echo $this->module->id; ?>" class="chrt"></div>
 
 		<script type="text/javascript">
 		if (!jq) {
@@ -79,8 +79,8 @@ JHTML::_('behavior.chart', 'pie');
 
 		<p class="tools-total"><?php echo $this->total; ?></p>
 	</div>
-	<div class="overview-container">
-		<table class="tools-stats-overview">
+	<div class="overview-container tools-stats-overview">
+		<table>
 			<tbody>
 				<tr>
 					<td class="tools-registered">

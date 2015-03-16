@@ -102,3 +102,25 @@
 		color: #222;
 		text-decoration: none;
 	}
+	.mod_tools .chrt {
+		min-width: 200px;
+		height: 200px;
+	}
+
+@media (max-width: 600px) {
+	.mod_tools .chrt {
+		min-width: 160px;
+	}
+}
+
+@media (max-width: 500px) {
+	.mod_tools .chrt {
+		min-width: 150px;
+	}
+	.mod_tools .overview-container {
+		width: 55%;
+	}
+	.mod_tools .tools-stats-overview {
+		width: 45%;
+	}
+}

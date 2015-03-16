@@ -78,9 +78,6 @@
 	}
 	.mod_resources .resources-stats-overview tbody th span {
 		display: inline-block;
-		/*-webkit-border-radius: 50%;
-		   -moz-border-radius: 50%;
-		        border-radius: 50%;*/
 		width: 0.65em;
 		height: 0.65em;
 		line-height: 1;
@@ -106,3 +103,25 @@
 	.mod_resources .resources-stats-overview tbody tr td a:hover span {
 		color: #222;
 	}
+	.mod_resources .chrt {
+		min-width: 200px;
+		height: 200px;
+	}
+
+@media (max-width: 600px) {
+	.mod_resources .chrt {
+		min-width: 160px;
+	}
+}
+
+@media (max-width: 500px) {
+	.mod_resources .chrt {
+		min-width: 150px;
+	}
+	.mod_resources .overview-container {
+		width: 55%;
+	}
+	.mod_resources .resources-stats-overview {
+		width: 45%;
+	}
+}

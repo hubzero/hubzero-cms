@@ -45,7 +45,7 @@ if ($total == 0)
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
-		<div id="wishlist-container<?php echo $this->module->id; ?>" style="min-width: 200px; height: 200px;"></div>
+		<div id="wishlist-container<?php echo $this->module->id; ?>" class="chrt"></div>
 
 		<script type="text/javascript">
 		if (!jq) {
