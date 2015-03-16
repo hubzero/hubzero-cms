@@ -64,11 +64,11 @@ class Revision extends \JTable
 		$this->pageid = intval($this->pageid);
 		if (!$this->pageid)
 		{
-			$this->setError(\JText::_('This revision is missing its page ID.'));
+			$this->setError(Lang::txt('This revision is missing its page ID.'));
 		}
 		if (trim($this->pagetext) == '')
 		{
-			$this->setError(\JText::_('Please provide content. A wiki page cannot be empty.'));
+			$this->setError(Lang::txt('Please provide content. A wiki page cannot be empty.'));
 		}
 
 		if ($this->getError())

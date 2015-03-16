@@ -56,13 +56,13 @@ class Link extends \JTable
 		$this->page_id = intval($this->page_id);
 		if (!$this->page_id)
 		{
-			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
+			$this->setError(Lang::txt('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 		}
 
 		$this->scope = strtolower($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_SCOPE'));
+			$this->setError(Lang::txt('COM_WIKI_LOGS_MUST_HAVE_SCOPE'));
 		}
 
 		if ($this->getError())

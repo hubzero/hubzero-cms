@@ -196,7 +196,7 @@ class Book extends Object
 
 		if (count($pages) <= 0)
 		{
-			return \JText::_('No default pages found');
+			return Lang::txt('No default pages found');
 		}
 
 		$p = Parser::getInstance();
@@ -428,7 +428,7 @@ class Book extends Object
 		{
 			$this->_cache['page'] = null;
 
-			if (isset($this->_cache['pages']) && is_a($this->_cache['pages'], 'WikiModelIterator'))
+			if (isset($this->_cache['pages']) && ($this->_cache['pages'] instanceof ItemList))
 			{
 				foreach ($this->_cache['pages'] as $page)
 				{
@@ -458,7 +458,7 @@ class Book extends Object
 	{
 		$this->_cache['page'] = null;
 
-		if (isset($this->_cache['pages']) && is_a($this->_cache['pages'], 'WikiModelIterator'))
+		if (isset($this->_cache['pages']) && ($this->_cache['pages'] instanceof ItemList))
 		{
 			foreach ($this->_cache['pages'] as $page)
 			{
@@ -558,7 +558,7 @@ class Book extends Object
 
 		if (!isset($pages))
 		{
-			$path = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'views' . DS . 'special' . DS . 'tmpl';
+			$path = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'views' . DS . 'special' . DS . 'tmpl';
 
 			$pages = array();
 

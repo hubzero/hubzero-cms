@@ -638,11 +638,11 @@ class Page extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($property), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($property), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($property), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($property), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -935,7 +935,7 @@ class Page extends Model
 		// Are they just changing case of characters?
 		if (!trim($newpagename))
 		{
-			$this->setError(\JText::_('No new name provided.'));
+			$this->setError(Lang::txt('No new name provided.'));
 			return false;
 		}
 
@@ -944,7 +944,7 @@ class Page extends Model
 		// Are they just changing case of characters?
 		if (strtolower($this->get('pagename')) == strtolower($newpagename))
 		{
-			$this->setError(\JText::_('New name matches old name.'));
+			$this->setError(Lang::txt('New name matches old name.'));
 			return false;
 		}
 
@@ -952,7 +952,7 @@ class Page extends Model
 		$p = new self($newpagename, $this->get('scope'));
 		if ($p->exists())
 		{
-			$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . \JText::_('CHOOSE_ANOTHER_PAGENAME'));
+			$this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . Lang::txt('CHOOSE_ANOTHER_PAGENAME'));
 			return false;
 		}
 
@@ -1047,7 +1047,7 @@ class Page extends Model
 		{
 			if (!\JFolder::delete($path . DS . $this->get('id')))
 			{
-				$this->setError(\JText::_('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
+				$this->setError(Lang::txt('COM_WIKI_UNABLE_TO_DELETE_FOLDER'));
 			}
 		}
 
@@ -1150,7 +1150,7 @@ class Page extends Model
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid adapter type of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid adapter type of "%s"', $scope));
 				}
 				include_once($path);
 			}

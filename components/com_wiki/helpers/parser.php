@@ -204,7 +204,7 @@ class Parser extends \JObservable
 
 		if (!\JFile::exists($path))
 		{
-			throw new Exception(\JText::_('Cannot load the parser'), 500);
+			throw new Exception(Lang::txt('Cannot load the parser'), 500);
 			return false;
 		}
 

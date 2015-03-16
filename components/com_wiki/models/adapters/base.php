@@ -40,22 +40,24 @@ abstract class Base extends Object
 	/**
 	 * Script name
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_base = 'index.php';
 
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_segments = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   string  $pagename
+	 * @param   string  $scope
+	 * @param   string  $group_cn
+	 * @return  void
 	 */
 	public function __construct($pagename=null, $scope=null, $group_cn=null)
 	{
@@ -67,9 +69,9 @@ abstract class Base extends Object
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -79,8 +81,8 @@ abstract class Base extends Object
 	/**
 	 * Flatten array of segments into querystring
 	 *
-	 * @param      array $segments An associative array of querystring bits
-	 * @return     string
+	 * @param   array  $segments  An associative array of querystring bits
+	 * @return  string
 	 */
 	protected function _build(array $segments)
 	{

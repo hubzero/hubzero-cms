@@ -217,16 +217,16 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			$lang->load('com_wiki');
 
 			//$controllerName = JRequest::getCmd('controller', 'page');
-			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php'))
+			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php'))
 			{
 				$controllerName = 'page';
 			}
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'controllers' . DS . $controllerName . '.php');
-			$controllerName = '\\Components\\Wiki\\Controllers\\' . ucfirst($controllerName);
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php');
+			$controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
 			// Instantiate controller
 			$controller = new $controllerName(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wiki',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site',
 				'name'      => 'groups',
 				'sub'       => 'wiki',
 				'group'     => $group->get('cn')

@@ -174,5 +174,22 @@ class Attachment extends \JTable
 		}
 		return true;
 	}
+
+	/**
+	 * Get filespace
+	 *
+	 * @return  string
+	 */
+	public function filespace()
+	{
+		static $path;
+
+		if (!$path)
+		{
+			$path = PATH_APP . DS . trim(\JComponentHelper::getParams('com_wiki')->get('filepath', '/site/wiki'), DS);
+		}
+
+		return $path;
+	}
 }
 

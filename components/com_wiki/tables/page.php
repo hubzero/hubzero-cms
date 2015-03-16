@@ -410,17 +410,17 @@ class Page extends \JTable
 
 		if (!$this->pagename)
 		{
-			$this->setError(\JText::_('COM_WIKI_ERROR_NO_PAGE_TITLE'));
+			$this->setError(Lang::txt('COM_WIKI_ERROR_NO_PAGE_TITLE'));
 		}
 
 		if (in_array(strtolower($this->getNamespace()), array('special', 'image', 'file')))
 		{
-			$this->setError(\JText::_('COM_WIKI_ERROR_INVALID_TITLE'));
+			$this->setError(Lang::txt('COM_WIKI_ERROR_INVALID_TITLE'));
 		}
 
 		if (strlen($this->pagename) > WIKI_MAX_PAGENAME_LENGTH)
 		{
-			$this->setError(\JText::_('Pagename too long'));
+			$this->setError(Lang::txt('Pagename too long'));
 		}
 
 		if ($this->getError())
@@ -434,14 +434,14 @@ class Page extends \JTable
 			$g->loadByTitle($this->pagename, $this->scope);
 			if ($g->exist())
 			{
-				$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
+				$this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 
 			$g->load($this->pagename, $this->scope);
 			if ($g->exist())
 			{
-				$this->setError(\JText::_('COM_WIKI_ERROR_PAGE_EXIST'));
+				$this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST'));
 				return false;
 			}
 
@@ -528,7 +528,7 @@ class Page extends \JTable
 		$id = intval($id);
 		if (!$id)
 		{
-			$this->setError(\JText::_('Missing page ID'));
+			$this->setError(Lang::txt('Missing page ID'));
 			return false;
 		}
 

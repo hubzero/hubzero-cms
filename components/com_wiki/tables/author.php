@@ -56,13 +56,13 @@ class Author extends \JTable
 		$this->page_id = intval($this->page_id);
 		if (!$this->page_id)
 		{
-			$this->setError(\JText::_('Author entry must have a page ID.'));
+			$this->setError(Lang::txt('Author entry must have a page ID.'));
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(\JText::_('Author entry must have a user ID.'));
+			$this->setError(Lang::txt('Author entry must have a user ID.'));
 		}
 
 		if ($this->getError())
@@ -87,7 +87,7 @@ class Author extends \JTable
 
 		if (!$page_id || !$user_id)
 		{
-			$this->setError(\JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
+			$this->setError(Lang::txt("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
 
@@ -128,7 +128,7 @@ class Author extends \JTable
 
 		if (!$page_id)
 		{
-			$this->setError(\JText::_('Missing page ID.'));
+			$this->setError(Lang::txt('Missing page ID.'));
 			return false;
 		}
 		$this->_db->setQuery("SELECT user_id FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
@@ -147,7 +147,7 @@ class Author extends \JTable
 
 		if (!$page_id)
 		{
-			$this->setError(\JText::_('Missing page ID.'));
+			$this->setError(Lang::txt('Missing page ID.'));
 			return false;
 		}
 		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, `#__users` AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
@@ -168,7 +168,7 @@ class Author extends \JTable
 
 		if (!$page_id || !$user_id)
 		{
-			$this->setError(\JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
+			$this->setError(Lang::txt("Missing argument (page_id: $page_id, user_id: $user_id)."));
 			return false;
 		}
 
@@ -193,7 +193,7 @@ class Author extends \JTable
 
 		if (!$page_id)
 		{
-			$this->setError(\JText::_('Missing page ID.'));
+			$this->setError(Lang::txt('Missing page ID.'));
 			return false;
 		}
 
@@ -219,7 +219,7 @@ class Author extends \JTable
 
 		if (!$page_id)
 		{
-			$this->setError(\JText::_("Missing argument (page_id: $page_id)."));
+			$this->setError(Lang::txt("Missing argument (page_id: $page_id)."));
 			return false;
 		}
 

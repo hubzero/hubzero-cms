@@ -30,7 +30,7 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-require_once(__DIR__ . '/base.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for a group wiki
@@ -50,9 +50,9 @@ class Groups extends Base
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{

@@ -30,7 +30,7 @@
 
 namespace Components\Wiki\Models\Adapters;
 
-require_once(__DIR__ . '/base.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Adapter class for site-wide wiki
@@ -48,9 +48,11 @@ class Site extends Base
 
 	/**
 	 * Constructor
-	 * 
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 *
+	 * @param   string  $pagename
+	 * @param   string  $scope
+	 * @param   string  $group_cn
+	 * @return  void
 	 */
 	public function __construct($pagename=null, $scope=null, $group_cn=null)
 	{

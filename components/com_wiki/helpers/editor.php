@@ -294,7 +294,7 @@ class Editor extends \JObservable
 
 		if (!\JFile::exists($path))
 		{
-			throw new Exception(\JText::_('Cannot load the editor'), 500);
+			throw new Exception(Lang::txt('Cannot load the editor'), 500);
 			return false;
 		}
 

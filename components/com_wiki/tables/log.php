@@ -56,13 +56,13 @@ class Log extends \JTable
 		$this->pid = intval($this->pid);
 		if (!$this->pid)
 		{
-			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
+			$this->setError(Lang::txt('COM_WIKI_LOGS_MUST_HAVE_PAGE_ID'));
 		}
 
 		$this->uid = intval($this->uid);
 		if (!$this->uid)
 		{
-			$this->setError(\JText::_('COM_WIKI_LOGS_MUST_HAVE_USER_ID'));
+			$this->setError(Lang::txt('COM_WIKI_LOGS_MUST_HAVE_USER_ID'));
 		}
 
 		if ($this->getError())
