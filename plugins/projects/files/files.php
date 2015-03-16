@@ -4043,6 +4043,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Build temp name
 			$tempBase = $tex ? 'temp__' . ProjectsHtml::takeOutExt($filename) : $filename;
+			$tempBase = str_replace(' ', '_', $tempBase);
 
 			// LaTeX file?
 			if ($tex)
