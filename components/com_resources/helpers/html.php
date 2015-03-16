@@ -948,6 +948,9 @@ class ResourcesHtml
 					{
 						$mesg = "Dataview";
 					}
+					// Allow to set button label in type params
+					$typeParams = new JRegistry($pt->params);
+					$mesg = $typeParams->get('btn_label', $mesg);
 
 					if ($xact)
 					{
