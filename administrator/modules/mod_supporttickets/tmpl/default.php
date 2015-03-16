@@ -35,7 +35,7 @@ $this->css();
 JHTML::_('behavior.chart');
 ?>
 <div class="<?php echo $this->module->module; ?>">
-	<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>
+	<div id="container<?php echo $this->module->id; ?>" class="chart"></div>
 	<?php
 		$top = 0;
 

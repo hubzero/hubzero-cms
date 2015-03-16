@@ -159,13 +159,22 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	$('#header h1 a').on('click', function(e) {
+		e.preventDefault();
+
+		$('body').toggleClass('menu-opened');
+	});
+
 	// ipad and iphone fix
-	if ((navigator.userAgent.match(/iPhone/i))
+	/*if ((navigator.userAgent.match(/iPhone/i))
 	 || (navigator.userAgent.match(/iPod/i))
 	 || (navigator.userAgent.match(/iPad/i))) {
 		// we just need to attach a click event listener to provoke iPhone/iPod/iPad's hover event
 		$('.main-navigation li.node').on('click', function(){ });
-	}
+	}*/
+	$('.main-navigation li.node>a').on('click', function(e){
+		$(this).parent().toggleClass('active');
+	});
 
 	// Apply Uniform to make buttons, selects, etc. look consistent
 	$("select, input[type=file]").uniform();

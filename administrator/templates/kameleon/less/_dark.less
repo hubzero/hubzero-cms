@@ -34,20 +34,28 @@
 		}
 	}
 
-	#header .user-options li {
-		border-left: 1px solid rgba(255, 255, 255, 0.1);
-		border-right: 1px solid rgba(255, 255, 255, 0.1);
+	#header {
+		background: #444;
 
-		&:before {
-			border-color: transparent transparent transparent #eee;
+		h1 {
+			border-color: rgba(255, 255, 255, 0.1);
 		}
-		&:after {
-			background-color: #eee;
-			color: #222;
-			text-shadow: 0 -1px 0px #fff;
-		}
-		&.disabled span {
-			color: rgba(255, 255, 255, 0.2);
+
+		.user-options li {
+			border-left: 1px solid rgba(255, 255, 255, 0.1);
+			border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+			&:before {
+				border-color: transparent transparent transparent #eee;
+			}
+			&:after {
+				background-color: #eee;
+				color: #222;
+				text-shadow: 0 -1px 0px #fff;
+			}
+			&.disabled span {
+				color: rgba(255, 255, 255, 0.2);
+			}
 		}
 	}
 
