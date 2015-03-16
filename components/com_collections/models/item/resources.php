@@ -31,6 +31,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Components\Resources\Tables\Resource;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +57,7 @@ class Resources extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Resource');
+			return Lang::txt('Resource');
 		}
 		return parent::type($as);
 	}
@@ -106,7 +107,7 @@ class Resources extends GenericItem
 		{
 			$alias = \JRequest::getVar('alias', '');
 
-			$resource = new \Components\Resources\Tables\Resource($this->_db);
+			$resource = new Resource($this->_db);
 			$resource->loadAlias($alias);
 			$id = $resource->id;
 		}
@@ -120,13 +121,13 @@ class Resources extends GenericItem
 
 		if (!$resource)
 		{
-			$resource = new \Components\Resources\Tables\Resource($this->_db);
+			$resource = new Resource($this->_db);
 			$resource->load($id);
 		}
 
 		if (!$resource->id)
 		{
-			$this->setError(\JText::_('Resource not found.'));
+			$this->setError(Lang::txt('Resource not found.'));
 			return false;
 		}
 
@@ -136,7 +137,7 @@ class Resources extends GenericItem
 		     ->set('created_by', $resource->created_by)
 		     ->set('title', $resource->title)
 		     ->set('description', $resource->introtext)
-		     ->set('url', \JRoute::_('index.php?option=com_resources&id=' . $resource->id));
+		     ->set('url', Route::url('index.php?option=com_resources&id=' . $resource->id));
 
 		if (!$this->store())
 		{

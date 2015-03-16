@@ -161,9 +161,9 @@ class Post extends Base
 		else
 		{
 			$this->_logError(
-				__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data))
+				__CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
 			);
-			throw new \InvalidArgumentException(\JText::sprintf('Data must be of type object or array. Type given was %s', gettype($data)));
+			throw new \InvalidArgumentException(Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)));
 		}
 
 		$this->item($item);
@@ -219,7 +219,7 @@ class Post extends Base
 	{
 		if ($this->original())
 		{
-			$this->setError(\JText::_('Original posts must be deleted or moved.'));
+			$this->setError(Lang::txt('Original posts must be deleted or moved.'));
 			return false;
 		}
 
@@ -243,7 +243,7 @@ class Post extends Base
 
 		if (!$collection_id)
 		{
-			$this->setError(\JText::_('Empty collection ID.'));
+			$this->setError(Lang::txt('Empty collection ID.'));
 			return false;
 		}
 
@@ -288,7 +288,7 @@ class Post extends Base
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}

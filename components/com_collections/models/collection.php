@@ -172,8 +172,8 @@ class Collection extends Base
 
 		$result = array(
 			'id'          => 0,
-			'title'       => \JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
-			'description' => \JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
+			'title'       => Lang::txt('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => Lang::txt('COM_COLLECTIONS_DEFAULT_DESC'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
@@ -550,7 +550,7 @@ class Collection extends Base
 
 		if (!$follow->exists())
 		{
-			$this->setError(\JText::_('Item is not being followed'));
+			$this->setError(Lang::txt('Item is not being followed'));
 			return false;
 		}
 

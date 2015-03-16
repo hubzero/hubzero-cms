@@ -124,8 +124,8 @@ class Collection extends \JTable
 
 		$result = array(
 			'id'          => 0,
-			'title'       => \JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
-			'description' => \JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
+			'title'       => Lang::txt('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => Lang::txt('COM_COLLECTIONS_DEFAULT_DESC'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
@@ -162,7 +162,7 @@ class Collection extends \JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_TITLE'));
 		}
 
 		$this->alias = str_replace(' ', '-', strtolower($this->title));
@@ -171,13 +171,13 @@ class Collection extends \JTable
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'));
 		}
 
 		$this->object_type = trim($this->object_type);
 		if (!$this->object_type)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'));
 		}
 
 		if ($this->getError())
@@ -197,7 +197,7 @@ class Collection extends \JTable
 		{
 			if ($tbl->id && $tbl->state != 2)
 			{
-				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 
@@ -212,7 +212,7 @@ class Collection extends \JTable
 			 && $tbl->id != $this->id
 			 && $tbl->state != 2)
 			{
-				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_COLLECTION_EXISTS'));
 				return false;
 			}
 		}

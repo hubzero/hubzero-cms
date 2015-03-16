@@ -572,7 +572,7 @@ class Archive extends Object
 
 		if (!$follow->exists())
 		{
-			$this->setError(\JText::_('Item is not being followed'));
+			$this->setError(Lang::txt('Item is not being followed'));
 			return true;
 		}
 

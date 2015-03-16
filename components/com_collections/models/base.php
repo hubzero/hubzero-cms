@@ -56,11 +56,11 @@ class Base extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -92,7 +92,7 @@ class Base extends Model
 			if ($this->_creator->get('uidNumber') && !trim($this->_creator->get('name')))
 			{
 				$user = \JUser::getInstance($this->_creator->get('uidNumber'));
-				$this->_creator->set('name', $user->get('name', \JText::_('(unknown)')));
+				$this->_creator->set('name', $user->get('name', Lang::txt('(unknown)')));
 			}
 		}
 		if ($property)
@@ -101,6 +101,23 @@ class Base extends Model
 			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
+	}
+
+	/**
+	 * Get the path to the file space
+	 *
+	 * @return  string
+	 */
+	public function filespace()
+	{
+		static $path;
+
+		if (!$path)
+		{
+			$path = PATH_APP . DS . trim(\JComponentHelper::getParams('com_collections')->get('filepath', '/site/collections'), DS);
+		}
+
+		return $path;
 	}
 }
 

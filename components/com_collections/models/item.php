@@ -214,11 +214,11 @@ class Item extends Base
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('modified'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('modified'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -379,7 +379,7 @@ class Item extends Base
 		{
 			if (!$asset->remove())
 			{
-				$this->setError(\JText::_('Failed to remove asset.'));
+				$this->setError(Lang::txt('Failed to remove asset.'));
 				return false;
 			}
 		}
@@ -388,7 +388,7 @@ class Item extends Base
 			$tbl = new Tables\Asset($this->_db);
 			if (!$tbl->remove($asset))
 			{
-				$this->setError(\JText::_('Failed to remove asset.'));
+				$this->setError(Lang::txt('Failed to remove asset.'));
 				return false;
 			}
 		}
@@ -497,7 +497,7 @@ class Item extends Base
 			{
 				if (!$vote->store())
 				{
-					$this->setError(\JText::_('Error occurred while saving vote'));
+					$this->setError(Lang::txt('Error occurred while saving vote'));
 					return false;
 				}
 			}
@@ -584,14 +584,14 @@ class Item extends Base
 			$config = \JComponentHelper::getParams('com_collections');
 
 			// Build the upload path if it doesn't exist
-			$path = PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('id');
+			$path = $this->filespace() . DS . $this->get('id');
 
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
 				if (!\JFolder::create($path))
 				{
-					$this->setError(\JText::_('Error uploading. Unable to create path.'));
+					$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 					return false;
 				}
 			}
@@ -611,7 +611,7 @@ class Item extends Base
 					// Upload new files
 					if (!\JFile::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i]))
 					{
-						$this->setError(\JText::_('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
+						$this->setError(Lang::txt('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
 					}
 					// File was uploaded
 					else

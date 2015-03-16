@@ -31,6 +31,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Hubzero\Utility\String;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +57,7 @@ class Content extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Article');
+			return Lang::txt('Article');
 		}
 		return parent::type($as);
 	}
@@ -110,7 +111,7 @@ class Content extends GenericItem
 
 		if (!$article->id)
 		{
-			$this->setError(JText::_('Article not found.'));
+			$this->setError(Lang::txt('Article not found.'));
 			return false;
 		}
 
@@ -119,7 +120,7 @@ class Content extends GenericItem
 		$text = preg_replace('/\s+/', ' ', $text);
 
 		$url = \JRequest::getVar('REQUEST_URI', '', 'server');
-		$url = ($url ?: JRoute::_('index.php?option=com_content&id=' . $article->alias));
+		$url = ($url ?: Route::url('index.php?option=com_content&id=' . $article->alias));
 		$url = str_replace('?tryto=collect', '', $url);
 		$url = str_replace('no_html=1', '', $url);
 		$url = trim($url, '&');
@@ -129,7 +130,7 @@ class Content extends GenericItem
 		     ->set('created', $article->created)
 		     ->set('created_by', $article->created_by)
 		     ->set('title', $article->title)
-		     ->set('description', \Hubzero\Utility\String::truncate($text, 300, array('html' => true)))
+		     ->set('description', String::truncate($text, 300, array('html' => true)))
 		     ->set('url', $url);
 
 		if (!$this->store())

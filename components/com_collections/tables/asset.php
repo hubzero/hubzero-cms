@@ -56,13 +56,13 @@ class Asset extends \JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 		}
 
 		$this->filename = trim($this->filename);
 		if (!$this->filename)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
 		}
 
 		if ($this->getError())
@@ -286,7 +286,7 @@ class Asset extends \JTable
 		}
 		if (!$id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ID'));
 			return false;
 		}
 
@@ -294,7 +294,7 @@ class Asset extends \JTable
 
 		if (!$this->filename)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_FILE_NAME'));
 			return false;
 		}
 
@@ -311,13 +311,13 @@ class Asset extends \JTable
 
 			if (!file_exists($file) or !$file)
 			{
-				$this->setError(\JText::_('COM_COLLECTIONS_FILE_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_COLLECTIONS_FILE_NOT_FOUND'));
 				return false;
 			}
 
 			if (!\JFile::move($file, $path . DS . $fileRemoved))
 			{
-				$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
 				return false;
 			}
 
@@ -328,7 +328,7 @@ class Asset extends \JTable
 
 		if (!$this->store())
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_UPDATE_RECORD'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_UPDATE_RECORD'));
 			return false;
 		}
 
@@ -356,7 +356,7 @@ class Asset extends \JTable
 		jimport('joomla.filesystem.file');
 		if (!\JFile::delete($path . DS . $this->filename))
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
 		}
 
 		return parent::delete();
@@ -371,6 +371,6 @@ class Asset extends \JTable
 	public function path($id=null)
 	{
 		$config = \JComponentHelper::getParams('com_collections');
-		return JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $id;
+		return PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $id;
 	}
 }

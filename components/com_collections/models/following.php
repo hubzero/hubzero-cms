@@ -163,7 +163,7 @@ class Following extends Model
 			$path = __DIR__ . '/following/' . $scope . '.php';
 			if (!is_file($path))
 			{
-				throw new \InvalidArgumentException(\JText::sprintf('Invalid scope of "%s"', $scope));
+				throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
 			}
 			include_once($path);
 		}

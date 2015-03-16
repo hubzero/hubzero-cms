@@ -60,7 +60,7 @@ class Item extends \JTable
 		if ($this->type != 'image' && $this->type != 'file'
 		 && (!$this->title && !$this->description && !$this->url))
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_CONTENT'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_CONTENT'));
 			return false;
 		}
 

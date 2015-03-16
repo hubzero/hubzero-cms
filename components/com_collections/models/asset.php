@@ -169,16 +169,14 @@ class Asset extends Base
 	{
 		if ($this->get('_file'))
 		{
-			$config = \JComponentHelper::getParams('com_collections');
-
-			$path = PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->get('item_id');
+			$path = $this->filespace() . DS . $this->get('item_id');
 
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
 				if (!\JFolder::create($path))
 				{
-					$this->setError(\JText::_('Error uploading. Unable to create path.'));
+					$this->setError(Lang::txt('Error uploading. Unable to create path.'));
 					return false;
 				}
 			}
@@ -194,7 +192,7 @@ class Asset extends Base
 			// Upload new files
 			if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
-				$this->setError(\JText::_('ERROR_UPLOADING') . ': ' . $file['name']);
+				$this->setError(Lang::txt('ERROR_UPLOADING') . ': ' . $file['name']);
 				return false;
 			}
 

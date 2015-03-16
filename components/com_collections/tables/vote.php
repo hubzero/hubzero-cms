@@ -73,7 +73,7 @@ class Vote extends \JTable
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 			return false;
 		}
 

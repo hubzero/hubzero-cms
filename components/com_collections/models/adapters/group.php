@@ -62,7 +62,7 @@ class Group extends Base
 			$group = new \Hubzero\User\Group();
 			$group->set('gidNumber', $scope_id);
 			$group->set('cn', $scope_id);
-			$group->set('description', JText::_('(unknown)'));
+			$group->set('description', Lang::txt('(unknown)'));
 		}
 
 		$this->_segments['cn']     = $group->get('cn');

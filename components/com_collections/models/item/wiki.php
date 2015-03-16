@@ -31,6 +31,8 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Components\Wiki\Models\Book;
+use Components\Wiki\Models\Page;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +58,7 @@ class Wiki extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Wiki page');
+			return Lang::txt('Wiki page');
 		}
 		return parent::type($as);
 	}
@@ -73,8 +75,6 @@ class Wiki extends GenericItem
 			return false;
 		}
 
-		//$controller = \JRequest::getVar('controller', '');
-		//if (!in_array($controller, array('page', 'history', 'comments')))
 		if (!\JRequest::getVar('pagename', ''))
 		{
 			return false;
@@ -103,7 +103,7 @@ class Wiki extends GenericItem
 		{
 			$group = \JRequest::getVar('cn', '');
 
-			$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
+			$book = new Book(($group ? $group : '__site__'));
 			$page = $book->page();
 
 			$id = $page->get('id');
@@ -118,12 +118,12 @@ class Wiki extends GenericItem
 
 		if (!$page)
 		{
-			$page = new \Components\Wiki\Models\Page($id);
+			$page = new Page($id);
 		}
 
 		if (!$page->exists())
 		{
-			$this->setError(\JText::_('Wiki page not found.'));
+			$this->setError(Lang::txt('Wiki page not found.'));
 			return false;
 		}
 
@@ -133,7 +133,7 @@ class Wiki extends GenericItem
 		     ->set('created_by', $page->get('created_by'))
 		     ->set('title', $page->get('title'))
 		     ->set('description', $page->revision()->content('clean', 300))
-		     ->set('url', \JRoute::_($page->link()));
+		     ->set('url', Route::url($page->link()));
 
 		if (!$this->store())
 		{

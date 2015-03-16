@@ -31,6 +31,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Hubzero\Utility\String;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +57,7 @@ class Courses extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Course');
+			return Lang::txt('Course');
 		}
 		return parent::type($as);
 	}
@@ -120,7 +121,7 @@ class Courses extends GenericItem
 
 		if (!$course->exists())
 		{
-			$this->setError(JText::_('Course not found.'));
+			$this->setError(Lang::txt('Course not found.'));
 			return false;
 		}
 
@@ -129,8 +130,8 @@ class Courses extends GenericItem
 		     ->set('created', $course->get('created'))
 		     ->set('created_by', $course->get('created_by'))
 		     ->set('title', $course->get('title'))
-		     ->set('description', \Hubzero\Utility\String::truncate($course->get('blurb'), 200))
-		     ->set('url', \JRoute::_($course->link()));
+		     ->set('description', String::truncate($course->get('blurb'), 200))
+		     ->set('url', Route::url($course->link()));
 
 		if (!$this->store())
 		{

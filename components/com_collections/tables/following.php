@@ -100,13 +100,13 @@ class Following extends \JTable
 		$this->following_id = intval($this->following_id);
 		if (!$this->following_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FOLLOWING_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_FOLLOWING_ID'));
 		}
 
 		$this->following_type = trim($this->following_type);
 		if (!$this->following_type)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_FOLLOWING_TYPE'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_FOLLOWING_TYPE'));
 		}
 
 		if ($this->getError())

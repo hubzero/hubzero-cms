@@ -31,6 +31,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Components\Forum\Models\Post;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +57,7 @@ class Forum extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Forum thread');
+			return Lang::txt('Forum thread');
 		}
 		return parent::type($as);
 	}
@@ -105,11 +106,11 @@ class Forum extends GenericItem
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'post.php');
 
-		$thread = new \Components\Forum\Models\Post($id);
+		$thread = new Post($id);
 
 		if (!$thread->exists())
 		{
-			$this->setError(\JText::_('Forum thread not found.'));
+			$this->setError(Lang::txt('Forum thread not found.'));
 			return false;
 		}
 

@@ -31,6 +31,7 @@
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
+use Components\Wishlist\Models\Wish;
 
 require_once(dirname(__DIR__) . DS . 'item.php');
 
@@ -56,7 +57,7 @@ class Wishlist extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Wish');
+			return Lang::txt('Wish');
 		}
 		return parent::type($as);
 	}
@@ -105,11 +106,11 @@ class Wishlist extends GenericItem
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
-		$wish = new \WishlistModelWish($id);
+		$wish = new Wish($id);
 
 		if (!$wish->exists())
 		{
-			$this->setError(\JText::_('Wish not found.'));
+			$this->setError(Lang::txt('Wish not found.'));
 			return false;
 		}
 
@@ -119,7 +120,7 @@ class Wishlist extends GenericItem
 		     ->set('created_by', $wish->get('proposed_by'))
 		     ->set('title', $wish->get('subject'))
 		     ->set('description', $wish->content('clean', 200))
-		     ->set('url', \JRoute::_($wish->link()));
+		     ->set('url', Route::url($wish->link()));
 
 		if (!$this->store())
 		{

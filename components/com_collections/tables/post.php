@@ -73,13 +73,13 @@ class Post extends \JTable
 		$this->collection_id = intval($this->collection_id);
 		if (!$this->collection_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'));
 		}
 
 		$this->item_id = intval($this->item_id);
 		if (!$this->item_id)
 		{
-			$this->setError(\JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'));
 		}
 
 		if ($this->getError())

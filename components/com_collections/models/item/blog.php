@@ -57,7 +57,7 @@ class Blog extends GenericItem
 	{
 		if ($as == 'title')
 		{
-			return \JText::_('Blog post');
+			return Lang::txt('Blog post');
 		}
 		return parent::type($as);
 	}
@@ -122,7 +122,7 @@ class Blog extends GenericItem
 
 		if (!$post->exists())
 		{
-			$this->setError(\JText::_('Blog post not found.'));
+			$this->setError(Lang::txt('Blog post not found.'));
 			return false;
 		}
 
@@ -132,7 +132,7 @@ class Blog extends GenericItem
 		     ->set('created_by', $post->get('created_by'))
 		     ->set('title', $post->get('title'))
 		     ->set('description', $post->content('clean', 200))
-		     ->set('url', \JRoute::_($post->link()));
+		     ->set('url', Route::url($post->link()));
 
 		if (!$this->store())
 		{
