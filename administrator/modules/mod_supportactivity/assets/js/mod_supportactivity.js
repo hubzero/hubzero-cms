@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
 		// Heartbeat for checking for new posts
 		setInterval(function () {
 			$.get(list.attr('data-url') + list.children().first().attr('data-time'), {}, function(data){
-				if (data) {
+				if (data && !data.match('/<body(.*?)>/i')) {
 					if (_DEBUG) {
 						window.console && console.log(data);
 					}
