@@ -30,6 +30,8 @@
 
 namespace Components\Tags\Tables;
 
+use stdClass;
+
 /**
  * Table class for substituting tags for another tag
  */
@@ -60,7 +62,7 @@ class Substitute extends \JTable
 		$this->raw_tag = trim($this->raw_tag);
 		if (!$this->raw_tag)
 		{
-			$this->setError(\JText::_('You must enter a tag.'));
+			$this->setError(Lang::txt('You must enter a tag.'));
 			return false;
 		}
 
@@ -75,7 +77,7 @@ class Substitute extends \JTable
 
 		if (!$this->tag_id)
 		{
-			$this->setError(\JText::_('You must enter the ID of the tag to substitute this tag for.'));
+			$this->setError(Lang::txt('You must enter the ID of the tag to substitute this tag for.'));
 			return false;
 		}
 
@@ -105,7 +107,7 @@ class Substitute extends \JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->tag_id  = $this->tag_id;
 			$data->tag     = $this->tag;
 			$data->raw_tag = $this->raw_tag;
@@ -161,7 +163,7 @@ class Substitute extends \JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -180,7 +182,7 @@ class Substitute extends \JTable
 
 		require_once(__DIR__ . DS . 'log.php');
 
-		$d = new \stdClass;
+		$d = new stdClass;
 		$d->tags = $data;
 
 		$log = new Log($this->_db);
@@ -201,7 +203,7 @@ class Substitute extends \JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -223,7 +225,7 @@ class Substitute extends \JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -287,7 +289,7 @@ class Substitute extends \JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $items;
@@ -310,7 +312,7 @@ class Substitute extends \JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 

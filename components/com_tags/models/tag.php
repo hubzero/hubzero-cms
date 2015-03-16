@@ -215,11 +215,11 @@ class Tag extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -591,7 +591,7 @@ class Tag extends Model
 	{
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing tag ID.'));
+			$this->setError(Lang::txt('Missing tag ID.'));
 			return false;
 		}
 
@@ -641,7 +641,7 @@ class Tag extends Model
 	{
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing tag ID.'));
+			$this->setError(Lang::txt('Missing tag ID.'));
 			return false;
 		}
 

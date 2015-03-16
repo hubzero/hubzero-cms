@@ -30,6 +30,8 @@
 
 namespace Components\Tags\Tables;
 
+use stdClass;
+
 /**
  * Table class for attaching tags to objects
  */
@@ -56,19 +58,19 @@ class Object extends \JTable
 		$this->objectid = intval($this->objectid);
 		if (!$this->objectid)
 		{
-			$this->setError(\JText::_('Missing scope ID.'));
+			$this->setError(Lang::txt('Missing scope ID.'));
 		}
 
 		$this->tbl = trim($this->tbl);
 		if (!$this->tbl)
 		{
-			$this->setError(\JText::_('Missing scope.'));
+			$this->setError(Lang::txt('Missing scope.'));
 		}
 
 		$this->tagid = intval($this->tagid);
 		if (!$this->tagid)
 		{
-			$this->setError(\JText::_('Missing tag ID.'));
+			$this->setError(Lang::txt('Missing tag ID.'));
 		}
 
 		if ($this->getError())
@@ -145,7 +147,7 @@ class Object extends \JTable
 
 		if (!$tagid)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -178,7 +180,7 @@ class Object extends \JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->tbl      = $tbl;
 			$data->objectid = $objectid;
 			$data->taggerid = $taggerid;
@@ -206,7 +208,7 @@ class Object extends \JTable
 
 		if (!$tbl || !$objectid)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -235,7 +237,7 @@ class Object extends \JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->tbl      = $tbl;
 			$data->objectid = $objectid;
 			$data->entries  = $items;
@@ -258,7 +260,7 @@ class Object extends \JTable
 
 		if (!$tagid)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -283,7 +285,7 @@ class Object extends \JTable
 
 		if (!$tbl || !$objectid)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -327,7 +329,7 @@ class Object extends \JTable
 
 		if (!$tagid || !$tbl || !$objectid)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 
@@ -364,7 +366,7 @@ class Object extends \JTable
 		{
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $items;
@@ -410,7 +412,7 @@ class Object extends \JTable
 			}
 			require_once(__DIR__ . DS . 'log.php');
 
-			$data = new \stdClass;
+			$data = new stdClass;
 			$data->old_id  = $oldtagid;
 			$data->new_id  = $newtagid;
 			$data->entries = $entries;

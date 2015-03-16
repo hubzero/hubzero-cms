@@ -57,7 +57,7 @@ class Log extends \JTable
 		$this->tag_id = intval($this->tag_id);
 		if (!$this->tag_id)
 		{
-			$this->setError(\JText::_('TAGS_LOGS_MUST_HAVE_TAG_ID'));
+			$this->setError(Lang::txt('TAGS_LOGS_MUST_HAVE_TAG_ID'));
 			return false;
 		}
 
@@ -91,7 +91,7 @@ class Log extends \JTable
 
 		if (!$tag_id || !$action)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 

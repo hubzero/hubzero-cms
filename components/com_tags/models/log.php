@@ -167,11 +167,11 @@ class Log extends Model
 		switch (strtolower($rtrn))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('timestamp'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('timestamp'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('timestamp'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('timestamp'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

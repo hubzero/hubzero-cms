@@ -235,7 +235,7 @@ class Tag extends \JTable
 		$this->raw_tag = trim($this->raw_tag);
 		if (!$this->raw_tag)
 		{
-			$this->setError(\JText::_('You must enter a tag.'));
+			$this->setError(Lang::txt('You must enter a tag.'));
 			return false;
 		}
 
@@ -740,7 +740,7 @@ class Tag extends \JTable
 
 		if (!$tag_id)
 		{
-			$this->setError(\JText::_('Missing argument.'));
+			$this->setError(Lang::txt('Missing argument.'));
 			return false;
 		}
 

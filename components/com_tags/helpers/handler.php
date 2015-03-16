@@ -467,7 +467,7 @@ class TagsHandler extends \Hubzero\Base\Object
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				elseif ($showsizes == 2)
 				{
@@ -475,7 +475,7 @@ class TagsHandler extends \Hubzero\Base\Object
 				}
 				else
 				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
 			if ($sort == 'alpha')
@@ -549,7 +549,7 @@ class TagsHandler extends \Hubzero\Base\Object
 		}
 		else
 		{
-			throw new \InvalidArgumentException(\JText::sprintf('Tag lsit must be an array or string. Type of "%s" passed.', gettype($tag_string)));
+			throw new \InvalidArgumentException(Lang::txt('Tag lsit must be an array or string. Type of "%s" passed.', gettype($tag_string)));
 		}
 
 		foreach ($raw_tags as $raw_tag)

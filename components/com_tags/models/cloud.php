@@ -471,7 +471,7 @@ class Cloud extends Object
 				if (!isset($this->_cache['tags.cloud']) || $clear)
 				{
 					$view = new View(array(
-						'base_path' => JPATH_ROOT . '/components/com_tags',
+						'base_path' => JPATH_ROOT . '/components/com_tags/site',
 						'name'      => 'tags',
 						'layout'    => '_cloud'
 					));
