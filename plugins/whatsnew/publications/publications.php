@@ -122,7 +122,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Instantiate some needed objects
-		$rr = new Publication($database);
+		$rr = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
 		$filters = array();
@@ -228,7 +228,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$juri = JURI::getInstance();
 
 		// Get version authors
-		$pa = new PublicationAuthor( $database );
+		$pa = new \Components\Publications\Tables\Author( $database );
 		$authors = $pa->getAuthors($row->version_id);
 
 		// Start building HTML
