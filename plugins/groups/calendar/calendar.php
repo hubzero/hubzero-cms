@@ -421,6 +421,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			// accounts for how humans keep time.
 			if ($event->allDay)
 			{
+				//google events don't put a time.
+				if(!isset($event->end))
+				{
+					$event->end = '0000-00-00 00:00:00';
+				}
+
 				$end_day = strtotime($event->end . '+ 48 hours');
 				$down = date('Y-m-d H:i:s', $end_day);
 				$event->end = $down;
