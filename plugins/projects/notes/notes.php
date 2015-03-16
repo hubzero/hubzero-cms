@@ -292,14 +292,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				$this->_task = 'download';
 			}
 
-			if (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS
-				. 'controllers' . DS . $this->_controllerName . '.php'))
+			if (!file_exists(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
+				. 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php'))
 			{
 				$this->_controllerName = 'page';
 			}
 			// Include controller
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS
-				. 'controllers' . DS . $this->_controllerName . '.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS
+				. 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php');
 
 			// Listing/unlisting?
 			if ($this->_task == 'publist' || $this->_task == 'unlist')
@@ -393,14 +393,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$view->content 		= $nview->loadTemplate();
 		}
 
-		$basePath = JPATH_ROOT . DS . 'components' . DS . 'com_wiki';
+		$basePath = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site';
 		if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save')
 		{
 			$basePath = JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes';
 		}
 		if (!$view->content)
 		{
-			$controllerName = "Components\Wiki\Controllers\\"  . ucfirst($this->_controllerName);
+			$controllerName = "Components\Wiki\Site\Controllers\\"  . ucfirst($this->_controllerName);
 			// Instantiate controller
 			$controller = new $controllerName(array(
 				'base_path' => $basePath,
