@@ -80,7 +80,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		);
 
 		$database = JFactory::getDBO();
-		$rt = new PublicationCategory($database);
+		$rt = new \Components\Publications\Tables\Category($database);
 		foreach ($rt->getCategories() as $category)
 		{
 			$response['children'][$category->url_alias] = array(
@@ -105,7 +105,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate some needed objects
-		$rr = new Publication($database);
+		$rr = new \Components\Publications\Tables\Publication($database);
 
 		// Build query
 		$filters = array();
@@ -190,7 +190,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		$rt = new PublicationCategory($database);
+		$rt = new \Components\Publications\Tables\Category($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
@@ -299,7 +299,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$helper = new PublicationHelper($database, $row->ftext, $row->id);
 
 		// Get version authors
-		$pa = new PublicationAuthor( $database );
+		$pa = new \Components\Publications\Tables\Author( $database );
 		$authors = $pa->getAuthors($row->ftext);
 
 		// Get the component params
