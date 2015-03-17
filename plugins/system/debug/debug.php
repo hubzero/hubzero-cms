@@ -184,33 +184,33 @@ class plgSystemDebug extends JPlugin
 			}
 			if (\JError::getErrors())
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . JText::_('PLG_DEBUG_ERRORS') . '</span><span class="badge">' . count(\JError::getErrors()) . '</span></a>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-errors" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . JText::_('PLG_DEBUG_ERRORS') . '</span><span class="badge">' . count(\JError::getErrors()) . '</span></a>';
 			}
 
 			$dumper = \Hubzero\Utility\Debug::getInstance();
 			if ($dumper->hasMessages())
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-debug\');"><span class="text">' . JText::_('PLG_DEBUG_CONSOLE') . '</span>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-console" onclick="Debugger.toggleContainer(this, \'debug-debug\');"><span class="text">' . JText::_('PLG_DEBUG_CONSOLE') . '</span>';
 				$html .= '<span class="badge">' . count($dumper->messages()) . '</span>';
 				$html .= '</a>';
 			}
 
-			$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-request\');"><span class="text">' . JText::_('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
-			$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-session\');"><span class="text">' . JText::_('PLG_DEBUG_SESSION') . '</span></a>';
+			$html .= '<a href="javascript:" class="debug-tab debug-tab-request" onclick="Debugger.toggleContainer(this, \'debug-request\');"><span class="text">' . JText::_('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
+			$html .= '<a href="javascript:" class="debug-tab debug-tab-session" onclick="Debugger.toggleContainer(this, \'debug-session\');"><span class="text">' . JText::_('PLG_DEBUG_SESSION') . '</span></a>';
 			if ($this->params->get('profile', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-profile_information\');"><span class="text">' . JText::_('PLG_DEBUG_PROFILE_TIMELINE') . '</span></a>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-timeline" onclick="Debugger.toggleContainer(this, \'debug-profile_information\');"><span class="text">' . JText::_('PLG_DEBUG_PROFILE_TIMELINE') . '</span></a>';
 			}
 			if ($this->params->get('queries', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . JText::_('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . \JFactory::getDbo()->getCount() . '</span></a>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-database" onclick="Debugger.toggleContainer(this, \'debug-queries\');"><span class="text">' . JText::_('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . \JFactory::getDbo()->getCount() . '</span></a>';
 			}
 		}
 		if (\JFactory::getApplication()->getCfg('debug_lang'))
 		{
 			if ($this->params->get('language_errorfiles', 1))
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-language_files_in_error\');"><span class="text">' . JText::_('PLG_DEBUG_LANGUAGE_FILE_ERRORS') . '</span>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-errors" onclick="Debugger.toggleContainer(this, \'debug-language_files_in_error\');"><span class="text">' . JText::_('PLG_DEBUG_LANGUAGE_FILE_ERRORS') . '</span>';
 				$html .= '<span class="badge">' . count(\JFactory::getLanguage()->getErrorFiles()) . '</span>';
 				$html .= '</a>';
 			}
@@ -222,14 +222,14 @@ class plgSystemDebug extends JPlugin
 				{
 					$total += count($files);
 				}
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-language_files_loaded\');"><span class="text">' . JText::_('PLG_DEBUG_LANGUAGE_FILES_LOADED') . '</span>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-files" onclick="Debugger.toggleContainer(this, \'debug-language_files_loaded\');"><span class="text">' . JText::_('PLG_DEBUG_LANGUAGE_FILES_LOADED') . '</span>';
 				$html .= '<span class="badge">' . $total . '</span>';
 				$html .= '</a>';
 			}
 
 			if ($this->params->get('language_strings'))
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-untranslated_strings\');"><span class="text">' . JText::_('PLG_DEBUG_UNTRANSLATED') . '</span>';
+				$html .= '<a href="javascript:" class="debug-tab debug-tab-lang-untranslated" onclick="Debugger.toggleContainer(this, \'debug-untranslated_strings\');"><span class="text">' . JText::_('PLG_DEBUG_UNTRANSLATED') . '</span>';
 				$html .= '<span class="badge">' . count(\JFactory::getLanguage()->getOrphans()) . '</span>';
 				$html .= '</a>';
 			}
