@@ -60,4 +60,17 @@ class Lang extends Facade
 		}
 		return \JText::_($string);
 	}
+
+	/**
+	 * Translates a string into the current language.
+	 *
+	 * @param   string   $string  The format string.
+	 * @param   integer  $n       The number of items
+	 * @return  string   The translated string or the key is $script is true
+	 */
+	public static function txts($string, $n)
+	{
+		$args = func_get_args();
+		return call_user_func_array(array('\JText', 'plural'), $args);
+	}
 }
