@@ -25,7 +25,7 @@ if (!jq) {
 
 HUB.Mw = {
 	jQuery: jq,
-	
+
 	// Inform Mambo whether session needs signed applet.
 	sessionUsesSignedApplet: function(value) {
 		var $ = this.jQuery;
@@ -38,7 +38,7 @@ HUB.Mw = {
 			$('signedapplet').val(1);
 		}
 	},
-		
+
 	// Clear the static troubleshooting message
 	clearTroubleshoot: function() {
 		var $ = this.jQuery;
@@ -47,13 +47,13 @@ HUB.Mw = {
 			$(trouble).remove();
 		}
 	},
-	
+
 	// Tell user that we're connecting to the tool session.
 	connectingTool: function() {
 		//document.getElementById('theapp').style.visibility = 'hidden';
 		//$('app-content').setStyle('visibility', 'hidden');
 	},
-	
+
 	// Delete the "Connecting..." message.
 	cancelConnecting: function() {
 		HUB.Mw.cancelTimeout();
@@ -61,32 +61,24 @@ HUB.Mw = {
 
 	// Start a timer to show Java failure.
 	appletTimeoutID: 0,
-	
+
 	// Show a message saying that Java didn't appear to work.
 	appletTimeout: function() {
-		var $ = this.jQuery;
 		HUB.Mw.clearTroubleshoot();
 		HUB.Mw.cancelConnecting();
 
-		var theapp = $('#theapp');
+		var theapp = jq('#theapp');
 		if (theapp) {
 			var par = theapp.parent();
 			theapp.remove();
 		}
 
 		$('<div id="theapp"><p class="error">' +
-				'It appears that the Java environment did not ' +
-				'start properly.  Please make sure that you ' +
-				'have Java installed and enabled for your web ' +
-				'browser.  The version of the Java environment ' +
-				'must be greater than or equal to 1.4.  ' +
-				'(<a target="_blank" href="http://www.java.com/en/download/testjava.jsp">How do I do this?</a>)  ' +
-				'Without Java support you will not be able to ' +
-				'view any applications.' +
+				JavaNotStarted +
 			'</p></div>'
 		).appendTo(par);
 	},
-	
+
 	startAppletTimeout: function() {
 		var timeout = 30;
 		HUB.Mw.appletTimeoutID = self.setTimeout("HUB.Mw.appletTimeout()", timeout * 1000);
@@ -99,47 +91,32 @@ HUB.Mw = {
 
 	// Show a message explaining that Java is not enabled.
 	noJava: function() {
-		var $ = this.jQuery;
 		HUB.Mw.cancelConnecting();
-		var trouble = $('#troubleshoot');
-		if (!trouble) {
+
+		var trouble = jq('#troubleshoot');
+		if (!trouble.length) {
 			return;
 		}
-		trouble.html(
-			'<p class="error">' +
-				'It appears that Java is either not installed or ' +
-				'not enabled.  You will not be able to view tools ' +
-				'until Java is enabled.<br />' +
-				'(<a href="/kb/misc/java/">Learn how to enable Java</a>)  ' +
-			'</p>'
-		);
+
+		trouble
+			.text(JavaNotFound)
+			.removeClass('help')
+			.addClass('error');
 	},
 
 	// Show a message explaining that there is a browser/Java bug.
 	javaBug: function() {
-		var $ = this.jQuery;
 		HUB.Mw.cancelConnecting();
-		var trouble = $('#troubleshoot');
-		if (!trouble) {
+
+		var trouble = jq('#troubleshoot');
+		if (!trouble.length) {
 			return;
 		}
-		trouble.html(
-			'<p class="error">' +
-				'There is a problem caused by the specific version ' +
-				'of Java you are using with this browser. You will ' +
-				'likely not be able to view tools. There are three ' +
-				'things you can try:<br /> ' +
-				'1) Restart your browser and disable Javascript ' +
-				'before starting a tool the ' +
-				'first time and re-enable Javascript once the first ' +
-				'tool is running.<br />' +
-				'2) Switch to a different version of Java. ' +
-				'Version 1.6.0 Update 02 (and earlier) will work ' +
-				'but 1.6.0 Update 03 and 04 do not.<br>' +
-				'3) Use a browser other than Firefox.<br>' +
-				'(<a href="/kb/tools/unable_to_connect_error_in_firefox/">More information</a>)  ' +
-			'</p>'
-		);
+
+		trouble
+			.text(JavaBug)
+			.removeClass('help')
+			.addClass('error');
 	},
 
 	// Check for any Java bugs.

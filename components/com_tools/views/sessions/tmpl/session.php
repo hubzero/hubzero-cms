@@ -46,6 +46,27 @@ foreach ($this->shares as $share)
 	}
 }
 
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'preferences.php');
+
+$database = JFactory::getDBO();
+$preferences = new ToolsTablePreferences($database);
+$preferences->loadByUser($juser->get('id'));
+
+$declared = JRequest::getWord('viewer');
+if ($declared)
+{
+	if (JRequest::getInt('preferred', 0))
+	{
+		$preferences->set('user_id', $juser->get('id'));
+		$preferences->param()->set('viewer', $declared);
+		$preferences->store();
+	}
+}
+else if ($declared = $preferences->param('viewer'))
+{
+	JRequest::setVar('viewer', $declared);
+}
+
 JPluginHelper::importPlugin('mw');
 JPluginHelper::importPlugin('tools');
 $dispatcher = JDispatcher::getInstance();
@@ -108,19 +129,33 @@ if (!$this->app->sess) {
 				<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
 					<fieldset>
 						<?php
-						$declared = JRequest::getWord('viewer');
 						$viewer = ($declared ? $declared : $this->output->rendered); //JFactory::getSession()->get('tool_viewer'));
 						?>
 						<?php echo JText::sprintf('COM_TOOLS_SESSION_USING_VIEWER', JText::_('PLG_TOOLS_' . $viewer . '_TITLE')); ?>
-						<label for="app-viewer">
-							<?php echo JText::_('COM_TOOLS_SESSION_VIEWER_CHANGE'); ?>
-						</label>
-						<select name="viewer" id="app-viewer">
-							<?php foreach ($plugins as $plugin) { ?>
-								<option value="<?php echo JText::_($plugin->name); ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
-							<?php } ?>
-						</select>
-						<input type="submit" value="<?php echo JText::_('COM_TOOLS_GO'); ?>" />
+
+						<span class="input-wrap">
+							<label for="app-viewer">
+								<?php echo JText::_('COM_TOOLS_SESSION_VIEWER_CHANGE'); ?>
+							</label>
+							<select name="viewer" id="app-viewer">
+								<?php foreach ($plugins as $plugin) {
+									if ($viewer == $plugin->name) continue;
+								?>
+									<option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
+								<?php } ?>
+							</select>
+						</span>
+
+						<span class="input-wrap">
+							<input type="checkbox" name="preferred" id="app-viewer-preferred" value="1" />
+							<label for="app-viewer-preferred">
+								<?php echo JText::_('Use for future sessions.'); ?>
+							</label>
+						</span>
+
+						<span class="input-wrap">
+							<input type="submit" value="<?php echo JText::_('COM_TOOLS_APPLY'); ?>" />
+						</span>
 						<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
 					</fieldset>
 				</form>

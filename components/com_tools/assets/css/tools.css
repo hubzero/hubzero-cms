@@ -275,6 +275,9 @@
 		display: none;
 		color: #aaa;
 	}
+	#app-options .input-wrap {
+		margin-left: 1.5em;
+	}
 	#app-options strong {
 		color: #ccc;
 	}

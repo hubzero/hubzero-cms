@@ -32,12 +32,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->js('jquery.editable.min.js', 'system')
+     ->js('deployJava.js')
      ->js();
 
 $base = rtrim(JURI::base(true), '/');
 
+JPluginHelper::importPlugin('tools');
+;
 ?>
-<p id="troubleshoot" class="help">If your application fails to appear within a minute, <a target="_blank" rel="external" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem</a>.</p>
+<p id="troubleshoot" class="help">
+	If your application fails to appear within a minute, <a target="_blank" rel="external" href="http://www.java.com/en/download/testjava.jsp">troubleshoot this problem</a>.
+</p>
 
 <applet id="<?php echo $this->output->id ?>" class="<?php echo $this->output->class; ?>" code="<?php echo $this->output->code; ?>" archive="<?php echo $this->output->archive; ?>" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 	<param name="name" value="<?php echo $this->output->name; ?>" />
@@ -66,6 +71,52 @@ $base = rtrim(JURI::base(true), '/');
 </applet>
 
 <script type="text/javascript">
-	HUB.Mw.startAppletTimeout();
-	HUB.Mw.connectingTool();
+	var JavaNotFound = 'It appears that Java is either not installed or not enabled.'<?php
+		$options = array();
+		if ($plugins = JDispatcher::getInstance()->trigger('onToolSessionIdentify'))
+		{
+			$url = 'index.php?option=com_tools&app=' . $this->app->name . '&task=session&sess=' . $this->app->sess . '&viewer=';
+			foreach ($plugins as $plugin)
+			{
+				if ($plugin->name == 'java')
+				{
+					continue;
+				}
+
+				$options[] = '<a href="' . JRoute::_($url . $plugin->name) . '">' . $plugin->title . '</a>';
+			}
+			if (count($options))
+			{
+				echo " + 'Consider trying an alternate viewer:<br /><br />" . implode('<br />', $options) . "'";
+			}
+		}
+		?>;
+
+	var JavaNotStarted = 'It appears that the Java environment did not start properly. Please make sure that you have Java installed and enabled for your web browser.'<?php
+		if (count($options))
+		{
+			echo " + 'If you do not have Java or problems persist, consider trying an alternate viewer:<br /><br />" . implode('<br />', $options) . "'";
+		}
+		?>;
+
+	var JavaBug = 'There is a problem caused by the specific version ' +
+				'of Java you are using with this browser. You will ' +
+				'likely not be able to view tools. There are three ' +
+				'things you can try:<br /> ' +
+				'1) Restart your browser and disable Javascript ' +
+				'before starting a tool the ' +
+				'first time and re-enable Javascript once the first ' +
+				'tool is running.<br />' +
+				'2) Switch to a different version of Java. ' +
+				'Version 1.6.0 Update 02 (and earlier) will work ' +
+				'but 1.6.0 Update 03 and 04 do not.<br>' +
+				'3) Use a browser other than Firefox.<br>' +
+				'(<a href="<?php echo JURI::base(); ?>/kb/tools/unable_to_connect_error_in_firefox/">More information</a>)  ';
+
+	if (!deployJava.versionCheck("1.6.0+")) {
+		HUB.Mw.noJava();
+	} else {
+		HUB.Mw.startAppletTimeout();
+		HUB.Mw.connectingTool();
+	}
 </script>
