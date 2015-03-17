@@ -176,7 +176,8 @@ class WikiTableRevision extends JTable
 		}
 		if ($version)
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version));
+
+			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version) . " AND approved != 2");
 		}
 		else
 		{
