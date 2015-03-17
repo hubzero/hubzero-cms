@@ -79,19 +79,24 @@ class PublicationsCuration extends JObject
 	var $_pub 			= NULL;
 
 	/**
-	* @var    string  Publication ID
+	* @var    object  Publication model
 	*/
-	var $_pid 			= NULL;
-
-	/**
-	* @var    string  Publication version ID
-	*/
-	var $_vid 			= NULL;
+	var $_model 		= NULL;
 
 	/**
 	* @var    string Curation manifest
 	*/
 	var $_manifest 		= NULL;
+
+	/**
+	* @var    integer Version ID
+	*/
+	var $_vid 			= NULL;
+
+	/**
+	* @var    integer Pub ID
+	*/
+	var $_pid 			= NULL;
 
 	/**
 	* @var    object Blocks
@@ -135,9 +140,9 @@ class PublicationsCuration extends JObject
 	* @param      string  $manifest     Pup type manifest
 	* @return     void
 	*/
-	public function __construct( &$db, $manifest = NULL )
+	public function __construct( $manifest = NULL )
 	{
-		$this->_db 		 = $db;
+		$this->_db = \JFactory::getDBO();
 		$this->_manifest = json_decode($manifest);
 
 		// Parse blocks
@@ -267,9 +272,14 @@ class PublicationsCuration extends JObject
 	 */
 	public function setPubAssoc($pub = NULL)
 	{
-		$this->_pid 	= is_object($pub) ? $pub->id : NULL;
-		$this->_vid 	= is_object($pub) ? $pub->version_id : NULL;
+		// Set version alias (e.f. 'dev' or 'default')
+		if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version))
+		{
+			$pub->versionAlias = $pub->version;
+		}
 		$this->_pub		= $pub;
+		$this->_vid		= $pub->version_id;
+		$this->_pid		= $pub->id;
 
 		// Set progress
 		$this->setProgress();
@@ -1289,7 +1299,7 @@ class PublicationsCuration extends JObject
 
 		// Incoming
 		$label = trim(JRequest::getVar( 'label', '', 'post' ));
-		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version );
+		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version_number );
 
 		if ($label && in_array($label, $used_labels))
 		{
@@ -1298,7 +1308,7 @@ class PublicationsCuration extends JObject
 		}
 		elseif ($label)
 		{
-			if (!$row->loadVersion($this->_pub->id, $this->_pub->version))
+			if (!$row->loadVersion($this->_pub->id, $this->_pub->version_number))
 			{
 				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
 				return false;
@@ -1332,7 +1342,7 @@ class PublicationsCuration extends JObject
 
 		if (!isset($pub->reviewedItems))
 		{
-			$pub->reviewedItems = $pub->_curationModel->getReviewedItems($pub->version_id);
+			$pub->reviewedItems = $this->getReviewedItems($pub->version_id);
 		}
 
 		$manifest = $this->_blocks->$sequence;

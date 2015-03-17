@@ -517,8 +517,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->publication->_project	= $this->_project;
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-			$view->publication->_type->curation);
+		$view->publication->_curationModel = new PublicationsCuration($view->publication->_type->curation);
 
 		// Set block
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
@@ -643,8 +642,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->publication->_project	= $this->_project;
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-			$view->publication->_type->curation);
+		$view->publication->_curationModel = new PublicationsCuration($view->publication->_type->curation);
 
 		// Set block
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
@@ -777,7 +775,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_type = $mt->getType($pub->base);
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $pub->_type->curation);
+		$pub->_curationModel = new PublicationsCuration($pub->_type->curation);
 
 		if ($element && $block)
 		{
@@ -871,7 +869,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $manifest);
+		$pub->_curationModel = new PublicationsCuration($manifest);
 
 		// Make sure block exists, else redirect to status
 		if (!$pub->_curationModel->setBlock( $block, $sequence ))
@@ -1255,7 +1253,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get curation model for the type
-		$curationModel = new PublicationsCuration($this->_database, $mType->curation);
+		$curationModel = new PublicationsCuration($mType->curation);
 
 		// Get default category from manifest
 		$cat = isset($curationModel->_manifest->params->default_category)
@@ -1377,14 +1375,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			// Start url
 			$route = $this->_project->provisioned
-						? 'index.php?option=com_publications' . a . 'task=submit'
-						: 'index.php?option=com_projects' . a . 'alias='
-							. $this->_project->alias . a . 'active=publications';
+						? 'index.php?option=com_publications&task=submit'
+						: 'index.php?option=com_projects&alias='
+							. $this->_project->alias . '&active=publications';
 
 			$mType 	= $mt->getType($pub->base);
 
 			// Get curation model
-			$curationModel = new PublicationsCuration($this->_database, $mType->curation);
+			$curationModel = new PublicationsCuration($mType->curation);
 			$sequence 	   = $curationModel->getFirstBlock();
 			$firstBlock    = $curationModel->_blocks->$sequence->name;
 
@@ -1456,7 +1454,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $manifest);
+		$pub->_curationModel = new PublicationsCuration($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -1615,7 +1613,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_project 	= $this->_project;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $pub->_type->curation);
+		$pub->_curationModel = new PublicationsCuration($pub->_type->curation);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -1909,7 +1907,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Initialize other helpers
 		$view->htmlHelper	  = new PublicationsHtml();
-		$view->contribHelper  = new PublicationContribHelper();
 
 		// Checked areas
 		$view->checked = array();
@@ -2186,7 +2183,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Initialize other helpers
 		$view->htmlHelper	  = new PublicationsHtml();
-		$view->contribHelper  = new PublicationContribHelper();
 
 		// Instantiate publication version
 		$row->loadVersion($pid, $version);
@@ -2648,7 +2644,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_project 	= $this->_project;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $pub->_type->curation);
+		$pub->_curationModel = new PublicationsCuration($pub->_type->curation);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -3861,7 +3857,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($this->_database, $pub->_type->curation);
+		$pub->_curationModel = new PublicationsCuration($pub->_type->curation);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);

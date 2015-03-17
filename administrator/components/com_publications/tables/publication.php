@@ -52,6 +52,31 @@ class Publication extends \JTable
 	 * @param      string 	$oid
 	 * @return     object or FALSE
 	 */
+	public function loadPublication( $oid=NULL )
+	{
+		if ($oid === NULL)
+		{
+			return false;
+		}
+		$where = is_numeric($oid) ? 'id=' . $this->_db->Quote($oid) : 'alias=' . $this->_db->Quote($oid);
+		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE " . $where );
+		if ($result = $this->_db->loadAssoc())
+		{
+			return $this->bind( $result );
+		}
+		else
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+	}
+
+	/**
+	 * Load by alias
+	 *
+	 * @param      string 	$oid
+	 * @return     object or FALSE
+	 */
 	public function loadAlias( $oid=NULL )
 	{
 		if ($oid === NULL)

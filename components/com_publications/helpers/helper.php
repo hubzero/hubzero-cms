@@ -83,39 +83,6 @@ class PublicationHelper extends \JObject
 		$this->supporting_content = null;
 	}
 
-	/**
-	 * Get publication path
-	 *
-	 * @param      string 	$pid
-	 * @param      string 	$vid
-	 * @param      string 	$base
-	 * @param      string 	$filedir
-	 * @param      boolean 	$root
-	 * @return     string
-	 */
-	public static function buildPath( $pid = NULL, $vid = NULL, $base = '', $filedir = '', $root = 0 )
-	{
-		if ($vid === NULL or $pid === NULL )
-		{
-			return false;
-		}
-		if (!$base)
-		{
-			$pubconfig = JComponentHelper::getParams( 'com_publications' );
-			$base = $pubconfig->get('webpath');
-		}
-
-		$base = DS . trim($base, DS);
-
-		$pub_dir     =  \Hubzero\Utility\String::pad( $pid );
-		$version_dir =  \Hubzero\Utility\String::pad( $vid );
-		$path        = $base . DS . $pub_dir . DS . $version_dir;
-		$path        = $filedir ? $path . DS . $filedir : $path;
-		$path        = $root ? JPATH_ROOT . $path : $path;
-
-		return $path;
-	}
-
 	//----------------------------------------------------------
 	// Disk Usage
 	//----------------------------------------------------------
@@ -277,82 +244,6 @@ class PublicationHelper extends \JObject
 		$result = $this->_db->loadObjectList();
 
 		return $result ? $result[0] : NULL;
-	}
-
-	//----------------------------------------------------------
-	// Citations
-	//----------------------------------------------------------
-
-	/**
-	 * Get citations
-	 *
-	 * @return     void
-	 */
-	public function getCitations()
-	{
-		if (!$this->_pub_id)
-		{
-			return false;
-		}
-
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
-		$database = JFactory::getDBO();
-
-		$cc = new \Components\Citations\Tables\Citation( $database );
-
-		$this->citations = $cc->getCitations( 'publication', $this->_pub_id );
-	}
-
-	/**
-	 * Get citations count
-	 *
-	 * @return     void
-	 */
-	public function getCitationsCount()
-	{
-		$citations = $this->citations;
-		if (!$citations)
-		{
-			$citations = $this->getCitations();
-		}
-
-		$this->citationsCount = $citations;
-	}
-
-	/**
-	 * Get last citation date
-	 *
-	 * @return     void
-	 */
-	public function getLastCitationDate()
-	{
-		$this->lastCitationDate = NULL;
-
-		if ($this->_pub_id)
-		{
-			return false;
-		}
-
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-			. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
-		$database = JFactory::getDBO();
-
-		$cc = new \Components\Citations\Tables\Citation( $database );
-
-		$this->lastCitationDate = $cc->getLastCitationDate( 'publication', $this->_pub_id );
 	}
 
 	//----------------------------------------------------------

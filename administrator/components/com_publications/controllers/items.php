@@ -306,7 +306,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+			$this->view->pub->_curationModel = new PublicationsCuration($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
@@ -427,7 +427,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+			$this->view->pub->_curationModel = new PublicationsCuration($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
@@ -526,7 +526,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+			$pub->_curationModel = new PublicationsCuration($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);
@@ -1190,7 +1190,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 							// Get curation model
 							$pub->_curationModel = new PublicationsCuration(
-								$this->database,
 								$pub->_type->curation
 							);
 
@@ -1925,7 +1924,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+			$pub->_curationModel = new PublicationsCuration($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);

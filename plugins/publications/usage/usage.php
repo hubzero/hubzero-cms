@@ -78,7 +78,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
-			'html'=>'',
+			'html'    => '',
 			'metadata'=>''
 		);
 
@@ -115,7 +115,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			$url = JRoute::_('index.php?option=' . $option . '&id=' . $publication->id . '&active=usage');
 		}
 
-		if (!in_array($table,$tables))
+		if (!in_array($table, $tables))
 		{
 			$arr['html'] 	 = '<p class="error">' . JText::_('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
 			$arr['metadata'] = '<p class="usage"><a href="' . $url . '">'
@@ -165,10 +165,9 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 
 			// Return the output
 			$arr['html'] = $view->loadTemplate();
-
 		}
 
-		if ($rtrn == 'all' || $rtrn == 'metadata')
+		if ($rtrn == 'metadata')
 		{
 			$stats->loadStats( $publication->id, $period );
 			if ($stats->users)

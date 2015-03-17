@@ -375,8 +375,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-		$view->publication->_type->curation);
+		$view->publication->_curationModel = new PublicationsCuration($view->publication->_type->curation);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))

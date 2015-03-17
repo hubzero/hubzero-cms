@@ -275,7 +275,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// Get curation model for the type
 		if ($this->useBlocks)
 		{
-			$curationModel = new PublicationsCuration($this->database, $mType->curation);
+			$curationModel = new PublicationsCuration($mType->curation);
 		}
 
 		// Get defaults from manifest

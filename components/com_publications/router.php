@@ -145,7 +145,10 @@ class PublicationsRouter extends \Hubzero\Component\Router\Base
 			$vars['id']   = $segments[0];
 			if (!empty($segments[1]))
 			{
-				$vars['v'] = $segments[1];
+				if (is_numeric($segments[1]) || $segments[1] == 'dev' || $segments[1] == 'default')
+				{
+					$vars['v'] = $segments[1];
+				}
 			}
 		}
 		elseif (in_array($segments[0], $tasks))

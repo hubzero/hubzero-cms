@@ -70,7 +70,7 @@ class PublicationsHtml extends \JObject
 	 * @return     string
 	 */
 	public static function buildPubPath( $pid = NULL, $vid = NULL,
-		$base = '', $filedir = '', $root = 0 
+		$base = '', $filedir = '', $root = 0
 	)
 	{
 		if ($vid === NULL or $pid === NULL )
@@ -288,6 +288,10 @@ class PublicationsHtml extends \JObject
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
+			if ($name == 'usage')
+			{
+				continue;
+			}
 			if ($name != '')
 			{
 				if ($alias)
@@ -914,7 +918,7 @@ class PublicationsHtml extends \JObject
 	{
 		$action = $publication->state == 1 ? JText::_('COM_PUBLICATIONS_LISTED_IN') : JText::_('COM_PUBLICATIONS_IN');
 		$html = '<p class="pubinfo">' . $action . ' ' . ' <a href="' . JRoute::_('index.php?option='
-			. $option . '&category=' . $publication->cat_url).'">' . $publication->cat_name . '</a>';
+			. $option . '&category=' . $publication->_category->url_alias).'">' . $publication->_category->name . '</a>';
 
 		// Show group if group project
 		$groupId = $publication->project_group ? $publication->project_group : $publication->group_owner;
@@ -925,7 +929,7 @@ class PublicationsHtml extends \JObject
 			{
 				$group = \Hubzero\User\Group::getInstance( $groupId );
 				$html .= ' | ' . JText::_('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
-						.' <a href="/groups/'.$group->get('cn') . '">'
+						.' <a href="/groups/' . $group->get('cn') . '">'
 						. $group->get('description').'</a>';
 			}
 		}
@@ -996,7 +1000,7 @@ class PublicationsHtml extends \JObject
 	 */
 	public static function drawPrimaryButton(
 		$option, $publication, $version,
-		$content, $path, $serveas = 'download',
+		$content, $serveas = 'download',
 		$restricted = 0, $authorized = 0 )
 	{
 
@@ -1026,34 +1030,26 @@ class PublicationsHtml extends \JObject
 			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
-		elseif ($content['primary'][0]->type == 'file' )
-		{
-			$fpath = $content['primary'][0]->path;
-			if (!$fpath || !file_exists(PATH_APP . $path . DS . $fpath))
-			{
-				return '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
-			}
-		}
-		if ($content['primary'][0]->type == 'link' )
+		if ($content['1'][0]->type == 'link' )
 		{
 			$serveas = 'external';
 		}
-		if ($content['primary'][0]->type == 'tool' )
+		if ($content['1'][0]->type == 'tool' )
 		{
 			$serveas = 'invoke';
 		}
 
-		$primary = $content['primary'][0];
+		$primary = $content['1'][0];
 		switch ($serveas)
 		{
 			case 'download':
 			case 'tardownload':
 			default:
 				$msg   = JText::_('COM_PUBLICATIONS_DOWNLOAD_PUBLICATION');
-				$xtra  = count($content['primary']) == 1
-					? strtoupper(PublicationsHtml::getFileExtension($content['primary'][0]->path))
+				$xtra  = count($content['1']) == 1
+					? strtoupper(PublicationsHtml::getFileExtension($content['1'][0]->path))
 					: NULL;
-				$extra = (count($content['primary']) > 1 || $serveas == 'tardownload') ? 'ZIP' : NULL;
+				$extra = (count($content['1']) > 1 || $serveas == 'tardownload') ? 'ZIP' : NULL;
 				break;
 
 			case 'video':
@@ -1073,7 +1069,7 @@ class PublicationsHtml extends \JObject
 
 			case 'external':
 
-				if ($content['primary'][0]->type == 'note')
+				if ($content['1'][0]->type == 'note')
 				{
 				//	$class = 'play'; // lightboxed
 				}

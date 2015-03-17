@@ -45,6 +45,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php'
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'logs.php');
 
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'publication.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'types.php');

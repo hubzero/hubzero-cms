@@ -242,7 +242,6 @@ else if ($this->authorized == 3)
 		if ($this->authorized != 3)
 		{
 			// Draw status bar
-			$contribHelper = new PublicationContribHelper();
 			PublicationsHtml::drawStatusBar($this, NULL, false, 1);
 		}
 
@@ -250,7 +249,7 @@ else if ($this->authorized == 3)
 		$description = '';
 		if ($this->pub->description)
 		{
-			$description = $model->description('parsed');
+			$description = $model->describe('parsed');
 		}
 
 		// Process metadata

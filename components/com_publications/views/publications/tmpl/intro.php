@@ -57,7 +57,6 @@ $this->css('introduction.css', 'system')
 				$this->view('_list')
 				     ->set('results', $this->results)
 				     ->set('config', $this->config)
-				     ->set('helper', new PublicationHelper($this->database))
 				     ->display();
 				} else {
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
@@ -70,7 +69,6 @@ $this->css('introduction.css', 'system')
 					$this->view('_list')
 					     ->set('results', $this->best)
 					     ->set('config', $this->config)
-					     ->set('helper', new PublicationHelper($this->database))
 					     ->display();
 			} else {
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');

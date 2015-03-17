@@ -587,7 +587,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration(
-			$this->_database,
 			$view->publication->_type->curation
 		);
 
@@ -1398,7 +1397,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				// Get file extention
 				$ext   = \Components\Projects\Helpers\Html::getFileExtension($file);
-				$base  = $parts[0];
 
 				// Subdir?
 				$file = $this->subdir ? $this->subdir . DS . $file : $file;
@@ -3819,6 +3817,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			// Build temp name
 			$tempBase = $tex ? 'temp__' . \Components\Projects\Helpers\Html::takeOutExt($filename) : $filename;
+			$tempBase = str_replace(' ', '_', $tempBase);
 
 			// LaTeX file?
 			if ($tex)

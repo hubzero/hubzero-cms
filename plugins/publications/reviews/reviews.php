@@ -66,10 +66,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 * @param      boolean $extended 	Whether or not to show panel
 	 * @return     array
 	 */
-	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
+	public function &onPublicationAreas( $model, $version = 'default', $extended = true )
 	{
 		$areas = array();
-		if ($publication->_category->_params->get('plg_reviews') && $extended)
+		if ($model->_category->_params->get('plg_reviews') && $extended && $model->access('view-all'))
 		{
 			$areas = array(
 				'reviews' => JText::_('PLG_PUBLICATION_REVIEWS')
@@ -111,7 +111,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 * @param      boolean 	$extended 		Whether or not to show panel
 	 * @return     array
 	 */
-	public function onPublication( $publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
+	public function onPublication( $model, $option, $areas, $rtrn='all', $version = 'default', $extended = true )
 	{
 		$arr = array(
 			'html'=>'',
@@ -121,27 +121,27 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ))
 		{
-			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
-			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
+			if (!array_intersect( $areas, $this->onPublicationAreas( $model ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $model ) ) ))
 			{
 				$rtrn = 'metadata';
 			}
 		}
-		if (!$publication->_category->_params->get('plg_reviews') || !$extended)
+		if (!$model->_category->_params->get('plg_reviews') || !$extended)
 		{
 			return $arr;
 		}
 
 		// Instantiate a helper object and perform any needed actions
 		$h = new PlgPublicationsReviewsHelper();
-		$h->publication = $publication;
+		$h->publication = $model;
 		$h->_option = $option;
 		$h->execute();
 
 		// Get reviews for this publication
 		$database = JFactory::getDBO();
 		$r = new \Components\Publications\Tables\Review( $database );
-		$reviews = $r->getRatings( $publication->id );
+		$reviews = $r->getRatings( $model->id );
 
 		$arr['count'] = count($reviews);
 		$arr['name']  = 'reviews';
@@ -156,7 +156,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			if (!$h->loggedin)
 			{
 				$rtrn = JRequest::getVar('REQUEST_URI',
-					JRoute::_('index.php?option=' . $option . '&id='.$publication->id.'&active=reviews&v=' . $publication->version_number), 'server');
+					JRoute::_('index.php?option=' . $option . '&id='.$model->id.'&active=reviews&v=' . $model->version_number), 'server');
 				$this->redirect(
 					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 					JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
@@ -178,7 +178,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 			// Pass the view some info
 			$view->option 		= $option;
-			$view->publication 	= $publication;
+			$view->publication 	= $model;
 			$view->reviews 		= $reviews;
 			$view->voting 		= $this->params->get('voting', 1);
 			$view->h 			= $h;
@@ -205,15 +205,15 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			if ($publication->alias)
+			if ($model->alias)
 			{
-				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number);
-				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number);
+				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
 			}
 			else
 			{
-				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number);
-				$url2 = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=reviews&v=' . $publication->version_number . '&action=addreview#reviewform');
+				$url = JRoute::_('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number);
+				$url2 = JRoute::_('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
 			}
 
 			$view->reviews = $reviews;

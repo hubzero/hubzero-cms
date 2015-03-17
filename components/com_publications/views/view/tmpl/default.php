@@ -30,6 +30,10 @@ $this->css()
 $authorized = ($this->restricted && !$this->authorized) ? false : true;
 $html = '';
 
+$this->publication->authors();
+$this->publication->attachments();
+$this->publication->license();
+
 // New launcher layout?
 if ($this->config->get('launcher_layout', 0))
 {
@@ -46,7 +50,7 @@ if ($this->config->get('launcher_layout', 0))
 	     ->set('license', $this->license)
 	     ->set('sections', $this->sections)
 	     ->set('cats', $this->cats)
-	     ->set('params', $this->params)
+	     ->set('params', $this->publication->params)
 	     ->display();
 }
 else
@@ -63,7 +67,7 @@ else
 	     ->set('version', $this->version)
 	     ->set('sections', $this->sections)
 	     ->set('cats', $this->cats)
-	     ->set('params', $this->params)
+	     ->set('params', $this->publication->params)
 	     ->set('lastPubRelease', $this->lastPubRelease)
 	     ->display();
 ?>
@@ -74,9 +78,9 @@ else
 			<?php echo PublicationsHtml::title( $this->option, $this->publication ); ?>
 <?php
 	// Display authors
-	if ($this->params->get('show_authors') && $this->authors) { ?>
+	if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
 		<div id="authorslist">
-			<?php echo PublicationsHtml::showContributors($this->authors, true, false, false, false, $this->params->get('format_authors', 0)); ?>
+			<?php echo PublicationsHtml::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
 		</div>
 	<?php }	?>
 	<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
@@ -87,8 +91,9 @@ else
 		</div><!-- / .overviewcontainer -->
 		<div class="aside launcharea">
 <?php
+
 	// Sort out primary files and draw a launch button
-	if ($this->config->get('curation', 0) && $this->tab != 'play' && $this->params->get('curated') != 2)
+	if ($this->config->get('curation', 0) && $this->tab != 'play' && $this->publication->params->get('curated') != 2)
 	{
 		// Get primary elements
 		$elements = $this->publication->_curationModel->getElements(1);
@@ -112,11 +117,11 @@ else
 			$html .= $launcher;
 		}
 	}
-	elseif ($this->content['primary'] && count($this->content['primary']) > 0 && $this->tab != 'play')
+	elseif ($this->publication->_attachments[1] && count($this->publication->_attachments[1]) > 0 && $this->tab != 'play')
 	{
-		$primaryParams 	 = new JParameter( $this->content['primary'][0]->params );
+		$primaryParams 	 = new JParameter( $this->publication->_attachments[1][0]->params );
 		$serveas 		 = $primaryParams->get('serveas');
-		$html 			.=  PublicationsHtml::drawPrimaryButton( $this->option, $this->publication, $this->version, $this->content, $this->path, $serveas, $this->restricted, $this->authorized );
+		$html 			.=  PublicationsHtml::drawPrimaryButton( $this->option, $this->publication, $this->version, $this->publication->_attachments, $serveas, $this->restricted, $this->authorized );
 	}
 	elseif ($this->tab != 'play' && $this->publication->state != 0)
 	{
@@ -124,28 +129,29 @@ else
 	}
 
 	// Sort out supporting docs
+	$bundlePath = $this->publication->bundlePath();
 	$html .= $this->tab != 'play' && $this->publication->state != 0
-		   ? PublicationsHtml::sortSupportingDocs( $this->publication, $this->version, $this->option, $this->content['secondary'], $this->restricted, $this->archPath )
+		   ? PublicationsHtml::sortSupportingDocs( $this->publication, $this->version, $this->option, $this->publication->_attachments[2], $this->restricted, $bundlePath )
 		   : '';
 
 	// Show version information
 	$html .=  $this->tab != 'play' ? PublicationsHtml::showVersionInfo( $this->publication, $this->version, $this->option, $this->config, $this->lastPubRelease ) : '';
 
 	// Show license information
-	$html .= $this->tab != 'play' && $this->license && $this->license->name != 'standard'
-			? PublicationsHtml::showLicense( $this->publication, $this->version, $this->option, $this->license, 'play' ) : '';
+	$html .= $this->tab != 'play' && $this->publication->_license && $this->publication->_license->name != 'standard'
+			? PublicationsHtml::showLicense( $this->publication, $this->version, $this->option, $this->publication->_license, 'play' ) : '';
 
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";
 	$html .= '<div class="clear"></div>'."\n";
 	$editurl = JRoute::_('index.php?option=com_projects&alias='
-		. $this->publication->project_alias . '&active=publications&pid=' . $this->publication->id);
-	$editurl.= '?version='.$this->version;
+		. $this->publication->_project->alias . '&active=publications&pid=' . $this->publication->id);
+	$editurl.= '?version=' . $this->version;
 
 	// Build pub url
 	$route = $this->publication->project_provisioned == 1
 				? 'index.php?option=com_publications&task=submit'
 				: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
-	$editurl = JRoute::_($route . '&pid=' . $this->publication->id).'?version='.$this->version;
+	$editurl = JRoute::_($route . '&pid=' . $this->publication->id).'?version=' . $this->version;
 
 	// Show status for authorized users
 	if ($this->contributable)
@@ -157,7 +163,7 @@ else
 }
 
 // Part below
-if ($this->publication->access == 2 && (!$this->authorized && $this->restricted)) 
+if (!$this->publication->access('view-all')) 
 {
 	// show nothing else
 	$html .= '</section><!-- / .main section -->'."\n";

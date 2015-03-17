@@ -31,19 +31,104 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+	. DS . 'models' . DS . 'curation.php');
 
 /**
- * Courses model class for a forum
+ * Information retrieval for items/info linked to a publication
  */
-class PublicationsModelPublication extends \Hubzero\Base\Model
+class PublicationsModelPublication extends \Hubzero\Base\Object
 {
 	/**
-	 * Table class name
+	 * Authorized
 	 *
-	 * @var string
+	 * @var mixed
 	 */
-	protected $_tbl_name = '\\Components\\Publications\\Tables\\Publication';
+	private $_authorized = false;
+
+	/**
+	 * JDatabase
+	 *
+	 * @var object
+	 */
+	private $_db = NULL;
+
+	/**
+	 * Container for properties
+	 *
+	 * @var array
+	 */
+	private $_data = array();
+
+	/**
+	 * Constructor
+	 *
+	 * @param      integer $id  Resource ID or alias
+	 * @param      object  &$db JDatabase
+	 * @return     void
+	 */
+	public function __construct($oid, $version = 'default')
+	{
+		$this->_db = \JFactory::getDBO();
+
+		if (is_object($oid))
+		{
+			// Temp as we are converting to models
+			$this->version = $oid;
+		}
+		else
+		{
+			// Load master entry
+			$this->publication = new \Components\Publications\Tables\Publication($this->_db);
+			$this->publication->loadPublication($oid);
+
+			// Load version
+			$this->version = new \Components\Publications\Tables\Version($this->_db);
+			$this->version->loadVersion($this->publication->id, $version);
+
+			// Version label
+			$versionAlias = $this->version->main == 1
+				&& $this->version->state != 0 ? 'default' : $version;
+			$versionAlias = $this->version->state == 3 ? 'dev' : $version;
+			$this->versionAlias   = $versionAlias;
+
+			// Get what we need
+			$this->masterType();
+			$this->category();
+
+			// Map to former publication object (TEMP measure while converting)
+			foreach ($this->version as $field => $value)
+			{
+				$this->$field = $value;
+			}
+			$this->version_id        = $this->version->id;
+			$this->id                = $this->publication->id;
+			$this->base 	         = $this->_type->alias;
+			$this->curatorgroup      = $this->_type->curatorgroup;
+			$this->dev_version_label = $this->version->getAttribute($this->publication->id, 'dev', 'version_label');
+
+			// Map master values
+			foreach ($this->publication as $field => $value)
+			{
+				if (isset($this->$field))
+				{
+					$masterField = 'master_' . $field;
+					$this->$masterField = $value;
+				}
+				else
+				{
+					$this->$field = $value;
+				}
+			}
+
+			// Collect params
+			$this->params = \JComponentHelper::getParams('com_publications');
+			$this->params->merge(new \JRegistry($this->version->params));
+			$this->params->merge($this->_type->_params);
+		}
+	}
 
 	/**
 	 * Returns a reference to an article model
@@ -82,6 +167,17 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Check if a property is set
+	 *
+	 * @param      string $property Name of property to set
+	 * @return     boolean True if set
+	 */
+	public function __isset($property)
+	{
+		return isset($this->_data[$property]);
+	}
+
+	/**
 	 * Set a property
 	 *
 	 * @param      string $property Name of property to set
@@ -108,6 +204,21 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Check if the instance exists
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function exists()
+	{
+		if ($this->version->id && $this->version->id > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Return a formatted timestamp
 	 *
 	 * @param      string $as What data to return
@@ -129,6 +240,488 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 				return $this->get('created');
 			break;
 		}
+	}
+
+	/**
+	 * Get the home project of this entry
+	 *
+	 * @return     mixed
+	 */
+	public function project()
+	{
+		if (empty($this->_project))
+		{
+			$this->_project = new \Components\Projects\Tables\Project($this->_db);
+			$this->_project->load($this->publication->project_id);
+			$this->_project->_params = new \JParameter( $this->_project->params );
+		}
+
+		return $this->_project;
+	}
+
+	/**
+	 * Get the master type of this entry
+	 *
+	 * @return     mixed
+	 */
+	public function masterType()
+	{
+		if (empty($this->_type))
+		{
+			$this->_type = new \Components\Publications\Tables\MasterType($this->_db);
+			$this->_type->load($this->publication->master_type);
+			$this->_type->_params = new \JParameter( $this->_type->params );
+			$this->pubTypeHelper = new PublicationTypesHelper($this->_db, $this->project());
+		}
+
+		return $this->_type;
+	}
+
+	/**
+	 * Set curation
+	 *
+	 * @return     mixed
+	 */
+	public function setCuration()
+	{
+		if (!$this->exists())
+		{
+			return NULL;
+		}
+
+		$this->masterType();
+		$this->project();
+
+		if (!isset($this->_curationModel))
+		{
+			// Get manifest from either version record (published) or master type
+			$manifest = $this->version->curation
+						? $this->version->curation
+						: $this->_type->curation;
+
+			// Get curation model
+			$this->_curationModel = new PublicationsCuration($manifest);
+
+			// Set pub assoc and load curation
+			$this->_curationModel->setPubAssoc($this);
+		}
+
+		return $this->_curationModel;
+	}
+
+	/**
+	 * Get the category of this entry
+	 *
+	 * @return     mixed
+	 */
+	public function category()
+	{
+		if (empty($this->_category))
+		{
+			$this->_category = new \Components\Publications\Tables\Category( $this->_db );
+			$this->_category->load($this->publication->category);
+			$this->_category->_params = new \JParameter( $this->_category->params );
+		}
+
+		return $this->_category;
+	}
+
+	/**
+	 * Get the authors of this entry
+	 *
+	 * @return     mixed
+	 */
+	public function authors()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_authors))
+		{
+			$objA = new \Components\Publications\Tables\Author( $this->_db );
+			$this->_authors = $objA->getAuthors($this->version->id);
+			$this->_submitter = $objA->getSubmitter($this->version->id, $this->version->created_by);
+		}
+
+		return $this->_authors;
+	}
+
+	/**
+	 * Get unlinked contributors
+	 * @param      array 	$contributors
+	 * @param      boolean 	$incSubmitter
+	 *
+	 * @return     string
+	 */
+	public function getUnlinkedContributors($contributors = '', $incSubmitter = false )
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		$contributors = $this->authors();
+
+		$html = '';
+		if (!empty($contributors))
+		{
+			$names = array();
+			foreach ($contributors as $contributor)
+			{
+				if ($incSubmitter == false && $contributor->role == 'submitter')
+				{
+					continue;
+				}
+				if ($contributor->lastName || $contributor->firstName)
+				{
+					$name  = stripslashes($contributor->lastName);
+					$name .= ', ' . substr(stripslashes($contributor->firstName), 0, 1) . '.';
+				}
+				else
+				{
+					$name = $contributor->name;
+				}
+				$name = str_replace( '"', '&quot;', $name );
+				$names[] = $name;
+			}
+			if (count($names) > 0)
+			{
+				$html = implode( '; ', $names );
+			}
+		}
+		return $html;
+	}
+
+	/**
+	 * Get submitter of this entry
+	 *
+	 * @return     mixed
+	 */
+	public function submitter()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_submitter))
+		{
+			$this->authors();
+		}
+
+		return $this->_submitter;
+	}
+
+	/**
+	 * Get project owner
+	 *
+	 * @return     mixed
+	 */
+	public function owner()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_owner))
+		{
+			$juser = \JFactory::getUser();
+			$objO = new \Components\Projects\Tables\Owner($this->_db);
+			$this->_owner = $objO->isOwner($juser->get('id'), $this->publication->project_id);
+		}
+
+		return $this->_owner;
+	}
+
+	/**
+	 * Get curator group names
+	 *
+	 * @return     mixed
+	 */
+	public function curatorGroups()
+	{
+		if (!$this->exists() || !$this->masterType())
+		{
+			return array();
+		}
+		if (!isset($this->_curatorGroups))
+		{
+			$groups = array();
+			if ($this->_type->curatorgroup)
+			{
+				$groups[] = $this->_type->curatorgroup;
+			}
+			if ($this->params->get('curatorgroup'))
+			{
+				$groups[] = $this->params->get('curatorgroup');
+			}
+			$this->_curatorGroups = $groups;
+		}
+
+		return $this->_curatorGroups;
+	}
+
+	/**
+	 * Get access group names
+	 *
+	 * @return     mixed
+	 */
+	public function getAccessGroups()
+	{
+		if (!$this->exists() || !$this->masterType())
+		{
+			return array();
+		}
+		if (!isset($this->_accessGroups))
+		{
+			$paccess = new \Components\Publications\Tables\Access( $this->_db );
+			$aGroups = $paccess->getGroups( $this->version->id, $this->publication->id );
+			$this->_accessGroups = $this->getGroupProperty($aGroups);
+		}
+
+		return $this->_accessGroups;
+	}
+
+	/**
+	 * Get group property
+	 *
+	 * @param      object 	$groups
+	 * @param      string 	$get
+	 *
+	 * @return     array
+	 */
+	public function getGroupProperty($groups, $get = 'cn')
+	{
+		$arr = array();
+		if (!empty($groups))
+		{
+			foreach ($groups as $group)
+			{
+				if ($group->regconfirmed)
+				{
+					$arr[] = $get == 'cn' ? $group->cn : $group->gidNumber;
+				}
+			}
+		}
+		return $arr;
+	}
+
+	/**
+	 * Get publication content
+	 *
+	 * @return     mixed
+	 */
+	public function attachments()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_attachments))
+		{
+			$pContent = new \Components\Publications\Tables\Attachment( $this->_db );
+			$this->_attachments = $pContent->sortAttachments ( $this->version->id );
+		}
+
+		return $this->_attachments;
+	}
+
+	/**
+	 * Get publication license
+	 *
+	 * @return     mixed
+	 */
+	public function license()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_license))
+		{
+			$this->_license = new \Components\Publications\Tables\License($this->_db);
+			$this->_license->load($this->version->license_type);
+		}
+
+		return $this->_license;
+	}
+
+	/**
+	 * Check if the resource was deleted
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function deleted()
+	{
+		if ($this->version->state == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the publication is published
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function published()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		if (in_array($this->version->state, array(0, 2, 3, 4, 5, 6, 7)))
+		{
+			return false;
+		}
+
+		$now = \JFactory::getDate();
+
+		if ($this->version->published_up
+		 && $this->version->published_up != $this->_db->getNullDate()
+		 && $this->version->published_up >= $now)
+		{
+			return false;
+		}
+		if ($this->version->published_down
+		 && $this->version->published_down != $this->_db->getNullDate()
+		 && $this->version->published_down <= $now)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Authorize current user
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	private function _authorize()
+	{
+		$juser = \JFactory::getUser();
+
+		// NOT logged in
+		if ($juser->get('guest'))
+		{
+			// If the resource is published and public
+			if ($this->published() && $this->publication->access == 0)
+			{
+				// Allow view access
+				$this->params->set('access-view-publication', true);
+				if ($this->publication->access == 0)
+				{
+					$this->params->set('access-view-all-publication', true);
+				}
+			}
+			$this->_authorized = true;
+			return;
+		}
+
+		// Check if they're a site admin (from Joomla)
+		$this->params->set('access-admin-publication', $juser->authorise('core.admin', null));
+		$this->params->set('access-manage-publication', $juser->authorise('core.manage', null));
+
+		if ($this->params->get('access-admin-publication')
+		 || $this->params->get('access-manage-publication'))
+		{
+			$this->params->set('access-view-publication', true);
+			$this->params->set('access-view-all-publication', true);
+
+			$this->params->set('access-create-publication', true);
+			$this->params->set('access-delete-publication', true);
+			$this->params->set('access-edit-publication', true);
+			$this->params->set('access-edit-state-publication', true);
+		}
+
+		// Get user groups
+		$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
+		$usersgroups = $this->getGroupProperty($ugs);
+
+		// If they're not an admin
+		if (!$this->params->get('access-admin-publication')
+		 && !$this->params->get('access-manage-publication'))
+		{
+			// If logged in and resource is published and public or registered
+			if ($this->published() && $this->publication->access <= 1)
+			{
+				// Allow view access
+				$this->params->set('access-view-publication', true);
+				$this->params->set('access-view-all-publication', true);
+			}
+			// Allowed groups (private access)
+			if ($this->publication->access >= 2)
+			{
+				$groups      = $this->getAccessGroups();
+				if (array_intersect($usersgroups, $groups) > 1)
+				{
+					$this->params->set('access-view-publication', true);
+					$this->params->set('access-view-all-publication', true);
+				}
+			}
+		}
+
+		// Project owners
+		if ($this->owner())
+		{
+			$this->params->set('access-owner-publication', true);
+			$this->params->set('access-manage-publication', true);
+
+			$this->params->set('access-view-publication', true);
+			$this->params->set('access-view-all-publication', true);
+			$this->params->set('access-create-publication', true);
+			$this->params->set('access-delete-publication', true);
+			$this->params->set('access-edit-publication', true);
+			$this->params->set('access-edit-state-publication', true);
+		}
+
+		// Curator
+		if ($this->version->curator && $juser->get('id') == $this->version->curator)
+		{
+			$this->params->set('access-curator-publication', true);
+			$this->params->set('access-curator-assigned-publication', true);
+		}
+
+		// Curator from groups
+		$curatorGroups = $this->curatorGroups();
+		if (!empty($curatorGroups))
+		{
+			if (array_intersect($usersgroups, $curatorGroups) > 1)
+			{
+				$this->params->set('access-curator-publication', true);
+			}
+		}
+
+		// Curators have full view access and approval controls
+		if ($this->params->get('access-curator-publication'))
+		{
+			$this->params->set('access-view-publication', true);
+			$this->params->set('access-view-all-publication', true);
+			$this->params->set('access-edit-state-publication', true);
+			$this->params->set('access-manage-publication', true);
+		}
+
+		$this->_authorized = true;
+	}
+
+	/**
+	 * Check a user's authorization
+	 *
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function access($action = 'view')
+	{
+		if (!$this->_authorized)
+		{
+			$this->_authorize();
+		}
+		return $this->params->get('access-' . strtolower($action) . '-publication');
 	}
 
 	/**
@@ -166,10 +759,18 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	 * @param      integer $shorten Number of characters to shorten text to
 	 * @return     mixed String or Integer
 	 */
-	public function description($as='parsed', $shorten=0)
+	public function describe($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
 		$options = array();
+
+		if ($this->get('description', null) == null)
+		{
+			$content = stripslashes($this->version->description);
+			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+
+			$this->set('description', trim($content));
+		}
 
 		switch ($as)
 		{
@@ -182,13 +783,14 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 						'option'   => 'com_publications',
 						'scope'    => '',
 						'pagename' => 'publications',
-						'pageid'   => '',
+						'pageid'   => $this->publication->id,
 						'filepath' => '',
 						'domain'   => ''
 					);
 
 					$content = (string) stripslashes($this->get('description', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
+					\JPluginHelper::importPlugin('content');
+					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
 						'com_publications.publication.description',
 						&$this,
 						&$config
@@ -197,14 +799,14 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 					$this->set('description.parsed', (string) $this->get('description', ''));
 					$this->set('description', $content);
 
-					return $this->description($as, $shorten);
+					return $this->describe($as, $shorten);
 				}
 
 				$options['html'] = true;
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->description('parsed'));
+				$content = strip_tags($this->describe('parsed'));
 			break;
 
 			case 'raw':
@@ -238,6 +840,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 		$as = strtolower($as);
 		$options = array();
 
+		if ($this->get('release_notes', null) == null)
+		{
+			$content = stripslashes($this->version->release_notes);
+
+			$this->set('release_notes', trim($content));
+		}
+
 		switch ($as)
 		{
 			case 'parsed':
@@ -255,11 +864,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 					);
 
 					$content = (string) stripslashes($this->get('release_notes', ''));
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
+					\JPluginHelper::importPlugin('content');
+					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
 						'com_publications.publication.release_notes',
 						&$this,
 						&$config
 					));
+
 
 					$this->set('release_notes.parsed', (string) $this->get('release_notes', ''));
 					$this->set('release_notes', $content);
@@ -329,6 +940,13 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 		$as = strtolower($as);
 		$options = array();
 
+		if ($this->get($field, null) == null)
+		{
+			$content = stripslashes($this->version->$field);
+
+			$this->set($field, trim($content));
+		}
+
 		if (!$this->get($field, ''))
 		{
 			return false;
@@ -356,7 +974,8 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 						$content = (string) stripslashes($this->getNbtag($aliasmap));
 					}
 
-					$this->importPlugin('content')->trigger('onContentPrepare', array(
+					\JPluginHelper::importPlugin('content');
+					\JDispatcher::getInstance()->trigger('onContentPrepare', array(
 						'com_publications.publication.' . $field,
 						&$this,
 						&$config
@@ -405,6 +1024,177 @@ class PublicationsModelPublication extends \Hubzero\Base\Model
 	public function store($check=true)
 	{
 		// Do nothing here yet.
+	}
+
+	/**
+	 * Get citations
+	 *
+	 * @return     void
+	 */
+	public function getCitations()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->_citations))
+		{
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'association.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'author.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+
+			$cc = new \Components\Citations\Tables\Citation( $this->_db );
+
+			$this->_citations = $cc->getCitations( 'publication', $this->publication->id );
+		}
+
+		return $this->_citations;
+	}
+
+	/**
+	 * Get citations count
+	 *
+	 * @return     void
+	 */
+	public function getCitationsCount()
+	{
+		$this->getCitations();
+
+		return count($this->_citations);
+	}
+
+	/**
+	 * Get last citation date
+	 *
+	 * @return     void
+	 */
+	public function getLastCitationDate()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->_lastCitationDate))
+		{
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'association.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'author.php' );
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+				. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+
+			$cc = new \Components\Citations\Tables\Citation( $this->_db );
+
+			$this->_lastCitationDate = $cc->getLastCitationDate( 'publication', $this->publication->id );
+		}
+
+		return $this->_lastCitationDate;
+	}
+
+	/**
+	 * Get tags
+	 *
+	 * @param      int $tagger_id
+	 * @param      int $strength
+	 * @param      boolean $admin
+	 *
+	 * @return     string HTML
+	 */
+	public function getTags($tagger_id = 0, $strength = 0, $admin = 0)
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->_tags))
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				. DS . 'helpers' . DS . 'tags.php' );
+
+			$rt = new PublicationTags( $this->_db );
+			$this->_tags = $rt->get_tags_on_object($this->publication->id, 0, 0, $tagger_id, $strength, $admin);
+		}
+
+		return $this->_tags;
+	}
+
+	/**
+	 * Get tags for editing
+	 *
+	 * @param      int $tagger_id
+	 * @param      int $strength
+	 *
+	 * @return     string HTML
+	 */
+	public function getTagsForEditing( $tagger_id = 0, $strength = 0 )
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			. DS . 'helpers' . DS . 'tags.php' );
+
+		$rt = new PublicationTags( $this->_db );
+		$this->_tagsForEditing = $rt->get_tag_string( $this->publication->id, 0, 0, $tagger_id, $strength, 0 );
+	}
+
+	/**
+	 * Get tag cloud
+	 *
+	 * @param      boolean $admin
+	 *
+	 * @return     string HTML
+	 */
+	public function getTagCloud( $admin = 0 )
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		if (!isset($this->_tagCloud))
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				. DS . 'helpers' . DS . 'tags.php' );
+
+			$rt = new PublicationTags( $this->_db );
+			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->publication->id);
+		}
+
+		return $this->_tagCloud;
+	}
+
+	/**
+	 * Get path to archival bundle
+	 *
+	 * @return     mixed
+	 */
+	public function bundlePath()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if (!isset($this->_bundlePath))
+		{
+			// Archival package
+			$tarname  = JText::_('Publication') . '_' . $this->publication->id . '.zip';
+			$this->_bundlePath = PublicationsHtml::buildPubPath(
+				$this->publication->id,
+				$this->version->id,
+				'', '', 1) . DS . $tarname;
+		}
+
+		return $this->_bundlePath;
 	}
 }
 

@@ -130,7 +130,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 
 			// Build publication path
 			$base_path 	= $config->get('webpath');
-			$view->path = $helper->buildPath(
+			$view->path = PublicationsHtml::buildPubPath(
 				$publication->id,
 				$publication->version_id,
 				$base_path,

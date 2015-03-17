@@ -49,10 +49,6 @@ $html .= '</p>'."\n";
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	$database = JFactory::getDBO();
 
-	// Get statistics info
-	$this->helper->getCitationsCount();
-	$this->helper->getLastCitationDate();
-
 	$this->line->ranking = round($this->line->ranking, 1);
 
 	$r = (10*$this->line->ranking);

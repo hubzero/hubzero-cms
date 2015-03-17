@@ -34,15 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 $useBlocks 	= $this->config->get('curation', 0);
 $webpath 	= $this->config->get('webpath');
 
-$abstract	= stripslashes($this->publication->abstract);
-$authorized = (($this->restricted && !$this->authorized) || $this->publication->state == 0) ? false : true;
+$authorized = $this->publication->access('view-all');
 
-$description = '';
-$model = new PublicationsModelPublication($this->publication);
-if ($this->publication->description)
-{
-	$description = $model->description('parsed');
-}
+$abstract	= stripslashes($this->publication->abstract);
+$description = $this->publication->describe('parsed');
+
+$this->publication->authors();
+$this->publication->attachments();
+$this->publication->license();
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->publication->metadata, $matches, PREG_SET_ORDER);
@@ -72,9 +71,9 @@ $schema 	= $metaElements->getSchema();
 <div class="pubabout">
 <?php
 	// Show gallery images
-	if ($this->params->get('show_gallery') || $useBlocks)
+	if ($this->publication->params->get('show_gallery') || $useBlocks)
 	{
-		if ($useBlocks && $this->params->get('curated') != 2)
+		if ($useBlocks && $this->publication->params->get('curated') != 2)
 		{
 			// Get handler model
 			$modelHandler = new PublicationsModelHandlers($this->database);
@@ -180,7 +179,7 @@ $schema 	= $metaElements->getSchema();
 ?>
 <?php
 	$citations = NULL;
-	if ($useBlocks || $this->params->get('show_metadata'))
+	if ($useBlocks || $this->publication->params->get('show_metadata'))
 	{
 		if (!isset($schema->fields) || !is_array($schema->fields))
 		{
@@ -205,10 +204,10 @@ $schema 	= $metaElements->getSchema();
 	}
 ?>
 
-<?php if (($useBlocks || $this->params->get('show_citation'))) { ?>
+<?php if (($useBlocks || $this->publication->params->get('show_citation'))) { ?>
 	<?php
-	if ($this->params->get('show_citation') == 1
-	|| $this->params->get('show_citation') == 2)
+	if ($this->publication->params->get('show_citation') == 1
+	|| $this->publication->params->get('show_citation') == 2)
 	{
 		// Build our citation object
 		$cite = new stdClass();
@@ -223,10 +222,10 @@ $schema 	= $metaElements->getSchema();
 							: NULL;
 		$cite->type 	= '';
 		$cite->pages 	= '';
-		$cite->author 	= $this->helper->getUnlinkedContributors( $this->authors);
+		$cite->author 	= $this->publication->getUnlinkedContributors( $this->publication->_authors);
 		$cite->publisher= $this->config->get('doi_publisher', '' );
 
-		if ($this->params->get('show_citation') == 2)
+		if ($this->publication->params->get('show_citation') == 2)
 		{
 			$citations = '';
 		}
@@ -243,34 +242,35 @@ $schema 	= $metaElements->getSchema();
 		<?php echo $citeinstruct; ?>
 	</div>
 <?php } ?>
-<?php if ($this->params->get('show_submitter') && $this->publication->submitter) { ?>
+<?php if ($this->publication->params->get('show_submitter') && $this->publication->_submitter) { ?>
 	<h4><?php echo JText::_('COM_PUBLICATIONS_SUBMITTER'); ?></h4>
 	<div class="pub-content">
 		<?php
-			$submitter  = $this->publication->submitter->name;
-			$submitter .= $this->publication->submitter->organization
-					? ', ' . $this->publication->submitter->organization : '';
+			$submitter  = $this->publication->_submitter->name;
+			$submitter .= $this->publication->_submitter->organization
+					? ', ' . $this->publication->_submitter->organization : '';
 			echo $submitter;
 		?>
 	</div>
 <?php } ?>
-<?php if ($useBlocks || $this->params->get('show_tags')) {
-	$this->helper->getTagCloud( $this->authorized );
+<?php if ($useBlocks || $this->publication->params->get('show_tags')) {
+	$this->publication->getTagCloud( $this->authorized );
 	?>
-	<?php if ($this->helper->tagCloud) { ?>
+	<?php if ($this->publication->_tagCloud) { ?>
 		<h4><?php echo JText::_('COM_PUBLICATIONS_TAGS'); ?></h4>
 		<div class="pub-content">
 			<?php
-				echo $this->helper->tagCloud;
+				echo $this->publication->_tagCloud;
 			?>
 		</div>
 	<?php } ?>
 <?php } ?>
 <?php
 // Show version notes
-if (($useBlocks || $this->params->get('show_notes')) && $this->publication->release_notes)
+if (($useBlocks || $this->publication->params->get('show_notes')) && $this->publication->release_notes)
 {
-	$notes = $model->notes('parsed');
+	$notes = $this->publication->notes('parsed');
+	$notes = NULL;
 	?>
 	<h4><?php echo JText::_('COM_PUBLICATIONS_NOTES'); ?></h4>
 	<div class="pub-content">

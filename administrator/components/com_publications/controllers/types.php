@@ -149,7 +149,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$this->view->curation = new PublicationsCuration(
-			$this->database,
 			$this->view->row->curation
 		);
 
@@ -211,7 +210,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$curation = new PublicationsCuration(
-			$this->database,
 			$row->curation
 		);
 
@@ -316,7 +314,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$this->view->curation = new PublicationsCuration(
-			$this->database,
 			$this->view->row->curation
 		);
 
@@ -425,7 +422,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$this->view->curation = new PublicationsCuration(
-			$this->database,
 			$this->view->row->curation
 		);
 
@@ -475,14 +471,13 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$curation = new PublicationsCuration(
-			$this->database,
 			$row->curation
 		);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $id;
 
-		$objC = new PublicationsCuration($this->database, $row->curation);
+		$objC = new PublicationsCuration($row->curation);
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
@@ -572,7 +567,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$this->view->curation = new PublicationsCuration(
-			$this->database,
 			$this->view->row->curation
 		);
 
@@ -635,7 +629,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Load curation
 		$curation = new PublicationsCuration(
-			$this->database,
 			$row->curation
 		);
 
@@ -704,7 +697,6 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			if ($useBlocks)
 			{
 				$this->view->curation = new PublicationsCuration(
-					$this->database,
 					$this->view->row->curation
 				);
 
@@ -803,7 +795,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 				$row->curatorGroup = 0;
 			}
 
-			$objC = new PublicationsCuration($this->database, $row->curation);
+			$objC = new PublicationsCuration($row->curation);
 			$manifest = $objC->_manifest;
 
 			// Get curation configs
