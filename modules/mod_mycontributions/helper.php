@@ -133,9 +133,9 @@ class Helper extends Module
 					if ($show_wishes)
 					{
 						// Get open wishes
-						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlists.php');
-						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php');
+						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+						require_once(PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
 
 						$objWishlist = new \Components\Wishlist\Tables\Wishlist($database);
 						$objWish = new \Components\Wishlist\Tables\Wish($database);
