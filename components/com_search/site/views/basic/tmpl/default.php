@@ -38,22 +38,22 @@ $this->css()
 $show_weight = array_key_exists('show_weight', $_GET);
 ?>
 <header id="content-header">
-	<h2><?php echo JText::_('COM_SEARCH'); ?></h2>
+	<h2><?php echo Lang::txt('COM_SEARCH'); ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section">
 	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_SEARCH_SEARCH'); ?>" />
+		<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
+			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_SEARCH_SEARCH'); ?>" />
 			<fieldset class="entry-search">
-				<legend><?php echo JText::_('COM_SEARCH_SITE'); ?></legend>
-				<label for="terms"><?php echo JText::_('COM_SEARCH_TERMS'); ?></label>
-				<input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo JText::_('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" />
+				<legend><?php echo Lang::txt('COM_SEARCH_SITE'); ?></legend>
+				<label for="terms"><?php echo Lang::txt('COM_SEARCH_TERMS'); ?></label>
+				<input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</form>
 <?php if ($this->results->valid()) : ?>
 	<?php if (($ct = $this->results->get_custom_title())): ?>
-		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1'); ?>">View all results.</a></p>
+		<p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="<?php echo Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1'); ?>">View all results.</a></p>
 	<?php endif; ?>
 
 		<div class="container">
@@ -66,13 +66,13 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				$total_pages  = ceil($total / $limit);
 				?>
 				<h3>
-					<?php echo JText::_('COM_SEARCH_RESULTS'); ?>
-					<span>(<?php echo JText::sprintf('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
+					<?php echo Lang::txt('COM_SEARCH_RESULTS'); ?>
+					<span>(<?php echo Lang::txt('COM_SEARCH_RESULTS_PAGE_OF', $current_page, $total_pages); ?>)</span>
 				</h3>
 			<?php if (($tags = $this->results->get_tags())): ?>
 				<ol class="tags">
 					<?php foreach ($tags as $tag): ?>
-					<li><a href="<?php echo JRoute::_($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
+					<li><a href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
 					<?php endforeach; ?>
 				</ol>
 			<?php endif; ?>
@@ -99,7 +99,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 										?>
 										Contributor(s):
 										<?php foreach ($contributors as $idx=>$contrib): ?>
-											<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
+											<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) echo ', '; ?>
 										<?php endforeach; ?>
 								</span>
 								<?php endif; ?>
@@ -172,7 +172,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				</li>
 			<?php endforeach; ?>
 			</ol>
-			<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get">
+			<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
 				<?php
 				$pagination = new JPagination(
 					$this->total,
@@ -187,27 +187,27 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			</form>
 		</div><!-- / .container -->
 <?php elseif (($raw = $this->terms->get_raw())): ?>
-	<p><?php echo JText::sprintf('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
+	<p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
 	<?php
 		# raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
 		if (!$this->terms->any() || strlen($raw) <= 3):
 	?>
-		<p class="warning"><?php echo JText::_('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
+		<p class="warning"><?php echo Lang::txt('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
 	<?php endif; ?>
 <?php endif; ?>
 	</div><!-- / .subject -->
 	<div class="aside">
 		<div class="container">
 			<h3>
-				<?php echo JText::_('COM_SEARCH_FILTER_RESULTS'); ?>
+				<?php echo Lang::txt('COM_SEARCH_FILTER_RESULTS'); ?>
 			</h3>
 		<?php if ($this->results->get_total_count()): ?>
 			<ul class="sub-nav">
 				<li>
 					<?php if ($this->plugin): ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo JText::_('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+						<a href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
 					<?php else: ?>
-						<strong><?php echo JText::_('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
+						<strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
 					<?php endif; ?>
 				</li>
 			<?php foreach ($this->results->get_result_counts() as $cat=>$def): ?>
@@ -216,7 +216,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<?php if ($this->plugin == $cat && !$this->section): ?>
 							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
 						<?php else: ?>
-							<a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
+							<a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
 						<?php endif; ?>
 						<?php
 						$fc_child_flag = 'plgsearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
@@ -227,7 +227,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
-									<li><a href="<?php echo JRoute::_('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
+									<li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
 								<?php else: ?>
 									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
 								<?php endif; ?>

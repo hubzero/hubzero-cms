@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Search\Controllers;
+namespace Components\Search\Site\Controllers;
 
 use Components\Search\Models\Hubgraph\Configuration;
 use Components\Search\Models\Hubgraph\Request;
@@ -36,11 +36,11 @@ use Components\Search\Models\Hubgraph\client;
 use Hubzero\Component\SiteController;
 use Exception;
 
-include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'hubgraph.php');
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'hubgraph' . DS . 'inflect.php');
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'hubgraph' . DS . 'request.php');
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'hubgraph' . DS . 'client.php');
-include_once(dirname(__DIR__) . DS . 'models' . DS . 'hubgraph' . DS . 'db.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubgraph.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'hubgraph' . DS . 'inflect.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'hubgraph' . DS . 'request.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'hubgraph' . DS . 'client.php');
+include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'hubgraph' . DS . 'db.php');
 
 /**
  * Hubgraph controller class
@@ -74,7 +74,7 @@ class Hubgraph extends SiteController
 		try
 		{
 			$path = \JFactory::getApplication()->getPathway();
-			$path->addItem(\JText::_('COM_SEARCH'), 'index.php?option=' . $this->_option);
+			$path->addItem(Lang::txt('COM_SEARCH'), 'index.php?option=' . $this->_option);
 
 			parent::execute();
 		}
@@ -92,7 +92,7 @@ class Hubgraph extends SiteController
 				// so it knows to load the default, basic controller.
 				$terms = \JRequest::getVar('terms', '', 'get');
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
+					Route::url('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
 					(JDEBUG ? $ex->getMessage() : null),
 					(JDEBUG ? 'error' : null)
 				);

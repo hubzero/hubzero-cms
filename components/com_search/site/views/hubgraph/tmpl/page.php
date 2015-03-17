@@ -183,7 +183,7 @@ class GenericRenderer
 
 	protected function related()
 	{
-		return '<a class="related" data-domain="' . a($this->item['domain']) . '" data-id="' . a($this->item['id']) . '">' . JText::_('COM_SEARCH_HUBGRAPH_SHOW_RELATED') . '</a>';
+		return '<a class="related" data-domain="' . a($this->item['domain']) . '" data-id="' . a($this->item['id']) . '">' . Lang::txt('COM_SEARCH_HUBGRAPH_SHOW_RELATED') . '</a>';
 	}
 
 	protected function language()
@@ -413,7 +413,7 @@ class EventsRenderer extends GenericRenderer
 		}
 		return str_replace(
 			'<td>',
-			'<td>' . (strtotime($this->item['date'] > $now) ? JText::_('COM_SEARCH_HUBGRAPH_HAPPENING') . ' ' : JText::_('COM_SEARCH_HUBGRAPH_HAPPENED') . ' '),
+			'<td>' . (strtotime($this->item['date'] > $now) ? Lang::txt('COM_SEARCH_HUBGRAPH_HAPPENING') . ' ' : Lang::txt('COM_SEARCH_HUBGRAPH_HAPPENED') . ' '),
 			parent::date()
 		);
 	}
@@ -423,12 +423,12 @@ class MembersRenderer extends GenericRenderer
 {
 	protected function domain()
 	{
-		return ($this->item['count'] ? JText::_('COM_SEARCH_HUBGRAPH_CONTRIBUTOR') : JText::_('COM_SEARCH_HUBGRAPH_MEMBER')) . ($this->item['organization'] ? ', ' . h($this->item['organization']) : '');
+		return ($this->item['count'] ? Lang::txt('COM_SEARCH_HUBGRAPH_CONTRIBUTOR') : Lang::txt('COM_SEARCH_HUBGRAPH_MEMBER')) . ($this->item['organization'] ? ', ' . h($this->item['organization']) : '');
 	}
 
 	protected function date()
 	{
-		return str_replace('<td>', '<td>' . JText::_('COM_SEARCH_HUBGRAPH_SINCE') . ' ', parent::date());
+		return str_replace('<td>', '<td>' . Lang::txt('COM_SEARCH_HUBGRAPH_SINCE') . ' ', parent::date());
 	}
 
 	protected function extraDetails()
@@ -440,7 +440,7 @@ class MembersRenderer extends GenericRenderer
 			{
 				if ($type == 'content')
 				{
-					$type = JText::_('COM_SEARCH_HUBGRAPH_CONTENT_PAGES');
+					$type = Lang::txt('COM_SEARCH_HUBGRAPH_CONTENT_PAGES');
 				}
 				$rv[] = $num . ' ' . ($num == 1 ? preg_replace('/e?s$/', '', $type) : $type);
 			}
@@ -454,7 +454,7 @@ function rmUrl($base, $key, $id)
 	return preg_replace('/[&?]$/', '', preg_replace('/' . $key . '(?:\[\d*\])?=' . preg_quote($id) . '/i', '', urldecode($base)));
 }
 $url = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : $_SERVER['REDIRECT_QUERY_STRING'];
-$url = JRoute::_('index.php?option=com_search' . ($url ? '&' . $url : ''));
+$url = Route::url('index.php?option=com_search' . ($url ? '&' . $url : ''));
 
 $req = $this->req;
 $results = $this->results;
@@ -477,9 +477,9 @@ if (!defined('HG_AJAX')):
 			<div class="pane-inner">
 
 		<div class="count">
-			<h3><?php echo JText::_('Category'); ?>:</h3>
+			<h3><?php echo Lang::txt('Category'); ?>:</h3>
 			<ol class="domains">
-				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo JText::_('All results') . ' <span>' . $results['total'] . '</span>'; ?></button></li>
+				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo Lang::txt('All results') . ' <span>' . $results['total'] . '</span>'; ?></button></li>
 				<?php 
 				// nees :[
 				$domains = array();
@@ -627,14 +627,14 @@ if (isset($this->terms)):
 		$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
 		$link = trim($link, '?');
 		?>
-		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_DID_YOU_MEAN', '<a href="' . JRoute::_('index.php?option=com_search&' . $link) . '">' . $this->terms . '</a>'); ?></p>
+		<p class="info"><?php echo Lang::txt('COM_SEARCH_HUBGRAPH_DID_YOU_MEAN', '<a href="' . Route::url('index.php?option=com_search&' . $link) . '">' . $this->terms . '</a>'); ?></p>
 	<?php elseif ($results['terms']['autocorrected']): ?>
-		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_RESULTS_FOR', $this->terms); ?></p>
+		<p class="info"><?php echo Lang::txt('COM_SEARCH_HUBGRAPH_RESULTS_FOR', $this->terms); ?></p>
 	<?php endif;
 elseif (!$req->anyCriteria()):
 	?>
 		<div class="instructions">
-			<p class="notification"><?php echo JText::_('Type a keyword or phrase in the box above and click the "Search" button.'); ?></p>
+			<p class="notification"><?php echo Lang::txt('Type a keyword or phrase in the box above and click the "Search" button.'); ?></p>
 		</div>
 	<?php
 endif;
@@ -662,7 +662,7 @@ if ($results['results']):
 	?>
 		</ul>
 		<div class="pages">
-			<span><?php echo JText::_('COM_SEARCH_HUBGRAPH_PAGE'); ?></span>
+			<span><?php echo Lang::txt('COM_SEARCH_HUBGRAPH_PAGE'); ?></span>
 			<ol>
 			<?php 
 				$curDomain = $req->getDomain();

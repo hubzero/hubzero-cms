@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,45 +23,19 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$option = 'com_search';
-
-// Authorization check
-if (!JFactory::getUser()->authorise('core.manage', $option))
-{
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-}
+JToolBarHelper::title(Lang::txt('COM_SEARCH') . ': ' . Lang::txt('COM_SEARCH_SITEMAP'), 'search.png');
+JToolBarHelper::preferences('com_search', '550');
+JToolBarHelper::spacer();
+JToolBarHelper::help('search');
 
 JHTML::_('behavior.framework');
-
-if (!function_exists('stem'))
-{
-	/**
-	 * Stem a string
-	 *
-	 * @param  string $str
-	 * @return string
-	 */
-	function stem($str)
-	{
-		return $str;
-	}
-}
-
-foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
-{
-	require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
-}
-foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
-{
-	require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
-}
 
 JPluginHelper::importPlugin('search');
 
@@ -83,11 +57,6 @@ if (array_key_exists('search-task', $_POST))
 	}
 }
 
-JToolBarHelper::title(JText::_('COM_SEARCH') . ': ' . JText::_('COM_SEARCH_SITEMAP'), 'search.png');
-JToolBarHelper::preferences('com_search', '550');
-JToolBarHelper::spacer();
-JToolBarHelper::help('search');
-
 $app = JFactory::getApplication();
 foreach ($app->triggerEvent('onSearchAdministrate', array($context)) as $plugin)
 {
@@ -95,4 +64,3 @@ foreach ($app->triggerEvent('onSearchAdministrate', array($context)) as $plugin)
 	//echo '<h3>' . $name . '</h3>';
 	echo $html;
 }
-

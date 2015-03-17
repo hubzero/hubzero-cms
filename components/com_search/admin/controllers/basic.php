@@ -23,40 +23,51 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
+ * @author    Steve Snyder <snyder13@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Search;
+namespace Components\Search\Admin\Controllers;
 
-$config = \JComponentHelper::getParams('com_search');
+use Hubzero\Component\AdminController;
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', $config->get('engine', 'basic')));
-
-// Are we falling back to the default engine?
-$fallback = \JFactory::getSession()->get('searchfallback');
-if ($fallback && intval($fallback) <= time())
+if (!function_exists('stem'))
 {
-	// Don't fallback if the time limit has expired
-	$fallback = null;
+	/**
+	 * Stem a string
+	 *
+	 * @param  string $str
+	 * @return string
+	 */
+	function stem($str)
+	{
+		return $str;
+	}
 }
 
-// Are we explicitely forcing the engine?
-if ($force = \JRequest::getCmd('engine'))
+foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
 {
-	$fallback = null;
-	$controllerName = $force;
+	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
+}
+foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
+{
+	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
-if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Search controller class
+ */
+class Basic extends AdminController
 {
-	$controllerName = 'basic';
+	/**
+	 * Display search form and results (if any)
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		$this->view->display();
+	}
 }
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();

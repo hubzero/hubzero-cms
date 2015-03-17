@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Search\Controllers;
+namespace Components\Search\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Search\Models\Basic\Result\Set;
@@ -50,11 +50,11 @@ if (!function_exists('stem'))
 
 foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl)
 {
-	require_once dirname(__DIR__) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
+	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
 }
 foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl)
 {
-	require_once dirname(__DIR__) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
+	require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
 /**
@@ -76,14 +76,14 @@ class Basic extends SiteController
 		// Set breadcrumbs
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			\JText::_('COM_SEARCH'),
+			Lang::txt('COM_SEARCH'),
 			'index.php?option=com_search'
 		);
 
 		$terms = new Terms(\JRequest::getString('terms'));
 
 		// Set the document title
-		\JFactory::getDocument()->setTitle($terms->is_set() ? \JText::sprintf('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
+		\JFactory::getDocument()->setTitle($terms->is_set() ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
 
 		// Get search results
 		$results = new Set($terms);

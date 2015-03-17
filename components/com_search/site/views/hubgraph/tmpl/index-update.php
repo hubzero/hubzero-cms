@@ -3,7 +3,7 @@
 $doc = JFactory::getDocument();
 if (!defined('HG_INLINE'))
 {
-	$doc->setTitle(JText::_('COM_SEARCH'));
+	$doc->setTitle(Lang::txt('COM_SEARCH'));
 }
 
 $this->css('./hubgraph/hubgraph.css')
@@ -23,21 +23,21 @@ if (isset($this->results['js'])): ?>
 
 <?php if (!defined('HG_INLINE')): ?>
 	<header id="content-header">
-		<h2><?php echo JText::_('COM_SEARCH'); ?></h2>
+		<h2><?php echo Lang::txt('COM_SEARCH'); ?></h2>
 	</header><!-- / #content-header -->
 <?php endif; ?>
 
-	<form id="search-form" class="section-inner search" action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get">
+	<form id="search-form" class="section-inner search" action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get">
 		<div class="bar">
 			<fieldset>
-				<input type="text" autocomplete="off" name="terms" class="terms" placeholder="<?php echo Jtext::_('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" value="<?php echo a($this->req->getTerms()) ?>" />
+				<input type="text" autocomplete="off" name="terms" class="terms" placeholder="<?php echo Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" value="<?php echo a($this->req->getTerms()) ?>" />
 				<a class="clear" href="<?php echo preg_replace('/[?&]+$/', '', $this->base . ($_SERVER['QUERY_STRING'] ? '?' . preg_replace('/^&/', '', preg_replace('/&?terms=[^&]*/', '', urldecode($_SERVER['QUERY_STRING']))) : '')) ?>">&#x2716;</a>
-				<button class="submit btn" type="submit"><span><?php echo Jtext::_('COM_SEARCH_SEARCH'); ?></span></button>
+				<button class="submit btn" type="submit"><span><?php echo Lang::txt('COM_SEARCH_SEARCH'); ?></span></button>
 			</fieldset>
 			<ul class="complete">
-				<li class="cat users" title="<?php echo Jtext::_('COM_SEARCH_HUBGRAPH_CONTRIBUTORS'); ?>"><ul></ul></li>
-				<li class="cat tags" title="<?php echo Jtext::_('COM_SEARCH_HUBGRAPH_TAGS'); ?>"><ul></ul></li>
-				<li class="cat orgs" title="<?php echo Jtext::_('COM_SEARCH_HUBGRAPH_ORGANIZATION'); ?>"><ul></ul></li>
+				<li class="cat users" title="<?php echo Lang::txt('COM_SEARCH_HUBGRAPH_CONTRIBUTORS'); ?>"><ul></ul></li>
+				<li class="cat tags" title="<?php echo Lang::txt('COM_SEARCH_HUBGRAPH_TAGS'); ?>"><ul></ul></li>
+				<li class="cat orgs" title="<?php echo Lang::txt('COM_SEARCH_HUBGRAPH_ORGANIZATION'); ?>"><ul></ul></li>
 				<li class="cat text"><ul></ul></li>
 			</ul>
 		</div>
