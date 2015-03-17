@@ -100,7 +100,7 @@ class WikiTableRevision extends JTable
 
 		if ($version)
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version);
+			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version) . " AND approved != 2";
 		}
 		else
 		{
