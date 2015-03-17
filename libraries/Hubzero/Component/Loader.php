@@ -77,25 +77,25 @@ class Loader
 		$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 		$file = substr($option, 4);
 
-		// [!] HUBZERO - Set path and constants for combined components
 		$client = ($app->isAdmin() ? 'admin' : 'site');
 
 		// Get component path
 		if (is_dir(JPATH_SITE . '/components/' . $option . '/' . $client))
 		{
+			// Set path and constants for combined components
 			define('JPATH_COMPONENT', JPATH_SITE . '/components/' . $option . '/' . $client);
 			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option . '/site');
 			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_SITE . '/components/' . $option . '/admin');
 		}
 		else
 		{
+			// Set path and constants for legacy components
 			define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
 			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
 			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
 		}
 
 		$path = JPATH_COMPONENT . '/' . $file . '.php';
-		// [!] HUBZERO - END Set path and constants for combined components
 
 		// If component is disabled throw error
 		if (!$this->isEnabled($option) || !file_exists($path))
