@@ -82,7 +82,7 @@ class Link extends \JModelAdmin
 	*/
 	public function getTable($type = 'Link', $prefix = 'RedirectTable', $config = array())
 	{
-		include_once(__DIR__ . '/../tables/link.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'link.php');
 		$db = \JFactory::getDBO();
 		return new \Components\Redirect\Tables\Link($db); //\JTable::getInstance($type, $prefix, $config);
 	}
@@ -154,13 +154,13 @@ class Link extends \JModelAdmin
 		\JArrayHelper::toInteger($pks);
 
 		// Populate default comment if necessary.
-		$comment = (!empty($comment)) ? $comment : \JText::sprintf('COM_REDIRECT_REDIRECTED_ON', \JHtml::_('date', time()));
+		$comment = (!empty($comment)) ? $comment : \Lang::txt('COM_REDIRECT_REDIRECTED_ON', \JHtml::_('date', time()));
 
 		// Access checks.
 		if (!$user->authorise('core.edit', 'com_redirect'))
 		{
 			$pks = array();
-			$this->setError(\JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
+			$this->setError(\Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
 			return false;
 		}
 

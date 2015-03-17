@@ -52,10 +52,10 @@ class JHtmlRedirect
 			-2 => array('trash',    'publish',   'JTRASHED',  'COM_REDIRECT_ENABLE_LINK'),
 		);
 		$state = JArrayHelper::getValue($states, (int) $value, $states[0]);
-		$html  = '<span>' . JText::_($state[3]) . '</span>'; //JHtml::_('image', 'admin/'.$state[0], JText::_($state[2]), NULL, true);
+		$html  = '<span>' . Lang::txt($state[3]) . '</span>'; //JHtml::_('image', 'admin/'.$state[0], Lang::txt($state[2]), NULL, true);
 		if ($canChange)
 		{
-			$html = '<a class="state ' . $state[0] . '" href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.JText::_($state[3]).'">'. $html.'</a>';
+			$html = '<a class="state ' . $state[0] . '" href="#" onclick="return listItemTask(\'cb'.$i.'\',\''.$state[1].'\')" title="'.Lang::txt($state[3]).'">'. $html.'</a>';
 		}
 
 		return $html;

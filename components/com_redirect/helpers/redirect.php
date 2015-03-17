@@ -30,6 +30,7 @@
 
 namespace Components\Redirect\Helpers;
 
+use Hubzero\Base\Object;
 use Exception;
 
 /**
@@ -55,7 +56,7 @@ class Redirect
 
 		$user    = \JFactory::getUser();
 		$actions = \JAccess::getActions($assetName);
-		$result  = new \JObject;
+		$result  = new Object;
 
 		foreach ($actions as $action)
 		{

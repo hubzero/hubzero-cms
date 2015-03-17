@@ -35,7 +35,7 @@ JRequest::setVar('hidemainmenu', true);
 
 $canDo = \Components\Redirect\Helpers\Redirect::getActions();
 
-JToolBarHelper::title(JText::_('COM_REDIRECT_MANAGER_LINK'), 'redirect');
+JToolBarHelper::title(Lang::txt('COM_REDIRECT_MANAGER_LINK'), 'redirect');
 // If not checked out, can save the item.
 if ($canDo->get('core.edit'))
 {
@@ -64,7 +64,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('link');
 
 // Include the HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
@@ -77,27 +77,27 @@ JHtml::_('behavior.keepalive');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . (int) $this->row->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . (int) $this->row->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo empty($this->row->id) ? JText::_('COM_REDIRECT_NEW_LINK') : JText::sprintf('COM_REDIRECT_EDIT_LINK', $this->row->id); ?></span></legend>
+			<legend><span><?php echo empty($this->row->id) ? Lang::txt('COM_REDIRECT_NEW_LINK') : Lang::txt('COM_REDIRECT_EDIT_LINK', $this->row->id); ?></span></legend>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?>">
-				<label id="fields-old_url-lbl" for="fields-old_url"><?php echo JText::_('COM_REDIRECT_FIELD_OLD_URL_LABEL'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span></label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?>">
+				<label id="fields-old_url-lbl" for="fields-old_url"><?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_LABEL'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span></label>
 				<input type="text" name="fields[old_url]" id="fields-old_url" value="<?php echo $this->escape($this->row->old_url); ?>" class="inputbox required" />
-				<span class="hint"><?php echo JText::_('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_OLD_URL_DESC'); ?></span>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?>">
-				<label id="fields-new_url-lbl" for="fields-new_url"><?php echo JText::_('COM_REDIRECT_FIELD_NEW_URL_LABEL'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span></label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?>">
+				<label id="fields-new_url-lbl" for="fields-new_url"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_LABEL'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span></label>
 				<input type="text" name="fields[new_url]" id="fields-new_url" value="<?php echo $this->escape($this->row->new_url); ?>" class="inputbox required" />
-				<span class="hint"><?php echo JText::_('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_NEW_URL_DESC'); ?></span>
 			</div>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_REDIRECT_FIELD_COMMENT_DESC'); ?>">
-				<label id="fields-comment-lbl" for="fields-comment"><?php echo JText::_('COM_REDIRECT_FIELD_COMMENT_LABEL'); ?></label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?>">
+				<label id="fields-comment-lbl" for="fields-comment"><?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_LABEL'); ?></label>
 				<input type="text" name="fields[comment]" id="fields-comment" value="<?php echo $this->escape($this->row->comment); ?>" class="inputbox required" />
-				<span class="hint"><?php echo JText::_('COM_REDIRECT_FIELD_COMMENT_DESC'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_REDIRECT_FIELD_COMMENT_DESC'); ?></span>
 			</div>
 		</fieldset>
 	</div>
@@ -106,28 +106,28 @@ JHtml::_('behavior.keepalive');
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('JGLOBAL_FIELD_ID_LABEL'); ?></th>
+					<th><?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->id); ?>
 						<input type="hidden" name="fields[id]" id="fields-id" value="<?php echo $this->escape($this->row->id); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('COM_REDIRECT_FIELD_CREATED_DATE_LABEL'); ?></th>
+					<th><?php echo Lang::txt('COM_REDIRECT_FIELD_CREATED_DATE_LABEL'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->modified_date); ?>
 						<input type="hidden" name="fields[created_date]" id="fields-created_date" value="<?php echo $this->escape($this->row->created_date); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('COM_REDIRECT_FIELD_UPDATED_DATE_LABEL'); ?></th>
+					<th><?php echo Lang::txt('COM_REDIRECT_FIELD_UPDATED_DATE_LABEL'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->modified_date); ?>
 						<input type="hidden" name="fields[modified_date]" id="fields-modified_date" value="<?php echo $this->escape($this->row->modified_date); ?>" />
 					</td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('JGLOBAL_HITS'); ?></th>
+					<th><?php echo Lang::txt('JGLOBAL_HITS'); ?></th>
 					<td>
 						<?php echo $this->escape($this->row->hits); ?>
 						<input type="hidden" name="fields[hits]" id="fields-hits" value="<?php echo $this->escape($this->row->hits); ?>" />
@@ -137,15 +137,15 @@ JHtml::_('behavior.keepalive');
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_REDIRECT_OPTIONS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_REDIRECT_OPTIONS'); ?></span></legend>
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('JFIELD_PUBLISHED_DESC'); ?>">
-				<label id="fields-published-lbl" for="fields-published"><?php echo JText::_('JSTATUS'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span></label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_PUBLISHED_DESC'); ?>">
+				<label id="fields-published-lbl" for="fields-published"><?php echo Lang::txt('JSTATUS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span></label>
 				<select name="fields[published]" id="fields-published">
-					<option value="1"<?php if ($this->row->published == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('JENABLED'); ?></option>
-					<option value="0"<?php if ($this->row->published == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('JDISABLED'); ?></option>
-					<option value="2"<?php if ($this->row->published == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JARCHIVED'); ?></option>
-					<option value="-2"<?php if ($this->row->published == -2) { echo ' selected="selected"'; } ?>><?php echo JText::_('JTRASHED'); ?></option>
+					<option value="1"<?php if ($this->row->published == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JENABLED'); ?></option>
+					<option value="0"<?php if ($this->row->published == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JDISABLED'); ?></option>
+					<option value="2"<?php if ($this->row->published == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JARCHIVED'); ?></option>
+					<option value="-2"<?php if ($this->row->published == -2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
 				</select>
 			</div>
 		</fieldset>

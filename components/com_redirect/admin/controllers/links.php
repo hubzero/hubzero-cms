@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Redirect\Controllers;
+namespace Components\Redirect\Admin\Controllers;
 
 use Components\Redirect\Helpers\Redirect as Helper;
 use Components\Redirect\Models\Links as Records;
@@ -37,10 +37,10 @@ use Components\Redirect\Tables\Link;
 use Hubzero\Component\AdminController;
 use Exception;
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'redirect.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'links.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'link.php');
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'link.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'links.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'link.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'link.php');
 
 /**
  * Redirect link list controller class.
@@ -108,8 +108,8 @@ class Links extends AdminController
 		{
 			// Set the internal error and also the redirect error.
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				\JText::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+				Lang::txt('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'),
 				'error'
 			);
 			return;
@@ -180,8 +180,8 @@ class Links extends AdminController
 		if (!$this->juser->authorise('core.edit', $this->_option))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				\JText::_('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'),
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+				Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'),
 				'error'
 			);
 			return;
@@ -214,7 +214,7 @@ class Links extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app     = \JFactory::getApplication();
@@ -242,8 +242,8 @@ class Links extends AdminController
 		if (!$this->juser->authorise('core.edit', $this->_option) && !$this->juser->authorise('core.create', $this->_option))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
-				\JText::_('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'),
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'),
 				'error'
 			);
 			return;
@@ -268,7 +268,7 @@ class Links extends AdminController
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false)
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false)
 			);
 			return;
 		}
@@ -281,14 +281,14 @@ class Links extends AdminController
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false),
-				\JText::sprintf('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()),
+				Route::url('index.php?option=' . $this->_option . $this->getRedirectToItemAppend($recordId, $urlVar), false),
+				Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()),
 				'error'
 			);
 			return;
 		}
 
-		$msg = \JText::_('COM_REDIRECT_SAVE_SUCCESS');
+		$msg = Lang::txt('COM_REDIRECT_SAVE_SUCCESS');
 
 		// Redirect the user and adjust session state based on the chosen task.
 		switch ($this->_task)
@@ -296,7 +296,7 @@ class Links extends AdminController
 			case 'apply':
 				// Redirect back to the edit screen.
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend($recordId, $urlVar), false),
+					Route::url('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend($recordId, $urlVar), false),
 					$msg
 				);
 			break;
@@ -307,7 +307,7 @@ class Links extends AdminController
 
 				// Redirect back to the edit screen.
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend(null, $urlVar), false),
+					Route::url('index.php?option=' . $this->_option . '&task=edit' . $this->getRedirectToItemAppend(null, $urlVar), false),
 					$msg
 				);
 			break;
@@ -318,7 +318,7 @@ class Links extends AdminController
 
 				// Redirect to the list screen.
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
+					Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
 					$msg
 				);
 			break;
@@ -333,7 +333,7 @@ class Links extends AdminController
 	public function activateTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$ids     = \JRequest::getVar('cid', array(), '', 'array');
@@ -342,7 +342,7 @@ class Links extends AdminController
 
 		if (empty($ids))
 		{
-			throw new Exception(\JText::_('COM_REDIRECT_NO_ITEM_SELECTED'), 500);
+			throw new Exception(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'), 500);
 		}
 		else
 		{
@@ -354,11 +354,11 @@ class Links extends AdminController
 			// Remove the items.
 			if (!$model->activate($ids, $newUrl, $comment))
 			{
-				\JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			}
 			else
 			{
-				$this->setMessage(\JText::plural('COM_REDIRECT_N_LINKS_UPDATED', count($ids)));
+				$this->setMessage(Lang::txts('COM_REDIRECT_N_LINKS_UPDATED', count($ids)));
 			}
 		}
 
@@ -373,7 +373,7 @@ class Links extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or die(\JText::_('JINVALID_TOKEN'));
+		\JSession::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
 		$cid = \JRequest::getVar('cid', array(), '', 'array');
@@ -389,7 +389,7 @@ class Links extends AdminController
 
 		if (empty($cid))
 		{
-			\JError::raiseWarning(500, \JText::_('COM_REDIRECT_NO_ITEM_SELECTED'));
+			throw new Exception(Lang::txt('COM_REDIRECT_NO_ITEM_SELECTED'), 500);
 		}
 		else
 		{
@@ -402,7 +402,7 @@ class Links extends AdminController
 			// Publish the items.
 			if (!$model->publish($cid, $value))
 			{
-				\JError::raiseWarning(500, $model->getError());
+				throw new Exception($model->getError(), 500);
 			}
 			else
 			{
@@ -422,12 +422,12 @@ class Links extends AdminController
 				{
 					$ntext = 'COM_REDIRECT_N_ITEMS_TRASHED';
 				}
-				$this->setMessage(\JText::plural($ntext, count($cid)));
+				$this->setMessage(Lang::txts($ntext, count($cid)));
 			}
 		}
 
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option, false)
+			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
 
