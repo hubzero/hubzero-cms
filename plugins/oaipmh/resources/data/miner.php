@@ -156,11 +156,29 @@ class Miner extends Object implements Provider
 
 		if (isset($filters['from']) && $filters['from'])
 		{
-			$query .= " AND r.`created` > " . $filters['from'];
+			$d = explode('-', $filters['from']);
+			$filters['from'] = $d[0];
+			$filters['from'] .= '-' . (isset($d[1]) ? $d[1] : '00');
+			$filters['from'] .= '-' . (isset($d[2]) ? $d[2] : '00');
+
+			if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['from']))
+			{
+				$filters['from'] .= ' 00:00:00';
+			}
+			$query .= " AND r.`created` > " . $this->database->quote($filters['from']);
 		}
 		if (isset($filters['until']) && $filters['until'])
 		{
-			$query .= " AND r.`created` < " . $filters['until'];
+			$d = explode('-', $filters['until']);
+			$filters['until'] = $d[0];
+			$filters['until'] .= '-' . (isset($d[1]) ? $d[1] : '00');
+			$filters['until'] .= '-' . (isset($d[2]) ? $d[2] : '00');
+
+			if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['until']))
+			{
+				$filters['until'] .= ' 00:00:00';
+			}
+			$query .= " AND r.`created` < " . $this->database->quote($filters['until']);
 		}
 
 		return $query;
