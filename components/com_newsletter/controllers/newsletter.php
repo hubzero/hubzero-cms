@@ -205,6 +205,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 
 		// check multiple places for wkhtmltopdf lib
 		// fallback on phantomjs
+		$cmd = '';
+		$fallback = '';
 		if (file_exists('/usr/bin/wkhtmltopdf'))
 		{
 			$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
@@ -213,14 +215,28 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		{
 			$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
-		else
+
+		if (file_exists('/usr/bin/phantomjs'))
 		{
 			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-			$cmd = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
+			$fallback = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
+			if (!$cmd)
+			{
+				$cmd = $fallback;
+			}
 		}
 
-		// exec command
-		exec($cmd, $ouput, $status);
+		if ($cmd)
+		{
+			// exec command
+			exec($cmd, $ouput, $status);
+
+			// wkhtmltopdf failed, so let's try phantomjs
+			if (!file_exists($newsletterPdf) && $fallback && $cmd != $fallback)
+			{
+				exec($fallback, $ouput, $status);
+			}
+		}
 
 		//make sure we have a file to output
 		if (!file_exists($newsletterPdf))
