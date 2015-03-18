@@ -176,7 +176,7 @@ class ForumTableAttachment extends JTable
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
 		if ($this->filename && file_exists($path))
 		{
-			$url = JRoute::_($url . $this->filename);
+			$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_($url . $this->filename), '/');
 
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 
@@ -192,10 +192,13 @@ class ForumTableAttachment extends JTable
 
 					$targetWidth = $targetHeight = min(400, max($size[0], $size[1]));
 
-					if ($ratio < 1) {
-					    $targetWidth = $targetHeight * $ratio;
-					} else {
-					    $targetHeight = $targetWidth / $ratio;
+					if ($ratio < 1)
+					{
+						$targetWidth = $targetHeight * $ratio;
+					}
+					else
+					{
+						$targetHeight = $targetWidth / $ratio;
 					}
 
 					//$srcWidth = $originalWidth;
