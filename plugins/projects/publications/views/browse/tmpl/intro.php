@@ -61,8 +61,8 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 						$url = JRoute::_($route . '&pid=' . $row->id);
 						$preview = 	JRoute::_('index.php?option=com_publications&id='.$row->id);
 
-						$status = PublicationsHtml::getPubStateProperty($row, 'status', 0);
-						$class = PublicationsHtml::getPubStateProperty($row, 'class');
+						$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status', 0);
+						$class = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
 					?>
 					<li>
 						<span class="mypub-options">
@@ -102,8 +102,8 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 							$url = JRoute::_($route . '&pid=' . $row->id);
 							$preview = 	JRoute::_('index.php?option=com_publications&id='.$row->id);
 
-							$status = PublicationsHtml::getPubStateProperty($row, 'status', 0);
-							$class = PublicationsHtml::getPubStateProperty($row, 'class');
+							$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status', 0);
+							$class = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
 
 							// Check team role
 							$pOwner = new \Components\Projects\Tables\Owner( $this->database );

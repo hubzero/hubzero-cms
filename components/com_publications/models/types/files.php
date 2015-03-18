@@ -470,9 +470,6 @@ class typeFiles extends JObject
 	 */
 	protected function _publishAttachment ($pid, $vid, $fpath, $hash, $secret)
 	{
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $vid, $pid);
-
 		// Load component configs
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$config = JComponentHelper::getParams( 'com_projects' );
@@ -484,7 +481,7 @@ class typeFiles extends JObject
 		// Build publication path
 		$base_path 	= $pubconfig->get('webpath');
 		$devpath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
-		$newpath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, $secret, 1);
+		$newpath 	= \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, $secret, 1);
 
 		// Create new version path
 		if (!is_dir( $newpath ))
@@ -526,9 +523,6 @@ class typeFiles extends JObject
 	 */
 	protected function _unpublishAttachment($pid, $vid, $fpath, $secret)
 	{
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $vid, $pid);
-
 		// Remove files that got unselected from a finalized draft
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
@@ -539,7 +533,7 @@ class typeFiles extends JObject
 
 		// Build publication path
 		$base_path  = $pubconfig->get('webpath');
-		$newpath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, $secret, 1);
+		$newpath 	= \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, $secret, 1);
 
 		if (is_dir( $newpath ))
 		{
@@ -619,9 +613,6 @@ class typeFiles extends JObject
 
 		$published = 0;
 
-		// Get helpers
-		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
-
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 
@@ -632,7 +623,7 @@ class typeFiles extends JObject
 		// Build publication paths
 		$base_path 	= $pubconfig->get('webpath');
 		$devpath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
-		$newpath 	= PublicationsHtml::buildPubPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
+		$newpath 	= \Components\Publications\Helpers\Html::buildPubPath($row->publication_id, $row->id, $base_path, $row->secret, 1);
 
 		// Create new version path
 		if (!is_dir( $newpath ))

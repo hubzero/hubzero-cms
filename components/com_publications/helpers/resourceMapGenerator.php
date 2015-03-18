@@ -86,7 +86,7 @@ class ResourceMapGenerator
 		$this->componentURL = JURI::base() . 'publications/';
 		$this->resourceURL  = $this->componentURL . $this->id;
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$pub = new \Components\Publications\Tables\Publication($database);
 		$publication = $pub->getPublication($this->id);
 		$this->resourceSite = JPATH_BASE . '/site/publications/' .
@@ -106,7 +106,7 @@ class ResourceMapGenerator
 		if (!empty($id) && $id != -1)
 		{
 			// Grabs the database object
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			// Attempts to load $id on this database object.
 			$resource = new \Components\Publications\Tables\Version($database);
 
@@ -141,14 +141,14 @@ class ResourceMapGenerator
 	private function populateRDFData()
 	{
 		// Grabs database object
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$resource = new \Components\Publications\Tables\Version($database);
 		$resource = $resource->getLastPubRelease($this->id);
 
 		if (!$resource)
 		{
 			// Return if ID does not exist
-			JError::raiseError(404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND'));
+			\JError::raiseError(404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND'));
 			return false;
 		}
 
@@ -384,7 +384,7 @@ class ResourceMapGenerator
 
 		if ($rdfa == null)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND') );
+			\JError::raiseError( 404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND') );
 			return false;
 		}
 
@@ -406,7 +406,7 @@ class ResourceMapGenerator
 	public static function putRDF($id)
 	{
 		// Do not put link to RDF file if administrator disabled it
-		if (!JComponentHelper::getParams('com_publications')->get('show_linked_data', 1))
+		if (!\JComponentHelper::getParams('com_publications')->get('show_linked_data', 1))
 		{
 			return;
 		}
@@ -422,6 +422,6 @@ class ResourceMapGenerator
 
 		$rdfURL = '/publications/' . $id . '.rdf';
 
-		JFactory::getDocument()->addCustomTag('<link rel="resourcemap" type="application/rdf+xml" href="' . $rdfURL . '" />');
+		\JFactory::getDocument()->addCustomTag('<link rel="resourcemap" type="application/rdf+xml" href="' . $rdfURL . '" />');
 	}
 }

@@ -28,15 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Helpers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
 
 /**
  * Publication Tagging class
  */
-class PublicationTags extends TagsHandler
+class Tags extends \TagsHandler
 {
 	/**
 	 * Constructor
@@ -97,8 +96,8 @@ class PublicationTags extends TagsHandler
 	 */
 	public function get_tags_with_objects($id=0, $category=0, $tag='')
 	{
-		$juser = JFactory::getUser();
-		$now = JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
+		$now = \JFactory::getDate()->toSql();
 
 		$this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t,
 			$this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
@@ -206,8 +205,8 @@ class PublicationTags extends TagsHandler
 	 */
 	public function get_objects_on_tag($tag='', $id=0, $category=0, $sortby='title', $tag2='', $filterby=array())
 	{
-		$juser = JFactory::getUser();
-		$now  = JFactory::getDate()->toSql();
+		$juser = \JFactory::getUser();
+		$now  = \JFactory::getDate()->toSql();
 
 		if ($tag || $tag2)
 		{
@@ -500,8 +499,8 @@ class PublicationTags extends TagsHandler
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		$sql .= "AND tj.tbl=" . $this->_db->Quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
-		$sql .= "AND V.published_up < " . $this->_db->Quote(JFactory::getDate()->toSql()) . " ";
-		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(JFactory::getDate()->toSql()) . ") ";
+		$sql .= "AND V.published_up < " . $this->_db->Quote(\JFactory::getDate()->toSql()) . " ";
+		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(\JFactory::getDate()->toSql()) . ") ";
 		$sql .= "GROUP BY tagid ";
 		$sql .= "ORDER BY tcount DESC ";
 		$sql .= "LIMIT $limit";
@@ -631,11 +630,11 @@ class PublicationTags extends TagsHandler
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				else
 				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
 			if ($sort == 'alpha')

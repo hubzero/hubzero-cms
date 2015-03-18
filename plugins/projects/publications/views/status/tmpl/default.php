@@ -26,7 +26,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $dateFormat = 'm/d/Y';
-$pubHelper 		= $this->pub->_helpers->pubHelper;
 
 // Get hub config
 $juri 	 = JURI::getInstance();
@@ -54,7 +53,8 @@ if ($this->pub->doi)
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
 	$cite->type = '';
-	$cite->author = $pubHelper->getUnlinkedContributors( $this->pub->_authors);
+	$model = new PublicationsModelPublication($this->pub);
+	$cite->author = $model->getUnlinkedContributors();
 	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }
@@ -64,8 +64,8 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status = PublicationsHtml::getPubStateProperty($this->pub, 'status');
-$class 	= PublicationsHtml::getPubStateProperty($this->pub, 'class');
+$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
+$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
 
 $complete 	= $this->pub->_curationModel->_progress->complete;
 
@@ -96,8 +96,8 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />

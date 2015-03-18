@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $versionLabel 	= $this->pub->version_label ? $this->pub->version_label : '1.0';
-$status 	  	= PublicationsHtml::getPubStateProperty($this->pub, 'status');
+$status 	  	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
 $version 		= $this->pub->version;
 $active 		= $this->active ? $this->active : 'status';
 $activenum 		= $this->activenum ? $this->activenum : NULL;

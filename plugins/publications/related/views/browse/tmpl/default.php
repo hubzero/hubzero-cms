@@ -31,9 +31,8 @@ $this->css('assets/css/related.css');
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
 
-// Get publications helper & author classes
-$helper = new PublicationHelper($database);
-$pa = new PublicationAuthor( $database );
+// Get author class
+$pa = new \Components\Publications\Tables\Author( $database );
 $authorlist = '';
 
 ?>
@@ -52,11 +51,11 @@ foreach ($this->related as $line)
 		}
 	}
 	else {
-		$class = PublicationsHtml::getRatingClass( $line->rating );
+		$class = \Components\Publications\Helpers\Html::getRatingClass( $line->rating );
 
 		// Get version authors
 		$authors = $pa->getAuthors($line->version);
-		$authorlist = $helper->showContributors( $authors, false, true );
+		$authorlist = \Components\Publications\Helpers\Html::showContributors( $authors, false, true );
 
 		// If the user is logged in, get their rating for this publication
 		if (!$juser->get('guest')) {
@@ -65,7 +64,7 @@ foreach ($this->related as $line)
 		} else {
 			$myrating = 0;
 		}
-		$myclass = PublicationsHtml::getRatingClass( $myrating );
+		$myclass = \Components\Publications\Helpers\Html::getRatingClass( $myrating );
 
 		// Get the SEF for the publication
 		if ($line->alias) {

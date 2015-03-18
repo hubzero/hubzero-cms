@@ -617,9 +617,8 @@ class PlgPublicationsReviewsHelper extends JObject
 			// Editing a review, do some prep work
 			$review->comment = str_replace('<br />','',$review->comment);
 
-			$RE = new PublicationHelper($database, $publication->version_id, $publication->id);
-			$RE->getTagsForEditing($review->created_by);
-			$review->tags = ($RE->tagsForEditing) ? $RE->tagsForEditing : '';
+			$this->publication->getTagsForEditing($review->created_by);
+			$review->tags = ($this->publication->_tagsForEditing) ? $this->publication->_tagsForEditing : '';
 		}
 		$review->rating = ($myr) ? $myr : $review->rating;
 
@@ -696,12 +695,9 @@ class PlgPublicationsReviewsHelper extends JObject
 		$tags = trim(JRequest::getVar( 'review_tags', '' ));
 		if ($tags)
 		{
-			$rt = new PublicationTags( $database );
+			$rt = new \Components\Publications\Helpers\Tags( $database );
 			$rt->tag_object($row->created_by, $publication_id, $tags, 1, 0);
 		}
-
-		// Instantiate a helper object
-		$helper = new PublicationHelper($database, $publication->version_id, $publication->id);
 
 		// Get version authors
 		$pa = new PublicationAuthor( $database );

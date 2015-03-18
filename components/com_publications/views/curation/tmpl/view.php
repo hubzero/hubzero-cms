@@ -41,9 +41,9 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status    = PublicationsHtml::getPubStateProperty($this->pub, 'status');
-$class 	   = PublicationsHtml::getPubStateProperty($this->pub, 'class');
-$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$status    = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
+$class 	   = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 
 $profile = \Hubzero\User\Profile::getInstance($this->pub->modified_by);
 $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');

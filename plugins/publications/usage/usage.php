@@ -148,7 +148,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			);
 
 			// Get usage helper
-			$view->helper = new PublicationUsage($database, $publication->id, $publication->base);
+			$view->helper = new \Components\Publications\Helpers\Usage($database, $publication->id, $publication->base);
 
 			// Pass the view some info
 			$view->option 		= $option;

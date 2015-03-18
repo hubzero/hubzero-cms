@@ -56,11 +56,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
-
 		// Log path
-		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// replace current attachments?
 		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');
@@ -183,7 +180,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : JText::_('View publication');
-			$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)

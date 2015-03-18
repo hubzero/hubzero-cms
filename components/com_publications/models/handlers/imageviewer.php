@@ -100,7 +100,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		$thumbName = PublicationsHtml::createThumbName(
+		$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 			basename($path),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat
@@ -170,7 +170,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
 		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
 
-		$thumbName = PublicationsHtml::createThumbName(
+		$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 			basename($path),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat
@@ -244,7 +244,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Get files directory
 		$directory = isset($params->directory) && $params->directory
 							? $params->directory : $pub->secret;
-		$pubPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', $directory, 0);
+		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', $directory, 0);
 
 		$configs 		= new stdClass;
 		$configs->dirHierarchy = $dirHierarchy;
@@ -272,7 +272,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
-			$thumbName = PublicationsHtml::createThumbName(
+			$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
@@ -345,7 +345,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
 			$fpath = str_replace(JPATH_ROOT, '', $fpath);
 
-			$thumbName = PublicationsHtml::createThumbName(
+			$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
@@ -384,7 +384,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		$fpath = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
-		$thumbName = PublicationsHtml::createThumbName(
+		$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 			basename($fpath),
 			$this->_config->params->thumbSuffix,
 			$this->_config->params->thumbFormat

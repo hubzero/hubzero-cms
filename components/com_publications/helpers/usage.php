@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Helpers;
+
+include_once(__DIR__ . DS . 'usage' . DS . 'andmore.php');
 
 /**
  * Base class for publication usage
  */
-class PublicationUsage
+class Usage
 {
 	/**
 	 * JDatabase
@@ -134,23 +135,23 @@ class PublicationUsage
 		{
 			case 'CURR':
 				$period  = 1;
-				$caption = JText::_('Current Month');
+				$caption = Lang::txt('Current Month');
 			break;
 
 			case 'LAST':
 				$period  = 2;
-				$caption = JText::_('Last Month');
+				$caption = Lang::txt('Last Month');
 			break;
 
 			case 'YEAR':
 				$period  = 12;
-				$caption = JText::_('Last 12 Months');
+				$caption = Lang::txt('Last 12 Months');
 			break;
 
 			case 'ALL':
 			default:
 				$period  = 14;
-				$caption = JText::_('Total');
+				$caption = Lang::txt('Total');
 			break;
 		}
 
@@ -190,7 +191,7 @@ class PublicationUsage
 		$html .= '   <td colspan="2">Google/IEEE';
 		if ($this->lastcite)
 		{
-			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat);
+			$html .= ': updated '.\JHTML::_('date', $this->lastcite, $this->dateFormat);
 		}
 		$html .= '</td>' . "\n";
 		$html .= '  </tr>' . "\n";
@@ -282,132 +283,3 @@ class PublicationUsage
 		return $class;
 	}
 }
-
-/**
- * Extended resource stats class (And More)
- */
-class AndmoreStats extends PublicationUsage
-{
-	/**
-	 * Number of views
-	 *
-	 * @var string
-	 */
-	var $views    = 'unavailable';
-
-	/**
-	 * Average view time
-	 *
-	 * @var string
-	 */
-	var $avg_view = 'unavailable';
-
-	/**
-	 * Total views
-	 *
-	 * @var string
-	 */
-	var $tot_view = 'unavailable';
-
-	/**
-	 * Constructor
-	 *
-	 * @param      object  &$db      JDatabase
-	 * @param      integer $pubid    Resource ID
-	 * @param      integer $type     Resource type
-	 * @param      integer $rating   Resource rating
-	 * @param      integer $cites    Number of citations
-	 * @param      string  $lastcite Last citation date
-	 * @return     void
-	 */
-	public function __construct(&$db, $pubid, $type, $rating=0, $cites=0, $lastcite='')
-	{
-		parent::__construct($db, $pubid, $type, $rating, $cites, $lastcite);
-	}
-
-	/**
-	 * Display formatted results for a given time range
-	 *
-	 * @param      string $disp Time range [curr, last, year, all]
-	 * @return     string
-	 */
-	public function display($disp='ALL')
-	{
-		list($caption, $period) = $this->fetch($disp);
-
-		if ($this->_type == 'apps')
-		{
-			$vlabel  = JText::_('Views');
-			$avlabel = JText::_('Avg. view time');
-		}
-		else
-		{
-			$vlabel = JText::_('Downloads');
-			$avlabel = JText::_('Avg. downloads');
-		}
-
-		$html = '';
-		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
-		{
-			$html .= '<table class="usagestats">' . "\n";
-			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
-			$html .= ' <tfoot>' . "\n";
-			$html .= '  <tr>' . "\n";
-			$html .= '   <td colspan="2">' . $caption;
-			if ($this->datetime)
-			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
-			}
-			$html .= '</td>' . "\n";
-			$html .= '  </tr>' . "\n";
-			$html .= ' </tfoot>' . "\n";
-			$html .= ' <tbody>' . "\n";
-			if ($this->users != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.JText::_('Users').':</th>' . "\n";
-				$html .= '   <td>' . $this->users . '</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			/*if ($this->views != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$vlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->views.'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}
-			if ($this->avg_view != 'unavailable')
-			{
-				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.$avlabel.':</th>' . "\n";
-				$html .= '   <td>'.$this->valfmt($this->avg_view).'</td>' . "\n";
-				$html .= '  </tr>' . "\n";
-			}*/
-			$html .= ' </tbody>' . "\n";
-			$html .= '</table>' . "\n";
-		}
-		$html .= $this->display_substats();
-
-		return $html;
-	}
-
-	/**
-	 * Push database results to $this for internal use
-	 *
-	 * @param      array &$result Database results
-	 * @return     void
-	 */
-	public function process($result)
-	{
-		if ($result)
-		{
-			foreach ($result as $row)
-			{
-				$this->users    = $row->users;
-				$this->views    = $row->downloads;
-				$this->datetime = $row->datetime;
-			}
-		}
-	}
-}
-

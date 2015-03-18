@@ -139,7 +139,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 		$view->step		= $this->_sequence;
 
 		// Get tags
-		$tagsHelper = new PublicationTags( $this->_parent->_db);
+		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
 
 		$tags_men = $tagsHelper->get_tags_on_object($pub->id, 0, 0, 0, 0);
 
@@ -189,7 +189,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 			return false;
 		}
 
-		$tagsHelper = new PublicationTags( $this->_parent->_db );
+		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db );
 		$tags 		= trim(JRequest::getVar('tags', '', 'post'));
 		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
 
@@ -217,7 +217,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 		// Start status
 		$status 	 = new PublicationsModelStatus();
 
-		$tagsHelper  = new PublicationTags( $this->_parent->_db);
+		$tagsHelper  = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
 
 		// Required?
 		$required = $manifest->params->required;

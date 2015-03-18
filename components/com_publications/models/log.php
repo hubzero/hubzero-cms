@@ -239,7 +239,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 		}
 
 		// Build log path (access logs)
-		$logPath = PublicationsHtml::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
+		$logPath = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
 
 		if (!is_dir($logPath))
 		{

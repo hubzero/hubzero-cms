@@ -292,11 +292,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		$pub->version 	= $version;
 
-		// Initialize helpers
-		$pub->_helpers = new stdClass();
-		$pub->_helpers->pubHelper 		= new PublicationHelper($this->database, $pub->version_id, $pub->id);
-		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
-
 		// Get type info
 		$pub->_category = new \Components\Publications\Tables\Category( $this->database );
 		$pub->_category->load($pub->category);
@@ -544,7 +539,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					$pub = $objP->getPublication($row->publication_id, $row->version_number);
 					if ($pub)
 					{
-						PublicationHelper::notify(
+						\Components\Publications\Helpers\Html::notify(
 							$this->config,
 							$pub,
 							array($owner),
@@ -1026,7 +1021,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$authors = array_unique($authors);
 
 		// Notify authors
-		PublicationHelper::notify(
+		\Components\Publications\Helpers\Html::notify(
 			$this->config,
 			$pub,
 			$authors,

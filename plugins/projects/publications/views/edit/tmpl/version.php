@@ -26,8 +26,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Version status
-$status = PublicationsHtml::getPubStateProperty($this->pub, 'status');
-$class 	= PublicationsHtml::getPubStateProperty($this->pub, 'class');
+$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
+$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
 
 $v = $this->version == 'default' ? '' : '?v='.$this->version;
 
@@ -58,7 +58,8 @@ if ($this->pub->doi)
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
 	$cite->type = '';
-	$cite->author = $this->helper->getUnlinkedContributors( $this->authors);
+	$model = new PublicationsModelPublication($this->pub);
+	$cite->author = $model->getUnlinkedContributors();
 	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }
@@ -76,8 +77,8 @@ $showCitations = $typeParams->get('show_citations', 0);
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -96,7 +97,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 
 <?php
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this);
+	\Components\Publications\Helpers\Html::drawStatusBar($this);
 
 // Section body starts:
 ?>

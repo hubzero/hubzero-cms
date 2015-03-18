@@ -229,11 +229,11 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get('created'), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -354,7 +354,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 	 *
 	 * @return     string
 	 */
-	public function getUnlinkedContributors($contributors = '', $incSubmitter = false )
+	public function getUnlinkedContributors($incSubmitter = false )
 	{
 		if (!$this->exists())
 		{
@@ -783,7 +783,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 						'option'   => 'com_publications',
 						'scope'    => '',
 						'pagename' => 'publications',
-						'pageid'   => $this->publication->id,
+						'pageid'   => '',
 						'filepath' => '',
 						'domain'   => ''
 					);
@@ -914,7 +914,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		{
 			foreach ($matches as $match)
 			{
-				$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
+				$data[$match[1]] = \Components\Publications\Helpers\Html::_txtUnpee($match[2]);
 			}
 		}
 
@@ -1118,8 +1118,8 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'helpers' . DS . 'tags.php' );
 
-			$rt = new PublicationTags( $this->_db );
-			$this->_tags = $rt->get_tags_on_object($this->publication->id, 0, 0, $tagger_id, $strength, $admin);
+			$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+			$this->_tags = $rt->get_tags_on_object($this->id, 0, 0, $tagger_id, $strength, $admin);
 		}
 
 		return $this->_tags;
@@ -1143,8 +1143,8 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 			. DS . 'helpers' . DS . 'tags.php' );
 
-		$rt = new PublicationTags( $this->_db );
-		$this->_tagsForEditing = $rt->get_tag_string( $this->publication->id, 0, 0, $tagger_id, $strength, 0 );
+		$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+		$this->_tagsForEditing = $rt->get_tag_string( $this->id, 0, 0, $tagger_id, $strength, 0 );
 	}
 
 	/**
@@ -1166,8 +1166,8 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'helpers' . DS . 'tags.php' );
 
-			$rt = new PublicationTags( $this->_db );
-			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->publication->id);
+			$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->id);
 		}
 
 		return $this->_tagCloud;
@@ -1187,14 +1187,58 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		if (!isset($this->_bundlePath))
 		{
 			// Archival package
-			$tarname  = JText::_('Publication') . '_' . $this->publication->id . '.zip';
-			$this->_bundlePath = PublicationsHtml::buildPubPath(
+			$tarname  = \JText::_('Publication') . '_' . $this->publication->id . '.zip';
+			$this->_bundlePath = \Components\Publications\Helpers\Html::buildPubPath(
 				$this->publication->id,
 				$this->version->id,
 				'', '', 1) . DS . $tarname;
 		}
 
 		return $this->_bundlePath;
+	}
+
+	/**
+	 * Get wiki page
+	 *
+	 * @param      object $attachment
+	 * @param      object $publication
+	 * @param      string $masterscope
+	 * @param      string $versionid
+	 * @return     object
+	 */
+	public function getWikiPage( $pageid = NULL, $masterscope = NULL, $versionid = NULL )
+	{
+		if (!$pageid || !$this->exists())
+		{
+			return false;
+		}
+
+		$query = "SELECT p.* ";
+		if ($this->version->state == 3)
+		{
+			// Draft - load latest version
+			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id
+			  ORDER by p.state ASC, v.version DESC LIMIT 1) as pagetext ";
+		}
+		else
+		{
+			$date = $this->version->accepted && $this->version->accepted != '0000-00-00 00:00:00'
+				? $this->version->accepted : $this->version->submitted;
+			$date = (!$date || $date == '0000-00-00 00:00:00') ? $this->version->published_up : $date;
+
+			$query .= ", (SELECT v.pagetext FROM #__wiki_version as v WHERE v.pageid=p.id AND ";
+			$query .= $versionid ? " v.id=" . $versionid : " v.created <= '" . $date . "'";
+			$query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
+		}
+
+		$query .= " FROM #__wiki_page as p WHERE p.scope LIKE '" . $masterscope . "%' ";
+		$query .=  is_numeric($pageid) ? " AND p.id='$pageid' " : " AND p.pagename='$pageid' ";
+		$query .= " LIMIT 1";
+
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadObjectList();
+
+		return $result ? $result[0] : NULL;
 	}
 }
 

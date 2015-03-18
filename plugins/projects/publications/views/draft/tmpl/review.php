@@ -68,11 +68,12 @@ $site 	 = $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 $sitename = $jconfig->getValue('config.sitename');
 
+$model = new PublicationsModelPublication($this->pub);
+
 // Build our citation object
 $citation = '';
 if ($this->pub->doi)
 {
-	$pubHelper 		= $this->pub->_helpers->pubHelper;
 	include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php' );
 
 	$cite 		 	= new stdClass();
@@ -85,7 +86,7 @@ if ($this->pub->doi)
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
 	$cite->type = '';
-	$cite->author = $pubHelper->getUnlinkedContributors( $this->pub->_authors);
+	$cite->author = $model->getUnlinkedContributors();
 	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);
 }

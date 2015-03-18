@@ -66,20 +66,17 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$config 		= JComponentHelper::getParams( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
-
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path
-		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
+		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
 
 		// Get publication path
-		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
+		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
 
 		// Get publication path
-		$configs->dataPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'data', 1);
+		$configs->dataPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'data', 1);
 
 		// Serve path for data files
 		/*$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
@@ -200,7 +197,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : JText::_('View publication');
-			$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)
@@ -233,7 +230,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		$newConfigs = new stdClass;
 		$newConfigs->path = $configs->path;
-		$newConfigs->dataPath = PublicationsHtml::buildPubPath(
+		$newConfigs->dataPath = \Components\Publications\Helpers\Html::buildPubPath(
 			$pub->id,
 			$newVersion->id,
 			'',
@@ -972,12 +969,12 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				JFile::copy($repoPath . DS . $file, $configs->dataPath . DS . $file);
 
 				// Generate thumbnails for images
-				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
+				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
 				$dispatcher->trigger( 'getFilePreview', array(
 					$file, '', $repoPath, '', NULL, false, $configs->dataPath, $thumb, 180, 180)
 				);
 				// Medium size thumb
-				$medium 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
+				$medium 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
 				$dispatcher->trigger( 'getFilePreview', array(
 					$file, '', $repoPath, '', NULL, true, $configs->dataPath, $medium)
 				);

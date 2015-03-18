@@ -59,17 +59,14 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		$config 		= JComponentHelper::getParams( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
-
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path
-		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
+		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
 
 		// Get publication path
-		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
+		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -194,7 +191,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
 			$title = $configs->title ? $configs->title : JText::_('COM_PUBLICATIONS_LAUNCH_TOOL');
-			$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL,
+			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
 		elseif ($role == 2 && $attachments)

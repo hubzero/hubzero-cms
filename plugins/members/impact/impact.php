@@ -204,7 +204,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$view->database  = $this->_database;
 		$view->uid       = $uid;
 		$view->pubconfig = JComponentHelper::getParams('com_publications');
-		$view->helper    = new PublicationHelper($this->_database);
 
 		if ($this->getError())
 		{
@@ -362,8 +361,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$database 	= JFactory::getDBO();
 		$thedate 	= JHTML::_('date', $row->published_up, 'd M Y');
 
-		$helper 	= new PublicationHelper($database);
-
 		// Get version authors
 		$pa = new \Components\Publications\Tables\Author( $database );
 		$authors = $pa->getAuthors($row->version_id);
@@ -374,7 +371,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			  . stripslashes($row->cat_name);
 		if ($authors)
 		{
-			$html .= ' <span>|</span>' . JText::_('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. PublicationsHtml::showContributors( $authors, false, true ) . "\n";
+			$html .= ' <span>|</span>' . JText::_('PLG_MEMBERS_IMPACT_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $authors, false, true ) . "\n";
 		}
 		if ($row->doi)
 		{

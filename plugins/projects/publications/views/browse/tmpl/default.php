@@ -85,12 +85,12 @@ $i = 1;
 	<?php
 		foreach ($this->rows as $row) {
 				// What's the publication status?
-				$status = PublicationsHtml::getPubStateProperty($row, 'status', 0);
-				$class 	= PublicationsHtml::getPubStateProperty($row, 'class');
-				$date 	= PublicationsHtml::getPubStateProperty($row, 'date');
+				$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status', 0);
+				$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
+				$date 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'date');
 
 				// Normalize type title
-				$cat_name = PublicationsHtml::writePubCategory($row->cat_alias, $row->cat_name);
+				$cat_name = \Components\Publications\Helpers\Html::writePubCategory($row->cat_alias, $row->cat_name);
 
 				$abstract = $row->abstract ? stripslashes($row->abstract) : '';
 

@@ -1429,11 +1429,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$pub->version 	= $version;
 
-		// Initialize helpers
-		$pub->_helpers = new stdClass();
-		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
-		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
-
 		// Get type info
 		$pub->_category = new \Components\Publications\Tables\Category( $this->_database );
 		$pub->_category->load($pub->category);
@@ -1714,8 +1709,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/diskspace');
 
 		// Get used space
-		$helper 	   = new PublicationHelper($this->_database);
-		$view->dirsize = $helper->getDiskUsage($this->_project->id, $view->rows);
+		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
 		$view->params  = new JParameter( $this->_project->params );
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
@@ -1905,9 +1899,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->last_idx 	= 0;
 		$view->current_idx 	= 0;
 
-		// Initialize other helpers
-		$view->htmlHelper	  = new PublicationsHtml();
-
 		// Checked areas
 		$view->checked = array();
 		foreach ($view->panels as $key => $value)
@@ -2013,7 +2004,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->route 		= $route;
 		$view->url 			= $pid ? JRoute::_($view->route . a . 'pid=' . $pid) : JRoute::_($view->route);
 		$view->title		= $this->_area['title'];
-		$view->helper		= new PublicationHelper($this->_database);
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -2177,13 +2167,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Build pub url
 		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $pub->version_id, $pub->id);
-		$view->helper = $helper;
-
-		// Initialize other helpers
-		$view->htmlHelper	  = new PublicationsHtml();
-
 		// Instantiate publication version
 		$row->loadVersion($pid, $version);
 
@@ -2318,7 +2301,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get gallery path
 				$webpath = $this->_pubconfig->get('webpath');
-				$view->gallery_path = PublicationsHtml::buildPubPath($row->publication_id,
+				$view->gallery_path = \Components\Publications\Helpers\Html::buildPubPath($row->publication_id,
 					$row->id, $webpath, 'gallery');
 
 				// Get project file path
@@ -2328,7 +2311,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'tags':
 				// Get tags
-				$tagsHelper = new PublicationTags( $this->_database);
+				$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_database);
 
 				$tags_men = $tagsHelper->get_tags_on_object($row->publication_id, 0, 0, 0, 0);
 
@@ -2580,11 +2563,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public function makeNewVersion($pub, $oldVersion, $newVersion)
 	{
-		// Initialize helpers
-		$pub->_helpers = new stdClass();
-		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
-		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
-
 		// Get authors
 		$pAuthors 			= new \Components\Publications\Tables\Author( $this->_database );
 		$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
@@ -2648,9 +2626,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
-
-		// Get publications helper
-		$helper = new PublicationHelper( $this->_database );
 
 		// Build pub url
 		$route = $this->_project->provisioned
@@ -2738,8 +2713,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					// Build publication path
 					$base_path = $this->_pubconfig->get('webpath');
-					$oldpath = PublicationsHtml::buildPubPath($pid, $oldid, $base_path, $pub->secret, 1);
-					$newpath = PublicationsHtml::buildPubPath($pid, $newid, $base_path, $new->secret, 1);
+					$oldpath = \Components\Publications\Helpers\Html::buildPubPath($pid, $oldid, $base_path, $pub->secret, 1);
+					$newpath = \Components\Publications\Helpers\Html::buildPubPath($pid, $newid, $base_path, $new->secret, 1);
 
 					// Create new path
 					if (!is_dir( $newpath ))
@@ -2842,8 +2817,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						}
 
 						// Copy image files
-						$g_oldpath = PublicationsHtml::buildPubPath($pid, $oldid, $base_path, 'gallery', 1);
-						$g_newpath = PublicationsHtml::buildPubPath($pid, $newid, $base_path, 'gallery', 1);
+						$g_oldpath = \Components\Publications\Helpers\Html::buildPubPath($pid, $oldid, $base_path, 'gallery', 1);
+						$g_newpath = \Components\Publications\Helpers\Html::buildPubPath($pid, $newid, $base_path, 'gallery', 1);
 						if (is_dir($g_oldpath))
 						{
 							JFolder::copy($g_oldpath, $g_newpath, '', true);
@@ -3029,10 +3004,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->_category->load($pub->category);
 		$view->_category->_params = new JParameter( $view->_category->params );
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $pub->version_id, $pub->id);
-		$view->helper = $helper;
-
 		// What's the last visited panel
 		$view->params 		= new JParameter( $row->params );
 		$view->lastpane 	= $view->params->get('stage', 'content');
@@ -3070,17 +3041,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->fpath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base_path, $pub->secret, $root = 1);
+			$view->fpath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base_path, $pub->secret, $root = 1);
 		}
-		$gallery_path = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $base_path, 'gallery');
+		$gallery_path = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base_path, 'gallery');
 
 		// Get project file path
 		$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 		$view->project_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		// Get tags
-		$view->helper->getTagCloud( 1 );
-		$view->tags = $view->helper->tagCloud;
+		$view->model = new PublicationsModelPublication($pub);
+		$view->model->getTagCloud( 1 );
+		$view->tags = $view->model->_tagCloud;
 
 		// Get license info
 		$pLicense = new \Components\Publications\Tables\License( $this->_database );
@@ -3102,7 +3074,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		/*
 		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
 		$gallery = $pScreenshot->getScreenshots( $pub->version_id );
-		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
+		$view->shots = \Components\Publications\Helpers\Html::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
 		*/
 
 		// Get JS
@@ -3601,7 +3573,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'tags':
-					$tagsHelper = new PublicationTags( $this->_database);
+					$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_database);
 					$tags = trim(JRequest::getVar('tags', '', 'post'));
 					$tagsHelper->tag_object($this->_uid, $row->publication_id, $tags, 1);
 
@@ -3753,8 +3725,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));
 
 		// Get used space
-		$helper 	   = new PublicationHelper($this->_database);
-		$dirsize 	   = $helper->getDiskUsage($this->_project->id, $rows);
+		$dirsize 	   = \Components\Publications\Helpers\Html::getDiskUsage($rows);
 		$params  	   = new JParameter( $this->_project->params );
 		$quota   	   = $params->get('pubQuota')
 						? $params->get('pubQuota')
@@ -4175,7 +4146,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$admins 	= array_unique($admins);
 					}
 				}
-				PublicationHelper::notify(
+				\Components\Publications\Helpers\Html::notify(
 					$this->_pubconfig,
 					$pub,
 					$admins,
@@ -4700,9 +4671,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					jimport('joomla.filesystem.file');
 					jimport('joomla.filesystem.folder');
 
-					// Get publications helper
-					$helper = new PublicationHelper( $this->_database );
-
 					// Build publication path
 					$path    =  JPATH_ROOT . DS . trim($this->_pubconfig->get('webpath'), DS)
 							. DS .  \Hubzero\Utility\String::pad( $pid );
@@ -5167,9 +5135,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$added = 0;
 
 		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
-
-		// Get publications helper
-		$helper = new PublicationHelper($this->_database, $vid, $pid);
 
 		// Get original content
 		$filters = array();
@@ -6026,10 +5991,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get screenshot path
 		$webpath = $this->_pubconfig->get('webpath');
-
-		// Get publications helper
-		$helper = new PublicationHelper( $this->_database );
-		$galleryPath = PublicationsHtml::buildPubPath($pid, $vid, $webpath, 'gallery');
+		$galleryPath = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $webpath, 'gallery');
 
 		if (isset($selections['files']) && count($selections['files']) > 0)
 		{
@@ -6096,7 +6058,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Path to publication thumb
-		$pubPath = PublicationsHtml::buildPubPath($pid, $vid, $webpath);
+		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $webpath);
 		$thumb = PATH_APP . $pubPath . DS . 'thumb.gif';
 
 		// Get new screenshot list
@@ -6258,10 +6220,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Get screenshot path
 		$webpath = $this->_pubconfig->get('webpath');
-
-		// Get publications helper
-		$helper = new PublicationHelper( $this->_database );
-		$gallery_path = PublicationsHtml::buildPubPath($pid, $vid, $webpath, 'gallery');
+		$gallery_path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $webpath, 'gallery');
 
 		// Does screenshot already exist?
 		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_database );
@@ -6660,7 +6619,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!$this->getError())
 		{
 			// Get attached tags
-			$tagsHelper = new PublicationTags( $this->_database);
+			$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_database);
 			$view->original = $tagsHelper->getTags($pid);
 
 			$view->attached_tags = $tagsHelper->getPickedTags($attached);
@@ -6976,7 +6935,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'tags')
 			{
 				// Check tags
-				$tagsHelper = new PublicationTags( $this->_database);
+				$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_database);
 				$checked['tags'] = $tagsHelper->countTags($row->publication_id) > 0 ? 1 : 0;
 			}
 			elseif ($value == 'citations')
@@ -7286,8 +7245,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->rows = $objP->getRecords($filters);
 
 		// Get used space
-		$helper 	   = new PublicationHelper($database);
-		$view->dirsize = $helper->getDiskUsage($project->id, $view->rows);
+		$view->dirsize = \Components\Publications\Helpers\Html::getDiskUsage($view->rows);
 		$view->params  = new JParameter( $project->params );
 		$view->quota   = $view->params->get('pubQuota')
 						? $view->params->get('pubQuota')
@@ -7339,9 +7297,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		// Get publications helper
-		$helper = new PublicationHelper($database, $vid, $pid);
-
 		// Start README
 		$readme  = $objV->title . "\n ";
 		$readme .= 'Version ' . $objV->version_label . "\n ";
@@ -7389,7 +7344,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build publication path
 		$base_path = $pubconfig->get('webpath');
-		$path = PublicationsHtml::buildPubPath($pid, $vid, $base_path);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path);
 
 		$galleryPath = JPATH_ROOT . $path . DS . 'gallery';
 		$dataPath 	 = JPATH_ROOT . $path . DS . 'data';
@@ -7671,7 +7626,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get referenced path
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base_path = $pubconfig->get('webpath');
-		$pubPath = PublicationsHtml::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
+		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 
 		$serve = JPATH_ROOT . $pubPath . DS . $fpath;
 

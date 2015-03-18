@@ -88,21 +88,15 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 		//decode file name
 		$file = urldecode($file);
 
-		$pubHelper = new PublicationHelper(
-			$this->database,
-			$vid,
-			$pid
-		);
-
 		if (strtolower($file) == 'thumb')
 		{
 			// Get publication thumbnail
-			$source = PublicationsHtml::getThumb($pid, $vid, $this->config );
+			$source = \Components\Publications\Helpers\Html::getThumb($pid, $vid, $this->config );
 		}
 		else
 		{
 			// Build publication path
-			$path = PublicationsHtml::buildPubPath($pid, $vid, $this->config->get('webpath'));
+			$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'));
 
 			if (strtolower($file) == 'master')
 			{

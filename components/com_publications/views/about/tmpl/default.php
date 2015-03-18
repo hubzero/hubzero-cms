@@ -87,7 +87,7 @@ $schema 	= $metaElements->getSchema();
 		else
 		{
 			// Get gallery path
-			$galleryPath 	= PublicationsHtml::buildPubPath(
+			$galleryPath 	= \Components\Publications\Helpers\Html::buildPubPath(
 				$this->publication->id,
 				$this->publication->version_id,
 				$webpath,
@@ -137,7 +137,7 @@ $schema 	= $metaElements->getSchema();
 			{
 				$append = NULL;
 				// Get file path
-				$path 	= PublicationsHtml::buildPubPath(
+				$path 	= \Components\Publications\Helpers\Html::buildPubPath(
 					$this->publication->id,
 					$this->publication->version_id,
 					$webpath,
@@ -222,7 +222,7 @@ $schema 	= $metaElements->getSchema();
 							: NULL;
 		$cite->type 	= '';
 		$cite->pages 	= '';
-		$cite->author 	= $this->publication->getUnlinkedContributors( $this->publication->_authors);
+		$cite->author 	= $this->publication->getUnlinkedContributors();
 		$cite->publisher= $this->config->get('doi_publisher', '' );
 
 		if ($this->publication->params->get('show_citation') == 2)
@@ -235,7 +235,7 @@ $schema 	= $metaElements->getSchema();
 		$cite = null;
 	}
 
-	$citeinstruct  = PublicationsHtml::citation( $this->option, $cite, $this->publication, $citations, $this->version );
+	$citeinstruct  = \Components\Publications\Helpers\Html::citation( $this->option, $cite, $this->publication, $citations, $this->version );
 	?>
 	<h4 id="citethis"><?php echo JText::_('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
 	<div class="pub-content">

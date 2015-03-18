@@ -67,8 +67,8 @@ $canedit = (
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form">
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 		<fieldset>
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -83,13 +83,13 @@ $canedit = (
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="step" value="metadata" />
 			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-			<?php if($this->project->provisioned == 1 ) { ?>
+			<?php if ($this->project->provisioned == 1 ) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<?php } ?>
 		</fieldset>
 <?php
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this, 'metadata', $this->typeParams->get('show_metadata', 0));
+	\Components\Publications\Helpers\Html::drawStatusBar($this, 'metadata', $this->typeParams->get('show_metadata', 0));
 
 	if ($this->move) {
 		$panel_number = 1;
@@ -122,9 +122,9 @@ $canedit = (
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NO_METADATA_COLLECTED'); ?></p>
 					<?php } ?>
 			<?php } else {
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+				include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
-				$parser = WikiHelperParser::getInstance();
+				$parser = \Components\Wiki\Helpers\Parser::getInstance();
 				$wikiconfig = array(
 					'option'   => $this->option,
 					'scope'    => '',

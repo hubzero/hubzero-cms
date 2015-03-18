@@ -112,9 +112,6 @@ class plgCronPublications extends JPlugin
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'helper.php');
 
-		// Get publication helper
-		$helper = new PublicationHelper($database);
-
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";
 		$query .= " FROM #__publication_authors as A ";
@@ -192,7 +189,6 @@ class plgCronPublications extends JPlugin
 			$eview->pubstats   = $pubstats;
 			$eview->limit      = $limit;
 			$eview->image      = $image;
-			$eview->helper     = $helper;
 			$eview->config     = $pconfig;
 			$eview->totals     = $pubLog->getTotals($author->user_id, 'author');
 
@@ -241,7 +237,6 @@ class plgCronPublications extends JPlugin
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'models' . DS . 'log.php');

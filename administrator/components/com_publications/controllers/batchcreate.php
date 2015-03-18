@@ -558,7 +558,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			}
 
 			// Add tags
-			$tagsHelper = new PublicationTags( $this->database );
+			$tagsHelper = new \Components\Publications\Helpers\Tags( $this->database );
 			$tagsHelper->tag_object($this->_uid, $pid, $tags, 1);
 		}
 
@@ -737,19 +737,13 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			return false;
 		}
 
-		// Get publications helper
-		if (!isset($this->_pubHelper))
-		{
-			$this->_pubHelper = new PublicationHelper( $this->database );
-		}
-
 		// Get standard gallery path
-		$gallery_path = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, $this->config->get('webpath'), 'gallery');
+		$gallery_path = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $this->config->get('webpath'), 'gallery');
 
 		$filename = basename($attachment->path);
 		$hash = $attachment->vcs_hash;
-		$hashed = PublicationsHtml::createThumbName($filename, '-' . substr($hash, 0, 6));
-		$thumb = PublicationsHtml::createThumbName($filename, '-' . substr($hash, 0, 6) . '_tn', $extension = 'png');
+		$hashed = \Components\Publications\Helpers\Html::createThumbName($filename, '-' . substr($hash, 0, 6));
+		$thumb = \Components\Publications\Helpers\Html::createThumbName($filename, '-' . substr($hash, 0, 6) . '_tn', $extension = 'png');
 
 		if (!is_dir( JPATH_ROOT . $gallery_path ))
 		{

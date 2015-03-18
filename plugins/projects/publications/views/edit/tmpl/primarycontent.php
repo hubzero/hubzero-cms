@@ -57,8 +57,8 @@ else
 
 <?php if ($this->pub->id && $this->row->title) { ?>
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php } else if ($this->project->provisioned == 1 ) { ?>
 	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
@@ -70,7 +70,7 @@ else
 <?php
 
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this, 'primary');
+	\Components\Publications\Helpers\Html::drawStatusBar($this, 'primary');
 
 	// Information text
 	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->_pubTypeHelper->_base));

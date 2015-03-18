@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->pub)
 {
-	$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+	$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 }
 
 $thisMonth = date('M Y');

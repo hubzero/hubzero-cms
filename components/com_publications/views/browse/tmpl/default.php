@@ -55,7 +55,7 @@ $this->css()
 						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 						$url .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
 
-						$rt = new PublicationTags($database);
+						$rt = new \Components\Publications\Helpers\Tags($database);
 						$tags = $rt->parseTopTags($this->filters['tag']);
 						foreach ($tags as $tag)
 						{
@@ -132,7 +132,6 @@ $this->css()
 				     ->set('results', $this->results)
 				     ->set('filters', $this->filters)
 				     ->set('config', $this->config)
-				     ->set('helper', new PublicationHelper($database))
 				     ->display();
 
 				echo '<div class="clear"></div>';
@@ -155,7 +154,7 @@ $this->css()
 			<div class="container">
 				<h3>Popular Tags</h3>
 				<?php
-				$rt = new PublicationTags($database);
+				$rt = new \Components\Publications\Helpers\Tags($database);
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
 				<p>Click a tag to see only publications with that tag.</p>

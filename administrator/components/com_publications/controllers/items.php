@@ -261,7 +261,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Build publication path
 		$base_path = $this->view->config->get('webpath');
-		$path = PublicationsHtml::buildPubPath($id, $this->view->row->id, $base_path);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($id, $this->view->row->id, $base_path);
 
 		// Archival package?
 		$this->view->archPath = JPATH_ROOT . $path . DS
@@ -329,7 +329,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->lists['authors'] = PublicationsAdminHtml::selectAuthors($this->view->pub->_authors, $this->_option);
 
 		// Get tags on this item
-		$tagsHelper = new PublicationTags( $this->database );
+		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->database );
 		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0, true);
 
 		$mytagarray = array();
@@ -1353,7 +1353,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$tags = JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new PublicationTags($this->database);
+		$rt = new \Components\Publications\Helpers\Tags($this->database);
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, true);
 
 		// Get ids of publication authors with accounts
@@ -1749,7 +1749,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pAudience->deleteAudience($vid);
 
 		// Build publication path
-		$path = PublicationsHtml::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
 
 		// Delete all files
 		if (is_dir($path))

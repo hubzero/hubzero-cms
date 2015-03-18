@@ -27,7 +27,6 @@ $this->css()
 	 ->css('jquery.fancybox.css', 'system')
      ->js();
 
-$authorized = ($this->restricted && !$this->authorized) ? false : true;
 $html = '';
 
 $this->publication->authors();
@@ -47,10 +46,8 @@ if ($this->config->get('launcher_layout', 0))
 	     ->set('database', $this->database)
 	     ->set('lastPubRelease', $this->lastPubRelease)
 	     ->set('version', $this->version)
-	     ->set('license', $this->license)
 	     ->set('sections', $this->sections)
 	     ->set('cats', $this->cats)
-	     ->set('params', $this->publication->params)
 	     ->display();
 }
 else
@@ -75,19 +72,19 @@ else
 
 	<div class="subject">
 		<div class="overviewcontainer">
-			<?php echo PublicationsHtml::title( $this->option, $this->publication ); ?>
+			<?php echo \Components\Publications\Helpers\Html::title( $this->option, $this->publication ); ?>
 <?php
 	// Display authors
 	if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
 		<div id="authorslist">
-			<?php echo PublicationsHtml::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
+			<?php echo \Components\Publications\Helpers\Html::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
 		</div>
 	<?php }	?>
 	<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
 
 <?php
 	// Show published date and category
-	echo PublicationsHtml::showSubInfo( $this->publication, $this->option ); ?>
+	echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication, $this->option ); ?>
 		</div><!-- / .overviewcontainer -->
 		<div class="aside launcharea">
 <?php
@@ -111,7 +108,7 @@ else
 				$this->publication,
 				$element,
 				$elements,
-				$authorized
+				$this->publication->access('view-all')
 			);
 
 			$html .= $launcher;
@@ -121,7 +118,7 @@ else
 	{
 		$primaryParams 	 = new JParameter( $this->publication->_attachments[1][0]->params );
 		$serveas 		 = $primaryParams->get('serveas');
-		$html 			.=  PublicationsHtml::drawPrimaryButton( $this->option, $this->publication, $this->version, $this->publication->_attachments, $serveas, $this->restricted, $this->authorized );
+		$html 			.=  \Components\Publications\Helpers\Html::drawPrimaryButton( $this->option, $this->publication, $this->version, $this->publication->_attachments, $serveas, $this->restricted, $this->authorized );
 	}
 	elseif ($this->tab != 'play' && $this->publication->state != 0)
 	{
@@ -131,32 +128,23 @@ else
 	// Sort out supporting docs
 	$bundlePath = $this->publication->bundlePath();
 	$html .= $this->tab != 'play' && $this->publication->state != 0
-		   ? PublicationsHtml::sortSupportingDocs( $this->publication, $this->version, $this->option, $this->publication->_attachments[2], $this->restricted, $bundlePath )
+		   ? \Components\Publications\Helpers\Html::sortSupportingDocs( $this->publication, $this->version, $this->option, $this->publication->_attachments[2], $this->restricted, $bundlePath )
 		   : '';
 
 	// Show version information
-	$html .=  $this->tab != 'play' ? PublicationsHtml::showVersionInfo( $this->publication, $this->version, $this->option, $this->config, $this->lastPubRelease ) : '';
+	$html .=  $this->tab != 'play' ? \Components\Publications\Helpers\Html::showVersionInfo( $this->publication, $this->version, $this->option, $this->config, $this->lastPubRelease ) : '';
 
 	// Show license information
 	$html .= $this->tab != 'play' && $this->publication->_license && $this->publication->_license->name != 'standard'
-			? PublicationsHtml::showLicense( $this->publication, $this->version, $this->option, $this->publication->_license, 'play' ) : '';
+			? \Components\Publications\Helpers\Html::showLicense( $this->publication, $this->version, $this->option, $this->publication->_license, 'play' ) : '';
 
 	$html .= ' </div><!-- / .aside launcharea -->'."\n";
 	$html .= '<div class="clear"></div>'."\n";
-	$editurl = JRoute::_('index.php?option=com_projects&alias='
-		. $this->publication->_project->alias . '&active=publications&pid=' . $this->publication->id);
-	$editurl.= '?version=' . $this->version;
-
-	// Build pub url
-	$route = $this->publication->project_provisioned == 1
-				? 'index.php?option=com_publications&task=submit'
-				: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
-	$editurl = JRoute::_($route . '&pid=' . $this->publication->id).'?version=' . $this->version;
 
 	// Show status for authorized users
 	if ($this->contributable)
 	{
-		$html .= PublicationsHtml::showAccessMessage( $this->publication, $this->option, $this->authorized, $this->restricted, $editurl );
+		$html .= \Components\Publications\Helpers\Html::showAccessMessage( $this->publication);
 	}
 
 	$html .= '</div><!-- / .subject -->'."\n";
@@ -178,7 +166,7 @@ else
 	$html .= '<section class="main section noborder">'."\n";
 	$html .= ' <div class="subject tabbed">'."\n";
 
-	$html .= PublicationsHtml::tabs(
+	$html .= \Components\Publications\Helpers\Html::tabs(
 		$this->option,
 		$this->publication->id,
 		$this->cats,
@@ -187,12 +175,12 @@ else
 		$this->version
 	);
 
-	$html .= PublicationsHtml::sections( $this->sections, $this->cats, $this->tab, 'hide', 'main' );
+	$html .= \Components\Publications\Helpers\Html::sections( $this->sections, $this->cats, $this->tab, 'hide', 'main' );
 
 	// Add footer notice
 	if ($this->tab == 'about')
 	{
-		$html .= PublicationsHtml::footer( $this->publication );
+		$html .= \Components\Publications\Helpers\Html::footer( $this->publication );
 	}
 
 	$html .= '</div><!-- / .subject -->'."\n";

@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Display publication type
-$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
-$status    = PublicationsHtml::getPubStateProperty($this->pub, 'status');
-$sClass    = PublicationsHtml::getPubStateProperty($this->pub, 'class');
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$status    = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
+$sClass    = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
 
 // CSS class
 $class = $this->publication_allowed ? 'maypublish' : 'draft_incomplete';
@@ -121,8 +121,8 @@ $append .= '</span>';
 	<input type="hidden" name="action" value="<?php echo $this->task; ?>" />
 	<input type="hidden" name="confirm" value="1" />
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route, $append)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title, $append); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route, $append)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title, $append); ?>
 
 <?php if ($canpublish) { ?>
 <p class="mini"><?php echo ($this->row->state == 1)
@@ -153,7 +153,7 @@ $append .= '</span>';
 			<?php if ($republish) { ?>
 			<li><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED_REPUBLISH'); ?></li>
 			<?php } ?>
-			<?php if (!$archive && !$republish && !$post) { ?>
+			<?php if (!$republish && !$post) { ?>
 			<li><?php
 					echo ($this->pubconfig->get('autoapprove', 0) || $post)
 					? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED')
@@ -242,7 +242,7 @@ else if ($this->authorized == 3)
 		if ($this->authorized != 3)
 		{
 			// Draw status bar
-			PublicationsHtml::drawStatusBar($this, NULL, false, 1);
+			\Components\Publications\Helpers\Html::drawStatusBar($this, NULL, false, 1);
 		}
 
 		$model = new PublicationsModelPublication($this->pub);
@@ -253,9 +253,9 @@ else if ($this->authorized == 3)
 		}
 
 		// Process metadata
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
-		$parser = WikiHelperParser::getInstance();
+		$parser = \Components\Wiki\Helpers\Parser::getInstance();
 		$wikiconfig = array(
 			'option'   => $this->option,
 			'scope'    => '',
@@ -265,7 +265,7 @@ else if ($this->authorized == 3)
 			'domain'   => ''
 		);
 
-		$metadata = PublicationsHtml::processMetadata($this->pub->metadata, $this->_category, $parser, $wikiconfig, 0);
+		$metadata = \Components\Publications\Helpers\Html::processMetadata($this->pub->metadata, $this->_category, $parser, $wikiconfig, 0);
 
 		?>
 		<div class="two columns first">
@@ -273,25 +273,11 @@ else if ($this->authorized == 3)
 			<p class="pub-review-label"><span class="dark"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label; ?></strong> &nbsp; &nbsp; <span class="<?php echo $sClass; ?>"> <?php echo $status; ?></span></span></p>
 			<h4><?php echo $this->pub->title; ?></h4>
 			<div id="authorslist">
-			<?php echo PublicationsHtml::showContributors( $this->authors, true ); ?>
+			<?php echo \Components\Publications\Helpers\Html::showContributors( $this->authors, true ); ?>
 			</div>
 			<?php echo $this->pub->abstract ? '<p>'.\Hubzero\Utility\String::truncate(stripslashes($this->pub->abstract), 250).'</p>'  : ''; ?>
 		 </div>
-			<?php if ($show_gallery) { ?>
-			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY')); ?></p>
-			<?php
-				// Show gallery
-				if ($this->shots) {
-					$html  = ' <div class="sscontainer">'."\n";
-					$html .= $this->shots;
-					$html .= ' </div><!-- / .sscontainer -->'."\n";
-					echo $html;
-				}
-				else {
-					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
-				}
-			?>
-			<?php } ?>
+			
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION'); ?></p>
 			<?php echo $description ? $description  : '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 			<?php
@@ -400,7 +386,7 @@ else if ($this->authorized == 3)
 				<?php if ($show_license) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE')); ?></p>
 					<?php echo $this->license
-								? PublicationsHtml::showLicense( $this->pub, $this->version, 'com_publications', $this->license )
+								? \Components\Publications\Helpers\Html::showLicense( $this->pub, $this->version, 'com_publications', $this->license )
 								: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 				<?php } ?>
 
@@ -411,7 +397,7 @@ else if ($this->authorized == 3)
 						$audience 	= $ra->getAudience($this->pub->id, $this->pub->version_id , $getlabels = 1, $numlevels = 4);
 						$audience = $audience ? $audience[0] : NULL;
 						echo $audience
-						? PublicationsHtml::showSkillLevel($audience, $numlevels = 4)
+						? \Components\Publications\Helpers\Html::showSkillLevel($audience, $numlevels = 4)
 						: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 					?>
 				<?php } ?>

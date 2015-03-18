@@ -641,8 +641,6 @@ class PublicationsAdminHtml
 	}
 
 	/**
-	 * Short description for 'PublicationHelper::getPubStateProperty'
-	 *
 	 * Long description (if any) ...
 	 *
 	 * @param      unknown $row Parameter description (if any) ...

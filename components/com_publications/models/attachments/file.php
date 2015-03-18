@@ -122,15 +122,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get project path
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
-
 		// Get publication paths
-		$configs->pubBase = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', '', 1);
-		$configs->pubPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
+		$configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', '', 1);
+		$configs->pubPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
 
 		// Log path
-		$configs->logPath = PublicationsHtml::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -540,7 +537,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			if ($configs->fancyLauncher)
 			{
-				$html  = PublicationsHtml::drawLauncher('ic-download', $pub, $url,
+				$html  = \Components\Publications\Helpers\Html::drawLauncher('ic-download', $pub, $url,
 						$title, $disabled, $pop, 'download', $showArchive);
 			}
 			else
@@ -564,7 +561,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$class = 'btn btn-primary active icon-next';
 				$class .= $disabled ? ' link_disabled' : '';
 
-				$html  = PublicationsHtml::primaryButton($class, $url, $label, NULL, $title, '', $disabled, $pop);
+				$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL, $title, '', $disabled, $pop);
 			}
 		}
 		elseif ($role == 2 && $attachments)
@@ -603,7 +600,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 							? $directory . DS . $configs->subdir
 							: $directory;
 		// Build new path
-		$newPath = PublicationsHtml::buildPubPath(
+		$newPath = \Components\Publications\Helpers\Html::buildPubPath(
 			$pub->id,
 			$newVersion->id,
 			'',

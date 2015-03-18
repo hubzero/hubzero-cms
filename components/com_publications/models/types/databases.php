@@ -346,9 +346,6 @@ class typeDatabases extends JObject
 			JPluginHelper::importPlugin( 'projects', 'databases');
 			$dispatcher = JDispatcher::getInstance();
 
-			// Get publications helper
-			$helper = new PublicationHelper($this->_database, $vid, $pid);
-
 			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 			// Original database not found
@@ -368,7 +365,7 @@ class typeDatabases extends JObject
 
 			// Build publication path
 			$base_path 		= $pubconfig->get('webpath');
-			$publishPath 	= PublicationsHtml::buildPubPath($pid, $vid, $base_path, 'data', 1);
+			$publishPath 	= \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, 'data', 1);
 			$pPath 			= JRoute::_('index.php?option=com_publications&id=' . $pid . '&vid=' . $vid . '&task=serve');
 
 			// Create new version path
@@ -574,7 +571,7 @@ class typeDatabases extends JObject
 				}
 
 				// Generate thumbnail
-				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
+				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
 				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
 
@@ -590,7 +587,7 @@ class typeDatabases extends JObject
 				}
 
 				// Generate medium image
-				$med 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
+				$med 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
 				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
 				JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
 
@@ -622,9 +619,6 @@ class typeDatabases extends JObject
 
 		$published = 0;
 
-		// Get helper
-		$helper = new PublicationHelper($this->_database, $row->id, $row->publication_id);
-
 		// Load component configs
 		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 		$base_path 	= $pubconfig->get('webpath');
@@ -640,7 +634,7 @@ class typeDatabases extends JObject
 			$database_rev  = $att->object_revision;
 
 			// Build publication path
-			$publishPath = PublicationsHtml::buildPubPath($row->publication_id, $row->id, $base_path, 'data', 1);
+			$publishPath = \Components\Publications\Helpers\Html::buildPubPath($row->publication_id, $row->id, $base_path, 'data', 1);
 			$pPath = JRoute::_('index.php?option=com_publications&id=' . $row->publication_id . '&vid=' . $row->id . '&task=serve');
 
 			// Get database object and load record

@@ -39,15 +39,15 @@ $profile = \Hubzero\User\Profile::getInstance($this->pub->created_by);
 $creator = $profile->get('name') . ' (' . $profile->get('username') . ')';
 
 // Version status
-$status = PublicationsHtml::getPubStateProperty($this->pub, 'status');
-$class 	= PublicationsHtml::getPubStateProperty($this->pub, 'class');
+$status = \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'status');
+$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->pub, 'class');
 
 // Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
 ?>
 <?php echo $this->project->provisioned == 1
-			? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-			: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+			? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+			: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar

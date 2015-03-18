@@ -485,7 +485,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
      */
 	protected function _resourceMap()
 	{
-		$resourceMap = new ResourceMapGenerator();
+		$resourceMap = new \ResourceMapGenerator();
 		$id = "";
 
 		// Retrieves the ID from alias
@@ -635,7 +635,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$base_path = $this->config->get('webpath');
 
 				// Build log path (access logs)
-				$logPath = PublicationsHtml::buildPubPath(
+				$logPath = \Components\Publications\Helpers\Html::buildPubPath(
 					$this->model->publication->id,
 					$this->model->version->id,
 					$base_path,
@@ -709,7 +709,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->display();
 
 		// Insert .rdf link in the header
-		ResourceMapGenerator::putRDF($this->model->publication->id);
+		\ResourceMapGenerator::putRDF($this->model->publication->id);
 
 		return;
 	}
@@ -764,15 +764,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
-
-		// Initialize helpers
-		$this->publication->_helpers = new stdClass();
-		$this->publication->_helpers->pubHelper = new PublicationHelper(
-			$this->database,
-			$this->publication->version_id,
-			$this->publication->id
-		);
-		$this->publication->_helpers->htmlHelper = new PublicationsHtml();
 
 		// Get manifest from either version record (published) or master type
 		$manifest = $this->publication->curation
@@ -864,9 +855,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$params = $this->config;
 		$params->merge( $rparams );
 
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
 		// Get cats
 		$cats = $dispatcher->trigger( 'onPublicationAreas', array($this->publication, $this->version, false, true) );
 
@@ -886,7 +874,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = PublicationsHtml::buildPubPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
 
 		// Add the default "About" section to the beginning of the lists
 		$cat = array();
@@ -914,7 +902,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->tab 			= 'play';
 		$this->view->sections 		= $sections;
 		$this->view->database 		= $this->database;
-		$this->view->helper 		= $helper;
 		$this->view->filters 		= array();
 		$this->view->license 		= $license;
 		$this->view->path 			= $path;
@@ -1060,9 +1047,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
 		// Get primary attachments or requested attachment
 		$objPA = new \Components\Publications\Tables\Attachment( $this->database );
 		$filters = $aid ? array('id' => $aid) : array('role' => 1);
@@ -1080,10 +1064,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = PublicationsHtml::buildPubPath($this->_id, $publication->version_id, $base_path, $publication->secret);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, $publication->secret);
 
 		// Build log path (access logs)
-		$logPath = PublicationsHtml::buildPubPath($this->_id, $publication->version_id, $base_path, 'logs');
+		$logPath = \Components\Publications\Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, 'logs');
 
 		// First/requested attachment
 		$primary = $attachments[0];
@@ -1130,7 +1114,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			// Multi-file or archive
 			$tarname  = JText::_('Publication') . '_' . $publication->id . '.zip';
-			$archPath = PublicationsHtml::buildPubPath($publication->id, $publication->version_id, $base_path);
+			$archPath = \Components\Publications\Helpers\Html::buildPubPath($publication->id, $publication->version_id, $base_path);
 
 			// Get archival package
 			$downloadable = $this->_archiveFiles (
@@ -1157,7 +1141,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					$this->view->config 		= $this->config;
 					$this->view->database 		= $this->database;
 					$this->view->publication 	= $publication;
-					$this->view->helper 		= $helper;
 					$this->view->attachments 	= $attachments;
 					$this->view->primary		= $primary;
 					$this->view->aid 			= $aid ? $aid : $primary->id;
@@ -1305,12 +1288,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
 		// Build publication data path
 		$base_path = $this->config->get('webpath');
-		$path = PublicationsHtml::buildPubPath($pid, $vid, $base_path, 'data', $root = 0);
+		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, 'data', $root = 0);
 
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . $path . DS . $file))
@@ -1422,14 +1402,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
 		// Allowed page scope
 		$masterscope = 'projects' . DS . $this->publication->project_alias . DS . 'notes';
 
 		// Get page information
-		$page = $helper->getWikiPage($pageid, $this->publication, $masterscope, $revision);
+		$this->model = new PublicationsModelPublication($this->publication);
+		$page = $this->model->getWikiPage($pageid, $masterscope, $revision);
 		if (!$page)
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
@@ -1452,7 +1430,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->project_id		= $this->publication->project_id;
 		$this->view->config 		= $this->config;
 		$this->view->database 		= $this->database;
-		$this->view->helper			= $helper;
 		$this->view->masterscope	= $masterscope;
 		$this->view->publication 	= $this->publication;
 		$this->view->attachments	= $this->attachments;
@@ -1656,16 +1633,13 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				 ? $publication->published_up
 				 : $publication->created;
 
-		// Get publication helper
-		$helper = new PublicationHelper($this->database, $publication->version_id, $id);
-
 		// Get version authors
 		$pa = new \Components\Publications\Tables\Author( $this->database );
 		$authors = $pa->getAuthors($publication->version_id);
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = PATH_APP . PublicationsHtml::buildPubPath($id, $publication->version_id, $base_path);
+		$path = PATH_APP . \Components\Publications\Helpers\Html::buildPubPath($id, $publication->version_id, $base_path);
 
 		if (!is_dir( $path ))
 		{
@@ -1910,14 +1884,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Include needed classes
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
 			. 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' .
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .
 			DS . 'models' . DS . 'publication.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' .
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .
 			DS . 'models' . DS . 'curation.php');
 
 		$lang = \JFactory::getLanguage();
@@ -2102,7 +2076,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Process tags
 		$database = \JFactory::getDBO();
-		$rt = new PublicationTags( $database );
+		$rt = new \Components\Publications\Helpers\Tags( $database );
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 0);
 
 		if (!$no_html)

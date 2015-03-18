@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Get publication properties
-$typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->cat_alias, $this->pub->cat_name);
 
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
@@ -60,9 +60,9 @@ $typetitle = PublicationsHtml::writePubCategory($this->pub->cat_alias, $this->pu
 			$doi_notice = $doi ? $doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA');
 
 			// Version status
-			$status = PublicationsHtml::getPubStateProperty($v, 'status');
-			$class  = PublicationsHtml::getPubStateProperty($v, 'class');
-			$date   = PublicationsHtml::getPubStateProperty($v, 'date');
+			$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
+			$class  = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
+			$date   = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
 			$options = '<a href="'.$this->url.'?version='.$v->version_number.'">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION').'</a>';

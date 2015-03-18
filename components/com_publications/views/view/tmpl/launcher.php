@@ -30,28 +30,8 @@ $this->css()
 // Get primary elements
 $elements = $this->publication->_curationModel->getElements(1);
 
-$authorized = ($this->restricted && !$this->authorized) ? false : true;
-
 // Get attachment type model
 $attModel = new PublicationsModelAttachments($this->database);
-
-$authorized = ($this->restricted && !$this->authorized) ? false : true;
-
-$base_path = $this->config->get('webpath');
-$path = PublicationsHtml::buildPubPath(
-	$this->publication->id,
-	$this->publication->version_id,
-	$base_path,
-	''
-);
-
-$masterImage = $path . DS . 'master.png';
-
-// Build pub url
-$route = $this->publication->project_provisioned == 1
-			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
-$editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . $this->version;
 
 ?>
 <!--[if gte IE 9]>
@@ -62,22 +42,22 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
   </style>
 <![endif]-->
 <div class="launcher-image">
-	<div class="imager" <?php if (is_file(PATH_APP . $masterImage)) { ?> style="background-image:url('<?php echo $masterImage; ?>');" <?php } ?> > </div>
+	<div class="imager" style="background-image:url('<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master'; ?>');" > </div>
 </div>
 <section id="launcher" class="main section launcher grad-blue gradient">
 	<div class="grid">
 		<div class="col span6">
 		  <div class="launcher-inside-wrap">
 			<?php // Show published date and category
-				echo PublicationsHtml::showSubInfo( $this->publication, $this->option );
+				echo \Components\Publications\Helpers\Html::showSubInfo( $this->publication, $this->option );
 			?>
 			<h3><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->publication->title), 150); ?></h3>
 			<?php
 			// Display authors
-			if ($this->params->get('show_authors')) {
+			if ($this->publication->params->get('show_authors')) {
 				if ($this->publication->_authors) {
 					$html  = '<div id="authorslist">'."\n";
-					$html .= PublicationsHtml::showContributors(
+					$html .= \Components\Publications\Helpers\Html::showContributors(
 						$this->publication->_authors,
 						true,
 						false
@@ -109,24 +89,24 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 						$this->publication,
 						$element,
 						$elements,
-						$authorized
+						$this->publication->access('view-all')
 					);
 					echo $launcher;
 				}
 			?>
 			<div class="version-info">
-				<?php echo PublicationsHtml::showVersionInfo(
+				<?php echo \Components\Publications\Helpers\Html::showVersionInfo(
 					$this->publication,
 					$this->version,
 					$this->option,
 					$this->config,
 					$this->lastPubRelease
 				);
-				echo PublicationsHtml::showLicense(
+				echo \Components\Publications\Helpers\Html::showLicense(
 					$this->publication,
 					$this->version,
 					$this->option,
-					$this->license,
+					$this->publication->_license,
 					'play'
 				) ?>
 			</div>
@@ -145,7 +125,7 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 		     ->set('version', $this->version)
 		     ->set('sections', $this->sections)
 		     ->set('cats', $this->cats)
-		     ->set('params', $this->params)
+		     ->set('params', $this->publication->params)
 		     ->set('lastPubRelease', $this->lastPubRelease)
 		     ->set('launcherLayout', true)
 		     ->display();
@@ -159,11 +139,6 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 <?php // Show status for authorized users
 if ($this->contributable)
 {
-	// Build pub url
-	$route = $this->publication->project_provisioned == 1
-				? 'index.php?option=com_publications&task=submit'
-				: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
-	$editurl = JRoute::_($route . '&pid=' . $this->publication->id).'?version='.$this->version;
-	echo PublicationsHtml::showAccessMessage( $this->publication, $this->option, $this->authorized, $this->restricted, $editurl );
+	echo \Components\Publications\Helpers\Html::showAccessMessage( $this->publication );
 } ?>
 </div>

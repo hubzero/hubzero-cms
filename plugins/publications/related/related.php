@@ -115,8 +115,8 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
 
 		// Initiate a helper class
-		$helper = new PublicationHelper($database, $publication->version_id, $publication->id);
-		$helper->getTags();
+		$model = new PublicationsModelPublication( $publication );
+		$tags = $model->getTags();
 
 		// Get version authors
 		$authors = isset($publication->_authors) ? $publication->_authors : array();
@@ -130,12 +130,12 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 			 . "\n JOIN #__tags_object AS a ON r.publication_id=a.objectid AND a.tbl='publications'"
 			 . "\n JOIN #__publication_authors AS PA ON PA.publication_version_id=r.id "
 			 . "\n WHERE C.id=r.publication_id ";
-		if ($helper->tags)
+		if ($tags)
 		{
 			$tquery = '';
-			foreach ($helper->tags as $tagg)
+			foreach ($tags as $tagg)
 			{
-				$tquery .= "'".$tagg['id']."',";
+				$tquery .= "'" . $tagg['id'] . "',";
 			}
 			$tquery = substr($tquery,0,strlen($tquery) - 1);
 			$sql2 .= " AND ( a.tagid IN (".$tquery.")";
@@ -149,12 +149,12 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 				$aquery .= "'".$author->user_id."',";
 			}
 			$aquery = substr($aquery,0,strlen($aquery) - 1);
-			$sql2 .= ($helper->tags) ? "" : " AND ( ";
+			$sql2 .= ($tags) ? "" : " AND ( ";
 			$sql2 .= " PA.user_id IN (".$aquery.")";
 		}
-		$sql2 .= ($helper->tags || count($authors) > 0 ) ? ")" : "";
+		$sql2 .= ($tags || count($authors) > 0 ) ? ")" : "";
 
-		$sql2 .= " AND r.publication_id !=".$publication->id;
+		$sql2 .= " AND r.publication_id !=" . $publication->id;
 		$sql2.= " AND C.category = rt.id AND C.category!=8 ";
 		$sql2 .= "AND r.access=0 ";
 		$sql2 .= "AND r.state=1 ";

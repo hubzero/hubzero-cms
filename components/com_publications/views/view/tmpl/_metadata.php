@@ -102,7 +102,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 	}
 
 	// Supported publication?
-	$rt = new PublicationTags( $database );
+	$rt = new \Components\Publications\Helpers\Tags( $database );
 	$supported = $rt->checkTagUsage( $this->config->get('supportedtag'), $this->publication->id );
 
 	if ($supported)

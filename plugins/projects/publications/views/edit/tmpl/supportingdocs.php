@@ -39,11 +39,11 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 
 ?>
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this, 'supporting');
+	\Components\Publications\Helpers\Html::drawStatusBar($this, 'supporting');
 
 	$canedit = (
 		$this->pub->state == 3

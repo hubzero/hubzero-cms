@@ -40,12 +40,12 @@ else
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this);
+	\Components\Publications\Helpers\Html::drawStatusBar($this);
 
 // Section body starts:
 $levels 	= array();
@@ -74,7 +74,7 @@ $canedit = (
 
 							$sel = $this->audience->$label == 1 ? $sel + 1 : $sel;
 							$picked .= $this->audience->$label == 1 ? $label.'-' : ''; ?>
-						<li id="<?php echo $label; ?>" class="c-click" title="<?php echo htmlentities($level->title); ?>">	<?php echo PublicationsHtml::skillLevelCircle($this->levels, $level->label); ?> <span class="aud-desc"><?php echo $level->description; ?></span></li>
+						<li id="<?php echo $label; ?>" class="c-click" title="<?php echo htmlentities($level->title); ?>">	<?php echo \Components\Publications\Helpers\Html::skillLevelCircle($this->levels, $level->label); ?> <span class="aud-desc"><?php echo $level->description; ?></span></li>
 						<?php } ?>
 					</ul>
 				</div>

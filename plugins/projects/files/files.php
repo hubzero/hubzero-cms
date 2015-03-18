@@ -4378,6 +4378,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get publication usage
 		if (\JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
 		{
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
+
 			$filters 					= array();
 			$filters['project']  		= $project->id;
 			$filters['ignore_access']   = 1;
@@ -4387,8 +4389,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			$objP 				= new \Components\Publications\Tables\Publication( $database );
 			$pubs 				= $objP->getRecords($filters);
-			$helper 	        = new PublicationHelper($database);
-			$view->pubDiskUsage = $helper->getDiskUsage($project->id, $pubs);
+
+			$view->pubDiskUsage = \Components\Publications\Helpers\Html::getDiskUsage($pubs);
 			$view->pubQuota 	= $view->params->get('pubQuota')
 								? $view->params->get('pubQuota')
 								: \Components\Projects\Helpers\Html::convertSize( floatval($config->get('pubQuota', '1')), 'GB', 'b');

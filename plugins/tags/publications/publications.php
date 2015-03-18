@@ -288,15 +288,11 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 
 		$row->href = JRoute::_('index.php?option=com_publications&id=' . $row->id);
 
 		$database = JFactory::getDBO();
-
-		// Instantiate a helper object
-		$helper = new PublicationHelper($database, $row->ftext, $row->id);
 
 		// Get version authors
 		$pa = new \Components\Publications\Tables\Author( $database );
@@ -332,10 +328,10 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			. stripslashes($row->title) . '</a></p>' . "\n";
 
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
-		if ($helper->contributors)
+		if ($authors)
 		{
 			$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS')
-				. ' ' . stripslashes($helper->showContributors( $authors, true, false ));
+				. ' ' . stripslashes(\Components\Publications\Helpers\Html::showContributors( $authors, true, false ));
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)

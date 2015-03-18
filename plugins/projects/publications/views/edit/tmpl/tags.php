@@ -25,8 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$model = new PublicationsModelPublication($this->pub);
+
 // Determine pane title
-if($this->version == 'dev') {
+if ($this->version == 'dev') {
 	$ptitle = $this->last_idx > $this->current_idx  ?
 	ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_TAGS')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_TAGS')) ;
 }
@@ -35,12 +37,12 @@ else {
 }
 ?>
 	<?php echo $this->project->provisioned == 1
-				? PublicationsHtml::showPubTitleProvisioned( $this->pub, $this->route)
-				: PublicationsHtml::showPubTitle( $this->pub, $this->route, $this->title); ?>
+				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
+				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 
 <?php
 	// Draw status bar
-	PublicationsHtml::drawStatusBar($this);
+	\Components\Publications\Helpers\Html::drawStatusBar($this);
 
 	$canedit = (
 	$this->pub->state == 3
@@ -95,11 +97,11 @@ else {
 					<?php } ?>
 				</fieldset>
 			 <div class="c-inner">
-					<?php if($canedit) { ?>
+					<?php if ($canedit) { ?>
 							<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 					<?php } ?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS'); ?>: </h5>
-					<?php if($canedit) { ?>
+					<?php if ($canedit) { ?>
 					<label>
 						<?php
 						JPluginHelper::importPlugin( 'hubzero' );
@@ -114,7 +116,7 @@ else {
 						}
 						?>
 					</label>
-					<?php if($this->categories) {
+					<?php if ($this->categories) {
 
 						$paramsClass = 'JParameter';
 						if (version_compare(JVERSION, '1.6', 'ge'))
@@ -123,7 +125,7 @@ else {
 						}
 						?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_CATEGORY'); ?></h5>
-					<?php foreach($this->categories as $cat) {
+					<?php foreach ($this->categories as $cat) {
 						$params = new $paramsClass($cat->params);
 						// Skip inaplicable category
 						if (!$params->get('type_' . $this->pub->base, 1))
@@ -133,7 +135,7 @@ else {
 						?>
 						<label class="pubtype-block">
 						 <input type="radio" name ="pubtype" value="<?php echo $cat->id; ?>"
-						<?php if($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> />	<?php echo $cat->name; ?>
+						<?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> />	<?php echo $cat->name; ?>
 							<span><?php echo $cat->description; ?></span>
 						</label>
 					<?php } ?>
@@ -141,8 +143,8 @@ else {
 					<?php } else {
 						// Show tags
 						if ($this->tags) {
-								$this->helper->getTagCloud( 1 );
-								echo $this->helper->tagCloud;
+								$model->getTagCloud( 1 );
+								echo $model->_tagCloud;
 						}
 						else {
 							echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';

@@ -62,7 +62,7 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		{
 			foreach ($matches as $match)
 			{
-				$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
+				$data[$match[1]] = \Components\Publications\Helpers\Html::_txtUnpee($match[2]);
 			}
 		}
 

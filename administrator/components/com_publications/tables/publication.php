@@ -316,7 +316,7 @@ class Publication extends \JTable
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
 			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
-			$tagging = new \PublicationTags( $this->_db );
+			$tagging = new \Components\Publications\Helpers\Tags( $this->_db );
 			$tags = $tagging->_parse_tags($filters['tag']);
 
 			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')";

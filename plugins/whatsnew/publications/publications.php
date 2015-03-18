@@ -206,7 +206,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	{
 		\Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 	}
 
 	/**
@@ -222,9 +222,6 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 		$config = JComponentHelper::getParams( 'com_publications' );
 
-		// Instantiate a helper object
-		$helper = new PublicationHelper($database);
-
 		$juri = JURI::getInstance();
 
 		// Get version authors
@@ -238,7 +235,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<span class="block details">' . JHTML::_('date', $row->published_up, 'd M Y') . ' <span>|</span> ' . $row->cat_name;
 		if ($authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . $helper->showContributors( $authors, false, true );
+			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . $model->showContributors( $authors, false, true );
 		}
 		$html .= '</span></span></p>' . "\n";
 		if ($row->text)

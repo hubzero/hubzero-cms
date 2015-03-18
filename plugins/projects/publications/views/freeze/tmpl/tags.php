@@ -43,6 +43,8 @@ $required 		= $this->manifest->params->required;
 
 $elName = "tagsPick";
 
+$model = new PublicationsModelPublication($this->pub);
+
 ?>
 
 <!-- Load content selection browser //-->
@@ -50,8 +52,8 @@ $elName = "tagsPick";
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 <?php  // Show tags
 	if ($this->tags) {
-			$this->pub->_helpers->pubHelper->getTagCloud( 1 );
-			echo $this->pub->_helpers->pubHelper->tagCloud;
+			$model->getTagCloud( 1 );
+			echo $model->_tagCloud;
 	}
 	else {
 		echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';

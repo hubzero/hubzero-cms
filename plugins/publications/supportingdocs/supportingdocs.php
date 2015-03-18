@@ -106,9 +106,6 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 		{
 			$database = JFactory::getDBO();
 
-			// Initiate a publication helper class
-			$helper = new PublicationHelper($database, $publication->id, $publication->version_id);
-
 			$config = JComponentHelper::getParams( $option );
 			$jconfig = JFactory::getConfig();
 
@@ -130,7 +127,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 
 			// Build publication path
 			$base_path 	= $config->get('webpath');
-			$view->path = PublicationsHtml::buildPubPath(
+			$view->path = \Components\Publications\Helpers\Html::buildPubPath(
 				$publication->id,
 				$publication->version_id,
 				$base_path,
@@ -141,7 +138,6 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			// Pass the view some info
 			$view->option 		= $option;
 			$view->publication 	= $publication;
-			$view->helper 		= $helper;
 			$view->config 		= $config;
 			$view->version 		= $version;
 			$view->live_site 	= $jconfig->getValue('config.live_site') . DS;

@@ -133,7 +133,7 @@ $g = 0;
 
 for ($i = 0, $n = count($images); $i < $n; $i++)
 {
-	$tn = PublicationsHtml::createThumbName($images[$i]['img'], '_tn', $extension = 'png');
+	$tn = \Components\Publications\Helpers\Html::createThumbName($images[$i]['img'], '_tn', $extension = 'png');
 	$els .=  ($i==0 ) ? '<div class="showcase-pane">'."\n" : '';
 
 	if (is_file(PATH_APP . $path . DS . $tn))

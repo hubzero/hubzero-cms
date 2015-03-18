@@ -1930,11 +1930,8 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		// Get publications helper
-		$helper = new PublicationHelper($this->_db, $this->_pub->version_id, $this->_pub->id);
-
 		// Get publication path
-		$pubBase = PublicationsHtml::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
+		$pubBase = \Components\Publications\Helpers\Html::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
 
 		// Empty draft?
 		if (!file_exists($pubBase))
@@ -2125,7 +2122,7 @@ class PublicationsCuration extends JObject
 		$shots = $pScreenshot->getScreenshots( $pub->version_id );
 
 		// Transfer gallery files to the right location
-		if ($element && $shots && isset($pub->_helpers))
+		if ($element && $shots)
 		{
 			// Set configs
 			$configs  = $fileAttach->getConfigs(
@@ -2136,7 +2133,7 @@ class PublicationsCuration extends JObject
 			);
 
 			// Get gallery path
-			$galleryPath 	= PublicationsHtml::buildPubPath(
+			$galleryPath 	= \Components\Publications\Helpers\Html::buildPubPath(
 				$pub->id,
 				$pub->version_id,
 				'',
