@@ -234,10 +234,10 @@ class Activity extends \JTable
 		$this->managers_only = $managers_only;
 
 		// Collapse checked/posted to-do item activities
-		if($class == 'todo' && $activity == \JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
+		if($class == 'todo' && $activity == Lang::txt('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'))
 		{
 			$this->loadActivityByRef($projectid, $referenceid, $class,
-				\JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
+				Lang::txt('COM_PROJECTS_ACTIVITY_TODO_ADDED'));
 		}
 
 		$this->projectid 	= $projectid;

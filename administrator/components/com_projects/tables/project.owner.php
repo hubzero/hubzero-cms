@@ -371,10 +371,10 @@ class Owner extends \JTable
 
 				if ($limit && $i == $limit && $i != count($result))
 				{
-					$names .= ', ' . JText::_('COM_PROJECTS_AND') . ' ' . (count($result) - $limit) . ' '
-						   . JText::_('COM_PROJECTS_MORE') .' ';
-					$names .= (count($result) - $limit) == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON')
-							: JText::_('COM_PROJECTS_ACTIVITY_PERSONS') ;
+					$names .= ', ' . Lang::txt('COM_PROJECTS_AND') . ' ' . (count($result) - $limit) . ' '
+						   . Lang::txt('COM_PROJECTS_MORE') .' ';
+					$names .= (count($result) - $limit) == 1 ? Lang::txt('COM_PROJECTS_ACTIVITY_PERSON')
+							: Lang::txt('COM_PROJECTS_ACTIVITY_PERSONS') ;
 					break;
 				}
 				else
@@ -817,7 +817,7 @@ class Owner extends \JTable
 
 			if (!$this->store())
 			{
-				$this->setError( \JText::_('Failed to record user last visit.') );
+				$this->setError( Lang::txt('Failed to record user last visit.') );
 				return false;
 			}
 			return true;
@@ -1089,7 +1089,7 @@ class Owner extends \JTable
 				$owners = array_merge($members, $managers);
 				if (!in_array($actor, $owners))
 				{
-					$this->setError( \JText::_('COM_PROJECTS_TEAM_ERROR_NEED_TO_BELONG_TO_GROUP'));
+					$this->setError( Lang::txt('COM_PROJECTS_TEAM_ERROR_NEED_TO_BELONG_TO_GROUP'));
 					return $added;
 				}
 
@@ -1129,7 +1129,7 @@ class Owner extends \JTable
 			}
 			else
 			{
-				$this->setError( \JText::_('COM_PROJECTS_TEAM_ERROR_GROUP_NOT_FOUND'));
+				$this->setError( Lang::txt('COM_PROJECTS_TEAM_ERROR_GROUP_NOT_FOUND'));
 			}
 		}
 

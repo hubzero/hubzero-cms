@@ -55,17 +55,17 @@ class Blog extends \JTable
 	{
 		if (!$this->projectid)
 		{
-			$this->setError( \JText::_('Missing project ID.') );
+			$this->setError( Lang::txt('Missing project ID.') );
 			return false;
 		}
 		if (trim( $this->blogentry ) == '')
 		{
-			$this->setError( \JText::_('Please provide content.') );
+			$this->setError( Lang::txt('Please provide content.') );
 			return false;
 		}
 		if (!$this->posted_by)
 		{
-			$this->setError( \JText::_('Missing creator ID.') );
+			$this->setError( Lang::txt('Missing creator ID.') );
 			return false;
 		}
 		return true;

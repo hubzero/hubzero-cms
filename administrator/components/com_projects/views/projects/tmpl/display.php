@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
-JToolBarHelper::title( JText::_( 'Projects' ), 'user.png' );
+JToolBarHelper::title( Lang::txt( 'Projects' ), 'user.png' );
 JToolBarHelper::preferences('com_projects', '550');
 JToolBarHelper::editList();
 
@@ -61,23 +61,23 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php if ($this->getError()) { ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
 
-		<label for="filter_search"><?php echo JText::_('COM_PROJECTS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_PROJECTS_SEARCH'); ?>" />
+		<label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
 
-		<label for="quota"><?php echo JText::_('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
+		<label for="quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
 		<select name="quota" id="quota">
-			<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_ALL'); ?></option>
-			<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
-			<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
+			<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_ALL'); ?></option>
+			<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
+			<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
 		</select>
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_PROJECTS_GO'); ?>" />
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>" />
 	</fieldset>
 
 	<table class="adminlist" id="projects-admin">
@@ -90,7 +90,7 @@ function submitbutton(pressbutton)
 				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JText::_('COM_PROJECTS_QUOTA'); ?></th>
+				<th><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -120,7 +120,7 @@ function submitbutton(pressbutton)
 
 					if ($row->owned_by_group && !$row->groupcn)
 					{
-						$row->groupname = '<span class="italic pale">'.JText::_('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
+						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
 					$owner = ($row->owned_by_group) ? $row->groupname.'<span class="block  prominent">'.$row->groupcn.'</span>' : $row->authorname;
 					$ownerclass = ($row->owned_by_group) ? '<span class="i_group">&nbsp;</span>' : '<span class="i_user">&nbsp;</span>';
@@ -129,23 +129,23 @@ function submitbutton(pressbutton)
 					$status = '';
 					if ($row->state == 1 && $row->setup_stage >= $setup_complete)
 					{
-						$status = '<span class="active">'.JText::_('Active').'</span> '.JText::_('since').' '.JHTML::_('date', $row->created, 'd M. Y');
+						$status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . JHTML::_('date', $row->created, 'd M. Y');
 					}
 					else if ($row->state == 2)
 					{
-						$status  = '<span class="deleted">'.JText::_('Deleted').'</span> ';
+						$status  = '<span class="deleted">' . Lang::txt('Deleted') . '</span> ';
 					}
 					else if ($row->setup_stage < $setup_complete)
 					{
-						$status = '<span class="setup">'.JText::_('Setup').'</span> '.JText::_('in progress');
+						$status = '<span class="setup">' . Lang::txt('Setup') . '</span> ' . Lang::txt('in progress');
 					}
 					else if ($row->state == 0)
 					{
-						$status = '<span class="faded italic">'.JText::_('Inactive/Suspended').'</span> ';
+						$status = '<span class="faded italic">' . Lang::txt('Inactive/Suspended') . '</span> ';
 					}
 					else if ($row->state == 5)
 					{
-						$status = '<span class="inactive">'.JText::_('Pending approval').'</span> ';
+						$status = '<span class="inactive">' . Lang::txt('Pending approval') . '</span> ';
 					}
 
 					$cloud = new \Components\Projects\Models\Tags($row->id);
@@ -172,14 +172,14 @@ function submitbutton(pressbutton)
 					<td><?php echo $ownerclass; ?></td>
 					<td><?php echo $owner; ?></td>
 					<td><?php echo $status; ?></td>
-					<td><?php echo ($row->private == 1) ? '<span class="private">' . JText::_('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . JText::_('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
+					<td><?php echo ($row->private == 1) ? '<span class="private">' . Lang::txt('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . Lang::txt('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
 					<td><?php echo $quota . 'GB'; ?></td>
 				</tr>
 				<?php
 					$k = 1 - $k;
 				}
 			} else { ?>
-				<tr><td colspan="9"><?php echo JText::_('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
+				<tr><td colspan="9"><?php echo Lang::txt('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
 		<?php } ?>
 		</tbody>
 	</table>

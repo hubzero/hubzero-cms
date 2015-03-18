@@ -46,8 +46,8 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = JRoute::_('index.php?option=' . $this->option . a . 'task=browse');
+	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 }
 
 $link 		= rtrim($base, DS) . DS . trim($sef, DS);
@@ -56,7 +56,7 @@ $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 $thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
+$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
 $subtitle  = $this->subject;
@@ -81,7 +81,7 @@ if ($comment)
 
 // Project owner
 $owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+		 ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
 
 $showThumb = $config->get('showthumbemail', 0);
@@ -298,7 +298,7 @@ $showThumb = $config->get('showthumbemail', 0);
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>

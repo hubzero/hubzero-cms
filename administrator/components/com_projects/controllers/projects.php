@@ -205,7 +205,7 @@ class Projects extends AdminController
 		// Check that master path is there
 		if ($this->config->get('offroot') && !is_dir($this->config->get('webpath')))
 		{
-			$this->view->setError( \JText::_('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath') );
+			$this->view->setError( Lang::txt('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath') );
 		}
 
 		// Output the HTML
@@ -243,7 +243,7 @@ class Projects extends AdminController
 			if (!$obj->loadProject($id))
 			{
 				$this->setRedirect('index.php?option=' . $this->_option,
-					\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 					'error');
 				return;
 			}
@@ -251,7 +251,7 @@ class Projects extends AdminController
 		if (!$id)
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
+				Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
 				'error');
 			return;
 		}
@@ -290,7 +290,7 @@ class Projects extends AdminController
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
 		{
-			$this->view->suspended = $objAC->checkActivity( $id, \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$this->view->suspended = $objAC->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		// Get project params
@@ -357,7 +357,7 @@ class Projects extends AdminController
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -369,16 +369,16 @@ class Projects extends AdminController
 		$obj->modified_by 	= $this->juser->get('id');
 		$obj->private 		= \JRequest::getVar( 'private', 0 );
 
-		$this->_message = \JText::_('COM_PROJECTS_SUCCESS_SAVED');
+		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
 		// Was project suspended?
 		$suspended = false;
 		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
 		{
-			$suspended = $objAA->checkActivity( $id, \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$suspended = $objAA->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
-		$subject 		= \JText::_('COM_PROJECTS_PROJECT').' "'.$obj->alias.'" ';
+		$subject 		= Lang::txt('COM_PROJECTS_PROJECT').' "'.$obj->alias.'" ';
 		$sendmail 		= 0;
 		$project 		= $obj->getProject($id, $this->juser->get('id'));
 
@@ -393,30 +393,30 @@ class Projects extends AdminController
 			{
 				case 'delete':
 					$obj->state = 2;
-					$what = \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
-					$subject .= \JText::_('COM_PROJECTS_MSG_ADMIN_DELETED');
-					$this->_message = \JText::_('COM_PROJECTS_SUCCESS_DELETED');
+					$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+					$subject .= Lang::txt('COM_PROJECTS_MSG_ADMIN_DELETED');
+					$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_DELETED');
 				break;
 
 				case 'suspend':
 					$obj->state = 0;
-					$what = \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
-					$subject .= \JText::_('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
-					$this->_message = \JText::_('COM_PROJECTS_SUCCESS_SUSPENDED');
+					$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED');
+					$subject .= Lang::txt('COM_PROJECTS_MSG_ADMIN_SUSPENDED');
+					$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SUSPENDED');
 				break;
 
 				case 'reinstate':
 					$obj->state = 1;
 					$what = $suspended
-						? \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED')
-						: \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_ACTIVATED');
+						? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED')
+						: Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_ACTIVATED');
 					$subject .= $suspended
-						? \JText::_('COM_PROJECTS_MSG_ADMIN_REINSTATED')
-						: \JText::_('COM_PROJECTS_MSG_ADMIN_ACTIVATED');
+						? Lang::txt('COM_PROJECTS_MSG_ADMIN_REINSTATED')
+						: Lang::txt('COM_PROJECTS_MSG_ADMIN_ACTIVATED');
 
 					$this->_message = $suspended
-						? \JText::_('COM_PROJECTS_SUCCESS_REINSTATED')
-						: \JText::_('COM_PROJECTS_SUCCESS_ACTIVATED');
+						? Lang::txt('COM_PROJECTS_SUCCESS_REINSTATED')
+						: Lang::txt('COM_PROJECTS_SUCCESS_ACTIVATED');
 				break;
 			}
 
@@ -426,9 +426,9 @@ class Projects extends AdminController
 		}
 		elseif ($message)
 		{
-			$subject .= ' - '.\JText::_('COM_PROJECTS_MSG_ADMIN_NEW_MESSAGE');
+			$subject .= ' - ' . Lang::txt('COM_PROJECTS_MSG_ADMIN_NEW_MESSAGE');
 			$sendmail = 1;
-			$this->_message = \JText::_('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
+			$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_MESSAGE_SENT');
 		}
 
 		// Save changes
@@ -470,7 +470,7 @@ class Projects extends AdminController
 			// Email config
 			$jconfig 		= \JFactory::getConfig();
 			$from 			= array();
-			$from['name']  	= $jconfig->getValue('config.sitename').' '.\JText::_('COM_PROJECTS');
+			$from['name']  	= $jconfig->getValue('config.sitename').' ' . Lang::txt('COM_PROJECTS');
 			$from['email'] 	= $jconfig->getValue('config.mailfrom');
 
 			// Html email
@@ -569,7 +569,7 @@ class Projects extends AdminController
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -683,7 +683,7 @@ class Projects extends AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option,
-			\JText::_('COM_PROJECTS_PROJECT').' #'.$id.' ('.$alias.') '.\JText::_('COM_PROJECTS_PROJECT_ERASED')
+			Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' ('.$alias.') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
 		);
 	}
 
@@ -704,7 +704,7 @@ class Projects extends AdminController
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -715,7 +715,7 @@ class Projects extends AdminController
 		if (!$file)
 		{
 			$this->setRedirect($url,
-				\JText::_('Please specify a file/directory path to add and commit into project'),
+				Lang::txt('Please specify a file/directory path to add and commit into project'),
 				'error'
 			);
 			return;
@@ -729,7 +729,7 @@ class Projects extends AdminController
 		if (!is_file($path . DS . $file))
 		{
 			$this->setRedirect($url,
-				\JText::_('Error: File not found in the project, cannot add and commit'),
+				Lang::txt('Error: File not found in the project, cannot add and commit'),
 				'error');
 			return;
 		}
@@ -748,7 +748,7 @@ class Projects extends AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&task=edit&id=' . $id,
-			\JText::_('File checked into project Git repo')
+			Lang::txt('File checked into project Git repo')
 		);
 	}
 
@@ -766,7 +766,7 @@ class Projects extends AdminController
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -781,7 +781,7 @@ class Projects extends AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option.'&task=edit&id='.$id,
-			\JText::_('Git repo optimized')
+			Lang::txt('Git repo optimized')
 		);
 	}
 
@@ -800,7 +800,7 @@ class Projects extends AdminController
 		if (!$id or !$obj->loadProject($id))
 		{
 			$this->setRedirect('index.php?option=' . $this->_option,
-				\JText::_('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
+				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
 		}
@@ -827,7 +827,7 @@ class Projects extends AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option='.$this->_option.'&task=edit&id='.$id,
-			\JText::_('Sync log unavailable')
+			Lang::txt('Sync log unavailable')
 		);
 	}
 }

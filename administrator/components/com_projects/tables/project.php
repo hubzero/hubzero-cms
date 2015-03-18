@@ -55,13 +55,13 @@ class Project extends \JTable
 	{
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( \JText::_('PROJECT_MUST_HAVE_ALIAS') );
+			$this->setError( Lang::txt('PROJECT_MUST_HAVE_ALIAS') );
 			return false;
 		}
 
 		if (trim( $this->title ) == '')
 		{
-			$this->setError( \JText::_('PROJECT_MUST_HAVE_TITLE') );
+			$this->setError( Lang::txt('PROJECT_MUST_HAVE_TITLE') );
 			return false;
 		}
 
@@ -1045,7 +1045,7 @@ class Project extends \JTable
 			$this->setup_stage = $stage;
 			if (!$this->store())
 			{
-				$this->setError( \JText::_('Failed to update setup stage.') );
+				$this->setError( Lang::txt('Failed to update setup stage.') );
 				return false;
 			}
 			return true;

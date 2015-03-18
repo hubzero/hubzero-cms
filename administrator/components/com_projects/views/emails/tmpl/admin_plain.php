@@ -36,27 +36,27 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = JRoute::_('index.php?option=' . $this->option . a . 'task=browse');
+	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 }
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 
-$message  = $this->subject."\n";
-$message .= '-------------------------------'."\n";
-$message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.', id #'.$this->project->id.')'."\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')).' '.JHTML::_('date', $this->project->created, 'M d, Y').' '.JText::_('COM_PROJECTS_BY').' ';
-$message .= $this->project->owned_by_group ? $this->nativegroup->cn.' '.JText::_('COM_PROJECTS_GROUP') : $this->project->fullname;
+$message  = $this->subject . "\n";
+$message .= '-------------------------------' . "\n";
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title.' ('.$this->project->alias . ', id #' . $this->project->id.')' . "\n";
+$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' ' . JHTML::_('date', $this->project->created, 'M d, Y').' ' . Lang::txt('COM_PROJECTS_BY').' ';
+$message .= $this->project->owned_by_group ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP') : $this->project->fullname;
 $message .= "\n";
-$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link."\n";
-$message .= '-------------------------------'."\n";
+$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
+$message .= '-------------------------------' . "\n";
 
 // Append a message
 if ($this->message)
 {
-	$message .= JText::_('COM_PROJECTS_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
-	$message .= $this->message ."\n";
+	$message .= Lang::txt('COM_PROJECTS_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
+	$message .= $this->message . "\n";
 }
 
 $message = str_replace('<br />', '', $message);
