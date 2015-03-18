@@ -133,9 +133,12 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 		$html .= t.t.t.'<textarea name="about" id="about" rows="10" cols="25">'.$this->project->about.'</textarea>'.n;
 	}
 	$html .= t.t.t.'</label>'.n;
+	if ($this->project->id)
+	{
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_THUMBNAIL').':'.n;
 	$html .= t.t.t.'<iframe class="filer filerMini" src="' . JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?file='.stripslashes($this->project->picture).'&amp;no_html=1&amp;tempid='.$this->tempid .'"></iframe>'."\n";
 	$html .= t.t.t.'</label>'.n;
+	}
 	// Privacy
 	$html .= t.t.'<h2 class="setup-h">'.JText::_('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH').'</h2>'.n;
 	$html .= t.t.t.'<label>'.n;
