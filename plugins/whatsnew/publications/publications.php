@@ -235,7 +235,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<span class="block details">' . JHTML::_('date', $row->published_up, 'd M Y') . ' <span>|</span> ' . $row->cat_name;
 		if ($authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . $model->showContributors( $authors, false, true );
+			$html .= ' <span>|</span> ' . JText::_('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . \Components\Publications\Helpers\Html::showContributors( $authors, false, true );
 		}
 		$html .= '</span></span></p>' . "\n";
 		if ($row->text)
