@@ -31,18 +31,16 @@ jQuery(document).ready(function(jq){
 	}
 
 	var holdTheInterval = setInterval(function(){
-			$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
+			/*$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);
-			}, 'html');
-
-			/*$.get('/api/members/diskusage', {}, function(data) {
-				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number")
-				{
+			}, 'html');*/
+			$.get($('#diskusage').attr('data-base') + '/api/members/diskusage', {}, function(data) {
+				if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
 					$('#diskusage .du-amount-bar').css('width', data.amount+'%');
 					$('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
 				}
-			}, 'JSON');*/
-		}, 60000);
+			}, 'JSON');
+		}, 60 * 1000);
 
 	var shrbtn = $('#share-btn');
 
