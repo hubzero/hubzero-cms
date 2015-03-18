@@ -1871,9 +1871,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$vid 		= JRequest::getInt('vid', 0);
 		$version 	= JRequest::getVar( 'version', '' );
 
-		require_once( JPATH_ROOT . DS . 'components' . DS
-			. 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
-
 		// Load publication & version classes
 		$objP  = new \Components\Publications\Tables\Publication( $this->database );
 		$objV  = new \Components\Publications\Tables\Version( $this->database );

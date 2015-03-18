@@ -83,8 +83,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$this->_database = JFactory::getDBO();
 
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
-			. 'helpers' . DS . 'helper.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' .
 			DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' .
@@ -151,7 +149,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		if ($returnhtml)
 		{
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 
 			$this->_option = $option;

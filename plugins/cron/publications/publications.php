@@ -110,7 +110,7 @@ class plgCronPublications extends JPlugin
 
 		// Helpers
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";

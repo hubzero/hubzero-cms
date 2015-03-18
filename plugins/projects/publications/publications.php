@@ -257,7 +257,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Import publication helpers
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php' );
 

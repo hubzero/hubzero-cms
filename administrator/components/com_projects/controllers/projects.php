@@ -86,8 +86,6 @@ class Projects extends AdminController
 				.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
 			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-			require_once( PATH_CORE . DS . 'components'.DS
-				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		}
 	}
 

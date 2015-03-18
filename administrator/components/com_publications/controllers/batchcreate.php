@@ -302,17 +302,14 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			$elementSupportId 	= !empty($elements2) ? $elements2[0]->id : $elementSupportId;
 		}
 
-		// Project helper
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'helpers' . DS . 'helper.php');
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications'
+		require_once( PATH_ROOT . DS .'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'types.php' );
 
 		// Get project repo path
 		$this->projectPath 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
 
 		// Git helper
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+		include_once( PATH_ROOT . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
 		$this->_git = new \Components\Projects\Helpers\Git($this->projectPath);
 
