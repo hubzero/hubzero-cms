@@ -149,6 +149,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
+		$questionID = JRequest::getVar('rid');
 		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		if (!$comment['item_id'])
@@ -178,6 +179,98 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			{
 				JError::raiseError(500, $row->getError());
 				return;
+			}
+
+			//send email, if configured
+			// Load the question
+			$question = new AnswersModelQuestion($questionID);
+
+			//get config
+			$jconfig = JFactory::getConfig();
+
+			// Get users who need to be notified on every question
+			$apu = $this->config->get('notify_users', '');
+			$apu = explode(',', $apu);
+			$apu = array_map('trim',$apu);
+
+			$receivers = array();
+
+			// Build the "from" info
+			$from = array(
+				'email'     => $jconfig->getValue('config.mailfrom'),
+				'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS'),
+				'multipart' => md5(date('U'))
+			);
+
+			// Build the message subject
+			$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_ANSWERS_ANSWERS') . ', ' . JText::_('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . JText::_('COM_ANSWERS_RESPONSE');
+			$message = array();
+
+			// Plain text message
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'response_plaintext'
+			));
+			$eview->option   = $this->_option;
+			$eview->jconfig  = $jconfig;
+			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->juser    = $this->juser;
+			$eview->question = $question;
+			$eview->row      = $row;
+			$eview->boundary = $from['multipart'];
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML message
+			$eview->setLayout('response_html');
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+			// ---
+
+			$authorid = $question->creator('id');
+
+			$apu = $this->config->get('notify_users', '');
+			$apu = explode(',', $apu);
+			$apu = array_map('trim', $apu);
+
+			$receivers = array();
+
+			if (!empty($apu))
+			{
+				foreach ($apu as $u)
+				{
+					$user = JUser::getInstance($u);
+					if ($user)
+					{
+						$receivers[] = $user->get('id');
+					}
+				}
+				$receivers = array_unique($receivers);
+			}
+
+			// Send the message
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher = JDispatcher::getInstance();
+
+			// send the response, unless the author is also in the admin list.
+			if (!in_array($authorid, $receivers) && $question->get('email'))
+			{
+				if (!$dispatcher->trigger('onSendMessage', array('answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option)))
+				{
+					$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
+				}
+			}
+
+			// admin emails
+			if (!empty($receivers))
+			{
+				if (!$dispatcher->trigger('onSendMessage', array('new_answer_admin', $subject, $message, $from, $receivers, $this->_option)))
+				{
+					$this->setError(JText::_('COM_ANSWERS_MESSAGE_FAILED'));
+				}
 			}
 		}
 
