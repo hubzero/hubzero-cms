@@ -134,4 +134,20 @@ class CollectionsModelAdapterMember extends CollectionsModelAdapterAbstract
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
 	}
+
+	/**
+	 * Check if a user has access
+	 *
+	 * @param   integer  $user_id
+	 * @return  boolean
+	 */
+	public function canAccess($user_id)
+	{
+		if ($user_id == $this->get('scope_id'))
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

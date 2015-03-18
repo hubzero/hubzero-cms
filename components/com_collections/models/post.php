@@ -61,11 +61,18 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	private $_adapter = NULL;
 
 	/**
-	 * CollectionsModelPost
+	 * CollectionsModelItem
 	 *
 	 * @var object
 	 */
 	private $_data = null;
+
+	/**
+	 * CollectionsModelCollection
+	 *
+	 * @var object
+	 */
+	private $_collection = null;
 
 	/**
 	 * Returns a reference to this model
@@ -193,6 +200,27 @@ class CollectionsModelPost extends CollectionsModelAbstract
 		}
 
 		return $this->_data;
+	}
+
+	/**
+	 * Get the item for this post
+	 *
+	 * @param   integer $oid
+	 * @return  object
+	 */
+	public function collection($oid=null)
+	{
+		if (!($this->_collection instanceof CollectionsModelCollection))
+		{
+			if ($oid === null)
+			{
+				$oid = $this->get('collection_id', 0);
+			}
+
+			$this->_collection = new CollectionsModelCollection($oid);
+		}
+
+		return $this->_collection;
 	}
 
 	/**

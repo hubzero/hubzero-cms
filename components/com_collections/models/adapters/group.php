@@ -48,6 +48,13 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 	);
 
 	/**
+	 * Group
+	 *
+	 * @var object
+	 */
+	protected $_group = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      integer $scope_id Scope ID (group, course, etc.)
@@ -65,6 +72,8 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 			$group->set('cn', $scope_id);
 			$group->set('description', JText::_('(unknown)'));
 		}
+
+		$this->_group = $group;
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'collections';
@@ -141,5 +150,26 @@ class CollectionsModelAdapterGroup extends CollectionsModelAdapterAbstract
 		$segments = array_merge($segments, (array) $params);
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+	}
+
+	/**
+	 * Check if a user has access
+	 *
+	 * @param   integer  $user_id
+	 * @return  boolean
+	 */
+	public function canAccess($user_id)
+	{
+		if (!$this->_group || !$this->_group->get('cn'))
+		{
+			return true;
+		}
+
+		if (in_array($user_id, $this->_group->get('members')))
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

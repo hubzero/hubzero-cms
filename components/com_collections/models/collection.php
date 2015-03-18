@@ -671,4 +671,60 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 		}
 		return $content;
 	}
+
+	/**
+	 * Return the adapter for this entry's scope,
+	 * instantiating it if it doesn't already exist
+	 *
+	 * @return  object
+	 */
+	private function _adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$scope = strtolower($this->get('object_type'));
+			$cls = 'CollectionsModelAdapter' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls($this->get('object_id'));
+		}
+		return $this->_adapter;
+	}
+
+	/**
+	 * Check if a specified user can access this item
+	 *
+	 * @param   integer  $user_id  User ID
+	 * @return  boolean
+	 */
+	public function canAccess($user_id = null)
+	{
+		if (!$user_id)
+		{
+			$user_id = \JFactory::getUser()->get('id');
+		}
+
+		// If registered
+		if ($this->get('access') == 1)
+		{
+			return (\JFactory::getUser()->get('guest') ? false : true);
+		}
+
+		// If private
+		if ($this->get('access') == 4)
+		{
+			return $this->_adapter()->canAccess($user_id);
+		}
+
+		return true;
+	}
 }

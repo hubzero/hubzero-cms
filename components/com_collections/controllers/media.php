@@ -61,7 +61,14 @@ class CollectionsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Check authorization
-		if ($post->item()->get('access') == 4 && $this->juser->get('guest'))
+		if ($post->collection()->get('access') == 4 && $this->juser->get('guest'))
+		{
+			JError::raiseError(403, JText::_('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'));
+			return;
+		}
+
+		// Check authorization
+		if (!$post->collection()->canAccess($this->juser->get('id')))
 		{
 			JError::raiseError(403, JText::_('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'));
 			return;

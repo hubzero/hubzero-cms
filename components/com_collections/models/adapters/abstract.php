@@ -88,4 +88,15 @@ abstract class CollectionsModelAdapterAbstract extends \Hubzero\Base\Object
 		}
 		return implode('&', $bits);
 	}
+
+	/**
+	 * Check if a user has access
+	 *
+	 * @param   integer  $user_id
+	 * @return  boolean
+	 */
+	public function canAccess($user_id)
+	{
+		return true;
+	}
 }
