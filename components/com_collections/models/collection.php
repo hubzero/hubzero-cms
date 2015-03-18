@@ -72,25 +72,32 @@ class Collection extends Base
 	private $_posts = null;
 
 	/**
-	 * CollectionsModelPost
+	 * Post
 	 *
 	 * @var object
 	 */
 	private $_post = null;
 
 	/**
-	 * CollectionsModelItem
+	 * Item
 	 *
 	 * @var object
 	 */
 	private $_item = null;
 
 	/**
-	 * CollectionsModelFollowing
+	 * Following
 	 *
 	 * @var object
 	 */
 	private $_following = null;
+
+	/**
+	 * Adapter
+	 *
+	 * @var object
+	 */
+	private $_adapter = NULL;
 
 	/**
 	 * Constructor
@@ -675,5 +682,61 @@ class Collection extends Base
 			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
+	}
+
+	/**
+	 * Return the adapter for this entry's scope,
+	 * instantiating it if it doesn't already exist
+	 *
+	 * @return  object
+	 */
+	private function _adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$scope = strtolower($this->get('object_type'));
+			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls($this->get('object_id'));
+		}
+		return $this->_adapter;
+	}
+
+	/**
+	 * Check if a specified user can access this item
+	 *
+	 * @param   integer  $user_id  User ID
+	 * @return  boolean
+	 */
+	public function canAccess($user_id = null)
+	{
+		if (!$user_id)
+		{
+			$user_id = \JFactory::getUser()->get('id');
+		}
+
+		// If registered
+		if ($this->get('access') == 1)
+		{
+			return (\JFactory::getUser()->get('guest') ? false : true);
+		}
+
+		// If private
+		if ($this->get('access') == 4)
+		{
+			return $this->_adapter()->canAccess($user_id);
+		}
+
+		return true;
 	}
 }

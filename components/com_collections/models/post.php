@@ -69,6 +69,13 @@ class Post extends Base
 	private $_data = null;
 
 	/**
+	 * CollectionsModelCollection
+	 *
+	 * @var object
+	 */
+	private $_collection = null;
+
+	/**
 	 * Returns a reference to this model
 	 *
 	 * @param   mixed   $oid  Integer, string, object or array
@@ -194,6 +201,27 @@ class Post extends Base
 		}
 
 		return $this->_data;
+	}
+
+	/**
+	 * Get the item for this post
+	 *
+	 * @param   integer $oid
+	 * @return  object
+	 */
+	public function collection($oid=null)
+	{
+		if (!($this->_collection instanceof Collection))
+		{
+			if ($oid === null)
+			{
+				$oid = $this->get('collection_id', 0);
+			}
+
+			$this->_collection = new Collection($oid);
+		}
+
+		return $this->_collection;
 	}
 
 	/**

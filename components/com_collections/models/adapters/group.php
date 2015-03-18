@@ -47,6 +47,13 @@ class Group extends Base
 	);
 
 	/**
+	 * Group
+	 *
+	 * @var object
+	 */
+	protected $_group = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
@@ -64,6 +71,8 @@ class Group extends Base
 			$group->set('cn', $scope_id);
 			$group->set('description', Lang::txt('(unknown)'));
 		}
+
+		$this->_group = $group;
 
 		$this->_segments['cn']     = $group->get('cn');
 		$this->_segments['active'] = 'collections';
@@ -140,5 +149,26 @@ class Group extends Base
 		$segments = array_merge($segments, (array) $params);
 
 		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+	}
+
+	/**
+	 * Check if a user has access
+	 *
+	 * @param   integer  $user_id
+	 * @return  boolean
+	 */
+	public function canAccess($user_id)
+	{
+		if (!$this->_group || !$this->_group->get('cn'))
+		{
+			return true;
+		}
+
+		if (in_array($user_id, $this->_group->get('members')))
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

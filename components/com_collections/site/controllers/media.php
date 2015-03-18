@@ -66,7 +66,13 @@ class Media extends SiteController
 		}
 
 		// Check authorization
-		if ($post->item()->get('access') == 4 && $this->juser->get('guest'))
+		if ($post->collection()->get('access') == 4 && $this->juser->get('guest'))
+		{
+			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'), 403);
+		}
+
+		// Check authorization
+		if (!$post->collection()->canAccess($this->juser->get('id')))
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'), 403);
 		}
