@@ -31,16 +31,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<thead>
 		<tr>
 			<th class="th_image" colspan="2"></th>
-			<th><?php echo JText::_('COM_PROJECTS_TITLE'); ?></th>
-			<th><?php echo JText::_('COM_PROJECTS_OWNER'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
 	<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
 		<?php if ($this->filters['reviewer'] == 'sensitive') {  ?>
-			<th><?php echo JText::_('COM_PROJECTS_TYPE_OF_DATA'); ?></th>
-			<th><?php echo JText::_('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_TYPE_OF_DATA'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
 		<?php } ?>
 		<?php if ($this->filters['reviewer'] == 'sponsored') {  ?>
-			<th><?php echo JText::_('COM_PROJECTS_SPS_INFO'); ?></th>
-			<th><?php echo JText::_('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_SPS_INFO'); ?></th>
+			<th><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></th>
 		<?php } ?>
 			<th></th>
 	<?php } ?>

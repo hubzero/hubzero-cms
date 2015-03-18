@@ -36,64 +36,64 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$sef_browse = JRoute::_('index.php?option=' . $this->option . '&task=browse');
+	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef_browse = Route::url('index.php?option=' . $this->option . '&task=browse');
 }
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 
-$message  = $this->project->fullname. ' ' .JText::_('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
+$message  = $this->project->fullname. ' ' .Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
 $message .= ' "' . $this->project->title. '"' ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
+$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
 		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
-		 . JText::_('COM_PROJECTS_BY') . ' ';
+		 . Lang::txt('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->owned_by_group
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+			? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
 
 if ($this->project->private == 0)
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 }
 $message .= '-------------------------------' ."\n\n";
-$message .= JText::_('COM_PROJECTS_EMAIL_PRIVACY') . ': ';
+$message .= Lang::txt('COM_PROJECTS_EMAIL_PRIVACY') . ': ';
 $message .= $this->project->private == 1
-			? JText::_('COM_PROJECTS_EMAIL_PRIVATE') ."\n"
-			: JText::_('COM_PROJECTS_EMAIL_PUBLIC') ."\n";
+			? Lang::txt('COM_PROJECTS_EMAIL_PRIVATE') ."\n"
+			: Lang::txt('COM_PROJECTS_EMAIL_PUBLIC') ."\n";
 
 if ($this->config->get('restricted_data', 0))
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') ."\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') ."\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') ."\n";
 	if ($this->params->get('followup'))
 	{
-		$message .= JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') ."\n";
+		$message .= Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') ."\n";
 	}
 	$message .= '-------------------------------' ."\n\n";
 }
 if ($this->config->get('grantinfo', 0))
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') ."\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->params->get('grant_PI') ."\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->params->get('grant_agency') ."\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->params->get('grant_budget') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->params->get('grant_title') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->params->get('grant_PI') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->params->get('grant_agency') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->params->get('grant_budget') ."\n";
 }
 $message .= '-------------------------------' ."\n\n";
 
 if ($this->config->get('ginfo_group', 0))
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_LINK_SPS') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_LINK_SPS') ."\n";
 	$message .= $browseLink . '?reviewer=sponsored' . "\n\n";
 }
 
 if ($this->config->get('sdata_group', 0))
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_LINK_HIPAA') ."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_LINK_HIPAA') ."\n";
 	$message .= $browseLink . '?reviewer=sensitive' . "\n";
 }
 

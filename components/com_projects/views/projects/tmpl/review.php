@@ -27,20 +27,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->reviewer == 'sponsored')
 {
-	$title = JText::_('COM_PROJECTS_REVIEW_PROJECT_SPS');
+	$title = Lang::txt('COM_PROJECTS_REVIEW_PROJECT_SPS');
 	$approved = $this->params->get('grant_approval') || $this->params->get('grant_status') == 1 ? 1 : 0;
 
 	$b_action = $approved ?
-			JText::_('COM_PROJECTS_SAVE_SPS_APPROVED') :
-			JText::_('COM_PROJECTS_SAVE_SPS') ;
+			Lang::txt('COM_PROJECTS_SAVE_SPS_APPROVED') :
+			Lang::txt('COM_PROJECTS_SAVE_SPS') ;
 }
 else {
 	$title = $this->project->state == 5
-			? JText::_('COM_PROJECTS_REVIEW_PROJECT_HIPAA')
-			: JText::_('COM_PROJECTS_REVIEW_PROJECT_HIPAA_SAVE');
+			? Lang::txt('COM_PROJECTS_REVIEW_PROJECT_HIPAA')
+			: Lang::txt('COM_PROJECTS_REVIEW_PROJECT_HIPAA_SAVE');
 	$b_action = $this->project->state == 5
-			? JText::_('COM_PROJECTS_SAVE_HIPAA')
-			: JText::_('COM_PROJECTS_SAVE');
+			? Lang::txt('COM_PROJECTS_SAVE_HIPAA')
+			: Lang::txt('COM_PROJECTS_SAVE');
 }
 
 $profile = \Hubzero\User\Profile::getInstance($this->project->created_by_user);
@@ -64,7 +64,7 @@ if ($this->getError()) {
 
 <?php if ($this->project->id) { ?>
 
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
 
 	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -77,11 +77,11 @@ if ($this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	</fieldset>
 	<div class="info_blurb">
-		<div class="pthumb"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>
+		<div class="pthumb"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title">
 			<?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>
-			<p class="info_title"><span class="italic"><?php echo JText::_('COM_PROJECTS_CREATED_BY') . ': ' . $profile->get('name'); ?></span></p>
+			<p class="info_title"><span class="italic"><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $profile->get('name'); ?></span></p>
 		</div>
 	</div>
 
@@ -92,26 +92,26 @@ if ($this->getError()) {
 		<table>
 			<tr>
 				<td>
-					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
+					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
 					 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>"  />
 					</label>
 				</td>
 				<td class="tdmini"></td>
 				<td>
-					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
+					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
 					 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->params->get('grant_PI'); ?>"  />
 					</label>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
+					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
 					 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>"  />
 					</label>
 				</td>
 				<td class="tdmini"></td>
 				<td>
-					<label><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
+					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
 					 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->params->get('grant_budget'); ?>"  />
 					</label>
 				</td>
@@ -119,20 +119,20 @@ if ($this->getError()) {
 			<tr>
 				<td>
 					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
-						? ucfirst(JText::_('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
-						: JText::_('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
+						? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
+						: Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
 					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
 					<?php if (!$approved) { ?>
-					 <p class="hint mini"><?php echo JText::_('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
+					 <p class="hint mini"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
 					<?php } ?>
 					</label>
 				</td>
-				<td class="tdmini"><?php if (!$approved) { echo '<span class="or">' . JText::_('COM_PROJECTS_OR') . '</span>';  } ?></td>
+				<td class="tdmini"><?php if (!$approved) { echo '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>';  } ?></td>
 				<td>
 					<?php if (!$approved) { ?>
 					<label for="rejected" class="dark">
 						 <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if ($this->params->get('grant_status') == 2) { echo 'checked="checked"'; } ?> />
-						<?php echo $this->params->get('grant_status') == 2 ? JText::_('COM_PROJECTS_SPS_REJECTED_KEEP') : JText::_('COM_PROJECTS_SPS_REJECT'); ?>
+						<?php echo $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT'); ?>
 					</label>
 					<?php } ?>
 				</td>
@@ -142,25 +142,25 @@ if ($this->getError()) {
 	<?php } ?>
 	<?php if ($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>
 	 <div>
-		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(JText::_('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
+		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
 	 </div>
 	<?php } ?>
 
 	<div id="newadmincomment">
-		<h4><?php echo ucfirst(JText::_('COM_PROJECTS_ADD_ADMIN_COMMENT')); ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
+		<h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_ADD_ADMIN_COMMENT')); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span></h4>
 		<label>
 			<textarea name="comment" rows="4" cols="40"></textarea>
 		</label>
 		<?php if ($this->reviewer == 'sponsored' && !$approved) { ?>
-		 <label><input class="option" name="notify" type="checkbox" value="1" /> <?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
+		 <label><input class="option" name="notify" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
 		<?php } ?>
 	</div>
 	<p class="submitarea">
 		<input type="submit" value="<?php echo $b_action; ?>" class="btn" />
-		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
 	</p>
 	<div id="admincommentbox">
-	<h4><?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
+	<h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
 	<?php if ($notes)  { ?>
 		<?php echo $notes; ?>
 	<?php } else {  ?>

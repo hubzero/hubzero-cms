@@ -40,11 +40,11 @@ $a = 0;
 ?>
 	<ul class="projecttools">
 		<li<?php if ($this->active == 'feed') { echo ' class="active"'; }?>>
-			<a class="newsupdate" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=feed'); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo JText::_('COM_PROJECTS_TAB_FEED'); ?></span>
+			<a class="newsupdate" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=feed'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo Lang::txt('COM_PROJECTS_TAB_FEED'); ?></span>
 			<span id="c-new" class="mini highlight <?php if ($this->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $this->project->counts['newactivity']; ?></span></span></a>
 		</li>
-		<li<?php if ($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=info'); ?>" class="inform" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_INFO')); ?>">
-			<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
+		<li<?php if ($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=info'); ?>" class="inform" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_INFO')); ?>">
+			<span><?php echo Lang::txt('COM_PROJECTS_TAB_INFO'); ?></span></a>
 		</li>
 <?php foreach ($this->tabs as $tab) {
 
@@ -62,7 +62,7 @@ $a = 0;
 		{
 	?>
 		<li class="assets">
-			<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
+			<span><?php echo Lang::txt('COM_PROJECTS_TAB_ASSETS'); ?></span>
 		</li>
 	</ul>
 	<ul class="projecttools assetlist">
@@ -70,7 +70,7 @@ $a = 0;
 foreach ($assetTabs as $aTab)
 { ?>
 		<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
-			<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
+			<a class="<?php echo $aTab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $aTab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
 				<span><?php echo $aTab['title']; ?></span>
 			<?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
 				<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
@@ -82,7 +82,7 @@ foreach ($assetTabs as $aTab)
 	<ul class="projecttools">
 <?php } continue; } ?>
 		<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
-			<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
+			<a class="<?php echo $tab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $tab['name']); ?>/" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
 				<span><?php echo $tab['title']; ?></span>
 			<?php if (isset($this->project->counts[$tab['name']]) && $this->project->counts[$tab['name']] != 0) { ?>
 				<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $this->project->counts[$tab['name']]; ?></span></span>

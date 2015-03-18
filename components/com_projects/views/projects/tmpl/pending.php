@@ -43,6 +43,6 @@ $this->project->title = $this->escape($this->project->title);
 			     ->set('option', $this->option)
 			     ->display();
 		?>
-		<p class="warning"><?php echo JText::_('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
+		<p class="warning"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PENDING_APPROVAL'); ?></p>
 	</section><!-- / .main section -->
 </div>

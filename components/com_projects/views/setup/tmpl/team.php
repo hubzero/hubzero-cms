@@ -69,22 +69,22 @@ $this->view('_title')
 	<div class="setup-wrap">
 		<form id="hubForm" method="post" action="index.php">
 			<div class="explaination">
-				<h4><?php echo JText::_('COM_PROJECTS_HOWTO_TITLE_ROLES'); ?></h4>
-				<p><span class="italic prominent"><?php echo ucfirst(JText::_('COM_PROJECTS_LABEL_COLLABORATORS')); ?></span> <?php echo JText::_('COM_PROJECTS_CAN'); ?>:</p>
+				<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_ROLES'); ?></h4>
+				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
 				<ul>
-					<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>
-					<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_TWO'); ?></li>
-					<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_THREE'); ?></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_TWO'); ?></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_THREE'); ?></li>
 				</ul>
-				<p><span class="italic prominent"><?php echo ucfirst(JText::_('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo JText::_('COM_PROJECTS_CAN'); ?>:</p>
+				<p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
 				<ul>
-					<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
-					<li><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
-					<li><strong><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
+					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
+					<li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
 				</ul>
 				<?php if ($this->gid) { ?>
-					<h4><?php echo JText::_('COM_PROJECTS_HOWTO_GROUP_PROJECT'); ?></h4>
-					<p><?php echo JText::_('COM_PROJECTS_HOWTO_GROUP_EXPLAIN'); ?></p>
+					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_PROJECT'); ?></h4>
+					<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_EXPLAIN'); ?></p>
 				<?php } ?>
 			</div>
 			<fieldset>
@@ -99,14 +99,14 @@ $this->view('_title')
 				     ->set('section', $this->section)
 				     ->display();
 				?>
-				<legend><?php echo JText::_('COM_PROJECTS_ADD_TEAM'); ?></legend>
+				<legend><?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?></legend>
 				<div id="cbody">
 					<?php echo $this->content; ?>
 				</div>
 			</fieldset>
 			<div class="clear"></div>
 			<div class="submitarea">
-				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
+				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
 			</div>
 		</form>
 	</div>

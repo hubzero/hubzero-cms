@@ -33,18 +33,18 @@ if (!$this->project->id)
 <div class="grid pictureframe js">
 	<div class="col span3">
 		<div id="project-image-box" class="project-image-box">
-			<img id="project-image-content" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=master'); ?>" alt="" />
+			<img id="project-image-content" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=master'); ?>" alt="" />
 		</div>
 		<?php if ($this->project->picture) { ?>
-		<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=deleteimg&alias=' . $this->project->alias ); ?>" id="deleteimg">[ <?php echo JText::_('COM_PROJECTS_DELETE'); ?> ]</a></p>
+		<p class="actionlink"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=deleteimg&alias=' . $this->project->alias ); ?>" id="deleteimg">[ <?php echo Lang::txt('COM_PROJECTS_DELETE'); ?> ]</a></p>
 		<?php } ?>
 	</div>
-	<div class="col span9 omega" id="ajax-upload" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=doajaxupload&no_html=1'); ?>">
-		<h5><?php echo JText::_('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo JText::_('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></h5>
+	<div class="col span9 omega" id="ajax-upload" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=doajaxupload&no_html=1'); ?>">
+		<h5><?php echo Lang::txt('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo Lang::txt('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></h5>
 		<p id="status-box"></p>
 		<label>
 			<input name="upload" type="file" class="option uploader" id="uploader" />
 		</label>
-		<input type="button" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn" id="upload-file" />
+		<input type="button" value="<?php echo Lang::txt('COM_PROJECTS_UPLOAD'); ?>" class="btn" id="upload-file" />
 	</div>
 </div>

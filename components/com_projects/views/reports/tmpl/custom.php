@@ -60,19 +60,19 @@ $filter = JRequest::getVar( 'searchterm', '');
 			</fieldset>
 			<div class="report-content">
 				<div class="groupblock">
-					<h6><?php echo JText::_('Download publication data:'); ?></h6>
+					<h6><?php echo Lang::txt('Download publication data:'); ?></h6>
 					<label>
 						<?php $ph = JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m'); ?>
-						<?php echo JText::_('From'); ?>: <input type="text" value="<?php echo $from; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+						<?php echo Lang::txt('From'); ?>: <input type="text" value="<?php echo $from; ?>" id="from-date" name="fromdate" placeholder="<?php echo $ph; ?>" maxlength="7" />
 					</label>
 					<label>
 						<?php $ph = JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m'); ?>
-						<?php echo JText::_('To'); ?>: <input type="text" value="<?php echo $to; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
+						<?php echo Lang::txt('To'); ?>: <input type="text" value="<?php echo $to; ?>" id="to-date"  name="todate" placeholder="<?php echo $ph; ?>" maxlength="7" />
 					</label>
 				</div>
 				<div class="groupblock">
 					<div class="block">
-						<label><?php echo JText::_('Filter by tag'); ?>:
+						<label><?php echo Lang::txt('Filter by tag'); ?>:
 						<?php JPluginHelper::importPlugin( 'hubzero' );
 						$dispatcher = JDispatcher::getInstance();
 
@@ -87,41 +87,41 @@ $filter = JRequest::getVar( 'searchterm', '');
 						</label>
 					</div>
 				</div>
-				<h6><?php echo JText::_('Include the following information:'); ?></h6>
+				<h6><?php echo Lang::txt('Include the following information:'); ?></h6>
 				<div class="groupblock element-choice">
 					<div class="columns three first">
 						<label class="block">
-							<input type="checkbox" name="data[]" value="id" checked="checked" /> <?php echo JText::_('Publication ID'); ?>
+							<input type="checkbox" name="data[]" value="id" checked="checked" /> <?php echo Lang::txt('Publication ID'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="title" checked="checked" /> <?php echo JText::_('Publication title'); ?>
+							<input type="checkbox" name="data[]" value="title" checked="checked" /> <?php echo Lang::txt('Publication title'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="author" checked="checked" /> <?php echo JText::_('First author'); ?>
+							<input type="checkbox" name="data[]" value="author" checked="checked" /> <?php echo Lang::txt('First author'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="version" checked="checked" /> <?php echo JText::_('Version label'); ?>
+							<input type="checkbox" name="data[]" value="version" checked="checked" /> <?php echo Lang::txt('Version label'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="doi" checked="checked" /> <?php echo JText::_('DOI url'); ?>
+							<input type="checkbox" name="data[]" value="doi" checked="checked" /> <?php echo Lang::txt('DOI url'); ?>
 						</label>
 					</div>
 					<div class="columns three second">
 						<label class="block">
-							<input type="checkbox" name="data[]" value="downloads" checked="checked" /> <?php echo JText::_('Number of downloads'); ?>
+							<input type="checkbox" name="data[]" value="downloads" checked="checked" /> <?php echo Lang::txt('Number of downloads'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="views" checked="checked" /> <?php echo JText::_('Number of page views'); ?>
+							<input type="checkbox" name="data[]" value="views" checked="checked" /> <?php echo Lang::txt('Number of page views'); ?>
 						</label>
 						<label class="block">
-							<input type="checkbox" name="data[]" value="citations" checked="checked" /> <?php echo JText::_('Number of citations'); ?>
+							<input type="checkbox" name="data[]" value="citations" checked="checked" /> <?php echo Lang::txt('Number of citations'); ?>
 						</label>
 					</div>
 					<div class="clear"></div>
 				</div>
 				<p class="submitarea">
 					<span class="button-wrapper icon-download">
-						<input type="submit" class="btn active btn-primary icon-download" value="<?php echo JText::_('Download report (CSV)'); ?>"  />
+						<input type="submit" class="btn active btn-primary icon-download" value="<?php echo Lang::txt('Download report (CSV)'); ?>"  />
 					</span>
 				</p>
 			</div>

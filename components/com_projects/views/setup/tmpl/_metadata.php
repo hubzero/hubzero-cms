@@ -32,12 +32,12 @@ if (!$this->project->id)
 ?>
 <div class="info_blurb grid">
 	<div class="col span1">
-		<img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" />
+		<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" />
 	</div>
 	<div class="col span6">
-		<?php echo '<span class="prominent">' . JText::_('COM_PROJECTS_PROJECT'). '</span>: ' . $this->project->title; ?>
+		<?php echo '<span class="prominent">' . Lang::txt('COM_PROJECTS_PROJECT'). '</span>: ' . $this->project->title; ?>
 		(<span><?php echo $this->project->alias; ?></span>)
-		<span class="block faded"><?php echo JText::_('COM_PROJECTS_CREATED') . ' ' . JHTML::_('date', $this->project->created, 'M d, Y'); ?></span>
+		<span class="block faded"><?php echo Lang::txt('COM_PROJECTS_CREATED') . ' ' . JHTML::_('date', $this->project->created, 'M d, Y'); ?></span>
 	</div>
 	<div class="col span5 omega">
 	</div>

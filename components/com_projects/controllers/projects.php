@@ -125,7 +125,7 @@ class Projects extends Base
 		// When logging in
 		if ($this->juser->get('guest') && $action == 'login')
 		{
-			$this->_msg = \JText::_('COM_PROJECTS_LOGIN_TO_VIEW_YOUR_PROJECTS');
+			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_YOUR_PROJECTS');
 			$this->_login();
 			return;
 		}
@@ -242,7 +242,7 @@ class Projects extends Base
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = \JText::_('COM_PROJECTS_LOGIN_REVIEWER');
+				$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_REVIEWER');
 				$this->_login();
 				return;
 			}
@@ -250,10 +250,10 @@ class Projects extends Base
 			if (!$this->_checkReviewerAuth($reviewer))
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
-				$this->view->error  = \JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
+				$this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
 				$this->view->title = $reviewer == 'sponsored'
-							 ? \JText::_('COM_PROJECTS_REVIEWER_SPS')
-							 : \JText::_('COM_PROJECTS_REVIEWER_HIPAA');
+							 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+							 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
 				$this->view->display();
 				return;
 			}
@@ -282,7 +282,7 @@ class Projects extends Base
 		// Login for private projects
 		if ($this->juser->get('guest') && $action == 'login')
 		{
-			$this->_msg = \JText::_('COM_PROJECTS_LOGIN_TO_VIEW_PRIVATE_PROJECTS');
+			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PRIVATE_PROJECTS');
 			$this->_login();
 			return;
 		}
@@ -355,8 +355,8 @@ class Projects extends Base
 		{
 			// Project on hold
 			$this->view 		= new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
-			$this->view->error  = \JText::_('COM_PROJECTS_PROJECT_RELOGIN');
-			$this->view->title  = \JText::_('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
+			$this->view->error  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN');
+			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
 			$this->view->display();
 			return;
 		}
@@ -364,7 +364,7 @@ class Projects extends Base
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -381,7 +381,7 @@ class Projects extends Base
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
 		if (!$this->project)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
+			$this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
 			$this->introTask();
 			return;
 		}
@@ -419,8 +419,8 @@ class Projects extends Base
 				else
 				{
 					// Error
-					$this->setError(\JText::_('COM_PROJECTS_PROJECT_OWNER_DELETED'));
-					$this->title = \JText::_('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
+					$this->setError(Lang::txt('COM_PROJECTS_PROJECT_OWNER_DELETED'));
+					$this->title = Lang::txt('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
 					$this->_showError();
 					return;
 				}
@@ -439,7 +439,7 @@ class Projects extends Base
 		// Is project deleted?
 		if ($this->project->state == 2)
 		{
-			$this->setError(\JText::_('COM_PROJECTS_PROJECT_DELETED'));
+			$this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
 			$this->introTask();
 			return;
 		}
@@ -449,7 +449,7 @@ class Projects extends Base
 		{
 			if (!$this->_publishing)
 			{
-				$this->setError(\JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
+				$this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
 				$this->introTask();
 				return;
 			}
@@ -461,7 +461,7 @@ class Projects extends Base
 		// Check if project is in setup
 		if ($this->project->setup_stage < $this->_setupComplete && (!$ajax && $this->active != 'team'))
 		{
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&task=setup&alias=' . $this->project->alias);
 			return;
 		}
@@ -488,7 +488,7 @@ class Projects extends Base
 		// Do we need to login?
 		if ($this->juser->get('guest') && $action == 'login')
 		{
-			$this->_msg = \JText::_('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
+			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
 			$this->_login();
 			return;
 		}
@@ -548,7 +548,7 @@ class Projects extends Base
 						$objO->sysGroup($this->project->alias, $this->config->get('group_prefix', 'pr-'));
 
 						// Go to project page
-						$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+						$this->_redirect = Route::url('index.php?option=' . $this->_option
 							. '&alias=' . $this->project->alias);
 						return;
 					}
@@ -556,7 +556,7 @@ class Projects extends Base
 				else
 				{
 					// Error - different email
-					$this->setError(\JText::_('COM_PROJECTS_INVITE_DIFFERENT_EMAIL'));
+					$this->setError(Lang::txt('COM_PROJECTS_INVITE_DIFFERENT_EMAIL'));
 					$this->_showError();
 					return;
 				}
@@ -574,13 +574,13 @@ class Projects extends Base
 				}
 				elseif ($this->juser->get('guest'))
 				{
-					$this->_msg = \JText::_('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
+					$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
 					$this->_login();
 					return;
 				}
 				else
 				{
-					$this->setError(\JText::_('COM_PROJECTS_ERROR_MUST_BE_PROJECT_CREATOR'));
+					$this->setError(Lang::txt('COM_PROJECTS_ERROR_MUST_BE_PROJECT_CREATOR'));
 					$this->_showError();
 					return;
 				}
@@ -590,12 +590,12 @@ class Projects extends Base
 				// Redirect to publication
 				if (isset($pub) && $pub->id)
 				{
-					$this->_redirect = \JRoute::_('index.php?option=com_publications&task=submit&pid=' . $pub->id);
+					$this->_redirect = Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id);
 					return;
 				}
 				else
 				{
-					\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+					\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 					return;
 				}
 			}
@@ -607,13 +607,13 @@ class Projects extends Base
 			// Login required
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = \JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
+				$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 				$this->_login();
 				return;
 			}
 			if (!$authorized && !$reviewer)
 			{
-				\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 				return;
 			}
 		}
@@ -624,13 +624,13 @@ class Projects extends Base
 		{
 			if (!$authorized)
 			{
-				\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 				return;
 			}
 			$layout = 'suspended';
 
 			// Check who suspended project
-			$suspended = $objAA->checkActivity( $pid, \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
+			$suspended = $objAA->checkActivity( $pid, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		// Is project pending approval?
@@ -642,7 +642,7 @@ class Projects extends Base
 			}
 			elseif ($this->juser->get('id') != $this->project->created_by_user)
 			{
-				\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 				return;
 			}
 			else
@@ -676,7 +676,7 @@ class Projects extends Base
 		{
 			if (!$this->project->lastvisit )
 			{
-				$aid = $this->_postActivity(\JText::_('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), '', '', 'team');
+				$aid = $this->_postActivity(Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), '', '', 'team');
 				if ($aid)
 				{
 					$objO->saveParam ( $pid, $this->juser->get('id'), $param = 'join_activityid', $value = $aid );
@@ -735,11 +735,11 @@ class Projects extends Base
 					if ($ajax)
 					{
 						// Plugin not active in this project
-						echo '<p class="error">' . \JText::_('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
+						echo '<p class="error">' . Lang::txt('COM_PROJECTS_ERROR_CONTENT_CANNOT_LOAD') . '</p>';
 						return;
 					}
 
-					$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+					$this->_redirect = Route::url('index.php?option=' . $this->_option
 						. '&task=view&alias=' . $this->project->alias);
 					return;
 				}
@@ -797,7 +797,7 @@ class Projects extends Base
 				else
 				{
 					// No html output
-					$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+					$this->_redirect = Route::url('index.php?option=' . $this->_option
 						. '&task=view&alias=' . $this->project->alias);
 					return;
 				}
@@ -837,7 +837,7 @@ class Projects extends Base
 						$this->juser->get('id'),
 						$param = 'hide_welcome', 1
 					);
-					$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+					$this->_redirect = Route::url('index.php?option=' . $this->_option
 						. '&task=view&alias=' . $this->project->alias);
 					return;
 				}
@@ -894,7 +894,7 @@ class Projects extends Base
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -906,14 +906,14 @@ class Projects extends Base
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
 		if (!$obj->loadProject($this->_identifier) or !$this->project)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
 		// Must be project creator
 		if ($this->project->created_by_user != $this->juser->get('id'))
 		{
-			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 			return;
 		}
 
@@ -921,7 +921,7 @@ class Projects extends Base
 		if ($this->project->provisioned != 1)
 		{
 			// Redirect to project page
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&alias=' . $this->project->alias);
 			return;
 		}
@@ -929,7 +929,7 @@ class Projects extends Base
 		// Redirect to setup if activation not complete
 		if ($this->project->setup_stage < $this->_setupComplete)
 		{
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&task=setup&alias=' . $this->project->alias);
 			return;
 		}
@@ -949,11 +949,11 @@ class Projects extends Base
 		// Check incoming data
 		if (!$this->model->check($name, $this->project->id))
 		{
-			$this->setError( \JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
+			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 		}
 		elseif ($title == '' or strlen($title) < 3)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
+			$this->setError( Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
 		}
 
 		// Set the pathway
@@ -1004,7 +1004,7 @@ class Projects extends Base
 			jimport('joomla.filesystem.folder');
 			if (!\JFolder::copy($path, $newpath, '', true))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_FAILED_TO_COPY_FILES') );
+				$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			}
 			else
 			{
@@ -1038,7 +1038,7 @@ class Projects extends Base
 		$this->_logActivity($obj->id, 'provisioned', 'activate', 'save', 1);
 
 		// Send to continue setup
-		$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+		$this->_redirect = Route::url('index.php?option=' . $this->_option
 			. '&task=setup&alias=' . $obj->alias);
 		return;
 	}
@@ -1052,7 +1052,7 @@ class Projects extends Base
 	{
 		if (!$this->_identifier)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -1063,21 +1063,21 @@ class Projects extends Base
 		// Load project
 		if (!$obj->loadProject($this->_identifier))
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
 		// Is project deleted?
 		if ($obj->state == 2)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_DELETED') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
 			return;
 		}
 
 		// Already suspended
 		if ($this->_task == 'suspend' && $obj->state == 0)
 		{
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&alias=' . $obj->alias);
 			return;
 		}
@@ -1086,11 +1086,11 @@ class Projects extends Base
 		if ($this->_task == 'reinstate')
 		{
 			$suspended = $objAA->checkActivity( $obj->id,
-				\JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
+				Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
 			);
 			if ($suspended == 1)
 			{
-				\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 				return;
 			}
 		}
@@ -1098,7 +1098,7 @@ class Projects extends Base
 		// Login required
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = \JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
+			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 			$this->_login();
 			return;
 		}
@@ -1110,13 +1110,13 @@ class Projects extends Base
 			$groupid = $obj->owned_by_group;
 			if ($obj->created_by_user != $this->juser->get('id'))
 			{
-				\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 				return;
 			}
 			if (!$groupid)
 			{
 				// Nothing to fix
-				$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+				$this->_redirect = Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $obj->alias);
 				return;
 			}
@@ -1144,7 +1144,7 @@ class Projects extends Base
 		if ($authorized != 1)
 		{
 			// Only managers can change project state
-			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 			return;
 		}
 
@@ -1170,23 +1170,23 @@ class Projects extends Base
 		{
 			// Add activity
 			$what = ($this->_task == 'suspend')
-				? \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
-				: \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED');
+				? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
+				: Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED');
 
 			if ($this->_task == 'delete')
 			{
-				$what = \JText::_('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+				$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
 			}
 			$objAA->recordActivity( $obj->id, $this->juser->get('id'), $what );
 
 			// Send to project page
 			$this->_msg = $this->_task == 'suspend'
-				? \JText::_('COM_PROJECTS_PROJECT_SUSPENDED')
-				: \JText::_('COM_PROJECTS_PROJECT_REINSTATED');
+				? Lang::txt('COM_PROJECTS_PROJECT_SUSPENDED')
+				: Lang::txt('COM_PROJECTS_PROJECT_REINSTATED');
 
 			if ($this->_task == 'delete')
 			{
-				$this->setError(\JText::_('COM_PROJECTS_PROJECT_DELETED'));
+				$this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
 				$this->introTask();
 				return;
 			}
@@ -1219,14 +1219,14 @@ class Projects extends Base
 		$obj = new Tables\Project( $this->database );
 		if (!$this->_identifier || !$obj->loadProject($this->_identifier) )
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
 		// Successful authorization grant, fetch the access token
 		if ($code)
 		{
-			$return  = \JRoute::_('index.php?option=' . $this->_option . '&alias='
+			$return  = Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->_identifier . '&active=files&action=connect&service='
 				. $service . '&code=' . $code);
 		}
@@ -1239,8 +1239,8 @@ class Projects extends Base
 		if ($error)
 		{
 			$error =  $error == 'access_denied'
-				? \JText::_('Sorry, we cannot connect you to external file service without your permission')
-				: \JText::_('Sorry, we cannot connect you to external file service at this time');
+				? Lang::txt('Sorry, we cannot connect you to external file service without your permission')
+				: Lang::txt('Sorry, we cannot connect you to external file service at this time');
 			$this->_setNotification($error, 'error');
 			$return = $json->return;
 		}
@@ -1272,20 +1272,20 @@ class Projects extends Base
 		$authorized = $this->_checkReviewerAuth($reviewer);
 		if (!$authorized)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS') );
+			$this->setError( Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS') );
 			return;
 		}
 
 		// We need to have a project
 		if (!$this->_identifier)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 		}
 
 		// Load project
 		if (!$obj->loadProject($this->_identifier))
 		{
-			$this->setError( \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 		}
 
 		// Set the pathway
@@ -1373,7 +1373,7 @@ class Projects extends Base
 			{
 				if ($reviewer == 'sensitive')
 				{
-					$cbase  .= '<nb:' . $reviewer . '>' . \JText::_('COM_PROJECTS_PROJECT_APPROVED_HIPAA');
+					$cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA');
 					$cbase  .= (trim($comment) != '') ? ' ' . $comment : '';
 					$cbase  .= $meta . '</nb:' . $reviewer . '>';
 				}
@@ -1381,14 +1381,14 @@ class Projects extends Base
 				{
 					if ($approve == 1)
 					{
-						$cbase  .= '<nb:' . $reviewer . '>' . \JText::_('COM_PROJECTS_PROJECT_APPROVED_SPS') . ' '
-						. ucfirst(\JText::_('COM_PROJECTS_APPROVAL_CODE')) . ': ' . $grant_approval;
+						$cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS') . ' '
+						. ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE')) . ': ' . $grant_approval;
 						$cbase  .= (trim($comment) != '') ? '. ' . $comment : '';
 						$cbase  .= $meta . '</nb:' . $reviewer . '>';
 					}
 					elseif ($approve == 2)
 					{
-						$cbase  .= '<nb:' . $reviewer . '>' . \JText::_('COM_PROJECTS_PROJECT_REJECTED_SPS');
+						$cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS');
 						$cbase  .= (trim($comment) != '') ? ' ' . $comment : '';
 						$cbase  .= $meta . '</nb:' . $reviewer . '>';
 					}
@@ -1416,7 +1416,7 @@ class Projects extends Base
 				{
 					$admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
 					$admincomment = $comment
-						? $actor . ' ' . \JText::_('COM_PROJECTS_SAID') . ': ' . $comment
+						? $actor . ' ' . Lang::txt('COM_PROJECTS_SAID') . ': ' . $comment
 						: '';
 
 					// Send out email to admins
@@ -1427,7 +1427,7 @@ class Projects extends Base
 							$this->config,
 							$this->project,
 							$admins,
-							\JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+							Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 							'projects_new_project_admin',
 							'admin',
 							$admincomment,
@@ -1448,7 +1448,7 @@ class Projects extends Base
 				{
 					if ($reviewer == 'sensitive')
 					{
-						$this->_setNotification(\JText::_('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
+						$this->_setNotification(Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
 
 						// Send out emails to team members
 						$this->_notifyTeam();
@@ -1456,14 +1456,14 @@ class Projects extends Base
 					if ($reviewer == 'sponsored')
 					{
 						$notification =  $approve == 2
-								? \JText::_('COM_PROJECTS_PROJECT_REJECTED_SPS_MSG')
-								: \JText::_('COM_PROJECTS_PROJECT_APPROVED_SPS_MSG');
+								? Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS_MSG')
+								: Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS_MSG');
 						$this->_setNotification($notification);
 					}
 				}
 				elseif ($comment)
 				{
-					$this->_setNotification(\JText::_('COM_PROJECTS_REVIEWER_COMMENT_POSTED') );
+					$this->_setNotification(Lang::txt('COM_PROJECTS_REVIEWER_COMMENT_POSTED') );
 				}
 
 				// Add to project activity feed
@@ -1473,12 +1473,12 @@ class Projects extends Base
 					if ($approve && $reviewer == 'sponsored')
 					{
 						$activity = $approve == 2
-								? \JText::_('COM_PROJECTS_PROJECT_REJECTED_SPS_ACTIVITY')
-								: \JText::_('COM_PROJECTS_PROJECT_APPROVED_SPS_ACTIVITY');
+								? Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS_ACTIVITY')
+								: Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS_ACTIVITY');
 					}
 					elseif ($comment)
 					{
-						$activity = \JText::_('COM_PROJECTS_PROJECT_REVIEWER_COMMENTED');
+						$activity = Lang::txt('COM_PROJECTS_PROJECT_REVIEWER_COMMENTED');
 					}
 
 					if ($activity)
@@ -1498,9 +1498,9 @@ class Projects extends Base
 							{
 								$objAA = new Tables\Activity( $this->database );
 								$caid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
-									\JText::_('COM_PROJECTS_COMMENTED') . ' '
-									. \JText::_('COM_PROJECTS_ON') . ' '
-									.  \JText::_('COM_PROJECTS_AN_ACTIVITY'),
+									Lang::txt('COM_PROJECTS_COMMENTED') . ' '
+									. Lang::txt('COM_PROJECTS_ON') . ' '
+									.  Lang::txt('COM_PROJECTS_AN_ACTIVITY'),
 									$cid, '', '', 'quote', 0, 1, 1 );
 
 								if ($caid)
@@ -1514,7 +1514,7 @@ class Projects extends Base
 			}
 
 			// Go back to project listing
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby);
 			return;
 		}

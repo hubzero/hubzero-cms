@@ -67,7 +67,7 @@ class Get extends \Hubzero\Component\SiteController
 		if (!$stamp || !$objSt->loadItem($stamp))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -76,7 +76,7 @@ class Get extends \Hubzero\Component\SiteController
 		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -96,7 +96,7 @@ class Get extends \Hubzero\Component\SiteController
 
 		// Redirect if nothing fetched
 		$this->setRedirect(
-			\JRoute::_('index.php?option=' . $this->_option)
+			Route::url('index.php?option=' . $this->_option)
 		);
 
 		return;

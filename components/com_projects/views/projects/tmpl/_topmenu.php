@@ -67,7 +67,7 @@ if (count($assetTabs) > 1)
 			$active = (($tab['name'] == $this->active) || ($tab['name'] == 'assets' && (isset($tab['submenu']) && $tab['submenu'] == 'Assets')))
 			?>
 			<li<?php if ($active) { echo ' class="active"'; } ?> id="tab-<?php echo $tab['name']; ?>">
-				<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $gopanel); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($tab['title']); ?>">
+				<a class="<?php echo $tab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $gopanel); ?>/" title="<?php echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($tab['title']); ?>">
 					<span class="label"><?php echo $tab['title']; ?></span>
 				<?php if ($tab['name'] != 'feed' && isset($this->project->counts[$tab['name']]) && $this->project->counts[$tab['name']] != 0) { ?>
 					<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $this->project->counts[$tab['name']]; ?></span></span>
@@ -78,7 +78,7 @@ if (count($assetTabs) > 1)
 				<?php if ($tab['name'] == 'assets') { ?>
 				<div id="asset-selection" class="submenu-wrap">
 					<?php foreach ($assetTabs as $aTab) { ?>
-						<p><a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $aTab['name']); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($aTab['title']); ?>" id="tab-<?php echo $aTab['name']; ?>"><span class="label"><?php echo $aTab['title']; ?></span><?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
+						<p><a class="<?php echo $aTab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=' . $aTab['name']); ?>/" title="<?php echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($aTab['title']); ?>" id="tab-<?php echo $aTab['name']; ?>"><span class="label"><?php echo $aTab['title']; ?></span><?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
 							<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
 						<?php } ?>
 							</a>
@@ -88,12 +88,12 @@ if (count($assetTabs) > 1)
 				<?php } ?>
 			</li>
 		<?php } // end foreach ?>
-			<li class="sideli <?php if ($this->active == 'info') { echo ' active'; } ?>" id="tab-info"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_ABOUT')); ?>">
-			<span class="label"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></span></a></li>
+			<li class="sideli <?php if ($this->active == 'info') { echo ' active'; } ?>" id="tab-info"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(Lang::txt('COM_PROJECTS_ABOUT')); ?>">
+			<span class="label"><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></span></a></li>
 		</ul>
 	<?php } else {  ?>
 		<?php if (isset($this->guest) && $this->guest) { ?>
-		<p><?php echo JText::_('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_LOGIN')).'</a> '.JText::_('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></p>
+		<p><?php echo Lang::txt('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LOGIN')).'</a> '.Lang::txt('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></p>
 		<?php } ?>
 	<?php } ?>
 </div>

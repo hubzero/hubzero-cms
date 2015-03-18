@@ -44,17 +44,17 @@ $this->project->title = $this->escape($this->project->title);
 		     ->set('option', $this->option)
 		     ->display();
 		?>
-		<p class="warning"><?php echo JText::_('COM_PROJECTS_INFO_OWNER_DELETED'); ?></p>
-		<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" id="hubForm">
+		<p class="warning"><?php echo Lang::txt('COM_PROJECTS_INFO_OWNER_DELETED'); ?></p>
+		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" id="hubForm">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="task" value="fixownership" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<h4><?php echo JText::_('COM_PROJECTS_OWNER_DELETED_OPTIONS'); ?></h4>
-			<label><input class="option" name="keep" type="radio" value="1" checked="checked" /> <?php echo JText::_('COM_PROJECTS_OWNER_KEEP_PROJECT'); ?></label>
-			<label><input class="option" name="keep" type="radio" value="0" /> <?php echo JText::_('COM_PROJECTS_OWNER_DELETE_PROJECT'); ?></label>
+				<h4><?php echo Lang::txt('COM_PROJECTS_OWNER_DELETED_OPTIONS'); ?></h4>
+			<label><input class="option" name="keep" type="radio" value="1" checked="checked" /> <?php echo Lang::txt('COM_PROJECTS_OWNER_KEEP_PROJECT'); ?></label>
+			<label><input class="option" name="keep" type="radio" value="0" /> <?php echo Lang::txt('COM_PROJECTS_OWNER_DELETE_PROJECT'); ?></label>
 			<p class="submitarea">
-				<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_MY_CHOICE'); ?>"  />
+				<input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_MY_CHOICE'); ?>"  />
 			</p>
 			</fieldset>
 		</form>

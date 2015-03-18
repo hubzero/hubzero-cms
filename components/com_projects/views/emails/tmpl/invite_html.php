@@ -41,7 +41,7 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
 }
 
 $projectUrl  = rtrim($base, DS) . DS . trim($sef, DS);
@@ -50,35 +50,35 @@ $link        = rtrim($base, DS) . DS . trim($sef, DS);
 $thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
+$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
 if ($this->uid == $this->project->created_by_user)
 {
-	$subtitle  = JText::_('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
+	$subtitle  = Lang::txt('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
 }
 else {
 	$subtitle  = $this->project->fullname.' ';
-	$subtitle .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$subtitle .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
+	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
+	$subtitle .= ' "'.$this->project->title.'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
+	$subtitle .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 }
 
 // Project owner
 $owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+		 ? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 		 : $this->project->fullname;
 
 // Get the actual message
 $comment = '';
 if ($this->uid)
 {
-	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
 else
 {
-	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
-	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 
 $comment .= $link ."\n\n";
@@ -299,7 +299,7 @@ $bdcolor = '#e1e1e1';
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->alias; ?></td>
 																</tr>																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>

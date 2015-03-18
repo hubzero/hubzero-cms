@@ -54,7 +54,7 @@ class Html extends \JObject
 
 		if ($lapsed < 30)
 		{
-			return \JText::_('just now');
+			return Lang::txt('just now');
 		}
 		elseif ($lapsed > 86400 && $current['year'] != $parsed['year'])
 		{
@@ -156,7 +156,7 @@ class Html extends \JObject
 		$number = floor($number);
 		if ($periods[$val] == 'sec')
 		{
-			return \JText::_('COM_PROJECTS_LESS_THAN_A_MINUTE');
+			return Lang::txt('COM_PROJECTS_LESS_THAN_A_MINUTE');
 		}
 
 		// If required create a plural
@@ -173,7 +173,7 @@ class Html extends \JObject
 		$text  = $parts[0] . ' ' . $parts[1];
 		if ($text == '0 seconds')
 		{
-			$text = \JText::_('COM_PROJECTS_JUST_A_MOMENT');
+			$text = Lang::txt('COM_PROJECTS_JUST_A_MOMENT');
 		}
 
 		return $text;
@@ -999,7 +999,7 @@ class Html extends \JObject
 		}
 		if ($name == '')
 		{
-			$name = \JText::_('COM_PROJECTS_UNKNOWN');
+			$name = Lang::txt('COM_PROJECTS_UNKNOWN');
 		}
 
 		return $name;
@@ -1229,8 +1229,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-picture',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_THUMB'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_THUMB'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
 			);
 		}
 
@@ -1239,8 +1239,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-about',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit&active=settings')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_GRANT_INFO'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=settings')
 			);
 		}
 
@@ -1249,8 +1249,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-about',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_ABOUT'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_ABOUT'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit')
 			);
 		}
 
@@ -1259,12 +1259,12 @@ class Html extends \JObject
 			|| ($creator && $project->num_visits < 5 &&  $project->counts['files'] == 0 ) )
 		{
 			$text = $creator
-				? \JText::_('COM_PROJECTS_WELCOME_UPLOAD_FILES')
-				: \JText::_('COM_PROJECTS_WELCOME_SHARE_FILES');
+				? Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES')
+				: Lang::txt('COM_PROJECTS_WELCOME_SHARE_FILES');
 			$suggestions[] = array(
 				'class' => 's-files',
 				'text'  => $text,
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=files')
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=files')
 			);
 		}
 
@@ -1273,8 +1273,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-team',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_INVITE_USERS'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&task=edit&active=team')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_INVITE_USERS'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&task=edit&active=team')
 			);
 		}
 
@@ -1284,8 +1284,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-todo',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_ADD_TODO'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=todo')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
 			);
 		}
 
@@ -1295,8 +1295,8 @@ class Html extends \JObject
 		{
 			$suggestions[] = array(
 				'class' => 's-notes',
-				'text'  => \JText::_('COM_PROJECTS_WELCOME_START_NOTE'),
-				'url'   => \JRoute::_('index.php?option=' . $option . $goto . '&active=notes')
+				'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
+				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
 			);
 		}
 
@@ -1481,7 +1481,7 @@ class Html extends \JObject
 		// Set up email config
 		$jconfig = \JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_PROJECTS');
+		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// Html email

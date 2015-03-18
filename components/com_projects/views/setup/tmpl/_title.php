@@ -25,9 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->project->title : $this->title;
+$title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->project->title : $this->title;
 
 ?>
 <header id="content-header">
-	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
+	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo Lang::txt('COM_PROJECTS_FOR').' '.ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
 </header><!-- / #content-header -->

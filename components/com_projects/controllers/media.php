@@ -80,20 +80,20 @@ class Media extends Base
 		}
 		else
 		{
-			echo json_encode(array('error' => \JText::_('Please select a file to upload')));
+			echo json_encode(array('error' => Lang::txt('Please select a file to upload')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => \JText::_('File is empty')));
+			echo json_encode(array('error' => Lang::txt('File is empty')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => \JText::_('File is too large. Max file upload size is ') . $max));
+			echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is ') . $max));
 			return;
 		}
 		//check to make sure we have an allowable extension
@@ -103,7 +103,7 @@ class Media extends Base
 		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);
-			echo json_encode(array('error' => \JText::_('File has an invalid extension, it should be one of '. $these . '.')));
+			echo json_encode(array('error' => Lang::txt('File has an invalid extension, it should be one of '. $these . '.')));
 			return;
 		}
 
@@ -115,7 +115,7 @@ class Media extends Base
 		$obj = new Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
-			echo json_encode(array('error' => \JText::_('Error loading project')));
+			echo json_encode(array('error' => Lang::txt('Error loading project')));
 			return;
 		}
 
@@ -123,7 +123,7 @@ class Media extends Base
 		$authorized = $this->_authorize();
 		if ($authorized != 1)
 		{
-			echo json_encode(array('error' => \JText::_('Unauthorized action')));
+			echo json_encode(array('error' => Lang::txt('Unauthorized action')));
 			return;
 		}
 
@@ -136,7 +136,7 @@ class Media extends Base
 			jimport('joomla.filesystem.folder');
 			if (!\JFolder::create( $path ))
 			{
-				echo json_encode(array('error' => \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
+				echo json_encode(array('error' => Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
@@ -157,7 +157,7 @@ class Media extends Base
 
 			if (\Components\Projects\Helpers\Html::virusCheck($temp))
 			{
-				echo json_encode(array('error' => \JText::_('Virus detected, refusing to upload')));
+				echo json_encode(array('error' => Lang::txt('Virus detected, refusing to upload')));
 				return;
 			}
 
@@ -175,7 +175,7 @@ class Media extends Base
 		// Perform the upload
 		if (!is_file($path . DS . $file))
 		{
-			echo json_encode(array('error' => \JText::_('COM_PROJECTS_ERROR_UPLOADING')));
+			echo json_encode(array('error' => Lang::txt('COM_PROJECTS_ERROR_UPLOADING')));
 			return;
 		}
 		else
@@ -225,7 +225,7 @@ class Media extends Base
 			{
 				// Record activity
 				$this->project = $obj;
-				$this->_postActivity(\JText::_('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
+				$this->_postActivity(Lang::txt('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
 			}
 		}
 
@@ -251,7 +251,7 @@ class Media extends Base
 		{
 			if ($ajax)
 			{
-				echo json_encode(array('error' => \JText::_('User login required')));
+				echo json_encode(array('error' => Lang::txt('User login required')));
 				return;
 			}
 			$this->_showError();
@@ -261,7 +261,7 @@ class Media extends Base
 		// Incoming project ID
 		if (!$this->_identifier)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_ERROR_NO_ID') );
+			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NO_ID') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -289,7 +289,7 @@ class Media extends Base
 		$file = $file ? $file : $obj->picture;
 		if (!$file)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILE_NOT_FOUND') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -308,7 +308,7 @@ class Media extends Base
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError( \JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			$this->setError( Lang::txt('COM_PROJECTS_FILE_NOT_FOUND') );
 			if ($ajax)
 			{
 				echo json_encode(array('error' => $this->getError()));
@@ -321,7 +321,7 @@ class Media extends Base
 			jimport('joomla.filesystem.file');
 			if (!\JFile::delete($path . DS . $file))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+				$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 				if ($ajax)
 				{
 					echo json_encode(array('error' => $this->getError()));
@@ -338,7 +338,7 @@ class Media extends Base
 			{
 				if (!\JFile::delete($path . DS . $curthumb))
 				{
-					$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+					$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
 					if ($ajax)
 					{
 						echo json_encode(array('error' => $this->getError()));
@@ -393,7 +393,7 @@ class Media extends Base
 		}
 
 		// Return to project page
-		$this->_redirect = \JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
 		return;
 	}
 
@@ -465,7 +465,7 @@ class Media extends Base
 		elseif ($redirect)
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 

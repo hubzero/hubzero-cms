@@ -47,18 +47,18 @@ $this->css('theme' . $theme . '.css');
 <div id="project-wrap" class="theme publicview">
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
-			<li><a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>
+			<li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
+			<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 
 	<?php if (($this->authorized or $this->project->owner) && !$this->reviewer) { // Public preview for authorized users ?>
 		<div id="project-preview">
-			<p><?php echo JText::_('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
+			<p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
 		</div>
 	<?php } else if ($this->reviewer) { ?>
 		<div id="project-preview">
-			<p><?php echo JText::_('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
+			<p><?php echo Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
 		</div>
 	<?php } ?>
 	<?php // Draw top header
@@ -82,7 +82,7 @@ $this->css('theme' . $theme . '.css');
 		<section class="main section">
 				<?php if ($this->project->about) { ?>
 				<div class="public-list-header">
-					<h3><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></h3>
+					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>
 				</div>
 				<div class="public-list-wrap">
 					<?php echo $this->project->about; ?>

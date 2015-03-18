@@ -27,14 +27,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->project->private)
 {
-	$privacy = '<span class="private">' . ucfirst(JText::_('COM_PROJECTS_PRIVATE')) . '</span>';
+	$privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE')) . '</span>';
 }
 else
 {
-	$privacy = '<a href="' . JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1') .'" title="' . JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(JText::_('COM_PROJECTS_PUBLIC')) . '</a>';
+	$privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1') .'" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
 }
 
-$start = ($this->publicView == false && $this->project->owner) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) : ucfirst(JText::_('COM_PROJECTS_PROJECT'));
+$start = ($this->publicView == false && $this->project->owner) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 
 ?>
 <div id="project-header" class="project-header">
@@ -50,19 +50,19 @@ $start = ($this->publicView == false && $this->project->owner) ? '<span class="h
 			?>
 			</div>
 			<div class="ptitle-container">
-				<h2><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>"><?php echo \Hubzero\Utility\String::truncate($this->project->title, 50); ?> <span>(<?php echo $this->project->alias; ?>)</span></a></h2>
+				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo \Hubzero\Utility\String::truncate($this->project->title, 50); ?> <span>(<?php echo $this->project->alias; ?>)</span></a></h2>
 				<p>
-				<?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
+				<?php echo $start .' '.Lang::txt('COM_PROJECTS_BY').' ';
 				if ($this->project->owned_by_group)
 				{
 					$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
 					if ($group)
 					{
-						echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
+						echo ' '.Lang::txt('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
 					}
 					else
 					{
-						echo JText::_('COM_PROJECTS_UNKNOWN').' '.JText::_('COM_PROJECTS_GROUP');
+						echo Lang::txt('COM_PROJECTS_UNKNOWN').' '.Lang::txt('COM_PROJECTS_GROUP');
 					}
 				}
 				else

@@ -35,34 +35,34 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
 }
 
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-$message  = JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
+$message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias ;
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias ;
 if ($this->project->provisioned == 1)
 {
-	$message .= ' - ' . JText::_('COM_PROJECTS_PROVISIONED');
+	$message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
 }
 
 $message .= ')' . "\n";
 if (!$this->project->provisioned)
 {
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
+$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
 		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
-		 . JText::_('COM_PROJECTS_BY') . ' ';
+		 . Lang::txt('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->owned_by_group
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+			? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 }
 $message .= "\n";
 
 if ($this->project->private == 0)
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 }
 $message .= '-------------------------------' ."\n\n";
 

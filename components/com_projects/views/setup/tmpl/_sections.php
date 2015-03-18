@@ -28,6 +28,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <ul id="panelist">
 	<?php foreach ($this->sections as $section) { ?>
-	<li <?php if ($section == $this->section) { echo 'class="activepane"'; } ?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&alias=' . $this->project->alias . '&active=' . strtolower($section)); ?>"><?php echo JText::_('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
+	<li <?php if ($section == $this->section) { echo 'class="activepane"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->project->alias . '&active=' . strtolower($section)); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
 	<?php } ?>
 </ul>

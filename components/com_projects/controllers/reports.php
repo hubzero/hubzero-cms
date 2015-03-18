@@ -114,19 +114,19 @@ class Reports extends Base
 
 		if (empty($data))
 		{
-			$this->setError(\JText::_('Please pick at least one information field to report'));
+			$this->setError(Lang::txt('Please pick at least one information field to report'));
 		}
 
 		$date_regex = '/^(19|20)\d\d[\-\/.](0[1-9]|1[012])$/';
 
 		if (!preg_match($date_regex, $from) || !preg_match($date_regex, $to))
 		{
-			$this->setError(\JText::_('Please use yyyy-mm format for the date'));
+			$this->setError(Lang::txt('Please use yyyy-mm format for the date'));
 		}
 
 		if (strtotime($from) > strtotime($to))
 		{
-			$this->setError(\JText::_('The start date of report should be earlier than the end date'));
+			$this->setError(Lang::txt('The start date of report should be earlier than the end date'));
 		}
 
 		// Instantiate a project and related classes
@@ -143,19 +143,19 @@ class Reports extends Base
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = \JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
+				$this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			\JError::raiseError( 403, \JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
 			return;
 		}
 
 		// Get stats
 		if (!$this->getError())
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 			$objLog = new \Components\Publications\Tables\Log($this->database);
@@ -198,7 +198,7 @@ class Reports extends Base
 			}
 			else
 			{
-				$this->setError(\JText::_('Nothing to report for selected date range and/or search term'));
+				$this->setError(Lang::txt('Nothing to report for selected date range and/or search term'));
 			}
 		}
 
@@ -206,7 +206,7 @@ class Reports extends Base
 		if ($this->getError())
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option
+				Route::url('index.php?option=' . $this->_option
 				. '&controller=reports&task=custom'
 				. '&searchterm=' . $filter),
 				$this->getError(),
@@ -250,12 +250,12 @@ class Reports extends Base
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = \JText::_('COM_PUBLICATIONS_REPORTS_LOGIN');
+				$this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			\JError::raiseError( 403, \JText::_('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
 			return;
 		}
 

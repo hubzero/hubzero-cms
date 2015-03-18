@@ -33,7 +33,7 @@ $this->project->title = $this->escape($this->project->title);
 ?>
 <div id="project-wrap">
 	<section class="main section">
-		<form method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="task" value="reinstate" />
@@ -51,16 +51,16 @@ $this->project->title = $this->escape($this->project->title);
 				?>
 
 				<p class="warning">
-					<?php echo $this->suspended == 2 ? JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if ($this->project->role != 1 && $this->suspended == 2) { ?><?php echo JText::_('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php } ?>
+					<?php echo $this->suspended == 2 ? Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if ($this->project->role != 1 && $this->suspended == 2) { ?><?php echo Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php } ?>
 				</p>
 
 				<?php if ($this->project->role == 1 && $this->suspended == 2) { ?>
-					<h4><?php echo JText::_('COM_PROJECTS_CANCEL_WANT_TO_REINSTATE'); ?></h4>
+					<h4><?php echo Lang::txt('COM_PROJECTS_CANCEL_WANT_TO_REINSTATE'); ?></h4>
 					<p>
-						<span><input type="submit" class="confirm" value="<?php echo JText::_('COM_PROJECTS_CANCEL_YES_REINSTATE'); ?>" /></span>
+						<span><input type="submit" class="confirm" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL_YES_REINSTATE'); ?>" /></span>
 					</p>
 					<p>
-						<?php echo ucfirst(JText::_('COM_PROJECTS_CANCEL_PERMANENTLY')); ?>, <?php echo JText::_('COM_PROJECTS_CANCEL_YOU_CAN_ALSO'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL_CONTACT_ADMIN'); ?></a>
+						<?php echo ucfirst(Lang::txt('COM_PROJECTS_CANCEL_PERMANENTLY')); ?>, <?php echo Lang::txt('COM_PROJECTS_CANCEL_YOU_CAN_ALSO'); ?> <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL_CONTACT_ADMIN'); ?></a>
 					</p>
 				<?php } ?>
 			</fieldset>

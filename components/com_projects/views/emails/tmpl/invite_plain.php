@@ -36,46 +36,46 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
 }
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 if ($this->uid == $this->project->created_by_user)
 {
-	$message  = JText::_('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
+	$message  = Lang::txt('COM_PROJECTS_EMAIL_CREATOR_NEW_PROJECT');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
 else {
 	$message  = $this->project->fullname.' ';
-	$message .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
+	$message .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
+	$message .= ' "'.$this->project->title.'" '.Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
+	$message .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
 	$message .= '-------------------------------'."\n";
 }
 
-$message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title
+$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->title
 		 . ' (' . $this->project->alias.')' . "\n";
-$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
-		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' ' . JText::_('COM_PROJECTS_BY').' ';
+$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
+		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY').' ';
 $message .= $this->project->owned_by_group
-			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+			? $this->nativegroup->cn . ' ' . Lang::txt('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
 $message .= "\n";
-$message .= JText::_('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
+$message .= Lang::txt('COM_PROJECTS_EMAIL_URL').': ' . $link . "\n\n";
 
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 if ($this->uid)
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
 }
 else
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName.' ';
-	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName.' ';
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 $message .= $link ."\n\n";
 

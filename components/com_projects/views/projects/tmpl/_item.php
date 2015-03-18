@@ -26,25 +26,25 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $privacyTxt = $this->row->private
-	? JText::_('COM_PROJECTS_PRIVATE')
-	: JText::_('COM_PROJECTS_PUBLIC');
+	? Lang::txt('COM_PROJECTS_PRIVATE')
+	: Lang::txt('COM_PROJECTS_PUBLIC');
 
 ?>
 <tr class="mline" id="tr_<?php echo $this->row->id; ?>">
 	<td class="th_image">
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->alias); ?>">
-			<img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->row->alias . '&task=media'); ?>" alt="<?php echo $this->escape(stripslashes($this->row->title)); ?>" title="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+		<a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->alias); ?>">
+			<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->row->alias . '&task=media'); ?>" alt="<?php echo $this->escape(stripslashes($this->row->title)); ?>" title="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 		</a>
 	</td>
-	<td class="th_privacy"><span class="privacy-icon<?php echo $this->row->private ? ' private' : ''; ?>" title="<?php echo ucfirst($privacyTxt) . ' ' . JText::_('COM_PROJECTS_PROJECT'); ?>"></span></td>
+	<td class="th_privacy"><span class="privacy-icon<?php echo $this->row->private ? ' private' : ''; ?>" title="<?php echo ucfirst($privacyTxt) . ' ' . Lang::txt('COM_PROJECTS_PROJECT'); ?>"></span></td>
 	<td class="th_title">
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->alias); ?>">
+		<a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=view&alias=' . $this->row->alias); ?>">
 		<?php echo $this->escape(stripslashes($this->row->title));  ?>
 		</a>
 	</td>
 	<td class="mini faded">
 		<?php
-		echo ($this->row->owned_by_group) ? '<span class="i_group"><a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->row->groupcn) . '">' . $this->row->groupname . '</a></span>' : '<span class="i_user"><a href="' . JRoute::_('index.php?option=com_members&id=' . $this->row->owned_by_user) . '">' . $this->row->authorname . '</a></span>';
+		echo ($this->row->owned_by_group) ? '<span class="i_group"><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->row->groupcn) . '">' . $this->row->groupname . '</a></span>' : '<span class="i_user"><a href="' . Route::url('index.php?option=com_members&id=' . $this->row->owned_by_user) . '">' . $this->row->authorname . '</a></span>';
 
 		// Reviewers
 		if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
@@ -73,49 +73,49 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 		$info = '';
 		if ($params->get('hipaa_data') == 'yes')
 		{
-			$info .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_TERMS_HIPAA') . '</span>';
+			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA') . '</span>';
 		}
 		if ($params->get('ferpa_data') == 'yes')
 		{
-			$info .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_TERMS_FERPA') . '</span>';
+			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') . '</span>';
 		}
 		if ($params->get('export_data') == 'yes')
 		{
-			$info .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
+			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
 		}
 		if ($params->get('irb_data') == 'yes')
 		{
-			$info .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_IRB') . '</span>';
+			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_IRB') . '</span>';
 		}
 		if ($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes')
 		{
-			$info .= '<span class="block">' . JText::_('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
+			$info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
 		}
 	?>
 	<td class="mini"><?php echo $info; ?></td>
 	<td class="mini">
 	<?php if ($this->row->state == 1 && $this->row->setup_stage >= 3) {
-		echo '<span class="active green">'.JText::_('COM_PROJECTS_ACTIVE').'</span>';
+		echo '<span class="active green">'.Lang::txt('COM_PROJECTS_ACTIVE').'</span>';
 	}
 	else if ($this->row->setup_stage < 3) {
-		echo '<span class="setup">'.JText::_('COM_PROJECTS_STATUS_SETUP').'</span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
+		echo '<span class="setup">'.Lang::txt('COM_PROJECTS_STATUS_SETUP').'</span> '.Lang::txt('COM_PROJECTS_IN_PROGRESS');
 	}
 	else if ($this->row->state == 0) {
-		echo '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
+		echo '<span class="faded italic">'.Lang::txt('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
 	}
 	else if ($this->row->state == 5) {
-		echo '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span>';
+		echo '<span class="italic pending">'.Lang::txt('COM_PROJECTS_STATUS_PENDING').'</span>';
 	}
 	$commentCount = 0;
 	if (isset($this->row->admin_notes) && $this->row->admin_notes) {
 		$commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->admin_notes, 'sensitive');
 		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->admin_notes, 'sensitive');
 	}
-	echo '<span class="block mini"><a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->id . '&reviewer=' . $this->filters['reviewer']) . '" class="showinbox">' . $commentCount . ' ' . JText::_('COM_PROJECTS_COMMENTS') . '</a></span>';
+	echo '<span class="block mini"><a href="' . Route::url('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->id . '&reviewer=' . $this->filters['reviewer']) . '" class="showinbox">' . $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') . '</a></span>';
 
 	?></td>
 	<td><?php if ($this->row->state == 5) {
-		echo '<span class="manage mini"><a href="' . JRoute::_('index.php?option=' . $this->option . '&task=process&id=' . $this->row->id . '&reviewer=' . $this->filters['reviewer'] ) . '" class="showinbox">' . JText::_('COM_PROJECTS_APPROVE') . '</a></span>';
+		echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->id . '&reviewer=' . $this->filters['reviewer'] ) . '" class="showinbox">' . Lang::txt('COM_PROJECTS_APPROVE') . '</a></span>';
 	} ?>
 	</td>
 <?php } ?>
@@ -123,22 +123,22 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 		$info = '';
 		if ($params->get('grant_title'))
 		{
-			$info .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_TITLE')
+			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_TITLE')
 			. ':</span> ' . $params->get('grant_title') . '</span>';
 		}
 		if ($params->get('grant_PI'))
 		{
-			$info .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_PI')
+			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_PI')
 			. ':</span> ' . $params->get('grant_PI') . '</span>';
 		}
 		if ($params->get('grant_agency'))
 		{
-			$info .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_AGENCY')
+			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_AGENCY')
 			. ':</span> ' . $params->get('grant_agency') . '</span>';
 		}
 		if ($params->get('grant_budget'))
 		{
-			$info .= '<span class="block"><span class="faded">' . JText::_('COM_PROJECTS_GRANT_BUDGET')
+			$info .= '<span class="block"><span class="faded">' . Lang::txt('COM_PROJECTS_GRANT_BUDGET')
 			. ':</span> ' . $params->get('grant_budget') . '</span>';
 		}
 	?>
@@ -147,24 +147,24 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 	if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0)
 	{
 		echo '<span class="italic pending">'
-		. JText::_('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
+		. Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
 	}
 	else if ($params->get('grant_approval') || $params->get('grant_status') == 1 )
 	{
 		echo '<span class="active green">'
-		. JText::_('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
+		. Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
 	}
 	else if ($params->get('grant_status') == '2')
 	{
 		echo '<span class="italic dark">'
-		. JText::_('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
+		. Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
 	}
 	if (isset($this->row->admin_notes) && $this->row->admin_notes)
 	{
 		echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->admin_notes, 'sponsored');
 	}
 	?></td>
-	<td class="faded actions"><?php echo '<span class="manage mini"><a href="' . JRoute::_('index.php?option=' . $this->option . '&task=process&id=' . $this->row->id ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] . '" class="showinbox">' . JText::_('COM_PROJECTS_MANAGE') . '</a></span>'; ?></td>
+	<td class="faded actions"><?php echo '<span class="manage mini"><a href="' . Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->id ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] . '" class="showinbox">' . Lang::txt('COM_PROJECTS_MANAGE') . '</a></span>'; ?></td>
 <?php }
 } ?>
 </tr>

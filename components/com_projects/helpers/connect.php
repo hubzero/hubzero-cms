@@ -318,7 +318,7 @@ class Connect extends \JObject {
 	{
 		if (!isset($this->_connect[$service]))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -354,7 +354,7 @@ class Connect extends \JObject {
 	{
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -364,7 +364,7 @@ class Connect extends \JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -446,7 +446,7 @@ class Connect extends \JObject {
 		if ($service == 'dropbox')
 		{
 			// TBD
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_DROPBOX_UNAVAIL'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_DROPBOX_UNAVAIL'));
 			return false;
 		}
 	}
@@ -497,7 +497,7 @@ class Connect extends \JObject {
 
 			if (!$refresh_token)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
 				return false;
 			}
 
@@ -514,7 +514,7 @@ class Connect extends \JObject {
 		// Need access token to proceed
 		if (!$access_token)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR_DETAILED'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR_DETAILED'));
 			return false;
 		}
 
@@ -559,7 +559,7 @@ class Connect extends \JObject {
 
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -568,7 +568,7 @@ class Connect extends \JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -604,7 +604,7 @@ class Connect extends \JObject {
 	{
 		if (!in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -613,7 +613,7 @@ class Connect extends \JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -647,7 +647,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -728,7 +728,7 @@ class Connect extends \JObject {
 						}
 						catch (Exception $e)
 						{
-							$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FAILED_SET_PERMISSIONS'));
+							$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_SET_PERMISSIONS'));
 						}
 					}
 				}
@@ -777,7 +777,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_PROFILE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_PROFILE'));
 				return false;
 			}
 		}
@@ -808,7 +808,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -846,7 +846,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -944,7 +944,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1036,7 +1036,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1121,7 +1121,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1193,7 +1193,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1250,7 +1250,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1389,7 +1389,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1419,7 +1419,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
 				return false;
 			}
 		}
@@ -1444,7 +1444,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1471,7 +1471,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_RETRIEVE_REVISIONS') . ' ' . $id);
 				return false;
 			}
 		}
@@ -1558,7 +1558,7 @@ class Connect extends \JObject {
 					'change'		=> '',
 					'movedTo'		=> '',
 					'size'			=> '',
-					'name'			=> \JText::_('PLG_PROJECTS_FILES_FILES_REMOTE_FILE_' . strtoupper($service)),
+					'name'			=> Lang::txt('PLG_PROJECTS_FILES_FILES_REMOTE_FILE_' . strtoupper($service)),
 					'order'			=> $order,
 					'count'			=> count($revisions),
 					'commitStatus'	=> $r == count($revisions) ? 'A' : 'M'
@@ -1685,7 +1685,7 @@ class Connect extends \JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1723,7 +1723,7 @@ class Connect extends \JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1736,7 +1736,7 @@ class Connect extends \JObject {
 			// Need remote folder
 			if (!$folderID)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FAILED_SERVICE_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FAILED_SERVICE_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1752,7 +1752,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_FOLDER_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_FOLDER_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1794,7 +1794,7 @@ class Connect extends \JObject {
 		{
 			if (!$this->getError())
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			}
 			return false;
 		}
@@ -1823,7 +1823,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_SERVICE_UNAVAILABLE'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_SERVICE_UNAVAILABLE'));
 				return false;
 			}
 
@@ -1856,7 +1856,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -1904,7 +1904,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -2211,7 +2211,7 @@ class Connect extends \JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -2220,7 +2220,7 @@ class Connect extends \JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -2237,7 +2237,7 @@ class Connect extends \JObject {
 				'approval_prompt=' . urlencode($config['approvalPrompt'])
 			);
 
-			$return = $return ? $return : JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias . '&active=files');
+			$return = $return ? $return : Route::url('index.php?option=com_projects&alias=' . $this->_project->alias . '&active=files');
 
 			$array = array(
 				'alias'	 => $this->_project->alias,
@@ -2266,21 +2266,21 @@ class Connect extends \JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
 		$config = $this->_connect[$service];
 		if (!$refreshToken)
 		{
-			$this->setError(\JText::_('Missing refresh token for service'));
+			$this->setError(Lang::txt('Missing refresh token for service'));
 			return false;
 		}
 
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -2300,7 +2300,7 @@ class Connect extends \JObject {
 			}
 			catch (Exception $e)
 			{
-				$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_AUTH_ERROR'));
 				return false;
 			}
 		}
@@ -2381,7 +2381,7 @@ class Connect extends \JObject {
 
 		if (!$apiService)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_API_UNAVAILABLE'));
 			return false;
 		}
 
@@ -2404,7 +2404,7 @@ class Connect extends \JObject {
 	{
 		if (!$service || !in_array($service, $this->_services))
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
 			return false;
 		}
 
@@ -2413,7 +2413,7 @@ class Connect extends \JObject {
 		// Make sure we have service
 		if (!isset($config) || !$config)
 		{
-			$this->setError(\JText::_('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_MISSING_CONFIG'));
 			return false;
 		}
 
@@ -2421,7 +2421,7 @@ class Connect extends \JObject {
 		$obj = new \Components\Projects\Tables\Project( $this->_db );
 		if (!$obj->loadProject($this->_project->id))
 		{
-			$this->setError( \JText::_('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA') );
+			$this->setError( Lang::txt('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA') );
 			return false;
 		}
 

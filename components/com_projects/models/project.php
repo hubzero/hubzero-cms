@@ -131,11 +131,11 @@ class Project extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -279,26 +279,26 @@ class Project extends Model
 		if (!$name)
 		{
 			// Cannot be empty
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_EMPTY'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_EMPTY'));
 		}
 		elseif (strlen($name) < intval($minLength))
 		{
 			// Check for length
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_TOO_SHORT'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_TOO_SHORT'));
 		}
 		elseif (strlen($name) > intval($maxLength))
 		{
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_TOO_LONG'));
 		}
 		elseif (preg_match('/[^a-z0-9]/', $name))
 		{
 			// Check for illegal characters
-			$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_INVALID'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID'));
 		}
 		elseif (is_numeric($name))
 		{
 			// Check for all numeric (not allowed)
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC'));
 		}
 		else
 		{
@@ -309,7 +309,7 @@ class Project extends Model
 				|| in_array( $name, $reserved ) ||
 				in_array( $name, $tasks ))
 			{
-				$this->setError(\JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
+				$this->setError(Lang::txt('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
 			}
 		}
 		if ($this->getError())

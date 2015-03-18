@@ -44,19 +44,19 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo JText::_('COM_PROJECTS_START_NEW'); ?></a></li>
+			<li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
-<form method="get" id="browseForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">
+<form method="get" id="browseForm" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
 	<section class="main section">
 		<div class="container data-entry">
-			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
 			<fieldset class="entry-search">
 				<legend></legend>
-				<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+				<label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
+				<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
 				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 			</fieldset>
 		</div>
@@ -72,13 +72,13 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 			}
 			?>
 			<ul class="entries-menu order-options">
-				<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo JText::_('COM_PROJECTS_OWNER'); ?></a></li>
-				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo JText::_('COM_PROJECTS_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
+				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
 			</ul>
 		<?php if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive'))) { ?>
 			<ul class="entries-menu filter-options">
-				<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=all&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_FILTER_ALL')); ?></a></li>
-				<li><a class="filter-pending<?php if ($this->filters['filterby'] == 'pending') { echo ' active'; } ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=pending&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_FILTER_PENDING')); ?></a></li>
+				<li><a class="filter-all<?php if ($this->filters['filterby'] == 'all') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=all&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_ALL')); ?></a></li>
+				<li><a class="filter-pending<?php if ($this->filters['filterby'] == 'pending') { echo ' active'; } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse' . $qs . '&filterby=pending&sortby=' . $this->filters['sortby']); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILTER_PENDING')); ?></a></li>
 			</ul>
 		<?php } ?>
 			<div class="clearfix"></div>
@@ -113,20 +113,20 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 			} else {
 				if ($this->guest)
 				{
-					echo '<p class="noresults">' . JText::_('COM_PROJECTS_NO_PROJECTS_FOUND').' '.JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option=' . $this->option . '&task=browse').'?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
+					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND').' '.Lang::txt('COM_PROJECTS_PLEASE').' <a href="'.Route::url('index.php?option=' . $this->option . '&task=browse').'?action=login">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
 				}
 			else
 			{
 				if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 				{
 					$txt = $this->filters['filterby'] == 'pending'
-					? JText::_('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_PENDING')
-					: JText::_('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_ALL');
+					? Lang::txt('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_PENDING')
+					: Lang::txt('COM_PROJECTS_NO_REVIEWER_PROJECTS_FOUND_ALL');
 					echo '<p class="noresults">' . $txt . '</p>';
 				}
 				else
 				{
-					echo '<p class="noresults">' . JText::_('COM_PROJECTS_NO_AUTHOROZED_PROJECTS_FOUND') . '</p>';
+					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_AUTHOROZED_PROJECTS_FOUND') . '</p>';
 				}
 			}
 			} ?>

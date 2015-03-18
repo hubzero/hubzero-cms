@@ -33,10 +33,10 @@ $this->css()
 $this->project->title = $this->escape($this->project->title);
 $this->project->about = $this->escape($this->project->about);
 
-$title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
+$title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
 ?>
 <header id="content-header">
-	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo JText::_('COM_PROJECTS_FOR').' '.ucfirst(JText::_('COM_PROJECTS_GROUP')); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
+	<h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) { ?> <?php echo Lang::txt('COM_PROJECTS_FOR').' '.ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->group->get('description'), 50); ?></a><?php } ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section" id="setup">
@@ -60,8 +60,8 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 
 	<form id="hubForm" method="post" action="index.php">
 		<div class="explaination">
-			<h4><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_UPFRONT_WHY'); ?></h4>
-			<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_UPFRONT_BECAUSE'); ?></p>
+			<h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_UPFRONT_WHY'); ?></h4>
+			<p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_UPFRONT_BECAUSE'); ?></p>
 		</div>
 		<fieldset class="wider">
 			<input type="hidden"  name="task" value="setup" />
@@ -71,20 +71,20 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 			<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
 			<input type="hidden" id="gid" name="gid" value="<?php echo $this->gid; ?>" />
 			<input type="hidden"  name="proceed" value="1" />
-			<h2><?php echo JText::_('COM_PROJECTS_SETUP_BEFORE_WE_START'); ?></h2>
-			<h4 class="setup-h"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?></span></h4>
+			<h2><?php echo Lang::txt('COM_PROJECTS_SETUP_BEFORE_WE_START'); ?></h2>
+			<h4 class="setup-h"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?></span></h4>
 			<label class="terms-label dark">
 				<input class="option restricted-answer" name="restricted" id="f-restricted-no" type="radio" value="no" checked="checked" />
-				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
+				<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
 			</label>
 			<label class="terms-label dark">
 				<input class="option restricted-answer" name="restricted" id="f-restricted-yes" type="radio" value="yes"/>
-				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES_NOT_SURE'); ?>
+				<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES_NOT_SURE'); ?>
 			</label>
 			<div id="f-restricted-explain" class="cautionaction">
-				<?php echo JText::_('COM_PROJECTS_SETUP_TERMS_RESTRICTED_EXPLAIN'); ?>
+				<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_EXPLAIN'); ?>
 			</div>
-			<p class="submitarea"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
+			<p class="submitarea"><input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
 		</fieldset>
 	</form>
 </section>

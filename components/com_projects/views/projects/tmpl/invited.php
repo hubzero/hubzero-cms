@@ -38,7 +38,7 @@ $project = new \Components\Projects\Models\Project($this->project);
 
 $this->project->about = $project->about('parsed');
 
-$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+$rtrn = JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
 
 ?>
 <div id="project-wrap">
@@ -53,20 +53,20 @@ $rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->o
 			     ->set('option', $this->option)
 			     ->display();
 		?>
-		<h3><?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>
+		<h3><?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM'); ?></h3>
 		<div id="confirm-invite" class="invitation">
 			<div class="grid">
 				<div class="col span6">
 					<p>
-						<?php echo JText::_('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. JText::_('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
+						<?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. Lang::txt('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
 					</p>
 				</div>
 				<div class="col span6 omega">
 					<p>
-						<?php echo JText::_('COM_PROJECTS_INVITED_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_LOGIN') . '</a>'; ?>
+						<?php echo Lang::txt('COM_PROJECTS_INVITED_HAVE_ACCOUNT') . ' <a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)) .  '">' . Lang::txt('COM_PROJECTS_INVITED_PLEASE_LOGIN') . '</a>'; ?>
 					</p>
 					<p>
-						<?php echo JText::_('COM_PROJECTS_INVITED_DO_NOT_HAVE_ACCOUNT') . ' <a href="' . JRoute::_('index.php?option=com_members&controller=register&return=' . base64_encode($rtrn)) .  '">' . JText::_('COM_PROJECTS_INVITED_PLEASE_REGISTER') . '</a>'; ?>
+						<?php echo Lang::txt('COM_PROJECTS_INVITED_DO_NOT_HAVE_ACCOUNT') . ' <a href="' . Route::url('index.php?option=com_members&controller=register&return=' . base64_encode($rtrn)) .  '">' . Lang::txt('COM_PROJECTS_INVITED_PLEASE_REGISTER') . '</a>'; ?>
 					</p>
 				</div>
 			</div>

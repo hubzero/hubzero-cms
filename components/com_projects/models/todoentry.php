@@ -235,11 +235,11 @@ class Entry extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:

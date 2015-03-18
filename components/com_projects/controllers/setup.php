@@ -57,8 +57,8 @@ class Setup extends Base
 		if ($this->juser->get('guest'))
 		{
 			$this->_msg = $this->_task == 'edit'
-				? \JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
-				: \JText::_('COM_PROJECTS_LOGIN_SETUP');
+				? Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
+				: Lang::txt('COM_PROJECTS_LOGIN_SETUP');
 			$this->_login();
 			return;
 		}
@@ -86,7 +86,7 @@ class Setup extends Base
 
 			if (!$obj->loadProject($this->_identifier) or !$this->project)
 			{
-				\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 				return;
 			}
 
@@ -96,7 +96,7 @@ class Setup extends Base
 			// Is project deleted?
 			if ($this->project->state == 2)
 			{
-				\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_DELETED') );
+				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
 				return;
 			}
 
@@ -121,7 +121,7 @@ class Setup extends Base
 						!$cgroup->is_member_of('managers',$this->juser->get('id')))
 					{
 						// Dispay error
-						$this->setError(\JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
+						$this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
 						$this->_showError();
 						return;
 					}
@@ -147,7 +147,7 @@ class Setup extends Base
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				JError::raiseError( 404, \JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
+				JError::raiseError( 404, Lang::txt('COM_PROJECTS_NO_GROUP_FOUND') );
 				return;
 			}
 			$this->_gid = $this->group->get('gidNumber');
@@ -164,7 +164,7 @@ class Setup extends Base
 			|| $obj->created_by_user != $this->juser->get('id'))
 		)
 		{
-			\JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 			return;
 		}
 		elseif (!$obj->id && $this->_gid && !$this->view->authorized)
@@ -173,7 +173,7 @@ class Setup extends Base
 			if (!$this->group->is_member_of('members', $this->juser->get('id'))
 				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
 			{
-				\JError::raiseError( 403, \JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
+				\JError::raiseError( 403, Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
 				return;
 			}
 		}
@@ -197,7 +197,7 @@ class Setup extends Base
 		else
 		{
 			// Setup complete, go to project page
-			$this->_redirect 	= \JRoute::_('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+			$this->_redirect 	= Route::url('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
 			return;
 		}
 
@@ -258,7 +258,7 @@ class Setup extends Base
 
 		if ($this->_identifier && !$obj->loadProject($this->_identifier))
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -289,7 +289,7 @@ class Setup extends Base
 		// Cannot save a new project unless in setup
 		if (!$setup && !$obj->id)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -300,7 +300,7 @@ class Setup extends Base
 			|| ($setup && $obj->created_by_user != $this->juser->get('id')))
 		)
 		{
-			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 			return;
 		}
 		elseif (!$obj->id && $this->_gid && !$this->authorized)
@@ -311,7 +311,7 @@ class Setup extends Base
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				\JError::raiseError( 404, \JText::_('COM_PROJECTS_NO_GROUP_FOUND') );
+				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_NO_GROUP_FOUND') );
 				return;
 			}
 
@@ -319,7 +319,7 @@ class Setup extends Base
 			if (!$this->group->is_member_of('members',$this->juser->get('id'))
 				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
 			{
-				\JError::raiseError( 403, \JText::_('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
+				\JError::raiseError( 403, Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
 				return;
 			}
 		}
@@ -329,12 +329,12 @@ class Setup extends Base
 			// Complete project setup
 			if ($this->_finalize())
 			{
-				$this->_setNotification(\JText::_('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
+				$this->_setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
 	
 				// Some follow-up actions
 				$this->_onAfterProjectCreate();
 
-				$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+				$this->_redirect = Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $obj->alias);
 				return;
 			}
@@ -362,14 +362,14 @@ class Setup extends Base
 		}
 		else
 		{
-			$this->_setNotification(\JText::_('COM_PROJECTS_'
+			$this->_setNotification(Lang::txt('COM_PROJECTS_'
 				. strtoupper($this->section) . '_SAVED'), 'success');
 		}
 
 		// Redirect
 		$task   = $setup ? 'setup' : 'edit';
 		$append = $new && $this->project->id && $this->next == 'describe' ? '#describearea' : '';
-		$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+		$this->_redirect = Route::url('index.php?option=' . $this->_option
 			. '&task=' . $task . '&alias=' . $this->project->alias
 			. '&active=' . $this->next ) . $append;
 		return;
@@ -392,7 +392,7 @@ class Setup extends Base
 		$obj = new Tables\Project( $this->database );
 		if (!$obj->loadProject($this->_identifier))
 		{
-			$this->setError( \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
@@ -404,7 +404,7 @@ class Setup extends Base
 			{
 				if (!$restricted)
 				{
-					$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA'));
+					$this->setError( Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA'));
 					return false;
 				}
 
@@ -441,7 +441,7 @@ class Setup extends Base
 
 					if ($restricted != 'yes')
 					{
-						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_HIPAA'));
+						$this->setError( Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_HIPAA'));
 						return false;
 					}
 				}
@@ -463,7 +463,7 @@ class Setup extends Base
 					// Make sure user made selections
 					if ($selected == 0)
 					{
-						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_SPECIFY_DATA'));
+						$this->setError( Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_SPECIFY_DATA'));
 						return false;
 					}
 
@@ -471,7 +471,7 @@ class Setup extends Base
 					if (($restrictions['ferpa_data'] == 'yes' && !$agree_ferpa)
 						|| ($restrictions['irb_data'] == 'yes' && !$agree_irb))
 					{
-						$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'));
+						$this->setError( Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'));
 						return false;
 					}
 
@@ -495,7 +495,7 @@ class Setup extends Base
 			// Check to make sure user has agreed to terms
 			if ($agree == 0)
 			{
-				$this->setError( \JText::_('COM_PROJECTS_ERROR_SETUP_TERMS'));
+				$this->setError( Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS'));
 				return false;
 			}
 
@@ -579,7 +579,7 @@ class Setup extends Base
 					$this->config,
 					$this->project,
 					$admins,
-					\JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+					Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 					'projects_new_project_admin',
 					'new'
 				);
@@ -590,7 +590,7 @@ class Setup extends Base
 		if (isset($this->_notify) && $this->_notify === true)
 		{
 			// Record activity
-			$this->_postActivity(\JText::_('COM_PROJECTS_PROJECT_STARTED'));
+			$this->_postActivity(Lang::txt('COM_PROJECTS_PROJECT_STARTED'));
 
 			// Send out emails
 			$this->_notifyTeam();
@@ -618,7 +618,7 @@ class Setup extends Base
 			jimport('joomla.filesystem.folder');
 			if (!\JFolder::create( $path ))
 			{
-				$this->setError( \JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( Lang::txt('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
 			}
 		}
 
@@ -670,12 +670,12 @@ class Setup extends Base
 				// Check incoming data
 				if ($setup && $new && !$this->model->check($name, $obj->id))
 				{
-					$this->setError( \JText::_('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
+					$this->setError( Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 					return false;
 				}
 				elseif (!$title)
 				{
-					$this->setError( \JText::_('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
+					$this->setError( Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
 					return false;
 				}
 
@@ -736,7 +736,7 @@ class Setup extends Base
 							0, 1, 1, '', $split_group_roles = 0
 						))
 						{
-							$this->setError( \JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+							$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
 								. ': ' . $objO->getError() );
 							return false;
 						}
@@ -752,7 +752,7 @@ class Setup extends Base
 						$this->juser->get('id'), $this->_gid, 1, 1, 1 )
 					)
 					{
-						$this->setError( \JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+						$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
 							. ': ' . $objO->getError() );
 						return false;
 					}
@@ -837,7 +837,7 @@ class Setup extends Base
 
 							$cbase   = $obj->admin_notes;
 							$cbase  .= '<nb:sponsored>'
-							. JText::_('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
+							. Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
 							. $meta . '</nb:sponsored>';
 							$obj->admin_notes = $cbase;
 
@@ -862,10 +862,10 @@ class Setup extends Base
 										$this->config,
 										$this->project,
 										$admins,
-										\JText::_('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
+										Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 										'projects_new_project_admin',
 										'admin',
-										\JText::_('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
+										Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE'),
 										'sponsored'
 									);
 								}
@@ -922,7 +922,7 @@ class Setup extends Base
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -941,14 +941,14 @@ class Setup extends Base
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
 		if (!$this->project)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
 
 		// Check if project is in setup
 		if ($this->project->setup_stage < $this->_setupComplete)
 		{
-			$this->_redirect = \JRoute::_('index.php?option=' . $this->_option
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
 				. '&task=setup&id=' . $this->project->id);
 			return;
 		}
@@ -956,7 +956,7 @@ class Setup extends Base
 		// Is project deleted?
 		if ($this->project->state == 2)
 		{
-			\JError::raiseError( 404, \JText::_('COM_PROJECTS_PROJECT_DELETED') );
+			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
 			return;
 		}
 
@@ -971,7 +971,7 @@ class Setup extends Base
 		if ($this->authorized != 1)
 		{
 			// Only managers can edit
-			\JError::raiseError( 403, \JText::_('ALERTNOTAUTH') );
+			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
 			return;
 		}
 
@@ -1024,7 +1024,7 @@ class Setup extends Base
 		{
 			echo json_encode(array(
 				'error' => $this->model->getError(),
-				'message' => \JText::_('COM_PROJECTS_VERIFY_PASSED')
+				'message' => Lang::txt('COM_PROJECTS_VERIFY_PASSED')
 			));
 			return;
 		}

@@ -194,13 +194,13 @@ class Base extends SiteController
 			: '';
 		$message = isset($this->_msg)
 			? $this->_msg
-			: JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
+			: Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-		$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option='
+		$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option='
 			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		$this->setRedirect(
-			\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);
@@ -354,22 +354,22 @@ class Base extends SiteController
 
 		// Set the title
 		$this->title  = $this->_task == 'edit'
-			? \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task))
-			: \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
+			? Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task))
+			: Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
 		// Add project title
 		if (is_object($project) && $project->alias)
 		{
 			if ($project->provisioned == 1)
 			{
-				$this->title .= ': ' . \JText::_('COM_PROJECTS_PROVISIONED_PROJECT');
+				$this->title .= ': ' . Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT');
 			}
 			else
 			{
 				$this->title .= ': '.stripslashes($project->title);
 				if ($active && !$this->juser->get('guest'))
 				{
-					$this->title .= ' :: ' . ucfirst(\JText::_('COM_PROJECTS_TAB_' . strtoupper($active)));
+					$this->title .= ' :: ' . ucfirst(Lang::txt('COM_PROJECTS_TAB_' . strtoupper($active)));
 				}
 			}
 		}
@@ -382,13 +382,13 @@ class Base extends SiteController
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
-								 ? \JText::_('COM_PROJECTS_REVIEWER_SPS')
-								 : \JText::_('COM_PROJECTS_REVIEWER_HIPAA');
+								 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+								 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
 				}
 				else
 				{
 					$this->title .= ($this->_task)
-						? ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
+						? ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)) : '';
 				}
 				break;
 
@@ -403,7 +403,7 @@ class Base extends SiteController
 			default:
 				if ($this->_task)
 				{
-					$this->title .= ': ' . \JText::_(strtoupper($this->_option)
+					$this->title .= ': ' . Lang::txt(strtoupper($this->_option)
 						. '_' . strtoupper($this->_task));
 				}
 				break;
@@ -435,23 +435,23 @@ class Base extends SiteController
 		{
 			$pathway->setPathway(array());
 			$pathway->addItem(
-				\JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
-				\JRoute::_('index.php?option=com_groups')
+				Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
+				Route::url('index.php?option=com_groups')
 			);
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($group->get('description'), 50),
-				\JRoute::_('index.php?option=com_groups&cn=' . $group->cn)
+				Route::url('index.php?option=com_groups&cn=' . $group->cn)
 			);
 			$pathway->addItem(
-				\JText::_('COM_PROJECTS_PROJECTS'),
-				\JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
+				Lang::txt('COM_PROJECTS_PROJECTS'),
+				Route::url('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
 			);
 		}
 		elseif (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				\JText::_('COMPONENT_LONG_NAME'),
-				\JRoute::_('index.php?option=' . $this->_option)
+				Lang::txt('COMPONENT_LONG_NAME'),
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 
@@ -461,8 +461,8 @@ class Base extends SiteController
 			if ($project->provisioned == 1)
 			{
 				$pathway->addItem(
-					stripslashes(\JText::_('COM_PROJECTS_PROVISIONED_PROJECT')),
-					\JRoute::_('index.php?option=' . $this->_option . '&alias='
+					stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
+					Route::url('index.php?option=' . $this->_option . '&alias='
 					.$project->alias . '&action=activate')
 				);
 			}
@@ -470,7 +470,7 @@ class Base extends SiteController
 			{
 				$pathway->addItem(
 					stripslashes($project->title),
-					\JRoute::_('index.php?option=' . $this->_option . '&alias=' . $project->alias)
+					Route::url('index.php?option=' . $this->_option . '&alias=' . $project->alias)
 				);
 			}
 		}
@@ -480,8 +480,8 @@ class Base extends SiteController
 		{
 			case 'reports':
 				$pathway->addItem(
-					\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
-					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
+					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 				);
 				break;
 
@@ -509,8 +509,8 @@ class Base extends SiteController
 
 						default:
 							$pathway->addItem(
-								ucfirst(\JText::_('COM_PROJECTS_TAB_'.strtoupper($this->active))),
-								\JRoute::_('index.php?option=' . $this->_option . '&alias='
+								ucfirst(Lang::txt('COM_PROJECTS_TAB_'.strtoupper($this->active))),
+								Route::url('index.php?option=' . $this->_option . '&alias='
 								. $project->alias . '&active=' . $this->active)
 							);
 						break;
@@ -523,8 +523,8 @@ class Base extends SiteController
 				if (!is_object($project) || !$project->id)
 				{
 					$pathway->addItem(
-						\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+						Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 					break;
 				}
@@ -536,20 +536,20 @@ class Base extends SiteController
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$title = $reviewer == 'sponsored'
-										? \JText::_('COM_PROJECTS_REVIEWER_SPS')
-										: \JText::_('COM_PROJECTS_REVIEWER_HIPAA');
+										? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+										: Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
 
 					$pathway->addItem(
 						$title,
-						\JRoute::_('index.php?option=' . $this->_option
+						Route::url('index.php?option=' . $this->_option
 						. '&task=browse&reviewer=' . $reviewer)
 					);
 				}
 				else
 				{
 					$pathway->addItem(
-						\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+						Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+						Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 				}
 			break;
@@ -561,8 +561,8 @@ class Base extends SiteController
 
 			default:
 				$pathway->addItem(
-					\JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-					\JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
+					Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
+					Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 				);
 				break;
 		}
@@ -649,7 +649,7 @@ class Base extends SiteController
 		// Set up email config
 		$jconfig 		= \JFactory::getConfig();
 		$from 			= array();
-		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PROJECTS');
+		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
 		$from['email'] 	= $jconfig->getValue('config.mailfrom');
 
 		// Get team/managers
@@ -668,8 +668,8 @@ class Base extends SiteController
 			return false;
 		}
 
-		$subject_active  = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->project->alias;
-		$subject_pending = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->project->alias;
+		$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $this->project->alias;
+		$subject_pending = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $this->project->alias;
 
 		// Message body
 		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
@@ -704,7 +704,7 @@ class Base extends SiteController
 				// Creator
 				if ($member->userid == $this->project->created_by_user)
 				{
-					$subject_active  = \JText::_('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
+					$subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
 					. ' ' . $this->project->alias . '!';
 				}
 
