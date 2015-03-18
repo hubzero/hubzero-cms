@@ -624,7 +624,7 @@ if (isset($this->terms)):
 			$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($this->req->getTerms()));
 			$rawTerms = str_replace($k, $v, $rawTerms);
 		endforeach;
-		$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
+		$link = preg_replace('/terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
 		$link = trim($link, '?');
 		?>
 		<p class="info"><?php echo Lang::txt('COM_SEARCH_HUBGRAPH_DID_YOU_MEAN', '<a href="' . Route::url('index.php?option=com_search&' . $link) . '">' . $this->terms . '</a>'); ?></p>
