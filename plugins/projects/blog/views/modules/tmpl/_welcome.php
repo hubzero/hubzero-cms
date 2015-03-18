@@ -36,11 +36,11 @@ $i = 0;
 ?>
 <?php if ($actual_s > 1) { ?>
 	<div class="welcome">
-		<p class="closethis"><a href="<?php echo JRoute::_('index.php?option=' . $this->option
-		. a . 'alias=' . $this->project->alias . a . 'active=feed') . '?c=1'; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
+		<p class="closethis"><a href="<?php echo Route::url('index.php?option=' . $this->option
+		. '&alias=' . $this->project->alias . '&active=feed') . '?c=1'; ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
 
-		<h3><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR') : JText::_('COM_PROJECTS_WELCOME_TO').' '.stripslashes($this->project->title).' '.JText::_('COM_PROJECTS_PROJECT').'!'; ?> </h3>
-		<p><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR') : JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS'); ?></p>
+		<h3><?php echo $this->creator ? Lang::txt('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR') : Lang::txt('COM_PROJECTS_WELCOME_TO').' '.stripslashes($this->project->title).' '.Lang::txt('COM_PROJECTS_PROJECT').'!'; ?> </h3>
+		<p><?php echo $this->creator ? Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR') : Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS'); ?></p>
 		<div id="suggestions" class="suggestions">
 			<?php foreach ($this->suggestions as $suggestion)
 				{ $i++;

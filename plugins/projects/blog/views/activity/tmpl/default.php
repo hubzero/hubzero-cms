@@ -42,7 +42,7 @@ if (count($this->activities) > 0 ) {
 	}  ?>
 </div>
 <?php } else { ?>
-<p class="noresults"><?php echo JText::_('COM_PROJECTS_NO_ACTIVITIES'); ?></p>
+<p class="noresults"><?php echo Lang::txt('COM_PROJECTS_NO_ACTIVITIES'); ?></p>
 <?php } ?>
 
 <div id="more-updates" class="nav_pager">
@@ -50,11 +50,11 @@ if (count($this->activities) > 0 ) {
 if ($this->total > $this->filters['limit'])
 {
 	$limit = $this->filters['limit'] + $this->limit; ?>
-	<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.a.'active=feed').'?limit='.$limit.a.'prev='.$this->filters['limit'];  ?>"><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
+	<p><a href="<?php echo Route::url('index.php?option='.$this->option . $this->goto . '&active=feed') . '?limit=' . $limit . '&amp;prev='.$this->filters['limit'];  ?>"><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES'); ?></a></p>
 <?php } else if ($this->filters['limit'] != $this->limit) { ?>
-	<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php } else if ($this->total > 5 && $this->total < $this->filters['limit']) { ?>
-	<p><?php echo JText::_('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
+	<p><?php echo Lang::txt('COM_PROJECTS_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
 <?php
 } ?>
 </div><!-- / #more-updates -->

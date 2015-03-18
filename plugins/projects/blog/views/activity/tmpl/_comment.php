@@ -52,22 +52,22 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 	<?php if ($deletable) { ?>
 		<span class="m_options">
 			<span class="delit" id="pu_<?php echo $comment->id; ?>">
-			 <a href="<?php echo JRoute::_('index.php?option=' . $this->option
+			 <a href="<?php echo Route::url('index.php?option=' . $this->option
 			. '&alias=' . $this->project->alias . '&task=view&active=feed')
-			.'/?action=deletecomment' . a . 'cid=' . $comment->id; ?>">x</a>
+			.'/?action=deletecomment&amp;cid=' . $comment->id; ?>">x</a>
 			</span>
 		</span>
 		<?php } ?>
 		<img class="comment-author" src="<?php echo $creator->getPicture($comment->admin); ?>" alt="" />
 		<span class="comment-show">
 			<span class="comment-details">
-				<span class="actor"><?php echo $comment->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
+				<span class="actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
 				<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></span>
 			</span>
 	<?php 	echo '<span class="body">' . $shortComment;
 			if ($shorten)
 			{
-				echo ' <a href="#" class="more-content">' . JText::_('COM_PROJECTS_MORE') . '</a>';
+				echo ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 			}
 			echo '</span>'; ?>
 	<?php 	if ($shorten)

@@ -26,22 +26,22 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="sidebox">
-		<h4 class="notes"><a href="<?php echo JRoute::_('index.php?option='.$this->option . a . 'alias=' . $this->project->alias . a . 'active=notes'); ?>" class="hlink" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_NOTES')); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_TAB_NOTES')); ?></a>
+		<h4 class="notes"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes'); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_NOTES')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')); ?></a>
 <?php if (count($this->items) > 0) { ?>
-	<span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=notes'); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_SEE_ALL')); ?> </a></span>
+	<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes'); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')); ?> </a></span>
 <?php } ?>
 </h4>
 <?php if (count($this->items) == 0) { ?>
 	<div class="noitems">
-		<p><?php echo JText::_('COM_PROJECTS_NO_NOTES'); ?></p>
-		<p class="addnew"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=notes') . '?action=new'; ?>"><?php echo JText::_('COM_PROJECTS_ADD_NOTE'); ?></a></p>
+		<p><?php echo Lang::txt('COM_PROJECTS_NO_NOTES'); ?></p>
+		<p class="addnew"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes') . '?action=new'; ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_NOTE'); ?></a></p>
 	</div>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->items as $note) {
 		?>
 	<li>
-		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=notes' . a . 'scope='.$note->scope . a . 'pagename=' . $note->pagename); ?>" title="<?php echo htmlentities($note->title); ?>">
+		 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes&scope='.$note->scope . '&pagename=' . $note->pagename); ?>" title="<?php echo htmlentities($note->title); ?>">
 		<?php echo \Hubzero\Utility\String::truncate($note->title, 35); ?></a>
 	   </li><?php } ?>
 	</ul><?php } ?>

@@ -30,7 +30,7 @@ $a = $this->activity;
 // Add Comment
 if ($a->commentable) { ?>
 <div class="addcomment <?php if (count($this->comments) == 0) { echo 'hidden'; } ?>" id="commentform_<?php echo $a->id; ?>">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=feed'); ?>" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=feed'); ?>" method="post">
 		<fieldset>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -42,9 +42,9 @@ if ($a->commentable) { ?>
 			<input type="hidden" name="parent_activity" value="<?php echo $a->id; ?>" />
 			<img class="comment-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->uid); ?>" alt="" />
 			<label class="comment-show">
-				<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo JText::_('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>
+				<textarea name="comment" rows="4" cols="50" class="commentarea" placeholder="<?php echo Lang::txt('PLG_PROJECTS_BLOG_ENTER_COMMENT'); ?>" id="ca_<?php echo $a->id; ?>"></textarea>
 			</label>
-			<p class="blog-submit"><input type="submit" class="btn c-submit nojs" id="cs_<?php echo $a->id; ?>" value="<?php echo JText::_('COM_PROJECTS_COMMENT'); ?>" /></p>
+			<p class="blog-submit"><input type="submit" class="btn c-submit nojs" id="cs_<?php echo $a->id; ?>" value="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" /></p>
 		</fieldset>
 	</form>
 </div>

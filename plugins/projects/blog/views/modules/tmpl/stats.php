@@ -26,6 +26,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="sidebox">
-		<h4 class="activity"><?php echo ucfirst(JText::_('COM_PROJECTS_MODULE_STATS')); ?></h4>
+		<h4 class="activity"><?php echo ucfirst(Lang::txt('COM_PROJECTS_MODULE_STATS')); ?></h4>
 		<p>&nbsp;</p>
 </div>

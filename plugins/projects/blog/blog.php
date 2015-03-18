@@ -60,7 +60,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$area = array(
 			'name'    => 'blog',
 			'alias'   => 'feed',
-			'title'   => JText::_('COM_PROJECTS_TAB_FEED'),
+			'title'   => Lang::txt('COM_PROJECTS_TAB_FEED'),
 			'submenu' => NULL,
 			'show'    => true
 		);
@@ -435,7 +435,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = JText::_('COM_PROJECTS_NEW_BLOG_ENTRY_SAVED');
+				$this->_msg = Lang::txt('COM_PROJECTS_NEW_BLOG_ENTRY_SAVED');
 			}
 
 			// Get new entry ID
@@ -451,7 +451,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				$aid = $objAA->recordActivity(
 					$this->_project->id,
 					$this->_uid,
-					JText::_('COM_PROJECTS_SAID'),
+					Lang::txt('COM_PROJECTS_SAID'),
 					$objM->id, '', '', 'blog', 1
 				);
 			}
@@ -481,7 +481,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
 		return;
 	}
 
@@ -511,7 +511,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				// Delete blog entry
 				if ($objM->deletePost())
 				{
-					$this->_msg = JText::_('COM_PROJECTS_ENTRY_DELETED');
+					$this->_msg = Lang::txt('COM_PROJECTS_ENTRY_DELETED');
 
 					// Delete all associated comments
 					$comments = $objC->deleteComments($eid, $tbl);
@@ -540,7 +540,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 				if ($objAA->deleteActivity())
 				{
-					$this->_msg = JText::_('COM_PROJECTS_ENTRY_DELETED');
+					$this->_msg = Lang::txt('COM_PROJECTS_ENTRY_DELETED');
 
 					// Delete all associated comments
 					$comments = $objC->deleteComments($eid, $tbl);
@@ -557,7 +557,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// unauthorized
-				$this->setError(JText::_('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
+				$this->setError(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'));
 			}
 		}
 
@@ -578,7 +578,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
 		return;
 	}
 
@@ -609,7 +609,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->option 			= $this->_option;
 		$view->project 			= $this->_project;
 		$view->activities 		= $this->_prepActivities($view->filters, $view->limit);
-		$view->goto  			= 'alias=' . $this->_project->alias;
+		$view->goto  			= '&alias=' . $this->_project->alias;
 		$view->uid 				= $this->_uid;
 		$view->database 		= $this->_database;
 		$view->title			= $this->_area['title'];
@@ -783,7 +783,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
 		if ($shorten)
 		{
-			$ebody .= ' <a href="#" class="more-content">' . JText::_('COM_PROJECTS_MORE') . '</a>';
+			$ebody .= ' <a href="#" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
 		}
 		$ebody .= '</span>';
 
@@ -850,9 +850,9 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get app log
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php'))
+		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php'))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php');
+			require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php');
 
 			$objLog = new ProjectToolLog($this->_database);
 			$aLog = $objLog->getLog($activity->referenceid, $activity->id);
@@ -882,7 +882,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Import some needed libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 		$page = new \Components\Wiki\Tables\Page($this->_database);
 		if ($page->loadById($ref))
@@ -941,14 +941,14 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				// Only preview mid-size images from now on
 				$hashed = md5(basename($file) . '-' . $hash) . '.png';
 
-				if (is_file(JPATH_ROOT. $to_path . DS . $hashed))
+				if (is_file(PATH_APP. $to_path . DS . $hashed))
 				{
 					$preview['image'] = $hashed;
 					$preview['url']   = NULL;
 					$preview['title'] = basename($file);
 
 					// Get image properties
-					list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT. $to_path . DS . $hashed);
+					list($width, $height, $type, $attr) = getimagesize(PATH_APP. $to_path . DS . $hashed);
 
 					$preview['width'] = $width;
 					$preview['height'] = $height;
@@ -1033,7 +1033,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = JText::_('COM_PROJECTS_COMMENT_POSTED');
+				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_POSTED');
 			}
 			// Get new entry ID
 			if (!$objC->id) {
@@ -1044,13 +1044,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($objC->id)
 			{
-				$what = $tbl == 'blog' ? JText::_('COM_PROJECTS_BLOG_POST') : JText::_('COM_PROJECTS_AN_ACTIVITY');
-				$what = $tbl == 'todo' ? JText::_('COM_PROJECTS_TODO_ITEM') : $what;
+				$what = $tbl == 'blog' ? Lang::txt('COM_PROJECTS_BLOG_POST') : Lang::txt('COM_PROJECTS_AN_ACTIVITY');
+				$what = $tbl == 'todo' ? Lang::txt('COM_PROJECTS_TODO_ITEM') : $what;
 				$url = '#tr_'.$parent_activity; // same-page link
 				$aid = $objAA->recordActivity(
 					$this->_project->id,
 					$this->_uid,
-					JText::_('COM_PROJECTS_COMMENTED').' '.JText::_('COM_PROJECTS_ON').' '.$what,
+					Lang::txt('COM_PROJECTS_COMMENTED').' '.Lang::txt('COM_PROJECTS_ON').' '.$what,
 					$objC->id, $what, $url, 'quote', 0
 				);
 			}
@@ -1080,7 +1080,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
 		return;
 	}
 
@@ -1104,7 +1104,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			// delete comment
 			if ($objC->deleteComment())
 			{
-				$this->_msg = JText::_('COM_PROJECTS_COMMENT_DELETED');
+				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_DELETED');
 			}
 
 			// delete associated activity
@@ -1132,7 +1132,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
 		return;
 	}
 }

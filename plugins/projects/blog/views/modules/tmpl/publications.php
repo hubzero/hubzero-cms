@@ -26,15 +26,15 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div class="sidebox">
-		<h4 class="publications"><a href="<?php echo JRoute::_('index.php?option='.$this->option . a . 'alias=' . $this->project->alias . a . 'active=publications'); ?>" class="hlink" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_PUBLICATIONS')); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_TAB_PUBLICATIONS')); ?></a>
+		<h4 class="publications"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications'); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')); ?></a>
 <?php if (count($this->items) > 0) { ?>
-	<span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications'); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_SEE_ALL')); ?> </a></span>
+	<span><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications'); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')); ?> </a></span>
 <?php } ?>
 </h4>
 <?php if (count($this->items) == 0) { ?>
 	<div class="noitems">
-		<p><?php echo JText::_('COM_PROJECTS_NO_PUBLICATIONS'); ?></p>
-		<p class="addnew"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications') . '?action=start'; ?>"><?php echo JText::_('COM_PROJECTS_ADD_PUBLICATION'); ?></a></p>
+		<p><?php echo Lang::txt('COM_PROJECTS_NO_PUBLICATIONS'); ?></p>
+		<p class="addnew"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications') . '?action=start'; ?>"><?php echo Lang::txt('COM_PROJECTS_ADD_PUBLICATION'); ?></a></p>
 	</div>
 <?php } else { ?>
 	<ul>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$status = \Components\Publications\Helpers\Html::getPubStateProperty($pub, 'status', 0);
 		?>
 	<li>
-		 <a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications') . '/?pid=' . $pub->id; ?>" title="<?php echo $pub->title; ?>">
+		 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications') . '/?pid=' . $pub->id; ?>" title="<?php echo $pub->title; ?>">
 		<?php echo \Hubzero\Utility\String::truncate($pub->title, 50); ?></a>
 		 <span class="block faded mini">
 			<span>v. <?php echo $pub->version_label; ?> (<?php echo $status; ?>)</span>

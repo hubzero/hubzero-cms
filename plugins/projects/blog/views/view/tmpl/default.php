@@ -37,7 +37,7 @@ $this->css()
 	$this->view('default', 'addupdate')
 	     ->set('option', $this->option)
 	     ->set('project', $this->project)
-	     ->set('goto', 'alias=' . $this->project->alias)
+	     ->set('goto', '&alias=' . $this->project->alias)
 	     ->display();
 ?>
 
@@ -48,7 +48,7 @@ $this->css()
 		     ->set('option', $this->option)
 		     ->set('project', $this->project)
 		     ->set('activities', $this->activities)
-		     ->set('goto', 'alias=' . $this->project->alias)
+		     ->set('goto', '&alias=' . $this->project->alias)
 		     ->set('limit', $this->limit)
 		     ->set('total', $this->total)
 		     ->set('filters', $this->filters)
@@ -56,7 +56,7 @@ $this->css()
 		     ->set('database', $this->database)
 		     ->display();
 		?>
-	<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias) . '/?active=feed'; ?>">
+	<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias) . '/?active=feed'; ?>">
 		<div>
 			<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
 			<input type="hidden" name="task" value="view" />

@@ -27,21 +27,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <div class="sidebox">
-		<h4 class="assets"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.a.'active=files'); ?>" class="hlink"><?php echo ucfirst(JText::_('COM_PROJECTS_FILES')); ?></a>
+		<h4 class="assets"><a href="<?php echo Route::url('index.php?option=' . $this->option . $this->goto . '&active=files'); ?>" class="hlink"><?php echo ucfirst(Lang::txt('COM_PROJECTS_FILES')); ?></a>
 <?php if (count($this->files) > 0) { ?>
-	<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$this->goto.'&active=files'); ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_SEE_ALL')); ?> </a></span>
+	<span><a href="<?php echo Route::url('index.php?option=' . $this->option . $this->goto . '&active=files'); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')); ?> </a></span>
 <?php } ?>
 </h4>
 <?php if (count($this->files) == 0) { ?>
-	<p class="mini"><?php echo JText::_('COM_PROJECTS_FILES_NONE'); ?></p>
+	<p class="mini"><?php echo Lang::txt('COM_PROJECTS_FILES_NONE'); ?></p>
 <?php } else { ?>
 	<ul>
 		<?php foreach ($this->files as $file) {
 		?>
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=files'.a.$this->goto).'/?action=download'.a.'file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name']); ?></a>
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=files' . $this->goto).'/?action=download&amp;file='.urlencode($file['fpath']); ?>" title="<?php echo $file['name']; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name']); ?></a>
 				<span class="block faded mini">
-					<?php echo $file['size']; ?> | <?php echo JText::_('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), 'M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file['author']); ?>
+					<?php echo $file['size']; ?> | <?php echo Lang::txt('COM_PROJECTS_FILES_REV'); ?> <?php echo $file['revisions']; ?> &middot; <?php echo JHTML::_('date', strtotime($file['date']), 'M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file['author']); ?>
 				</span>
 			</li>
 		<?php } ?>

@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="blab" class="miniblog">
-	<form id="blogForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $this->goto) . '/?active=feed'; ?>">
+	<form id="blogForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . $this->goto) . '/?active=feed'; ?>">
 		<fieldset>
 			<textarea name="blogentry" cols="5" rows="5" id="blogentry" placeholder="Got an update?"></textarea>
 			<p id="blog-submitarea">
@@ -36,7 +36,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="action" value="save" />
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="managers_only" value="0" />
-				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
+				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
 			</p>
 		</fieldset>
 	</form>
