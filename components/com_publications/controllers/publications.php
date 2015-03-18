@@ -522,7 +522,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get our model and load publication data
-		$this->model = new PublicationsModelPublication($this->_identifier, $this->_version);
+		$this->model = new \Components\Publications\Models\Publication($this->_identifier, $this->_version);
 
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->deleted())
@@ -771,7 +771,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					: $this->publication->_type->curation;
 
 		// Get curation model
-		$this->publication->_curationModel = new PublicationsCuration(
+		$this->publication->_curationModel = new \Components\Publications\Models\Curation(
 			$manifest
 		);
 
@@ -788,7 +788,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->database);
+		$attModel = new \Components\Publications\Models\Attachments($this->database);
 
 		// Serve content
 		$content = $attModel->serve(
@@ -1079,7 +1079,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$publication->project->load($publication->project_id);
 
 		// Get pub type helper
-		$pubTypeHelper = new PublicationTypesHelper($this->database, $publication->project);
+		$pubTypeHelper = new \Components\Publications\Models\Types($this->database, $publication->project);
 
 		// Get user choice for serving content
 		$pParams = new JParameter( $primary->params );
@@ -1406,7 +1406,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$masterscope = 'projects' . DS . $this->publication->project_alias . DS . 'notes';
 
 		// Get page information
-		$this->model = new PublicationsModelPublication($this->publication);
+		$this->model = new \Components\Publications\Models\Publication($this->publication);
 		$page = $this->model->getWikiPage($pageid, $masterscope, $revision);
 		if (!$page)
 		{
@@ -1518,7 +1518,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new PublicationsCuration($manifest);
+			$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);

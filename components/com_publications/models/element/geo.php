@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
+
 
 /**
  * Renders a geolocation element
  */
-class PublicationsElementGeo extends PublicationsElement
+class Geo extends Base
 {
 	/**
 	* Element name
@@ -59,14 +61,14 @@ class PublicationsElementGeo extends PublicationsElement
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description)
 		{
-			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
+			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= JText::_($label) . ' <span class="hint">' . JText::_('(street, city, state/province postal-code, country)') . '</span>';
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . JText::_('Required') . '</span>' : '';
+		$output .= Lang::txt($label) . ' <span class="hint">' . Lang::txt('(street, city, state/province postal-code, country)') . '</span>';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -85,7 +87,7 @@ class PublicationsElementGeo extends PublicationsElement
 	{
 		if (!$this->_script)
 		{
-			$document = JFactory::getDocument();
+			$document = \JFactory::getDocument();
 			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
 			$document->addScript('/components/com_publications/models/element/geo.js');
 			$this->_script = true;

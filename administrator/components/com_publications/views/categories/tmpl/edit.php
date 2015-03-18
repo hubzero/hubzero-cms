@@ -230,7 +230,7 @@ function submitbutton(pressbutton)
 				<?php
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 					. DS . 'models' . DS . 'elements.php');
-				$elements = new PublicationsElements('', $this->row->customFields);
+				$elements = new \Components\Publications\Models\Elements('', $this->row->customFields);
 				$schema = $elements->getSchema();
 
 				if (!is_object($schema))

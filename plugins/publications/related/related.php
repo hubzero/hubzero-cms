@@ -115,7 +115,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
 		$sql1 .= "GROUP BY pageid ORDER BY ranking DESC, title LIMIT 10";
 
 		// Initiate a helper class
-		$model = new PublicationsModelPublication( $publication );
+		$model = new \Components\Publications\Models\Publication( $publication );
 		$tags = $model->getTags();
 
 		// Get version authors

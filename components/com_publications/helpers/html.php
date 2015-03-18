@@ -462,7 +462,7 @@ class Html extends \JObject
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'elements.php');
 
-		$elements 	= new PublicationsElements($data, $customFields);
+		$elements 	= new \Components\Publications\Models\Elements($data, $customFields);
 		$schema 	= $elements->getSchema();
 
 		foreach ($schema->fields as $field)

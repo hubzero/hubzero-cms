@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
 
 /**
  * Renders a languages element
  */
-class PublicationsElementLanguages extends PublicationsElement
+class Languages extends Base
 {
 	/**
 	* Element name
@@ -243,7 +244,7 @@ class PublicationsElementLanguages extends PublicationsElement
 		if (!$value)
 		{
 			jimport('joomla.language.helper');
-			$language = JLanguageHelper::detectLanguage();
+			$language = \JLanguageHelper::detectLanguage();
 			$language = explode('-', $language);
 			$value = $language[0];
 		}
@@ -251,12 +252,12 @@ class PublicationsElementLanguages extends PublicationsElement
 		$languages = array();
 		foreach ($this->_codes as $code => $lang)
 		{
-			$languages[] = JHTML::_('select.option', $code, $lang);
+			$languages[] = \JHTML::_('select.option', $code, $lang);
 		}
 
-		array_unshift($languages, JHTML::_('select.option', '', '- '.JText::_('Select Language').' -'));
+		array_unshift($languages, \JHTML::_('select.option', '', '- '.Lang::txt('Select Language').' -'));
 
-		return '<span class="field-wrap">' . JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
+		return '<span class="field-wrap">' . \JHTML::_('select.genericlist',  $languages, $control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.'-'.$name) . '</span>';
 	}
 
 	/**

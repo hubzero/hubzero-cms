@@ -43,7 +43,7 @@ $required 		= $this->manifest->params->required;
 
 $elName = "tagsPick";
 
-$model = new PublicationsModelPublication($this->pub);
+$model = new \Components\Publications\Models\Publication($this->pub);
 
 ?>
 

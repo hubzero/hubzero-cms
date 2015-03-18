@@ -28,15 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
+require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
+
+use Hubzero\Base\Model;
+use Components\Publications\Helpers;
+use Components\Publications\Tables;
 
 /**
  * Publications log model class
  */
-class PublicationsModelLog extends \Hubzero\Base\Model
+class Log extends Model
 {
 	/**
 	 * Table class name
@@ -130,7 +133,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 		$types = ($type == 'all') ? array('view', 'primary') : array($type);
 
 		// Get all public versions
-		$row  = new \Components\Publications\Tables\Version( $this->_db );
+		$row  = new Tables\Version( $this->_db );
 		$versions = $row->getVersions($pid, $filters = array('public' => 1));
 
 		if (!$versions)
@@ -231,7 +234,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_publications');
+			$this->_config = \JComponentHelper::getParams('com_publications');
 		}
 		if (!$pid || !$vid)
 		{
@@ -239,7 +242,7 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 		}
 
 		// Build log path (access logs)
-		$logPath = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
+		$logPath = Helpers\Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
 
 		if (!is_dir($logPath))
 		{

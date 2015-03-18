@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block\Content as Base;
+use stdClass;
 
 /**
  * Content block
  */
-class PublicationsBlockExtras extends PublicationsBlockContent
+class Extras extends Base
 {
 	/**
 	* Block name

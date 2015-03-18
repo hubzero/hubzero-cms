@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 /**
  * Publications block base class
  */
-class PublicationsModelBlock extends JObject
+class Block extends Object
 {
 	/**
 	* Element name

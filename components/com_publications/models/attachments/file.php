@@ -22,19 +22,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Attachment;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'html.php');
+use Components\Publications\Models\Attachment as Base;
+use stdClass;
+use ZipArchive;
 
 /**
  * Handles a file attachment
  */
-class PublicationsModelAttachmentFile extends PublicationsModelAttachment
+class File extends Base
 {
 	/**
 	* Attachment type name
@@ -61,7 +58,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$typeParams = $element->typeParams;
 
 		// replace current attachments?
-		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');
+		$configs->replace  	= \JRequest::getInt( 'replace_current', 0, 'post');
 
 		// which directory to copy files to
 		$configs->directory = isset($typeParams->directory) && $typeParams->directory
@@ -115,7 +112,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Load handler
 		if ($configs->handler)
 		{
-			$modelHandler = new PublicationsModelHandlers($this->_parent->_db);
+			$modelHandler = new \Components\Publications\Models\Handlers($this->_parent->_db);
 			$configs->handler = $modelHandler->ini($configs->handler);
 		}
 
@@ -134,7 +131,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Get bundle name
-		$versionParams 		  = new JParameter( $pub->params );
+		$versionParams 		  = new \JParameter( $pub->params );
 		$bundleName			  = $versionParams->get('element' . $elementId . 'bundlename', $configs->title);
 		$configs->bundleTitle = $bundleName ? $bundleName : $configs->title;
 		$configs->bundleName  = $bundleName ? $bundleName . '.zip' : 'bundle.zip';
@@ -155,7 +152,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 							? trim($typeParams->bundleDirectory) : NULL;
 
 		// Archival path
-		$tarname  = JText::_('Publication') . '_' . $pub->id . '.zip';
+		$tarname  = Lang::txt('Publication') . '_' . $pub->id . '.zip';
 		$configs->archPath	= $configs->pubBase . DS . $tarname;
 
 		return $configs;
@@ -354,7 +351,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
-		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url =  Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
 		$url = preg_replace('/\/administrator/', '', $url);
 		$html = '';
@@ -370,13 +367,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				return $html;
 			}
 		}
-		$notice = $authorized ? ' (' . JText::_('unavailable')  . ')' : '';
+		$notice = $authorized ? ' (' . Lang::txt('unavailable')  . ')' : '';
 
 		// Draw bundles
 		if ($configs->multiZip && $attachments && count($attachments) > 1)
 		{
 			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
-			$pop   = JText::_('Download') . ' ' . $title;
+			$pop   = Lang::txt('Download') . ' ' . $title;
 
 			$fpath = $this->bundle($attachments, $configs, false);
 
@@ -401,7 +398,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
 				. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
-				. JText::_('COM_PUBLICATIONS_EDIT') . '</a></span>';
+				. Lang::txt('COM_PUBLICATIONS_EDIT') . '</a></span>';
 			}
 			$html .= '</span>';
 			$html .='</li>';
@@ -427,7 +424,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$itemUrl 	=  $url . '&a=' . $attach->id . '&download=1';
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : basename($attach->path);
-				$pop		= JText::_('Download') . ' ' . $title;
+				$pop		= Lang::txt('Download') . ' ' . $title;
 				$html .= '<li>';
 				$html .= is_file($fpath) && $authorized
 						? '<a href="' . $itemUrl . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
@@ -440,7 +437,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				{
 					$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
 					. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
-					. JText::_('COM_PUBLICATIONS_EDIT') . '</a></span>';
+					. Lang::txt('COM_PUBLICATIONS_EDIT') . '</a></span>';
 				}
 				$html .= '</span>';
 				$html .='</li>';
@@ -480,20 +477,20 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		if ($pub->state == 0)
 		{
-			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
@@ -511,7 +508,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Which role?
 		$role = $element->params->role;
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url = Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number )
 				. '?el=' . $elementId;
 
@@ -527,7 +524,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				$attach = $attachments[0];
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
-				$title = $configs->title ? $configs->title : JText::_('Download content');
+				$title = $configs->title ? $configs->title : Lang::txt('Download content');
 			}
 			else
 			{
@@ -542,13 +539,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			else
 			{
-				$label = JText::_('Download');
+				$label = Lang::txt('Download');
 				// Link to bundle
 				if ($showArchive == 1 || ($showArchive == 2 && count($attachments) > 1))
 				{
-					$url = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
-					$label .= ' ' . JText::_('Bundle');
-					$title = $pub->title . ' ' . JText::_('Bundle');
+					$url = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+					$label .= ' ' . Lang::txt('Bundle');
+					$title = $pub->title . ' ' . Lang::txt('Bundle');
 				}
 				else
 				{
@@ -593,7 +590,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		$newConfigs = new stdClass;
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// Directory path within pub folder
 		$newConfigs->dirPath = $configs->subdir
@@ -614,7 +611,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Create new path
 		if (!is_dir( $newPath ))
 		{
-			JFolder::create( $newPath );
+			\JFolder::create( $newPath );
 		}
 
 		// Loop through attachments
@@ -634,11 +631,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
 			{
-				JFolder::create( dirname($copyTo) );
+				\JFolder::create( dirname($copyTo) );
 			}
 
 			// Copy file
-			if (!JFile::copy($copyFrom, $copyTo))
+			if (!\JFile::copy($copyFrom, $copyTo))
 			{
 				$pAttach->delete();
 			}
@@ -678,7 +675,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
 		// Incoming
-		$forceDownload = JRequest::getInt( 'download', 0 );		// Force downlaod action?
+		$forceDownload = \JRequest::getInt( 'download', 0 );		// Force downlaod action?
 
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -726,10 +723,10 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			if ($download && is_file($download))
 			{
 				// Log access
-				if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+				if ( is_file(PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 						.'com_publications' . DS . 'tables' . DS . 'logs.php'))
 				{
-					require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+					require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 							.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 					if ($pub->state == 1)
@@ -750,7 +747,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				if (!$xserver->serve())
 				{
 					// Should only get here on error
-					JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE') );
+					\JError::raiseError( 404, Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE') );
 				}
 				else
 				{
@@ -759,7 +756,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			else
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOWNLOAD') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOWNLOAD') );
 				return false;
 			}
 		}
@@ -784,7 +781,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			if (!$suffix && $params)
 			{
 				// Get file attachment params
-				$fParams = new JParameter( $params );
+				$fParams = new \JParameter( $params );
 				$suffix  = $fParams->get('suffix');
 			}
 
@@ -828,9 +825,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Create pub version path
 		if (!is_dir( $path ))
 		{
-			if (!JFolder::create( $path ))
+			if (!\JFolder::create( $path ))
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
 			}
 		}
@@ -872,7 +869,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = JRequest::getVar( 'selecteditems', '');
+			$selections = \JRequest::getVar( 'selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -903,7 +900,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// TBD
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 		if (!$uid)
 		{
@@ -911,7 +908,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Git helper
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
 		$this->_git = new \Components\Projects\Helpers\Git($configs->path);
 
@@ -939,7 +936,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Success
 		if ($i > 0 && $i == $a)
 		{
-			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
+			$message = $this->get('_message') ? $this->get('_message') : Lang::txt('Selection successfully saved');
 			$this->set('_message', $message);
 		}
 
@@ -954,7 +951,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -969,14 +966,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Remove file
 		if (!$this->unpublishAttachment($row, $pub, $configs))
 		{
-			$this->setError(JText::_('There was a problem removing published file'));
+			$this->setError(Lang::txt('There was a problem removing published file'));
 		}
 
 		// Remove file and record
 		if (!$this->getError())
 		{
 			$row->delete();
-			$this->set('_message', JText::_('Item removed'));
+			$this->set('_message', Lang::txt('Item removed'));
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
@@ -996,11 +993,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= JRequest::getVar( 'title', '' );
-		$name 	= JRequest::getVar( 'filename', '' );
-		$thumb 	= JRequest::getInt( 'makedefault', 0 );
+		$title 	= \JRequest::getVar( 'title', '' );
+		$name 	= \JRequest::getVar( 'filename', '' );
+		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -1018,8 +1015,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		if ($configs->allowRename && !$gone && $name && $name != basename($row->path))
 		{
 			// Get files plugin
-			JPluginHelper::importPlugin( 'projects', 'files' );
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'files' );
+			$dispatcher = \JDispatcher::getInstance();
 
 			$newpath = dirname($row->path) == '.' ? $name : dirname($row->path) . '/' . $name;
 
@@ -1048,7 +1045,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			else
 			{
-				$error = isset($result->error) && $result->error ?  ($result->error) : JText::_('Failed to rename file');
+				$error = isset($result->error) && $result->error ?  ($result->error) : Lang::txt('Failed to rename file');
 				$this->setError($error);
 			}
 
@@ -1100,15 +1097,15 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= JFactory::getDate()->toSql();
+		$row->modified 		= \JFactory::getDate()->toSql();
 
 		// Update record
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error updating item record'));
+			$this->setError(Lang::txt('Error updating item record'));
 		}
 
-		$this->set('_message', JText::_('Update successful'));
+		$this->set('_message', Lang::txt('Update successful'));
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
@@ -1117,7 +1114,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		if ($thumb)
 		{
 			// Get handler model
-			$modelHandler = new PublicationsModelHandlers( $this->_parent->_db );
+			$modelHandler = new \Components\Publications\Models\Handlers( $this->_parent->_db );
 
 			// Load image handler
 			$handler = $modelHandler->ini('imageviewer');
@@ -1129,7 +1126,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			if ($handler->makeDefault($row, $pub, $configs))
 			{
-				$this->set('_message', JText::_('Updated default publication thumbnail'));
+				$this->set('_message', Lang::txt('Updated default publication thumbnail'));
 				return true;
 			}
 		}
@@ -1169,7 +1166,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				$objPA->vcs_hash 				= $vcs_hash;
 				$objPA->modified_by 			= $uid;
-				$objPA->modified 				= JFactory::getDate()->toSql();
+				$objPA->modified 				= \JFactory::getDate()->toSql();
 				$update = 1; // Copy file again (new version)
 
 				// Reflect the update in curation record
@@ -1185,7 +1182,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$objPA->type 					= $this->_name;
 			$objPA->vcs_hash 				= $vcs_hash;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= JFactory::getDate()->toSql();
+			$objPA->created 				= \JFactory::getDate()->toSql();
 			$objPA->role 					= $element->role;
 
 			// Reflect the update in curation record
@@ -1273,9 +1270,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Create pub version path
 		if (!is_dir( $configs->pubPath ))
 		{
-			if (!JFolder::create( $configs->pubPath ))
+			if (!\JFolder::create( $configs->pubPath ))
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
 			}
 		}
@@ -1290,11 +1287,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// If parent dir does not exist, we must create it
 			if ($configs->dirHierarchy && !file_exists(dirname($copyTo)))
 			{
-				JFolder::create(dirname($copyTo));
+				\JFolder::create(dirname($copyTo));
 			}
 			if (!is_file($copyTo) || $update)
 			{
-				JFile::copy($copyFrom, $copyTo);
+				\JFile::copy($copyFrom, $copyTo);
 			}
 		}
 
@@ -1355,12 +1352,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Delete file
 		if (is_file( $deletePath ))
 		{
-			if (JFile::delete($deletePath))
+			if (\JFile::delete($deletePath))
 			{
 				// Also delete hash file
 				if (is_file($hfile))
 				{
-					JFile::delete($hfile);
+					\JFile::delete($hfile);
 				}
 
 				// Remove any related files managed by handler
@@ -1385,7 +1382,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 */
 	public function getStatus( $element, $attachments )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
 		$max 		= $element->max;
@@ -1400,7 +1397,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		{
 			if ($counter)
 			{
-				$status->setError( JText::_('Need at least ' . $min . ' file(s)') );
+				$status->setError( Lang::txt('Need at least ' . $min . ' file(s)') );
 			}
 			else
 			{
@@ -1415,14 +1412,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( JText::_('Maximum ' . $max . ' files allowed') );
+			$status->setError( Lang::txt('Maximum ' . $max . ' files allowed') );
 		}
 		// Check allowed formats
 		elseif (!self::checkAllowed($attachments, $params->allowed_ext))
 		{
 			if ($counter && !empty($params->allowed_ext))
 			{
-				$error = JText::_('Error: wrong file type. Allowed file type(s): ');
+				$error = Lang::txt('Error: wrong file type. Allowed file type(s): ');
 				foreach ($params->allowed_ext as $ext)
 				{
 					$error .= ' ' . $ext .',';
@@ -1432,13 +1429,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			else
 			{
-				$status->setError( JText::_('File format not allowed') );
+				$status->setError( Lang::txt('File format not allowed') );
 			}
 		}
 		// Check required formats
 		elseif (!self::checkRequired($attachments, $params->required_ext))
 		{
-			$status->setError( JText::_('Missing a file of required format') );
+			$status->setError( Lang::txt('Missing a file of required format') );
 		}
 
 		if (!$required)
@@ -1584,12 +1581,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$data->md5		    = $att->content_hash;
 		$data->viewer	    = $view->viewer;
 		$data->allowRename  = $allowRename;
-		$data->downloadUrl  = JRoute::_('index.php?option=com_publications&task=serve&id='
+		$data->downloadUrl  = Route::url('index.php?option=com_publications&task=serve&id='
 							. $view->pub->id . '&v=' . $view->pub->version_number )
 							. '?el=' . $view->elementId . a . 'a=' . $att->id . a . 'download=1';
 
 		// Is attachment (image) also publication thumbnail
-		$params = new JParameter( $att->params );
+		$params = new \JParameter( $att->params );
 		$data->pubThumb = $params->get('pubThumb', NULL);
 		$data->suffix = $params->get('suffix', NULL);
 
@@ -1600,7 +1597,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$data->size		= $att->vcs_hash
 						? $view->git->gitLog($configs->path, $att->path, $att->vcs_hash, 'size') : NULL;
 		$data->gitStatus= $data->gone
-					? JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
+					? Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
 					: NULL;
 
 		return $data;

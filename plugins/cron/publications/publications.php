@@ -242,7 +242,7 @@ class plgCronPublications extends JPlugin
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'models' . DS . 'log.php');
 
 		// Get log model
-		$modelLog = new PublicationsModelLog();
+		$modelLog = new \Components\Publications\Models\Log();
 
 		$filters = array();
 		$filters['sortby'] = 'date';

@@ -22,15 +22,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 /**
  * Tags block
  */
-class PublicationsBlockTags extends PublicationsModelBlock
+class Tags extends Base
 {
 	/**
 	* Block name
@@ -185,19 +187,19 @@ class PublicationsBlockTags extends PublicationsModelBlock
 
 		if (!$objP->load($pub->id))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			return false;
 		}
 
 		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db );
-		$tags 		= trim(JRequest::getVar('tags', '', 'post'));
+		$tags 		= trim(\JRequest::getVar('tags', '', 'post'));
 		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
 
 		// Save category
-		$cat = JRequest::getInt( 'pubtype', 0 );
+		$cat = \JRequest::getInt( 'pubtype', 0 );
 		if ($cat && $pub->_category->id != $cat)
 		{
 			$objP->category = $cat;
@@ -215,7 +217,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{
 		// Start status
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		$tagsHelper  = new \Components\Publications\Helpers\Tags( $this->_parent->_db);
 

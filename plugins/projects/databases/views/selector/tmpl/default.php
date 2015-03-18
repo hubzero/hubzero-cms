@@ -44,7 +44,7 @@ $params  = $element->params;
 $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 // Get attachment type model
-$attModel = new PublicationsModelAttachments($this->database);
+$attModel = new \Components\Publications\Models\Attachments($this->database);
 
 // Get attached items
 $attachments = $this->publication->_attachments;

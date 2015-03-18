@@ -586,7 +586,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration(
+		$view->publication->_curationModel = new \Components\Publications\Models\Curation(
 			$view->publication->_type->curation
 		);
 

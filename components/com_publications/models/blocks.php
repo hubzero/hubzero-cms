@@ -28,20 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 include_once(dirname(__FILE__) . DS . 'format.php');
 include_once(dirname(__FILE__) . DS . 'block.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 
 /**
  * Publications blocks class
  *
  */
-class PublicationsModelBlocks extends JObject
+class Blocks extends Object
 {
 	/**
 	 * JDatabase
@@ -93,7 +94,7 @@ class PublicationsModelBlocks extends JObject
 
 		if ($block === false || !$pub || !is_object($pub))
 		{
-			$status = new PublicationsModelStatus();
+			$status = new \Components\Publications\Models\Status();
 		}
 		else
 		{
@@ -121,7 +122,7 @@ class PublicationsModelBlocks extends JObject
 			return	$this->_blocks[$signature];
 		}
 
-		$elementClass = 'PublicationsBlock' . ucfirst($name);
+		$elementClass = __NAMESPACE__ . '\\Block\\' . ucfirst($name);
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_blockPath))
@@ -133,10 +134,10 @@ class PublicationsModelBlocks extends JObject
 				$dirs = array();
 			}
 
-			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file))
+			if ($elementFile = \JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

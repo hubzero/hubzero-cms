@@ -306,7 +306,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new PublicationsCuration($manifest);
+			$this->view->pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
@@ -427,7 +427,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new PublicationsCuration($manifest);
+			$this->view->pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
@@ -526,7 +526,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new PublicationsCuration($manifest);
+			$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);
@@ -743,7 +743,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$lang->load('plg_projects_publications');
 
 		// Save via block
-		$blocksModel = new PublicationsModelBlocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
 		$block->reorder(NULL, 0, $pub, $this->juser->get('id'));
@@ -833,7 +833,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$lang->load('plg_projects_publications');
 
 		// Save via block
-		$blocksModel = new PublicationsModelBlocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
 		if ($author)
@@ -1189,7 +1189,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							$pub->_type = $mt->getType($pub->base);
 
 							// Get curation model
-							$pub->_curationModel = new PublicationsCuration(
+							$pub->_curationModel = new \Components\Publications\Models\Curation(
 								$pub->_type->curation
 							);
 
@@ -1921,7 +1921,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new PublicationsCuration($manifest);
+			$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);

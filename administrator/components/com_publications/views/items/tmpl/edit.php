@@ -78,7 +78,7 @@ if ($this->useBlocks)
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
-$elements 	= new PublicationsElements($data, $customFields);
+$elements 	= new \Components\Publications\Models\Elements($data, $customFields);
 $fields 	= $elements->render();
 $schema 	= $elements->getSchema();
 

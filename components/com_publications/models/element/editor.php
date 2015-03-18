@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
 
 /**
  * Renders an editor element
  */
-class PublicationsElementEditor extends PublicationsElement
+class Editor extends Base
 {
 	/**
 	* Element name
@@ -62,6 +63,6 @@ class PublicationsElementEditor extends PublicationsElement
 		$classes .= $editorImages == 1 ? 'images ' : '';
 		$classes .= $editorMacros == 1 ? 'macros ' : '';
 
-		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
+		return '<span class="field-wrap">' . \JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
 	}
 }

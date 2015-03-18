@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+
+namespace Components\Publications\Models\Type;
+
+use Hubzero\Base\Object;
 
 /**
  * DATABASES master type helper class
  */
-class typeDatabases extends JObject
+class Databases extends Object
 {
 	/**
 	 * JDatabase
@@ -300,7 +302,7 @@ class typeDatabases extends JObject
 
 		$html = '<span class="' . $this->_base . '">' . $title . '</span>';
 		if ($data->source_file) {
-		$html.= '<span class="c-iteminfo">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE')
+		$html.= '<span class="c-iteminfo">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SOURCE_FILE')
 			. ': ' . \Components\Projects\Helpers\Html::shortenFileName($data->source_file, 40) . '</span>';
 		}
 
@@ -339,12 +341,12 @@ class typeDatabases extends JObject
 			$objData->loadRecord($database_name);
 
 			// Load component configs
-			$pubconfig = JComponentHelper::getParams( 'com_publications' );
-			$config = JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+			$config = \JComponentHelper::getParams( 'com_projects' );
 
 			// Get databases plugin
-			JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'databases');
+			$dispatcher = \JDispatcher::getInstance();
 
 			$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
@@ -366,14 +368,14 @@ class typeDatabases extends JObject
 			// Build publication path
 			$base_path 		= $pubconfig->get('webpath');
 			$publishPath 	= \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, 'data', 1);
-			$pPath 			= JRoute::_('index.php?option=com_publications&id=' . $pid . '&vid=' . $vid . '&task=serve');
+			$pPath 			= Route::url('index.php?option=com_publications&id=' . $pid . '&vid=' . $vid . '&task=serve');
 
 			// Create new version path
 			if (!is_dir( $publishPath ))
 			{
-				if (!JFolder::create( $publishPath ))
+				if (!\JFolder::create( $publishPath ))
 				{
-					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+					$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 					return '<p class="error">' . $this->getError() . '</p>';
 				}
 			}
@@ -387,7 +389,7 @@ class typeDatabases extends JObject
 				// Failed to clone
 				if (!$dbVersion)
 				{
-					$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+					$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
 					return false;
 				}
 			}
@@ -402,7 +404,7 @@ class typeDatabases extends JObject
 					$result 			= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
 					$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 					$objPA->modified_by = $uid;
-					$objPA->modified 	= JFactory::getDate()->toSql();
+					$objPA->modified 	= \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -417,7 +419,7 @@ class typeDatabases extends JObject
 				$objPA->publication_version_id 	= $vid;
 				$objPA->type 					= $this->_attachmentType;
 				$objPA->created_by 				= $uid;
-				$objPA->created 				= JFactory::getDate()->toSql();
+				$objPA->created 				= \JFactory::getDate()->toSql();
 			}
 
 			// We do need a revision number!
@@ -540,9 +542,6 @@ class typeDatabases extends JObject
 		// Copy files from repo to published location
 		if (!empty($files))
 		{
-			jimport('joomla.filesystem.file');
-			jimport('joomla.filesystem.folder');
-
 			foreach ($files as $file)
 			{
 				if (!file_exists( $repoPath . DS . $file))
@@ -553,10 +552,10 @@ class typeDatabases extends JObject
 				// If parent dir does not exist, we must create it
 				if (!file_exists(dirname($publishPath . DS . $file)))
 				{
-					JFolder::create(dirname($publishPath . DS . $file));
+					\JFolder::create(dirname($publishPath . DS . $file));
 				}
 
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $file);
+				\JFile::copy($repoPath . DS . $file, $publishPath . DS . $file);
 
 				// Get file extention
 				$ext = \Components\Projects\Helpers\Html::getFileExtension($file);
@@ -573,7 +572,7 @@ class typeDatabases extends JObject
 				// Generate thumbnail
 				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
 				$tpath  = dirname($thumb) == '.' ? $publishPath : $publishPath . DS . dirname($thumb);
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
+				\JFile::copy($repoPath . DS . $file, $publishPath . DS . $thumb);
 
 				$hi = new \Hubzero\Image\Processor($publishPath . DS . $thumb);
 				if (count($hi->getErrors()) == 0)
@@ -589,7 +588,7 @@ class typeDatabases extends JObject
 				// Generate medium image
 				$med 	= \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
 				$mpath  = dirname($med) == '.' ? $publishPath : $publishPath . DS . dirname($med);
-				JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
+				\JFile::copy($repoPath . DS . $file, $publishPath . DS . $med);
 
 				$hi = new \Hubzero\Image\Processor($publishPath . DS . $med);
 				if (count($hi->getErrors()) == 0)
@@ -620,7 +619,7 @@ class typeDatabases extends JObject
 		$published = 0;
 
 		// Load component configs
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
 		$base_path 	= $pubconfig->get('webpath');
 
 		foreach ($attachments as $att)
@@ -635,7 +634,7 @@ class typeDatabases extends JObject
 
 			// Build publication path
 			$publishPath = \Components\Publications\Helpers\Html::buildPubPath($row->publication_id, $row->id, $base_path, 'data', 1);
-			$pPath = JRoute::_('index.php?option=com_publications&id=' . $row->publication_id . '&vid=' . $row->id . '&task=serve');
+			$pPath = Route::url('index.php?option=com_publications&id=' . $row->publication_id . '&vid=' . $row->id . '&task=serve');
 
 			// Get database object and load record
 			$objData = new \Components\Projects\Tables\Database($this->_database);
@@ -654,8 +653,8 @@ class typeDatabases extends JObject
 			if (strtotime($objData->updated) > $rtime)
 			{
 				// Get databases plugin
-				JPluginHelper::importPlugin( 'projects', 'databases');
-				$dispatcher = JDispatcher::getInstance();
+				\JPluginHelper::importPlugin( 'projects', 'databases');
+				$dispatcher = \JDispatcher::getInstance();
 
 				// New database instance - need to clone again and get a new version number
 				$result 	= $dispatcher->trigger( 'clone_database', array( $database_name, $this->_project, $pPath) );
@@ -673,7 +672,7 @@ class typeDatabases extends JObject
 												. DS . $database_name . DS . '?v=' . $dbVersion;
 					$objAtt->object_revision = $dbVersion;
 					$objAtt->modified_by 	 = $uid;
-					$objAtt->modified 		 = JFactory::getDate()->toSql();
+					$objAtt->modified 		 = \JFactory::getDate()->toSql();
 					$objAtt->store();
 					$published++;
 				}

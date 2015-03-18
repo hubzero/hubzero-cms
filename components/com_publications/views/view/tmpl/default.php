@@ -96,7 +96,7 @@ else
 		$elements = $this->publication->_curationModel->getElements(1);
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->database);
+		$attModel = new \Components\Publications\Models\Attachments($this->database);
 
 		if ($elements)
 		{

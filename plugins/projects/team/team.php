@@ -368,7 +368,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->publication->_project 	= $this->_project;
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($view->publication->_type->curation);
+		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))

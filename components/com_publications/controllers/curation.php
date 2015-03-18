@@ -312,7 +312,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($manifest);
+		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Get reviewed Items
 		$pub->reviewedItems = $pub->_curationModel->getReviewedItems($pub->version_id);
@@ -411,7 +411,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($manifest);
+		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -684,7 +684,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($manifest);
+		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Store curation manifest
 		$row->curation = json_encode($pub->_curationModel->_manifest);
@@ -805,7 +805,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($manifest);
+		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -893,7 +893,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new PublicationsCuration($manifest);
+		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);

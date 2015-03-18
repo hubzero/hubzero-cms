@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models\Type;
+
+use Hubzero\Base\Object;
 
 /**
  * LINKS (external content) master type helper class
  */
-class typeLinks extends JObject
+class Links extends Object
 {
 	/**
 	 * JDatabase
@@ -317,7 +318,7 @@ class typeLinks extends JObject
 				if ($objPA->loadAttachment($vid, $link, 'link'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= JFactory::getDate()->toSql();
+					$objPA->modified 				= \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -327,7 +328,7 @@ class typeLinks extends JObject
 					$objPA->path 					= $link;
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
+					$objPA->created 				= \JFactory::getDate()->toSql();
 					$objPA->title 					= NULL;
 				}
 

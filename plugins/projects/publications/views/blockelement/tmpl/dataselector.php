@@ -62,10 +62,10 @@ $this->editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publica
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
 
 // Get attachment model
-$modelAttach = new PublicationsModelAttachments($this->database);
+$modelAttach = new \Components\Publications\Models\Attachments($this->database);
 
 // Get handler model
-$modelHandler = new PublicationsModelHandlers($this->database);
+$modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
 // Is there handler choice?
 $handlers 	  = $this->manifest->params->typeParams->handlers;

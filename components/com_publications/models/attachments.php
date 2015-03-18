@@ -28,20 +28,21 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'attachment.php');
 
 /**
  * Publications attachments class
  *
  */
-class PublicationsModelAttachments extends JObject
+class Attachments extends Object
 {
 	/**
 	 * JDatabase
@@ -84,8 +85,8 @@ class PublicationsModelAttachments extends JObject
 
 		if ($type === false)
 		{
-			$status = new PublicationsModelStatus();
-			$status->setError(JText::_('Attachment type not found') );
+			$status = new \Components\Publications\Models\Status();
+			$status->setError(Lang::txt('Attachment type not found') );
 		}
 		else
 		{
@@ -114,7 +115,7 @@ class PublicationsModelAttachments extends JObject
 
 		if ($type === false)
 		{
-			$status->setError(JText::_('Attachment type not found') );
+			$status->setError(Lang::txt('Attachment type not found') );
 		}
 		else
 		{
@@ -443,7 +444,7 @@ class PublicationsModelAttachments extends JObject
 			return	$this->_types[$signature];
 		}
 
-		$elementClass = 'PublicationsModelAttachment' . ucfirst($name);
+		$elementClass = __NAMESPACE__ . '\\Attachment\\' . ucfirst($name);
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_path))
@@ -455,10 +456,10 @@ class PublicationsModelAttachments extends JObject
 				$dirs = array();
 			}
 
-			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file))
+			if ($elementFile = \JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Format;
+
+use Components\Publications\Models\Format as Base;
+use stdClass;
 
 /**
- * XML format handler for PublicationsElementsFormat
+ * XML format handler
  */
-class PublicationsElementsFormatXML extends PublicationsElementsFormat
+class XML extends Base
 {
 	/**
 	 * Converts an object into an XML formatted string.

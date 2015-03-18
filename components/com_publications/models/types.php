@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 /**
  * Publication master type helper class
  */
-class PublicationTypesHelper extends JObject
+class Types extends Object
 {
 	/**
 	 * JDatabase
@@ -83,7 +84,7 @@ class PublicationTypesHelper extends JObject
 	 */
 	public function getTypes()
 	{
-		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
+		$dir  = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
 
 		$types = scandir($dir);
 		$bases = array();
@@ -111,7 +112,7 @@ class PublicationTypesHelper extends JObject
 			return false;
 		}
 
-		$dir  = JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
+		$dir  = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'types';
 
 		$types = scandir($dir);
 
@@ -122,7 +123,7 @@ class PublicationTypesHelper extends JObject
 				require_once($dir . DS . $t);
 
 				$base = str_replace('.php', '', $t);
-				$helperName = 'type' . ucfirst($base);
+				$helperName = '\Components\Publications\Models\Type\\' . ucfirst($base);
 
 				$helper = new $helperName($this->_database, $this->_project, $data);
 				if ($helper->_attachmentType == $type)
@@ -151,20 +152,20 @@ class PublicationTypesHelper extends JObject
 		}
 
 		// Default to files
-		if (!is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
+		if (!is_file(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS
 			. 'models' . DS . 'types' . DS . $base . '.php'))
 		{
 			$base = 'files';
 		}
 		$this->_base 	 = $base;
 
-		if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
+		if (is_file(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS
 			. 'models' . DS . 'types' . DS . $base . '.php'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'types' . DS . $base . '.php');
 
-			$helperName = 'type' . ucfirst($base);
+			$helperName = '\Components\Publications\Models\Type\\' . ucfirst($base);
 
 			$this->_helper = new $helperName($this->_database, $this->_project, $data);
 

@@ -48,7 +48,7 @@ if ($useBlocks && $pubParams->get('curated') != 2)
 	$elements = array_merge($prime, $second);
 
 	// Get attachment type model
-	$attModel = new PublicationsModelAttachments($database);
+	$attModel = new \Components\Publications\Models\Attachments($database);
 
 	if ($elements)
 	{

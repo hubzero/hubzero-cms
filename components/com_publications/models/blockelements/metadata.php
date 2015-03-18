@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\BlockElement;
+
+use Components\Publications\Models\BlockElement as Base;
 
 /**
  * Renders metadata element
  */
-class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElement
+class Metadata extends Base
 {
 	/**
 	* Element name
@@ -44,7 +45,7 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 	 */
 	public function getStatus( $manifest, $pub = NULL )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
 		$field	  = $manifest->params->field;
@@ -77,13 +78,13 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		{
 			if ($default == $value || preg_match('/' . $default . ' (\\(.*\\))/', $value, $matches))
 			{
-				$status->setError( JText::_('Default value needs to be replaced') );
+				$status->setError( Lang::txt('Default value needs to be replaced') );
 			}
 		}
 		// Required value not filled?
 		if ($required && !$value)
 		{
-			$status->setError( JText::_('Please enter ' . $key) );
+			$status->setError( Lang::txt('Please enter ' . $key) );
 		}
 		elseif (!$required && !$value)
 		{
@@ -110,7 +111,7 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		$total 			= $master->props['total'];
 
 		// Incoming
-		$activeElement  = JRequest::getInt( 'el', $showElement );
+		$activeElement  = \JRequest::getInt( 'el', $showElement );
 
 		// Do we need to collapse inactive elements?
 		$collapse = isset($master->params->collapse_elements) && $master->params->collapse_elements ? 1 : 0;

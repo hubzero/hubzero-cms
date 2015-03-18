@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$model = new PublicationsModelPublication($this->pub);
+$model = new \Components\Publications\Models\Publication($this->pub);
 
 // Determine pane title
 if ($this->version == 'dev') {

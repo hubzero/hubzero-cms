@@ -22,16 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Handlers;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+use Components\Publications\Models\Handler as Base;
+use stdClass;
 
 /**
  * Image Viewer Handler
  */
-class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
+class ImageViewer extends Base
 {
 	/**
 	* Handler type name
@@ -110,7 +109,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		if (is_file($thumbPath))
 		{
 			$md5 = hash_file('sha256', $thumbPath);
-			JFile::delete($thumbPath);
+			\JFile::delete($thumbPath);
 		}
 
 		// Get master and default thumb
@@ -123,12 +122,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			if (is_file($masterThumb) &&  hash_file('sha256', $masterThumb) == $md5)
 			{
 				// Delete master thumbnail
-				JFile::delete($masterThumb);
+				\JFile::delete($masterThumb);
 
 				// Remove master cover
 				if (is_file($masterCover))
 				{
-					JFile::delete($masterCover);
+					\JFile::delete($masterCover);
 				}
 			}
 		}
@@ -180,10 +179,10 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Copy to master
 		if (is_file($path))
 		{
-			JFile::copy($path, $copyToMaster);
+			\JFile::copy($path, $copyToMaster);
 
 			// Create/update thumb
-			JFile::copy($path, $copyToThumb);
+			\JFile::copy($path, $copyToThumb);
 
 			$hi = new \Hubzero\Image\Processor($copyToThumb);
 			if (count($hi->getErrors()) == 0)
@@ -279,24 +278,24 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			);
 			$thumbPath = dirname($fpath) . DS . $thumbName;
 
-			if (is_file(JPATH_ROOT . DS . $fpath) && is_file(JPATH_ROOT . DS . $thumbPath))
+			if (is_file(PATH_APP . DS . $fpath) && is_file(PATH_APP . DS . $thumbPath))
 			{
 				// Get extentsion
 				$ext = \Components\Projects\Helpers\Html::getFileExtension($fpath);
 
 				$title = $attach->title ? $attach->title : basename($attach->path);
-				$fpath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . basename($fpath);
+				$fpath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . basename($fpath);
 				if ($ext == 'swf' || $ext == 'mov')
 				{
 					$g++;
 					$els .= ' <a class="video"  href="' . $fpath . '" title="' . $title . '">';
-					$els .= '<img src="' . JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" /></a>';
+					$els .= '<img src="' . Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" /></a>';
 				}
 				else
 				{
 					$k++;
 					$els .= ' <a rel="lightbox" href="' . $fpath . '" title="' . $title . '">';
-					$els .= '<img src="' . JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></a>';
+					$els .= '<img src="' . Route::url('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></a>';
 				}
 				$i++;
 			}
@@ -336,14 +335,14 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		$path = str_replace(JPATH_ROOT, '', $attConfigs->pubPath);
+		$path = str_replace(PATH_APP, '', $attConfigs->pubPath);
 
 		$html = '';
 
 		foreach ($attachments as $attach)
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
-			$fpath = str_replace(JPATH_ROOT, '', $fpath);
+			$fpath = str_replace(PATH_APP, '', $fpath);
 
 			$thumbName = \Components\Publications\Helpers\Html::createThumbName(
 				basename($fpath),
@@ -353,7 +352,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$title 		= $attach->title ? $attach->title : $attConfigs->title;
 			$title 		= $title ? $title : basename($attach->path);
 
-			$params = new JParameter( $attach->params );
+			$params = new \JParameter( $attach->params );
 
 			$html .= '<li>';
 			$html .= ' <a rel="lightbox" href="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . basename($fpath) . '">';
@@ -408,7 +407,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Create/update thumb if doesn't exist or file changed
 		if (!is_file($thumbPath) || $md5 != $row->content_hash)
 		{
-			JFile::copy($fpath, $thumbPath);
+			\JFile::copy($fpath, $thumbPath);
 			$hi = new \Hubzero\Image\Processor($thumbPath);
 			if (count($hi->getErrors()) == 0)
 			{
@@ -478,7 +477,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			if (!$suffix && $params)
 			{
 				// Get file attachment params
-				$fParams = new JParameter( $params );
+				$fParams = new \JParameter( $params );
 				$suffix  = $fParams->get('suffix');
 			}
 
@@ -514,14 +513,14 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	public function drawEditor($editor)
 	{
 		// Incoming
-		$active = trim(JRequest::getVar( 'o', NULL )); // Requested image
+		$active = trim(\JRequest::getVar( 'o', NULL )); // Requested image
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$attachments = $editor->get('attachments');
 
 		// Get attachment model
-		$modelAttach = new PublicationsModelAttachments($database);
+		$modelAttach = new \Components\Publications\Models\Attachments($database);
 
 		// Get image files
 		$images = array();
@@ -536,7 +535,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		// Draw images
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 			'name'   => 'handlers',
 			'layout' => 'imagegallery',
 		));

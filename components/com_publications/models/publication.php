@@ -28,8 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
+use Components\Publications\Helpers;
+use Components\Publications\Tables;
 
 require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 
@@ -39,7 +42,7 @@ include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 /**
  * Information retrieval for items/info linked to a publication
  */
-class PublicationsModelPublication extends \Hubzero\Base\Object
+class Publication extends Object
 {
 	/**
 	 * Authorized
@@ -81,11 +84,11 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		else
 		{
 			// Load master entry
-			$this->publication = new \Components\Publications\Tables\Publication($this->_db);
+			$this->publication = new Tables\Publication($this->_db);
 			$this->publication->loadPublication($oid);
 
 			// Load version
-			$this->version = new \Components\Publications\Tables\Version($this->_db);
+			$this->version = new Tables\Version($this->_db);
 			$this->version->loadVersion($this->publication->id, $version);
 
 			// Version label
@@ -229,11 +232,11 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -268,10 +271,10 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 	{
 		if (empty($this->_type))
 		{
-			$this->_type = new \Components\Publications\Tables\MasterType($this->_db);
+			$this->_type = new Tables\MasterType($this->_db);
 			$this->_type->load($this->publication->master_type);
 			$this->_type->_params = new \JParameter( $this->_type->params );
-			$this->pubTypeHelper = new PublicationTypesHelper($this->_db, $this->project());
+			$this->pubTypeHelper = new Types($this->_db, $this->project());
 		}
 
 		return $this->_type;
@@ -300,7 +303,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 						: $this->_type->curation;
 
 			// Get curation model
-			$this->_curationModel = new PublicationsCuration($manifest);
+			$this->_curationModel = new Curation($manifest);
 
 			// Set pub assoc and load curation
 			$this->_curationModel->setPubAssoc($this);
@@ -318,7 +321,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 	{
 		if (empty($this->_category))
 		{
-			$this->_category = new \Components\Publications\Tables\Category( $this->_db );
+			$this->_category = new Tables\Category( $this->_db );
 			$this->_category->load($this->publication->category);
 			$this->_category->_params = new \JParameter( $this->_category->params );
 		}
@@ -339,7 +342,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		}
 		if (!isset($this->_authors))
 		{
-			$objA = new \Components\Publications\Tables\Author( $this->_db );
+			$objA = new Tables\Author( $this->_db );
 			$this->_authors = $objA->getAuthors($this->version->id);
 			$this->_submitter = $objA->getSubmitter($this->version->id, $this->version->created_by);
 		}
@@ -473,7 +476,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		}
 		if (!isset($this->_accessGroups))
 		{
-			$paccess = new \Components\Publications\Tables\Access( $this->_db );
+			$paccess = new Tables\Access( $this->_db );
 			$aGroups = $paccess->getGroups( $this->version->id, $this->publication->id );
 			$this->_accessGroups = $this->getGroupProperty($aGroups);
 		}
@@ -518,7 +521,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		}
 		if (!isset($this->_attachments))
 		{
-			$pContent = new \Components\Publications\Tables\Attachment( $this->_db );
+			$pContent = new Tables\Attachment( $this->_db );
 			$this->_attachments = $pContent->sortAttachments ( $this->version->id );
 		}
 
@@ -538,7 +541,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		}
 		if (!isset($this->_license))
 		{
-			$this->_license = new \Components\Publications\Tables\License($this->_db);
+			$this->_license = new Tables\License($this->_db);
 			$this->_license->load($this->version->license_type);
 		}
 
@@ -914,7 +917,7 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		{
 			foreach ($matches as $match)
 			{
-				$data[$match[1]] = \Components\Publications\Helpers\Html::_txtUnpee($match[2]);
+				$data[$match[1]] = Helpers\Html::_txtUnpee($match[2]);
 			}
 		}
 
@@ -1115,10 +1118,10 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		}
 		if (!isset($this->_tags))
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'helpers' . DS . 'tags.php' );
 
-			$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+			$rt = new Helpers\Tags( $this->_db );
 			$this->_tags = $rt->get_tags_on_object($this->id, 0, 0, $tagger_id, $strength, $admin);
 		}
 
@@ -1140,10 +1143,10 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 			return false;
 		}
 
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+		include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
 			. DS . 'helpers' . DS . 'tags.php' );
 
-		$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+		$rt = new Helpers\Tags( $this->_db );
 		$this->_tagsForEditing = $rt->get_tag_string( $this->id, 0, 0, $tagger_id, $strength, 0 );
 	}
 
@@ -1163,10 +1166,10 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 
 		if (!isset($this->_tagCloud))
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'helpers' . DS . 'tags.php' );
 
-			$rt = new \Components\Publications\Helpers\Tags( $this->_db );
+			$rt = new Helpers\Tags( $this->_db );
 			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->id);
 		}
 
@@ -1187,8 +1190,8 @@ class PublicationsModelPublication extends \Hubzero\Base\Object
 		if (!isset($this->_bundlePath))
 		{
 			// Archival package
-			$tarname  = \JText::_('Publication') . '_' . $this->publication->id . '.zip';
-			$this->_bundlePath = \Components\Publications\Helpers\Html::buildPubPath(
+			$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
+			$this->_bundlePath = Helpers\Html::buildPubPath(
 				$this->publication->id,
 				$this->version->id,
 				'', '', 1) . DS . $tarname;

@@ -68,7 +68,7 @@ $site 	 = $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 $sitename = $jconfig->getValue('config.sitename');
 
-$model = new PublicationsModelPublication($this->pub);
+$model = new \Components\Publications\Models\Publication($this->pub);
 
 // Build our citation object
 $citation = '';

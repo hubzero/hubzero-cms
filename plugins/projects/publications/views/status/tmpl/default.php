@@ -53,7 +53,7 @@ if ($this->pub->doi)
 
 	$cite->url = $site . DS . 'publications' . DS . $this->pub->id.'?v='.$this->pub->version_number;
 	$cite->type = '';
-	$model = new PublicationsModelPublication($this->pub);
+	$model = new \Components\Publications\Models\Publication($this->pub);
 	$cite->author = $model->getUnlinkedContributors();
 	$cite->doi = $this->pub->doi;
 	$citation = \Components\Citations\Helpers\Format::formatReference($cite);

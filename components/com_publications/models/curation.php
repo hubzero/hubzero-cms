@@ -28,8 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
+use Components\Publications\Helpers;
+use Components\Publications\Tables;
+use stdClass;
+use ZipArchive;
 
 // Include building blocks
 include_once(dirname(__FILE__) . DS . 'blocks.php');
@@ -39,18 +44,18 @@ include_once(dirname(__FILE__) . DS . 'blockelements.php');
 include_once(dirname(__FILE__) . DS . 'handlers.php');
 
 // Include tables
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.history.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 	. DS . 'helpers' . DS . 'html.php');
 
 // Get language file
-$lang = JFactory::getLanguage();
+$lang = \JFactory::getLanguage();
 $lang->load('com_publications_curation');
 
 /**
@@ -59,7 +64,7 @@ $lang->load('com_publications_curation');
  * Parses curation flow into view block for user, admin and curator
  *
  */
-class PublicationsCuration extends JObject
+class Curation extends Object
 {
 	/**
 	* JDatabase
@@ -164,7 +169,7 @@ class PublicationsCuration extends JObject
 		if (!$manifest)
 		{
 			// Get blocks model
-			$blocksModel = new PublicationsModelBlocks($this->_db);
+			$blocksModel = new Blocks($this->_db);
 
 			// Get default blocks
 			$blocks = $blocksModel->getBlocks('block',
@@ -300,7 +305,7 @@ class PublicationsCuration extends JObject
 		$customFields = array();
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		// Find all blocks of the same parent
 		foreach ($this->_blocks as $sequence => $block)
@@ -345,7 +350,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		$elements = array();
 
@@ -399,7 +404,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		// Find all blocks of the same parent
 		foreach ($this->_blocks as $sequence => $block)
@@ -448,7 +453,7 @@ class PublicationsCuration extends JObject
 
 			if (!$sequence)
 			{
-				$this->setError( JText::_('Error loading block') );
+				$this->setError( Lang::txt('Error loading block') );
 				return false;
 			}
 
@@ -458,7 +463,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		return $blocksModel->renderBlock($this->_blockname, $viewer, $this->_block, $this->_pub, $sequence);
 	}
@@ -478,7 +483,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		$blocksModel->reorder($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
@@ -499,7 +504,7 @@ class PublicationsCuration extends JObject
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= JFactory::getDate()->toSql();
+			$data->updated 		= \JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -522,7 +527,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		$blocksModel->saveItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
@@ -543,7 +548,7 @@ class PublicationsCuration extends JObject
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= JFactory::getDate()->toSql();
+			$data->updated 		= \JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -566,7 +571,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		$blocksModel->deleteItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
@@ -587,7 +592,7 @@ class PublicationsCuration extends JObject
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= JFactory::getDate()->toSql();
+			$data->updated 		= \JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -610,7 +615,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Incoming
-		$dispute  = urldecode(JRequest::getVar('review', ''));
+		$dispute  = urldecode(\JRequest::getVar('review', ''));
 
 		if (!trim($dispute))
 		{
@@ -620,7 +625,7 @@ class PublicationsCuration extends JObject
 
 		// Record update time
 		$data 				= new stdClass;
-		$data->updated 		= JFactory::getDate()->toSql();
+		$data->updated 		= \JFactory::getDate()->toSql();
 		$data->updated_by 	= $actor;
 		$data->update		= stripslashes($dispute);
 		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
@@ -645,7 +650,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Incoming
-		$reason  = urldecode(JRequest::getVar('review', ''));
+		$reason  = urldecode(\JRequest::getVar('review', ''));
 
 		if (!trim($reason))
 		{
@@ -655,7 +660,7 @@ class PublicationsCuration extends JObject
 
 		// Record update time
 		$data 				= new stdClass;
-		$data->updated 		= JFactory::getDate()->toSql();
+		$data->updated 		= \JFactory::getDate()->toSql();
 		$data->updated_by 	= $actor;
 		$data->review_status = 3;
 		$data->update		= stripslashes($reason);
@@ -707,7 +712,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		$blocksModel->addItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
 
@@ -728,7 +733,7 @@ class PublicationsCuration extends JObject
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= JFactory::getDate()->toSql();
+			$data->updated 		= \JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -751,7 +756,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		// Save data
 		$blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
@@ -773,7 +778,7 @@ class PublicationsCuration extends JObject
 		{
 			// Record update time
 			$data 				= new stdClass;
-			$data->updated 		= JFactory::getDate()->toSql();
+			$data->updated 		= \JFactory::getDate()->toSql();
 			$data->updated_by 	= $actor;
 			$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
 		}
@@ -933,7 +938,7 @@ class PublicationsCuration extends JObject
 	public function transfer( $pub, $old, $new)
 	{
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 
 		foreach ($pub->_curationModel->_progress->blocks as $sequence => $block)
 		{
@@ -974,12 +979,12 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return false;
 		}
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->_db);
+		$blocksModel = new Blocks($this->_db);
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence);
 
 		// Return status
@@ -1007,7 +1012,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $elementId;
 		}
 
@@ -1053,7 +1058,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
 		}
 
@@ -1098,7 +1103,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
 		}
 
@@ -1140,7 +1145,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
 		}
 
@@ -1184,7 +1189,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
 		}
 
@@ -1228,7 +1233,7 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return $activeId;
 		}
 
@@ -1273,12 +1278,12 @@ class PublicationsCuration extends JObject
 
 		if (!$sequence)
 		{
-			$this->setError( JText::_('Error loading block') );
+			$this->setError( Lang::txt('Error loading block') );
 			return false;
 		}
 
 		// Get blocks model
-		$blocksModel 	= new PublicationsModelBlocks($this->_db);
+		$blocksModel 	= new Blocks($this->_db);
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$sequence, $elementId );
 	}
 
@@ -1295,34 +1300,34 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$row = new \Components\Publications\Tables\Version( $this->_db );
+		$row = new Tables\Version( $this->_db );
 
 		// Incoming
-		$label = trim(JRequest::getVar( 'label', '', 'post' ));
+		$label = trim(\JRequest::getVar( 'label', '', 'post' ));
 		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version_number );
 
 		if ($label && in_array($label, $used_labels))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 			return false;
 		}
 		elseif ($label)
 		{
 			if (!$row->loadVersion($this->_pub->id, $this->_pub->version_number))
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
 				return false;
 			}
 
 			$row->version_label = $label;
 			if (!$row->store())
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR') );
 			}
 		}
 
 		// Success message
-		$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED'));
+		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED'));
 
 		return true;
 	}
@@ -1338,7 +1343,7 @@ class PublicationsCuration extends JObject
 	public function getReviewStatus( $block, $pub, $sequence = 0)
 	{
 		// Get status model
-		$status = new PublicationsModelStatus();
+		$status = new Status();
 
 		if (!isset($pub->reviewedItems))
 		{
@@ -1420,7 +1425,7 @@ class PublicationsCuration extends JObject
 	 */
 	public function getReviewItemStatus( $props = NULL, $items = NULL )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new Status();
 		$status->status 		= 2; // unreviewed
 		$status->updated_by 	= 0;
 
@@ -1510,16 +1515,16 @@ class PublicationsCuration extends JObject
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($reviewStatus->updated_by);
-			$by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
+			$by 	 = ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
 
 			if ($status->status != 3)
 			{
-				$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
-					. JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
+				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
+					. \JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
 			}
 			else
 			{
-				$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
+				$status->updatenotice 	= Lang::txt('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
 			}
 		}
 
@@ -1549,25 +1554,25 @@ class PublicationsCuration extends JObject
 				{
 					?>
 						<span class="dispute-notice">
-							<span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE'); ?></a>]</span>
-							<?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?>
+							<span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE'); ?></a>]</span>
+							<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?>
 							<span class="dispute-text"><?php echo $curatorStatus->authornotice; ?></span>
 						</span>
 				<?php }
 				else
 				{
-					echo  JText::_('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
+					echo  Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_UPDATED');
 				}
 			} ?></span>
 			<?php if ($viewer == 'author' && $curatorStatus->curatornotice && !$curatorStatus->updated) {  ?>
-			<span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>
+			<span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>
 			<?php } ?>
 
-			<span class="fail-notice"><?php echo $viewer == 'curator' ? JText::_('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : JText::_('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
+			<span class="fail-notice"><?php echo $viewer == 'curator' ? Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
 			<span class="notice-text"><?php echo $curatorStatus->curatornotice; ?></span>
 			<?php if ($curatorStatus->authornotice && $viewer == 'curator') { ?>
 			<span class="dispute-notice">
-				<strong><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
+				<strong><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
 				<?php echo $curatorStatus->authornotice; ?>
 			</span>
 			<?php } ?>
@@ -1589,8 +1594,8 @@ class PublicationsCuration extends JObject
 		$updated = $reviewStatus->updated;
 		?>
 		<div class="block-checker" id="<?php echo $props; ?>" rel="<?php echo $title; ?>">
-			<span class="checker-pass <?php echo ($status == 1) ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="<?php echo $url; ?>" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_APPROVE'); ?>"></a></span>
-			<span class="checker-fail <?php echo $status == 0 ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="#addnotice" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_NOT_APPROVE'); ?>"></a></span>
+			<span class="checker-pass <?php echo ($status == 1) ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_APPROVE'); ?>"></a></span>
+			<span class="checker-fail <?php echo $status == 0 ? 'picked' : ''; ?><?php echo $updated ? ' updated' : ''; ?>"><a href="#addnotice" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOT_APPROVE'); ?>"></a></span>
 		</div>
 	<?php
 	}
@@ -1610,7 +1615,7 @@ class PublicationsCuration extends JObject
 
 		$review = array();
 
-		$curation = new \Components\Publications\Tables\Curation($this->_db);
+		$curation = new Tables\Curation($this->_db);
 		$results = $curation->getRecords($versionId);
 
 		if ($results)
@@ -1735,7 +1740,7 @@ class PublicationsCuration extends JObject
 	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
 		// Incoming
-		$comment = JRequest::getVar('comment', '', 'post');
+		$comment = \JRequest::getVar('comment', '', 'post');
 
 		// Collect details
 		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);
@@ -1745,11 +1750,11 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$obj = new \Components\Publications\Tables\CurationHistory($this->_db);
+		$obj = new Tables\CurationHistory($this->_db);
 
 		// Create new record
 		$obj->publication_version_id 	= $pub->version_id;
-		$obj->created 					= JFactory::getDate()->toSql();
+		$obj->created 					= \JFactory::getDate()->toSql();
 		$obj->created_by				= $actor;
 		$obj->changelog					= $changelog;
 		$obj->curator					= $curator;
@@ -1774,7 +1779,7 @@ class PublicationsCuration extends JObject
 	 */
 	public function getHistory( $pub, $curator = 0 )
 	{
-		$obj = new \Components\Publications\Tables\CurationHistory($this->_db);
+		$obj = new Tables\CurationHistory($this->_db);
 
 		$history = $obj->getRecords($pub->version_id);
 
@@ -1792,7 +1797,7 @@ class PublicationsCuration extends JObject
 	 */
 	public function getLastUpdate( $elementId, $name, $pub, $sequence )
 	{
-		$curation = new \Components\Publications\Tables\Curation($this->_db);
+		$curation = new Tables\Curation($this->_db);
 		return $curation->getRecord($pub->id, $pub->version_id, $name, $sequence, $elementId);
 	}
 
@@ -1826,7 +1831,7 @@ class PublicationsCuration extends JObject
 			return false;
 		}
 
-		$curation = new \Components\Publications\Tables\Curation($this->_db);
+		$curation = new Tables\Curation($this->_db);
 
 		// Load curation record if exists
 		if ($curation->loadRecord($pub->id, $pub->version_id, $name, $sequence, $elementId))
@@ -1880,11 +1885,11 @@ class PublicationsCuration extends JObject
 		// Do we have items to package?
 		if (!$elements)
 		{
-			return '<p class="witherror">' . JText::_('COM_PUBLICATIONS_CURATION_PACKAGE_ERROR_NO_FILES') . '</p>';
+			return '<p class="witherror">' . Lang::txt('COM_PUBLICATIONS_CURATION_PACKAGE_ERROR_NO_FILES') . '</p>';
 		}
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_db);
+		$attModel = new Attachments($this->_db);
 		$contents = '<ul class="filelist">';
 
 		$contents .= $attModel->showPackagedItems(
@@ -1931,7 +1936,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get publication path
-		$pubBase = \Components\Publications\Helpers\Html::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
+		$pubBase = Helpers\Html::buildPubPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
 
 		// Empty draft?
 		if (!file_exists($pubBase))
@@ -1941,13 +1946,13 @@ class PublicationsCuration extends JObject
 
 		// Set archival properties
 		$bundleDir  = $this->_pub->title;
-		$tarname 	= JText::_('Publication') . '_' . $this->_pub->id . '.zip';
+		$tarname 	= Lang::txt('Publication') . '_' . $this->_pub->id . '.zip';
 		$tarpath 	= $pubBase . DS . $tarname;
 		$licFile 	= $pubBase . DS . 'LICENSE.txt';
 		$readmeFile = $pubBase . DS . 'README.txt';
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_db);
+		$attModel = new Attachments($this->_db);
 
 		// Start README
 		$readme  = $this->_pub->title . "\n ";
@@ -1978,7 +1983,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Add license information
-		$objL = new \Components\Publications\Tables\License( $this->_db );
+		$objL = new Tables\License( $this->_db );
 		if ($objL->loadLicense($this->_pub->license_type) && $objL->id)
 		{
 			$readme .= "\n " . "\n ";
@@ -2037,7 +2042,7 @@ class PublicationsCuration extends JObject
 				$readme .= "\n ";
 				$readme .= "\n ";
 				$readme .= '--------------------------------------------' . "\n ";
-				$readme .= 'Archival package produced ' . JFactory::getDate()->toSql();
+				$readme .= 'Archival package produced ' . \JFactory::getDate()->toSql();
 
 				$handle  = fopen($readmeFile, 'w');
 				fwrite($handle, $readme);
@@ -2076,7 +2081,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_db);
+		$attModel = new Attachments($this->_db);
 		$fileAttach = $attModel->loadAttach('file');
 
 		// Get supporting docs element manifest
@@ -2096,7 +2101,7 @@ class PublicationsCuration extends JObject
 				if ($elAttach->element_id == 0)
 				{
 					// Save elementid
-					$row = new \Components\Publications\Tables\Attachment( $this->_db );
+					$row = new Tables\Attachment( $this->_db );
 					if ($row->load($elAttach->id))
 					{
 						$markId = $elAttach->role != 1 && $sElement ? $sElement->id : $elementId;
@@ -2118,7 +2123,7 @@ class PublicationsCuration extends JObject
 		$element = $elements ? $elements[0] : NULL;
 
 		// Retrieve screenshots
-		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->_db );
+		$pScreenshot = new Tables\Screenshot( $this->_db );
 		$shots = $pScreenshot->getScreenshots( $pub->version_id );
 
 		// Transfer gallery files to the right location
@@ -2133,7 +2138,7 @@ class PublicationsCuration extends JObject
 			);
 
 			// Get gallery path
-			$galleryPath 	= \Components\Publications\Helpers\Html::buildPubPath(
+			$galleryPath 	= Helpers\Html::buildPubPath(
 				$pub->id,
 				$pub->version_id,
 				'',
@@ -2145,18 +2150,18 @@ class PublicationsCuration extends JObject
 			{
 				foreach ($shots as $shot)
 				{
-					$objPA = new \Components\Publications\Tables\Attachment( $this->_db );
+					$objPA = new Tables\Attachment( $this->_db );
 					if (is_file($galleryPath . DS . $shot->srcfile)
 					&& !$objPA->loadElementAttachment($pub->version_id, array( 'path' => $shot->filename),
 						$element->id, 'file', $element->manifest->params->role))
 					{
-						$objPA = new \Components\Publications\Tables\Attachment( $this->_db );
+						$objPA = new Tables\Attachment( $this->_db );
 						$objPA->publication_id 			= $pub->id;
 						$objPA->publication_version_id 	= $pub->version_id;
 						$objPA->path 					= $shot->filename;
 						$objPA->type 					= 'file';
 						$objPA->created_by 				= $uid;
-						$objPA->created 				= JFactory::getDate()->toSql();
+						$objPA->created 				= \JFactory::getDate()->toSql();
 						$objPA->role 					= $element->manifest->params->role;
 						$objPA->element_id 				= $element->id;
 						$objPA->ordering 				= $shot->ordering;
@@ -2188,7 +2193,7 @@ class PublicationsCuration extends JObject
 		}
 
 		// Check if published version has curation manifest saved
-		$row = new \Components\Publications\Tables\Version( $this->_db );
+		$row = new Tables\Version( $this->_db );
 		if ($pub->state == 1 && !$pub->curation)
 		{
 			if ($row->load($pub->version_id))

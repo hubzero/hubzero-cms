@@ -28,23 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
 include_once(dirname(__FILE__) . DS . 'editor.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'handler.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'handlerassoc.php');
 
 /**
  * Publications handlers class
  *
  */
-class PublicationsModelHandlers extends JObject
+class Handlers extends Object
 {
 	/**
 	 * JDatabase
@@ -132,7 +133,7 @@ class PublicationsModelHandlers extends JObject
 
 			// Header
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 				'name'   => 'handlers',
 				'layout' => '_header',
 			));
@@ -145,7 +146,7 @@ class PublicationsModelHandlers extends JObject
 				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
 					$hview = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 						'name'   => 'handlers',
 						'layout' => '_choice',
 					));
@@ -206,7 +207,7 @@ class PublicationsModelHandlers extends JObject
 		}
 
 		// Start editor
-		$editor = new PublicationsModelEditor($handler, $configs);
+		$editor = new \Components\Publications\Models\Editor($handler, $configs);
 
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
@@ -382,7 +383,7 @@ class PublicationsModelHandlers extends JObject
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 			'name'   => 'handlers',
 			'layout' => '_selected',
 		));
@@ -426,7 +427,7 @@ class PublicationsModelHandlers extends JObject
 			return	$this->_types[$signature];
 		}
 
-		$elementClass = 'PublicationsModelHandler' . ucfirst($name);
+		$elementClass = '\Components\Publications\Models\Handlers\\' . ucfirst($name);
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_path))
@@ -438,10 +439,10 @@ class PublicationsModelHandlers extends JObject
 				$dirs = array();
 			}
 
-			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
+			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $name).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file))
+			if ($elementFile = \JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

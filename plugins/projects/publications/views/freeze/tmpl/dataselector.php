@@ -70,10 +70,10 @@ $bundleName		= $bundleName ? $bundleName : 'bundle';
 $bundleName	   .= '.zip';
 
 // Get attachment model
-$modelAttach = new PublicationsModelAttachments($this->database);
+$modelAttach = new \Components\Publications\Models\Attachments($this->database);
 
 // Get handler model
-$modelHandler = new PublicationsModelHandlers($this->database);
+$modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
 // Is there handler choice?
 $handlers 	  = $this->manifest->params->typeParams->handlers;

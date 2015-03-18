@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
+
+use Exception;
 
 /**
  * Abstract Format for resources elements
  */
-abstract class PublicationsElementsFormat
+abstract class Format
 {
 	/**
 	 * Returns a reference to a Format object, only creating it
@@ -54,7 +55,7 @@ abstract class PublicationsElementsFormat
 		if (!isset($instances[$type]))
 		{
 			// Only load the file the class does not exist.
-			$class = 'PublicationsElementsFormat' . $type;
+			$class = __NAMESPACE__ . '\\Format\\' . $type;
 			if (!class_exists($class))
 			{
 				$path = dirname(__FILE__) . '/format/' . $type . '.php';
@@ -64,7 +65,7 @@ abstract class PublicationsElementsFormat
 				}
 				else
 				{
-					throw new JException(JText::_('Format not found.'), 500, E_ERROR);
+					throw new Exception(Lang::txt('Format not found.'), 500, E_ERROR);
 				}
 			}
 

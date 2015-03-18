@@ -31,7 +31,7 @@ if (!$this->ajax)
 }
 
 // Get attachment type model
-$attModel = new PublicationsModelAttachments($this->database);
+$attModel = new \Components\Publications\Models\Attachments($this->database);
 
 $route = $this->project->provisioned == 1
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id

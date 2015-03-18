@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models\Type;
+
+use Hubzero\Base\Object;
 
 /**
  * FILES master type helper class
  */
-class typeFiles extends JObject
+class Files extends Object
 {
 	/**
 	 * JDatabase
@@ -240,7 +241,7 @@ class typeFiles extends JObject
 				$mt = new \Hubzero\Content\Mimetypes();
 				$mimetypes = array();
 
-				foreach($selections['files'] as $file)
+				foreach ($selections['files'] as $file)
 				{
 					$mtype = $mt->getMimeType(urldecode($file));
 					$parts = explode('/', $mtype);
@@ -403,7 +404,7 @@ class typeFiles extends JObject
 			$fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 			// Git helper
-			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+			include_once(PATH_CORE . DS . 'components' . DS .'com_projects'
 				. DS . 'helpers' . DS . 'githelper.php' );
 			$git = new \Components\Projects\Helpers\Git($fpath);
 
@@ -424,7 +425,7 @@ class typeFiles extends JObject
 					// Update only if no hash recorded (or update requested)
 					$objPA->vcs_hash 				= $objPA->vcs_hash && $update_hash == 0 ? $objPA->vcs_hash : $vcs_hash;
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= JFactory::getDate()->toSql();
+					$objPA->modified 				= \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -435,7 +436,7 @@ class typeFiles extends JObject
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->vcs_hash 				= $vcs_hash;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
+					$objPA->created 				= \JFactory::getDate()->toSql();
 				}
 
 				$objPA->ordering 					= $added + 1;
@@ -471,12 +472,8 @@ class typeFiles extends JObject
 	protected function _publishAttachment ($pid, $vid, $fpath, $hash, $secret)
 	{
 		// Load component configs
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
-		$config = JComponentHelper::getParams( 'com_projects' );
-
-		// Remove files that got unselected from a finalized draft
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$config = \JComponentHelper::getParams( 'com_projects' );
 
 		// Build publication path
 		$base_path 	= $pubconfig->get('webpath');
@@ -486,9 +483,9 @@ class typeFiles extends JObject
 		// Create new version path
 		if (!is_dir( $newpath ))
 		{
-			if (!JFolder::create( $newpath ))
+			if (!\JFolder::create( $newpath ))
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return '<p class="error">' . $this->getError() . '</p>';
 			}
 		}
@@ -496,7 +493,7 @@ class typeFiles extends JObject
 		// If parent dir does not exist, we must create it
 		if (!file_exists(dirname($newpath. DS . $fpath)))
 		{
-			JFolder::create(dirname($newpath. DS . $fpath));
+			\JFolder::create(dirname($newpath. DS . $fpath));
 		}
 
 		// Copy file if there (will be at latest revision)
@@ -504,7 +501,7 @@ class typeFiles extends JObject
 		{
 			if (!is_file($newpath. DS . $fpath))
 			{
-				JFile::copy($devpath . DS . $fpath, $newpath . DS . $fpath);
+				\JFile::copy($devpath . DS . $fpath, $newpath . DS . $fpath);
 			}
 		}
 
@@ -523,13 +520,9 @@ class typeFiles extends JObject
 	 */
 	protected function _unpublishAttachment($pid, $vid, $fpath, $secret)
 	{
-		// Remove files that got unselected from a finalized draft
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Load component configs
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
-		$config = JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$config = \JComponentHelper::getParams( 'com_projects' );
 
 		// Build publication path
 		$base_path  = $pubconfig->get('webpath');
@@ -540,7 +533,7 @@ class typeFiles extends JObject
 			$file =  $newpath. DS .$fpath;
 			if (is_file($file))
 			{
-				JFile::delete($file);
+				\JFile::delete($file);
 			}
 		}
 
@@ -577,23 +570,23 @@ class typeFiles extends JObject
 		if ($this->_project && $this->_project->provisioned != 1)
 		{
 			// Load component configs
-			$config = JComponentHelper::getParams( 'com_projects' );
+			$config = \JComponentHelper::getParams( 'com_projects' );
 		}
 
 		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
-		if($canedit && $pid) {
+		if ($canedit && $pid) {
 		$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
-		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
+		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
 		}
 		$html .= '<span class="c-iteminfo">';
 		if ($att->id)
 		{
-			$html .= $att->title ? '"' . $att->title . '"' : JText::_('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
+			$html .= $att->title ? '"' . $att->title . '"' : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 			$html .= $revision ? ' &middot; ' . $revision : '';
 		}
 		else
 		{
-			$html .= JText::_('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
+			$html .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 		}
 		$html .= '</span>';
 		return $html;
@@ -613,12 +606,9 @@ class typeFiles extends JObject
 
 		$published = 0;
 
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
 		// Load component configs
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
-		$config = JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$config = \JComponentHelper::getParams( 'com_projects' );
 
 		// Build publication paths
 		$base_path 	= $pubconfig->get('webpath');
@@ -628,9 +618,9 @@ class typeFiles extends JObject
 		// Create new version path
 		if (!is_dir( $newpath ))
 		{
-			if (!JFolder::create( $newpath ))
+			if (!\JFolder::create( $newpath ))
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return '<p class="error">' . $this->getError() . '</p>';
 			}
 		}
@@ -645,13 +635,13 @@ class typeFiles extends JObject
 			// If parent dir does not exist, we must create it
 			if (!file_exists(dirname($newpath. DS .$att->path)))
 			{
-				JFolder::create(dirname($newpath. DS .$att->path));
+				\JFolder::create(dirname($newpath. DS .$att->path));
 			}
 
 			// Copy file if there (will be at latest revision)
 			if (is_file($devpath. DS .$att->path))
 			{
-				JFile::copy($devpath. DS .$att->path, $newpath. DS .$att->path);
+				\JFile::copy($devpath. DS .$att->path, $newpath. DS .$att->path);
 			}
 
 			// Copy succeeded?
@@ -660,7 +650,7 @@ class typeFiles extends JObject
 				$objAtt = new \Components\Publications\Tables\Attachment( $this->_database );
 				$objAtt->load($att->id);
 				$objAtt->modified_by  = $uid;
-				$objAtt->modified 	  = JFactory::getDate()->toSql();
+				$objAtt->modified 	  = \JFactory::getDate()->toSql();
 				$objAtt->content_hash = hash_file('sha256', $newpath. DS .$att->path);
 
 				// Create hash file

@@ -111,7 +111,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				$val = $value;
 				if ($editor)
 				{
-					$model = new PublicationsModelPublication($this->pub);
+					$model = new \Components\Publications\Models\Publication($this->pub);
 					$val = $model->parse($aliasmap, $this->manifest->params->field, 'parsed');
 				}
 				?>

@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 /**
  * License block
  */
-class PublicationsBlockLicense extends PublicationsModelBlock
+class License extends Base
 {
 	/**
 	* Block name
@@ -123,7 +125,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'selector.css');
 
 		// Output HTML
@@ -185,7 +187,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 
 		if (!$row->load($pub->version_id))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 			return false;
 		}
 
@@ -196,27 +198,27 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
 		// Incoming - license screen agreements
-		$license = JRequest::getInt( 'license', 0, 'post' );
-		$text 	 = \Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'license_text', '', 'post'));
-		$agree 	 = JRequest::getInt( 'agree', 0, 'post');
-		$custom  = JRequest::getVar( 'substitute', array(), 'request', 'array' );
+		$license = \JRequest::getInt( 'license', 0, 'post' );
+		$text 	 = \Hubzero\Utility\Sanitize::clean(\JRequest::getVar( 'license_text', '', 'post'));
+		$agree 	 = \JRequest::getInt( 'agree', 0, 'post');
+		$custom  = \JRequest::getVar( 'substitute', array(), 'request', 'array' );
 
 		if ($license)
 		{
 			if (!$objL->load($license))
 			{
-				$this->setError( JText::_('There was a problem saving license selection') );
+				$this->setError( Lang::txt('There was a problem saving license selection') );
 				return false;
 			}
 
 			if ($objL->agreement == 1 && !$agree)
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 				return false;
 			}
 			elseif ($objL->customizable == 1 && !$text)
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
 				return false;
 			}
 
@@ -237,7 +239,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 					{
 						if (!isset($custom[$sub]) || !$custom[$sub])
 						{
-							$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM') );
+							$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM') );
 							return false;
 						}
 						else
@@ -269,7 +271,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		}
 
 		// Incoming - selector screen
-		$selections = JRequest::getVar( 'selecteditems', '');
+		$selections = \JRequest::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
 
 		$i = 0;
@@ -302,12 +304,12 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 
 		if ($i)
 		{
-			$this->set('_message', JText::_('License selection saved') );
+			$this->set('_message', Lang::txt('License selection saved') );
 			return true;
 		}
 		else
 		{
-			$this->setError( JText::_('There was a problem saving license selection') );
+			$this->setError( Lang::txt('There was a problem saving license selection') );
 			return false;
 		}
 	}
@@ -320,10 +322,10 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{
 		// Start status
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		// Get version params
-		$pubParams = new JParameter( $pub->params );
+		$pubParams = new \JParameter( $pub->params );
 
 		$status->status = 1;
 
@@ -337,14 +339,14 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			// Missing agreement?
 			if ($objL->agreement == 1 && !$agreement)
 			{
-				$status->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
+				$status->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 				$status->status = 0;
 			}
 
 			if ($objL->customizable == 1
 				&& $objL->text && !$pub->license_text)
 			{
-				$status->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
+				$status->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
 				$status->status = 0;
 			}
 
@@ -353,7 +355,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 				preg_replace('/\[([^]]+)\]/', ' ', $pub->license_text, -1, $bingo);
 				if ($bingo)
 				{
-					$status->setError( JText::_('Default values need to be substituted') );
+					$status->setError( Lang::txt('Default values need to be substituted') );
 					$status->status = 0;
 				}
 			}

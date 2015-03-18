@@ -275,7 +275,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// Get curation model for the type
 		if ($this->useBlocks)
 		{
-			$curationModel = new PublicationsCuration($mType->curation);
+			$curationModel = new \Components\Publications\Models\Curation($mType->curation);
 		}
 
 		// Get defaults from manifest
@@ -652,7 +652,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		if ($this->curationModel)
 		{
 			// Get attachment type model
-			$attModel = new PublicationsModelAttachments($this->database);
+			$attModel = new \Components\Publications\Models\Attachments($this->database);
 			$fileAttach = $attModel->loadAttach('file');
 
 			// Get element manifest
@@ -699,7 +699,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				// Get types helper
 				if (!isset($this->_pubTypeHelper))
 				{
-					$this->_pubTypeHelper = new PublicationTypesHelper(
+					$this->_pubTypeHelper = new \Components\Publications\Models\Types(
 						$this->database,
 						$this->project
 					);

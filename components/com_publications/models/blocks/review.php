@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 /**
  * Review block
  */
-class PublicationsBlockReview extends PublicationsModelBlock
+class Review extends Base
 {
 	/**
 	* Element name
@@ -127,7 +129,7 @@ class PublicationsBlockReview extends PublicationsModelBlock
 			)
 		);
 
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 
 		$view->pub		= $pub;
@@ -165,7 +167,7 @@ class PublicationsBlockReview extends PublicationsModelBlock
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{
 		// Start status
-		$status 	 	= new PublicationsModelStatus();
+		$status 	 	= new \Components\Publications\Models\Status();
 		$status->status = 1;
 		return $status;
 	}

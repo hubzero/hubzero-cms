@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
+use stdClass;
 
 /**
  * Publication element base class
  */
-class PublicationsElement extends JObject
+class Element extends Object
 {
 	/**
 	* Element name
@@ -112,14 +114,14 @@ class PublicationsElement extends JObject
 		$output = '<label id="'.$control_name.'-'.$name.'-lbl" for="'.$control_name.'-'.$name.'"';
 		if ($description) 
 		{
-			$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($description).'">';
+			$output .= ' class="hasTip" title="' . Lang::txt($label).'::' . Lang::txt($description).'">';
 		} 
 		else 
 		{
 			$output .= '>';
 		}
-		$output .= JText::_($label);
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+		$output .= Lang::txt($label);
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED').'</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -150,7 +152,7 @@ class PublicationsElement extends JObject
 	 */
 	public function fetchOptions($name, $value, &$element, $control_name) 
 	{
-		return JText::_('(none)');
+		return Lang::txt('(none)');
 	}
 	
 	/**

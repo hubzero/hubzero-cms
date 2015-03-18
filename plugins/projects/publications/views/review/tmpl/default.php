@@ -245,7 +245,7 @@ else if ($this->authorized == 3)
 			\Components\Publications\Helpers\Html::drawStatusBar($this, NULL, false, 1);
 		}
 
-		$model = new PublicationsModelPublication($this->pub);
+		$model = new \Components\Publications\Models\Publication($this->pub);
 		$description = '';
 		if ($this->pub->description)
 		{

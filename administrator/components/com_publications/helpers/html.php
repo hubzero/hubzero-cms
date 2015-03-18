@@ -460,7 +460,7 @@ class PublicationsAdminHtml
 			$gallery  = $pub->_curationModel->getElements(3);
 
 			// Get attachment type model
-			$attModel = new PublicationsModelAttachments($database);
+			$attModel = new \Components\Publications\Models\Attachments($database);
 
 			// Draw list of primary elements
 			$html .= '<h5>' . JText::_('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';

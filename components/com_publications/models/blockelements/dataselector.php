@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\BlockElement;
+
+use Components\Publications\Models\BlockElement as Base;
 
 /**
  * Renders URL selector element
  */
-class PublicationsModelBlockElementDataselector extends PublicationsModelBlockElement
+class Dataselector extends Base
 {
 	/**
 	* Element name
@@ -68,12 +69,12 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$total 			= $master->props['total'];
 
 		// Incoming
-		$activeElement  = JRequest::getInt( 'el', $showElement );
+		$activeElement  = \JRequest::getInt( 'el', $showElement );
 
 		// Git helper
 		if (!$this->_git)
 		{
-			include_once( JPATH_ROOT . DS . 'components' . DS
+			include_once( PATH_CORE . DS . 'components' . DS
 				. 'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
 			$this->_git = new \Components\Projects\Helpers\Git($this->path);
 		}
@@ -121,7 +122,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		);
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))
@@ -163,7 +164,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$master = NULL, $order = 0)
 	{
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		// Make sure we have attachments
 		if (!isset($pub->_attachments))

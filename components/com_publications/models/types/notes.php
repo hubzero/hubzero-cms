@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models\Type;
+
+use Hubzero\Base\Object;
 
 /**
  * NOTES master type helper class
  */
-class typeNotes extends JObject
+class Notes extends Object
 {
 	/**
 	 * JDatabase
@@ -126,7 +127,7 @@ class typeNotes extends JObject
 		$this->_data 	 = $data;
 
 		// Include note model
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 	}
 
@@ -224,7 +225,7 @@ class typeNotes extends JObject
 		// Incoming data
 		$item = $this->__get('item');
 
-		$config = JComponentHelper::getParams( 'com_projects' );
+		$config = \JComponentHelper::getParams( 'com_projects' );
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
@@ -300,7 +301,7 @@ class typeNotes extends JObject
 		$item   	= $this->__get('item');
 
 		// Load component configs
-		$config = JComponentHelper::getParams( 'com_projects' );
+		$config = \JComponentHelper::getParams( 'com_projects' );
 
 		$pageid 		= $att->id ? $att->object_id : $item;
 		$masterscope 	= 'projects' . DS . $this->_project->alias . DS . 'notes';
@@ -349,8 +350,8 @@ class typeNotes extends JObject
 		if (isset($selections['notes']) && count($selections['notes']) > 0)
 		{
 			// Load component configs
-			$pubconfig = JComponentHelper::getParams( 'com_publications' );
-			$config = JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+			$config = \JComponentHelper::getParams( 'com_projects' );
 
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;
@@ -375,7 +376,7 @@ class typeNotes extends JObject
 				if ($objPA->loadAttachment($vid, $pageId, 'note'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= JFactory::getDate()->toSql();
+					$objPA->modified 				= \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -385,7 +386,7 @@ class typeNotes extends JObject
 					$objPA->path 					= '';
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
+					$objPA->created 				= \JFactory::getDate()->toSql();
 				}
 
 				// Save object information

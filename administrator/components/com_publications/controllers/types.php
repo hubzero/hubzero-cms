@@ -148,12 +148,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$this->view->curation = new PublicationsCuration(
+		$this->view->curation = new \Components\Publications\Models\Curation(
 			$this->view->row->curation
 		);
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 		// Get available blocks
 		$this->view->blocks = $blocksModel->getBlocks('*',
@@ -209,7 +209,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$curation = new PublicationsCuration(
+		$curation = new \Components\Publications\Models\Curation(
 			$row->curation
 		);
 
@@ -222,7 +222,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if ($newblock)
 		{
 			// Get blocks model
-			$blocksModel = new PublicationsModelBlocks($this->database);
+			$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 			// Get max used block and element IDs
 			$maxBlockId   = 0;
@@ -313,7 +313,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$this->view->curation = new PublicationsCuration(
+		$this->view->curation = new \Components\Publications\Models\Curation(
 			$this->view->row->curation
 		);
 
@@ -421,7 +421,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$this->view->curation = new PublicationsCuration(
+		$this->view->curation = new \Components\Publications\Models\Curation(
 			$this->view->row->curation
 		);
 
@@ -470,14 +470,14 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$curation = new PublicationsCuration(
+		$curation = new \Components\Publications\Models\Curation(
 			$row->curation
 		);
 
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			. '&task=edit&id[]=' . $id;
 
-		$objC = new PublicationsCuration($row->curation);
+		$objC = new \Components\Publications\Models\Curation($row->curation);
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
@@ -566,12 +566,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$this->view->curation = new PublicationsCuration(
+		$this->view->curation = new \Components\Publications\Models\Curation(
 			$this->view->row->curation
 		);
 
 		// Get blocks model
-		$blocksModel = new PublicationsModelBlocks($this->database);
+		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 		// Get available blocks
 		$this->view->blocks = $blocksModel->getBlocks('*',
@@ -628,7 +628,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Load curation
-		$curation = new PublicationsCuration(
+		$curation = new \Components\Publications\Models\Curation(
 			$row->curation
 		);
 
@@ -696,12 +696,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			// Get curation
 			if ($useBlocks)
 			{
-				$this->view->curation = new PublicationsCuration(
+				$this->view->curation = new \Components\Publications\Models\Curation(
 					$this->view->row->curation
 				);
 
 				// Get blocks model
-				$blocksModel = new PublicationsModelBlocks($this->database);
+				$blocksModel = new \Components\Publications\Models\Blocks($this->database);
 
 				// Get available blocks
 				$this->view->blocks = $blocksModel->getBlocks('*',
@@ -795,7 +795,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 				$row->curatorGroup = 0;
 			}
 
-			$objC = new PublicationsCuration($row->curation);
+			$objC = new \Components\Publications\Models\Curation($row->curation);
 			$manifest = $objC->_manifest;
 
 			// Get curation configs

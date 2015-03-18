@@ -22,16 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Attachment;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'html.php');
+use Components\Publications\Models\Attachment as Base;
+use stdClass;
 
 /**
  * Handles a link attachment
  */
-class PublicationsModelAttachmentLink extends PublicationsModelAttachment
+class Link extends Base
 {
 	/**
 	* Attachment type name
@@ -60,7 +59,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// replace current attachments?
-		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');
+		$configs->replace  	= \JRequest::getInt( 'replace_current', 0, 'post');
 
 		// Verify file type against allowed before attaching?
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
@@ -89,7 +88,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		$html = '';
 
-		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url =  Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
 		$url = preg_replace('/\/administrator/', '', $url);
 
@@ -101,7 +100,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
-				$pop		= JText::_('View link') . ' ' . $title;
+				$pop		= Lang::txt('View link') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -139,20 +138,20 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		if ($pub->state == 0)
 		{
-			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
@@ -162,7 +161,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		// Which role?
 		$role = $element->params->role;
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url = Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number )
 				. '?el=' . $elementId;
 
@@ -176,10 +175,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			}
 
 			// One launcher for all files
-			$label = JText::_('View publication');
+			$label = Lang::txt('View publication');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
-			$title = $configs->title ? $configs->title : JText::_('View publication');
+			$title = $configs->title ? $configs->title : Lang::txt('View publication');
 			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
@@ -202,7 +201,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// Loop through attachments
 		foreach ($attachments as $att)
@@ -251,7 +250,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		if (!$path)
 		{
-			$this->setError( JText::_('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -270,9 +269,9 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	 */
 	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
 	{
-		$toAttach   = $toAttach ? $toAttach : JRequest::getVar( 'url', '', 'post', 'array');
-		$titles 	= JRequest::getVar( 'title', '', 'post', 'array');
-		$desc 		= JRequest::getVar( 'desc', '', 'post', 'array');
+		$toAttach   = $toAttach ? $toAttach : \JRequest::getVar( 'url', '', 'post', 'array');
+		$titles 	= \JRequest::getVar( 'title', '', 'post', 'array');
+		$desc 		= \JRequest::getVar( 'desc', '', 'post', 'array');
 
 		// Incoming selections
 		if (empty($toAttach))
@@ -303,7 +302,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
 
 		// Get actor
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 		if (!$uid)
 		{
@@ -341,7 +340,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 					$row = new \Components\Publications\Tables\Version( $this->_parent->_db );
 					if (!$row->load($pub->version_id))
 					{
-						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
+						$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 						return false;
 					}
 
@@ -359,7 +358,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		// Success
 		if ($i > 0 && $i == $a)
 		{
-			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
+			$message = $this->get('_message') ? $this->get('_message') : Lang::txt('Selection successfully saved');
 			$this->set('_message', $message);
 		}
 
@@ -389,7 +388,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$elementId, $this->_name, $element->role))
 		{
 			// Link already attached
-			$this->setError(JText::_('The link is already attached'));
+			$this->setError(Lang::txt('The link is already attached'));
 			return true;
 		}
 		else
@@ -399,7 +398,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$objPA->path 					= $path;
 			$objPA->type 					= $this->_name;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= JFactory::getDate()->toSql();
+			$objPA->created 				= \JFactory::getDate()->toSql();
 			$objPA->role 					= $element->role;
 			$objPA->title 					= $title;
 
@@ -412,7 +411,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		if (!$objPA->store())
 		{
-			$this->setError(JText::_('There was a problem attaching the link'));
+			$this->setError(Lang::txt('There was a problem attaching the link'));
 			return false;
 		}
 
@@ -426,7 +425,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -442,7 +441,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		if (!$this->getError())
 		{
 			$row->delete();
-			$this->set('_message', JText::_('Item removed'));
+			$this->set('_message', Lang::txt('Item removed'));
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
@@ -461,10 +460,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= JRequest::getVar( 'title', '' );
-		$thumb 	= JRequest::getInt( 'makedefault', 0 );
+		$title 	= \JRequest::getVar( 'title', '' );
+		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -479,15 +478,15 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= JFactory::getDate()->toSql();
+		$row->modified 		= \JFactory::getDate()->toSql();
 
 		// Update record
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error updating item record'));
+			$this->setError(Lang::txt('Error updating item record'));
 		}
 
-		$this->set('_message', JText::_('Update successful'));
+		$this->set('_message', Lang::txt('Update successful'));
 
 		return true;
 	}
@@ -499,7 +498,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	 */
 	public function getStatus( $element, $attachments )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
 		$max 		= $element->max;
@@ -521,7 +520,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			if ($counter)
 			{
-				$status->setError( JText::_('Need at least ' . $min . ' attachment') );
+				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
 			}
 			else
 			{
@@ -532,14 +531,14 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( JText::_('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
 		}
 		// Check allowed formats
 		elseif (!self::checkAllowed($attachments, $allowed))
 		{
 			if ($counter && !empty($accept))
 			{
-				$error = JText::_('Error: unacceptable URL. URL should start with: ');
+				$error = Lang::txt('Error: unacceptable URL. URL should start with: ');
 				foreach ($params->allowed_ext as $ext)
 				{
 					$error .= ' ' . $ext .',';

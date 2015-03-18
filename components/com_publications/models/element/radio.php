@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
 
 /**
  * Renders a radio element
  */
-class PublicationsElementRadio extends PublicationsElement
+class Radio extends Base
 {
 	/**
 	* Element name
@@ -72,14 +73,14 @@ class PublicationsElementRadio extends PublicationsElement
 		$output = '<legend id="'.$control_name.$name.'-lgd"';
 		if (isset($element->description) && $element->description) 
 		{
-			$output .= ' class="hasTip" title="'.JText::_($label).'::'.JText::_($element->description).'">';
+			$output .= ' class="hasTip" title="'.Lang::txt($label).'::'.Lang::txt($element->description).'">';
 		} 
 		else 
 		{
 			$output .= '>';
 		}
-		$output .= JText::_($label);
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.JText::_('Required').'</span>' : '';
+		$output .= Lang::txt($label);
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">'.Lang::txt('JOPTION_REQUIRED').'</span>' : '';
 		$output .= '</legend>';
 
 		$html[] = $output;
@@ -107,7 +108,7 @@ class PublicationsElementRadio extends PublicationsElement
 
 				$html[] = '<label for="'. $control_name . '-' . $name . $option->value . '">';
 				$html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="'. $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
-				$html[] = JText::_($option->label) . '</label>';
+				$html[] = Lang::txt($option->label) . '</label>';
 
 				$k++;
 			}
@@ -135,7 +136,7 @@ class PublicationsElementRadio extends PublicationsElement
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tfoot>';
 		$html[] = '<tr>';
-		$html[] = '<td colspan="4" class="option-button"><button rel="'.$name.'" class="add-custom-option"><span>' . JText::_('+ Add new option') . '</span></button></td>';
+		$html[] = '<td colspan="4" class="option-button"><button rel="'.$name.'" class="add-custom-option"><span>' . Lang::txt('COM_PUBLICATIONS_NEW_OPTION') . '</span></button></td>';
 		$html[] = '</tr>';
 		$html[] = '</tfoot>';
 		$html[] = '<tbody>';
@@ -144,7 +145,7 @@ class PublicationsElementRadio extends PublicationsElement
 			foreach ($element->options as $option)
 			{
 				$html[] = '<tr>';
-				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Option') . '</label></td>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('Option') . '</label></td>';
 				$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
 				$html[] = '</tr>';
 

@@ -725,7 +725,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
 
 		// Get curation model
-		$view->publication->_curationModel = new PublicationsCuration($view->publication->_type->curation);
+		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
@@ -1183,7 +1183,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
-		$data   = new PublicationsMetadata();
+		$data   = new \Components\Publications\Models\Metadata();
 
 		if ($citation == true)
 		{

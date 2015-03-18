@@ -22,18 +22,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
 
-include_once(dirname(__FILE__) . DS . 'format.php');
-include_once(dirname(__FILE__) . DS . 'element.php');
+use stdClass;
+
+include_once(__DIR__ . DS . 'format.php');
+include_once(__DIR__ . DS . 'element.php');
 
 /**
  * Publications elements class
  * Used for rendering custom resources fields
  *
  */
-class PublicationsElements
+class Elements
 {
 	/**
 	 * @var    string  The raw params string
@@ -70,7 +71,7 @@ class PublicationsElements
 	 */
 	public function __construct($data = null, $setup = null)
 	{
-		$this->_elementPath[] = dirname(__FILE__) . DS . 'element';
+		$this->_elementPath[] = __DIR__ . DS . 'element';
 
 		$this->_raw = $data;
 
@@ -228,7 +229,7 @@ class PublicationsElements
 
 		if (empty ($instances[$id]))
 		{
-			$instances[$id] = new PublicationsElements;
+			$instances[$id] = new self;
 		}
 
 		return $instances[$id];
@@ -271,8 +272,7 @@ class PublicationsElements
 	public function loadFile($file, $format = 'JSON', $options = array())
 	{
 		// Get the contents of the file
-		jimport('joomla.filesystem.file');
-		$data = JFile::read($file);
+		$data = \JFile::read($file);
 
 		return $this->loadString($data, $format, $options);
 	}
@@ -288,7 +288,7 @@ class PublicationsElements
 	public function loadString($data, $format = 'JSON', $options = array())
 	{
 		// Load a string into the given namespace [or default namespace if not given]
-		$handler = PublicationsElementsFormat::getInstance($format);
+		$handler = Format::getInstance($format);
 
 		$obj = $handler->stringToObject($data, $options);
 		$this->loadObject($obj);
@@ -340,7 +340,7 @@ class PublicationsElements
 			}
 			else
 			{
-				$handler = PublicationsElementsFormat::getInstance('JSON');
+				$handler = Format::getInstance('JSON');
 				if ($obj = $handler->stringToObject($setup, array()))
 				{
 					$this->_schema[$group] = $obj;
@@ -363,7 +363,7 @@ class PublicationsElements
 	 */
 	public function merge(&$source)
 	{
-		if ($source instanceof PublicationsElements)
+		if ($source instanceof Elements)
 		{
 			// Load the variables into the registry's default namespace.
 			foreach ($source->toArray() as $k => $v)
@@ -442,7 +442,7 @@ class PublicationsElements
 	public function toString($format = 'JSON', $options = array())
 	{
 		// Return a namespace in a given format
-		$handler = PublicationsElementsFormat::getInstance($format);
+		$handler = Format::getInstance($format);
 
 		return $handler->objectToString($this->data, $options);
 	}
@@ -545,7 +545,7 @@ class PublicationsElements
 		/*if ($description = $this->_schema[$group]->description)
 		{
 			// Add the params description to the display
-			$desc	= JText::_($description);
+			$desc	= Lang::txt($description);
 			$html[]	= '<p class="paramrow_desc">'.$desc.'</p>';
 		}*/
 
@@ -677,7 +677,7 @@ class PublicationsElements
 		{
 			$result = new stdClass;
 			$result->label = $node->label;
-			$result->element = JText::_('Element not defined for type').' = '.$type;
+			$result->element = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
 			$result->text = $result->label;
 			$result->name = $result->name;
@@ -712,7 +712,7 @@ class PublicationsElements
 		{
 			$result = new stdClass;
 			$result->label = $node->label;
-			$result->element = JText::_('Element not defined for type').' = '.$type;
+			$result->element = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
 			$result->text = $result->label;
 			$result->name = $result->name;
@@ -745,7 +745,7 @@ class PublicationsElements
 			return	$this->_elements[$signature];
 		}
 
-		$elementClass = 'PublicationsElement' . $type;
+		$elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 		if (!class_exists($elementClass))
 		{
 			if (isset($this->_elementPath))
@@ -757,10 +757,10 @@ class PublicationsElements
 				$dirs = array();
 			}
 
-			$file = JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
+			$file = \JFilterInput::getInstance()->clean(str_replace('_', DS, $type).'.php', 'path');
 
 			jimport('joomla.filesystem.path');
-			if ($elementFile = JPath::find($dirs, $file))
+			if ($elementFile = \JPath::find($dirs, $file))
 			{
 				include_once $elementFile;
 			}

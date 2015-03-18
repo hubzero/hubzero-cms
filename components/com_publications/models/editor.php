@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models;
+
+use Hubzero\Base\Object;
 
 /**
  * Model for a handler editor
  */
-class PublicationsModelEditor extends \Hubzero\Base\Object
+class Editor extends Object
 {
 	/**
 	 * Handler object
@@ -65,7 +66,7 @@ class PublicationsModelEditor extends \Hubzero\Base\Object
 	 */
 	public function __construct($handler, $configs)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->handler 	= $handler;
 		$this->configs 	= $configs;

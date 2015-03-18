@@ -22,16 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Attachment;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'html.php');
+use Components\Publications\Models\Attachment as Base;
+use stdClass;
 
 /**
- * Handles a Datastore Lite attachment
+ * Handles a tool attachment
  */
-class PublicationsModelAttachmentTool extends PublicationsModelAttachment
+class Tool extends Base
 {
 	/**
 	* Attachment type name
@@ -56,10 +55,10 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
-		$config 		= JComponentHelper::getParams( 'com_projects' );
+		$config 		= \JComponentHelper::getParams( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path
@@ -92,7 +91,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 
 		$html = '';
 
-		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url =  Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
 		$url = preg_replace('/\/administrator/', '', $url);
 
@@ -104,7 +103,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
-				$pop		= JText::_('Launch tool') . ' ' . $title;
+				$pop		= Lang::txt('Launch tool') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -140,30 +139,30 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		$disabled = 0;
 		$pop 	  = NULL;
 
-		$mconfig = JComponentHelper::getParams('com_tools');
+		$mconfig = \JComponentHelper::getParams('com_tools');
 
 		// Ensure we have a connection to the middleware
 		if (!$mconfig->get('mw_on'))
 		{
-			$pop 		= JText::_('COM_PUBLICATIONS_STATE_SESSION_INVOKE_DISABLED_POP');
+			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_SESSION_INVOKE_DISABLED_POP');
 			$disabled 	= 1;
 		}
 		elseif ($pub->state == 0)
 		{
-			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
@@ -173,7 +172,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Which role?
 		$role = $element->params->role;
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url = Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number )
 				. '?el=' . $elementId;
 
@@ -187,10 +186,10 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 			}
 
 			// One launcher for all items
-			$label = JText::_('COM_PUBLICATIONS_LAUNCH_TOOL');
+			$label = Lang::txt('COM_PUBLICATIONS_LAUNCH_TOOL');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
-			$title = $configs->title ? $configs->title : JText::_('COM_PUBLICATIONS_LAUNCH_TOOL');
+			$title = $configs->title ? $configs->title : Lang::txt('COM_PUBLICATIONS_LAUNCH_TOOL');
 			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
@@ -213,7 +212,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// Loop through attachments
 		foreach ($attachments as $att)
@@ -262,7 +261,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Attachment missing
 		if (!$record)
 		{
-			$this->setError( JText::_('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -270,7 +269,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 		//get tool params
-		$params = JComponentHelper::getParams('com_tools');
+		$params = \JComponentHelper::getParams('com_tools');
 		$launchOnIpad = $params->get('launch_ipad', 0);
 
 		// Generate the URL that launches a tool session
@@ -281,12 +280,12 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		}
 		else
 		{
-			$path = JRoute::_('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
+			$path = Route::url('index.php?option=com_tools&app=' . $record->object_name . '&task=invoke&version=' . $v);
 		}
 
 		if (!$path)
 		{
-			$this->setError( JText::_('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -308,7 +307,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = JRequest::getVar( 'selecteditems', '');
+			$selections = \JRequest::getVar( 'selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -330,15 +329,15 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Create new version path
 		if (!is_dir( $configs->dataPath ))
 		{
-			if (!JFolder::create( $configs->dataPath ))
+			if (!\JFolder::create( $configs->dataPath ))
 			{
-				$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
 			}
 		}
 
 		// Get actor
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 		if (!$uid)
 		{
@@ -369,7 +368,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Success
 		if ($i > 0 && $i == $a)
 		{
-			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
+			$message = $this->get('_message') ? $this->get('_message') : Lang::txt('Selection successfully saved');
 			$this->set('_message', $message);
 		}
 
@@ -408,10 +407,10 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= JRequest::getVar( 'title', '' );
-		$thumb 	= JRequest::getInt( 'makedefault', 0 );
+		$title 	= \JRequest::getVar( 'title', '' );
+		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -426,15 +425,15 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= JFactory::getDate()->toSql();
+		$row->modified 		= \JFactory::getDate()->toSql();
 
 		// Update record
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error updating item record'));
+			$this->setError(Lang::txt('Error updating item record'));
 		}
 
-		$this->set('_message', JText::_('Update successful'));
+		$this->set('_message', Lang::txt('Update successful'));
 
 		return true;
 	}
@@ -446,7 +445,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 	 */
 	public function getStatus( $element, $attachments )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
 		$max 		= $element->max;
@@ -467,7 +466,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		{
 			if ($counter)
 			{
-				$status->setError( JText::_('Need at least ' . $min . ' attachment') );
+				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
 			}
 			else
 			{
@@ -478,7 +477,7 @@ class PublicationsModelAttachmentTool extends PublicationsModelAttachment
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( JText::_('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
 		}
 
 		$status->status = $status->getError() ? 0 : 1;

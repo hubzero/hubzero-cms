@@ -22,20 +22,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
 
-include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+use Components\Publications\Models\Block as Base;
+use stdClass;
+
+include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
 	. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
+include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
 	. DS . 'helpers' . DS . 'format.php' );
 
 /**
  * Citations block
  */
-class PublicationsBlockCitations extends PublicationsModelBlock
+class Citations extends Base
 {
 	/**
 	* Block name
@@ -140,7 +142,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		);
 
 		// Get selector styles
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS
 			. 'css' . DS . 'selector.css');
@@ -148,7 +150,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 
 		if (!isset($pub->_citations))
 		{
-			$config = JComponentHelper::getParams( 'com_publications' );
+			$config = \JComponentHelper::getParams( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
@@ -191,13 +193,13 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 
 		if (!$objP->load($pub->id))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			return false;
 		}
 
 		if (!isset($pub->_citations))
 		{
-			$config = JComponentHelper::getParams( 'com_publications' );
+			$config = \JComponentHelper::getParams( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
@@ -206,7 +208,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		}
 
 		// Incoming
-		$url = JRequest::getVar('citation-doi', '');
+		$url = \JRequest::getVar('citation-doi', '');
 		if (!$url)
 		{
 			return true;
@@ -216,8 +218,8 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		$doi   	= count($parts) > 1 ? $parts[1] : $url;
 
 		// Get links plugin
-		JPluginHelper::importPlugin( 'projects', 'links' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'links' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Plugin params
 		$plugin_params = array(
@@ -235,7 +237,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		{
 			if ($output[0]['success'])
 			{
-				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_SAVED'));
+				$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_SAVED'));
 
 				// Reflect the update in curation record
 				$this->_parent->set('_update', 1);
@@ -248,7 +250,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		}
 		else
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
 			return false;
 		}
 
@@ -262,13 +264,13 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	 */
 	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cite = JRequest::getVar('cite', array(), 'post', 'none', 2);
+		$cite = \JRequest::getVar('cite', array(), 'post', 'none', 2);
 
 		$new  = $cite['id'] ? false : true;
 
 		if (!$cite['type'] || !$cite['title'])
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
 
@@ -279,14 +281,14 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			return false;
 		}
 
-		$citation->created 		= $new ? JFactory::getDate()->toSql() : $citation->created;
+		$citation->created 		= $new ? \JFactory::getDate()->toSql() : $citation->created;
 		$citation->uid			= $new ? $actor : $citation->uid;
 		$citation->published	= 1;
 
 		if (!$citation->store(true))
 		{
 			// This really shouldn't happen.
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
 			return false;
 		}
 
@@ -307,7 +309,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			}
 		}
 
-		$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
+		$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE') );
 		return true;
 	}
 
@@ -329,11 +331,11 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cid = $cid ? $cid : JRequest::getInt( 'cid', 0 );
+		$cid = $cid ? $cid : \JRequest::getInt( 'cid', 0 );
 
 		// Get links plugin
-		JPluginHelper::importPlugin( 'projects', 'links' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'links' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Plugin params
 		$plugin_params = array(
@@ -349,7 +351,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		{
 			if ($output[0]['success'])
 			{
-				$this->set('_message', JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_DELETED'));
+				$this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_DELETED'));
 
 				// Reflect the update in curation record
 				$this->_parent->set('_update', 1);
@@ -362,7 +364,7 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		}
 		else
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_ERROR_SAVING'));
 			return false;
 		}
 
@@ -377,11 +379,11 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 	 */
 	public function getStatus( $pub = NULL, $manifest = NULL, $elementId = NULL )
 	{
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		if (!isset($pub->_citations))
 		{
-			$config = JComponentHelper::getParams( 'com_publications' );
+			$config = \JComponentHelper::getParams( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication

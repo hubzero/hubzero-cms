@@ -64,7 +64,7 @@ if ($useBlocks)
 
 include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
-$metaElements 	= new PublicationsElements($data, $customFields);
+$metaElements 	= new \Components\Publications\Models\Elements($data, $customFields);
 $schema 	= $metaElements->getSchema();
 
 ?>
@@ -76,7 +76,7 @@ $schema 	= $metaElements->getSchema();
 		if ($useBlocks && $this->publication->params->get('curated') != 2)
 		{
 			// Get handler model
-			$modelHandler = new PublicationsModelHandlers($this->database);
+			$modelHandler = new \Components\Publications\Models\Handlers($this->database);
 
 			// Load image handler
 			if ($handler = $modelHandler->ini('imageviewer'))
@@ -131,7 +131,7 @@ $schema 	= $metaElements->getSchema();
 			$elements = array_merge($prime, $second);
 
 			// Get attachment type model
-			$attModel = new PublicationsModelAttachments($this->database);
+			$attModel = new \Components\Publications\Models\Attachments($this->database);
 
 			if ($elements)
 			{

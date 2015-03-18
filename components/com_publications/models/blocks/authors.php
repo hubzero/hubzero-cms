@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 /**
  * Authors block
  */
-class PublicationsBlockAuthors extends PublicationsModelBlock
+class Authors extends Base
 {
 	/**
 	* Block name
@@ -132,7 +134,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			return false;
 		}
 
-		$selections = JRequest::getVar( 'selecteditems', '');
+		$selections = \JRequest::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
 		$added = 0;
 
@@ -155,7 +157,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				if ($pAuthor->status == 2 || $pAuthor->status == 0)
 				{
 					$pAuthor->status 		= 1;
-					$pAuthor->modified 		= JFactory::getDate()->toSql();
+					$pAuthor->modified 		= \JFactory::getDate()->toSql();
 					$pAuthor->modified_by 	= $actor;
 
 					if ($pAuthor->updateAssociationByOwner())
@@ -179,7 +181,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				$pAuthor->name 						= $profile && $profile->name ? $profile->name : $invited;
 				$pAuthor->firstName 				= $profile->givenName ? $profile->givenName : '';
 				$pAuthor->lastName 					= $profile->surname ? $profile->surname : '';
-				$pAuthor->created 					= JFactory::getDate()->toSql();
+				$pAuthor->created 					= \JFactory::getDate()->toSql();
 				$pAuthor->created_by 				= $actor;
 
 				if (!$pAuthor->createAssociation())
@@ -201,7 +203,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		if ($added)
 		{
-			$this->set('_message', JText::_('Author selection saved') );
+			$this->set('_message', Lang::txt('Author selection saved') );
 		}
 
 		// Save group owner
@@ -221,7 +223,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	public function saveGroupOwner( $pub )
 	{
 		// Incoming
-		$group_owner = JRequest::getInt( 'group_owner', 0);
+		$group_owner = \JRequest::getInt( 'group_owner', 0);
 
 		$saveGroupOwner = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
 
@@ -252,7 +254,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		if (!$pub->_authors)
 		{
@@ -271,7 +273,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pAuthor->name 						= $author->name;
 			$pAuthor->project_owner_id 			= $author->project_owner_id;
 			$pAuthor->publication_version_id 	= $newVersion->id;
-			$pAuthor->created 					= JFactory::getDate()->toSql();
+			$pAuthor->created 					= \JFactory::getDate()->toSql();
 			$pAuthor->created_by 				= $juser->get('id');
 			if (!$pAuthor->createAssociation())
 			{
@@ -296,7 +298,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Incoming
-		$list = JRequest::getVar( 'list', '' );
+		$list = \JRequest::getVar( 'list', '' );
 		$authors = explode("-", $list);
 
 		$o = 1;
@@ -317,7 +319,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			}
 		}
 
-		$this->set('_message', JText::_('New author order saved') );
+		$this->set('_message', Lang::txt('New author order saved') );
 
 		return true;
 	}
@@ -329,12 +331,12 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 */
 	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0)
 	{
-		$email 		= JRequest::getVar( 'email', '', 'post' );
-		$firstName 	= trim(JRequest::getVar( 'firstName', '', 'post' ));
-		$lastName 	= trim(JRequest::getVar( 'lastName', '', 'post' ));
-		$org 		= trim(JRequest::getVar( 'organization', '', 'post' ));
-		$credit 	= trim(JRequest::getVar( 'credit', '', 'post' ));
-		$uid 		= trim(JRequest::getInt( 'uid', 0, 'post' ));
+		$email 		= \JRequest::getVar( 'email', '', 'post' );
+		$firstName 	= trim(\JRequest::getVar( 'firstName', '', 'post' ));
+		$lastName 	= trim(\JRequest::getVar( 'lastName', '', 'post' ));
+		$org 		= trim(\JRequest::getVar( 'organization', '', 'post' ));
+		$credit 	= trim(\JRequest::getVar( 'credit', '', 'post' ));
+		$uid 		= trim(\JRequest::getInt( 'uid', 0, 'post' ));
 
 		$regex 		= '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email 		= preg_match($regex, $email) ? $email : '';
@@ -346,7 +348,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		if (!$firstName || !$lastName || !$org)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
 
@@ -354,7 +356,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$objO = new \Components\Projects\Tables\Owner( $this->_parent->_db );
 
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS
+		include_once(PATH_CORE . DS . 'components' . DS
 			. 'com_members' . DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
 
@@ -400,7 +402,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$objO->projectid 	 = $pub->_project->id;
 			$objO->userid 		 = $uid;
 			$objO->status 		 = $uid ? 1 : 0;
-			$objO->added 		 = JFactory::getDate()->toSql();
+			$objO->added 		 = \JFactory::getDate()->toSql();
 			$objO->role 		 = 2;
 			$objO->invited_email = $email;
 			$objO->invited_name  = $name;
@@ -419,7 +421,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// Now we do need owner record
 		if (!$owner)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 			return false;
 		}
 
@@ -428,13 +430,13 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		if ($pAuthor->loadAssociationByOwner( $owner, $pub->version_id ))
 		{
-			$pAuthor->modified 		= JFactory::getDate()->toSql();
+			$pAuthor->modified 		= \JFactory::getDate()->toSql();
 			$pAuthor->modified_by 	= $actor;
 			$exists = 1;
 		}
 		else
 		{
-			$pAuthor->created 				 = JFactory::getDate()->toSql();
+			$pAuthor->created 				 = \JFactory::getDate()->toSql();
 			$pAuthor->created_by 			 = $actor;
 			$pAuthor->publication_version_id = $pub->version_id;
 			$pAuthor->project_owner_id 		 = $owner;
@@ -451,7 +453,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		if (!$pAuthor->store())
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 			return false;
 		}
 
@@ -462,8 +464,8 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		if ($sendInvite && $email)
 		{
 			// Get team plugin
-			JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'team' );
+			$dispatcher = \JDispatcher::getInstance();
 
 			// Plugin params
 			$plugin_params = array(
@@ -481,8 +483,8 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		$message = $exists
-			? JText::_('Author already in team, updated author information')
-			: JText::_('New author added');
+			? Lang::txt('Author already in team, updated author information')
+			: Lang::txt('New author added');
 
 		$this->set('_message', $message );
 		return true;
@@ -495,7 +497,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
 
 		// Load classes
 		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );
@@ -504,33 +506,33 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// We need attachment record
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
 			return false;
 		}
 
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members'
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_members'
 			. DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
 
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->id, 'all', 1);
 
-		$email 		= JRequest::getVar( 'email', '', 'post' );
-		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
-		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
-		$org 		= JRequest::getVar( 'organization', '', 'post' );
-		$credit 	= JRequest::getVar( 'credit', '', 'post' );
+		$email 		= \JRequest::getVar( 'email', '', 'post' );
+		$firstName 	= \JRequest::getVar( 'firstName', '', 'post' );
+		$lastName 	= \JRequest::getVar( 'lastName', '', 'post' );
+		$org 		= \JRequest::getVar( 'organization', '', 'post' );
+		$credit 	= \JRequest::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
 		$code 		= \Components\Projects\Helpers\Html::generateCode();
-		$uid 		= JRequest::getInt( 'uid', 0, 'post' );
+		$uid 		= \JRequest::getInt( 'uid', 0, 'post' );
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
 
 		if (!$firstName || !$lastName || !$org)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
 
@@ -540,7 +542,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$row->name 	 		= $row->firstName . ' ' . $row->lastName;
 		$row->credit 		= $credit;
 		$row->modified_by 	= $actor;
-		$row->modified 		= JFactory::getDate()->toSql();
+		$row->modified 		= \JFactory::getDate()->toSql();
 
 		// Check that profile exists
 		if ($uid)
@@ -575,14 +577,14 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		if ($row->store())
 		{
-			$this->set('_message', JText::_('Author record saved') );
+			$this->set('_message', Lang::txt('Author record saved') );
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
 		else
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 			return false;
 		}
 
@@ -617,8 +619,8 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		if ($sendInvite && $email)
 		{
 			// Get team plugin
-			JPluginHelper::importPlugin( 'projects', 'team' );
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'team' );
+			$dispatcher = \JDispatcher::getInstance();
 
 			// Plugin params
 			$plugin_params = array(
@@ -645,7 +647,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
 
 		// Load classes
 		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );
@@ -654,13 +656,13 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		// We need attachment record
 		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR'));
 			return false;
 		}
 
 		if ($row->deleteAssociationByOwner($row->project_owner_id, $row->publication_version_id))
 		{
-			$this->set('_message', JText::_('Author deleted') );
+			$this->set('_message', Lang::txt('Author deleted') );
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
@@ -679,7 +681,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'team' . DS . 'css' . DS . 'selector.css');
 
 		// Output HTML
@@ -732,7 +734,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Start status
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		// Get authors
 		if (!isset($pub->_authors))

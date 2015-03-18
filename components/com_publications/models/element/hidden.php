@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
 
 /**
  * Renders a hidden element
  */
-class PublicationsElementHidden extends PublicationsElement
+class Hidden extends Base
 {
 	/**
 	* Element name
@@ -117,7 +118,7 @@ class PublicationsElementHidden extends PublicationsElement
 				}
 
 				$html[] = '<tr>';
-				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . JText::_('Value') . '</label></td>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('COM_PUBLICATIONS_VALUE') . '</label></td>';
 				$html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
 				$html[] = '</tr>';
 

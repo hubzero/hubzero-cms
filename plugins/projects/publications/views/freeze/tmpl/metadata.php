@@ -95,7 +95,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 				// Parse editor text
 				if ($editor)
 				{
-					$model = new PublicationsModelPublication($this->pub);
+					$model = new \Components\Publications\Models\Publication($this->pub);
 					$value = $model->parse($aliasmap, $field, 'parsed');
 				}
 				?>

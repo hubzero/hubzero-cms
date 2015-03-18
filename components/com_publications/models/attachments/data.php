@@ -22,16 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Attachment;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-	. DS . 'helpers' . DS . 'html.php');
+use Components\Publications\Models\Attachment as Base;
+use stdClass;
 
 /**
  * Handles a Datastore Lite attachment
  */
-class PublicationsModelAttachmentData extends PublicationsModelAttachment
+class Data extends Base
 {
 	/**
 	* Attachment type name
@@ -63,10 +62,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
-		$config 		= JComponentHelper::getParams( 'com_projects' );
+		$config 		= \JComponentHelper::getParams( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path
@@ -79,8 +78,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$configs->dataPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'data', 1);
 
 		// Serve path for data files
-		/*$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
-		$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . a . 'task=serve';
+		/*$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
+		$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . a . 'task=serve';
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -106,7 +105,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		$html = '';
 
-		$url =  JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url =  Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId );
 		$url = preg_replace('/\/administrator/', '', $url);
 
@@ -118,7 +117,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
-				$pop		= JText::_('Browse database') . ' ' . $title;
+				$pop		= Lang::txt('Browse database') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -156,20 +155,20 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		if ($pub->state == 0)
 		{
-			$pop 		= JText::_('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
+			$pop 		= Lang::txt('COM_PUBLICATIONS_STATE_UNPUBLISHED_POP');
 			$disabled 	= 1;
 		}
 		elseif (!$authorized)
 		{
 			$pop = $pub->access == 1
-			     ? JText::_('COM_PUBLICATIONS_STATE_REGISTERED_POP')
-			     : JText::_('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
+			     ? Lang::txt('COM_PUBLICATIONS_STATE_REGISTERED_POP')
+			     : Lang::txt('COM_PUBLICATIONS_STATE_RESTRICTED_POP');
 			$disabled = 1;
 		}
 		elseif (!$attachments)
 		{
 			$disabled = 1;
-			$pop = JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
+			$pop = Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE');
 		}
 
 		$pop   = $pop ? '<p class="warning">' . $pop . '</p>' : '';
@@ -179,7 +178,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Which role?
 		$role = $element->params->role;
 
-		$url = JRoute::_('index.php?option=com_publications&task=serve&id='
+		$url = Route::url('index.php?option=com_publications&task=serve&id='
 				. $pub->id . '&v=' . $pub->version_number )
 				. '?el=' . $elementId;
 
@@ -193,10 +192,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			}
 
 			// One launcher for all items
-			$label = JText::_('View publication');
+			$label = Lang::txt('View publication');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
-			$title = $configs->title ? $configs->title : JText::_('View publication');
+			$title = $configs->title ? $configs->title : Lang::txt('View publication');
 			$html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL,
 					$title, 'rel="external"', $disabled, $pop);
 		}
@@ -220,13 +219,13 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			$attachments, $oldVersion, $newVersion)
 	{
 		// Get databases plugin
-		JPluginHelper::importPlugin( 'projects', 'databases');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'databases');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get configs
 		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		$newConfigs = new stdClass;
 		$newConfigs->path = $configs->path;
@@ -237,7 +236,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			'data',
 			1
 		);
-		$newConfigs->servePath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pub->id) . '/?vid=' . $newVersion->id . a . 'task=serve';
+		$newConfigs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $newVersion->id . '&amp;task=serve';
 
 		// Loop through attachments
 		foreach ($attachments as $att)
@@ -254,7 +253,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->_parent->setError( JText::_('Oups! Cannot attach selected database: database not found') );
+				$this->_parent->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
 				return false;
 			}
 
@@ -272,7 +271,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			// Failed to clone
 			if (!$dbVersion)
 			{
-				$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
 				$pAttach->delete();
 				return false;
 			}
@@ -326,7 +325,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		if (!$path)
 		{
-			$this->setError( JText::_('Oups! Something went wrong. Cannot redirect to content.') );
+			$this->setError( Lang::txt('Oups! Something went wrong. Cannot redirect to content.') );
 			return false;
 		}
 
@@ -348,7 +347,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = JRequest::getVar( 'selecteditems', '');
+			$selections = \JRequest::getVar( 'selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -370,15 +369,15 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Create new version path
 		if (!is_dir( $configs->dataPath ))
 		{
-			if (!JFolder::create( $configs->dataPath ))
+			if (!\JFolder::create( $configs->dataPath ))
 			{
-				$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
 				return false;
 			}
 		}
 
 		// Get actor
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 		if (!$uid)
 		{
@@ -409,7 +408,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Success
 		if ($i > 0 && $i == $a)
 		{
-			$message = $this->get('_message') ? $this->get('_message') : JText::_('Selection successfully saved');
+			$message = $this->get('_message') ? $this->get('_message') : Lang::txt('Selection successfully saved');
 			$this->set('_message', $message);
 		}
 
@@ -425,8 +424,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	public function addAttachment($database_name, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
 		// Get databases plugin
-		JPluginHelper::importPlugin( 'projects', 'databases');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'databases');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get database object and load record
 		$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
@@ -451,14 +450,14 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			if (!$objData->id)
 			{
 				// Original database not found
-				$this->setError( JText::_('Oups! Cannot attach selected database: database not found') );
+				$this->setError( Lang::txt('Oups! Cannot attach selected database: database not found') );
 				return false;
 			}
 			$objPA->publication_id 			= $pub->id;
 			$objPA->publication_version_id 	= $pub->version_id;
 			$objPA->type 					= $this->_name;
 			$objPA->created_by 				= $uid;
-			$objPA->created 				= JFactory::getDate()->toSql();
+			$objPA->created 				= \JFactory::getDate()->toSql();
 			$objPA->role 					= $element->role;
 			$new = 1;
 
@@ -480,7 +479,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				$result 			= $dispatcher->trigger( 'clone_database', array( $database_name, $pub->_project, $configs->servePath) );
 				$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
 				$objPA->modified_by = $uid;
-				$objPA->modified 	= JFactory::getDate()->toSql();
+				$objPA->modified 	= \JFactory::getDate()->toSql();
 			}
 			else
 			{
@@ -491,7 +490,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Failed to clone
 		if (!$dbVersion)
 		{
-			$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+			$this->_parent->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
 			return false;
 		}
 
@@ -508,7 +507,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 		if (!$objPA->store())
 		{
-			$this->_parent->setError(JText::_('There was a problem attaching the database'));
+			$this->_parent->setError(Lang::txt('There was a problem attaching the database'));
 			return false;
 		}
 		// Determine accompanying files and copy them in the right location
@@ -525,7 +524,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -541,15 +540,15 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		if (!$this->getError())
 		{
 			// Get databases plugin
-			JPluginHelper::importPlugin( 'projects', 'databases');
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'databases');
+			$dispatcher = \JDispatcher::getInstance();
 
 			// Get database object and load record
 			$objData = new \Components\Projects\Tables\Database($this->_parent->_db);
 			$objData->loadRecord($row->object_name);
 			if (!$objData->id)
 			{
-				$this->_parent->setError(JText::_('There was a problem deleting the database'));
+				$this->_parent->setError(Lang::txt('There was a problem deleting the database'));
 				return false;
 			}
 
@@ -557,7 +556,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 			$row->delete();
 
-			$this->set('_message', JText::_('Item removed'));
+			$this->set('_message', Lang::txt('Item removed'));
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
@@ -576,10 +575,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= JRequest::getVar( 'title', '' );
-		$thumb 	= JRequest::getInt( 'makedefault', 0 );
+		$title 	= \JRequest::getVar( 'title', '' );
+		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');
 
 		// Get configs
@@ -594,15 +593,15 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Update label
 		$row->title 		= $title;
 		$row->modified_by 	= $uid;
-		$row->modified 		= JFactory::getDate()->toSql();
+		$row->modified 		= \JFactory::getDate()->toSql();
 
 		// Update record
 		if (!$row->store())
 		{
-			$this->setError(JText::_('Error updating item record'));
+			$this->setError(Lang::txt('Error updating item record'));
 		}
 
-		$this->set('_message', JText::_('Update successful'));
+		$this->set('_message', Lang::txt('Update successful'));
 
 		return true;
 	}
@@ -614,7 +613,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	 */
 	public function getStatus( $element, $attachments )
 	{
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 
 		// Get requirements to check against
 		$max 		= $element->max;
@@ -635,7 +634,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		{
 			if ($counter)
 			{
-				$status->setError( JText::_('Need at least ' . $min . ' attachment') );
+				$status->setError( Lang::txt('Need at least ' . $min . ' attachment') );
 			}
 			else
 			{
@@ -646,7 +645,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		}
 		elseif ($max > 0 && $counter > $max)
 		{
-			$status->setError( JText::_('Maximum ' . $max . ' attachment(s) allowed') );
+			$status->setError( Lang::txt('Maximum ' . $max . ' attachment(s) allowed') );
 		}
 
 		$status->status = $status->getError() ? 0 : 1;
@@ -738,7 +737,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$dataFiles = array();
 		if (is_dir($configs->dataPath))
 		{
-			$dataFiles = JFolder::files($configs->dataPath, '.', true, true);
+			$dataFiles = \JFolder::files($configs->dataPath, '.', true, true);
 		}
 
 		if (!empty($dataFiles))
@@ -786,7 +785,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		mb_internal_encoding('UTF-8');
 
 		// component path for "com_dataviewer"
-		$dv_com_path = JPATH_ROOT . DS . 'components' . DS . 'com_dataviewer';
+		$dv_com_path = PATH_CORE . DS . 'components' . DS . 'com_dataviewer';
 
 		require_once($dv_com_path . DS . 'dv_config.php');
 		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
@@ -841,7 +840,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$dataFiles = array();
 		if (is_dir($configs->dataPath))
 		{
-			$dataFiles = JFolder::files($configs->dataPath, '.', true, true);
+			$dataFiles = \JFolder::files($configs->dataPath, '.', true, true);
 		}
 		if (!empty($dataFiles))
 		{
@@ -887,8 +886,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		}
 
 		// Get files plugin
-		JPluginHelper::importPlugin( 'projects', 'files');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', 'files');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get data definition
 		$dd = json_decode($objPD->data_definition, true);
@@ -963,10 +962,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				// If parent dir does not exist, we must create it
 				if (!file_exists(dirname($configs->dataPath . DS . $file)))
 				{
-					JFolder::create(dirname($configs->dataPath . DS . $file));
+					\JFolder::create(dirname($configs->dataPath . DS . $file));
 				}
 
-				JFile::copy($repoPath . DS . $file, $configs->dataPath . DS . $file);
+				\JFile::copy($repoPath . DS . $file, $configs->dataPath . DS . $file);
 
 				// Generate thumbnails for images
 				$thumb 	= \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');

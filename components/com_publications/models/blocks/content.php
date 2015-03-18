@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 /**
  * Content block
  */
-class PublicationsBlockContent extends PublicationsModelBlock
+class Content extends Base
 {
 	/**
 	* Block name
@@ -109,7 +111,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 					: 'index.php?option=com_projects&alias='
 						. $pub->_project->alias . '&active=publications';
 
-		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
+		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
 			. $this->_name . '&step=' . $sequence . '&move=continue');
 
 		// Make sure we have attachments
@@ -127,7 +129,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
 
 		// Get block element model
-		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
 
 		// Properties object
 		$master 			= new stdClass;
@@ -199,7 +201,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 
 					// Record update time
 					$data 				= new stdClass;
-					$data->updated 		= JFactory::getDate()->toSql();
+					$data->updated 		= \JFactory::getDate()->toSql();
 					$data->updated_by 	= $actor;
 					$data->update 		= ''; // remove dispute
 
@@ -236,7 +238,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		}
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		// Transfer data of each element
 		foreach ($manifest->elements as $elementId => $element)
@@ -264,7 +266,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','css/selector');
 
 		// Get block element model
-		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
 
 		// Build each element
 		$o = 1;
@@ -302,7 +304,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		}
 
 		// Start status
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		// Check against manifested requirements
 		if ($this->_manifest)
@@ -362,7 +364,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	public function getElementStatus( $elementId, $elementparams, $attachments = NULL )
 	{
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		$status = $attModel->getStatus( $elementparams->type, $elementparams, $elementId, $attachments );
 		return $status;
@@ -376,7 +378,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	public function saveElement( $elementId, $elementparams, $pub = NULL, $params = NULL )
 	{
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		if ($attModel->attach( $elementparams->type, $elementparams, $elementId, $pub, $params ))
 		{
@@ -411,7 +413,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
 
 		// Load attachment
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
@@ -419,7 +421,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		// We need attachment record
 		if (!$aid || !$row->load($aid))
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 			return false;
 		}
 
@@ -427,7 +429,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$type = $row->type;
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		// Save incoming attachment info
 		$attModel->update($type, $row, $pub, $actor, $elementId,
@@ -455,7 +457,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
 
 		// Load attachment
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
@@ -463,7 +465,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		// We need attachment record
 		if (!$aid || !$row->load($aid))
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 			return false;
 		}
 
@@ -471,7 +473,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$type = $row->type;
 
 		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
+		$attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 
 		// Save incoming attachment info
 		$attModel->remove($type, $row, $pub, $actor, $elementId,

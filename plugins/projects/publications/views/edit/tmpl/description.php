@@ -154,7 +154,7 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 							</label>
 							<span class="clear"></span>
 							<?php
-							$model = new PublicationsModelPublication($this->row);
+							$model = new \Components\Publications\Models\Publication($this->row);
 							if ($noedit)
 							{
 								echo $model->describe('parsed');

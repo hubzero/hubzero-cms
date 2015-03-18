@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Block;
+
+use Components\Publications\Models\Block as Base;
+use stdClass;
 
 /**
  * Description block
  */
-class PublicationsBlockDescription extends PublicationsModelBlock
+class Description extends Base
 {
 	/**
 	* Block name
@@ -105,7 +107,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 					: 'index.php?option=com_projects&alias='
 						. $pub->_project->alias . '&active=publications';
 
-		$pub->url = JRoute::_($route . '&pid=' . $pub->id . '&section='
+		$pub->url = Route::url($route . '&pid=' . $pub->id . '&section='
 			. $this->_name . '&step=' . $sequence . '&move=continue');
 
 		// Get block status
@@ -115,7 +117,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		$status->review = $pub->_curationModel->_progress->blocks->$sequence->review;
 
 		// Get block element model
-		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
 
 		// Properties object
 		$master 			= new stdClass;
@@ -164,7 +166,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 
 		if (!$row->load($pub->version_id))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
 			return false;
 		}
 
@@ -173,7 +175,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		$missed  = 0;
 
 		// Incoming
-		$nbtags = JRequest::getVar( 'nbtag', array(), 'request', 'array' );
+		$nbtags = \JRequest::getVar( 'nbtag', array(), 'request', 'array' );
 
 		// Parse metadata
 		$data = array();
@@ -206,7 +208,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 
 				if (!$value && $required)
 				{
-					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 				}
 				else
 				{
@@ -230,7 +232,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 			}
 			else
 			{
-				$value = trim(JRequest::getVar( $field, '', 'post', 'none', 2 ));
+				$value = trim(\JRequest::getVar( $field, '', 'post', 'none', 2 ));
 				$value = ($input == 'editor')
 					? stripslashes($value)
 					: \Hubzero\Utility\Sanitize::clean($value);
@@ -246,7 +248,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 
 					// Record update time
 					$data 				= new stdClass;
-					$data->updated 		= JFactory::getDate()->toSql();
+					$data->updated 		= \JFactory::getDate()->toSql();
 					$data->updated_by 	= $actor;
 
 					// Unmark as skipped
@@ -268,7 +270,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		// Update modified info
 		if ($changed)
 		{
-			$row->modified 	  = JFactory::getDate()->toSql();
+			$row->modified 	  = \JFactory::getDate()->toSql();
 			$row->modified_by = $actor;
 			$this->_parent->set('_update', 1);
 		}
@@ -276,13 +278,13 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		// Report error
 		if ($missed && $this->_manifest->params->collapse_elements == 0)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
 		}
 
 		// Save
 		if (!$row->store())
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_SAVE_PUBLICATION'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SAVE_PUBLICATION'));
 			return false;
 		}
 
@@ -301,7 +303,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	public function buildContent( $pub = NULL, $viewname = 'edit', $status, $master )
 	{
 		// Get block element model
-		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
 
 		$html = '';
 
@@ -334,7 +336,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		}
 
 		// Start status
-		$status 	 = new PublicationsModelStatus();
+		$status 	 = new \Components\Publications\Models\Status();
 
 		// Return element status
 		if ($elementId !== NULL && isset($this->_manifest->elements->$elementId))
@@ -383,7 +385,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 	public function getElementStatus( $element, $pub = NULL )
 	{
 		// Get block element model
-		$elModel = new PublicationsModelBlockElements($this->_parent->_db );
+		$elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db );
 
 		$status = $elModel->getStatus( $element->type, $element, $pub );
 		return $status;

@@ -22,13 +22,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Element;
+
+use Components\Publications\Models\Element as Base;
 
 /**
  * Renders a textarea element
  */
-class PublicationsElementTextarea extends PublicationsElement
+class Textarea extends Base
 {
 	/**
 	* Element name

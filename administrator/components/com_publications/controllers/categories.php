@@ -250,7 +250,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'elements.php');
-			$re = new PublicationsElements($elements);
+			$re = new \Components\Publications\Models\Elements($elements);
 			$row->customFields = $re->toString();
 		}
 
@@ -396,7 +396,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		);
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
-		$elements = new PublicationsElements();
+		$elements = new \Components\Publications\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}
 }

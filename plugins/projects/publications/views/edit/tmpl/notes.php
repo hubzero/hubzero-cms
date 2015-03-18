@@ -103,7 +103,7 @@ $canedit = (
 			</span>
 			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>: </h5>
 			<?php
-			$model = new PublicationsModelPublication($this->pub);
+			$model = new \Components\Publications\Models\Publication($this->pub);
 			if ($canedit)
 			{
 				echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 15, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
@@ -137,7 +137,7 @@ $canedit = (
 		</span>
 		<h4><?php echo $ptitle; ?></h4>
 		<?php
-		$model = new PublicationsModelPublication($this->pub);
+		$model = new \Components\Publications\Models\Publication($this->pub);
 		if ($canedit) { ?>
 		<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NOTES_WRITE_NOTES'); ?></p>
 		<table class="tbl-panel">

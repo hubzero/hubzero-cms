@@ -22,13 +22,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Models\Handlers;
+
+use Components\Publications\Models\Handler as Base;
+use stdClass;
 
 /**
  * DataStore Lite Handler
  */
-class PublicationsModelHandlerDataStore extends PublicationsModelHandler
+class DataStore extends Base
 {
 	/**
 	* Handler type name
@@ -116,7 +118,7 @@ class PublicationsModelHandlerDataStore extends PublicationsModelHandler
 	public function getStatus( $attachments )
 	{
 		// Start status
-		$status = new PublicationsModelStatus();
+		$status = new \Components\Publications\Models\Status();
 		return $status;
 	}
 

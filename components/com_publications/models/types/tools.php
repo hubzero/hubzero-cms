@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Models\Type;
+
+use Hubzero\Base\Object;
 
 /**
  * TOOLS master type helper class
  */
-class typeTools extends JObject
+class Tools extends Object
 {
 	/**
 	 * JDatabase
@@ -222,7 +223,7 @@ class typeTools extends JObject
 		$item = $this->__get('item');
 
 		// Get tool
-		$tool = new ProjectTool( $this->_database );
+		$tool = new \ProjectTool( $this->_database );
 		if ($tool->loadTool($item))
 		{
 			$title = $tool->title;
@@ -250,7 +251,7 @@ class typeTools extends JObject
 		$toolname = $attachments[0]->object_name;
 
 		// Get tool
-		$objTool = new ProjectTool( $this->_database );
+		$objTool = new \ProjectTool( $this->_database );
 		$tool 	 = $objTool->getFullRecord($toolname);
 
 		// Cannot publish if tool is not in working status
@@ -274,7 +275,7 @@ class typeTools extends JObject
 			$toolname = $selections['tools'][0];
 
 			// Get tool
-			$objTool = new ProjectTool( $this->_database );
+			$objTool = new \ProjectTool( $this->_database );
 			$tool 	 = $objTool->getFullRecord($toolname);
 
 			// Cannot publish if tool is not in working status
@@ -302,7 +303,7 @@ class typeTools extends JObject
 		}
 
 		$toolname = $item->object_name;
-		$tool 	  = new ProjectTool($this->_database);
+		$tool 	  = new \ProjectTool($this->_database);
 		if (!$tool->loadTool($toolname))
 		{
 			return true;
@@ -324,14 +325,14 @@ class typeTools extends JObject
 
 		$toolname 	= $att->id ? $att->object_name : $item;
 		$instanceId = $att->id ? $att->object_instance : NULL;
-		$objT 	  	= new ProjectTool($this->_database);
+		$objT 	  	= new \ProjectTool($this->_database);
 		$tool 		= $objT->getFullRecord($toolname, NULL, $instanceId);
 		if (!$tool->id)
 		{
 			return false;
 		}
 
-		$status = ' | ' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS') . ': ';
+		$status = ' | ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS') . ': ';
 		$status.= $tool->status_name != 'working'
 				? '<span class="urgency">' . $tool->status_name . '</span>'
 				: '<span class="green">' . $tool->status_name . '</span>';
@@ -373,7 +374,7 @@ class typeTools extends JObject
 			foreach ($selections['tools'] as $toolname)
 			{
 				// Get tool
-				$objTool = new ProjectTool( $this->_database );
+				$objTool = new \ProjectTool( $this->_database );
 				$tool = $objTool->getFullRecord($toolname);
 
 				if (!$tool)
@@ -385,7 +386,7 @@ class typeTools extends JObject
 				if ($objPA->loadAttachment($vid, $toolname, 'tool'))
 				{
 					$objPA->modified_by 			= $uid;
-					$objPA->modified 				= JFactory::getDate()->toSql();
+					$objPA->modified 				= \JFactory::getDate()->toSql();
 				}
 				else
 				{
@@ -395,7 +396,7 @@ class typeTools extends JObject
 					$objPA->path 					= '';
 					$objPA->type 					= $this->_attachmentType;
 					$objPA->created_by 				= $uid;
-					$objPA->created 				= JFactory::getDate()->toSql();
+					$objPA->created 				= \JFactory::getDate()->toSql();
 				}
 
 				// Save object information

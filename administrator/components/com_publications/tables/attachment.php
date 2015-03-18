@@ -30,8 +30,6 @@
 
 namespace Components\Publications\Tables;
 
-use PublicationTypesHelper;
-
 /**
  * Table class for publication attachments
  */
@@ -525,7 +523,7 @@ class Attachment extends \JTable
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 
 		// Get types helper
-		$typeHelper = new PublicationTypesHelper($this->_db);
+		$typeHelper = new \Components\Publications\Models\Types($this->_db);
 		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
 		$prop = $prop ? $prop : 'path';
 
@@ -602,7 +600,7 @@ class Attachment extends \JTable
 		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
 
 		// Get types helper
-		$typeHelper = new PublicationTypesHelper($this->_db);
+		$typeHelper = new \Components\Publications\Models\Types($this->_db);
 		$prop = $typeHelper->dispatchByType($type, 'getMainProperty');
 		$prop = $prop ? $prop : 'path';
 
