@@ -645,8 +645,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 		if ($juser->get('id') == $member->get('uidNumber'))
 		{
-			if ($xseen->whenseen == '' || $xseen->whenseen == $database->getNullDate() || $xseen->whenseen == NULL)
+			if (!$xseen->whenseen || $xseen->whenseen == $database->getNullDate())
 			{
+				$xseen->mid = $mid;
+				$xseen->uid = $member->get('uidNumber');
 				$xseen->whenseen = JFactory::getDate()->toSql();
 				$xseen->store(true);
 			}
