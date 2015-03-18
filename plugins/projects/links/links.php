@@ -215,14 +215,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$cid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
 		}
 
 		// Make sure this publication belongs to this project
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
 		if (!$objP->load($pid) || $objP->project_id != $this->_project->id)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
 		}
 
 		// Remove citation
@@ -231,7 +231,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Unattach citation
 			if ($this->unattachCitation($pid, $cid ))
 			{
-				$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_DELETED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_DELETED');
 			}
 		}
 
@@ -247,10 +247,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
-				. a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid).'/?version=' . $version . '&section=citations';
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+				. '&active=publications';
+		$url = Route::url($route . '&pid=' . $pid).'/?version=' . $version . '&section=citations';
 
 		$this->_referer = $url;
 		return;
@@ -271,7 +271,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$url || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_NO_DOI') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_NO_DOI') );
 		}
 
 		$parts 		= explode("doi:", $url);
@@ -281,7 +281,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Attach citation
 		if ($this->attachCitation($pid, $doi, $format, $this->_uid ))
 		{
-			$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_SAVED');
+			$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED');
 		}
 
 		// Pass success or error message
@@ -296,10 +296,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
-				. a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid)
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+				. '&active=publications';
+		$url = Route::url($route .'&pid=' . $pid)
 			.'/?version=' . $version . '&section=citations';
 
 		$this->_referer = $url;
@@ -320,14 +320,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
 		if (!$pid || !$cite['type'] || !$cite['title'])
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 		}
 		else
 		{
@@ -345,7 +345,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				if (!$citation->store(true))
 				{
 					// This really shouldn't happen.
-					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
 				}
 			}
 			// Create association
@@ -364,7 +364,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_SAVED');
+			$this->_msg = Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED');
 		}
 
 		// Pass success or error message
@@ -379,10 +379,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
-				. a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid)
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+				. '&active=publications';
+		$url = Route::url($route . '&pid=' . $pid)
 			.'/?version=' . $version . '&section=citations';
 
 		$this->_referer = $url;
@@ -396,16 +396,16 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
+		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
 
 		if (!$cid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_NO_DOI') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_NO_DOI') );
 
 			if ($returnStatus)
 			{
@@ -455,20 +455,20 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function attachCitation($pid = 0, $doi = NULL, $format = 'apa',
 		$actor = 0, $returnStatus = false)
 	{
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
+		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
 
 		$out = array('error' => NULL, 'success' => NULL );
 
 		if (!$doi || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_NO_DOI') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_NO_DOI') );
 
 			if ($returnStatus)
 			{
@@ -483,7 +483,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if ($c->loadPubCitation($doi, $pid))
 		{
-			$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED') );
+			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_CITATION_ALREADY_ATTACHED') );
 
 			if ($returnStatus)
 			{
@@ -585,7 +585,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 				if (!$c->store())
 				{
-					$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_ERROR_SAVE') );
+					$this->setError( Lang::txt('PLG_PROJECTS_LINKS_CITATION_ERROR_SAVE') );
 
 					if ($returnStatus)
 					{
@@ -621,7 +621,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->setError( JText::_('PLG_PROJECTS_LINKS_CITATION_COULD_NOT_LOAD') );
+				$this->setError( Lang::txt('PLG_PROJECTS_LINKS_CITATION_COULD_NOT_LOAD') );
 
 				if ($returnStatus)
 				{
@@ -685,7 +685,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
@@ -694,7 +694,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publication)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -748,9 +748,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = JRequest::getInt( 'cid', 0 );
 
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 			// Load the object
@@ -814,7 +814,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
@@ -823,7 +823,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publication)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -844,9 +844,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 		// Load the object
@@ -962,7 +962,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$url)
 		{
-			$output['error'] = JText::_('PLG_PROJECTS_LINKS_EMPTY_URL');
+			$output['error'] = Lang::txt('PLG_PROJECTS_LINKS_EMPTY_URL');
 			return json_encode($output);
 		}
 
@@ -993,7 +993,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		if (!$doi && filter_var($url, FILTER_VALIDATE_URL) == false)
 		{
-			$output['error'] = JText::_('Please enter a valid URL starting with http:// or https://');
+			$output['error'] = Lang::txt('Please enter a valid URL starting with http:// or https://');
 			return json_encode($output);
 		}
 
@@ -1042,7 +1042,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			if (!$finalUrl || !$content)
 			{
-				$output['message'] = JText::_('PLG_PROJECTS_LINKS_NO_PREVIEW');
+				$output['message'] = Lang::txt('PLG_PROJECTS_LINKS_NO_PREVIEW');
 				return json_encode($output);
 			}
 			else
@@ -1052,7 +1052,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			if ($content)
 			{
-				require_once( JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'links'
+				require_once( PATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'links'
 							. DS . 'helpers' . DS . 'simple_html_dom.php');
 
 				$out = '';
@@ -1157,7 +1157,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$output['error'] 	= JText::_('PLG_PROJECTS_LINKS_FAILED_TO_LOAD_URL');
+				$output['error'] 	= Lang::txt('PLG_PROJECTS_LINKS_FAILED_TO_LOAD_URL');
 				return json_encode($output);
 			}
 		}
@@ -1173,7 +1173,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function getDoiMetadata($doi, $citation = false, &$url, $rawData = false, $format = 'apa')
 	{
 		// Include metadata model
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+		include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'metadata.php');
 
 		$format = in_array($format, array('apa', 'ieee')) ? $format : 'apa';
@@ -1208,14 +1208,14 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Error
 		if ( $status != 200 )
 		{
-			$this->setError(JText::_('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
 			return;
 		}
 
 		// Error - redirected instead of printing metadata
 		if (strpos($contenttype, 'text/html;') !== false)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_DOI_NOT_FOUND'));
 			return;
 		}
 

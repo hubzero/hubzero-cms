@@ -27,8 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 $block   	= $this->block;
 $step  	 	= $this->step;
@@ -47,31 +47,31 @@ else
 	$typeParams = NULL;
 }
 
-$label  	= isset($typeParams->addLabel) ? $typeParams->addLabel : JText::_('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
+$label  	= isset($typeParams->addLabel) ? $typeParams->addLabel : Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
 $action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl';
-$btnLabel 	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
+$btnLabel 	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_SELECTION');
 $placeHolder= 'http://';
 
 $title = $block == 'citations'
-	? JText::_('PLG_PROJECTS_LINKS_SELECTOR_DOI')
-	: JText::_('PLG_PROJECTS_LINKS_SELECTOR');
+	? Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_DOI')
+	: Lang::txt('PLG_PROJECTS_LINKS_SELECTOR');
 
 if ($block == 'citations')
 {
-	$label  	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
+	$label  	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_TYPE_DOI');
 	$action 	= 'parsedoi';
-	$btnLabel 	= JText::_('PLG_PROJECTS_LINKS_SELECTOR_SAVE_DOI');
+	$btnLabel 	= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_SAVE_DOI');
 	$placeHolder= 'doi:';
 }
 
 //$newCiteUrl   = 'citations/add?publication=' . $this->publication->id;
 $newCiteUrl   = $this->project->provisioned == 1
-		? JRoute::_( $route) . '?active=links&action=newcite'
-		: JRoute::_( $route . '&active=links&action=newcite') .'/?p=' . $this->props . a . 'pid='
-		. $this->publication->id . a . 'vid=' . $this->publication->version_id;
+		? Route::url( $route) . '?active=links&amp;action=newcite'
+		: Route::url( $route . '&active=links&action=newcite') .'/?p=' . $this->props . '&amp;pid='
+		. $this->publication->id . '&amp;vid=' . $this->publication->version_id;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 ?>
 <div id="abox-content-wrap">
@@ -80,7 +80,7 @@ $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?
 		<h3><?php echo $title; ?> 	<span class="abox-controls">
 				<a class="btn btn-success active" id="b-save"><?php echo $btnLabel; ?></a>
 				<?php if ($this->ajax) { ?>
-				<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
+				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
 				<?php } ?>
 			</span>
 		</h3>
@@ -100,7 +100,7 @@ $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?
 				<input type="hidden" name="action" value="apply" />
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
-				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo JRoute::_( $route); ?>" />
+				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo Route::url( $route); ?>" />
 				<?php if ($this->project->provisioned == 1) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
@@ -121,7 +121,7 @@ $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?
 			$allow_import = $config->get('citation_import', 1);
 			if ($allow_import) { ?>
 			<p class="and_or centeralign">OR</p>
-			<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn" id="newcite-question"><?php echo JText::_('Enter manually'); ?></a></p>
+			<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn" id="newcite-question"><?php echo Lang::txt('Enter manually'); ?></a></p>
 			<?php }
 		} ?>
 	</div>
