@@ -376,13 +376,42 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 	/**
 	 * Show form for adding attachments to a resource
-	 *
+	 * @vars       boolean $check
 	 * @return     void
 	 */
-	public function step_attach()
+	public function step_attach($check = FALSE)
 	{
 		//$step = $this->step;
 		//$next_step = $step+1;
+		if ($this->view->getName() != 'steps')
+		{
+			$this->setView('steps', 'attachments');
+		}
+
+		if (!isset($this->view->database))
+		{
+			if ($check == TRUE)
+			{
+				foreach($this->steps as $step => $name)
+				{
+					if ($name == 'Attach')
+					{
+						$this->step = $step;
+					}
+				}
+			}
+			else
+			{
+				$this->step = $this->step;
+			}
+
+			$this->view->config   = $this->config;
+			$this->view->database = $this->database;
+			$this->view->title    = $this->_title;
+			$this->view->step     = $this->step;
+			$this->view->steps    = $this->steps;
+			$this->view->progress = $this->progress;
+		}
 
 		// Incoming
 		$this->view->id = JRequest::getInt('id', 0);
@@ -1206,6 +1235,20 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			// Are submissions auto-approved?
 			if ($this->config->get('autoapprove') == 1)
 			{
+				//checks if autoapproved content has children (configurable in options on backend)
+				if($this->config->get('autoapprove_content_check') == 1)
+				{
+					require_once(JPATH_COMPONENT . '/models/resource.php');
+					$item = new ResourcesModelResource($id);
+
+					if (count($item->children()) < 1)
+					{
+						$this->setError(JText::_('COM_CONTRIBUTE_NO_CONTENT'));
+						$this->step_review();
+						return;
+					}
+				}
+
 				// Set status to published
 				$resource->published = 1;
 				$resource->publish_up = JFactory::getDate()->toSql();
