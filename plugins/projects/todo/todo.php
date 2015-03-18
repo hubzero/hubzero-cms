@@ -66,7 +66,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'    => 'todo',
-			'title'   => JText::_('COM_PROJECTS_TAB_TODO'),
+			'title'   => Lang::txt('COM_PROJECTS_TAB_TODO'),
 			'submenu' => NULL,
 			'show'    => true
 		);
@@ -315,7 +315,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$pathway = $app->getPathway();
 		$pathway->addItem(
 				stripslashes($view->row->get('content')),
-				JRoute::_('index.php?option=' . $this->_option
+				Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $this->_project->alias . '&active=todo'
 					. '&action=view') . '/?todoid=' . $todoid
 		);
@@ -391,7 +391,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Prevent resubmit
 		if ($task == 'save' && $content == '' && $newlist == '')
 		{
-			$this->_referer = JRoute::_('index.php?option=' . $this->_option
+			$this->_referer = Route::url('index.php?option=' . $this->_option
 				. '&alias='.$this->_project->alias . '&active=todo');
 			return;
 		}
@@ -444,7 +444,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_WRONG_DATE_FORMAT'));
+					$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_WRONG_DATE_FORMAT'));
 				}
 			}
 			else
@@ -468,8 +468,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$this->_msg = $todoid
-					?  JText::_('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
-					: JText::_('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
+					?  Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
+					: Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
 			}
 		}
 		// Assign todo
@@ -489,8 +489,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$this->_msg = $mine
-						? JText::_('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
-						: JText::_('PLG_PROJECTS_TODO_TODO_REASSIGNED');
+						? Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
+						: Lang::txt('PLG_PROJECTS_TODO_TODO_REASSIGNED');
 				}
 			}
 		}
@@ -514,16 +514,16 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				else
 				{
 					$this->_msg = $state == 1
-						? JText::_('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
-						: JText::_('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
+						? Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
+						: Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
 
 					if ($state == 1)
 					{
 						// Record activity
 						$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
-							JRoute::_('index.php?option=' . $this->_option
+							Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
+							Route::url('index.php?option=' . $this->_option
 								. '&alias=' . $this->_project->alias . '&active=todo'
 								. '&action=view&todoid=' . $objTD->id), 'todo', 1 );
 					}
@@ -550,10 +550,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				// Store content
 				if (!$objTD->store())
 				{
-					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
+					$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
 				}
 				else {
-					$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
 				}
 			}
 		}
@@ -563,8 +563,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($new)
 		{
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
-				JRoute::_('index.php?option=' . $this->_option
+				Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
+				Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $this->_project->alias . '&active=todo'
 					. '&action=view&todoid=' . $objTD->id), 'todo', 1);
 			// Store activity ID
@@ -588,13 +588,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		// Set redirect path
 		if ($page == 'item')
 		{
-			$url = JRoute::_('index.php?option=' . $this->_option
+			$url = Route::url('index.php?option=' . $this->_option
 					. '&alias='.$this->_project->alias . '&active=todo'
 					. '&action=view&todoid=' . $objTD->id);
 		}
 		else
 		{
-			$url = JRoute::_('index.php?option=' . $this->_option
+			$url = Route::url('index.php?option=' . $this->_option
 				. '&alias=' . $this->_project->alias . '&active=todo&list=' . $objTD->color);
 		}
 
@@ -641,7 +641,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// Delete todo
 			if (!$objTD->deleteTodo($this->_project->id, $todoid))
 			{
-				$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_DELETED_ERROR'));
+				$this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED_ERROR'));
 			}
 			else
 			{
@@ -656,7 +656,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 					$objAA->deleteActivity();
 				}
 
-				$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_DELETED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED');
 			}
 		}
 		else if ($list && $objTD->getListName($this->_project->id, $list))
@@ -700,7 +700,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 			// Clean-up colored items
 			$objTD->deleteList( $this->_project->id, $list );
-			$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
+			$this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
 		}
 
 		// Pass success or error message
@@ -714,7 +714,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to todo list
-		$url  = JRoute::_('index.php?option=' . $this->_option
+		$url  = Route::url('index.php?option=' . $this->_option
 				. '&alias=' . $this->_project->alias . '&active=todo');
 		$url .= $gobacklist ? '?list=' . $gobacklist : '';
 		$this->_referer = $url;
@@ -793,7 +793,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			// delete comment
 			if ($objC->deleteComment())
 			{
-				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_DELETED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_DELETED');
 			}
 
 			// delete associated activity
@@ -815,7 +815,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set redirect path
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option
+		$this->_referer = Route::url('index.php?option=' . $this->_option
 							. '&alias=' . $this->_project->alias . '&active=todo'
 							. '&action=view&todoid=' . $todoid);
 		return;
@@ -851,7 +851,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_POSTED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_POSTED');
 			}
 			// Get new entry ID
 			if (!$objC->id) {
@@ -862,10 +862,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 			if ($objC->id )
 			{
-				$what = JText::_('PLG_PROJECTS_TODO_TODO_ITEM');
+				$what = Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM');
 				$url = '#tr_'.$parent_activity; // same-page link
 				$aid = $objAA->recordActivity( $this->_project->id,
-					$this->_uid, JText::_('PLG_PROJECTS_TODO_COMMENTED').' '.JText::_('PLG_PROJECTS_TODO_ON').' '.$what,
+					$this->_uid, Lang::txt('PLG_PROJECTS_TODO_COMMENTED').' '.Lang::txt('PLG_PROJECTS_TODO_ON').' '.$what,
 					$objC->id, $what, $url, 'quote', 0 );
 			}
 
@@ -888,7 +888,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set redirect path
-		$this->_referer = JRoute::_('index.php?option=' . $this->_option
+		$this->_referer = Route::url('index.php?option=' . $this->_option
 							. '&alias=' . $this->_project->alias . '&active=todo'
 							. '&action=view&todoid=' . $itemid);
 		return;

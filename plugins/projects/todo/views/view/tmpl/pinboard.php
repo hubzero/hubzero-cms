@@ -37,14 +37,14 @@ $listName = $this->model->getListName($this->project->id, $this->filters);
 
 $whatsleft = $total - $this->filters['start'] - $this->filters['limit'];
 $team_ids = array('0' => '');
-$which = $this->filters['state'] == 1 ? strtolower(JText::_('PLG_PROJECTS_TODO_COMPLETED')) : JText::_('PLG_PROJECTS_TODO_OUTSTANDING');
-$where = $listName ? ' '.JText::_('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
-$where.= $this->filters['mine'] == 1 ? ' '.JText::_('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
+$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) : Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
+$where = $listName ? ' '.Lang::txt('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
+$where.= $this->filters['mine'] == 1 ? ' '.Lang::txt('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
 
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=todo';
 
 ?>
-<form action="<?php echo JRoute::_($url); ?>" method="post" id="plg-form" >
+<form action="<?php echo Route::url($url); ?>" method="post" id="plg-form" >
 	<?php // View header
 	$this->view('_header')
 		 ->set('option', $this->option)
@@ -58,8 +58,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 	<?php if (!$this->filters['state']) { ?>
 	<ul id="page_options" class="pluginOptions">
 		<li>
-			<a class="icon-add add btn showinbox"  href="<?php echo JRoute::_($url . '&action=new&list=' . $this->filters['todolist']); ?>">
-				<?php echo JText::_('PLG_PROJECTS_TODO_ADD_TODO'); ?>
+			<a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+				<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
 			</a>
 		</li>
 	</ul>
@@ -82,7 +82,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 					$class = $color ? 'pin_' . $color : 'pin_grey';
 
 					$overdue = $row->isOverdue();
-					$oNote = $overdue ? ' ('.JText::_('PLG_PROJECTS_TODO_OVERDUE').')' : '';
+					$oNote = $overdue ? ' ('.Lang::txt('PLG_PROJECTS_TODO_OVERDUE').')' : '';
 				?>
 					<li class="<?php echo $class; ?> droptarget <?php echo $row->isComplete() ? 'tdclosed' : ''; ?>" id="todo-<?php echo $row->get('id'); ?>">
 						<div id="td-<?php echo $row->get('id'); ?>">
@@ -93,24 +93,24 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 							<span class="todo-content" id="td-content-<?php echo $row->get('id'); ?>"><?php echo \Hubzero\Utility\String::truncate($row->get('content'), 150); ?></span>
 							<span class="todo-options" id="td-options-<?php echo $row->get('id'); ?>">
 							<?php if ($row->isComplete()) { ?>
-								<span class="todo-assigned"> <?php echo $row->closer('name'); ?></span> <?php if ($row->isComplete()) { echo '<span class="todo-due">' . JText::_('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $row->closed('date') . '</span>'; } ?>
+								<span class="todo-assigned"> <?php echo $row->closer('name'); ?></span> <?php if ($row->isComplete()) { echo '<span class="todo-due">' . Lang::txt('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $row->closed('date') . '</span>'; } ?>
 							<?php } else { ?>
-							<?php echo '<span class="todo-assigned" id="td-assigned-' . $row->get('id') . '">' . $row->owner('name') . '</span>'; ?> <?php if ($row->due()) { echo '<span class="todo-due" id="td-due-' . $row->get('id') . '">' . JText::_('PLG_PROJECTS_TODO_DUE') . ' ' . $row->due('date') . $oNote . '</span>'; } ?>
+							<?php echo '<span class="todo-assigned" id="td-assigned-' . $row->get('id') . '">' . $row->owner('name') . '</span>'; ?> <?php if ($row->due()) { echo '<span class="todo-due" id="td-due-' . $row->get('id') . '">' . Lang::txt('PLG_PROJECTS_TODO_DUE') . ' ' . $row->due('date') . $oNote . '</span>'; } ?>
 							<?php } ?>
 							</span>
 							<input type="hidden" name="order" id="order-<?php echo $row->get('id'); ?>" value="<?php echo $order; ?>" />
-							<span class="comment-blurb"><a href="<?php echo JRoute::_($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?>&nbsp;&raquo;</a></span>
+							<span class="comment-blurb"><a href="<?php echo Route::url($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?>&nbsp;&raquo;</a></span>
 						</div>
 					</li>
 				<?php $order++; } ?>
 		<?php } elseif (!$this->filters['state']) {	 ?>
 		<li class="todo-add">
-			<span><a class="item-add showinbox" href="<?php echo JRoute::_($url . '&action=new&list=' . $this->filters['todolist']); ?>">
-				<?php echo JText::_('PLG_PROJECTS_TODO_ADD_TODO'); ?>
+			<span><a class="item-add showinbox" href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+				<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
 			</a></span>
 		</li>
 		<?php } else {	?>
-			<li class="todo-empty"><?php echo JText::_('PLG_PROJECTS_TODO_NO_TODOS').$where.'.'; ?></li>
+			<li class="todo-empty"><?php echo Lang::txt('PLG_PROJECTS_TODO_NO_TODOS').$where.'.'; ?></li>
 		<?php } ?>
 		<li class="clear"></li>
 	</ul>

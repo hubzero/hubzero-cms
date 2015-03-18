@@ -55,10 +55,10 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 ?>
 
 <div id="abox-content">
-<h3><?php echo $this->row->get('id') ? JText::_('PLG_PROJECTS_TODO_EDIT_TODO') : JText::_('PLG_PROJECTS_TODO_ADD_TODO'); ?></h3>
+<h3><?php echo $this->row->get('id') ? Lang::txt('PLG_PROJECTS_TODO_EDIT_TODO') : Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?></h3>
 
 <div class="pinboard">
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=todo'); ?>" method="post" id="plg-form" >
+	<form action="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=todo'); ?>" method="post" id="plg-form" >
 		<fieldset>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="id" id="pid" value="<?php echo $this->project->id; ?>" />
@@ -72,12 +72,12 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 			<div id="td-item" class="<?php echo $class; ?>">
 				<span class="pin">&nbsp;</span>
 				<div class="todo-content">
-					<textarea name="content" rows="10" cols="25" placeholder="<?php echo JText::_('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
+					<textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
 					<div class="todo-edits">
 						<?php if (count($lists) > 0 ) { ?>
-						<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
+						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
 							<select name="list">
-								<option value="none" <?php if ($color == '') echo 'selected="selected"'?>><?php echo JText::_('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
+								<option value="none" <?php if ($color == '') echo 'selected="selected"'?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
 							<?php foreach ($lists as $list) {
 							?>
 								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
@@ -85,9 +85,9 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 							</select>
 						</label>
 						<?php } ?>
-						<label id="td-selector"><?php echo JText::_('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO'); ?>
+						<label id="td-selector"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO'); ?>
 							<select name="assigned">
-								<option value=""><?php echo JText::_('PLG_PROJECTS_TODO_NOONE'); ?></option>
+								<option value=""><?php echo Lang::txt('PLG_PROJECTS_TODO_NOONE'); ?></option>
 							<?php foreach ($this->team as $member) {
 								if ($member->userid && $member->userid != 0) {
 									$team_ids[] = $member->userid; ?>
@@ -95,11 +95,11 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 							<?php } } ?>
 							</select>
 						</label>
-						<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_DUE')); ?>
+						<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE')); ?>
 							<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $this->row->due() ? JHTML::_('date', strtotime($this->row->due('date')), 'm/d/Y') : ''; ?>" />
 						</label>
 						<p class="submitarea">
-							<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_TODO_SAVE'); ?>" class="btn" />
+							<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_SAVE'); ?>" class="btn" />
 						</p>
 					</div>
 				</div>

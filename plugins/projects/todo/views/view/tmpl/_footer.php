@@ -42,16 +42,16 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 <input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
 <input type="hidden" name="sortdir" value="<?php echo $this->filters['sortdir']; ?>" />
 <?php if ($this->filters['state'] == 0) { ?>
-	<p class="tips js"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_REORDER_INSTRUCT')); ?></p>
+	<p class="tips js"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_REORDER_INSTRUCT')); ?></p>
 <?php } ?>
 <?php if ($this->filters['todolist']) { ?>
 <div class="container-footer">
-	<span class="listoptions"><a href="<?php echo JRoute::_($url . '&action=delete&dl=' . $this->filters['todolist']); ?>" id="del-<?php echo $this->filters['todolist']; ?>" class="dellist"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE_TODO_LIST'); ?></a></span>
-	<div class="confirmaction" id="confirm-<?php echo $this->filters['todolist']; ?>"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE'); ?>
+	<span class="listoptions"><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>" id="del-<?php echo $this->filters['todolist']; ?>" class="dellist"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST'); ?></a></span>
+	<div class="confirmaction" id="confirm-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE'); ?>
 		<ul>
-			<li><a href="<?php echo JRoute::_($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1'); ?>"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS'); ?></a></li>
-			<li><a href="<?php echo JRoute::_($url . '&action=delete&dl=' . $this->filters['todolist']); ?>"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS'); ?></a></li>
-			<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist']); ?>" id="cnl-<?php echo $this->filters['todolist']; ?>"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE_CANCEL'); ?></a></li>
+			<li><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS'); ?></a></li>
+			<li><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS'); ?></a></li>
+			<li><a href="<?php echo Route::url($url . '&list=' . $this->filters['todolist']); ?>" id="cnl-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_CANCEL'); ?></a></li>
 		</ul>
 	</div>
 </div>
