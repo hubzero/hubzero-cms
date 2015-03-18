@@ -206,7 +206,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 	{
 		\Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 	}
 
 	/**
