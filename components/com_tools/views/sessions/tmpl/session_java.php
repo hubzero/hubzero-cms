@@ -67,7 +67,7 @@ if ($this->app->params->get('vncDebug',0)) {
 }
 ?>
 
-			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="<?php echo $base; ?>/components/com_tools/scripts/VncViewer-20140116-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
+			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="<?php echo $base; ?>/components/com_tools/scripts/VncViewer-20150318-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 				<param name="name" value="App Viewer" />
 				<param name="PORT" value="<?php echo $this->output->port; ?>" />
 				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>" />
