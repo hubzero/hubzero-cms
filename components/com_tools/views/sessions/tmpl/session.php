@@ -123,7 +123,7 @@ if (!$this->app->sess) {
 		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->output->width; ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->output->height; ?>" />
-			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="/components/com_tools/scripts/VncViewer-20110822-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
+			<applet id="theapp" class="thisapp<?php if (!empty($cls)) { echo ' ' . implode(' ', $cls); } ?>" code="VncViewer.class" archive="/components/com_tools/scripts/VncViewer-20150318-01.jar" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>" MAYSCRIPT>
 				<param name="PORT" value="<?php echo $this->output->port; ?>" />
 				<param name="ENCPASSWORD" value="<?php echo $this->output->password; ?>" />
 				<param name="CONNECT" value="<?php echo $this->output->connect; ?>" />
@@ -143,7 +143,7 @@ if (!$this->app->sess) {
 			<script type="text/javascript">
 			function loadUnsignedApplet()
 			{
-				var jar = "/components/com_tools/scripts/VncViewer-20110822-01.jar",
+				var jar = "/components/com_tools/scripts/VncViewer-20150318-01.jar",
 					w = <?php echo $this->output->width; ?>,
 					h = <?php echo $this->output->height; ?>,
 					port = <?php echo $this->output->port; ?>;
@@ -160,7 +160,7 @@ if (!$this->app->sess) {
 			}
 			function loadSignedApplet()
 			{
-				var jar = "/components/com_tools/scripts/SignedVncViewer-20110822-01.jar",
+				var jar = "/components/com_tools/scripts/VncViewer-20150318-01.jar",
 					w = <?php echo $this->output->width; ?>,
 					h = <?php echo $this->output->height; ?>,
 					port = <?php echo $this->output->port; ?>,
