@@ -288,7 +288,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		include_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		$row->href = JRoute::_('index.php?option=com_publications&id=' . $row->id);
 
