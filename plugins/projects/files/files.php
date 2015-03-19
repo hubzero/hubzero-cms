@@ -591,11 +591,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Make sure block exists, else use default
-		if (!$view->publication->_curationModel->setBlock( $block, $step ))
-		{
-			$block = 'content';
-			$step  = 1;
-		}
+		$view->publication->_curationModel->setBlock( $block, $step );
 
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
