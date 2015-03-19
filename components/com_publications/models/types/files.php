@@ -472,8 +472,8 @@ class Files extends Object
 	protected function _publishAttachment ($pid, $vid, $fpath, $hash, $secret)
 	{
 		// Load component configs
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
-		$config = \JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = Component::params( 'com_publications' );
+		$config = Component::params( 'com_projects' );
 
 		// Build publication path
 		$base_path 	= $pubconfig->get('webpath');
@@ -521,8 +521,8 @@ class Files extends Object
 	protected function _unpublishAttachment($pid, $vid, $fpath, $secret)
 	{
 		// Load component configs
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
-		$config = \JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = Component::params( 'com_publications' );
+		$config = Component::params( 'com_projects' );
 
 		// Build publication path
 		$base_path  = $pubconfig->get('webpath');
@@ -570,7 +570,7 @@ class Files extends Object
 		if ($this->_project && $this->_project->provisioned != 1)
 		{
 			// Load component configs
-			$config = \JComponentHelper::getParams( 'com_projects' );
+			$config = Component::params( 'com_projects' );
 		}
 
 		$html = '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . \Components\Projects\Helpers\Html::shortenFileName($file, 50);
@@ -607,8 +607,8 @@ class Files extends Object
 		$published = 0;
 
 		// Load component configs
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
-		$config = \JComponentHelper::getParams( 'com_projects' );
+		$pubconfig = Component::params( 'com_publications' );
+		$config = Component::params( 'com_projects' );
 
 		// Build publication paths
 		$base_path 	= $pubconfig->get('webpath');

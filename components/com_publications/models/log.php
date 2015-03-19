@@ -234,7 +234,7 @@ class Log extends Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \JComponentHelper::getParams('com_publications');
+			$this->_config = Component::params('com_publications');
 		}
 		if (!$pid || !$vid)
 		{

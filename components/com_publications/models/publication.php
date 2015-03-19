@@ -127,7 +127,7 @@ class Publication extends Object
 			}
 
 			// Collect params
-			$this->params = \JComponentHelper::getParams('com_publications');
+			$this->params = Component::params('com_publications');
 			$this->params->merge(new \JRegistry($this->version->params));
 			$this->params->merge($this->_type->_params);
 		}

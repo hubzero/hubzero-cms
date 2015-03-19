@@ -1878,7 +1878,7 @@ class Publications extends SiteController
 		$ajax 	 = \JRequest::getInt( 'ajax', 0 );
 
 		// Load projects config
-		$pconfig = \JComponentHelper::getParams( 'com_projects' );
+		$pconfig = Component::params( 'com_projects' );
 
 		// Redirect if publishing is turned off
 		if (!$this->_contributable || !$this->config->get('contribute', 0))
@@ -1982,7 +1982,7 @@ class Publications extends SiteController
 		// Is project registration restricted to a group?
 		if ($action == 'start')
 		{
-			$pconfig = \JComponentHelper::getParams( 'com_projects' );
+			$pconfig = Component::params( 'com_projects' );
 			$creatorgroup = $pconfig->get('creatorgroup', '');
 
 			if ($creatorgroup)

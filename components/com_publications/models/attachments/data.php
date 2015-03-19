@@ -62,10 +62,10 @@ class Data extends Base
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
-		$config 		= \JComponentHelper::getParams( 'com_projects' );
+		$config 		= Component::params( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = Component::params( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path

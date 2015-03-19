@@ -225,7 +225,7 @@ class Notes extends Object
 		// Incoming data
 		$item = $this->__get('item');
 
-		$config = \JComponentHelper::getParams( 'com_projects' );
+		$config = Component::params( 'com_projects' );
 		$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$group = $config->get('group_prefix', 'pr-') . $this->_project->alias;
 
@@ -301,7 +301,7 @@ class Notes extends Object
 		$item   	= $this->__get('item');
 
 		// Load component configs
-		$config = \JComponentHelper::getParams( 'com_projects' );
+		$config = Component::params( 'com_projects' );
 
 		$pageid 		= $att->id ? $att->object_id : $item;
 		$masterscope 	= 'projects' . DS . $this->_project->alias . DS . 'notes';
@@ -350,8 +350,8 @@ class Notes extends Object
 		if (isset($selections['notes']) && count($selections['notes']) > 0)
 		{
 			// Load component configs
-			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
-			$config = \JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = Component::params( 'com_publications' );
+			$config = Component::params( 'com_projects' );
 
 			$masterscope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 			$group 		 = $config->get('group_prefix', 'pr-') . $this->_project->alias;

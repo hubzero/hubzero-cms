@@ -341,8 +341,8 @@ class Databases extends Object
 			$objData->loadRecord($database_name);
 
 			// Load component configs
-			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
-			$config = \JComponentHelper::getParams( 'com_projects' );
+			$pubconfig = Component::params( 'com_publications' );
+			$config = Component::params( 'com_projects' );
 
 			// Get databases plugin
 			\JPluginHelper::importPlugin( 'projects', 'databases');
@@ -619,7 +619,7 @@ class Databases extends Object
 		$published = 0;
 
 		// Load component configs
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = Component::params( 'com_publications' );
 		$base_path 	= $pubconfig->get('webpath');
 
 		foreach ($attachments as $att)

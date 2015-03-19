@@ -406,7 +406,7 @@ class ResourceMapGenerator
 	public static function putRDF($id)
 	{
 		// Do not put link to RDF file if administrator disabled it
-		if (!\JComponentHelper::getParams('com_publications')->get('show_linked_data', 1))
+		if (!Component::params('com_publications')->get('show_linked_data', 1))
 		{
 			return;
 		}

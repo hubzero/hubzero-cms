@@ -148,7 +148,7 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = \JComponentHelper::getParams( 'com_publications' );
+			$config = Component::params( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
@@ -197,7 +197,7 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = \JComponentHelper::getParams( 'com_publications' );
+			$config = Component::params( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication
@@ -381,7 +381,7 @@ class Citations extends Base
 
 		if (!isset($pub->_citations))
 		{
-			$config = \JComponentHelper::getParams( 'com_publications' );
+			$config = Component::params( 'com_publications' );
 			$pub->_citationFormat = $config->get('citation_format', 'apa');
 
 			// Get citations for this publication

@@ -121,7 +121,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Get component config
-		$pconfig = JComponentHelper::getParams( $this->_option );
+		$pconfig = Component::params( $this->_option );
 		$this->view->config = $pconfig;
 
 		// Get <select> of types

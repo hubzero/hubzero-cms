@@ -60,7 +60,7 @@ class Html extends \JObject
 		}
 		if (!$base)
 		{
-			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = Component::params( 'com_publications' );
 			$base = $pubconfig->get('webpath');
 		}
 
@@ -91,7 +91,7 @@ class Html extends \JObject
 	{
 		if (empty($config))
 		{
-			$config = \JComponentHelper::getParams( 'com_publications' );
+			$config = Component::params( 'com_publications' );
 		}
 
 		// Get publication directory path
@@ -380,7 +380,7 @@ class Html extends \JObject
 		include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
 			. 'com_citations' . DS . 'tables' . DS . 'type.php' );
 
-		$cconfig  = \JComponentHelper::getParams( 'com_citations' );
+		$cconfig  = Component::params( 'com_citations' );
 
 		$template = "{AUTHORS} ({YEAR}). <b>{TITLE/CHAPTER}</b>. <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b> {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}. {PUBLISHER}. doi:{DOI}";
 
@@ -1619,7 +1619,7 @@ class Html extends \JObject
 
 		if (!empty($rows))
 		{
-			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = Component::params( 'com_publications' );
 			$base = trim($pubconfig->get('webpath'), DS);
 
 			foreach ($rows as $row)

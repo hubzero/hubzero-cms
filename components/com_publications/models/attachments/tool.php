@@ -55,10 +55,10 @@ class Tool extends Base
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
 		// Get project path
-		$config 		= \JComponentHelper::getParams( 'com_projects' );
+		$config 		= Component::params( 'com_projects' );
 		$configs->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($pub->_project->alias);
 
-		$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = Component::params( 'com_publications' );
 		$base = $pubconfig->get('webpath');
 
 		// Log path
@@ -139,7 +139,7 @@ class Tool extends Base
 		$disabled = 0;
 		$pop 	  = NULL;
 
-		$mconfig = \JComponentHelper::getParams('com_tools');
+		$mconfig = Component::params('com_tools');
 
 		// Ensure we have a connection to the middleware
 		if (!$mconfig->get('mw_on'))
@@ -269,7 +269,7 @@ class Tool extends Base
 		$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 		//get tool params
-		$params = \JComponentHelper::getParams('com_tools');
+		$params = Component::params('com_tools');
 		$launchOnIpad = $params->get('launch_ipad', 0);
 
 		// Generate the URL that launches a tool session

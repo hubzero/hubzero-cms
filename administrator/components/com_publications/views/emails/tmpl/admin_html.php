@@ -34,8 +34,8 @@ $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
 $juri 	 		= JURI::getInstance();
 $jconfig 		= JFactory::getConfig();
-$config  		= JComponentHelper::getParams( 'com_projects' );
-$pubconfig  	= JComponentHelper::getParams( 'com_publications' );
+$config  		= Component::params( 'com_projects' );
+$pubconfig  	= Component::params( 'com_publications' );
 $hubShortName 	= $jconfig->getValue('config.sitename');
 $showThumb      = $config->get('showthumbemail', 0);
 
