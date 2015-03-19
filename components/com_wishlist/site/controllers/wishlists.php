@@ -54,7 +54,7 @@ class Wishlists extends SiteController
 	 */
 	public function execute()
 	{
-		$upconfig = \JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$this->banking = $this->config->get('banking', $upconfig->get('bankAccounts', 0));
 
 		$this->registerTask('__default', 'wishlist');
@@ -914,7 +914,7 @@ class Wishlists extends SiteController
 		$this->view->wish     = $wish;
 
 		// Get URL to page explaining virtual economy
-		$aconfig = \JComponentHelper::getParams('com_answers');
+		$aconfig = Component::params('com_answers');
 		$this->view->infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
 		$this->view->funds    = $funds;
 		$this->view->banking  = $this->banking;
@@ -1006,7 +1006,7 @@ class Wishlists extends SiteController
 			$this->_buildPathway($wishlist);
 
 			// Get URL to page explaining virtual economy
-			$aconfig = \JComponentHelper::getParams('com_answers');
+			$aconfig = Component::params('com_answers');
 			$infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
 
 			$this->view->title    = Lang::txt(strtoupper($this->_name));

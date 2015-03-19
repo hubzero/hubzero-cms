@@ -140,7 +140,7 @@ class Configuration implements ArrayAccess, Iterator
 	 */
 	public function params()
 	{
-		return \JComponentHelper::getParams('com_search');
+		return \Component::params('com_search');
 	}
 
 	/**

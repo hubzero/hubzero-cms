@@ -229,7 +229,7 @@ class Owner extends \JTable
 		sort($owners);
 
 		// Are we also including advisory committee?
-		$wconfig = \JComponentHelper::getParams('com_wishlist');
+		$wconfig = Component::params('com_wishlist');
 
 		$advisory = array();
 

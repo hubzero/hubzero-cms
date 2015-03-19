@@ -159,7 +159,7 @@ class Economy extends Object
 		if ($points > 0 && $type!='royalty')
 		{
 			// Get the component parameters
-			$wconfig = \JComponentHelper::getParams('com_wishlist');
+			$wconfig = Component::params('com_wishlist');
 			$admingroup = $wconfig->get('group', 'hubadmin');
 
 			// get list owners

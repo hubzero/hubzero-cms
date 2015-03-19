@@ -193,7 +193,7 @@ class Wish extends \JTable
 
 		if (isset($filters['tag']) && $filters['tag'])
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
+			require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 
 			$tagging = new Tags($this->_db);
 			$tags = $tagging->parseTags($filters['tag']);
@@ -235,7 +235,7 @@ class Wish extends \JTable
 
 		$filters['tag'] = isset($filters['tag']) ? $filters['tag'] : '';
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
+		require_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 
 		$sort = 'ws.status ASC, ws.proposed DESC';
 		// list  sorting
@@ -485,7 +485,7 @@ class Wish extends \JTable
 		$this->_db->setQuery("SELECT * FROM `#__wish_attachments` WHERE wish=" . $this->_db->Quote($this->$k));
 		if (($attachments = $this->_db->loadObjectList()))
 		{
-			$config = \JComponentHelper::getParams('com_wishlist');
+			$config = Component::params('com_wishlist');
 
 			$path = PATH_APP . DS . trim($config->get('webpath', '/site/wishes'), DS) . DS . $oid;
 
@@ -516,7 +516,7 @@ class Wish extends \JTable
 		$juser = \JFactory::getUser();
 
 		// Remove all tags
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
+		include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
 		$wt = new Tags($oid);
 		$wt->setTags('', $juser->get('id'), 1);
 

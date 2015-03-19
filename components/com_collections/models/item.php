@@ -581,7 +581,7 @@ class Item extends Base
 
 		if ($files = $this->get('_files'))
 		{
-			$config = \JComponentHelper::getParams('com_collections');
+			$config = Component::params('com_collections');
 
 			// Build the upload path if it doesn't exist
 			$path = $this->filespace() . DS . $this->get('id');

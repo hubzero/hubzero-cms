@@ -63,7 +63,7 @@ class PagePermissions extends \JModelAdmin
 		$this->setState($this->getName().'.id', $pk);
 
 		// Load the parameters.
-		$value = \JComponentHelper::getParams($this->option);
+		$value = \Component::params($this->option);
 		$this->setState('params', $value);
 	}
 
@@ -98,7 +98,8 @@ class PagePermissions extends \JModelAdmin
 		 */
 	public function getTable($type = 'Page', $prefix = 'Wiki', $config = array())
 	{
-		return \JTable::getInstance($type, $prefix, $config);
+		$database = \JFactory::getDBO();
+		return new \Components\Wiki\Tables\Page($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**

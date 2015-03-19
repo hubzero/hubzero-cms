@@ -42,7 +42,7 @@ class Group extends Base
 	/**
 	 * URL segments
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_segments = array(
 		'option' => 'com_groups',
@@ -51,8 +51,8 @@ class Group extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
@@ -67,7 +67,7 @@ class Group extends Base
 		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'blog';
 
-		$groupParams = \JComponentHelper::getParams('com_groups');
+		$groupParams = Component::params('com_groups');
 		$uploadpath = $groupParams->get('uploadpath', '/site/groups');
 		$uploadpath = trim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS . 'blog';
 
@@ -79,8 +79,8 @@ class Group extends Base
 	/**
 	 * Retrieve a property from the internal item object
 	 *
-	 * @param      string $key Property to retrieve
-	 * @return     string
+	 * @param   string  $key  Property to retrieve
+	 * @return  string
 	 */
 	public function item($key='')
 	{
@@ -109,9 +109,9 @@ class Group extends Base
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{

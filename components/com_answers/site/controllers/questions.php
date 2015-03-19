@@ -53,7 +53,7 @@ class Questions extends SiteController
 	 */
 	public function execute()
 	{
-		$this->config->set('banking', \JComponentHelper::getParams('com_members')->get('bankAccounts'));
+		$this->config->set('banking', \Component::params('com_members')->get('bankAccounts'));
 
 		$this->registerTask('__default', 'search');
 		$this->registerTask('latest', 'latest.rss');

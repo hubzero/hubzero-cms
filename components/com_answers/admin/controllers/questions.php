@@ -47,7 +47,7 @@ class Questions extends AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = \JComponentHelper::getParams('com_members')->get('bankAccounts');
+		$this->banking = \Component::params('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');

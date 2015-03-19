@@ -62,7 +62,7 @@ class Bibtex extends Downloadable
 	public function format($row)
 	{
 		// get fields to not include for all citations
-		$config = \JComponentHelper::getParams('com_citations');
+		$config = \Component::params('com_citations');
 		$exclude = $config->get('citation_download_exclude', '');
 		if (strpos($exclude, ',') !== false)
 		{

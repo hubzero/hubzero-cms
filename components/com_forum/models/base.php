@@ -129,7 +129,7 @@ class Base extends Model
 	{
 		if (!($this->_config instanceof \JRegistry))
 		{
-			$this->_config = \JComponentHelper::getParams('com_forum');
+			$this->_config = Component::params('com_forum');
 		}
 		if ($key)
 		{

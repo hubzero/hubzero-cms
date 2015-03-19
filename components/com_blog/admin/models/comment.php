@@ -59,7 +59,7 @@ class Comment extends \JModelAdmin
 		$this->setState($this->getName() . '.id', $pk);
 
 		// Load the parameters.
-		$value = \JComponentHelper::getParams($this->option);
+		$value = \Component::params($this->option);
 		$this->setState('params', $value);
 	}
 
@@ -94,7 +94,8 @@ class Comment extends \JModelAdmin
 	 */
 	public function getTable($type = 'Comment', $prefix = 'Blog', $config = array())
 	{
-		return \JTable::getInstance($type, $prefix, $config);
+		$database = \JFactory::getDBO();
+		return new \Components\Blog\Tables\Comment($database); //\JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**

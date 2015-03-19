@@ -186,7 +186,7 @@ class Attachment extends \JTable
 
 		if (!$path)
 		{
-			$path = PATH_APP . DS . trim(\JComponentHelper::getParams('com_wiki')->get('filepath', '/site/wiki'), DS);
+			$path = PATH_APP . DS . trim(\Component::params('com_wiki')->get('filepath', '/site/wiki'), DS);
 		}
 
 		return $path;

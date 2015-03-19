@@ -217,7 +217,7 @@ class Attachment extends \JTable
 		{
 			if (!is_object($config))
 			{
-				$config = \JComponentHelper::getParams('com_forum');
+				$config = Component::params('com_forum');
 			}
 			$this->_uppath = PATH_APP . DS . trim($config->get('filepath', '/site/forum'), DS);
 		}

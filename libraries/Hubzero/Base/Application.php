@@ -35,6 +35,7 @@ use Hubzero\Error\Exception\NotAuthorizedException;
 use Hubzero\Error\Exception\NotFoundException;
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Facades\Facade;
+use Hubzero\Http\Request;
 
 /**
  * Application class
@@ -57,6 +58,7 @@ class Application extends Container
 		'Hubzero\Events\EventServiceProvider',
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
+		'Hubzero\Component\ComponentServiceProvider',
 	);
 
 	/**
@@ -65,10 +67,12 @@ class Application extends Container
 	 * @var  array
 	 */
 	private static $baseAliases = array(
-		'App'   => 'Hubzero\Facades\App',
-		'Route' => 'Hubzero\Facades\Route',
-		'Lang'  => 'Hubzero\Facades\Lang',
-		'Log'   => 'Hubzero\Facades\Log',
+		'App'       => 'Hubzero\Facades\App',
+		'Request'   => 'Hubzero\Facades\Request',
+		'Route'     => 'Hubzero\Facades\Route',
+		'Lang'      => 'Hubzero\Facades\Lang',
+		'Log'       => 'Hubzero\Facades\Log',
+		'Component' => 'Hubzero\Facades\Component',
 	);
 
 	/**
@@ -83,9 +87,11 @@ class Application extends Container
 	 *
 	 * @return  void
 	 */
-	public function __construct()
+	public function __construct(Request $request = null)
 	{
 		parent::__construct();
+
+		$this['request'] = ($request ?: Request::createFromGlobals());
 
 		$this->registerBaseServiceProviders();
 

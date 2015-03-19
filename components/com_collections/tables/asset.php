@@ -370,7 +370,7 @@ class Asset extends \JTable
 	 */
 	public function path($id=null)
 	{
-		$config = \JComponentHelper::getParams('com_collections');
+		$config = Component::params('com_collections');
 		return PATH_APP . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $id;
 	}
 }

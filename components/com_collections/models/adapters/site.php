@@ -56,7 +56,7 @@ class Site extends Base
 	{
 		$this->set('scope_id', $scope_id);
 
-		$config = \JComponentHelper::getParams($this->_segments['option']);
+		$config = Component::params($this->_segments['option']);
 
 		$this->set('path', $config->get('uploadpath', '/site/blog'));
 		$this->set('scope', 'site');

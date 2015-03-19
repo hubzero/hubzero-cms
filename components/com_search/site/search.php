@@ -30,7 +30,7 @@
 
 namespace Components\Search\Site;
 
-$config = \JComponentHelper::getParams('com_search');
+$config = \Component::params('com_search');
 
 $controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', $config->get('engine', 'basic')));
 

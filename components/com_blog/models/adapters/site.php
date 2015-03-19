@@ -49,14 +49,14 @@ class Site extends Base
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer  $scope_id  Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
 		$this->set('scope_id', $scope_id);
 
-		$config = \JComponentHelper::getParams($this->_segments['option']);
+		$config = Component::params($this->_segments['option']);
 
 		$this->set('path', $config->get('uploadpath', '/site/blog'));
 		$this->set('scope', '');
@@ -66,8 +66,8 @@ class Site extends Base
 	/**
 	 * Retrieve a property from the internal item object
 	 *
-	 * @param      string $key Property to retrieve
-	 * @return     string
+	 * @param   string  $key  Property to retrieve
+	 * @return  string
 	 */
 	public function item($key='')
 	{
@@ -96,9 +96,9 @@ class Site extends Base
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{

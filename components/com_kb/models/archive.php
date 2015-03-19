@@ -100,7 +100,7 @@ class Archive extends Object
 	{
 		$this->_db = \JFactory::getDBO();
 
-		$this->_config = \JComponentHelper::getParams('com_kb');
+		$this->_config = \Component::params('com_kb');
 	}
 
 	/**

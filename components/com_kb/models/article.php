@@ -167,7 +167,7 @@ class Article extends Model
 
 		$params = new \JRegistry($this->get('params'));
 
-		$this->_params = \JComponentHelper::getParams('com_kb');
+		$this->_params = \Component::params('com_kb');
 		$this->_params->merge($params);
 	}
 

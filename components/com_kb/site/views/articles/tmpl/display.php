@@ -167,7 +167,7 @@ $this->css()
 		</div><!-- / .subject -->
 
 		<aside class="aside">
-		<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
+		<?php if (Component::isEnabled('com_answers')) { ?>
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_KB_COMMUNITY'); ?></h3>
 				<p>
@@ -175,7 +175,7 @@ $this->css()
 				</p>
 			</div><!-- / .container -->
 		<?php } ?>
-		<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
+		<?php if (Component::isEnabled('com_wishlist')) { ?>
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_KB_FEATURE_REQUEST'); ?></h3>
 				<p>
@@ -183,7 +183,7 @@ $this->css()
 				</p>
 			</div><!-- / .container -->
 		<?php } ?>
-		<?php if (JComponentHelper::isEnabled('com_support')) { ?>
+		<?php if (Component::isEnabled('com_support')) { ?>
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_KB_TROUBLE_REPORT'); ?></h3>
 				<p>

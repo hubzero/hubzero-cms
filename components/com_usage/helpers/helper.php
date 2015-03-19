@@ -46,7 +46,7 @@ class Helper
 
 		if (!is_object($instance))
 		{
-			$config = \JComponentHelper::getParams('com_usage');
+			$config = \Component::params('com_usage');
 
 			$options['driver']   = $config->get('statsDBDriver');
 			$options['host']     = $config->get('statsDBHost');

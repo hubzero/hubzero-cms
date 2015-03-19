@@ -27,6 +27,30 @@ class JComponentHelper
 	protected static $components = array();
 
 	/**
+	 * Check if the CMS is running legacy code
+	 * and needs to fallback to Joomla methods.
+	 *
+	 * @return  boolean
+	 * @since   2.0.0
+	 */
+	protected static function isLegacy()
+	{
+		static $legacy;
+
+		if ($legacy === null)
+		{
+			$legacy = true;
+
+			if (class_exists('Component'))
+			{
+				$legacy = false;
+			}
+		}
+
+		return $legacy;
+	}
+
+	/**
 	 * Get the component information.
 	 *
 	 * @param   string   $option  The component option.
@@ -38,6 +62,11 @@ class JComponentHelper
 	 */
 	public static function getComponent($option, $strict = false)
 	{
+		if (!self::isLegacy())
+		{
+			return \Component::load($option, $strict);
+		}
+
 		if (!isset(self::$components[$option]))
 		{
 			if (self::_load($option))
@@ -71,6 +100,11 @@ class JComponentHelper
 	 */
 	public static function isEnabled($option, $strict = false)
 	{
+		if (!self::isLegacy())
+		{
+			return \Component::isEnabled($option, $strict);
+		}
+
 		$result = self::getComponent($option, $strict);
 
 		return ($result->enabled | JFactory::getApplication()->isAdmin());
@@ -89,6 +123,11 @@ class JComponentHelper
 	 */
 	public static function getParams($option, $strict = false)
 	{
+		if (!self::isLegacy())
+		{
+			return \Component::params($option, $strict);
+		}
+
 		$component = self::getComponent($option, $strict);
 
 		return $component->params;
@@ -287,6 +326,11 @@ class JComponentHelper
 	 */
 	public static function renderComponent($option, $params = array())
 	{
+		if (!self::isLegacy())
+		{
+			return \Component::render($option, $params);
+		}
+
 		// Initialise variables.
 		$app = JFactory::getApplication();
 
@@ -314,7 +358,7 @@ class JComponentHelper
 		$file = substr($option, 4);
 
 		// Define component path.
-		/*define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
+		define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
 		define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
 		define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
 
@@ -327,7 +371,7 @@ class JComponentHelper
 		else
 		{
 			$path = JPATH_COMPONENT . '/' . $file . '.php';
-		}*/
+		}
 
 		// [!] HUBZERO - Set path and constants for combined components
 		$client = ($app->isAdmin() ? 'admin' : 'site');

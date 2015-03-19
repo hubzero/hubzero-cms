@@ -90,7 +90,7 @@ class Links extends \JModelList
 		$this->setState('filter.state', $state);
 
 		// Load the parameters.
-		$params = \JComponentHelper::getParams('com_redirect');
+		$params = \Component::params('com_redirect');
 		$this->setState('params', $params);
 
 		// List state information.

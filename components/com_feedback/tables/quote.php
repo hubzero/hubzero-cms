@@ -200,8 +200,7 @@ class Quote extends \JTable
 		// If no primary key is given, return false.
 		if ($pk === null)
 		{
-			$e = new \Exception(Lang::txt('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
-			$this->setError($e);
+			$this->setError(Lang::txt('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
 			return false;
 		}
 
@@ -235,7 +234,7 @@ class Quote extends \JTable
 	 */
 	public function filespace($root = true)
 	{
-		$config = \JComponentHelper::getParams('com_feedback');
+		$config = Component::params('com_feedback');
 
 		return ($root ? PATH_APP : '') . DS . trim($config->get('uploadpath', '/site/quotes'), DS);
 	}

@@ -32,6 +32,8 @@ namespace Components\Answers\Models;
 
 use Hubzero\Base\Model;
 use Hubzero\User\Profile;
+use Component;
+use Lang;
 
 /**
  * Base class for Answers models to extend
@@ -131,13 +133,13 @@ class Base extends Model
 	{
 		if (!($this->_config instanceof \JRegistry))
 		{
-			$this->_config = \JComponentHelper::getParams('com_answers');
+			$this->_config = Component::params('com_answers');
 		}
 		if ($key)
 		{
 			if ($key == 'banking' && $this->_config->set('banking', -1) == -1)
 			{
-				$this->_config->set('banking', \JComponentHelper::getParams('com_members')->get('bankAccounts'));
+				$this->_config->set('banking', Component::params('com_members')->get('bankAccounts'));
 			}
 			return $this->_config->get($key, $default);
 		}

@@ -80,7 +80,7 @@ class Group extends Base
 	{
 		if (!isset($this->_image))
 		{
-			$config = \JComponentHelper::getParams('com_groups');
+			$config = Component::params('com_groups');
 			if ($this->_obj->get('logo'))
 			{
 				$this->_image = DS . trim($config->get('uploadpath', '/site/groups'), DS) . DS . $this->_obj->get('gidNumber') . DS . $this->_obj->get('logo');

@@ -104,10 +104,10 @@ class Feedback extends SiteController
 	public function displayTask()
 	{
 		// Check if wishlistcomponent entry is there
-		$this->view->wishlist = \JComponentHelper::isEnabled('com_wishlist', true);
+		$this->view->wishlist = Component::isEnabled('com_wishlist', true);
 
 		// Check if poll component entry is there
-		$this->view->poll = \JComponentHelper::isEnabled('com_poll', true);
+		$this->view->poll = Component::isEnabled('com_poll', true);
 
 		// Set page title
 		$this->_buildTitle();

@@ -114,7 +114,7 @@ class Base extends Model
 
 		if (!$path)
 		{
-			$path = PATH_APP . DS . trim(\JComponentHelper::getParams('com_collections')->get('filepath', '/site/collections'), DS);
+			$path = PATH_APP . DS . trim(Component::params('com_collections')->get('filepath', '/site/collections'), DS);
 		}
 
 		return $path;

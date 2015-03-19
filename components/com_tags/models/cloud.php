@@ -111,7 +111,7 @@ class Cloud extends Object
 			$this->_scope_id = $scope_id;
 		}
 
-		$this->_config = \JComponentHelper::getParams('com_tags');
+		$this->_config = \Component::params('com_tags');
 	}
 
 	/**

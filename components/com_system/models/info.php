@@ -193,7 +193,7 @@ class Info extends \JModelLegacy
 
 			$registry = \JFactory::getConfig();
 			jimport('joomla.filesystem.folder');
-			$cparams = \JComponentHelper::getParams('com_media');
+			$cparams = \Component::params('com_media');
 
 			$this->_addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
 			$this->_addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
@@ -251,8 +251,8 @@ class Info extends \JModelLegacy
 			$this->_addDirectory('cache', JPATH_SITE . '/cache', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 			$this->_addDirectory('administrator/cache', JPATH_CACHE, 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 
-			$this->_addDirectory($registry->get('log_path', JPATH_ROOT . '/log'), $registry->get('log_path', JPATH_ROOT . '/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
-			$this->_addDirectory($registry->get('tmp_path', JPATH_ROOT . '/tmp'), $registry->get('tmp_path', JPATH_ROOT . '/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
+			$this->_addDirectory($registry->get('log_path', PATH_APP . '/log'), $registry->get('log_path', PATH_APP . '/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
+			$this->_addDirectory($registry->get('tmp_path', PATH_APP . '/tmp'), $registry->get('tmp_path', PATH_APP . '/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
 		}
 		return $this->directories;
 	}

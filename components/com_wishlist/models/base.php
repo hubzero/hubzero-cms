@@ -56,7 +56,7 @@ class Base extends Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \JComponentHelper::getParams('com_wishlist');
+			$this->_config = Component::params('com_wishlist');
 		}
 		if ($key)
 		{

@@ -252,7 +252,7 @@ class Archive extends Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \JComponentHelper::getParams('com_blog');
+			$this->_config = Component::params('com_blog');
 		}
 		if ($property)
 		{

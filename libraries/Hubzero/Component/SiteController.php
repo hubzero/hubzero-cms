@@ -36,6 +36,7 @@ use Hubzero\Base\Object;
 use Hubzero\Document\Assets;
 use ReflectionClass;
 use ReflectionMethod;
+use Lang;
 
 /**
  * Base controller for components to extend.
@@ -189,7 +190,7 @@ class SiteController extends Object implements ControllerInterface
 				// Uh-oh!
 				else
 				{
-					throw new InvalidControllerException(\JText::_('Controller::__construct() : Can\'t get or parse class name.'), 500);
+					throw new InvalidControllerException(Lang::txt('Controller::__construct() : Can\'t get or parse class name.'), 500);
 				}
 
 				$this->_name = strtolower($segments[1]);
@@ -243,7 +244,7 @@ class SiteController extends Object implements ControllerInterface
 		// Set some commonly used vars
 		$this->juser    = \JFactory::getUser();
 		$this->database = \JFactory::getDBO();
-		$this->config   = \JComponentHelper::getParams($this->_option);
+		$this->config   = \Component::params($this->_option);
 
 		// Clear component messages - for cross component messages
 		$this->getComponentMessage();
@@ -309,7 +310,7 @@ class SiteController extends Object implements ControllerInterface
 		// Raise an error (hopefully, this shouldn't happen)
 		else
 		{
-			throw new InvalidTaskException(\JText::sprintf('The requested task "%s" was not found.', $this->_task), 404);
+			throw new InvalidTaskException(Lang::txt('The requested task "%s" was not found.', $this->_task), 404);
 		}
 
 		$name = $this->_controller;
