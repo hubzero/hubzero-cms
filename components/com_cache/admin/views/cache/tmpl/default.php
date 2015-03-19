@@ -31,7 +31,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(JText::_('COM_CACHE_CLEAR_CACHE'), 'clear.png');
+JToolBarHelper::title(Lang::txt('COM_CACHE_CLEAR_CACHE'), 'clear.png');
 JToolBarHelper::custom('delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
 JToolBarHelper::divider();
 if (JFactory::getUser()->authorise('core.admin', 'com_cache'))
@@ -45,7 +45,7 @@ $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-select fltrt">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
@@ -59,10 +59,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<thead>
 			<tr>
 				<th scope="col">
-					<?php echo JText::_('COM_CACHE_NUM'); ?>
+					<?php echo Lang::txt('COM_CACHE_NUM'); ?>
 				</th>
 				<th scope="col">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title nowrap">
 					<?php echo JHtml::_('grid.sort',  'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>

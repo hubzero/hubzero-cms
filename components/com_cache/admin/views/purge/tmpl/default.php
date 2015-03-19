@@ -31,7 +31,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(JText::_('COM_CACHE_PURGE_EXPIRED_CACHE'), 'purge.png');
+JToolBarHelper::title(Lang::txt('COM_CACHE_PURGE_EXPIRED_CACHE'), 'purge.png');
 JToolBarHelper::custom('purge', 'delete.png', 'delete_f2.png', 'COM_CACHE_PURGE_EXPIRED', false);
 JToolBarHelper::divider();
 if (JFactory::getUser()->authorise('core.admin', 'com_cache'))
@@ -42,20 +42,20 @@ if (JFactory::getUser()->authorise('core.admin', 'com_cache'))
 JToolBarHelper::help('purge_expired');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th>
-					<?php echo JText::_('COM_CACHE_PURGE_EXPIRED_ITEMS'); ?>
+					<?php echo Lang::txt('COM_CACHE_PURGE_EXPIRED_ITEMS'); ?>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<p class="mod-purge-instruct"><?php echo JText::_('COM_CACHE_PURGE_INSTRUCTIONS'); ?></p>
-					<p class="warning"><?php echo JText::_('COM_CACHE_RESOURCE_INTENSIVE_WARNING'); ?></p>
+					<p class="mod-purge-instruct"><?php echo Lang::txt('COM_CACHE_PURGE_INSTRUCTIONS'); ?></p>
+					<p class="warning"><?php echo Lang::txt('COM_CACHE_RESOURCE_INTENSIVE_WARNING'); ?></p>
 				</td>
 			</tr>
 		</tbody>

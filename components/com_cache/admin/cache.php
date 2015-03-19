@@ -28,53 +28,19 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cache\Helpers;
+namespace Components\Cache\Admin;
 
-use JSubMenuHelper;
-use JText;
-use JHtml;
-
-/**
- * Cache component helper.
- */
-class Cache
+// Access check.
+if (!\JFactory::getUser()->authorise('core.manage', 'com_cache'))
 {
-	/**
-	 * Get a list of filter options for the application clients.
-	 *
-	 * @return  array  An array of JHtmlOption elements.
-	 */
-	static function getClientOptions()
-	{
-		// Build the filter options.
-		return array(
-			JHtml::_('select.option', '0', JText::_('JSITE')),
-			JHtml::_('select.option', '1', JText::_('JADMINISTRATOR'))
-		);
-	}
-
-	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  The name of the active view.
-	 * @return  void
-	 */
-	public static function addSubmenu($vName)
-	{
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_CHECKIN'),
-			'index.php?option=com_checkin',
-			$vName == 'com_checkin'
-		);
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_CLEAR_CACHE'),
-			'index.php?option=com_cache',
-			$vName == 'cache'
-		);
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
-			'index.php?option=com_cache&view=purge',
-			$vName == 'purge'
-		);
-	}
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
+
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'cache.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'cache.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
+
+// Instantiate controller
+$controller = new Controllers\Cleanser();
+$controller->execute();
+$controller->redirect();

@@ -28,15 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cache\Controllers;
+namespace Components\Cache\Admin\Controllers;
 
 use Components\Cache\Helpers\Cache as Helper;
 use Components\Cache\Models\Cache as Handler;
 use Hubzero\Component\AdminController;
 use Exception;
-use JRequest;
-use JSession;
-use JText;
 
 /**
  * Cache Controller
@@ -62,10 +59,8 @@ class Cleanser extends AdminController
 	 */
 	public function displayTask()
 	{
-		require_once JPATH_COMPONENT . '/helpers/cache.php';
-
 		// Set the default view name and format from the Request.
-		$vName = JRequest::getCmd('view', 'cache');
+		$vName = \JRequest::getCmd('view', 'cache');
 
 		// Get and render the view.
 		switch ($vName)
@@ -105,13 +100,13 @@ class Cleanser extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
-		$cid = JRequest::getVar('cid', array(), 'post', 'array');
+		$cid = \JRequest::getVar('cid', array(), 'post', 'array');
 
 		if (empty($cid))
 		{
-			JError::raiseWarning(500, JText::_('JERROR_NO_ITEMS_SELECTED'));
+			throw new Exception(Lang::txt('JERROR_NO_ITEMS_SELECTED'), 500);
 		}
 		else
 		{
@@ -119,7 +114,7 @@ class Cleanser extends AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&client=' . $this->model->getClient()->id
+			Route::url('index.php?option=' . $this->_option . '&client=' . $this->model->getClient()->id, false)
 		);
 	}
 
@@ -131,21 +126,21 @@ class Cleanser extends AdminController
 	public function purgeTask()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		$ret = $this->model->purge();
 
-		$msg = JText::_('COM_CACHE_EXPIRED_ITEMS_HAVE_BEEN_PURGED');
+		$msg = Lang::txt('COM_CACHE_EXPIRED_ITEMS_HAVE_BEEN_PURGED');
 		$msgType = 'message';
 
 		if ($ret === false)
 		{
-			$msg = JText::_('Error purging expired items');
+			$msg = Lang::txt('Error purging expired items');
 			$msgType = 'error';
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&view=purge',
+			Route::url('index.php?option=' . $this->_option . '&view=purge', false),
 			$msg,
 			$msgType
 		);
