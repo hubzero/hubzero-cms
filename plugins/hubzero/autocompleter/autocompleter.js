@@ -202,7 +202,7 @@ $.TokenList = function (input, url_or_data, settings) {
 		.blur(function () {
 			hide_dropdown();
 			$(this).closest('ul').removeClass(settings.classes.tokenListFocus);
-			var val = $(this).val().replace(/^,|,$/g,'');
+			var val = $(this).val().replace(/^,|,$/g,'').replace(/^;|;$/g,'');
 			if (val) {
 				var item = {
 					'id': val, 
@@ -211,7 +211,7 @@ $.TokenList = function (input, url_or_data, settings) {
 				add_token(item);
 				hidden_input.change();
 			}
-			
+
 			$(this).val("");
 		})
 		.bind("keyup keydown blur update", resize_input)
@@ -293,7 +293,7 @@ $.TokenList = function (input, url_or_data, settings) {
 						|| event.keyCode === KEY.SEMICOLON
 						|| event.keyCode === KEY.SEMICOLONFIREFOX) 
 					{
-						var val = $(this).val().replace(/^,|,$/g,'');
+						var val = $(this).val().replace(/^,|,$/g,'').replace(/^;|;$/g,'');
 						if (val) {
 							var item = {
 								'id': val, 
@@ -1116,13 +1116,13 @@ HUB.Plugins.Autocomplete = {
 				onAdd: function(item)
 				{
 					// pasting in comma separated items
-					if (item.name.indexOf(',') > -1)
+					if (item.name.indexOf(',') > -1 || item.name.indexOf(';') > -1)
 					{
 						// remove original item
 						$('#'+id).tokenInput('remove', {id:item.id});
 
 						// split by comma
-						var items = item.name.split(',');
+						var items = item.name.split(/,|;/g);
 						for (var i = 0, n = items.length; i < n; i++)
 						{
 							// add each individual item
