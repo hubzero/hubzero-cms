@@ -32,18 +32,18 @@ defined('_JEXEC') or die('Restricted access');
 $i = 1;
 $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 ?>
-<p id="recordcount"><?php echo JText::_('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
+<p id="recordcount"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
 <ul class="pubitems" id="resultlist">
 <?php foreach ($this->items as $item) { ?>
 	<li<?php if (count($item['errors']) > 0) { echo ' class="problem"'; } ?>>
-	<h5><?php echo JText::_('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $item['version']->title; ?></h5>
+	<h5><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $item['version']->title; ?></h5>
 	<table class="records">
 		<tr>
-			<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE'); ?></td>
+			<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE'); ?></td>
 			<td><?php echo $item['type']; ?></td>
 		</tr>
 		<tr>
-			<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?></td>
+			<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?></td>
 			<td><?php echo $item['category']; ?></td>
 		</tr>
 		<?php foreach ($item['version'] as $key => $value) {
@@ -52,16 +52,16 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 			}
 			?>
 			<tr>
-				<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_' . strtoupper($key)); ?></td>
+				<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_' . strtoupper($key)); ?></td>
 				<td><?php echo $value; ?></td>
 			</tr>
 		<?php } ?>
 			<tr<?php if (!$item['license']) { echo ' class="missing"'; } ?>>
-				<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE'); ?></td>
+				<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE'); ?></td>
 				<td><?php echo $item['license'] ? $item['license']->title : 'N/A'; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_TAGS'); ?></td>
+				<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TAGS'); ?></td>
 				<td><?php if (!empty($item['tags'])) { ?>
 					<ol class="tags">
 						<?php foreach ($item['tags'] as $tag) { echo '<li>' . $tag . '</li>'; } ?>
@@ -70,15 +70,15 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 				</td>
 			</tr>
 			<tr<?php if (empty($item['authors'])) { echo ' class="missing"'; } ?>>
-				<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHORS'); ?></td>
+				<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHORS'); ?></td>
 				<td>
 					<table class="filelist">
 						<thead>
 						<tr>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_UID'); ?></th>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME'); ?></th>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_ORG'); ?></th>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_OWNER'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UID'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORG'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_OWNER'); ?></th>
 						</tr>
 						</thead>
 						<tbody>
@@ -89,7 +89,7 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 							<td><?php echo $authorRecord['author']->user_id; ?></td>
 							<td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $authorRecord['error'] . '</span>' : ''; ?><?php echo $authorRecord['author']->name; ?></td>
 							<td><?php echo $authorRecord['author']->organization; ?></td>
-							<td><?php echo $authorRecord['owner'] ? JText::_('JYES') : JText::_('JNO'); ?></td>
+							<td><?php echo $authorRecord['owner'] ? Lang::txt('JYES') : Lang::txt('JNO'); ?></td>
 						</tr>
 		<?php } } ?>
 						</tbody>
@@ -97,14 +97,14 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 				</td>
 			</tr>
 			<tr>
-				<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_FILES'); ?></td>
+				<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FILES'); ?></td>
 				<td>
 					<table class="filelist">
 						<thead>
 						<tr>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_FILE_PATH'); ?></th>
-							<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_TITLE'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FILE_PATH'); ?></th>
+							<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?></th>
 						</tr>
 						</thead>
 						<tbody>

@@ -187,8 +187,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit&id[]=' . $fields['id'];
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit&id[]=' . $fields['id'], false);
 
 		// Initiate extended database class
 		$row = new \Components\Publications\Tables\License($this->database);
@@ -233,14 +233,14 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
 			);
 		}
 		return;
@@ -278,7 +278,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		$row->changeOrder($dir);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -298,9 +298,9 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		if (count($id) > 1)
 		{
-			$this->addComponentMessage(JText::_('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
+			$this->addComponentMessage(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'), 'error');
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -321,7 +321,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -331,8 +331,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_MADE_DEFAULT')
 		);
 	}
 
@@ -366,7 +366,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 				{
 					$this->addComponentMessage($row->getError(), 'error');
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
 				}
@@ -375,8 +375,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_PUBLISHED')
 		);
 	}
 
@@ -387,6 +387,6 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }

@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': [ ' . $text . ' ]', 'addedit.png');
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': [ ' . $text . ' ]', 'addedit.png');
 if ($this->row->id)
 {
 	JToolBarHelper::apply();
@@ -61,40 +61,40 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_CATEGORY_INFORMATION'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATEGORY_INFORMATION'); ?></span></legend>
 <?php if ($this->row->id) { ?>
 	<table>
 		<tbody>
 			<tr>
-				<th><?php echo JText::_('ID'); ?></th>
+				<th><?php echo Lang::txt('ID'); ?></th>
 				<td><?php echo $this->row->id; ?></td>
 			</tr>
 		</tbody>
 	</table>
 <?php } ?>
 			<div class="input-wrap">
-				<label for="field-name"><?php echo JText::_('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-name"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="prop[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-alias"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
+				<label for="field-alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
 				<input type="text" name="prop[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-url_alias"><?php echo JText::_('COM_PUBLICATIONS_FIELD_URL_ALIAS'); ?>:</label>
+				<label for="field-url_alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS'); ?>:</label>
 				<input type="text" name="prop[url_alias]" id="field-url_alias" maxlength="100" value="<?php echo $this->escape($this->row->url_alias); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?>">
-				<label for="field-dc_type"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?>">
+				<label for="field-dc_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
 				<select name="prop[dc_type]" id="field-dc_type">
 					<?php foreach ($dcTypes as $dct) { ?>
 					<option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) { echo 'selected="selected"'; } ?>><?php echo $dct; ?></option>
 					<?php } ?>
 				</select>
-				<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ABOUT'); ?>:</label>
+				<label for="field-description"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>:</label>
 				<input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
 			</div>
 
@@ -107,29 +107,29 @@ function submitbutton(pressbutton)
 	<div class="col width-50 fltrt">
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_ITEM_CONFIG'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ITEM_CONFIG'); ?></span></legend>
 
 			<fieldset>
-				<legend><?php echo JText::_('COM_PUBLICATIONS_FIELD_STATUS'); ?></legend>
+				<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></legend>
 
 				<div class="input-wrap">
 					<input class="option" name="prop[state]" id="field-state1" type="radio" value="1" <?php echo $this->row->state == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-state1"><?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
+					<label for="field-state1"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
 					<br />
 					<input class="option" name="prop[state]" id="field-state0" type="radio" value="0" <?php echo $this->row->state != 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-state0"><?php echo JText::_('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+					<label for="field-state0"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 				</div>
 			</fieldset>
 			<fieldset>
-				<legend><?php echo JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'); ?></legend>
-				<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
-					<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?></span>
+				<legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'); ?></legend>
+				<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?>">
+					<span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE_HINT'); ?></span>
 
 					<input class="option" name="prop[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable1"><?php echo JText::_('JYES'); ?></label>
+					<label for="field-contributable1"><?php echo Lang::txt('JYES'); ?></label>
 					<br />
 					<input class="option" name="prop[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
-					<label for="field-contributable0"><?php echo JText::_('JNO'); ?></label>
+					<label for="field-contributable0"><?php echo Lang::txt('JNO'); ?></label>
 				</div>
 			</fieldset>
 		</fieldset>
@@ -138,17 +138,17 @@ function submitbutton(pressbutton)
 
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_CATS_MASTER_TYPE_CONFIG'); ?></span></legend>
 
 			<?php foreach ($this->types as $mt) { ?>
 				<fieldset>
 					<legend><?php echo $mt; ?></legend>
 					<div class="input-wrap">
 						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>1" type="radio" value="1" <?php echo ($params->get('type_'.$mt, 1) == 1) ? ' checked="checked"':''; ?> />
-						<label for="field-type_<?php echo $mt; ?>1"><?php echo  JText::_('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
+						<label for="field-type_<?php echo $mt; ?>1"><?php echo  Lang::txt('COM_PUBLICATIONS_INCLUDE_CHOICE'); ?></label>
 						<br />
 						<input class="option" name="params[type_<?php echo $mt; ?>]" id="field-type_<?php echo $mt; ?>0" type="radio" value="0" <?php echo ($params->get('type_'.$mt, 1) == 0) ? ' checked="checked"':''; ?> />
-						<label for="field-type_<?php echo $mt; ?>0"><?php echo JText::_('COM_PUBLICATIONS_NOT_APPLICABLE'); ?></label>
+						<label for="field-type_<?php echo $mt; ?>0"><?php echo Lang::txt('COM_PUBLICATIONS_NOT_APPLICABLE'); ?></label>
 					</div>
 				</fieldset>
 			<?php } ?>
@@ -156,13 +156,13 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="col width-50 ltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_PLUGINS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_PLUGINS'); ?></span></legend>
 
 			<table class="admintable">
 				<thead>
 					<tr>
-						<th><?php echo JText::_('COM_PUBLICATIONS_PLUGIN'); ?></th>
-						<th colspan="2"><?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_PLUGIN'); ?></th>
+						<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -187,7 +187,7 @@ function submitbutton(pressbutton)
 						}
 						?>
 						<tr>
-							<td><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name))); ?></td>
+							<td><?php echo (strstr($plugin->name, '_') ? Lang::txt(stripslashes($plugin->name)) : stripslashes(ucfirst($plugin->name))); ?></td>
 							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> off</label></td>
 							<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> on</label></td>
 						</tr>
@@ -203,25 +203,25 @@ function submitbutton(pressbutton)
 	<?php if (!$this->config->get('curation', 0)) { ?>
 		<div class="col width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_CUSTOM_FIELDS'); ?></span></legend>
 
 			<table class="admintable" id="fields">
 				<thead>
 					<tr>
 	<?php //if ($this->row->id) { ?>
-						<th><?php echo JText::_('COM_PUBLICATIONS_TYPES_REORDER'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_REORDER'); ?></th>
 	<?php //} ?>
-						<th><?php echo JText::_('COM_PUBLICATIONS_TYPES_FIELD'); ?></th>
-						<th><?php echo JText::_('COM_PUBLICATIONS_TYPES_TYPE'); ?></th>
-						<th><?php echo JText::_('COM_PUBLICATIONS_TYPES_REQUIRED'); ?></th>
-						<th><?php echo JText::_('COM_PUBLICATIONS_TYPES_OPTIONS'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_FIELD'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_TYPE'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_REQUIRED'); ?></th>
+						<th><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_OPTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
 						<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
 							<button id="add-custom-field" href="#addRow">
-								<span><?php echo JText::_('COM_PUBLICATIONS_ADD_ROW'); ?></span>
+								<span><?php echo Lang::txt('COM_PUBLICATIONS_ADD_ROW'); ?></span>
 							</button>
 						</td>
 					</tr>
@@ -264,8 +264,8 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<td class="order">
-							<span class="handle hasTip" title="<?php echo JText::_('COM_PUBLICATIONS_MOVE_HANDLE'); ?>">
-								<?php echo JText::_('COM_PUBLICATIONS_MOVE_HANDLE'); ?>
+							<span class="handle hasTip" title="<?php echo Lang::txt('COM_PUBLICATIONS_MOVE_HANDLE'); ?>">
+								<?php echo Lang::txt('COM_PUBLICATIONS_MOVE_HANDLE'); ?>
 							</span>
 						</td>
 						<td>
@@ -274,18 +274,18 @@ function submitbutton(pressbutton)
 						</td>
 						<td>
 							<select name="fields[<?php echo $i; ?>][type]" id="fields-<?php echo $i; ?>-type">
-								<optgroup label="<?php echo JText::_('COM_PUBLICATIONS_COMMON'); ?>">
-									<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_TEXT'); ?></option>
-									<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_TEXTAREA'); ?></option>
-									<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_LIST'); ?></option>
-									<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_RADIO'); ?></option>
-									<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_CHECKBOX'); ?></option>
-									<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPES_HIDDEN'); ?></option>
+								<optgroup label="<?php echo Lang::txt('COM_PUBLICATIONS_COMMON'); ?>">
+									<option value="text"<?php echo ($field->type == 'text') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_TEXT'); ?></option>
+									<option value="textarea"<?php echo ($field->type == 'textarea') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_TEXTAREA'); ?></option>
+									<option value="list"<?php echo ($field->type == 'list') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_LIST'); ?></option>
+									<option value="radio"<?php echo ($field->type == 'radio') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_RADIO'); ?></option>
+									<option value="checkbox"<?php echo ($field->type == 'checkbox') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_CHECKBOX'); ?></option>
+									<option value="hidden"<?php echo ($field->type == 'hidden') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_TYPES_HIDDEN'); ?></option>
 								</optgroup>
-								<optgroup label="<?php echo JText::_('COM_PUBLICATIONS_PRE_DEFINED'); ?>">
-									<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo JText::_('Date'); ?></option>
-									<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo JText::_('Geo Location'); ?></option>
-									<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_LANGUAGE_LIST'); ?></option>
+								<optgroup label="<?php echo Lang::txt('COM_PUBLICATIONS_PRE_DEFINED'); ?>">
+									<option value="date"<?php echo ($field->type == 'date') ? ' selected="selected"':''; ?>><?php echo Lang::txt('Date'); ?></option>
+									<option value="geo"<?php echo ($field->type == 'geo') ? ' selected="selected"':''; ?>><?php echo Lang::txt('Geo Location'); ?></option>
+									<option value="languages"<?php echo ($field->type == 'languages') ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_LANGUAGE_LIST'); ?></option>
 								</optgroup>
 							</select>
 						</td>

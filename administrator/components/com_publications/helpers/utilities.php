@@ -58,7 +58,7 @@ class PublicationUtilities
 
 		if (!$service || !$userpw || !$shoulder)
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
+			$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
 			return false;
 		}
 
@@ -84,7 +84,7 @@ class PublicationUtilities
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 			if (!$livesite)
 			{
-				$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
+				$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
 				return false;
 			}
 
@@ -194,7 +194,7 @@ class PublicationUtilities
 			}
 			else
 			{
-				$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
+				$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
 			}
 		}
 
@@ -219,7 +219,7 @@ class PublicationUtilities
 	{
 		if (!$doi)
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE');
+			$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_UPDATE_NO_HANDLE');
 			return false;
 		}
 
@@ -250,13 +250,13 @@ class PublicationUtilities
 			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 		if (!$livesite)
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
+			$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_MISSING_LIVE_CONFIG');
 			return false;
 		}
 
 		if (!$service || !$userpw)
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
+			$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE');
 			return false;
 		}
 
@@ -310,7 +310,7 @@ class PublicationUtilities
 		}
 		elseif ($sendXML == true)
 		{
-			$doierr .= JText::_('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
+			$doierr .= Lang::txt('COM_PUBLICATIONS_ERROR_DOI_XML_INVALID');
 			return false;
 		}
 

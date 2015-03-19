@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . JText::_('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . JText::_('COM_PUBLICATIONS_VERSIONS') , 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS') , 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
@@ -48,22 +48,20 @@ function submitbutton(pressbutton)
 }
 </script>
 <?php if ($this->config->get('enabled') == 0) { ?>
-<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
+<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
-<p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
-. $this->controller; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]= '. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_VERSIONS'); ?></p>
+<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_VERSIONS'); ?></p>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th class="tdmini"></th>
-				<th class="tdmini"><?php echo JText::_('COM_PUBLICATIONS_VERSION'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_TITLE'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_DOI'); ?></th>
-				<th><?php echo ucfirst(JText::_('COM_PUBLICATIONS_OPTIONS')); ?></th>
+				<th class="tdmini"><?php echo Lang::txt('COM_PUBLICATIONS_VERSION'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_TITLE'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_STATUS'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_DOI'); ?></th>
+				<th><?php echo ucfirst(Lang::txt('COM_PUBLICATIONS_OPTIONS')); ?></th>
 			</tr>
 		 </thead>
 		<tbody>
@@ -72,16 +70,13 @@ $k = 0;
 	foreach ($this->versions as $v) {
 	// Get DOI
 	$doi = $v->doi ? 'doi:'.$v->doi : '';
-	$doi_notice = $doi ? $doi : JText::_('COM_PUBLICATIONS_NA');
+	$doi_notice = $doi ? $doi : Lang::txt('COM_PUBLICATIONS_NA');
 
 	// Version status
 	$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
 	$class = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
 	$date = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
-	$options = '<a href="index.php?option=' . $this->option . '&amp;controller='
-		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
-	.JText::_('COM_PUBLICATIONS_MANAGE_VERSION').'</a>';
 	?>
 	<tr class="mini <?php if ($v->main == 1) { echo ' vprime'; } ?>">
 		<td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
@@ -92,7 +87,7 @@ $k = 0;
 			<?php if ($date) { echo '<span class="block faded">'.$date.'</span>';  } ?>
 		</td>
 		<td><?php echo $doi_notice; ?></td>
-		<td><?php echo $options; ?></td>
+		<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION'); ?></a></td>
 	</tr>
 <?php } ?>
 		</tbody>

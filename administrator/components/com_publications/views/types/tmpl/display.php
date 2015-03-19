@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
@@ -40,22 +40,22 @@ JToolBarHelper::deleteList();
 $useBlocks  = $this->config->get('curation', 0);
 
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
 				<?php if (!$useBlocks) { ?>
-				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></th>
 				<?php } ?>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<?php if (!$useBlocks) { ?>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_SUPPORTING'), 'supporting', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_SUPPORTING'), 'supporting', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 				<?php } ?>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -91,7 +91,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id ); ?>">
 						<span><?php echo $this->escape($row->type); ?></span>
 					</a>
 				</td>
@@ -105,13 +105,13 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				<?php } ?>
 				<td class="centeralign narrow">
 					<span class="state <?php echo $cClass; ?>">
-						<span><?php echo JText::_($cClass); ?></span>
+						<span><?php echo Lang::txt($cClass); ?></span>
 					</span>
 				</td>
 				<?php if (!$useBlocks) { ?>
 				<td class="centeralign narrow">
 					<span class="state <?php echo $sClass; ?>">
-						<span><?php echo JText::_($sClass); ?></span>
+						<span><?php echo Lang::txt($sClass); ?></span>
 					</span>
 				</td>
 				<?php } ?>

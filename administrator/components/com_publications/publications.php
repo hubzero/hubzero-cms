@@ -36,7 +36,7 @@ $task = JRequest::getWord('task', '');
 
 if (!JFactory::getUser()->authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -75,28 +75,28 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('COM_PUBLICATIONS_PUBLICATIONS'),
+	Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
 	'index.php?option=' .  $option . '&controller=items',
 	$controllerName == 'items'
 );
 
 JSubMenuHelper::addEntry(
-	JText::_('COM_PUBLICATIONS_LICENSES'),
+	Lang::txt('COM_PUBLICATIONS_LICENSES'),
 	'index.php?option=' .  $option . '&controller=licenses',
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_PUBLICATIONS_CATEGORIES'),
+	Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
 	'index.php?option=' .  $option . '&controller=categories',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_PUBLICATIONS_MASTER_TYPES'),
+	Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
 	'index.php?option=' .  $option . '&controller=types',
 	$controllerName == 'types'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_PUBLICATIONS_BATCH_CREATE'),
+	Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
 	'index.php?option=' .  $option . '&controller=batchcreate',
 	$controllerName == 'batchcreate'
 );

@@ -30,37 +30,37 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_BATCH_CREATE') . ']', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_BATCH_CREATE') . ']', 'addedit.png');
 
 $this->css('batchcreate');
 $this->js('batchcreate');
 
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=process" method="post" name="adminForm" id="adminForm" class="batchupload" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=process' ); ?>" method="post" name="adminForm" id="adminForm" class="batchupload" enctype="multipart/form-data">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_BATCH_IMPORT'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_IMPORT'); ?></span></legend>
 		<div class="input-wrap">
 			<div class="col width-70 fltlft">
 				<div class="input-wrap">
-					<label for="projectid"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ADD_IN_PROJECT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+					<label for="projectid"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ADD_IN_PROJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
 					<?php 
 					// Draw project list
 					$this->view('_selectprojects')
 					     ->set('projects', $this->projects)
 					     ->display(); ?>
 				</div>
-				<div class="input-wrap file-import" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
+				<div class="input-wrap file-import" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
 					<label for="field-file">
-						<?php echo JText::_('COM_PUBLICATIONS_FIELD_DATA'); ?><span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DATA'); ?><span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
 					</label>
 					<input type="file" name="file" id="field-file" />
 				</div>
 				<div class="input-wrap">
-					<input type="submit" name="batch_submit" id="batch_submit" value="<?php echo JText::_('COM_PUBLICATIONS_UPLOAD_AND_PREPROCESS'); ?>" />
+					<input type="submit" name="batch_submit" id="batch_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_UPLOAD_AND_PREPROCESS'); ?>" />
 				</div>
 			</div>
 			<div class="input-wrap col width-30 fltrt">
-				<p><?php echo JText::_('COM_PUBLICATIONS_BATCH_XSD_INSTRUCT'); ?> <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=xsd"><?php echo JText::_('COM_PUBLICATIONS_BATCH_XSD'); ?></a></p>
+				<p><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD_INSTRUCT'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=xsd'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_XSD'); ?></a></p>
 			</div>
 		</div>
 		<div class="clr"></div>

@@ -49,10 +49,10 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id='
+	$sef 		= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$pubSef		= Route::url('index.php?option=' . $this->option . '&id='
 				. $this->row->publication_id . '&v=' . $this->row->version_number);
-	$imaSef		= JRoute::_('index.php?option=' . $this->option . '&id='
+	$imaSef		= Route::url('index.php?option=' . $this->option . '&id='
 				. $this->row->publication_id . '&v=' . $this->row->id);
 }
 
@@ -61,7 +61,7 @@ $pubLink = rtrim($base, DS) . DS . trim($pubSef, DS);
 $thumb   = rtrim($base, DS) . DS . trim($imaSef, DS);
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('COM_PUBLICATIONS_PUBLICATIONS');
+$title = $hubShortName . ' ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
 
 // Main message
 $subtitle  = $this->subject;

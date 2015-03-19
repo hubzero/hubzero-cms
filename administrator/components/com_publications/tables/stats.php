@@ -54,7 +54,7 @@ class Stats extends \JTable
 	{
 		if (trim( $this->publication_id ) == '')
 		{
-			$this->setError( \JText::_('Your entry must have a publication ID.') );
+			$this->setError( Lang::txt('Your entry must have a publication ID.') );
 			return false;
 		}
 		return true;

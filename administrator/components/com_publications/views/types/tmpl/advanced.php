@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED') . ' ]', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': [ ' . Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED') . ' ]', 'addedit.png');
 JToolBarHelper::save('saveadvanced');
 JToolBarHelper::cancel();
 
@@ -49,7 +49,7 @@ function submitbutton(pressbutton)
 	return;
 }
 </script>
-<p class="backto"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=edit&amp;id[]=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<p class="backto"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->row->id ); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
 		<fieldset class="adminform">
@@ -58,8 +58,8 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="saveadvanced" />
 			<input type="hidden" name="neworder" id="neworder" value="" />
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></span></legend>
-			<p class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING_HINT'); ?></p>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></span></legend>
+			<p class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING_HINT'); ?></p>
 			<div class="input-wrap">
 				<textarea cols="50" rows="10" name="curation"><?php echo json_encode($manifest); ?></textarea>
 			</div>

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 JToolBarHelper::editList();
@@ -54,49 +54,49 @@ function submitbutton(pressbutton)
 }
 </script>
 <?php if ($this->config->get('enabled') == 0) { ?>
-<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
+<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<fieldset id="filter-bar">
-		<label for="status"><?php echo JText::_('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
+		<label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
 		<select name="status" id="status">
-			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_ALL_STATUS'); ?></option>
-			<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
-			<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
-			<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
-			<option value="10"<?php echo ($this->filters['status'] == 10) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
-			<option value="7"<?php echo ($this->filters['status'] == 7) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
-			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
-			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_READY'); ?></option>
-			<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
+			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_ALL_STATUS'); ?></option>
+			<option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
+			<option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
+			<option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
+			<option value="10"<?php echo ($this->filters['status'] == 10) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
+			<option value="7"<?php echo ($this->filters['status'] == 7) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
+			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
+			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
+			<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
 		</select>
 
-		<label for="category"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>
+		<label for="category"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>
 		<?php 
 		// Draw category list
 		$this->view('_selectcategory')
 		     ->set('categories', $this->categories)
 		     ->set('value', $this->filters['category'])
 			 ->set('name', 'category')
-			 ->set('showNone', JText::_('COM_PUBLICATIONS_ALL_CATEGORIES'))
+			 ->set('showNone', Lang::txt('COM_PUBLICATIONS_ALL_CATEGORIES'))
 		     ->display();
 		?>
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_PUBLICATIONS_GO'); ?>" />
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
 	</fieldset>
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JText::_('@v.'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
-				<th colspan="2"><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo Lang::txt('@v.'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'), 'project', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
+				<th colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -116,8 +116,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = $this->rows[$i];
 
 	// Build some publishing info
-	$info  = JText::_('COM_PUBLICATIONS_FIELD_CREATED') . ': ' . $row->created . '<br />';
-	$info .= JText::_('COM_PUBLICATIONS_FIELD_CREATOR') . ': ' . $this->escape($row->created_by) . '<br />';
+	$info  = Lang::txt('COM_PUBLICATIONS_FIELD_CREATED') . ': ' . $row->created . '<br />';
+	$info .= Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR') . ': ' . $this->escape($row->created_by) . '<br />';
 
 	// Get the published status
 	$now = JFactory::getDate()->toSql();
@@ -128,13 +128,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-				 ? JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
-				. JHTML::_('date', $row->checked_out_time, JText::_('DATE_FORMAT_LC2')) . '<br />'
+				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').': '
+				. JHTML::_('date', $row->checked_out_time, Lang::txt('DATE_FORMAT_LC2')) . '<br />'
 				 : '';
 		$info .= ($row->checked_out)
-				 ? JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': '.$row->checked_out . '<br />'
+				 ? Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': '.$row->checked_out . '<br />'
 				 : '';
-		$checkedInfo = ' ['.JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
+		$checkedInfo = ' ['.Lang::txt('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
 		$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
 	}
 	else
@@ -147,8 +147,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
 	$task 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'task');
 	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
-			? JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_LC2'))
-			: JHTML::_('date', $row->created, JText::_('DATE_FORMAT_LC2'));
+			? JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_LC2'))
+			: JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_LC2'));
 ?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">
 				<td>
@@ -158,7 +158,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_( 'COM_PUBLICATIONS_PUBLISH_INFO' );?>::<?php echo $info; ?>">
+					<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring ); ?>" title="<?php echo Lang::txt( 'COM_PUBLICATIONS_PUBLISH_INFO' );?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a><?php if ($checkedInfo) { echo $checkedInfo; } ?>
 				</td>
@@ -169,10 +169,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
 				</td>
 				<td>
-					<a href="index.php?option=com_projects&amp;task=edit&amp;id[]=<?php echo $row->project_id; ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id[]=' . $row->project_id ); ?>"><?php echo \Hubzero\Utility\String::truncate($row->project_title, 50);  ?></a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=versions&amp;id=<?php echo $row->id;  echo $filterstring; ?>"><?php echo $this->escape($row->versions); ?></a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring ); ?>"><?php echo $this->escape($row->versions); ?></a>
 				</td>
 				<td>
 					<?php echo $this->escape($row->base); ?>

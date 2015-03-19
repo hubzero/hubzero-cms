@@ -35,7 +35,7 @@ if (!$this->groups || $this->groupOwner) {
 	$html .= ' disabled="disabled"';
 }
 $html .= ' style="max-width: 15em;">'."\n";
-$html .= ' <option value="">' . JText::_('Select group ...') . '</option>'."\n";
+$html .= ' <option value="">' . Lang::txt('Select group ...') . '</option>'."\n";
 if ($this->groups)
 {
 	foreach ($this->groups as $group)

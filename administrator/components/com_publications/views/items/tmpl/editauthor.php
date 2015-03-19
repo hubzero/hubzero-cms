@@ -30,14 +30,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pageTitle = ($this->author->id) ? JText::_('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : JText::_('COM_PUBLICATIONS_ADD_AUTHOR');
+$pageTitle = ($this->author->id) ? Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
 
 $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_PUBLICATIONS').': [ ' . $pageTitle . ' '
-	. JText::_('COM_PUBLICATIONS_FOR_PUB') . ' #'
+	JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS').': [ ' . $pageTitle . ' '
+	. Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #'
 	. $this->pub->id . ' (v.' . $this->row->version_label . ')' . ' ]', 'groups.png');
 	JToolBarHelper::save('saveauthor');
 	JToolBarHelper::cancel();
@@ -75,18 +75,17 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<p class="crumbs"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?> &raquo; <a href="<?php echo 'index.php?option='
-. $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]='. $this->pub->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo $pageTitle; ?></p>
+<p class="crumbs"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo $pageTitle; ?></p>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div style="float: right">
-			<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'JSAVE' );?></button>
-			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo JText::_( 'Cancel' );?></button>
+			<button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt( 'JSAVE' );?></button>
+			<button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt( 'Cancel' );?></button>
 		</div>
 		<div class="configuration" >
-			<?php echo JText::_('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
+			<?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
 		</div>
 	</fieldset>
 <?php } ?>
@@ -105,14 +104,14 @@ function submitbutton(pressbutton)
 				<tbody>
 					<?php if (!$this->author->id) { ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_EMAIL'); ?>:</label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_EMAIL'); ?>:</label></td>
 						<td>
 							<input type="text" name="email" value="" />
 						</td>
 					</tr>
 					<?php } ?>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_USER_ID'); ?>:</label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_USER_ID'); ?>:</label></td>
 						<td>
 							<?php if (!$this->author->id || !$this->author->user_id) { ?>
 							<input type="text" name="uid" value="<?php echo $this->author->user_id; ?>" size="25" />
@@ -123,25 +122,25 @@ function submitbutton(pressbutton)
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>:  <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 						<td>
 							<input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>:  <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 						<td>
 							<input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:  <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 						<td>
 							<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
 						</td>
 					</tr>
 					<tr>
-						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>:</label></td>
+						<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>:</label></td>
 						<td>
 							<input type="text" name="credit" value="<?php echo $this->author->credit; ?>" size="25" />
 						</td>

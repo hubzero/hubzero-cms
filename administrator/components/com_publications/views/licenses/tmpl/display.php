@@ -30,19 +30,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_LICENSES') . ']', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_LICENSES') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
-JToolBarHelper::save('makedefault', JText::_('COM_PUBLICATIONS_MAKE_DEFAULT'));
-JToolBarHelper::publishList('changestatus', JText::_('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
+JToolBarHelper::save('makedefault', Lang::txt('COM_PUBLICATIONS_MAKE_DEFAULT'));
+JToolBarHelper::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
 
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_PUBLICATIONS_SEARCH'); ?>" />
+		<label for="filter_search"><?php echo Lang::txt('Search'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PUBLICATIONS_SEARCH'); ?>" />
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_PUBLICATIONS_GO'); ?>" />
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -50,12 +50,12 @@ JToolBarHelper::publishList('changestatus', JText::_('COM_PUBLICATIONS_PUBLISH_U
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_STATUS'), 'active', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'active', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -79,24 +79,24 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id); ?>">
 						<span><?php echo $this->escape($row->title); ?></span>
 					</a>
 				</td>
 				<td class="centeralign">
 					<span class="state <?php echo $class; ?>">
-						<span><?php echo JText::_($class); ?></span>
+						<span><?php echo Lang::txt($class); ?></span>
 					</span>
 				</td>
 				<td class="centeralign">
 					<?php if ($row->main == 1) { ?>
 					<span class="state default">
-						<span><?php echo JText::_('JYES'); ?></span>
+						<span><?php echo Lang::txt('JYES'); ?></span>
 					</span>
 					<?php } ?>
 				</td>

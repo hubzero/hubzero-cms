@@ -30,6 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . JText::_('COM_PUBLICATIONS_PUBLICATIONS') . '</a>: <small><small>[' . JText::_('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS') . ']</small></small>', 'addedit.png');
+JToolBarHelper::title('<a href="index.php?option=' . $this->option . '">' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . '</a>: <small><small>[' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS_ADMIN_CONTROLS') . ']</small></small>', 'addedit.png');
 ?>
 

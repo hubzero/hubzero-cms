@@ -104,7 +104,7 @@ class Publication extends \JTable
 	{
 		if (trim( $this->title ) == '')
 		{
-			$this->setError(\JText::_('Your Publication must contain a title.'));
+			$this->setError(Lang::txt('Your Publication must contain a title.'));
 			return false;
 		}
 		return true;

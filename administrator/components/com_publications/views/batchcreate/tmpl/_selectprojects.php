@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $html  = '<select name="projectid" id="projectid">'."\n";
-$html .= "\t".'<option value="0" selected="selected">' . JText::_('COM_PUBLICATIONS_SELECT_PROJECT') . '</option>';
+$html .= "\t".'<option value="0" selected="selected">' . Lang::txt('COM_PUBLICATIONS_SELECT_PROJECT') . '</option>';
 foreach ($this->projects as $project)
 {
 	$html .= "\t".'<option value="' . $project->id . '"';

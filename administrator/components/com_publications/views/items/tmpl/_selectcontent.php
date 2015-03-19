@@ -35,7 +35,7 @@ $database = JFactory::getDBO();
 
 if (!$pub->_attachments)
 {
-	return '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+	return '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 }
 $html 	= '';
 $prime  = $pub->_attachments[1];
@@ -51,35 +51,35 @@ if ($this->useBlocks && isset($pub->_curationModel))
 	$attModel = new \Components\Publications\Models\Attachments($database);
 
 	// Draw list of primary elements
-	$html .= '<h5>' . JText::_('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
+	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
 	$list  = $attModel->listItems(
 		$prime,
 		$pub,
 		'administrator'
 	);
-	$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+	$html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
 	// Draw list of secondary elements
-	$html .= '<h5>' . JText::_('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
+	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
 	$list  = $attModel->listItems(
 		$second,
 		$pub,
 		'administrator'
 	);
-	$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+	$html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
 	// Draw list of gallery elements
-	$html .= '<h5>' . JText::_('COM_PUBLICATIONS_GALLERY') . '</h5>';
+	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_GALLERY') . '</h5>';
 	$list  = $attModel->listItems(
 		$gallery,
 		$pub,
 		'administrator'
 	);
-	$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+	$html .= $list ? $list : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 }
 else
 {
-	$html .= '<h5>' . JText::_('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
+	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_PRIMARY_CONTENT') . '</h5>';
 	if ($prime)
 	{
 		$html .= '<ul class="content-list">';
@@ -101,9 +101,9 @@ else
 	}
 	else
 	{
-		$html .= '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+		$html .= '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 	}
-	$html .= '<h5>' . JText::_('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
+	$html .= '<h5>' . Lang::txt('COM_PUBLICATIONS_SUPPORTING_CONTENT') . '</h5>';
 	if ($second)
 	{
 		$html .= '<ul class="content-list">';
@@ -125,7 +125,7 @@ else
 	}
 	else
 	{
-		$html .= '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
+		$html .= '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 	}
 }
 

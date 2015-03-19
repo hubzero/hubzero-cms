@@ -85,7 +85,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			if (!$xserver->serve())
 			{
 				// Should only get here on error
-				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+				JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
 			}
 			else
 			{
@@ -95,8 +95,8 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		else
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_XSD'),
 				'error'
 			);
 		}
@@ -113,7 +113,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 	{
 		if (!isset($this->reader) || !$this->reader->isValid())
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_BATCH_ERROR'));
+			$this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR'));
 			$this->reader->close();
 			return;
 		}
@@ -125,7 +125,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// Errors found - stop
 		if (count($errors) > 0)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'));
+			$this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'));
 			$output = '<pre>';
 			foreach ($errors as $error)
 			{
@@ -159,21 +159,21 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$this->project = new \Components\Projects\Tables\Project($this->database);
 		if (!$id || !$this->project->load($id))
 		{
-			echo json_encode(array('result' => 'error', 'error' => JText::_('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'), 'records' => NULL));
+			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_PROJECT_ID'), 'records' => NULL));
 			exit();
 		}
 
 		// Check for file
 		if (!is_array($file) || $file['size'] == 0 || $file['error'] != 0)
 		{
-			echo json_encode(array('result' => 'error', 'error' => JText::_('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'), 'records' => NULL));
+			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_FILE'), 'records' => NULL));
 			exit();
 		}
 
 		// Check for correct type
 		if (!in_array($file['type'], array('application/xml', 'text/xml')))
 		{
-			echo json_encode(array('result' => 'error', 'error' => JText::_('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'), 'records' => NULL));
+			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_WRONG_FORMAT'), 'records' => NULL));
 			exit();
 		}
 
@@ -184,7 +184,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		}
 		if (!$this->data)
 		{
-			echo json_encode(array('result' => 'error', 'error' => JText::_('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'), 'records' => NULL));
+			echo json_encode(array('result' => 'error', 'error' => Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_NO_DATA'), 'records' => NULL));
 			exit();
 		}
 
@@ -197,7 +197,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		{
 			echo json_encode(array(
 				'result' 	=> 'error',
-				'error' 	=> JText::_('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
+				'error' 	=> Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_XML_VALIDATION_FAILED'),
 				'records' 	=> NULL)
 			);
 			exit();
@@ -352,7 +352,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$item['license'] 	= $objL->getLicenseByTitle($license);
 				if (!$item['license'])
 				{
-					$item['errors'][] = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_LICENSE');
+					$item['errors'][] = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_LICENSE');
 				}
 				else
 				{
@@ -422,7 +422,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				// Set general process error
 				if (count($item['errors']) > 0)
 				{
-					$this->setError(JText::_('COM_PUBLICATIONS_BATCH_ERROR_MISSING_OR_INVALID'));
+					$this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR_MISSING_OR_INVALID'));
 				}
 
 				$items[] = $item;
@@ -463,11 +463,11 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			}
 			if ($i > 0)
 			{
-				$output = '<p class="success">' . JText::_('COM_PUBLICATIONS_BATCH_SUCCESS_CREATED') . ' ' .  $i . ' ' . JText::_('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
+				$output = '<p class="success">' . Lang::txt('COM_PUBLICATIONS_BATCH_SUCCESS_CREATED') . ' ' .  $i . ' ' . Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
 			}
 			if ($i != count($items))
 			{
-				$output = '<p class="error">' . JText::_('COM_PUBLICATIONS_BATCH_FAILED_CREATED') . ' ' .  (count($items) - $i) . ' ' . JText::_('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
+				$output = '<p class="error">' . Lang::txt('COM_PUBLICATIONS_BATCH_FAILED_CREATED') . ' ' .  (count($items) - $i) . ' ' . Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
 			}
 
 			$output.= $out;
@@ -597,12 +597,12 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		// Hightlight a problem
 		if ($exists == false)
 		{
-			$error = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_FILE_NOT_FOUND');
+			$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_FILE_NOT_FOUND');
 			$item['errors'][] = $error;
 		}
 		elseif ($role == 3 && !getimagesize($filePath))
 		{
-			$error = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_FILE_NOT_IMAGE');
+			$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_FILE_NOT_IMAGE');
 			$item['errors'][] = $error;
 		}
 
@@ -825,7 +825,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		{
 			if (!intval($uid))
 			{
-				$error = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID')
+				$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_INVALID_USER_ID')
 					. ': ' . trim($uid);
 				$item['errors'][] = $error;
 			}
@@ -834,7 +834,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$profile = \Hubzero\User\Profile::getInstance($uid);
 				if (!$profile || !$profile->get('uidNumber'))
 				{
-					$error = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND')
+					$error = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_USER_NOT_FOUND')
 						. ': ' . trim($uid);
 					$item['errors'][] = $error;
 				}
@@ -868,7 +868,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 
 		if (!$pAuthor->name)
 		{
-			$item['errors'][] = JText::_('COM_PUBLICATIONS_BATCH_ITEM_ERROR_AUTHOR_NAME_REQUIRED');
+			$item['errors'][] = Lang::txt('COM_PUBLICATIONS_BATCH_ITEM_ERROR_AUTHOR_NAME_REQUIRED');
 		}
 
 		// Add author record
@@ -928,6 +928,6 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 }

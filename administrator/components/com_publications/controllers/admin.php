@@ -45,7 +45,7 @@ class PublicationsControllerAdmin extends \Hubzero\Component\AdminController
 	{
 		// Redirect to Publication Manager for now
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=items'
+			Route::url('index.php?option=' . $this->_option . '&controller=items', false)
 		);
 		return;
 	}
@@ -57,7 +57,7 @@ class PublicationsControllerAdmin extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller);
+		$this->setRedirect(Route::url('index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller, false));
 	}
 }

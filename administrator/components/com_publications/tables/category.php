@@ -55,17 +55,17 @@ class Category extends \JTable
 	{
 		if (trim( $this->name ) == '')
 		{
-			$this->setError( \JText::_('Your publication category name must contain text.') );
+			$this->setError( Lang::txt('Your publication category name must contain text.') );
 			return false;
 		}
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( \JText::_('Your publication category alias must contain text.') );
+			$this->setError( Lang::txt('Your publication category alias must contain text.') );
 			return false;
 		}
 		if (trim( $this->url_alias ) == '')
 		{
-			$this->setError( \JText::_('Your publication url alias name must contain text.') );
+			$this->setError( Lang::txt('Your publication url alias name must contain text.') );
 			return false;
 		}
 		return true;

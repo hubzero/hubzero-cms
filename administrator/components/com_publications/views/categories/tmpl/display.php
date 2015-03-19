@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_CATEGORIES') . ']', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . Lang::txt('COM_PUBLICATIONS_CATEGORIES') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
-JToolBarHelper::publishList('changestatus', JText::_('COM_PUBLICATIONS_CHANGE_STATUS'));
+JToolBarHelper::publishList('changestatus', Lang::txt('COM_PUBLICATIONS_CHANGE_STATUS'));
 
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
@@ -41,10 +41,10 @@ JToolBarHelper::publishList('changestatus', JText::_('COM_PUBLICATIONS_CHANGE_ST
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_STATUS'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
+				<th><?php echo JHTML::_('grid.sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort'] ); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -71,19 +71,19 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 						<span><?php echo $this->escape($row->name); ?></span>
 					</a>
 					<span class="block faded">
-						<?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS') . ': ' .$this->escape($row->alias); ?> |
-						<?php echo JText::_('COM_PUBLICATIONS_FIELD_URL_ALIAS') . ': ' .$this->escape($row->url_alias); ?> |
-						<?php echo JText::_('COM_PUBLICATIONS_FIELD_DC_TYPE') . ': ' .$this->escape($row->dc_type); ?>
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS') . ': ' .$this->escape($row->alias); ?> |
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL_ALIAS') . ': ' .$this->escape($row->url_alias); ?> |
+						<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE') . ': ' .$this->escape($row->dc_type); ?>
 					</span>
 				</td>
 				<td class="centeralign narrow">
 					<span class="state <?php echo ($row->contributable == 1 ? 'yes' : 'no'); ?>">
-						<span><?php echo ($row->contributable == 1 ? JText::_('JYES') : JText::_('JNO')); ?></span>
+						<span><?php echo ($row->contributable == 1 ? Lang::txt('JYES') : Lang::txt('JNO')); ?></span>
 					</span>
 				</td>
 				<td class="centeralign narrow">
 					<span class="state <?php echo ($row->state == 1 ? 'on' : 'off'); ?>">
-						<span><?php echo ($row->state == 1 ? JText::_('COM_PUBLICATIONS_ON') : JText::_('COM_PUBLICATIONS_OFF')); ?></span>
+						<span><?php echo ($row->state == 1 ? Lang::txt('COM_PUBLICATIONS_ON') : Lang::txt('COM_PUBLICATIONS_OFF')); ?></span>
 					</span>
 				</td>
 			</tr>

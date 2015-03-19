@@ -54,7 +54,7 @@ class Screenshot extends \JTable
 	{
 		if (trim( $this->filename ) == '')
 		{
-			$this->setError( \JText::_('Missing filename'));
+			$this->setError( Lang::txt('Missing filename'));
 			return false;
 		}
 

@@ -36,8 +36,8 @@ if (substr($base, -13) == 'administrator')
 }
 else
 {
-	$sef    = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
-	$pubSef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->row->publication_id . '&v=' . $this->row->version_number);
+	$sef    = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$pubSef = Route::url('index.php?option=' . $this->option . '&id=' . $this->row->publication_id . '&v=' . $this->row->version_number);
 }
 
 $link 	 = rtrim($base, DS) . DS . trim($sef, DS);
@@ -45,18 +45,18 @@ $pubLink = rtrim($base, DS) . DS . trim($pubSef, DS);
 
 $message  = $this->subject."\n";
 $message .= '-------------------------------'."\n";
-$message .= JText::_('COM_PUBLICATIONS_PUBLICATION').' "'.$this->row->title.'" (id #'.$this->row->publication_id.')'."\n";
-$message .= JText::_('COM_PUBLICATIONS_EMAIL_URL').': ' . $pubLink . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION').' "'.$this->row->title.'" (id #'.$this->row->publication_id.')'."\n";
+$message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL').': ' . $pubLink . "\n";
 $message .= '-------------------------------'."\n";
-$message .= JText::_('COM_PUBLICATIONS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.', id #'.$this->project->id.')'."\n";
+$message .= Lang::txt('COM_PUBLICATIONS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.', id #'.$this->project->id.')'."\n";
 $message .= "\n";
-$message .= JText::_('COM_PUBLICATIONS_EMAIL_PROJECT_URL') . ': ' . $link . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_EMAIL_PROJECT_URL') . ': ' . $link . "\n";
 $message .= '-------------------------------'."\n";
 
 // Append a message
 if ($this->message)
 {
-	$message .= JText::_('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
+	$message .= Lang::txt('COM_PUBLICATION_MSG_MESSAGE_FROM_ADMIN') . ': ' . "\n";
 	$message .= $this->message ."\n";
 }
 

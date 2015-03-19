@@ -54,13 +54,13 @@ class Curation extends \JTable
 	{
 		if (!$this->publication_id)
 		{
-			$this->setError( \JText::_('Must have a publication ID.') );
+			$this->setError( Lang::txt('Must have a publication ID.') );
 			return false;
 		}
 
 		if (!$this->publication_version_id)
 		{
-			$this->setError( \JText::_('Must have a publication version ID.') );
+			$this->setError( Lang::txt('Must have a publication version ID.') );
 			return false;
 		}
 

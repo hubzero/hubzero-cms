@@ -285,14 +285,14 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_CATEGORY_SAVED')
+				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_CATEGORY_SAVED')
+				Lang::txt('COM_PUBLICATIONS_CATEGORY_SAVED')
 			);
 		}
 		return;
@@ -328,7 +328,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				{
 					$this->addComponentMessage($row->getError(), 'error');
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
 				}
@@ -337,8 +337,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_PUBLICATIONS_CATEGORY_ITEM_STATUS_CHNAGED')
 		);
 	}
 
@@ -349,7 +349,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 
 	/**

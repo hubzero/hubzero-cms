@@ -41,10 +41,10 @@ $site 	 = $jconfig->getValue('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $text = ($this->task == 'edit'
-	? JText::_('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
-	: JText::_('JACTION_CREATE'));
+	? Lang::txt('JACTION_EDIT') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')'
+	: Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': [ ' . $text . ' ]', 'addedit.png');
 JToolBarHelper::spacer();
 JToolBarHelper::apply();
 JToolBarHelper::save();
@@ -84,7 +84,6 @@ $canedit 	= 1;
 $now 		= JFactory::getDate()->toSql();
 $status 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 'status');
 
-$v = $this->version == 'default' ? '' : '?v=' . $this->version;
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
 $params = new JParameter($this->row->params, JPATH_COMPONENT . DS . 'publications.xml');
 
@@ -111,7 +110,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'resetrating') {
-		if (confirm('<?php echo JText::_('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>')) {
+		if (confirm('<?php echo Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>')) {
 			submitform(pressbutton);
 			return;
 		} else {
@@ -161,7 +160,7 @@ function submitbutton(pressbutton)
 
 	// do field validation
 	if (form.title.value == '') {
-		alert('<?php echo JText::_('COM_PUBLICATIONS_ERROR_MISSING_TITLE'); ?>');
+		alert('<?php echo Lang::txt('COM_PUBLICATIONS_ERROR_MISSING_TITLE'); ?>');
 	}
 	else {
 		submitform( pressbutton );
@@ -174,16 +173,16 @@ function popratings()
 	return false;
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="item-form" class="editform">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php
 				// Draw category list
 				$this->view('_selectcategory')
@@ -195,30 +194,30 @@ function popratings()
 				?>
 			</div>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
 				<input type="text" name="alias" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->pub->alias)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
 				<textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->row->abstract)); ?></textarea>
 			</div>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<?php
 					echo JFactory::getEditor()->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
 				?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
 			<div class="input-wrap">
-				<?php echo $fields ? $fields : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>'; ?>
+				<?php echo $fields ? $fields : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>'; ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
+				<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
 				<?php
 					echo JFactory::getEditor()->display('release_notes', $this->escape(stripslashes($this->row->release_notes))
 						, '', '', '20', '10', false
@@ -226,7 +225,7 @@ function popratings()
 			</div>
 		</fieldset>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="index.php?option=com_publications&amp;task=addauthor&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid=' . $this->row->publication_id . '&vid=' . $this->row->id ); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
 		<fieldset>
 		<div class="input-wrap" id="publiction-authors">
 			<?php
@@ -240,7 +239,7 @@ function popratings()
 		</fieldset>
 	</fieldset>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
 		<fieldset>
 		<div class="input-wrap">
 			<?php
@@ -254,10 +253,10 @@ function popratings()
 		</fieldset>
 	</fieldset>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_LICENSE'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_LICENSE'); ?></span></legend>
 		<fieldset>
 		<div class="input-wrap">
-			<label for="license_type"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
+			<label for="license_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
 			<?php // Draw license selector
 			$this->view('_selectlicense')
 			     ->set('licenses', $this->licenses)
@@ -266,7 +265,7 @@ function popratings()
 			?>
 		</div>
 		<div class="input-wrap">
-			<label for="license_text"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
+			<label for="license_text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
 			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->row->license_text)); ?></textarea>
 		</div>
 		</fieldset>
@@ -276,36 +275,36 @@ function popratings()
 <table class="meta">
 	<tbody>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_ID'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ID'); ?></th>
 			<td><?php echo $this->pub->id; ?></td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_CREATED'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CREATED'); ?></th>
 			<td>
-				<?php echo JHTML::_('date', $this->row->created, JText::_('DATE_FORMAT_LC2')); ?>
+				<?php echo JHTML::_('date', $this->row->created, Lang::txt('DATE_FORMAT_LC2')); ?>
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_CREATOR'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR'); ?></th>
 			<td>
 				<?php echo $this->escape($this->row->created_by_name); ?>
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_PROJECT'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PROJECT'); ?></th>
 			<td>
 				<?php echo $this->pub->project_title; ?>
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
 			<td>
 				<?php echo $this->pub->_type->type; ?>
 			</td>
 		</tr>
 		<?php if ($this->row->state == 1 || $this->row->state == 0) { ?>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_RANKING'); ?>:</th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RANKING'); ?>:</th>
 			<td><?php echo $this->pub->ranking; ?>/10
 				<?php if ($this->pub->ranking != '0') { ?>
 					<input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" onclick="submitbutton('resetranking');" />
@@ -313,7 +312,7 @@ function popratings()
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_RATING'); ?>:</th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RATING'); ?>:</th>
 			<td><?php echo $rating.'/5.0 ('.$this->pub->times_rated.' reviews)'; ?>
 			<?php if ( $rating != '0.0' ) { ?>
 				<input type="button" name="reset_rating" id="reset_rating" value="Reset rating" onclick="submitbutton('resetrating');" />
@@ -324,53 +323,53 @@ function popratings()
 	</tbody>
 </table>
 <fieldset class="adminform">
-	<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_VERSION'); ?></span></legend>
+	<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_VERSION'); ?></span></legend>
 <table>
 	<tbody>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_VERSION_ID'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION_ID'); ?></th>
 			<td>
 				<?php echo $this->row->id; ?>
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
 			<td>
 				<?php echo $this->pub->version_label.' ('.$status.')'; ?>
 			</td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_URL'); ?></th>
-			<td><a href="<?php echo trim($site, DS) . '/publications/' . $this->pub->id . $v; ?>" target="_blank"><?php echo trim($site, DS) . '/publications/' . $this->pub->id . $v; ?></a></td>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL'); ?></th>
+			<td><a href="<?php echo trim($site, DS) . '/publications/' . $this->pub->id . DS . $this->pub->version_number; ?>" target="_blank"><?php echo trim($site, DS) . '/publications/' . $this->pub->id . DS . $this->pub->version_number; ?></a></td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
-			<td><?php echo JHTML::_('date', $this->row->modified, JText::_('DATE_FORMAT_LC2')); ?></td>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
+			<td><?php echo JHTML::_('date', $this->row->modified, Lang::txt('DATE_FORMAT_LC2')); ?></td>
 		</tr>
 		<tr>
-			<th><?php echo JText::_('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
+			<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
 			<td><?php echo $this->row->modified_by_name; ?></td>
 		</tr>
 	</tbody>
 </table>
 </fieldset>
 <fieldset class="adminform">
-	<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_PUBLISHING'); ?></span></legend>
+	<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_PUBLISHING'); ?></span></legend>
 	<div class="input-wrap">
-		<label for="field-published"><?php echo JText::_('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label><br />
+		<label for="field-published"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label><br />
 		<select name="state" id="field-published">
-			<option value="3"<?php echo ($this->row->state == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
-			<option value="4"<?php echo ($this->row->state == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_READY'); ?></option>
-			<option value="5"<?php echo ($this->row->state == 5) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
-			<option value="7"<?php echo ($this->row->state == 7) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
-			<option value="10"<?php echo ($this->row->state == 10) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
-			<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
-			<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
-			<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
+			<option value="3"<?php echo ($this->row->state == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
+			<option value="4"<?php echo ($this->row->state == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
+			<option value="5"<?php echo ($this->row->state == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
+			<option value="7"<?php echo ($this->row->state == 7) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
+			<option value="10"<?php echo ($this->row->state == 10) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
+			<option value="1"<?php echo ($this->row->state == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
+			<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
+			<option value="2"<?php echo ($this->row->state == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
 		</select>
 	</div>
 	<div class="input-wrap">
-		<label for="access"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
+		<label for="access"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
 		<?php 
 		// Draw access select list
 		$this->view('_selectaccess')
@@ -380,7 +379,7 @@ function popratings()
 		?>
 	</div>
 	<div class="input-wrap">
-		<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
+		<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
 		<?php 
 		// Draw group selector
 		$this->view('_selectgroup')
@@ -390,11 +389,11 @@ function popratings()
 		     ->display(); ?>
 	</div>
 	<div class="input-wrap">
-		<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
+		<label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
 			<?php echo JHTML::_('calendar', ($this->row->published_up != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
 	</div>
 		<div class="input-wrap">
-			<label for="publish_down"><?php echo JText::_('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
+			<label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
 			<?php
 				$down = 'Never';
 				if (strtolower($this->row->published_down) != 'never')
@@ -406,7 +405,7 @@ function popratings()
 			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down'); ?>
 		</div>
 	<div class="input-wrap">
-		<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DOI'); ?>:</label>
+		<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DOI'); ?>:</label>
 		<input type="text" id="doi" name="doi" value="<?php echo $this->row->doi; ?>" />
 	</div>
 
@@ -415,35 +414,35 @@ function popratings()
 			<tbody>
 		<?php if (isset($this->submitter) && $this->submitter) { ?>
 				<tr>
-					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</td>
+					<td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</td>
 					<td><?php echo $this->submitter->name; ?></td>
 				</tr>
 		<?php } ?>
 		<?php if ($this->row->state == 5) { ?>
 				<tr>
-					<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>
+					<td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>
 					<td><?php echo $this->row->submitted; ?></td>
 				</tr>
 		<?php } else if ($this->row->state == 1 || $this->row->state == 0)  { ?>
 			<?php if ($this->row->submitted != '0000-00-00 00:00:00') { ?>
 					<tr>
-						<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?></td>
+						<td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?></td>
 						<td><?php echo $this->row->submitted; ?></td>
 					</tr>
 			<?php } ?>
 			<?php if ($this->row->accepted != '0000-00-00 00:00:00') { ?>
 					<tr>
-						<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCEPTED'); ?></td>
+						<td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCEPTED'); ?></td>
 						<td><?php echo $this->row->accepted; ?></td>
 					</tr>
 			<?php } ?>
 		<?php }  ?>
 			<tr>
-				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
+				<td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
 				<td>	<?php if (file_exists($this->archPath)) { ?>
-						<a href="<?php echo str_replace(JPATH_ROOT, '', $this->archPath); ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></a> &nbsp;&nbsp;<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>">[<?php echo JText::_('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
+						<a href="<?php echo trim($site, DS) . '/publications/' . $this->pub->id  . '/serve/' . $this->pub->version_number . '?render=archive'; ?>" class="archival"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></a> &nbsp;&nbsp;<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->row->publication_id . '&vid=' . $this->row->id . '&version=' . $this->version); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
 					<?php  }  else { ?>
-					<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_PRODUCE_ARCHIVAL'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->row->publication_id . '&vid=' . $this->row->id . '&version=' . $this->version); ?>" class="archival"><?php echo Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL'); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
@@ -452,36 +451,36 @@ function popratings()
 	</div>
 </fieldset>
 <fieldset class="adminform">
-	<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_MANAGEMENT_OPTIONS'); ?></span></legend>
+	<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MANAGEMENT_OPTIONS'); ?></span></legend>
 	<div class="input-wrap">
 		<textarea name="message" id="message" rows="5" cols="50"></textarea>
 		<input type="hidden" name="admin_action" value="" />
-		<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="submitbutton('message')" />
+		<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="submitbutton('message')" />
 		<?php if ($this->row->state == 1) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="submitbutton('unpublish')" />
+			<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="submitbutton('unpublish')" />
 		<?php } else if ($this->row->state == 0) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="submitbutton('republish')" />
+			<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="submitbutton('republish')" />
 		<?php } else if ($this->row->state == 5) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="submitbutton('publish')" />
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="submitbutton('revert')" />
+			<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="submitbutton('publish')" />
+			<input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="submitbutton('revert')" />
 		<?php } ?>
 	</div>
 </fieldset>
 
 <?php
 	echo JHtml::_('sliders.start', 'content-panel');
-	echo JHtml::_('sliders.panel', JText::_('COM_PUBLICATIONS_FIELDSET_PARAMETERS'), 'params-page');
+	echo JHtml::_('sliders.panel', Lang::txt('COM_PUBLICATIONS_FIELDSET_PARAMETERS'), 'params-page');
 ?>
 	<table class="admintable">
 		<tbody>
 			<?php if ($this->useBlocks)
 			{ ?>
 				<tr>
-					<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATED'); ?>:</td>
+					<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATED'); ?>:</td>
 					<td>
 						<select name="params[curated]">
-							<option value="2" <?php echo ($params->get('curated', 1) != 1) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_UNCURATED'); ?></option>
-							<option value="1" <?php echo ($params->get('curated', 1) == 1) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATED'); ?></option>
+							<option value="2" <?php echo ($params->get('curated', 1) != 1) ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNCURATED'); ?></option>
+							<option value="1" <?php echo ($params->get('curated', 1) == 1) ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_CURATED'); ?></option>
 						</select>
 					</td>
 				</tr>
@@ -494,8 +493,8 @@ function popratings()
 						<td class="key"><?php echo ucfirst($panel); ?>:</td>
 						<td>
 							<select name="params[show_<?php echo $panel; ?>]">
-								<option value="0" <?php echo ($params->get('show_'.$panel, $val) == 0) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_HIDE'); ?></option>
-								<option value="1" <?php echo ($params->get('show_'.$panel, $val) > 0) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_SHOW'); ?></option>
+								<option value="0" <?php echo ($params->get('show_'.$panel, $val) == 0) ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_HIDE'); ?></option>
+								<option value="1" <?php echo ($params->get('show_'.$panel, $val) > 0) ? ' selected="selected"':''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_SHOW'); ?></option>
 							</select>
 						</td>
 					</tr>
@@ -506,7 +505,7 @@ function popratings()
 	</table>
 <?php echo JHtml::_('sliders.end'); ?>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
 		<fieldset>
 			<div class="input-wrap">
 				<?php

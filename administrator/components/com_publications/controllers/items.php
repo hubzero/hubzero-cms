@@ -172,8 +172,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->view->isnew = 1;
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
 				'notice'
 			);
 			return;
@@ -206,7 +206,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// If publication not found, raise error
 		if (!$this->view->pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
@@ -223,8 +223,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		 && $this->view->objP->checked_out <> $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
 				'notice'
 			);
 			return;
@@ -235,7 +235,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (trim($this->view->row->published_down) == '0000-00-00 00:00:00')
 		{
-			$this->view->row->published_down = JText::_('COM_PUBLICATIONS_NEVER');
+			$this->view->row->published_down = Lang::txt('COM_PUBLICATIONS_NEVER');
 		}
 
 		// Get name of resource creator
@@ -243,7 +243,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		$this->view->row->created_by_name = $creator->get('name');
 		$this->view->row->created_by_name = ($this->view->row->created_by_name)
-			? $this->view->row->created_by_name : JText::_('COM_PUBLICATIONS_UNKNOWN');
+			? $this->view->row->created_by_name : Lang::txt('COM_PUBLICATIONS_UNKNOWN');
 
 		// Get name of last person to modify resource
 		if ($this->view->row->modified_by)
@@ -252,7 +252,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 			$this->view->row->modified_by_name = $modifier->get('name');
 			$this->view->row->modified_by_name = ($this->view->row->modified_by_name)
-				? $this->view->row->modified_by_name : JText::_('COM_PUBLICATIONS_UNKNOWN');
+				? $this->view->row->modified_by_name : Lang::txt('COM_PUBLICATIONS_UNKNOWN');
 		}
 		else
 		{
@@ -265,7 +265,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Archival package?
 		$this->view->archPath = JPATH_ROOT . $path . DS
-			. JText::_('Publication').'_'.$id.'.zip';
+			. Lang::txt('Publication').'_'.$id.'.zip';
 
 		// Get params definitions
 		$this->view->params  = new JParameter(
@@ -362,7 +362,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// If publication not found, raise error
 		if (!$this->view->pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
@@ -374,7 +374,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (!$this->view->useBlocks)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'));
+			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'));
 		}
 		else
 		{
@@ -459,7 +459,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
@@ -470,7 +470,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'),
+				Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'),
 				'error'
 			);
 			return;
@@ -523,13 +523,13 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Set redirect URL
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		// Redirect back to publication
 		$this->setRedirect(
 			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT')
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_CONTENT')
 		);
 	}
 
@@ -558,7 +558,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->author = new \Components\Publications\Tables\Author( $this->database );
 		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
 			return;
 		}
 
@@ -571,7 +571,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Load version
 		if (!$this->view->row->load($vid))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
@@ -579,7 +579,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$pid = JRequest::getInt( 'pid', $this->view->row->publication_id );
 		if (!$this->view->pub->load($pid))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
@@ -627,8 +627,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if (!$pAuthor->load($aid))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
 				'error'
 			);
 			return;
@@ -647,8 +647,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if (!$pAuthor->delete())
 		{
 			$this->setRedirect(
-				$url,
-				JText::_('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
+				Route::url($url, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
 				'error'
 			);
 			return;
@@ -656,8 +656,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Redirect back to publication
 		$this->setRedirect(
-			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR')
+			Route::url($url, false),
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR')
 		);
 		return;
 	}
@@ -678,8 +678,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$neworder = JRequest::getVar('list', '');
 
 		// Set redirect URL
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		if (!$neworder)
 		{
@@ -696,7 +696,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_NOT_FOUND'),
+				Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -744,14 +744,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 				if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
 				{
-					$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
 				}
 			}
 
 			// Redirect back to publication
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
 			);
 			return;
 		}
@@ -777,8 +777,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
 
 		// Set redirect URL
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		// Instantiate publication object
 		$objP = new \Components\Publications\Tables\Publication( $this->database );
@@ -786,7 +786,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_NOT_FOUND'),
+				Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -842,14 +842,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 				if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
 				{
-					$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
+					$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
 				}
 			}
 
 			// Redirect back to publication
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
 			);
 			return;
 		}
@@ -886,8 +886,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'error'
 			);
 			return;
@@ -921,13 +921,13 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 
 		// Set redirect URL
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		// Load version	for editing
 		$vid = $pub->version_id;
@@ -1067,19 +1067,19 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$doierr
 			))
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 			}
 		}
 
 		// Email config
 		$pubtitle 	= \Hubzero\Utility\String::truncate($row->title, 100);
-		$subject 	= JText::_('Version') . ' ' . $row->version_label . ' '
-					. JText::_('COM_PUBLICATIONS_OF') . ' '
-					. strtolower(JText::_('COM_PUBLICATIONS_PUBLICATION'))
+		$subject 	= Lang::txt('Version') . ' ' . $row->version_label . ' '
+					. Lang::txt('COM_PUBLICATIONS_OF') . ' '
+					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
 					. ' "' . $pubtitle . '" ';
 		$sendmail 	= 0;
 		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'message', '' )));
-		$output 	= JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_ITEM');
+		$output 	= Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_ITEM');
 
 		// Admin actions
 		if ($action)
@@ -1094,11 +1094,11 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				case 'republish':
 
 					$activity = $action == 'publish'
-						? JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
-						: JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REPUBLISHED');
+						? Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
+						: Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REPUBLISHED');
 					$subject .= $action == 'publish'
-						? JText::_('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
-						: JText::_('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
+						? Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
+						: Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
 
 					$row->published_down = '0000-00-00 00:00:00';
 					$row->state = 1;
@@ -1125,13 +1125,13 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 								$row->doi = $doi;
 								if ($doierr)
 								{
-									$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+									$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 								}
 							}
 							else
 							{
 								$this->setRedirect(
-									$url, JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr, 'error'
+									$url, Lang::txt('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr, 'error'
 								);
 								return;
 							}
@@ -1142,7 +1142,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							if (!PublicationUtilities::updateDoi($row->doi, $row,
 								$authors, $this->config, $metadata, $doierr))
 							{
-								$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+								$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
 							}
 						}
 					}
@@ -1191,35 +1191,35 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 					if (!$this->getError())
 					{
-						$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
+						$output .= ' '.Lang::txt('COM_PUBLICATIONS_ITEM').' ';
 						$output .= $action == 'publish'
-							? JText::_('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
-							: JText::_('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
+							? Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
+							: Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
 					}
 					break;
 
 				case 'revert':
 					$row->state = $state ? $state : 4;
-					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
-					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
-					$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
-					$output .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
+					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
+					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
+					$output .= ' '.Lang::txt('COM_PUBLICATIONS_ITEM').' ';
+					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
 					break;
 
 				case 'unpublish':
 					$row->state = 0;
 					$row->published_down    = JFactory::getDate()->toSql();
-					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');
-					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
+					$activity = Lang::txt('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');
+					$subject .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
 
-					$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
-					$output .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
+					$output .= ' '.Lang::txt('COM_PUBLICATIONS_ITEM').' ';
+					$output .= Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
 					break;
 			}
 
 			// Add activity
-			$activity .= ' '.strtolower(JText::_('version')).' '.$row->version_label.' '
-			.JText::_('COM_PUBLICATIONS_OF').' '.strtolower(JText::_('publication')).' "'
+			$activity .= ' '.strtolower(Lang::txt('version')).' '.$row->version_label.' '
+			.Lang::txt('COM_PUBLICATIONS_OF').' '.strtolower(Lang::txt('publication')).' "'
 			.$pubtitle.'" ';
 
 			// Build return url
@@ -1261,10 +1261,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 					if ( $objC->id )
 					{
-						$what = JText::_('COM_PROJECTS_AN_ACTIVITY');
+						$what = Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 						$curl = '#tr_'.$aid; // same-page link
 						$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'),
-						JText::_('COM_PROJECTS_COMMENTED') . ' ' . JText::_('COM_PROJECTS_ON')
+						Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON')
 							. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
 
 						// Store activity ID
@@ -1281,9 +1281,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Do we have a message to send?
 		if ($message)
 		{
-			$subject .= ' - '.JText::_('COM_PUBLICATIONS_MSG_ADMIN_NEW_MESSAGE');
+			$subject .= ' - '.Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_NEW_MESSAGE');
 			$sendmail = 1;
-			$output .= ' '.JText::_('COM_PUBLICATIONS_MESSAGE_SENT');
+			$output .= ' '.Lang::txt('COM_PUBLICATIONS_MESSAGE_SENT');
 		}
 
 		// Updating entry if anything changed
@@ -1354,7 +1354,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		else
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$output
 			);
 		}
@@ -1446,10 +1446,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			// E-mail "from" info
 			$from = array();
 			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('PUBLICATIONS');
+			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('PUBLICATIONS');
 
 			$subject = $subject
-				? $subject : JText::_('COM_PUBLICATIONS_STATUS_UPDATE');
+				? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
 
 			// Get message body
 			$eview 					= new \Hubzero\Component\View( array('name'=>'emails', 'layout' => 'admin_plain' ) );
@@ -1481,7 +1481,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$this->_option)
 			))
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
 			}
 		}
 	}
@@ -1508,8 +1508,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
 			);
 			return;
@@ -1528,7 +1528,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
 			return;
 		}
 
@@ -1564,8 +1564,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
 				'notice'
 			);
 			return;
@@ -1584,7 +1584,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$objP = new \Components\Publications\Tables\Publication( $this->database );
 			if (!$objP->load($id))
 			{
-				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+				JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 				return;
 			}
 
@@ -1603,14 +1603,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				// Load version
 				if (!$row->loadVersion($id, $version))
 				{
-					JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
+					JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
 					return;
 				}
 
 				// Cannot delete main version if other versions exist
 				if ($row->main)
 				{
-					JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE') );
+					JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE') );
 					return;
 				}
 				if ($erase == 1)
@@ -1681,8 +1681,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$output = ($version != 'all')
-			? JText::_('COM_PUBLICATIONS_SUCCESS_VERSION_DELETED')
-			: JText::_('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED') . ' (' . count($ids) . ')';
+			? Lang::txt('COM_PUBLICATIONS_SUCCESS_VERSION_DELETED')
+			: Lang::txt('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED') . ' (' . count($ids) . ')';
 		$this->setRedirect(
 			$this->buildRedirectURL(),
 			$output
@@ -1750,8 +1750,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller
+			Route::url('index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller, false)
 		);
 
 		return;
@@ -1781,14 +1781,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_RATING_RESET');
+			$this->_message = Lang::txt('COM_PUBLICATIONS_SUCCESS_RATING_RESET');
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id,
+			. '&task=edit&id[]=' . $id, false),
 			$this->_message
 		);
 	}
@@ -1816,14 +1816,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_RANKING_RESET');
+			$this->_message = Lang::txt('COM_PUBLICATIONS_SUCCESS_RANKING_RESET');
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			Route::url('index.php?option=' . $this->_option
 			. '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id,
+			. '&task=edit&id[]=' . $id, false),
 			$this->_message
 		);
 	}
@@ -1851,18 +1851,18 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (!$objP->load($pid) || !$objV->load($vid))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
 		$pub = $objP->getPublication($pid, $objV->version_number, $objP->project_id);
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
 			return;
 		}
 
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version, false);
 
 		if ($useBlocks)
 		{
@@ -1903,7 +1903,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				$objP->checkin();
 
 				// Redirect
-				$this->setRedirect( $url, JText::_('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
+				$this->setRedirect( $url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
 				return;
 			}
 		}
@@ -1915,7 +1915,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
 		}
 
-		$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
+		$this->_message = Lang::txt('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
 
 		// Checkin the resource
 		$objP->checkin();
@@ -1947,8 +1947,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		$this->_redirect = 'index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller;
+		$this->_redirect = Route::url('index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller, false);
 	}
 
 	/**
@@ -1958,8 +1958,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	 */
 	private function buildRedirectURL()
 	{
-		$url  = 'index.php?option=' . $this->_option
-			. '&controller=' . $this->_controller;
+		$url  = Route::url('index.php?option=' . $this->_option
+			. '&controller=' . $this->_controller, false);
 
 		// Incoming
 		$id  = JRequest::getInt('id', 0);

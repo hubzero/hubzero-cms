@@ -140,8 +140,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$this->view->row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -201,8 +201,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -213,8 +213,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$row->curation
 		);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id, false);
 
 		$manifest   = new stdClass;
 		$oManifest  = $curation->_manifest;
@@ -285,7 +285,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED')
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_BLOCK_ADDED')
 		);
 	}
 
@@ -305,8 +305,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$this->view->row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -354,15 +354,15 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'error'
 			);
 			return;
 		}
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id, false);
 
 		if (!trim($curation) || $this->isJson(trim($curation)))
 		{
@@ -373,7 +373,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
+				Lang::txt('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
 				'error'
 			);
 			return;
@@ -381,7 +381,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED')
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_CURATION_SAVED')
 		);
 	}
 
@@ -413,8 +413,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$this->view->row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -462,8 +462,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -474,8 +474,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$row->curation
 		);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id, false);
 
 		$objC = new \Components\Publications\Models\Curation($row->curation);
 		$manifest = $objC->_manifest;
@@ -537,7 +537,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED')
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ELEMENTS_SAVED')
 		);
 
 	}
@@ -558,8 +558,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$this->view->row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -620,8 +620,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if (!$id || !$row->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
 				'notice'
 			);
 			return;
@@ -632,8 +632,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$row->curation
 		);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $id;
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $id, false);
 
 		$manifest = new stdClass;
 		if ($neworder && !empty($order))
@@ -654,7 +654,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED')
+			Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_ORDER_SAVED')
 		);
 	}
 
@@ -764,8 +764,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Initiate extended database class
 		$row = new \Components\Publications\Tables\MasterType($this->database);
 
-		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			. '&task=edit&id[]=' . $fields['id'];
+		$url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			. '&task=edit&id[]=' . $fields['id'], false);
 
 		// Load record
 		if ($fields['id'])
@@ -882,14 +882,14 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_SUCCESS_TYPE_SAVED')
 			);
 		}
 		return;
@@ -926,7 +926,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$row->changeOrder($dir);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -937,7 +937,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false));
 	}
 
 	/**
@@ -959,8 +959,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
 				'error'
 			);
 			return;
@@ -977,7 +977,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			{
 				// Redirect with error message
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::sprintf('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
 					'error'
 				);
@@ -990,7 +990,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
 		);
 	}

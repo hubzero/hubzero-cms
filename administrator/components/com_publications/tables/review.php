@@ -54,7 +54,7 @@ class Review extends \JTable
 	{
 		if (trim( $this->rating ) == '')
 		{
-			$this->setError( \JText::_('Your review must have a rating.') );
+			$this->setError( Lang::txt('Your review must have a rating.') );
 			return false;
 		}
 		return true;

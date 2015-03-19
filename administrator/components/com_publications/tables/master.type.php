@@ -54,12 +54,12 @@ class MasterType extends \JTable
 	{
 		if (trim( $this->type ) == '')
 		{
-			$this->setError( \JText::_('Your publication master type must contain text.') );
+			$this->setError( Lang::txt('Your publication master type must contain text.') );
 			return false;
 		}
 		if (trim( $this->alias ) == '')
 		{
-			$this->setError( \JText::_('Your publication master type alias must contain text.') );
+			$this->setError( Lang::txt('Your publication master type alias must contain text.') );
 			return false;
 		}
 		return true;

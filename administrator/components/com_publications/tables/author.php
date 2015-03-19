@@ -54,13 +54,13 @@ class Author extends \JTable
 	{
 		if (!$this->user_id)
 		{
-			$this->setError(\JText::_('Must have an author ID.'));
+			$this->setError(Lang::txt('Must have an author ID.'));
 			return false;
 		}
 
 		if (!$this->publication_version_id)
 		{
-			$this->setError(\JText::_('Must have an item ID.'));
+			$this->setError(Lang::txt('Must have an item ID.'));
 			return false;
 		}
 
