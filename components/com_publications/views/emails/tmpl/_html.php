@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juri 	 = JURI::getInstance();
-$jconfig = JFactory::getConfig();
+$jconfig = \JFactory::getConfig();
 $hubShortName = $jconfig->getValue('config.sitename');
 
 // Set some styles
@@ -55,7 +55,7 @@ if ($comment)
 }
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('Publications');
+$title = $hubShortName . ' ' . Lang::txt('Publications');
 
 ?>
 

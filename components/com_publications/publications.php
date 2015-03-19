@@ -28,10 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-$option = JRequest::getCmd('option', 'com_publications');
+namespace Components\Publications;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
@@ -48,23 +45,24 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'logs.php');
 
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'publication.php');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'curation.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'types.php');
 
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'resourceMapGenerator.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'usage.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'tags.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'resourceMapGenerator.php');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables'. DS . 'project.owner.php');
 
-$controllerName = JRequest::getCmd('controller', 'publications');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'publications'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'publications';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'PublicationsController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
 $controller = new $controllerName();

@@ -148,7 +148,7 @@ class ResourceMapGenerator
 		if (!$resource)
 		{
 			// Return if ID does not exist
-			\JError::raiseError(404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND'));
+			\JError::raiseError(404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'));
 			return false;
 		}
 
@@ -384,7 +384,7 @@ class ResourceMapGenerator
 
 		if ($rdfa == null)
 		{
-			\JError::raiseError( 404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND') );
 			return false;
 		}
 

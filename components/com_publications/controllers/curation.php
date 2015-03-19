@@ -28,17 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Controllers;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+use Hubzero\Component\SiteController;
+use Components\Publications\Tables;
+use Components\Publications\Models;
+use Components\Publications\Helpers;
+use stdClass;
+
+include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
+require_once( PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class PublicationsControllerCuration extends \Hubzero\Component\SiteController
+class Curation extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -47,8 +52,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		$this->_task  = JRequest::getVar( 'task', '');
-		$this->_id    = JRequest::getInt( 'id', 0 );
+		$this->_task  = \JRequest::getVar( 'task', '');
+		$this->_id    = \JRequest::getInt( 'id', 0 );
 		$this->_pub	  = NULL;
 
 		// View individual curation
@@ -58,13 +63,13 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		// Get language
-		$lang = JFactory::getLanguage();
+		$lang = \JFactory::getLanguage();
 		$lang->load('plg_projects_publications');
 
 		// Is curation enabled?
 		if (!$this->config->get('curation', 0))
 		{
-			$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
 
@@ -82,7 +87,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Must be logged in to be a curator
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
+			$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 			$this->_login();
 			return;
 		}
@@ -91,18 +96,18 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
 		// Check authorization
-		$mt  = new \Components\Publications\Tables\MasterType( $this->database );
+		$mt  = new Tables\MasterType( $this->database );
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Incoming
-		$assigned = JRequest::getInt('assigned', 0);
+		$assigned = \JRequest::getInt('assigned', 0);
 
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
-		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
-		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'submitted');
-		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'DESC');
+		$filters['limit'] 	 		= \JRequest::getInt('limit', 25);
+		$filters['start'] 	 		= \JRequest::getInt('limitstart', 0);
+		$filters['sortby']   		= \JRequest::getVar( 't_sortby', 'submitted');
+		$filters['sortdir']  		= \JRequest::getVar( 't_sortdir', 'DESC');
 		$filters['ignore_access']   = 1;
 
 		// Only get types for which authorized
@@ -117,7 +122,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->filters		= $filters;
 
 		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objP = new Tables\Publication( $this->database );
 
 		// Get all publications
 		$this->view->rows = $objP->getRecords($filters);
@@ -128,7 +133,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -168,10 +173,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	{
 		if (!$this->_title)
 		{
-			$this->_title = JText::_(strtoupper($this->_option)) . ': '
-				. JText::_(strtoupper($this->_option . '_' . $this->_controller));
+			$this->_title = Lang::txt(strtoupper($this->_option)) . ': '
+				. Lang::txt(strtoupper($this->_option . '_' . $this->_controller));
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle( $this->_title );
 	}
 
@@ -182,18 +187,18 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 		$pathway = $app->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option='.$this->_option
 			);
 		}
 		$pathway->addItem(
-			JText::_('COM_PUBLICATIONS_CURATION'),
+			Lang::txt('COM_PUBLICATIONS_CURATION'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=display'
 		);
 
@@ -215,12 +220,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$version 	= JRequest::getVar( 'version', '' );
+		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$version 	= \JRequest::getVar( 'version', '' );
 
 		if (!$pid)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
@@ -233,9 +238,9 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		// Load publication & version classes
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
-		$objV = new \Components\Publications\Tables\Version( $this->database );
-		$mt   = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP = new Tables\Publication( $this->database );
+		$objV = new Tables\Version( $this->database );
+		$mt   = new Tables\MasterType( $this->database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
@@ -246,7 +251,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
@@ -254,8 +259,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		if ($pub->state != 5)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=curation'),
-				JText::_('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'),
+				Route::url('index.php?option=' . $this->_option . '&controller=curation'),
+				Lang::txt('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'),
 				'error'
 			);
 			return;
@@ -272,11 +277,11 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
+				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
 			return;
 		}
 
@@ -293,17 +298,17 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->version 	= $version;
 
 		// Get type info
-		$pub->_category = new \Components\Publications\Tables\Category( $this->database );
+		$pub->_category = new Tables\Category( $this->database );
 		$pub->_category->load($pub->category);
-		$pub->_category->_params = new JParameter( $pub->_category->params );
+		$pub->_category->_params = new \JParameter( $pub->_category->params );
 
 		// Get authors
-		$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
+		$pAuthors 			= new Tables\Author( $this->database );
 		$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 		$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 
 		// Get attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+		$pContent = new Tables\Attachment( $this->database );
 		$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 		// Get manifest from either version record (published) or master type
@@ -312,7 +317,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+		$pub->_curationModel = new Models\Curation($manifest);
 
 		// Get reviewed Items
 		$pub->reviewedItems = $pub->_curationModel->getReviewedItems($pub->version_id);
@@ -323,7 +328,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->_pub = $pub;
 
 		// Get last history record (from author)
-		$obj = new \Components\Publications\Tables\CurationHistory($this->database);
+		$obj = new Tables\CurationHistory($this->database);
 		$this->view->history = $obj->getLastRecord($pub->version_id);
 
 		// Set page title
@@ -349,20 +354,20 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function historyTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$version 	= JRequest::getVar( 'version', '' );
-		$ajax 		= JRequest::getInt( 'ajax', 0 );
+		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$version 	= \JRequest::getVar( 'version', '' );
+		$ajax 		= \JRequest::getInt( 'ajax', 0 );
 
 		if (!$pid)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$objV  = new \Components\Publications\Tables\Version( $this->database );
-		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$objV  = new Tables\Version( $this->database );
+		$mt    = new Tables\MasterType( $this->database );
 
 		// Check that version exists
 		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
@@ -375,12 +380,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			if ($ajax)
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
+				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
 			return;
 		}
 
@@ -396,12 +401,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			if ($ajax)
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
+				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
 			return;
 		}
 
@@ -411,7 +416,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+		$pub->_curationModel = new Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -445,26 +450,26 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function assignTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$vid 		= JRequest::getInt( 'vid', 0 );
-		$owner 		= JRequest::getInt( 'owner', 0 );
-		$confirm 	= JRequest::getInt( 'confirm', 0 );
-		$ajax 		= JRequest::getInt( 'ajax', 0 );
+		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$vid 		= \JRequest::getInt( 'vid', 0 );
+		$owner 		= \JRequest::getInt( 'owner', 0 );
+		$confirm 	= \JRequest::getInt( 'confirm', 0 );
+		$ajax 		= \JRequest::getInt( 'ajax', 0 );
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$row  = new \Components\Publications\Tables\Version( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$row  = new Tables\Version( $this->database );
 		if (!$vid || !$row->load($vid) || $row->publication_id != $pid || !$objP->load($pid))
 		{
 			if ($ajax)
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
+				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
 			return;
 		}
 
@@ -472,7 +477,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
 		// Check authorization
-		$mt  = new \Components\Publications\Tables\MasterType( $this->database );
+		$mt  = new Tables\MasterType( $this->database );
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Get all authorized types
@@ -483,12 +488,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			if ($ajax)
 			{
 				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
+				$this->view->error  = Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
 				$this->view->title = $this->title;
 				$this->view->display();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
 			return;
 		}
 
@@ -496,7 +501,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		if ($confirm)
 		{
 			$previousOwner = $row->curator;
-			$selected = JRequest::getInt( 'selected', 0 );
+			$selected = \JRequest::getInt( 'selected', 0 );
 
 			// Make sure owner profile exists
 			if ($owner)
@@ -504,10 +509,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 				$ownerProfile  = \Hubzero\User\Profile::getInstance($owner);
 				if (!$ownerProfile)
 				{
-					$this->setError(JText::_('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
+					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
 				}
 			}
-			elseif ($selected && JRequest::getVar( 'owner', ''))
+			elseif ($selected && \JRequest::getVar( 'owner', ''))
 			{
 				$owner = $selected;
 			}
@@ -518,12 +523,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 				$row->curator = $owner;
 				if (!$row->store())
 				{
-					$this->setError(JText::_('COM_PUBLICATIONS_CURATION_ASSIGN_FAILED'));
+					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_FAILED'));
 				}
 				// Notify curator
 				if ($owner && $owner != $previousOwner)
 				{
-					$juri 	 = JURI::getInstance();
+					$juri 	 = \JURI::getInstance();
 					$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
 					$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
@@ -531,19 +536,19 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					$item .= ' v.' . $row->version_label . ' ';
 					$item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
-					$message = JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
-					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id . "\n" . "\n";
-					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link;
+					$message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
+					$message.= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id . "\n" . "\n";
+					$message.= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link;
 
 					// Instantiate project publication
 					$pub = $objP->getPublication($row->publication_id, $row->version_number);
 					if ($pub)
 					{
-						\Components\Publications\Helpers\Html::notify(
+						Helpers\Html::notify(
 							$this->config,
 							$pub,
 							array($owner),
-							JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
+							Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
 							$message
 						);
 					}
@@ -551,7 +556,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 				// Log assignment in history
 				if (!$this->getError() && $owner != $previousOwner)
 				{
-					$obj = new \Components\Publications\Tables\CurationHistory($this->database);
+					$obj = new Tables\CurationHistory($this->database);
 					if (isset($ownerProfile) && $ownerProfile)
 					{
 						$changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</p>';
@@ -563,7 +568,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 					// Create new record
 					$obj->publication_version_id 	= $row->id;
-					$obj->created 					= JFactory::getDate()->toSql();
+					$obj->created 					= \JFactory::getDate()->toSql();
 					$obj->created_by				= $this->juser->get('id');
 					$obj->changelog					= $changelog;
 					$obj->curator					= 1;
@@ -596,12 +601,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$message = $this->getError() ? $this->getError() : JText::_('COM_PUBLICATIONS_CURATION_SUCCESS_ASSIGNED');
+		$message = $this->getError() ? $this->getError() : Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_ASSIGNED');
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=curation'),
+			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 			$message,
 			$class
 		);
@@ -617,22 +622,22 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function approveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$vid 	= JRequest::getInt('vid', 0);
+		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$vid 	= \JRequest::getInt('vid', 0);
 
 		// Include utilities
-		require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS
+		require_once(PATH_ROOT . DS. 'administrator' . DS . 'components' . DS
 		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$row   = new \Components\Publications\Tables\Version( $this->database );
-		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$row   = new Tables\Version( $this->database );
+		$mt    = new Tables\MasterType( $this->database );
 
 		// Load version
 		if (!$row->load($vid) || $row->publication_id != $pid)
 		{
-			JError::raiseError( 404, JText::_('Error loading version') );
+			\JError::raiseError( 404, Lang::txt('Error loading version') );
 			return;
 		}
 
@@ -641,7 +646,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('Error loading publication') );
+			\JError::raiseError( 404, Lang::txt('Error loading publication') );
 			return;
 		}
 
@@ -656,17 +661,17 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
+				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
 			return;
 		}
 
 		$row->state    		= 1; // published
-		$row->accepted 		= JFactory::getDate()->toSql();
-		$row->reviewed 		= JFactory::getDate()->toSql();
+		$row->accepted 		= \JFactory::getDate()->toSql();
+		$row->reviewed 		= \JFactory::getDate()->toSql();
 		$row->reviewed_by 	= $this->juser->get('id');
 
 		// Archive (mkAIP) if no grace period and not previously archived
@@ -675,7 +680,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			&& (!$row->archived || $row->archived == '0000-00-00 00:00:00')
 		)
 		{
-			$row->archived = JFactory::getDate()->toSql();
+			$row->archived = \JFactory::getDate()->toSql();
 		}
 
 		// Get manifest from either version record (published) or master type
@@ -684,14 +689,14 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+		$pub->_curationModel = new Models\Curation($manifest);
 
 		// Store curation manifest
 		$row->curation = json_encode($pub->_curationModel->_manifest);
 
 		if (!$row->store())
 		{
-			JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
+			\JError::raiseError( 403, Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
 			return;
 		}
 
@@ -704,14 +709,14 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			$doierr   = NULL;
 
 			// Get authors
-			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
+			$pAuthors 			= new Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Update DOI with latest information
 			if (!PublicationUtilities::updateDoi($row->doi, $row,
 				$pub->_authors, $this->config, $metadata, $doierr))
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
+				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
 			}
 		}
 
@@ -724,12 +729,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// On after status change
 		$this->onAfterStatusChange( $pub, $row->state );
 
-		$message = $this->getError() ? $this->getError() : JText::_('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
+		$message = $this->getError() ? $this->getError() : Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=curation'),
+			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
 			$message,
 			$class
 		);
@@ -745,18 +750,18 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function kickbackTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$vid 	= JRequest::getInt('vid', 0);
+		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$vid 	= \JRequest::getInt('vid', 0);
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$row   = new \Components\Publications\Tables\Version( $this->database );
-		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$row   = new Tables\Version( $this->database );
+		$mt    = new Tables\MasterType( $this->database );
 
 		// Load version
 		if (!$row->load($vid) || $row->publication_id != $pid)
 		{
-			JError::raiseError( 404, JText::_('Error loading version') );
+			\JError::raiseError( 404, Lang::txt('Error loading version') );
 			return;
 		}
 
@@ -765,7 +770,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('Error loading publication') );
+			\JError::raiseError( 404, Lang::txt('Error loading publication') );
 			return;
 		}
 
@@ -780,22 +785,22 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		{
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
+				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
 			return;
 		}
 
 		// Change publication status
 		$row->state 		= 7; // pending author changes
-		$row->reviewed 		= JFactory::getDate()->toSql();
+		$row->reviewed 		= \JFactory::getDate()->toSql();
 		$row->reviewed_by 	= $this->juser->get('id');
 
 		if (!$row->store())
 		{
-			JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
+			\JError::raiseError( 403, Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
 			return;
 		}
 
@@ -805,7 +810,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+		$pub->_curationModel = new Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
@@ -815,8 +820,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		// Redirect to main listing
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=curation'),
-			JText::_('COM_PUBLICATIONS_CURATION_SUCCESS_KICKBACK')
+			Route::url('index.php?option=' . $this->_option . '&controller=curation'),
+			Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_KICKBACK')
 		);
 
 		return;
@@ -830,12 +835,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : JRequest::getInt('id', 0);
-		$vid 	= JRequest::getInt('vid', 0);
-		$props  = JRequest::getVar( 'p', '' );
-		$pass 	= JRequest::getInt( 'pass', 0 );
+		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
+		$vid 	= \JRequest::getInt('vid', 0);
+		$props  = \JRequest::getVar( 'p', '' );
+		$pass 	= \JRequest::getInt( 'pass', 0 );
 		$action = $pass ? 'pass' : 'fail';
-		$review = JRequest::getVar( 'review', '' );
+		$review = \JRequest::getVar( 'review', '' );
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -845,23 +850,23 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		if (!$block || !$step)
 		{
-			echo json_encode(array('success' => 0, 'error' => JText::_('Error parsing publication manifest')));
+			echo json_encode(array('success' => 0, 'error' => Lang::txt('Error parsing publication manifest')));
 			return;
 		}
 		if ($action == 'fail' && !$review)
 		{
-			echo json_encode(array('success' => 0, 'error' => JText::_('Please explain why the item requires changes')));
+			echo json_encode(array('success' => 0, 'error' => Lang::txt('Please explain why the item requires changes')));
 			return;
 		}
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$objV  = new \Components\Publications\Tables\Version( $this->database );
-		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$objV  = new Tables\Version( $this->database );
+		$mt    = new Tables\MasterType( $this->database );
 
 		if (!$vid || !$objV->load($vid))
 		{
-			echo json_encode(array('success' => 0, 'error' => JText::_('Error loading version')));
+			echo json_encode(array('success' => 0, 'error' => Lang::txt('Error loading version')));
 			return;
 		}
 
@@ -871,7 +876,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			echo json_encode(array('success' => 0, 'error' => JText::_('Error loading publication')));
+			echo json_encode(array('success' => 0, 'error' => Lang::txt('Error loading publication')));
 			return;
 		}
 
@@ -883,7 +888,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 		if (!$authorized)
 		{
-			echo json_encode(array('success' => 0, 'error' => JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')));
+			echo json_encode(array('success' => 0, 'error' => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')));
 			return;
 		}
 
@@ -893,13 +898,13 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					: $pub->_type->curation;
 
 		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+		$pub->_curationModel = new Models\Curation($manifest);
 
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
 
 		$data 					= new stdClass;
-		$data->reviewed 		= JFactory::getDate()->toSql();
+		$data->reviewed 		= \JFactory::getDate()->toSql();
 		$data->reviewed_by 		= $this->juser->get('id');
 		$data->review_status 	= $action == 'pass' ? 1 : 2;
 		if ($action == 'pass')
@@ -927,7 +932,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		{
 			echo json_encode(array(
 				'success' 	=> 0,
-				'error'  	=> JText::_('There was a problem saving curation item'),
+				'error'  	=> Lang::txt('There was a problem saving curation item'),
 				'notice' 	=> '')
 			);
 			return;
@@ -946,12 +951,12 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 		// Add message to project
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
 
 		$activity = $status == 1
-					? JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
-					: JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
+					? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
+					: Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
 
 		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
 
@@ -959,8 +964,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_curationModel->saveHistory($pub, $this->juser->get('id'), $pub->state, $status, 1 );
 
 		// Add activity
-		$activity .= ' ' . strtolower(JText::_('version')) . ' ' . $pub->version_label . ' '
-		. JText::_('COM_PUBLICATIONS_OF') . ' ' . strtolower(JText::_('publication')) . ' "'
+		$activity .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version_label . ' '
+		. Lang::txt('COM_PUBLICATIONS_OF') . ' ' . strtolower(Lang::txt('publication')) . ' "'
 		. $pubtitle . '" ';
 
 		// Build return url
@@ -982,16 +987,16 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		);
 
 		// Start message
-		$juri 	 = JURI::getInstance();
+		$juri 	 = \JURI::getInstance();
 		$sef	 = 'publications' . DS . $pub->id . DS . $pub->version_number;
 		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 		$manage  = rtrim($juri->base(), DS) . DS . 'projects' . DS . $pub->_project->alias . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
-		$message  = $status == 1 ? JText::_('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : JText::_('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
+		$message  = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
 		if ($status != 1)
 		{
 			$message .= "\n" . "\n";
-			$message .= JText::_('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
+			$message .= Lang::txt('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
 		}
 		else
 		{
@@ -999,16 +1004,16 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		}
 
 		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
-		$subject 	= ucfirst(JText::_('COM_PUBLICATIONS_CURATION_VERSION'))
-					. ' ' . $pub->version_label . ' ' . JText::_('COM_PUBLICATIONS_OF') . ' '
-					. strtolower(JText::_('COM_PUBLICATIONS_PUBLICATION'))
+		$subject 	= ucfirst(Lang::txt('COM_PUBLICATIONS_CURATION_VERSION'))
+					. ' ' . $pub->version_label . ' ' . Lang::txt('COM_PUBLICATIONS_OF') . ' '
+					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
 					. ' "' . $pubtitle . '" ';
 		$subject .= $status == 1
-			? JText::_('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
-			: JText::_('COM_PUBLICATIONS_MSG_ADMIN_KICKED_BACK');
+			? Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
+			: Lang::txt('COM_PUBLICATIONS_MSG_ADMIN_KICKED_BACK');
 
 		// Get authors
-		$pa = new \Components\Publications\Tables\Author( $this->database );
+		$pa = new Tables\Author( $this->database );
 		$authors = $pa->getAuthors($pub->version_id, 1, 1, 1);
 
 		// No authors – send to publication creator
@@ -1021,7 +1026,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$authors = array_unique($authors);
 
 		// Notify authors
-		\Components\Publications\Helpers\Html::notify(
+		Helpers\Html::notify(
 			$this->config,
 			$pub,
 			$authors,
@@ -1098,10 +1103,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 */
 	protected function _login()
 	{
-		$rtrn = JRequest::getVar('REQUEST_URI',
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+		$rtrn = \JRequest::getVar('REQUEST_URI',
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);

@@ -1160,7 +1160,7 @@ class Html extends \JObject
 	{
 		$typetitle = self::writePubCategory($pub->cat_alias, $pub->cat_name);
 		$tabtitle  = $tabtitle ? $tabtitle : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS'));
-		$pubUrl    = Route::url($url . a . 'pid=' . $pub->id) .'?version=' . $pub->version_number;
+		$pubUrl    = Route::url($url . '&pid=' . $pub->id) .'?version=' . $pub->version_number;
 		?>
 		<div id="plg-header">
 			<h3 class="publications c-header"><a href="<?php echo $url; ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\String::truncate($pub->title, 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
@@ -1277,24 +1277,24 @@ class Html extends \JObject
 		{
 			case 0:
 				$class  = 'unpublished';
-				$status = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_UNPUBLISHED');
-				$date = strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED'))
+				$status = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
 					.' ' . \JHTML::_('date', $row->published_down, $dateFormat);
 				break;
 
 			case 1:
 				$class  = 'published';
-				$status.= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_PUBLISHED');
+				$status.= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? Lang::txt('to be') . ' ' : '';
-				$date  .= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
+				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
 					.' ' . \JHTML::_('date', $row->published_up, $dateFormat);
 				break;
 
 			case 3:
 			default:
 				$class = 'draft';
-				$status = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DRAFT');
-				$date = strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STARTED'))
+				$status = Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT');
+				$date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
 					.' ' . \JHTML::_('date', $row->created, $dateFormat);
 				break;
 
@@ -1302,14 +1302,14 @@ class Html extends \JObject
 				$class   = 'ready';
 				if ($row->accepted != '0000-00-00 00:00:00' )
 				{
-					$status .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_REVERTED');
-					$date = strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'))
+					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_REVERTED');
+					$date = strtolower(Lang::txt('COM_PUBLICATIONS_ACCEPTED'))
 						.' ' . \JHTML::_('date', $row->accepted, $dateFormat);
 				}
 				else
 				{
-					$status .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
-					$date = strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
+					$status .= Lang::txt('COM_PUBLICATIONS_VERSION_READY');
+					$date = strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
 						.' ' . \JHTML::_('date', $row->published_up, $dateFormat);
 				}
 
@@ -1317,15 +1317,15 @@ class Html extends \JObject
 
 			case 5:
 				$class  = 'pending';
-				$status = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
-				$date  .= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
+				$status = Lang::txt('COM_PUBLICATIONS_VERSION_PENDING');
+				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
 					.' ' . \JHTML::_('date', $row->submitted, $dateFormat);
 				break;
 
 			case 7:
 				$class  = 'wip';
-				$status = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_WIP');
-				$date  .= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
+				$status = Lang::txt('COM_PUBLICATIONS_VERSION_WIP');
+				$date  .= strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
 					.' ' . \JHTML::_('date', $row->submitted, $dateFormat);
 				break;
 		}
@@ -1689,7 +1689,7 @@ class Html extends \JObject
 		// Set up email config
 		$jconfig = \JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PUBLICATIONS');
+		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
 		$from['email'] = $jconfig->getValue('config.mailfrom');
 
 		// Html email

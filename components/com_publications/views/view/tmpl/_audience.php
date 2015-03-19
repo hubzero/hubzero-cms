@@ -94,7 +94,7 @@ if ($this->audience) {
 				}
 				else
 				{
-					$txtlabel = JText::_('Tool Audience Unrated');
+					$txtlabel = Lang::txt('Tool Audience Unrated');
 				}
 				?>
 				<li class="txtlabel"><?php echo $txtlabel; ?></li>
@@ -106,8 +106,8 @@ if ($this->audience) {
 				<table class="skillset">
 					<thead>
 						<tr>
-							<td colspan="2" class="combtd"><?php echo JText::_('Difficulty Level'); ?></td>
-							<td><?php echo JText::_('Target Audience'); ?></td>
+							<td colspan="2" class="combtd"><?php echo Lang::txt('Difficulty Level'); ?></td>
+							<td><?php echo Lang::txt('Target Audience'); ?></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -130,7 +130,7 @@ if ($this->audience) {
 					<?php } ?>
 					</tbody>
 				</table>
-				<p class="learnmore"><a href="<?php echo $this->audiencelink; ?>"><?php echo JText::_('Learn more'); ?> &rsaquo;</a></p>
+				<p class="learnmore"><a href="<?php echo $this->audiencelink; ?>"><?php echo Lang::txt('Learn more'); ?> &rsaquo;</a></p>
 			</div>
 		<?php } ?>
 	</div>

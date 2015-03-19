@@ -29,11 +29,11 @@ $route = $this->publication->_project->provisioned == 1
 		: 'index.php?option=com_projects&alias=' . $this->publication->_project->alias;
 
 // Manage URL
-$url = $this->publication->_project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' . $this->publication->_project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->publication->_project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->publication->_project->alias . '&active=publications&pid=' . $this->publication->id);
 
 ?>
 <div id="abox-content" class="handler-wrap">
-	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HANDLER') . ' - ' . $this->editor->configs->label; ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HANDLER') . ' - ' . $this->editor->configs->label; ?></h3>
 	<?php
 	// Display error  message
 	if ($this->getError()) {

@@ -26,10 +26,10 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div class="handler-controls">
-	<h6><?php echo JText::_('COM_PUBLICATIONS_HANDLER_CHOICE'); ?>
+	<h6><?php echo Lang::txt('COM_PUBLICATIONS_HANDLER_CHOICE'); ?>
 		<a class="pub-info-pop more-content" title="Click to learn more" href="#handler-hint"></a>
 	</h6>
 	<div class="hidden">
-		<div id="handler-hint" class="full-content"><?php echo JText::_('COM_PUBLICATIONS_HANDLER_CHOICE_HINT'); ?></div>
+		<div id="handler-hint" class="full-content"><?php echo Lang::txt('COM_PUBLICATIONS_HANDLER_CHOICE_HINT'); ?></div>
 	</div>
 </div>

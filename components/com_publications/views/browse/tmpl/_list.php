@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$database = JFactory::getDBO();
+$database = \JFactory::getDBO();
 switch ($this->filters['sortby'])
 {
 	case 'date_created': $show_date = 1; break;

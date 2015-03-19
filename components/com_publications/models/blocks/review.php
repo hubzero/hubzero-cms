@@ -129,8 +129,7 @@ class Review extends Base
 			)
 		);
 
-		$document = \JFactory::getDocument();
-		$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;

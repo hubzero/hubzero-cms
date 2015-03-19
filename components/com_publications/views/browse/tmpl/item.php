@@ -25,10 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->line->alias) {
-	$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $this->line->alias);
-} else {
-	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
+if ($this->line->alias) 
+{
+	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->line->alias);
+} 
+else 
+{
+	$sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->line->id);
 }
 
 $html  = "\t".'<li';
@@ -41,13 +44,13 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>'."\n";
-$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . JRoute::_('index.php?option=com_publications&id=' . $this->line->id . '&v=' . $this->line->version_id) . '/Image:thumb' . '" alt=""/></div>' . "\n";
+$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $this->line->id . '&v=' . $this->line->version_id) . '/Image:thumb' . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
 $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>'."\n";
 $html .= '</p>'."\n";
 
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
-	$database = JFactory::getDBO();
+	$database = \JFactory::getDBO();
 
 	$this->line->ranking = round($this->line->ranking, 1);
 
@@ -58,9 +61,9 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 
 	$html .= "\t\t".'<div class="metadata">'."\n";
 	$html .= "\t\t\t".'<dl class="rankinfo">'."\n";
-	$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.JText::_('COM_PUBLICATIONS_THIS_HAS').'</span> '.number_format($this->line->ranking,1).' '.JText::_('COM_PUBLICATIONS_RANKING').'</dt>'."\n";
+	$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.Lang::txt('COM_PUBLICATIONS_THIS_HAS').'</span> '.number_format($this->line->ranking,1).' '.Lang::txt('COM_PUBLICATIONS_RANKING').'</dt>'."\n";
 	$html .= "\t\t\t\t".'<dd>'."\n";
-	$html .= "\t\t\t\t\t".'<p>'.JText::_('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>'."\n";
+	$html .= "\t\t\t\t\t".'<p>'.Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>'."\n";
 	$html .= "\t\t\t\t\t".'<div>'."\n";
 	$html .= "\t\t\t\t\t".'</div>'."\n";
 	$html .= "\t\t\t\t".'</dd>'."\n";
@@ -102,7 +105,7 @@ if (($this->line->category && !intval($this->filters['category']))) {
 	$info[] = $this->line->cat_name;
 }
 if ($this->authors && $this->params->get('show_authors')) {
-	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
+	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
 }
 if ($this->line->doi)
 {

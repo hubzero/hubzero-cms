@@ -122,7 +122,7 @@ else
 	}
 	elseif ($this->tab != 'play' && $this->publication->state != 0)
 	{
-		$html .= '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
+		$html .= '<p class="error statusmsg">' . Lang::txt('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
 	}
 
 	// Sort out supporting docs

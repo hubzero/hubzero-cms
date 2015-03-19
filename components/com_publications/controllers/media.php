@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Controllers;
+use Hubzero\Component\SiteController;
+use Components\Publications\Helpers;
 
 /**
  * Publications controller class for media
  */
-class PublicationsControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Execute a task
@@ -50,7 +51,7 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 		if (substr(strtolower($file), 0, 5) == 'image'
 		 || substr(strtolower($file), 0, 4) == 'file')
 		{
-			JRequest::setVar('task', 'download');
+			\JRequest::setVar('task', 'download');
 		}
 
 		parent::execute();
@@ -64,8 +65,8 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$pid 	= JRequest::getInt('id', 0);
-		$vid 	= JRequest::getInt( 'v', 0 );
+		$pid 	= \JRequest::getInt('id', 0);
+		$vid 	= \JRequest::getInt( 'v', 0 );
 		$source = NULL;
 
 		// Need pub and version ID
@@ -75,7 +76,7 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Get the file name
-		$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+		$uri = \JRequest::getVar('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));
@@ -91,12 +92,12 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 		if (strtolower($file) == 'thumb')
 		{
 			// Get publication thumbnail
-			$source = \Components\Publications\Helpers\Html::getThumb($pid, $vid, $this->config );
+			$source = Helpers\Html::getThumb($pid, $vid, $this->config );
 		}
 		else
 		{
 			// Build publication path
-			$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'));
+			$path = Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'));
 
 			if (strtolower($file) == 'master')
 			{
@@ -104,15 +105,15 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 				$source = $path . DS . 'master.png';
 
 				// Default image
-				if (!is_file(JPATH_ROOT . DS . $source))
+				if (!is_file(PATH_APP . DS . $source))
 				{
 					// Grab first bigger image in gallery
-					if (is_dir(JPATH_ROOT . DS . $path . DS . 'gallery'))
+					if (is_dir(PATH_APP . DS . $path . DS . 'gallery'))
 					{
-						$file_list = scandir(JPATH_ROOT . DS . $path . DS . 'gallery');
+						$file_list = scandir(PATH_APP . DS . $path . DS . 'gallery');
 						foreach ($file_list as $file)
 						{
-							list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DS . $path . DS . 'gallery' . DS . $file);
+							list($width, $height, $type, $attr) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
 							if ($width > 200)
 							{
 								$source = $path . DS . 'gallery' . DS . $file;
@@ -120,7 +121,7 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 							}
 						}
 					}
-					if (!is_file(JPATH_ROOT . DS . $source))
+					if (!is_file(PATH_APP . DS . $source))
 					{
 						$source = $this->config->get('masterimage',
 						'/components/com_publications/assets/img/master.png');
@@ -133,7 +134,7 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 				$source = $path . DS . 'gallery' . DS . $file;
 
 				// Default image
-				if (!is_file(JPATH_ROOT . DS . $source))
+				if (!is_file(PATH_APP . DS . $source))
 				{
 					$source = $this->config->get('gallery_thumb',
 					'/components/com_publications/assets/img/gallery_thumb.gif');
@@ -141,11 +142,11 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (is_file(JPATH_ROOT . DS . $source))
+		if (is_file(PATH_APP . DS . $source))
 		{
 			$xserver = new \Hubzero\Content\Server();
 			$xserver->filename($source);
-			$xserver->serve_inline(JPATH_ROOT . DS . $source);
+			$xserver->serve_inline(PATH_APP . DS . $source);
 			exit;
 		}
 

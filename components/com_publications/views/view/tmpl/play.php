@@ -38,7 +38,7 @@ $html = '';
 $firstattach = $this->firstattach;
 if (!$firstattach)
 {
-	echo '<p class="error">'.JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
+	echo '<p class="error">'.Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
 	return;
 }
 
@@ -103,7 +103,7 @@ if (is_file(PATH_CORE . $firstattach->url))
 			$token = base64_encode($crypter->encrypt($session_id));
 		}
 		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&task=serve&aid='.basename($firstattach->id).'&render=download&token='.$token);
+		$sef = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . basename($firstattach->id) . '&render=download&token=' . $token);
 		if (substr($sef,0,1) == '/') {
 			$sef = substr($sef,1,strlen($sef));
 		}
@@ -123,7 +123,7 @@ if (is_file(PATH_CORE . $firstattach->url))
 		$html .= '</applet>'."\n";
 	}
 } else {
-	$html .= '<p class="error">'.JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
+	$html .= '<p class="error">'.Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
 }
 
 echo $html;

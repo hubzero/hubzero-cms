@@ -38,16 +38,16 @@ if (!$this->ajax)
 
 ?>
 <div id="abox-content" class="history-wrap">
-	<h3><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_VIEW'); ?></h3>
+	<h3><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY_VIEW'); ?></h3>
 
 	<div class="curation-history">
 		<div class="pubtitle">
-			<p><?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION')
+			<p><?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION')
 			. ' ' . $this->pub->version_label; ?>
 			</p>
 		</div>
 	<?php if ($history) { $i = 1; ?>
-		<h5><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_EVENTS'); ?></h5>
+		<h5><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY_EVENTS'); ?></h5>
 		<div class="history-blocks">
 	<?php
 		foreach ($history as $event)
@@ -62,14 +62,14 @@ if (!$this->ajax)
 					<span class="block"><?php echo $this->escape(stripslashes($author->get('name'))); ?></span>
 					<span class="block">(
 					<?php echo ($event->curator)
-						? JText::_('COM_PUBLICATIONS_CURATION_CURATOR')
-						: JText::_('COM_PUBLICATIONS_CURATION_AUTHOR');  ?>
+						? Lang::txt('COM_PUBLICATIONS_CURATION_CURATOR')
+						: Lang::txt('COM_PUBLICATIONS_CURATION_AUTHOR');  ?>
 					)</span>
 				</div>
 				<div class="changelog-text col span9 omega">
 					<?php echo $event->changelog; ?>
 					<?php if ($event->comment) {  ?>
-						<p><?php echo  JText::_('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment . '</span>'; ?></p>
+						<p><?php echo  Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment . '</span>'; ?></p>
 					<?php } ?>
 				</div>
 				<div class="clear"></div>
@@ -77,7 +77,7 @@ if (!$this->ajax)
 		<?php } ?>
 		</div>
 	<?php  } else { ?>
-		<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_NOTHING'); ?></p>
+		<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY_NOTHING'); ?></p>
 	<?php } ?>
 	</div>
 </div>

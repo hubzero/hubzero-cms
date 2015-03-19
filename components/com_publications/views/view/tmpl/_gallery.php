@@ -141,14 +141,14 @@ for ($i = 0, $n = count($images); $i < $n; $i++)
 		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 		{
 			$g++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
 			$els .= ' <a class="popup" href="/publications' . DS . $pid . DS . $vid . '/Image:' . $images[$i]['img'] . '" title="' . $title . '">';
 			$els .= '<img src="/publications' . DS . $pid . DS . $vid . '/Image:' . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 		}
 		else
 		{
 			$k++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: Lang::txt('SCREENSHOT') . ' #' . $k;
 			$els .= ' <a rel="lightbox" href="/publications' . DS . $pid . DS . $vid . '/Image:' . $images[$i]['img'] . '" title="' . $title . '">';
 			$els .= '<img src="/publications' . DS . $pid . DS . $vid . '/Image:' . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 		}

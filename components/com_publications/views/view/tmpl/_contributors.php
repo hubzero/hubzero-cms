@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$database = JFactory::getDBO();
+$database = \JFactory::getDBO();
 
 if ($this->contributors)
 {
@@ -76,7 +76,7 @@ if ($this->contributors)
 		$name = str_replace( '"', '&quot;', $name );
 		if ($contributor->user_id && $contributor->open)
 		{
-			$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id=' . $contributor->user_id)
+			$link  = '<a href="' . Route::url('index.php?option=com_members&amp;id=' . $contributor->user_id)
 					. '" title="View the profile of ' . $name . '">' . $name . '</a>';
 		}
 		else
@@ -113,7 +113,7 @@ if ($this->contributors)
 
 	if (count($names) > 0)
 	{
-		$html = '<p>' . ucfirst(JText::_('By')) . ' ';
+		$html = '<p>' . ucfirst(Lang::txt('By')) . ' ';
 		$html .= count($names) > 1 && count($orgs) > 0  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
 		$html .= '</p>';
 	}

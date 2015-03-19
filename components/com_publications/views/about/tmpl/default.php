@@ -106,7 +106,7 @@ $schema 	= $metaElements->getSchema();
 	}
 ?>
 
-	<h4><?php echo JText::_('COM_PUBLICATIONS_ABSTRACT'); ?></h4>
+	<h4><?php echo Lang::txt('COM_PUBLICATIONS_ABSTRACT'); ?></h4>
 	<div class="pub-content">
 		<?php echo $description; ?>
 	</div>
@@ -119,7 +119,7 @@ $schema 	= $metaElements->getSchema();
 				? $this->publication->_curationModel->_manifest->params->list_all :  0;
 		$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label)
 				? $this->publication->_curationModel->_manifest->params->list_label
-				: JText::_('COM_PUBLICATIONS_CONTENT_LIST');
+				: Lang::txt('COM_PUBLICATIONS_CONTENT_LIST');
 		// Add plugin style
 		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
 
@@ -147,17 +147,17 @@ $schema 	= $metaElements->getSchema();
 				$licFile 	= $path . DS . 'LICENSE.txt';
 				if (file_exists($licFile))
 				{
-					$licenseUrl = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
-					$append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . JText::_('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
+					$licenseUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
+					$append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
 				}
 
 				// Archival path
-				$tarname  = JText::_('Publication') . '_' . $this->publication->id . '.zip';
-				$archPath	= $path . DS . $tarname;
+				$tarname  = Lang::txt('Publication') . '_' . $this->publication->id . '.zip';
+				$archPath = $path . DS . $tarname;
 
 				$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
 						? $this->publication->_curationModel->_manifest->params->show_archival :  0;
-				$archiveUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
+				$archiveUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
 				$showArchive = ($showArchive && file_exists($archPath)) ? true : false;
 
 				// Draw list
@@ -168,7 +168,7 @@ $schema 	= $metaElements->getSchema();
 					$append
 				);
 				?>
-				<h4 class="list-header"><?php echo $listLabel ? $listLabel : JText::_('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
+				<h4 class="list-header"><?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
 				<div class="pub-content">
 					<?php echo $list; ?>
 				</div>
@@ -212,7 +212,7 @@ $schema 	= $metaElements->getSchema();
 		// Build our citation object
 		$cite = new stdClass();
 		$cite->title = $this->publication->title;
-		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->publication->published_up, 'Y') : JHTML::_('date', JFactory::getDate()->toSql(), 'Y');
+		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->publication->published_up, 'Y') : JHTML::_('date', \JFactory::getDate()->toSql(), 'Y');
 
 		$cite->location = '';
 		$cite->date = '';
@@ -237,13 +237,13 @@ $schema 	= $metaElements->getSchema();
 
 	$citeinstruct  = \Components\Publications\Helpers\Html::citation( $this->option, $cite, $this->publication, $citations, $this->version );
 	?>
-	<h4 id="citethis"><?php echo JText::_('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
+	<h4 id="citethis"><?php echo Lang::txt('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
 	<div class="pub-content">
 		<?php echo $citeinstruct; ?>
 	</div>
 <?php } ?>
 <?php if ($this->publication->params->get('show_submitter') && $this->publication->_submitter) { ?>
-	<h4><?php echo JText::_('COM_PUBLICATIONS_SUBMITTER'); ?></h4>
+	<h4><?php echo Lang::txt('COM_PUBLICATIONS_SUBMITTER'); ?></h4>
 	<div class="pub-content">
 		<?php
 			$submitter  = $this->publication->_submitter->name;
@@ -257,7 +257,7 @@ $schema 	= $metaElements->getSchema();
 	$this->publication->getTagCloud( $this->authorized );
 	?>
 	<?php if ($this->publication->_tagCloud) { ?>
-		<h4><?php echo JText::_('COM_PUBLICATIONS_TAGS'); ?></h4>
+		<h4><?php echo Lang::txt('COM_PUBLICATIONS_TAGS'); ?></h4>
 		<div class="pub-content">
 			<?php
 				echo $this->publication->_tagCloud;
@@ -272,7 +272,7 @@ if (($useBlocks || $this->publication->params->get('show_notes')) && $this->publ
 	$notes = $this->publication->notes('parsed');
 	$notes = NULL;
 	?>
-	<h4><?php echo JText::_('COM_PUBLICATIONS_NOTES'); ?></h4>
+	<h4><?php echo Lang::txt('COM_PUBLICATIONS_NOTES'); ?></h4>
 	<div class="pub-content">
 		<?php
 			echo $notes;

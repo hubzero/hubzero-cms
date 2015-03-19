@@ -81,7 +81,7 @@ $docs 	= array('pdf', 'doc', 'docx', 'xls', 'xlsx',
 $html5video = array("mp4","m4v","webm","ogv");
 
 $token = '';
-$juser = JFactory::getUser();
+$juser = \JFactory::getUser();
 if (!$juser->get('guest'))
 {
 	$session = JFactory::getSession();
@@ -94,14 +94,14 @@ if (!$juser->get('guest'))
 }
 
 $juri = JURI::getInstance();
-$downloadUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
+$downloadUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
 	  . $this->aid . '&render=download&token=' . $token);
 
-$viewUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
+$viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid='
 	  . $this->aid . '&render=download&disposition=inline&token=' . $token);
 
 ?>
-<div class="sample"><p><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p></div>
+<div class="sample"><p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p></div>
 
 <?php
 // Image?

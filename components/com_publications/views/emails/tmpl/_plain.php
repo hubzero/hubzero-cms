@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $message  = $this->subject ."\n";
 $message .= '-------------------------------' ."\n";
-$message .= JText::_('Publication') . ': ' . $this->publication->title . ' (' . $this->publication->id . ')' . "\n";
+$message .= Lang::txt('Publication') . ': ' . $this->publication->title . ' (' . $this->publication->id . ')' . "\n";
 
 // Append a message
 if ($this->message)

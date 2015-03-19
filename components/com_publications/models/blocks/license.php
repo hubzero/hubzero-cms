@@ -125,8 +125,7 @@ class License extends Base
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'selector.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(

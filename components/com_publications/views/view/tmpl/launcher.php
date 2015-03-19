@@ -42,7 +42,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
   </style>
 <![endif]-->
 <div class="launcher-image">
-	<div class="imager" style="background-image:url('<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master'; ?>');" > </div>
+	<div class="imager" style="background-image:url('<?php echo Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master'; ?>');" > </div>
 </div>
 <section id="launcher" class="main section launcher grad-blue gradient">
 	<div class="grid">

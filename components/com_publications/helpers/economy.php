@@ -103,7 +103,7 @@ class Economy extends Object
 
 			if (intval($points) > 0)
 			{
-				$msg = ($type == 'royalty') ? JText::_('Royalty payment for your publication contributions') : '';
+				$msg = ($type == 'royalty') ? Lang::txt('Royalty payment for your publication contributions') : '';
 				$BTL->deposit($points, $msg, $cat, 0);
 			}
 		}

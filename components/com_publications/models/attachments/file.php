@@ -1583,7 +1583,7 @@ class File extends Base
 		$data->allowRename  = $allowRename;
 		$data->downloadUrl  = Route::url('index.php?option=com_publications&task=serve&id='
 							. $view->pub->id . '&v=' . $view->pub->version_number )
-							. '?el=' . $view->elementId . a . 'a=' . $att->id . a . 'download=1';
+							. '?el=' . $view->elementId . '&amp;a=' . $att->id . '&amp;download=1';
 
 		// Is attachment (image) also publication thumbnail
 		$params = new \JParameter( $att->params );

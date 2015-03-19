@@ -28,13 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Publications\Tables;
+use Components\Publications\Models;
+use Components\Publications\Helpers;
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
  */
-class PublicationsControllerPublications extends \Hubzero\Component\SiteController
+class Publications extends SiteController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -94,7 +98,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Is component enabled?
 		if ($this->config->get('enabled', 0) == 0)
 		{
-			$this->_redirect = JRoute::_('index.php?option=com_resources');
+			$this->_redirect = Route::url('index.php?option=com_resources');
 			return;
 		}
 
@@ -105,7 +109,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_curated = $this->config->get('curation', 0);
 
 		// Are we allowing contributions
-		$this->_contributable = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		$this->_contributable = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 	}
 
 	/**
@@ -139,7 +143,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option='.$this->_option
 			);
 		}
@@ -168,7 +172,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			if ($this->_task == 'serve' || $this->_task == 'wiki')
 			{
 				$pathway->addItem(
-					JText::_('COM_PUBLICATIONS_SERVING_CONTENT'),
+					Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT'),
 					$this->_route . '&task=' . $this->_task
 				);
 			}
@@ -205,7 +209,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 				default:
 					$pathway->addItem(
-						JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);
 					break;
@@ -222,7 +226,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	{
 		if (!$this->_title)
 		{
-			$this->_title = JText::_(strtoupper($this->_option));
+			$this->_title = Lang::txt(strtoupper($this->_option));
 			if ($this->_task)
 			{
 				switch ($this->_task)
@@ -239,11 +243,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 					case 'serve':
 					case 'wiki':
-						$this->_title .= ': '. JText::_('COM_PUBLICATIONS_SERVING_CONTENT');
+						$this->_title .= ': '. Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT');
 						break;
 
 					default:
-						$this->_title .= ': '.JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task));
+						$this->_title .= ': '.Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task));
 						break;
 				}
 			}
@@ -304,9 +308,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	protected function _login()
 	{
 		$rtrn = \JRequest::getVar('REQUEST_URI',
-			JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);
@@ -321,7 +325,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	{
 		// Redirect to version panel of current version (TEMP)
 		$this->setRedirect(
-			JRoute::_($this->_route . '&active=versions')
+			Route::url($this->_route . '&active=versions')
 		);
 		return;
 	}
@@ -355,7 +359,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->filters['start']  = \JRequest::getInt( 'limitstart', 0 );
 
 		// Instantiate a publication object
-		$rr = new \Components\Publications\Tables\Publication( $this->database );
+		$rr = new Tables\Publication( $this->database );
 
 		// Get most recent pubs
 		$this->view->results = $rr->getRecords( $this->view->filters );
@@ -365,7 +369,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->best = $rr->getRecords( $this->view->filters );
 
 		// Get major types
-		$t = new \Components\Publications\Tables\Category( $this->database );
+		$t = new Tables\Category( $this->database );
 		$this->view->categories = $t->getCategories(array('itemCount' => 1));
 
 		if ($this->getError())
@@ -415,7 +419,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get major types
-		$t = new \Components\Publications\Tables\Category( $this->database );
+		$t = new Tables\Category( $this->database );
 		$this->view->categories = $t->getCategories();
 
 		if (!is_int($this->view->filters['category']))
@@ -431,7 +435,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Instantiate a publication object
-		$rr = new \Components\Publications\Tables\Publication( $this->database );
+		$rr = new Tables\Publication( $this->database );
 
 		// Execute count query
 		$results = $rr->getCount( $this->view->filters );
@@ -442,10 +446,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination( $this->view->total, $this->view->filters['start'], $this->view->filters['limit'] );
+		$this->view->pageNav = new \JPagination( $this->view->total, $this->view->filters['start'], $this->view->filters['limit'] );
 
 		// Get type if not given
-		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
+		$this->_title = Lang::txt(strtoupper($this->_option)) . ': ';
 		if ($this->view->filters['category'] != '')
 		{
 			$t->load( $this->view->filters['category'] );
@@ -454,8 +458,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 		else
 		{
-			$this->_title .= JText::_('COM_PUBLICATIONS_ALL');
-			$this->_task_title = JText::_('COM_PUBLICATIONS_ALL');
+			$this->_title .= Lang::txt('COM_PUBLICATIONS_ALL');
+			$this->_task_title = Lang::txt('COM_PUBLICATIONS_ALL');
 		}
 
 		// Set page title
@@ -517,19 +521,19 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Ensure we have an ID or alias to work with
 		if (!$this->_identifier)
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
 
 		// Get our model and load publication data
-		$this->model = new \Components\Publications\Models\Publication($this->_identifier, $this->_version);
+		$this->model = new Models\Publication($this->_identifier, $this->_version);
 
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->deleted())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -545,7 +549,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			{
 				// Go to last public release
 				$this->setRedirect(
-					JRoute::_($this->_route . '&v=' . $lastPubRelease->version_number)
+					Route::url($this->_route . '&v=' . $lastPubRelease->version_number)
 				);
 				return;
 			}
@@ -561,8 +565,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$restricted    = $contentAccess ? false : true;
 
 		// Get publication plugins
-		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'publications' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// For curation we need somewhat different vars
 		// TBD - streamline
@@ -635,21 +639,21 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$base_path = $this->config->get('webpath');
 
 				// Build log path (access logs)
-				$logPath = \Components\Publications\Helpers\Html::buildPubPath(
+				$logPath = Helpers\Html::buildPubPath(
 					$this->model->publication->id,
 					$this->model->version->id,
 					$base_path,
 					'logs'
 				);
 
-				$pubLog = new \Components\Publications\Tables\Log($this->database);
+				$pubLog = new Tables\Log($this->database);
 				$pubLog->logAccess($this->model, 'view', $logPath);
 			}
 		}
 
 		// Add the default "About" section to the beginning of the lists
 		$cat = array();
-		$cat['about'] = JText::_('COM_PUBLICATIONS_ABOUT');
+		$cat['about'] = Lang::txt('COM_PUBLICATIONS_ABOUT');
 		array_unshift($cats, $cat);
 		array_unshift($sections, array( 'html' => $body, 'metadata' => '' ));
 
@@ -666,7 +670,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Write title & build pathway
 		$document = \JFactory::getDocument();
-		$document->setTitle( \JText::_(strtoupper($this->_option))
+		$document->setTitle( Lang::txt(strtoupper($this->_option))
 			. ': ' . stripslashes($this->model->version->title) );
 
 		// Set the pathway
@@ -676,9 +680,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$layout = 'default';
 		$app = \JFactory::getApplication();
 		if ($this->model->_category->alias
-		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html'
+		 && (is_file(PATH_CORE . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html'
 			. DS . $this->_option . DS . 'view' . DS . $this->model->_category->url_alias . '.php')
-		 || is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view'
+		 || is_file(PATH_CORE . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view'
 			. DS . 'tmpl' . DS . $this->model->_category->url_alias . '.php')))
 		{
 			$layout = $this->model->_category->url_alias;
@@ -727,25 +731,25 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if (!$this->publication)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
 		// We need our curation model to parse elements
-		if (JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+		if (PATH_CORE . DS . 'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'curation.php')
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'curation.php');
 		}
 		else
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
 		// Load master type
-		$mt = new \Components\Publications\Tables\MasterType( $this->database );
+		$mt = new Tables\MasterType( $this->database );
 		$this->publication->_type = $mt->getType($this->publication->base);
 		$this->publication->version = $this->version;
 
@@ -754,14 +758,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->publication->_project->load($this->publication->project_id);
 
 		// Get attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+		$pContent = new Tables\Attachment( $this->database );
 		$this->publication->_attachments = $pContent->sortAttachments ( $this->publication->version_id );
 
 		// We do need attachments
 		if (!isset($this->publication->_attachments['elements'][$element])
 			|| empty($this->publication->_attachments['elements'][$element]))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
@@ -771,7 +775,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					: $this->publication->_type->curation;
 
 		// Get curation model
-		$this->publication->_curationModel = new \Components\Publications\Models\Curation(
+		$this->publication->_curationModel = new Models\Curation(
 			$manifest
 		);
 
@@ -788,7 +792,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get attachment type model
-		$attModel = new \Components\Publications\Models\Attachments($this->database);
+		$attModel = new Models\Attachments($this->database);
 
 		// Serve content
 		$content = $attModel->serve(
@@ -803,7 +807,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// No content served
 		if ($content === NULL || $content == false)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 		else
@@ -831,27 +835,27 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	{
 		if (!$this->publication)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
 		if (!$this->content)
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . a . 'id=' . $this->publication->id);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option . '&id=' . $this->publication->id);
 			return;
 		}
 
 		// Get publication plugins
-		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'publications' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Get type info
-		$this->publication->_category = new \Components\Publications\Tables\Category( $this->database );
+		$this->publication->_category = new Tables\Category( $this->database );
 		$this->publication->_category->load($this->publication->category);
-		$this->publication->_category->_params = new JParameter( $this->publication->_category->params );
+		$this->publication->_category->_params = new \JParameter( $this->publication->_category->params );
 
 		// Get parameters and merge with the component params
-		$rparams = new JParameter( $this->publication->params );
+		$rparams = new \JParameter( $this->publication->params );
 		$params = $this->config;
 		$params->merge( $rparams );
 
@@ -864,32 +868,32 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->version, false, true) );
 
 		// Get license info
-		$pLicense = new \Components\Publications\Tables\License($this->database);
+		$pLicense = new Tables\License($this->database);
 		$license = $pLicense->getLicense($this->publication->license_type);
 
 		// Get version authors
-		$pa = new \Components\Publications\Tables\Author( $this->database );
+		$pa = new Tables\Author( $this->database );
 		$authors = $pa->getAuthors($this->publication->version_id);
 		$this->publication->_authors = $authors;
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = \Components\Publications\Helpers\Html::buildPubPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
+		$path = Helpers\Html::buildPubPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
 
 		// Add the default "About" section to the beginning of the lists
 		$cat = array();
-		$cat['about'] = JText::_('COM_PUBLICATIONS_ABOUT');
+		$cat['about'] = Lang::txt('COM_PUBLICATIONS_ABOUT');
 		array_unshift($cats, $cat);
 		array_unshift($sections, array( 'html'=> '', 'metadata'=>'' ));
 
 		$cat = array();
-		$cat['play'] = JText::_('COM_PUBLICATIONS_TAB_PLAY_CONTENT');
+		$cat['play'] = Lang::txt('COM_PUBLICATIONS_TAB_PLAY_CONTENT');
 		$cats[] = $cat;
 		$sections[] = array('html' => $this->content, 'metadata' => '', 'area' => 'play');
 
 		// Write title & build pathway
 		$document = \JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );
+		$document->setTitle( Lang::txt(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -963,17 +967,17 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Ensure we have an ID or alias to work with
 		if (!$this->_id && !$this->_alias)
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
 
 		// Load version by ID
-		$objPV 	  = new \Components\Publications\Tables\Version( $this->database );
+		$objPV 	  = new Tables\Version( $this->database );
 		if ($vid && !$objPV->load($vid))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -988,13 +992,13 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get publication
-		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
+		$objP 		 = new Tables\Publication( $this->database );
 		$publication = $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
@@ -1002,8 +1006,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($publication->state == 0 || $publication->state == 2)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
 				'error'
 			);
 			return;
@@ -1019,7 +1023,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$token = base64_decode($token);
 
 			jimport('joomla.utilities.simplecrypt');
-			$crypter = new JSimpleCrypt();
+			$crypter = new \JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
 
 			$session = Hubzero\Session\Helper::getSession($session_id);
@@ -1048,7 +1052,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get primary attachments or requested attachment
-		$objPA = new \Components\Publications\Tables\Attachment( $this->database );
+		$objPA = new Tables\Attachment( $this->database );
 		$filters = $aid ? array('id' => $aid) : array('role' => 1);
 		$attachments = $objPA->getAttachments($publication->version_id, $filters);
 
@@ -1058,16 +1062,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// We do need an attachment!
 		if (count($attachments) == 0)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = \Components\Publications\Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, $publication->secret);
+		$path = Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, $publication->secret);
 
 		// Build log path (access logs)
-		$logPath = \Components\Publications\Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, 'logs');
+		$logPath = Helpers\Html::buildPubPath($this->_id, $publication->version_id, $base_path, 'logs');
 
 		// First/requested attachment
 		$primary = $attachments[0];
@@ -1079,16 +1083,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$publication->project->load($publication->project_id);
 
 		// Get pub type helper
-		$pubTypeHelper = new \Components\Publications\Models\Types($this->database, $publication->project);
+		$pubTypeHelper = new Models\Types($this->database, $publication->project);
 
 		// Get user choice for serving content
-		$pParams = new JParameter( $primary->params );
+		$pParams = new \JParameter( $primary->params );
 		$serveas = $pParams->get('serveas');
 
 		// Log access
 		if ($this->_logging && $publication->state == 1)
 		{
-			$pubLog = new \Components\Publications\Tables\Log($this->database);
+			$pubLog = new Tables\Log($this->database);
 			$aType  = $primary->role == 1 ? 'primary' : 'support';
 			$pubLog->logAccess($publication, $aType, $logPath);
 		}
@@ -1113,8 +1117,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			&& $render != 'video' && $render != 'presenter'))
 		{
 			// Multi-file or archive
-			$tarname  = JText::_('Publication') . '_' . $publication->id . '.zip';
-			$archPath = \Components\Publications\Helpers\Html::buildPubPath($publication->id, $publication->version_id, $base_path);
+			$tarname  = Lang::txt('Publication') . '_' . $publication->id . '.zip';
+			$archPath = Helpers\Html::buildPubPath($publication->id, $publication->version_id, $base_path);
 
 			// Get archival package
 			$downloadable = $this->_archiveFiles (
@@ -1147,14 +1151,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					$this->view->version 		= $version;
 
 					// Get publication plugin params
-					$pplugin 			= JPluginHelper::getPlugin( 'projects', 'publications' );
-					$pparams 			= new JParameter($pplugin->params);
+					$pplugin 			= \JPluginHelper::getPlugin( 'projects', 'publications' );
+					$pparams 			= new \JParameter($pplugin->params);
 
 					$this->view->googleView	= $pparams->get('googleview');
 
 					$mt = new \Hubzero\Content\Mimetypes();
 
-					$this->view->mimetype 	= $mt->getMimeType(JPATH_ROOT . $path . DS . $pPath);
+					$this->view->mimetype 	= $mt->getMimeType(PATH_APP . $path . DS . $pPath);
 					$mParts 				= explode('/', $this->view->mimetype);
 					$this->view->type 		= strtolower(array_shift($mParts));
 					$eParts					= explode('.', $pPath);
@@ -1180,7 +1184,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				}
 
 				// Download - default action
-				$downloadable['path'] 		= JPATH_ROOT . $path . DS . $pPath;
+				$downloadable['path'] 		= PATH_APP . $path . DS . $pPath;
 				$downloadable['name'] 		= basename($pPath);
 				$downloadable['serveas'] 	= basename($pPath);
 			}
@@ -1207,14 +1211,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Ensure we have attachment information
 		if (empty($downloadable))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND') );
 			return;
 		}
 
 		// Ensure the file exist
 		if (!file_exists($downloadable['path']))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND'));
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'));
 			return;
 		}
 
@@ -1228,7 +1232,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
 		}
 		else
 		{
@@ -1257,32 +1261,32 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Ensure we what we need
 		if (!$pid || !$vid || !$file )
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
 		// Get publication version
-		$objPV 		 = new \Components\Publications\Tables\Version( $this->database );
+		$objPV 		 = new Tables\Version( $this->database );
 		if (!$objPV->load($vid))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
 		}
 
 		// Get publication
-		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
+		$objP 		 = new Tables\Publication( $this->database );
 		$publication = $objP->getPublication($pid, $objPV->version_number);
 
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -1290,18 +1294,18 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Build publication data path
 		$base_path = $this->config->get('webpath');
-		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $base_path, 'data', $root = 0);
+		$path = Helpers\Html::buildPubPath($pid, $vid, $base_path, 'data', $root = 0);
 
 		// Ensure the file exist
-		if (!file_exists(JPATH_ROOT . $path . DS . $file))
+		if (!file_exists(PATH_APP . $path . DS . $file))
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
 		// Initiate a new content server and serve up the file
 		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename(JPATH_ROOT . $path . DS . $file);
+		$xserver->filename(PATH_APP . $path . DS . $file);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		$xserver->saveas(basename($file));
@@ -1309,7 +1313,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
 		}
 		else
 		{
@@ -1339,7 +1343,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Ensure we have an ID or alias to work with
 			if (!$this->_id && !$this->_alias)
 			{
-				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+				$this->_redirect = Route::url('index.php?option=' . $this->_option);
 				return;
 			}
 
@@ -1348,7 +1352,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 			// Get publication
-			$objP 		 		= new \Components\Publications\Tables\Publication( $this->database );
+			$objP 		 		= new Tables\Publication( $this->database );
 			$this->publication 	= $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 
 			// Check if user has access to content
@@ -1358,7 +1362,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			}
 
 			// Get primary attachment(s)
-			$objPA = new \Components\Publications\Tables\Attachment( $this->database );
+			$objPA = new Tables\Attachment( $this->database );
 			$filters = array('role' => 1);
 			$this->attachments = $objPA->getAttachments($this->publication->version_id, $filters);
 		}
@@ -1366,10 +1370,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$revision = NULL;
 
 		// Retrieve wiki page by stamp
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
 			// Incoming
@@ -1391,14 +1395,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if (!$pageid)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
 		// Make sure we got a result from the database
 		if (!$this->publication)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			return;
 		}
 
@@ -1406,19 +1410,19 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$masterscope = 'projects' . DS . $this->publication->project_alias . DS . 'notes';
 
 		// Get page information
-		$this->model = new \Components\Publications\Models\Publication($this->publication);
+		$this->model = new Models\Publication($this->publication);
 		$page = $this->model->getWikiPage($pageid, $masterscope, $revision);
 		if (!$page)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
 			return;
 		}
 
 		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wiki','wiki');
 
 		// Set page title
-		$document->setTitle( JText::_(strtoupper($this->_option)) . ': '
+		$document->setTitle( Lang::txt(strtoupper($this->_option)) . ': '
 			. stripslashes($this->publication->title) );
 
 		// Set the pathway
@@ -1463,22 +1467,22 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($this->_curated)
 		{
 			// We need our curation model to parse elements
-			if (JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			if (PATH_ROOT . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'curation.php')
 			{
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications'
 					. DS . 'models' . DS . 'curation.php');
 			}
 			else
 			{
-				JError::raiseError( 404,
-					JText::_('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
+				\JError::raiseError( 404,
+					Lang::txt('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
 				);
 				return;
 			}
 		}
 
-		$tarpath = JPATH_ROOT . $path . DS . $tarname;
+		$tarpath = PATH_APP . $path . DS . $tarname;
 
 		$archive = array();
 		$archive['path'] 	= $tarpath;
@@ -1500,16 +1504,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
-			$mt = new \Components\Publications\Tables\MasterType( $this->database );
+			$mt = new Tables\MasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
-			$typeParams = new JParameter( $pub->_type->params );
+			$typeParams = new \JParameter( $pub->_type->params );
 
 			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+			$pContent = new Tables\Attachment( $this->database );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get authors
-			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
+			$pAuthors 			= new Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Get manifest from either version record (published) or master type
@@ -1518,7 +1522,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+			$pub->_curationModel = new Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);
@@ -1529,8 +1533,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		else
 		{
 			// Archival for non-curated publications
-			JPluginHelper::importPlugin( 'projects', 'publications' );
-			$dispatcher = JDispatcher::getInstance();
+			\JPluginHelper::importPlugin( 'projects', 'publications' );
+			$dispatcher = \JDispatcher::getInstance();
 			$result = $dispatcher->trigger( 'archivePub', array($pub->id, $pub->version_id) );
 		}
 
@@ -1553,23 +1557,23 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get publication
-		$objP 		 = new \Components\Publications\Tables\Publication( $this->database );
+		$objP 		 = new Tables\Publication( $this->database );
 		$publication = $objP->getPublication($id, $version);
 
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'));
 		}
 
 		// Output HTML
 		if ($publication)
 		{
-			$title = stripslashes($publication->title).': '.JText::_('COM_PUBLICATIONS_LICENSE');
+			$title = stripslashes($publication->title).': '.Lang::txt('COM_PUBLICATIONS_LICENSE');
 		}
 		else
 		{
-			$title = JText::_('COM_PUBLICATIONS_PAGE_UNAVAILABLE');
+			$title = Lang::txt('COM_PUBLICATIONS_PAGE_UNAVAILABLE');
 		}
 
 		$this->view->option 		= $this->_option;
@@ -1578,7 +1582,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->title 			= $title;
 
 		// Get license info
-		$pLicense = new \Components\Publications\Tables\License($this->database);
+		$pLicense = new Tables\License($this->database);
 		$this->view->license = $pLicense->getLicense($publication->license_type);
 
 		// Output HTML
@@ -1610,7 +1614,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
 		// Get the publication
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objP = new Tables\Publication( $this->database );
 		$publication = $objP->getPublication($id, $version);
 
 		// Get HUB configuration
@@ -1621,8 +1625,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (!$publication)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -1634,12 +1638,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				 : $publication->created;
 
 		// Get version authors
-		$pa = new \Components\Publications\Tables\Author( $this->database );
+		$pa = new Tables\Author( $this->database );
 		$authors = $pa->getAuthors($publication->version_id);
 
 		// Build publication path
 		$base_path = $this->config->get('webpath');
-		$path = PATH_APP . \Components\Publications\Helpers\Html::buildPubPath($id, $publication->version_id, $base_path);
+		$path = PATH_APP . Helpers\Html::buildPubPath($id, $publication->version_id, $base_path);
 
 		if (!is_dir( $path ))
 		{
@@ -1651,21 +1655,21 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Build the URL for this resource
-		$sef = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id);
+		$sef = Route::url('index.php?option='.$this->_option.'&id='.$publication->id);
 		$sef.= $version != 'default' ? '?v='.$version : '';
 		if (substr($sef,0,1) == '/')
 		{
 			$sef = substr($sef,1,strlen($sef));
 		}
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 		$url = $juri->base().$sef;
 
 		// Choose the format
 		switch ($format)
 		{
 			case 'endnote':
-				$doc  = "%0 ".JText::_('COM_PUBLICATIONS_GENERIC')."\r\n";
-				$doc .= "%D " . JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
+				$doc  = "%0 ".Lang::txt('COM_PUBLICATIONS_GENERIC')."\r\n";
+				$doc .= "%D " . \JHTML::_('date', $thedate, $yearFormat, $tz) . "\r\n";
 				$doc .= "%T " . trim(stripslashes($publication->title)) . "\r\n";
 
 				if ($authors)
@@ -1688,7 +1692,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$doc .= "%U " . $url . "\r\n";
 				if ($thedate)
 				{
-					$doc .= "%8 " . JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
+					$doc .= "%8 " . \JHTML::_('date', $thedate, $monthFormat, $tz) . "\r\n";
 				}
 				if ($publication->doi)
 				{
@@ -1702,7 +1706,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 			case 'bibtex':
 			default:
-				include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php' );
+				include_once( PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'BibTex.php' );
 
 				$bibtex = new Structures_BibTex();
 				$addarray = array();
@@ -1724,9 +1728,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						$i++;
 					}
 				}
-				$addarray['month'] = JHTML::_('date', $thedate, $monthFormat, $tz);
+				$addarray['month'] = \JHTML::_('date', $thedate, $monthFormat, $tz);
 				$addarray['url']   = $url;
-				$addarray['year']  = JHTML::_('date', $thedate, $yearFormat, $tz);
+				$addarray['year']  = \JHTML::_('date', $thedate, $yearFormat, $tz);
 				if ($publication->doi)
 				{
 					$addarray['doi'] = 'doi:' . DS . $publication->doi;
@@ -1764,13 +1768,13 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Ensure we have a trigger
 		if (!$trigger)
 		{
-			echo '<p class="error">' . JText::_('COM_PUBLICATIONS_NO_TRIGGER_FOUND') . '</p>';
+			echo '<p class="error">' . Lang::txt('COM_PUBLICATIONS_NO_TRIGGER_FOUND') . '</p>';
 			return;
 		}
 
 		// Get Publications plugins
-		JPluginHelper::importPlugin( 'publications' );
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'publications' );
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Call the trigger
 		$results = $dispatcher->trigger( $trigger, array($this->_option) );
@@ -1874,12 +1878,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$ajax 	 = \JRequest::getInt( 'ajax', 0 );
 
 		// Load projects config
-		$pconfig = JComponentHelper::getParams( 'com_projects' );
+		$pconfig = \JComponentHelper::getParams( 'com_projects' );
 
 		// Redirect if publishing is turned off
 		if (!$this->_contributable || !$this->config->get('contribute', 0))
 		{
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
 
@@ -1908,14 +1912,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
 		\Hubzero\Document\Assets::addComponentScript('com_projects', 'assets/js/projects');
-
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'uploader.css');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'jquery.fileuploader.js');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'jquery.queueuploader.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/uploader');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/jquery.fileuploader.js');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/jquery.queueuploader.js');
 
 		// Set page title
-		$this->_task_title = JText::_('COM_PUBLICATIONS_SUBMIT');
+		$this->_task_title = Lang::txt('COM_PUBLICATIONS_SUBMIT');
 		$this->_buildTitle();
 
 		// Set the pathway
@@ -1926,14 +1928,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$plugin  = in_array($active, $allowed) ? $active : 'publications';
 
 		// Get output from plugin
-		JPluginHelper::importPlugin( 'projects', $plugin);
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin( 'projects', $plugin);
+		$dispatcher = \JDispatcher::getInstance();
 
 		if ($this->juser->get('guest') && ($action == 'login' || $this->_task == 'start'))
 		{
 			$this->_msg = $this->_task == 'start'
-						? JText::_('COM_PUBLICATIONS_LOGIN_TO_START')
-						: JText::_('COM_PUBLICATIONS_LOGIN_TO_VIEW_SUBMISSIONS');
+						? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
+						: Lang::txt('COM_PUBLICATIONS_LOGIN_TO_VIEW_SUBMISSIONS');
 			$this->_login();
 			return;
 		}
@@ -1946,7 +1948,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 			if (!$project)
 			{
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.a.'task=submit');
+				$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=submit');
 				$this->_task = 'submit';
 				return;
 			}
@@ -1966,8 +1968,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Redirect to project if not provisioned
 			if ($project->provisioned != 1)
 			{
-				$this->_redirect = JRoute::_('index.php?option=com_projects' . a . 'alias=' . $project->alias
-				. a . 'active=publications' . a . 'pid=' . $pid).'?action='.$action;
+				$this->_redirect = Route::url('index.php?option=com_projects&alias=' . $project->alias
+				. '&active=publications&pid=' . $pid).'?action=' . $action;
 				return;
 			}
 		}
@@ -1980,7 +1982,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Is project registration restricted to a group?
 		if ($action == 'start')
 		{
-			$pconfig = JComponentHelper::getParams( 'com_projects' );
+			$pconfig = \JComponentHelper::getParams( 'com_projects' );
 			$creatorgroup = $pconfig->get('creatorgroup', '');
 
 			if ($creatorgroup)
@@ -1993,7 +1995,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					{
 						$this->_buildPathway(null);
 						$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-						$this->view->error  = JText::_('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
+						$this->view->error  = Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
 						$this->view->title = $this->title;
 						$this->view->display();
 						return;
@@ -2034,7 +2036,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		elseif (empty($content))
 		{
 			// plugin disabled?
-			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
+			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
 
@@ -2076,7 +2078,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Process tags
 		$database = \JFactory::getDBO();
-		$rt = new \Components\Publications\Helpers\Tags( $database );
+		$rt = new Helpers\Tags( $database );
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 0);
 
 		if (!$no_html)
@@ -2099,8 +2101,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (!$publication)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -2110,8 +2112,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($publication->access == 1 && $this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
 				'error'
 			);
 			return;
@@ -2127,8 +2129,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			if (!$authorized && $restricted = $this->_checkGroupAccess($publication, $version))
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option),
-					JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+					Route::url('index.php?option=' . $this->_option),
+					Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
 					'error'
 				);
 				return;
@@ -2167,15 +2169,15 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Instantiate a new view
 		if ($this->juser->get('guest'))
 		{
-			$this->_msg = JText::_('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
+			$this->_msg = Lang::txt('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
 			$this->_login();
 			return;
 		}
 		else
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option),
-				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				Route::url('index.php?option=' . $this->_option),
+				Lang::txt('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
 				'error'
 			);
 			return;
@@ -2281,7 +2283,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Get the list of groups that can access this resource
-		$paccess = new \Components\Publications\Tables\Access( $this->database );
+		$paccess = new Tables\Access( $this->database );
 		$allowedgroups = $paccess->getGroups( $publication->version_id, $publication->id, $version );
 		$allowedgroups = $this->getGroupProperty($allowedgroups);
 

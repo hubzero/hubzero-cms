@@ -142,11 +142,9 @@ class Citations extends Base
 		);
 
 		// Get selector styles
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS
-			. 'css' . DS . 'selector.css');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
 
 		if (!isset($pub->_citations))
 		{

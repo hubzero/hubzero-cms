@@ -11,9 +11,9 @@ $this->css()
 
 <?php if ($this->pid && $this->project && $this->project->created_by_user == $this->uid) { ?>
 	<p class="contrib-options">
-		<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_A_PROJECT'); ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $this->project->alias . '&action=activate'); ?>">
-		<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a>
+		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_A_PROJECT'); ?>
+		<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->alias . '&action=activate'); ?>">
+		<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a>
 	</p>
 <?php } ?>
 

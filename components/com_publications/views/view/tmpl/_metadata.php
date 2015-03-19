@@ -43,7 +43,7 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
 
 			if ($section['name'] != 'usage')
 			{
-				echo '<a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id.'&active=' . $section['name'] ) . '" title="' . JText::_('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
+				echo '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $section['name'] ) . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
 			}
 
 			echo '<span class="icon"></span><span class="label">' . $section['count'] . '</span>';
@@ -62,13 +62,13 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
 if ($this->publication->state != 1)
 {
 	$text = $this->version == 'dev'
-		? JText::_('COM_PUBLICATIONS_METADATA_DEV')
-		: JText::_('COM_PUBLICATIONS_METADATA_UNAVAILABLE');
+		? Lang::txt('COM_PUBLICATIONS_METADATA_DEV')
+		: Lang::txt('COM_PUBLICATIONS_METADATA_UNAVAILABLE');
 	echo '<div class="metaplaceholder"><p>' . $text . '</p></div>' . "\n";
 	return;
 }
 
-$database = JFactory::getDbo();
+$database = \JFactory::getDbo();
 
 $data = '';
 foreach ($this->sections as $section)
@@ -93,7 +93,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 			</dt>
 			<dd>
 				<p>
-					Ranking is calculated from a formula comprised of <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
+					Ranking is calculated from a formula comprised of <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
 				</p>
 				<div></div>
 			</dd>
@@ -117,7 +117,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 		}
 		else
 		{
-			$link = JRoute::_('index.php?option=com_tags&tag=' . $tag->tag);
+			$link = Route::url('index.php?option=com_tags&tag=' . $tag->tag);
 		}
 
 		echo  '<p class="supported"><a href="' . $link . '">' . $tag->raw_tag . '</a></p>';
@@ -146,10 +146,10 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 	if ($this->lastPubRelease && $this->lastPubRelease->id != $this->publication->version_id)
 	{ ?>
 		<p>
-			<?php echo JText::_('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
-			[<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' .
+			<?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
+			[<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' .
 					$this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->lastPubRelease->version_label; ?></a>]
-			<?php echo JText::_('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
+			<?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
 		</p>
 	<?php }
 

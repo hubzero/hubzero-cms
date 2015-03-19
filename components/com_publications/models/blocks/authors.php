@@ -681,8 +681,7 @@ class Authors extends Base
 		$name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
 		// Get selector styles
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'team' . DS . 'css' . DS . 'selector.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team','css/selector');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(

@@ -33,7 +33,7 @@ $this->css('introduction.css', 'system')
 </header><!-- / #content-header -->
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE') . ' ' . JText::_('COM_PUBLICATIONS_PUBLICATIONS'); ?></a></li>
+    	<li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BROWSE') . ' ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <div class="clear"></div>
@@ -51,7 +51,7 @@ $this->css('introduction.css', 'system')
 <section class="section intropage">
 	<div class="grid">
 		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
-			<h3><?php echo JText::_('Recent Publications'); ?></h3>
+			<h3><?php echo Lang::txt('Recent Publications'); ?></h3>
 			<?php if ($this->results && count($this->results) > 0) {
 				// Display List of items
 				$this->view('_list')
@@ -59,11 +59,11 @@ $this->css('introduction.css', 'system')
 				     ->set('config', $this->config)
 				     ->display();
 				} else {
-				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
+				echo ('<p class="noresults">'.Lang::txt('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
 		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6 omega';  ?>">
-			<h3><?php echo JText::_('COM_PUBLICATIONS_PUPULAR'); ?></h3>
+			<h3><?php echo Lang::txt('COM_PUBLICATIONS_PUPULAR'); ?></h3>
 			<?php if ($this->best && count($this->best) > 0)
 			{ 		// Display List of items
 					$this->view('_list')
@@ -71,14 +71,14 @@ $this->css('introduction.css', 'system')
 					     ->set('config', $this->config)
 					     ->display();
 			} else {
-				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
+				echo ('<p class="noresults">'.Lang::txt('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
 		<?php if ($this->contributable) { ?>
 		<div class="col span4 omega">
-			<h3><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
-			<p><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option=com_publications&task=submit'); ?>" class="btn"><?php echo JText::_('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>
+			<h3><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
+			<p><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
+			<p><a href="<?php echo Route::url('index.php?option=com_publications&task=submit'); ?>" class="btn"><?php echo Lang::txt('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>
 		</div>
 		<?php } ?>
 	</div>

@@ -164,10 +164,10 @@ class PublicationsRouter extends \Hubzero\Component\Router\Base
 		}
 		else
 		{
-			include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
+			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
 				. 'com_publications' . DS . 'tables' . DS . 'category.php');
 
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 
 			$t = new \Components\Publications\Tables\Category( $database );
 			$cats = $t->getCategories();
@@ -244,7 +244,7 @@ class PublicationsRouter extends \Hubzero\Component\Router\Base
 		}
 
 		// are we serving up a file
-		$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+		$uri = \JRequest::getVar('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:') || strstr($uri, 'File:'))
 		{
 			$vars['task'] = 'download';
