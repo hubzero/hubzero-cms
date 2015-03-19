@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Checkin;
+namespace Components\Checkin\Admin;
 
 // Access check.
 if (!\JFactory::getUser()->authorise('core.manage', 'com_checkin'))
 {
-	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(__DIR__ . DS . 'models' . DS . 'checkin.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'checkin.php');
 require_once(__DIR__ . DS . 'controllers' . DS . 'checkin.php');
 
 // Instantiate controller

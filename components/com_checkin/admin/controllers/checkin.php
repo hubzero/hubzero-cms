@@ -28,14 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Checkin\Controllers;
+namespace Components\Checkin\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Exception;
-use JSubMenuHelper;
-use JSession;
-use JRequest;
-use JText;
 
 /**
  * Checkin Controller
@@ -62,7 +58,7 @@ class Checkin extends AdminController
 	public function displayTask()
 	{
 		// Load the submenu.
-		$this->addSubmenu(JRequest::getWord('option', 'com_checkin'));
+		$this->addSubmenu(\JRequest::getWord('option', 'com_checkin'));
 
 		$this->view->items      = $this->model->getItems();
 		$this->view->pagination = $this->model->getPagination();
@@ -87,25 +83,25 @@ class Checkin extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
-		$ids = JRequest::getVar('cid', array(), '', 'array');
+		$ids = \JRequest::getVar('cid', array(), '', 'array');
 
 		$msg = '';
 
 		if (empty($ids))
 		{
-			throw new Exception(JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 500);
+			throw new Exception(Lang::txt('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 500);
 		}
 		else
 		{
 			// Checked in the items.
-			$msg = JText::plural('COM_CHECKIN_N_ITEMS_CHECKED_IN', $this->model->checkin($ids));
+			$msg = Lang::txts('COM_CHECKIN_N_ITEMS_CHECKED_IN', $this->model->checkin($ids));
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			($msg ?: null)
 		);
 	}
@@ -118,19 +114,19 @@ class Checkin extends AdminController
 	 */
 	protected function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_CHECKIN'),
-			'index.php?option=com_checkin',
+		\JSubMenuHelper::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_CHECKIN'),
+			Route::url('index.php?option=com_checkin'),
 			$vName == 'com_checkin'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_CLEAR_CACHE'),
-			'index.php?option=com_cache',
+		\JSubMenuHelper::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_CLEAR_CACHE'),
+			Route::url('index.php?option=com_cache'),
 			$vName == 'cache'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
-			'index.php?option=com_cache&view=purge',
+		\JSubMenuHelper::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
+			Route::url('index.php?option=com_cache&view=purge'),
 			$vName == 'purge'
 		);
 	}
