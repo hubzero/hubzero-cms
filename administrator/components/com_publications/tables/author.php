@@ -550,7 +550,6 @@ class Author extends \JTable
 				. $this->_db->Quote($this->organization) . ", "
 				. $this->_db->Quote($this->credit) . ", "
 				. $this->_db->Quote(\JFactory::getDate()->toSql()) . ", "
-				. $this->_db->Quote($this->created) . ", "
 				. $this->_db->Quote($this->created_by) . ", "
 				. $this->_db->Quote($this->status) . ", "
 				. $this->_db->Quote($this->project_owner_id) . ")";
