@@ -127,7 +127,7 @@ $this->css();
 					<?php
 						$view = new \Hubzero\Component\View(array(
 							'name'      =>'wishlists',
-							'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->option,
+							'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'site',
 							'layout'    => '_vote'
 						));
 						$view->set('option', 'com_wishlist')
