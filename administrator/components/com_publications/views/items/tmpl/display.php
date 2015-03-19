@@ -72,7 +72,15 @@ function submitbutton(pressbutton)
 		</select>
 
 		<label for="category"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>
-		<?php echo PublicationsAdminHtml::selectCategory($this->categories, 'category', $this->filters['category'], JText::_('COM_PUBLICATIONS_ALL_CATEGORIES'), '', '', ''); ?>
+		<?php 
+		// Draw category list
+		$this->view('_selectcategory')
+		     ->set('categories', $this->categories)
+		     ->set('value', $this->filters['category'])
+			 ->set('name', 'category')
+			 ->set('showNone', JText::_('COM_PUBLICATIONS_ALL_CATEGORIES'))
+		     ->display();
+		?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_PUBLICATIONS_GO'); ?>" />
 	</fieldset>
@@ -135,9 +143,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// What's the publication status?
-	$status = PublicationsAdminHtml::getPubStateProperty($row, 'status');
-	$class 	= PublicationsAdminHtml::getPubStateProperty($row, 'class');
-	$task 	= PublicationsAdminHtml::getPubStateProperty($row, 'task');
+	$status = \Components\Publications\Helpers\Html::getPubStateProperty($row, 'status');
+	$class 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'class');
+	$task 	= \Components\Publications\Helpers\Html::getPubStateProperty($row, 'task');
 	$date 	= $row->modified && $row->modified != '0000-00-00 00:00:00'
 			? JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_LC2'))
 			: JHTML::_('date', $row->created, JText::_('DATE_FORMAT_LC2'));
@@ -183,7 +191,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		</tbody>
 	</table>
 
-	<?php PublicationsAdminHtml::statusKey(); ?>
+	<?php 
+	// Draw legend
+	$this->view('_statuskey')
+	     ->display(); ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

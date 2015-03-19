@@ -54,7 +54,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.ph
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');

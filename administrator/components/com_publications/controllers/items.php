@@ -278,16 +278,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->pub->_category->load($this->view->pub->category);
 		$this->view->pub->_category->_params = new JParameter( $this->view->pub->_category->params );
 
-		$this->view->lists['category'] = PublicationsAdminHtml::selectCategory(
-			$this->view->pub->_category->getContribCategories(),
-			'category',
-			$this->view->pub->category,
-			'',
-			'',
-			'',
-			''
-		);
-
 		// Get master type info
 		$mt = new \Components\Publications\Tables\MasterType( $this->database );
 		$this->view->pub->_type = $mt->getType($this->view->pub->base);
@@ -312,21 +302,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
 		}
 
-		// Draw content
-		$this->view->lists['content'] = PublicationsAdminHtml::selectContent(
-			$this->view->pub,
-			$this->_option,
-			$this->view->useBlocks,
-			$this->database
-		);
-
 		// Get pub authors
 		$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
 		$this->view->pub->_authors 		= $pAuthors->getAuthors($this->view->pub->version_id);
 		$this->view->pub->_submitter 	= $pAuthors->getSubmitter($this->view->pub->version_id, $this->view->pub->created_by);
-
-		// Draw publication authors
-		$this->view->lists['authors'] = PublicationsAdminHtml::selectAuthors($this->view->pub->_authors, $this->_option);
 
 		// Get tags on this item
 		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->database );
@@ -342,13 +321,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Get selected license
 		$objL = new \Components\Publications\Tables\License( $this->database );
 		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
-		$this->view->lists['licenses'] = PublicationsAdminHtml::selectLicense(
-			$objL->getLicenses(),
-			$this->view->license
-		);
-
-		// Get access
-		$this->view->lists['access'] = PublicationsAdminHtml::selectAccess('Public,Registered,Private', $this->view->pub->access);
+		$this->view->licenses = $objL->getLicenses();
 
 		// Get groups
 		$filters = array(
@@ -357,10 +330,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			'type'       => array(1, 3),
 			'sortby'     => 'description'
 		);
-		$groups = \Hubzero\User\Group::find($filters);
-
-		// Build <select> of groups
-		$this->view->lists['groups'] = PublicationsAdminHtml::selectGroup($groups, $this->view->pub->group_owner, $this->view->pub->_project->owned_by_group);
+		$this->view->groups = \Hubzero\User\Group::find($filters);
 
 		// Set any errors
 		if ($this->getError())
@@ -937,7 +907,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if (!$row->bind($_POST))
 		{
-			echo PublicationsAdminHtml::alert($row->getError());
+			echo \Components\Publications\Helpers\Html::alert($row->getError());
 			exit();
 		}
 
@@ -1028,7 +998,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo PublicationsAdminHtml::alert(JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							echo \Components\Publications\Helpers\Html::alert(JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
 							exit();
 						}
 					}

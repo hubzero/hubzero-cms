@@ -37,6 +37,7 @@ $jconfig 		= JFactory::getConfig();
 $config  		= JComponentHelper::getParams( 'com_projects' );
 $pubconfig  	= JComponentHelper::getParams( 'com_publications' );
 $hubShortName 	= $jconfig->getValue('config.sitename');
+$showThumb      = $config->get('showthumbemail', 0);
 
 $base 	 = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
@@ -44,16 +45,20 @@ if (substr($base, -13) == 'administrator')
 	$base 		= substr($base, 0, strlen($base)-13);
 	$sef 		= 'projects/' . $this->project->alias;
 	$pubSef		= 'publications' . DS . $this->row->publication_id . DS . $this->row->version_number;
+	$imaSef     = 'publications' . DS . $this->row->publication_id . DS . $this->row->id;
 }
 else
 {
 	$sef 		= JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
 	$pubSef		= JRoute::_('index.php?option=' . $this->option . '&id='
 				. $this->row->publication_id . '&v=' . $this->row->version_number);
+	$imaSef		= JRoute::_('index.php?option=' . $this->option . '&id='
+				. $this->row->publication_id . '&v=' . $this->row->id);
 }
 
 $link 	 = rtrim($base, DS) . DS . trim($sef, DS);
 $pubLink = rtrim($base, DS) . DS . trim($pubSef, DS);
+$thumb   = rtrim($base, DS) . DS . trim($imaSef, DS);
 
 // Page title
 $title = $hubShortName . ' ' . JText::_('COM_PUBLICATIONS_PUBLICATIONS');
@@ -77,16 +82,6 @@ if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 if ($comment)
 {
 	$comment = '<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">' . $comment . '</p>';
-}
-
-$showThumb = $config->get('showthumbemail', 0);
-
-// Get publication thumbnail
-if ($showThumb)
-{
-	$thumb 		= PublicationsAdminHtml::getThumbSrc($this->row->publication_id, $this->row->id, $pubconfig);
-	$thumb 		= $thumb ? rtrim($base, DS) . DS . trim($thumb, DS) : NULL;
-	$showThumb 	= $thumb ? true : false;
 }
 
 ?>

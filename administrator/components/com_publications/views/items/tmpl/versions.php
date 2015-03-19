@@ -75,9 +75,9 @@ $k = 0;
 	$doi_notice = $doi ? $doi : JText::_('COM_PUBLICATIONS_NA');
 
 	// Version status
-	$status = PublicationsAdminHtml::getPubStateProperty($v, 'status');
-	$class = PublicationsAdminHtml::getPubStateProperty($v, 'class');
-	$date = PublicationsAdminHtml::getPubStateProperty($v, 'date');
+	$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
+	$class = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
+	$date = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
 	$options = '<a href="index.php?option=' . $this->option . '&amp;controller='
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'

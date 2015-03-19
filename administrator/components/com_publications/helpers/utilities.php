@@ -50,7 +50,7 @@ class PublicationUtilities
 	public static function registerDoi( $row, $authors, $config, $metadata = array(), &$doierr = '', $reserve = 0 )
 	{
 		// Get configs
-		$jconfig  = JFactory::getConfig();
+		$jconfig  = \JFactory::getConfig();
 		$shoulder = $config->get('doi_shoulder');
 		$service  = trim($config->get('doi_service'), DS);
 		$prefix   = $config->get('doi_prefix', '' );
@@ -235,7 +235,7 @@ class PublicationUtilities
 		// Get configs
 		$juri = JURI::getInstance();
 
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 		$service = trim($config->get('doi_service'), DS);
 		$userpw  = $config->get('doi_userpw');
 
@@ -390,8 +390,8 @@ class PublicationUtilities
 			$xmlfile.='</contributors>';
 		}
 		$xmlfile.='<dates>
-			<date dateType="Valid">'.$datePublished.'</date>
-			<date dateType="Accepted">'.$dateAccepted.'</date>
+			<date dateType="Valid">' . $datePublished . '</date>
+			<date dateType="Accepted">' . $dateAccepted . '</date>
 		</dates>
 		<language>'.$metadata['language'].'</language>
 		<resourceType resourceTypeGeneral="' . $metadata['resourceType'] . '">'.$metadata['typetitle'].'</resourceType>';
@@ -401,10 +401,10 @@ class PublicationUtilities
 				<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $metadata['relatedDoi'] . '</relatedIdentifier>
 			</relatedIdentifiers>';
 		}
-		$xmlfile.= '<version>'.$row->version_label.'</version>';
+		$xmlfile.= '<version>' . $row->version_label . '</version>';
 		if (isset($metadata['license']))
 		{
-			$xmlfile.='<rights>'.htmlspecialchars($metadata['license']).'</rights>';
+			$xmlfile.='<rights>' . htmlspecialchars($metadata['license']) . '</rights>';
 		}
 		$xmlfile .='<descriptions>
 			<description descriptionType="Abstract">';
@@ -428,7 +428,7 @@ class PublicationUtilities
 			return false;
 		}
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		// Load version
 		$row = new \Components\Publications\Tables\Version($database);
@@ -441,7 +441,7 @@ class PublicationUtilities
 			// Get type info
 			$pub->_category = new \Components\Publications\Tables\Category( $database );
 			$pub->_category->load($pub->category);
-			$pub->_category->_params = new JParameter( $pub->_category->params );
+			$pub->_category->_params = new \JParameter( $pub->_category->params );
 		}
 
 		if (!$pub->_category)
@@ -468,7 +468,7 @@ class PublicationUtilities
 		}
 
 		// Get dc:contibutor
-		$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
+		$profile = \Hubzero\User\Profile::getInstance(\JFactory::getUser()->get('id'));
 		$owner 	 = $pub->_project->owned_by_user ? $pub->_project->owned_by_user : $pub->_project->created_by_user;
 		if ($profile->load( $owner ))
 		{

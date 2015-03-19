@@ -1762,4 +1762,17 @@ class Html extends \JObject
 			}
 		}
 	}
+
+	/**
+	 * Short description for 'alert'
+	 *
+	 * Long description (if any) ...
+	 *
+	 * @param      string $msg Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public static function alert( $msg )
+	{
+		return "<script type=\"text/javascript\"> alert('" . $msg . "'); window.history.go(-1); </script>\n";
+	}
 }

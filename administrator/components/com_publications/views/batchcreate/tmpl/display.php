@@ -43,7 +43,11 @@ $this->js('batchcreate');
 			<div class="col width-70 fltlft">
 				<div class="input-wrap">
 					<label for="projectid"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ADD_IN_PROJECT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
-					<?php echo $this->lists['projects']; ?>
+					<?php 
+					// Draw project list
+					$this->view('_selectprojects')
+					     ->set('projects', $this->projects)
+					     ->display(); ?>
 				</div>
 				<div class="input-wrap file-import" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_ATTACH_HINT'); ?>">
 					<label for="field-file">

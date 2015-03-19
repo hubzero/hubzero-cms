@@ -53,9 +53,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$filters['sortby']  	= 'title';
 		$filters['sortdir'] 	= 'DESC';
 		$filters['authorized'] 	= true;
-		$projects = $project->getRecords( $filters, true, 0, 1 );
-
-		$this->view->lists['projects'] = PublicationsAdminHtml::selectProjects($projects);
+		$this->view->projects = $project->getRecords( $filters, true, 0, 1 );
 
 		// Set any errors
 		if ($this->getError())

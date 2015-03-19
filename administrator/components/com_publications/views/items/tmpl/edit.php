@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 $this->js();
 
-$htmlHelper	  = new PublicationsAdminHtml();
-
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
@@ -84,7 +82,7 @@ $schema 	= $elements->getSchema();
 
 $canedit 	= 1;
 $now 		= JFactory::getDate()->toSql();
-$status 	= $htmlHelper->getPubStateProperty($this->row, 'status');
+$status 	= \Components\Publications\Helpers\Html::getPubStateProperty($this->row, 'status');
 
 $v = $this->version == 'default' ? '' : '?v=' . $this->version;
 $rating = $this->pub->rating == 9.9 ? 0.0 : $this->pub->rating;
@@ -186,7 +184,15 @@ function popratings()
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php echo $this->lists['category']; ?>
+				<?php
+				// Draw category list
+				$this->view('_selectcategory')
+				     ->set('categories', $this->pub->_category->getContribCategories())
+				     ->set('value', $this->pub->category)
+					 ->set('name', 'category')
+					 ->set('showNone', '')
+				     ->display();
+				?>
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
@@ -223,7 +229,13 @@ function popratings()
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="index.php?option=com_publications&amp;task=addauthor&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
 		<fieldset>
 		<div class="input-wrap" id="publiction-authors">
-			<?php echo $this->lists['authors']; ?>
+			<?php
+			// Draw author list
+			$this->view('_selectauthors')
+			     ->set('authNames', $this->pub->_authors)
+			     ->set('option', $this->option)
+			     ->display();
+			?>
 		</div>
 		</fieldset>
 	</fieldset>
@@ -246,7 +258,12 @@ function popratings()
 		<fieldset>
 		<div class="input-wrap">
 			<label for="license_type"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
-			<?php echo $this->lists['licenses']; ?>
+			<?php // Draw license selector
+			$this->view('_selectlicense')
+			     ->set('licenses', $this->licenses)
+			     ->set('selected', $this->license)
+			     ->display(); 
+			?>
 		</div>
 		<div class="input-wrap">
 			<label for="license_text"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
@@ -354,11 +371,23 @@ function popratings()
 	</div>
 	<div class="input-wrap">
 		<label for="access"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
-		<?php echo $this->lists['access']; ?>
+		<?php 
+		// Draw access select list
+		$this->view('_selectaccess')
+		     ->set('as', 'Public,Registered,Private')
+		     ->set('value', $this->pub->access)
+		     ->display();
+		?>
 	</div>
 	<div class="input-wrap">
 		<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
-		<?php echo $this->lists['groups']; ?>
+		<?php 
+		// Draw group selector
+		$this->view('_selectgroup')
+		     ->set('groups', $this->groups)
+		     ->set('groupOwner', $this->pub->_project->owned_by_group)
+		     ->set('value', $this->pub->group_owner)
+		     ->display(); ?>
 	</div>
 	<div class="input-wrap">
 		<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
@@ -480,7 +509,14 @@ function popratings()
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
 		<fieldset>
 			<div class="input-wrap">
-				<?php echo $this->lists['content']; ?>
+				<?php
+				// Draw content
+				$this->view('_selectcontent')
+				     ->set('useBlocks', $this->useBlocks)
+				     ->set('pub', $this->pub)
+				     ->set('option', $this->option)
+				     ->display();
+				?>
 			</div>
 		</fieldset>
 	</fieldset>
