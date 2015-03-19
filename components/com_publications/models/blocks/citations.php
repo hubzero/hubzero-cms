@@ -27,12 +27,9 @@ namespace Components\Publications\Models\Block;
 use Components\Publications\Models\Block as Base;
 use stdClass;
 
-include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
-	. DS . 'helpers' . DS . 'format.php' );
+include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
 /**
  * Citations block

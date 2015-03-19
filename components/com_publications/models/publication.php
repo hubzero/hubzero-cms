@@ -36,8 +36,7 @@ use Components\Publications\Tables;
 
 require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-	. DS . 'models' . DS . 'curation.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
 
 /**
  * Information retrieval for items/info linked to a publication
@@ -1042,14 +1041,10 @@ class Publication extends Object
 		}
 		if (!isset($this->_citations))
 		{
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'association.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'author.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 			$cc = new \Components\Citations\Tables\Citation( $this->_db );
 
@@ -1084,14 +1079,10 @@ class Publication extends Object
 		}
 		if (!isset($this->_lastCitationDate))
 		{
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'association.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'author.php' );
-			include_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-				. 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 			$cc = new \Components\Citations\Tables\Citation( $this->_db );
 
@@ -1118,8 +1109,7 @@ class Publication extends Object
 		}
 		if (!isset($this->_tags))
 		{
-			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'helpers' . DS . 'tags.php' );
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags( $this->_db );
 			$this->_tags = $rt->get_tags_on_object($this->id, 0, 0, $tagger_id, $strength, $admin);
@@ -1143,8 +1133,7 @@ class Publication extends Object
 			return false;
 		}
 
-		include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
-			. DS . 'helpers' . DS . 'tags.php' );
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 		$rt = new Helpers\Tags( $this->_db );
 		$this->_tagsForEditing = $rt->get_tag_string( $this->id, 0, 0, $tagger_id, $strength, 0 );
@@ -1166,8 +1155,7 @@ class Publication extends Object
 
 		if (!isset($this->_tagCloud))
 		{
-			include_once( PATH_CORE . DS . 'components' . DS . 'com_publications'
-				. DS . 'helpers' . DS . 'tags.php' );
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php');
 
 			$rt = new Helpers\Tags( $this->_db );
 			$this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->id);

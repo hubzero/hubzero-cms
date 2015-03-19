@@ -294,7 +294,7 @@ class Format
 								$user = \JUser::getInstance($id);
 								if (is_object($user))
 								{
-									$a[] = '<a rel="external" href="' . \JRoute::_('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
 								}
 								else
 								{
@@ -372,7 +372,7 @@ class Format
 					$singleCitationView = $config->get('citation_single_view', 0);
 					if ($singleCitationView && isset($citation->id))
 					{
-						$title = '<a href="' . \JRoute::_('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $t . '</a>';
+						$title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $t . '</a>';
 					}
 
 					//send back title to replace title placeholder ({TITLE})
@@ -516,9 +516,9 @@ class Format
 		// are we allowing downloading
 		if ($downloading)
 		{
-			$html .= '<a rel="nofollow" href="' . \JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . \JText::_('COM_CITATIONS_BIBTEX') . '">' . \JText::_('COM_CITATIONS_BIBTEX') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=bibtex&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_BIBTEX') . '">' . \Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
 			$html .= '<span> | </span>';
-			$html .= '<a rel="nofollow" href="' . \JRoute::_('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . \JText::_('COM_CITATIONS_ENDNOTE') . '">' . \JText::_('COM_CITATIONS_ENDNOTE') . '</a>';
+			$html .= '<a rel="nofollow" href="' . \Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&format=endnote&no_html=1') . '" title="' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . \Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
 		}
 
 		// if we have an open url link and we want to use open urls
@@ -669,7 +669,7 @@ class Format
 		{
 			if (count($assocs) > 1)
 			{
-				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . \JText::_('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
+				$html .= '<span>|</span> <span style="line-height:1.6em;color:#444">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
 				$k = 0;
 				$rrs = array();
 				foreach ($assocs as $rid)
@@ -683,11 +683,11 @@ class Format
 							$k++;
 							if ($internally_cited_image)
 							{
-								$rrs[] = '<a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[<img src="' . $internally_cited_image_multiple . '" alt="Resource Cited" />]</a>';
+								$rrs[] = '<a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $rid->oid) . '">[<img src="' . $internally_cited_image_multiple . '" alt="' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" />]</a>';
 							}
 							else
 							{
-								$rrs[] = '<a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $rid->oid) . '">[' . $k . ']</a>';
+								$rrs[] = '<a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $rid->oid) . '">[' . $k . ']</a>';
 							}
 						}
 					}
@@ -705,11 +705,11 @@ class Format
 					{
 						if ($internally_cited_image)
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="Resource Cited" /></a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs[0]->oid) . '"><img src="' . $internally_cited_image_single . '" alt="' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" /></a>';
 						}
 						else
 						{
-							$html .= ' <span>|</span> <a class="internally-cited" href="' . \JRoute::_('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . JText::_('COM_CITATIONS_RESOURCES_CITED') . '</a>';
+							$html .= ' <span>|</span> <a class="internally-cited" href="' . \Route::url('index.php?option=com_resources&id=' . $assocs[0]->oid) . '">' . \Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '</a>';
 						}
 					}
 				}
@@ -719,7 +719,7 @@ class Format
 		if ($citation->eprint)
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . \JFilterOutput::ampReplace($citation->eprint) . '">' . \JText::_('Electronic Paper') . '</a>';
+			$html .= '<a href="' . \JFilterOutput::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $html;
@@ -802,7 +802,7 @@ class Format
 					//display tag if not admin tag or if admin tag and user is adminstrator
 					if (!$tag['admin'] || ($tag['admin'] && $isAdmin))
 					{
-						$html .= '<li class="' . $cls . '"><a href="' . \JRoute::_('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
+						$html .= '<li class="' . $cls . '"><a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag['tag']) . '">' . stripslashes($tag['raw_tag']) . '</a></li>';
 					}
 				}
 				$html .= '</ul>';
@@ -917,7 +917,7 @@ class Format
 					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
 					if ($aid)
 					{
-						$a[] = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $aid) . '">' . trim($auth) . '</a>';
+						$a[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $aid) . '">' . trim($auth) . '</a>';
 					}
 					else
 					{
@@ -973,8 +973,8 @@ class Format
 		{
 			switch ($row->type)
 			{
-				case 'phdthesis': $html .= ' (' . \JText::_('PhD Thesis') . ')'; break;
-				case 'mastersthesis': $html .= ' (' . \JText::_('Masters Thesis') . ')'; break;
+				case 'phdthesis': $html .= ' (' . \Lang::txt('PhD Thesis') . ')'; break;
+				case 'mastersthesis': $html .= ' (' . \Lang::txt('Masters Thesis') . ')'; break;
 				default: break;
 			}
 		}
@@ -1050,7 +1050,7 @@ class Format
 		if (self::keyExistsOrIsNotEmpty('doi', $row))
 		{
 			$html  = self::grammarCheck($html, '.');
-			$html .= ' (' . \JText::_('DOI') . ': ' . $row->doi . ')';
+			$html .= ' (' . \Lang::txt('DOI') . ': ' . $row->doi . ')';
 		}
 		$html  = self::grammarCheck($html, '.');
 		$html .= '</p>' . "\n";

@@ -221,7 +221,7 @@ class Download
 
 		if (!$formatter || !is_object($formatter))
 		{
-			$cls = '\\components\\Citations\\Download\\' . $format;
+			$cls = '\\Components\\Citations\\Download\\' . $format;
 
 			if (is_file(dirname(__DIR__) . DS . 'download' . DS . strtolower($format) . '.php'))
 			{
@@ -229,14 +229,14 @@ class Download
 			}
 			if (!class_exists($cls))
 			{
-				throw new Exception(\JText::_('Download format unavailable.'), 500);
+				throw new Exception(Lang::txt('Download format unavailable.'), 500);
 			}
 
 			$formatter = new $cls();
 
 			if (!$formatter instanceof Downloadable)
 			{
-				throw new Exception(\JText::_('Invalid download formatter specified.'), 500);
+				throw new Exception(Lang::txt('Invalid download formatter specified.'), 500);
 			}
 
 			$this->setFormatter($formatter, $format);

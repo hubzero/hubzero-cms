@@ -320,9 +320,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$new  = $cite['id'] ? false : true;
 
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
 		if (!$pid || !$cite['type'] || !$cite['title'])
@@ -396,9 +396,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 */
 	public function unattachCitation($pid = 0, $cid = 0, $returnStatus = false)
 	{
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
@@ -455,11 +455,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function attachCitation($pid = 0, $doi = NULL, $format = 'apa',
 		$actor = 0, $returnStatus = false)
 	{
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
 		include_once( PATH_ROOT . DS . 'components' . DS . 'com_citations'
 			. DS . 'helpers' . DS . 'format.php' );
@@ -748,9 +748,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Incoming
 			$cid    = JRequest::getInt( 'cid', 0 );
 
-			include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+			include_once( PATH_ROOT . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-			include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+			include_once( PATH_ROOT . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 			// Load the object
@@ -844,9 +844,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
-		include_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		include_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
 
 		// Load the object

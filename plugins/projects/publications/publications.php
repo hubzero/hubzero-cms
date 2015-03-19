@@ -2275,9 +2275,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'citations':
-				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+				include_once( JPATH_ROOT . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+				include_once( JPATH_ROOT . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 				include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
 					. DS . 'helpers' . DS . 'format.php' );
@@ -6940,7 +6940,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			elseif ($value == 'citations')
 			{
 				// Check citations
-				include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+				include_once( JPATH_ROOT . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
 
 				$assoc 	= new \Components\Citations\Tables\Association($this->_database);

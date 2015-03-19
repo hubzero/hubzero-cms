@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 foreach (array('citation', 'association', 'author', 'secondary', 'sponsor', 'tags', 'format', 'type') as $inc)
 {
-	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . $inc . '.php');
+	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . $inc . '.php');
 }
 
 /**

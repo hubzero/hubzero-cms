@@ -134,7 +134,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			return $types;
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 
 		$database = JFactory::getDBO();
 
@@ -167,11 +167,11 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$row->pages     = isset($row->data2)  ? $row->data2  : '';
 		$row->publisher = isset($row->data3)  ? $row->data3  : '';
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-		$config = JComponentHelper::getParams('com_citations');
+		$config = \Component::params('com_citations');
 
 		switch ($config->get("citation_label", "number"))
 		{
@@ -181,7 +181,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 			case 'both':   $citations_label_class = 'both-label';   break;
 		}
 
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 		$citationsFormat = new \Components\Citations\Tables\Format($database);
 		$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
@@ -196,18 +196,18 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		$citationSingleView = $config->get('citation_single_view', 1);
 		if ($citationSingleView)
 		{
-			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
+			$html .= '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
 		}
 		else
 		{
-			$html .= '<a href="' . JRoute::_('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 50)) . '">';
+			$html .= '<a href="' . \Route::url('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 50)) . '">';
 		}
 		$html .= \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
 		$html .= '</a></p>'."\n";
-		$html .= '<p class="details '. $citations_label_class . '">' . JText::_('PLG_TAGS_CITATION');
+		$html .= '<p class="details '. $citations_label_class . '">' . \Lang::txt('PLG_TAGS_CITATION');
 		if ($config->get('citation_label', 'number') != 'none')
 		{
-			$types = plgTagsCitations::getTypes();
+			$types = self::getTypes();
 
 			$type = '';
 			foreach ($types as $t)
@@ -223,8 +223,8 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 		}
 		$html .= '</p>';
 
-		require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		$db = JFactory::getDBO();
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		$db = \JFactory::getDBO();
 		$cc = new \Components\Citations\Tables\Citation($db);
 		$cc->load($row->id);
 

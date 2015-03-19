@@ -103,14 +103,10 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Get a needed library
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_citations' . DS . 'tables' . DS . 'author.php' );
-		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php' );
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
 
 		// Get citations for this publication
 		$c = new \Components\Citations\Tables\Citation( $database );

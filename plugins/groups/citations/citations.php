@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 // include needed libs
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 
 /**
  * Groups plugin class for citations
@@ -850,8 +850,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// include libs
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 
 		// Get connections to publications
 		foreach ($assocs as $entry)
@@ -887,7 +887,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$groupsConfig = JComponentHelper::getParams('com_groups');
 
 		// build base path
-		$base = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
 		// return path
 		return $base . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'plugins' . DS . $this->_name . DS . $name;
@@ -905,7 +905,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$groupsConfig = JComponentHelper::getParams('com_groups');
 
 		// build base path
-		$base = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+		$base = PATH_APP . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
 		// build helper path
 		$helperPath =  $base . DS . $this->group->get('gidNumber') . DS . 'libraries' . DS . $this->_name . DS . 'helper.php';
