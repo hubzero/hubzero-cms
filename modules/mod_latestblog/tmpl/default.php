@@ -41,13 +41,16 @@ $c = 0;
 			{
 				?>
 					<li>
+						<?php if ($this->params->get('details', 1)) { ?>
 						<p class="entry-author-photo">
 							<img src="<?php echo $post->creator()->getPicture(); ?>" alt="" />
 						</p>
+						<?php } ?>
 						<div class="entry-content">
 							<h4>
 								<a href="<?php echo JRoute::_($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
 							</h4>
+						<?php if ($this->params->get('details', 1)) { ?>
 							<dl class="entry-meta">
 								<dt>
 									<span>
@@ -90,6 +93,8 @@ $c = 0;
 									</a>
 								</dd>
 							</dl>
+						<?php } ?>
+						<?php if ($this->params->get('preview', 1)) { ?>
 							<div class="entry-body">
 								<?php
 								if ($this->pullout && $c == 0)
@@ -102,6 +107,7 @@ $c = 0;
 								}
 								?>
 							</div>
+						<?php } ?>
 						</div>
 					</li>
 				<?php

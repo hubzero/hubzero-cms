@@ -52,6 +52,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="yes">Yes</option>
 				</field>
 				<field name="pulloutlimit" type="text" default="500" label="Length of Pullout" description="Number of characters to display in post." />
+				<field name="details" type="list" default="1" label="Post Details" description="Display details such as author and published time?">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="preview" type="list" default="1" label="Post Preview" description="Display a preview or teaser of the post's text?">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="charlimit" type="text" default="100" label="Length of Post Preview" description="Number of characters to display in post." />
 				<field name="blog" type="list" default="site" label="Included Discussions From" description="Where the discussions are pulled from.">
 					<option value="site">Site Blog</option>
