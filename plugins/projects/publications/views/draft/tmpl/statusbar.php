@@ -85,7 +85,7 @@ $i = 1;
 			}
 			else
 			{
-				$class = $status > 0 ? 'c_passed' : 'c_failed';
+				$class = ($status > 0 || $this->pub->state == 1) ? 'c_passed' : 'c_failed';
 			}
 
 			$isComing = $this->pub->_curationModel->isBlockComing($blockname, $sequence, $activenum);

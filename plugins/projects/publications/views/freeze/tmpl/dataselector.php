@@ -160,11 +160,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 				} ?>
 			</ul>
 		</div>
-		<?php } elseif (!$required) {  ?>
+		<?php } else {  ?>
 			<p class="noresults"><?php echo $this->name == 'curator' ? JText::_('No user input') : JText::_('No items attached'); ?></p>
 		<?php } ?>
 
-			<?php if ($error || ($required && !$complete)) { ?>
+			<?php if ($this->pub->state != 1 && ($error || ($required && !$complete))) { ?>
 				<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
 			<?php } else { ?>
 

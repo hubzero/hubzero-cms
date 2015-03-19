@@ -102,7 +102,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 				<div class="element-value"><?php echo $value; ?></div>
 			<?php } else { ?>
 				<p class="noresults">No user input</p>
-				<?php if ($this->status->getError() || ($required && !$complete)) { ?>
+				<?php if ($this->pub->state != 1 && ($this->status->getError() || ($required && !$complete))) { ?>
 					<p class="witherror"><?php echo $this->status->getError() ? $this->status->getError() : JText::_('Missing required input'); ?></p>
 				<?php } ?>
 			<?php } ?>
