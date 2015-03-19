@@ -33,7 +33,7 @@
 	</files>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addpath="/administrator/components/com_poll/elements">
+			<fieldset name="basic" addpath="/components/com_poll/elements">
 				<field name="id" type="poll" default="" label="Poll" description="PARAMMODULEPOLL" />
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 			</fieldset>
