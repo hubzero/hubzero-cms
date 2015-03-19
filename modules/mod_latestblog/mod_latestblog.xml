@@ -2,8 +2,8 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_latestblog/mod_latestblog.xml
-@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@file           modules/mod_recentquestions/mod_recentquestions.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
 Copyright 2005-2011 Purdue University. All rights reserved.
@@ -28,51 +28,58 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>mod_latestblog</name>
+	<name>Latest Blog posts</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>MOD_LATESTBLOG_XML_DESCRIPTION</description>
+	<description>This module shows the latest blog posts in the site blog as well as group blogs.</description>
 	<files>
 		<filename module="mod_latestblog">mod_latestblog.php</filename>
 		<filename>mod_latestblog.xml</filename>
 		<filename>index.html</filename>
-		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="MOD_LATESTBLOG_PARAM_CLASS_LABEL" description="MOD_LATESTBLOG_PARAM_CLASS_DESC" />
+				<field name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
 				<field type="spacer" />
-				<field name="limit" type="text" default="5" label="MOD_LATESTBLOG_PARAM_LIMIT_LABEL" description="MOD_LATESTBLOG_PARAM_LIMIT_DESC" />
+				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
 				<field type="spacer" />
-				<field name="pullout" type="list" default="yes" label="MOD_LATESTBLOG_PARAM_PULLOUT_LABEL" description="MOD_LATESTBLOG_PARAM_PULLOUT_DESC">
-					<option value="no">JNo</option>
-					<option value="yes">JYes</option>
+				<field name="pullout" type="list" default="yes" label="Highlight first entry" description="Highlight the first entry.">
+					<option value="no">no</option>
+					<option value="yes">Yes</option>
 				</field>
-				<field name="pulloutlimit" type="text" default="500" label="MOD_LATESTBLOG_PARAM_PULLOUTLIMIT_LABEL" description="MOD_LATESTBLOG_PARAM_PULLOUTLIMIT_DESC" />
-				<field name="charlimit" type="text" default="100" label="MOD_LATESTBLOG_PARAM_CHARLIMIT_LABEL" description="MOD_LATESTBLOG_PARAM_CHARLIMIT_DESC" />
-				<field name="blog" type="list" default="site" label="MOD_LATESTBLOG_PARAM_BLOG_LABEL" description="MOD_LATESTBLOG_PARAM_BLOG_DESC">
-					<option value="site">MOD_LATESTBLOG_PARAM_BLOG_SITE</option>
-					<option value="member">MOD_LATESTBLOG_PARAM_BLOG_MEMBER</option>
-					<option value="group">MOD_LATESTBLOG_PARAM_BLOG_GROUP</option>
-					<option value="both">MOD_LATESTBLOG_PARAM_BLOG_ALL</option>
+				<field name="pulloutlimit" type="text" default="500" label="Length of Pullout" description="Number of characters to display in post." />
+				<field name="details" type="list" default="1" label="Post Details" description="Display details such as author and published time?">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="preview" type="list" default="1" label="Post Preview" description="Display a preview or teaser of the post's text?">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="charlimit" type="text" default="100" label="Length of Post Preview" description="Number of characters to display in post." />
+				<field name="blog" type="list" default="site" label="Included Discussions From" description="Where the discussions are pulled from.">
+					<option value="site">Site Blog</option>
+					<option value="member">Member Blog</option>
+					<option value="group">Group Blog</option>
+					<option value="both">Site, Member, and Group Blogs</option>
 				</field>
 				<field type="spacer" />
-				<field name="morelink" type="text" default="" label="MOD_LATESTBLOG_PARAM_MORELINK_LABEL" description="MOD_LATESTBLOG_PARAM_MORELINK_DESC" />
-				<field name="feedlink" type="list" default="yes" label="MOD_LATESTBLOG_PARAM_FEEDLINK_LABEL" description="MOD_LATESTBLOG_PARAM_FEEDLINK_DESC">
-					<option value="no">JNo</option>
-					<option value="yes">JYes</option>
+				<field name="morelink" type="text" default="" label="More Link" description="More link address."  size="100" />
+				<field name="feedlink" type="list" default="yes" label="Feed Link" description="Include Feed Link">
+					<option value="no">no</option>
+					<option value="yes">Yes</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
-					<option value="0">JNo</option>
-					<option value="1">JYes</option>
+				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
 				</field>
-				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
 			</fieldset>
 		</fields>
 	</config>
