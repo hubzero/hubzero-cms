@@ -379,6 +379,7 @@ class Publications extends SiteController
 				$this->view->setError($error);
 			}
 		}
+
 		$this->view->display();
 		return;
 	}
@@ -540,7 +541,7 @@ class Publications extends SiteController
 		}
 
 		// Last public release
-		$lastPubRelease = $this->model->version->getLastPubRelease($this->model->publication->id);
+		$lastPubRelease = $this->model->lastPublicRelease();
 
 		// Is the visitor authorized to view this resource?
 		if (!$this->model->access('view'))

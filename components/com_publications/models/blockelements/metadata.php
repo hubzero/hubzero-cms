@@ -84,7 +84,7 @@ class Metadata extends Base
 		// Required value not filled?
 		if ($required && !$value)
 		{
-			$status->setError( Lang::txt('Please enter ' . $key) );
+			$status->setError( Lang::txt('Missing ' . $key) );
 		}
 		elseif (!$required && !$value)
 		{

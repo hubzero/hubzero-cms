@@ -47,6 +47,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'logs.php');
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'publication.php');
 include_once(JPATH_COMPONENT . DS . 'models' . DS . 'curation.php');
 require_once(JPATH_COMPONENT . DS . 'models' . DS . 'types.php');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'doi.php');
 
 require_once(__DIR__ . DS . 'helpers' . DS . 'usage.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'tags.php');

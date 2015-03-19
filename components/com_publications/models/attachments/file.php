@@ -628,6 +628,12 @@ class File extends Base
 			$copyFrom = $this->getFilePath($att->path, $att->id, $configs, $att->params);
 			$copyTo   = $this->getFilePath($pAttach->path, $pAttach->id, $newConfigs, $pAttach->params);
 
+			if (!is_file($copyFrom))
+			{
+				$pAttach->delete();
+				continue;
+			}
+
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
 			{

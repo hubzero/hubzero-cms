@@ -141,7 +141,6 @@ class Curation extends Object
 	/**
 	* Constructor
 	*
-	* @param      object  &$db      	 JDatabase
 	* @param      string  $manifest     Pup type manifest
 	* @return     void
 	*/

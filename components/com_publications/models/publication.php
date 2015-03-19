@@ -88,9 +88,15 @@ class Publication extends Object
 
 			// Load version
 			$this->version = new Tables\Version($this->_db);
+
+			// If non-existent version is requested, load default
+			if (!$this->version->checkVersion($oid, $version))
+			{
+				$version = 'default';
+			}
 			$this->version->loadVersion($this->publication->id, $version);
 
-			// Version label
+			// Version alternative label
 			$versionAlias = $this->version->main == 1
 				&& $this->version->state != 0 ? 'default' : $version;
 			$versionAlias = $this->version->state == 3 ? 'dev' : $version;
@@ -259,6 +265,21 @@ class Publication extends Object
 		}
 
 		return $this->_project;
+	}
+
+	/**
+	 * Get last public release
+	 *
+	 * @return     mixed
+	 */
+	public function lastPublicRelease()
+	{
+		if (!isset($this->_lastPublicRelease))
+		{
+			$this->_lastPublicRelease = $this->version->getLastPubRelease($this->version->publication_id);
+		}
+
+		return $this->_lastPublicRelease;
 	}
 
 	/**
