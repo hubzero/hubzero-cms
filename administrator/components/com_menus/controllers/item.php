@@ -190,7 +190,7 @@ class MenusControllerItem extends JControllerForm
 		{
 			 $data['link'] = str_replace(array('"', '>', '<'), '', $data['link']);
 
-			if (strstr($data['link'], ':'))
+			if (strstr($data['link'], ':') && substr($data['link'], 0, 1) != '/')
 			{
 				$segments = explode(':', $data['link']);
 				$protocol = strtolower($segments[0]);
