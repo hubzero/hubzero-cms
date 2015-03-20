@@ -89,10 +89,7 @@ class ResourceMapGenerator
 		$database = \JFactory::getDBO();
 		$pub = new \Components\Publications\Tables\Publication($database);
 		$publication = $pub->getPublication($this->id);
-		$this->resourceSite = JPATH_BASE . '/site/publications/' .
-				\Hubzero\Utility\String::pad($this->id) . DS .
-				\Hubzero\Utility\String::pad($publication->version_id) . DS .
-				$publication->secret . DS;
+		$this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath($this->id, $publication->version_id, '', $publication->secret, 1);
 	}
 
 	/**

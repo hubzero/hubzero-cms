@@ -619,7 +619,7 @@ class Html extends \JObject
 		}
 		if (!$config)
 		{
-			$config = \JComponentHelper::getParams('com_projects');
+			$config = Component::params('com_projects');
 		}
 		$path    = trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
 		$default = trim($config->get('masterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
@@ -647,7 +647,7 @@ class Html extends \JObject
 		}
 		if (!$config)
 		{
-			$config = \JComponentHelper::getParams('com_projects');
+			$config = Component::params('com_projects');
 		}
 
 		$src  = '';
@@ -1435,7 +1435,7 @@ class Html extends \JObject
 		}
 
 		// Get component config
-		$config = \JComponentHelper::getParams('com_projects');
+		$config = Component::params('com_projects');
 
 		// Build repo path
 		$path   = DS . trim($config->get('webpath'), DS) . DS . strtolower(trim($projectAlias));

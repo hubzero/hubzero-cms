@@ -335,7 +335,7 @@ class Note extends \Components\Wiki\Models\Book
 		}
 
 		// Load wiki configs
-		$wiki_config = \JComponentHelper::getParams( 'com_wiki' );
+		$wiki_config = Component::params( 'com_wiki' );
 
 		$path =  DS . trim($wiki_config->get('filepath', '/site/wiki'), DS) . DS . $id;
 

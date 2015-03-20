@@ -64,7 +64,7 @@ class Git extends \JObject
 	public function __construct($path = NULL)
 	{
 		// Get component configs
-		$configs = \JComponentHelper::getParams('com_projects');
+		$configs = Component::params('com_projects');
 
 		// Set path to git
 		$this->_gitpath = $configs->get('gitpath', '/opt/local/bin/git');

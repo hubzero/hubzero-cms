@@ -29,7 +29,7 @@ $delimiter = isset($this->delimiter) ? $this->delimiter : NULL;
 
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
-$config  = JComponentHelper::getParams( 'com_projects' );
+$config  = Component::params( 'com_projects' );
 
 $hubShortName = $jconfig->getValue('config.sitename');
 

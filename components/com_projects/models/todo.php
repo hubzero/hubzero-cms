@@ -81,7 +81,7 @@ class Todo extends Model
 
 		$this->_tbl = new \Components\Projects\Tables\Todo($this->_db);
 
-		$this->config = \JComponentHelper::getParams('com_projects');
+		$this->config = Component::params('com_projects');
 	}
 
 	/**

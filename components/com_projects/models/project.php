@@ -222,7 +222,7 @@ class Project extends Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \JComponentHelper::getParams('com_projects');
+			$this->_config = Component::params('com_projects');
 		}
 		if ($key)
 		{
