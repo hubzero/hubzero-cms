@@ -122,7 +122,7 @@ function submitbutton(pressbutton)
 					{
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
-					$owner = ($row->owned_by_group) ? $row->groupname.'<span class="block  prominent">'.$row->groupcn.'</span>' : $row->authorname;
+					$owner = ($row->owned_by_group) ? $row->groupname . ' <span class="block  prominent">' . $row->groupcn . '</span>' : $row->authorname;
 					$ownerclass = ($row->owned_by_group) ? '<span class="i_group">&nbsp;</span>' : '<span class="i_user">&nbsp;</span>';
 
 					// Determine status
@@ -161,7 +161,7 @@ function submitbutton(pressbutton)
 					<td><?php echo $row->id; ?></td>
 					<td><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
 					<td>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>"><?php echo stripslashes($row->title); ?></a><br />
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo stripslashes($row->title); ?></a><br />
 						<strong><?php echo stripslashes($row->alias); ?></strong>
 						<?php if ($tags) { ?>
 							<span class="project-tags block">

@@ -100,7 +100,7 @@ function submitbutton(pressbutton)
 	}
 }
 </script>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('COM_PROJECTS_BASIC_INFO'); ?></span></legend>
@@ -269,14 +269,14 @@ function submitbutton(pressbutton)
 					</div>
 				<?php } ?>
 				<div class="input-wrap">
-					<?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="index.php?option=com_projects&amp;task=gitgc&amp;id=<?php echo $this->obj->id; ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
+					<?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->obj->id); ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
 				</div>
 
 				<?php if ($cEnabled) { ?>
 					<div class="input-wrap">
 						<?php echo Lang::txt('COM_PROJECTS_CONNECTIONS'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
 						<?php if ($connected) { ?>
-							<a href="index.php?option=com_projects&amp;task=fixsync&amp;id=<?php echo $this->obj->id; ?>"><?php echo Lang::txt('download sync log'); ?></a> &nbsp; [<?php echo Lang::txt('Also fixes stalled sync'); ?>]
+							<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fixsync&id=' . $this->obj->id); ?>"><?php echo Lang::txt('download sync log'); ?></a> &nbsp; [<?php echo Lang::txt('Also fixes stalled sync'); ?>]
 						<?php } ?>
 					</div>
 				<?php } ?>
@@ -398,7 +398,7 @@ function submitbutton(pressbutton)
 	<div class="clr"></div>
 
 	<div class="width-100">
-		<p class="notice"><a href="index.php?option=com_projects&amp;task=erase&amp;id=<?php echo $this->obj->id; ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
+		<p class="notice"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->obj->id); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
 	</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->obj->id; ?>" />

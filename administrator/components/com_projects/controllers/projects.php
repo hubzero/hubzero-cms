@@ -242,7 +242,7 @@ class Projects extends AdminController
 		{
 			if (!$obj->loadProject($id))
 			{
-				$this->setRedirect('index.php?option=' . $this->_option,
+				$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 					'error');
 				return;
@@ -250,7 +250,7 @@ class Projects extends AdminController
 		}
 		if (!$id)
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'),
 				'error');
 			return;
@@ -503,11 +503,11 @@ class Projects extends AdminController
 		// Redirect to edit view?
 		if ($redirect)
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option . '&task=edit&id=' . $id;
+			$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false);
 		}
 		else
 		{
-			$this->_redirect = 'index.php?option=' . $this->_option;
+			$this->_redirect = Route::url('index.php?option=' . $this->_option, false);
 		}
 	}
 
@@ -549,7 +549,7 @@ class Projects extends AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			Route::url('index.php?option=' . $this->_option, false)
 		);
 	}
 
@@ -568,7 +568,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -682,7 +682,7 @@ class Projects extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option='.$this->_option,
+			Route::url('index.php?option='.$this->_option, false),
 			Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' ('.$alias.') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED')
 		);
 	}
@@ -703,14 +703,14 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error'
 			);
 			return;
 		}
 
-		$url = 'index.php?option=' . $this->_option . '&task=edit&id=' . $id;
+		$url = Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false);
 
 		if (!$file)
 		{
@@ -747,7 +747,7 @@ class Projects extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&task=edit&id=' . $id,
+			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('File checked into project Git repo')
 		);
 	}
@@ -765,7 +765,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project($this->database);
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -780,7 +780,7 @@ class Projects extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option='.$this->_option.'&task=edit&id='.$id,
+			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('Git repo optimized')
 		);
 	}
@@ -799,7 +799,7 @@ class Projects extends AdminController
 		$obj = new Tables\Project( $this->database );
 		if (!$id or !$obj->loadProject($id))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option,
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
 				'error');
 			return;
@@ -826,7 +826,7 @@ class Projects extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option='.$this->_option.'&task=edit&id='.$id,
+			Route::url('index.php?option=' . $this->_option . '&task=edit&id=' . $id, false),
 			Lang::txt('Sync log unavailable')
 		);
 	}
