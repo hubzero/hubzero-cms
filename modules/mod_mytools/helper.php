@@ -175,7 +175,7 @@ class Helper extends Module
 					//$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
 
 					//are we on the iPad
-					$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
+					/*$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 					//get tool params
 					$params = JComponentHelper::getParams('com_tools');
@@ -187,9 +187,9 @@ class Helper extends Module
 						$url = 'nanohub://tools/invoke/' . $tool->toolname . '/' . $tool->revision;
 					}
 					else
-					{
+					{*/
 						$url = JRoute::_('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
-					}
+					//}
 
 					$cls = '';
 					// Build the HTML
