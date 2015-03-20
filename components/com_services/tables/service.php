@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Services\Tables;
 
 /**
  * Table class for services
  */
-class Service extends JTable
+class Service extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,14 +56,17 @@ class Service extends JTable
 		$this->alias = trim($this->alias);
 		if ($this->alias == '')
 		{
-			$this->setError(JText::_('Entry must have an alias.'));
-			return false;
+			$this->setError(Lang::txt('Entry must have an alias.'));
 		}
 
 		$this->category = trim($this->category);
 		if ($this->category == '')
 		{
-			$this->setError(JText::_('Entry must have a category.'));
+			$this->setError(Lang::txt('Entry must have a category.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -118,7 +120,7 @@ class Service extends JTable
 		// do we have special admin group
 		if ($specialgroup)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 
 			$query .= "JOIN #__xgroups AS xg ON xg.cn=" . $this->_db->quote($specialgroup) . " ";
 			$query .= " LEFT JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND m.uidNumber=" . $this->_db->quote($juser->get('id')) . " ";

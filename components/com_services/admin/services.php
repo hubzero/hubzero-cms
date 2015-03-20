@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,44 +24,41 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Services\Admin;
 
-$option = 'com_services';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_services'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
-require_once(__DIR__ . DS . 'tables' . DS . 'service.php');
-require_once(__DIR__ . DS . 'tables' . DS . 'subscription.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'service.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'subscription.php');
 
-$controllerName = JRequest::getCmd('controller', 'services');
+$controllerName = \JRequest::getCmd('controller', 'services');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'services';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_SERVICES_SERVICES'),
-	JRoute::_('index.php?option=com_services&controller=services'),
+\JSubMenuHelper::addEntry(
+	\Lang::txt('COM_SERVICES_SERVICES'),
+	\Route::url('index.php?option=com_services&controller=services'),
 	$controllerName == 'services'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SERVICES_SUBSCRIPTIONS'),
-	JRoute::_('index.php?option=com_services&controller=subscriptions'),
+\JSubMenuHelper::addEntry(
+	\Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
+	\Route::url('index.php?option=com_services&controller=subscriptions'),
 	$controllerName == 'subscriptions'
 );
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'ServicesController' . ucfirst($controllerName);
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Services\Admin\Controllers;
+
+use Components\Services\Tables\Service;
+use Hubzero\Component\AdminController;
 
 /**
  * Controller class for services
  */
-class ServicesControllerServices extends \Hubzero\Component\AdminController
+class Services extends AdminController
 {
 	/**
 	 * Execute a task
@@ -57,8 +59,8 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
 			// Get paging variables
@@ -93,14 +95,6 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 
 		$this->view->total = ($this->view->rows) ? count($this->view->rows) : 0;
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -118,42 +112,42 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	 */
 	protected function setupServices()
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$objS = new Service($database);
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		$default1 = array(
 			'id' => 0,
-			'title' => JText::_('COM_SERVICES_BASIC_SERVICE_TITLE'),
-			'category' => strtolower(JText::_('COM_SERVICES_JOBS')),
+			'title' => Lang::txt('COM_SERVICES_BASIC_SERVICE_TITLE'),
+			'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
 			'alias' => 'employer_basic',
 			'status' => 1,
-			'description' => JText::_('COM_SERVICES_BASIC_SERVICE_DESC'),
+			'description' => Lang::txt('COM_SERVICES_BASIC_SERVICE_DESC'),
 			'unitprice' => '0.00',
 			'pointprice' => 0,
 			'currency' => '$',
 			'maxunits' => 6,
 			'minunits' => 1,
 			'unitsize' => 1,
-			'unitmeasure' => strtolower(JText::_('month')),
+			'unitmeasure' => strtolower(Lang::txt('month')),
 			'changed' => $now,
-			'params' => "promo=" . JText::_('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
+			'params' => "promo=" . Lang::txt('COM_SERVICES_BASIC_SERVICE_PROMO') . "\npromomaxunits=3\nmaxads=1"
 		);
 		$default2 = array(
 			'id' => 0,
-			'title' => JText::_('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
-			'category' => strtolower(JText::_('COM_SERVICES_JOBS')),
+			'title' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_TITLE'),
+			'category' => strtolower(Lang::txt('COM_SERVICES_JOBS')),
 			'alias' => 'employer_premium',
 			'status' => 0,
-			'description' => JText::_('COM_SERVICES_PREMIUM_SERVICE_DESC'),
+			'description' => Lang::txt('COM_SERVICES_PREMIUM_SERVICE_DESC'),
 			'unitprice' => '500.00',
 			'pointprice' => 0,
 			'currency' => '$',
 			'maxunits' => 6,
 			'minunits' => 1,
 			'unitsize' => 1,
-			'unitmeasure' => strtolower(JText::_('month')),
+			'unitmeasure' => strtolower(Lang::txt('month')),
 			'changed' => $now,
 			'params' => "promo=\npromomaxunits=\nmaxads=3"
 		);
@@ -188,11 +182,11 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -225,10 +219,10 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -257,7 +251,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		}
 
 		$this->setMessage(
-			JText::_('COM_SERVICES_SAVED'),
+			Lang::txt('COM_SERVICES_SAVED'),
 			'message'
 		);
 
@@ -268,20 +262,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

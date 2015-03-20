@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Services\Tables;
 
 /**
  * Table class for service subscription
  */
-class Subscription extends JTable
+class Subscription extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,13 +55,16 @@ class Subscription extends JTable
 	{
 		if (!$this->uid)
 		{
-			$this->setError(JText::_('Entry must have a user ID.'));
-			return false;
+			$this->setError(Lang::txt('Entry must have a user ID.'));
 		}
 
 		if (!$this->serviceid)
 		{
-			$this->setError(JText::_('Entry must have a service ID.'));
+			$this->setError(Lang::txt('Entry must have a service ID.'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
@@ -290,11 +292,11 @@ class Subscription extends JTable
 		$limits    = array();
 		$starttime = $subscription->added;
 		$lastunit  = 0;
-		$today     = JFactory::getDate(time() - (24 * 60 * 60))->toSql();
+		$today     = \JFactory::getDate(time() - (24 * 60 * 60))->toSql();
 
 		for ($i = 0; $i < $maxunits; $i++)
 		{
-			$starttime = JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->format('Y-m-d');
+			$starttime = \JFactory::getDate(strtotime("+".$unitsize."month", strtotime($starttime)))->format('Y-m-d');
 			$limits[$i] = $starttime;
 		}
 
