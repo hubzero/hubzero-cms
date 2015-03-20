@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cpanel\Controllers;
+namespace Components\Cpanel\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 

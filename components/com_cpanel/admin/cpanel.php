@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cpanel;
+namespace Components\Cpanel\Admin;
 
 // No access check.
 require_once(__DIR__ . DS . 'controllers' . DS . 'cpanel.php');

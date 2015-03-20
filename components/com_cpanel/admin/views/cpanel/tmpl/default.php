@@ -32,7 +32,7 @@
 defined('_JEXEC') or die;
 
 // Set toolbar items for the page
-JToolBarHelper::title(JText::_('COM_CPANEL'), 'cpanel.png');
+JToolBarHelper::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
 JToolBarHelper::help('cpanel');
 
 echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
@@ -54,7 +54,7 @@ foreach ($this->modules as $module)
 	}
 	else
 	{
-		echo JHtml::_('sliders.panel', JText::_('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
+		echo JHtml::_('sliders.panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
 	}
 	echo $output;
 }
