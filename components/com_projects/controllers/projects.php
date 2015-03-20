@@ -309,7 +309,7 @@ class Projects extends Base
 		);
 
 		// Initiate paging
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
