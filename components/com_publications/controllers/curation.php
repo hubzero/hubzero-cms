@@ -625,39 +625,18 @@ class Curation extends SiteController
 		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
 		$vid 	= \JRequest::getInt('vid', 0);
 
-		// Include utilities
-		require_once(PATH_ROOT . DS. 'administrator' . DS . 'components' . DS
-		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		// Load publication model
+		$this->model  = new \Components\Publications\Models\Publication( $pid, '', $vid);
 
-		// Load publication & version classes
-		$objP  = new Tables\Publication( $this->database );
-		$row   = new Tables\Version( $this->database );
-		$mt    = new Tables\MasterType( $this->database );
-
-		// Load version
-		if (!$row->load($vid) || $row->publication_id != $pid)
+		if (!$this->model->exists()
+			|| $this->model->version->publication_id != $this->model->publication->id)
 		{
-			\JError::raiseError( 404, Lang::txt('Error loading version') );
+			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
 			return;
 		}
-
-		// Instantiate project publication
-		$pub = $objP->getPublication($pid, $row->version_number);
-
-		if (!$pub)
-		{
-			\JError::raiseError( 404, Lang::txt('Error loading publication') );
-			return;
-		}
-
-		$pub->_project 	= new \Components\Projects\Tables\Project( $this->database );
-		$pub->_project->load($pub->project_id);
-		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
-
-		if (!$authorized)
+		if (!$this->model->access('curator'))
 		{
 			if ($this->juser->get('guest'))
 			{
@@ -669,67 +648,48 @@ class Curation extends SiteController
 			return;
 		}
 
-		$row->state    		= 1; // published
-		$row->accepted 		= \JFactory::getDate()->toSql();
-		$row->reviewed 		= \JFactory::getDate()->toSql();
-		$row->reviewed_by 	= $this->juser->get('id');
+		$this->model->version->state       = 1; // published
+		$this->model->version->accepted    = \JFactory::getDate()->toSql();
+		$this->model->version->reviewed    = \JFactory::getDate()->toSql();
+		$this->model->version->reviewed_by = $this->juser->get('id');
 
 		// Archive (mkAIP) if no grace period and not previously archived
 		if (!$this->getError() && !$this->config->get('graceperiod', 0)
-			&& $row->doi && PublicationUtilities::mkAip($row)
-			&& (!$row->archived || $row->archived == '0000-00-00 00:00:00')
+			&& $this->model->version->doi && \Components\Publications\Helpers\Utilities::mkAip($this->model->version)
+			&& (!$this->model->version->archived
+			|| $this->model->version->archived == '0000-00-00 00:00:00')
 		)
 		{
-			$row->archived = \JFactory::getDate()->toSql();
+			$this->model->version->archived = \JFactory::getDate()->toSql();
 		}
 
-		// Get manifest from either version record (published) or master type
-		$manifest   = $pub->curation
-					? $pub->curation
-					: $pub->_type->curation;
-
-		// Get curation model
-		$pub->_curationModel = new Models\Curation($manifest);
+		// Set curation
+		$this->model->setCuration();
 
 		// Store curation manifest
-		$row->curation = json_encode($pub->_curationModel->_manifest);
+		$this->model->version->curation = json_encode($this->model->_curationModel->_manifest);
 
-		if (!$row->store())
+		if (!$this->model->version->store())
 		{
 			\JError::raiseError( 403, Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
 			return;
 		}
 
-		// Update DOI record if DOI provisioned locally
-		$shoulder  = $this->config->get('doi_shoulder');
-		if ($row->doi && $shoulder && preg_match("/" . $shoulder . "/", $row->doi))
+		// Get DOI service
+		$doiService = new \Components\Publications\Models\Doi($this->model);
+		if ($this->model->version->doi)
 		{
-			// Collect DOI metadata
-			$metadata = PublicationUtilities::collectMetadata($pub);
-			$doierr   = NULL;
-
-			// Get authors
-			$pAuthors 			= new Tables\Author( $this->database );
-			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
-
-			// Update DOI with latest information
-			if (!PublicationUtilities::updateDoi($row->doi, $row,
-				$pub->_authors, $this->config, $metadata, $doierr))
-			{
-				$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
-			}
+			$doiService->update($this->model->version->doi, true);
 		}
 
 		// Mark as curated
-		$row->saveParam($row->id, 'curated', 1);
-
-		// Set pub assoc and load curation
-		$pub->_curationModel->setPubAssoc($pub);
+		$this->model->version->saveParam($this->model->version->id, 'curated', 1);
 
 		// On after status change
-		$this->onAfterStatusChange( $pub, $row->state );
+		$this->onAfterStatusChange( $this->model, $this->model->version->state );
 
-		$message = $this->getError() ? $this->getError() : Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
+		$message = $this->getError() ? $this->getError()
+			: Lang::txt('COM_PUBLICATIONS_CURATION_SUCCESS_APPROVED');
 		$class   = $this->getError() ? 'error' : 'success';
 
 		// Redirect to main listing

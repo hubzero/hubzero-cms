@@ -64,21 +64,13 @@ class Reports extends Base
 		$this->_buildTitle();
 		$this->view->title = $this->title;
 
-		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
-		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+			.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
-			$objStats = new Tables\Stats($this->database);
+		$objStats = new Tables\Stats($this->database);
 
-			$monthly = $objStats->monthlyStats(2, true);
-			$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
-		}
-		else
-		{
-			$this->view->monthly = NULL;
-		}
+		$monthly = $objStats->monthlyStats(2, true);
+		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
 
 		// Output HTML
 		$this->view->task 		= $this->_task;

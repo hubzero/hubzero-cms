@@ -88,7 +88,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 		$revertAllowed = 0;
 	}
 }
-$allowArchive = PublicationUtilities::archiveOn();
+$allowArchive = \Components\Publications\Helpers\Utilities::archiveOn();
 
 $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:00:00' ? JFactory::getDate($this->pub->accepted . '+1 month')->toSql() : NULL;
 

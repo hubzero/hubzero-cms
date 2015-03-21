@@ -34,9 +34,47 @@ use Hubzero\Base\Object;
 use Components\Publications\Helpers;
 use Components\Publications\Tables;
 
-require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+// Include table classes
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'publication.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'version.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'access.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'audience.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'author.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'license.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'category.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'master.type.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'attachment.php');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
+// Projects
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_projects' . DS . 'tables' . DS . 'project.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'. DS
+	. 'helpers' . DS . 'html.php');
+
+// Common models
+require_once(__DIR__ . DS . 'curation.php');
+require_once(__DIR__ . DS . 'types.php');
+require_once(__DIR__ . DS . 'doi.php');
+
+// Helpers
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php');
 
 /**
  * Information retrieval for items/info linked to a publication
@@ -67,11 +105,13 @@ class Publication extends Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
+	 * @param      integer $oid  Publication ID or alias
+	 * @param      string  $version  Publication version number or alias (dev/default)
+	 * @param      integer $vid  Publication version ID
 	 * @param      object  &$db JDatabase
 	 * @return     void
 	 */
-	public function __construct($oid, $version = 'default')
+	public function __construct($oid, $version = 'default', $vid = NULL)
 	{
 		$this->_db = \JFactory::getDBO();
 
@@ -79,6 +119,7 @@ class Publication extends Object
 		{
 			// Temp as we are converting to models
 			$this->version = $oid;
+			$this->publication = NULL;
 		}
 		else
 		{
@@ -88,13 +129,14 @@ class Publication extends Object
 
 			// Load version
 			$this->version = new Tables\Version($this->_db);
-
-			// If non-existent version is requested, load default
-			if (!$this->version->checkVersion($oid, $version))
+			if (intval($vid))
 			{
-				$version = 'default';
+				$this->version->load($vid);
 			}
-			$this->version->loadVersion($this->publication->id, $version);
+			else
+			{
+				$this->version->loadVersion($this->publication->id, $version);
+			}
 
 			// Version alternative label
 			$versionAlias = $this->version->main == 1
@@ -115,7 +157,11 @@ class Publication extends Object
 			$this->id                = $this->publication->id;
 			$this->base 	         = $this->_type->alias;
 			$this->curatorgroup      = $this->_type->curatorgroup;
-			$this->dev_version_label = $this->version->getAttribute($this->publication->id, 'dev', 'version_label');
+			$this->dev_version_label = $this->version->getAttribute(
+				$this->publication->id,
+				'dev',
+				'version_label'
+			);
 
 			// Map master values
 			foreach ($this->publication as $field => $value)
@@ -212,7 +258,22 @@ class Publication extends Object
 	}
 
 	/**
-	 * Check if the instance exists
+	 * Check if the publication exists
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	public function masterExists()
+	{
+		if (empty($this->publication) || !$this->publication->id)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Check if the version exists
 	 *
 	 * @param      mixed $idx Index value
 	 * @return     array
@@ -276,7 +337,8 @@ class Publication extends Object
 	{
 		if (!isset($this->_lastPublicRelease))
 		{
-			$this->_lastPublicRelease = $this->version->getLastPubRelease($this->version->publication_id);
+			$pid = empty($this->publication->id) ? $this->version->publication_id : $this->publication->id;
+			$this->_lastPublicRelease = $this->version->getLastPubRelease($pid);
 		}
 
 		return $this->_lastPublicRelease;
@@ -660,6 +722,9 @@ class Publication extends Object
 			$this->params->set('access-delete-publication', true);
 			$this->params->set('access-edit-publication', true);
 			$this->params->set('access-edit-state-publication', true);
+
+			// May curate
+			$this->params->set('access-curator-publication', true);
 		}
 
 		// Get user groups

@@ -87,10 +87,7 @@ class plgCronProjects extends JPlugin
 
 		$period = 'alltime';
 
-		$publishing =
-			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php')
-			&& JPluginHelper::isEnabled('projects', 'publications')
-			? 1 : 0;
+		$publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');

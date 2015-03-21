@@ -30,32 +30,14 @@
 
 namespace Components\Publications;
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'access.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.level.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'master.type.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'logs.php');
+// Include publication model
+include_once(__DIR__ . DS . 'models' . DS . 'publication.php');
 
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'publication.php');
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'curation.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'types.php');
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'doi.php');
+require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+	.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 require_once(__DIR__ . DS . 'helpers' . DS . 'usage.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'tags.php');
-require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'resourceMapGenerator.php');
-
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables'. DS . 'project.owner.php');
 
 $controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'publications'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

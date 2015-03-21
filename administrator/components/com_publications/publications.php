@@ -28,81 +28,54 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Publications;
 
-$option = JRequest::getCmd('option', 'com_publications');
-$task = JRequest::getWord('task', '');
+$option = \JRequest::getCmd('option','com_publications');
+$task = \JRequest::getWord('task', '');
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_publications'))
 {
-	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'access.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.level.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'master.type.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
-
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'publication.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'curation.php');
-
-// Projects
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-	. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-	. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'. DS
-	. 'helpers' . DS . 'html.php');
-
-$controllerName = JRequest::getCmd('controller', 'items');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+// get controller name
+$controllerName = \JRequest::getCmd('controller', 'items');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'items';
 }
 
-JSubMenuHelper::addEntry(
+\JSubMenuHelper::addEntry(
 	Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'),
 	'index.php?option=' .  $option . '&controller=items',
 	$controllerName == 'items'
 );
-
-JSubMenuHelper::addEntry(
+\JSubMenuHelper::addEntry(
 	Lang::txt('COM_PUBLICATIONS_LICENSES'),
 	'index.php?option=' .  $option . '&controller=licenses',
 	$controllerName == 'licenses'
 );
-JSubMenuHelper::addEntry(
+\JSubMenuHelper::addEntry(
 	Lang::txt('COM_PUBLICATIONS_CATEGORIES'),
 	'index.php?option=' .  $option . '&controller=categories',
 	$controllerName == 'categories'
 );
-JSubMenuHelper::addEntry(
+\JSubMenuHelper::addEntry(
 	Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'),
 	'index.php?option=' .  $option . '&controller=types',
 	$controllerName == 'types'
 );
-JSubMenuHelper::addEntry(
+\JSubMenuHelper::addEntry(
 	Lang::txt('COM_PUBLICATIONS_BATCH_CREATE'),
 	'index.php?option=' .  $option . '&controller=batchcreate',
 	$controllerName == 'batchcreate'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'PublicationsController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

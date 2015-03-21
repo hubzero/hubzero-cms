@@ -25,11 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$publishing =
-	is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-		.'com_publications' . DS . 'tables' . DS . 'publication.php')
-	&& JPluginHelper::isEnabled('projects', 'publications')
-	? 1 : 0;
+$publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 if (!$publishing)
 {

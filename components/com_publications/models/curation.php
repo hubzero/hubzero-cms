@@ -37,11 +37,11 @@ use stdClass;
 use ZipArchive;
 
 // Include building blocks
-include_once(dirname(__FILE__) . DS . 'blocks.php');
-include_once(dirname(__FILE__) . DS . 'status.php');
-include_once(dirname(__FILE__) . DS . 'attachments.php');
-include_once(dirname(__FILE__) . DS . 'blockelements.php');
-include_once(dirname(__FILE__) . DS . 'handlers.php');
+include_once(__DIR__ . DS . 'blocks.php');
+include_once(__DIR__ . DS . 'status.php');
+include_once(__DIR__ . DS . 'attachments.php');
+include_once(__DIR__ . DS . 'blockelements.php');
+include_once(__DIR__ . DS . 'handlers.php');
 
 // Include tables
 include_once(PATH_CORE . DS . 'administrator' . DS . 'components'

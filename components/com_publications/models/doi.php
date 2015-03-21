@@ -27,6 +27,8 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Object;
 use stdClass;
 
+include_once(__DIR__ . DS . 'publication.php');
+
 /**
  * Publication doi model class
  */
@@ -62,9 +64,6 @@ class Doi extends Object
 
 		// Set configs
 		$this->configs();
-
-		// Default metadata
-		$this->setDefaults();
 
 		// Map to DOI fields
 		$this->mapPublication( $pub );
@@ -195,7 +194,10 @@ class Doi extends Object
 		{
 			return false;
 		}
+		// Clear out any previously set values
+		$this->reset();
 
+		$this->set('doi', $pub->version->doi);
 		$this->set('title', htmlspecialchars($pub->version->title));
 		$this->set('version', htmlspecialchars($pub->version->version_label));
 		$this->set('abstract', htmlspecialchars($pub->version->abstract));
@@ -299,6 +301,26 @@ class Doi extends Object
 	}
 
 	/**
+	 * Reset custom values
+	 *
+	 * @return  void
+	 */
+	public function reset()
+	{
+		$this->set('url', '');
+		$this->set('title', '');
+		$this->set('abstract', '');
+		$this->set('license', '');
+		$this->set('version', '');
+		$this->set('relatedDoi', '');
+		$this->set('contributor', '');
+		$this->set('creator', '');
+		$this->set('creatorOrcid', '');
+		$this->set('authors', array());
+		$this->setDefaults();
+	}
+
+	/**
 	 * Check if required fields are set
 	 *
 	 * @return     boolean
@@ -378,7 +400,7 @@ class Doi extends Object
 			if ($handle)
 			{
 				// Return DOI
-				return $this->_configs->shoulder . DS . $handle;
+				return strtoupper($this->_configs->shoulder . DS . $handle);
 			}
 		}
 		else
@@ -460,6 +482,12 @@ class Doi extends Object
 		if (!$this->on())
 		{
 			$this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_DOI_NO_SERVICE'));
+			return false;
+		}
+
+		// Check that we are trying to update a DOI issued by the hub
+		if (!preg_match("/" . $this->_configs->shoulder . "/", $doi))
+		{
 			return false;
 		}
 

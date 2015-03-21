@@ -98,9 +98,11 @@ class plgCronPublications extends JPlugin
 		$lang->load('com_publications', JPATH_BASE);
 
 		// Is logging enabled?
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php'))
+		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS. 'components'
+				. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 		}
 		else
 		{
@@ -109,8 +111,10 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Helpers
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members'
+			. DS . 'helpers' . DS . 'imghandler.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS . 'com_publications'
+			. DS . 'helpers' . DS . 'html.php');
 
 		// Get all registered authors who subscribed to email
 		$query  = "SELECT A.user_id, P.picture ";
@@ -232,14 +236,17 @@ class plgCronPublications extends JPlugin
 	public function rollUserStats(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
-		$pconfig = JComponentHelper::getParams('com_publications');
+		$pconfig  = Component::params('com_publications');
 
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'models' . DS . 'log.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications'
+			. DS . 'models' . DS . 'log.php');
 
 		// Get log model
 		$modelLog = new \Components\Publications\Models\Log();
@@ -276,14 +283,15 @@ class plgCronPublications extends JPlugin
 		$config = JComponentHelper::getParams('com_publications');
 		$jconfig = JFactory::getConfig();
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+		require_once(JPATH_ROOT . DS . 'components'. DS
 			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS
 			. 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Check that mkAIP script exists
-		if (!PublicationUtilities::archiveOn())
+		if (!\Components\Publications\Helpers\Utilities::archiveOn())
 		{
 			return;
 		}
@@ -356,7 +364,7 @@ class plgCronPublications extends JPlugin
 			}
 
 			// Run mkAIP and save archived date
-			if (PublicationUtilities::mkAip($row))
+			if (\Components\Publications\Helpers\Utilities::mkAip($row))
 			{
 				$pv->archived = JFactory::getDate()->toSql();
 				$pv->store();
@@ -414,9 +422,7 @@ class plgCronPublications extends JPlugin
 	public function issueMasterDoi(\Components\Cron\Models\Job $job)
 	{
 		$database = \JFactory::getDBO();
-		$config   = \JComponentHelper::getParams('com_publications');
-		$jconfig  = \JFactory::getConfig();
-		$juri     = \JURI::getInstance();
+		$config   = Component::params('com_publications');
 
 		// Is config to issue master DOI turned ON?
 		if (!$config->get('master_doi'))
@@ -427,7 +433,7 @@ class plgCronPublications extends JPlugin
 		// Get all publications without master DOI
 		$sql  = "SELECT V.* FROM #__publication_versions as V, #__publications as C";
 		$sql .= " WHERE C.id=V.publication_id AND (C.master_doi IS NULL OR master_doi=0)";
-		$sql .= " AND V.state=1 GROUP BY C.id";
+		$sql .= " AND V.state=1 GROUP BY C.id ORDER BY V.version_number ASC";
 
 		$database->setQuery( $sql );
 		if (!($rows = $database->loadObjectList()))
@@ -436,72 +442,49 @@ class plgCronPublications extends JPlugin
 			return true;
 		}
 
-		// Get site url
-		$livesite = $jconfig->getValue('config.live_site')
-			? $jconfig->getValue('config.live_site')
-			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite)
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+			. DS . 'models' . DS . 'publication.php');
+
+		// Get DOI service
+		$doiService = new \Components\Publications\Models\Doi();
+
+		// Is service enabled?
+		if (!$doiService->on() || !$doiService->_configs->livesite)
 		{
 			return true;
 		}
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'category.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'license.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS .'com_publications' . DS . 'tables' . DS . 'author.php');
-
 		// Go through records
 		foreach ($rows as $row)
 		{
-			$objP  = new \Components\Publications\Tables\Publication( $database );
+			// Load publication model
+			$model  = new \Components\Publications\Models\Publication( $row->publication_id, $row->id);
 
-			// Get first published version
-			$pub = $objP->getPublication($row->publication_id, 1);
-
-			if (!$pub)
+			// Check to make sure we got result
+			if (!$model->exists())
 			{
 				continue;
 			}
 
-			// Get authors
-			$pAuthors 			= new \Components\Publications\Tables\Author( $database );
-			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
+			// Map publication
+			$doiService->mapPublication($model);
 
-			// Collect DOI metadata
-			$metadata = PublicationUtilities::collectMetadata($pub);
-			$pointer = $pub->alias ? $pub->alias : $pub->id;
+			// Build url
+			$pointer = $model->publication->alias ? $model->publication->alias : $model->publication->id;
+			$url = $doiService->_configs->livesite . DS . 'publications'
+							. DS . $pointer . DS . 'main';
 
 			// Master DOI should link to /main
-			$metadata['url'] = $livesite . DS . 'publications'
-							. DS . $pointer . DS . 'main';
-			$metadata['pubYear'] = $row->published_up && $row->published_up != '0000-00-00 00:00:00'
-				? date( 'Y', strtotime($row->published_up)) : date( 'Y' );
+			$doiService->set('url', $url);
 
-			// Register DOI with data from version being published
-			$masterDoi = PublicationUtilities::registerDoi(
-				$pub,
-				$pub->_authors,
-				$config,
-				$metadata,
-				$doierr,
-				1
-			);
+			// Register DOI
+			$masterDoi = $doiService->register();
 
 			// Save with publication record
-			if ($masterDoi && $objP->load($pub->id))
+			if ($masterDoi)
 			{
-				$objP->master_doi = $masterDoi;
-				$objP->store();
+				$model->publication->master_doi = strtoupper($masterDoi);
+				$model->publication->store();
 			}
 		}
 

@@ -96,7 +96,6 @@
 			<filename>tables/project.comment.php</filename>
 			<filename>tables/project.microblog.php</filename>
 			<filename>tables/project.owner.php</filename>
-			<filename>tables/project.publication.php</filename>
 			<filename>tables/project.todo.php</filename>
 			<filename>tables/project.type.php</filename>
 			<filename>tables/project.wiki.php</filename>

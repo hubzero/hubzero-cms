@@ -585,7 +585,7 @@ class Log extends \JTable
 		$pastThreeYear 	= intval(\JFactory::getDate(strtotime("-3 month"))->format('y'));
 		$pastThreeMonth = intval(\JFactory::getDate(strtotime("-3 month"))->format('m'));
 
-		$dthis 			= JFactory::getDate()->format('Y') . '-' . JFactory::getDate()->format('m');
+		$dthis 			= \JFactory::getDate()->format('Y') . '-' . \JFactory::getDate()->format('m');
 
 		$query  = "SELECT V.id as publication_version_id, V.publication_id, V.title, V.version_label,
 					V.version_number, V.doi, V.published_up,

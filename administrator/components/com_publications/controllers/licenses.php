@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Publications\Tables;
 
 /**
  * Manage publication licenses
  */
-class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
+class Licenses extends AdminController
 {
 	/**
 	 * List resource types
@@ -44,8 +46,8 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array();
@@ -78,7 +80,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		));
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
@@ -93,7 +95,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 
 		// initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -134,7 +136,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -156,7 +158,7 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		}
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option
 			. DS . 'assets' . DS . 'css' . DS . 'publications.css');
 
@@ -182,9 +184,9 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
@@ -199,10 +201,10 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$row->customizable 	= JRequest::getInt('customizable', 0, 'post');
-		$row->agreement 	= JRequest::getInt('agreement', 0, 'post');
-		$row->apps_only 	= JRequest::getInt('apps_only', 0, 'post');
-		$row->active 		= JRequest::getInt('active', 0, 'post');
+		$row->customizable 	= \JRequest::getInt('customizable', 0, 'post');
+		$row->agreement 	= \JRequest::getInt('agreement', 0, 'post');
+		$row->apps_only 	= \JRequest::getInt('apps_only', 0, 'post');
+		$row->active 		= \JRequest::getInt('active', 0, 'post');
 		$row->icon			= $row->icon ? $row->icon : '/components/com_publications/images/logos/license.gif';
 
 		if (!$row->id)
@@ -265,10 +267,10 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
+		$id = \JRequest::getVar('id', array(0), '', 'array');
 
 		// Load row
 		$row = new \Components\Publications\Tables\License($this->database);
@@ -291,10 +293,10 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	public function makedefaultTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
+		$id = \JRequest::getVar('id', array(0), '', 'array');
 
 		if (count($id) > 1)
 		{
@@ -345,10 +347,10 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	public function changestatusTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0), '', 'array');
+		$ids = \JRequest::getVar('id', array(0), '', 'array');
 
 		// Initialize
 		$row = new \Components\Publications\Tables\License($this->database);

@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Publications\Tables;
+use stdClass;
 
 /**
  * Manage publication master types
  */
-class PublicationsControllerTypes extends \Hubzero\Component\AdminController
+class Types extends AdminController
 {
 	/**
 	 * List types
@@ -44,8 +47,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app 	= JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app 	= \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array();
@@ -80,7 +83,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->filters['state'] = 'all';
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
@@ -95,7 +98,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -132,7 +135,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function addblockTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -170,7 +173,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 		$document->addScript('components' . DS . $this->_option . DS . 'assets'
@@ -188,12 +191,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function saveblockTask($redirect = false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = JRequest::getInt('id', 0);
-		$newblock = JRequest::getVar('newblock', '');
-		$before   = JRequest::getInt('before', 1);
+		$id       = \JRequest::getInt('id', 0);
+		$newblock = \JRequest::getVar('newblock', '');
+		$before   = \JRequest::getInt('before', 1);
 
 		$row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -297,7 +300,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function advancedTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -326,7 +329,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 		$document->addScript('components' . DS . $this->_option . DS . 'assets'
@@ -344,8 +347,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function saveadvancedTask()
 	{
 		// Incoming
-		$id 		= JRequest::getInt('id', 0);
-		$curation 	= JRequest::getVar('curation', '', 'post', 'none', 2);
+		$id 		= \JRequest::getInt('id', 0);
+		$curation 	= \JRequest::getVar('curation', '', 'post', 'none', 2);
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 
 		$row 		= new \Components\Publications\Tables\MasterType($this->database);
@@ -404,8 +407,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function editelementsTask()
 	{
 		// Incoming
-		$id 	  				= JRequest::getInt('id', 0);
-		$this->view->sequence 	= JRequest::getInt('bid', 0);
+		$id 	  				= \JRequest::getInt('id', 0);
+		$this->view->sequence 	= \JRequest::getInt('bid', 0);
 
 		$this->view->row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -434,7 +437,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 		$document->addScript('components' . DS . $this->_option . DS . 'assets'
@@ -453,8 +456,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function saveelementsTask()
 	{
 		// Incoming
-		$id 	  	= JRequest::getInt('id', 0);
-		$sequence 	= JRequest::getInt('bid', 0);
+		$id 	  	= \JRequest::getInt('id', 0);
+		$sequence 	= \JRequest::getInt('bid', 0);
 
 		$row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -481,7 +484,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
-		$curation = JRequest::getVar('curation', array(), 'post', 'none', 2);
+		$curation = \JRequest::getVar('curation', array(), 'post', 'none', 2);
 
 		// Collect modifications
 		if (is_array($curation) && isset($curation['blocks'][$sequence]))
@@ -550,7 +553,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function editblockorderTask()
 	{
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -588,7 +591,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 		$document->addScript('components' . DS . $this->_option . DS . 'assets'
@@ -607,11 +610,11 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function saveblockorderTask($redirect = false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = JRequest::getInt('id', 0);
-		$neworder = JRequest::getVar('neworder', '');
+		$id       = \JRequest::getInt('id', 0);
+		$neworder = \JRequest::getVar('neworder', '');
 		$order 	  = explode('-', $neworder);
 
 		$row = new \Components\Publications\Tables\MasterType($this->database);
@@ -679,7 +682,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -725,7 +728,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->cats = $objC->getCategories();
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets'
 			. DS . 'css' . DS . 'publications.css');
 		$document->addScript('components' . DS . $this->_option . DS . 'assets'
@@ -753,12 +756,12 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
 
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -785,7 +788,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		if ($useBlocks && $row->id)
 		{
 			// Incoming
-			$curatorGroup = JRequest::getVar('curatorgroup', '');
+			$curatorGroup = \JRequest::getVar('curatorgroup', '');
 			if ($group = \Hubzero\User\Group::getInstance($curatorGroup))
 			{
 				$row->curatorGroup = $group->get('gidNumber');
@@ -799,7 +802,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$manifest = $objC->_manifest;
 
 			// Get curation configs
-			$curation = JRequest::getVar('curation', array(), 'post');
+			$curation = \JRequest::getVar('curation', array(), 'post');
 
 			// Collect modifications
 			if (is_array($curation))
@@ -851,7 +854,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		else
 		{
 			// Get parameters
-			$params = JRequest::getVar('params', '', 'post');
+			$params = \JRequest::getVar('params', '', 'post');
 			if (is_array($params))
 			{
 				$txt = array();
@@ -913,10 +916,10 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
+		$id = \JRequest::getVar('id', array(0), '', 'array');
 
 		// Load row
 		$row = new \Components\Publications\Tables\MasterType($this->database);
@@ -948,10 +951,10 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -978,7 +981,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 				// Redirect with error message
 				$this->setRedirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					JText::sprintf('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
+					\JText::sprintf('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
 					'error'
 				);
 				return;
@@ -991,7 +994,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
+			\JText::sprintf('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
 		);
 	}
 }

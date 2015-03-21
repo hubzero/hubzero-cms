@@ -101,7 +101,7 @@ tooltip: true,
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
-					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . a . 'id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
+					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . '&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
 					<span class="block mini faded"><?php echo JText::_('PLG_MEMBERS_IMPACT_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, JText::_('DATE_FORMAT_HZ1')) . ' ' . JText::_('PLG_MEMBERS_IMPACT_IN') . ' ' . $stat->cat_name; ?> <span> | <?php echo JText::_('PLG_MEMBERS_IMPACT_FROM_PROJECT'); ?> <a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&alias=' . $stat->project_alias); ?>"><?php echo \Hubzero\Utility\String::truncate($stat->project_title, 65); ?></a></span></span>
 				</td></tr>
 				<tr>

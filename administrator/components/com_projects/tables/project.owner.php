@@ -783,6 +783,7 @@ class Owner extends \JTable
 			$group->set('discoverability', 1 );
 
 			$group->update();
+
 		}
 	}
 

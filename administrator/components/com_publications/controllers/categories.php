@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Publications\Tables;
+use stdClass;
 
 /**
  * Manage publication categories (former resource types)
  */
-class PublicationsControllerCategories extends \Hubzero\Component\AdminController
+class Categories extends AdminController
 {
 	/**
 	 * List types
@@ -44,8 +47,8 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array();
@@ -80,7 +83,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		$this->view->filters['state'] = 'all';
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS
 		. 'assets' . DS . 'css' . DS . 'publications.css');
 
@@ -95,7 +98,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 
 		// initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -136,7 +139,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		else
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -164,7 +167,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		$this->view->types = $objMT->getTypes('alias', 1);
 
 		// Push some styles to the template
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS
 			. 'assets' . DS . 'css' . DS . 'publications.css');
 
@@ -190,9 +193,9 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$prop = JRequest::getVar('prop', array(), 'post');
+		$prop = \JRequest::getVar('prop', array(), 'post');
 
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
@@ -207,7 +210,7 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 		}
 
 		// Get the custom fields
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		if (is_array($fields))
 		{
 			$elements = new stdClass();
@@ -248,14 +251,14 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 				}
 			}
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 				. DS . 'models' . DS . 'elements.php');
 			$re = new \Components\Publications\Models\Elements($elements);
 			$row->customFields = $re->toString();
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
+		$params = \JRequest::getVar('params', '', 'post');
 		if (is_array($params))
 		{
 			$txt = array();
@@ -307,10 +310,10 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	public function changestatusTask($dir = 0)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0), '', 'array');
+		$ids = \JRequest::getVar('id', array(0), '', 'array');
 
 		// Initialize
 		$row = new \Components\Publications\Tables\Category($this->database);
@@ -376,26 +379,26 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	 */
 	public function elementTask()
 	{
-		$ctrl = JRequest::getVar('ctrl', 'fields');
+		$ctrl = \JRequest::getVar('ctrl', 'fields');
 
 		$option = new stdClass;
 		$option->label = '';
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label       = JRequest::getVar('name', 0);
+		$field->label       = \JRequest::getVar('name', 0);
 		$field->element     = '';
 		$field->description = '';
 		$field->text        = $field->label;
 		$field->name        = $field->label;
 		$field->default     = '';
-		$field->type        = JRequest::getVar('type', '');
+		$field->type        = \JRequest::getVar('type', '');
 		$field->options     = array(
 			$option,
 			$option
 		);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 		$elements = new \Components\Publications\Models\Elements();
 		echo $elements->getElementOptions($field->name, $field, $ctrl);
 	}

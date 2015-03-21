@@ -90,31 +90,11 @@ class Base extends SiteController
 			return;
 		}
 
-		// Enable publication management
+		// Include publications model
 		if ($this->_publishing)
 		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'version.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'access.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'author.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'license.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'category.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'master.type.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'attachment.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+				. DS . 'models' . DS . 'publication.php');
 		}
 
 		// Database development on?

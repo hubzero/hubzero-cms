@@ -529,6 +529,22 @@ class Publications extends SiteController
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version);
 
+		// Last public release
+		$lastPubRelease = $this->model->lastPublicRelease();
+
+		// Version invalid but publication exists?
+		if ($this->model->masterExists() && !$this->model->exists())
+		{
+			if ($lastPubRelease && $lastPubRelease->id)
+			{
+				// Go to last public release
+				$this->setRedirect(
+					Route::url($this->_route . '&v=' . $lastPubRelease->version_number)
+				);
+				return;
+			}
+		}
+
 		// Make sure we got a result from the database
 		if (!$this->model->exists() || $this->model->deleted())
 		{
@@ -539,9 +555,6 @@ class Publications extends SiteController
 			);
 			return;
 		}
-
-		// Last public release
-		$lastPubRelease = $this->model->lastPublicRelease();
 
 		// Is the visitor authorized to view this resource?
 		if (!$this->model->access('view'))

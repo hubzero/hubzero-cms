@@ -31,12 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
-
-// Import pub utilities
-require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS
-. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+	. DS . 'models' . DS . 'publication.php');
 
 /**
  * Project publications
@@ -256,13 +252,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginScript('projects', 'publications');
 		}
 
-		// Import publication helpers
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'tags.php' );
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php' );
-
-		// Import required models
-		require_once( JPATH_ROOT . DS .'components' . DS . 'com_publications' . DS . 'models' . DS . 'types.php' );
-
 		$this->_project 	= $project;
 		$this->_action 		= $action;
 		$this->_option 		= $option;
@@ -336,7 +325,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			case 'archive':
 			case 'revert':
 			case 'post':
-				$arr['html'] = $this->useBlocks ? $this->publishDraft() : $this->_publish();
+				$arr['html'] = $this->publishDraft();
 				break;
 
 			case 'apply':
@@ -467,7 +456,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Output HTML
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
 			'name'   => 'handlers',
 			'layout' => 'editor',
 		));
@@ -1220,7 +1209,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_project->setup_stage 		= 3;
 
 			// Get project type params
-			require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS
+			require_once( PATH_CORE. DS .'administrator' . DS . 'components' . DS
 				. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
 			$objT = new \Components\Projects\Tables\Type( $this->_database );
 			$this->_project->params = $objT->getParams ($this->_project->type);
@@ -1950,13 +1939,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
 
 		// Add stylesheet
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/impact');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/impact');
 
 		// Is logging enabled?
-		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+		if ( is_file(PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 				.'com_publications' . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
 					.'com_publications' . DS . 'tables' . DS . 'logs.php');
 		}
 		else
@@ -1972,11 +1961,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				'name'=>'stats'
 			)
 		);
-
-		// Start url
-		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
 
 		// Get pub stats for each publication
 		$pubLog = new \Components\Publications\Tables\Log($this->_database);
@@ -2000,8 +1984,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->config 		= $this->_config;
 		$view->pubconfig 	= $this->_pubconfig;
 		$view->version 		= $version;
-		$view->route 		= $route;
-		$view->url 			= $pid ? JRoute::_($view->route . a . 'pid=' . $pid) : JRoute::_($view->route);
+		$view->route 		= $this->_project->provisioned
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias
+					. '&active=publications';
+		$view->url 			= $pid ? JRoute::_($view->route . '&pid=' . $pid) : JRoute::_($view->route);
 		$view->title		= $this->_area['title'];
 
 		// Get messages	and errors
@@ -2195,7 +2182,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get project file path
 				$view->fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
-				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+				$view->prefix = $this->_config->get('offroot', 0) ? '' : PATH_CORE;
 
 				// Get Files JS
 				\Hubzero\Document\Assets::addPluginScript('projects', 'files');
@@ -2275,11 +2262,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'citations':
-				include_once( JPATH_ROOT . DS . 'components'
+				include_once( PATH_CORE . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
-				include_once( JPATH_ROOT . DS . 'components'
+				include_once( PATH_CORE . DS . 'components'
 					. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
-				include_once( JPATH_ROOT . DS . 'components' . DS . 'com_citations'
+				include_once( PATH_CORE . DS . 'components' . DS . 'com_citations'
 					. DS . 'helpers' . DS . 'format.php' );
 				$view->format = $this->_pubconfig->get('citation_format', 'apa');
 
@@ -2305,7 +2292,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 				// Get project file path
 				$view->fpath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
-				$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+				$view->prefix = $this->_config->get('offroot', 0) ? '' : PATH_CORE;
 				break;
 
 			case 'tags':
@@ -2429,12 +2416,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Include support scripts
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'ticket.php' );
-				include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_support'.DS.'tables'.DS.'comment.php' );
+				include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
+					. DS . 'com_support' . DS . 'tables' . DS . 'ticket.php' );
+				include_once( PATH_CORE . DS . 'administrator' . DS . 'components'
+					. DS . 'com_support' . DS . 'tables' . DS . 'comment.php' );
 				$juser = JFactory::getUser();
 
 				// Load the support config
-				$sparams = JComponentHelper::getParams('com_support');
+				$sparams = Component::params('com_support');
 
 				$row = new \Components\Support\Tables\Ticket( $this->_database );
 				$row->created = JFactory::getDate()->toSql();
@@ -2628,9 +2617,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = JRoute::_($route . '&pid=' . $pid);
 
 		// Check if dev version is already there
 		if ($row->checkVersion($pid, 'dev'))
@@ -3045,7 +3034,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$gallery_path = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base_path, 'gallery');
 
 		// Get project file path
-		$view->prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+		$view->prefix = $this->_config->get('offroot', 0) ? '' : PATH_CORE;
 		$view->project_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 
 		// Get tags
@@ -3213,7 +3202,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_project->setup_stage 		= 3;
 
 					// Get project type params
-					require_once( JPATH_ROOT. DS .'administrator' . DS . 'components' . DS
+					require_once( PATH_CORE. DS .'administrator' . DS . 'components' . DS
 						. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
 					$objT = new \Components\Projects\Tables\Type( $this->_database );
 					$this->_project->params = $objT->getParams ($this->_project->type);
@@ -3275,7 +3264,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$this->_project->delete();
 						$objP->delete();
 						JError::raiseError( 500, $this->getError() );
-					//	JError::raiseError( 500, JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
 						return false;
 					}
 					else
@@ -3286,9 +3274,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							$this->_uid, $this->_uid,
 							0, 1, 1, 1 ))
 						{
-							// File auto ticket to report this - TBD
-							//*******
-							$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS').': '.$objO->getError() );
+							$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+								. ': ' . $objO->getError());
 							return false;
 						}
 					}
@@ -3786,9 +3773,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-
 		// Check against quota
 		if ($this->_overQuota())
 		{
@@ -3801,20 +3785,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Load publication & version classes
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-		$row  = new \Components\Publications\Tables\Version( $this->_database );
-		$mt   = new \Components\Publications\Tables\MasterType( $this->_database );
-
-		// Check that version exists
-		$version = $row->checkVersion($pid, $version) ? $version : 'default';
-
-		// Instantiate project publication
-		$pub 	 		= $objP->getPublication($pid, $version, $this->_project->id);
-		$pub->version 	= $version;
+		// Load publication model
+		$model  = new \Components\Publications\Models\Publication( $pid, $version);
 
 		// Error loading publication record
-		if (!$pub->id)
+		if (!$model->exists())
 		{
 			$this->_referer = JRoute::_($route);
 			$this->_message = array(
@@ -3823,31 +3798,45 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$pub->_project 	= $this->_project;
-		$pub->_type    	= $mt->getType($pub->base);
-
-		// Get curation model
-		$pub->_curationModel = new \Components\Publications\Models\Curation($pub->_type->curation);
-
-		// Set pub assoc and load curation
-		$pub->_curationModel->setPubAssoc($pub);
-
-		// Instantiate publication version
-		if (!$row->loadVersion($pid, $version))
+		// Curated flow?
+		if ($this->useBlocks)
 		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
+			$model->setCuration();
+			$complete = $model->_curationModel->_progress->complete;
+
+			// Require DOI?
+			$requireDoi = isset($model->_curationModel->_manifest->params->require_doi)
+						? $model->_curationModel->_manifest->params->require_doi : 0;
+		}
+		else
+		{
+			// Checked areas
+			$checked = $this->_checkDraft( $model->_type->alias, $model->version, $version );
+
+			// Check if all required areas are filled in
+			$complete = $this->_checkPublicationPermit($checked, $model->_type->alias);
+
+			$requireDoi = true;
+		}
+
+		// Make sure the publication belongs to the project
+		if ($this->_project->id != $model->_project->id)
+		{
+			$this->_referer = JRoute::_($route);
+			$this->_message = array(
+				'message' => JText::_('Oups! The publication you are trying to change is hosted by another project.'),
+				'type' => 'error');
 			return;
 		}
 
 		// Check that version label was not published before
-		$used_labels = $row->getUsedLabels( $pid, $version );
-		if (!$row->version_label || in_array($row->version_label, $used_labels))
+		$used_labels = $model->version->getUsedLabels( $pid, $version );
+		if (!$model->version->version_label || in_array($model->version->version_label, $used_labels))
 		{
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 		}
 
 		// Is draft complete?
-		$complete = $pub->_curationModel->_progress->complete;
 		if (!$complete && $this->_task != 'revert')
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
@@ -3855,18 +3844,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Is revert allowed?
 		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
-		if ($revertAllowed && $row->state == 1 && $row->accepted && $row->accepted != '0000-00-00 00:00:00')
+		if ($revertAllowed && $model->version->state == 1
+			&& $model->version->accepted && $model->version->accepted != '0000-00-00 00:00:00')
 		{
-			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
+			$monthFrom = JFactory::getDate($model->version->accepted . '+1 month')->toSql();
 			if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
 			{
 				$revertAllowed = 0;
 			}
 		}
-
-		// Require DOI?
-		$requireDoi   = isset($pub->_curationModel->_manifest->params->require_doi)
-					  ? $pub->_curationModel->_manifest->params->require_doi : 0;
 
 		// Embargo?
 		if ($pubdate)
@@ -3883,19 +3869,19 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Main version?
-		$main = $this->_task == 'republish' ? $row->main : 1;
-		$main_vid = $row->getMainVersionId($pid); // current default version
+		$main = $this->_task == 'republish' ? $model->version->main : 1;
+		$main_vid = $model->version->getMainVersionId($pid); // current default version
 
 		// Save version before changes
-		$originalStatus = $row->state;
+		$originalStatus = $model->version->state;
 
 		// Checks
-		if ($this->_task == 'republish' && $row->state != 0)
+		if ($this->_task == 'republish' && $model->version->state != 0)
 		{
 			// Can only re-publish unpublished version
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
 		}
-		elseif ($this->_task == 'revert' && $row->state != 5 && !$revertAllowed)
+		elseif ($this->_task == 'revert' && $model->version->state != 5 && !$revertAllowed)
 		{
 			// Can only revert a pending resource
 			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
@@ -3921,11 +3907,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$row->submitted = JFactory::getDate()->toSql();
+			$model->version->submitted = JFactory::getDate()->toSql();
 
 			// Save submitter
 			$pa = new \Components\Publications\Tables\Author( $this->_database );
-			$pa->saveSubmitter($row->id, $submitter, $this->_project->id);
+			$pa->saveSubmitter($model->version->id, $submitter, $this->_project->id);
 
 			if ($this->_pubconfig->get('autoapprove') == 1 )
 			{
@@ -3952,70 +3938,71 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Save state
-		$row->state 			= $state;
-		$row->main 				= $main;
+		$model->version->state 		= $state;
+		$model->version->main 		= $main;
 		if ($this->_task != 'revert')
 		{
-			$row->rating 			= '0.0';
-			$row->published_up  	= $this->_task == 'republish' ? $row->published_up : JFactory::getDate()->toSql();
-			$row->published_up  	= $pubdate ? $pubdate : $row->published_up;
-			$row->published_down 	= '';
+			$model->version->rating 		= '0.0';
+			$model->version->published_up   = $this->_task == 'republish'
+				? $model->version->published_up : JFactory::getDate()->toSql();
+			$model->version->published_up  	= $pubdate ? $pubdate : $model->version->published_up;
+			$model->version->published_down = '';
 		}
-		$row->modified 			= JFactory::getDate()->toSql();
-		$row->modified_by 		= $this->_uid;
+		$model->version->modified    = JFactory::getDate()->toSql();
+		$model->version->modified_by = $this->_uid;
 
 		// Issue DOI
-		if ($requireDoi > 0 && $this->_task == 'publish' && !$row->doi
-			&& $this->_pubconfig->get('doi_shoulder') && $this->_pubconfig->get('doi_service'))
+		if ($requireDoi > 0 && $this->_task == 'publish' && !$model->version->doi)
 		{
-			// Collect DOI metadata
-			$metadata = PublicationUtilities::collectMetadata($pub);
-			$doierr   = NULL;
-
-			// Get authors
-			$pAuthors 			= new \Components\Publications\Tables\Author( $this->_database );
-			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
-
-			// Issue a new DOI
-			$reserve = $state == 5 ? 1 : 0;
-			$doi = PublicationUtilities::registerDoi($row, $pub->_authors, $this->_pubconfig,
-				$metadata, $doierr, $reserve);
+			// Get DOI service
+			$doiService = new \Components\Publications\Models\Doi($model);
+			$extended = $state == 5 ? false : true;
+			$doi = $doiService->register($extended);
 
 			// Store DOI
 			if ($doi)
 			{
-				$row->doi = $doi;
+				$model->version->doi = $doi;
 			}
 
 			// Can't proceed without a valid DOI
-			if (!$doi || $doierr)
+			if (!$doi || $doiService->getError())
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI').' '.$doierr);
+				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI')
+					. ' ' . $doiService->getError());
 			}
 		}
 
 		// Proceed if no error
 		if (!$this->getError())
 		{
+			if ($this->useBlocks && $state == 1)
+			{
+				$model->version->curation = json_encode($this->model->_curationModel->_manifest);
+			}
+
 			// Save data
-			if (!$row->store())
+			if (!$model->version->store())
 			{
 				JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
 				return;
 			}
 
 			// Remove main flag from previous default version
-			if ($main && $main_vid && $main_vid != $row->id)
+			if ($main && $main_vid && $main_vid != $model->version->id)
 			{
-				$row->removeMainFlag($main_vid);
+				$model->version->removeMainFlag($main_vid);
 			}
 
 			// Mark as curated
-			$row->saveParam($row->id, 'curated', 1);
+			if ($this->useBlocks)
+			{
+				$model->version->saveParam($model->version->id, 'curated', 1);
+			}
 		}
 
 		// OnAfterPublish
-		$this->onAfterChangeState( $pub, $row, $originalStatus );
+		$this->onAfterChangeState( $model, $model->version, $originalStatus );
 
 		// Redirect
 		$this->_referer = $url;
@@ -4177,6 +4164,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$pub->_curationModel->package();
 		}
+		elseif (!$this->useBlocks)
+		{
+			// Finalize attachments for publication
+			$published = $this->_publishAttachments($row);
+
+			// Produce archival package
+			$this->archivePub($row->publication_id, $row->id);
+		}
 
 		// Pass success or error message
 		if ($this->getError())
@@ -4231,312 +4226,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Change publication status
-	 *
-	 * OLD FLOW - Marked for deprecation
-	 * @return     string
-	 */
-	protected function _publish()
-	{
-		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$confirm 	= JRequest::getInt('confirm', 0);
-		$version 	= JRequest::getVar('version', 'dev');
-		$republish  = $this->_task == 'republish' ? 1 : 0;
-		$agree   	= JRequest::getInt('agree', 0);
-		$pubdate 	= JRequest::getVar('publish_date', '', 'post');
-		$submitter 	= JRequest::getInt('submitter', $this->_uid, 'post');
-
-		$notify 	= 1;
-
-		// Load review step
-		if (!$confirm && $this->_task != 'revert')
-		{
-			return $this->review();
-		}
-
-		// Determine redirect path
-		$url = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($url . a . 'pid=' . $pid);
-
-		// Agreement to terms is required
-		if ($confirm && !$agree)
-		{
-			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = $url;
-			return;
-		}
-
-		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-
-		// Get all publications
-		$rows = $objP->getRecords(array('project' => $this->_project->id, 'dev' => 1, 'ignore_access' => 1));
-
-		if ($this->_overQuota())
-		{
-			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-			// Redirect
-			$this->_referer = $url;
-			return;
-		}
-
-		// Import pub utilities
-		require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS
-		. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-
-		// If publication not found, raise error
-		$pub = $objP->getPublication($pid, $version, $this->_project->id);
-		if (!$pub)
-		{
-			if ($pid)
-			{
-				$this->_referer = $url;
-				return;
-			}
-			else
-			{
-				JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND') );
-				return;
-			}
-		}
-
-		// Instantiate publication version
-		$row = new \Components\Publications\Tables\Version( $this->_database );
-		if (!$row->loadVersion($pid, $version))
-		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
-			return;
-		}
-
-		// Check that version label was not published before
-		$used_labels = $row->getUsedLabels( $pid, $version );
-		if (!$row->version_label || in_array($row->version_label, $used_labels))
-		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
-		}
-
-		// Determine state for new version
-		if ($this->_task == 'post' || $this->_task == 'revert')
-		{
-			$state = 4; // No approval needed
-		}
-		elseif ($republish)
-		{
-			$state = 1; // No approval needed
-		}
-		else
-		{
-			$row->submitted = JFactory::getDate()->toSql();
-
-			// Save submitter
-			$pa = new \Components\Publications\Tables\Author( $this->_database );
-			$pa->saveSubmitter($row->id, $submitter, $this->_project->id);
-
-			if ($this->_pubconfig->get('autoapprove') == 1 )
-			{
-				$state = 1;
-			}
-			else
-			{
-				$apu = $this->_pubconfig->get('autoapproved_users');
-				$apu = explode(',', $apu);
-				$apu = array_map('trim',$apu);
-
-				$juser = JFactory::getUser();
-				if (in_array($juser->get('username'),$apu))
-				{
-					// Set status to published
-					$state = 1;
-				} else {
-					// Set status to pending review (submitted)
-					$state = 5;
-				}
-			}
-		}
-
-		// Main version?
-		$main = $republish ? $row->main : 1;
-		$main_vid = $row->getMainVersionId($pid); // current default version
-
-		// Checks
-		if ($republish && $row->state != 0)
-		{
-			// Can only re-publish unpublished version
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
-		}
-		elseif ($this->_task == 'revert' &&  $row->state != 5)
-		{
-			// Can only revert a pending resource
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
-		}
-		elseif (!$republish && $this->_task != 'revert' &&  $row->state != 3 && $row->state != 4)
-		{
-			// Can only publish a draft or posted version
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_DEV') );
-		}
-
-		// Embargo?
-		if ($pubdate)
-		{
-			$pubdate = $this->parseDate($pubdate);
-
-			$tenYearsFromNow = JFactory::getDate(strtotime("+10 years"))->toSql();
-
-			// Stop if more than 10 years from now
-			if ($pubdate > $tenYearsFromNow)
-			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
-			}
-		}
-
-		if (!$this->getError())
-		{
-			// Checked areas
-			$checked = $this->_checkDraft( $pub->base, $row, $version );
-
-			// Check if all required areas are filled in
-			$publication_allowed = $this->_checkPublicationPermit($checked, $pub->base);
-			if (!$publication_allowed)
-			{
-				JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
-				return;
-			}
-
-			// Save version before changes
-			$originalStatus = $row->state;
-
-			// Save state
-			$row->state = $state;
-			$row->main = $main;
-			$row->secret = $row->secret ? $row->secret : strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
-			$row->rating = '0.0';
-			if (!$republish)
-			{
-				$row->published_up = JFactory::getDate()->toSql();	// Publication open immediately (no embargo)
-			}
-
-			// Set embargo
-			if ($pubdate)
-			{
-				$row->published_up = $pubdate;
-			}
-
-			$row->published_down = '';
-			$row->modified = JFactory::getDate()->toSql();
-			$row->modified_by = $this->_uid;
-
-			// Get type
-			$objT = new \Components\Publications\Tables\Category( $this->_database );
-			$objT->load($pub->category);
-			$category = ucfirst($objT->alias);
-
-			// Collect extra metadata
-			$metadata = array();
-			$metadata['typetitle']    = $category ? $category : 'Dataset';
-			$metadata['resourceType'] = isset($objT->dc_type) && $objT->dc_type ? $objT->dc_type : 'Dataset';
-			$metadata['language'] = 'en';
-
-			// Get license type
-			$objL = new \Components\Publications\Tables\License( $this->_database);
-			if ($objL->loadLicense($row->license_type))
-			{
-				$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
-				$metadata['license'] = $objL->title;
-			}
-
-			// Get dc:contibutor
-			$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
-			$owner 	 = $this->_project->owned_by_user ? $this->_project->owned_by_user : $this->_project->created_by_user;
-			if ($profile->load( $owner ))
-			{
-				$metadata['contributor'] = $profile->get('name');
-			}
-
-			// Get authors
-			$pa = new \Components\Publications\Tables\Author( $this->_database );
-			$authors = $pa->getAuthors($row->id);
-
-			// Get DOI
-			if (($state == 1 || $state == 5) && !$row->doi
-				&& $this->_pubconfig->get('doi_shoulder') && $this->_pubconfig->get('doi_service'))
-			{
-				// Issue a new DOI
-				$reserve = $state == 5 ? 1 : 0;
-				$doi = PublicationUtilities::registerDoi($row, $authors, $this->_pubconfig,
-					$metadata, $doierr, $reserve);
-
-				if ($doi)
-				{
-					$row->doi = $doi;
-				}
-
-				// Can't proceed without a valid DOI
-				if (!$doi || $doierr)
-				{
-					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI').' '.$doierr);
-				}
-			}
-
-			// Proceed if no errors
-			if (!$this->getError())
-			{
-				if (!$row->store())
-				{
-					JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
-					return;
-				}
-
-				// Remove main flag from previous default version
-				if ($main && $main_vid && $main_vid != $row->id)
-				{
-					$row->removeMainFlag($main_vid);
-				}
-
-				// Mark as uncurated
-				if ($state == 1 && isset($this->useBlocks) && !$this->useBlocks)
-				{
-					$row->saveParam($row->id, 'curated', 2);
-				}
-
-				// Finalize attachments for publication
-				$published = $this->_publishAttachments($row);
-
-				// Produce archival package
-				$this->archivePub($row->publication_id, $row->id);
-
-				// OnAfterPublish
-				$this->onAfterChangeState( $pub, $row, $originalStatus );
-
-			}
-		}
-
-		// Pass success or error message
-		if ($this->getError())
-		{
-			$this->_message = array('message' => $this->getError(), 'type' => 'error');
-		}
-		elseif (isset($this->_msg) && $this->_msg)
-		{
-			$this->_message = array('message' => $this->_msg, 'type' => 'success');
-		}
-
-		// Redirect
-		$this->_referer = $url;
-		return;
-
-	}
-
-	/**
 	 * Unpublish version/delete draft
 	 *
 	 * @return     string
@@ -4551,9 +4240,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Determine redirect path
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = JRoute::_($route . '&pid=' . $pid);
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -7655,5 +7344,5 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		return;
-		}
+	}
 }

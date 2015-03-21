@@ -52,7 +52,7 @@ class plgCronResources extends JPlugin
 
 		$obj->events = array(
 			array(
-				'name'   => 'issueMasterDoi',
+				'name'   => 'issueResourceMasterDoi',
 				'label'  => JText::_('PLG_CRON_RESOURCES_MASTER_DOI'),
 				'params' => ''
 			)
@@ -67,12 +67,10 @@ class plgCronResources extends JPlugin
 	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function issueMasterDoi(\Components\Cron\Models\Job $job)
+	public function issueResourceMasterDoi(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$config   = JComponentHelper::getParams('com_publications');
-		$jconfig  = JFactory::getConfig();
-		$juri     = JURI::getInstance();
 
 		// Is config to issue master DOI turned ON?
 		if (!$config->get('master_doi'))
@@ -101,57 +99,45 @@ class plgCronResources extends JPlugin
 			return true;
 		}
 
-		// Get site url
-		$livesite = $jconfig->getValue('config.live_site')
-			? $jconfig->getValue('config.live_site')
-			: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-		if (!$livesite)
+		// Includes
+		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+			. DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
+			. DS . 'models' . DS . 'doi.php');
+
+		// Get DOI service
+		$doiService = new \Components\Publications\Models\Doi();
+
+		// Is service enabled?
+		if (!$doiService->on() || !$doiService->_configs->livesite)
 		{
 			return true;
 		}
 
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-			. DS . 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-			. DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-			. DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-
 		// Go through records
 		foreach ($rows as $row)
 		{
-			// Get authors
-			$objA = new ToolAuthor($database);
-			$authors = $objA->getAuthorsDOI($row->id);
+			// Reset metadata
+			$doiService->reset();
 
-			$pubDate = $row->released && $row->released != '0000-00-00 00:00:00'
-						? date( 'Y', strtotime($row->released)) : date( 'Y' );
+			// Map data
+			$pubYear = $row->released && $row->released != '0000-00-00 00:00:00'
+					? date( 'Y', strtotime($row->released)) : date( 'Y' );
+			$doiService->set('pubYear', $pubYear);
+			$doiService->mapUser($row->created_by, array(), 'creator');
+			$doiService->set('resourceType', 'Software');
+			$doiService->set('title', htmlspecialchars(stripslashes($row->title)));
+			$doiService->set('url', $doiService->_configs->livesite . DS
+				. 'resources' . DS . $row->toolname . DS . 'main');
 
-			// Collect metadata
-			$metadata = array(
-				'title'        => htmlspecialchars(stripslashes($row->title)),
-				'pubYear'      => $pubDate,
-				'publisher'    => $config->get('doi_publisher'),
-				'resourceType' => 'Software',
-				'url'          => $livesite . DS . 'resources'
-								. DS . $row->toolname . DS . 'main'
-			);
-
-			// Register DOI with data from version being published
-			$masterDoi = PublicationUtilities::registerDoi(
-				$row,
-				$authors,
-				$config,
-				$metadata,
-				$doierr,
-				1
-			);
+			// Register DOI
+			$masterDoi = $doiService->register();
 
 			// Save with publication record
 			$resource = new \Components\Resources\Tables\Resource($database);
 			if ($masterDoi && $resource->load($row->id))
 			{
-				$resource->master_doi = $masterDoi;
+				$resource->master_doi = strtoupper($masterDoi);
 				$resource->store();
 			}
 		}

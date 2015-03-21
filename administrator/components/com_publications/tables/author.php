@@ -302,7 +302,7 @@ class Author extends \JTable
 		$owner_id = $objO->getOwnerId( $projectid, $by);
 
 		// Load submitter record if exists
-		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->Quote($id);
+		$query = "SELECT * FROM $this->_tbl WHERE role='submitter' AND publication_version_id=" . $this->_db->Quote($vid);
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
 		{

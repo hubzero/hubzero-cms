@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Publications\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Publications\Tables;
+use stdClass;
 
 /**
  * Manage publication batch
  */
-class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminController
+class Batchcreate extends AdminController
 {
 	/**
 	 * Start page
@@ -85,7 +88,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			if (!$xserver->serve())
 			{
 				// Should only get here on error
-				JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
+				\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
 			}
 			else
 			{
@@ -146,12 +149,12 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 	public function processTask( $dryRun = 0 )
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		\JSession::checkToken() or die( 'Invalid Token' );
 
 		// Incoming
-		$id 	= JRequest::getInt('projectid', 0);
-		$file   = JRequest::getVar('file', array(), 'FILES');
-		$dryRun = JRequest::getInt('dryrun', 1);
+		$id 	= \JRequest::getInt('projectid', 0);
+		$file   = \JRequest::getVar('file', array(), 'FILES');
+		$dryRun = \JRequest::getInt('dryrun', 1);
 
 		$this->data = NULL;
 
@@ -256,7 +259,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$objL = new \Components\Publications\Tables\License( $this->database );
 
 		// Get base type
-		$base = JRequest::getVar( 'base', 'files' );
+		$base = \JRequest::getVar( 'base', 'files' );
 
 		// Determine publication master type
 		$mt 		= new \Components\Publications\Tables\MasterType( $this->database );
@@ -317,7 +320,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		{
 			if ($this->reader->name === 'publication')
 			{
-				$node = new SimpleXMLElement($this->reader->readOuterXML());
+				$node = new \SimpleXMLElement($this->reader->readOuterXML());
 
 				// Check that category exists
 				$category = isset($node->cat) ? $node->cat : 'dataset';
@@ -335,7 +338,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$item['publication']->category 			= $catId ? $catId : $cat;
 				$item['publication']->project_id 		= $this->project->id;
 				$item['publication']->created_by 		= $this->_uid;
-				$item['publication']->created 			= JFactory::getDate()->toSql();
+				$item['publication']->created 			= \JFactory::getDate()->toSql();
 				$item['publication']->access 			= 0;
 
 				// Version properties
@@ -445,8 +448,8 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		elseif ($dryRun == 2)
 		{
 			// Get hub config
-			$juri 	 = JURI::getInstance();
-			$jconfig = JFactory::getConfig();
+			$juri 	 = \JURI::getInstance();
+			$jconfig = \JFactory::getConfig();
 			$this->site = $jconfig->getValue('config.live_site')
 				? $jconfig->getValue('config.live_site')
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
@@ -497,7 +500,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$item['version']->publication_id 	= $pid;
 		$item['version']->version_number 	= 1;
 		$item['version']->created_by 		= $this->_uid;
-		$item['version']->created 			= JFactory::getDate()->toSql();
+		$item['version']->created 			= \JFactory::getDate()->toSql();
 		$item['version']->secret			= strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 		$item['version']->access			= 0;
 		$item['version']->main				= 1;
@@ -642,7 +645,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			$attachment->publication_version_id 	= $vid;
 			$attachment->vcs_hash 					= $vcs_hash;
 			$attachment->created_by 				= $this->_uid;
-			$attachment->created 					= JFactory::getDate()->toSql();
+			$attachment->created 					= \JFactory::getDate()->toSql();
 			$attachment->store();
 		}
 
@@ -740,23 +743,23 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		$hashed = \Components\Publications\Helpers\Html::createThumbName($filename, '-' . substr($hash, 0, 6));
 		$thumb = \Components\Publications\Helpers\Html::createThumbName($filename, '-' . substr($hash, 0, 6) . '_tn', $extension = 'png');
 
-		if (!is_dir( JPATH_ROOT . $gallery_path ))
+		if (!is_dir( PATH_APP . $gallery_path ))
 		{
-			JFolder::create( JPATH_ROOT . $gallery_path );
+			\JFolder::create( PATH_APP . $gallery_path );
 		}
-		if (!JFile::copy($fileRecord['projectPath'], JPATH_ROOT . $gallery_path. DS . $hashed))
+		if (!\JFile::copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $hashed))
 		{
 			return false;
 		}
 		else
 		{
-			JFile::copy($fileRecord['projectPath'], JPATH_ROOT . $gallery_path. DS . $thumb);
+			\JFile::copy($fileRecord['projectPath'], PATH_APP . $gallery_path. DS . $thumb);
 
-			$hi = new \Hubzero\Image\Processor(JPATH_ROOT . $gallery_path . DS . $thumb);
+			$hi = new \Hubzero\Image\Processor(PATH_APP . $gallery_path . DS . $thumb);
 			if (count($hi->getErrors()) == 0)
 			{
 				$hi->resize(100, false, false, true);
-				$hi->save(JPATH_ROOT . $gallery_path . DS . $thumb);
+				$hi->save(PATH_APP . $gallery_path . DS . $thumb);
 
 				// Create screenshot record
 				$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->database );
@@ -765,7 +768,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 				$pScreenshot->publication_id 			= $pub->id;
 				$pScreenshot->publication_version_id 	= $pub->version_id;
 				$pScreenshot->title 					= $attachment->title;
-				$pScreenshot->created 					= JFactory::getDate()->toSql();
+				$pScreenshot->created 					= \JFactory::getDate()->toSql();
 				$pScreenshot->created_by 				= $this->_uid;
 				$pScreenshot->store();
 				return true;
@@ -793,7 +796,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			$objO->projectid 	 = $this->project->id;
 			$objO->userid 		 = $author->user_id;
 			$objO->status 		 = $author->user_id ? 1 : 0;
-			$objO->added 		 = JFactory::getDate()->toSql();
+			$objO->added 		 = \JFactory::getDate()->toSql();
 			$objO->role 		 = 2;
 			$objO->invited_email = '';
 			$objO->invited_name  = $author->name;
@@ -802,7 +805,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		}
 		$author->publication_version_id = $vid;
 		$author->created_by = $this->_uid;
-		$author->created 	= JFactory::getDate()->toSql();
+		$author->created 	= \JFactory::getDate()->toSql();
 
 		$author->store();
 	}

@@ -358,7 +358,7 @@ class Authors extends Base
 		// Instantiate a new registration object
 		include_once(PATH_CORE . DS . 'components' . DS
 			. 'com_members' . DS . 'models' . DS . 'registration.php');
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \MembersModelRegistration();
 
 		// Do we have a registered user with this email?
 		if ($email && !$uid)
@@ -513,7 +513,7 @@ class Authors extends Base
 		// Instantiate a new registration object
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_members'
 			. DS . 'models' . DS . 'registration.php');
-		$xregistration = new MembersModelRegistration();
+		$xregistration = new \MembersModelRegistration();
 
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->id, 'all', 1);
