@@ -1020,7 +1020,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			$this->_task = $s ? 'setup' : 'edit';
-			return $this->view ( $edit = 1 );
+			return $this->display ( $edit = 1 );
 		}
 	}
 
