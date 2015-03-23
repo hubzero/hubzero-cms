@@ -28,16 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  * @since     Class available since release 1.3.2
  */
+namespace Components\Time\Models;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Database\Relational;
 
 /**
  * Records database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Record extends \Hubzero\Database\Relational
+class Record extends Relational
 {
 	/**
 	 * The table namespace
@@ -71,7 +71,7 @@ class Record extends \Hubzero\Database\Relational
 	 **/
 	public function task()
 	{
-		return $this->belongsToOne('Task');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Task');
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Record extends \Hubzero\Database\Relational
 	 **/
 	public function proxies()
 	{
-		return $this->oneToMany('Proxy', 'user_id', 'user_id');
+		return $this->oneToMany(__NAMESPACE__ . '\\Proxy', 'user_id', 'user_id');
 	}
 
 	/**

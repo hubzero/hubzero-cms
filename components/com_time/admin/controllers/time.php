@@ -26,36 +26,48 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
  */
 
-namespace Components\Time\Models;
+namespace Components\Time\Admin\Controllers;
 
-use Hubzero\Database\Relational;
+use Hubzero\Component\AdminController;
 
 /**
- * Contacts database model
- *
- * @uses \Hubzero\Database\Relational
+ * Controller class for time
  */
-class Contact extends Relational
+class Time extends AdminController
 {
 	/**
-	 * The table namespace
+	 * Display primary page
 	 *
-	 * @var string
-	 **/
-	protected $namespace = 'time_hub';
+	 * @return     void
+	 */
+	public function displayTask()
+	{
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getError() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->display();
+	}
 
 	/**
-	 * Fields and their validation criteria
+	 * Cancel a task
 	 *
-	 * @var array
-	 **/
-	protected $rules = array(
-		'name'  => 'alpha',
-		'phone' => 'phone',
-		'email' => 'email',
-		'role'  => 'alpha'
-	);
+	 * @return     void
+	 */
+	public function cancel()
+	{
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
 }
+

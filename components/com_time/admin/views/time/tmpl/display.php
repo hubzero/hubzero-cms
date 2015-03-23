@@ -23,39 +23,14 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
  */
 
-namespace Components\Time\Models;
+JToolBarHelper::title(Lang::txt('COM_TIME'));
+JToolBarHelper::preferences('com_time', '550');
+?>
 
-use Hubzero\Database\Relational;
-
-/**
- * Contacts database model
- *
- * @uses \Hubzero\Database\Relational
- */
-class Contact extends Relational
-{
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'time_hub';
-
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var array
-	 **/
-	protected $rules = array(
-		'name'  => 'alpha',
-		'phone' => 'phone',
-		'email' => 'email',
-		'role'  => 'alpha'
-	);
-}
+<form action="index.php?option=com_time" name="adminForm" id="item-form">
+	<p class="warning"><?php echo Lang::txt('COM_TIME_NO_FEATURES'); ?></p>
+</form>

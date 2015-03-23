@@ -29,15 +29,16 @@
  * @since     Class available since release 1.3.2
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Tasks database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Task extends \Hubzero\Database\Relational
+class Task extends Relational
 {
 	/**
 	 * The table namespace
@@ -71,7 +72,7 @@ class Task extends \Hubzero\Database\Relational
 	 **/
 	public function records()
 	{
-		return $this->oneToMany('Record');
+		return $this->oneToMany(__NAMESPACE__ . '\\Record');
 	}
 
 	/**
@@ -82,7 +83,7 @@ class Task extends \Hubzero\Database\Relational
 	 **/
 	public function hub()
 	{
-		return $this->belongsToOne('Hub');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Hub');
 	}
 
 	/**

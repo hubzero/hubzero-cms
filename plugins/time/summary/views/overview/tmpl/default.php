@@ -28,6 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Time\Models\Hub;
+use Components\Time\Models\Task;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,12 +47,12 @@ $base = 'index.php?option=com_time&controller=reports';
 
 <div class="plg_time_summary">
 	<div class="filters">
-		<form action="<?php echo JRoute::_($base); ?>">
+		<form action="<?php echo Route::url($base); ?>">
 			<input type="hidden" name="report_type" value="summary" />
 			<div class="grouping">
-				<label for="hub_id"><?php echo JText::_('PLG_TIME_SUMMARY_HUB_NAME'); ?>: </label>
+				<label for="hub_id"><?php echo Lang::txt('PLG_TIME_SUMMARY_HUB_NAME'); ?>: </label>
 				<select name="hub_id" id="hub_id">
-					<option value=""><?php echo JText::_('PLG_TIME_SUMMARY_NO_HUB_SELECTED'); ?></option>
+					<option value=""><?php echo Lang::txt('PLG_TIME_SUMMARY_NO_HUB_SELECTED'); ?></option>
 					<?php foreach (Hub::all()->order('name', 'asc') as $hub) : ?>
 						<?php if ($this->permissions->can('view.report', 'hub', $hub->id)) : ?>
 							<option value="<?php echo $hub->id; ?>" <?php echo ($hub->id == $this->hub_id) ? 'selected="selected"' : ''; ?>>
@@ -60,9 +63,9 @@ $base = 'index.php?option=com_time&controller=reports';
 				</select>
 			</div>
 			<div class="grouping">
-				<label for="task_id"><?php echo JText::_('PLG_TIME_SUMMARY_TASK_NAME'); ?>: </label>
+				<label for="task_id"><?php echo Lang::txt('PLG_TIME_SUMMARY_TASK_NAME'); ?>: </label>
 				<select name="task_id" id="task_id">
-					<option value=""><?php echo JText::_('PLG_TIME_SUMMARY_NO_TASK_SELECTED'); ?></option>
+					<option value=""><?php echo Lang::txt('PLG_TIME_SUMMARY_NO_TASK_SELECTED'); ?></option>
 					<?php $tasks = Task::all()->order('name', 'asc'); ?>
 					<?php if ($this->hub_id) $tasks->whereEquals('hub_id', $this->hub_id); ?>
 					<?php foreach ($tasks as $task) : ?>
@@ -75,17 +78,17 @@ $base = 'index.php?option=com_time&controller=reports';
 				</select>
 			</div>
 			<div class="grouping">
-				<label for="start_date"><?php echo JText::_('PLG_TIME_SUMMARY_START_DATE'); ?>: </label>
+				<label for="start_date"><?php echo Lang::txt('PLG_TIME_SUMMARY_START_DATE'); ?>: </label>
 				<input type="text" id="start_date" name="start_date" class="hadDatepicker" value="<?php echo $this->start; ?>" />
 			</div>
 			<div class="grouping">
-				<label for="end_date"><?php echo JText::_('PLG_TIME_SUMMARY_END_DATE'); ?>: </label>
+				<label for="end_date"><?php echo Lang::txt('PLG_TIME_SUMMARY_END_DATE'); ?>: </label>
 				<input type="text" id="end_date" name="end_date" class="hadDatepicker" value="<?php echo $this->end; ?>" />
 			</div>
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_TIME_SUMMARY_FILTER'); ?>" />
-			<a href="<?php echo JRoute::_($base . '&report_type=summary'); ?>">
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_TIME_SUMMARY_FILTER'); ?>" />
+			<a href="<?php echo Route::url($base . '&report_type=summary'); ?>">
 				<button class="btn btn-warning" type="button">
-					<?php echo JText::_('PLG_TIME_SUMMARY_CLEAR'); ?>
+					<?php echo Lang::txt('PLG_TIME_SUMMARY_CLEAR'); ?>
 				</button>
 			</a>
 		</form>

@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Helpers;
+
+use Components\Time\Models\Hub;
+use Components\Time\Models\Task;
 
 /**
  * Filters helper class for time component
  */
-class TimeFilters
+class Filters
 {
 	/**
 	 * Gets the request filters and returns them
@@ -45,11 +47,11 @@ class TimeFilters
 	public static function getFilters($namespace)
 	{
 		// Set filters for view
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Process query filters
 		$q = $app->getUserState("{$namespace}.query");
-		if ($incoming = JRequest::getVar('q', false))
+		if ($incoming = \JRequest::getVar('q', false))
 		{
 			$q[] = $incoming;
 		}
@@ -66,7 +68,7 @@ class TimeFilters
 		$query = self::filtersMap($q);
 
 		// Turn search into array of results, if not already
-		$search = JRequest::getVar('search', $app->getUserState("{$namespace}.search", ''));
+		$search = \JRequest::getVar('search', $app->getUserState("{$namespace}.search", ''));
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
 		if ($search && !is_array($search))
 		{
@@ -93,8 +95,8 @@ class TimeFilters
 	public static function getColumnNames($table, $exclude=array())
 	{
 		// Get the column names
-		$prefix = JFactory::getApplication()->getCfg('dbprefix');
-		$db     = JFactory::getDbo();
+		$prefix = \JFactory::getApplication()->getCfg('dbprefix');
+		$db     = \JFactory::getDbo();
 		$cols   = $db->getTableFields($prefix.$table);
 
 		$columns = array();
@@ -156,7 +158,7 @@ class TimeFilters
 	public static function filtersMap($q=array())
 	{
 		// Initialize variables
-		$db        = JFactory::getDbo();
+		$db        = \JFactory::getDbo();
 		$filters   = array();
 		$return    = array();
 		$dcolumn   = '';
@@ -179,7 +181,7 @@ class TimeFilters
 						$val['human_column']   = 'User';
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$val['human_value']    = JFactory::getUser($val['value'])->name;
+						$val['human_value']    = \JFactory::getUser($val['value'])->name;
 						$filters[]  = $val;
 					}
 					// Augment name information for multiple fields
@@ -188,7 +190,7 @@ class TimeFilters
 						$val['human_column']   = ucwords(str_replace('_id', '', $val['column']));
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$val['human_value']    = JFactory::getUser($val['value'])->name;
+						$val['human_value']    = \JFactory::getUser($val['value'])->name;
 
 						if (is_null($val['human_value']))
 						{
@@ -268,7 +270,7 @@ class TimeFilters
 	 */
 	public static function filtersOverrides($vals, $column)
 	{
-		$db     = JFactory::getDbo();
+		$db     = \JFactory::getDbo();
 		$return = array();
 
 		if ($column == 'task_id')
@@ -290,7 +292,7 @@ class TimeFilters
 			if ($column == 'assignee_id' || $column == 'liaison_id' || $column == 'user_id')
 			{
 				$x['value']   = $value;
-				$x['display'] = JFactory::getUser($value)->get('name');
+				$x['display'] = \JFactory::getUser($value)->get('name');
 
 				if ($value == 0)
 				{

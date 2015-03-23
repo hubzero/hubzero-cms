@@ -29,15 +29,16 @@
  * @since     Class available since release 1.3.2
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Time user proxies database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Proxy extends \Hubzero\Database\Relational
+class Proxy extends Relational
 {
 	/**
 	 * The table namespace

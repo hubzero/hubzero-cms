@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Models;
+
+use Hubzero\Base\Object;
 
 /**
  * Permissions model for time component
  */
-class TimeModelPermissions extends \Hubzero\Base\Object
+class Permissions extends Object
 {
 	/**
 	 * Option
@@ -59,7 +60,7 @@ class TimeModelPermissions extends \Hubzero\Base\Object
 	public function __construct($option)
 	{
 		$this->option = $option;
-		$this->juser  = JFactory::getUser();
+		$this->juser  = \JFactory::getUser();
 	}
 
 	/**

@@ -26,36 +26,31 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
  */
 
-namespace Components\Time\Models;
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
-use Hubzero\Database\Relational;
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 
-/**
- * Contacts database model
- *
- * @uses \Hubzero\Database\Relational
- */
-class Contact extends Relational
-{
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'time_hub';
+$this->css()
+     ->css($this->controller);
+?>
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var array
-	 **/
-	protected $rules = array(
-		'name'  => 'alpha',
-		'phone' => 'phone',
-		'email' => 'email',
-		'role'  => 'alpha'
-	);
-}
+<div class="com_time_permissions_container">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="POST">
+		<div class="permissions-box">
+			<fieldset class="permissions">
+				<?php echo $this->permissions->label; ?>
+				<?php echo $this->permissions->input; ?>
+			</fieldset>
+		</div>
+		<input type="hidden" name="task" value="save" />
+		<input type="hidden" name="scope" value="<?php echo $this->scope; ?>" />
+		<input type="hidden" name="scope_id" value="<?php echo $this->scope_id; ?>" />
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_TIME_PERMISSIONS_SAVE'); ?>" />
+			<button type="button" class="btn btn-secondary cancel"><?php echo Lang::txt('COM_TIME_PERMISSIONS_CANCEL'); ?></button>
+		</p>
+	</form>
+</div>

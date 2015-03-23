@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Time\Models\Hub;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -54,17 +56,17 @@ foreach (JRequest::get('GET') as $key => $value)
 
 <div class="plg_time_csv">
 	<?php if ($this->records->count()) : ?>
-		<a target="_blank" href="<?php echo JRoute::_($base . '&' . JURI::getInstance()->getQuery() . '&method=download'); ?>">
+		<a target="_blank" href="<?php echo Route::url($base . '&' . JURI::getInstance()->getQuery() . '&method=download'); ?>">
 			<div class="download btn icon-save">Download</div>
 		</a>
 	<?php endif; ?>
 	<div class="filters">
-		<form action="<?php echo JRoute::_($base); ?>">
+		<form action="<?php echo Route::url($base); ?>">
 			<input type="hidden" name="report_type" value="csv" />
 			<div class="grouping">
-				<label for="hub_id"><?php echo JText::_('PLG_TIME_CSV_HUB_NAME'); ?>: </label>
+				<label for="hub_id"><?php echo Lang::txt('PLG_TIME_CSV_HUB_NAME'); ?>: </label>
 				<select name="hub_id" id="hub_id">
-					<option value=""><?php echo JText::_('PLG_TIME_CSV_NO_HUB_SELECTED'); ?></option>
+					<option value=""><?php echo Lang::txt('PLG_TIME_CSV_NO_HUB_SELECTED'); ?></option>
 					<?php foreach (Hub::all()->order('name', 'asc') as $hub) : ?>
 						<?php if ($this->permissions->can('view.report', 'hub', $hub->id)) : ?>
 							<option value="<?php echo $hub->id; ?>" <?php echo ($hub->id == $this->hub_id) ? 'selected="selected"' : ''; ?>>
@@ -75,37 +77,37 @@ foreach (JRequest::get('GET') as $key => $value)
 				</select>
 			</div>
 			<div class="grouping">
-				<label for="start_date"><?php echo JText::_('PLG_TIME_CSV_START_DATE'); ?>: </label>
+				<label for="start_date"><?php echo Lang::txt('PLG_TIME_CSV_START_DATE'); ?>: </label>
 				<input type="text" id="start_date" name="start_date" class="hadDatepicker" value="<?php echo $this->start; ?>" />
 			</div>
 			<div class="grouping">
-				<label for="end_date"><?php echo JText::_('PLG_TIME_CSV_END_DATE'); ?>: </label>
+				<label for="end_date"><?php echo Lang::txt('PLG_TIME_CSV_END_DATE'); ?>: </label>
 				<input type="text" id="end_date" name="end_date" class="hadDatepicker" value="<?php echo $this->end; ?>" />
 			</div>
 			<div class="grouping">
-				<div><?php echo JText::_('PLG_TIME_CSV_FIELDS'); ?>:</div>
+				<div><?php echo Lang::txt('PLG_TIME_CSV_FIELDS'); ?>:</div>
 				<input type="checkbox" name="fields-hub" value="1" <?php echo ($hub = JRequest::getInt('fields-hub', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-hub"><?php echo JText::_('PLG_TIME_CSV_HUB'); ?></label>
+				<label for="fields-hub"><?php echo Lang::txt('PLG_TIME_CSV_HUB'); ?></label>
 				<br />
 				<input type="checkbox" name="fields-task" value="1" <?php echo ($task = JRequest::getInt('fields-task', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-task"><?php echo JText::_('PLG_TIME_CSV_TASK'); ?></label>
+				<label for="fields-task"><?php echo Lang::txt('PLG_TIME_CSV_TASK'); ?></label>
 				<br />
 				<input type="checkbox" name="fields-user" value="1" <?php echo ($user = JRequest::getInt('fields-user', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-user"><?php echo JText::_('PLG_TIME_CSV_USER'); ?></label>
+				<label for="fields-user"><?php echo Lang::txt('PLG_TIME_CSV_USER'); ?></label>
 				<br />
 				<input type="checkbox" name="fields-date" value="1" <?php echo ($date = JRequest::getInt('fields-date', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-date"><?php echo JText::_('PLG_TIME_CSV_DATE'); ?></label>
+				<label for="fields-date"><?php echo Lang::txt('PLG_TIME_CSV_DATE'); ?></label>
 				<br />
 				<input type="checkbox" name="fields-time" value="1" <?php echo ($time = JRequest::getInt('fields-time', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-time"><?php echo JText::_('PLG_TIME_CSV_TIME'); ?></label>
+				<label for="fields-time"><?php echo Lang::txt('PLG_TIME_CSV_TIME'); ?></label>
 				<br />
 				<input type="checkbox" name="fields-description" value="1" <?php echo ($description = JRequest::getInt('fields-description', $all)) ? 'checked="checked"' : ''; ?>/>
-				<label for="fields-description"><?php echo JText::_('PLG_TIME_CSV_DESCRIPTION'); ?></label>
+				<label for="fields-description"><?php echo Lang::txt('PLG_TIME_CSV_DESCRIPTION'); ?></label>
 			</div>
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_TIME_CSV_FILTER'); ?>" />
-			<a href="<?php echo JRoute::_($base . '&report_type=csv'); ?>">
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_TIME_CSV_FILTER'); ?>" />
+			<a href="<?php echo Route::url($base . '&report_type=csv'); ?>">
 				<button class="btn btn-warning" type="button">
-					<?php echo JText::_('PLG_TIME_CSV_CLEAR'); ?>
+					<?php echo Lang::txt('PLG_TIME_CSV_CLEAR'); ?>
 				</button>
 			</a>
 		</form>
@@ -116,32 +118,32 @@ foreach (JRequest::get('GET') as $key => $value)
 			<div class="preview-header">
 				<?php if ($hub) : ?>
 					<div class="preview-field hname">
-						<?php echo JText::_('PLG_TIME_CSV_HUB'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_HUB'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($task) : ?>
 					<div class="preview-field pname">
-						<?php echo JText::_('PLG_TIME_CSV_TASK'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_TASK'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($user) : ?>
 					<div class="preview-field uname">
-						<?php echo JText::_('PLG_TIME_CSV_USER'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_USER'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($date) : ?>
 					<div class="preview-field date">
-						<?php echo JText::_('PLG_TIME_CSV_DATE'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_DATE'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($time) : ?>
 					<div class="preview-field time">
-						<?php echo JText::_('PLG_TIME_CSV_TIME'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_TIME'); ?>
 					</div>
 				<?php endif; ?>
 				<?php if ($description) : ?>
 					<div class="preview-field description">
-						<?php echo JText::_('PLG_TIME_CSV_DESCRIPTION'); ?>
+						<?php echo Lang::txt('PLG_TIME_CSV_DESCRIPTION'); ?>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -183,6 +185,6 @@ foreach (JRequest::get('GET') as $key => $value)
 			<?php endforeach; ?>
 		</div>
 	<?php else : ?>
-		<p class="warning no-data"><?php echo JText::_('PLG_TIME_CSV_NO_DATA_AVAILABLE'); ?></p>
+		<p class="warning no-data"><?php echo Lang::txt('PLG_TIME_CSV_NO_DATA_AVAILABLE'); ?></p>
 	<?php endif; ?>
 </div>

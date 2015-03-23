@@ -29,15 +29,16 @@
  * @since     Class available since release 1.3.2
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Time liaisons database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Liaison extends \Hubzero\Database\Relational
+class Liaison extends Relational
 {
 	/**
 	 * Runs extra setup code when creating a new model

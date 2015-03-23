@@ -24,38 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
  */
 
-namespace Components\Time\Models;
+namespace Components\Time\Admin;
 
-use Hubzero\Database\Relational;
+$option = \JRequest::getCmd('option', 'com_time');
 
-/**
- * Contacts database model
- *
- * @uses \Hubzero\Database\Relational
- */
-class Contact extends Relational
+$controllerName = \JRequest::getCmd('controller', 'time');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'time_hub';
-
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var array
-	 **/
-	protected $rules = array(
-		'name'  => 'alpha',
-		'phone' => 'phone',
-		'email' => 'email',
-		'role'  => 'alpha'
-	);
+	$controllerName = 'time';
 }
+
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+// Instantiate controller
+$controller = new $controllerName();
+$controller->execute();
+$controller->redirect();

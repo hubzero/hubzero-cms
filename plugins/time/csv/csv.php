@@ -28,6 +28,11 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Time\Models\Permissions;
+use Components\Time\Models\Record;
+use Components\Time\Models\Task;
+use Components\Time\Models\Hub;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -76,7 +81,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		}
 
 		// Pass permissions to view
-		$view->permissions = new TimeModelPermissions('com_time');
+		$view->permissions = new Permissions('com_time');
 		$view->records     = $records->including('task.hub', 'user');
 
 		return $view->loadTemplate();
@@ -95,7 +100,7 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		$hub_id    = JRequest::getInt('hub_id', null);
 		$start     = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
 		$end       = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$records    = Record::all()->where('date', '>=', $start)
+		$records   = Record::all()->where('date', '>=', $start)
 		                           ->where('date', '<=', $end);
 		                           // @FIXME: order by non-native field
 		                           //->order('h.name', 'asc');
@@ -131,31 +136,31 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		$row = array();
 		if ($hub = JRequest::getInt('fields-hub', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_HUB');
+			$row[] = Lang::txt('PLG_TIME_CSV_HUB');
 		}
 		if ($task = JRequest::getInt('fields-task', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_TASK');
+			$row[] = Lang::txt('PLG_TIME_CSV_TASK');
 		}
 		if ($user = JRequest::getInt('fields-user', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_USER');
+			$row[] = Lang::txt('PLG_TIME_CSV_USER');
 		}
 		if ($date = JRequest::getInt('fields-date', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_DATE');
+			$row[] = Lang::txt('PLG_TIME_CSV_DATE');
 		}
 		if ($time = JRequest::getInt('fields-time', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_TIME');
+			$row[] = Lang::txt('PLG_TIME_CSV_TIME');
 		}
 		if ($description = JRequest::getInt('fields-description', $all))
 		{
-			$row[] = JText::_('PLG_TIME_CSV_DESCRIPTION');
+			$row[] = Lang::txt('PLG_TIME_CSV_DESCRIPTION');
 		}
 		echo implode(',', $row) . "\n";
 
-		$permissions = new TimeModelPermissions('com_time');
+		$permissions = new Permissions('com_time');
 
 		foreach ($records->including('task.hub', 'user') as $record)
 		{

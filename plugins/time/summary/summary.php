@@ -28,6 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Time\Models\Permissions;
+use Components\Time\Models\Record;
+use Components\Time\Models\Task;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -63,7 +67,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get vars from request
-		$permissions   = new TimeModelPermissions('com_time');
+		$permissions   = new Permissions('com_time');
 		$view->hub_id  = JRequest::getInt('hub_id', null);
 		$view->task_id = JRequest::getInt('task_id', null);
 		$view->start   = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
@@ -141,7 +145,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getTimePerTask()
 	{
-		$permissions = new TimeModelPermissions('com_time');
+		$permissions = new Permissions('com_time');
 		$hub_id      = JRequest::getInt('hub_id',  null);
 		$task_id     = JRequest::getInt('task_id', null);
 		$start       = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));

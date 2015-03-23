@@ -29,15 +29,18 @@
  * @since     Class available since release 1.3.2
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Time\Models;
+
+use Hubzero\Database\Relational;
+use Hubzero\Utility\String;
+use Hubzero\Base\Object;
 
 /**
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Hub extends \Hubzero\Database\Relational
+class Hub extends Relational
 {
 	/**
 	 * The table namespace
@@ -93,7 +96,7 @@ class Hub extends \Hubzero\Database\Relational
 	 **/
 	public function tasks()
 	{
-		return $this->oneToMany('Task');
+		return $this->oneToMany(__NAMESPACE__ . '\\Task');
 	}
 
 	/**
@@ -104,7 +107,7 @@ class Hub extends \Hubzero\Database\Relational
 	 **/
 	public function records()
 	{
-		return $this->oneToManyThrough('Record', 'Task');
+		return $this->oneToManyThrough(__NAMESPACE__ . '\\Record', __NAMESPACE__ . '\\Task');
 	}
 
 	/**
@@ -115,7 +118,7 @@ class Hub extends \Hubzero\Database\Relational
 	 **/
 	public function contacts()
 	{
-		return $this->oneToMany('Contact');
+		return $this->oneToMany(__NAMESPACE__ . '\\Contact');
 	}
 
 	/**
@@ -150,7 +153,7 @@ class Hub extends \Hubzero\Database\Relational
 				{
 					if ($shorten)
 					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+						$content = String::truncate($content, $shorten, array('html' => true));
 					}
 					return $content;
 				}
@@ -164,7 +167,7 @@ class Hub extends \Hubzero\Database\Relational
 					'domain'   => $this->id
 				);
 
-				$object  = new \Hubzero\Base\Object;
+				$object  = new Object;
 				$object->set('notes', stripslashes($this->get('notes')));
 
 				\JPluginHelper::importPlugin('content');
@@ -187,7 +190,7 @@ class Hub extends \Hubzero\Database\Relational
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
+					$content = String::truncate($content, $shorten);
 				}
 
 				return $content;
