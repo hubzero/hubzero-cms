@@ -7609,7 +7609,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initialize Git
-		if (($case == 'files' || preg_match("/tools:/", $case)) && is_dir( $this->prefix. $path ))
+		if (($case == 'files' || preg_match("/tools:/", $case)) && is_dir( $this->prefix. $path )
+		&& $this->_project->state == 1)
 		{
 			$this->_git->iniGit($path);
 		}
