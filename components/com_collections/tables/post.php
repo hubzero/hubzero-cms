@@ -251,9 +251,19 @@ class Post extends \JTable
 		{
 			$where[] = "p.item_id=" . $this->_db->Quote($filters['item_id']);
 		}
-		if (isset($filters['state']) && $filters['state'] >= 0)
+		if (isset($filters['state']))
 		{
-			$where[] = "i.state=" . $this->_db->Quote($filters['state']);
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "i.state IN (" . implode(',', $filters['state']) . ")";
+				$where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
+			}
+			else if ($filters['state'] >= 0)
+			{
+				$where[] = "i.state=" . $this->_db->Quote($filters['state']);
+				$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			}
 		}
 		if (isset($filters['access']))
 		{

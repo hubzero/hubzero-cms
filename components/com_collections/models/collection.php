@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2005-2011 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Collections\Models;
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
-use Components\Collections\Tables;
-use Hubzero\Base\ItemList;
-use Hubzero\User\Group;
-use Hubzero\Utility\String;
-
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'collection.php');
-require_once(__DIR__ . DS . 'post.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'collection.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
  * Collections model class for a collection
  */
-class Collection extends Base
+class CollectionsModelCollection extends CollectionsModelAbstract
 {
 	/**
 	 * Authorization checked?
@@ -55,7 +51,7 @@ class Collection extends Base
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = '\\Components\\Collections\\Tables\\Collection';
+	protected $_tbl_name = 'CollectionsTableCollection';
 
 	/**
 	 * Model context
@@ -72,21 +68,21 @@ class Collection extends Base
 	private $_posts = null;
 
 	/**
-	 * Post
+	 * CollectionsModelPost
 	 *
 	 * @var object
 	 */
 	private $_post = null;
 
 	/**
-	 * Item
+	 * CollectionsModelItem
 	 *
 	 * @var object
 	 */
 	private $_item = null;
 
 	/**
-	 * Following
+	 * CollectionsModelFollowing
 	 *
 	 * @var object
 	 */
@@ -109,10 +105,9 @@ class Collection extends Base
 	 */
 	public function __construct($oid=null, $object_id=0, $object_type='member')
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 
-		$tbl = $this->_tbl_name;
-		$this->_tbl = new $tbl($this->_db);
+		$this->_tbl = new CollectionsTableCollection($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -139,12 +134,12 @@ class Collection extends Base
 	}
 
 	/**
-	 * Returns a reference to this object
+	 * Returns a reference to CollectionsModelCollection object
 	 *
-	 * @param   mixed    $oid          ID, array, or object
-	 * @param   integer  $object_id    ID
-	 * @param   string   $object_type  [member, group]
-	 * @return  object
+	 * @param   mixed   $oid         ID, array, or object
+	 * @param   integer $object_id   ID
+	 * @param   string  $object_type [member, group]
+	 * @return  object  CollectionsModelCollection
 	 */
 	static function &getInstance($oid=null, $object_id=0, $object_type='member')
 	{
@@ -174,13 +169,13 @@ class Collection extends Base
 	 */
 	public function setup($object_id, $object_type)
 	{
-		$lang = \JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_collections');
 
 		$result = array(
 			'id'          => 0,
-			'title'       => Lang::txt('COM_COLLECTIONS_DEFAULT_TITLE'),
-			'description' => Lang::txt('COM_COLLECTIONS_DEFAULT_DESC'),
+			'title'       => JText::_('COM_COLLECTIONS_DEFAULT_TITLE'),
+			'description' => JText::_('COM_COLLECTIONS_DEFAULT_DESC'),
 			'object_id'   => $object_id,
 			'object_type' => $object_type,
 			'is_default'  => 1,
@@ -189,7 +184,7 @@ class Collection extends Base
 		);
 		if (!$result['created_by'])
 		{
-			$result['created_by'] = \JFactory::getUser()->get('id');
+			$result['created_by'] = JFactory::getUser()->get('id');
 		}
 		$this->bind($result);
 
@@ -199,8 +194,8 @@ class Collection extends Base
 	/**
 	 * Store changes
 	 *
-	 * @param   boolean  $check  Validate data?
-	 * @return  boolean  True on success, False on error
+	 * @param   boolean $check Validate data?
+	 * @return  boolean True on success, False on error
 	 */
 	public function store($check=true)
 	{
@@ -212,7 +207,7 @@ class Collection extends Base
 		// Create an Item entry
 		// This is because even collections can be reposted.
 		// Thus, there needs to be an item entry to "repost"
-		$item = new Tables\Item($this->_db);
+		$item = new CollectionsTableItem($this->_db);
 		$item->loadType($this->get('id'), 'collection');
 		if (!$item->get('id'))
 		{
@@ -233,19 +228,27 @@ class Collection extends Base
 			}
 		}
 
+		/*if (!$this->getError() && $this->get('state') == self::APP_STATE_DELETED)
+		{
+			foreach ($this->posts(array('access' => array(0, 1, 2, 4))) as $post)
+			{
+				$post->delete();
+			}
+		}*/
+
 		return true;
 	}
 
 	/**
 	 * Get the item entry for a collection
 	 *
-	 * @return  object
+	 * @return  object CollectionsModelItem
 	 */
 	public function item()
 	{
-		if (!($this->_item instanceof Item))
+		if (!($this->_item instanceof CollectionsModelItem))
 		{
-			$item = new Tables\Item($this->_db);
+			$item = new CollectionsTableItem($this->_db);
 			$item->loadType($this->get('id'), 'collection');
 			if (!$item->get('id'))
 			{
@@ -266,7 +269,7 @@ class Collection extends Base
 				}
 			}
 
-			$this->_item = new Item($item);
+			$this->_item = new CollectionsModelItem($item);
 		}
 		return $this->_item;
 	}
@@ -280,7 +283,7 @@ class Collection extends Base
 	 */
 	public function reposts()
 	{
-		//$post = new Tables\Post($this->_db);
+		//$post = new CollectionsTablePost($this->_db);
 		//$post->loadByBoard($this->get('id'), $this->item()->get('id'));
 
 		return null;
@@ -303,7 +306,7 @@ class Collection extends Base
 			$this->_post = null;
 
 			// If the list of all posts is available ...
-			if (isset($this->_posts) && $this->_posts instanceof ItemList)
+			if (isset($this->_posts) && $this->_posts instanceof \Hubzero\Base\ItemList)
 			{
 				// Find a post in the list that matches the ID passed
 				foreach ($this->posts() as $key => $post)
@@ -319,7 +322,7 @@ class Collection extends Base
 
 			if (!$this->_post)
 			{
-				$this->_post = Post::getInstance($id);
+				$this->_post = CollectionsModelPost::getInstance($id);
 			}
 		}
 		// Return current post
@@ -347,7 +350,7 @@ class Collection extends Base
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = (\JFactory::getUser()->get('guest') ? 0 : array(0, 1));
+			$filters['access'] = (JFactory::getUser()->get('guest') ? 0 : array(0, 1));
 		}
 		if (!isset($filters['sort']))
 		{
@@ -360,14 +363,14 @@ class Collection extends Base
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new Tables\Post($this->_db);
+			$tbl = new CollectionsTablePost($this->_db);
 
 			return $tbl->getCount($filters);
 		}
 
-		if (!isset($this->_posts) || !($this->_posts instanceof ItemList))
+		if (!isset($this->_posts) || !($this->_posts instanceof \Hubzero\Base\ItemList))
 		{
-			$tbl = new Tables\Post($this->_db);
+			$tbl = new CollectionsTablePost($this->_db);
 
 			if ($results = $tbl->getRecords($filters))
 			{
@@ -378,17 +381,17 @@ class Collection extends Base
 				}
 
 				// Get all the assets for this list of items
-				$ba = new Tables\Asset($this->_db);
+				$ba = new CollectionsTableAsset($this->_db);
 				$assets = $ba->getRecords(array('item_id' => $ids));
 
 				// Get all the tags for this list of items
-				$bt = new Tags();
+				$bt = new CollectionsModelTags();
 				$tags = $bt->getTagsForIds($ids);
 
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)
 				{
-					$results[$key] = new Post($result);
+					$results[$key] = new CollectionsModelPost($result);
 
 					if ($assets)
 					{
@@ -424,7 +427,7 @@ class Collection extends Base
 				$results = array();
 			}
 
-			$this->_posts = new ItemList($results);
+			$this->_posts = new \Hubzero\Base\ItemList($results);
 		}
 
 		return $this->_posts;
@@ -463,7 +466,7 @@ class Collection extends Base
 			case 'followers':
 				if (!isset($this->_counts[$what]))
 				{
-					$tbl = new Tables\Following($this->_db);
+					$tbl = new CollectionsTableFollowing($this->_db);
 					$this->_counts[$what] = $tbl->count(array(
 						'following_type' => 'collection',
 						'following_id'   => $this->get('id')
@@ -478,7 +481,7 @@ class Collection extends Base
 			case 'vote':
 				if ($this->get('likes', null) == null)
 				{
-					$tbl = new Tables\Item($this->_db);
+					$tbl = new CollectionsTableItem($this->_db);
 					$this->set('likes', $tbl->getLikes(array(
 						'object_type' => 'collection',
 						'object_id'   => $this->get('id')
@@ -491,7 +494,7 @@ class Collection extends Base
 			case 'repost':
 				if ($this->get('reposts', null) == null)
 				{
-					$tbl = new Tables\Item($this->_db);
+					$tbl = new CollectionsTableItem($this->_db);
 					$this->set('reposts', $tbl->getReposts(array(
 						'object_type' => 'collection',
 						'object_id'   => $this->get('id')
@@ -532,10 +535,10 @@ class Collection extends Base
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = \JFactory::getUser()->get('id');
+				$follower_id = JFactory::getUser()->get('id');
 			}
 
-			$follow = new Following($this->get('id'), 'collection', $follower_id, $follower_type);
+			$follow = new CollectionsModelFollowing($this->get('id'), 'collection', $follower_id, $follower_type);
 			if ($follow->exists())
 			{
 				$this->_following = true;
@@ -553,11 +556,11 @@ class Collection extends Base
 	 */
 	public function unfollow($follower_id=null, $follower_type='member')
 	{
-		$follow = new Following($this->get('id'), 'collection', $follower_id, $follower_type);
+		$follow = new CollectionsModelFollowing($this->get('id'), 'collection', $follower_id, $follower_type);
 
 		if (!$follow->exists())
 		{
-			$this->setError(Lang::txt('Item is not being followed'));
+			$this->setError(JText::_('Item is not being followed'));
 			return false;
 		}
 
@@ -573,13 +576,13 @@ class Collection extends Base
 	/**
 	 * Follow this collection
 	 *
-	 * @param   integer  $follower_id    ID of the follower
-	 * @param   string   $follower_type  Type of the follower [member, group]
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
 	 * @return  boolean
 	 */
 	public function follow($follower_id=null, $follower_type='member')
 	{
-		$follow = new Following();
+		$follow = new CollectionsModelFollowing();
 		$follow->bind(array(
 			'following_id'   => $this->get('id'),
 			'following_type' => 'collection',
@@ -602,26 +605,7 @@ class Collection extends Base
 	 */
 	public function link()
 	{
-		switch ($this->get('object_type'))
-		{
-			case 'group':
-				$group = Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups';
-				if ($group)
-				{
-					$href .= '&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
-				}
-			break;
-
-			case 'member':
-				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
-			break;
-
-			default:
-				$href = 'index.php?option=com_collections&task=all&id=' . $this->get('id');
-			break;
-		}
-		return $href;
+		return $this->_adapter()->build();
 	}
 
 	/**
@@ -643,7 +627,7 @@ class Collection extends Base
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', \JRequest::getCmd('option')),
+						'option'   => $this->get('option', JRequest::getCmd('option')),
 						'scope'    => $this->get('scope', 'collection'),
 						'pagename' => $this->get('alias'),
 						'pageid'   => 0,
@@ -679,7 +663,7 @@ class Collection extends Base
 
 		if ($shorten)
 		{
-			$content = String::truncate($content, $shorten, $options);
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -695,19 +679,21 @@ class Collection extends Base
 		if (!$this->_adapter)
 		{
 			$scope = strtolower($this->get('object_type'));
-			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
+			$cls = 'CollectionsModelAdapter' . ucfirst($scope);
 
 			if (!class_exists($cls))
 			{
 				$path = __DIR__ . '/adapters/' . $scope . '.php';
 				if (!is_file($path))
 				{
-					throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
 				}
 				include_once($path);
 			}
 
 			$this->_adapter = new $cls($this->get('object_id'));
+			$this->_adapter->set('id', $this->get('id'));
+			$this->_adapter->set('alias', $this->get('alias'));
 		}
 		return $this->_adapter;
 	}
