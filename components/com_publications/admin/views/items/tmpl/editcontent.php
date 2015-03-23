@@ -30,6 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+
 $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')

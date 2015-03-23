@@ -430,7 +430,7 @@
 	.crumbs {
 		background: #CCC;
 		font-size: 85%;
-		padding: 0.2em 0.5em;
+		padding: 0.5em 1em;
 	}
 	.crumbs a {
 		border-bottom: 1px dotted #333;

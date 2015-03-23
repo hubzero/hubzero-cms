@@ -32,6 +32,8 @@ namespace Components\Publications\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
+use Components\Publications\Helpers;
+use Components\Publications\Models;
 
 /**
  * Manage publications
@@ -59,11 +61,6 @@ class Items extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
-
 		// Get configuration
 		$app = \JFactory::getApplication();
 		$config = \JFactory::getConfig();
@@ -109,7 +106,7 @@ class Items extends AdminController
 			''
 		));
 
-		$model = new \Components\Publications\Tables\Publication($this->database);
+		$model = new Tables\Publication($this->database);
 
 		// Get record count
 		$this->view->total = $model->getCount($this->view->filters, NULL, true);
@@ -117,21 +114,13 @@ class Items extends AdminController
 		// Get publications
 		$this->view->rows = $model->getRecords($this->view->filters, NULL, true);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new \JPagination(
-			count($this->view->total),
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Get component config
 		$pconfig = Component::params( $this->_option );
 		$this->view->config = $pconfig;
 
 		// Get <select> of types
 		// Get types
-		$rt = new \Components\Publications\Tables\Category( $this->database );
+		$rt = new Tables\Category( $this->database );
 		$this->view->categories = $rt->getContribCategories();
 
 		// Set any errors
@@ -158,12 +147,7 @@ class Items extends AdminController
 		$this->view->config = $this->config;
 
 		// Use new curation flow?
-		$this->view->useBlocks  = $this->view->config->get('curation', 0);
-
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
+		$this->view->useBlocks  = $this->_curated;
 
 		// Incoming publication ID
 		$id = \JRequest::getVar('id', array(0));
@@ -194,10 +178,10 @@ class Items extends AdminController
 		$this->view->return['status'] 		= \JRequest::getVar('status', '');
 
 		// Instantiate publication object
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objP = new Tables\Publication( $this->database );
 
 		// Instantiate Version
-		$this->view->row = new \Components\Publications\Tables\Version($this->database);
+		$this->view->row = new Tables\Version($this->database);
 
 		// Check that version exists
 		$version = $this->view->row->checkVersion($id, $version) ? $version : 'default';
@@ -266,7 +250,7 @@ class Items extends AdminController
 
 		// Build publication path
 		$base_path = $this->view->config->get('webpath');
-		$path = \Components\Publications\Helpers\Html::buildPubPath($id, $this->view->row->id, $base_path);
+		$path = Helpers\Html::buildPubPath($id, $this->view->row->id, $base_path);
 
 		// Archival package?
 		$this->view->archPath = PATH_APP . $path . DS
@@ -279,17 +263,17 @@ class Items extends AdminController
 		);
 
 		// Get category
-		$this->view->pub->_category = new \Components\Publications\Tables\Category( $this->database );
+		$this->view->pub->_category = new Tables\Category( $this->database );
 		$this->view->pub->_category->load($this->view->pub->category);
 		$this->view->pub->_category->_params = new \JParameter( $this->view->pub->_category->params );
 
 		// Get master type info
-		$mt = new \Components\Publications\Tables\MasterType( $this->database );
+		$mt = new Tables\MasterType( $this->database );
 		$this->view->pub->_type = $mt->getType($this->view->pub->base);
 		$this->view->typeParams = new \JParameter( $this->view->pub->_type->params );
 
 		// Get attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+		$pContent = new Tables\Attachment( $this->database );
 		$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
 
 		// Curation
@@ -301,19 +285,19 @@ class Items extends AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+			$this->view->pub->_curationModel = new Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
 		}
 
 		// Get pub authors
-		$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
+		$pAuthors 			= new Tables\Author( $this->database );
 		$this->view->pub->_authors 		= $pAuthors->getAuthors($this->view->pub->version_id);
 		$this->view->pub->_submitter 	= $pAuthors->getSubmitter($this->view->pub->version_id, $this->view->pub->created_by);
 
 		// Get tags on this item
-		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->database );
+		$tagsHelper = new Helpers\Tags( $this->database );
 		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0, true);
 
 		$mytagarray = array();
@@ -324,7 +308,7 @@ class Items extends AdminController
 		$this->view->tags = implode(', ', $mytagarray);
 
 		// Get selected license
-		$objL = new \Components\Publications\Tables\License( $this->database );
+		$objL = new Tables\License( $this->database );
 		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
 		$this->view->licenses = $objL->getLicenses();
 
@@ -359,7 +343,7 @@ class Items extends AdminController
 		$el 	= \JRequest::getInt( 'el', 0 );
 		$v 		= \JRequest::getInt( 'v', 0 );
 
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
+		$objP = new Tables\Publication( $this->database );
 
 		// Get publication information
 		$this->view->pub = $objP->getPublication($id, $v);
@@ -388,12 +372,12 @@ class Items extends AdminController
 			$this->view->pub->_project->load($this->view->pub->project_id);
 
 			// Get master type info
-			$mt = new \Components\Publications\Tables\MasterType( $this->database );
+			$mt = new Tables\MasterType( $this->database );
 			$this->view->pub->_type = $mt->getType($this->view->pub->base);
 			$this->view->typeParams = new \JParameter( $this->view->pub->_type->params );
 
 			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+			$pContent = new Tables\Attachment( $this->database );
 			$this->view->pub->_attachments = $pContent->sortAttachments ( $this->view->pub->version_id );
 
 			// Get manifest from either version record (published) or master type
@@ -402,7 +386,7 @@ class Items extends AdminController
 						: $this->view->pub->_type->curation;
 
 			// Get curation model
-			$this->view->pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+			$this->view->pub->_curationModel = new Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$this->view->pub->_curationModel->setPubAssoc($this->view->pub);
@@ -427,11 +411,6 @@ class Items extends AdminController
 			}
 		}
 
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
-
 		// Output the HTML
 		$this->view->display();
 
@@ -455,7 +434,7 @@ class Items extends AdminController
 		$attachments = \JRequest::getVar( 'attachments', array(), 'request', 'array' );
 
 		// Load publication model
-		$this->model  = new \Components\Publications\Models\Publication( $id, $version);
+		$this->model  = new Models\Publication( $id, $version);
 
 		if (!$this->model->exists())
 		{
@@ -478,7 +457,7 @@ class Items extends AdminController
 			{
 				foreach ($attachments as $attachId => $attach )
 				{
-					$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+					$pContent = new Tables\Attachment( $this->database );
 					if ($pContent->load($attachId))
 					{
 						$pContent->title = $attach['title'];
@@ -521,7 +500,7 @@ class Items extends AdminController
 
 		$this->view->setLayout('editauthor');
 
-		$this->view->author = new \Components\Publications\Tables\Author( $this->database );
+		$this->view->author = new Tables\Author( $this->database );
 		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
 		{
 			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
@@ -531,8 +510,8 @@ class Items extends AdminController
 		// Version ID
 		$vid = \JRequest::getInt( 'vid', $this->view->author->publication_version_id );
 
-		$this->view->row = new \Components\Publications\Tables\Version( $this->database );
-		$this->view->pub = new \Components\Publications\Tables\Publication( $this->database );
+		$this->view->row = new Tables\Version( $this->database );
+		$this->view->pub = new Tables\Publication( $this->database );
 
 		// Load version
 		if (!$this->view->row->load($vid))
@@ -570,11 +549,6 @@ class Items extends AdminController
 			}
 		}
 
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -589,7 +563,7 @@ class Items extends AdminController
 		// Incoming
 		$aid = \JRequest::getInt( 'aid', 0 );
 
-		$pAuthor = new \Components\Publications\Tables\Author( $this->database );
+		$pAuthor = new Tables\Author( $this->database );
 		if (!$pAuthor->load($aid))
 		{
 			$this->setRedirect(
@@ -603,7 +577,7 @@ class Items extends AdminController
 		$url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 
 		// Instantiate Version
-		$row = new \Components\Publications\Tables\Version($this->database);
+		$row = new Tables\Version($this->database);
 		if ($row->load($pAuthor->publication_version_id))
 		{
 			$url .= '&task=edit' . '&id[]=' . $row->publication_id
@@ -657,7 +631,7 @@ class Items extends AdminController
 		}
 
 		// Load publication model
-		$model  = new \Components\Publications\Models\Publication( $id, $version);
+		$model  = new Models\Publication( $id, $version);
 
 		if (!$model->exists())
 		{
@@ -677,7 +651,7 @@ class Items extends AdminController
 		$lang->load('plg_projects_publications');
 
 		// Save via block
-		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+		$blocksModel = new Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
 		$block->reorder(NULL, 0, $model, $this->juser->get('id'));
@@ -696,10 +670,10 @@ class Items extends AdminController
 			if ($model->version->doi)
 			{
 				// Get DOI service
-				$doiService = new \Components\Publications\Models\Doi($model);
+				$doiService = new Models\Doi($model);
 
 				// Get updated authors
-				$pAuthor = new \Components\Publications\Tables\Author( $this->database );
+				$pAuthor = new Tables\Author( $this->database );
 				$authors = $pAuthor->getAuthors($model->version->id);
 				$doiService->set('authors', $authors);
 
@@ -743,7 +717,7 @@ class Items extends AdminController
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
 
 		// Load publication model
-		$model  = new \Components\Publications\Models\Publication( $id, $version);
+		$model  = new Models\Publication( $id, $version);
 
 		if (!$model->exists())
 		{
@@ -763,7 +737,7 @@ class Items extends AdminController
 		$lang->load('plg_projects_publications');
 
 		// Save via block
-		$blocksModel = new \Components\Publications\Models\Blocks($this->database);
+		$blocksModel = new Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
 		if ($author)
@@ -790,10 +764,10 @@ class Items extends AdminController
 			if ($model->version->doi)
 			{
 				// Get DOI service
-				$doiService = new \Components\Publications\Models\Doi($model);
+				$doiService = new Models\Doi($model);
 
 				// Get updated authors
-				$pAuthor = new \Components\Publications\Tables\Author( $this->database );
+				$pAuthor = new Tables\Author( $this->database );
 				$authors = $pAuthor->getAuthors($model->version->id);
 				$doiService->set('authors', $authors);
 
@@ -853,7 +827,7 @@ class Items extends AdminController
 		}
 
 		// Load publication model
-		$this->model  = new \Components\Publications\Models\Publication( $id, $version);
+		$this->model  = new Models\Publication( $id, $version);
 
 		if (!$this->model->exists())
 		{
@@ -935,7 +909,7 @@ class Items extends AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo \Components\Publications\Helpers\Html::alert(\JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							echo Helpers\Html::alert(\JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
 							exit();
 						}
 					}
@@ -993,7 +967,7 @@ class Items extends AdminController
 		if ($this->model->version->doi && !$action)
 		{
 			// Get DOI service
-			$doiService = new \Components\Publications\Models\Doi($this->model);
+			$doiService = new Models\Doi($this->model);
 
 			// Update DOI if locally issued
 			if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
@@ -1006,7 +980,7 @@ class Items extends AdminController
 		$tags = \JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new \Components\Publications\Helpers\Tags($this->database);
+		$rt = new Helpers\Tags($this->database);
 		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, true);
 
 		// Email config
@@ -1041,7 +1015,7 @@ class Items extends AdminController
 					$this->model->version->state = 1;
 
 					// Get DOI service
-					$doiService = new \Components\Publications\Models\Doi($this->model);
+					$doiService = new Models\Doi($this->model);
 
 					// Is service enabled? - Issue/update a DOI
 					if ($doiService->on())
@@ -1107,7 +1081,7 @@ class Items extends AdminController
 						if (!$this->getError() && $this->model->version->doi
 							&& $allowArchive == true && (!$this->model->version->archived
 							|| $this->model->version->archived == '0000-00-00 00:00:00')
-							&& \Components\Publications\Helpers\Utilities::mkAip($this->model->version))
+							&& Helpers\Utilities::mkAip($this->model->version))
 						{
 							$this->model->version->archived = \JFactory::getDate()->toSql();
 						}
@@ -1244,7 +1218,7 @@ class Items extends AdminController
 		if ($sendmail && !$this->getError())
 		{
 			// Get ids of publication authors with accounts
-			$objA   = new \Components\Publications\Tables\Author( $this->_db );
+			$objA   = new Tables\Author( $this->_db );
 			$notify = $objA->getAuthors($this->model->version->id, 1, 1, 1, true);
 			$notify[] = $this->model->version->created_by;
 			$notify = array_unique($notify);
@@ -1287,7 +1261,7 @@ class Items extends AdminController
 	private function _collectMetadata($row, $objP, $authors)
 	{
 		// Get type
-		$objT = new \Components\Publications\Tables\Category($this->database);
+		$objT = new Tables\Category($this->database);
 		$objT->load($objP->category);
 		$typetitle = ucfirst($objT->alias);
 
@@ -1315,7 +1289,7 @@ class Items extends AdminController
 		}
 
 		// Get license type
-		$objL = new \Components\Publications\Tables\License( $this->database);
+		$objL = new Tables\License( $this->database);
 		if ($objL->loadLicense($row->license_type))
 		{
 			$metadata['rightsType'] = isset($objL->dc_type) && $objL->dc_type ? $objL->dc_type : 'other';
@@ -1343,7 +1317,7 @@ class Items extends AdminController
 		// Get pub authors' ids
 		if (empty($authors))
 		{
-			$pa = new \Components\Publications\Tables\Author( $this->database );
+			$pa = new Tables\Author( $this->database );
 			$authors = $pa->getAuthors($row->id, 1, 1, 1);
 		}
 
@@ -1414,11 +1388,6 @@ class Items extends AdminController
 		// Get the publications component config
 		$this->view->config = $this->config;
 
-		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS
-			. 'assets' . DS . 'css' . DS . 'publications.css');
-
 		// Incoming publication ID
 		$id = \JRequest::getInt('id', 0);
 
@@ -1440,8 +1409,8 @@ class Items extends AdminController
 		$this->view->return['status'] = \JRequest::getVar('status', '');
 
 		// Instantiate project publication
-		$objP = new \Components\Publications\Tables\Publication( $this->database );
-		$objV = new \Components\Publications\Tables\Version( $this->database );
+		$objP = new Tables\Publication( $this->database );
+		$objV = new Tables\Version( $this->database );
 
 		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
@@ -1499,7 +1468,7 @@ class Items extends AdminController
 		foreach ($ids as $id)
 		{
 			// Load publication
-			$objP = new \Components\Publications\Tables\Publication( $this->database );
+			$objP = new Tables\Publication( $this->database );
 			if (!$objP->load($id))
 			{
 				\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
@@ -1508,7 +1477,7 @@ class Items extends AdminController
 
 			$projectId = $objP->project_id;
 
-			$row = new \Components\Publications\Tables\Version( $this->database );
+			$row = new Tables\Version( $this->database );
 
 			// Get versions
 			$versions = $row->getVersions( $id, $filters = array('withdev' => 1));
@@ -1552,7 +1521,7 @@ class Items extends AdminController
 				$i = 0;
 				foreach ($versions as $v)
 				{
-					$objV = new \Components\Publications\Tables\Version( $this->database );
+					$objV = new Tables\Version( $this->database );
 					if ($objV->loadVersion($id, $v->version_number))
 					{
 						if ($erase == 1)
@@ -1617,27 +1586,27 @@ class Items extends AdminController
 	public function deleteVersionExistence($vid, $pid)
 	{
 		// Delete authors
-		$pa = new \Components\Publications\Tables\Author( $this->database );
+		$pa = new Tables\Author( $this->database );
 		$authors = $pa->deleteAssociations($vid);
 
 		// Delete attachments
-		$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+		$pContent = new Tables\Attachment( $this->database );
 		$pContent->deleteAttachments($vid);
 
 		// Delete screenshots
-		$pScreenshot = new \Components\Publications\Tables\Screenshot( $this->database );
+		$pScreenshot = new Tables\Screenshot( $this->database );
 		$pScreenshot->deleteScreenshots($vid);
 
 		// Delete access accosiations
-		$pAccess = new \Components\Publications\Tables\Access( $this->database );
+		$pAccess = new Tables\Access( $this->database );
 		$pAccess->deleteGroups($vid);
 
 		// Delete audience
-		$pAudience = new \Components\Publications\Tables\Audience( $this->database );
+		$pAudience = new Tables\Audience( $this->database );
 		$pAudience->deleteAudience($vid);
 
 		// Build publication path
-		$path = \Components\Publications\Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
+		$path = Helpers\Html::buildPubPath($pid, $vid, $this->config->get('webpath'), '', 1);
 
 		// Delete all files
 		if (is_dir($path))
@@ -1662,7 +1631,7 @@ class Items extends AdminController
 		$id  = \JRequest::getInt('id', 0);
 
 		// Checkin the resource
-		$row = new \Components\Publications\Tables\Publication($this->database);
+		$row = new Tables\Publication($this->database);
 		$row->load($id);
 		$row->checkin();
 
@@ -1692,7 +1661,7 @@ class Items extends AdminController
 		if ($id)
 		{
 			// Load the object, reset the ratings, save, checkin
-			$row = new \Components\Publications\Tables\Publication($this->database);
+			$row = new Tables\Publication($this->database);
 			$row->load($id);
 			$row->rating = '0.0';
 			$row->times_rated = '0';
@@ -1728,7 +1697,7 @@ class Items extends AdminController
 		if ($id)
 		{
 			// Load the object, reset the ratings, save, checkin
-			$row = new \Components\Publications\Tables\Publication($this->database);
+			$row = new Tables\Publication($this->database);
 			$row->load($id);
 			$row->ranking = '0';
 			$row->store();
@@ -1760,9 +1729,9 @@ class Items extends AdminController
 		$version 	= \JRequest::getVar( 'version', '' );
 
 		// Load publication & version classes
-		$objP  = new \Components\Publications\Tables\Publication( $this->database );
-		$objV  = new \Components\Publications\Tables\Version( $this->database );
-		$mt    = new \Components\Publications\Tables\MasterType( $this->database );
+		$objP  = new Tables\Publication( $this->database );
+		$objV  = new Tables\Version( $this->database );
+		$mt    = new Tables\MasterType( $this->database );
 
 		if (!$objP->load($pid) || !$objV->load($vid))
 		{
@@ -1788,16 +1757,16 @@ class Items extends AdminController
 			$pub->_project->load($pub->project_id);
 
 			// Get master type info
-			$mt = new \Components\Publications\Tables\MasterType( $this->database );
+			$mt = new Tables\MasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
 			$typeParams = new \JParameter( $pub->_type->params );
 
 			// Get attachments
-			$pContent = new \Components\Publications\Tables\Attachment( $this->database );
+			$pContent = new Tables\Attachment( $this->database );
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get authors
-			$pAuthors 			= new \Components\Publications\Tables\Author( $this->database );
+			$pAuthors 			= new Tables\Author( $this->database );
 			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
 
 			// Get manifest from either version record (published) or master type
@@ -1806,7 +1775,7 @@ class Items extends AdminController
 						: $pub->_type->curation;
 
 			// Get curation model
-			$pub->_curationModel = new \Components\Publications\Models\Curation($manifest);
+			$pub->_curationModel = new Models\Curation($manifest);
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);
@@ -1856,7 +1825,7 @@ class Items extends AdminController
 		if ($id)
 		{
 			// Load the object and checkin
-			$row = new \Components\Publications\Tables\Publication($this->database);
+			$row = new Tables\Publication($this->database);
 			$row->load($id);
 			$row->checkin();
 		}

@@ -30,6 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+$this->js();
+
 JToolBarHelper::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
@@ -101,7 +104,14 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="10"><?php 
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
