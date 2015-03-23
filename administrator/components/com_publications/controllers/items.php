@@ -1024,7 +1024,7 @@ class Items extends AdminController
 		{
 			$output = '';
 			require_once( PATH_CORE . DS . 'components'
-				. DS . 'com_projects'. DS . 'tables' . DS . 'project.activity.php');
+				. DS . 'com_projects'. DS . 'tables' . DS . 'activity.php');
 			$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 			switch ($action)
 			{
@@ -1179,7 +1179,7 @@ class Items extends AdminController
 					if ($message && $aid)
 					{
 						require_once( PATH_CORE . DS . 'components'
-							. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+							. DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
 						$objC = new \Components\Projects\Tables\Comment( $this->database );
 
 						$comment = \Hubzero\Utility\String::truncate($message, 250);
@@ -1494,7 +1494,7 @@ class Items extends AdminController
 		jimport('joomla.filesystem.folder');
 
 		require_once(PATH_CORE . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+			. DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 
 		foreach ($ids as $id)
 		{

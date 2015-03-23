@@ -340,12 +340,12 @@ class Project extends \JTable
 
 		// Do we have a recent saved stats log?
 		$logged = (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.stats.php')) ? 1 : 0;
+			.'com_projects' . DS . 'tables' . DS . 'stats.php')) ? 1 : 0;
 
 		if ($logged)
 		{
 			require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+				.'com_projects' . DS . 'tables' . DS . 'stats.php');
 
 			$objStats = new \Components\Projects\Tables\Stats($this->_db);
 			if ($objStats->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))

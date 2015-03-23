@@ -39,8 +39,8 @@ if (!\JFactory::getUser()->authorise('core.manage', 'com_projects'))
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'project.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.database.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.database.version.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'database.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'database.version.php');
 
 $controllerName = \JRequest::getCmd('controller', 'projects');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

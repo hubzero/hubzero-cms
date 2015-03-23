@@ -1209,8 +1209,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_project->setup_stage 		= 3;
 
 			// Get project type params
-			require_once( PATH_CORE. DS .'administrator' . DS . 'components' . DS
-				. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+			require_once( PATH_CORE. DS . 'components' . DS
+				. 'com_projects' . DS . 'tables' . DS . 'type.php');
 			$objT = new \Components\Projects\Tables\Type( $this->_database );
 			$this->_project->params = $objT->getParams ($this->_project->type);
 
@@ -3202,8 +3202,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_project->setup_stage 		= 3;
 
 					// Get project type params
-					require_once( PATH_CORE. DS .'administrator' . DS . 'components' . DS
-						. 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+					require_once( PATH_CORE. DS . 'components' . DS
+						. 'com_projects' . DS . 'tables' . DS . 'type.php');
 					$objT = new \Components\Projects\Tables\Type( $this->_database );
 					$this->_project->params = $objT->getParams ($this->_project->type);
 

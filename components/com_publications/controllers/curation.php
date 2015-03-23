@@ -912,7 +912,7 @@ class Curation extends SiteController
 		}
 		// Add message to project
 		require_once( PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+			. DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
 
 		$activity = $status == 1
 					? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')

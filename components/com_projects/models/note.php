@@ -94,7 +94,7 @@ class Note extends \Components\Wiki\Models\Book
 	public function getPublicStamp( $id = 0, $register = false, $listed = NULL )
 	{
 		if (!is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php') )
+			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php') )
 		{
 			return false;
 		}
@@ -107,7 +107,7 @@ class Note extends \Components\Wiki\Models\Book
 		}
 
 		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		$objSt = new Tables\Stamp( $this->_db );
 

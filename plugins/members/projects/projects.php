@@ -220,9 +220,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
-		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -240,7 +240,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 
 		// Get activity class
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.activity.php');
+			. DS . 'tables' . DS . 'activity.php');
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();

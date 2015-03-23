@@ -295,7 +295,7 @@ class Author extends \JTable
 		}
 
 		require_once( PATH_CORE . DS . 'components' . DS
-			. 'com_projects' . DS . 'tables' . DS . 'project.owner.php' );
+			. 'com_projects' . DS . 'tables' . DS . 'owner.php' );
 
 		// Get project owner info
 		$objO = new \Components\Projects\Tables\Owner( $this->_db );

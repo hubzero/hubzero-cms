@@ -45,7 +45,7 @@ class Get extends SiteController
 	 */
 	public function displayTask()
 	{
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		// Incoming
 		$stamp = \JRequest::getVar( 's', '' );

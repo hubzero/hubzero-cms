@@ -25,8 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+require_once( PATH_CORE . DS . 'components' . DS
+	.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 $database 	= JFactory::getDBO();
 $objSt 		= new \Components\Projects\Tables\Stamp( $database );

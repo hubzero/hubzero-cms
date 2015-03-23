@@ -30,7 +30,7 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
 
 use Hubzero\Base\Model;
 

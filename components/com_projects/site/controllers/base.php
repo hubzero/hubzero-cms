@@ -103,17 +103,17 @@ class Base extends SiteController
 		if (\JPluginHelper::isEnabled('projects', 'databases'))
 		{
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'tables' . DS . 'project.database.php');
+				. DS . 'tables' . DS . 'database.php');
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
-				. DS . 'tables' . DS . 'project.database.version.php');
+				. DS . 'tables' . DS . 'database.version.php');
 		}
 
 		// Logging and stats
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.stats.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.log.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'log.php');
 
 		// Include external file connection
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'remotefile.php');
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
 	}
 

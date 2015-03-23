@@ -31,12 +31,12 @@
 namespace Components\Projects\Models;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.activity.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.microblog.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.comment.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.owner.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.type.php');
-require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.todo.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'activity.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'microblog.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'owner.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'todo.php');
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 

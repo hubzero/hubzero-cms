@@ -116,7 +116,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once(PATH_ROOT . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+			. DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Set filters
 		$filters = array();
@@ -213,7 +213,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		require_once(PATH_ROOT . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		require_once(PATH_ROOT . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+			. DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get group projects
 		$obj  = new \Components\Projects\Tables\Project($this->_database);
@@ -306,11 +306,11 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 	protected function _updates()
 	{
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.comment.php');
+			. DS . 'tables' . DS . 'comment.php');
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.todo.php');
+			. DS . 'tables' . DS . 'todo.php');
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.microblog.php');
+			. DS . 'tables' . DS . 'microblog.php');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -340,7 +340,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Get activity class
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.activity.php');
+			. DS . 'tables' . DS . 'activity.php');
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();

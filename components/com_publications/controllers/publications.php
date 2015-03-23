@@ -1385,10 +1385,10 @@ class Publications extends SiteController
 
 		// Retrieve wiki page by stamp
 		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
+			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php'))
 		{
 			require_once( PATH_CORE_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+				.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 			// Incoming
 			$stamp = \JRequest::getVar( 's', '' );
@@ -1905,7 +1905,7 @@ class Publications extends SiteController
 		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
 			. 'helpers' . DS . 'html.php' );
 		require_once( PATH_CORE . DS . 'components' . DS
-			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
+			. 'com_projects' . DS . 'tables' . DS . 'activity.php' );
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .
 			DS . 'models' . DS . 'publication.php');

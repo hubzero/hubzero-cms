@@ -25,8 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
-	.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
+require_once( PATH_CORE . DS . 'components' . DS
+	.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 $database 	= JFactory::getDBO();

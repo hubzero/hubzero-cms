@@ -64,7 +64,7 @@ class Reports extends Base
 		$this->_buildTitle();
 		$this->view->title = $this->title;
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
 
 		$objStats = new Tables\Stats($this->database);
 

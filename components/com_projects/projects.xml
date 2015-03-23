@@ -92,13 +92,12 @@
 			<filename>index.html</filename>
 			<filename>helpers/html.php</filename>
 			<filename>tables/project.php</filename>
-			<filename>tables/project.activity.php</filename>
-			<filename>tables/project.comment.php</filename>
-			<filename>tables/project.microblog.php</filename>
-			<filename>tables/project.owner.php</filename>
-			<filename>tables/project.todo.php</filename>
-			<filename>tables/project.type.php</filename>
-			<filename>tables/project.wiki.php</filename>
+			<filename>tables/activity.php</filename>
+			<filename>tables/comment.php</filename>
+			<filename>tables/microblog.php</filename>
+			<filename>tables/owner.php</filename>
+			<filename>tables/todo.php</filename>
+			<filename>tables/type.php</filename>
 			<filename>views/edit/tmpl/default.php</filename>
 			<filename>views/edit/tmpl/default.xml</filename>
 			<filename>views/edit/tmpl/index.html</filename>

@@ -851,7 +851,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// include libs
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
 
 		// Get connections to publications
 		foreach ($assocs as $entry)
