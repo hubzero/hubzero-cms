@@ -65,7 +65,6 @@ class plgCronNewsletter extends JPlugin
 		return $obj;
 	}
 
-
 	/**
 	 * Processes any queued newsletter mailings.
 	 *
@@ -75,7 +74,7 @@ class plgCronNewsletter extends JPlugin
 	public function processMailings(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
 
 		// needed vars
@@ -117,12 +116,12 @@ class plgCronNewsletter extends JPlugin
 			}
 
 			// get tracking & unsubscribe token
-			$emailToken = NewsletterHelper::generateMailingToken($queuedEmail);
+			$emailToken = \Components\Newsletter\Helpers\Helper::generateMailingToken($queuedEmail);
 
 			// if tracking is on add it to email
 			if ($queuedEmail->tracking)
 			{
-				$queuedEmail->html_body = NewsletterHelper::addTrackingToEmailMessage($queuedEmail->html_body, $emailToken);
+				$queuedEmail->html_body = \Components\Newsletter\Helpers\Helper::addTrackingToEmailMessage($queuedEmail->html_body, $emailToken);
 			}
 
 			// create unsubscribe link
@@ -185,7 +184,7 @@ class plgCronNewsletter extends JPlugin
 				$processed[] = $queuedEmail->email;
 
 				// load recipient object
-				$newsletterMailingRecipient = new NewsletterMailingRecipient($database);
+				$newsletterMailingRecipient = new \Components\Newsletter\Tables\MailingRecipient($database);
 				$newsletterMailingRecipient->load($queuedEmail->mailing_recipientid);
 
 				// mark as sent and save
@@ -198,7 +197,6 @@ class plgCronNewsletter extends JPlugin
 		return true;
 	}
 
-
 	/**
 	 * Processes newsletter mailing actions (clicks, opens, etc) IP addresses into location data for stats
 	 *
@@ -208,13 +206,13 @@ class plgCronNewsletter extends JPlugin
 	public function processIps(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
 
 		// get db
 		$database = JFactory::getDBO();
 
 		// get actions
-		$newsletterMailingRecipientAction = new NewsletterMailingRecipientAction($database);
+		$newsletterMailingRecipientAction = new \Components\Newsletter\Tables\MailingRecipientAction($database);
 		$unconvertedActions = $newsletterMailingRecipientAction->getUnconvertedActions();
 
 		// convert all unconverted actions
