@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('CMS Updater: database'));
+JToolBarHelper::title(Lang::txt('CMS Updater: database'));
 JToolBarHelper::custom('migrate', 'purge', '', 'Update repository', false);
 
 $this->css();
@@ -67,7 +67,7 @@ $this->css();
 					<td><?php echo $date; ?></td>
 					<td class="status">
 						<?php if ($row['status'] == 'pending') : ?>
-							<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['entry']); ?>">
+							<a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=migrate&file='.$row['entry']); ?>">
 						<?php endif; ?>
 							<span class="state <?php echo ($row['status'] == 'complete') ? 'published' : $row['status']; ?>">
 								<span class="text"><?php echo $row['status']; ?></span>

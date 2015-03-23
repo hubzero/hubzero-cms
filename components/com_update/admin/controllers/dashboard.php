@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Update\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Update\Helpers\Cli;
 
 /**
  * Update controller class
  */
-class UpdateControllerDashboard extends \Hubzero\Component\AdminController
+class Dashboard extends AdminController
 {
 	/**
 	 * Display the update dashboard
@@ -53,17 +55,17 @@ class UpdateControllerDashboard extends \Hubzero\Component\AdminController
 		}
 
 		$config = \JFactory::getConfig();
-		$source = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
+		$source = Component::params('com_update')->get('git_repository_source', null);
 
-		$this->view->repositoryVersion   = json_decode(cli::version());
+		$this->view->repositoryVersion   = json_decode(Cli::version());
 		$this->view->repositoryVersion   = $this->view->repositoryVersion[0];
-		$this->view->repositoryMechanism = json_decode(cli::mechanism());
+		$this->view->repositoryMechanism = json_decode(Cli::mechanism());
 		$this->view->repositoryMechanism = $this->view->repositoryMechanism[0];
 		$this->view->databaseMechanism   = $config->get('dbtype');
 		$this->view->databaseVersion     = \JFactory::getDbo()->getVersion();
-		$this->view->status    = json_decode(cli::status());
-		$this->view->upcoming  = json_decode(cli::update(true, false, $source));
-		$this->view->migration = json_decode(cli::migration());
+		$this->view->status    = json_decode(Cli::status());
+		$this->view->upcoming  = json_decode(Cli::update(true, false, $source));
+		$this->view->migration = json_decode(Cli::migration());
 
 		if (!isset($this->view->repositoryMechanism))
 		{

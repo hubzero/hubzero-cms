@@ -28,41 +28,40 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Update\Admin;
 
 $option = 'com_update';
 
-if (!JFactory::getUser()->authorise('core.admin', $option))
+if (!\JFactory::getUser()->authorise('core.admin', $option))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'cli.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'cli.php';
 
-$controllerName = JRequest::getCmd('controller', 'dashboard');
+$controllerName = \JRequest::getCmd('controller', 'dashboard');
 
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'dashboard';
 }
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php';
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
-$controllerName = 'UpdateController' . ucfirst(strtolower($controllerName));
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-JSubMenuHelper::addEntry(
-	JText::_('Dashboard'),
+\JSubMenuHelper::addEntry(
+	Lang::txt('Dashboard'),
 	'index.php?option='.$option.'&controller=dashboard',
 	$controllerName == 'UpdateControllerDashboard'
 );
-JSubMenuHelper::addEntry(
-	JText::_('Repository'),
+\JSubMenuHelper::addEntry(
+	Lang::txt('Repository'),
 	'index.php?option='.$option.'&controller=repository',
 	$controllerName == 'UpdateControllerRepository'
 );
-JSubMenuHelper::addEntry(
-	JText::_('Database'),
+\JSubMenuHelper::addEntry(
+	Lang::txt('Database'),
 	'index.php?option='.$option.'&controller=database',
 	$controllerName == 'UpdateControllerDatabase'
 );

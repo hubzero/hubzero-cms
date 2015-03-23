@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Update\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Update\Helpers\Cli;
 
 /**
  * Update repository controller class
  */
-class UpdateControllerRepository extends \Hubzero\Component\AdminController
+class Repository extends AdminController
 {
 	/**
 	 * Display the repository details
@@ -47,8 +49,8 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 		$this->view->filters = array();
 
 		// Paging
-		$app    = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app    = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
@@ -84,10 +86,10 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$source = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
+		$source = Component::params('com_update')->get('git_repository_source', null);
 
 		$this->view->rows = json_decode(
-			cli::log(
+			Cli::log(
 				$this->view->filters['limit'],
 				$this->view->filters['start'],
 				$this->view->filters['search'],
@@ -98,7 +100,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 			)
 		);
 		$this->view->total = json_decode(
-			cli::log(
+			Cli::log(
 				$this->view->filters['limit'],
 				$this->view->filters['start'],
 				$this->view->filters['search'],
@@ -112,7 +114,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -139,10 +141,10 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 	public function updateTask()
 	{
 		$env         = \JFactory::getConfig()->getValue('config.application_env', 'production');
-		$source      = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
-		$autoPushRef = \JComponentHelper::getParams('com_update')->get('git_auto_push_ref', null);
+		$source      = Component::params('com_update')->get('git_repository_source', null);
+		$autoPushRef = Component::params('com_update')->get('git_auto_push_ref', null);
 		$allowNonFf  = ($env == 'production') ? false : true;
-		$response    = cli::update(false, $allowNonFf, $source, $autoPushRef);
+		$response    = Cli::update(false, $allowNonFf, $source, $autoPushRef);
 		$response    = json_decode($response);
 		$response    = $response[0];
 		$message     = 'Update complete!';
@@ -156,7 +158,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 		else
 		{
 			// Also check status again to make sure it's clean (merge conflicts will show up here)
-			$status = json_decode(cli::status());
+			$status = json_decode(Cli::status());
 
 			if (!empty($status))
 			{
@@ -189,7 +191,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 	 */
 	public function rollbackTask()
 	{
-		$response = cli::rollback();
+		$response = Cli::rollback();
 		$response = json_decode($response);
 		$response = $response[0];
 		$message  = 'Rollback complete!';

@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('CMS Updater: Dashboard'));
+JToolBarHelper::title(Lang::txt('CMS Updater: Dashboard'));
 JToolBarHelper::preferences($this->option, '550');
 ?>
 

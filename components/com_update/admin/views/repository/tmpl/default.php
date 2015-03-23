@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('CMS Updater: repository'));
+JToolBarHelper::title(Lang::txt('CMS Updater: repository'));
 //JToolBarHelper::custom('rollback', 'back', '', 'Rollback repository', false);
 //JToolBarHelper::spacer();
 JToolBarHelper::custom('update', 'purge', '', 'Update repository', false);
@@ -41,17 +41,17 @@ $this->css();
 
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="updateRepositoryForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('Search'); ?>: </label>
+		<label for="filter_search"><?php echo Lang::txt('Search'); ?>: </label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="search" />
 
-		<label for="status"><?php echo JText::_('Status'); ?>:</label>
+		<label for="status"><?php echo Lang::txt('Status'); ?>:</label>
 		<select name="status" id="status">
-			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('[ all ]'); ?></option>
-			<option value="upcoming"<?php echo ($this->filters['status'] == 'upcoming') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Upcoming'); ?></option>
-			<option value="installed"<?php echo ($this->filters['status'] == 'installed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Installed'); ?></option>
+			<option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('[ all ]'); ?></option>
+			<option value="upcoming"<?php echo ($this->filters['status'] == 'upcoming') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Upcoming'); ?></option>
+			<option value="installed"<?php echo ($this->filters['status'] == 'installed') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Installed'); ?></option>
 		</select>
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('Go'); ?>" />
 	</fieldset>
 
 	<div class="clr"></div>

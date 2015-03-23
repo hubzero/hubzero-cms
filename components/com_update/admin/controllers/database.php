@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Update\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Update\Helpers\Cli;
 
 /**
  * Update controller class
  */
-class UpdateControllerDatabase extends \Hubzero\Component\AdminController
+class Database extends AdminController
 {
 	/**
 	 * Display the database migration log
@@ -55,8 +57,8 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 		$this->view->filters = array();
 
 		// Paging
-		$app    = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app    = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
@@ -72,7 +74,7 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 
 		$this->view->rows  = array();
 		$this->view->total = 0;
-		$migrations = json_decode(cli::migration(true, true));
+		$migrations = json_decode(Cli::migration(true, true));
 		if ($migrations && count($migrations) > 0)
 		{
 			foreach ($migrations as $status => $files)
@@ -90,7 +92,7 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
@@ -107,8 +109,8 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 	 */
 	public function migrateTask()
 	{
-		$file     = JRequest::getVar('file', null);
-		$response = cli::migration(false, true, $file);
+		$file     = \JRequest::getVar('file', null);
+		$response = Cli::migration(false, true, $file);
 		$response = json_decode($response);
 		$message  = 'Migration complete!';
 		$type     = 'success';

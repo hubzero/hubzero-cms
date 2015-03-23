@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Update\Helpers;
 
 /**
 * CLI helper class
 */
-class cli
+class Cli
 {
 	/**
 	 * Get the version of the code in the repository
@@ -217,7 +216,7 @@ class cli
 
 		if (!isset($user))
 		{
-			$user = \JComponentHelper::getParams('com_update')->get('system_user', 'hubadmin');
+			$user = Component::params('com_update')->get('system_user', 'hubadmin');
 		}
 
 		if (!isset($processUser))

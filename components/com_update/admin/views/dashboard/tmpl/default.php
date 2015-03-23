@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('CMS Updater: Dashboard'));
+JToolBarHelper::title(Lang::txt('CMS Updater: Dashboard'));
 JToolBarHelper::preferences($this->option, '550');
 
 $this->css();
@@ -83,7 +83,7 @@ $logStatus = 'all';
 							<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
-					<a class="action" href="<?php echo JRoute::_('index.php?option=com_update&controller=repository&status='.$logStatus); ?>">View change log</a>
+					<a class="action" href="<?php echo Route::url('index.php?option=com_update&controller=repository&status='.$logStatus); ?>">View change log</a>
 				</div>
 			</div>
 		</div>
@@ -125,7 +125,7 @@ $logStatus = 'all';
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
-				<a class="action" href="<?php echo JRoute::_('index.php?option=com_update&controller=database'); ?>">View migration log</a>
+				<a class="action" href="<?php echo Route::url('index.php?option=com_update&controller=database'); ?>">View migration log</a>
 			</div>
 		</div>
 	</div>
