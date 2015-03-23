@@ -37,7 +37,7 @@ use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 use Hubzero\Utility\Validate;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'comment.php');
 require_once(__DIR__ . DS . 'attachment.php');
 require_once(__DIR__ . DS . 'changelog.php');
 
@@ -111,11 +111,11 @@ class Comment extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -263,7 +263,7 @@ class Comment extends Model
 						$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
 						$comment = preg_replace('/  /', ' &nbsp;', $comment);
 					//}
-					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . \JRoute::_("index.php?option=com_support&task=ticket&id=$1") . '">' . \JText::sprintf('ticket #%s', "$1") . '</a>', $comment);
+					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
 
 					$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
 					$this->set('comment.parsed', $comment);
@@ -449,7 +449,7 @@ class Comment extends Model
 				}
 				$this->_cache['recipients.added'][$to] = array(
 					'role'    => $role,
-					'name'    => \JText::_('COM_SUPPORT_UNKNOWN'),
+					'name'    => Lang::txt('COM_SUPPORT_UNKNOWN'),
 					'email'   => $to,
 					'id'      => 0
 				);

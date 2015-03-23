@@ -97,7 +97,7 @@ class Response extends \JTable
 	{
 		$juser = \JFactory::getUser();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$ab = new \Components\Support\Tables\ReportAbuse($this->_db);
 
 		if (isset($filters['question_id']))

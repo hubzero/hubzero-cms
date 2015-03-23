@@ -108,7 +108,7 @@ class Changelog extends Object
 					{
 						$obj = array(
 							'role'    => 'commenter',
-							'name'    => \JText::_('COM_SUPPORT_NONE'),
+							'name'    => Lang::txt('COM_SUPPORT_NONE'),
 							'address' => trim($matches[1])
 						);
 					}
@@ -116,7 +116,7 @@ class Changelog extends Object
 					{
 						$obj = array(
 							'role'    => trim($matches[1]),
-							'name'    => \JText::_('COM_SUPPORT_NONE'),
+							'name'    => Lang::txt('COM_SUPPORT_NONE'),
 							'address' => trim($matches[2])
 						);
 					}
@@ -159,7 +159,7 @@ class Changelog extends Object
 							}
 							else
 							{
-								$obj['name']    = \JText::_('COM_SUPPORT_NONE');
+								$obj['name']    = Lang::txt('COM_SUPPORT_NONE');
 								$obj['address'] = trim($matches[2]);
 							}
 						}
@@ -264,11 +264,11 @@ class Changelog extends Object
 				{
 					if ($type == 'changes' && $items['before'] != $items['after'])
 					{
-						$clog[] = '<li>' . \JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
 					}
 					else if ($type == 'notifications')
 					{
-						$clog[] = '<li>' . \JText::sprintf('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . '</li>';
 					}
 				}
 				$clog[] = '</ul>';
@@ -276,7 +276,7 @@ class Changelog extends Object
 		}
 		if (!count($clog))
 		{
-			$clog[] = '<ul class="changes"><li>' . \JText::_('COM_SUPPORT_CHANGELOG_NONE_MADE') . '</li></ul>';
+			$clog[] = '<ul class="changes"><li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NONE_MADE') . '</li></ul>';
 		}
 		return implode("\n", $clog);
 	}
@@ -381,7 +381,7 @@ class Changelog extends Object
 	{
 		if (!isset($this->_log[$to]))
 		{
-			throw new InvalidArgumentException(\JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $to));
+			throw new InvalidArgumentException(Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $to));
 		}
 
 		switch ($to)
@@ -413,7 +413,7 @@ class Changelog extends Object
 	{
 		if (!isset($this->_log[$from]))
 		{
-			throw new InvalidArgumentException(\JText::sprintf('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
+			throw new InvalidArgumentException(Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
 		}
 
 		foreach ($this->_log[$from] as $key => $item)
@@ -439,7 +439,7 @@ class Changelog extends Object
 		if ($after->get('group') != $before->get('group'))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_GROUP'),
 				$before->get('group'),
 				$after->get('group')
 			);
@@ -447,7 +447,7 @@ class Changelog extends Object
 		if ($after->get('severity') != $before->get('severity'))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_SEVERITY'),
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_SEVERITY'),
 				$before->get('severity'),
 				$after->get('severity')
 			);
@@ -455,23 +455,23 @@ class Changelog extends Object
 		if (intval($after->get('owner')) != intval($before->get('owner')))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
-				$before->owner('username', \JText::_('COM_SUPPORT_NONE')),
-				$after->owner('username', \JText::_('COM_SUPPORT_NONE'))
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
+				$before->owner('username', Lang::txt('COM_SUPPORT_NONE')),
+				$after->owner('username', Lang::txt('COM_SUPPORT_NONE'))
 			);
 		}
 		/*if ($after->get('resolved') != $before->get('resolved'))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_RESOLUTION'),
-				$before->get('resolved', \JText::_('COM_SUPPORT_UNRESOLVED')),
-				$after->get('resolved', \JText::_('COM_SUPPORT_UNRESOLVED'))
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_RESOLUTION'),
+				$before->get('resolved', Lang::txt('COM_SUPPORT_UNRESOLVED')),
+				$after->get('resolved', Lang::txt('COM_SUPPORT_UNRESOLVED'))
 			);
 		}*/
 		if (intval($after->get('status')) != intval($before->get('status')))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
 				$before->status('text'),
 				$after->status('text')
 			);
@@ -479,18 +479,18 @@ class Changelog extends Object
 		if ($after->get('category') != $before->get('category'))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_CATEGORY'),
-				$before->get('category', \JText::_('COM_SUPPORT_BLANK')),
-				$after->get('category', \JText::_('COM_SUPPORT_BLANK'))
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_CATEGORY'),
+				$before->get('category', Lang::txt('COM_SUPPORT_BLANK')),
+				$after->get('category', Lang::txt('COM_SUPPORT_BLANK'))
 			);
 		}
 
 		if ($after->get('tags') != $before->get('tags'))
 		{
 			$this->changed(
-				\JText::_('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
-				($before->get('tags') ? $before->get('tags') : \JText::_('COM_SUPPORT_BLANK')),
-				($after->get('tags')  ? $after->get('tags')  : \JText::_('COM_SUPPORT_BLANK'))
+				Lang::txt('COM_SUPPORT_CHANGELOG_FIELD_TAGS'),
+				($before->get('tags') ? $before->get('tags') : Lang::txt('COM_SUPPORT_BLANK')),
+				($after->get('tags')  ? $after->get('tags')  : Lang::txt('COM_SUPPORT_BLANK'))
 			);
 		}
 

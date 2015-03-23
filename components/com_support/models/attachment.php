@@ -32,7 +32,7 @@ namespace Components\Support\Models;
 
 use Hubzero\Base\Model;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'attachment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 
 /**
  * Support mdoel for a ticket resolution
@@ -218,7 +218,7 @@ class Attachment extends Model
 				if (!$path)
 				{
 					$config = \JComponentHelper::getParams('com_support');
-					$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/tickets'), DS);
+					$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS);
 				}
 				return $path . DS . $this->get('ticket') . DS . $this->get('filename');
 			break;
@@ -231,7 +231,7 @@ class Attachment extends Model
 
 		if ($absolute)
 		{
-			$link = rtrim(\JURI::getInstance()->base(), '/') . '/' . trim(\JRoute::_($link), '/');
+			$link = rtrim(\JURI::getInstance()->base(), '/') . '/' . trim(Route::url($link), '/');
 		}
 
 		return $link;
@@ -257,7 +257,7 @@ class Attachment extends Model
 			jimport('joomla.filesystem.file');
 			if (!\JFile::delete($path))
 			{
-				$this->setError(\JText::sprintf('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
+				$this->setError(Lang::txt('COM_SUPPORT_ERROR_UNABLE_TO_DELETE_FILE', $file));
 				return false;
 			}
 		}

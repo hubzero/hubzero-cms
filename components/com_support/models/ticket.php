@@ -38,9 +38,9 @@ use Hubzero\User\Profile;
 use Hubzero\Base\ItemList;
 use Hubzero\Utility\String;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'watching.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'ticket.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'watching.php');
 require_once(__DIR__ . DS . 'comment.php');
 require_once(__DIR__ . DS . 'tags.php');
 require_once(__DIR__ . DS . 'status.php');
@@ -294,7 +294,7 @@ class Ticket extends Model
 				}
 				else
 				{
-					$status = ($this->get('open') ? \JText::_('COM_SUPPORT_TICKET_STATUS_NEW') : \JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED'));
+					$status = ($this->get('open') ? Lang::txt('COM_SUPPORT_TICKET_STATUS_NEW') : Lang::txt('COM_SUPPORT_TICKET_STATUS_RESOLVED'));
 				}
 			break;
 
@@ -777,7 +777,7 @@ class Ticket extends Model
 
 					if (!$this->get('report_parsed'))
 					{
-						$this->set('report_parsed', \JText::_('(no content found)'));
+						$this->set('report_parsed', Lang::txt('(no content found)'));
 					}
 
 					return $this->content('parsed');
@@ -921,11 +921,11 @@ class Ticket extends Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return \JHTML::_('date', $this->get('created'), \JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return \JHTML::_('date', $this->get('created'), \JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get('created'), Lang::txt('TIME_FORMAT_HZ1'));
 			break;
 
 			case 'local':

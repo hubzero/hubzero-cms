@@ -32,7 +32,7 @@ namespace Components\Support\Models;
 
 use Hubzero\Base\Model;
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'status.php');
 
 /**
  * Support model for a ticket status

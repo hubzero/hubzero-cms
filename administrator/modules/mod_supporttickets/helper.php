@@ -47,8 +47,8 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
 		$juser    = \JFactory::getUser();
 		$database = \JFactory::getDBO();

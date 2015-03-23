@@ -89,7 +89,12 @@ class Migration20141010150100ComSupport extends Base
 			$this->db->setQuery("SELECT * FROM `#__support_queries` WHERE `folder_id`=2 ORDER BY `id`");
 			if ($queries = $this->db->loadObjectList())
 			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+				$path = JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
+				if (!file_exists($path))
+				{
+					$path = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
+				}
+				include_once($path);
 
 				// Copy the queries to the new folder
 				foreach ($queries as $k => $query)

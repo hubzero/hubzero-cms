@@ -338,7 +338,7 @@ class plgCronSupport extends JPlugin
 			$lang->load('com_support');
 			$lang->load('com_support', JPATH_BASE);
 
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 			$message = new \Components\Support\Tables\Message($database);
@@ -418,8 +418,8 @@ class plgCronSupport extends JPlugin
 					$comment->changelog()->diff($old, $row);
 					$comment->set('ticket', $row->get('id'));
 
-					$eview = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+					$eview = new \Hubzero\Mail\View(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
 						'name'      => 'emails',
 						'layout'    => 'comment_plain'
 					));
@@ -430,7 +430,7 @@ class plgCronSupport extends JPlugin
 					$eview->comment    = $comment;
 					$eview->ticket     = $row;
 
-					$plain = $eview->loadTemplate();
+					$plain = $eview->loadTemplate(false);
 					$plain = str_replace("\n", "\r\n", $plain);
 
 					// HTML
@@ -519,7 +519,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
@@ -577,7 +577,7 @@ class plgCronSupport extends JPlugin
 
 			// Plain text
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'tickets_plain'
 			));
@@ -927,7 +927,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
 			$severities = \Components\Support\Helpers\Utilities::getSeverities($sconfig->get('severities'));
 		}
 
@@ -985,7 +985,7 @@ class plgCronSupport extends JPlugin
 			}
 
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'ticketlist_plain'
 			));

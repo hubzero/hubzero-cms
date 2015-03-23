@@ -143,9 +143,9 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 		// Reports hasn't been set
 		if ($this->get('reports', -1) == -1)
 		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
+			if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
 			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 				$ra = new \Components\Support\Tables\ReportAbuse($this->_db);
 				$val = $ra->getCount(array(
 					'id'       => $this->get('id'),

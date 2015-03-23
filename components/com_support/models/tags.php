@@ -63,7 +63,7 @@ class Tags extends Cloud
 			$bits = array();
 			foreach ($this->tags('list', $filters, $clear) as $tag)
 			{
-				$bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . \JRoute::_('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . stripslashes($tag->get('raw_tag')) . '</a>';
+				$bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . Route::url('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . stripslashes($tag->get('raw_tag')) . '</a>';
 			}
 			return implode(', ', $bits);
 		}
