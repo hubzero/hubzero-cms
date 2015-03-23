@@ -54,60 +54,52 @@ class Jobs extends AdminController
 		$app = \JFactory::getApplication();
 		$config = \JFactory::getConfig();
 
-		$this->view->filters = array();
-
-		// Get paging variables
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Get sorting variables
+			'sortby' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortby',
+				'filter_order',
+				'added'
+			),
+			'sortdir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			// Filters
+			'category' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . 'category',
+				'category',
+				'all'
+			),
+			'filterby' => '',
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . 'search',
+				'search',
+				''
+			))
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		// Get sorting variables
-		$this->view->filters['sortby']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortby',
-			'filter_order',
-			'added'
-		));
-		$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-
-		// Filters
-		$this->view->filters['category'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . 'category',
-			'category',
-			'all'
-		));
-		$this->view->filters['filterby'] = '';
-		$this->view->filters['search']   = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . 'search',
-			'search',
-			''
-		)));
 
 		// Get data
 		$obj = new Job($this->database);
-		$this->view->rows  = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
 
+		$this->view->rows  = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
 		$this->view->total = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1, '', 1);
 
 		$this->view->config = $this->config;
-
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -138,8 +130,7 @@ class Jobs extends AdminController
 		$live_site = rtrim(\JURI::base(),'/');
 
 		// Push some styles to the template
-		$document = \JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'jobs.css');
+		$this->css();
 
 		// Incoming job ID
 		$id = \JRequest::getVar('id', array(0));
@@ -153,7 +144,6 @@ class Jobs extends AdminController
 
 		$this->view->jobadmin = new JobAdmin($this->database);
 		$this->view->employer = new Employer($this->database);
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
 
 		// Is this a new job?
 		if (!$id)
@@ -201,6 +191,8 @@ class Jobs extends AdminController
 		}
 
 		// Get subscription info
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_services' . DS . 'tables' . DS . 'subscription.php');
+
 		$this->view->subscription = new \Components\Services\Tables\Subscription($this->database);
 		$this->view->subscription->loadSubscription($this->view->employer->subscriptionid, '', '', $status=array(0, 1));
 
@@ -258,7 +250,7 @@ class Jobs extends AdminController
 			if (!$job->load($id))
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
 					'error'
 				);
@@ -294,7 +286,7 @@ class Jobs extends AdminController
 			{
 				case 'publish':
 					// make sure we aren't over quota
-					$allowed_ads = $employerid==1 ? 1 : $this->_checkQuota($job, $employerid, $this->database);
+					$allowed_ads = $employerid == 1 ? 1 : $this->_checkQuota($job, $employerid, $this->database);
 
 					if ($allowed_ads <= 0)
 					{
