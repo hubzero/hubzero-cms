@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Billboards\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Billboard database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Billboard extends \Hubzero\Database\Relational
+class Billboard extends Relational
 {
 	/**
 	 * The table namespace
@@ -109,7 +110,7 @@ class Billboard extends \Hubzero\Database\Relational
 	 **/
 	public function collection()
 	{
-		return $this->belongsToOne('Collection');
+		return $this->belongsToOne(__NAMESPACE__ . '\\Collection');
 	}
 
 	/**
@@ -120,7 +121,7 @@ class Billboard extends \Hubzero\Database\Relational
 	 */
 	public function transformBackgroundImg()
 	{
-		$params = \JComponentHelper::getParams('com_billboards');
+		$params = Component::params('com_billboards');
 		$base   = $params->get('image_location', DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards' . DS);
 
 		return DS . trim($base, DS) . DS . $this->get('background_img');

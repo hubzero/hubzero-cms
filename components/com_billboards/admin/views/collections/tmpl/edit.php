@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
@@ -48,19 +48,19 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if ($('#field-name').val() == '') {
-		alert('<?php echo JText::_('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
+		alert('<?php echo Lang::txt('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="field-name"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+			<label for="field-name"><?php echo Lang::txt('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 			<input type="text" name="name" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>

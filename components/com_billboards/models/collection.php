@@ -28,15 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Billboards\Models;
+
+use Hubzero\Database\Relational;
 
 /**
  * Billboard collections database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class Collection extends \Hubzero\Database\Relational
+class Collection extends Relational
 {
 	/**
 	 * The table namespace
@@ -62,6 +63,6 @@ class Collection extends \Hubzero\Database\Relational
 	 **/
 	public function billboards()
 	{
-		return $this->oneToMany('Billboard');
+		return $this->oneToMany(__NAMESPACE__ . '\\Billboard');
 	}
 }

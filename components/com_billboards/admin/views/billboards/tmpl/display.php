@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 // Menu
-JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS'), 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '200', '500');
 JToolBarHelper::spacer();
 JToolBarHelper::publishList();
@@ -42,21 +42,21 @@ JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'));
+JToolBarHelper::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
 JToolBarHelper::spacer();
 JToolBarHelper::help('billboards');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows->toArray()); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows->toArray()); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -81,7 +81,7 @@ JToolBarHelper::help('billboards');
 
 		$task  = $row->published ? 'unpublish' : 'publish';
 		$class = $row->published ? 'publish' : 'unpublish';
-		$alt   = $row->published ? JText::_('JPUBLISHED') : JText::_('JUNPUBLISHED');
+		$alt   = $row->published ? Lang::txt('JPUBLISHED') : Lang::txt('JUNPUBLISHED');
 ?>
 			<tr class="<?php echo "row$i"; ?>">
 				<td>
@@ -91,7 +91,7 @@ JToolBarHelper::help('billboards');
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
 				</td>
 				<td>
 					<?php echo $row->collection->name; ?>
@@ -100,7 +100,7 @@ JToolBarHelper::help('billboards');
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
 				</td>
 				<td>
-					<a class="state <?php echo $class;?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_BILLBOARDS_SET_TO', $task); ?>">
+					<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>

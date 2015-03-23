@@ -28,39 +28,38 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Billboards\Admin;
 
 $option = 'com_billboards';
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include needed models and controller
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'billboard.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'collection.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
 
-$controllerName = JRequest::getCmd('controller', 'billboards');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'billboards');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'billboards';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_BILLBOARDS'),
-	JRoute::_('index.php?option=com_billboards&controller=billboards'),
+\JSubMenuHelper::addEntry(
+	Lang::txt('COM_BILLBOARDS'),
+	Route::url('index.php?option=com_billboards&controller=billboards'),
 	$controllerName == 'billboards'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_BILLBOARDS_COLLECTIONS'),
-	JRoute::_('index.php?option=com_billboards&controller=collections'),
+\JSubMenuHelper::addEntry(
+	Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
+	Route::url('index.php?option=com_billboards&controller=collections'),
 	$controllerName == 'collections'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'BillboardsController' . ucfirst($controllerName);
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Initiate controller
 $controller = new $controllerName();

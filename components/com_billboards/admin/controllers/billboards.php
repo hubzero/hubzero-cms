@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\BillBoards\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Billboards\Models\Billboard;
 
 /**
  * Primary controller for the Billboards component
  */
-class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
+class BillBoards extends AdminController
 {
 	/**
 	 * Browse the list of billboards
@@ -68,12 +70,12 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function editTask($billboard=null)
 	{
 		// Hide the menu, force users to save or cancel
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!isset($billboard) || !is_object($billboard))
 		{
 			// Incoming - expecting an array
-			$cid = JRequest::getVar('cid', array(0));
+			$cid = \JRequest::getVar('cid', array(0));
 			if (!is_array($cid))
 			{
 				$cid = array($cid);
@@ -87,8 +89,8 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		if ($billboard->isCheckedOut())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
 				'warning'
 			);
 			return;
@@ -114,10 +116,10 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming, make sure to allow HTML to pass through
-		$data = JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
+		$data = \JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 
 		// Create object
 		$billboard = Billboard::oneOrNew($data['id'])->set($data);
@@ -137,7 +139,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		}
 
 		// See if we have an image coming in as well
-		$billboard_image = JRequest::getVar('billboard-image', false, 'files', 'array');
+		$billboard_image = \JRequest::getVar('billboard-image', false, 'files', 'array');
 
 		// If so, proceed with saving the image
 		if (isset($billboard_image['name']) && $billboard_image['name'])
@@ -149,9 +151,9 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			// Make sure upload directory exists and is writable
 			if (!is_dir($uploadDirectory))
 			{
-				if (!JFolder::create($uploadDirectory))
+				if (!\JFolder::create($uploadDirectory))
 				{
-					$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+					$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					$this->view->setLayout('edit');
 					$this->view->task = 'edit';
 					$this->editTask($billboard);
@@ -160,9 +162,9 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			}
 
 			// Scan for viruses
-			if (!JFile::isSafe($billboard_image['tmp_name']))
+			if (!\JFile::isSafe($billboard_image['tmp_name']))
 			{
-				$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
+				$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
 				$this->view->setLayout('edit');
 				$this->view->task = 'edit';
 				$this->editTask($billboard);
@@ -171,7 +173,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 			if (!move_uploaded_file($billboard_image['tmp_name'], $uploadDirectory . $billboard_image['name']))
 			{
-				$this->view->setError(JText::_('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
+				$this->view->setError(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
 				$this->view->setLayout('edit');
 				$this->view->task = 'edit';
 				$this->editTask($billboard);
@@ -189,8 +191,8 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
 		);
 	}
 
@@ -202,16 +204,16 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Initialize variables
-		$cid   = JRequest::getVar('cid', array(), 'post', 'array');
-		$order = JRequest::getVar('order', array(), 'post', 'array');
+		$cid   = \JRequest::getVar('cid', array(), 'post', 'array');
+		$order = \JRequest::getVar('order', array(), 'post', 'array');
 
 		// Make sure we have something to work with
 		if (empty($cid))
 		{
-			JError::raiseWarning(500, JText::_('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
+			JError::raiseWarning(500, Lang::txt('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
 			return;
 		}
 
@@ -231,13 +233,13 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		}
 
 		// Clear the component's cache
-		$cache = JFactory::getCache('com_billboards');
+		$cache = \JFactory::getCache('com_billboards');
 		$cache->clean();
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
 		);
 	}
 
@@ -249,10 +251,10 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('cid', array());
+		$ids = \JRequest::getVar('cid', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -270,8 +272,8 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 				if (!$billboard->destroy())
 				{
 					$this->setRedirect(
-						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-						JText::_('COM_BILLBOARDS_ERROR_CANT_DELETE')
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+						Lang::txt('COM_BILLBOARDS_ERROR_CANT_DELETE')
 					);
 					return;
 				}
@@ -280,8 +282,8 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 
@@ -313,7 +315,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		// Incoming - we need an id so that we can check it back in
-		$fields = JRequest::getVar('billboard', array(), 'post');
+		$fields = \JRequest::getVar('billboard', array(), 'post');
 
 		// Check the billboard back in
 		$billboard = Billboard::oneOrNew($fields['id']);
@@ -321,7 +323,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -334,7 +336,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	protected function toggle($publish=1)
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (we're expecting an array)
 		$ids = JRequest::getVar('cid', array());
@@ -364,8 +366,8 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			else
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+					Lang::txt('COM_BILLBOARDS_ERROR_CHECKED_OUT'),
 					'warning'
 				);
 				return;
@@ -374,7 +376,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

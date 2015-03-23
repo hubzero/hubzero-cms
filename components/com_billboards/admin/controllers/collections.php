@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\BillBoards\Admin\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Billboards\Models\Collection;
 
 /**
  * Primary controller for the Billboards component
  */
-class BillboardsControllerCollections extends \Hubzero\Component\AdminController
+class Collections extends AdminController
 {
 	/**
 	 * Browse billboards collections (collections are used to display multiple billboards via mod_billboards)
@@ -68,12 +70,12 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	public function editTask($collection=null)
 	{
 		// Hide the menu, force users to save or cancel
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!isset($collection) || !is_object($collection))
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (!is_array($id))
 			{
 				$id = array($id);
@@ -96,11 +98,11 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Create object
-		$collection = Collection::oneOrNew(JRequest::getInt('id'))->set(array(
-			'name' => JRequest::getVar('name')
+		$collection = Collection::oneOrNew(\JRequest::getInt('id'))->set(array(
+			'name' => \JRequest::getVar('name')
 		));
 
 		if (!$collection->save())
@@ -119,8 +121,8 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
 		);
 	}
 
@@ -132,10 +134,10 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -153,8 +155,8 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
 
@@ -167,7 +169,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	{
 		// Just redirect, no checkin necessary
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

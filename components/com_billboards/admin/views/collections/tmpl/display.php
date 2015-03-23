@@ -31,22 +31,22 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Add the toolbar items
-JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
+JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'));
+JToolBarHelper::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
 JToolBarHelper::spacer();
 JToolBarHelper::help('collections');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->copy()->total();?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -62,7 +62,7 @@ JToolBarHelper::help('collections');
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?>
 					</a>
 				</td>

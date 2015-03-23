@@ -33,6 +33,9 @@ namespace Modules\Billboards;
 use Hubzero\Module\Module;
 use JComponentHelper;
 use JFactory;
+use Components\Billboards\Models\Billboard;
+
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
 
 /**
  * Module helper class, used to query for billboards and contains the display method
@@ -58,9 +61,7 @@ class Helper extends Module
 
 		// Grab all the buildboards associated with the selected collection
 		// Make sure we only grab published billboards
-		require_once JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_billboards' . DS . 'models' . DS . 'billboard.php';
-
-		$rows = \Billboard::whereEquals('published', 1)
+		$rows = Billboard::whereEquals('published', 1)
 		                 ->whereEquals('collection_id', $collection)
 		                 ->order('ordering', 'asc')
 		                 ->rows();
