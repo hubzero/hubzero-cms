@@ -34,8 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 	$juser = JFactory::getUser();
 	$database = JFactory::getDBO();
 
-	$jt = new JobType($database);
-	$jc = new JobCategory($database);
+	$jt = new \Components\Jobs\Tables\JobType($database);
+	$jc = new \Components\Jobs\Tables\JobCategory($database);
 
 	$profile = \Hubzero\User\Profile::getInstance($this->seeker->uid);
 
@@ -49,16 +49,16 @@ defined('_JEXEC') or die('Restricted access');
 
 		$path = $base_path . DS . \Hubzero\Utility\String::pad($this->seeker->uid);
 
-		if (!is_dir(JPATH_ROOT . $path))
+		if (!is_dir(PATH_APP . $path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $path))
+			if (!JFolder::create(PATH_APP . $path))
 			{
 				$path = '';
 			}
 		}
 
-	$resume = is_file(JPATH_ROOT . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
+	$resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS . $this->seeker->filename : '';
 ?>
 	<div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : ''; echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
 		<div class="thumb">

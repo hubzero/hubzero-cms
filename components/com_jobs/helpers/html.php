@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,11 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Jobs\Helpers;
 
 if (!defined('n'))
 {
@@ -67,7 +66,7 @@ if (!defined('n'))
 /**
  * Jobs helper class for misc. HTML
  */
-class JobsHtml
+class Html
 {
 	/**
 	 * Remove paragraph tags and break tags
@@ -98,26 +97,26 @@ class JobsHtml
 	{
 		$html  = '<div class="confirmwrap">' . "\n";
 		$html .= "\t" . '<div class="confirmscreen">' . "\n";
-		$html .= "\t" . '<p class="warning">' . JText::_('CONFIRM_ARE_YOU_SURE') . ' ';
+		$html .= "\t" . '<p class="warning">' . Lang::txt('CONFIRM_ARE_YOU_SURE') . ' ';
 		if ($action == 'cancelsubscription')
 		{
-			$html .= strtolower(JText::_('SUBSCRIPTION_CANCEL_THIS'));
+			$html .= strtolower(Lang::txt('SUBSCRIPTION_CANCEL_THIS'));
 		}
 		else if ($action == 'withdrawapp')
 		{
-			$html .=  JText::_('APPLICATION_WITHDRAW');
+			$html .=  Lang::txt('APPLICATION_WITHDRAW');
 		}
 		else
 		{
-			$html .= JText::_('ACTION_PERFORM_THIS');
+			$html .= Lang::txt('ACTION_PERFORM_THIS');
 		}
-		$yes  = strtoupper(JText::_('YES'));
-		$yes .= $action == 'cancelsubscription' ? ', ' . JText::_('ACTION_CANCEL_IT') : '';
-		$yes .= $action == 'withdrawapp'        ? ', ' . JText::_('ACTION_WITHDRAW')  : '';
+		$yes  = strtoupper(Lang::txt('YES'));
+		$yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('ACTION_CANCEL_IT') : '';
+		$yes .= $action == 'withdrawapp'        ? ', ' . Lang::txt('ACTION_WITHDRAW')  : '';
 
-		$no  = strtoupper(JText::_('NO'));
-		$no .= $action == 'cancelsubscription' ? ', ' . JText::_('ACTION_DO_NOT_CANCEL')   : '';
-		$no .= $action == 'withdrawapp'        ? ', ' . JText::_('ACTION_DO_NOT_WITHDRAW') : '';
+		$no  = strtoupper(Lang::txt('NO'));
+		$no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('ACTION_DO_NOT_CANCEL')   : '';
+		$no .= $action == 'withdrawapp'        ? ', ' . Lang::txt('ACTION_DO_NOT_WITHDRAW') : '';
 
 		$html .= '?</p>' . "\n";
 		$html .= "\t" . '<p><span class="yes"><a href="' . $actionurl . '">' . $yes . '</a></span> <span class="no"><a href="' . $returnurl . '">' . $no . '</a></span></p>';

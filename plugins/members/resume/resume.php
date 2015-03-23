@@ -57,17 +57,17 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$lang = JFactory::getLanguage();
 		$lang->load('com_jobs');
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'employer.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'prefs.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'resume.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'seeker.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'shortlist.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'admin.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'application.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'category.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'employer.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'job.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'prefs.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'resume.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'seeker.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'shortlist.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'stats.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_jobs' . DS . 'tables' . DS . 'type.php');
 
 		$this->config = JComponentHelper::getParams('com_jobs');
 	}
@@ -104,7 +104,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	public function isEmployer($user=null, $member=null)
 	{
 		$database = JFactory::getDBO();
-		$employer = new Employer($database);
+		$employer = new \Components\Jobs\Tables\Employer($database);
 		$juser = JFactory::getUser();
 
 		// Check if they're a site admin (from Joomla)
@@ -271,7 +271,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($task == 'saveprefs')
 		{
-			$js = new JobSeeker($database);
+			$js = new \Components\Jobs\Tables\JobSeeker($database);
 
 			if (!$js->loadSeeker($member->get('uidNumber')))
 			{
@@ -296,7 +296,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 		else if ($task == 'savetitle' && $author && $title)
 		{
-			$resume = new Resume ($database);
+			$resume = new \Components\Jobs\Tables\Resume($database);
 			if ($resume->loadResume($author))
 			{
 				$resume->title = $title;
@@ -325,7 +325,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// are we activating or disactivating?
 		$active = JRequest::getInt('on', 0);
 
-		$js = new JobSeeker($database);
+		$js = new \Components\Jobs\Tables\JobSeeker($database);
 
 		if (!$js->loadSeeker($member->get('uidNumber')))
 		{
@@ -371,11 +371,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$self = $member->get('uidNumber') == $juser->get('id') ? 1 : 0;
 
 		// get job seeker info on the user
-		$js = new JobSeeker($database);
+		$js = new \Components\Jobs\Tables\JobSeeker($database);
 		if (!$js->loadSeeker($member->get('uidNumber')))
 		{
 			// make a new entry
-			$js = new JobSeeker($database);
+			$js = new \Components\Jobs\Tables\JobSeeker($database);
 			$js->uid = $member->get('uidNumber');
 			$js->active = 0;
 
@@ -394,11 +394,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		$jt = new JobType($database);
-		$jc = new JobCategory($database);
+		$jt = new \Components\Jobs\Tables\JobType($database);
+		$jc = new \Components\Jobs\Tables\JobCategory($database);
 
 		// get active resume
-		$resume = new Resume($database);
+		$resume = new \Components\Jobs\Tables\Resume($database);
 		$file = '';
 		$path = $this->build_path($member->get('uidNumber'));
 
@@ -412,7 +412,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		}
 
 		// get seeker stats
-		$jobstats = new JobStats($database);
+		$jobstats = new \Components\Jobs\Tables\JobStats($database);
 		$stats = $jobstats->getStats($member->get('uidNumber'), 'seeker');
 
 		$view = new \Hubzero\Plugin\View(
@@ -465,10 +465,10 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$listdir = $base_path . DS . $dir;
 
-		if (!is_dir(JPATH_ROOT . $listdir))
+		if (!is_dir(PATH_APP . $listdir))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create(JPATH_ROOT . $listdir))
+			if (!JFolder::create(PATH_APP . $listdir))
 			{
 				return false;
 			}
@@ -512,7 +512,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$title = JRequest::getVar('title', '');
 		$default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME'));
-		$path = JPATH_ROOT.$path;
+		$path = PATH_APP . $path;
 
 		// Replace file title with user name
 		$file_ext = substr($file['name'], strripos($file['name'], '.'));
@@ -531,11 +531,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			return $this->_view($database, $option, $member, $emp);
 		}
 
-		$row = new Resume($database);
+		$row = new \Components\Jobs\Tables\Resume($database);
 
 		if (!$row->loadResume($member->get('uidNumber')))
 		{
-			$row = new Resume($database);
+			$row = new \Components\Jobs\Tables\Resume($database);
 			$row->id   = 0;
 			$row->uid  = $member->get('uidNumber');
 			$row->main = 1;
@@ -545,7 +545,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			JFile::delete($path . DS . $row->filename);
 
 			// Remove stats for prev resume
-			$jobstats = new JobStats($database);
+			$jobstats = new \Components\Jobs\Tables\JobStats($database);
 			$jobstats->deleteStats($member->get('uidNumber'), 'seeker');
 		}
 
@@ -607,7 +607,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		$path = $this->build_path($member->get('uidNumber'));
 
-		if (!file_exists(JPATH_ROOT . $path . DS . $file) or !$file)
+		if (!file_exists(PATH_APP . $path . DS . $file) or !$file)
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
 		}
@@ -615,7 +615,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete(JPATH_ROOT . $path . DS . $file))
+			if (!JFile::delete(PATH_APP . $path . DS . $file))
 			{
 				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 			}
@@ -624,11 +624,11 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 				$row->delete();
 
 				// Remove stats for prev resume
-				$jobstats = new JobStats($database);
+				$jobstats = new \Components\Jobs\Tables\JobStats($database);
 				$jobstats->deleteStats ($member->get('uidNumber'), 'seeker');
 
 				// Do not include profile in search without a resume
-				$js = new JobSeeker ($database);
+				$js = new \Components\Jobs\Tables\JobSeeker($database);
 				$js->loadSeeker($member->get('uidNumber'));
 				$js->bind(array('active' => 0));
 				if (!$js->store())
@@ -671,7 +671,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		{
 			$database = JFactory::getDBO();
 
-			$shortlist = new Shortlist($database);
+			$shortlist = new \Components\Jobs\Tables\Shortlist($database);
 			$shortlist->loadEntry($juser->get('id'), $oid, 'resume');
 
 			if (!$shortlist->id)
@@ -691,7 +691,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			if ($ajax)
 			{
 				// get seeker info
-				$js = new JobSeeker($database);
+				$js = new \Components\Jobs\Tables\JobSeeker($database);
 				$seeker = $js->getSeeker($oid, $juser->get('id'));
 
 				$view = new \Hubzero\Plugin\View(
@@ -825,13 +825,13 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$uid = $member->get('uidNumber');
 
 		// Load the resume
-		$resume = new Resume($database);
+		$resume = new \Components\Jobs\Tables\Resume($database);
 		$file = '';
 		$path = $this->build_path($uid);
 
 		if ($resume->loadResume($uid))
 		{
-			$file = JPATH_ROOT . $path . DS . $resume->filename;
+			$file = PATH_APP . $path . DS . $resume->filename;
 		}
 
 		if (!is_file($file))
@@ -849,7 +849,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$xserver->filename($file);
 
 		// record view
-		$stats = new JobStats($database);
+		$stats = new \Components\Jobs\Tables\JobStats($database);
 		if ($juser->get('id') != $uid)
 		{
 			$stats->saveView($uid, 'seeker');
