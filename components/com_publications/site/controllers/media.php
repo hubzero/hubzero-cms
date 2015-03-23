@@ -124,7 +124,7 @@ class Media extends SiteController
 					if (!is_file(PATH_APP . DS . $source))
 					{
 						$source = $this->config->get('masterimage',
-						'/components/com_publications/assets/img/master.png');
+						'/components/com_publications/site/assets/img/master.png');
 					}
 				}
 			}
@@ -137,7 +137,7 @@ class Media extends SiteController
 				if (!is_file(PATH_APP . DS . $source))
 				{
 					$source = $this->config->get('gallery_thumb',
-					'/components/com_publications/assets/img/gallery_thumb.gif');
+					'/components/com_publications/site/assets/img/gallery_thumb.gif');
 				}
 			}
 		}

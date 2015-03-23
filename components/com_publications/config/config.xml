@@ -38,9 +38,9 @@
 			<option value="1">JOFF</option>
 		</field>
 		<field name="default_category" type="text" menu="hide" default="dataset" label="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT" description="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT_DESC" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE_DESC" />
-		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB_DESC" />
-		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/site/assets/img/resource_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE_DESC" />
+		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/site/assets/img/video_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB_DESC" />
+		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/site/assets/img/gallery_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB_DESC" />
 		<field name="email_image" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EMAIL_IMAGE_HEADER" description="COM_PUBLICATIONS_CONFIG_EMAIL_IMAGE_HEADER_DESC" />
 		<field name="masterimage" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE_DESC" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />

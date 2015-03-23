@@ -77,7 +77,7 @@ class ImageViewer extends Base
 				'thumbHeight' 		=> '60',
 				'masterWidth' 		=> '600',
 				'masterHeight' 		=> '400',
-				'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif',
+				'defaultThumb'		=> '/components/com_publications/site/assets/img/resource_thumb.gif',
 				'enforced'			=> 0
 			)
 		);
