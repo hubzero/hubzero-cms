@@ -89,6 +89,13 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	private $_following = null;
 
 	/**
+	 * Adapter
+	 *
+	 * @var object
+	 */
+	private $_adapter = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   mixed   $oid         Integer, string, array, or object
@@ -220,6 +227,14 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 				$this->setError($item->getError());
 			}
 		}
+
+		/*if (!$this->getError() && $this->get('state') == self::APP_STATE_DELETED)
+		{
+			foreach ($this->posts(array('access' => array(0, 1, 2, 4))) as $post)
+			{
+				$post->delete();
+			}
+		}*/
 
 		return true;
 	}
@@ -590,26 +605,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	 */
 	public function link()
 	{
-		switch ($this->get('object_type'))
-		{
-			case 'group':
-				$group = \Hubzero\User\Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups';
-				if ($group)
-				{
-					$href .= '&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
-				}
-			break;
-
-			case 'member':
-				$href = 'index.php?option=com_members&id=' . $this->get('object_id') . '&active=collections&task=' . $this->get('alias');
-			break;
-
-			default:
-				$href = 'index.php?option=com_collections&task=all&id=' . $this->get('id');
-			break;
-		}
-		return $href;
+		return $this->_adapter()->build();
 	}
 
 	/**
@@ -696,6 +692,8 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 			}
 
 			$this->_adapter = new $cls($this->get('object_id'));
+			$this->_adapter->set('id', $this->get('id'));
+			$this->_adapter->set('alias', $this->get('alias'));
 		}
 		return $this->_adapter;
 	}
