@@ -167,7 +167,7 @@ class Asset
 		//          * namespace isn't always defined, at which point the model name is the namespace
 		//          * namespace might be something like time_hub, which should become time.hub
 		//          * non-integer ids will fail
-		return "com_{$this->model->getNamespace()}.{$this->model->getModelName()}." . (int)$this->model->getPkValue();
+		return strtolower("com_{$this->model->getNamespace()}.{$this->model->getModelName()}.") . (int)$this->model->getPkValue();
 	}
 
 	/**
