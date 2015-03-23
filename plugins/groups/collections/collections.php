@@ -602,7 +602,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			return $this->_collections();
+			JError::raiseError(400, JText::_('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
+			return;
 		}
 
 		$view->filters['collection_id'] = $view->collection->get('id');

@@ -554,7 +554,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->collection = $this->model->collection($view->filters['collection_id']);
 		if (!$view->collection->exists())
 		{
-			return $this->_collections();
+			JError::raiseError(400, JText::_('Collection not found.'));
+			return;
 		}
 
 		// Is the board restricted to logged-in users only?
