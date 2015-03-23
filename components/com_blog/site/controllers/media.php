@@ -51,13 +51,13 @@ class Media extends SiteController
 	{
 		$archive = new Archive('site', 0);
 
-		$entry = $archive->entry(\JRequest::getVar('alias', ''));
+		$entry = $archive->entry(Request::getVar('alias', ''));
 		if (!$entry->exists() || !$entry->access('view'))
 		{
 			throw new Exception(Lang::txt('Access denied.'), 403);
 		}
 
-		if (!($file = \JRequest::getVar('file', '')))
+		if (!($file = Request::getVar('file', '')))
 		{
 			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
 
@@ -110,14 +110,14 @@ class Media extends SiteController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
@@ -127,8 +127,8 @@ class Media extends SiteController
 
 		// Incoming
 		$archive = new Archive(
-			\JRequest::getWord('scope', 'site'),
-			\JRequest::getInt('id', 0)
+			Request::getWord('scope', 'site'),
+			Request::getInt('id', 0)
 		);
 
 		// Build the file path
@@ -176,17 +176,17 @@ class Media extends SiteController
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file
-		$file = trim(\JRequest::getVar('folder', '', 'get'));
+		$file = trim(Request::getVar('folder', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
@@ -196,8 +196,8 @@ class Media extends SiteController
 
 		// Incoming
 		$archive = new Archive(
-			\JRequest::getWord('scope', 'site'),
-			\JRequest::getInt('id', 0)
+			Request::getWord('scope', 'site'),
+			Request::getInt('id', 0)
 		);
 
 		// Build the file path
@@ -226,17 +226,17 @@ class Media extends SiteController
 	public function deletefileTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming file
-		$file = trim(\JRequest::getVar('file', '', 'get'));
+		$file = trim(Request::getVar('file', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_FILE'));
@@ -246,8 +246,8 @@ class Media extends SiteController
 
 		// Incoming
 		$archive = new Archive(
-			\JRequest::getWord('scope', 'site'),
-			\JRequest::getInt('id', 0)
+			Request::getWord('scope', 'site'),
+			Request::getInt('id', 0)
 		);
 
 		// Build the file path
@@ -280,8 +280,8 @@ class Media extends SiteController
 	{
 		// Output HTML
 		$this->view->archive = new Archive(
-			\JRequest::getWord('scope', 'site'),
-			\JRequest::getInt('id', 0)
+			Request::getWord('scope', 'site'),
+			Request::getInt('id', 0)
 		);
 
 		foreach ($this->getErrors() as $error)
@@ -303,8 +303,8 @@ class Media extends SiteController
 	{
 		// Incoming
 		$this->view->archive = new Archive(
-			\JRequest::getWord('scope', 'site'),
-			\JRequest::getInt('id', 0)
+			Request::getWord('scope', 'site'),
+			Request::getInt('id', 0)
 		);
 
 		// Build the file path

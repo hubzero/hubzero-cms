@@ -625,8 +625,7 @@ class Entry extends Model
 				$this->params->set('access-view-entry', true);
 			}
 
-			$juser = \JFactory::getUser();
-			if ($juser->get('guest'))
+			if (User::isGuest())
 			{
 				// Do not allow logged-out users to see private, 
 				// or 'registered' entries.
@@ -639,12 +638,13 @@ class Entry extends Model
 			else
 			{
 				// Check if they're a site admin
-				$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-				$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
+				foreach (array('admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own') as $option)
+				{
+					$this->params->set(
+						'access-' . $option . '-entry',
+						User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))
+					);
+				}
 
 				// If they're not an admin
 				if (!$this->params->get('access-admin-entry')
@@ -657,7 +657,7 @@ class Entry extends Model
 					}
 
 					// Was the entry created by the current user?
-					if ($this->get('created_by') == $juser->get('id'))
+					if ($this->get('created_by') == User::get('id'))
 					{
 						// Give full access
 						$this->params->set('access-view-entry', true);

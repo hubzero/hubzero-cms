@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,8 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js();
-
-$juser = JFactory::getUser();
 
 $filters = array(
 	'scope'      => $this->filters['scope'],
@@ -53,10 +51,10 @@ $first = $this->model->entries('first', $filters);
 		$path  = 'index.php?option=' . $this->option . '&task=feed.rss';
 		$path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
 		$path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
+
 		$feed = Route::url($path);
 		if (substr($feed, 0, 4) != 'http')
 		{
-			$jconfig = JFactory::getConfig();
 			$live_site = rtrim(JURI::base(),'/');
 
 			$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
@@ -124,7 +122,7 @@ $first = $this->model->entries('first', $filters);
 								<a href="<?php echo Route::url($row->link()); ?>">
 									<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 								</a>
-							<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+							<?php if (User::get('id') == $row->get('created_by')) { ?>
 								<a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_BLOG_EDIT'); ?>">
 									<?php echo Lang::txt('COM_BLOG_EDIT'); ?>
 								</a>
@@ -173,7 +171,7 @@ $first = $this->model->entries('first', $filters);
 									</span>
 								</dd>
 							<?php } ?>
-							<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+							<?php if (User::get('id') == $row->get('created_by')) { ?>
 								<dd class="state <?php echo $row->state('text'); ?>">
 									<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
 								</dd>

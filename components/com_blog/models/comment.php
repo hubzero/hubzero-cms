@@ -311,7 +311,7 @@ class Comment extends Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', \JRequest::getCmd('option')),
+						'option'   => $this->get('option', \Request::getCmd('option')),
 						'scope'    => $this->get('scope', 'blog'),
 						'pagename' => $this->get('alias'),
 						'pageid'   => 0,

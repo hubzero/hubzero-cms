@@ -60,7 +60,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = \JFactory::getUser();
+		$user = \User::getRoot();
 		$result = new Object;
 
 		$actions = array(

@@ -32,7 +32,7 @@ namespace Components\Blog\Site;
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'entries'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'entries'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';

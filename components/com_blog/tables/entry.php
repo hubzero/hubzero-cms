@@ -100,10 +100,9 @@ class Entry extends \JTable
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->created_by)
 		{
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		if (!$this->id)
@@ -295,7 +294,7 @@ class Entry extends \JTable
 		{
 			if (!\JFactory::getApplication()->isAdmin())
 			{
-				$created_by = " OR m.created_by=" .  $this->_db->quote(\JFactory::getUser()->get('id'));
+				$created_by = " OR m.created_by=" .  $this->_db->quote(User::get('id'));
 				$where[] = "(m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
 			}
 		}

@@ -34,8 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$juser = JFactory::getUser();
-
 $filters = array(
 	'scope' => $this->config->get('show_from', 'site'),
 	'state' => 'public',
@@ -46,7 +44,7 @@ if ($filters['scope'] == 'both')
 {
 	$filters['scope'] = '';
 }
-if (!$juser->get('guest'))
+if (!User::isGuest())
 {
 	$filters['state'] = 'registered';
 
@@ -133,7 +131,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						</span>
 					</dd>
 				<?php } ?>
-				<?php if ($juser->get('id') == $this->row->get('created_by')) { ?>
+				<?php if (User::get('id') == $this->row->get('created_by')) { ?>
 					<dd class="state">
 						<?php echo Lang::txt('COM_BLOG_STATE_' . strtoupper($this->row->state('text'))); ?>
 					</dd>
@@ -311,9 +309,9 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 			<form method="post" action="<?php echo Route::url($this->row->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
 					<?php
-					$jxuser = new \Hubzero\User\Profile; //::getInstance($juser->get('id'));
-					if (!$juser->get('guest')) {
-						$jxuser = \Hubzero\User\Profile::getInstance($juser->get('id'));
+					$jxuser = new \Hubzero\User\Profile;
+					if (!User::isGuest()) {
+						$jxuser = \Hubzero\User\Profile::getInstance(User::get('id'));
 						$anonymous = 0;
 					} else {
 						$anonymous = 1;
@@ -323,8 +321,8 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 				</p>
 				<fieldset>
 				<?php
-				$replyto = $this->row->comment(JRequest::getInt('reply', 0));
-				if (!$juser->get('guest'))
+				$replyto = $this->row->comment(Request::getInt('reply', 0));
+				if (!User::isGuest())
 				{
 					if ($replyto->exists())
 					{
@@ -354,7 +352,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					}
 				}
 				?>
-					<?php if (!$juser->get('guest')) { ?>
+					<?php if (!User::isGuest()) { ?>
 					<label for="commentcontent">
 						Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>:
 						<?php
@@ -369,7 +367,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					</p>
 					<?php } ?>
 
-				<?php if (!$juser->get('guest')) { ?>
+				<?php if (!User::isGuest()) { ?>
 					<label id="comment-anonymous-label">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 						<?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
@@ -383,7 +381,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->row->get('id'); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $replyto->get('id'); ?>" />
 					<input type="hidden" name="comment[created]" value="" />
-					<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />

@@ -38,8 +38,8 @@ class Comment extends \JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -49,7 +49,7 @@ class Comment extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -57,19 +57,21 @@ class Comment extends \JTable
 		if ($this->content == '')
 		{
 			$this->setError(Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT='));
-			return false;
 		}
 
 		if (!$this->entry_id)
 		{
 			$this->setError(Lang::txt('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+		}
+
+		if ($this->getError())
+		{
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->created_by)
 		{
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 		if (!$this->id)
 		{
@@ -79,7 +81,7 @@ class Comment extends \JTable
 		else
 		{
 			$this->modified    = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified_by = User::get('id');
 		}
 
 		return true;
@@ -88,9 +90,9 @@ class Comment extends \JTable
 	/**
 	 * Get a record from the database and bind it to this
 	 *
-	 * @param      integer $entry_id Blog entry
-	 * @param      integer $user_id  User ID
-	 * @return     boolean True if record found
+	 * @param   integer  $entry_id  Blog entry
+	 * @param   integer  $user_id   User ID
+	 * @return  boolean  True if record found
 	 */
 	public function loadUserComment($entry_id, $user_id)
 	{
@@ -103,9 +105,9 @@ class Comment extends \JTable
 	/**
 	 * Get all comments off another comment on an entry
 	 *
-	 * @param      integer $entry_id Blog entry
-	 * @param      integer $parent   Parent comment
-	 * @return     array
+	 * @param   integer  $entry_id  Blog entry
+	 * @param   integer  $parent    Parent comment
+	 * @return  array
 	 */
 	public function getComments($entry_id=NULL, $parent=NULL)
 	{
@@ -132,9 +134,9 @@ class Comment extends \JTable
 	/**
 	 * Get all comments on an entry
 	 *
-	 * @param      integer $entry_id Blog entry
-	 * @param      array   $filters  Extra filters to apply to the query
-	 * @return     array
+	 * @param   integer  $entry_id  Blog entry
+	 * @param   array    $filters   Extra filters to apply to the query
+	 * @return  array
 	 */
 	public function getAllComments($entry_id=NULL, $filters=array())
 	{
@@ -174,14 +176,14 @@ class Comment extends \JTable
 	/**
 	 * Recursive function to build tree
 	 *
-	 * @param      integer $id       Parent ID
-	 * @param      string  $indent   Indent text
-	 * @param      array   $list     List of records
-	 * @param      array   $children Container for parent/children mapping
-	 * @param      integer $maxlevel Maximum levels to descend
-	 * @param      integer $level    Indention level
-	 * @param      integer $type     Indention type
-	 * @return     void
+	 * @param   integer  $id        Parent ID
+	 * @param   string   $indent    Indent text
+	 * @param   array    $list      List of records
+	 * @param   array    $children  Container for parent/children mapping
+	 * @param   integer  $maxlevel  Maximum levels to descend
+	 * @param   integer  $level     Indention level
+	 * @param   integer  $type      Indention type
+	 * @return  void
 	 */
 	private function _treeRecurse($children, $list, $maxlevel=9999, $level=0)
 	{
@@ -201,8 +203,8 @@ class Comment extends \JTable
 	/**
 	 * Delete descendants of a comment
 	 *
-	 * @param      integer $id Parent of comments to delete
-	 * @return     boolean True if comments were deleted
+	 * @param   integer  $id  Parent of comments to delete
+	 * @return  boolean  True if comments were deleted
 	 */
 	public function deleteChildren($id=NULL)
 	{
@@ -238,9 +240,9 @@ class Comment extends \JTable
 	/**
 	 * Set the state of a comment and all descendants
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id     ID of parent comment
+	 * @param   integer  $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return  boolean  true if successful otherwise returns and error message
 	 */
 	public function setState($oid=null, $state=0)
 	{
@@ -267,9 +269,9 @@ class Comment extends \JTable
 	/**
 	 * Set the state of descendants of a comment
 	 *
-	 * @param      integer $id     ID of parent comment
-	 * @param      integer $state  State to set (0=unpublished, 1=published, 2=trashed)
-	 * @return     boolean true if successful otherwise returns and error message
+	 * @param   integer  $id     ID of parent comment
+	 * @param   integer  $state  State to set (0=unpublished, 1=published, 2=trashed)
+	 * @return  boolean  true if successful otherwise returns and error message
 	 */
 	public function setDescendantState($id=NULL, $state=0)
 	{
@@ -306,8 +308,8 @@ class Comment extends \JTable
 	 * Return a count of entries based off of filters passed
 	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getEntriesCount($filters=array())
 	{
@@ -322,8 +324,8 @@ class Comment extends \JTable
 	 * Get entries based off of filters passed
 	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getEntries($filters=array())
 	{
@@ -337,8 +339,8 @@ class Comment extends \JTable
 	 * Build a query from filters passed
 	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters)
 	{

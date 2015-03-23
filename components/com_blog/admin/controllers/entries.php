@@ -62,7 +62,6 @@ class Entries extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$jconfig = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -96,7 +95,7 @@ class Entries extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -139,12 +138,12 @@ class Entries extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -183,18 +182,18 @@ class Entries extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		if (isset($fields['publish_up']) && $fields['publish_up'] != '')
 		{
-			$fields['publish_up']   = \JFactory::getDate($fields['publish_up'], \JFactory::getConfig()->get('offset'))->toSql();
+			$fields['publish_up']   = \JFactory::getDate($fields['publish_up'], Config::get('offset'))->toSql();
 		}
 		if (isset($fields['publish_down']) && $fields['publish_down'] != '')
 		{
-			$fields['publish_down'] = \JFactory::getDate($fields['publish_down'], \JFactory::getConfig()->get('offset'))->toSql();
+			$fields['publish_down'] = \JFactory::getDate($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		// Initiate extended database class
@@ -215,7 +214,7 @@ class Entries extends AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(\JRequest::getVar('tags', '')));
+		$row->tag(trim(Request::getVar('tags', '')));
 
 		if ($this->_task == 'apply')
 		{
@@ -237,10 +236,10 @@ class Entries extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		if (count($ids) > 0)
 		{
@@ -271,12 +270,12 @@ class Entries extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
@@ -335,12 +334,12 @@ class Entries extends AdminController
 	public function setcommentsTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
-		$state = \JRequest::getInt('state', 0);
+		$state = Request::getInt('state', 0);
 
 		// Check for a resource
 		if (count($ids) < 1)

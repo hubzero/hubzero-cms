@@ -62,8 +62,6 @@ class Comments extends AdminController
 	 */
 	public function displayTask()
 	{
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -93,7 +91,7 @@ class Comments extends AdminController
 			'limit'        => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start'        => $app->getUserStateFromRequest(
@@ -200,12 +198,12 @@ class Comments extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -219,7 +217,7 @@ class Comments extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('entry_id', \JRequest::getInt('entry_id', 0));
+			$this->view->row->set('entry_id', Request::getInt('entry_id', 0));
 			$this->view->row->set('created_by', $this->juser->get('id'));
 			$this->view->row->set('created', \JFactory::getDate()->toSql());
 		}
@@ -244,10 +242,10 @@ class Comments extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new Comment($fields['id']);
@@ -286,10 +284,10 @@ class Comments extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		if (count($ids) > 0)
 		{
@@ -309,7 +307,7 @@ class Comments extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
 		);
 	}
 
@@ -322,7 +320,7 @@ class Comments extends AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . \JRequest::getInt('entry_id', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
 		);
 	}
 }

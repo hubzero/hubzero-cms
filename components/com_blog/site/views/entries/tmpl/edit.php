@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//$juser = JFactory::getUser();
 /*if ($this->entry->id) {
 	$lid = $this->entry->id;
 } else {

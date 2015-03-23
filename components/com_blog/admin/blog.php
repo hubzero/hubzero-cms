@@ -30,31 +30,31 @@
 
 namespace Components\Blog\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_blog'))
+if (!\User::authorise('core.manage', 'com_blog'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$scope = \JRequest::getCmd('scope', 'site');
-$controllerName = \JRequest::getCmd('controller', 'entries');
+$scope = \Request::getCmd('scope', 'site');
+$controllerName = \Request::getCmd('controller', 'entries');
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_BLOG_SCOPE_SITE'),
-	Route::url('index.php?option=com_blog&controller=entries&scope=site'),
+	\Lang::txt('COM_BLOG_SCOPE_SITE'),
+	\Route::url('index.php?option=com_blog&controller=entries&scope=site'),
 	($controllerName == 'entries' && $scope == 'site')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_BLOG_SCOPE_MEMBER'),
-	Route::url('index.php?option=com_blog&controller=entries&scope=member'),
+	\Lang::txt('COM_BLOG_SCOPE_MEMBER'),
+	\Route::url('index.php?option=com_blog&controller=entries&scope=member'),
 	($controllerName == 'entries' && $scope == 'member')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_BLOG_SCOPE_GROUP'),
-	Route::url('index.php?option=com_blog&controller=entries&scope=group'),
+	\Lang::txt('COM_BLOG_SCOPE_GROUP'),
+	\Route::url('index.php?option=com_blog&controller=entries&scope=group'),
 	($controllerName == 'entries' && $scope == 'group')
 );
 

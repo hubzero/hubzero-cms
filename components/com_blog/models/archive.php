@@ -272,19 +272,19 @@ class Archive extends Object
 	{
 		if (!$this->config()->get('access-check-done', false))
 		{
-			$juser = \JFactory::getUser();
-			if ($juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->config()->set('access-check-done', true);
 			}
 			else
 			{
-				$this->config()->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-				$this->config()->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->config()->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->config()->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->config()->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->config()->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
+				foreach (array('admin', 'manage', 'delete', 'edit', 'edit-state', 'edit-own') as $option)
+				{
+					$this->config()->set(
+						'access-' . $option . '-entry',
+						User::authorise('core.' . ($option == 'admin' ? 'admin' : 'manage'), $this->get('id'))
+					);
+				}
 
 				$this->config()->set('access-check-done', true);
 			}

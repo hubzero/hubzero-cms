@@ -94,7 +94,7 @@ class Entries extends SiteController
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
 			}
-			$year = \JRequest::getInt('year', 0);
+			$year = Request::getInt('year', 0);
 			if ($year)
 			{
 				$pathway->addItem(
@@ -102,7 +102,7 @@ class Entries extends SiteController
 					'index.php?option=' . $this->_option . '&year=' . $year
 				);
 			}
-			$month = \JRequest::getInt('month', 0);
+			$month = Request::getInt('month', 0);
 			if ($month)
 			{
 				$pathway->addItem(
@@ -134,12 +134,12 @@ class Entries extends SiteController
 			{
 				$this->_title .= ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 			}
-			$year = \JRequest::getInt('year', 0);
+			$year = Request::getInt('year', 0);
 			if ($year)
 			{
 				$this->_title .= ': ' . $year;
 			}
-			$month = \JRequest::getInt('month', 0);
+			$month = Request::getInt('month', 0);
 			if ($month)
 			{
 				$this->_title .= ': ' . sprintf("%02d", $month);
@@ -162,18 +162,15 @@ class Entries extends SiteController
 	{
 		$this->view->config = $this->config;
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'      => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'      => \JRequest::getInt('limitstart', 0),
-			'year'       => \JRequest::getInt('year', 0),
-			'month'      => \JRequest::getInt('month', 0),
+			'limit'      => Request::getInt('limit', Config::get('list_limit')),
+			'start'      => Request::getInt('limitstart', 0),
+			'year'       => Request::getInt('year', 0),
+			'month'      => Request::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
 			'scope_id'   => 0,
-			'search'     => \JRequest::getVar('search', ''),
+			'search'     => Request::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 'public'
 		);
@@ -182,7 +179,7 @@ class Entries extends SiteController
 			$this->view->filters['scope'] = '';
 		}
 
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$this->view->filters['state'] = 'registered';
 
@@ -222,7 +219,7 @@ class Entries extends SiteController
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
-		$alias = \JRequest::getVar('alias', '');
+		$alias = Request::getVar('alias', '');
 
 		if (!$alias)
 		{
@@ -253,7 +250,7 @@ class Entries extends SiteController
 			'scope_id' => 0
 		);
 
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->view->filters['state'] = 'public';
 		}
@@ -298,9 +295,9 @@ class Entries extends SiteController
 	 */
 	public function editTask($row = null)
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -315,7 +312,7 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$this->view->entry = $this->model->entry(\JRequest::getInt('entry', 0));
+			$this->view->entry = $this->model->entry(Request::getInt('entry', 0));
 		}
 
 		if (!$this->view->entry->exists())
@@ -323,7 +320,7 @@ class Entries extends SiteController
 			$this->view->entry->set('allow_comments', 1);
 			$this->view->entry->set('state', 1);
 			$this->view->entry->set('scope', 'site');
-			$this->view->entry->set('created_by', $this->juser->get('id'));
+			$this->view->entry->set('created_by', User::get('id'));
 		}
 
 		// Push some scripts to the template
@@ -349,9 +346,9 @@ class Entries extends SiteController
 	 */
 	public function saveTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -361,20 +358,20 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$entry = \JRequest::getVar('entry', array(), 'post', 'none', 2);
+		$entry = Request::getVar('entry', array(), 'post', 'none', 2);
 
 		// Make sure we don't want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		if (isset($entry['publish_up']) && $entry['publish_up'] != '')
 		{
-			$entry['publish_up']   = \JFactory::getDate($entry['publish_up'], \JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_up']   = \JFactory::getDate($entry['publish_up'], Config::get('offset'))->toSql();
 		}
 		if (isset($entry['publish_down']) && $entry['publish_down'] != '')
 		{
-			$entry['publish_down'] = \JFactory::getDate($entry['publish_down'], \JFactory::getConfig()->get('offset'))->toSql();
+			$entry['publish_down'] = \JFactory::getDate($entry['publish_down'], Config::get('offset'))->toSql();
 		}
 
 		$row = $this->model->entry(0);
@@ -393,7 +390,7 @@ class Entries extends SiteController
 		}
 
 		// Process tags
-		if (!$row->tag(\JRequest::getVar('tags', '')))
+		if (!$row->tag(Request::getVar('tags', '')))
 		{
 			$this->setError($row->getError());
 			return $this->editTask($row);
@@ -411,9 +408,9 @@ class Entries extends SiteController
 	 */
 	public function deleteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option, false, true), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -433,14 +430,14 @@ class Entries extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('entry', 0);
+		$id = Request::getInt('entry', 0);
 		if (!$id)
 		{
 			return $this->displayTask();
 		}
 
-		$process    = \JRequest::getVar('process', '');
-		$confirmdel = \JRequest::getVar('confirmdel', '');
+		$process    = Request::getVar('process', '');
+		$confirmdel = Request::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
 		$entry = $this->model->entry($id);
@@ -473,7 +470,7 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Delete the entry itself
 		$entry->set('state', -1);
@@ -514,21 +511,18 @@ class Entries extends SiteController
 		$doc = new \JDocumentFeed;
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Incoming
 		$filters = array(
-			'limit'    => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'    => \JRequest::getInt('limitstart', 0),
-			'year'     => \JRequest::getInt('year', 0),
-			'month'    => \JRequest::getInt('month', 0),
+			'limit'    => Request::getInt('limit', Config::get('list_limit')),
+			'start'    => Request::getInt('limitstart', 0),
+			'year'     => Request::getInt('year', 0),
+			'month'    => Request::getInt('month', 0),
 			'scope'    => 'site',
 			'scope_id' => 0,
-			'search'   => \JRequest::getVar('search','')
+			'search'   => Request::getVar('search','')
 		);
 
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$filters['state'] = 'public';
 		}
@@ -541,12 +535,12 @@ class Entries extends SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$doc->title .= ($filters['year'])  ? ': ' . $filters['year'] : '';
 		$doc->title .= ($filters['month']) ? ': ' . sprintf("%02d", $filters['month']) : '';
 
-		$doc->description = Lang::txt('COM_BLOG_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = Lang::txt('COM_BLOG_RSS_DESCRIPTION', Config::get('sitename'));
+		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_BLOG_RSS_CATEGORY');
 
 		// Get the records
@@ -592,9 +586,9 @@ class Entries extends SiteController
 	public function savecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -604,10 +598,10 @@ class Entries extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new Comment($comment['id']);
@@ -629,13 +623,10 @@ class Entries extends SiteController
 
 		if ($row->get('created_by') != $entry->get('created_by'))
 		{
-			// Get the site configuration
-			$jconfig = JFactory::getConfig();
-
 			// Build the "from" data for the e-mail
 			$from = array(
-				'name'  => $jconfig->get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG'),
-				'email' => $jconfig->get('mailfrom')
+				'name'  => Config::get('sitename').' '.Lang::txt('PLG_MEMBERS_BLOG'),
+				'email' => Config::get('mailfrom')
 			);
 
 			$subject = Lang::txt('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
@@ -677,17 +668,17 @@ class Entries extends SiteController
 	public function deletecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_BLOG_LOGIN_NOTICE'));
 			return $this->entryTask();
 		}
 
 		// Incoming
-		$id    = \JRequest::getInt('comment', 0);
-		$year  = \JRequest::getVar('year', '');
-		$month = \JRequest::getVar('month', '');
-		$alias = \JRequest::getVar('alias', '');
+		$id    = Request::getInt('comment', 0);
+		$year  = Request::getVar('year', '');
+		$month = Request::getVar('month', '');
+		$alias = Request::getVar('alias', '');
 
 		if (!$id)
 		{
@@ -701,7 +692,7 @@ class Entries extends SiteController
 		$comment = new Tables\Comment($this->database);
 		$comment->load($id);
 
-		if ($this->juser->get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
+		if (User::get('id') != $comment->created_by && !$this->config->get('access-delete-comment'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias)
@@ -743,7 +734,7 @@ class Entries extends SiteController
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
-		$alias = \JRequest::getVar('alias', '');
+		$alias = Request::getVar('alias', '');
 		if (!$alias)
 		{
 			throw new Exception(Lang::txt('Feed not found.'), 404);
@@ -756,19 +747,18 @@ class Entries extends SiteController
 			throw new Exception(Lang::txt('Feed not found.'), 404);
 		}
 
-		$year  = \JRequest::getInt('year', date("Y"));
-		$month = \JRequest::getInt('month', 0);
+		$year  = Request::getInt('year', date("Y"));
+		$month = Request::getInt('month', 0);
 
 		// Build some basic RSS document information
-		$jconfig = \JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$doc->title .= ($year) ? ': ' . $year : '';
 		$doc->title .= ($month) ? ': ' . sprintf("%02d", $month) : '';
 		$doc->title .= stripslashes($this->entry->get('title', ''));
 		$doc->title .= ': ' . Lang::txt('Comments');
 
-		$doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($this->entry->get('title')));
-		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->entry->get('title')));
+		$doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
 		$rows = $this->entry->comments('list');
 
@@ -842,7 +832,7 @@ class Entries extends SiteController
 	{
 		$this->config->set('access-view-' . $assetType, true);
 
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -858,14 +848,14 @@ class Entries extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 		}
 	}
 }
