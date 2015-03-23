@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 
@@ -64,8 +64,7 @@ class Reports extends Base
 		$this->_buildTitle();
 		$this->view->title = $this->title;
 
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.stats.php');
 
 		$objStats = new Tables\Stats($this->database);
 
@@ -128,7 +127,8 @@ class Reports extends Base
 		$admin = $this->_checkReviewerAuth('general');
 
 		// Check authorization
-		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
+		$groups = $this->config->get('reportgroup', '')
+				? array($this->config->get('reportgroup', '')) : array();
 		$authorized   = $this->_authorize(0, $groups);
 
 		if (!$authorized)

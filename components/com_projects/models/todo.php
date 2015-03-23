@@ -30,7 +30,7 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
 
 require_once(__DIR__ . DS . 'todoentry.php');
 require_once(__DIR__ . DS . 'comment.php');

@@ -1904,7 +1904,7 @@ class Publications extends SiteController
 		// Include needed classes
 		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
 			. 'helpers' . DS . 'html.php' );
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+		require_once( PATH_CORE . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .

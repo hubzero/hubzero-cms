@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects;
+namespace Components\Projects\Admin;
 
 $option = \JRequest::getCmd('option','com_projects');
 
@@ -38,20 +38,9 @@ if (!\JFactory::getUser()->authorise('core.manage', 'com_projects'))
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.microblog.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comment.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php');
-
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.version.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'project.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.database.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.database.version.php');
 
 $controllerName = \JRequest::getCmd('controller', 'projects');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

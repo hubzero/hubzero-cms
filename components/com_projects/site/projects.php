@@ -28,20 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects;
+namespace Components\Projects\Site;
 
-require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.microblog.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.comment.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.owner.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.php' );
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php' );
-include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
-include_once( JPATH_COMPONENT . DS . 'models' . DS . 'tags.php' );
-
-require_once(__DIR__ . DS . 'models' . DS . 'project.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'base.php');
+require_once(dirname(__DIR__) . DS . 'models' . DS . 'project.php');
 
 $controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'projects'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))

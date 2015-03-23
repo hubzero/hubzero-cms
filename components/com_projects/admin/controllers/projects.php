@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Projects\Tables;
+use Components\Projects\Models;
+use Components\Projects\Helpers;
 
 /**
  * Manage projects
@@ -83,8 +85,8 @@ class Projects extends AdminController
 		$app = \JFactory::getApplication();
 
 		// Get quotas
-		$this->view->defaultQuota = \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
-		$this->view->premiumQuota = \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
+		$this->view->defaultQuota = Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
+		$this->view->premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
 
 		// Get filters
 		$this->view->filters = array(
@@ -290,7 +292,7 @@ class Projects extends AdminController
 		}
 
 		// Get tags on this item
-		$cloud = new \Components\Projects\Models\Tags($id);
+		$cloud = new Models\Tags($id);
 		$this->view->tags = $cloud->render('string');
 
 		// Output the HTML
@@ -422,7 +424,7 @@ class Projects extends AdminController
 		$tags = \JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$cloud = new \Components\Projects\Models\Tags($obj->id);
+		$cloud = new Models\Tags($obj->id);
 		$cloud->setTags($tags, $this->juser->get('id'), 1);
 
 		// Save params
@@ -434,7 +436,7 @@ class Projects extends AdminController
 				if ($key == 'quota' || $key == 'pubQuota')
 				{
 					// convert GB to bytes
-					$value = \Components\Projects\Helpers\Html::convertSize( floatval($value), 'GB', 'b');
+					$value = Helpers\Html::convertSize( floatval($value), 'GB', 'b');
 				}
 
 				$obj->saveParam($id, $key, htmlentities($value));
@@ -715,9 +717,8 @@ class Projects extends AdminController
 		}
 
 		// Git helper
-		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
-			. DS . 'helpers' . DS . 'githelper.php' );
-		$gitHelper = new \Components\Projects\Helpers\Git($path);
+		require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php');
+		$gitHelper = new Helpers\Git($path);
 
 		$commitMsg = '';
 
@@ -789,7 +790,7 @@ class Projects extends AdminController
 		$obj->saveParam($id, $service . '_sync_lock', '');
 
 		// Get log file
-		$repodir = \Components\Projects\Helpers\Html::getProjectRepoPath($obj->alias, 'logs');
+		$repodir = Helpers\Html::getProjectRepoPath($obj->alias, 'logs');
 		$sfile 	 = $repodir . DS . 'sync.' . \JFactory::getDate()->format('Y-m') . '.log';
 
 		if (file_exists($sfile))

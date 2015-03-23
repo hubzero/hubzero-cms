@@ -911,7 +911,7 @@ class Curation extends SiteController
 			return;
 		}
 		// Add message to project
-		require_once( PATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once( PATH_ROOT . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
 
 		$activity = $status == 1

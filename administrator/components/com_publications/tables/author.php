@@ -294,7 +294,7 @@ class Author extends \JTable
 			return false;
 		}
 
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+		require_once( PATH_CORE . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.owner.php' );
 
 		// Get project owner info

@@ -28,9 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
+use Components\Projects\Helpers;
 
 /**
  * Projects media controller class
@@ -155,7 +156,7 @@ class Media extends Base
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
 
-			if (\Components\Projects\Helpers\Html::virusCheck($temp))
+			if (Helpers\Html::virusCheck($temp))
 			{
 				echo json_encode(array('error' => Lang::txt('Virus detected, refusing to upload')));
 				return;
@@ -332,7 +333,7 @@ class Media extends Base
 			}
 
 			// Delete thumbnail
-			$curthumb = \Components\Projects\Helpers\Html::createThumbName($file);
+			$curthumb = Helpers\Html::createThumbName($file);
 			$curthumb = file_exists($path . DS . $curthumb) ? $curthumb : 'thumb.png';
 			if (file_exists($path . DS . $curthumb))
 			{
@@ -426,7 +427,7 @@ class Media extends Base
 		// Show project thumbnail
 		if ($media == 'thumb')
 		{
-			$source = \Components\Projects\Helpers\Html::getThumbSrc( $alias, '', $this->config );
+			$source = Helpers\Html::getThumbSrc( $alias, '', $this->config );
 		}
 		elseif ($media)
 		{
@@ -439,7 +440,7 @@ class Media extends Base
 			if ($media == 'master')
 			{
 				// Public picture
-				$source = \Components\Projects\Helpers\Html::getProjectImageSrc( $alias, $obj->picture, $this->config );
+				$source = Helpers\Html::getProjectImageSrc( $alias, $obj->picture, $this->config );
 			}
 			else
 			{

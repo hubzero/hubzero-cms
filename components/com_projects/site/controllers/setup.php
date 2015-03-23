@@ -28,9 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
+use Components\Projects\Helpers;
 
 /**
  * Projects setup controller class
@@ -564,9 +565,9 @@ class Setup extends Base
 			$admingroup 	= $this->config->get('admingroup', '');
 			$sdata_group 	= $this->config->get('sdata_group', '');
 			$ginfo_group 	= $this->config->get('ginfo_group', '');
-			$project_admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
-			$ginfo_admins 	= \Components\Projects\Helpers\Html::getGroupMembers($ginfo_group);
-			$sdata_admins 	= \Components\Projects\Helpers\Html::getGroupMembers($sdata_group);
+			$project_admins = Helpers\Html::getGroupMembers($admingroup);
+			$ginfo_admins 	= Helpers\Html::getGroupMembers($ginfo_group);
+			$sdata_admins 	= Helpers\Html::getGroupMembers($sdata_group);
 
 			$admins = array_merge($project_admins, $ginfo_admins, $sdata_admins);
 			$admins = array_unique($admins);
@@ -574,7 +575,7 @@ class Setup extends Base
 			// Send out email to admins
 			if (!empty($admins))
 			{
-				\Components\Projects\Helpers\Html::sendHUBMessage(
+				Helpers\Html::sendHUBMessage(
 					$this->_option,
 					$this->config,
 					$this->project,
@@ -610,7 +611,7 @@ class Setup extends Base
 		}
 
 		// Build project repo path
-		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias, 'files', false);
+		$path = Helpers\Html::getProjectRepoPath($this->project->alias, 'files', false);
 
 		// Create project repo path
 		if (!is_dir( $path ))
@@ -625,7 +626,7 @@ class Setup extends Base
 		// Git ini
 		include_once( PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php' );
-		$this->_git = new \Components\Projects\Helpers\Git($path);
+		$this->_git = new Helpers\Git($path);
 		$this->_git->iniGit();
 	}
 
@@ -852,12 +853,12 @@ class Setup extends Base
 
 							if (\Hubzero\User\Group::getInstance($admingroup))
 							{
-								$admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
+								$admins = Helpers\Html::getGroupMembers($admingroup);
 
 								// Send out email to admins
 								if (!empty($admins))
 								{
-									\Components\Projects\Helpers\Html::sendHUBMessage(
+									Helpers\Html::sendHUBMessage(
 										$this->_option,
 										$this->config,
 										$this->project,
@@ -1050,7 +1051,7 @@ class Setup extends Base
 		$title   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
 		$title   = urldecode($title);
 
-		$suggested = \Components\Projects\Helpers\Html::suggestAlias($title);
+		$suggested = Helpers\Html::suggestAlias($title);
 		$maxLength = $this->config->get('max_name_length', 30);
 		$maxLength = $maxLength > 30 ? 30 : $maxLength;
 

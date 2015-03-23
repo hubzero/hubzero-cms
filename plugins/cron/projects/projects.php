@@ -89,21 +89,21 @@ class plgCronProjects extends JPlugin
 
 		$publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
 
 		if ($publishing)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+			require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 		}
 
-		require_once(JPATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		$obj = new \Components\Projects\Tables\Project( $database );
 
@@ -111,7 +111,7 @@ class plgCronProjects extends JPlugin
 		$testProjects = $obj->getTestProjects();
 
 		// Compute and store stats
-		$view->stats  = $obj->getStats($period, 1, $pconfig, $testProjects, $publishing);
+		$stats  = $obj->getStats($period, 1, $pconfig, $testProjects, $publishing);
 
 		return true;
 	}
@@ -128,18 +128,18 @@ class plgCronProjects extends JPlugin
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		$pconfig = JComponentHelper::getParams('com_projects');
+		$pconfig = Component::params('com_projects');
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS.'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-		require_once(JPATH_SITE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php');
+		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'attachment.php');
+		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 
 		// Get all projects
 		$obj = new \Components\Projects\Tables\Project($database);
@@ -207,9 +207,9 @@ class plgCronProjects extends JPlugin
 		$juri = JURI::getInstance();
 
 		$jconfig = JFactory::getConfig();
-		$pconfig = JComponentHelper::getParams('com_projects');
+		$pconfig = Component::params('com_projects');
 
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+		require_once(PATH_CORE . DS . 'components'
 			. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
 		include_once(PATH_CORE . DS . 'components' . DS .'com_projects'
 			. DS . 'helpers' . DS . 'githelper.php');

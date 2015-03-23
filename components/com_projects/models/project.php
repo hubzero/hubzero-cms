@@ -30,7 +30,17 @@
 
 namespace Components\Projects\Models;
 
-require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.activity.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.microblog.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.comment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.owner.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.type.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'project.todo.php');
+
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
+
+require_once(__DIR__ . DS . 'tags.php');
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;

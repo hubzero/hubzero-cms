@@ -5040,7 +5040,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if ($connected)
 		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
+			require_once( PATH_CORE . DS . 'components'
 				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
 			$objRFile = new \Components\Projects\Tables\RemoteFile ($database);
 			$converted = $objRFile->getFileCount($obj->id, '', '1');
@@ -6495,11 +6495,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Include
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+		require_once( PATH_CORE . DS . 'components' . DS
 			.'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+		require_once( PATH_CORE . DS . 'components' . DS
 			.'com_projects' . DS . 'tables' . DS . 'project.activity.php');
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'helpers' . DS . 'html.php');
 
 		$this->_database = \JFactory::getDBO();
 		$this->_uid 	 = $uid;
@@ -7053,7 +7054,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($this->_audience == 'external')
 		{
 			$obj->md5hash		= hash_file('md5', $fullPath);
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components' . DS
+			require_once( PATH_CORE . DS . 'components' . DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
 			$objSt = new \Components\Projects\Tables\Stamp( $this->_database );

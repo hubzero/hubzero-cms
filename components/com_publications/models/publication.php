@@ -59,9 +59,9 @@ require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
 	.'com_publications' . DS . 'tables' . DS . 'attachment.php');
 
 // Projects
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+require_once( PATH_CORE . DS . 'components'.DS
 	.'com_projects' . DS . 'tables' . DS . 'project.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+require_once( PATH_CORE . DS . 'components'.DS
 	.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 require_once( PATH_CORE . DS . 'components' . DS . 'com_projects'. DS
 	. 'helpers' . DS . 'html.php');

@@ -28,9 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
+use Components\Projects\Helpers;
 
 /**
  * Primary component controller
@@ -666,7 +667,7 @@ class Projects extends Base
 
 			$this->view->pub 	   = isset($pub) ? $pub : '';
 			$this->view->team 	   = $objO->getOwnerNames($this->_identifier);
-			$this->view->suggested = \Components\Projects\Helpers\Html::suggestAlias($pub->title);
+			$this->view->suggested = Helpers\Html::suggestAlias($pub->title);
 			$this->view->verified  = $this->model->check($this->view->suggested, $pid, 0);
 			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
 		}
@@ -714,7 +715,7 @@ class Projects extends Base
 		$plugins 	= $dispatcher->trigger( 'onProjectAreas', array( 'all' => true ) );
 
 		// Get tabbed plugins
-		$this->view->tabs = \Components\Projects\Helpers\Html::getTabs($plugins);
+		$this->view->tabs = Helpers\Html::getTabs($plugins);
 
 		// Go through plugins
 		$this->view->content = '';
@@ -724,7 +725,7 @@ class Projects extends Base
 			$plugin = $this->active == 'info' ? '' : $plugin;
 
 			// Get active plugins (some may not be in tabs)
-			$activePlugins = \Components\Projects\Helpers\Html::getPluginNames($plugins);
+			$activePlugins = Helpers\Html::getPluginNames($plugins);
 
 			// Get plugin content
 			if ($this->active != 'info')
@@ -995,8 +996,8 @@ class Projects extends Base
 		}
 
 		// Get project parent directory
-		$path    =  \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
-		$newpath =  \Components\Projects\Helpers\Html::getProjectRepoPath($name, 'files', true);
+		$path    =  Helpers\Html::getProjectRepoPath($this->project->alias);
+		$newpath =  Helpers\Html::getProjectRepoPath($name, 'files', true);
 
 		// Rename project parent directory
 		if ($path && is_dir($path))
@@ -1332,12 +1333,12 @@ class Projects extends Base
 					$approve = 1;
 
 					// Bump up quota
-					$premiumQuota = \Components\Projects\Helpers\Html::convertSize(
+					$premiumQuota = Helpers\Html::convertSize(
 						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'quota', htmlentities($premiumQuota));
 
 					// Bump up publication quota
-					$premiumPubQuota = \Components\Projects\Helpers\Html::convertSize(
+					$premiumPubQuota = Helpers\Html::convertSize(
 						floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
 					$obj->saveParam($obj->id, 'pubQuota', htmlentities($premiumPubQuota));
 				}
@@ -1414,7 +1415,7 @@ class Projects extends Base
 
 				if (\Hubzero\User\Group::getInstance($admingroup))
 				{
-					$admins = \Components\Projects\Helpers\Html::getGroupMembers($admingroup);
+					$admins = Helpers\Html::getGroupMembers($admingroup);
 					$admincomment = $comment
 						? $actor . ' ' . Lang::txt('COM_PROJECTS_SAID') . ': ' . $comment
 						: '';
@@ -1422,7 +1423,7 @@ class Projects extends Base
 					// Send out email to admins
 					if (!empty($admins))
 					{
-						\Components\Projects\Helpers\Html::sendHUBMessage(
+						Helpers\Html::sendHUBMessage(
 							$this->_option,
 							$this->config,
 							$this->project,

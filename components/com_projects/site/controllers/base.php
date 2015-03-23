@@ -28,10 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
+use Components\Projects\Helpers;
+use Components\Projects\Models;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
@@ -71,7 +73,7 @@ class Base extends SiteController
 		$this->_gid  = \JRequest::getVar( 'gid', 0 );
 
 		// Model
-		$this->model = new \Components\Projects\Models\Project();
+		$this->model = new Models\Project();
 
 		// Execute the task
 		parent::execute();
@@ -100,23 +102,19 @@ class Base extends SiteController
 		// Database development on?
 		if (\JPluginHelper::isEnabled('projects', 'databases'))
 		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.database.php');
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+				. DS . 'tables' . DS . 'project.database.php');
+			require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+				. DS . 'tables' . DS . 'project.database.version.php');
 		}
 
 		// Logging and stats
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.log.php');
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.log.php');
 
 		// Include external file connection
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
-				. 'helpers' . DS . 'connect.php' );
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
-				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
 	}
 
 	/**
@@ -716,7 +714,7 @@ class Base extends SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				\Components\Projects\Helpers\Html::email($member->invited_email, $jconfig->getValue('config.sitename')
+				Helpers\Html::email($member->invited_email, $jconfig->getValue('config.sitename')
 					. ': ' . $subject_pending, $message, $from);
 			}
 		}

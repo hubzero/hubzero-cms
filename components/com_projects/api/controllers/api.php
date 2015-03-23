@@ -208,8 +208,8 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			return $this->_errorMessage(404, JText::_('User not found'));
 		}
 
-		include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		include_once(PATH_CORE . DS . 'components' . DS
+			. 'com_projects' . DS . 'tables' . DS . 'project.php');
 		$objP = new Components\Projects\Tables\Project($this->_database);
 
 		// Set filters
@@ -433,7 +433,8 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			return $authorized;
 		}
 
-		include_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'project.php');
 		$objP = new Components\Projects\Tables\Project($this->_database);
 
 		$this->project 	= $objP->getProject($this->project_id, $this->user_id);

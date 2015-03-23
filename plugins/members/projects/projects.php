@@ -53,7 +53,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		// load plugin parameters
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 		$this->_database = JFactory::getDBO();
 		$this->_setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 		$this->_juser = JFactory::getUser();
@@ -110,8 +110,8 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load classes
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Set filters
 		$filters = array();
@@ -220,9 +220,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _updates()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
 
 		// Build the final HTML
 		$view = new \Hubzero\Plugin\View(
@@ -239,7 +239,8 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
 		$view->newcount = $obj->getUpdateCount ($projects, $this->_juser->get('id'));
 
 		// Get activity class
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'project.activity.php');
 		$objAC = new \Components\Projects\Tables\Activity($this->_database);
 
 		$afilters = array();

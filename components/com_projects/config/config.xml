@@ -28,7 +28,7 @@
 		<field name="max_name_length" type="text" menu="hide" default="25" label="Maximum characters in name" description="Max number of characters a project alias name can contain" />
 		<field name="reserved_names" type="text" menu="hide" default="clone, temp, test" label="Reserved project names" description="Words that cannot be used as project names" />
 		<field name="imagepath" type="text" menu="hide" default="/site/projects" label="Image path" description="File path to project images (thumbnails)" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_projects/assets/img/project.png" label="Default picture" description="Default placeholder image for project pictures" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_projects/site/assets/img/project.png" label="Default picture" description="Default placeholder image for project pictures" />
 		<field name="showthumbemail" type="list" default="0" label="Show project thumb in emails" description="Show project thumbnail in html emails (must be OFF for firewalled hubs)">
 			<option value="0">hide</option>
 			<option value="1">show</option>

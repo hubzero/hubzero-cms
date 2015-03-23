@@ -622,7 +622,7 @@ class Html extends \JObject
 			$config = Component::params('com_projects');
 		}
 		$path    = trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
-		$default = trim($config->get('masterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
+		$default = trim($config->get('masterpic', '../site/assets/img/projects-large.gif'), DS);
 		$default = is_file( PATH_APP . DS . $default ) ? $default : NULL;
 
 		$src  = $picture && is_file( PATH_APP . DS . $path . DS . $picture )

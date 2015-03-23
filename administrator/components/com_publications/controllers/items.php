@@ -1023,7 +1023,7 @@ class Items extends AdminController
 		if ($action)
 		{
 			$output = '';
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
+			require_once( PATH_CORE . DS . 'components'
 				. DS . 'com_projects'. DS . 'tables' . DS . 'project.activity.php');
 			$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 			switch ($action)
@@ -1178,7 +1178,7 @@ class Items extends AdminController
 					// Append comment to activity
 					if ($message && $aid)
 					{
-						require_once( PATH_CORE . DS . 'administrator' . DS . 'components'
+						require_once( PATH_CORE . DS . 'components'
 							. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
 						$objC = new \Components\Projects\Tables\Comment( $this->database );
 
@@ -1493,7 +1493,7 @@ class Items extends AdminController
 
 		jimport('joomla.filesystem.folder');
 
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+		require_once(PATH_CORE . DS . 'components'
 			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
 
 		foreach ($ids as $id)

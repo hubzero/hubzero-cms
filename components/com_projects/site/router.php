@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Projects\Site;
+
+use Hubzero\Component\Router\Base;
 
 /**
  * Routing class for the component
  */
-class ProjectsRouter extends \Hubzero\Component\Router\Base
+class Router extends Base
 {
 	/**
 	 * Build the route for the component.
@@ -302,7 +303,7 @@ class ProjectsRouter extends \Hubzero\Component\Router\Base
 						{
 							include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
 								. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
-							$database = JFactory::getDBO();
+							$database = \JFactory::getDBO();
 
 							$b = new \Components\Publications\Tables\Block($database);
 							$blocks = $b->getBlocks('block');

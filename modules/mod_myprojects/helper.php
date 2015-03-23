@@ -56,11 +56,13 @@ class Helper extends Module
 		$limit = intval($params->get('limit', 5));
 
 		// Load component configs
-		$config = JComponentHelper::getParams('com_projects');
+		$config = Component::params('com_projects');
 
 		// Load classes
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'helpers' . DS . 'html.php');
 
 		// Set filters
 		$filters = array(

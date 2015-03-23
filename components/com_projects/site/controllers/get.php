@@ -28,14 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Projects\Controllers;
+namespace Components\Projects\Site\Controllers;
 
+use Hubzero\Component\SiteController;
 use Components\Projects\Tables;
 
 /**
  * Projects Public links controller class
  */
-class Get extends \Hubzero\Component\SiteController
+class Get extends SiteController
 {
 	/**
 	 * Pub view for project files, notes etc.
@@ -44,16 +45,7 @@ class Get extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
-		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-		}
-		else
-		{
-			return false;
-		}
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
 		// Incoming
 		$stamp = \JRequest::getVar( 's', '' );
