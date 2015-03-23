@@ -32,11 +32,10 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Object;
 
-include_once(dirname(__FILE__) . DS . 'format.php');
-include_once(dirname(__FILE__) . DS . 'block.php');
+include_once(__DIR__ . DS . 'format.php');
+include_once(__DIR__ . DS . 'block.php');
 
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
 
 /**
  * Publications blocks class

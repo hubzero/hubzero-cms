@@ -35,8 +35,7 @@ use Hubzero\Base\Object;
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'status.php');
 
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'attachment.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 
 /**
  * Publications attachments class

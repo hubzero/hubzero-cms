@@ -729,10 +729,10 @@ class File extends Base
 			if ($download && is_file($download))
 			{
 				// Log access
-				if ( is_file(PATH_CORE . DS . 'administrator' . DS . 'components'. DS
+				if ( is_file(PATH_CORE . DS . 'components'. DS
 						.'com_publications' . DS . 'tables' . DS . 'logs.php'))
 				{
-					require_once( PATH_CORE . DS . 'administrator' . DS . 'components'. DS
+					require_once( PATH_CORE . DS . 'components'. DS
 							.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 					if ($pub->state == 1)

@@ -1489,7 +1489,7 @@ class Html extends \JObject
 
 		// Get message body
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'site',
 			'name'   => 'emails',
 			'layout' => $layout . '_plain'
 		));

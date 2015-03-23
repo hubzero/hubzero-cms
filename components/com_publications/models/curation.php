@@ -44,15 +44,11 @@ include_once(__DIR__ . DS . 'blockelements.php');
 include_once(__DIR__ . DS . 'handlers.php');
 
 // Include tables
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.php');
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'curation.history.php');
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'block.php');
 
-include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
-	. DS . 'helpers' . DS . 'html.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
 // Get language file
 $lang = \JFactory::getLanguage();

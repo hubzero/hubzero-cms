@@ -108,7 +108,7 @@ class Stats extends \JTable
 	{
 		$stats = array();
 
-		require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+		require_once( PATH_CORE . DS . 'components' . DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php');
 
 		$obj  = new Project( $this->_db );

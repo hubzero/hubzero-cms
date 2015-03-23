@@ -147,7 +147,7 @@ class Reports extends Base
 		// Get stats
 		if (!$this->getError())
 		{
-			require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+			require_once( PATH_CORE . DS . 'components'.DS
 				.'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 			$objLog = new \Components\Publications\Tables\Log($this->database);

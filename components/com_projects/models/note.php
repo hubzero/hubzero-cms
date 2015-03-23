@@ -93,7 +93,7 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function getPublicStamp( $id = 0, $register = false, $listed = NULL )
 	{
-		if (!is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+		if (!is_file(PATH_CORE . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php') )
 		{
 			return false;
@@ -106,7 +106,7 @@ class Note extends \Components\Wiki\Models\Book
 			return false;
 		}
 
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+		require_once(PATH_CORE . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		$objSt = new Tables\Stamp( $this->_db );

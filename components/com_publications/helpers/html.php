@@ -100,8 +100,8 @@ class Html
 
 		// Get default picture
 		$default = $cat == 'tools'
-				? $config->get('toolpic', '/components/com_publications/assets/img/tool_thumb.gif')
-				: $config->get('defaultpic', '/components/com_publications/assets/img/resource_thumb.gif');
+				? $config->get('toolpic', '/components/com_publications/site/assets/img/tool_thumb.gif')
+				: $config->get('defaultpic', '/components/com_publications/site/assets/img/resource_thumb.gif');
 
 		// Check for default image
 		if (is_file(PATH_APP . $path . DS . 'thumb.gif') && $force == false)
@@ -129,7 +129,7 @@ class Html
 	)
 	{
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'      => 'view',
 			'layout'    => '_contributors',
 		));
@@ -1204,7 +1204,7 @@ class Html
 		$xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
 	{
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'   => 'view',
 			'layout' => '_primary'
 		));
@@ -1696,7 +1696,7 @@ class Html
 
 		// Get message body
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'   => 'emails',
 			'layout' => '_plain'
 		));

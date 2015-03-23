@@ -30,7 +30,7 @@
 
 namespace Components\Publications\Models;
 
-require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'logs.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 
 use Hubzero\Base\Model;
 use Components\Publications\Helpers;

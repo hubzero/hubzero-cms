@@ -99,8 +99,8 @@ class plgCronProjects extends JPlugin
 
 		if ($publishing)
 		{
-			require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+			require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 		}
 
 		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
@@ -137,9 +137,9 @@ class plgCronProjects extends JPlugin
 
 		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'remotefile.php');
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php');
-		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'attachment.php');
-		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'attachment.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 
 		// Get all projects
 		$obj = new \Components\Projects\Tables\Project($database);

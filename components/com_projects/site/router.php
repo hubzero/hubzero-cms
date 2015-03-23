@@ -298,10 +298,10 @@ class Router extends Base
 						$vars['pid'] = $segments[2];
 						$blocks = array();
 
-						if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'
+						if (is_file(PATH_CORE . DS . 'components'
 							. DS . 'com_publications' . DS . 'tables' . DS . 'block.php'))
 						{
-							include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+							include_once(PATH_CORE . DS . 'components'
 								. DS . 'com_publications' . DS . 'tables' . DS . 'block.php');
 							$database = \JFactory::getDBO();
 

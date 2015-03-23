@@ -54,8 +54,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
 	}
 
 	/**
@@ -189,7 +189,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 		$rt = new \Components\Publications\Tables\Category($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
@@ -288,7 +288,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		include_once(PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
+		include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 		$row->href = JRoute::_('index.php?option=com_publications&id=' . $row->id);

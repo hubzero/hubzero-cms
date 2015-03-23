@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+require_once( PATH_CORE . DS . 'components'.DS
 	.'com_publications' . DS . 'tables' . DS . 'review.php');
 
 /**

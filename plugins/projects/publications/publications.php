@@ -456,7 +456,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Output HTML
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'   => 'handlers',
 			'layout' => 'editor',
 		));
@@ -5633,7 +5633,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($result == 1)
 		{
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 				'name'      => 'view',
 				'layout'    => '_audience',
 			));

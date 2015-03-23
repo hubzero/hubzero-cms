@@ -85,7 +85,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		}
 
 		$juri = JURI::getInstance();
-		$sef = JRoute::_('index.php?option='.$option.'&id='.$publication->id);
+		$sef = JRoute::_('index.php?option=' . $option . '&id=' . $publication->id);
 		$url = $juri->base() . trim($sef, DS);
 		$url = $url . DS . '?v=' . $publication->version_number;
 

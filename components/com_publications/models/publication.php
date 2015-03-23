@@ -35,28 +35,17 @@ use Components\Publications\Helpers;
 use Components\Publications\Tables;
 
 // Include table classes
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'publication.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'version.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'access.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'audience.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'author.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'license.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'category.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'master.type.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
-require_once( PATH_CORE . DS . 'administrator' . DS . 'components'.DS
-	.'com_publications' . DS . 'tables' . DS . 'attachment.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'publication.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'version.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'access.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'audience.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'author.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
+require_once( dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php');
 
 // Projects
 require_once( PATH_CORE . DS . 'components'.DS

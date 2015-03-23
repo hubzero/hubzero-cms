@@ -339,12 +339,12 @@ class Project extends \JTable
 		$thisWeekNum	= \JFactory::getDate()->format('W');
 
 		// Do we have a recent saved stats log?
-		$logged = (is_file(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+		$logged = (is_file(PATH_CORE . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'stats.php')) ? 1 : 0;
 
 		if ($logged)
 		{
-			require_once(PATH_CORE . DS . 'administrator' . DS . 'components'.DS
+			require_once(PATH_CORE . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'stats.php');
 
 			$objStats = new \Components\Projects\Tables\Stats($this->_db);

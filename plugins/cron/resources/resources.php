@@ -100,7 +100,7 @@ class plgCronResources extends JPlugin
 		}
 
 		// Includes
-		require_once(PATH_CORE . DS . 'administrator' . DS . 'components'
+		require_once(PATH_CORE . DS . 'components'
 			. DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications'
 			. DS . 'models' . DS . 'doi.php');

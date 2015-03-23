@@ -98,10 +98,10 @@ class plgCronPublications extends JPlugin
 		$lang->load('com_publications', JPATH_BASE);
 
 		// Is logging enabled?
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		if (is_file(JPATH_ROOT . DS . 'components'
 			. DS . 'com_publications' . DS . 'tables' . DS . 'logs.php'))
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS. 'components'
+			require_once( JPATH_ROOT . DS. 'components'
 				. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 		}
 		else
@@ -241,9 +241,9 @@ class plgCronPublications extends JPlugin
 		$numMonths = 1;
 		$includeCurrent = false;
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once(JPATH_ROOT . DS . 'components'
 			. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once(JPATH_ROOT . DS . 'components'
 			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications'
 			. DS . 'models' . DS . 'log.php');
@@ -285,7 +285,7 @@ class plgCronPublications extends JPlugin
 
 		require_once(JPATH_ROOT . DS . 'components'. DS
 			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+		require_once(JPATH_ROOT . DS . 'components'
 			. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
 		require_once(JPATH_ROOT . DS . 'components'. DS
 			. 'com_projects' . DS . 'helpers' . DS . 'html.php');

@@ -36,10 +36,8 @@ include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
 include_once(dirname(__FILE__) . DS . 'editor.php');
 
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'handler.php');
-include_once(PATH_CORE . DS . 'administrator' . DS . 'components'
-	. DS . 'com_publications' . DS . 'tables' . DS . 'handlerassoc.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'handler.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'handlerassoc.php');
 
 /**
  * Publications handlers class
@@ -133,7 +131,7 @@ class Handlers extends Object
 
 			// Header
 			$view = new \Hubzero\Component\View(array(
-				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+				'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 				'name'   => 'handlers',
 				'layout' => '_header',
 			));
@@ -146,7 +144,7 @@ class Handlers extends Object
 				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
 					$hview = new \Hubzero\Component\View(array(
-						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+						'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 						'name'   => 'handlers',
 						'layout' => '_choice',
 					));
@@ -383,7 +381,7 @@ class Handlers extends Object
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications',
+			'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',
 			'name'   => 'handlers',
 			'layout' => '_selected',
 		));

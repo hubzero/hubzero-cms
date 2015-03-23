@@ -52,8 +52,8 @@ class Helper extends Module
 		$config   = JComponentHelper::getParams('com_publications');
 
 		// Get some classes we need
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'master.type.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'master.type.php');
 
 		$this->moduleclass = $this->params->get('moduleclass');
 
