@@ -53,17 +53,17 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 \JSubMenuHelper::addEntry(
 	Lang::txt('Dashboard'),
 	'index.php?option='.$option.'&controller=dashboard',
-	$controllerName == 'UpdateControllerDashboard'
+	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Dashboard'
 );
 \JSubMenuHelper::addEntry(
 	Lang::txt('Repository'),
 	'index.php?option='.$option.'&controller=repository',
-	$controllerName == 'UpdateControllerRepository'
+	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Repository'
 );
 \JSubMenuHelper::addEntry(
 	Lang::txt('Database'),
 	'index.php?option='.$option.'&controller=database',
-	$controllerName == 'UpdateControllerDatabase'
+	$controllerName == __NAMESPACE__ . '\\Controllers\\' . 'Database'
 );
 
 // Instantiate controller
