@@ -31,53 +31,37 @@
 namespace Hubzero\Facades;
 
 /**
- * Config helper facade
+ * User facade
  */
-class Config extends Facade
+class User extends Facade
 {
 	/**
-	 * Get the registered name.
+	 * Get the registered name of the component.
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	protected static function getAccessor()
 	{
-		return 'config';
+		return 'user';
 	}
 
 	/**
-	 * Handle dynamic, static calls to the object.
+	 * Is the current user a guest (logged out) or not?
 	 *
-	 * @param   string  $method
-	 * @param   array   $args
+	 * @return  boolean
+	 */
+	public static function isGuest()
+	{
+		return static::getRoot()->get('guest');
+	}
+
+	/**
+	 * Get the root object behind the facade.
+	 *
 	 * @return  mixed
 	 */
-	public static function __callStatic($method, $args)
+	public static function getRoot()
 	{
-		$instance = \JFactory::getConfig();
-
-		// Seems counter-intuitive but the switch here can
-		// actually be faster than calling call_user_func_array
-		// every time.
-		switch (count($args))
-		{
-			case 0:
-				return $instance->$method();
-
-			case 1:
-				return $instance->$method($args[0]);
-
-			case 2:
-				return $instance->$method($args[0], $args[1]);
-
-			case 3:
-				return $instance->$method($args[0], $args[1], $args[2]);
-
-			case 4:
-				return $instance->$method($args[0], $args[1], $args[2], $args[3]);
-
-			default:
-				return call_user_func_array(array($instance, $method), $args);
-		}
+		return \JFactory::getUser();
 	}
 }

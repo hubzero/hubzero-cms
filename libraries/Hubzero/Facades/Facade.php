@@ -130,7 +130,7 @@ abstract class Facade
 	 */
 	public static function __callStatic($method, $args)
 	{
-		$instance = static::$app->get(static::getAccessor());
+		$instance = static::getRoot();
 
 		// Seems counter-intuitive but the switch here can
 		// actually be faster than calling call_user_func_array

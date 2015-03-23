@@ -33,7 +33,7 @@ namespace Hubzero\Facades;
 /**
  * Request facade
  */
-class Request extends Facade
+class Request extends \JRequest
 {
 	/**
 	 * Get the registered name.

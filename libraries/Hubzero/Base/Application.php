@@ -68,8 +68,10 @@ class Application extends Container
 	 */
 	private static $baseAliases = array(
 		'App'       => 'Hubzero\Facades\App',
+		'Config'    => 'Hubzero\Facades\Config',
 		'Request'   => 'Hubzero\Facades\Request',
 		'Route'     => 'Hubzero\Facades\Route',
+		'User'      => 'Hubzero\Facades\User',
 		'Lang'      => 'Hubzero\Facades\Lang',
 		'Log'       => 'Hubzero\Facades\Log',
 		'Component' => 'Hubzero\Facades\Component',
