@@ -190,7 +190,7 @@ class ManyToMany extends Relationship
 	 **/
 	public function sync($ids)
 	{
-		if (is_array($ids) && count($ids) > 0)
+		if (is_array($ids))
 		{
 			// Get a query instance
 			$query = new Query;
