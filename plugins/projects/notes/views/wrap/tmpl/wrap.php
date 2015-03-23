@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
 	 ->js();
 
-$url = 'index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=notes';
+$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes';
 
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
@@ -55,23 +55,23 @@ if ($parentNotes && count($parentNotes) > 0)
 {
 	foreach ($parentNotes as $parent)
 	{
-		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_($url . '&scope=' . $parent->scope . '&pagename='.$parent->pagename) . '">' . $parent->title . '</a></span>';
+		$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($url . '&scope=' . $parent->scope . '&pagename=' . $parent->pagename) . '">' . $parent->title . '</a></span>';
 	}
 }
 if ($this->task == 'new')
 {
-	$bcrumb .= ' &raquo; <span class="subheader">'.JText::_('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
+	$bcrumb .= ' &raquo; <span class="subheader">'.Lang::txt('COM_PROJECTS_NOTES_TASK_NEW').'</span>';
 }
 elseif ($page->get('id'))
 {
-	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.JRoute::_( $url . '&scope=' . $this->scope . a . 'pagename=' . $page->get('name')).'">'. $page->get('title') . '</a></span>';
+	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url( $url . '&scope=' . $this->scope . '&pagename=' . $page->get('name')).'">'. $page->get('title') . '</a></span>';
 
 }
 
 $tasks = array( 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' );
 if ($this->task != 'view' && in_array($this->task, $tasks))
 {
-	$bcrumb .= ' &raquo; <span class="subheader">' . JText::_('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task)) . '</span> ';
+	$bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task)) . '</span> ';
 }
 
 // Is note public?
@@ -82,16 +82,16 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 
 ?>
 <div id="plg-header">
-	<h3 class="notes"><?php if ($bcrumb) { ?><a href="<?php echo JRoute::_($url); ?>"><?php } ?><?php echo $this->title; ?><?php if ($bcrumb) { ?></a><?php } ?> <?php  echo $bcrumb; ?></h3>
+	<h3 class="notes"><?php if ($bcrumb) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?><?php echo $this->title; ?><?php if ($bcrumb) { ?></a><?php } ?> <?php  echo $bcrumb; ?></h3>
 </div>
 <?php if ($showSidePanel) { ?>
 <ul id="page_options" class="pluginOptions">
 	<li>
-		<a class="icon-add add btn"  href="<?php echo JRoute::_($url . '&action=new'); ?>" title="<?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
-			<?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
+		<a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
+			<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 		</a>
 		<?php if (count($parentNotes) < 2) { ?>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $parentScope . '&action=new'); ?>" class="icon-add add btn" title="<?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $parentScope . '&action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
 		<?php } ?>
 	</li>
 </ul>

@@ -101,7 +101,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'    => 'notes',
-			'title'   => JText::_('COM_PROJECTS_TAB_NOTES'),
+			'title'   => Lang::txt('COM_PROJECTS_TAB_NOTES'),
 			'submenu' => NULL,
 			'show'    => true
 		);
@@ -121,14 +121,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Load component configs
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 
 		$group_prefix = $this->_config->get('group_prefix', 'pr-');
 		$groupname = $group_prefix . $project->alias;
 		$scope = 'projects' . DS . $project->alias . DS . 'notes';
 
 		// Include note model
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+		include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
@@ -169,8 +169,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) {
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+		if (is_array( $areas )) 
+		{
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
+			{
 				return;
 			}
 		}
@@ -210,8 +212,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 			if ( !$this->_uid)
 			{
-				$juser = JFactory::getUser();
-				$this->_uid = $juser->get('id');
+				$this->_uid = User::get('id');
 			}
 			$this->_msg = $msg;
 			if ( $error)
@@ -220,22 +221,26 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			}
 
 			// Load component configs
-			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->_config = Component::params('com_projects');
 			$this->_group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
 
 			// Incoming
-			$this->_pagename = trim(JRequest::getVar('pagename', '', 'default', 'none', 2));
+			$this->_pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
 			$this->_masterScope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 
 			// Include note model
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+			include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 				. DS . 'models' . DS . 'note.php');
 
 			// Get our model
-			$this->model = new \Components\Projects\Models\Note($this->_masterScope, $this->_group, $this->_project->id);
+			$this->model = new \Components\Projects\Models\Note(
+				$this->_masterScope,
+				$this->_group,
+				$this->_project->id
+			);
 
 			// What's the task?
-			$this->_task = $action ? $action : JRequest::getVar('action', 'view');
+			$this->_task = $action ? $action : Request::getVar('action', 'view');
 
 			// Publishing?
 			if ($this->_task == 'browser')
@@ -268,10 +273,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				case 'removecomment':
 				case 'comments':
 					$this->_controllerName = 'comments';
-					$cid = JRequest::getVar('cid', 0);
+					$cid = Request::getVar('cid', 0);
 					if ($cid)
 					{
-						JRequest::setVar('id', $cid);
+						Request::setVar('id', $cid);
 					}
 				break;
 
@@ -332,9 +337,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	public function page()
 	{
 		// Incoming
-		$preview 	= trim(JRequest::getVar( 'preview', '' ));
-		$note 		= JRequest::getVar('page', array(), 'post', 'none', 2);
-		$scope 		= trim(JRequest::getVar( 'scope', $this->_masterScope ), DS);
+		$preview 	= trim(Request::getVar( 'preview', '' ));
+		$note 		= Request::getVar('page', array(), 'post', 'none', 2);
+		$scope 		= trim(Request::getVar( 'scope', $this->_masterScope ), DS);
 
 		$pagePrefix = '';
 
@@ -367,14 +372,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->content = NULL;
 		$exists = $view->page->get('id') ? true : false;
 
-		JRequest::setVar('pagename', $this->_pagename);
-		JRequest::setVar('task', $this->_task);
-		JRequest::setVar('scope', $scope);
-		JRequest::setVar('group_cn', $this->_group);
+		Request::setVar('pagename', $this->_pagename);
+		Request::setVar('task', $this->_task);
+		Request::setVar('scope', $scope);
+		Request::setVar('group_cn', $this->_group);
 
-		JRequest::setVar('tool', $this->_tool);
-		JRequest::setVar('project', $this->_project);
-		JRequest::setVar('candelete', $canDelete);
+		Request::setVar('tool', $this->_tool);
+		Request::setVar('project', $this->_project);
+		Request::setVar('candelete', $canDelete);
 
 		if (!$view->page->get('id') && $this->_task == 'view' && $view->page->get('namespace') != 'special')
 		{
@@ -396,7 +401,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$basePath = PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'site';
 		if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save')
 		{
-			$basePath = JPATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes';
+			$basePath = PATH_ROOT . DS . 'plugins' . DS . 'projects' . DS . 'notes';
 		}
 		if (!$view->content)
 		{
@@ -418,12 +423,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			{
 				$objAA = new \Components\Projects\Tables\Activity( $this->_database );
 				$what  = $exists
-					? JText::_('COM_PROJECTS_NOTE_EDITED')
-					: JText::_('COM_PROJECTS_NOTE_ADDED');
+					? Lang::txt('COM_PROJECTS_NOTE_EDITED')
+					: Lang::txt('COM_PROJECTS_NOTE_ADDED');
 				$what .= $exists ? ' "' . $controller->page->get('title') . '" ' : '';
-				$what .= ' '.JText::_('COM_PROJECTS_NOTE_IN_NOTES');
+				$what .= ' '.Lang::txt('COM_PROJECTS_NOTE_IN_NOTES');
 				$aid = $objAA->recordActivity($this->_project->id, $this->_uid, $what,
-					$controller->page->get('id'), 'notes', JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=notes') , 'notes', 0);
+					$controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=notes') , 'notes', 0);
 
 				// Record page order for new pages
 				$lastorder = $this->model->getLastNoteOrder($scope);
@@ -435,8 +440,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			if ($rename)
 			{
 				// Incoming
-				$oldpagename = trim(JRequest::getVar( 'oldpagename', '', 'post' ));
-				$newpagename = trim(JRequest::getVar( 'newpagename', '', 'post' ));
+				$oldpagename = trim(Request::getVar( 'oldpagename', '', 'post' ));
+				$newpagename = trim(Request::getVar( 'newpagename', '', 'post' ));
 				$this->model->fixScopePaths($scope, $oldpagename, $newpagename);
 			}
 
@@ -482,10 +487,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	protected function _list()
 	{
 		// Incoming
-		$id = trim(JRequest::getInt( 'p', 0 ));
+		$id = trim(Request::getInt( 'p', 0 ));
 
 		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
-		$url 	= JRoute::_($route . '&active=notes');
+		$url 	= Route::url($route . '&active=notes');
 
 		// Load requested page
 		$page = $this->model->page($id);
@@ -500,9 +505,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		// Get/update public stamp for page
 		if ($this->model->getPublicStamp($page->get('id'), true, $listed))
 		{
-			$this->_msg = $this->_task == 'publist' ? JText::_('COM_PROJECTS_NOTE_MSG_LISTED') : JText::_('COM_PROJECTS_NOTE_MSG_UNLISTED');
+			$this->_msg = $this->_task == 'publist' ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED') : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
-			$this->_referer = JRoute::_('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename'));
+			$this->_referer = Route::url('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename'));
 			return;
 		}
 
@@ -520,10 +525,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	protected function _share()
 	{
 		// Incoming
-		$id = trim(JRequest::getInt( 'p', 0 ));
+		$id = trim(Request::getInt( 'p', 0 ));
 
 		$route  = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
-		$url 	= JRoute::_($route . '&active=notes');
+		$url 	= Route::url($route . '&active=notes');
 
 		// Load requested page
 		$page = $this->model->page($id);
@@ -547,7 +552,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publicStamp)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_NOTES_ERROR_SHARE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_NOTES_ERROR_SHARE'));
 
 			// Output error
 			$view = new \Hubzero\Plugin\View(
@@ -567,12 +572,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->option 			= $this->_option;
 		$view->project			= $this->_project;
 		$view->url				= $url;
-		$view->config 			= JComponentHelper::getParams( 'com_projects' );
+		$view->config 			= Component::params( 'com_projects' );
 		$view->page				= $page;
 		$view->revision 		= $page->revision('current');
 		$view->masterscope 		= 'projects' . DS . $this->_project->alias . DS . 'notes';
 		$view->params			= $this->params;
-		$view->ajax				= JRequest::getInt('ajax', 0);
+		$view->ajax				= Request::getInt('ajax', 0);
 
 		// Output HTML
 		if ($this->getError())
@@ -608,56 +613,56 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		{
 			$pathway->setPathway(array());
 			$pathway->addItem(
-				JText::_('COM_PROJECTS_GROUPS_COMPONENT'),
-				JRoute::_('index.php?option=com_groups')
+				Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
+				Route::url('index.php?option=com_groups')
 			);
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($group->get('description'), 50),
-				JRoute::_('index.php?option=com_groups&cn=' . $group->cn)
+				Route::url('index.php?option=com_groups&cn=' . $group->cn)
 			);
 			$pathway->addItem(
-				JText::_('COM_PROJECTS_PROJECTS'),
-				JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
+				Lang::txt('COM_PROJECTS_PROJECTS'),
+				Route::url('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				JText::_('COMPONENT_LONG_NAME'),
-				JRoute::_('index.php?option=' . $this->_option)
+				Lang::txt('COMPONENT_LONG_NAME'),
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 
 		$pathway->addItem(
 			stripslashes($this->_project->title),
-			JRoute::_('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias)
+			Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias)
 		);
 
 		if ($this->_tool && $this->_tool->id)
 		{
 			$pathway->addItem(
-				ucfirst(JText::_('COM_PROJECTS_PANEL_TOOLS')),
-				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
+				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->_project->alias . '&active=tools')
 			);
 
 			$pathway->addItem(
 				\Hubzero\Utility\String::truncate($this->_tool->title, 50),
-				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->_project->alias . '&active=tools&tool=' . $this->_tool->id)
 			);
 
 			$pathway->addItem(
-				ucfirst(JText::_('COM_PROJECTS_TOOLS_TAB_WIKI')),
-				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
+				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->_project->alias . '&active=tools&tool=' . $this->_tool->id . '&action=wiki')
 			);
 		}
 		else
 		{
 			$pathway->addItem(
-				ucfirst(JText::_('COM_PROJECTS_TAB_NOTES')),
-				JRoute::_('index.php?option=' . $this->_option . '&alias='
+				ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
+				Route::url('index.php?option=' . $this->_option . '&alias='
 				. $this->_project->alias . '&active=notes')
 			);
 		}
@@ -671,9 +676,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	public function browser()
 	{
 		// Incoming
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$primary 	= JRequest::getInt('primary', 1);
-		$versionid  = JRequest::getInt('versionid', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$primary 	= Request::getInt('primary', 1);
+		$versionid  = Request::getInt('versionid', 0);
 
 		if (!$ajax)
 		{
@@ -694,7 +699,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$role 	= $primary ? '1' : '0';
 		$other 	= $primary ? '0' : '1';
 
-		$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => 'note'));
+		$view->attachments = $pContent->getAttachments(
+			$versionid,
+			$filters = array('role' => $role, 'type' => 'note')
+		);
 
 		// Output HTML
 		$view->params 		= new JParameter( $this->_project->params );
@@ -716,10 +724,10 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$html =  $view->loadTemplate();
 
 		$arr = array(
-			'html' => $html,
+			'html'     => $html,
 			'metadata' => '',
-			'msg' => '',
-			'referer' => ''
+			'msg'      => '',
+			'referer'  => ''
 		);
 
 		return $arr;
@@ -757,14 +765,14 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load component configs
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 
 		$group_prefix = $this->_config->get('group_prefix', 'pr-');
 		$groupname = $group_prefix . $this->_project->alias;
 		$scope = 'projects' . DS . $this->_project->alias . DS . 'notes';
 
 		// Include note model
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+		include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
@@ -774,7 +782,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$this->fixupPathway();
 
 		// URL to project
-		$url = JRoute::_('index.php?option=com_projects&alias=' . $this->_project->alias);
+		$url = Route::url('index.php?option=com_projects&alias=' . $this->_project->alias);
 
 		// Load requested page
 		$page = $this->model->page($data->pageid);
@@ -785,7 +793,8 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 
 		// Write title & build pathway
 		$document = JFactory::getDocument();
-		$document->setTitle( JText::_(strtoupper($this->_option)) . ': ' . stripslashes($this->_project->title) . ' - ' . stripslashes($page->get('title')) );
+		$document->setTitle( Lang::txt(strtoupper($this->_option)) . ': '
+			. stripslashes($this->_project->title) . ' - ' . stripslashes($page->get('title')) );
 
 		// Instantiate a new view
 		$view = new \Hubzero\Plugin\View(
@@ -798,7 +807,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->option 			= $this->_option;
 		$view->project			= $this->_project;
 		$view->url				= $url;
-		$view->config 			= JComponentHelper::getParams( 'com_projects' );
+		$view->config 			= Component::params( 'com_projects' );
 		$view->database 		= $database;
 		$view->page				= $page;
 		$view->revision 		= $page->revision('current');

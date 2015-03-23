@@ -25,8 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once( PATH_CORE . DS . 'components' . DS
-	.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
+require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 $database 	= JFactory::getDBO();
@@ -36,12 +35,12 @@ $page		= new \Components\Wiki\Tables\Page( $database );
 // Get listed public notes
 $items = $objSt->getPubList($this->project->id, 'notes');
 
-$link = JRoute::_('index.php?option=com_projects' . a . 'task=get') . '/?s=';
+$link = Route::url('index.php?option=com_projects&task=get') . '/?s=';
 
 if ($items) {
 ?>
 <div class="public-list-header">
-	<h3><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLIC')); ?> <?php echo JText::_('COM_PROJECTS_NOTES'); ?></h3>
+	<h3><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')); ?> <?php echo Lang::txt('COM_PROJECTS_NOTES'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>

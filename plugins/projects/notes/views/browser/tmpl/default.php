@@ -79,9 +79,8 @@ if ($this->primary && !empty($this->attachments))
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
-$p_url = JRoute::_($route . a . 'active=notes');
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 ?>
 <ul id="c-browser" <?php if (count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?> >
@@ -158,7 +157,7 @@ $p_url = JRoute::_($route . a . 'active=notes');
 		{
 			foreach ($missing as $miss)
 			{ ?>
-				<li class="c-click notes i-missing" id="note::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_NOTES_MISSING_NOTE'); ?></span></li>
+				<li class="c-click notes i-missing" id="note::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_NOTES_MISSING_NOTE'); ?></span></li>
 		<?php	}
 		}
 	}
@@ -166,9 +165,9 @@ $p_url = JRoute::_($route . a . 'active=notes');
 </ul>
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
-	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_NOTES_NO_SELECTION_ITEMS_FOUND'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_NOTES_NO_SELECTION_ITEMS_FOUND'); ?></p>
 <?php } ?>
 
 <?php if (!$this->project->provisioned) { ?>
-	<p class="addnew">Go to <a href="<?php echo JRoute::_($route).'?active=notes'; ?>">Notes</a> to create a new note</p>
+	<p class="addnew">Go to <a href="<?php echo Route::url($route . '&active=notes'); ?>">Notes</a> to create a new note</p>
 <?php } ?>

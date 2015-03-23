@@ -77,15 +77,15 @@ $scope   = JRequest::getVar('scope', '');
 <?php
 if ($this->page->exists() && !$this->page->access('modify')) {
 	if ($this->page->param('allow_changes') == 1) { ?>
-		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
+		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR_SUGGESTED'); ?></p>
 <?php } else { ?>
-		<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+		<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php }
 }
 ?>
 
 <?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
-	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 
 <?php if ($this->getError()) { ?>
@@ -95,7 +95,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 <?php if ($this->preview) { ?>
 	<div id="preview">
 		<section class="main section">
-			<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_PREVIEW_ONLY'); ?></p>
+			<p class="warning"><?php echo Lang::txt('COM_WIKI_WARNING_PREVIEW_ONLY'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->get('pagehtml'); ?>
@@ -104,32 +104,32 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	</div>
 <?php } ?>
 
-<form action="<?php echo JRoute::_($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<form action="<?php echo Route::url($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
 <?php if (!$this->sub) { ?>
 	<div class="explaination">
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
 	<?php } ?>
-		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
-		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', Route::url('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', Route::url('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
 
-		<div id="file-manager" data-instructions="<?php echo JText::_('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+		<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 			<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<div id="file-uploader-list"></div>
 	</div>
 <?php } else { ?>
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
 	<?php } ?>
 <?php } ?>
 	<fieldset>
-		<legend><?php echo JText::_('COM_WIKI_FIELDSET_PAGE'); ?></legend>
+		<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_PAGE'); ?></legend>
 
 	<?php if ($this->page->access('edit')) { ?>
 		<label for="title">
-			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:
-			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
+			<?php echo Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:
+			<span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
 			<input type="text" name="page[title]" id="title" value="<?php echo $this->task == 'new' ? 'New Note' : $this->escape($this->page->get('title')); ?>" size="38" />
 		</label>
 	<?php } else { ?>
@@ -137,28 +137,28 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } ?>
 
 		<label for="pagetext" style="position: relative;">
-			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>:
-			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
+			<?php echo Lang::txt('COM_WIKI_FIELD_PAGETEXT'); ?>:
+			<span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
 			<?php
 			echo Components\Wiki\Helpers\Editor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '20');
 			?>
 		</label>
 		<p class="ta-right hint">
-			<?php echo JText::sprintf('COM_WIKI_FIELD_PAGETEXT_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
+			<?php echo JText::sprintf('COM_WIKI_FIELD_PAGETEXT_HINT', Route::url('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
 		</p>
 
 	<?php if ($this->sub) { ?>
 		<div class="field-wrap">
 			<div class="grid">
 				<div class="col span-half">
-					<div id="file-manager" data-instructions="<?php echo JText::_('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+					<div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 						<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 					</div>
 					<div id="file-uploader-list"></div>
 				</div>
 				<div class="col span-half omega">
-					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
-					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', Route::url('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', Route::url('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
 				</div>
 			</div><!-- / .grid -->
 		</div>
@@ -167,7 +167,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 <?php if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) {?>
 	<fieldset class="hidden">
-		<legend><?php echo JText::_('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
+		<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
 		<?php if ($this->page->access('edit')) {
 			$mode = $this->page->param('mode', 'wiki');
@@ -175,18 +175,18 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 ?>
 				<label<?php echo $cls; ?>>
 					<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
-					<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
+					<?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
 				</label>
 				&nbsp;
 
 				<label<?php echo $cls; ?> for="params_allow_changes">
 					<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) { echo ' checked="checked"'; } ?> value="1" />
-					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
+					<?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
 				</label>
 
 				<label<?php echo $cls; ?> for="params_allow_comments">
 					<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) { echo ' checked="checked"'; } ?> value="1" />
-					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
+					<?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
 				</label>
 		<?php } else { ?>
 				<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
@@ -201,7 +201,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<?php if ($this->page->access('manage')) { ?>
 				<label for="state">
 					<input class="option" type="checkbox" name="page[state]" id="state"<?php if ($this->page->isLocked()) { echo ' checked="checked"'; } ?> value="1" />
-					<?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>
+					<?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>
 				</label>
 			<?php } ?>
 		</fieldset>
@@ -219,13 +219,13 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 <?php if ($this->page->access('edit')) { ?>
 	<?php if (!$this->sub) { ?>
 		<div class="explaination">
-			<p><?php echo JText::_('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
+			<p><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_EXPLANATION'); ?></p>
 		</div>
 	<?php } ?>
 		<fieldset>
-			<legend><?php echo JText::_('COM_WIKI_FIELDSET_METADATA'); ?></legend>
+			<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_METADATA'); ?></legend>
 			<label>
-				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
+				<?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php
 				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
 				if (count($tf) > 0) {
@@ -234,16 +234,16 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 					echo '<input type="text" name="tags" value="'. $tags .'" size="38" />';
 				}
 				?>
-				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
 <?php } else { ?>
 			<input type="hidden" name="tags" value="<?php echo $this->escape($tags); ?>" />
 <?php } ?>
 
 			<label for="field-summary">
-				<?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
+				<?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
 				<input type="text" name="revision[summary]" id="field-summary" value="<?php echo $this->escape($this->revision->get('summary')); ?>" size="38" />
-				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
 			</label>
 
 			<input type="hidden" name="revision[minor_edit]" value="1" />
@@ -269,8 +269,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input type="submit" class="btn" name="preview" value="<?php echo JText::_('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
-			<input type="submit" class="btn btn-success" name="submit" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" />
+			<input type="submit" class="btn" name="preview" value="<?php echo Lang::txt('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
+			<input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
 </section><!-- / .main section -->

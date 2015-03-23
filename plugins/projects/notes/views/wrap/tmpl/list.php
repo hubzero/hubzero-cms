@@ -62,21 +62,21 @@ if ($pNotes)
 }
 ?>
 <div class="notes-list">
-	<h4><?php echo ucfirst(JText::_('COM_PROJECTS_NOTES_MULTI')); ?></h4>
+	<h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_NOTES_MULTI')); ?></h4>
 	<ul>
 	<?php if ($notes) { ?>
 		<?php foreach ($notes as $note) {
 			    foreach ($note as $level => $parent) {
 				 foreach ($parent as $entry) { ?>
 					<li <?php if ($entry->pagename == $this->page->get('pagename')) { echo 'class="active"'; } ?>>
-						<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$entry->scope.a.'pagename='.$entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></a>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes&scope='.$entry->scope . '&pagename='.$entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\String::truncate($entry->title, 35); ?></a>
 					</li>
 					<?php
 						// Third level of notes
 						if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
 							foreach ($thirdlevel[$entry->pagename] as $subpage) { ?>
 							<li <?php if ($subpage->pagename == $this->page->get('pagename')) { echo 'class="active"'; } ?>>
-								<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'alias='.$this->project->alias.'&active=notes'.a.'scope='.$subpage->scope.a.'pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes&scope=' . $subpage->scope . '&pagename='.$subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\String::truncate($subpage->title, 35); ?></a>
 							</li>
 					<?php	}
 					 } ?>
@@ -85,7 +85,7 @@ if ($pNotes)
 		?>
 	<?php } ?>
 	<?php } else { ?>
-	<li class="faded"><?php echo JText::_('COM_PROJECTS_NOTES_NO_NOTES'); ?></li>
+	<li class="faded"><?php echo Lang::txt('COM_PROJECTS_NOTES_NO_NOTES'); ?></li>
 	<?php } ?>
 	</ul>
 </div>

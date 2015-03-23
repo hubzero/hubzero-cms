@@ -32,13 +32,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes';
-$pagename = JRequest::getVar('pagename', '');
+$pagename = Request::getVar('pagename', '');
+
 ?>
 
 <section class="main section">
 <p class="s-notes">	
-	<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->scope . '&action=new'); ?>">
-		<?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
+	<a href="<?php echo Route::url('index.php?option=' . $this->option . '&scope=' . $this->scope . '&action=new'); ?>">
+		<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 	</a>
 </p>
 </section><!-- / .main section -->
