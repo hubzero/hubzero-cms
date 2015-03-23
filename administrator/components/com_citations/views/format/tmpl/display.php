@@ -43,9 +43,11 @@ $cf = new CitationFormat();
 ?>
 
 <script type="text/javascript">
+var $jQ = jQuery.noConflict();
+
 function submitbutton(pressbutton)
 {
-	var form = $('adminForm');
+	var form = $jQ('adminForm');
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -54,7 +56,6 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 
-var $jQ = jQuery.noConflict();
 $jQ(document).ready(function(e) {
 	var formatSelector = $jQ('#format-selector'),
 		formatBox = $jQ('#format-string');
