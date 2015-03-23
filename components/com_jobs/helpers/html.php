@@ -135,7 +135,7 @@ class Html
 	 * @param      string $class Class to add
 	 * @return     string HTML
 	 */
-	public function formSelect($name, $array, $value, $class='')
+	public static function formSelect($name, $array, $value, $class='')
 	{
 		$out  = '<select name="' . $name . '" id="' . $name . '"';
 		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
