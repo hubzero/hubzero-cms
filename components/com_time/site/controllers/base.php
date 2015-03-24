@@ -46,7 +46,7 @@ class Base extends SiteController
 	public function execute()
 	{
 		// Force login if user isn't already
-		if (\JFactory::getUser()->get('guest'))
+		if (User::isGuest())
 		{
 			$task = (isset($this->_task) && !empty($this->_task)) ? '&task=' . $this->_task : '';
 			// Set the redirect

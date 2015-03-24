@@ -91,7 +91,7 @@ class Tasks extends Base
 	{
 		if (!isset($task) || !is_object($task))
 		{
-			$task = Task::oneOrNew(\JRequest::getInt('id'));
+			$task = Task::oneOrNew(Request::getInt('id'));
 		}
 
 		// Display
@@ -109,16 +109,16 @@ class Tasks extends Base
 	public function saveTask()
 	{
 		// Create object
-		$task = Task::oneOrNew(\JRequest::getInt('id'))->set(array(
-			'name'        => \JRequest::getVar('name'),
-			'hub_id'      => \JRequest::getInt('hub_id'),
-			'start_date'  => \JRequest::getVar('start_date'),
-			'end_date'    => \JRequest::getVar('end_date'),
-			'active'      => \JRequest::getInt('active'),
-			'description' => \JRequest::getVar('description'),
-			'priority'    => \JRequest::getInt('priority'),
-			'assignee_id' => \JRequest::getInt('assignee_id'),
-			'liaison_id'  => \JRequest::getInt('liaison_id')
+		$task = Task::oneOrNew(Request::getInt('id'))->set(array(
+			'name'        => Request::getVar('name'),
+			'hub_id'      => Request::getInt('hub_id'),
+			'start_date'  => Request::getVar('start_date'),
+			'end_date'    => Request::getVar('end_date'),
+			'active'      => Request::getInt('active'),
+			'description' => Request::getVar('description'),
+			'priority'    => Request::getInt('priority'),
+			'assignee_id' => Request::getInt('assignee_id'),
+			'liaison_id'  => Request::getInt('liaison_id')
 		));
 
 		// Save the posted array
@@ -151,13 +151,13 @@ class Tasks extends Base
 	 */
 	public function deleteTask()
 	{
-		$task = Task::oneOrFail(\JRequest::getInt('id'));
+		$task = Task::oneOrFail(Request::getInt('id'));
 
 		// If there are active records, don't allow deletion
 		if ($task->records->count())
 		{
 			$this->setRedirect(
-				Route::url($this->base . '&task=edit&id=' . \JRequest::getInt('id')),
+				Route::url($this->base . '&task=edit&id=' . Request::getInt('id')),
 				Lang::txt('COM_TIME_TASK_DELETE_HAS_ASSOCIATED_RECORDS'),
 				'warning'
 			);
@@ -182,13 +182,13 @@ class Tasks extends Base
 	 */
 	public function toggleActiveTask()
 	{
-		$task = Task::oneOrFail(\JRequest::getInt('id'));
+		$task = Task::oneOrFail(Request::getInt('id'));
 
 		$task->set('active', ($task->active == 0) ? 1 : 0);
 
 		if (!$task->save())
 		{
-			JError::raiseError(500, implode('<br />', $task->getErrors()));
+			App::abort(500, implode('<br />', $task->getErrors()));
 			return;
 		}
 

@@ -95,7 +95,7 @@ class Records extends Base
 	{
 		if (!isset($record) || !is_object($record))
 		{
-			$record = Record::oneOrNew(\JRequest::getInt('id'));
+			$record = Record::oneOrNew(Request::getInt('id'));
 		}
 
 		// Only allow creator of the record to edit or a proxy of the user
@@ -124,7 +124,7 @@ class Records extends Base
 	public function readonlyTask()
 	{
 		// Display
-		$this->view->row   = Record::oneOrFail(\JRequest::getInt('id'));
+		$this->view->row   = Record::oneOrFail(Request::getInt('id'));
 		$this->view->start = $this->start($this->view->row);
 		$this->view->display();
 	}
@@ -137,12 +137,12 @@ class Records extends Base
 	public function saveTask()
 	{
 		// Create object
-		$record = Record::oneOrNew(\JRequest::getInt('id'))->set(array(
-			'task_id'     => \JRequest::getInt('task_id'),
-			'user_id'     => \JRequest::getInt('user_id'),
-			'time'        => \JRequest::getInt('htime') . '.' . \JRequest::getInt('mtime'),
-			'date'        => \JFactory::getDate(\JRequest::getVar('date'), \JFactory::getConfig()->get('offset'))->toSql(),
-			'description' => \JRequest::getVar('description')
+		$record = Record::oneOrNew(Request::getInt('id'))->set(array(
+			'task_id'     => Request::getInt('task_id'),
+			'user_id'     => Request::getInt('user_id'),
+			'time'        => Request::getInt('htime') . '.' . Request::getInt('mtime'),
+			'date'        => \JFactory::getDate(Request::getVar('date'), Config::get('offset'))->toSql(),
+			'description' => Request::getVar('description')
 		));
 
 		// Set end based on start + time length
@@ -189,7 +189,7 @@ class Records extends Base
 	 */
 	public function deleteTask()
 	{
-		$record = Record::oneOrFail(\JRequest::getInt('id'));
+		$record = Record::oneOrFail(Request::getInt('id'));
 
 		// Only allow creator of the record to edit or delete
 		if (!$record->isMine())

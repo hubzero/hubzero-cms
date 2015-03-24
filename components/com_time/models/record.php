@@ -115,7 +115,7 @@ class Record extends Relational
 	 **/
 	public function helperICanProxy()
 	{
-		return in_array(\JFactory::getUser()->get('id'), $this->proxies()->rows()->fieldsByKey('proxy_id'));
+		return in_array(User::get('id'), $this->proxies()->rows()->fieldsByKey('proxy_id'));
 	}
 
 	/**

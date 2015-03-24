@@ -40,7 +40,7 @@ require_once dirname(__DIR__) . DS . 'models'      . DS . 'proxy.php';
 require_once dirname(__DIR__) . DS . 'models'      . DS . 'liaison.php';
 require_once dirname(__DIR__) . DS . 'helpers'     . DS . 'filters.php';
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'overview'));
+$controllerName = Request::getCmd('controller', Request::getCmd('view', 'overview'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'overview';

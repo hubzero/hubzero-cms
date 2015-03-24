@@ -48,13 +48,6 @@ class Proxy extends Relational
 	protected $namespace = 'time';
 
 	/**
-	 * The table to which the class pertains
-	 *
-	 * @var string
-	 **/
-	protected $table = '#__time_proxies';
-
-	/**
 	 * Defines a one to one relationship between time proxies and hub user
 	 *
 	 * @return \Hubzero\Database\Relationship\oneToOne

@@ -72,9 +72,9 @@ $this->css()
 			<form action="<?php echo Route::url($this->base . '&task=save'); ?>" method="post">
 				<div class="grouping" id="uname-group">
 					<label for="user_id"><?php echo Lang::txt('COM_TIME_RECORDS_USER'); ?>:</label>
-					<?php if (with($proxies = Proxy::whereEquals('proxy_id', \JFactory::getUser()->get('id')))->total()) : ?>
+					<?php if (with($proxies = Proxy::whereEquals('proxy_id', User::get('id')))->total()) : ?>
 						<select name="user_id" id="user_id">
-							<option value="<?php echo JFactory::getUser()->get('id'); ?>"><?php echo JFactory::getUser()->get('name'); ?></option>
+							<option value="<?php echo User::get('id'); ?>"><?php echo User::get('name'); ?></option>
 							<?php foreach ($proxies as $proxy) : ?>
 								<option value="<?php echo $proxy->user_id; ?>" <?php echo ($this->row->user_id == $proxy->user_id) ? 'selected="selected"': ''; ?>>
 									<?php echo $proxy->user->name; ?>
@@ -82,8 +82,8 @@ $this->css()
 							<?php endforeach; ?>
 						</select>
 					<?php else : ?>
-						<?php echo $this->escape($this->row->user->get('name', \JFactory::getUser()->get('name'))); ?>
-						<input type="hidden" name="user_id" value="<?php echo $this->row->get('user_id', \JFactory::getUser()->get('id')); ?>" />
+						<?php echo $this->escape($this->row->user->get('name', User::get('name'))); ?>
+						<input type="hidden" name="user_id" value="<?php echo $this->row->get('user_id', User::get('id')); ?>" />
 					<?php endif; ?>
 				</div>
 

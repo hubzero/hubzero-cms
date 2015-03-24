@@ -43,8 +43,8 @@ class Permissions extends Base
 	public function displayTask()
 	{
 		// Get scope
-		$this->view->scope    = \JRequest::getWord('scope', 'Hub');
-		$this->view->scope_id = \JRequest::getInt('scope_id', 0);
+		$this->view->scope    = Request::getWord('scope', 'Hub');
+		$this->view->scope_id = Request::getInt('scope_id', 0);
 
 		// Get permissions
 		$access = new \JForm('permissions');
@@ -73,8 +73,8 @@ class Permissions extends Base
 	 */
 	public function saveTask()
 	{
-		$scope    = \JRequest::getWord('scope', false);
-		$scope_id = \JRequest::getInt('scope_id', false);
+		$scope    = Request::getWord('scope', false);
+		$scope_id = Request::getInt('scope_id', false);
 
 		if (!$scope || !$scope_id)
 		{
@@ -83,7 +83,7 @@ class Permissions extends Base
 		}
 
 		// Process Rules
-		$data  = \JRequest::getVar(strtolower($scope));
+		$data  = Request::getVar(strtolower($scope));
 		$rules = array();
 
 		if ($data && count($data) > 0)

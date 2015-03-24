@@ -73,7 +73,7 @@ class Hubs extends Base
 		// If we already have a hub, use it, otherwise, instanciate a new object with the request variable
 		if (!isset($hub) || !is_object($hub))
 		{
-			$hub = Hub::oneOrNew(\JRequest::getInt('id'));
+			$hub = Hub::oneOrNew(Request::getInt('id'));
 		}
 
 		// Display
@@ -90,7 +90,7 @@ class Hubs extends Base
 	public function readonlyTask()
 	{
 		// Display
-		$this->view->row   = Hub::oneOrFail(\JRequest::getInt('id'));
+		$this->view->row   = Hub::oneOrFail(Request::getInt('id'));
 		$this->view->start = $this->start($this->view->row);
 		$this->view->display();
 	}
@@ -102,17 +102,17 @@ class Hubs extends Base
 	 */
 	public function saveTask()
 	{
-		$hub = Hub::oneOrNew(\JRequest::getInt('id'))->set(array(
-			'name'             => \JRequest::getVar('name'),
-			'liaison'          => \JRequest::getVar('liaison'),
-			'anniversary_date' => \JRequest::getVar('anniversary_date'),
-			'notes'            => \JRequest::getVar('notes', null, 'post', 'none', JREQUEST_ALLOWRAW),
-			'support_level'    => \JRequest::getVar('support_level')
+		$hub = Hub::oneOrNew(Request::getInt('id'))->set(array(
+			'name'             => Request::getVar('name'),
+			'liaison'          => Request::getVar('liaison'),
+			'anniversary_date' => Request::getVar('anniversary_date'),
+			'notes'            => Request::getVar('notes', null, 'post', 'none', JREQUEST_ALLOWRAW),
+			'support_level'    => Request::getVar('support_level')
 		));
 
 		$contacts = array();
 		// Set the contact info on the hub
-		foreach (\JRequest::getVar('contacts', array(), 'post') as $contact)
+		foreach (Request::getVar('contacts', array(), 'post') as $contact)
 		{
 			// First check and make sure we don't save a completely empty contact
 			if (empty($contact['name'])
@@ -159,7 +159,7 @@ class Hubs extends Base
 	public function deleteTask()
 	{
 		// Get model
-		$hub = Hub::oneOrFail(\JRequest::getInt('id'));
+		$hub = Hub::oneOrFail(Request::getInt('id'));
 
 		// If there are active tasks, don't allow deletion
 		if ($hub->tasks->count() > 0)
@@ -209,7 +209,7 @@ class Hubs extends Base
 	 */
 	public function deletecontactTask()
 	{
-		$contact = Contact::oneOrFail(\JRequest::getInt('id'));
+		$contact = Contact::oneOrFail(Request::getInt('id'));
 
 		// Get the hub id for the return
 		$hid = $contact->hub_id;

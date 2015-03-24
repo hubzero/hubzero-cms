@@ -51,7 +51,7 @@ class Filters
 
 		// Process query filters
 		$q = $app->getUserState("{$namespace}.query");
-		if ($incoming = \JRequest::getVar('q', false))
+		if ($incoming = Request::getVar('q', false))
 		{
 			$q[] = $incoming;
 		}
@@ -61,14 +61,14 @@ class Filters
 		{
 			$q[0]['column']   = ($namespace == 'com_time.tasks') ? 'assignee_id' : 'user_id';
 			$q[0]['operator'] = 'e';
-			$q[0]['value']    = \JFactory::getUser()->get('id');
+			$q[0]['value']    = User::get('id');
 		}
 
 		// Translate operators and augment query filters with human-friendly text
 		$query = self::filtersMap($q);
 
 		// Turn search into array of results, if not already
-		$search = \JRequest::getVar('search', $app->getUserState("{$namespace}.search", ''));
+		$search = Request::getVar('search', $app->getUserState("{$namespace}.search", ''));
 		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
 		if ($search && !is_array($search))
 		{
@@ -86,16 +86,16 @@ class Filters
 	}
 
 	/**
-	 * Get column names
+	 * Gets the column names
 	 *
-	 * @param  array $table   - table to get column names for
-	 * @param  array $exclude - array of columns to exclude
-	 * @return $columns       - array of column names
+	 * @param  string $table   the table to get column names for
+	 * @param  array  $exclude an array of columns to exclude
+	 * @return array
 	 */
 	public static function getColumnNames($table, $exclude=array())
 	{
 		// Get the column names
-		$prefix = \JFactory::getApplication()->getCfg('dbprefix');
+		$prefix = Config::get('dbprefix');
 		$db     = \JFactory::getDbo();
 		$cols   = $db->getTableFields($prefix.$table);
 

@@ -30,9 +30,9 @@
 
 namespace Components\Time\Admin;
 
-$option = \JRequest::getCmd('option', 'com_time');
+$option = Request::getCmd('option', 'com_time');
 
-$controllerName = \JRequest::getCmd('controller', 'time');
+$controllerName = Request::getCmd('controller', 'time');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'time';

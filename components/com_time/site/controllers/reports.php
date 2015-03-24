@@ -45,13 +45,13 @@ class Reports extends Base
 		\JPluginHelper::importPlugin('time');
 		$this->view->reports = \JPluginHelper::getPlugin('time');
 
-		if ($this->view->report_type = \JRequest::getCmd('report_type', false))
+		if ($this->view->report_type = Request::getCmd('report_type', false))
 		{
 			$className = 'plgTime' . ucfirst($this->view->report_type);
 
 			if (class_exists($className))
 			{
-				if (($method = \JRequest::getCmd('method', false)) && in_array($method, $className::$accepts))
+				if (($method = Request::getCmd('method', false)) && in_array($method, $className::$accepts))
 				{
 					if (method_exists($className, $method))
 					{
