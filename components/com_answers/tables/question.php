@@ -79,6 +79,11 @@ class Question extends \JTable
 	{
 		$juser = \JFactory::getUser();
 
+		if (!isset($filters['tag']))
+		{
+			$filters['tag'] = '';
+		}
+
 		// build body of query
 		$query  = "";
 		if ($filters['tag'])
@@ -213,7 +218,7 @@ class Question extends \JTable
 		$query  = "SELECT C.id, C.subject, C.question, C.created, C.created_by, C.state, C.anonymous, C.reward, C.helpful, U.name, U.id AS userid";
 		$query .= ", (SELECT COUNT(*) FROM $ar->_tbl AS a WHERE a.state!=2 AND a.question_id=C.id) AS rcount";
 		$query .= ", (SELECT SUM(tr.amount) FROM #__users_transactions AS tr WHERE tr.category='answers' AND tr.type='hold' AND tr.referenceid=C.id) AS points";
-		$query .= ($filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
+		$query .= (isset($filters['tag']) && $filters['tag']) ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$query .= $this->buildQuery($filters);
 		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
 

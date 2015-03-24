@@ -132,7 +132,7 @@ class Questions extends SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
 
 		$this->setRedirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)
@@ -147,10 +147,10 @@ class Questions extends SiteController
 	public function savereplyTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
 			$this->loginTask();
@@ -158,8 +158,8 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$questionID = \JRequest::getVar('rid');
-		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$questionID = Request::getVar('rid');
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		if (!$comment['item_id'])
 		{
@@ -179,7 +179,7 @@ class Questions extends SiteController
 			$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 			$row->set('created', \JFactory::getDate()->toSql());
 			$row->set('state', 0);
-			$row->set('created_by', $this->juser->get('id'));
+			$row->set('created_by', User::get('id'));
 
 			// Save the data
 			if (!$row->store(true))
@@ -192,9 +192,6 @@ class Questions extends SiteController
 		// Load question
 		$question = new Question($questionID);
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Get users who need to be notified on updates
 		$apu = $this->config->get('notify_users', '');
 		$apu = explode(',', $apu);
@@ -204,13 +201,13 @@ class Questions extends SiteController
 
 		// Build the "from" info
 		$from = array(
-			'email'     => $jconfig->getValue('config.mailfrom'),
-			'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
+			'email'     => Config::get('mailfrom'),
+			'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
 			'multipart' => md5(date('U'))
 		);
 
 		// Build the message subject
-			$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' 
+			$subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' 
 				. Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
 			$message = array();
 
@@ -220,8 +217,8 @@ class Questions extends SiteController
 				'layout' => 'response_plaintext'
 			));
 			$eview->option   = $this->_option;
-			$eview->jconfig  = $jconfig;
-			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->jconfig  = Config::getRoot();
+			$eview->sitename = Config::get('sitename');
 			$eview->juser    = $this->juser;
 			$eview->question = $question;
 			$eview->row      = $row;
@@ -282,7 +279,7 @@ class Questions extends SiteController
 			}
 
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . \JRequest::getInt('rid', 0))
+			Route::url('index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('rid', 0))
 		);
 	}
 
@@ -294,7 +291,7 @@ class Questions extends SiteController
 	public function replyTask()
 	{
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_LOGIN_TO_COMMENT'));
 			$this->loginTask();
@@ -302,9 +299,9 @@ class Questions extends SiteController
 		}
 
 		// Retrieve a review or comment ID and category
-		$id    = \JRequest::getInt('id', 0);
-		$refid = \JRequest::getInt('refid', 0);
-		$cat   = \JRequest::getVar('category', '');
+		$id    = Request::getInt('id', 0);
+		$refid = Request::getInt('refid', 0);
+		$cat   = Request::getVar('category', '');
 
 		// Do we have an ID?
 		if (!$id)
@@ -340,10 +337,10 @@ class Questions extends SiteController
 	 */
 	public function rateitemTask()
 	{
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if (!$no_html)
 			{
@@ -354,10 +351,10 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$id      = \JRequest::getInt('refid', 0);
-		$cat     = \JRequest::getVar('category', '');
-		$vote    = \JRequest::getVar('vote', '');
-		$ip      = \JRequest::ip();
+		$id      = Request::getInt('refid', 0);
+		$cat     = Request::getVar('category', '');
+		$vote    = Request::getVar('vote', '');
+		$ip      = Request::ip();
 
 		// Check for reference ID
 		if (!$id)
@@ -380,7 +377,7 @@ class Questions extends SiteController
 		$qid = $row->get('question_id');
 
 		// Can't vote for your own comment
-		if ($row->get('created_by') == $this->juser->get('username'))
+		if ($row->get('created_by') == User::get('username'))
 		{
 			if (!$no_html)
 			{
@@ -486,12 +483,12 @@ class Questions extends SiteController
 		// Record user's vote (new way)
 		if ($cat)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS  . 'tables' . DS . 'vote.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS  . 'tables' . DS . 'vote.php');
 
 			$v = new Tables\Vote($this->database);
 			$v->referenceid = $row->get('id');
 			$v->category    = $cat;
-			$v->voter       = $this->juser->get('id');
+			$v->voter       = User::get('id');
 			$v->ip          = $ip;
 			$v->voted       = \JFactory::getDate()->toSql();
 			$v->helpful     = $vote;
@@ -542,33 +539,30 @@ class Questions extends SiteController
 		$this->view->config = $this->config;
 		$this->view->task   = $this->_task;
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']    = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = \JRequest::getInt('limitstart', 0);
-		$this->view->filters['tag']      = \JRequest::getVar('tags', '');
-		$this->view->filters['tag']      = ($this->view->filters['tag']) ? $this->view->filters['tag'] : \JRequest::getVar('tag', '');
-		$this->view->filters['q']        = \JRequest::getVar('q', '');
+		$this->view->filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
+		$this->view->filters['start']    = Request::getInt('limitstart', 0);
+		$this->view->filters['tag']      = Request::getVar('tags', '');
+		$this->view->filters['tag']      = ($this->view->filters['tag']) ? $this->view->filters['tag'] : Request::getVar('tag', '');
+		$this->view->filters['q']        = Request::getVar('q', '');
 
-		$this->view->filters['filterby'] = \JRequest::getWord('filterby', '');
+		$this->view->filters['filterby'] = Request::getWord('filterby', '');
 		if ($this->view->filters['filterby']
 		 && !in_array($this->view->filters['filterby'], array('open', 'closed')))
 		{
 			$this->view->filters['filterby'] = '';
 		}
 
-		$this->view->filters['sortby']   = \JRequest::getWord('sortby', 'date');
+		$this->view->filters['sortby']   = Request::getWord('sortby', 'date');
 		if (!in_array($this->view->filters['sortby'], array('date', 'votes', 'rewards')))
 		{
 			$this->view->filters['sortby'] = 'date';
 		}
 
-		$this->view->filters['sort_Dir']   = \JRequest::getWord('sortdir', 'DESC');
+		$this->view->filters['sort_Dir']   = Request::getWord('sortdir', 'DESC');
 
-		$this->view->filters['area']     = \JRequest::getVar('area', '');
+		$this->view->filters['area']     = Request::getVar('area', '');
 		if ($this->view->filters['area']
 		 && !in_array($this->view->filters['area'], array('mine', 'assigned', 'interest')))
 		{
@@ -581,7 +575,7 @@ class Questions extends SiteController
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
-			$mt = new \MembersModelTags($this->juser->get('id'));
+			$mt = new \MembersModelTags(User::get('id'));
 			$mytags  = $mt->render('string');
 
 			$this->view->filters['tag']  = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytags;
@@ -595,7 +589,7 @@ class Questions extends SiteController
 
 			// What tools did this user contribute?
 			$TA = new \ToolAuthor($this->database);
-			$tools = $TA->getToolContributions($this->juser->get('id'));
+			$tools = $TA->getToolContributions(User::get('id'));
 			$mytooltags = array();
 			if ($tools)
 			{
@@ -670,8 +664,8 @@ class Questions extends SiteController
 	public function questionTask()
 	{
 		// Incoming
-		$this->view->id   = \JRequest::getInt('id', 0);
-		$this->view->note = $this->_note(\JRequest::getInt('note', 0));
+		$this->view->id   = Request::getInt('id', 0);
+		$this->view->note = $this->_note(Request::getInt('note', 0));
 
 		$this->view->question = Question::getInstance($this->view->id);
 
@@ -683,7 +677,7 @@ class Questions extends SiteController
 
 		// Check if person voted
 		$this->view->voted = 0;
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$this->view->voted = $this->view->question->voted();
 		}
@@ -745,7 +739,7 @@ class Questions extends SiteController
 	public function newTask($question = null)
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
@@ -757,7 +751,7 @@ class Questions extends SiteController
 		$this->view->task   = $this->_task;
 
 		// Incoming
-		$this->view->tag = \JRequest::getVar('tag', '');
+		$this->view->tag = Request::getVar('tag', '');
 
 		if (is_object($question))
 		{
@@ -772,7 +766,7 @@ class Questions extends SiteController
 		$this->view->funds = 0;
 		if ($this->config->get('banking'))
 		{
-			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, User::get('id'));
 			$funds = $BTL->summary() - $BTL->credit_summary();
 			$this->view->funds = ($funds > 0) ? $funds : 0;
 		}
@@ -798,10 +792,10 @@ class Questions extends SiteController
 	public function saveqTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
@@ -809,8 +803,8 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
-		$tags   = \JRequest::getVar('tags', '');
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$tags   = Request::getVar('tags', '');
 		if (!isset($fields['reward']))
 		{
 			$fields['reward'] = 0;
@@ -861,7 +855,7 @@ class Questions extends SiteController
 		// Store new content
 		if (!$row->store(true))
 		{
-			\JRequest::setVar('tag', $tags);
+			Request::setVar('tag', $tags);
 
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->newTask($row);
@@ -871,7 +865,7 @@ class Questions extends SiteController
 		// Hold the reward for this question if we're banking
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
-			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, User::get('id'));
 			$BTL->hold(
 				$fields['reward'],
 				Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'),
@@ -945,10 +939,9 @@ class Questions extends SiteController
 		if (!empty($receivers))
 		{
 			// Send a message about the new question to authorized users (specified admins or related content authors)
-			$jconfig = \JFactory::getConfig();
 			$from = array(
-				'email'     => $jconfig->getValue('config.mailfrom'),
-				'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
+				'email'     => Config::get('mailfrom'),
+				'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
 				'multipart' => md5(date('U'))
 			);
 
@@ -963,8 +956,8 @@ class Questions extends SiteController
 				'layout' => 'question_plaintext'
 			));
 			$eview->option   = $this->_option;
-			$eview->jconfig  = $jconfig;
-			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->jconfig  = Config::getRoot();
+			$eview->sitename = Config::get('sitename');
 			$eview->juser    = $this->juser;
 			$eview->question = $row;
 			$eview->id       = $row->get('id', 0);
@@ -1002,7 +995,7 @@ class Questions extends SiteController
 	public function deleteqTask()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
@@ -1010,8 +1003,8 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('qid', 0);
-		$ip = (!$this->juser->get('guest')) ? \JRequest::ip() : '';
+		$id = Request::getInt('qid', 0);
+		$ip = (!User::isGuest()) ? Request::ip() : '';
 
 		$reward = 0;
 		if ($this->config->get('banking'))
@@ -1024,10 +1017,10 @@ class Questions extends SiteController
 		$question = new Question($id);
 
 		// Check if user is authorized to delete
-		if ($question->get('created_by') != $this->juser->get('id'))
+		if ($question->get('created_by') != User::get('id'))
 		{
 			$this->setRedirect(
-				JRoute::_($question->link() . '&note=3')
+				Route::url($question->link() . '&note=3')
 			);
 			return;
 		}
@@ -1054,8 +1047,6 @@ class Questions extends SiteController
 			// Get all the answers for this question
 			if ($question->comments('list', array('filterby' => 'all')))
 			{
-				$jconfig = \JFactory::getConfig();
-
 				$users = array();
 				foreach ($responses as $r)
 				{
@@ -1064,13 +1055,13 @@ class Questions extends SiteController
 
 				// Build the "from" info
 				$from = array(
-					'email'     => $jconfig->getValue('config.mailfrom'),
-					'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
+					'email'     => Config::get('mailfrom'),
+					'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
 					'multipart' => md5(date('U'))
 				);
 
 				// Build the message subject
-				$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $id . ' ' . Lang::txt('COM_ANSWERS_WAS_REMOVED');
+				$subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $id . ' ' . Lang::txt('COM_ANSWERS_WAS_REMOVED');
 
 				$message = array();
 
@@ -1080,8 +1071,8 @@ class Questions extends SiteController
 					'layout' => 'removed_plaintext'
 				));
 				$eview->option   = $this->_option;
-				$eview->jconfig  = $jconfig;
-				$eview->sitename = $jconfig->getValue('config.sitename');
+				$eview->jconfig  = Config::getRoot();
+				$eview->sitename = Config::get('sitename');
 				$eview->juser    = $this->juser;
 				$eview->question = $question;
 				$eview->id       = $question->get('id');
@@ -1109,7 +1100,7 @@ class Questions extends SiteController
 			$BT->deleteRecords('answers', 'hold', $id);
 
 			// Make credit adjustment
-			$BTL_Q = new Teller($this->database, $this->juser->get('id'));
+			$BTL_Q = new Teller($this->database, User::get('id'));
 			$adjusted = $BTL_Q->credit_summary() - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
 		}
@@ -1128,10 +1119,10 @@ class Questions extends SiteController
 	public function saveaTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
@@ -1139,7 +1130,7 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$response = \JRequest::getVar('response', array(), 'post', 'none', 2);
+		$response = Request::getVar('response', array(), 'post', 'none', 2);
 
 		// Initiate class and bind posted items to database fields
 		$row = new Response($response['id']);
@@ -1157,19 +1148,17 @@ class Questions extends SiteController
 		// Load the question
 		$question = new Question($row->get('question_id'));
 
-		$jconfig = \JFactory::getConfig();
-
 		// ---
 
 		// Build the "from" info
 		$from = array(
-			'email'     => $jconfig->getValue('config.mailfrom'),
-			'name'      => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
+			'email'     => Config::get('mailfrom'),
+			'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS'),
 			'multipart' => md5(date('U'))
 		);
 
 		// Build the message subject
-		$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
+		$subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
 
 		$message = array();
 
@@ -1179,8 +1168,8 @@ class Questions extends SiteController
 			'layout' => 'response_plaintext'
 		));
 		$eview->option   = $this->_option;
-		$eview->jconfig  = $jconfig;
-		$eview->sitename = $jconfig->getValue('config.sitename');
+		$eview->jconfig  = Config::getRoot();
+		$eview->sitename = Config::get('sitename');
 		$eview->juser    = $this->juser;
 		$eview->question = $question;
 		$eview->row      = $row;
@@ -1255,7 +1244,7 @@ class Questions extends SiteController
 	public function acceptTask()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->addComponentMessage(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'), 'warning');
 			$this->loginTask();
@@ -1263,8 +1252,8 @@ class Questions extends SiteController
 		}
 
 		// Incoming
-		$id  = \JRequest::getInt('id', 0);
-		$rid = \JRequest::getInt('rid', 0);
+		$id  = Request::getInt('id', 0);
+		$rid = Request::getInt('rid', 0);
 
 		$question = new Question($id);
 
@@ -1279,7 +1268,7 @@ class Questions extends SiteController
 		$dispatcher = \JDispatcher::getInstance();
 
 		// Call the plugin
-		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($this->juser->get('id')), $this->_option, $rid)))
+		if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array(User::get('id')), $this->_option, $rid)))
 		{
 			$this->setError(Lang::txt('COM_ANSWERS_ACTION_FAILED'));
 		}
@@ -1299,12 +1288,12 @@ class Questions extends SiteController
 	 */
 	public function voteTask()
 	{
-		$no_html = \JRequest::getInt('no_html', 0);
-		$id      = \JRequest::getInt('id', 0);
-		$vote    = \JRequest::getInt('vote', 0);
+		$no_html = Request::getInt('no_html', 0);
+		$id      = Request::getInt('id', 0);
+		$vote    = Request::getInt('vote', 0);
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if (!$no_html)
 			{
@@ -1372,7 +1361,7 @@ class Questions extends SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -1388,14 +1377,14 @@ class Questions extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 		}
 	}
 
@@ -1457,14 +1446,11 @@ class Questions extends SiteController
 		//get the joomla document
 		$jdoc = \JFactory::getDocument();
 
-		//load joomla config
-		$jconfig = \JFactory::getConfig();
-
 		//instantiate database object
 		$database = \JFactory::getDBO();
 
 		//get the id of module so we get the right params
-		$mid = \JRequest::getInt("m", 0);
+		$mid = Request::getInt("m", 0);
 
 		//get module params
 		$params = \Hubzero\Module\Helper::getParams($mid);
@@ -1480,9 +1466,9 @@ class Questions extends SiteController
 
 		//set rss feed attribs
 		$doc->link        = Route::url('index.php?option=com_answers');
-		$doc->title       = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_TITLE', $jconfig->getValue('config.sitename'));
-		$doc->description = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$doc->title       = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_TITLE', Config::get('sitename'));
+		$doc->description = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_DESCRIPTION', Config::get('sitename'));
+		$doc->copyright   = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY');
 
 		//number of questions to get
@@ -1519,13 +1505,13 @@ class Questions extends SiteController
 			$link = Route::url('index.php?option=com_answers&task=question&id=' . $question['id']);
 
 			//set feed item attibs and add item to feed
-			$item 				= new \JFeedItem();
-			$item->title 		= html_entity_decode(Sanitize::stripAll(stripslashes($question['subject'])));
-			$item->link 		= $link;
-			$item->description 	= html_entity_decode(Sanitize::stripAll(stripslashes($question['question'])));
-			$item->date        	= date("r", strtotime($question['created']));
-			$item->category   	= 'Recent Question';
-			$item->author     	= $author;
+			$item = new \JFeedItem();
+			$item->title       = html_entity_decode(Sanitize::stripAll(stripslashes($question['subject'])));
+			$item->link        = $link;
+			$item->description = html_entity_decode(Sanitize::stripAll(stripslashes($question['question'])));
+			$item->date        = date("r", strtotime($question['created']));
+			$item->category    = 'Recent Question';
+			$item->author      = $author;
 			$doc->addItem($item);
 		}
 
