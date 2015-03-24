@@ -62,7 +62,6 @@ class Categories extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -100,7 +99,7 @@ class Categories extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -139,13 +138,13 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
-			$this->view->cid = \JRequest::getInt('cid', 0);
+			$id = Request::getVar('id', array(0));
+			$this->view->cid = Request::getInt('cid', 0);
 
 			if (is_array($id) && !empty($id))
 			{
@@ -188,10 +187,10 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields   = \JRequest::getVar('fields', array(), 'post');
+		$fields   = Request::getVar('fields', array(), 'post');
 		$articles = null;
 
 		// Initiate extended database class
@@ -259,17 +258,17 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Incoming
-		$step = \JRequest::getInt('step', 1);
+		$step = Request::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
 		// What step are we on?
 		switch ($step)
 		{
 			case 1:
-				\JRequest::setVar('hidemainmenu', 1);
+				Request::setVar('hidemainmenu', 1);
 
 				// Incoming
-				$id = \JRequest::getVar('id', array(0));
+				$id = Request::getVar('id', array(0));
 				if (is_array($id) && !empty($id))
 				{
 					$id = $id[0];
@@ -289,10 +288,10 @@ class Categories extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				// Incoming
-				$id = \JRequest::getInt('id', 0);
+				$id = Request::getInt('id', 0);
 
 				// Make sure we have an ID to work with
 				if (!$id)
@@ -312,7 +311,7 @@ class Categories extends AdminController
 				$category = new Category($id);
 
 				// Check if we're deleting collection and all FAQs or just the collection page
-				$category->set('delete_action', \JRequest::getVar('action', 'removefaqs'));
+				$category->set('delete_action', Request::getVar('action', 'removefaqs'));
 				if (!$category->delete())
 				{
 					$msg = $category->getError();
@@ -339,8 +338,8 @@ class Categories extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$ids = \JRequest::getVar('id', array());
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID

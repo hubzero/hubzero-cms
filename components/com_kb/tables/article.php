@@ -75,16 +75,15 @@ class Article extends \JTable
 			}
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 		else
 		{
 			$this->modified    = \JFactory::getDate()->toSql();
-			$this->modified_by = $juser->get('id');
+			$this->modified_by = User::get('id');
 		}
 
 		if ($this->getError())

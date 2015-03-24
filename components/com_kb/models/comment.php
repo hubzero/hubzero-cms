@@ -98,15 +98,15 @@ class Comment extends Model
 
 		if ($this->get('section', null) === null)
 		{
-			$this->set('section', \JRequest::getVar('section', ''));
+			$this->set('section', Request::getVar('section', ''));
 		}
 		if ($this->get('category', null) === null)
 		{
-			$this->set('category', \JRequest::getVar('category', ''));
+			$this->set('category', Request::getVar('category', ''));
 		}
 		if ($this->get('article', null) === null)
 		{
-			$this->set('article', \JRequest::getVar('alias', ''));
+			$this->set('article', Request::getVar('alias', ''));
 		}
 	}
 
@@ -410,7 +410,7 @@ class Comment extends Model
 			$tbl = new Tables\Vote($this->_db);
 			$this->set(
 				'voted',
-				$tbl->getVote($this->get('id'), $juser->get('id'), \JRequest::ip(), 'comment')
+				$tbl->getVote($this->get('id'), $juser->get('id'), Request::ip(), 'comment')
 			);
 		}
 
@@ -445,7 +445,7 @@ class Comment extends Model
 		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');
 		$al->type      = 'comment';
-		$al->ip        = \JRequest::ip();
+		$al->ip        = Request::ip();
 		$al->user_id   = $juser->get('id');
 		$al->vote      = $vote;
 

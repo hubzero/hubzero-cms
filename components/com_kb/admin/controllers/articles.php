@@ -63,7 +63,6 @@ class Articles extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -105,7 +104,7 @@ class Articles extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -160,12 +159,12 @@ class Articles extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -229,22 +228,22 @@ class Articles extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new Article($fields['id']);
 		if (!$row->bind($fields))
 		{
-			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		// Get parameters
-		$params = \JRequest::getVar('params', array(), 'post');
+		$params = Request::getVar('params', array(), 'post');
 
 		$p = $row->param();
 
@@ -270,7 +269,7 @@ class Articles extends AdminController
 
 		// Save the tags
 		$row->tag(
-			\JRequest::getVar('tags', '', 'post'),
+			Request::getVar('tags', '', 'post'),
 			$this->juser->get('id')
 		);
 
@@ -294,11 +293,11 @@ class Articles extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$ids = \JRequest::getVar('id', array());
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -328,8 +327,8 @@ class Articles extends AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$ids = \JRequest::getVar('id', array());
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -380,7 +379,7 @@ class Articles extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$filters = \JRequest::getVar('filters', array());
+		$filters = Request::getVar('filters', array());
 
 		if (isset($filters['id']) && $filters['id'])
 		{
@@ -403,8 +402,8 @@ class Articles extends AdminController
 	public function resethitsTask()
 	{
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$id  = \JRequest::getInt('id', 0);
+		$cid = Request::getInt('cid', 0);
+		$id  = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -444,8 +443,8 @@ class Articles extends AdminController
 	public function resetvotesTask()
 	{
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$id  = \JRequest::getInt('id', 0);
+		$cid = Request::getInt('cid', 0);
+		$id  = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)

@@ -49,7 +49,7 @@ class KbModelArticle extends \JModelAdmin
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = \JRequest::getVar($key, array());
+		$pk = Request::getVar($key, array());
 		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
@@ -57,7 +57,7 @@ class KbModelArticle extends \JModelAdmin
 		$this->setState($this->getName() . '.id', $pk);
 
 		// Load the parameters.
-		$value = \Component::params($this->option);
+		$value = Component::params($this->option);
 		$this->setState('params', $value);
 	}
 

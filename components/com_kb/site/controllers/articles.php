@@ -87,7 +87,7 @@ class Articles extends SiteController
 	public function categoryTask()
 	{
 		// Make sure we have an ID
-		if (!($alias = \JRequest::getVar('alias', '')))
+		if (!($alias = Request::getVar('alias', '')))
 		{
 			$this->displayTask();
 			return;
@@ -127,26 +127,24 @@ class Articles extends SiteController
 		}
 
 		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		$this->view->filters = array(
-			'limit'    => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'    => \JRequest::getInt('limitstart', 0),
-			'sort'     => \JRequest::getWord('sort', 'recent'),
+			'limit'    => Request::getInt('limit', Config::get('list_limit')),
+			'start'    => Request::getInt('limitstart', 0),
+			'sort'     => Request::getWord('sort', 'recent'),
 			'section'  => $sect,
 			'category' => $cat,
-			'search'   => \JRequest::getVar('search',''),
+			'search'   => Request::getVar('search',''),
 			'state'    => 1,
-			'access'   => $this->juser->getAuthorisedViewLevels()
+			'access'   => User::getAuthorisedViewLevels()
 		);
 
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
 		{
 			$this->view->filters['sort'] = 'recent';
 		}
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$this->view->filters['user_id'] = $this->juser->get('id');
+			$this->view->filters['user_id'] = User::get('id');
 		}
 
 		// Get a record count
@@ -168,7 +166,7 @@ class Articles extends SiteController
 		$this->view->title  = Lang::txt('COM_KB');
 		$this->view->catid  = $sect;
 		$this->view->config = $this->config;
-		$this->view->juser  = $this->juser;
+		$this->view->juser  = User::getRoot();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -188,11 +186,11 @@ class Articles extends SiteController
 	public function articleTask()
 	{
 		// Incoming
-		$alias = \JRequest::getVar('alias', '');
-		$id    = \JRequest::getInt('id', 0);
+		$alias = Request::getVar('alias', '');
+		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$this->view->article = new Article(($alias ? $alias : $id), \JRequest::getVar('category'));
+		$this->view->article = new Article(($alias ? $alias : $id), Request::getVar('category'));
 
 		if (!$this->view->article->exists())
 		{
@@ -205,20 +203,20 @@ class Articles extends SiteController
 		}
 
 		// Is the user logged in?
-		/*if (!$this->juser->get('guest'))
+		/*if (!User::isGurst())
 		{
 			// See if this person has already voted
-			$h = new KbTableVote($this->database);
+			$h = new Vote($this->database);
 			$this->view->vote = $h->getVote(
 				$this->view->article->get('id'),
-				$this->juser->get('id'),
-				JRequest::ip(),
+				User::get('id'),
+				Request::ip(),
 				'entry'
 			);
 		}
 		else
 		{*/
-			$this->view->vote = strtolower(\JRequest::getVar('vote', ''));
+			$this->view->vote = strtolower(Request::getVar('vote', ''));
 		//}
 
 		// Load the category object
@@ -240,7 +238,7 @@ class Articles extends SiteController
 
 		$this->view->subcategories = $this->view->section->children('list');
 
-		$this->view->replyto = new Comment(\JRequest::getInt('reply', 0));
+		$this->view->replyto = new Comment(Request::getInt('reply', 0));
 
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);
@@ -250,7 +248,7 @@ class Articles extends SiteController
 
 		// Output HTML
 		$this->view->title   = Lang::txt('COM_KB');
-		$this->view->juser   = $this->juser;
+		$this->view->juser   = User::getRoot();
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->get('id');
 
@@ -353,9 +351,9 @@ class Articles extends SiteController
 	 */
 	public function voteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
@@ -363,9 +361,9 @@ class Articles extends SiteController
 		}
 
 		// Incoming
-		$type = strtolower(\JRequest::getVar('type', ''));
-		$vote = strtolower(\JRequest::getVar('vote', ''));
-		$id   = \JRequest::getInt('id', 0);
+		$type = strtolower(Request::getVar('type', ''));
+		$vote = strtolower(Request::getVar('vote', ''));
+		$id   = Request::getInt('id', 0);
 
 		// Did they vote?
 		if (!$vote)
@@ -395,12 +393,12 @@ class Articles extends SiteController
 			break;
 		}
 
-		if (!$row->vote($vote, $this->juser->get('id')))
+		if (!$row->vote($vote, User::get('id')))
 		{
 			$this->setError($row->getError());
 		}
 
-		if (\JRequest::getInt('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			$this->view->item = $row;
 			$this->view->type = $type;
@@ -434,9 +432,9 @@ class Articles extends SiteController
 	public function savecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			$return = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
@@ -444,10 +442,10 @@ class Articles extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new Comment($comment['id']);
@@ -486,11 +484,11 @@ class Articles extends SiteController
 		}
 
 		// Incoming
-		$alias = \JRequest::getVar('alias', '');
-		$id    = \JRequest::getInt('id', 0);
+		$alias = Request::getVar('alias', '');
+		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$category = new Category(\JRequest::getVar('category'));
+		$category = new Category(Request::getVar('category'));
 
 		$article = new Article(($alias ? $alias : $id), $category->get('id'));
 		if (!$article->exists())
@@ -504,19 +502,17 @@ class Articles extends SiteController
 		$document = \JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 
-		$jconfig = \JFactory::getConfig();
-
 		// Start a new feed object
 		$feed = new \JDocumentFeed;
 		$feed->link = Route::url($article->link());
 
 		// Build some basic RSS document information
-		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+		$feed->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
 		$feed->title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
 		$feed->title .= ': ' . Lang::txt('COM_KB_COMMENTS');
 
-		$feed->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
-		$feed->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$feed->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
+		$feed->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 
 		// Start outputing results if any found
 		$feed = $this->_feedItem($feed, $article->comments('list'));

@@ -65,17 +65,16 @@ class Comment extends \JTable
 			$this->setError(Lang::txt('Missing entry ID.'));
 		}
 
-		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		$this->created_by = intval($this->created_by);
 		if (!$this->created_by)
 		{
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		$this->parent     = intval($this->parent);

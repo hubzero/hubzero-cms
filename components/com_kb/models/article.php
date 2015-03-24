@@ -167,7 +167,7 @@ class Article extends Model
 
 		$params = new \JRegistry($this->get('params'));
 
-		$this->_params = \Component::params('com_kb');
+		$this->_params = Component::params('com_kb');
 		$this->_params->merge($params);
 	}
 
@@ -511,7 +511,6 @@ class Article extends Model
 				$feed = Route::url($link);
 				if (substr($feed, 0, 4) != 'http')
 				{
-					$jconfig = \JFactory::getConfig();
 					$live_site = rtrim(\JURI::base(), '/');
 
 					$feed = $live_site . '/' . ltrim($feed, '/');
@@ -616,7 +615,7 @@ class Article extends Model
 			$tbl = new Tables\Vote($this->_db);
 			$this->set(
 				'voted',
-				$tbl->getVote($this->get('id'), $juser->get('id'), \JRequest::ip(), 'entry')
+				$tbl->getVote($this->get('id'), $juser->get('id'), Request::ip(), 'entry')
 			);
 		}
 
@@ -651,7 +650,7 @@ class Article extends Model
 		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');
 		$al->type      = 'entry';
-		$al->ip        = \JRequest::ip();
+		$al->ip        = Request::ip();
 		$al->user_id   = $juser->get('id');
 		$al->vote      = $vote;
 

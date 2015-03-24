@@ -30,9 +30,9 @@
 
 namespace Components\Kb\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_kb'))
+if (!\User::authorise('core.manage', 'com_kb'))
 {
-	throw new \Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+	throw new \Exception(\Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 }
 
 // Include scripts
@@ -40,20 +40,20 @@ require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
 require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'categories');
+$controllerName = \Request::getCmd('controller', 'categories');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'categories';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_KB_CATEGORIES'),
-	Route::url('index.php?option=com_kb&id=0', false),
+	\Lang::txt('COM_KB_CATEGORIES'),
+	\Route::url('index.php?option=com_kb&id=0', false),
 	$controllerName == 'categories'
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_KB_ARTICLES'),
-	Route::url('index.php?option=com_kb&controller=articles&id=0', false),
+	\Lang::txt('COM_KB_ARTICLES'),
+	\Route::url('index.php?option=com_kb&controller=articles&id=0', false),
 	$controllerName == 'articles'
 );
 
