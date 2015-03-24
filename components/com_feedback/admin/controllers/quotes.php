@@ -59,15 +59,14 @@ class Quotes extends AdminController
 	 */
 	public function displayTask()
 	{
-		if (\JRequest::getMethod() == 'POST')
+		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			\JRequest::checkToken() or jexit('Invalid Token');
+			Request::checkToken() or jexit('Invalid Token');
 		}
 
 		// Get site configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
@@ -97,7 +96,7 @@ class Quotes extends AdminController
 			'limit'  => $app->getUserStateFromRequest(
 				$this->_option . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			)
 		);
@@ -127,18 +126,18 @@ class Quotes extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		if (\JRequest::getMethod() == 'POST')
+		if (Request::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			\JRequest::checkToken() or jexit('Invalid Token');
+			Request::checkToken() or jexit('Invalid Token');
 		}
 
 		if (!is_object($row))
 		{
 			// Incoming ID
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			$id = (is_array($id) ? $id[0] : $id);
 
 			// Initiate database class and load info
@@ -160,7 +159,7 @@ class Quotes extends AdminController
 			$this->view->pictures = $pictures;
 		}
 
-		$username = trim(\JRequest::getVar('username', ''));
+		$username = trim(Request::getVar('username', ''));
 		if ($username)
 		{
 			$profile = new Profile();
@@ -196,11 +195,11 @@ class Quotes extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Initiate class and bind posted items to database fields
 		$row = new Quote($this->database);
-		$row->notable_quote = \JRequest::getInt('notable_quotes', 0);
+		$row->notable_quote = Request::getInt('notable_quotes', 0);
 
 		$path = $row->filespace() . DS . $row->id;
 
@@ -280,10 +279,10 @@ class Quotes extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID

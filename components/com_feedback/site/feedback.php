@@ -32,7 +32,7 @@ namespace Components\Feedback\Site;
 
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'quote.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'feedback'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'feedback'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'feedback';

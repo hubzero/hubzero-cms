@@ -30,16 +30,16 @@
 
 namespace Components\Feedback\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_feedback'))
+if (!\User::authorise('core.manage', 'com_feedback'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'quote.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'quotes');
+$controllerName = \Request::getCmd('controller', 'quotes');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'quotes';

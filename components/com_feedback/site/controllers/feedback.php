@@ -140,7 +140,7 @@ class Feedback extends SiteController
 		));
 
 		$this->view->path    = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
-		$this->view->quoteId = \JRequest::getInt('quoteid', null);
+		$this->view->quoteId = Request::getInt('quoteid', null);
 
 		$this->view->display();
 	}
@@ -153,12 +153,12 @@ class Feedback extends SiteController
 	public function storyTask($row=null)
 	{
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
-		if (is_dir(PATH_APP . '/tmp/feedback/' . $this->juser->get('id')))
+		if (is_dir(PATH_APP . '/tmp/feedback/' . User::get('id')))
 		{
-			\JFolder::delete(PATH_APP . '/tmp/feedback/' . $this->juser->get('id'));
+			\JFolder::delete(PATH_APP . '/tmp/feedback/' . User::get('id'));
 		}
 
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			$this->setRedirect(
@@ -171,8 +171,8 @@ class Feedback extends SiteController
 
 		// Incoming
 		$this->view->quote = array(
-			'long'  => \JRequest::getVar('quote', '', 'post'),
-			'short' => \JRequest::getVar('short_quote', '', 'post')
+			'long'  => Request::getVar('quote', '', 'post'),
+			'short' => Request::getVar('short_quote', '', 'post')
 		);
 
 		// Set page title
@@ -182,7 +182,7 @@ class Feedback extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->user = Profile::getInstance($this->juser->get('id'));
+		$this->view->user = Profile::getInstance(User::get('id'));
 
 		if (!is_object($row))
 		{
@@ -238,7 +238,7 @@ class Feedback extends SiteController
 	 */
 	public function sendstoryTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
@@ -246,7 +246,7 @@ class Feedback extends SiteController
 			return;
 		}
 
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate class and bind posted items to database fields
@@ -323,7 +323,7 @@ class Feedback extends SiteController
 		}
 
 		// If there is a temp dir for this user then copy the contents to the newly created folder
-		$tempDir = PATH_APP . '/tmp/feedback/' . $this->juser->get('id');
+		$tempDir = PATH_APP . '/tmp/feedback/' . User::get('id');
 
 		if (is_dir($tempDir))
 		{
@@ -360,7 +360,7 @@ class Feedback extends SiteController
 		$this->view->path   = ltrim($row->filespace(), DS) . DS . $row->id;
 
 		// Output HTML
-		$this->view->user   = $this->juser;
+		$this->view->user   = User::getRoot();
 		$this->view->row    = $row;
 		$this->view->config = $this->config;
 
@@ -404,7 +404,7 @@ class Feedback extends SiteController
 	public function uploadImageTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_STORY_LOGIN')));
 			return;
@@ -433,7 +433,7 @@ class Feedback extends SiteController
 		}
 
 		// Define upload directory and make sure its writable
-		$path = PATH_APP . DS . 'tmp/feedback/' . $this->juser->get('id');
+		$path = PATH_APP . DS . 'tmp/feedback/' . User::get('id');
 
 		if (!is_dir($path))
 		{

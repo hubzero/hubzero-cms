@@ -59,7 +59,7 @@ class Media extends SiteController
 	 */
 	public function uploadTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
@@ -67,7 +67,7 @@ class Media extends SiteController
 		}
 
 		// Incoming
-		if (!($id = \JRequest::getInt('id', 0)))
+		if (!($id = Request::getInt('id', 0)))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
@@ -75,7 +75,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
@@ -111,7 +111,7 @@ class Media extends SiteController
 		else
 		{
 			// Do we have an old file we're replacing?
-			$curfile = \JRequest::getVar('currentfile', '');
+			$curfile = Request::getVar('currentfile', '');
 
 			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
@@ -137,7 +137,7 @@ class Media extends SiteController
 	 */
 	public function deleteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
@@ -145,22 +145,22 @@ class Media extends SiteController
 		}
 
 		// Incoming member ID
-		if (!($id = \JRequest::getInt('id', 0)))
+		if (!($id = Request::getInt('id', 0)))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
-		if ($this->juser->get('id') != $id)
+		if (User::get('id') != $id)
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-			$this->displayTask('', $this->juser->get('id'));
+			$this->displayTask('', User::get('id'));
 			return;
 		}
 
 		// Incoming file
-		if (!($file = \JRequest::getVar('file', '')))
+		if (!($file = Request::getVar('file', '')))
 		{
 			$this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
 			$this->displayTask($file, $id);
@@ -206,14 +206,14 @@ class Media extends SiteController
 		// Do have an ID or do we need to get one?
 		if (!$id)
 		{
-			$id = \JRequest::getInt('id', 0);
+			$id = Request::getInt('id', 0);
 		}
 		$dir = String::pad($id);
 
 		// Do we have a file or do we need to get one?
 		$file = ($file)
 			  ? $file
-			  : \JRequest::getVar('file', '');
+			  : Request::getVar('file', '');
 
 		// Build the directory path
 		$path = $this->path . DS . $dir;

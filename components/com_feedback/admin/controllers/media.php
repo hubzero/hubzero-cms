@@ -45,11 +45,11 @@ class Media extends AdminController
 	 */
 	public function execute()
 	{
-		$this->type = \JRequest::getVar('type', '', 'post');
+		$this->type = Request::getVar('type', '', 'post');
 
 		if (!$this->type)
 		{
-			$this->type = \JRequest::getVar('type', 'regular', 'get');
+			$this->type = Request::getVar('type', 'regular', 'get');
 		}
 		$this->type = ($this->type == 'regular') ? $this->type : 'selected';
 
@@ -64,10 +64,10 @@ class Media extends AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
 			$this->setError(Lang::txt('FEEDBACK_NO_ID'));
@@ -76,7 +76,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('FEEDBACK_NO_FILE'));
@@ -105,7 +105,7 @@ class Media extends AdminController
 		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$qid = \JRequest::getInt('qid', 0);
+		$qid = Request::getInt('qid', 0);
 
 		// Perform the upload
 		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
@@ -156,10 +156,10 @@ class Media extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
 			$this->setError(Lang::txt('FEEDBACK_NO_ID'));
@@ -167,7 +167,7 @@ class Media extends AdminController
 			return;
 		}
 
-		$qid = \JRequest::getInt('qid', 0);
+		$qid = Request::getInt('qid', 0);
 
 		$row = new Quote($this->database);
 		$row->load($qid);
@@ -225,19 +225,19 @@ class Media extends AdminController
 		$this->view->config = $this->config;
 
 		// Do have an ID or do we need to get one?
-		$this->view->id = ($id) ? $id : \JRequest::getInt('id', 0);
+		$this->view->id = ($id) ? $id : Request::getInt('id', 0);
 
 		$this->view->dir = String::pad($this->view->id);
 
 		// Do we have a file or do we need to get one?
-		$this->view->file = ($file) ? $file : \JRequest::getVar('file', '');
+		$this->view->file = ($file) ? $file : Request::getVar('file', '');
 
 		$row = new Quote($this->database);
 
 		// Build the directory path
 		$this->view->path = $row->filespace(false) . DS . $this->view->dir;
 
-		$this->view->qid = ($qid) ? $qid : \JRequest::getInt('qid', 0);
+		$this->view->qid = ($qid) ? $qid : Request::getInt('qid', 0);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
