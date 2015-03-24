@@ -62,14 +62,13 @@ class Entries extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -130,13 +129,13 @@ class Entries extends AdminController
 	 */
 	public function editTask($tag=NULL)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Load a tag object if one doesn't already exist
 		if (!is_object($tag))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -167,9 +166,9 @@ class Entries extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		$row = new Tag(intval($fields['id']));
 		if (!$row->bind($fields))
@@ -214,9 +213,9 @@ class Entries extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID
@@ -262,13 +261,11 @@ class Entries extends AdminController
 	 */
 	public function cleancacheTask($redirect=true)
 	{
-		$conf = \JFactory::getConfig();
-
 		$cache = \JCache::getInstance('', array(
 			'defaultgroup' => '',
-			'storage'      => $conf->get('cache_handler', ''),
+			'storage'      => Config::get('cache_handler', ''),
 			'caching'      => true,
-			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+			'cachebase'    => Config::get('cache_path', PATH_APP . DS . 'cache')
 		));
 		$cache->clean('tags');
 
@@ -290,10 +287,10 @@ class Entries extends AdminController
 	public function mergeTask()
 	{
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$step = \JRequest::getInt('step', 1);
+		$step = Request::getInt('step', 1);
 		$step = ($step) ? $step : 1;
 
 		// Make sure we have some IDs to work with
@@ -311,7 +308,7 @@ class Entries extends AdminController
 		switch ($step)
 		{
 			case 1:
-				\JRequest::setVar('hidemainmenu', 1);
+				Request::setVar('hidemainmenu', 1);
 
 				// Instantiate a new view
 				$this->view->step = 2;
@@ -340,10 +337,10 @@ class Entries extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				// Get the string of tag IDs we plan to merge
-				$ind = \JRequest::getVar('ids', '', 'post');
+				$ind = Request::getVar('ids', '', 'post');
 				if ($ind)
 				{
 					$ids = explode(',', $ind);
@@ -354,8 +351,8 @@ class Entries extends AdminController
 				}
 
 				// Incoming
-				$tag_exist = \JRequest::getInt('existingtag', 0, 'post');
-				$tag_new   = \JRequest::getVar('newtag', '', 'post');
+				$tag_exist = Request::getInt('existingtag', 0, 'post');
+				$tag_new   = Request::getVar('newtag', '', 'post');
 
 				// Are we merging tags into a totally new tag?
 				if ($tag_new)
@@ -418,10 +415,10 @@ class Entries extends AdminController
 	public function pierceTask()
 	{
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$step = \JRequest::getInt('step', 1);
+		$step = Request::getInt('step', 1);
 		$step = ($step) ? $step : 1;
 
 		// Make sure we have some IDs to work with
@@ -439,7 +436,7 @@ class Entries extends AdminController
 		switch ($step)
 		{
 			case 1:
-				\JRequest::setVar('hidemainmenu', 1);
+				Request::setVar('hidemainmenu', 1);
 
 				$this->view->step = 2;
 				$this->view->idstr = $idstr;
@@ -467,10 +464,10 @@ class Entries extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				// Get the string of tag IDs we plan to merge
-				$ind = \JRequest::getVar('ids', '', 'post');
+				$ind = Request::getVar('ids', '', 'post');
 				if ($ind)
 				{
 					$ids = explode(',', $ind);
@@ -481,8 +478,8 @@ class Entries extends AdminController
 				}
 
 				// Incoming
-				$tag_exist = \JRequest::getInt('existingtag', 0, 'post');
-				$tag_new   = \JRequest::getVar('newtag', '', 'post');
+				$tag_exist = Request::getInt('existingtag', 0, 'post');
+				$tag_new   = Request::getVar('newtag', '', 'post');
 
 				// Are we merging tags into a totally new tag?
 				if ($tag_new)

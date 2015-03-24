@@ -59,14 +59,13 @@ class Tagged extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Incoming
 		$this->view->filters = array(
 			'limit'  => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start'  => $app->getUserStateFromRequest(
@@ -130,13 +129,13 @@ class Tagged extends AdminController
 	 */
 	public function editTask($row=NULL)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Load a tag object if one doesn't already exist
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -167,9 +166,9 @@ class Tagged extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		$row = new Object();
 		if (!$row->bind($fields))
@@ -216,9 +215,9 @@ class Tagged extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID

@@ -58,7 +58,7 @@ class Relationships extends AdminController
 			$this->view->setError($error);
 		}
 
-		$tag = \JRequest::getVar('tag', null);
+		$tag = Request::getVar('tag', null);
 		if ($tag && (int) $tag == $tag)
 		{
 			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);

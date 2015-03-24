@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,10 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-JLoader::import('Hubzero.Api.Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
@@ -48,11 +42,11 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
-		$this->config   = JComponentHelper::getParams('com_tags');
-		$this->database = JFactory::getDBO();
+		$this->config   = Component::params('com_tags');
+		$this->database = \JFactory::getDBO();
 
 		switch ($this->segments[0])
 		{
@@ -72,11 +66,10 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Method to report errors. creates error node for response body as well
 	 *
-	 * @param	$code		Error Code
-	 * @param	$message	Error Message
-	 * @param	$format		Error Response Format
-	 *
-	 * @return     void
+	 * @param   integer  $code     Error Code
+	 * @param   string   $message  Error Message
+	 * @param   string   $format   Error Response Format
+	 * @return  void
 	 */
 	private function errorMessage($code, $message, $format = 'json')
 	{
@@ -90,7 +83,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -105,54 +98,54 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'tags';
 		$response->tasks = array(
 			'tags' => array(
-				'description' => JText::_('Get a list of tags.'),
+				'description' => Lang::txt('Get a list of tags.'),
 				'parameters'  => array(
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'scope' => array(
-						'description' => JText::_('Object type to retrieve tags for (ex: resource, answer, etc).'),
+						'description' => Lang::txt('Object type to retrieve tags for (ex: resource, answer, etc).'),
 						'type'        => 'string',
 						'default'     => 'null',
 						'requires'    => 'scope_id'
 					),
 					'scope_id' => array(
-						'description' => JText::_('ID of object to retrieve tags for.'),
+						'description' => Lang::txt('ID of object to retrieve tags for.'),
 						'type'        => 'integer',
 						'default'     => 'null',
 						'requires'    => 'scope'
 					),
 					'sort' => array(
-						'description' => JText::_('Sorting to be applied to the records.'),
+						'description' => Lang::txt('Sorting to be applied to the records.'),
 						'type'        => 'string',
 						'default'     => 'date',
 						'accepts'     => array('raw_tag', 'id')
 					),
 					'sortDir' => array(
-						'description' => JText::_('Direction to sort records by.'),
+						'description' => Lang::txt('Direction to sort records by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 				),
 			),
 			'tag' => array(
-				'description' => JText::_('Get information for a tag.'),
+				'description' => Lang::txt('Get information for a tag.'),
 				'parameters'  => array(
 					'tag' => array(
-						'description' => JText::_('The tag to retrieve information for.'),
+						'description' => Lang::txt('The tag to retrieve information for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
@@ -170,19 +163,19 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function tagsTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$cloud = new \Components\Tags\Models\Cloud();
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
-			'tbl'        => JRequest::getword('scope', ''),
-			'objectid'   => JRequest::getInt('scope_id', 0),
-			'taggerid'   => JRequest::getVar('tagger', ''),
-			'sort'       => JRequest::getWord('sort', 'raw_tag'),
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'ASC'))
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
+			'tbl'        => Request::getword('scope', ''),
+			'objectid'   => Request::getInt('scope_id', 0),
+			'taggerid'   => Request::getVar('tagger', ''),
+			'sort'       => Request::getWord('sort', 'raw_tag'),
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
 		);
 
 		$response = new stdClass;
@@ -191,7 +184,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$juri = \JURI::getInstance();
 
 			foreach ($cloud->tags('list', $filters) as $i => $tag)
 			{
@@ -199,7 +192,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 				$obj->id    = $tag->get('id');
 				$obj->tag   = $tag->get('raw_tag');
 				$obj->title = $tag->get('tag');
-				$obj->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($tag->link()), DS));
+				$obj->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($tag->link()), DS));
 
 				$obj->substitutes_count = $tag->get('substitutes');
 				$obj->objects_count = $tag->get('total');
@@ -220,30 +213,30 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function tagTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response = new stdClass;
 
-		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(Request::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
 
 			$this->errorMessage(
 				404,
-				JText::_('Specified tag does not exist.')
+				Lang::txt('Specified tag does not exist.')
 			);
 			return;
 		}
 
-		$juri = JURI::getInstance();
+		$juri = \JURI::getInstance();
 
 		$response->id    = $tag->get('id');
 		$response->tag   = $tag->get('raw_tag');
 		$response->title = $tag->get('tag');
 		$response->description = $tag->get('description');
 		$response->admin = $tag->get('admin');
-		$response->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($tag->link()), DS));
+		$response->url   = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($tag->link()), DS));
 
 		$response->objects_count = $tag->objects('count');
 
@@ -270,27 +263,27 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function addTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response = new stdClass;
 
-		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(Request::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
 
 			$this->errorMessage(
 				404,
-				JText::_('Specified tag does not exist.')
+				Lang::txt('Specified tag does not exist.')
 			);
 			return;
 		}
 
 		if (
 			!$tag->addTo(
-				JRequest::getWord('scope', ''),
-				JRequest::getInt('scope_id', 0),
-				JRequest::getInt('tagger', 0)
+				Request::getWord('scope', ''),
+				Request::getInt('scope_id', 0),
+				Request::getInt('tagger', 0)
 			)
 		)
 		{
@@ -298,7 +291,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 			$this->errorMessage(
 				500,
-				JText::_('Failed to add tag.')
+				Lang::txt('Failed to add tag.')
 			);
 			return;
 		}
@@ -315,27 +308,27 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function removeTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response = new stdClass;
 
-		$tag = new \Components\Tags\Models\Tag(JRequest::getWord('tag', ''));
+		$tag = new \Components\Tags\Models\Tag(Request::getWord('tag', ''));
 		if (!$tag->exists())
 		{
 			$response->success = false;
 
 			$this->errorMessage(
 				404,
-				JText::_('Specified tag does not exist.')
+				Lang::txt('Specified tag does not exist.')
 			);
 			return;
 		}
 
 		if (
 			!$tag->removeFrom(
-				JRequest::getWord('scope', ''),
-				JRequest::getInt('scope_id', 0),
-				JRequest::getInt('tagger', 0)
+				Request::getWord('scope', ''),
+				Request::getInt('scope_id', 0),
+				Request::getInt('tagger', 0)
 			)
 		)
 		{
@@ -343,7 +336,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 
 			$this->errorMessage(
 				500,
-				JText::_('Failed to remove tag.')
+				Lang::txt('Failed to remove tag.')
 			);
 			return;
 		}
@@ -360,23 +353,21 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function newTask()
 	{
-		$this->setMessageType(JRequest::getVar('format', 'json'));
-
 		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$userid = \JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
 		if ($result === false)
 		{
-			return $this->not_found();
+			return $this->errorMessage(404, Lang::txt('Not found.'));
 		}
 
 		// Create an object for returning messages
 		$msg = new stdClass;
 
 		// Any tags?
-		$tag = new \Components\Tags\Models\Tag(JRequest::getVar('tag', '', 'post'));
+		$tag = new \Components\Tags\Models\Tag(Request::getVar('tag', '', 'post'));
 		if (!$tag->exists())
 		{
 			if (!$tag->store(true))
@@ -397,6 +388,7 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 		$msg->label   = $tag->get('raw_tag');
 		$msg->id      = $tag->get('id');
 
+		$this->setMessageType(Request::getVar('format', 'json'));
 		$this->setMessage($msg);
 	}
 }

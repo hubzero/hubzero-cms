@@ -54,11 +54,11 @@ class Tags extends SiteController
 		$this->registerTask('feed.rss', 'feed');
 		$this->registerTask('feedrss', 'feed');
 
-		if (($tagstring = urldecode(trim(\JRequest::getVar('tag', '', 'request', 'none', 2)))))
+		if (($tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2)))))
 		{
-			if (!\JRequest::getVar('task', ''))
+			if (!Request::getVar('task', ''))
 			{
-				\JRequest::setVar('task', 'view');
+				Request::setVar('task', 'view');
 			}
 		}
 
@@ -92,14 +92,14 @@ class Tags extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$tagstring = urldecode(trim(\JRequest::getVar('tag', '', 'request', 'none', 2)));
+		$tagstring = urldecode(trim(Request::getVar('tag', '', 'request', 'none', 2)));
 
-		$addtag = trim(\JRequest::getVar('addtag', ''));
+		$addtag = trim(Request::getVar('addtag', ''));
 
 		// Ensure we were passed a tag
 		if (!$tagstring && !$addtag)
 		{
-			if (\JRequest::getWord('task', '', 'get'))
+			if (Request::getWord('task', '', 'get'))
 			{
 				$this->setRedirect(
 					Route::url('index.php?option=' . $this->_option)
@@ -160,18 +160,15 @@ class Tags extends SiteController
 		\JPluginHelper::importPlugin('tags');
 		$dispatcher = \JDispatcher::getInstance();
 
-		// Get configuration
-		$config = \JFactory::getConfig();
-
 		// Incoming paging vars
 		$this->view->filters = array(
-			'limit' => \JRequest::getInt('limit', $config->getValue('config.list_limit')),
-			'start' => \JRequest::getInt('limitstart', 0),
-			'sort'  => \JRequest::getVar('sort', 'date')
+			'limit' => Request::getInt('limit', Config::get('list_limit')),
+			'start' => Request::getInt('limitstart', 0),
+			'sort'  => Request::getVar('sort', 'date')
 		);
 
 		// Get the active category
-		$area = \JRequest::getString('area', '');
+		$area = Request::getString('area', '');
 
 		$this->view->categories = $dispatcher->trigger('onTagView', array(
 			$tags,
@@ -295,7 +292,7 @@ class Tags extends SiteController
 		$this->_buildTitle($tags);
 
 		// Output HTML
-		if (\JRequest::getVar('format', '') == 'xml')
+		if (Request::getVar('format', '') == 'xml')
 		{
 			$this->view->setLayout('view_xml');
 		}
@@ -324,7 +321,7 @@ class Tags extends SiteController
 			'limit'  => 20,
 			'start'  => 0,
 			'admin'  => 0,
-			'search' => trim(\JRequest::getString('value', ''))
+			'search' => trim(Request::getString('value', ''))
 		);
 
 		// Create a Tag object
@@ -370,7 +367,7 @@ class Tags extends SiteController
 	public function feedTask()
 	{
 		// Incoming
-		$tagstring = trim(\JRequest::getVar('tag', '', 'request', 'none', 2));
+		$tagstring = trim(Request::getVar('tag', '', 'request', 'none', 2));
 
 		// Ensure we were passed a tag
 		if (!$tagstring)
@@ -407,8 +404,8 @@ class Tags extends SiteController
 		$config = \JFactory::getConfig();
 
 		// Paging variables
-		$limitstart = \JRequest::getInt('limitstart', 0);
-		$limit = \JRequest::getInt('limit', $config->getValue('config.list_limit'));
+		$limitstart = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', $config->getValue('config.list_limit'));
 
 		// Load plugins
 		\JPluginHelper::importPlugin('tags');
@@ -422,8 +419,8 @@ class Tags extends SiteController
 		}
 
 		// Get the active category
-		$area = \JRequest::getVar('area', '');
-		$sort = \JRequest::getVar('sort', '');
+		$area = Request::getVar('area', '');
+		$sort = Request::getVar('sort', '');
 
 		if ($area)
 		{
@@ -488,8 +485,6 @@ class Tags extends SiteController
 			);
 		}
 
-		$jconfig = \JFactory::getConfig();
-
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
 		if ($results)
@@ -526,9 +521,9 @@ class Tags extends SiteController
 		// Start a new feed object
 		$doc = new \JDocumentFeed;
 		$doc->link        = Route::url('index.php?option=' . $this->_option);
-		$doc->title       = $jconfig->getValue('config.sitename') . ' - ' . $title;
-		$doc->description = Lang::txt('COM_TAGS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), $title);
-		$doc->copyright   = Lang::txt('COM_TAGS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->title       = Config::get('sitename') . ' - ' . $title;
+		$doc->description = Lang::txt('COM_TAGS_RSS_DESCRIPTION', Config::get('sitename'), $title);
+		$doc->copyright   = Lang::txt('COM_TAGS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_TAGS_RSS_CATEGORY');
 
 		// Start outputing results if any found
@@ -583,13 +578,12 @@ class Tags extends SiteController
 	public function browseTask()
 	{
 		// Instantiate a new view
-		if (\JRequest::getVar('format', '') == 'xml')
+		if (Request::getVar('format', '') == 'xml')
 		{
 			$this->view->setLayout('browse_xml');
 		}
 
 		// Get configuration
-		$jconfig = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Incoming
@@ -609,9 +603,9 @@ class Tags extends SiteController
 		);
 
 		// Fallback support for deprecated sorting option
-		if ($sortby = \JRequest::getVar('sortby'))
+		if ($sortby = Request::getVar('sortby'))
 		{
-			\JRequest::setVar('sort', $sortby);
+			Request::setVar('sort', $sortby);
 		}
 		$this->view->filters['sort'] = urldecode($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort',
@@ -636,13 +630,13 @@ class Tags extends SiteController
 
 		$t = new Cloud();
 
-		$order = \JRequest::getVar('order', '');
+		$order = Request::getVar('order', '');
 		if ($order == 'usage')
 		{
 			$limit = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			);
 
@@ -662,7 +656,7 @@ class Tags extends SiteController
 			$this->view->filters['limit'] = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			);
 
@@ -723,17 +717,17 @@ class Tags extends SiteController
 		if (!is_object($tag))
 		{
 			// Incoming
-			$tag = new Tag(intval(\JRequest::getInt('id', 0, 'request')));
+			$tag = new Tag(intval(Request::getInt('id', 0, 'request')));
 		}
 
 		$this->view->tag = $tag;
 
 		$this->view->filters = array(
-			'limit'    => \JRequest::getInt('limit', 0),
-			'start'    => \JRequest::getInt('limitstart', 0),
-			'sort'     => \JRequest::getVar('sort', ''),
-			'sort_Dir' => \JRequest::getVar('sortdir', ''),
-			'search'   => urldecode(\JRequest::getString('search', ''))
+			'limit'    => Request::getInt('limit', 0),
+			'start'    => Request::getInt('limitstart', 0),
+			'sort'     => Request::getVar('sort', ''),
+			'sort_Dir' => Request::getVar('sortdir', ''),
+			'search'   => urldecode(Request::getString('search', ''))
 		);
 
 		// Set the pathway
@@ -760,7 +754,7 @@ class Tags extends SiteController
 	 */
 	public function cancelTask()
 	{
-		$return = \JRequest::getVar('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
+		$return = Request::getVar('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
 
 		$this->setRedirect(
 			Route::url($return)
@@ -775,7 +769,7 @@ class Tags extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag'))
@@ -783,7 +777,7 @@ class Tags extends SiteController
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
-		$tag = \JRequest::getVar('fields', array(), 'post');
+		$tag = Request::getVar('fields', array(), 'post');
 
 		// Bind incoming data
 		$row = new Tag(intval($tag['id']));
@@ -802,10 +796,10 @@ class Tags extends SiteController
 			return;
 		}
 
-		$limit  = \JRequest::getInt('limit', 0);
-		$start  = \JRequest::getInt('limitstart', 0);
-		$sortby = \JRequest::getInt('sortby', '');
-		$search = urldecode(\JRequest::getString('search', ''));
+		$limit  = Request::getInt('limit', 0);
+		$start  = Request::getInt('limitstart', 0);
+		$sortby = Request::getInt('sortby', '');
+		$search = urldecode(Request::getString('search', ''));
 
 		// Redirect to main listing
 		$this->setRedirect(
@@ -827,7 +821,7 @@ class Tags extends SiteController
 		}
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -861,11 +855,11 @@ class Tags extends SiteController
 		$this->cleancacheTask(false);
 
 		// Get the browse filters so we can go back to previous view
-		$search = \JRequest::getVar('search', '');
-		$sortby = \JRequest::getVar('sortby', '');
-		$limit  = \JRequest::getInt('limit', 25);
-		$start  = \JRequest::getInt('limitstart', 0);
-		$count  = \JRequest::getInt('count', 1);
+		$search = Request::getVar('search', '');
+		$sortby = Request::getVar('sortby', '');
+		$limit  = Request::getInt('limit', 25);
+		$start  = Request::getInt('limitstart', 0);
+		$count  = Request::getInt('count', 1);
 
 		// Redirect back to browse mode
 		$this->setRedirect(
@@ -881,13 +875,11 @@ class Tags extends SiteController
 	 */
 	public function cleancacheTask($redirect=true)
 	{
-		$conf = \JFactory::getConfig();
-
 		$cache = \JCache::getInstance('', array(
 			'defaultgroup' => '',
-			'storage'      => $conf->get('cache_handler', ''),
+			'storage'      => Config::get('cache_handler', ''),
 			'caching'      => true,
-			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+			'cachebase'    => Config::get('cache_path', PATH_APP . DS . 'cache')
 		));
 		$cache->clean('tags');
 
@@ -977,7 +969,7 @@ class Tags extends SiteController
 	{
 		$this->config->set('access-view-' . $assetType, true);
 
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -993,14 +985,14 @@ class Tags extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 		}
 	}
 }

@@ -30,42 +30,42 @@
 
 namespace Components\Tags\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_tags'))
+if (!\User::authorise('core.manage', 'com_tags'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'cloud.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'entries');
+$controllerName = \Request::getCmd('controller', 'entries');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'entries';
 }
-$task = \JRequest::getCmd('task', '');
+$task = \Request::getCmd('task', '');
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_TAGS'),
-	Route::url('index.php?option=com_tags'),
+	\Lang::txt('COM_TAGS'),
+	\Route::url('index.php?option=com_tags'),
 	($controllerName == 'entries')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_TAGS_RELATIONSHIPS'),
-	Route::url('index.php?option=com_tags&controller=relationships'),
+	\Lang::txt('COM_TAGS_RELATIONSHIPS'),
+	\Route::url('index.php?option=com_tags&controller=relationships'),
 	($controllerName == 'relationships' && $task != 'meta' && $task != 'updatefocusareas')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_TAGS_FOCUS_AREAS'),
-	Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
+	\Lang::txt('COM_TAGS_FOCUS_AREAS'),
+	\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
 	\JSubMenuHelper::addEntry(
-		Lang::txt('COM_TAGS_PLUGINS'),
-		Route::url('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
+		\Lang::txt('COM_TAGS_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
 	);
 }
 

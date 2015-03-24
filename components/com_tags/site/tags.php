@@ -32,7 +32,7 @@ namespace Components\Tags\Site;
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'cloud.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'tags'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'tags'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tags';
