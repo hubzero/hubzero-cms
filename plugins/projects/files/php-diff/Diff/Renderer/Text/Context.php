@@ -63,7 +63,8 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 	{
 		$diff = '';
 		$opCodes = $this->diff->getGroupedOpcodes();
-		foreach($opCodes as $group) {
+		foreach ($opCodes as $group)
+		{
 			$diff .= "***************\n";
 			$lastItem = count($group)-1;
 			$i1 = $group[0][1];
@@ -71,32 +72,41 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 			$j1 = $group[0][3];
 			$j2 = $group[$lastItem][4];
 
-			if($i2 - $i1 >= 2) {
+			if ($i2 - $i1 >= 2)
+			{
 				$diff .= '*** '.($group[0][1] + 1).','.$i2." ****\n";
 			}
-			else {
+			else
+			{
 				$diff .= '*** '.$i2." ****\n";
 			}
 
-			if($j2 - $j1 >= 2) {
+			if ($j2 - $j1 >= 2)
+			{
 				$separator = '--- '.($j1 + 1).','.$j2." ----\n";
 			}
-			else {
+			else
+			{
 				$separator = '--- '.$j2." ----\n";
 			}
 
 			$hasVisible = false;
-			foreach($group as $code) {
-				if($code[0] == 'replace' || $code[0] == 'delete') {
+			foreach ($group as $code)
+			{
+				if ($code[0] == 'replace' || $code[0] == 'delete')
+				{
 					$hasVisible = true;
 					break;
 				}
 			}
 
-			if($hasVisible) {
-				foreach($group as $code) {
+			if ($hasVisible)
+			{
+				foreach ($group as $code)
+				{
 					list($tag, $i1, $i2, $j1, $j2) = $code;
-					if($tag == 'insert') {
+					if ($tag == 'insert')
+					{
 						continue;
 					}
 					$diff .= $this->tagMap[$tag].' '.implode("\n".$this->tagMap[$tag].' ', $this->diff->GetA($i1, $i2))."\n";
@@ -104,8 +114,10 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 			}
 
 			$hasVisible = false;
-			foreach($group as $code) {
-				if($code[0] == 'replace' || $code[0] == 'insert') {
+			foreach ($group as $code)
+			{
+				if ($code[0] == 'replace' || $code[0] == 'insert')
+				{
 					$hasVisible = true;
 					break;
 				}
@@ -113,10 +125,13 @@ class Diff_Renderer_Text_Context extends Diff_Renderer_Abstract
 
 			$diff .= $separator;
 
-			if($hasVisible) {
-				foreach($group as $code) {
+			if ($hasVisible)
+			{
+				foreach ($group as $code)
+				{
 					list($tag, $i1, $i2, $j1, $j2) = $code;
-					if($tag == 'delete') {
+					if ($tag == 'delete')
+					{
 						continue;
 					}
 					$diff .= $this->tagMap[$tag].' '.implode("\n".$this->tagMap[$tag].' ', $this->diff->GetB($j1, $j2))."\n";

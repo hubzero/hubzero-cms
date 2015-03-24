@@ -54,7 +54,8 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 	{
 		$changes = parent::render();
 		$html = '';
-		if(empty($changes)) {
+		if (empty($changes))
+		{
 			return $html;
 		}
 
@@ -66,11 +67,13 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 		$html .= '<th>Differences</th>';
 		$html .= '</tr>';
 		$html .= '</thead>';
-		foreach($changes as $i => $blocks) {
+		foreach ($changes as $i => $blocks)
+		{
 			// If this is a separate block, we're condensing code so output ...,
 			// indicating a significant portion of the code has been collapsed as
 			// it is the same
-			if($i > 0) {
+			if ($i > 0)
+			{
 				$html .= '<tbody class="Skipped">';
 				$html .= '<th>&hellip;</th>';
 				$html .= '<th>&hellip;</th>';
@@ -78,11 +81,14 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 				$html .= '</tbody>';
 			}
 
-			foreach($blocks as $change) {
+			foreach ($blocks as $change)
+			{
 				$html .= '<tbody class="Change'.ucfirst($change['tag']).'">';
 				// Equal changes should be shown on both sides of the diff
-				if($change['tag'] == 'equal') {
-					foreach($change['base']['lines'] as $no => $line) {
+				if ($change['tag'] == 'equal')
+				{
+					foreach ($change['base']['lines'] as $no => $line)
+					{
 						$fromLine = $change['base']['offset'] + $no + 1;
 						$toLine = $change['changed']['offset'] + $no + 1;
 						$html .= '<tr>';
@@ -93,8 +99,10 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 					}
 				}
 				// Added lines only on the right side
-				else if($change['tag'] == 'insert') {
-					foreach($change['changed']['lines'] as $no => $line) {
+				else if ($change['tag'] == 'insert')
+				{
+					foreach ($change['changed']['lines'] as $no => $line)
+					{
 						$toLine = $change['changed']['offset'] + $no + 1;
 						$html .= '<tr>';
 						$html .= '<th>&nbsp;</th>';
@@ -104,8 +112,10 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 					}
 				}
 				// Show deleted lines only on the left side
-				else if($change['tag'] == 'delete') {
-					foreach($change['base']['lines'] as $no => $line) {
+				else if ($change['tag'] == 'delete')
+				{
+					foreach ($change['base']['lines'] as $no => $line)
+					{
 						$fromLine = $change['base']['offset'] + $no + 1;
 						$html .= '<tr>';
 						$html .= '<th>'.$fromLine.'</th>';
@@ -115,8 +125,10 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 					}
 				}
 				// Show modified lines on both sides
-				else if($change['tag'] == 'replace') {
-					foreach($change['base']['lines'] as $no => $line) {
+				else if ($change['tag'] == 'replace')
+				{
+					foreach ($change['base']['lines'] as $no => $line)
+					{
 						$fromLine = $change['base']['offset'] + $no + 1;
 						$html .= '<tr>';
 						$html .= '<th>'.$fromLine.'</th>';
@@ -125,7 +137,8 @@ class Diff_Renderer_Html_Inline extends Diff_Renderer_Html_Array
 						$html .= '</tr>';
 					}
 
-					foreach($change['changed']['lines'] as $no => $line) {
+					foreach ($change['changed']['lines'] as $no => $line)
+					{
 						$toLine = $change['changed']['offset'] + $no + 1;
 						$html .= '<tr>';
 						$html .= '<th>'.$toLine.'</th>';

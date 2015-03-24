@@ -113,11 +113,11 @@ class Diff
 	 */
 	public function getA($start=0, $end=null)
 	{
-		if($start == 0 && $end === null) {
+		if ($start == 0 && $end === null) {
 			return $this->a;
 		}
 
-		if($end === null) {
+		if ($end === null) {
 			$length = 1;
 		}
 		else {
@@ -140,11 +140,11 @@ class Diff
 	 */
 	public function getB($start=0, $end=null)
 	{
-		if($start == 0 && $end === null) {
+		if ($start == 0 && $end === null) {
 			return $this->b;
 		}
 
-		if($end === null) {
+		if ($end === null) {
 			$length = 1;
 		}
 		else {
@@ -164,7 +164,7 @@ class Diff
 	 */
 	public function getGroupedOpcodes()
 	{
-		if(!is_null($this->groupedCodes)) {
+		if (!is_null($this->groupedCodes)) {
 			return $this->groupedCodes;
 		}
 
