@@ -2,82 +2,71 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- *
- * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @package    hubzero-cms
+ * @copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$_HUBZERO_API_START = microtime(true);
-
-//ini_set('display_errors','0');
-//error_reporting(0);
-error_reporting(-1);
-ini_set('error_reporting', E_ALL);
-header("HTTP/1.1 404 Not Found");
-
-if (function_exists('xdebug_disable'))
-{
-	xdebug_disable();
-}
-
-ini_set('magic_quotes_runtime','0');
-ini_set('zend.ze1_compatibility_mode', '0');
-ini_set('zlib.output_compression','0');
-ini_set('output_hander','');
-ini_set('implicit_flush','0');
-
+/*
+|--------------------------------------------------------------------------
+| Parent Flag
+|--------------------------------------------------------------------------
+|
+| Set flag that this is a parent file.
+|
+*/
 define('_JEXEC', 1);
-define('JPROFILE', 0);
-define('JPATH_PLATFORM', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
-if (!defined('_JDEFINES')) {
-	define('JPATH_BASE', __DIR__);
-	require_once dirname(JPATH_BASE).'/core/bootstrap/api/defines.php';
-}
+/*
+|--------------------------------------------------------------------------
+| Define directories
+|--------------------------------------------------------------------------
+|
+| First thing we need to do is set some constants for the app's directory
+| and the path to the parent directory containing the app and core.
+|
+*/
 
-require_once JPATH_LIBRARIES.DS.'loader.php';
-require_once dirname(JPATH_BASE).'/vendor/autoload.php';
+define('JPATH_BASE', __DIR__);
 
-JLoader::import('cms.version.version');
+require_once dirname(JPATH_BASE) . DS . 'core' . DS . 'bootstrap' . DS . 'api' . DS . 'defines.php';
 
-$jversion = new JVersion;
-define('JVERSION', $jversion->getShortVersion());
-unset($jversion);
+/*
+|--------------------------------------------------------------------------
+| Load The Framework
+|--------------------------------------------------------------------------
+|
+| Here we will load the framework. We'll keep this is in a
+| separate location so we can isolate the creation of an application
+| from the actual running of the application with a given request.
+|
+*/
 
-JLoader::import('joomla.error.error');
-JLoader::import('joomla.factory');
-JLoader::import('joomla.base.object');
+require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'api' .  DS . 'framework.php';
 
-JError::setErrorHandling(E_ERROR, 'ignore');
-JError::setErrorHandling(E_WARNING, 'ignore');
-JError::setErrorHandling(E_NOTICE, 'ignore');
+/*
+|--------------------------------------------------------------------------
+| Load The Application
+|--------------------------------------------------------------------------
+|
+| This bootstraps the framework and gets it ready for use, then it
+| will load up this application so that we can run it and send
+| the responses back to the browser.
+|
+*/
 
-$app = JFactory::getApplication('api',array(),'Hubzero_');
+$app = require_once PATH_ROOT . DS . 'core' . DS . 'bootstrap' . DS . 'start.php';
 
-$app->request->import();
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can simply call the run method,
+| which will execute the request and send the response back to
+| the client's browser.
+|
+*/
 
-$app->execute();
-
-echo $app->output;
+$app->run();

@@ -55,6 +55,37 @@ $app['app'] = $app;
 
 /*
 |--------------------------------------------------------------------------
+| Register The Configuration Repository
+|--------------------------------------------------------------------------
+|
+| The configuration repository is used to lazily load in the options for
+| this application from the configuration files. The files are easily
+| separated by their concerns so they do not become really crowded.
+|
+*/
+
+/*$app['config'] = new Config(
+
+	$app->getConfigLoader(), $client
+
+));*/
+
+/*
+|--------------------------------------------------------------------------
+| Load The Aliases
+|--------------------------------------------------------------------------
+|
+| The alias loader is responsible for lazy loading the class aliases setup
+| for the application.
+|
+*/
+
+$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
+
+$app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
+
+/*
+|--------------------------------------------------------------------------
 | Load The Application Routes
 |--------------------------------------------------------------------------
 |

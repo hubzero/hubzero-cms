@@ -97,7 +97,7 @@ class Application extends Container
 
 		$this->registerBaseServiceProviders();
 
-		$this->registerBaseFacades();
+		//$this->registerBaseFacades();
 	}
 
 	/**
@@ -161,13 +161,16 @@ class Application extends Container
 	 * 
 	 * @return  void
 	 */
-	protected function registerBaseFacades()
+	public function registerBaseFacades($aliases = array())
 	{
 		// Set the application to resolve Facades
 		Facade::setApplication($this);
 
 		// Create aliaes for runtime
-		Facade::createAliases(static::$baseAliases);
+		Facade::createAliases(array_merge(
+			static::$baseAliases,
+			$aliases
+		));
 	}
 
 	/**

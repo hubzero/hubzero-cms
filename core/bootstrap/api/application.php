@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * API application class
  */
-class Hubzero_API extends JApplication
+class JApi extends JApplication
 {
 	/**
 	 * Description for '_authn'
@@ -278,6 +278,8 @@ class Hubzero_API extends JApplication
 	 */
 	public function initialise($options = array())
 	{
+		$this->request->import();
+
 		$this->response->setCachable(false);
 		$this->response->setAcceptableMediaTypes($this->request->getHeader('Accept'));
 		$this->response->setAcceptableEncodings($this->request->getHeader('Accept-Encoding'));
@@ -636,9 +638,9 @@ class Hubzero_API extends JApplication
 	 */
 	public function render()
 	{
-		global $_HUBZERO_API_START;
+		//global $_HUBZERO_API_START;
 
-		$this->response->setHeader('X-Runtime: ' . (microtime(true) - $_HUBZERO_API_START));
+		//$this->response->setHeader('X-Runtime: ' . (microtime(true) - $_HUBZERO_API_START));
 
 		$this->response->send();
 	}
@@ -651,12 +653,12 @@ class Hubzero_API extends JApplication
 	 */
 	public function execute($capture = false)
 	{
-		global $_HUBZERO_API_START;
+		/*global $_HUBZERO_API_START;
 
 		if (!isset($_HUBZERO_API_START))
 		{
 			$_HUBZERO_API_START = microtime(true);
-		}
+		}*/
 
 		$this->initialise();
 
@@ -678,7 +680,7 @@ class Hubzero_API extends JApplication
 			$this->output = ob_get_clean();
 		}
 
-		unset($_HUBZERO_API_START);
+		//unset($_HUBZERO_API_START);
 	}
 
 	/**
