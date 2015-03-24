@@ -55,7 +55,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		<label><?php echo JText::_('URL:'); ?> <span class="optional">Optional</span>
 			<input type="text" name="calendar[url]" value="<?php echo $this->calendar->get('url'); ?>" />
-			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
+			<span class="hint"><?php echo JText::_('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span> <br />
+			<span class="hint"><?php echo JText::_('The .ics format is currently supported.'); ?></span>
+
 		</label>
 
 		<label><?php echo JText::_('Color:'); ?> <span class="optional">Optional</span>
