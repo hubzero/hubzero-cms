@@ -69,7 +69,7 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'roles'
 );
 
-require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 $canDo = PluginsHelper::getActions();
 if ($canDo->get('core.manage'))
 {
