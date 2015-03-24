@@ -188,7 +188,7 @@ class Comment extends \JTable
 		$query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=$itemid AND tbl=" . $this->_db->Quote($tbl);
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
-		if($result)
+		if ($result)
 		{
 			foreach ($result as $r)
 			{
@@ -228,7 +228,7 @@ class Comment extends \JTable
 		$this->created 			= \Factory::getDate()->toSql();
 		$this->created_by 		= $by;
 
-		if(!$this->store())
+		if (!$this->store())
 		{
 			return false;
 		}

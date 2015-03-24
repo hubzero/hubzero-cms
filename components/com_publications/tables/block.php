@@ -96,7 +96,7 @@ class Block extends \JTable
 			$blocks = array();
 			if ($results)
 			{
-				foreach($results as $result)
+				foreach ($results as $result)
 				{
 					$blocks[] = $result->block;
 				}
