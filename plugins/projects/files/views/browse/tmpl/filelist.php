@@ -38,20 +38,7 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $empty = false;
 
 // Directory path breadcrumbs
-$desect_path = explode(DS, $this->subdir);
-$path_bc = '';
-$url = '';
-$parent = '';
-if ($this->subdir && count($desect_path) > 0)
-{
-	for ($p = 0; $p < count($desect_path); $p++)
-	{
-		$parent   = count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
-		$url  	 .= DS . $desect_path[$p];
-		$path_bc .= ' &raquo; <span><a href="'. $this->url . '/?subdir='
-			. urlencode($url) . '" class="folder">' . $desect_path[$p].'</a></span> ';
-	}
-}
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
 $class = $this->case == 'tools' ? 'tools' : 'files';
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
@@ -93,7 +80,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		<h3 class="<?php echo $class; ?>">
 			<?php if ($this->subdir) { ?><a href="<?php echo $this->url; ?>"><?php } ?>
 			<?php echo $this->title; ?>
-			<?php if ($this->subdir) { ?></a><?php echo $path_bc; ?><?php } ?>
+			<?php if ($this->subdir) { ?></a><?php echo $bc; ?><?php } ?>
 			<?php if ($this->task == 'newdir') { echo ' &raquo; <span class="indlist">' . JText::_('PLG_PROJECTS_FILES_ADD_NEW_FOLDER') . '</span>'; } ?>
 		</h3>
 	</div>
@@ -281,7 +268,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			// Show directory as empty
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
-					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>" class="mini faded">
+					<td colspan="<?php echo $this->publishing ? 8 : 7; ?>" class="mini faded">
 						<?php if ($this->subdir || $this->tool)
 							{
 								echo JText::_('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY');

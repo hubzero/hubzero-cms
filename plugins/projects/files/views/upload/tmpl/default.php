@@ -30,27 +30,14 @@ if (!$this->ajax)
 	$this->css('css/uploader');
 }
 
-$subdirlink = $this->subdir ? a . 'subdir=' . urlencode($this->subdir) : '';
+$subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 $rUrl = $this->url . '?a=1' . $subdirlink;
 
 // Incoming
 $basic   = JRequest::getInt('basic', 0);
 
 // Directory path breadcrumbs
-$desect_path = explode(DS, $this->subdir);
-$path_bc = '';
-$url = '';
-$parent = '';
-if (count($desect_path) > 0)
-{
-	for ($p = 0; $p < count($desect_path); $p++)
-	{
-		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
-		$url 	.= DS . $desect_path[$p];
-		$path_bc .= ' &raquo; <span><a href="'.$this->url.'/?subdir='.urlencode($url)
-			.'" class="folder">'.$desect_path[$p].'</a></span> ';
-	}
-}
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
 ?>
 <?php if ($this->ajax) { ?>
@@ -60,18 +47,18 @@ if (count($desect_path) > 0)
 <?php
 // Display error or success message
 if ($this->getError()) {
-	echo ('<p class="witherror">'.$this->getError().'</p>');
+	echo ('<p class="witherror">' . $this->getError().'</p>');
 }
 ?>
 <?php
 if (!$this->getError()) {
 ?>
 
-<form id="hubForm-ajax" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
+<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
 	<?php if (!$this->ajax) { ?>
 		<div id="plg-header">
 			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
+				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $bc; ?><?php } ?>
 			&raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></span>
 			</h3>
 		</div>
@@ -145,12 +132,12 @@ if (!$this->getError()) {
 			<?php if ($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 		</div>
 		<?php if (!$basic) { ?>
-			<p class="hint rightfloat mini faded"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'); ?> <a href="<?php echo $this->url . '?action=upload&basic=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD'); ?></a>.</p>
+			<p class="hint rightfloat mini faded"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'); ?> <a href="<?php echo $this->url . '?action=upload&amp;basic=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_BASIC_UPLOAD'); ?></a>.</p>
 		<?php } ?>
 	</fieldset>
 </form>

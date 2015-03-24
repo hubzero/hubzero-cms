@@ -1448,6 +1448,34 @@ class Html extends \JObject
 	}
 
 	/**
+	 * Build breadcrumbs inside files plugin
+	 *
+	 * @param      string $dir
+	 * @param      string $url
+	 * @return     string
+	 */
+	public static function buildFileBrowserCrumbs( $dir = '', $url = '', &$parent = NULL)
+	{
+		$bc = NULL;
+		$href = '';
+
+		$desectPath = explode(DS, $dir);
+
+		if ($dir && count($desectPath) > 0)
+		{
+			for ($p = 0; $p < count($desectPath); $p++)
+			{
+				$parent   = count($desectPath) > 1 && $p != count($desectPath)  ? $href  : '';
+				$href  	 .= DS . $desectPath[$p];
+				$bc .= ' &raquo; <span><a href="' . $url . '/?subdir='
+					. urlencode($href) . '" class="folder">' . $desectPath[$p].'</a></span> ';
+			}
+		}
+
+		return $bc;
+	}
+
+	/**
 	 * Send hub message
 	 *
 	 * @param      string 	$option

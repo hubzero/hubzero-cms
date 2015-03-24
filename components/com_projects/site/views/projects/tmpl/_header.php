@@ -65,7 +65,7 @@ $start = ($this->showPrivacy == 2 && $this->project->owner) ? '<span class="h-pr
 		}
 		else
 		{
-			echo '<a href=="' . Route::url('index.php?option=com_members&id=' . $this->project->owned_by_user) .'">' . $this->project->fullname.'</a>';
+			echo '<a href="' . Route::url('index.php?option=com_members&id=' . $this->project->owned_by_user) .'">' . $this->project->fullname.'</a>';
 		}
 		?>
 		<?php if ($this->showPrivacy == 1) { ?>

@@ -29,20 +29,7 @@ $this->css()
      ->js();
 
 // Directory path breadcrumbs
-$desect_path = explode(DS, $this->subdir);
-$path_bc = '';
-$url = '';
-$parent = '';
-if ($this->subdir && count($desect_path) > 0)
-{
-	for ($p = 0; $p < count($desect_path); $p++)
-	{
-		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
-		$url 	.= DS . $desect_path[$p];
-		$path_bc .= ' &raquo; <span><a href="' . $this->url . '/?subdir='.urlencode($url)
-			.'" class="folder">'.$desect_path[$p].'</a></span> ';
-	}
-}
+$bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
 $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action=history&amp;asset=' . urlencode($this->file) . '&amp;subdir=' . $this->subdir . '">' . JText::_('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file, 40) . '</span></a></span> &raquo; <span class="subheader">' . JText::_('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
 
@@ -63,7 +50,7 @@ if ($this->getError()) {
 	<?php if (!$this->ajax && $this->case == 'files') { ?>
 		<div id="plg-header">
 			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
+				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $bc; ?><?php } ?>
 			<?php echo $endPath; ?>
 			</h3>
 		</div>
