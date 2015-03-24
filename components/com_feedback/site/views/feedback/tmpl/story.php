@@ -36,8 +36,6 @@ $this->css()
      ->js('jquery.ui.widget.js', 'system')
      ->js('jquery.iframe-transport.js', 'system')
      ->js('jquery.fileuploader.js', 'system');
-
-$jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -103,12 +101,12 @@ $jconfig = JFactory::getConfig();
 
 				<label for="field-publish_ok">
 					<input type="checkbox" name="fields[publish_ok]" id="field-publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', $jconfig->getValue('config.sitename'), $jconfig->getValue('config.sitename')); ?>
+					<?php echo Lang::txt('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', Config::get('sitename'), Config::get('sitename')); ?>
 				</label>
 
 				<label for="field-contact_ok">
 					<input type="checkbox" name="fields[contact_ok]" id="field-contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
-					<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
+					<?php echo Lang::txt('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', Config::get('sitename')); ?>
 				</label>
 			</fieldset><div class="clear"></div>
 

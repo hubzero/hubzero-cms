@@ -70,20 +70,17 @@ class Results extends SiteController
 		$menu->param = new \JRegistry($menu->params);
 
 		// Incoming
-		$this->view->period = \JRequest::getVar('period', $menu->param->get('period', 'month'));
-
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
+		$this->view->period = Request::getVar('period', $menu->param->get('period', 'month'));
 
 		// Paging variables
-		$this->view->start = \JRequest::getInt('limitstart', 0);
-		$this->view->limit = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->start = Request::getInt('limitstart', 0);
+		$this->view->limit = Request::getInt('limit', Config::get('list_limit'));
 
 		// Get categories
 		$areas = $this->_getAreas();
 
 		// Was there a category passed in the querystring?
-		$area = trim(\JRequest::getWord('category', ''));
+		$area = trim(Request::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($this->view->period != NULL)
@@ -289,20 +286,17 @@ class Results extends SiteController
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
 		// Incoming
-		$period = \JRequest::getVar('period', 'month');
-
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
+		$period = Request::getVar('period', 'month');
 
 		// Paging variables
-		$start = \JRequest::getInt('limitstart', 0);
-		$limit = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$start = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 
 		// Get categories
 		$areas = $this->_getAreas();
 
 		// Was there a category passed in the querystring?
-		$area = trim(\JRequest::getWord('category', ''));
+		$area = trim(Request::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($period != NULL)
@@ -382,10 +376,10 @@ class Results extends SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
+		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
 		$doc->title .= ($area) ? ': ' . $area : '';
-		$doc->description = Lang::txt('COM_WHATSNEW_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = Lang::txt('COM_WHATSNEW_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$doc->description = Lang::txt('COM_WHATSNEW_RSS_DESCRIPTION', Config::get('sitename'));
+		$doc->copyright   = Lang::txt('COM_WHATSNEW_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_WHATSNEW_RSS_CATEGORY');
 
 		// Start outputing results if any found

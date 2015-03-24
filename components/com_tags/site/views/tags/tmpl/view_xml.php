@@ -58,7 +58,6 @@ $juri = JURI::getInstance();
 $foundresults = false;
 $dopaging = false;
 $cats = $this->cats;
-$jconfig = JFactory::getConfig();
 $html = "\t".'<categories>'."\n";
 $k = 0;
 foreach ($this->results as $category)

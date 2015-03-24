@@ -28,8 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-JLoader::import('Hubzero.Api.Controller');
-
 /**
  * API controller class for What's New
  */
@@ -42,8 +40,8 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
 		switch ($this->segments[0])
 		{
@@ -63,27 +61,27 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'whatsnew';
 		$response->tasks = array(
 			'index' => array(
-				'description' => JText::_('Get a list of new content.'),
+				'description' => Lang::txt('Get a list of new content.'),
 				'parameters'  => array(
 					'period' => array(
-						'description' => JText::_('Time period to search for records.'),
+						'description' => Lang::txt('Time period to search for records.'),
 						'type'        => 'string',
 						'default'     => 'year',
 						'accepts'     => array('year', 'quarter', 'month', 'week')
 					),
 					'order' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -91,7 +89,7 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -112,12 +110,12 @@ class WhatsnewControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// get the request vars
-		$period     = JRequest::getVar("period", "year");
-		$category   = JRequest::getVar("category", "all");
-		$limit      = JRequest::getVar("limit", 25);
-		$limitstart = JRequest::getVar("limitstart", 0);
-		$content    = JRequest::getVar("content", 0);
-		$order      = JRequest::getVar("order", "desc");
+		$period     = Request::getVar("period", "year");
+		$category   = Request::getVar("category", "all");
+		$limit      = Request::getVar("limit", 25);
+		$limitstart = Request::getVar("limitstart", 0);
+		$content    = Request::getVar("content", 0);
+		$order      = Request::getVar("order", "desc");
 
 		// import joomla plugin helper
 		jimport('joomla.plugin.helper');

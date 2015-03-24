@@ -32,7 +32,7 @@ namespace Components\Whatsnew\Site;
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'results'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'results'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'results';

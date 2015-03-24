@@ -33,8 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('introduction.css', 'system')
      ->css();
-
-$jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -44,7 +42,7 @@ $jconfig = JFactory::getConfig();
 	<div class="grid">
 		<div class="col span8">
 			<h3><?php echo Lang::txt('COM_FEEDBACK_HAVE_SOMETHING_TO_SAY'); ?></h3>
-			<p><?php echo JText::sprintf('COM_FEEDBACK_INTRO', $jconfig->getValue('config.sitename')); ?></p>
+			<p><?php echo Lang::txt('COM_FEEDBACK_INTRO', Config::get('sitename')); ?></p>
 		</div><!-- / .subject -->
 		<div class="col span4 omega">
 			<h3><?php echo Lang::txt('COM_FEEDBACK_PARTICIPATE'); ?></h3>

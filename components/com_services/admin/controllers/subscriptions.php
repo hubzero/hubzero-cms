@@ -60,14 +60,13 @@ class Subscriptions extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
 			// Get paging variables
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -114,11 +113,11 @@ class Subscriptions extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getInt('id', 0);
+			$id = Request::getInt('id', 0);
 
 			$row = new Subscription($this->database);
 			$this->view->subscription = $row->getSubscription($id);
@@ -164,9 +163,9 @@ class Subscriptions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$subscription = new Subscription($this->database);
 		if (!$subscription->load($id))
@@ -192,17 +191,17 @@ class Subscriptions extends AdminController
 		}
 
 		$author    = \JUser::getInstance($subscription->uid);
-		$subscription->notes = rtrim(stripslashes(\JRequest::getVar('notes', '')));
-		$action    = \JRequest::getVar('action', '');
-		$message   = \JRequest::getVar('message', '');
+		$subscription->notes = rtrim(stripslashes(Request::getVar('notes', '')));
+		$action    = Request::getVar('action', '');
+		$message   = Request::getVar('message', '');
 		$statusmsg = '';
 		$email     = 0;
 
 		switch ($action)
 		{
 			case 'refund':
-				$received_refund = \JRequest::getInt('received_refund', 0);
-				$newunits = \JRequest::getInt('newunits', 0);
+				$received_refund = Request::getInt('received_refund', 0);
+				$newunits = Request::getInt('newunits', 0);
 				$pending = $subscription->pendingpayment - $received_refund;
 				$pendingunits = $subscription->pendingunits - $newunits;
 				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
@@ -212,8 +211,8 @@ class Subscriptions extends AdminController
 			break;
 
 			case 'activate':
-				$received_payment = \JRequest::getInt('received_payment', 0);
-				$newunits = \JRequest::getInt('newunits', 0);
+				$received_payment = Request::getInt('received_payment', 0);
+				$newunits = Request::getInt('newunits', 0);
 				$pending = $subscription->pendingpayment - $received_payment;
 				$pendingunits = $subscription->pendingunits - $newunits;
 				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
@@ -279,12 +278,10 @@ class Subscriptions extends AdminController
 
 		if ($email || $message)
 		{
-			$jconfig = \JFactory::getConfig();
-
 			// E-mail "from" info
 			$from = array(
-				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS')
+				'email' => Config::get('mailfrom'),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SERVICES_SUBSCRIPTIONS')
 			);
 
 			// start email message

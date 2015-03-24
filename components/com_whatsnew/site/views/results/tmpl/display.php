@@ -137,7 +137,6 @@ foreach ($this->cats as $cat)
 		<div class="subject">
 			<div class="container">
 			<?php
-			$jconfig = JFactory::getConfig();
 			$juri = JURI::getInstance();
 			$foundresults = false;
 			$dopaging = false;
@@ -213,7 +212,6 @@ foreach ($this->cats as $cat)
 						{
 							$feed = DS . $feed;
 						}
-						$jconfig = JFactory::getConfig();
 						$live_site = rtrim(JURI::base(),'/');
 
 						$feed = $live_site . $feed;

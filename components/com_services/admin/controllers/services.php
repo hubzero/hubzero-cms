@@ -59,7 +59,6 @@ class Services extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -67,7 +66,7 @@ class Services extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -182,11 +181,11 @@ class Services extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -219,10 +218,10 @@ class Services extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class

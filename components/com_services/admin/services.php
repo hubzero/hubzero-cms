@@ -30,7 +30,7 @@
 
 namespace Components\Services\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_services'))
+if (!\User::authorise('core.manage', 'com_services'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -40,7 +40,7 @@ require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'service.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'subscription.php');
 
-$controllerName = \JRequest::getCmd('controller', 'services');
+$controllerName = \Request::getCmd('controller', 'services');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'services';

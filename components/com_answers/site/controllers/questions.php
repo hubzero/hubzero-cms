@@ -217,7 +217,6 @@ class Questions extends SiteController
 				'layout' => 'response_plaintext'
 			));
 			$eview->option   = $this->_option;
-			$eview->jconfig  = Config::getRoot();
 			$eview->sitename = Config::get('sitename');
 			$eview->juser    = $this->juser;
 			$eview->question = $question;
@@ -956,7 +955,6 @@ class Questions extends SiteController
 				'layout' => 'question_plaintext'
 			));
 			$eview->option   = $this->_option;
-			$eview->jconfig  = Config::getRoot();
 			$eview->sitename = Config::get('sitename');
 			$eview->juser    = $this->juser;
 			$eview->question = $row;
@@ -1071,7 +1069,6 @@ class Questions extends SiteController
 					'layout' => 'removed_plaintext'
 				));
 				$eview->option   = $this->_option;
-				$eview->jconfig  = Config::getRoot();
 				$eview->sitename = Config::get('sitename');
 				$eview->juser    = $this->juser;
 				$eview->question = $question;
@@ -1168,7 +1165,6 @@ class Questions extends SiteController
 			'layout' => 'response_plaintext'
 		));
 		$eview->option   = $this->_option;
-		$eview->jconfig  = Config::getRoot();
 		$eview->sitename = Config::get('sitename');
 		$eview->juser    = $this->juser;
 		$eview->question = $question;
