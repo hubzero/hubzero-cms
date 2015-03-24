@@ -46,11 +46,11 @@ class Help extends AdminController
 	public function displayTask()
 	{
 		// Get the page we are trying to access
-		$page      = \JRequest::getWord('page', '');
-		$component = \JRequest::getWord('component', 'com_help');
-		$extension = \JRequest::getWord('extension', '');
+		$page      = Request::getWord('page', '');
+		$component = Request::getWord('component', 'com_help');
+		$extension = Request::getWord('extension', '');
 
-		if ($component == $this->_option && !\JRequest::getString('tmpl', '') && !$page)
+		if ($component == $this->_option && !Request::getString('tmpl', '') && !$page)
 		{
 			$this->view
 				->set('components', self::getComponents())
@@ -62,7 +62,7 @@ class Help extends AdminController
 		$page = $page ?: 'index';
 
 		// Force help template
-		\JRequest::setVar('tmpl', 'help');
+		Request::setVar('tmpl', 'help');
 
 		$finalHelpPage = Finder::page($component, $extension, $page);
 
@@ -112,7 +112,6 @@ class Help extends AdminController
 	{
 		// Initialise variables.
 		$lang   = \JFactory::getLanguage();
-		$user   = \JFactory::getUser();
 		$db     = \JFactory::getDbo();
 		$query  = $db->getQuery(true);
 		$result = array();
@@ -144,7 +143,7 @@ class Help extends AdminController
 			if ($component->parent_id == 1)
 			{
 				// Only add this top level if it is authorised and enabled.
-				if ($authCheck == false || ($authCheck && $user->authorise('core.manage', $component->element)))
+				if ($authCheck == false || ($authCheck && User::authorise('core.manage', $component->element)))
 				{
 					// Root level.
 					$result[$component->id] = $component;
@@ -163,12 +162,12 @@ class Help extends AdminController
 					{
 						// Load the core file then
 						// Load extension-local file.
-						$lang->load($component->element.'.sys', JPATH_BASE, null, false, false)
-						|| $lang->load($component->element.'.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false)
-						|| $lang->load($component->element.'.sys', JPATH_BASE, $lang->getDefault(), false, false)
-						|| $lang->load($component->element.'.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
+						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false)
+						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false)
+						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
+						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
 					}
-					$component->text = $lang->hasKey($component->title) ? \JText::_($component->title) : $component->alias;
+					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 				}
 			}
 			else
@@ -179,7 +178,7 @@ class Help extends AdminController
 					// Add the submenu link if it is defined.
 					if (isset($result[$component->parent_id]->submenu) && !empty($component->link))
 					{
-						$component->text = $lang->hasKey($component->title) ? \JText::_($component->title) : $component->alias;
+						$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 						$result[$component->parent_id]->submenu[] = &$component;
 					}
 				}
@@ -209,16 +208,21 @@ class Help extends AdminController
 		}
 
 		// Path to help pages
-		$helpPagesPath = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
+		$helpPagesPath  = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
+		$helpPagesPath2 = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
 
 		// Make sure directory exists
 		$pages = array();
+
+		jimport('joomla.filesystem.folder');
+		// Get help pages for this component
 		if (is_dir($helpPagesPath))
 		{
-			jimport('joomla.filesystem.folder');
-
-			// Get help pages for this component
 			$pages = \JFolder::files($helpPagesPath , '.phtml');
+		}
+		else if (is_dir($helpPagesPath2))
+		{
+			$pages = \JFolder::files($helpPagesPath2 , '.phtml');
 		}
 
 		// Return pages
@@ -247,17 +251,17 @@ class Help extends AdminController
 			$name = ucfirst(str_replace('com_', '',$component['name']));
 
 			// Build content to return
-			$content .= '<' . $headingLevel . '>' . \JText::sprintf('COM_HELP_COMPONENT_HELP', $name) . '</' . $headingLevel . '>';
+			$content .= '<' . $headingLevel . '>' . Lang::txt('COM_HELP_COMPONENT_HELP', $name) . '</' . $headingLevel . '>';
 
 			// Make sure we have pages
 			if (count($component['pages']) > 0)
 			{
-				$content .= '<p>' . \JText::sprintf('COM_HELP_PAGE_INDEX_EXPLANATION', $name) . '</p>';
+				$content .= '<p>' . Lang::txt('COM_HELP_PAGE_INDEX_EXPLANATION', $name) . '</p>';
 				$content .= '<ul>';
 				foreach ($component['pages'] as $page)
 				{
 					$name = str_replace('.phtml', '', $page);
-					$url  = \JRoute::_('index.php?option=com_help&component=' . $component['option'] . '&page=' . $name);
+					$url  = Route::url('index.php?option=com_help&component=' . $component['option'] . '&page=' . $name);
 
 					$content .= '<li><a href="' . $url . '">' . ucwords(str_replace('_', ' ', $name)) . '</a></li>';
 				}
@@ -265,7 +269,7 @@ class Help extends AdminController
 			}
 			else
 			{
-				$content .= '<p>' . \JText::_('COM_HELP_NO_PAGES_FOUND') . '</p>';
+				$content .= '<p>' . Lang::txt('COM_HELP_NO_PAGES_FOUND') . '</p>';
 			}
 		}
 

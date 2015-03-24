@@ -48,13 +48,13 @@ class Help extends SiteController
 	public function displayTask()
 	{
 		// Force help template
-		\JRequest::setVar('tmpl', 'help');
+		Request::setVar('tmpl', 'help');
 
 		// Get the page we are trying to access
-		$page      = \JRequest::getWord('page', 'index');
-		$component = \JRequest::getWord('component', 'com_help');
+		$page      = Request::getWord('page', 'index');
+		$component = Request::getWord('component', 'com_help');
 		$name      = str_replace('com_', '', $component);
-		$extension = \JRequest::getWord('extension', '');
+		$extension = Request::getWord('extension', '');
 
 		$tmpl = \JFactory::getApplication()->getTemplate();
 		$lang = \JFactory::getLanguage()->getTag();
