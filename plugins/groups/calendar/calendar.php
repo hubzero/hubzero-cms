@@ -427,7 +427,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 					$event->end = '0000-00-00 00:00:00';
 				}
 
-				$end_day = strtotime($event->end . '+ 48 hours');
+				$end_day = strtotime($event->end . '+ 24 hours');
 				$down = date('Y-m-d H:i:s', $end_day);
 				$event->end = $down;
 			}
