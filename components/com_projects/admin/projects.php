@@ -30,7 +30,7 @@
 
 namespace Components\Projects\Admin;
 
-$option = \JRequest::getCmd('option','com_projects');
+$option = Request::getCmd('option','com_projects');
 
 if (!\JFactory::getUser()->authorise('core.manage', 'com_projects'))
 {
@@ -42,7 +42,7 @@ require_once(dirname(__DIR__) . DS . 'models' . DS . 'project.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'database.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'database.version.php');
 
-$controllerName = \JRequest::getCmd('controller', 'projects');
+$controllerName = Request::getCmd('controller', 'projects');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'projects';

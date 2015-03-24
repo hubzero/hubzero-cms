@@ -51,8 +51,6 @@ $this->css();
 	<?php
 		$i = 1;
 
-		$juser = JFactory::getUser();
-
 		foreach ($this->rows as $row)
 		{
 			if ($i > $this->limit)
@@ -81,7 +79,7 @@ $this->css();
 
 			$cls  = ($row->get('state') == 1) ? 'answered' : '';
 			$cls  = ($row->isReported())      ? 'flagged'  : $cls;
-			$cls .= ($row->get('created_by') == $juser->get('username')) ? ' mine' : '';
+			$cls .= ($row->get('created_by') == User::get('username')) ? ' mine' : '';
 	?>
 			<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 				<th>
@@ -118,7 +116,7 @@ $this->css();
 			<?php } ?>
 				<td class="voting">
 					<span class="vote-like">
-					<?php if ($juser->get('guest')) { ?>
+					<?php if (User::isGuest()) { ?>
 						<span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote.">
 							<?php echo $row->get('helpful', 0); ?><span> Like</span>
 						</span>

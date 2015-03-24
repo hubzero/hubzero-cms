@@ -118,7 +118,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			$config = JComponentHelper::getParams( $option );
+			$config = Component::params($option);
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(

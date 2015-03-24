@@ -200,8 +200,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->_database = $database;
 
 		// Load component configs
-		$this->_config = JComponentHelper::getParams( 'com_projects' );
-		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$this->_config = Component::params( 'com_projects' );
+		$this->_pubconfig = Component::params( 'com_publications' );
 
 		// Areas that can be updated after publication
 		$this->_updateAllowed = \Components\Projects\Helpers\Html::getParamArray(
@@ -1614,7 +1614,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get project path
 		if ($this->_task != 'editauthor')
 		{
-			$config 		= JComponentHelper::getParams( 'com_projects' );
+			$config 		= Component::params( 'com_projects' );
 			$view->path 	= \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
 		}
 
@@ -6741,7 +6741,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _getMemberPath()
 	{
 		// Get members config
-		$mconfig = \JComponentHelper::getParams( 'com_members' );
+		$mconfig = Component::params( 'com_members' );
 
 		// Build upload path
 		$dir  = \Hubzero\Utility\String::pad( $this->_uid );
@@ -6975,7 +6975,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Archival name
 		$tarname = JText::_('Publication') . '_' . $pid . '.zip';
 
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = Component::params( 'com_publications' );
 
 		// Load publication & version classes
 		$objP  = new \Components\Publications\Tables\Publication( $database );

@@ -192,14 +192,14 @@ class Tags extends Base
 		}
 
 		$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_parent->_db );
-		$tags 		= trim(\JRequest::getVar('tags', '', 'post'));
+		$tags 		= trim(Request::getVar('tags', '', 'post'));
 		$tagsHelper->tag_object($actor, $pub->id, $tags, 1);
 
 		// Reflect the update in curation record
 		$this->_parent->set('_update', 1);
 
 		// Save category
-		$cat = \JRequest::getInt( 'pubtype', 0 );
+		$cat = Request::getInt( 'pubtype', 0 );
 		if ($cat && $pub->_category->id != $cat)
 		{
 			$objP->category = $cat;

@@ -149,7 +149,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Get the component parameters
-			$this->config = JComponentHelper::getParams('com_wishlist');
+			$this->config = Component::params('com_wishlist');
 
 			// Get list owners
 			$owners = $objOwner->get_owners($id, $this->config->get('group') , $wishlist);

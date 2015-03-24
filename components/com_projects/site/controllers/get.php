@@ -48,7 +48,7 @@ class Get extends SiteController
 		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 		// Incoming
-		$stamp = \JRequest::getVar( 's', '' );
+		$stamp = Request::getVar( 's', '' );
 
 		// Clean up stamp value (only numbers and letters)
 		$regex  = array('/[^a-zA-Z0-9]/');

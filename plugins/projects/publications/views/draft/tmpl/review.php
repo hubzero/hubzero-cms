@@ -62,11 +62,10 @@ $juser = JFactory::getUser();
 
 // Get hub config
 $juri 	 = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-$site 	 = $jconfig->getValue('config.live_site')
-	? $jconfig->getValue('config.live_site')
+$site 	 = Config::get('config.live_site')
+	? Config::get('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
-$sitename = $jconfig->getValue('config.sitename');
+$sitename = Config::get('config.sitename');
 
 $model = new \Components\Publications\Models\Publication($this->pub);
 
@@ -95,7 +94,7 @@ if ($this->pub->doi)
 $pubdate = JRequest::getVar('publish_date');
 
 // Get configs
-$config   = JComponentHelper::getParams( 'com_publications' );
+$config   = Component::params( 'com_publications' );
 $termsUrl = $config->get('deposit_terms', '');
 
 ?>

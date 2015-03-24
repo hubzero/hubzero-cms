@@ -102,7 +102,6 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$this->database 		= JFactory::getDBO();
 		$this->publication    	= $publication;
 		$this->option   		= $option;
-		$this->juser     		= JFactory::getUser();
 
 		// Get a needed library
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
@@ -111,16 +110,16 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$this->a = new \Components\Answers\Tables\Question($this->database);
 
 		$this->filters = array();
-		$this->filters['limit']    	= JRequest::getInt( 'limit', 0 );
-		$this->filters['start']    	= JRequest::getInt( 'limitstart', 0 );
+		$this->filters['limit']    	= Request::getInt( 'limit', 0 );
+		$this->filters['start']    	= Request::getInt( 'limitstart', 0 );
 		$identifier 		 		= $this->publication->alias ? $this->publication->alias : $this->publication->id;
 		$this->filters['tag']      	= $this->publication->cat_alias == 'tool'
 									?  'tool:' . $identifier : 'publication:' . $identifier;
 		$this->filters['rawtag']   	= $this->publication->cat_alias == 'tool'
 									?  'tool:' . $identifier : 'publication:' . $identifier;
-		$this->filters['q']        	= JRequest::getVar( 'q', '' );
-		$this->filters['filterby'] 	= JRequest::getVar( 'filterby', '' );
-		$this->filters['sortby']   	= JRequest::getVar( 'sortby', 'withinplugin' );
+		$this->filters['q']        	= Request::getVar( 'q', '' );
+		$this->filters['filterby'] 	= Request::getVar( 'filterby', '' );
+		$this->filters['sortby']   	= Request::getVar( 'sortby', 'withinplugin' );
 
 		$this->count = $this->a->getCount($this->filters);
 
@@ -130,7 +129,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
-			switch (strtolower(JRequest::getWord('action', 'browse')))
+			switch (strtolower(Request::getWord('action', 'browse')))
 			{
 				case 'save':
 					$arr['html'] = $this->_save();
@@ -183,11 +182,11 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		);
 
 		// Are we banking?
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		// Info aboit points link
-		$aconfig = JComponentHelper::getParams('com_answers');
+		$aconfig = Component::params('com_answers');
 		$view->infolink = $aconfig->get('infolink', '/kb/points/');
 
 		// Pass the view some info
@@ -218,7 +217,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	private function _new($row=null)
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$app = JFactory::getApplication();
 			$app->redirect(
@@ -242,7 +241,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		);
 		$view->option   	= $this->option;
 		$view->publication 	= $this->publication;
-		$view->juser    	= $this->juser;
+
 		if (is_object($row))
 		{
 			$view->row  = $row;
@@ -254,7 +253,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$view->tag      = $this->filters['tag'];
 
 		// Are we banking?
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$view->banking = $upconfig->get('bankAccounts');
 
 		$view->funds = 0;
@@ -286,18 +285,18 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 	private function _save()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->_browse();
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$tags   = JRequest::getVar('tags', '');
-		$funds  = JRequest::getInt('funds', 0);
-		$reward = JRequest::getInt('reward', 0);
+		$tags   = Request::getVar('tags', '');
+		$funds  = Request::getInt('funds', 0);
+		$reward = Request::getInt('reward', 0);
 
 		// If offering a reward, do some checks
 		if ($reward)
@@ -317,7 +316,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Initiate class and bind posted items to database fields
-		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getVar('question', array(), 'post', 'none', 2);
 
 		$row = new \Components\Answers\Models\Question($fields['id']);
 		if (!$row->bind($fields))
@@ -352,7 +351,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		// Hold the reward for this question if we're banking
 		if ($reward && $this->banking)
 		{
-			$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
+			$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
 			$BTL->hold($reward, JText::_('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));
 		}
 
@@ -363,7 +362,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		$identifier = $this->publication->alias ? $this->publication->alias : $this->publication->id;
 		$tag        = $this->publication->cat_alias == 'tool' ?  'tool' . $identifier : 'publication' . $identifier;
 
-		$row->addTag($tag, $this->juser->get('id'), ($this->publication->cat_alias == 'tool' ? 0 : 1));
+		$row->addTag($tag, User::get('id'), ($this->publication->cat_alias == 'tool' ? 0 : 1));
 
 		// Redirect to the question
 		JFactory::getApplication()->redirect(

@@ -42,7 +42,7 @@ $instruct = $this->project->provisioned == 1
 			: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SELECT_AUTHORS');
 
 // Get image path
-$mconfig = JComponentHelper::getParams( 'com_members' );
+$mconfig = Component::params( 'com_members' );
 $path  = DS . trim($mconfig->get('webpath'), DS);
 
 // Keep count of authors deleted from team / unconfirmed

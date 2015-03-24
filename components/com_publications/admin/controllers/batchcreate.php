@@ -152,9 +152,9 @@ class Batchcreate extends AdminController
 		\JSession::checkToken() or die( 'Invalid Token' );
 
 		// Incoming
-		$id 	= \JRequest::getInt('projectid', 0);
-		$file   = \JRequest::getVar('file', array(), 'FILES');
-		$dryRun = \JRequest::getInt('dryrun', 1);
+		$id 	= Request::getInt('projectid', 0);
+		$file   = Request::getVar('file', array(), 'FILES');
+		$dryRun = Request::getInt('dryrun', 1);
 
 		$this->data = NULL;
 
@@ -259,7 +259,7 @@ class Batchcreate extends AdminController
 		$objL = new \Components\Publications\Tables\License( $this->database );
 
 		// Get base type
-		$base = \JRequest::getVar( 'base', 'files' );
+		$base = Request::getVar( 'base', 'files' );
 
 		// Determine publication master type
 		$mt 		= new \Components\Publications\Tables\MasterType( $this->database );
@@ -449,9 +449,8 @@ class Batchcreate extends AdminController
 		{
 			// Get hub config
 			$juri 	 = \JURI::getInstance();
-			$jconfig = \JFactory::getConfig();
-			$this->site = $jconfig->getValue('config.live_site')
-				? $jconfig->getValue('config.live_site')
+			$this->site = Config::get('config.live_site')
+				? Config::get('config.live_site')
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 			// Process batch

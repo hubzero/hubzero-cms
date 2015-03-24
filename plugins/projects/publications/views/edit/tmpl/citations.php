@@ -33,7 +33,7 @@ $canedit = 1;
 
 $ptitle = JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS_TO_RELATED');
 
-$config = JComponentHelper::getParams( 'com_citations' );
+$config = Component::params( 'com_citations' );
 $allow_import = $config->get('citation_import', 1);
 
 // Build url

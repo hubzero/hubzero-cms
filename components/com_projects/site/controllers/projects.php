@@ -68,7 +68,7 @@ class Projects extends Base
 			'limit'    => 20,
 			'start'    => 0,
 			'admin'    => 0,
-			'search'   => trim(\JRequest::getString('value', '')),
+			'search'   => trim(Request::getString('value', '')),
 			'getowner' => 1
 		);
 
@@ -121,7 +121,7 @@ class Projects extends Base
 		$this->_task = 'intro';
 
 		// Incoming
-		$action  = \JRequest::getVar( 'action', '' );
+		$action  = Request::getVar( 'action', '' );
 
 		// When logging in
 		if ($this->juser->get('guest') && $action == 'login')
@@ -228,8 +228,8 @@ class Projects extends Base
 	public function browseTask()
 	{
 		// Incoming
-		$reviewer 	= \JRequest::getWord( 'reviewer', '' );
-		$action  	= \JRequest::getVar( 'action', '' );
+		$reviewer 	= Request::getWord( 'reviewer', '' );
+		$action  	= Request::getVar( 'action', '' );
 
 		// Set the pathway
 		$this->_task = 'browse';
@@ -262,22 +262,22 @@ class Projects extends Base
 
 		// Incoming
 		$this->view->filters 				= array();
-		$this->view->filters['limit']  		= \JRequest::getVar(
+		$this->view->filters['limit']  		= Request::getVar(
 			'limit',
 			intval($this->config->get('limit', 25)),
 			'request'
 		);
-		$this->view->filters['start']  		= \JRequest::getInt( 'limitstart', 0, 'get' );
-		$this->view->filters['sortby'] 		= \JRequest::getVar( 'sortby', 'title' );
-		$this->view->filters['search'] 		= \JRequest::getVar( 'search', '' );
-		$this->view->filters['sortdir']		= \JRequest::getVar( 'sortdir', 'ASC');
+		$this->view->filters['start']  		= Request::getInt( 'limitstart', 0, 'get' );
+		$this->view->filters['sortby'] 		= Request::getVar( 'sortby', 'title' );
+		$this->view->filters['search'] 		= Request::getVar( 'search', '' );
+		$this->view->filters['sortdir']		= Request::getVar( 'sortdir', 'ASC');
 		$this->view->filters['getowner']	= 1;
 		$this->view->filters['reviewer']	= $reviewer;
 		$this->view->filters['filterby']	= 'all';
 
 		if ($reviewer == 'sensitive' || $reviewer == 'sponsored')
 		{
-			$this->view->filters['filterby'] = \JRequest::getVar( 'filterby', 'pending' );
+			$this->view->filters['filterby'] = Request::getVar( 'filterby', 'pending' );
 		}
 
 		// Login for private projects
@@ -345,10 +345,10 @@ class Projects extends Base
 	public function viewTask()
 	{
 		// Incoming
-		$preview 		=  \JRequest::getInt( 'preview', 0 );
-		$this->active 	=  \JRequest::getVar( 'active', 'feed' );
-		$ajax 			=  \JRequest::getInt( 'ajax', 0 );
-		$action  		=  \JRequest::getVar( 'action', '' );
+		$preview 		=  Request::getInt( 'preview', 0 );
+		$this->active 	=  Request::getVar( 'active', 'feed' );
+		$ajax 			=  Request::getInt( 'ajax', 0 );
+		$action  		=  Request::getVar( 'action', '' );
 		$sync 			=  0;
 
 		// Stop ajax action if user got logged out
@@ -375,8 +375,8 @@ class Projects extends Base
 		$objAA 	= new Tables\Activity( $this->database );
 
 		// Is user invited to project?
-		$confirmcode = \JRequest::getVar( 'confirm', '' );
-		$email 		 = \JRequest::getVar( 'email', '' );
+		$confirmcode = Request::getVar( 'confirm', '' );
+		$email 		 = Request::getVar( 'email', '' );
 
 		// Load project
 		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
@@ -830,7 +830,7 @@ class Projects extends Base
 			if ($this->active == 'feed')
 			{
 				// Hide welcome screen?
-				$c = \JRequest::getInt( 'c', 0 );
+				$c = Request::getInt( 'c', 0 );
 				if ($c)
 				{
 					$objO->saveParam(
@@ -940,9 +940,9 @@ class Projects extends Base
 		$pub = $objPub->getProvPublication($this->project->id);
 
 		// Incoming
-		$name  = trim(\JRequest::getVar( 'new-alias', '', 'post' ));
-		$title = trim(\JRequest::getVar( 'title', '', 'post' ));
-		$pubid = trim(\JRequest::getInt( 'pubid', 0, 'post' ));
+		$name  = trim(Request::getVar( 'new-alias', '', 'post' ));
+		$title = trim(Request::getVar( 'title', '', 'post' ));
+		$pubid = trim(Request::getInt( 'pubid', 0, 'post' ));
 
 		$name = preg_replace('/ /', '', $name);
 		$name = strtolower($name);
@@ -1107,7 +1107,7 @@ class Projects extends Base
 		// Fix ownership?
 		if ($this->_task == 'fixownership')
 		{
-			$keep 	 = \JRequest::getInt( 'keep', 0 );
+			$keep 	 = Request::getInt( 'keep', 0 );
 			$groupid = $obj->owned_by_group;
 			if ($obj->created_by_user != $this->juser->get('id'))
 			{
@@ -1206,10 +1206,10 @@ class Projects extends Base
 	public function authTask()
 	{
 		// Incoming
-		$error  = \JRequest::getVar( 'error', '', 'get' );
-		$code   = \JRequest::getVar( 'code', '', 'get' );
+		$error  = Request::getVar( 'error', '', 'get' );
+		$code   = Request::getVar( 'code', '', 'get' );
 
-		$state  = \JRequest::getVar( 'state', '', 'get' );
+		$state  = Request::getVar( 'state', '', 'get' );
 		$json	=  base64_decode($state);
 		$json 	=  json_decode($json);
 
@@ -1258,12 +1258,12 @@ class Projects extends Base
 	public function processTask()
 	{
 		// Incoming
-		$reviewer 	= \JRequest::getWord( 'reviewer', '' );
-		$action  	= \JRequest::getVar( 'action', '' );
-		$comment  	= \JRequest::getVar( 'comment', '' );
-		$approve  	= \JRequest::getInt( 'approve', 0 );
-		$filterby  	= \JRequest::getVar( 'filterby', 'pending' );
-		$notify 	= \JRequest::getVar( 'notify', 0, 'post' );
+		$reviewer 	= Request::getWord( 'reviewer', '' );
+		$action  	= Request::getVar( 'action', '' );
+		$comment  	= Request::getVar( 'comment', '' );
+		$approve  	= Request::getInt( 'approve', 0 );
+		$filterby  	= Request::getVar( 'filterby', 'pending' );
+		$notify 	= Request::getVar( 'notify', 0, 'post' );
 
 		// Instantiate a project and related classes
 		$obj 		= new Tables\Project( $this->database );
@@ -1318,12 +1318,12 @@ class Projects extends Base
 			}
 			elseif ($reviewer == 'sponsored')
 			{
-				$grant_agency 		= \JRequest::getVar( 'grant_agency', '' );
-				$grant_title 		= \JRequest::getVar( 'grant_title', '' );
-				$grant_PI 			= \JRequest::getVar( 'grant_PI', '' );
-				$grant_budget 		= \JRequest::getVar( 'grant_budget', '' );
-				$grant_approval 	= \JRequest::getVar( 'grant_approval', '' );
-				$rejected 			= \JRequest::getVar( 'rejected', 0 );
+				$grant_agency 		= Request::getVar( 'grant_agency', '' );
+				$grant_title 		= Request::getVar( 'grant_title', '' );
+				$grant_PI 			= Request::getVar( 'grant_PI', '' );
+				$grant_budget 		= Request::getVar( 'grant_budget', '' );
+				$grant_approval 	= Request::getVar( 'grant_approval', '' );
+				$rejected 			= Request::getVar( 'rejected', 0 );
 
 				// New approval
 				if (trim($params->get('grant_approval')) == '' && trim($grant_approval) != ''
@@ -1526,7 +1526,7 @@ class Projects extends Base
 
 			// Output HTML
 			$this->view->reviewer 	= $reviewer;
-			$this->view->ajax 		= \JRequest::getInt( 'ajax', 0 );
+			$this->view->ajax 		= Request::getInt( 'ajax', 0 );
 			$this->view->title 		= $this->title;
 			$this->view->option 	= $this->_option;
 			$this->view->project	= $obj;

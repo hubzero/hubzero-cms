@@ -1507,10 +1507,9 @@ class Html extends \JObject
 		}
 
 		// Set up email config
-		$jconfig = \JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
+		$from['email'] = Config::get('config.mailfrom');
 
 		// Html email
 		$from['multipart'] = md5(date('U'));
@@ -1523,7 +1522,7 @@ class Html extends \JObject
 		));
 
 		$eview->option 			= $option;
-		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
+		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->project 		= $project;
 		$eview->params 			= new \JParameter( $project->params );
 		$eview->config 			= $config;

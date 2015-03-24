@@ -139,7 +139,7 @@ class Categories extends AdminController
 		else
 		{
 			// Incoming (expecting an array)
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -193,9 +193,9 @@ class Categories extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$prop = \JRequest::getVar('prop', array(), 'post');
+		$prop = Request::getVar('prop', array(), 'post');
 
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit&id[]=' . $prop['id'];
@@ -210,7 +210,7 @@ class Categories extends AdminController
 		}
 
 		// Get the custom fields
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		if (is_array($fields))
 		{
 			$elements = new stdClass();
@@ -258,7 +258,7 @@ class Categories extends AdminController
 		}
 
 		// Get parameters
-		$params = \JRequest::getVar('params', '', 'post');
+		$params = Request::getVar('params', '', 'post');
 		if (is_array($params))
 		{
 			$txt = array();
@@ -310,10 +310,10 @@ class Categories extends AdminController
 	public function changestatusTask($dir = 0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0), '', 'array');
+		$ids = Request::getVar('id', array(0), '', 'array');
 
 		// Initialize
 		$row = new \Components\Publications\Tables\Category($this->database);
@@ -379,20 +379,20 @@ class Categories extends AdminController
 	 */
 	public function elementTask()
 	{
-		$ctrl = \JRequest::getVar('ctrl', 'fields');
+		$ctrl = Request::getVar('ctrl', 'fields');
 
 		$option = new stdClass;
 		$option->label = '';
 		$option->value = '';
 
 		$field = new stdClass;
-		$field->label       = \JRequest::getVar('name', 0);
+		$field->label       = Request::getVar('name', 0);
 		$field->element     = '';
 		$field->description = '';
 		$field->text        = $field->label;
 		$field->name        = $field->label;
 		$field->default     = '';
-		$field->type        = \JRequest::getVar('type', '');
+		$field->type        = Request::getVar('type', '');
 		$field->options     = array(
 			$option,
 			$option

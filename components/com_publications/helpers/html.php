@@ -1686,10 +1686,9 @@ class Html
 		}
 
 		// Set up email config
-		$jconfig = \JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
+		$from['email'] = Config::get('config.mailfrom');
 
 		// Html email
 		$from['multipart'] = md5(date('U'));

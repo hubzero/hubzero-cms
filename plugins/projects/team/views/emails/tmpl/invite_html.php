@@ -26,10 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juri 	 = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-$config  = JComponentHelper::getParams( 'com_projects' );
+$config  = Component::params( 'com_projects' );
 
-$hubShortName = $jconfig->getValue('config.sitename');
+$hubShortName = Config::get('config.sitename');
 
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
@@ -230,14 +229,14 @@ $bdcolor = '#e1e1e1';
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo $jconfig->getValue('config.sitename'); ?>
+														<?php echo Config::get('config.sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo $juri->base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $juri->base(); ?></a>
 														</span>
 														<br />
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 														<?php echo $title; ?>
@@ -358,7 +357,7 @@ $bdcolor = '#e1e1e1';
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

@@ -30,8 +30,8 @@
 
 namespace Components\Publications\Admin;
 
-$option = \JRequest::getCmd('option','com_publications');
-$task = \JRequest::getWord('task', '');
+$option = Request::getCmd('option','com_publications');
+$task = Request::getWord('task', '');
 
 if (!\JFactory::getUser()->authorise('core.manage', 'com_publications'))
 {
@@ -42,7 +42,7 @@ if (!\JFactory::getUser()->authorise('core.manage', 'com_publications'))
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'publication.php');
 
 // get controller name
-$controllerName = \JRequest::getCmd('controller', 'items');
+$controllerName = Request::getCmd('controller', 'items');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'items';

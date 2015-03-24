@@ -243,7 +243,7 @@ class Media extends Base
 	public function deleteimgTask()
 	{
 		// Incoming
-		$ajax = \JRequest::getInt( 'ajax', 0 );
+		$ajax = Request::getInt( 'ajax', 0 );
 
 		$prefix = PATH_APP;
 
@@ -286,7 +286,7 @@ class Media extends Base
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar( 'file', '' );
+		$file = Request::getVar( 'file', '' );
 		$file = $file ? $file : $obj->picture;
 		if (!$file)
 		{
@@ -406,8 +406,8 @@ class Media extends Base
 	public function mediaTask()
 	{
 		// Incoming
-		$media   = trim(\JRequest::getVar( 'media', 'thumb' ));
-		$alias 	 = trim(\JRequest::getVar( 'alias', '' ));
+		$media   = trim(Request::getVar( 'media', 'thumb' ));
+		$alias 	 = trim(Request::getVar( 'alias', '' ));
 		$source	 = NULL;
 		$redirect= false;
 		$dir	 = 'preview';
@@ -417,7 +417,7 @@ class Media extends Base
 			return false;
 		}
 
-		$uri = \JRequest::getVar('SCRIPT_URL', '', 'server');
+		$uri = Request::getVar('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Compiled:'))
 		{
 			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));

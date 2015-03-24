@@ -135,7 +135,7 @@ class Types extends AdminController
 	public function addblockTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -191,12 +191,12 @@ class Types extends AdminController
 	public function saveblockTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = \JRequest::getInt('id', 0);
-		$newblock = \JRequest::getVar('newblock', '');
-		$before   = \JRequest::getInt('before', 1);
+		$id       = Request::getInt('id', 0);
+		$newblock = Request::getVar('newblock', '');
+		$before   = Request::getInt('before', 1);
 
 		$row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -300,7 +300,7 @@ class Types extends AdminController
 	public function advancedTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -347,8 +347,8 @@ class Types extends AdminController
 	public function saveadvancedTask()
 	{
 		// Incoming
-		$id 		= \JRequest::getInt('id', 0);
-		$curation 	= \JRequest::getVar('curation', '', 'post', 'none', 2);
+		$id 		= Request::getInt('id', 0);
+		$curation 	= Request::getVar('curation', '', 'post', 'none', 2);
 		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 
 		$row 		= new \Components\Publications\Tables\MasterType($this->database);
@@ -407,8 +407,8 @@ class Types extends AdminController
 	public function editelementsTask()
 	{
 		// Incoming
-		$id 	  				= \JRequest::getInt('id', 0);
-		$this->view->sequence 	= \JRequest::getInt('bid', 0);
+		$id 	  				= Request::getInt('id', 0);
+		$this->view->sequence 	= Request::getInt('bid', 0);
 
 		$this->view->row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -456,8 +456,8 @@ class Types extends AdminController
 	public function saveelementsTask()
 	{
 		// Incoming
-		$id 	  	= \JRequest::getInt('id', 0);
-		$sequence 	= \JRequest::getInt('bid', 0);
+		$id 	  	= Request::getInt('id', 0);
+		$sequence 	= Request::getInt('bid', 0);
 
 		$row 		= new \Components\Publications\Tables\MasterType($this->database);
 
@@ -484,7 +484,7 @@ class Types extends AdminController
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
-		$curation = \JRequest::getVar('curation', array(), 'post', 'none', 2);
+		$curation = Request::getVar('curation', array(), 'post', 'none', 2);
 
 		// Collect modifications
 		if (is_array($curation) && isset($curation['blocks'][$sequence]))
@@ -553,7 +553,7 @@ class Types extends AdminController
 	public function editblockorderTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$this->view->row = new \Components\Publications\Tables\MasterType($this->database);
 
@@ -610,11 +610,11 @@ class Types extends AdminController
 	public function saveblockorderTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = \JRequest::getInt('id', 0);
-		$neworder = \JRequest::getVar('neworder', '');
+		$id       = Request::getInt('id', 0);
+		$neworder = Request::getVar('neworder', '');
 		$order 	  = explode('-', $neworder);
 
 		$row = new \Components\Publications\Tables\MasterType($this->database);
@@ -682,7 +682,7 @@ class Types extends AdminController
 		else
 		{
 			// Incoming (expecting an array)
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -756,12 +756,12 @@ class Types extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
 
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -788,7 +788,7 @@ class Types extends AdminController
 		if ($useBlocks && $row->id)
 		{
 			// Incoming
-			$curatorGroup = \JRequest::getVar('curatorgroup', '');
+			$curatorGroup = Request::getVar('curatorgroup', '');
 			if ($group = \Hubzero\User\Group::getInstance($curatorGroup))
 			{
 				$row->curatorGroup = $group->get('gidNumber');
@@ -802,7 +802,7 @@ class Types extends AdminController
 			$manifest = $objC->_manifest;
 
 			// Get curation configs
-			$curation = \JRequest::getVar('curation', array(), 'post');
+			$curation = Request::getVar('curation', array(), 'post');
 
 			// Collect modifications
 			if (is_array($curation))
@@ -854,7 +854,7 @@ class Types extends AdminController
 		else
 		{
 			// Get parameters
-			$params = \JRequest::getVar('params', '', 'post');
+			$params = Request::getVar('params', '', 'post');
 			if (is_array($params))
 			{
 				$txt = array();
@@ -916,10 +916,10 @@ class Types extends AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getVar('id', array(0), '', 'array');
+		$id = Request::getVar('id', array(0), '', 'array');
 
 		// Load row
 		$row = new \Components\Publications\Tables\MasterType($this->database);
@@ -951,10 +951,10 @@ class Types extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

@@ -513,7 +513,7 @@ class ImageViewer extends Base
 	public function drawEditor($editor)
 	{
 		// Incoming
-		$active = trim(\JRequest::getVar( 'o', NULL )); // Requested image
+		$active = trim(Request::getVar( 'o', NULL )); // Requested image
 
 		$database = \JFactory::getDBO();
 

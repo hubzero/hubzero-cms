@@ -347,7 +347,7 @@ class Data extends Base
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$selections = \JRequest::getVar( 'selecteditems', '');
+			$selections = Request::getVar( 'selecteditems', '');
 			$toAttach = explode(',', $selections);
 		}
 
@@ -575,8 +575,8 @@ class Data extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= \JRequest::getVar( 'title', '' );
-		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
+		$title 	= Request::getVar( 'title', '' );
+		$thumb 	= Request::getInt( 'makedefault', 0 );
 
 		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');

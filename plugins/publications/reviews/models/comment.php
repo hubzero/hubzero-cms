@@ -267,7 +267,7 @@ class PublicationsModelComment extends \Hubzero\Base\Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => \JRequest::getCmd('option', 'com_publications'),
+						'option'   => Request::getCmd('option', 'com_publications'),
 						'scope'    => 'reviews',
 						'pagename' => $this->get('id'),
 						'pageid'   => 0,

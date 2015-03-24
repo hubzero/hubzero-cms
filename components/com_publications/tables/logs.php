@@ -187,7 +187,7 @@ class Log extends \JTable
 		}
 
 		// Get IP
-		$ip = \JRequest::ip();
+		$ip = Request::ip();
 
 		// Check if bot
 		if ($this->checkBotIp( $ip ))

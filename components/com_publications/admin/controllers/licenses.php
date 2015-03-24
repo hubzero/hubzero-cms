@@ -136,7 +136,7 @@ class Licenses extends AdminController
 		else
 		{
 			// Incoming (expecting an array)
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = $id[0];
@@ -184,9 +184,9 @@ class Licenses extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
@@ -201,10 +201,10 @@ class Licenses extends AdminController
 			return;
 		}
 
-		$row->customizable 	= \JRequest::getInt('customizable', 0, 'post');
-		$row->agreement 	= \JRequest::getInt('agreement', 0, 'post');
-		$row->apps_only 	= \JRequest::getInt('apps_only', 0, 'post');
-		$row->active 		= \JRequest::getInt('active', 0, 'post');
+		$row->customizable 	= Request::getInt('customizable', 0, 'post');
+		$row->agreement 	= Request::getInt('agreement', 0, 'post');
+		$row->apps_only 	= Request::getInt('apps_only', 0, 'post');
+		$row->active 		= Request::getInt('active', 0, 'post');
 		$row->icon			= $row->icon ? $row->icon : '/components/com_publications/images/logos/license.gif';
 
 		if (!$row->id)
@@ -267,10 +267,10 @@ class Licenses extends AdminController
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getVar('id', array(0), '', 'array');
+		$id = Request::getVar('id', array(0), '', 'array');
 
 		// Load row
 		$row = new \Components\Publications\Tables\License($this->database);
@@ -293,10 +293,10 @@ class Licenses extends AdminController
 	public function makedefaultTask($dir = 0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getVar('id', array(0), '', 'array');
+		$id = Request::getVar('id', array(0), '', 'array');
 
 		if (count($id) > 1)
 		{
@@ -347,10 +347,10 @@ class Licenses extends AdminController
 	public function changestatusTask($dir = 0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0), '', 'array');
+		$ids = Request::getVar('id', array(0), '', 'array');
 
 		// Initialize
 		$row = new \Components\Publications\Tables\License($this->database);

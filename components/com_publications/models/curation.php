@@ -610,7 +610,7 @@ class Curation extends Object
 		}
 
 		// Incoming
-		$dispute  = urldecode(\JRequest::getVar('review', ''));
+		$dispute  = urldecode(Request::getVar('review', ''));
 
 		if (!trim($dispute))
 		{
@@ -645,7 +645,7 @@ class Curation extends Object
 		}
 
 		// Incoming
-		$reason  = urldecode(\JRequest::getVar('review', ''));
+		$reason  = urldecode(Request::getVar('review', ''));
 
 		if (!trim($reason))
 		{
@@ -1298,7 +1298,7 @@ class Curation extends Object
 		$row = new Tables\Version( $this->_db );
 
 		// Incoming
-		$label = trim(\JRequest::getVar( 'label', '', 'post' ));
+		$label = trim(Request::getVar( 'label', '', 'post' ));
 		$used_labels = $row->getUsedLabels( $this->_pub->id, $this->_pub->version_number );
 
 		if ($label && in_array($label, $used_labels))
@@ -1735,7 +1735,7 @@ class Curation extends Object
 	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
 		// Incoming
-		$comment = \JRequest::getVar('comment', '', 'post');
+		$comment = Request::getVar('comment', '', 'post');
 
 		// Collect details
 		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);

@@ -179,7 +179,7 @@ class Project extends Model
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => \JRequest::getCmd('option', 'com_projects'),
+						'option'   => Request::getCmd('option', 'com_projects'),
 						'scope'    => $this->get('alias') . DS . 'notes',
 						'pagename' => 'projects',
 						'pageid'   => $this->get('id'),

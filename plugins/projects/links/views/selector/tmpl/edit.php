@@ -33,7 +33,7 @@ $route = $this->project->provisioned == 1
 $url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
-$config = JComponentHelper::getParams( 'com_publications' );
+$config = Component::params( 'com_publications' );
 $citationFormat = $config->get('citation_format', 'apa');
 
 // Use new curation flow?

@@ -117,7 +117,7 @@ $url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.ph
 				</div>
 		</form>
 		<?php if ($block == 'citations') {
-			$config 	  = JComponentHelper::getParams( 'com_citations' );
+			$config 	  = Component::params( 'com_citations' );
 			$allow_import = $config->get('citation_import', 1);
 			if ($allow_import) { ?>
 			<p class="and_or centeralign">OR</p>

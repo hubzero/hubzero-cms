@@ -27,9 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Get hub config
 $juri 	 = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-$site 	 = $jconfig->getValue('config.live_site')
-	? $jconfig->getValue('config.live_site')
+
+$site 	 = Config::get('config.live_site')
+	? Config::get('config.live_site')
 	: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
 $now = JFactory::getDate()->toSql();

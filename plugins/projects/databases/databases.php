@@ -171,7 +171,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load component configs
-		$this->_config 		= JComponentHelper::getParams('com_projects');
+		$this->_config 		= Component::params('com_projects');
 		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
 
 		// Check if the plugin parameters the two mysql accounts are properly set

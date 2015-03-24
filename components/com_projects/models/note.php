@@ -326,7 +326,7 @@ class Note extends \Components\Wiki\Models\Book
 	public function getWikiPath( $id = 0)
 	{
 		// Ensure we have an ID to work with
-		$listdir = \JRequest::getInt('lid', 0);
+		$listdir = Request::getInt('lid', 0);
 		$id = $id ? $id : $listdir;
 
 		if (!$id)

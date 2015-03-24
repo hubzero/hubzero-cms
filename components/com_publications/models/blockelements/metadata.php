@@ -111,7 +111,7 @@ class Metadata extends Base
 		$total 			= $master->props['total'];
 
 		// Incoming
-		$activeElement  = \JRequest::getInt( 'el', $showElement );
+		$activeElement  = Request::getInt( 'el', $showElement );
 
 		// Do we need to collapse inactive elements?
 		$collapse = isset($master->params->collapse_elements) && $master->params->collapse_elements ? 1 : 0;

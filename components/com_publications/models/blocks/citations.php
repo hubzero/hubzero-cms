@@ -203,7 +203,7 @@ class Citations extends Base
 		}
 
 		// Incoming
-		$url = \JRequest::getVar('citation-doi', '');
+		$url = Request::getVar('citation-doi', '');
 		if (!$url)
 		{
 			return true;
@@ -259,7 +259,7 @@ class Citations extends Base
 	 */
 	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cite = \JRequest::getVar('cite', array(), 'post', 'none', 2);
+		$cite = Request::getVar('cite', array(), 'post', 'none', 2);
 
 		$new  = $cite['id'] ? false : true;
 
@@ -326,7 +326,7 @@ class Citations extends Base
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
-		$cid = $cid ? $cid : \JRequest::getInt( 'cid', 0 );
+		$cid = $cid ? $cid : Request::getInt( 'cid', 0 );
 
 		// Get links plugin
 		\JPluginHelper::importPlugin( 'projects', 'links' );

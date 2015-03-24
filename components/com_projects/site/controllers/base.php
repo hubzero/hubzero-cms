@@ -64,13 +64,13 @@ class Base extends SiteController
 		$this->_includeScripts();
 
 		// Incoming project identifier
-		$id    = \JRequest::getInt( 'id', 0 );
-		$alias = \JRequest::getVar( 'alias', '' );
+		$id    = Request::getInt( 'id', 0 );
+		$alias = Request::getVar( 'alias', '' );
 		$this->_identifier = $id ? $id : $alias;
 
 		// Incoming
-		$this->_task = strtolower(\JRequest::getWord( 'task', '' ));
-		$this->_gid  = \JRequest::getVar( 'gid', 0 );
+		$this->_task = strtolower(Request::getWord( 'task', '' ));
+		$this->_gid  = Request::getVar( 'gid', 0 );
 
 		// Model
 		$this->model = new Models\Project();
@@ -174,7 +174,7 @@ class Base extends SiteController
 			? $this->_msg
 			: Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-		$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option='
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option='
 			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
 		$this->setRedirect(
@@ -356,7 +356,7 @@ class Base extends SiteController
 		switch ($this->_task)
 		{
 			case 'browse':
-				$reviewer 	 = \JRequest::getVar( 'reviewer', '' );
+				$reviewer 	 = Request::getVar( 'reviewer', '' );
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$this->title = $reviewer == 'sponsored'
@@ -510,7 +510,7 @@ class Base extends SiteController
 
 			case 'browse':
 			case 'process':
-				$reviewer 	= \JRequest::getWord( 'reviewer', '' );
+				$reviewer 	= Request::getWord( 'reviewer', '' );
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$title = $reviewer == 'sponsored'
@@ -567,7 +567,7 @@ class Base extends SiteController
 		}
 
 		// Is this an ajax call?
-		$ajax = \JRequest::getInt( 'ajax', 0 );
+		$ajax = Request::getInt( 'ajax', 0 );
 		if ($ajax && $enabled == 1)
 		{
 			return false;
@@ -580,12 +580,12 @@ class Base extends SiteController
 		$objLog->projectid 		= $pid;
 		$objLog->userid 		= $this->juser->get('id');
 		$objLog->owner 			= intval($owner);
-		$objLog->ip 			= \JRequest::ip();
+		$objLog->ip 			= Request::ip();
 		$objLog->section 		= $section;
 		$objLog->layout 		= $layout ? $layout : $this->_task;
 		$objLog->action 		= $action ? $action : 'view';
 		$objLog->time 			= date('Y-m-d H:i:s');
-		$objLog->request_uri 	= \JRequest::getVar('REQUEST_URI', $juri->base(), 'server');
+		$objLog->request_uri 	= Request::getVar('REQUEST_URI', $juri->base(), 'server');
 		$objLog->ajax 			= $ajax;
 		$objLog->store();
 	}
@@ -625,10 +625,9 @@ class Base extends SiteController
 		}
 
 		// Set up email config
-		$jconfig 		= \JFactory::getConfig();
 		$from 			= array();
-		$from['name']  	= $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
-		$from['email'] 	= $jconfig->getValue('config.mailfrom');
+		$from['name']  	= Config::get('config.sitename') . ' ' . Lang::txt('COM_PROJECTS');
+		$from['email'] 	= Config::get('config.mailfrom');
 
 		// Get team/managers
 		$filters = array( 'select'=> 'o.userid, o.invited_code, o.invited_email, o.role ', 'sortby' => 'status' );
@@ -652,7 +651,7 @@ class Base extends SiteController
 		// Message body
 		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
 		$eview->option 			= $this->_option;
-		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
+		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->project 		= $this->project;
 		$eview->goto 			= 'alias=' . $this->project->alias;
 		$eview->user 			= $this->juser->get('id');
@@ -714,7 +713,7 @@ class Base extends SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-				Helpers\Html::email($member->invited_email, $jconfig->getValue('config.sitename')
+				Helpers\Html::email($member->invited_email, Config::get('config.sitename')
 					. ': ' . $subject_pending, $message, $from);
 			}
 		}

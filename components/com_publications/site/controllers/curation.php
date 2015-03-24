@@ -52,8 +52,8 @@ class Curation extends SiteController
 	 */
 	public function execute()
 	{
-		$this->_task  = \JRequest::getVar( 'task', '');
-		$this->_id    = \JRequest::getInt( 'id', 0 );
+		$this->_task  = Request::getVar( 'task', '');
+		$this->_id    = Request::getInt( 'id', 0 );
 		$this->_pub	  = NULL;
 
 		// View individual curation
@@ -100,14 +100,14 @@ class Curation extends SiteController
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Incoming
-		$assigned = \JRequest::getInt('assigned', 0);
+		$assigned = Request::getInt('assigned', 0);
 
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= \JRequest::getInt('limit', 25);
-		$filters['start'] 	 		= \JRequest::getInt('limitstart', 0);
-		$filters['sortby']   		= \JRequest::getVar( 't_sortby', 'submitted');
-		$filters['sortdir']  		= \JRequest::getVar( 't_sortdir', 'DESC');
+		$filters['limit'] 	 		= Request::getInt('limit', 25);
+		$filters['start'] 	 		= Request::getInt('limitstart', 0);
+		$filters['sortby']   		= Request::getVar( 't_sortby', 'submitted');
+		$filters['sortdir']  		= Request::getVar( 't_sortdir', 'DESC');
 		$filters['ignore_access']   = 1;
 
 		// Only get types for which authorized
@@ -220,8 +220,8 @@ class Curation extends SiteController
 	public function viewTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$version 	= \JRequest::getVar( 'version', '' );
+		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$version 	= Request::getVar( 'version', '' );
 
 		if (!$pid)
 		{
@@ -354,9 +354,9 @@ class Curation extends SiteController
 	public function historyTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$version 	= \JRequest::getVar( 'version', '' );
-		$ajax 		= \JRequest::getInt( 'ajax', 0 );
+		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$version 	= Request::getVar( 'version', '' );
+		$ajax 		= Request::getInt( 'ajax', 0 );
 
 		if (!$pid)
 		{
@@ -450,11 +450,11 @@ class Curation extends SiteController
 	public function assignTask()
 	{
 		// Incoming
-		$pid 		= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$vid 		= \JRequest::getInt( 'vid', 0 );
-		$owner 		= \JRequest::getInt( 'owner', 0 );
-		$confirm 	= \JRequest::getInt( 'confirm', 0 );
-		$ajax 		= \JRequest::getInt( 'ajax', 0 );
+		$pid 		= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid 		= Request::getInt( 'vid', 0 );
+		$owner 		= Request::getInt( 'owner', 0 );
+		$confirm 	= Request::getInt( 'confirm', 0 );
+		$ajax 		= Request::getInt( 'ajax', 0 );
 
 		// Load publication & version classes
 		$objP  = new Tables\Publication( $this->database );
@@ -501,7 +501,7 @@ class Curation extends SiteController
 		if ($confirm)
 		{
 			$previousOwner = $row->curator;
-			$selected = \JRequest::getInt( 'selected', 0 );
+			$selected = Request::getInt( 'selected', 0 );
 
 			// Make sure owner profile exists
 			if ($owner)
@@ -512,7 +512,7 @@ class Curation extends SiteController
 					$this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
 				}
 			}
-			elseif ($selected && \JRequest::getVar( 'owner', ''))
+			elseif ($selected && Request::getVar( 'owner', ''))
 			{
 				$owner = $selected;
 			}
@@ -622,8 +622,8 @@ class Curation extends SiteController
 	public function approveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$vid 	= \JRequest::getInt('vid', 0);
+		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid 	= Request::getInt('vid', 0);
 
 		// Load publication model
 		$this->model  = new \Components\Publications\Models\Publication( $pid, '', $vid);
@@ -710,8 +710,8 @@ class Curation extends SiteController
 	public function kickbackTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$vid 	= \JRequest::getInt('vid', 0);
+		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid 	= Request::getInt('vid', 0);
 
 		// Load publication & version classes
 		$objP  = new Tables\Publication( $this->database );
@@ -795,12 +795,12 @@ class Curation extends SiteController
 	public function saveTask()
 	{
 		// Incoming
-		$pid 	= $this->_id ? $this->_id : \JRequest::getInt('id', 0);
-		$vid 	= \JRequest::getInt('vid', 0);
-		$props  = \JRequest::getVar( 'p', '' );
-		$pass 	= \JRequest::getInt( 'pass', 0 );
+		$pid 	= $this->_id ? $this->_id : Request::getInt('id', 0);
+		$vid 	= Request::getInt('vid', 0);
+		$props  = Request::getVar( 'p', '' );
+		$pass 	= Request::getInt( 'pass', 0 );
 		$action = $pass ? 'pass' : 'fail';
-		$review = \JRequest::getVar( 'review', '' );
+		$review = Request::getVar( 'review', '' );
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -1063,7 +1063,7 @@ class Curation extends SiteController
 	 */
 	protected function _login()
 	{
-		$rtrn = \JRequest::getVar('REQUEST_URI',
+		$rtrn = Request::getVar('REQUEST_URI',
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),

@@ -138,7 +138,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load component configs
-			$this->_config = JComponentHelper::getParams( 'com_projects' );
+			$this->_config = Component::params( 'com_projects' );
 
 			$database = JFactory::getDBO();
 
@@ -1071,10 +1071,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Set up email config
-		$jconfig = JFactory::getConfig();
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_(strtoupper($option));
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('config.sitename').' '.JText::_(strtoupper($option));
+		$from['email'] = Config::get('config.mailfrom');
 
 		// Email message subject
 		if ($project->provisioned == 1)
@@ -1115,7 +1114,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		$eview->option 			= $option;
-		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
+		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->actor 			= JFactory::getUser();
 		$eview->uid 			= $uid;
 		$eview->project 		= $project;
@@ -1146,7 +1145,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if (\Components\Projects\Helpers\Html::email($email, $jconfig->getValue('config.sitename').': '.$subject, $message, $from))
+			if (\Components\Projects\Helpers\Html::email($email, Config::get('config.sitename').': '.$subject, $message, $from))
 			{
 				return true;
 			}

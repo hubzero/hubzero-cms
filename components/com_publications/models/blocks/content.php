@@ -413,7 +413,7 @@ class Content extends Base
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 
 		// Load attachment
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
@@ -457,7 +457,7 @@ class Content extends Base
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 
 		// Load attachment
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );

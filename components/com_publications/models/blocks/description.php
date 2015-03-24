@@ -175,7 +175,7 @@ class Description extends Base
 		$missed  = 0;
 
 		// Incoming
-		$nbtags = \JRequest::getVar( 'nbtag', array(), 'request', 'array' );
+		$nbtags = Request::getVar( 'nbtag', array(), 'request', 'array' );
 
 		// Parse metadata
 		$data = array();
@@ -232,7 +232,7 @@ class Description extends Base
 			}
 			else
 			{
-				$value = trim(\JRequest::getVar( $field, '', 'post', 'none', 2 ));
+				$value = trim(Request::getVar( $field, '', 'post', 'none', 2 ));
 				$value = ($input == 'editor')
 					? stripslashes($value)
 					: \Hubzero\Utility\Sanitize::clean($value);

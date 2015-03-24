@@ -120,7 +120,7 @@ class Projects extends AdminController
 			'authorized' => true,
 			'getowner'   => 1,
 			'activity'   => 1,
-			'quota'      => \JRequest::getVar('quota', 'all', 'post')
+			'quota'      => Request::getVar('quota', 'all', 'post')
 		);
 
 		// Retrieve all records when filtering by quota (no paging)
@@ -202,7 +202,7 @@ class Projects extends AdminController
 	public function editTask()
 	{
 		// Incoming project ID
-		$id = \JRequest::getVar( 'id', array(0) );
+		$id = Request::getVar( 'id', array(0) );
 		if (is_array( $id ))
 		{
 			$id = $id[0];
@@ -320,7 +320,7 @@ class Projects extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit( 'Invalid Token' );
+		Request::checkToken() or jexit( 'Invalid Token' );
 
 		// Config
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
@@ -330,9 +330,9 @@ class Projects extends AdminController
 
 		// Incoming
 		$formdata 	= $_POST;
-		$id 		= \JRequest::getVar( 'id', 0 );
-		$action 	= \JRequest::getVar( 'admin_action', '' );
-		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(\JRequest::getVar( 'message', '' )));
+		$id 		= Request::getVar( 'id', 0 );
+		$action 	= Request::getVar( 'admin_action', '' );
+		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar( 'message', '' )));
 
 		// Initiate extended database class
 		$obj = new Tables\Project( $this->database );
@@ -349,7 +349,7 @@ class Projects extends AdminController
 		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
 		$obj->modified 		= \JFactory::getDate()->toSql();
 		$obj->modified_by 	= $this->juser->get('id');
-		$obj->private 		= \JRequest::getVar( 'private', 0 );
+		$obj->private 		= Request::getVar( 'private', 0 );
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
 
@@ -421,14 +421,14 @@ class Projects extends AdminController
 		}
 
 		// Incoming tags
-		$tags = \JRequest::getVar('tags', '', 'post');
+		$tags = Request::getVar('tags', '', 'post');
 
 		// Save the tags
 		$cloud = new Models\Tags($obj->id);
 		$cloud->setTags($tags, $this->juser->get('id'), 1);
 
 		// Save params
-		$incoming   = \JRequest::getVar( 'params', array() );
+		$incoming   = Request::getVar( 'params', array() );
 		if (!empty($incoming))
 		{
 			foreach ($incoming as $key=>$value)
@@ -450,10 +450,9 @@ class Projects extends AdminController
 		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
 			// Email config
-			$jconfig 		= \JFactory::getConfig();
 			$from 			= array();
-			$from['name']  	= $jconfig->getValue('config.sitename').' ' . Lang::txt('COM_PROJECTS');
-			$from['email'] 	= $jconfig->getValue('config.mailfrom');
+			$from['name']  	= Config::get('config.sitename').' ' . Lang::txt('COM_PROJECTS');
+			$from['email'] 	= Config::get('config.mailfrom');
 
 			// Html email
 			$from['multipart'] = md5(date('U'));
@@ -501,9 +500,9 @@ class Projects extends AdminController
 	protected function _saveMember()
 	{
 		// New member added?
-		$members 	= urldecode(trim(\JRequest::getVar( 'newmember', '', 'post'  )));
-		$role 		= \JRequest::getInt( 'role', 0 );
-		$id 		= \JRequest::getVar( 'id', 0 );
+		$members 	= urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
+		$role 		= Request::getInt( 'role', 0 );
+		$id 		= Request::getVar( 'id', 0 );
 
 		// Get owner class
 		$objO = new Tables\Owner($this->database);
@@ -542,7 +541,7 @@ class Projects extends AdminController
 	 */
 	public function eraseTask()
 	{
-		$id = \JRequest::getVar( 'id', 0 );
+		$id = Request::getVar( 'id', 0 );
 		$permanent = 1;
 		jimport('joomla.filesystem.folder');
 
@@ -678,8 +677,8 @@ class Projects extends AdminController
 	 */
 	public function gitaddTask()
 	{
-		$id   = \JRequest::getVar( 'id', 0 );
-		$file = \JRequest::getVar( 'file', '' );
+		$id   = Request::getVar( 'id', 0 );
+		$file = Request::getVar( 'file', '' );
 
 		// Initiate extended database class
 		$obj = new Tables\Project( $this->database );
@@ -740,7 +739,7 @@ class Projects extends AdminController
 	 */
 	public function gitgcTask()
 	{
-		$id = \JRequest::getVar( 'id', 0 );
+		$id = Request::getVar( 'id', 0 );
 
 		// Initiate extended database class
 		$obj = new Tables\Project($this->database);
@@ -773,7 +772,7 @@ class Projects extends AdminController
 	 */
 	public function fixsyncTask()
 	{
-		$id = \JRequest::getVar( 'id', 0 );
+		$id = Request::getVar( 'id', 0 );
 		$service = 'google';
 
 		// Initiate extended database class

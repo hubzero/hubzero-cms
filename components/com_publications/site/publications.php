@@ -38,7 +38,7 @@ require_once( dirname(__DIR__) . DS . 'tables' . DS . 'logs.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'usage.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'resourceMapGenerator.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'publications'));
+$controllerName = Request::getCmd('controller', Request::getCmd('view', 'publications'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'publications';

@@ -80,7 +80,6 @@ class Doi extends Object
 		if (empty($this->_configs))
 		{
 			$params   = Component::params( 'com_publications' );
-			$jconfig  = \JFactory::getConfig();
 			$juri     = \JURI::getInstance();
 
 			$configs            = new stdClass;
@@ -88,9 +87,9 @@ class Doi extends Object
 			$configs->service   = trim($params->get('doi_service'), DS);
 			$configs->prefix    = $params->get('doi_prefix');
 			$configs->userpw    = $params->get('doi_userpw');
-			$configs->publisher = $params->get('doi_publisher', $jconfig->getValue('config.sitename'));
-			$configs->livesite  = $jconfig->getValue('config.live_site')
-				? $jconfig->getValue('config.live_site')
+			$configs->publisher = $params->get('doi_publisher', Config::get('config.sitename'));
+			$configs->livesite  = Config::get('config.live_site')
+				? Config::get('config.live_site')
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 			$configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-2.1/metadata.xsd' ), DS);
 

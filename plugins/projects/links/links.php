@@ -148,8 +148,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 
 			// Load component configs
-			$this->_config 		= JComponentHelper::getParams('com_projects');
-			$this->_pubconfig 	= JComponentHelper::getParams('com_publications');
+			$this->_config 		= Component::params('com_projects');
+			$this->_pubconfig 	= Component::params('com_publications');
 
 			// Actions
 			switch ($this->_task)

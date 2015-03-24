@@ -50,7 +50,7 @@ class Items extends AdminController
 		// Curation?
 		$this->_curated = $this->config->get('curation', 0);
 
-		$this->_task = strtolower(\JRequest::getVar('task', '','request'));
+		$this->_task = strtolower(Request::getVar('task', '','request'));
 		parent::execute();
 	}
 
@@ -150,7 +150,7 @@ class Items extends AdminController
 		$this->view->useBlocks  = $this->_curated;
 
 		// Incoming publication ID
-		$id = \JRequest::getVar('id', array(0));
+		$id = Request::getVar('id', array(0));
 		if (is_array($id))
 		{
 			$id = $id[0];
@@ -169,13 +169,13 @@ class Items extends AdminController
 		}
 
 		// Incoming version
-		$version 	= \JRequest::getVar( 'version', '' );
+		$version 	= Request::getVar( 'version', '' );
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['category']   	= \JRequest::getVar('category', '');
-		$this->view->return['sortby']   	= \JRequest::getVar('sortby', '');
-		$this->view->return['status'] 		= \JRequest::getVar('status', '');
+		$this->view->return['category']   	= Request::getVar('category', '');
+		$this->view->return['sortby']   	= Request::getVar('sortby', '');
+		$this->view->return['status'] 		= Request::getVar('status', '');
 
 		// Instantiate publication object
 		$objP = new Tables\Publication( $this->database );
@@ -339,9 +339,9 @@ class Items extends AdminController
 	public function editcontentTask()
 	{
 		// Incoming
-		$id 	= \JRequest::getInt( 'id', 0 );
-		$el 	= \JRequest::getInt( 'el', 0 );
-		$v 		= \JRequest::getInt( 'v', 0 );
+		$id 	= Request::getInt( 'id', 0 );
+		$el 	= Request::getInt( 'el', 0 );
+		$v 		= Request::getInt( 'v', 0 );
 
 		$objP = new Tables\Publication( $this->database );
 
@@ -424,14 +424,14 @@ class Items extends AdminController
 	public function savecontentTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$el 	 = \JRequest::getInt( 'el', 0 );
-		$id 	 = \JRequest::getInt( 'id', 0 );
-		$version = \JRequest::getVar( 'version', '' );
-		$params  = \JRequest::getVar( 'params', array(), 'request', 'array' );
-		$attachments = \JRequest::getVar( 'attachments', array(), 'request', 'array' );
+		$el 	 = Request::getInt( 'el', 0 );
+		$id 	 = Request::getInt( 'id', 0 );
+		$version = Request::getVar( 'version', '' );
+		$params  = Request::getVar( 'params', array(), 'request', 'array' );
+		$attachments = Request::getVar( 'attachments', array(), 'request', 'array' );
 
 		// Load publication model
 		$this->model  = new Models\Publication( $id, $version);
@@ -496,7 +496,7 @@ class Items extends AdminController
 	public function editauthorTask()
 	{
 		// Incoming
-		$author = \JRequest::getInt( 'author', 0 );
+		$author = Request::getInt( 'author', 0 );
 
 		$this->view->setLayout('editauthor');
 
@@ -508,7 +508,7 @@ class Items extends AdminController
 		}
 
 		// Version ID
-		$vid = \JRequest::getInt( 'vid', $this->view->author->publication_version_id );
+		$vid = Request::getInt( 'vid', $this->view->author->publication_version_id );
 
 		$this->view->row = new Tables\Version( $this->database );
 		$this->view->pub = new Tables\Publication( $this->database );
@@ -521,7 +521,7 @@ class Items extends AdminController
 		}
 
 		// Load publication
-		$pid = \JRequest::getInt( 'pid', $this->view->row->publication_id );
+		$pid = Request::getInt( 'pid', $this->view->row->publication_id );
 		if (!$this->view->pub->load($pid))
 		{
 			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
@@ -561,7 +561,7 @@ class Items extends AdminController
 	public function deleteauthorTask()
 	{
 		// Incoming
-		$aid = \JRequest::getInt( 'aid', 0 );
+		$aid = Request::getInt( 'aid', 0 );
 
 		$pAuthor = new Tables\Author( $this->database );
 		if (!$pAuthor->load($aid))
@@ -610,12 +610,12 @@ class Items extends AdminController
 	public function saveauthororderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = \JRequest::getInt('id', 0);
-		$version  = \JRequest::getVar( 'version', '' );
-		$neworder = \JRequest::getVar('list', '');
+		$id       = Request::getInt('id', 0);
+		$version  = Request::getVar( 'version', '' );
+		$neworder = Request::getVar('list', '');
 
 		// Set redirect URL
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
@@ -701,16 +701,16 @@ class Items extends AdminController
 	public function saveauthorTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$author  = \JRequest::getInt( 'author', 0 );
-		$id 	 = \JRequest::getInt( 'id', 0 );
-		$version = \JRequest::getVar( 'version', '' );
+		$author  = Request::getInt( 'author', 0 );
+		$id 	 = Request::getInt( 'id', 0 );
+		$version = Request::getVar( 'version', '' );
 
-		$firstName 	= \JRequest::getVar( 'firstName', '', 'post' );
-		$lastName 	= \JRequest::getVar( 'lastName', '', 'post' );
-		$org 		= \JRequest::getVar( 'organization', '', 'post' );
+		$firstName 	= Request::getVar( 'firstName', '', 'post' );
+		$lastName 	= Request::getVar( 'lastName', '', 'post' );
+		$org 		= Request::getVar( 'organization', '', 'post' );
 
 		// Set redirect URL
 		$url = Route::url('index.php?option=' . $this->_option . '&controller='
@@ -806,13 +806,13 @@ class Items extends AdminController
 	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id 			= \JRequest::getInt( 'id', 0 );
-		$action 		= \JRequest::getVar( 'admin_action', '' );
-		$published_up 	= \JRequest::getVar( 'published_up', '' );
-		$version 	    = \JRequest::getVar( 'version', 'default' );
+		$id 			= Request::getInt( 'id', 0 );
+		$action 		= Request::getVar( 'admin_action', '' );
+		$published_up 	= Request::getVar( 'published_up', '' );
+		$version 	    = Request::getVar( 'version', 'default' );
 
 		// Is this a new publication? Cannot create via back-end
 		$isnew = $id ? 0 : 1;
@@ -858,22 +858,22 @@ class Items extends AdminController
 		}
 
 		// Incoming updates
-		$title 			= trim(\JRequest::getVar( 'title', '', 'post' ));
+		$title 			= trim(Request::getVar( 'title', '', 'post' ));
 		$title 			= htmlspecialchars($title);
-		$abstract 		= trim(\JRequest::getVar( 'abstract', '', 'post' ));
+		$abstract 		= trim(Request::getVar( 'abstract', '', 'post' ));
 		$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
-		$description 	= trim(\JRequest::getVar( 'description', '', 'post', 'none', 2 ));
-		$release_notes 	= stripslashes(trim(\JRequest::getVar( 'release_notes', '', 'post', 'none', 2 )));
-		$group_owner	= \JRequest::getInt( 'group_owner', 0, 'post' );
-		$published_up 	= trim(\JRequest::getVar( 'published_up', '', 'post' ));
-		$published_down = trim(\JRequest::getVar( 'published_down', '', 'post' ));
-		$state 			= \JRequest::getInt( 'state', 0 );
+		$description 	= trim(Request::getVar( 'description', '', 'post', 'none', 2 ));
+		$release_notes 	= stripslashes(trim(Request::getVar( 'release_notes', '', 'post', 'none', 2 )));
+		$group_owner	= Request::getInt( 'group_owner', 0, 'post' );
+		$published_up 	= trim(Request::getVar( 'published_up', '', 'post' ));
+		$published_down = trim(Request::getVar( 'published_down', '', 'post' ));
+		$state 			= Request::getInt( 'state', 0 );
 		$metadata 		= '';
 		$activity 		= '';
 
 		// Save publication record
-		$this->model->publication->alias    = trim(\JRequest::getVar( 'alias', '', 'post' ));
-		$this->model->publication->category = trim(\JRequest::getInt( 'category', 0, 'post' ));
+		$this->model->publication->alias    = trim(Request::getVar( 'alias', '', 'post' ));
+		$this->model->publication->category = trim(Request::getInt( 'category', 0, 'post' ));
 		if (!$project->owned_by_group)
 		{
 			$this->model->publication->group_owner = $group_owner;
@@ -895,7 +895,7 @@ class Items extends AdminController
 				}
 			}
 
-			$nbtag = \JRequest::getVar( 'nbtag', array(), 'request', 'array' );
+			$nbtag = Request::getVar( 'nbtag', array(), 'request', 'array' );
 			foreach ($nbtag as $tagname => $tagcontent)
 			{
 				$tagcontent = trim(stripslashes($tagcontent));
@@ -923,12 +923,12 @@ class Items extends AdminController
 		$this->model->version->description  = $description;
 		$this->model->version->metadata     = $metadata;
 		$this->model->version->release_notes= $release_notes;
-		$this->model->version->license_text = trim(\JRequest::getVar( 'license_text', '', 'post' ));
-		$this->model->version->license_type = \JRequest::getInt( 'license_type', 0, 'post' );
-		$this->model->version->access       = \JRequest::getInt( 'access', 0, 'post' );
+		$this->model->version->license_text = trim(Request::getVar( 'license_text', '', 'post' ));
+		$this->model->version->license_type = Request::getInt( 'license_type', 0, 'post' );
+		$this->model->version->access       = Request::getInt( 'access', 0, 'post' );
 
 		// DOI manually entered?
-		$doi = trim(\JRequest::getVar( 'doi', '', 'post' ));
+		$doi = trim(Request::getVar( 'doi', '', 'post' ));
 		if ($doi && (!$this->model->version->doi
 			|| !preg_match("/" . $doiService->_configs->shoulder
 			. "/", $this->model->version->doi)))
@@ -977,7 +977,7 @@ class Items extends AdminController
 		}
 
 		// Incoming tags
-		$tags = \JRequest::getVar('tags', '', 'post');
+		$tags = Request::getVar('tags', '', 'post');
 
 		// Save the tags
 		$rt = new Helpers\Tags($this->database);
@@ -990,7 +990,7 @@ class Items extends AdminController
 					. strtolower(Lang::txt('COM_PUBLICATIONS_PUBLICATION'))
 					. ' "' . $pubtitle . '" ';
 		$sendmail 	= 0;
-		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(\JRequest::getVar( 'message', '' )));
+		$message 	= rtrim(\Hubzero\Utility\Sanitize::clean(Request::getVar( 'message', '' )));
 		$output 	= Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_ITEM');
 
 		// Admin actions
@@ -1197,7 +1197,7 @@ class Items extends AdminController
 		}
 
 		// Save parameters
-		$params = \JRequest::getVar('params', '', 'post');
+		$params = Request::getVar('params', '', 'post');
 		if (is_array($params))
 		{
 			foreach ($params as $k => $v)
@@ -1333,12 +1333,9 @@ class Items extends AdminController
 		if ($authors && count($authors) > 0)
 		{
 			// Email all the contributors
-			$jconfig = \JFactory::getConfig();
-
-			// E-mail "from" info
 			$from = array();
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('PUBLICATIONS');
+			$from['email'] = Config::get('config.mailfrom');
+			$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt('PUBLICATIONS');
 
 			$subject = $subject
 				? $subject : Lang::txt('COM_PUBLICATIONS_STATUS_UPDATE');
@@ -1389,7 +1386,7 @@ class Items extends AdminController
 		$this->view->config = $this->config;
 
 		// Incoming publication ID
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Need ID
 		if (!$id)
@@ -1404,9 +1401,9 @@ class Items extends AdminController
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['cat']   = \JRequest::getVar('cat', '');
-		$this->view->return['sortby']   = \JRequest::getVar('sortby', '');
-		$this->view->return['status'] = \JRequest::getVar('status', '');
+		$this->view->return['cat']   = Request::getVar('cat', '');
+		$this->view->return['sortby']   = Request::getVar('sortby', '');
+		$this->view->return['status'] = Request::getVar('status', '');
 
 		// Instantiate project publication
 		$objP = new Tables\Publication( $this->database );
@@ -1441,11 +1438,11 @@ class Items extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
-		$erase = \JRequest::getInt('erase', 1);
+		$ids = Request::getVar('id', array(0));
+		$erase = Request::getInt('erase', 1);
 
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
@@ -1458,7 +1455,7 @@ class Items extends AdminController
 			return;
 		}
 
-		$version = count($ids) == 1 ? \JRequest::getVar( 'version', 'all' ) : 'all';
+		$version = count($ids) == 1 ? Request::getVar( 'version', 'all' ) : 'all';
 
 		jimport('joomla.filesystem.folder');
 
@@ -1625,10 +1622,10 @@ class Items extends AdminController
 	public function cancelTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id  = \JRequest::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 
 		// Checkin the resource
 		$row = new Tables\Publication($this->database);
@@ -1653,10 +1650,10 @@ class Items extends AdminController
 	public function resetratingTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		if ($id)
 		{
@@ -1689,10 +1686,10 @@ class Items extends AdminController
 	public function resetrankingTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id  = \JRequest::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 
 		if ($id)
 		{
@@ -1724,9 +1721,9 @@ class Items extends AdminController
 	public function archiveTask()
 	{
 		// Incoming
-		$pid 		= \JRequest::getInt('pid', 0);
-		$vid 		= \JRequest::getInt('vid', 0);
-		$version 	= \JRequest::getVar( 'version', '' );
+		$pid 		= Request::getInt('pid', 0);
+		$vid 		= Request::getInt('vid', 0);
+		$version 	= Request::getVar( 'version', '' );
 
 		// Load publication & version classes
 		$objP  = new Tables\Publication( $this->database );
@@ -1817,10 +1814,10 @@ class Items extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id  = \JRequest::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 
 		if ($id)
 		{
@@ -1846,7 +1843,7 @@ class Items extends AdminController
 			. '&controller=' . $this->_controller, false);
 
 		// Incoming
-		$id  = \JRequest::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 		$url .= $id ? '&task=edit&id[]=' . $id : '';
 		return $url;
 	}
@@ -1858,7 +1855,7 @@ class Items extends AdminController
 	 */
 	public function authorTask()
 	{
-		$u = \JRequest::getInt('u', 0);
+		$u = Request::getInt('u', 0);
 
 		// Get the member's info
 		$profile = \Hubzero\User\Profile::getInstance($u);

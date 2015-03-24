@@ -40,14 +40,18 @@ if ($this->review->id) {
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->review->publication_id . '&active=reviews'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 <?php
-			if (!$this->juser->get('guest')) {
+			if (!$this->juser->get('guest')) 
+			{
 				$jxuser = new \Hubzero\User\Profile();
 				$jxuser->load( $this->juser->get('id') );
 				$thumb = plgPublicationsReviews::getMemberPhoto($jxuser, 0);
-			} else {
-				$config = JComponentHelper::getParams( 'com_members' );
+			} 
+			else 
+			{
+				$config = Component::params( 'com_members' );
 				$thumb = $config->get('defaultpic');
-				if (substr($thumb, 0, 1) != DS) {
+				if (substr($thumb, 0, 1) != DS) 
+				{
 					$thumb = DS.$dfthumb;
 				}
 				$thumb = plgPublicationsReviews::thumbit($thumb);

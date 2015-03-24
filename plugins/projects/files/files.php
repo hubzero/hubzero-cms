@@ -171,7 +171,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$this->_config      = \JComponentHelper::getParams('com_projects');
+			$this->_config      = Component::params('com_projects');
 			$this->_publishing  = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 			$this->_project     = $project;
 			$this->_tool	    = NULL;
@@ -205,7 +205,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->setError($error);
 			}
 
-			$this->_task   = $action ? $action : \JRequest::getVar('action', 'browse');
+			$this->_task   = $action ? $action : Request::getVar('action', 'browse');
 
 			// Set acting user
 			$juser = \JFactory::getUser();
@@ -215,8 +215,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->mt = new \Hubzero\Content\Mimetypes();
 
 			// Incoming
-			$this->subdir 	    = trim(urldecode(\JRequest::getVar('subdir', '')), DS);
-			$this->publication 	= \JRequest::getInt('pid', 0);
+			$this->subdir 	    = trim(urldecode(Request::getVar('subdir', '')), DS);
+			$this->publication 	= Request::getInt('pid', 0);
 
 			// Set routing
 			$this->_route       = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
@@ -333,7 +333,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'newdir':
-					$ajax 			= \JRequest::getInt('ajax', 0);
+					$ajax 			= Request::getInt('ajax', 0);
 					$arr['html'] 	= $ajax ? $this->_newDir() :  $this->display();
 					break;
 
@@ -379,10 +379,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	{
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 = \JRequest::getInt('limit', 100);
-		$filters['start']    = \JRequest::getInt( 'limitstart', 0);
-		$filters['sortby']   = \JRequest::getVar( 'sortby', 'filename');
-		$filters['sortdir']  = \JRequest::getVar( 'sortdir', 'ASC');
+		$filters['limit'] 	 = Request::getInt('limit', 100);
+		$filters['start']    = Request::getInt( 'limitstart', 0);
+		$filters['sortby']   = Request::getVar( 'sortby', 'filename');
+		$filters['sortdir']  = Request::getVar( 'sortdir', 'ASC');
 
 		// Something is wrong
 		if (!$this->_path)
@@ -511,11 +511,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = \JRequest::getVar( 'p', '' );
-		$ajax   = \JRequest::getInt( 'ajax', 0 );
-		$pid    = \JRequest::getInt( 'pid', 0 );
-		$vid    = \JRequest::getInt( 'vid', 0 );
-		$filter = urldecode(\JRequest::getVar( 'filter', '' ));
+		$props  = Request::getVar( 'p', '' );
+		$ajax   = Request::getInt( 'ajax', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
+		$filter = urldecode(Request::getVar( 'filter', '' ));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -639,11 +639,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function browser()
 	{
 		// Incoming
-		$content 	= \JRequest::getVar('content', 'files');
-		$ajax 		= \JRequest::getInt('ajax', 0);
-		$primary 	= \JRequest::getInt('primary', 1);
-		$images 	= \JRequest::getInt('images', 0);
-		$pid 		= \JRequest::getInt('pid', 0);
+		$content 	= Request::getVar('content', 'files');
+		$ajax 		= Request::getInt('ajax', 0);
+		$primary 	= Request::getInt('primary', 1);
+		$images 	= Request::getInt('images', 0);
+		$pid 		= Request::getInt('pid', 0);
 
 		if (!$ajax)
 		{
@@ -691,7 +691,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Does the publication exist?
-		$versionid 	= \JRequest::getInt('versionid', 0);
+		$versionid 	= Request::getInt('versionid', 0);
 		$pContent 	= new \Components\Publications\Tables\Attachment( $this->_database );
 		$role    	= $primary ? '1': '0';
 		$other 		= $primary ? '0' : '1';
@@ -1004,8 +1004,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$prov 	= $this->_project->provisioned == 1 ? 1 : 0;
 
 		// Incoming
-		$ajax 	= \JRequest::getInt('ajax', 0);
-		$pid 	= \JRequest::getInt('pid', 0);
+		$ajax 	= Request::getInt('ajax', 0);
+		$pid 	= Request::getInt('pid', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1069,9 +1069,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function ajaxSave()
 	{
 		// Incoming
-		$expand  	= \JRequest::getInt('expand_zip');
+		$expand  	= Request::getInt('expand_zip');
 		$sizeLimit 	= $this->params->get('maxUpload', '104857600');
-		$pid 		= \JRequest::getInt('pid', 0);
+		$pid 		= Request::getInt('pid', 0);
 
 		$prov    	= ($this->_task == 'saveprov' || $this->_project->provisioned == 1) ? 1 : 0;
 		$newProv	= ($prov && !$this->_project->id) ? 1 : 0;
@@ -1328,17 +1328,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function save()
 	{
 		// Incoming
-		$view = \JRequest::getVar('view', 'view'); // where to redirect
-		$json = \JRequest::getVar('json', 0); // give response in json?
+		$view = Request::getVar('view', 'view'); // where to redirect
+		$json = Request::getVar('json', 0); // give response in json?
 
 		// AJAX uploader
-		if (\JRequest::getVar('no_html', 0) && !$json)
+		if (Request::getVar('no_html', 0) && !$json)
 		{
 			return $this->ajaxSave();
 		}
 
 		// Incoming files
-		$files = \JRequest::getVar( 'upload', '', 'files', 'array' );
+		$files = Request::getVar( 'upload', '', 'files', 'array' );
 
 		if (empty($files['name']) or $files['name'][0] == '')
 		{
@@ -1420,7 +1420,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 
 				// Expand archive?
-				$expand  = \JRequest::getInt('expand_zip', 0);
+				$expand  = Request::getInt('expand_zip', 0);
 				$zipfile = in_array(strtolower($ext), $archive_formats) ? 1 : 0;
 
 				if (!$this->getError() && $zipfile && $expand)
@@ -1542,7 +1542,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($view == 'pub')
 			{
-				$url = \JRequest::getVar('HTTP_REFERER', NULL, 'server');
+				$url = Request::getVar('HTTP_REFERER', NULL, 'server');
 			}
 
 			$this->_referer = $url;
@@ -1895,7 +1895,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _newDir()
 	{
 		// Incoming
-		$newdir = \JRequest::getVar('newdir', '', 'post');
+		$newdir = Request::getVar('newdir', '', 'post');
 
 		$url 	= Route::url($this->_route . '&active=files');
 
@@ -1934,7 +1934,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _saveDir()
 	{
 		// Incoming
-		$newdir = \JRequest::getVar('newdir', '', 'post');
+		$newdir = Request::getVar('newdir', '', 'post');
 		$newdir = \Components\Projects\Helpers\Html::makeSafeDir($newdir);
 		$createdir = $this->subdir ? $this->subdir . DS . $newdir : $newdir;
 
@@ -2019,7 +2019,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _deleteDir()
 	{
 		// Incoming
-		$dir = trim(urldecode(\JRequest::getVar('dir', '')), DS);
+		$dir = trim(urldecode(Request::getVar('dir', '')), DS);
 
 		$sync = 0;
 
@@ -2113,7 +2113,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->option 		= $this->_option;
 			$view->project 		= $this->_project;
 			$view->uid 			= $this->_uid;
-			$view->ajax 		= \JRequest::getInt('ajax', 0);
+			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->subdir 		= $this->subdir;
 			$view->case 		= $this->_case;
 			$view->tool			= $this->_tool;
@@ -2248,7 +2248,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->project 		= $this->_project;
 			$view->uid 			= $this->_uid;
 			$view->case 		= $this->_case;
-			$view->ajax 		= \JRequest::getInt('ajax', 0);
+			$view->ajax 		= Request::getInt('ajax', 0);
 			$view->tool			= $this->_tool;
 			$view->subdir 		= $this->subdir;
 			$view->url			= $url;
@@ -2270,10 +2270,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			chdir($this->_path);
 
 			// Get new path
-			$newpath = trim(urldecode(\JRequest::getVar('newpath', '')), DS);
+			$newpath = trim(urldecode(Request::getVar('newpath', '')), DS);
 
 			// New directory to be created?
-			$newdir = \JRequest::getVar('newdir', '');
+			$newdir = Request::getVar('newdir', '');
 
 			// Clean up directory name
 			if ($newdir)
@@ -2395,8 +2395,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function share()
 	{
 		// Incoming
-		$converted  = \JRequest::getInt('converted', 0);
-		$service 	= \JRequest::getVar('service', 'google');
+		$converted  = Request::getInt('converted', 0);
+		$service 	= Request::getVar('service', 'google');
 
 		// Combine file and folder data
 		$items = $this->_sortIncoming();
@@ -2517,7 +2517,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$originalFormat = $remote['original_format'];
 
 					// Incoming
-					$importExt 	= \JRequest::getVar('format', 'pdf', 'post');
+					$importExt 	= Request::getVar('format', 'pdf', 'post');
 
 					// Remove Google native extension from title
 					if (in_array($ext, array('gdoc', 'gsheet', 'gslides', 'gdraw')))
@@ -2726,11 +2726,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function diff()
 	{
 		// Incoming
-		$old 	 = urldecode(\JRequest::getVar( 'old', ''));
-		$new 	 = urldecode(\JRequest::getVar( 'new', ''));
-		$mode 	 = \JRequest::getVar( 'mode', $this->params->get('diffmode', 'side-by-side'));
-		$file 	 = urldecode(\JRequest::getVar( 'file', ''));
-		$full 	 = \JRequest::getInt( 'full');
+		$old 	 = urldecode(Request::getVar( 'old', ''));
+		$new 	 = urldecode(Request::getVar( 'new', ''));
+		$mode 	 = Request::getVar( 'mode', $this->params->get('diffmode', 'side-by-side'));
+		$file 	 = urldecode(Request::getVar( 'file', ''));
+		$full 	 = Request::getInt( 'full');
 
 		$remote 		= NULL;
 		$service		= NULL;
@@ -2878,13 +2878,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->cleanData();
 
 		// Incoming
-		$checked = \JRequest::getVar( 'asset', '', 'request', 'array' );
-		$ajax 	 = \JRequest::getInt('ajax', 0);
+		$checked = Request::getVar( 'asset', '', 'request', 'array' );
+		$ajax 	 = Request::getInt('ajax', 0);
 
 		// Can only view history of one file at a time
 		if (empty($checked) or $checked[0] == '')
 		{
-			$file = urldecode(\JRequest::getVar( 'asset', ''));
+			$file = urldecode(Request::getVar( 'asset', ''));
 		}
 		else
 		{
@@ -3025,9 +3025,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected function _rename()
 	{
 		// Incoming
-		$newname = \JRequest::getVar( 'newname', '', 'post');
-		$oldname = \JRequest::getVar( 'oldname', '', 'post');
-		$rename  = \JRequest::getVar( 'rename', 'file', 'post');
+		$newname = Request::getVar( 'newname', '', 'post');
+		$oldname = Request::getVar( 'oldname', '', 'post');
+		$rename  = Request::getVar( 'rename', 'file', 'post');
 
 		if (!$newname)
 		{
@@ -3178,7 +3178,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load component configs
-		$config = \JComponentHelper::getParams('com_projects');
+		$config = Component::params('com_projects');
 
 		// Get project path
 		$this->_path  = \Components\Projects\Helpers\Html::getProjectRepoPath($project->alias);
@@ -3260,8 +3260,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function restore()
 	{
 		// Incoming
-		$file 	= urldecode(\JRequest::getVar( 'asset', ''));
-		$hash 	= \JRequest::getVar('hash', '');
+		$file 	= urldecode(Request::getVar( 'asset', ''));
+		$hash 	= Request::getVar('hash', '');
 
 		// Make sure we have a file to work with
 		if (!$file)
@@ -3322,13 +3322,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function download()
 	{
 		// Incoming
-		$render 	= \JRequest::getVar('render', 'download');
+		$render 	= Request::getVar('render', 'download');
 		$items 		= $this->_sortIncoming();
-		$file 	 	= trim(urldecode(\JRequest::getVar('file', '')), DS);
+		$file 	 	= trim(urldecode(Request::getVar('file', '')), DS);
 		$multifile	= 0;
 		$deleteTemp = 0;
 		$remote 	= NULL;
-		$revision 	= \JRequest::getVar('revision', '');
+		$revision 	= Request::getVar('revision', '');
 
 		if (!$file)
 		{
@@ -3492,7 +3492,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		elseif (!$this->getError())
 		{
 			// Which revision are we downloading?
-			$hash 	  = \JRequest::getVar('hash', '');
+			$hash 	  = Request::getVar('hash', '');
 			$serveas   = basename($file);
 
 			// Multiple files selected
@@ -3589,7 +3589,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				{
 					// Viewing current file
 					$fpath 		= $this->subdir ? $this->subdir. DS . $file : $file;
-					$serveas 	= urldecode(\JRequest::getVar('serveas', $file));
+					$serveas 	= urldecode(Request::getVar('serveas', $file));
 					$fullpath	= $this->_path . DS . $fpath;
 				}
 			}
@@ -3672,9 +3672,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->cleanData();
 
 		// Incoming
-		$checked 	= \JRequest::getVar( 'asset', '', 'request', 'array' );
-		$commit  	= \JRequest::getInt( 'commit', 0 );
-		$download  	= \JRequest::getInt( 'download', 0 );
+		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
+		$commit  	= Request::getInt( 'commit', 0 );
+		$download  	= Request::getInt( 'download', 0 );
 
 		if (!$this->params->get('latex'))
 		{
@@ -3685,7 +3685,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Can only view history of one file at a time
 		if (empty($checked) or $checked[0] == '')
 		{
-			$file = urldecode(\JRequest::getVar( 'file', ''));
+			$file = urldecode(Request::getVar( 'file', ''));
 		}
 		else
 		{
@@ -4292,7 +4292,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			if (!isset($this->_config))
 			{
-				$this->_config 	 = \JComponentHelper::getParams('com_projects');
+				$this->_config 	 = Component::params('com_projects');
 			}
 			if (!isset($this->_path))
 			{
@@ -4332,7 +4332,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$this->_project = $project;
 			$this->_path = $this->getProjectPath($project->alias, $case);
-			$this->_config = \JComponentHelper::getParams('com_projects');
+			$this->_config = Component::params('com_projects');
 		}
 
 		// Make sure Git helper is included
@@ -4435,7 +4435,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->status 	= $this->_git->gitStatus();
 		$view->option 	= $this->_option;
 		$view->project 	= $this->_project;
-		$view->ajax 	= \JRequest::getInt('ajax', 0);
+		$view->ajax 	= Request::getInt('ajax', 0);
 
 		// Build URL
 		$view->url = Route::url($this->_route . '&active=files');
@@ -4469,7 +4469,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$view->option 	= $this->_option;
 		$view->project 	= $this->_project;
-		$view->ajax 	= \JRequest::getInt('ajax', 0);
+		$view->ajax 	= Request::getInt('ajax', 0);
 
 		// Build URL
 		$view->url = Route::url($this->_route . '&active=files');
@@ -4759,8 +4759,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function cleanData()
 	{
 		// Clean up empty values
-		$checked 	= \JRequest::getVar( 'asset', '', 'request', 'array' );
-		$folders 	= \JRequest::getVar( 'folder', '', 'request', 'array' );
+		$checked 	= Request::getVar( 'asset', '', 'request', 'array' );
+		$folders 	= Request::getVar( 'folder', '', 'request', 'array' );
 
 		foreach ($checked as $key => $value)
 		{
@@ -4788,8 +4788,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		\JRequest::setVar( 'asset', $checked);
-		\JRequest::setVar( 'folder', $folders);
+		Request::setVar( 'asset', $checked);
+		Request::setVar( 'folder', $folders);
 	}
 
 	/**
@@ -4974,8 +4974,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->cleanData();
 
 		// Incoming
-		$checked = \JRequest::getVar( 'asset', '', 'request', 'array' );
-		$folders = \JRequest::getVar( 'folder', '', 'request', 'array' );
+		$checked = Request::getVar( 'asset', '', 'request', 'array' );
+		$folders = Request::getVar( 'folder', '', 'request', 'array' );
 
 		$combined = array();
 		if (!empty($checked))
@@ -4988,7 +4988,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($file = \JRequest::getVar( 'asset', ''))
+		elseif ($file = Request::getVar( 'asset', ''))
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
@@ -5002,7 +5002,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				}
 			}
 		}
-		elseif ($folder = \JRequest::getVar( 'folder', ''))
+		elseif ($folder = Request::getVar( 'folder', ''))
 		{
 			$combined[] = array('folder' => urldecode($folder));
 		}
@@ -5113,7 +5113,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if ($get == 'pubspace')
 		{
 			// Load publications component configs
-			$pubconfig = \JComponentHelper::getParams( 'com_publications' );
+			$pubconfig = Component::params( 'com_publications' );
 			$base_path = DS . trim($pubconfig->get('webpath'), DS);
 
 			chdir(PATH_CORE . $base_path);
@@ -5253,8 +5253,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get site name
-		$jconfig = \JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename') ? $jconfig->getValue('config.sitename') : 'myhub';
+		$sitename = Config::get('config.sitename') ? Config::get('config.sitename') : 'myhub';
 
 		// Get configs
 		$gitConfigPath 	= '/etc/apache2/' . $sitename . '.conf.d/projects';
@@ -5264,7 +5263,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$configFile 	= $gitConfigPath . DS . 'projects.conf';
 
 		// Load psystem configs
-		$sysconfig = \JComponentHelper::getParams('com_system');
+		$sysconfig = Component::params('com_system');
 
 		// We need the config path set up by admin beforehand
 		if ( !is_dir($gitConfigPath) )
@@ -5326,9 +5325,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function connect($service = '', $callback = '')
 	{
 		// Incoming
-		$service 	= $service ? $service : \JRequest::getVar('service', '');
-		$reauth 	= \JRequest::getInt('reauth', 0);
-		$removeData = \JRequest::getInt('removedata', 1);
+		$service 	= $service ? $service : Request::getVar('service', '');
+		$reauth 	= Request::getInt('reauth', 0);
+		$removeData = Request::getInt('removedata', 1);
 
 		// Build pub url
 		$url = Route::url($this->_route . '&active=files');
@@ -5423,9 +5422,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function iniSync()
 	{
 		// Incoming
-		$ajax 	 = \JRequest::getInt('ajax', 0);
-		$auto 	 = \JRequest::getInt('auto', 0);
-		$queue 	 = \JRequest::getInt('queue', 0);
+		$ajax 	 = Request::getInt('ajax', 0);
+		$auto 	 = Request::getInt('auto', 0);
+		$queue 	 = Request::getInt('queue', 0);
 
 		$pparams = new \JParameter( $this->_project->params );
 
@@ -6297,7 +6296,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function syncError()
 	{
-		$service 	= \JRequest::getVar('service', 'google');
+		$service 	= Request::getVar('service', 'google');
 
 		$this->_writeToFile( '' );
 		$this->_rSync['error'] = \JText::_('PLG_PROJECTS_FILES_SYNC_ERROR');
@@ -6313,8 +6312,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function syncStatus()
 	{
 		// Incoming
-		$pid 		= \JRequest::getInt('id', 0);
-		$service 	= \JRequest::getVar('service', 'google');
+		$pid 		= Request::getInt('id', 0);
+		$service 	= Request::getVar('service', 'google');
 		$status 	= array('status' => '', 'msg' => time(), 'output' => '');
 
 		// Read status file
@@ -6504,7 +6503,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$this->_database = \JFactory::getDBO();
 		$this->_uid 	 = $uid;
-		$this->_config 	 = \JComponentHelper::getParams('com_projects');
+		$this->_config 	 = Component::params('com_projects');
 
 		if (!$this->_uid)
 		{
@@ -6551,7 +6550,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir : trim(urldecode(\JRequest::getVar('subdir', '')), DS);
+		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir : trim(urldecode(Request::getVar('subdir', '')), DS);
 
 		$juri = JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
@@ -6612,8 +6611,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function renameFile()
 	{
 		// Incoming
-		$oldpath  	= isset($this->_data->oldpath) ? $this->_data->oldpath : urldecode(\JRequest::getVar( 'oldpath', '' ));
-		$newpath   	= isset($this->_data->newpath) ? $this->_data->newpath : urldecode(\JRequest::getVar( 'newpath', '' ));
+		$oldpath  	= isset($this->_data->oldpath) ? $this->_data->oldpath : urldecode(Request::getVar( 'oldpath', '' ));
+		$newpath   	= isset($this->_data->newpath) ? $this->_data->newpath : urldecode(Request::getVar( 'newpath', '' ));
 
 		if (!$oldpath || !$newpath)
 		{
@@ -6678,9 +6677,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function getList()
 	{
 		// Incoming
-		$sortby  = isset($this->_data->sortby) ? $this->_data->sortby : \JRequest::getVar( 'sortby', 'name' );
-		$sortdir = isset($this->_data->sortdir) ? $this->_data->sortdir : \JRequest::getVar( 'sortdir', 'ASC' );
-		$filter  = isset($this->_data->filter) ? $this->_data->filter : urldecode(\JRequest::getVar( 'filter', '' ));
+		$sortby  = isset($this->_data->sortby) ? $this->_data->sortby : Request::getVar( 'sortby', 'name' );
+		$sortdir = isset($this->_data->sortdir) ? $this->_data->sortdir : Request::getVar( 'sortdir', 'ASC' );
+		$filter  = isset($this->_data->filter) ? $this->_data->filter : urldecode(Request::getVar( 'filter', '' ));
 
 		// Get list of files from repo
 		$docs 	 = $this->_git->getFiles($this->subdir);
@@ -6755,7 +6754,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$dataPath  = isset($this->_data->dataPath)
 					? $this->_data->dataPath
-					: \JRequest::getVar( 'data_path', '' ); // path to local or remote file to copy
+					: Request::getVar( 'data_path', '' ); // path to local or remote file to copy
 		$results  = array();
 		$assets   = array();
 
@@ -6874,7 +6873,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_task = 'save';
 
 			// Incoming files
-			$files = \JRequest::getVar( 'upload', '', 'files', 'array' );
+			$files = Request::getVar( 'upload', '', 'files', 'array' );
 
 			// Get file paths
 			if (!empty($files['name']))
@@ -6915,7 +6914,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Clean incoming data
 		$this->cleanData();
 
-		$assets = isset($this->_data->assets) ? $this->_data->assets : \JRequest::getVar( 'asset', '', 'request', 'array' );
+		$assets = isset($this->_data->assets) ? $this->_data->assets : Request::getVar( 'asset', '', 'request', 'array' );
 
 		// Incoming
 		$checked = $checked ? $checked : $assets;
@@ -6978,8 +6977,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function getItemMetadata($file = '', $hash = '')
 	{
-		$rFile = isset($this->_data->file) ? $this->_data->file : \JRequest::getVar( 'file', '' );
-		$rHash = isset($this->_data->hash) ? $this->_data->hash : \JRequest::getVar( 'hash', '' );
+		$rFile = isset($this->_data->file) ? $this->_data->file : Request::getVar( 'file', '' );
+		$rHash = isset($this->_data->hash) ? $this->_data->hash : Request::getVar( 'hash', '' );
 
 		$file = trim($file) ? $file : $rFile;
 		$hash = trim($hash) ? $hash : $rHash;
@@ -7163,7 +7162,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	public function getMembersPath()
 	{
 		// Get members config
-		$mconfig = \JComponentHelper::getParams( 'com_members' );
+		$mconfig = Component::params( 'com_members' );
 
 		// Build upload path
 		$dir  = \Hubzero\Utility\String::pad( $this->_uid );

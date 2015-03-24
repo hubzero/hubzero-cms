@@ -119,9 +119,9 @@ class Publications extends SiteController
 	 */
 	protected function _incoming()
 	{
-		$this->_id      = \JRequest::getInt( 'id', 0 );
-		$this->_alias   = \JRequest::getVar( 'alias', '' );
-		$this->_version = \JRequest::getVar( 'v', 'default' );
+		$this->_id      = Request::getInt( 'id', 0 );
+		$this->_alias   = Request::getVar( 'alias', '' );
+		$this->_version = Request::getVar( 'v', 'default' );
 
 		$this->_identifier = $this->_alias ? $this->_alias : $this->_id;
 
@@ -307,7 +307,7 @@ class Publications extends SiteController
 	 */
 	protected function _login()
 	{
-		$rtrn = \JRequest::getVar('REQUEST_URI',
+		$rtrn = Request::getVar('REQUEST_URI',
 			Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -356,7 +356,7 @@ class Publications extends SiteController
 		$this->view->filters 		   = array();
 		$this->view->filters['sortby'] = 'date_published';
 		$this->view->filters['limit']  = $this->config->get('listlimit', 10);
-		$this->view->filters['start']  = \JRequest::getInt( 'limitstart', 0 );
+		$this->view->filters['start']  = Request::getInt( 'limitstart', 0 );
 
 		// Instantiate a publication object
 		$rr = new Tables\Publication( $this->database );
@@ -398,17 +398,14 @@ class Publications extends SiteController
 			$default_sort = 'ranking';
 		}
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Incoming
 		$this->view->filters = array(
-			'category'   	=> \JRequest::getVar('category', ''),
-			'sortby' 		=> \JRequest::getCmd('sortby', $default_sort),
-			'limit'  		=> \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'  		=> \JRequest::getInt('limitstart', 0),
-			'search' 		=> \JRequest::getVar('search', ''),
-			'tag'    		=> trim(\JRequest::getVar('tag', '', 'request', 'none', 2)),
+			'category'   	=> Request::getVar('category', ''),
+			'sortby' 		=> Request::getCmd('sortby', $default_sort),
+			'limit'  		=> Request::getInt('limit', Config::get('config.list_limit')),
+			'start'  		=> Request::getInt('limitstart', 0),
+			'search' 		=> Request::getVar('search', ''),
+			'tag'    		=> trim(Request::getVar('tag', '', 'request', 'none', 2)),
 			'tag_ignored' 	=> array()
 		);
 
@@ -516,8 +513,8 @@ class Publications extends SiteController
 		$this->view->setName('view');
 
 		// Incoming
-		$tab      = \JRequest::getVar( 'active', '' );   // The active tab (section)
-		$no_html  = \JRequest::getInt( 'no_html', 0 );   // No-html display?
+		$tab      = Request::getVar( 'active', '' );   // The active tab (section)
+		$no_html  = Request::getInt( 'no_html', 0 );   // No-html display?
 
 		// Ensure we have an ID or alias to work with
 		if (!$this->_identifier)
@@ -677,9 +674,9 @@ class Publications extends SiteController
 		$defaultsort 		= ($this->model->_category->alias == 'series'
 							&& $this->config->get('show_ranking'))
 							? 'ranking' : $defaultsort;
-		$filters['sortby'] 	= \JRequest::getVar( 'sortby', $defaultsort );
-		$filters['limit']  	= \JRequest::getInt( 'limit', 0 );
-		$filters['start']  	= \JRequest::getInt( 'limitstart', 0 );
+		$filters['sortby'] 	= Request::getVar( 'sortby', $defaultsort );
+		$filters['limit']  	= Request::getInt( 'limit', 0 );
+		$filters['start']  	= Request::getInt( 'limitstart', 0 );
 		$filters['id']     	= $this->model->publication->id;
 
 		// Write title & build pathway
@@ -740,8 +737,8 @@ class Publications extends SiteController
 	protected function _handleContent()
 	{
 		// Incoming
-		$aid	  = \JRequest::getInt( 'a', 0 );             // Attachment id
-		$element  = \JRequest::getInt( 'el', 1 );            // Element id, default to first
+		$aid	  = Request::getInt( 'a', 0 );             // Attachment id
+		$element  = Request::getInt( 'el', 1 );            // Element id, default to first
 
 		if (!$this->publication)
 		{
@@ -955,17 +952,17 @@ class Publications extends SiteController
 	public function serveTask()
 	{
 		// Incoming
-		$version  = \JRequest::getVar( 'v', '' );            // Get version number of a publication
-		$aid	  = \JRequest::getInt( 'a', 0 );             // Attachment id
-		$element  = \JRequest::getInt( 'el', 0 );            // Element id
-		$render	  = \JRequest::getVar( 'render', '' );
-		$disp	  = \JRequest::getVar( 'disposition', 'attachment' );
+		$version  = Request::getVar( 'v', '' );            // Get version number of a publication
+		$aid	  = Request::getInt( 'a', 0 );             // Attachment id
+		$element  = Request::getInt( 'el', 0 );            // Element id
+		$render	  = Request::getVar( 'render', '' );
+		$disp	  = Request::getVar( 'disposition', 'attachment' );
 		$disp	  = $disp == 'inline' ? $disp : 'attachment';
-		$no_html  = \JRequest::getInt('no_html', 0);
+		$no_html  = Request::getInt('no_html', 0);
 
 		// In dataview
-		$vid   = \JRequest::getInt( 'vid', '' );
-		$file  = \JRequest::getVar( 'file', '' );
+		$vid   = Request::getInt( 'vid', '' );
+		$file  = Request::getVar( 'file', '' );
 		if ($vid && $file)
 		{
 			$this->_serveData();
@@ -1032,7 +1029,7 @@ class Publications extends SiteController
 		$this->version     = $version;
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		if (($token = \JRequest::getVar('token', '', 'get')))
+		if (($token = Request::getVar('token', '', 'get')))
 		{
 			$token = base64_decode($token);
 
@@ -1264,12 +1261,12 @@ class Publications extends SiteController
 	protected function _serveData()
 	{
 		// Incoming
-		$pid      	= \JRequest::getInt( 'id', 0 );
-		$vid  	  	= \JRequest::getInt( 'vid', 0 );
-		$file	  	= \JRequest::getVar( 'file', '' );
-		$render   	= \JRequest::getVar('render', '');
-		$return   	= \JRequest::getVar('return', '');
-		$disp		= \JRequest::getVar( 'disposition');
+		$pid      	= Request::getInt( 'id', 0 );
+		$vid  	  	= Request::getInt( 'vid', 0 );
+		$file	  	= Request::getVar( 'file', '' );
+		$render   	= Request::getVar('render', '');
+		$return   	= Request::getVar('return', '');
+		$disp		= Request::getVar( 'disposition');
 		$disp		= in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
 
 		// Ensure we what we need
@@ -1346,13 +1343,13 @@ class Publications extends SiteController
 	{
 		// Get requested page id
 		$pageid = count($this->attachments) > 0 && $this->attachments[0]->object_id
-				? $this->attachments[0]->object_id : \JRequest::getVar( 'p', 0 );
+				? $this->attachments[0]->object_id : Request::getVar( 'p', 0 );
 
 		// Get publication information (secondary page)
 		if (!$this->publication)
 		{
 			// Incoming
-			$version  = \JRequest::getVar( 'v', '' );
+			$version  = Request::getVar( 'v', '' );
 
 			// Ensure we have an ID or alias to work with
 			if (!$this->_id && !$this->_alias)
@@ -1391,7 +1388,7 @@ class Publications extends SiteController
 				.'com_projects' . DS . 'tables' . DS . 'publicstamp.php');
 
 			// Incoming
-			$stamp = \JRequest::getVar( 's', '' );
+			$stamp = Request::getVar( 's', '' );
 
 			// Clean up stamp value (only numbers and letters)
 			$regex  = array('/[^a-zA-Z0-9]/');
@@ -1563,8 +1560,8 @@ class Publications extends SiteController
 	public function licenseTask()
 	{
 		// Incoming
-		$id       = \JRequest::getInt( 'id', 0 );
-		$version  = \JRequest::getVar( 'v', '' );            // Get version number of a publication
+		$id       = Request::getInt( 'id', 0 );
+		$version  = Request::getVar( 'v', '' );            // Get version number of a publication
 
 		// Which version is requested?
 		$version = $version == 'dev' ? 'dev' : $version;
@@ -1619,11 +1616,11 @@ class Publications extends SiteController
 		$tz = false;
 
 		// Incoming
-		$id = \JRequest::getInt( 'id', 0 );
-		$format = \JRequest::getVar( 'format', 'bibtex' );
+		$id = Request::getInt( 'id', 0 );
+		$format = Request::getVar( 'format', 'bibtex' );
 
 		// Which version is requested?
-		$version  = \JRequest::getVar( 'v', '' );
+		$version  = Request::getVar( 'v', '' );
 		$version = $version == 'dev' ? 'dev' : $version;
 		$version = (($version && intval($version) > 0) || $version == 'dev') ? $version : 'default';
 
@@ -1632,8 +1629,7 @@ class Publications extends SiteController
 		$publication = $objP->getPublication($id, $version);
 
 		// Get HUB configuration
-		$jconfig = \JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
+		$sitename = Config::get('config.sitename');
 
 		// Make sure we got a result from the database
 		if (!$publication)
@@ -1777,7 +1773,7 @@ class Publications extends SiteController
 	public function pluginTask()
 	{
 		// Incoming
-		$trigger = trim(\JRequest::getVar( 'trigger', '' ));
+		$trigger = trim(Request::getVar( 'trigger', '' ));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -1885,11 +1881,11 @@ class Publications extends SiteController
 	public function contributeTask()
 	{
 		// Incoming
-		$pid     = \JRequest::getInt('pid', 0);
-		$action  = \JRequest::getVar( 'action', '' );
-		$active  = \JRequest::getVar( 'active', 'publications' );
+		$pid     = Request::getInt('pid', 0);
+		$action  = Request::getVar( 'action', '' );
+		$active  = Request::getVar( 'active', 'publications' );
 		$action  = $this->_task == 'start' ? 'start' : $action;
-		$ajax 	 = \JRequest::getInt( 'ajax', 0 );
+		$ajax 	 = Request::getInt( 'ajax', 0 );
 
 		// Load projects config
 		$pconfig = Component::params( 'com_projects' );
@@ -2086,9 +2082,9 @@ class Publications extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt( 'id', 0 );
-		$tags = \JRequest::getVar( 'tags', '' );
-		$no_html = \JRequest::getInt( 'no_html', 0 );
+		$id = Request::getInt( 'id', 0 );
+		$tags = Request::getVar( 'tags', '' );
+		$no_html = Request::getInt( 'no_html', 0 );
 
 		// Process tags
 		$database = \JFactory::getDBO();

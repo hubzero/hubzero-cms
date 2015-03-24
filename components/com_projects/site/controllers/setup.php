@@ -49,7 +49,7 @@ class Setup extends Base
 
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
-		$this->section  = \JRequest::getVar( 'active', $defaultSection );
+		$this->section  = Request::getVar( 'active', $defaultSection );
 
 		$this->project  = NULL;
 		$this->group    = NULL;
@@ -131,10 +131,10 @@ class Setup extends Base
 
 			// New entry defaults
 			$obj->id 			= 0;
-			$obj->alias 		= \JRequest::getCmd( 'name', '', 'post' );
-			$obj->title 		= \JRequest::getVar( 'title', '', 'post' );
-			$obj->about 		= trim(\JRequest::getVar( 'about', '', 'post', 'none', 2 ));
-			$obj->type 			= \JRequest::getInt( 'type', 1, 'post' );
+			$obj->alias 		= Request::getCmd( 'name', '', 'post' );
+			$obj->title 		= Request::getVar( 'title', '', 'post' );
+			$obj->about 		= trim(Request::getVar( 'about', '', 'post', 'none', 2 ));
+			$obj->type 			= Request::getInt( 'type', 1, 'post' );
 			$obj->setup_stage 	= 0;
 			$obj->private 		= 1;
 		}
@@ -230,7 +230,7 @@ class Setup extends Base
 		$this->view->config 		= $this->config;
 		$this->view->gid 			= $this->_gid;
 		$this->view->group 			= $this->group;
-		$this->view->extended       = \JRequest::getInt( 'extended', 0, 'post');
+		$this->view->extended       = Request::getInt( 'extended', 0, 'post');
 
 		// Get messages	and errors
 		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->_getNotifications('success');
@@ -252,7 +252,7 @@ class Setup extends Base
 	public function saveTask()
 	{
 		// Incoming
-		$step = \JRequest::getInt( 'step', '0'); // Where do we go next?
+		$step = Request::getInt( 'step', '0'); // Where do we go next?
 
 		// Instantiate a project
 		$obj = new Tables\Project( $this->database );
@@ -383,10 +383,10 @@ class Setup extends Base
 	 */
 	protected function _finalize()
 	{
-		$agree 				= \JRequest::getInt( 'agree', 0, 'post' );
-		$restricted 		= \JRequest::getVar( 'restricted', '', 'post' );
-		$agree_irb 			= \JRequest::getInt( 'agree_irb', 0, 'post' );
-		$agree_ferpa 		= \JRequest::getInt( 'agree_ferpa', 0, 'post' );
+		$agree 				= Request::getInt( 'agree', 0, 'post' );
+		$restricted 		= Request::getVar( 'restricted', '', 'post' );
+		$agree_irb 			= Request::getInt( 'agree_irb', 0, 'post' );
+		$agree_ferpa 		= Request::getInt( 'agree_ferpa', 0, 'post' );
 		$state				= 1;
 
 		// Load project
@@ -417,10 +417,10 @@ class Setup extends Base
 			if ($this->config->get('restricted_data', 0) == 1)
 			{
 				$restrictions = array(
-					'hipaa_data'  => \JRequest::getVar( 'hipaa', 'no', 'post' ),
-					'ferpa_data'  => \JRequest::getVar( 'ferpa', 'no', 'post' ),
-					'export_data' => \JRequest::getVar( 'export', 'no', 'post' ),
-					'irb_data'    => \JRequest::getVar( 'irb', 'no', 'post' )
+					'hipaa_data'  => Request::getVar( 'hipaa', 'no', 'post' ),
+					'ferpa_data'  => Request::getVar( 'ferpa', 'no', 'post' ),
+					'export_data' => Request::getVar( 'export', 'no', 'post' ),
+					'irb_data'    => Request::getVar( 'irb', 'no', 'post' )
 				);
 
 				// Save individual restrictions
@@ -503,10 +503,10 @@ class Setup extends Base
 			// Collect grant information
 			if ($this->config->get('grantinfo', 0))
 			{
-				$grant_agency    = \JRequest::getVar( 'grant_agency', '' );
-				$grant_title     = \JRequest::getVar( 'grant_title', '' );
-				$grant_PI        = \JRequest::getVar( 'grant_PI', '' );
-				$grant_budget    = \JRequest::getVar( 'grant_budget', '' );
+				$grant_agency    = Request::getVar( 'grant_agency', '' );
+				$grant_title     = Request::getVar( 'grant_title', '' );
+				$grant_PI        = Request::getVar( 'grant_PI', '' );
+				$grant_budget    = Request::getVar( 'grant_budget', '' );
 				$obj->saveParam($obj->id, 'grant_budget', htmlentities($grant_budget));
 				$obj->saveParam($obj->id, 'grant_agency', htmlentities($grant_agency));
 				$obj->saveParam($obj->id, 'grant_title', htmlentities($grant_title));
@@ -648,7 +648,7 @@ class Setup extends Base
 		$setup = $obj->id && $obj->state == 1 ? false : true;
 
 		// Incoming
-		$private    = \JRequest::getInt( 'private', 1, 'post' );
+		$private    = Request::getInt( 'private', 1, 'post' );
 
 		// Save section
 		switch ($this->section)
@@ -657,9 +657,9 @@ class Setup extends Base
 			case 'info':
 			
 				// Incoming
-				$name       = trim(\JRequest::getVar( 'name', '', 'post' ));
-				$title      = trim(\JRequest::getVar( 'title', '', 'post' ));
-				$type       = \JRequest::getInt( 'type', 1, 'post' );
+				$name       = trim(Request::getVar( 'name', '', 'post' ));
+				$title      = trim(Request::getVar( 'title', '', 'post' ));
+				$type       = Request::getInt( 'type', 1, 'post' );
 
 				$name = preg_replace('/ /', '', $name);
 				$name = strtolower($name);
@@ -696,7 +696,7 @@ class Setup extends Base
 				}
 
 				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
-				$obj->about = trim(\JRequest::getVar( 'about', '', 'post', 'none', 2 ));
+				$obj->about = trim(Request::getVar( 'about', '', 'post', 'none', 2 ));
 				$obj->type 	= $type;
 
 				// save advanced permissions
@@ -814,7 +814,7 @@ class Setup extends Base
 				}
 
 				// Save params
-				$incoming   = \JRequest::getVar( 'params', array() );
+				$incoming   = Request::getVar( 'params', array() );
 				if (!empty($incoming))
 				{
 					$old_params = $obj->params;
@@ -1015,9 +1015,9 @@ class Setup extends Base
 	public function verifyTask()
 	{
 		// Incoming
-		$name   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
-		$id 	= $this->_identifier ? $this->_identifier: trim(\JRequest::getInt( 'pid', 0 ));
-		$ajax 	= isset($this->_ajax) ? $this->_ajax : trim(\JRequest::getInt( 'ajax', 0 ));
+		$name   = isset($this->_text) ? $this->_text : trim(Request::getVar( 'text', '' ));
+		$id 	= $this->_identifier ? $this->_identifier: trim(Request::getInt( 'pid', 0 ));
+		$ajax 	= isset($this->_ajax) ? $this->_ajax : trim(Request::getInt( 'ajax', 0 ));
 
 		$this->model->check($name, $id, $ajax);
 
@@ -1048,7 +1048,7 @@ class Setup extends Base
 	public function suggestaliasTask()
 	{
 		// Incoming
-		$title   = isset($this->_text) ? $this->_text : trim(\JRequest::getVar( 'text', '' ));
+		$title   = isset($this->_text) ? $this->_text : trim(Request::getVar( 'text', '' ));
 		$title   = urldecode($title);
 
 		$suggested = Helpers\Html::suggestAlias($title);

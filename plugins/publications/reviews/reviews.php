@@ -58,7 +58,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->infolink = '/kb/points/';
-		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
+		$this->banking = Component::params('com_members')->get('bankAccounts');
 	}
 
 	/**
@@ -706,11 +706,8 @@ class PlgPublicationsReviewsHelper extends JObject
 		$pa = new PublicationAuthor( $database );
 		$users = $pa->getAuthors($publication->version_id, 1, 1, true );
 
-		// Get the HUB configuration
-		$jconfig = JFactory::getConfig();
-
 		// Build the subject
-		$subject = $jconfig->getValue('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$subject = Config::get('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
 
 		// Message
 		$juser = JFactory::getUser();
@@ -729,8 +726,8 @@ class PlgPublicationsReviewsHelper extends JObject
 
 		// Build the "from" data for the e-mail
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('config.sitename').' '.JText::_('PLG_PUBLICATION_REVIEWS_CONTRIBUTIONS');
+		$from['email'] = Config::get('config.mailfrom');
 
 		// Send message
 		JPluginHelper::importPlugin( 'xmessage' );

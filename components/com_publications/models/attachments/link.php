@@ -59,7 +59,7 @@ class Link extends Base
 		$configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// replace current attachments?
-		$configs->replace  	= \JRequest::getInt( 'replace_current', 0, 'post');
+		$configs->replace  	= Request::getInt( 'replace_current', 0, 'post');
 
 		// Verify file type against allowed before attaching?
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
@@ -269,9 +269,9 @@ class Link extends Base
 	 */
 	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
 	{
-		$toAttach   = $toAttach ? $toAttach : \JRequest::getVar( 'url', '', 'post', 'array');
-		$titles 	= \JRequest::getVar( 'title', '', 'post', 'array');
-		$desc 		= \JRequest::getVar( 'desc', '', 'post', 'array');
+		$toAttach   = $toAttach ? $toAttach : Request::getVar( 'url', '', 'post', 'array');
+		$titles 	= Request::getVar( 'title', '', 'post', 'array');
+		$desc 		= Request::getVar( 'desc', '', 'post', 'array');
 
 		// Incoming selections
 		if (empty($toAttach))
@@ -460,8 +460,8 @@ class Link extends Base
 	public function updateAttachment($row, $element, $elementId, $pub, $blockParams)
 	{
 		// Incoming
-		$title 	= \JRequest::getVar( 'title', '' );
-		$thumb 	= \JRequest::getInt( 'makedefault', 0 );
+		$title 	= Request::getVar( 'title', '' );
+		$thumb 	= Request::getInt( 'makedefault', 0 );
 
 		$juser = \JFactory::getUser();
 		$uid   = $juser->get('id');

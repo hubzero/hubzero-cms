@@ -45,7 +45,7 @@ class Reports extends Base
 	public function displayTask()
 	{
 		// Incoming
-		$period = \JRequest::getVar( 'period', 'alltime');
+		$period = Request::getVar( 'period', 'alltime');
 
 		// Instantiate a project and related classes
 		$obj   = new Tables\Project( $this->database );
@@ -98,10 +98,10 @@ class Reports extends Base
 	public function generateTask()
 	{
 		// Incoming
-		$data   = \JRequest::getVar( 'data', array(), 'post', 'array' );
-		$from   = \JRequest::getVar( 'fromdate', \JHTML::_('date', \JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-		$to     = \JRequest::getVar( 'todate', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m') );
-		$filter = \JRequest::getVar( 'searchterm', '');
+		$data   = Request::getVar( 'data', array(), 'post', 'array' );
+		$from   = Request::getVar( 'fromdate', \JHTML::_('date', \JFactory::getDate('-1 month')->toSql(), 'Y-m') );
+		$to     = Request::getVar( 'todate', \JHTML::_('date', \JFactory::getDate()->toSql(), 'Y-m') );
+		$filter = Request::getVar( 'searchterm', '');
 
 		if (empty($data))
 		{

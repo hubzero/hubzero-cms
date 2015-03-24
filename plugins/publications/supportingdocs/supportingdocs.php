@@ -106,8 +106,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 		{
 			$database = JFactory::getDBO();
 
-			$config = JComponentHelper::getParams( $option );
-			$jconfig = JFactory::getConfig();
+			$config = Component::params( $option );
 
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
@@ -140,7 +139,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 			$view->publication 	= $publication;
 			$view->config 		= $config;
 			$view->version 		= $version;
-			$view->live_site 	= $jconfig->getValue('config.live_site') . DS;
+			$view->live_site 	= Config::get('config.live_site') . DS;
 			$view->authorized	= $authorized;
 			if ($this->getError())
 			{

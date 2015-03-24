@@ -134,7 +134,7 @@ class Authors extends Base
 			return false;
 		}
 
-		$selections = \JRequest::getVar( 'selecteditems', '');
+		$selections = Request::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
 		$added = 0;
 
@@ -223,7 +223,7 @@ class Authors extends Base
 	public function saveGroupOwner( $pub )
 	{
 		// Incoming
-		$group_owner = \JRequest::getInt( 'group_owner', 0);
+		$group_owner = Request::getInt( 'group_owner', 0);
 
 		$saveGroupOwner = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
 
@@ -298,7 +298,7 @@ class Authors extends Base
 		}
 
 		// Incoming
-		$list = \JRequest::getVar( 'list', '' );
+		$list = Request::getVar( 'list', '' );
 		$authors = explode("-", $list);
 
 		$o = 1;
@@ -331,12 +331,12 @@ class Authors extends Base
 	 */
 	public function addItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0)
 	{
-		$email 		= \JRequest::getVar( 'email', '', 'post' );
-		$firstName 	= trim(\JRequest::getVar( 'firstName', '', 'post' ));
-		$lastName 	= trim(\JRequest::getVar( 'lastName', '', 'post' ));
-		$org 		= trim(\JRequest::getVar( 'organization', '', 'post' ));
-		$credit 	= trim(\JRequest::getVar( 'credit', '', 'post' ));
-		$uid 		= trim(\JRequest::getInt( 'uid', 0, 'post' ));
+		$email 		= Request::getVar( 'email', '', 'post' );
+		$firstName 	= trim(Request::getVar( 'firstName', '', 'post' ));
+		$lastName 	= trim(Request::getVar( 'lastName', '', 'post' ));
+		$org 		= trim(Request::getVar( 'organization', '', 'post' ));
+		$credit 	= trim(Request::getVar( 'credit', '', 'post' ));
+		$uid 		= trim(Request::getInt( 'uid', 0, 'post' ));
 
 		$regex 		= '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email 		= preg_match($regex, $email) ? $email : '';
@@ -497,7 +497,7 @@ class Authors extends Base
 	 */
 	public function saveItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 
 		// Load classes
 		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );
@@ -518,14 +518,14 @@ class Authors extends Base
 		// Get current owners
 		$owners = $objO->getIds($pub->_project->id, 'all', 1);
 
-		$email 		= \JRequest::getVar( 'email', '', 'post' );
-		$firstName 	= \JRequest::getVar( 'firstName', '', 'post' );
-		$lastName 	= \JRequest::getVar( 'lastName', '', 'post' );
-		$org 		= \JRequest::getVar( 'organization', '', 'post' );
-		$credit 	= \JRequest::getVar( 'credit', '', 'post' );
+		$email 		= Request::getVar( 'email', '', 'post' );
+		$firstName 	= Request::getVar( 'firstName', '', 'post' );
+		$lastName 	= Request::getVar( 'lastName', '', 'post' );
+		$org 		= Request::getVar( 'organization', '', 'post' );
+		$credit 	= Request::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
 		$code 		= \Components\Projects\Helpers\Html::generateCode();
-		$uid 		= \JRequest::getInt( 'uid', 0, 'post' );
+		$uid 		= Request::getInt( 'uid', 0, 'post' );
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
@@ -647,7 +647,7 @@ class Authors extends Base
 	 */
 	public function deleteItem ($manifest, $sequence, $pub, $actor = 0, $elementId = 0, $aid = 0)
 	{
-		$aid = $aid ? $aid : \JRequest::getInt( 'aid', 0 );
+		$aid = $aid ? $aid : Request::getInt( 'aid', 0 );
 
 		// Load classes
 		$row  = new \Components\Publications\Tables\Author( $this->_parent->_db );

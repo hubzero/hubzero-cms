@@ -121,7 +121,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Load component configs
-			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->_config = Component::params('com_projects');
 
 			$database = JFactory::getDBO();
 
@@ -199,7 +199,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Load component configs
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 		$limit = $this->_config->get('sidebox_limit', 3);
 
 		// Get project params
@@ -310,7 +310,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$html = '';
 
 		// Load component configs
-		$this->_config = JComponentHelper::getParams('com_projects');
+		$this->_config = Component::params('com_projects');
 
 		// Get project params
 		$params = new JParameter( $project->params );

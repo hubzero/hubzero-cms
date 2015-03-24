@@ -141,8 +141,6 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	 */
 	public function share($with, $url, $mediaUrl, $publication, $version)
 	{
-		$jconfig = JFactory::getConfig();
-
 		$link = '';
 		$description = $publication->abstract
 			? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
@@ -158,7 +156,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 
 			case 'twitter':
 				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
-						$jconfig->getValue('config.sitename'),
+						Config::get('config.sitename'),
 						stripslashes($publication->title) . ' ' . $url));
 				break;
 

@@ -197,10 +197,10 @@ class License extends Base
 		$objL = new \Components\Publications\Tables\License( $this->_parent->_db );
 
 		// Incoming - license screen agreements
-		$license = \JRequest::getInt( 'license', 0, 'post' );
-		$text 	 = \Hubzero\Utility\Sanitize::clean(\JRequest::getVar( 'license_text', '', 'post'));
-		$agree 	 = \JRequest::getInt( 'agree', 0, 'post');
-		$custom  = \JRequest::getVar( 'substitute', array(), 'request', 'array' );
+		$license = Request::getInt( 'license', 0, 'post' );
+		$text 	 = \Hubzero\Utility\Sanitize::clean(Request::getVar( 'license_text', '', 'post'));
+		$agree 	 = Request::getInt( 'agree', 0, 'post');
+		$custom  = Request::getVar( 'substitute', array(), 'request', 'array' );
 
 		if ($license)
 		{
@@ -270,7 +270,7 @@ class License extends Base
 		}
 
 		// Incoming - selector screen
-		$selections = \JRequest::getVar( 'selecteditems', '');
+		$selections = Request::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
 
 		$i = 0;

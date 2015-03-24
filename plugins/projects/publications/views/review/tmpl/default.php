@@ -79,8 +79,7 @@ $show_gallery 	= ($this->pubconfig->get('show_gallery', 0)) ? 1 : 0;
 $show_notes 	= ($this->pubconfig->get('show_notes', 0)) ? 1 : 0;
 $show_license 	= ($this->pubconfig->get('show_license', 0)) ? 1 : 0;
 
-$jconfig = JFactory::getConfig();
-$sitename = $jconfig->getValue('config.sitename');
+$sitename = Config::get('config.sitename');
 
 // Get access info
 if ($show_access) {

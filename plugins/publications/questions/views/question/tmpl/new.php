@@ -57,7 +57,7 @@ $this->css();
 			<input type="hidden" name="question[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 			<input type="hidden" name="question[email]" value="1" />
 			<input type="hidden" name="question[state]" value="0" />
-			<input type="hidden" name="question[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
+			<input type="hidden" name="question[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
 
 			<label for="field-anonymous">
 				<input class="option" type="checkbox" name="question[anonymous]" id="field-anonymous" value="1" />

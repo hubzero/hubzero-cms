@@ -96,7 +96,7 @@ class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Get pub configs
-		$config = JComponentHelper::getParams( $option );
+		$config = Component::params($option);
 
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{

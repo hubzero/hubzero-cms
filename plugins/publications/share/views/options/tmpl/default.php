@@ -34,13 +34,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css('assets/css/share.css')
      ->js('assets/js/share.js');
 
-$jconfig = JFactory::getConfig();
-
 $i = 1;
 $limit = intval($this->_params->get('icons_limit')) ? $this->_params->get('icons_limit') : 0;
 
 $popup = '<ol class="sharelinks">';
-$title = JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',$jconfig->getValue('config.sitename'),stripslashes($this->publication->title));
+$title = JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING', Config::get('config.sitename'),stripslashes($this->publication->title));
 $metadata  = '<div class="share">'."\n";
 $metadata .= "\t".JText::_('PLG_PUBLICATION_SHARE').': ';
 

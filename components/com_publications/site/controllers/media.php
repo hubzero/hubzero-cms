@@ -51,7 +51,7 @@ class Media extends SiteController
 		if (substr(strtolower($file), 0, 5) == 'image'
 		 || substr(strtolower($file), 0, 4) == 'file')
 		{
-			\JRequest::setVar('task', 'download');
+			Request::setVar('task', 'download');
 		}
 
 		parent::execute();
@@ -65,8 +65,8 @@ class Media extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$pid 	= \JRequest::getInt('id', 0);
-		$vid 	= \JRequest::getInt( 'v', 0 );
+		$pid 	= Request::getInt('id', 0);
+		$vid 	= Request::getInt( 'v', 0 );
 		$source = NULL;
 
 		// Need pub and version ID
@@ -76,7 +76,7 @@ class Media extends SiteController
 		}
 
 		// Get the file name
-		$uri = \JRequest::getVar('REQUEST_URI', '', 'server');
+		$uri = Request::getVar('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));

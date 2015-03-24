@@ -238,11 +238,10 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			$projects = $objP->getRecords($filters, $admin = false, $this->user_id, 0, $setupComplete);
 
 			$juri = JURI::getInstance();
-			$jconfig 	= JFactory::getConfig();
 
 			// Get config
-			$livesite = $jconfig->getValue('config.live_site')
-				? $jconfig->getValue('config.live_site')
+			$livesite = Config::get('config.live_site')
+				? Config::get('config.live_site')
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 			$livesite = trim(preg_replace('/\/api/', '', $juri->base()), DS);
 

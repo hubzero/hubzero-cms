@@ -69,7 +69,7 @@ class Dataselector extends Base
 		$total 			= $master->props['total'];
 
 		// Incoming
-		$activeElement  = \JRequest::getInt( 'el', $showElement );
+		$activeElement  = Request::getInt( 'el', $showElement );
 
 		// Git helper
 		if (!$this->_git)
