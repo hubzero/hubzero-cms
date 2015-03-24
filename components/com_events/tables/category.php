@@ -28,126 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
 
 /**
  * Events table class for category
  */
-class EventsCategory extends JTable
+class Category extends \JTable
 {
-	/**
-	 * int(11) Primary Key
-	 *
-	 * @var integer
-	 */
-	var $id               = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $asset_id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent_id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $lft        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $rgt        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $level        = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $path            = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $extension            = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title            = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $alias            = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description            = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var string
-	 */
-	var $published        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $checked_out      = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $checked_out_time = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var string
-	 */
-	var $access           = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params           = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -169,7 +56,7 @@ class EventsCategory extends JTable
 		// check for valid name
 		if (trim($this->title) == '')
 		{
-			$this->_error = JText::_('EVENTS_CATEGORY_MUST_HAVE_TITLE');
+			$this->_error = Lang::txt('EVENTS_CATEGORY_MUST_HAVE_TITLE');
 			return false;
 		}
 		return true;

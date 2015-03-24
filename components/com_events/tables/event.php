@@ -28,196 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
 
 /**
  * Events table class for an event
  */
-class EventsEvent extends JTable
+class Event extends \JTable
 {
-	/**
-	 * int(12) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id               = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $catid            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $calendar_id      = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var integer
-	 */
-	var $ical_uid         = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var integer
-	 */
-	var $scope            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id         = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title            = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content          = NULL;
-
-	/**
-	 * varchar(120)
-	 *
-	 * @var string
-	 */
-	var $contact_info     = NULL;
-
-	/**
-	 * varchar(120)
-	 *
-	 * @var string
-	 */
-	var $adresse_info     = NULL;
-
-	/**
-	 * varchar(240)
-	 *
-	 * @var string
-	 */
-	var $extra_info       = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $mask             = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by      = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_up       = NULL;
-
-	/**
-	 * varchar(5)
-	 *
-	 * @var string
-	 */
-	var $time_zone        = NULL;
-
-	/**
-	 * varchar(5)
-	 *
-	 * @var string
-	 */
-	var $repeating_rule   = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_down     = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $approved         = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $registerby       = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params           = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $restricted       = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $email            = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -238,16 +55,19 @@ class EventsEvent extends JTable
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('EVENTS_MUST_HAVE_TITLE'));
-			return false;
+			$this->setError(Lang::txt('EVENTS_MUST_HAVE_TITLE'));
 		}
 		if (trim($this->catid) == '' || trim($this->catid) == 0)
 		{
 			if ($this->scope == 'event')
 			{
-				$this->setError(JText::_('EVENTS_MUST_HAVE_CATEGORY'));
-				return false;
+				$this->setError(Lang::txt('EVENTS_MUST_HAVE_CATEGORY'));
 			}
+		}
+
+		if ($this->getError())
+		{
+			return false;
 		}
 		return true;
 	}
@@ -340,18 +160,18 @@ class EventsEvent extends JTable
 				{
 					if ($filters['scope'] == 'event')
 					{
-						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")";
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
 					}
 					else
 					{
-						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
 					}
 				}
 
 				//did we pass in a scope id filter
 				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
 				{
-					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
 				}
 
 				$sql .= " ORDER BY publish_up ASC";
@@ -370,18 +190,18 @@ class EventsEvent extends JTable
 				{
 					if ($filters['scope'] == 'event')
 					{
-						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")";
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
 					}
 					else
 					{
-						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
 					}
 				}
 
 				//did we pass in a scope id filter
 				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
 				{
-					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
 				}
 
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . intval($filters['category']) : "";
@@ -405,18 +225,18 @@ class EventsEvent extends JTable
 					{
 						if ($filters['scope'] == 'event')
 						{
-							$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")";
+							$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
 						}
 						else
 						{
-							$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+							$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
 						}
 					}
 
 					//did we pass in a scope id filter
 					if (isset($filters['scope_id']) && $filters['scope_id'] != '')
 					{
-						$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+						$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
 					}
 
 					$sql .= "ORDER BY publish_up ASC";
@@ -441,18 +261,18 @@ class EventsEvent extends JTable
 				{
 					if ($filters['scope'] == 'event')
 					{
-						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] ) . ")";
+						$sql .= " AND ({$this->_tbl}.scope IS NULL OR {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']) . ")";
 					}
 					else
 					{
-						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote( $filters['scope'] );
+						$sql .= " AND {$this->_tbl}.scope=" . $this->_db->quote($filters['scope']);
 					}
 				}
 
 				//did we pass in a scope id filter
 				if (isset($filters['scope_id']) && $filters['scope_id'] != '')
 				{
-					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+					$sql .= " AND {$this->_tbl}.scope_id=" . $this->_db->quote($filters['scope_id']);
 				}
 
 				$sql .= " ORDER BY publish_up ASC";
@@ -498,7 +318,7 @@ class EventsEvent extends JTable
 		if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0)
 		{
 			$where[] = "a.scope=" . $this->_db->quote('group');
-			$where[] = "a.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+			$where[] = "a.scope_id=" . $this->_db->quote($filters['scope_id']);
 		}
 
 		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
@@ -533,7 +353,7 @@ class EventsEvent extends JTable
 		if (isset($filters['scope_id']) && $filters['scope_id'] != '' && $filters['scope_id'] != 0)
 		{
 			$where[] = "a.scope=" . $this->_db->quote('group');
-			$where[] = "a.scope_id=" . $this->_db->quote( $filters['scope_id'] );
+			$where[] = "a.scope_id=" . $this->_db->quote($filters['scope_id']);
 		}
 
 		$query .= (count($where)) ? " WHERE " . implode(' AND ', $where) : "";
@@ -564,10 +384,10 @@ class EventsEvent extends JTable
 	 * @param      array   $filters
 	 * @return     array
 	 */
-	public function find( $filters = array() )
+	public function find($filters = array())
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -579,10 +399,10 @@ class EventsEvent extends JTable
 	 * @param      array   $filters
 	 * @return     int
 	 */
-	public function count( $filters = array() )
+	public function count($filters = array())
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -594,7 +414,7 @@ class EventsEvent extends JTable
 	 * @param      array   $filters
 	 * @return     string
 	 */
-	private function _buildQuery( $filters = array() )
+	private function _buildQuery($filters = array())
 	{
 		// var to hold conditions
 		$where = array();
@@ -603,13 +423,13 @@ class EventsEvent extends JTable
 		// scope
 		if (isset($filters['scope']))
 		{
-			$where[] = "scope=" . $this->_db->quote( $filters['scope'] );
+			$where[] = "scope=" . $this->_db->quote($filters['scope']);
 		}
 
 		// scope_id
 		if (isset($filters['scope_id']))
 		{
-			$where[] = "scope_id=" . $this->_db->quote( $filters['scope_id'] );
+			$where[] = "scope_id=" . $this->_db->quote($filters['scope_id']);
 		}
 
 		// calendar_id
@@ -621,7 +441,7 @@ class EventsEvent extends JTable
 			}
 			else
 			{
-				$where[] = "calendar_id=" . $this->_db->quote( $filters['calendar_id'] );
+				$where[] = "calendar_id=" . $this->_db->quote($filters['calendar_id']);
 			}
 		}
 
@@ -634,9 +454,9 @@ class EventsEvent extends JTable
 		// publish up/down
 		if (isset($filters['publish_up']) && isset($filters['publish_down']))
 		{
-			$q  = "(publish_up >=" . $this->_db->quote( $filters['publish_up'] );
-			$q .= " OR (publish_down <> '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote( $filters['publish_down'] ) . ")";
-			$q .= " OR (publish_up <= " . $this->_db->quote( $filters['publish_up'] ) . " AND publish_down >=" . $this->_db->quote( $filters['publish_down'] ) . "))";
+			$q  = "(publish_up >=" . $this->_db->quote($filters['publish_up']);
+			$q .= " OR (publish_down <> '0000-00-00 00:00:00' AND publish_down <=" . $this->_db->quote($filters['publish_down']) . ")";
+			$q .= " OR (publish_up <= " . $this->_db->quote($filters['publish_up']) . " AND publish_down >=" . $this->_db->quote($filters['publish_down']) . "))";
 			$where[] = $q;
 		}
 

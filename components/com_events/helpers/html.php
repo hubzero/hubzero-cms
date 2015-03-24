@@ -28,13 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Helpers;
+
+use Lang;
 
 /**
  * Events helper class for misc. HTML
  */
-class EventsHtml
+class Html
 {
 	/**
 	 * Auto-link strings matching URL patterns
@@ -64,7 +65,7 @@ class EventsHtml
 		if (substr($name, 0, 7) == 'mailto:')
 		{
 			$name = substr($name, 7, strlen($name));
-			$name = Eventshtml::obfuscate($name);
+			$name = self::obfuscate($name);
 			$href = 'mailto:' . $name;
 		}
 		$l = sprintf(
@@ -150,21 +151,21 @@ class EventsHtml
 	public static function buildReccurDaySelect($reccurday, $tag_name, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">'.JText::_('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
-			JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_TUESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
+			'<span style="color:red;">'.Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT').'</span>',
+			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
 		);
-		$daynamelist[] = JHTML::_('select.option', '-1', '&nbsp;' . JText::_('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
+		$daynamelist[] = \JHTML::_('select.option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
 		for ($a=0; $a<7; $a++)
 		{
 			$name_of_day = '&nbsp;' . $day_name[$a];
-			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
+			$daynamelist[] = \JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
 		}
-		$tosend = EventsHtml::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
+		$tosend = self::buildRadioOption($daynamelist, $tag_name, $args, 'value', 'text', $reccurday);
 		return $tosend;
 	}
 
@@ -184,10 +185,10 @@ class EventsHtml
 			{
 				$mnh="0" . $mnh;
 			}
-			$name_of_month = EventsHtml::getMonthName($mnh);
-			$monthslist[] = JHTML::_('select.option', $mnh, $name_of_month, 'value', 'text');
+			$name_of_month = self::getMonthName($mnh);
+			$monthslist[] = \JHTML::_('select.option', $mnh, $name_of_month, 'value', 'text');
 		}
-		$tosend = JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
+		$tosend = \JHTML::_('select.genericlist', $monthslist, 'month', $args, 'value', 'text', $month, false, false);
 		return $tosend;
 	}
 
@@ -210,9 +211,9 @@ class EventsHtml
 			{
 				$dys = "0" . $dys;
 			}
-			$dayslist[] = JHTML::_('select.option', $dys, $dys, 'value', 'text');
+			$dayslist[] = \JHTML::_('select.option', $dys, $dys, 'value', 'text');
 		}
-		$tosend = JHTML::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
+		$tosend = \JHTML::_('select.genericlist', $dayslist, 'day', $args, 'value', 'text', $day, false, false);
 		return $tosend;
 	}
 
@@ -228,17 +229,17 @@ class EventsHtml
 		$y = date("Y");
 		if ($year<$y-2)
 		{
-			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
+			$yearslist[] = \JHTML::_('select.option', $year, $year, 'value', 'text');
 		}
 		for ($i=$y-2; $i<=$y+5; $i++)
 		{
-			$yearslist[] = JHTML::_('select.option', $i, $i, 'value', 'text');
+			$yearslist[] = \JHTML::_('select.option', $i, $i, 'value', 'text');
 		}
 		if ($year>$y+5)
 		{
-			$yearslist[] = JHTML::_('select.option', $year, $year, 'value', 'text');
+			$yearslist[] = \JHTML::_('select.option', $year, $year, 'value', 'text');
 		}
-		$tosend = JHTML::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
+		$tosend = \JHTML::_('select.genericlist', $yearslist, 'year', $args, 'value', 'text', $year, false, false);
 		return $tosend;
 	}
 
@@ -251,13 +252,13 @@ class EventsHtml
 	 */
 	public static function buildViewSelect($viewtype, $args)
 	{
-		$viewlist[] = JHTML::_('select.option', 'view_week', JText::_('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
-		$viewlist[] = JHTML::_('select.option', 'view_month', JText::_('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
-		$viewlist[] = JHTML::_('select.option', 'view_year', JText::_('EVENTS_CAL_LANG_VIEWBYYEAR'), 'value', 'text');
-		//$viewlist[] = JHTML::_('select.option', 'view_day', JText::_('EVENTS_CAL_LANG_VIEWBYDAY'), 'value', 'text');
-		//$viewlist[] = JHTML::_('select.option', 'view_cat', JText::_('EVENTS_CAL_LANG_VIEWBYCAT'), 'value', 'text');
-		//$viewlist[] = JHTML::_('select.option', 'view_search', JText::_('EVENTS_SEARCH_TITLE'), 'value', 'text');
-		$tosend = JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
+		$viewlist[] = \JHTML::_('select.option', 'view_week', Lang::txt('EVENTS_CAL_LANG_VIEWBYWEEK'), 'value', 'text');
+		$viewlist[] = \JHTML::_('select.option', 'view_month', Lang::txt('EVENTS_CAL_LANG_VIEWBYMONTH'), 'value', 'text');
+		$viewlist[] = \JHTML::_('select.option', 'view_year', Lang::txt('EVENTS_CAL_LANG_VIEWBYYEAR'), 'value', 'text');
+		//$viewlist[] = \JHTML::_('select.option', 'view_day', Lang::txt('EVENTS_CAL_LANG_VIEWBYDAY'), 'value', 'text');
+		//$viewlist[] = \JHTML::_('select.option', 'view_cat', Lang::txt('EVENTS_CAL_LANG_VIEWBYCAT'), 'value', 'text');
+		//$viewlist[] = \JHTML::_('select.option', 'view_search', Lang::txt('EVENTS_SEARCH_TITLE'), 'value', 'text');
+		$tosend = \JHTML::_('select.genericlist', $viewlist, 'task', $args, 'value', 'text', $viewtype, false, false);
 		return $tosend;
 	}
 
@@ -298,9 +299,9 @@ class EventsHtml
 				$tmpi = $format ? sprintf("$format", $i) : "$i";
 			}
 			$fi = $format ? sprintf("$format", $i) : "$i";
-			$arr[] = JHTML::_('select.option', $fi, $tmpi, 'value', 'text');
+			$arr[] = \JHTML::_('select.option', $fi, $tmpi, 'value', 'text');
 		}
-		return JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false);
+		return \JHTML::_('select.genericlist', $arr, $tag_name, $tag_attribs, 'value', 'text', $selected, false, false);
 	}
 
 	/**
@@ -314,16 +315,16 @@ class EventsHtml
 	 */
 	public static function buildCategorySelect($catid, $args, $gid, $option)
 	{
-		$database = JFactory::getDBO();
+		$database = \JFactory::getDBO();
 
 		$catsql = "SELECT id AS value, title AS text FROM #__categories "
 				. "WHERE extension='$option' AND published='1' ORDER BY lft";
 
-		$categories[] = JHTML::_('select.option', '0', JText::_('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
+		$categories[] = \JHTML::_('select.option', '0', Lang::txt('EVENTS_CAL_LANG_EVENT_CHOOSE_CATEG'), 'value', 'text');
 
 		$database->setQuery($catsql);
 		$categories = array_merge($categories, $database->loadObjectList());
-		$clist = JHTML::_('select.genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
+		$clist = \JHTML::_('select.genericlist', $categories, 'catid', $args, 'value', 'text', $catid, false, false);
 
 		return $clist;
 	}
@@ -338,49 +339,49 @@ class EventsHtml
 	public static function buildTimeZoneSelect($tzselected, $args)
 	{
 		$timezones = array(
-			JHTML::_('select.option', -12,   JText::_('EVENTS_TIME_UTC_-12')),
-			JHTML::_('select.option', -11,   JText::_('EVENTS_TIME_UTC_-11')),
-			JHTML::_('select.option', -10,   JText::_('EVENTS_TIME_UTC_-10')),
-			JHTML::_('select.option', -9.5,  JText::_('EVENTS_TIME_UTC_-930')),
-			JHTML::_('select.option', -9,    JText::_('EVENTS_TIME_UTC_-9')),
-			JHTML::_('select.option', -8,    JText::_('EVENTS_TIME_UTC_-8')),
-			JHTML::_('select.option', -7,    JText::_('EVENTS_TIME_UTC_-7')),
-			JHTML::_('select.option', -6,    JText::_('EVENTS_TIME_UTC_-6')),
-			JHTML::_('select.option', -5,    JText::_('EVENTS_TIME_UTC_-5')),
-			JHTML::_('select.option', -4,    JText::_('EVENTS_TIME_UTC_-4')),
-			JHTML::_('select.option', -4.5,  JText::_('EVENTS_TIME_UTC_-430')),
-			JHTML::_('select.option', -3.5,  JText::_('EVENTS_TIME_UTC_-330')),
-			JHTML::_('select.option', -3,    JText::_('EVENTS_TIME_UTC_-3')),
-			JHTML::_('select.option', -2,    JText::_('EVENTS_TIME_UTC_-2')),
-			JHTML::_('select.option', -1,    JText::_('EVENTS_TIME_UTC_-1')),
-			JHTML::_('select.option', 0,     JText::_('EVENTS_TIME_UTC_0')),
-			JHTML::_('select.option', 1,     JText::_('EVENTS_TIME_UTC_1')),
-			JHTML::_('select.option', 2,     JText::_('EVENTS_TIME_UTC_2')),
-			JHTML::_('select.option', 3,     JText::_('EVENTS_TIME_UTC_3')),
-			JHTML::_('select.option', 3.5,   JText::_('EVENTS_TIME_UTC_330')),
-			JHTML::_('select.option', 4,     JText::_('EVENTS_TIME_UTC_4')),
-			JHTML::_('select.option', 4.5,   JText::_('EVENTS_TIME_UTC_430')),
-			JHTML::_('select.option', 5,     JText::_('EVENTS_TIME_UTC_5')),
-			JHTML::_('select.option', 5.5,   JText::_('EVENTS_TIME_UTC_530')),
-			JHTML::_('select.option', 5.75,  JText::_('EVENTS_TIME_UTC_545')),
-			JHTML::_('select.option', 6,     JText::_('EVENTS_TIME_UTC_6')),
-			JHTML::_('select.option', 6.5,   JText::_('EVENTS_TIME_UTC_630')),
-			JHTML::_('select.option', 7,     JText::_('EVENTS_TIME_UTC_7')),
-			JHTML::_('select.option', 8,     JText::_('EVENTS_TIME_UTC_8')),
-			JHTML::_('select.option', 8.75,  JText::_('EVENTS_TIME_UTC_845')),
-			JHTML::_('select.option', 9,     JText::_('EVENTS_TIME_UTC_9')),
-			JHTML::_('select.option', 9.5,   JText::_('EVENTS_TIME_UTC_930')),
-			JHTML::_('select.option', 10,    JText::_('EVENTS_TIME_UTC_10')),
-			JHTML::_('select.option', 10.5,  JText::_('EVENTS_TIME_UTC_1030')),
-			JHTML::_('select.option', 11,    JText::_('EVENTS_TIME_UTC_11')),
-			JHTML::_('select.option', 11.5,  JText::_('EVENTS_TIME_UTC_1130')),
-			JHTML::_('select.option', 12,    JText::_('EVENTS_TIME_UTC_12')),
-			JHTML::_('select.option', 12.75, JText::_('EVENTS_TIME_UTC_1245')),
-			JHTML::_('select.option', 13,    JText::_('EVENTS_TIME_UTC_13')),
-			JHTML::_('select.option', 14,    JText::_('EVENTS_TIME_UTC_14')),
+			\JHTML::_('select.option', -12,   Lang::txt('EVENTS_TIME_UTC_-12')),
+			\JHTML::_('select.option', -11,   Lang::txt('EVENTS_TIME_UTC_-11')),
+			\JHTML::_('select.option', -10,   Lang::txt('EVENTS_TIME_UTC_-10')),
+			\JHTML::_('select.option', -9.5,  Lang::txt('EVENTS_TIME_UTC_-930')),
+			\JHTML::_('select.option', -9,    Lang::txt('EVENTS_TIME_UTC_-9')),
+			\JHTML::_('select.option', -8,    Lang::txt('EVENTS_TIME_UTC_-8')),
+			\JHTML::_('select.option', -7,    Lang::txt('EVENTS_TIME_UTC_-7')),
+			\JHTML::_('select.option', -6,    Lang::txt('EVENTS_TIME_UTC_-6')),
+			\JHTML::_('select.option', -5,    Lang::txt('EVENTS_TIME_UTC_-5')),
+			\JHTML::_('select.option', -4,    Lang::txt('EVENTS_TIME_UTC_-4')),
+			\JHTML::_('select.option', -4.5,  Lang::txt('EVENTS_TIME_UTC_-430')),
+			\JHTML::_('select.option', -3.5,  Lang::txt('EVENTS_TIME_UTC_-330')),
+			\JHTML::_('select.option', -3,    Lang::txt('EVENTS_TIME_UTC_-3')),
+			\JHTML::_('select.option', -2,    Lang::txt('EVENTS_TIME_UTC_-2')),
+			\JHTML::_('select.option', -1,    Lang::txt('EVENTS_TIME_UTC_-1')),
+			\JHTML::_('select.option', 0,     Lang::txt('EVENTS_TIME_UTC_0')),
+			\JHTML::_('select.option', 1,     Lang::txt('EVENTS_TIME_UTC_1')),
+			\JHTML::_('select.option', 2,     Lang::txt('EVENTS_TIME_UTC_2')),
+			\JHTML::_('select.option', 3,     Lang::txt('EVENTS_TIME_UTC_3')),
+			\JHTML::_('select.option', 3.5,   Lang::txt('EVENTS_TIME_UTC_330')),
+			\JHTML::_('select.option', 4,     Lang::txt('EVENTS_TIME_UTC_4')),
+			\JHTML::_('select.option', 4.5,   Lang::txt('EVENTS_TIME_UTC_430')),
+			\JHTML::_('select.option', 5,     Lang::txt('EVENTS_TIME_UTC_5')),
+			\JHTML::_('select.option', 5.5,   Lang::txt('EVENTS_TIME_UTC_530')),
+			\JHTML::_('select.option', 5.75,  Lang::txt('EVENTS_TIME_UTC_545')),
+			\JHTML::_('select.option', 6,     Lang::txt('EVENTS_TIME_UTC_6')),
+			\JHTML::_('select.option', 6.5,   Lang::txt('EVENTS_TIME_UTC_630')),
+			\JHTML::_('select.option', 7,     Lang::txt('EVENTS_TIME_UTC_7')),
+			\JHTML::_('select.option', 8,     Lang::txt('EVENTS_TIME_UTC_8')),
+			\JHTML::_('select.option', 8.75,  Lang::txt('EVENTS_TIME_UTC_845')),
+			\JHTML::_('select.option', 9,     Lang::txt('EVENTS_TIME_UTC_9')),
+			\JHTML::_('select.option', 9.5,   Lang::txt('EVENTS_TIME_UTC_930')),
+			\JHTML::_('select.option', 10,    Lang::txt('EVENTS_TIME_UTC_10')),
+			\JHTML::_('select.option', 10.5,  Lang::txt('EVENTS_TIME_UTC_1030')),
+			\JHTML::_('select.option', 11,    Lang::txt('EVENTS_TIME_UTC_11')),
+			\JHTML::_('select.option', 11.5,  Lang::txt('EVENTS_TIME_UTC_1130')),
+			\JHTML::_('select.option', 12,    Lang::txt('EVENTS_TIME_UTC_12')),
+			\JHTML::_('select.option', 12.75, Lang::txt('EVENTS_TIME_UTC_1245')),
+			\JHTML::_('select.option', 13,    Lang::txt('EVENTS_TIME_UTC_13')),
+			\JHTML::_('select.option', 14,    Lang::txt('EVENTS_TIME_UTC_14')),
 		);
 
-		return JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
+		return \JHTML::_('select.genericlist', $timezones, 'time_zone', $args, 'value', 'text', $tzselected);
 	}
 
 	/**
@@ -392,46 +393,46 @@ class EventsHtml
 	public static function getTimeZoneName($tz)
 	{
 		$timezones = array(
-			"-12"   => JText::_('EVENTS_TIME_UTC_-12'),
-			"-11"   => JText::_('EVENTS_TIME_UTC_-11'),
-			"-10"   => JText::_('EVENTS_TIME_UTC_-10'),
-			"-9.5"  => JText::_('EVENTS_TIME_UTC_-930'),
-			"-9"    => JText::_('EVENTS_TIME_UTC_-9'),
-			"-8"    => JText::_('EVENTS_TIME_UTC_-8'),
-			"-7"    => JText::_('EVENTS_TIME_UTC_-7'),
-			"-6"    => JText::_('EVENTS_TIME_UTC_-6'),
-			"-5"    => JText::_('EVENTS_TIME_UTC_-5'),
-			"-4"    => JText::_('EVENTS_TIME_UTC_-4'),
-			"-4.5"  => JText::_('EVENTS_TIME_UTC_-430'),
-			"-3.5"  => JText::_('EVENTS_TIME_UTC_-330'),
-			"-3"    => JText::_('EVENTS_TIME_UTC_-3'),
-			"-2"    => JText::_('EVENTS_TIME_UTC_-2'),
-			"-1"    => JText::_('EVENTS_TIME_UTC_-1'),
-			"0"     => JText::_('EVENTS_TIME_UTC_0'),
-			"1"     => JText::_('EVENTS_TIME_UTC_1'),
-			"2"     => JText::_('EVENTS_TIME_UTC_2'),
-			"3"     => JText::_('EVENTS_TIME_UTC_3'),
-			"3.5"   => JText::_('EVENTS_TIME_UTC_330'),
-			"4"     => JText::_('EVENTS_TIME_UTC_4'),
-			"4.5"   => JText::_('EVENTS_TIME_UTC_430'),
-			"5"     => JText::_('EVENTS_TIME_UTC_5'),
-			"5.5"   => JText::_('EVENTS_TIME_UTC_530'),
-			"5.75"  => JText::_('EVENTS_TIME_UTC_545'),
-			"6"     => JText::_('EVENTS_TIME_UTC_6'),
-			"6.5"   => JText::_('EVENTS_TIME_UTC_630'),
-			"7"     => JText::_('EVENTS_TIME_UTC_7'),
-			"8"     => JText::_('EVENTS_TIME_UTC_8'),
-			"8.75"  => JText::_('EVENTS_TIME_UTC_845'),
-			"9"     => JText::_('EVENTS_TIME_UTC_9'),
-			"9.5"   => JText::_('EVENTS_TIME_UTC_930'),
-			"10"    => JText::_('EVENTS_TIME_UTC_10'),
-			"10.5"  => JText::_('EVENTS_TIME_UTC_1030'),
-			"11"    => JText::_('EVENTS_TIME_UTC_11'),
-			"11.5"  => JText::_('EVENTS_TIME_UTC_1130'),
-			"12"    => JText::_('EVENTS_TIME_UTC_12'),
-			"12.75" => JText::_('EVENTS_TIME_UTC_1245'),
-			"13"    => JText::_('EVENTS_TIME_UTC_13'),
-			"14"    => JText::_('EVENTS_TIME_UTC_14')
+			"-12"   => Lang::txt('EVENTS_TIME_UTC_-12'),
+			"-11"   => Lang::txt('EVENTS_TIME_UTC_-11'),
+			"-10"   => Lang::txt('EVENTS_TIME_UTC_-10'),
+			"-9.5"  => Lang::txt('EVENTS_TIME_UTC_-930'),
+			"-9"    => Lang::txt('EVENTS_TIME_UTC_-9'),
+			"-8"    => Lang::txt('EVENTS_TIME_UTC_-8'),
+			"-7"    => Lang::txt('EVENTS_TIME_UTC_-7'),
+			"-6"    => Lang::txt('EVENTS_TIME_UTC_-6'),
+			"-5"    => Lang::txt('EVENTS_TIME_UTC_-5'),
+			"-4"    => Lang::txt('EVENTS_TIME_UTC_-4'),
+			"-4.5"  => Lang::txt('EVENTS_TIME_UTC_-430'),
+			"-3.5"  => Lang::txt('EVENTS_TIME_UTC_-330'),
+			"-3"    => Lang::txt('EVENTS_TIME_UTC_-3'),
+			"-2"    => Lang::txt('EVENTS_TIME_UTC_-2'),
+			"-1"    => Lang::txt('EVENTS_TIME_UTC_-1'),
+			"0"     => Lang::txt('EVENTS_TIME_UTC_0'),
+			"1"     => Lang::txt('EVENTS_TIME_UTC_1'),
+			"2"     => Lang::txt('EVENTS_TIME_UTC_2'),
+			"3"     => Lang::txt('EVENTS_TIME_UTC_3'),
+			"3.5"   => Lang::txt('EVENTS_TIME_UTC_330'),
+			"4"     => Lang::txt('EVENTS_TIME_UTC_4'),
+			"4.5"   => Lang::txt('EVENTS_TIME_UTC_430'),
+			"5"     => Lang::txt('EVENTS_TIME_UTC_5'),
+			"5.5"   => Lang::txt('EVENTS_TIME_UTC_530'),
+			"5.75"  => Lang::txt('EVENTS_TIME_UTC_545'),
+			"6"     => Lang::txt('EVENTS_TIME_UTC_6'),
+			"6.5"   => Lang::txt('EVENTS_TIME_UTC_630'),
+			"7"     => Lang::txt('EVENTS_TIME_UTC_7'),
+			"8"     => Lang::txt('EVENTS_TIME_UTC_8'),
+			"8.75"  => Lang::txt('EVENTS_TIME_UTC_845'),
+			"9"     => Lang::txt('EVENTS_TIME_UTC_9'),
+			"9.5"   => Lang::txt('EVENTS_TIME_UTC_930'),
+			"10"    => Lang::txt('EVENTS_TIME_UTC_10'),
+			"10.5"  => Lang::txt('EVENTS_TIME_UTC_1030'),
+			"11"    => Lang::txt('EVENTS_TIME_UTC_11'),
+			"11.5"  => Lang::txt('EVENTS_TIME_UTC_1130'),
+			"12"    => Lang::txt('EVENTS_TIME_UTC_12'),
+			"12.75" => Lang::txt('EVENTS_TIME_UTC_1245'),
+			"13"    => Lang::txt('EVENTS_TIME_UTC_13'),
+			"14"    => Lang::txt('EVENTS_TIME_UTC_14')
 		);
 
 		if (array_key_exists($tz, $timezones))
@@ -451,13 +452,13 @@ class EventsHtml
 	public static function buildWeekDaysCheck($reccurweekdays, $args)
 	{
 		$day_name = array(
-			'<span style="color:red;">' . JText::_('EVENTS_CAL_LANG_SUNDAYSHORT') . '</span>',
-			JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_TUESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
+			'<span style="color:red;">' . Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT') . '</span>',
+			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
 		);
 		$tosend = '';
 		if ($reccurweekdays == '')
@@ -497,11 +498,11 @@ class EventsHtml
 	{
 		$week_name = array(
 			'',
-			JText::_('EVENTS_CAL_LANG_REP_WEEK') . ' 1',
-			JText::_('EVENTS_CAL_LANG_REP_WEEK') . ' 2',
-			JText::_('EVENTS_CAL_LANG_REP_WEEK') . ' 3',
-			JText::_('EVENTS_CAL_LANG_REP_WEEK') . ' 4',
-			JText::_('EVENTS_CAL_LANG_REP_WEEK') . ' 5'
+			Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 1',
+			Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 2',
+			Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 3',
+			Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 4',
+			Lang::txt('EVENTS_CAL_LANG_REP_WEEK') . ' 5'
 		);
 		$tosend = '';
 		$checked = '';
@@ -548,7 +549,7 @@ class EventsHtml
 		$agenda_viewmail = _CAL_CONF_MAILVIEW;
 		if ($userid)
 		{
-			$juser = JUser::getInstance($userid);
+			$juser = \JUser::getInstance($userid);
 
 			if ($juser)
 			{
@@ -564,7 +565,7 @@ class EventsHtml
 		}
 		else
 		{
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
 			$userdet = $database->loadResult();
 			if ($userdet)
@@ -573,7 +574,7 @@ class EventsHtml
 			}
 			else
 			{
-				$contactlink = JText::_('EVENTS_CAL_LANG_ANONYME');
+				$contactlink = Lang::txt('EVENTS_CAL_LANG_ANONYME');
 			}
 		}
 
@@ -591,18 +592,18 @@ class EventsHtml
 		$monthname = '';
 		switch ($month)
 		{
-			case '01': $monthname = JText::_('EVENTS_CAL_LANG_JANUARY');   break;
-			case '02': $monthname = JText::_('EVENTS_CAL_LANG_FEBRUARY');  break;
-			case '03': $monthname = JText::_('EVENTS_CAL_LANG_MARCH');     break;
-			case '04': $monthname = JText::_('EVENTS_CAL_LANG_APRIL');     break;
-			case '05': $monthname = JText::_('EVENTS_CAL_LANG_MAY');       break;
-			case '06': $monthname = JText::_('EVENTS_CAL_LANG_JUNE');      break;
-			case '07': $monthname = JText::_('EVENTS_CAL_LANG_JULY');      break;
-			case '08': $monthname = JText::_('EVENTS_CAL_LANG_AUGUST');    break;
-			case '09': $monthname = JText::_('EVENTS_CAL_LANG_SEPTEMBER'); break;
-			case '10': $monthname = JText::_('EVENTS_CAL_LANG_OCTOBER');   break;
-			case '11': $monthname = JText::_('EVENTS_CAL_LANG_NOVEMBER');  break;
-			case '12': $monthname = JText::_('EVENTS_CAL_LANG_DECEMBER');  break;
+			case '01': $monthname = Lang::txt('EVENTS_CAL_LANG_JANUARY');   break;
+			case '02': $monthname = Lang::txt('EVENTS_CAL_LANG_FEBRUARY');  break;
+			case '03': $monthname = Lang::txt('EVENTS_CAL_LANG_MARCH');     break;
+			case '04': $monthname = Lang::txt('EVENTS_CAL_LANG_APRIL');     break;
+			case '05': $monthname = Lang::txt('EVENTS_CAL_LANG_MAY');       break;
+			case '06': $monthname = Lang::txt('EVENTS_CAL_LANG_JUNE');      break;
+			case '07': $monthname = Lang::txt('EVENTS_CAL_LANG_JULY');      break;
+			case '08': $monthname = Lang::txt('EVENTS_CAL_LANG_AUGUST');    break;
+			case '09': $monthname = Lang::txt('EVENTS_CAL_LANG_SEPTEMBER'); break;
+			case '10': $monthname = Lang::txt('EVENTS_CAL_LANG_OCTOBER');   break;
+			case '11': $monthname = Lang::txt('EVENTS_CAL_LANG_NOVEMBER');  break;
+			case '12': $monthname = Lang::txt('EVENTS_CAL_LANG_DECEMBER');  break;
 		}
 		return $monthname;
 	}
@@ -618,13 +619,13 @@ class EventsHtml
 		$dayname = '';
 		switch ($daynb)
 		{
-			case '0': $dayname = JText::_('EVENTS_CAL_LANG_SUNDAY');    break;
-			case '1': $dayname = JText::_('EVENTS_CAL_LANG_MONDAY');    break;
-			case '2': $dayname = JText::_('EVENTS_CAL_LANG_TUESDAY');   break;
-			case '3': $dayname = JText::_('EVENTS_CAL_LANG_WEDNESDAY'); break;
-			case '4': $dayname = JText::_('EVENTS_CAL_LANG_THURSDAY');  break;
-			case '5': $dayname = JText::_('EVENTS_CAL_LANG_FRIDAY');    break;
-			case '6': $dayname = JText::_('EVENTS_CAL_LANG_SATURDAY');  break;
+			case '0': $dayname = Lang::txt('EVENTS_CAL_LANG_SUNDAY');    break;
+			case '1': $dayname = Lang::txt('EVENTS_CAL_LANG_MONDAY');    break;
+			case '2': $dayname = Lang::txt('EVENTS_CAL_LANG_TUESDAY');   break;
+			case '3': $dayname = Lang::txt('EVENTS_CAL_LANG_WEDNESDAY'); break;
+			case '4': $dayname = Lang::txt('EVENTS_CAL_LANG_THURSDAY');  break;
+			case '5': $dayname = Lang::txt('EVENTS_CAL_LANG_FRIDAY');    break;
+			case '6': $dayname = Lang::txt('EVENTS_CAL_LANG_SATURDAY');  break;
 		}
 		return $dayname;
 	}
@@ -668,17 +669,17 @@ class EventsHtml
 				if ($format_type == 0)
 				{
 					// Fr style : Monday 23 Juillet 2003
-					$newdate = EventsHtml::getLongDayName($numero_jour) . '&nbsp;' . $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = self::getLongDayName($numero_jour) . '&nbsp;' . $jour_fr . '&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 				else if ($format_type == 1)
 				{
 					// Us style : Monday, July 23 2003
-					$newdate = EventsHtml::getLongDayName($numero_jour) . ',&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $jour_fr . '&nbsp;' . $annee;
+					$newdate = self::getLongDayName($numero_jour) . ',&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $jour_fr . '&nbsp;' . $annee;
 				}
 				else
 				{
 					// De style : Montag, 23 Juli 2003
-					$newdate = EventsHtml::getLongDayName($numero_jour) . ',&nbsp;' . $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = self::getLongDayName($numero_jour) . ',&nbsp;' . $jour_fr . '.&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 			break;
 
@@ -686,17 +687,17 @@ class EventsHtml
 				if ($format_type == 0)
 				{
 					// Fr style : 23 Juillet 2003
-					$newdate = $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = $jour_fr . '&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 				else if ($format_type == 1)
 				{
 					// Us style : July 23, 2003
-					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $jour_fr . ',&nbsp;' . $annee;
+					$newdate = self::getMonthName($mois_0) . '&nbsp;' . $jour_fr . ',&nbsp;' . $annee;
 				}
 				else
 				{
 					// De style : 23. Juli 2003
-					$newdate = $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = $jour_fr . '.&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 			break;
 
@@ -704,17 +705,17 @@ class EventsHtml
 				if ($format_type == 0)
 				{
 					// Fr style : 23 Juillet
-					$newdate = $jour_fr . '&nbsp;' . EventsHtml::getMonthName($mois_0);
+					$newdate = $jour_fr . '&nbsp;' . self::getMonthName($mois_0);
 				}
 				else if ($format_type == 1)
 				{
 					// Us style : Juillet, 23
-					$newdate = EventsHtml::getMonthName($mois_0) . ',&nbsp;' . $jour_fr;
+					$newdate = self::getMonthName($mois_0) . ',&nbsp;' . $jour_fr;
 				}
 				else
 				{
 					// De style : 23. Juli
-					$newdate = $jour_fr . '.&nbsp;' . EventsHtml::getMonthName($mois_0);
+					$newdate = $jour_fr . '.&nbsp;' . self::getMonthName($mois_0);
 				}
 			break;
 
@@ -722,17 +723,17 @@ class EventsHtml
 				if ($format_type == 0)
 				{
 					// Fr style : Juillet 2003
-					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 				else if ($format_type == 1)
 				{
 					// Us style : Juillet 2003
-					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 				else
 				{
 					// De style : Juli 2003
-					$newdate = EventsHtml::getMonthName($mois_0) . '&nbsp;' . $annee;
+					$newdate = self::getMonthName($mois_0) . '&nbsp;' . $annee;
 				}
 			break;
 

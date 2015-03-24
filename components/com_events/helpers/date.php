@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Helpers;
 
 /**
  * Events helper class for a date
@@ -41,42 +40,42 @@ class EventsDate
 	 *
 	 * @var number
 	 */
-	var $year   = NULL;
+	public $year   = NULL;
 
 	/**
 	 * Month
 	 *
 	 * @var number
 	 */
-	var $month  = NULL;
+	public $month  = NULL;
 
 	/**
 	 * Day
 	 *
 	 * @var unknown
 	 */
-	var $day    = NULL;
+	public $day    = NULL;
 
 	/**
 	 * Hour
 	 *
 	 * @var integer
 	 */
-	var $hour   = NULL;
+	public $hour   = NULL;
 
 	/**
 	 * Minute
 	 *
 	 * @var integer
 	 */
-	var $minute = NULL;
+	public $minute = NULL;
 
 	/**
 	 * Second
 	 *
 	 * @var integer
 	 */
-	var $second = NULL;
+	public $second = NULL;
 
 	/**
 	 * Constructor
@@ -84,7 +83,7 @@ class EventsDate
 	 * @param      string $datetime Timestamp (0000-00-00 00:00:00)
 	 * @return     void
 	 */
-    public function EventsDate($datetime='')
+	public function __construct($datetime='')
 	{
 		if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $datetime, $regs))
 		{
@@ -127,7 +126,7 @@ class EventsDate
 
 		$this->day = max(1, $this->day);
 		$this->day = min($this->daysInMonth(), $this->day);
-    }
+	}
 
 	/**
 	 * Get the year
@@ -138,7 +137,7 @@ class EventsDate
 	public function getYear($asString=false)
 	{
 		return $asString ? sprintf("%04d", $this->year) : $this->year;
-    }
+	}
 
 	/**
 	 * Get the month
@@ -149,7 +148,7 @@ class EventsDate
 	public function getMonth($asString=false)
 	{
 		return $asString ? sprintf("%02d", $this->month) : $this->month;
-    }
+	}
 
 	/**
 	 * Get the day
@@ -160,7 +159,7 @@ class EventsDate
 	public function getDay($asString=false)
 	{
 		return $asString ? sprintf("%02d", $this->day) : $this->day;
-    }
+	}
 
 	/**
 	 * Get the 12 hour time (am/pm)
@@ -218,7 +217,7 @@ class EventsDate
 		}
 
 		return $url;
-    }
+	}
 
 	/**
 	 * Calculate the number of days in the month

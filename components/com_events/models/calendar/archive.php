@@ -28,13 +28,22 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Models\Calendar;
+
+use Components\Events\Models\Calendar;
+use Components\Events\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
+use DateTimezone;
+use DateTime;
 
 // include calendar model
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar.php';
+require_once dirname(__DIR__) . DS . 'calendar.php';
 
-class EventsModelCalendarArchive extends \Hubzero\Base\Model
+/**
+ * Calendar archive model
+ */
+class Archive extends Model
 {
 	/**
 	 * \Hubzero\Base\ItemList
@@ -52,7 +61,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 	public function __construct()
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 	}
 
 	/**
@@ -91,17 +100,17 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		{
 			case 'list':
 			default:
-				if (!($this->_calendars instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_calendars instanceof ItemList) || $clear)
 				{
-					$tbl = new EventsCalendar($this->_db);
+					$tbl = new Tables\Calendar($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new EventsModelCalendar($result);
+							$results[$key] = new Calendar($result);
 						}
 					}
-					$this->_calendars = new \Hubzero\Base\Model\ItemList($results);
+					$this->_calendars = new ItemList($results);
 				}
 				return $this->_calendars;
 			break;
@@ -116,17 +125,17 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 	public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)
 	{
 		// get request varse
-		$calendarIds = JRequest::getVar('calendar_id','','get');
+		$calendarIds = Request::getVar('calendar_id','','get');
 		$calendarIds = array_map("intval", explode(',', $calendarIds));
 
 		// array to hold events
-		$events = new \Hubzero\Base\ItemList();
+		$events = new ItemList();
 
 		// loop through and get each calendar
 		foreach ($calendarIds as $k => $calendarId)
 		{
 			// load calendar model
-			$eventsCalendar = new EventsModelCalendar($calendarId);
+			$eventsCalendar = new Calendar($calendarId);
 
 			// make sure calendar is published
 			if (!$eventsCalendar->get('published') && $calendarId != 0)
@@ -158,11 +167,11 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 
 		// get daylight start and end
 		$ttz = new DateTimezone(timezone_name_from_abbr('EST'));
-		$first = JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
-		$last = JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
+		$first = \JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
+		$last = \JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
 		$transitions = $ttz->getTransitions($first, $last);
-		$daylightStart = JFactory::getDate($transitions[1]['ts']);
-		$daylightEnd = JFactory::getDate($transitions[2]['ts']);
+		$daylightStart = \JFactory::getDate($transitions[1]['ts']);
+		$daylightEnd = \JFactory::getDate($transitions[2]['ts']);
 
 		// output timezone block
 		$output .= "BEGIN:VTIMEZONE\r\n";
@@ -196,7 +205,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 
 			// get event timezone setting
 			// use this in "DTSTART;TZID="
-			$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
+			$tzInfo = \plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
 			$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 
 			// get publish up/down dates in UTC
@@ -208,8 +217,8 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 			// ----------------------------------------------------------------------------------
 			// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
 			// adjust date/time display according to that timezone and their systems timezone setting
-			$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-			$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+			$publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
+			$publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
 
 			// create now, created, and modified vars
 			$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
@@ -260,7 +269,7 @@ class EventsModelCalendarArchive extends \Hubzero\Base\Model
 		// set headers and output
 		header('Content-type: text/calendar; charset=utf-8');
 		header('Content-Disposition: attachment; filename="'. $name .'.ics"');
-		header('Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT');
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		echo $output;
 		exit();
 	}

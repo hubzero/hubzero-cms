@@ -27,92 +27,13 @@
  * @license   GNU General Public License, version 2 (GPLv2)
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
 
 /**
  * Table class for event pages
  */
-class EventsCalendar extends JTable
+class Calendar extends \JTable
 {
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id             = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id       = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title          = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url            = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $color          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $published      = NULL;
-
-	/**
-	 * tinyint
-	 *
-	 * @var string
-	 */
-	var $readonly       = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $last_fetched   = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $last_fetched_attempt = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $failed_attempts     = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -133,7 +54,7 @@ class EventsCalendar extends JTable
 	{
 		if (!isset($this->title) || $this->title == '')
 		{
-			$this->setError(JText::_('COM_EVENTS_CALENDAR_MUST_HAVE_TITLE'));
+			$this->setError(Lang::txt('COM_EVENTS_CALENDAR_MUST_HAVE_TITLE'));
 			return false;
 		}
 		return true;
@@ -145,10 +66,10 @@ class EventsCalendar extends JTable
 	 * @param      array   $filters
 	 * @return     array
 	 */
-	public function find( $filters = array() )
+	public function find($filters = array())
 	{
 		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -160,10 +81,10 @@ class EventsCalendar extends JTable
 	 * @param      array   $filters
 	 * @return     int
 	 */
-	public function count( $filters = array() )
+	public function count($filters = array())
 	{
 		$sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql .= $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -175,7 +96,7 @@ class EventsCalendar extends JTable
 	 * @param      array   $filters
 	 * @return     string
 	 */
-	private function _buildQuery( $filters = array() )
+	private function _buildQuery($filters = array())
 	{
 		// var to hold conditions
 		$where = array();
@@ -184,19 +105,19 @@ class EventsCalendar extends JTable
 		// scope
 		if (isset($filters['scope']))
 		{
-			$where[] = "scope=" . $this->_db->quote( $filters['scope'] );
+			$where[] = "scope=" . $this->_db->quote($filters['scope']);
 		}
 
 		// scope_id
 		if (isset($filters['scope_id']))
 		{
-			$where[] = "scope_id=" . $this->_db->quote( $filters['scope_id'] );
+			$where[] = "scope_id=" . $this->_db->quote($filters['scope_id']);
 		}
 
 		// readonly
 		if (isset($filters['readonly']))
 		{
-			$where[] = "readonly=" . $this->_db->quote( $filters['readonly'] );
+			$where[] = "readonly=" . $this->_db->quote($filters['readonly']);
 		}
 
 		// published

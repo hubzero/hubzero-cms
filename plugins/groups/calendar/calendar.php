@@ -257,7 +257,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->params       = $this->params;
 
 		//get calendars
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber'),
@@ -267,7 +267,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$jconfig = JFactory::getConfig();
 
 		// event calendar model
-		$eventsCalendar = EventsModelCalendar::getInstance();
+		$eventsCalendar = \Components\Events\Models\Calendar::getInstance();
 
 		//define our filters
 		$view->filters = array(
@@ -315,7 +315,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$sources = array();
 
 		// get calendars
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber'),
@@ -366,7 +366,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$end->modify('-1 second');
 
 		// get calendar events
-		$eventsCalendar = EventsModelCalendar::getInstance();
+		$eventsCalendar = \Components\Events\Models\Calendar::getInstance();
 		$rawEvents = $eventsCalendar->events('list', array(
 			'scope'        => 'group',
 			'scope_id'     => $this->group->get('gidNumber'),
@@ -501,10 +501,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getInt('event_id', 0, 'get');
 
 		//load event data
-		$view->event = new EventsModelEvent($eventId);
+		$view->event = new \Components\Events\Models\Event($eventId);
 
 		//get calendars
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$view->calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber'),
@@ -552,7 +552,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load com_events params file for registration fields
 		$view->registrationFields = new JParameter(
 			$view->event->get('params'),
-			JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
+			JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'events.xml'
 		);
 
 		//are we passing an events array back from save
@@ -668,7 +668,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//instantiate new event object
-		$eventsModelEvent = new EventsModelEvent();
+		$eventsModelEvent = new \Components\Events\Models\Event();
 
 		// attempt to bind
 		if (!$eventsModelEvent->bind($event))
@@ -759,7 +759,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//load event data
-		$eventsModelEvent = new EventsModelEvent($eventId);
+		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
 
 		// check to see if user has the right permissions to delete
 		if ($this->juser->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager')
@@ -828,7 +828,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//load event data
-		$view->event = new EventsModelEvent( $eventId );
+		$view->event = new \Components\Events\Models\Event( $eventId );
 
 		// make sure we have event
 		if (!$view->event->get('id'))
@@ -842,11 +842,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//get registrants count
-		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
+		$eventsRespondent = new \Components\Events\Tables\Respondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getCount();
 
 		//get calendar
-		$view->calendar = EventsModelCalendar::getInstance($view->event->get('calendar_id'));
+		$view->calendar = \Components\Events\Models\Calendar::getInstance($view->event->get('calendar_id'));
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -880,7 +880,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		// load & export event
-		$eventsModelEvent = new EventsModelEvent( $eventId );
+		$eventsModelEvent = new \Components\Events\Models\Event( $eventId );
 		$eventsModelEvent->export();
 	}
 
@@ -937,7 +937,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		// load & subscribe to the calendar archive
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$subscriptionName = '[' . JFactory::getConfig()->getValue('sitename') . '] Group Calendar: ' . $this->group->get('description');
 		$eventsCalendarArchive->subscribe($subscriptionName, 'group', $this->group->get('gidNumber'));
 	}
@@ -1011,7 +1011,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function import()
 	{
 		//include icalendar file reader
-		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
+		require_once __DIR__ . DS . 'icalparser.php';
 
 		//get incoming
 		$file = JRequest::getVar('import', array(), 'files');
@@ -1074,10 +1074,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','');
 
 		//load event data
-		$view->event = new EventsModelEvent( $eventId );
+		$view->event = new \Components\Events\Models\Event( $eventId );
 
 		//get registrants count
-		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
+		$eventsRespondent = new \Components\Events\Tables\Respondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getCount();
 
 		//do we have a registration deadline
@@ -1180,7 +1180,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$event_id   = JRequest::getInt('event_id', NULL, 'post');
 
 		//load event data
-		$event = new EventsModelEvent( $event_id );
+		$event = new \Components\Events\Models\Event( $event_id );
 
 		// get event params
 		$params = new JRegistry($event->get('params'));
@@ -1215,7 +1215,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			}
 
 			// check to make sure this is the only time registering
-			if (EventsRespondent::checkUniqueEmailForEvent($register['email'], $event_id) > 0)
+			if (\Components\Events\Tables\Respondent::checkUniqueEmailForEvent($register['email'], $event_id) > 0)
 			{
 				$errors[] = JText::_('You have previously registered for this event.');
 			}
@@ -1236,7 +1236,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		//set data for saving
-		$eventsRespondent                       = new EventsRespondent( array() );
+		$eventsRespondent                       = new \Components\Events\Tables\Respondent( array() );
 		$eventsRespondent->event_id             = $event_id;
 		$eventsRespondent->registered           = JFactory::getDate()->toSql();
 		$eventsRespondent->arrival              = $arrival['day'] . ' ' . $arrival['time'];
@@ -1275,7 +1275,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$this->database->query();
 
 		//load event we are registering for
-		$eventsEvent = new EventsEvent( $this->database );
+		$eventsEvent = new \Components\Events\Tables\Event( $this->database );
 		$eventsEvent->load( $event_id );
 
 		// send a copy to event admin
@@ -1389,11 +1389,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//load event data
-		$view->event = new EventsEvent( $this->database );
+		$view->event = new \Components\Events\Tables\Event( $this->database );
 		$view->event->load( $eventId );
 
 		//get registrants count
-		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
+		$eventsRespondent = new \Components\Events\Tables\Respondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getRecords();
 
 		//push some vars to the view
@@ -1429,7 +1429,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$eventId = JRequest::getVar('event_id','','get');
 
 		//get registrants count
-		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
+		$eventsRespondent = new \Components\Events\Tables\Respondent( array('id' => $eventId ) );
 		$registrants = $eventsRespondent->getRecords();
 
 		//var to hold output
@@ -1535,7 +1535,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function calendars()
 	{
 		//get calendars
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber')
@@ -1606,7 +1606,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		);
 
 		// get the calendar
-		$view->calendar = EventsModelcalendar::getInstance($calendarId);
+		$view->calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -1641,7 +1641,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarInput = JRequest::getVar('calendar',array());
 
 		// get the calendar
-		$calendar = EventsModelcalendar::getInstance($calendarInput['id']);
+		$calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
 
 		//add scope and scope id to calendar array
 		$calendarInput['scope']    = 'group';
@@ -1703,7 +1703,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$deleteEvents = ($events == 'delete') ? true : false;
 
 		// get the calendar
-		$calendar = EventsModelcalendar::getInstance($calendarId);
+		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
 
 		//delete the calendar
 		$calendar->delete($deleteEvents);
@@ -1725,7 +1725,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$calendarId = JRequest::getVar('calendar_id','');
 
 		// get the calendar
-		$calendar = EventsModelcalendar::getInstance($calendarId);
+		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
 
 		// refresh Calendar (force refresh even if we dont need to yet)
 		if (!$calendar->refresh(true))
@@ -1752,7 +1752,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function refreshCalendars()
 	{
 		//get calendars
-		$eventsCalendarArchive = EventsModelCalendarArchive::getInstance();
+		$eventsCalendarArchive = \Components\Events\Models\Calendar\Archive::getInstance();
 		$calendars = $eventsCalendarArchive->calendars('list', array(
 			'scope'     => 'group',
 			'scope_id'  => $this->group->get('gidNumber'),

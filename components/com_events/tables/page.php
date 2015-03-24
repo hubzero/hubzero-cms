@@ -27,91 +27,13 @@
  * @license   GNU General Public License, version 2 (GPLv2)
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
 
 /**
  * Table class for event pages
  */
-class EventsPage extends JTable
+class Page extends \JTable
 {
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $event_id    = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $alias       = NULL;
-
-	/**
-	 * string(250)
-	 *
-	 * @var string
-	 */
-	var $title       = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $pagetext    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by  = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var itneger
-	 */
-	var $modified_by = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params      = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -133,7 +55,7 @@ class EventsPage extends JTable
 		$this->alias = trim($this->alias);
 		if ($this->alias == '')
 		{
-			$this->setError(JText::_('COM_EVENTS_PAGE_MUST_HAVE_ALIAS'));
+			$this->setError(Lang::txt('COM_EVENTS_PAGE_MUST_HAVE_ALIAS'));
 			return false;
 		}
 		return true;

@@ -28,19 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Models;
+
+use Components\Events\Tables;
+use Hubzero\Base\Model\ItemList;
+use Hubzero\Base\Model;
+use DateInterval;
+use DateTimezone;
+use Lang;
+use Config;
 
 // include tables
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'calendar.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'calendar.php';
 
-//include icalendar file reader
+// include icalendar file reader
 require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
-class EventsModelCalendar extends \Hubzero\Base\Model
+/**
+ * Event calendar model
+ */
+class Calendar extends Model
 {
 	/**
-	 * JTable
+	 * Table
 	 *
 	 * @var string
 	 */
@@ -51,7 +61,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'EventsCalendar';
+	protected $_tbl_name = '\\Components\\Events\\Tables\\Calendar';
 
 	/**
 	 * \Hubzero\Base\ItemList
@@ -80,10 +90,10 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
-	public function __construct( $oid = null )
+	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -91,11 +101,11 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
@@ -136,13 +146,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 			case 'count':
 				if (!$this->_events_count || $clear)
 				{
-					$tbl = new EventsEvent($this->_db);
+					$tbl = new Tables\Event($this->_db);
 					$this->_events_count = $tbl->count( $filters );
 				}
 				return $this->_events_count;
 				break;
 			case 'repeating':
-				if (!($this->_events_repeating instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_events_repeating instanceof ItemList) || $clear)
 				{
 					// var to hold repeating data
 					$repeats = array();
@@ -152,21 +162,21 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 
 					// capture publish up/down
 					// remove for now as we want all events that have a repeating rule
-					$start = JFactory::getDate($filters['publish_up']);
-					$end   = JFactory::getDate($filters['publish_down']);
+					$start = \JFactory::getDate($filters['publish_up']);
+					$end   = \JFactory::getDate($filters['publish_down']);
 					unset($filters['publish_up']);
 					unset($filters['publish_down']);
 
 					// find any events that match our filters
-					$tbl = new EventsEvent($this->_db);
+					$tbl = new Tables\Event($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$start = JFactory::getDate($result->publish_up);
+							$start = \JFactory::getDate($result->publish_up);
 
 							// get the repeating & pass start date
-							$rule        = new \Recurr\Rule($result->repeating_rule, $start);
+							$rule = new \Recurr\Rule($result->repeating_rule, $start);
 
 							// define constraint that date must be between event publish_up & end 
 							$constraint  = new \Recurr\Transformer\Constraint\BetweenConstraint($start, $end);
@@ -179,7 +189,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 							$diff = new DateInterval('P0Y0DT0H0M');
 							if ($result->publish_down != '0000-00-00 00:00:00')
 							{
-								$diff = date_diff(JFactory::getDate($result->publish_up), JFactory::getDate($result->publish_down));
+								$diff = date_diff(\JFactory::getDate($result->publish_up), \JFactory::getDate($result->publish_down));
 							}
 
 							// create new event for each reoccurrence
@@ -188,27 +198,27 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 								$event               = clone($result);
 								$event->publish_up   = $occurrence->getStart()->format('Y-m-d H:i:s');
 								$event->publish_down = $occurrence->getStart()->add($diff)->format('Y-m-d H:i:s');
-								$repeats[]           = new EventsModelEvent($event);
+								$repeats[]           = new Event($event);
 							}
 						}
 					}
-					$this->_events_repeating = new \Hubzero\Base\Model\ItemList($repeats);
+					$this->_events_repeating = new ItemList($repeats);
 				}
 				return $this->_events_repeating;
 				break;
 			case 'list':
 			default:
-				if (!($this->_events instanceof \Hubzero\Base\Model\ItemList) || $clear)
+				if (!($this->_events instanceof ItemList) || $clear)
 				{
-					$tbl = new EventsEvent($this->_db);
+					$tbl = new Tables\Event($this->_db);
 					if ($results = $tbl->find( $filters ))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new EventsModelEvent($result);
+							$results[$key] = new Event($result);
 						}
 					}
-					$this->_events = new \Hubzero\Base\Model\ItemList($results);
+					$this->_events = new ItemList($results);
 				}
 				return $this->_events;
 			break;
@@ -244,8 +254,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		$interval = $params->get('import_subscription_interval', 60);
 
 		// get datetimes needed to refresh
-		$now             = JFactory::getDate();
-		$lastRefreshed   = JFactory::getDate($this->get('last_fetched_attempt'));
+		$now             = \JFactory::getDate();
+		$lastRefreshed   = \JFactory::getDate($this->get('last_fetched_attempt'));
 		$refreshInterval = new DateInterval("PT{$interval}M");
 
 		// add refresh interval to last refreshed
@@ -287,14 +297,14 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		if (!strstr($statusCode, '200 OK'))
 		{
 			$this->set('failed_attempts', $this->failed_attempts + 1);
-			$this->set('last_fetched_attempt', JFactory::getDate()->toSql());
+			$this->set('last_fetched_attempt', \JFactory::getDate()->toSql());
 			$this->store(true);
 			$this->setError($this->get('title'));
 			return false;
 		}
 
 		//read calendar file
-		$icalparser = new icalparser( $calendarUrl );
+		$icalparser = new \icalparser($calendarUrl);
 		$incomingEvents = $icalparser->getEvents();
 
 		// check to make sure we have events
@@ -339,11 +349,11 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 			// create blank event if we dont have one
 			if (!$event)
 			{
-				$event = new EventsModelEvent();
+				$event = new Event();
 			}
 
 			// set the timezone
-			$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
+			$tz = new DateTimezone(Config::get('offset'));
 
 			// start already datetime objects
 			$start = $incomingEvent['DTSTART'];
@@ -389,7 +399,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 					{
 						$incomingEvent['RRULE']['UNTIL'] .= 'T000000Z';
 					}
-					$until = JFactory::getDate($incomingEvent['RRULE']['UNTIL']);
+					$until = \JFactory::getDate($incomingEvent['RRULE']['UNTIL']);
 					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
 				}
 			}
@@ -406,8 +416,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 			$event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
 			$event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
 			$event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
-			$event->set('modified', JFactory::getDate()->toSql());
-			$event->set('modified_by', JFactory::getUser()->get('id'));
+			$event->set('modified', \JFactory::getDate()->toSql());
+			$event->set('modified_by', \JFactory::getUser()->get('id'));
 			$event->set('publish_up', $publish_up);
 			$event->set('publish_down', $publish_down);
 			$event->set('allday', $allday);
@@ -422,8 +432,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 				$event->set('scope', $this->get('scope'));
 				$event->set('scope_id', $this->get('scope_id'));
 				$event->set('state', 1);
-				$event->set('created', JFactory::getDate()->toSql());
-				$event->set('created_by', JFactory::getUser()->get('id'));
+				$event->set('created', \JFactory::getDate()->toSql());
+				$event->set('created_by', \JFactory::getUser()->get('id'));
 				$event->set('time_zone', -5);
 				$event->set('registerby', '0000-00-00 00:00:00');
 				$event->set('params', '');
@@ -435,8 +445,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 
 		// mark as fetched
 		// clear failed attempts
-		$this->set('last_fetched', JFactory::getDate()->toSql());
-		$this->set('last_fetched_attempt', JFactory::getDate()->toSql());
+		$this->set('last_fetched', \JFactory::getDate()->toSql());
+		$this->set('last_fetched_attempt', \JFactory::getDate()->toSql());
 		$this->set('failed_attempts', 0);
 		$this->store(true);
 		return true;

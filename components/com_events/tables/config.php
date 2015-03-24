@@ -28,28 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
+
+include_once(__DIR__ . DS . 'configs.php');
 
 /**
  * Events table class for configuration
  */
-class EventsConfig extends JTable
+class Config extends \JTable
 {
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $param = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $value = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -71,7 +58,7 @@ class EventsConfig extends JTable
 		// check for valid name
 		if (trim($this->param) == '')
 		{
-			$this->setError(JText::_('EVENTS_BLANK_CONFIG_PARAMETER'));
+			$this->setError(Lang::txt('EVENTS_BLANK_CONFIG_PARAMETER'));
 			return false;
 		}
 		return true;

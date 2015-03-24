@@ -167,7 +167,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						<?php
 							$timezone = $this->event->get('time_zone');
 							$timezone = (isset($timezone)) ? $timezone: -5;
-							echo EventsHtml::buildTimeZoneSelect($timezone, '');
+							echo \Components\Events\Helpers\Html::buildTimeZoneSelect($timezone, '');
 						?>
 					</label>
 				</fieldset>

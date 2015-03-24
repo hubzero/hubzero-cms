@@ -28,16 +28,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Models;
+
+use Hubzero\Base\Model;
+use Hubzero\User\Group;
+use DateTimezone;
+use DateTime;
+use Lang;
 
 // include tables
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'event.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
 
-class EventsModelEvent extends \Hubzero\Base\Model
+/**
+ * Event model
+ */
+class Event extends Model
 {
 	/**
-	 * JTable
+	 * Table
 	 *
 	 * @var string
 	 */
@@ -48,7 +56,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'EventsEvent';
+	protected $_tbl_name = '\\Components\\Events\\Tables\\Event';
 
 	/**
 	 * Constructor
@@ -56,10 +64,10 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	 * @param      mixed     Object Id
 	 * @return     void
 	 */
-	public function __construct( $oid = null )
+	public function __construct($oid = null)
 	{
 		// create needed objects
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		// load page jtable
 		$this->_tbl = new $this->_tbl_name($this->_db);
@@ -104,8 +112,8 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	 */
 	public function link()
 	{
-		$group = Hubzero\User\Group::getInstance($this->get('scope_id'));
-		return JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active=calendar&action=details&event_id='.$this->get('id'));
+		$group = Group::getInstance($this->get('scope_id'));
+		return Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $this->get('id'));
 	}
 
 	/**
@@ -115,7 +123,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	 */
 	public function calendar()
 	{
-		return EventsModelCalendar::getInstance($this->get('calendar_id'));
+		return Calendar::getInstance($this->get('calendar_id'));
 	}
 
 	/**
@@ -165,7 +173,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 			// until
 			if (preg_match('/UNTIL=(.*)/u', $part, $matches))
 			{
-				$date = JFactory::getDate($matches[1]);
+				$date = \JFactory::getDate($matches[1]);
 				$repeating['until'] = $date->format('m/d/Y');
 				$repeating['end']   = 'until';
 				unset($parts[$k]);
@@ -183,7 +191,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	public function humanReadableRepeatingRule()
 	{
 		// reable repeating rule
-		$readable = JText::_('COM_EVENTS_REPEATS');
+		$readable = Lang::txt('COM_EVENTS_REPEATS');
 
 		// get parsed rule
 		$rule = $this->parseRepeatingRule();
@@ -191,7 +199,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// interval type type
 		if ($rule['interval'] > 1)
 		{
-			$readable .= JText::sprintf('COM_EVENTS_REPEATS_EVERY', $rule['interval'], ucfirst(str_replace('ly', 's', $rule['freq'])));
+			$readable .= Lang::txt('COM_EVENTS_REPEATS_EVERY', $rule['interval'], ucfirst(str_replace('ly', 's', $rule['freq'])));
 		}
 		else
 		{
@@ -201,11 +209,11 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// handle end
 		if ($rule['end'] == 'count')
 		{
-			$readable .= ' ' . JText::sprintf('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
+			$readable .= ' ' . Lang::txt('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
 		}
 		else if ($rule['end'] == 'until')
 		{
-			$readable .= ' ' . JText::sprintf('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
+			$readable .= ' ' . Lang::txt('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
 		}
 
 		// return
@@ -221,7 +229,7 @@ class EventsModelEvent extends \Hubzero\Base\Model
 	{
 		// get event timezone setting
 		// use this in "DTSTART;TZID="
-		$tzInfo = plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($this->get('time_zone'));
+		$tzInfo = \plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($this->get('time_zone'));
 		$tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 
 		// get publish up/down dates in UTC
@@ -233,8 +241,8 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// ----------------------------------------------------------------------------------
 		// The timezone param "DTSTART;TZID=" defined above will allow a users calendar app to
 		// adjust date/time display according to that timezone and their systems timezone setting
-		$publishUp->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
-		$publishDown->setTimezone( new DateTimezone(timezone_name_from_abbr('EST')) );
+		$publishUp->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
+		$publishDown->setTimezone(new DateTimezone(timezone_name_from_abbr('EST')));
 
 		//event vars
 		$id       = $this->get('id');
@@ -254,11 +262,11 @@ class EventsModelEvent extends \Hubzero\Base\Model
 
 		// get daylight start and end
 		$ttz = new DateTimezone(timezone_name_from_abbr('EST'));
-		$first = JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
-		$last = JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
+		$first = \JFactory::getDate(date('Y') . '-01-02 00:00:00')->toUnix();
+		$last = \JFactory::getDate(date('Y') . '-12-30 00:00:00')->toUnix();
 		$transitions = $ttz->getTransitions($first, $last);
-		$daylightStart = JFactory::getDate($transitions[1]['ts']);
-		$daylightEnd = JFactory::getDate($transitions[2]['ts']);
+		$daylightStart = \JFactory::getDate($transitions[1]['ts']);
+		$daylightEnd = \JFactory::getDate($transitions[2]['ts']);
 
 		// output timezone block
 		$output .= "BEGIN:VTIMEZONE\r\n";

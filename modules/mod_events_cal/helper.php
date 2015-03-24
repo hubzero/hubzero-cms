@@ -31,7 +31,7 @@
 namespace Modules\EventsCalendar;
 
 use Hubzero\Module\Module;
-use EventsHtml;
+use Components\Events\Helpers\Html;
 use JFactory;
 use JRoute;
 use JText;
@@ -233,12 +233,12 @@ class Helper extends Module
 		$content .= ' <caption>'."\n";
 		if ($this->params->get('show_nav_prev_month'))
 		{
-			$content .= ' <a class="prev month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)) . '">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
+			$content .= ' <a class="prev month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)) . '">'.Html::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
 		}
-		$content .= ' <a class="current month" href="' . JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month) . '">' . EventsHtml::getMonthName($cal_month) . '</a>'."\n";
+		$content .= ' <a class="current month" href="' . JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month) . '">' . Html::getMonthName($cal_month) . '</a>'."\n";
 		if ($this->params->get('show_nav_next_month'))
 		{
-			$content .= ' <a class="next month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)) . '">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
+			$content .= ' <a class="next month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)) . '">'.Html::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
 		}
 		$content .= ' </caption>'."\n";
 		$content .= ' <thead>'."\n";

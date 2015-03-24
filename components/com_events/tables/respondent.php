@@ -27,191 +27,15 @@
  * @license   GNU General Public License, version 2 (GPLv2)
  */
 
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Events\Tables;
+
+use Exception;
 
 /**
- * Short description for 'EventsRespondent'
- *
- * Long description (if any) ...
+ * Event respondent
  */
-class EventsRespondent extends JTable
+class Respondent extends \JTable
 {
-	/**
-	 * Description for 'id'
-	 *
-	 * @var unknown
-	 */
-	public $id = NULL;
-
-	/**
-	 * Description for 'event_id'
-	 *
-	 * @var unknown
-	 */
-	public $event_id = NULL;
-
-	/**
-	 * Description for 'registered'
-	 *
-	 * @var unknown
-	 */
-	public $registered = NULL;
-
-	/**
-	 * Description for 'first_name'
-	 *
-	 * @var unknown
-	 */
-	public $first_name = NULL;
-
-	/**
-	 * Description for 'last_name'
-	 *
-	 * @var unknown
-	 */
-	public $last_name = NULL;
-
-	/**
-	 * Description for 'affiliation'
-	 *
-	 * @var unknown
-	 */
-	public $affiliation = NULL;
-
-	/**
-	 * Description for 'title'
-	 *
-	 * @var unknown
-	 */
-	public $title = NULL;
-
-	/**
-	 * Description for 'city'
-	 *
-	 * @var unknown
-	 */
-	public $city = NULL;
-
-	/**
-	 * Description for 'state'
-	 *
-	 * @var unknown
-	 */
-	public $state = NULL;
-
-	/**
-	 * Description for 'zip'
-	 *
-	 * @var unknown
-	 */
-	public $zip = NULL;
-
-	/**
-	 * Description for 'country'
-	 *
-	 * @var unknown
-	 */
-	public $country = NULL;
-
-	/**
-	 * Description for 'telephone'
-	 *
-	 * @var unknown
-	 */
-	public $telephone = NULL;
-
-	/**
-	 * Description for 'fax'
-	 *
-	 * @var unknown
-	 */
-	public $fax = NULL;
-
-	/**
-	 * Description for 'email'
-	 *
-	 * @var unknown
-	 */
-	public $email = NULL;
-
-	/**
-	 * Description for 'website'
-	 *
-	 * @var unknown
-	 */
-	public $website = NULL;
-
-	/**
-	 * Description for 'position_description'
-	 *
-	 * @var unknown
-	 */
-	public $position_description = NULL;
-
-	/**
-	 * Description for 'highest_degree'
-	 *
-	 * @var unknown
-	 */
-	public $highest_degree = NULL;
-
-	/**
-	 * Description for 'gender'
-	 *
-	 * @var unknown
-	 */
-	public $gender = NULL;
-
-	/**
-	 * Description for 'disability_needs'
-	 *
-	 * @var unknown
-	 */
-	public $disability_needs = NULL;
-
-	/**
-	 * Description for 'dietary_needs'
-	 *
-	 * @var unknown
-	 */
-	public $dietary_needs = NULL;
-
-	/**
-	 * Description for 'attending_dinner'
-	 *
-	 * @var unknown
-	 */
-	public $attending_dinner = NULL;
-
-	/**
-	 * Description for 'abstract'
-	 *
-	 * @var unknown
-	 */
-	public $abstract = NULL;
-
-	/**
-	 * Description for 'comment'
-	 *
-	 * @var unknown
-	 */
-	public $comment = NULL;
-
-	/**
-	 * Description for 'arrival'
-	 *
-	 * @var unknown
-	 */
-	public $arrival = NULL;
-
-	/**
-	 * Description for 'departure'
-	 *
-	 * @var unknown
-	 */
-	public $departure = NULL;
-
 	/**
 	 * Description for 'filters'
 	 *
@@ -264,7 +88,7 @@ class EventsRespondent extends JTable
 	 */
 	public static function getRacialIdentification($resp_id)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 		if (is_array($resp_id))
 		{
 			$dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
@@ -311,7 +135,7 @@ class EventsRespondent extends JTable
 	public function getPaginator()
 	{
 		jimport('joomla.html.pagination');
-		return new JPagination($this->getCount(), $this->limit, $this->offset);
+		return new \JPagination($this->getCount(), $this->limit, $this->offset);
 	}
 
 	/**
@@ -326,7 +150,7 @@ class EventsRespondent extends JTable
 	 */
 	public function __construct($filters)
 	{
-		parent::__construct('#__events_respondents', 'id', JFactory::getDBO());
+		parent::__construct('#__events_respondents', 'id', \JFactory::getDBO());
 
 		if (array_key_exists('sortby', $filters))
 		{
@@ -462,11 +286,9 @@ class EventsRespondent extends JTable
 	 */
 	public static function checkUniqueEmailForEvent($email, $eventId)
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 		$sql = "SELECT COUNT(*) FROM `#__events_respondents` WHERE `event_id`=" . $db->quote($eventId) . " AND `email`=" .$db->quote($email);
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
-
 }
-
