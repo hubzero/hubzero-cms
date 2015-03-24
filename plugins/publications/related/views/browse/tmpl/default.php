@@ -68,14 +68,14 @@ foreach ($this->related as $line)
 
 		// Get the SEF for the publication
 		if ($line->alias) {
-			$sef = Route::url('index.php?option='.$this->option.'&alias='. $line->alias);
+			$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $line->alias);
 		} else {
-			$sef = Route::url('index.php?option='.$this->option.'&id='. $line->id);
+			$sef = Route::url('index.php?option=' . $this->option . '&id=' . $line->id);
 		}
 	}
 
 	// Make sure we have an SEF, otherwise it's a querystring
-	if (strstr($sef,'option=')) {
+	if (strstr($sef, 'option=')) {
 		$d = '&amp;';
 	} else {
 		$d = '?';

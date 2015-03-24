@@ -39,7 +39,7 @@ $self = in_array($this->aid, $this->checked) ? 1 : 0;
 <?php
 if (!$this->getError()) {
 ?>
-<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="removeowner" />

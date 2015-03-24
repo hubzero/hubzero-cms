@@ -39,14 +39,14 @@ $route = $this->project->provisioned == 1
 
 // Filter URL
 $filterUrl   = $this->project->provisioned == 1
-		? JRoute::_( $route) . '?active=files&amp;action=filter&amp;'
-		: JRoute::_( $route . '&active=files&amp;action=filter') .'/?';
+		? Route::url( $route) . '?active=files&amp;action=filter&amp;'
+		: Route::url( $route . '&active=files&amp;action=filter') .'/?';
 
 $filterUrl .= 'p=' . $this->props . '&amp;pid=' . $this->publication->id
 				. '&amp;vid=' . $this->publication->version_id . '&amp;ajax=1&amp;no_html=1';
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $parents = array();
@@ -247,7 +247,7 @@ foreach ($this->items as $item)
 		?>
 	</div>
 	</form>
-	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
 
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -272,7 +272,7 @@ foreach ($this->items as $item)
 				<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success" id="f-upload"  />
 			</span>
 		</h5>
-		<div id="ajax-uploader" data-action="<?php echo JRoute::_( $route) . '?active=files&amp;action=save&amp;no_html=1&amp;ajax=1'; ?>" >
+		<div id="ajax-uploader" data-action="<?php echo Route::url( $route) . '?active=files&amp;action=save&amp;no_html=1&amp;ajax=1'; ?>" >
 			<label class="addnew">
 				<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
 			</label>

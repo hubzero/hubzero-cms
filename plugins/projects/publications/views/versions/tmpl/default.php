@@ -64,11 +64,11 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			$class  = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'class');
 			$date   = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
-			$options = '<a href="'.$this->url.'?version='.$v->version_number.'">'
-			.JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION').'</a>';
+			$options = '<a href="' . $this->url . '?version=' . $v->version_number . '">'
+			. JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION') . '</a>';
 
-			$options .= '<span class="block"><a href="'.JRoute::_('index.php?option=com_publications'
-			. '&id=' . $this->pid) . '?v=' . $v->version_number.'">'
+			$options .= '<span class="block"><a href="' . Route::url('index.php?option=com_publications'
+			. '&id=' . $this->pid) . '?v=' . $v->version_number . '">'
 			.JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE').'</a></span>';
 
 			?>

@@ -30,7 +30,7 @@ $route = $this->project->provisioned == 1
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $title = JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));

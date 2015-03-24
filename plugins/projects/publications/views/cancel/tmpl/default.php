@@ -38,14 +38,14 @@ $crumbs = $draft
 		: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_CRUMBS');
 ?>
 <div id="abox-content">
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <h3><?php echo $heading; ?></h3>
 <?php } ?>
 
-<?php if(!$this->ajax) { ?>
+<?php if (!$this->ajax) { ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
-	<?php if($this->project->provisioned == 1 ) { ?>
+	<?php if ($this->project->provisioned == 1 ) { ?>
 		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo $crumbs; ?></h3>
 	<?php } else { ?>
 		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo $crumbs; ?></span>
@@ -65,23 +65,23 @@ $crumbs = $draft
 		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
-	<?php if($this->getError()) { ?>
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } else { ?>
-		<?php if($this->pub->state == 1) { ?>
+		<?php if ($this->pub->state == 1) { ?>
 		<p class="notice">
 			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_INFO'); ?>
 		</p>
 		<?php } ?>
-		<?php if($this->pub->state == 3  || $this->pub->state == 4 || ($this->pub->state == 1 && $this->publishedCount == 1)) {
+		<?php if ($this->pub->state == 3  || $this->pub->state == 4 || ($this->pub->state == 1 && $this->publishedCount == 1)) {
 			$warning = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_WARNING');
-			if($this->pub->state == 3 || $this->pub->state == 4) {
+			if ($this->pub->state == 3 || $this->pub->state == 4) {
 				$warning = '';
-				if($this->pub->versions == 0) {
+				if ($this->pub->versions == 0) {
 					$warning .= JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING_SINGLE').' ';
 				}
 				$warning .= JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING');

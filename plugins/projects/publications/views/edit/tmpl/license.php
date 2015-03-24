@@ -55,7 +55,7 @@ else
 		<input type="hidden" name="license" id="license" value="<?php echo $this->license ? strtolower(urlencode($this->license->name)) : ''; ?>" />
 		<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
@@ -81,13 +81,13 @@ else
 				<?php if ($canedit) { ?>
 				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SELECT'); ?></p>
 				<div id="c-show">
-					<?php if(!$this->licenses) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_FOUND').'</p>'; } else { ?>
+					<?php if (!$this->licenses) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_FOUND').'</p>'; } else { ?>
 					<ul id="c-browser">
 						<?php foreach ($this->licenses as $lic) { ?>
-						<li id="<?php echo 'lic-'.strtolower(urlencode($lic->name)); ?>" class="c-radio" title="<?php echo htmlentities($lic->title); ?>"><?php if($lic->icon) { echo '<img src="'.$lic->icon.'" alt="'.htmlentities($lic->title).'" />'; } ?><?php echo $lic->title; ?></li>
+						<li id="<?php echo 'lic-'.strtolower(urlencode($lic->name)); ?>" class="c-radio" title="<?php echo htmlentities($lic->title); ?>"><?php if ($lic->icon) { echo '<img src="'.$lic->icon.'" alt="'.htmlentities($lic->title).'" />'; } ?><?php echo $lic->title; ?></li>
 						<?php } ?>
 					</ul>
-					<?php if($this->pubconfig->get('suggest_licence')) { ?>
+					<?php if ($this->pubconfig->get('suggest_licence')) { ?>
 						<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
 					<?php } ?>
 					<?php } ?>
@@ -100,26 +100,26 @@ else
 		</div>
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
-			<?php if($canedit) { ?>
-					<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+			<?php if ($canedit) { ?>
+					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
 			<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_LICENSE')); ?>: </h5>
 			<ul id="c-license" class="c-list">
-				<li id="nosel" <?php if($this->license) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_SELECTED'); ?></li>
-				<li id="c-sel-license" class="prominent<?php if(!$this->license) { echo ' hidden'; } ?>"><?php echo $this->license ? $this->license->title : ''; ?></li>
+				<li id="nosel" <?php if ($this->license) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NONE_SELECTED'); ?></li>
+				<li id="c-sel-license" class="prominent<?php if (!$this->license) { echo ' hidden'; } ?>"><?php echo $this->license ? $this->license->title : ''; ?></li>
 			</ul>
 
 			<?php foreach ($this->licenses as $lic) { ?>
-			<div id="extra-<?php echo strtolower(urlencode($lic->name)); ?>" class="c-extra<?php if(!$this->license or $lic->id != $this->row->license_type) { echo ' hidden'; } ?>">
-				<?php if($lic->info) {
+			<div id="extra-<?php echo strtolower(urlencode($lic->name)); ?>" class="c-extra<?php if (!$this->license or $lic->id != $this->row->license_type) { echo ' hidden'; } ?>">
+				<?php if ($lic->info) {
 					$info = $lic->info;
-					if($lic->url) {
+					if ($lic->url) {
 						 $info .= ' <a href="'.$lic->url.'" rel="external">Read license terms &rsaquo;</a>';
 					}
 					?>
 					<p class="pub-info"><?php echo $info; ?></p>
 				<?php } ?>
-				<?php if($lic->customizable && $lic->text) { ?>
+				<?php if ($lic->customizable && $lic->text) { ?>
 					<label>
 						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE'); ?>
 						<textarea name="license_text[<?php echo strtolower(urlencode($lic->name)); ?>]" id="license-text-<?php echo strtolower(urlencode($lic->name)); ?>" cols="50" rows="10" class="pubinput"><?php echo $lic->id == $this->row->license_type ? $this->row->license_text : $lic->text; ?></textarea>
@@ -130,7 +130,7 @@ else
 				<?php } ?>
 				<?php if ($lic->agreement == 1 && $canedit) {
 					$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED').' '.$lic->title.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE');
-					if($lic->url) {
+					if ($lic->url) {
 						 $txt = preg_replace("/license terms/", '<a href="'.$lic->url.'" rel="external">license terms</a>', $txt);
 					}
 					$txt = preg_replace("/".$lic->title."/", '<strong>'.$lic->title.'</strong>', $txt);

@@ -88,9 +88,9 @@ if ($handler)
 	$handler = $modelHandler->ini($handler);
 }
 
-$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+$bundleUrl = Route::url('index.php?option=com_publications&task=serve&id='
 			. $this->pub->id . '&v=' . $this->pub->version_number )
-			. '?el=' . $this->elementId . '&download=1';
+			. '?el=' . $this->elementId . '&amp;download=1';
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
@@ -100,7 +100,7 @@ $route = $this->pub->_project->provisioned
 			: 'index.php?option=com_projects&alias='
 				. $this->pub->_project->alias . '&active=publications';
 
-$this->editUrl = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
+$this->editUrl = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
 
 // Get curator status
 if ($this->name == 'curator')

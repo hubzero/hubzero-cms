@@ -31,7 +31,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 <div id="abox-content">
 <h3><?php echo JText::_('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
 
-<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
 	<fieldset >
 <?php if (empty($this->files)) { ?>
 	<p class="warning"><?php echo JText::_('PLG_PROJECTS_FILES_TRASH_EMPTY'); ?></p>

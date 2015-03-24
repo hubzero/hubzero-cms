@@ -53,8 +53,8 @@ else
 
 $thumbName = \Components\Projects\Helpers\Html::createThumbName($file, $suffix, $format);
 
-$filePath = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $file;
-$thumbSrc = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $thumbName;
+$filePath = Route::url('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $file;
+$thumbSrc = Route::url('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $thumbName;
 
 // Is this image used for publication thumbail?
 $class = $data->pubThumb == 1 ? ' starred' : '';

@@ -92,13 +92,13 @@ else {
 					<input type="hidden" name="selections" id="selections" value="" />
 					<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 					<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-					<?php if($this->project->provisioned == 1 ) { ?>
+					<?php if ($this->project->provisioned == 1 ) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
 				</fieldset>
 			 <div class="c-inner">
 					<?php if ($canedit) { ?>
-							<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+							<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 					<?php } ?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS'); ?>: </h5>
 					<?php if ($canedit) { ?>

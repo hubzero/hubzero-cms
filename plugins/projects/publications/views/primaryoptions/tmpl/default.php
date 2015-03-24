@@ -37,8 +37,8 @@ elseif ($this->used)
 		<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_USED'); ?>
 		<?php
 		$other = '';
-		foreach($this->used as $used) {
-			$other .= ' <a href="' . JRoute::_('index.php?option=' . $this->option
+		foreach ($this->used as $used) {
+			$other .= ' <a href="' . Route::url('index.php?option=' . $this->option
 				   . '&active=publications&alias=' . $this->project->alias
 				   . '&pid=' . $used->id) . '/?section=content">'
 				   . stripslashes($used->title) . ' (' . $used->id . ')' . '</a>,';
@@ -61,10 +61,10 @@ elseif ($this->used)
 <?php if ($this->selections) { ?>
 <div class="serveas_<?php echo $this->serveas; ?>">
 	<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_' . strtoupper($this->serveas)); ?></p>
-	<?php if(count($this->choices) > 1) { ?>
+	<?php if (count($this->choices) > 1) { ?>
 	<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_ALL_OPTIONS'); ?></h5>
-		<?php foreach($this->choices as $choice) { ?>
-		<label><input name="serveas" type="radio" value="<?php echo $choice; ?>" class="serve_option" <?php if($this->serveas == $choice)  { echo 'checked="checked"'; } ?> /> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SERVEAS_'.strtoupper($choice)); ?></label>
+		<?php foreach ($this->choices as $choice) { ?>
+		<label><input name="serveas" type="radio" value="<?php echo $choice; ?>" class="serve_option" <?php if ($this->serveas == $choice)  { echo 'checked="checked"'; } ?> /> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SERVEAS_'.strtoupper($choice)); ?></label>
 		<?php } ?>
 	<?php } else { ?>
 	<input type="hidden" name="serveas" value=<?php echo $this->serveas; ?> />

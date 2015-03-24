@@ -41,11 +41,11 @@ $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=team&action=select'
-		: JRoute::_( $route . '&active=team&action=select') .'/?p=' . $props . '&pid='
-		. $this->pub->id . '&vid=' . $this->pub->version_id;
+		? Route::url( $route) . '?active=team&action=select'
+		: Route::url( $route . '&active=team&action=select') .'/?p=' . $props . '&amp;pid='
+		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 
-$editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
+$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
 $move = JRequest::getVar( 'move', '' );
@@ -122,7 +122,7 @@ $termsUrl = $config->get('deposit_terms', '');
 				<div class="element-instructions">
 					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
 					<div class="submitarea">
-						<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 					</div>
 				</div>
 			</div>

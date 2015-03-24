@@ -56,7 +56,7 @@ $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->ele
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$this->editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
+$this->editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
@@ -167,7 +167,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					$versionParams 	= new JParameter( $this->pub->params );
 					$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
 
-					$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+					$bundleUrl = Route::url('index.php?option=com_publications&task=serve&id='
 								. $this->pub->id . '&amp;v=' . $this->pub->version_number )
 								. '?el=' . $this->elementId . '&download=1';
 
@@ -179,7 +179,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 							<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
 								<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
 								<span class="save-param-status"></span>
-								<span class="save-param-wrap"><a href="<?php echo $prov ? JRoute::_( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : JRoute::_( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
+								<span class="save-param-wrap"><a href="<?php echo $prov ? Route::url( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : Route::url( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
 							</label>
 						</div>
 					</div>

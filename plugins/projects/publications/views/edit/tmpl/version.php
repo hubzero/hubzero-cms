@@ -200,7 +200,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 					<?php } ?>
 					<tr>
 						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_URL'); ?>:</td>
-						<td class="tbl-input"><a href="<?php echo JRoute::_('index.php?option=com_publications&id='.$this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/'.$this->pub->id.$v; ?></a></td>
+						<td class="tbl-input"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/' . $this->pub->id.$v; ?></a></td>
 					</tr>
 				</tbody>
 			</table>

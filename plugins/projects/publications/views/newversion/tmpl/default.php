@@ -33,7 +33,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 
 ?>
 <div id="abox-content">
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_PROVIDE_LABEL'); ?></h3>
 <?php } ?>
 <?php
@@ -42,10 +42,10 @@ if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
-<?php if(!$this->ajax) { ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=publications'); ?>" method="post" id="plg-form" >
+<?php if (!$this->ajax) { ?>
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=publications'); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
-	<?php if($this->project->provisioned == 1 ) { ?>
+	<?php if ($this->project->provisioned == 1 ) { ?>
 		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></h3>
 	<?php } else { ?>
 		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
@@ -63,11 +63,11 @@ if ($this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
-	<div <?php if(!$this->ajax) { echo 'class="vform"'; } ?>>
+	<div <?php if (!$this->ajax) { echo 'class="vform"'; } ?>>
 		<p>
 			<span class="faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')); ?></span> <?php echo $this->pub->version_label; ?>
 		</p>
@@ -78,7 +78,7 @@ if ($this->getError()) {
 	</div>
 		<p class="submitarea">
 			<input type="submit" class="btn active btn-success" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
-				<?php if($this->ajax) { ?>
+				<?php if ($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 				<?php } else {
 					$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');

@@ -34,9 +34,9 @@ $review = isset($this->review) && $this->review == 1 ?  '&amp;review=1' : '';
 
 ?>
 <?php if ($this->row->id && !isset($this->hide_version)) { ?>
-	<p id="version-label" <?php if($this->active == 'version') { echo 'class="active"'; } ?>>
-		<a href="<?php echo $this->url.'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
-		<a href="<?php echo $this->url.'/?version='.$this->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$version_label.' ('.$status.')'; ?></a>
+	<p id="version-label" <?php if ($this->active == 'version') { echo 'class="active"'; } ?>>
+		<a href="<?php echo $this->url . '/?action=versions'; ?>" class="versions" id="v-picker"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
+		<a href="<?php echo $this->url . '/?version=' . $this->version; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $version_label . ' (' . $status . ')'; ?></a>
     </p>
 <?php } ?>
 	<?php if ($this->row->state != 0) { ?>
@@ -64,22 +64,22 @@ $review = isset($this->review) && $this->review == 1 ?  '&amp;review=1' : '';
 		<?php if ($panel == 'content' && $this->active == 'content') {
 			// Content submenu (primary / supporting docs)
 		?>
-			<li id="sub-bar"><?php if($this->step == 'primary') { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY').'</span>'; }
-			else { ?><a href="<?php echo $this->url.'/?section=content'.$version.$move.$review; ?>" class="<?php echo $class; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY'); ?></a><?php } ?> <span class="proceedto">&nbsp;</span> <?php if ($this->step == 'primary') { echo $passed ? '<a href="'. $this->url.'/?section=content' . $version . $move . $review . '&amp;primary=0"  >'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</a>' : '<span>'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</span>'; } else { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</span>'; } ?></li>
+			<li id="sub-bar"><?php if ($this->step == 'primary') { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY').'</span>'; }
+			else { ?><a href="<?php echo $this->url . '/?section=content' . $version . $move . $review; ?>" class="<?php echo $class; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY'); ?></a><?php } ?> <span class="proceedto">&nbsp;</span> <?php if ($this->step == 'primary') { echo $passed ? '<a href="'. $this->url.'/?section=content' . $version . $move . $review . '&amp;primary=0"  >'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</a>' : '<span>'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</span>'; } else { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS').'</span>'; } ?></li>
 		<?php } ?>
 
-		<?php if($panel == 'description' && $this->active == 'description' && $this->show_substeps == 1) {
+		<?php if ($panel == 'description' && $this->active == 'description' && $this->show_substeps == 1) {
 			// Description submenu (abstract / metadata)
 		?>
-			<li id="sub-bar"><?php if($this->step == 'abstract') { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_ABSTRACT').'</span>'; }
-			else { ?><a href="<?php echo $this->url.'/?section=description' . $version . $move . $review; ?>" class="<?php echo $class; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_ABSTRACT'); ?></a><?php } ?> <span class="proceedto">&nbsp;</span> <?php if($this->step == 'abstract') { echo $passed ? '<a href="'. $this->url . '/?section=description' . $version . $move . $review . '&amp;step=metadata" >'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</a>' : '<span>'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</span>'; } else { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</span>'; } ?></li>
+			<li id="sub-bar"><?php if ($this->step == 'abstract') { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_ABSTRACT').'</span>'; }
+			else { ?><a href="<?php echo $this->url.'/?section=description' . $version . $move . $review; ?>" class="<?php echo $class; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_ABSTRACT'); ?></a><?php } ?> <span class="proceedto">&nbsp;</span> <?php if ($this->step == 'abstract') { echo $passed ? '<a href="' . $this->url . '/?section=description' . $version . $move . $review . '&amp;step=metadata" >'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</a>' : '<span>'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</span>'; } else { echo '<span class="active">'.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA').'</span>'; } ?></li>
 		<?php } ?>
 
 		<li <?php if ($this->active == $panel) { echo 'class="active"'; } ?>>
 		<?php if ($this->move) { ?>
-			<?php if($i < $this->current_idx) { ?><a href="<?php echo $this->url . '/?section=' . $panel . $version . $move . $review; ?>"  class="<?php echo $class; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($panel)); ?><?php if($i < $this->current_idx) { ?></a><?php } ?>
+			<?php if ($i < $this->current_idx) { ?><a href="<?php echo $this->url . '/?section=' . $panel . $version . $move . $review; ?>"  class="<?php echo $class; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($panel)); ?><?php if ($i < $this->current_idx) { ?></a><?php } ?>
 		<?php } else { ?>
-			<?php if($i != $this->current_idx or $this->active == 'version' or $review) { ?><a href="<?php echo $this->url . '/?section=' . $panel . $version . $move . $review; ?>" class="<?php echo $class; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($panel)); ?><?php if($i != $this->current_idx or $this->active == 'version' or $review) { ?></a><?php } ?>
+			<?php if ($i != $this->current_idx or $this->active == 'version' or $review) { ?><a href="<?php echo $this->url . '/?section=' . $panel . $version . $move . $review; ?>" class="<?php echo $class; ?>"><?php } ?><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_'.strtoupper($panel)); ?><?php if ($i != $this->current_idx or $this->active == 'version' or $review) { ?></a><?php } ?>
 		<?php } ?>
 		</li>
 		<?php } ?>

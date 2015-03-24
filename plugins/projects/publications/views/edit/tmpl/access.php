@@ -88,7 +88,7 @@ $canedit = (
 		<input type="hidden" name="access" id="access" value="<?php echo $access; ?>" />
 		<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
@@ -122,20 +122,20 @@ $row = $this->row;
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
 			<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS')); ?>: </h5>
 				<ul id="c-access" class="c-list">
-					<li id="nosel" <?php if($access != '') { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_NONE_SELECTED'); ?></li>
-					<li id="c-sel-access" class="prominent<?php if($access == '') { echo ' hidden'; } ?>"><?php echo $accesstext; ?></li>
+					<li id="nosel" <?php if ($access != '') { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_NONE_SELECTED'); ?></li>
+					<li id="c-sel-access" class="prominent<?php if ($access == '') { echo ' hidden'; } ?>"><?php echo $accesstext; ?></li>
 				</ul>
-				<div id="extra-0" class="c-extra<?php if($access == '' || $access != 0) { echo ' hidden'; } ?>">
+				<div id="extra-0" class="c-extra<?php if ($access == '' || $access != 0) { echo ' hidden'; } ?>">
 					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_PUBLIC'); ?></p>
 				</div>
-				<div id="extra-1" class="c-extra<?php if($access != 1) { echo ' hidden'; } ?>">
+				<div id="extra-1" class="c-extra<?php if ($access != 1) { echo ' hidden'; } ?>">
 					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_REGISTERED'); ?></p>
 				</div>
-				<div id="extra-2" class="c-extra<?php if($access != 2 && $access != 3) { echo ' hidden'; } ?>">
+				<div id="extra-2" class="c-extra<?php if ($access != 2 && $access != 3) { echo ' hidden'; } ?>">
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO'); ?></h5>
 					<label>
 						<input type="checkbox" checked="checked" disabled="disabled" name="sysgroup" value="1" />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO_SYSGROUP'); ?>

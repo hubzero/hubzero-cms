@@ -29,7 +29,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $route = $this->project->provisioned
 	? 'index.php?option=com_publications&task=submit'
 	: 'index.php?option=com_projects&alias=' . $this->project->alias;
-$p_url = JRoute::_($route . '&active=team');
+$p_url = Route::url($route . '&active=team');
 
 ?>
 <div id="abox-content">
@@ -44,7 +44,7 @@ $p_url = JRoute::_($route . '&active=team');
 		<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="email" value="<?php echo $this->email; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 		<label for="from"><span class="leftshift"><?php echo ucfirst(JText::_('COM_PROJECTS_FROM')); ?>:</span>

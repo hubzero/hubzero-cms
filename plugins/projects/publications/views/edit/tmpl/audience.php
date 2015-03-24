@@ -69,7 +69,7 @@ $canedit = (
 				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SELECT'); ?></p>
 				<div id="c-show">
 					<ul id="c-browser">
-					<?php foreach($this->levels as $level) {
+					<?php foreach ($this->levels as $level) {
 							$label = $level->label;
 
 							$sel = $this->audience->$label == 1 ? $sel + 1 : $sel;
@@ -90,12 +90,12 @@ $canedit = (
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUDIENCE')); ?>: </h5>
 				<ul id="c-audience" class="c-list">
-					<li id="nosel" <?php if($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
-					<li id="c-sel-audience" class="prominent<?php if($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>">
+					<li id="nosel" <?php if ($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
+					<li id="c-sel-audience" class="prominent<?php if ($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>">
 					<?php if ($picked) 
 					{
 						$view = new \Hubzero\Component\View(array(
@@ -128,7 +128,7 @@ $canedit = (
 	<input type="hidden" name="audience" id="audience" value="<?php echo $picked; ?>" />
 	<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 	<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-	<?php if($this->project->provisioned == 1 ) { ?>
+	<?php if ($this->project->provisioned == 1 ) { ?>
 	<input type="hidden" name="task" value="submit" />
 	<?php } ?>
 </fieldset>

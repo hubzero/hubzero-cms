@@ -40,7 +40,7 @@ if ($this->getError()) {
 if (!$this->getError()) {
 ?>
 
-<form id="hubForm-ajax" method="post" class="" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id='.$this->project->id); ?>">
+<form id="hubForm-ajax" method="post" class="" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
 	<p class="notice">
 	<?php echo $remoteControl ? JText::_('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : JText::_('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM');  ?>
 	</p>

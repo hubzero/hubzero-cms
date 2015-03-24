@@ -40,11 +40,11 @@ $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=publications&action=select&p=' . $props . '&vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=publications&action=select') .'/?p=' . $props . '&pid='
-		. $this->pub->id . '&vid=' . $this->pub->version_id;
+		? Route::url( $route) . '?active=publications&amp;action=select&amp;p=' . $props . '&amp;vid=' . $this->pub->version_id
+		: Route::url( $route . '&active=publications&action=select') .'/?p=' . $props . '&amp;pid='
+		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 
-$editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
+$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
 $move = JRequest::getVar( 'move', '' );

@@ -25,14 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
-	<?php if(!$this->getError()) { ?>
+	<?php if (!$this->getError()) { ?>
 		<ul id="c-browser">
 			<?php
-			if(count($this->tags) > 0) {
+			if (count($this->tags) > 0) {
 				$i = 0; ?>
 				<li class="c-head"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SUGGESTED'); ?><a id="more-tags" href="<?php echo $this->url.'?section=tags'; ?>">	 &#43; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_MORE'); ?></a></li>
 			<?php
-				foreach($this->tags as $tag) {
+				foreach ($this->tags as $tag) {
 					 ?>
 					<li class="c-click tag:<?php echo urlencode(htmlspecialchars($tag->raw_tag)); ?>" id="tag:<?php echo $tag->id; ?>">
 						<span class="pubtag"></span> <?php echo stripslashes($tag->raw_tag); ?>

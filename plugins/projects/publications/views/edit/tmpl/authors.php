@@ -77,7 +77,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 				</noscript>
 			</div>
 			<div id="pick-authors" class="addnew">
-			<form action="<?php echo JRoute::_($this->route . '&active=publications'); ?>" method="post" id="addmember-form">
+			<form action="<?php echo Route::url($this->route . '&active=publications'); ?>" method="post" id="addmember-form">
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 					<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
@@ -116,7 +116,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			<?php } ?>
 			<?php if ($this->project->provisioned == 1 ) { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
-				. JRoute::_('index.php?option=com_publications&task=submit&pid='
+				. Route::url('index.php?option=com_publications&task=submit&pid='
 				. $this->pub->id) . '?active=team&amp;action=editauthors&amp;version='. $this->pub->version_number . '" class="showinbox">'
 				. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM') . '</a>.'; ?></p>
 			<?php } ?>

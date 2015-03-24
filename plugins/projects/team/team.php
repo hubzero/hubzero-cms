@@ -732,16 +732,16 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$route = $this->_project->provisioned
 				? 'index.php?option=com_publications&task=submit'
 				: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-			$url = JRoute::_($route . '&pid=' . $pid);
+			$url = Route::url($route . '&pid=' . $pid);
 			$this->_redirect = $url;
 			return;
 		}
 		else
 		{
 			$url = $setup
-							? JRoute::_('index.php?option=' . $this->_option
+							? Route::url('index.php?option=' . $this->_option
 							. '&alias=' . $this->_project->alias . '&task=setup&step=1')
-							: JRoute::_('index.php?option=' . $this->_option
+							: Route::url('index.php?option=' . $this->_option
 							. '&alias=' . $this->_project->alias . '&task=edit&edit=team');
 			$this->_referer = $url;
 		}
@@ -849,7 +849,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$url = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&task=';
 			$url .= $setup ? 'setup' : 'edit';
 			$url .= '&active=team';
-			$this->_referer = JRoute::_($url);
+			$this->_referer = Route::url($url);
 			return; // redirect
 		}
 	}
@@ -935,7 +935,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
 
-		$this->_referer = JRoute::_('index.php?option='.$this->_option);
+		$this->_referer = Route::url('index.php?option='.$this->_option);
 		return;
 	}
 
@@ -1222,7 +1222,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->route = $this->_project->provisioned
 					? 'index.php?option=com_publications&task=submit'
 					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-		$view->url = JRoute::_($view->route . '&pid=' . $pid . '&version=' . $version) ;
+		$view->url = Route::url($view->route . '&pid=' . $pid . '&version=' . $version) ;
 
 		// Save incoming settings
 		if ($this->_task == 'saveauthors')

@@ -41,13 +41,13 @@ $route = $prov
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=links&amp;action=select&amp;p=' . $props
+		? Route::url( $route) . '?active=links&amp;action=select&amp;p=' . $props
 			. '&amp;vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
+		: Route::url( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
 			. $this->pub->id . '&vid=' . $this->pub->version_id;
 
-$delUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
-$editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=links&pid=' . $this->pub->id);
+$delUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
+$editUrl = $prov ? Route::url($route) : Route::url($route . '&active=links&pid=' . $this->pub->id);
 
 // Are we in draft flow?
 $move = JRequest::getVar( 'move', '' );
@@ -88,8 +88,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo $editUrl . '/?action=newcite&vid=' . $this->pub->version_id . '&cid=' . $cite->id . '&p=' . $props; ?>" class="item-edit showinbox" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo $delUrl . '/?action=deleteitem&cid=' . $cite->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo $editUrl . '/?action=newcite&amp;vid=' . $this->pub->version_id . '&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-edit showinbox" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo $delUrl . '/?action=deleteitem&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>

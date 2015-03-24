@@ -52,7 +52,7 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 	<div id="gallery-thumb">
-		<div class="g-ima"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->thumb; ?>" /></div>
+		<div class="g-ima"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->thumb; ?>" /></div>
 		<div class="g-title">
 				<span class="g-filename"><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_FILE')); ?>:</span><?php echo $this->ima; ?></span>
 				<div class="clear"></div>
@@ -77,7 +77,7 @@ if ($this->getError()) {
 
 	<?php if ($this->file) { ?>
 	<div id="gallery-preview">
-		<img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->file; ?>" />
+		<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->file; ?>" />
 	</div>
 	<?php }  ?>
 	<?php } ?>

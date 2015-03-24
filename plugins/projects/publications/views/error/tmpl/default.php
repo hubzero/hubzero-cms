@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<?php if($this->title) { ?>
+<?php if ($this->title) { ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
 </div>

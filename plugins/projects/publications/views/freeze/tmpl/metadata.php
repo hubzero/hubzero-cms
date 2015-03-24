@@ -67,7 +67,7 @@ $route = $this->pub->_project->provisioned
 			: 'index.php?option=com_projects&alias='
 				. $this->pub->_project->alias . '&active=publications';
 
-$url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
+$url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
 
 // Get curator status
 if ($this->name == 'curator') {

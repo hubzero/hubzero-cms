@@ -109,7 +109,7 @@ else
 								$i = 1;
 								foreach ($this->shots as $shot) {
 									$thumb = \Components\Projects\Helpers\Html::createThumbName($shot->srcfile, '_tn', $extension = 'png');
-									$src = JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->row->id) . '/Image:' . $thumb;
+									$src = Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->row->id) . '/Image:' . $thumb;
 									// Check if master file is still there
 									$gone = is_file($this->prefix.$this->fpath.DS.$shot->filename) ? 0 : 1;
 									?>

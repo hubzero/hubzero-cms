@@ -39,15 +39,15 @@ $this->css('assets/css/related.css');
 		if ($line->section != 'Topic') {
 			// Get the SEF for the resource
 			if ($line->alias) {
-				$sef = Route::url('index.php?option='.$this->option.'&alias='. $line->alias);
+				$sef = Route::url('index.php?option=' . $this->option . '&alias='. $line->alias);
 			} else {
-				$sef = Route::url('index.php?option='.$this->option.'&id='. $line->id);
+				$sef = Route::url('index.php?option=' . $this->option . '&id='. $line->id);
 			}
 		} else {
 			if ($line->group != '' && $line->scope != '') {
-				$sef = Route::url('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
+				$sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
 			} else {
-				$sef = Route::url('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
+				$sef = Route::url('index.php?option=com_topics&scope=' . $line->scope . '&pagename=' . $line->alias);
 			}
 		}
 ?>

@@ -83,7 +83,7 @@ if (count($this->authors) > 0)
 									echo $this->mc[0];
 								?>
 					<script>
-						if($('.autocomplete').length)
+						if ($('.autocomplete').length)
 						{
 							$('.autocomplete').each(function(i, input) {
 

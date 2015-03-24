@@ -33,7 +33,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 
 ?>
 <div id="abox-content">
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h3>
 <?php } ?>
 <?php
@@ -42,10 +42,10 @@ if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
-<?php if(!$this->ajax) { ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=publications'); ?>" method="post" id="plg-form" >
+<?php if (!$this->ajax) { ?>
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=publications'); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
-	<?php if($this->project->provisioned == 1 ) { ?>
+	<?php if ($this->project->provisioned == 1 ) { ?>
 		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
 	<?php } else { ?>
 		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a><span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></span>
@@ -65,11 +65,11 @@ if ($this->getError()) {
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
 		<input type="hidden" name="version" id="version" value="<?php echo $this->version; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
-	<div <?php if(!$this->ajax) { echo 'class="vform"'; } ?>>
+	<div <?php if (!$this->ajax) { echo 'class="vform"'; } ?>>
 		<label class="a-label">
 			<span class="faded block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE'); ?></span>
 			<input type="text" name="license_title"  class="long" value="" />
@@ -85,7 +85,7 @@ if ($this->getError()) {
 	</div>
 		<p class="submitarea">
 			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
-			<?php if($this->ajax) { ?>
+			<?php if ($this->ajax) { ?>
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else { ?>
 			<a href="<?php echo $this->url . '?section=license&version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>

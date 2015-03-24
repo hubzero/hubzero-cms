@@ -63,7 +63,7 @@ else
 	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
 	<div id="plg-header">
-	<h3 class="publications c-header"><a href="<?php echo JRoute::_($this->route); ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')); ?></span></h3>
+	<h3 class="publications c-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')); ?></span></h3>
 	</div>
 <?php } ?>
 
@@ -110,7 +110,7 @@ else
 		</div>
 		<div class="two columns second" id="c-output">
 		<?php } ?>
-			<form action="<?php echo JRoute::_($this->route); ?>" method="post" id="plg-form" enctype="multipart/form-data">
+			<form action="<?php echo Route::url($this->route); ?>" method="post" id="plg-form" enctype="multipart/form-data">
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 				<input type="hidden" name="sel" value="<?php echo count($this->attachments); ?>" id="sel" />
