@@ -56,6 +56,7 @@ class JFormFieldEditor extends JFormField
 		$assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
 		$authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
 		$asset = $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
+		$class = isset($this->element['class']) ? $this->element['class'] : '';
 
 		// Build the buttons array.
 		$buttons = (string) $this->element['buttons'];
@@ -78,11 +79,21 @@ class JFormFieldEditor extends JFormField
 		// Get an editor object.
 		$editor = $this->getEditor();
 
+
+		//display($name, $html, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
+
 		return $editor
 			->display(
-			$this->name, htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'), $width, $height, $cols, $rows,
-			$buttons ? (is_array($buttons) ? array_merge($buttons, $hide) : $hide) : false, $this->id, $asset,
-			$this->form->getValue($authorField)
+				$this->name, // name
+				htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'), //html
+				$width, //width
+				$height, //height 
+				$cols,  //col
+				$rows, //row
+				$buttons ? (is_array($buttons) ? array_merge($buttons, $hide) : $hide) : false, //buttons
+				$this->id, $asset, //asset
+				$this->form->getValue($authorField), //author
+				array('class'=>$class) //params
 		);
 	}
 
