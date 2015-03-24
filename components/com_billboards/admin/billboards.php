@@ -32,7 +32,7 @@ namespace Components\Billboards\Admin;
 
 $option = 'com_billboards';
 
-if (!\JFactory::getUser()->authorise('core.manage', $option))
+if (!User::authorise('core.manage', $option))
 {
 	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -41,7 +41,7 @@ if (!\JFactory::getUser()->authorise('core.manage', $option))
 require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
 
-$controllerName = \JRequest::getCmd('controller', 'billboards');
+$controllerName = Request::getCmd('controller', 'billboards');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'billboards';

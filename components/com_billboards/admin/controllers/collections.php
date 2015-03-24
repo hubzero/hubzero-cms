@@ -70,12 +70,12 @@ class Collections extends AdminController
 	public function editTask($collection=null)
 	{
 		// Hide the menu, force users to save or cancel
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!isset($collection) || !is_object($collection))
 		{
 			// Incoming (expecting an array)
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (!is_array($id))
 			{
 				$id = array($id);
@@ -98,11 +98,11 @@ class Collections extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Create object
-		$collection = Collection::oneOrNew(\JRequest::getInt('id'))->set(array(
-			'name' => \JRequest::getVar('name')
+		$collection = Collection::oneOrNew(Request::getInt('id'))->set(array(
+			'name' => Request::getVar('name')
 		));
 
 		if (!$collection->save())
@@ -134,10 +134,10 @@ class Collections extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);

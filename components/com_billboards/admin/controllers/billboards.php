@@ -70,12 +70,12 @@ class BillBoards extends AdminController
 	public function editTask($billboard=null)
 	{
 		// Hide the menu, force users to save or cancel
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!isset($billboard) || !is_object($billboard))
 		{
 			// Incoming - expecting an array
-			$cid = \JRequest::getVar('cid', array(0));
+			$cid = Request::getVar('cid', array(0));
 			if (!is_array($cid))
 			{
 				$cid = array($cid);
@@ -116,10 +116,10 @@ class BillBoards extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming, make sure to allow HTML to pass through
-		$data = \JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
+		$data = Request::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 
 		// Create object
 		$billboard = Billboard::oneOrNew($data['id'])->set($data);
@@ -139,7 +139,7 @@ class BillBoards extends AdminController
 		}
 
 		// See if we have an image coming in as well
-		$billboard_image = \JRequest::getVar('billboard-image', false, 'files', 'array');
+		$billboard_image = Request::getVar('billboard-image', false, 'files', 'array');
 
 		// If so, proceed with saving the image
 		if (isset($billboard_image['name']) && $billboard_image['name'])
@@ -204,16 +204,16 @@ class BillBoards extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Initialize variables
-		$cid   = \JRequest::getVar('cid', array(), 'post', 'array');
-		$order = \JRequest::getVar('order', array(), 'post', 'array');
+		$cid   = Request::getVar('cid', array(), 'post', 'array');
+		$order = Request::getVar('order', array(), 'post', 'array');
 
 		// Make sure we have something to work with
 		if (empty($cid))
 		{
-			JError::raiseWarning(500, Lang::txt('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
+			App::abort(500, Lang::txt('BILLBOARDS_ORDER_PLEASE_SELECT_ITEMS'));
 			return;
 		}
 
@@ -226,7 +226,7 @@ class BillBoards extends AdminController
 				$billboard->set('ordering', $order[$i]);
 				if (!$billboard->save())
 				{
-					JError::raiseError(500, $billboard->getError());
+					App::abort(500, $billboard->getError());
 					return;
 				}
 			}
@@ -251,10 +251,10 @@ class BillBoards extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = \JRequest::getVar('cid', array());
+		$ids = Request::getVar('cid', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -315,7 +315,7 @@ class BillBoards extends AdminController
 	public function cancelTask()
 	{
 		// Incoming - we need an id so that we can check it back in
-		$fields = \JRequest::getVar('billboard', array(), 'post');
+		$fields = Request::getVar('billboard', array(), 'post');
 
 		// Check the billboard back in
 		$billboard = Billboard::oneOrNew($fields['id']);
@@ -336,10 +336,10 @@ class BillBoards extends AdminController
 	protected function toggle($publish=1)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (we're expecting an array)
-		$ids = JRequest::getVar('cid', array());
+		$ids = Request::getVar('cid', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
@@ -357,7 +357,7 @@ class BillBoards extends AdminController
 				$row->set('published', $publish);
 				if (!$row->save())
 				{
-					JError::raiseError(500, $row->getError());
+					App::abort(500, $row->getError());
 					return;
 				}
 				// Check it back in
