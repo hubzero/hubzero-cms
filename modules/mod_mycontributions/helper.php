@@ -146,7 +146,7 @@ class Helper extends Module
 
 						if ($listid)
 						{
-							$controller = new \Components\Wishlist\Controllers\Wishlists();
+							$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 							$filters = $controller->getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
