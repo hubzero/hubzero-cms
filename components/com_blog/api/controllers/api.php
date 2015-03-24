@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,16 +24,10 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-JLoader::import('Hubzero.Api.Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 /**
@@ -48,11 +42,11 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//\JLoader::import('joomla.environment.request');
+		//\JLoader::import('joomla.application.component.helper');
 
-		$this->config   = JComponentHelper::getParams('com_blog');
-		$this->database = JFactory::getDBO();
+		$this->config   = Component::params('com_blog');
+		$this->database = \JFactory::getDBO();
 
 		switch ($this->segments[0])
 		{
@@ -86,7 +80,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -102,32 +96,32 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'blog';
 		$response->tasks = array(
 			'archive' => array(
-				'description' => JText::_('Get a list of categories for a specific section.'),
+				'description' => Lang::txt('Get a list of categories for a specific section.'),
 				'parameters'  => array(
 					'sort' => array(
-						'description' => JText::_('Field to sort results by.'),
+						'description' => Lang::txt('Field to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'created',
 						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
 					),
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -135,7 +129,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -146,16 +140,16 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function archiveTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$model = new \Components\Blog\Models\Archive('site');
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
-			'sort'       => JRequest::getWord('sort', 'created'),
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'DESC'))
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
+			'sort'       => Request::getWord('sort', 'created'),
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC'))
 		);
 
 		$response = new stdClass;
@@ -164,7 +158,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$juri = \JURI::getInstance();
 
 			foreach ($model->entries('list', $filters) as $i => $entry)
 			{
@@ -176,7 +170,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 				$obj->published = $entry->get('publish_up');
 				$obj->scope     = $entry->get('scope');
 				$obj->author    = $entry->creator('name');
-				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($entry->link()), DS));
+				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($entry->link()), DS));
 				$obj->comments  = $entry->comments('count');
 
 				$response->posts[] = $obj;
