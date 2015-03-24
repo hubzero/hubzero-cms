@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 		$huser = \Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
 		if (is_object($huser) && $huser->get('name'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
 		}
 	}
 
@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
-				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
+				<a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_PERMALINK'); ?>">
 					<span class="comment-date-at">@</span>
 					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('PLG_PUBLICATION_REVIEWS_ON'); ?></span>
@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php } ?>
 
 	<?php if (JRequest::getWord('action') == 'edit' && JRequest::getInt('comment') == $this->comment->get('id')) { ?>
-			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+			<form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 				<fieldset>
 					<legend><span><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?></span></legend>
 
@@ -144,27 +144,27 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if ($juser->get('id') == $this->comment->get('created_by')) { ?>
 				<?php /*if ($this->config->get('access-delete-thread')) { ?>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
+					<a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_DELETE'); ?><!--
 					--></a>
 				<?php }*/ ?>
-					<a class="icon-edit edit" href="<?php echo JRoute::_($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
+					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_EDIT'); ?><!--
 					--></a>
 			<?php } ?>
 			<?php if (!$this->comment->get('reports')) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
-					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply active" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?><!--
 				--></a>
 					<?php } else { ?>
-					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo JRoute::_($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-reply reply" data-txt-active="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_CANCEL'); ?>" data-txt-inactive="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPLY'); ?><!--
 				--></a>
 					<?php } ?>
 				<?php } ?>
-					<a class="icon-abuse abuse" href="<?php echo JRoute::_($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+					<a class="icon-abuse abuse" href="<?php echo Route::url($this->comment->link('report')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo JText::_('PLG_PUBLICATION_REVIEWS_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
@@ -175,10 +175,10 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 				<?php if ($juser->get('guest')) { ?>
 				<p class="warning">
-					<?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base, false, true))) . '">' . JText::_('PLG_PUBLICATION_REVIEWS_LOGIN') . '</a>'); ?>
+					<?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . JText::_('PLG_PUBLICATION_REVIEWS_LOGIN') . '</a>'); ?>
 				</p>
 				<?php } else { ?>
-				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo JRoute::_($this->base); ?>" method="post" enctype="multipart/form-data">
+				<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
 					<fieldset>
 						<legend><span><?php echo JText::sprintf('PLG_PUBLICATION_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : JText::_('PLG_PUBLICATION_REVIEWS_ANONYMOUS'))); ?></span></legend>
 

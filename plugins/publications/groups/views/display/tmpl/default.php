@@ -41,6 +41,6 @@ $logo = $this->group->getLogo();
 		<p class="group-img">
 			<img src="<?php echo $logo; ?>" width="50" alt="<?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
 		</p>
-		<p class="group-descripion"><?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+		<p class="group-descripion"><?php echo JText::sprintf('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
 	</div>
 </div>

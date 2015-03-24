@@ -44,10 +44,10 @@ $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=' . $active . a . 'action=select' . a . 'p=' . $this->props
-			. a . 'vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=' . $active . '&action=select') .'/?p=' . $this->props . '&pid='
-			. $this->pub->id . '&vid=' . $this->pub->version_id;
+		? JRoute::_( $route) . '?active=' . $active . '&action=select&p=' . $this->props
+			. '&vid=' . $this->pub->version_id
+		: JRoute::_( $route . '&active=' . $active . '&action=select') .'/?p=' . $this->props . '&amp;pid='
+			. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 ?>
 <div class="item-new">
 	<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox nox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_' . strtoupper($this->type)); ?></a></span>

@@ -24,7 +24,6 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$document = JFactory::getDocument();
 
 ?>
 <div id="prj-db-list">
@@ -152,12 +151,12 @@ $document = JFactory::getDocument();
 	}
 	else
 	{
-		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="'.JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias . a . 'action=create#content').'" >'.JText::_('PLG_PROJECTS_DATA_START').'</a></span></p>');
+		echo ('<p class="noresults">' . JText::_('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="' . Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->project->alias . '&action=create#content') . '" >' . JText::_('PLG_PROJECTS_DATA_START') . '</a></span></p>');
 	}
 	?>
 </div>
 <div id="prj-db-update-dialog" title="Update Title &amp; Description" style="display: none;">
-	<form id="prj-db-update-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=update'); ?>">
+	<form id="prj-db-update-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=databases&action=update'); ?>">
 		<input type="hidden" name="db_id" />
 		<label for="db_title" >Title:</label><br />
 		<input type="text" name="db_title" style="width: 550px;" /><br /><br />

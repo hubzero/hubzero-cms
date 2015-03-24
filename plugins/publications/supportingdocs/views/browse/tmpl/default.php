@@ -123,7 +123,7 @@ elseif ($this->docs) {
 		? '<img src="' . \Components\Projects\Helpers\Html::getFileIcon($ext) . '" alt="'.$ext.'" /> '
 		: '<span class="'.$child->type.'"></span> ';
 
-		$url = JRoute::_('index.php?option=com_publications&id='
+		$url = Route::url('index.php?option=com_publications&id='
 			 . $this->publication->id . '&task=serve&v=' . $this->version . '&a='
 			 . $child->id);
 

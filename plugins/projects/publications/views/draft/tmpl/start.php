@@ -59,7 +59,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				// TBD
 			}
 		?>
-		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url.'?action='. $action . a . 'base='.$current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
+		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url . '?action=' . $action . '&amp;base=' . $current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
 
 		<?php } ?>
 		<div class="clear"></div>

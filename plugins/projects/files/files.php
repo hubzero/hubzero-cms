@@ -412,7 +412,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->writeGitConfig( $this->_project->alias, $this->_config, $this->_case);
 
 		// Build URL
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -988,7 +988,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$aid = $objAA->recordActivity( $this->_project->id,
 				$this->_uid, $activity,
 				$parsedRef, 'project files',
-				\JRoute::_('index.php?option=' . $this->_option
+				Route::url('index.php?option=' . $this->_option
 					. '&alias=' . $this->_project->alias . '&active=files'), 'files', 1
 			);
 		}
@@ -1025,7 +1025,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 			$route 		 = 'index.php?option=com_publications&task=submit';
-			$view->url   = \JRoute::_($route);
+			$view->url   = Route::url($route);
 		}
 		else
 		{
@@ -1035,7 +1035,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->quota = $quota
 				? $quota
 				: \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$view->url 	= \JRoute::_($this->_route . '&active=files');
+			$view->url 	= Route::url($this->_route . '&active=files');
 		}
 
 		$view->unused 		= $view->quota - $dirsize;
@@ -1537,7 +1537,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_message = array('message' => $this->_msg, 'type' => 'success');
 			}
 
-			$url 	= \JRoute::_($this->_route . '&active=files');
+			$url 	= Route::url($this->_route . '&active=files');
 			$url .= $this->subdir ? '?subdir=' .urlencode($this->subdir) : '';
 
 			if ($view == 'pub')
@@ -1897,7 +1897,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$newdir = \JRequest::getVar('newdir', '', 'post');
 
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1944,7 +1944,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$reserved = \Components\Projects\Helpers\Html::getParamArray(
 			$this->params->get('reservedNames', '' ));
 
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Checks
 		if (!$newdir)
@@ -2023,7 +2023,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$sync = 0;
 
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Check that we have directory to delete
 		if (!$dir || !is_dir($this->_path . DS . $dir) || $dir == '.git' || $dir == '.')
@@ -2088,7 +2088,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
 		}
 
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Get session
 		$jsession = \JFactory::getSession();
@@ -2223,7 +2223,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->setError(\JText::_('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_MOVE'));
 		}
 
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		// Confirmation screen
 		if ($this->_task == 'move')
@@ -2441,7 +2441,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Redirect to connect screen
 						$this->_message = array('message' => \JText::_('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
 							'type' => 'success');
-						$url  = \JRoute::_('index.php?option=' . $this->_option
+						$url  = Route::url('index.php?option=' . $this->_option
 							 . '&alias=' . $this->_project->alias . '&active=files');
 						$url .= '/?action=connect';
 						$this->_referer = $url;
@@ -2704,7 +2704,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = \JRoute::_('index.php?option=' . $this->_option
+		$url  = Route::url('index.php?option=' . $this->_option
 			. '&alias=' . $this->_project->alias . '&active=files');
 		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
@@ -2839,7 +2839,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$view->url 	        = \JRoute::_($this->_route . '&active=files');
+		$view->url 	        = Route::url($this->_route . '&active=files');
 		$view->config		= $this->_config;
 		$view->file 		= $file;
 		$view->fpath 		= $fpath;
@@ -2972,7 +2972,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($preview)
 			{
-				$versions[$i]['preview'] = \JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->_project->alias . '&task=media&media=' . basename($preview));
+				$versions[$i]['preview'] = Route::url('index.php?option=' . $this->option . '&alias=' . $this->_project->alias . '&task=media&media=' . basename($preview));
 			}
 			$i++;
 		}
@@ -2988,7 +2988,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Redirect to file list
-		$view->url = \JRoute::_($this->_route . '&active=files');
+		$view->url = Route::url($this->_route . '&active=files');
 
 		// Binary file?
 		$view->binary		= \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $fpath);
@@ -3125,7 +3125,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
@@ -3306,7 +3306,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
 		$this->_referer = $url;
@@ -3516,7 +3516,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 						// Redirect to connect screen
 						$this->_message = array('message' => \JText::_('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'),
 							'type' => 'success');
-						$url  = \JRoute::_('index.php?option=' . $this->_option
+						$url  = Route::url('index.php?option=' . $this->_option
 							 . '&alias=' . $this->_project->alias . '&active=files');
 						$url .= '/?action=connect';
 						$this->_referer = $url;
@@ -3653,7 +3653,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to file list
-		$url  = \JRoute::_($this->_route . '&active=files');
+		$url  = Route::url($this->_route . '&active=files');
 		$url .= $this->subdir ? '?subdir=' . urlencode($this->subdir) : '';
 
 		$this->_referer = $url;
@@ -3727,7 +3727,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$binary		= false;
 
 		// Build URL
-		$url 	= \JRoute::_($this->_route . '&active=files');
+		$url 	= Route::url($this->_route . '&active=files');
 
 		$formats = $compiler->getFormatsArray();
 
@@ -4338,7 +4338,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Make sure Git helper is included
 		$this->_getGitHelper();
 
-		$url 	= \JRoute::_($this->_route . '&active=files&action=diskspace');
+		$url 	= Route::url($this->_route . '&active=files&action=diskspace');
 
 		// Run git-gc
 		if ($action == 'optimize' || $action == 'advoptimize')
@@ -4438,7 +4438,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->ajax 	= \JRequest::getInt('ajax', 0);
 
 		// Build URL
-		$view->url = \JRoute::_($this->_route . '&active=files');
+		$view->url = Route::url($this->_route . '&active=files');
 		$view->subdir = $this->subdir;
 
 		if ($this->getError())
@@ -4472,7 +4472,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->ajax 	= \JRequest::getInt('ajax', 0);
 
 		// Build URL
-		$view->url = \JRoute::_($this->_route . '&active=files');
+		$view->url = Route::url($this->_route . '&active=files');
 		$view->subdir = $this->subdir;
 
 		if ($this->getError())
@@ -5331,7 +5331,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$removeData = \JRequest::getInt('removedata', 1);
 
 		// Build pub url
-		$url = \JRoute::_($this->_route . '&active=files');
+		$url = Route::url($this->_route . '&active=files');
 
 		// Build return URL
 		$return = $callback ? $callback : $url . '?action=connect';

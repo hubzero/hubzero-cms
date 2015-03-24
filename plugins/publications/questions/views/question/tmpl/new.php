@@ -41,7 +41,7 @@ $this->css();
 	<?php foreach ($this->getErrors() as $error) { ?>
 	<p class="error"><?php echo $error; ?></p>
 	<?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
 
@@ -86,7 +86,7 @@ $this->css();
 				<?php
 				echo JFactory::getEditor()->display('question[question]', $this->escape(stripslashes($this->row->get('question'))), '', '', 50, 10, false, 'field-question');
 				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 			</label>
 
 			</label>

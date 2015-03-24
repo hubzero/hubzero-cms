@@ -196,7 +196,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_URL'); ?>:</td>
-							<td class="tbl-input"><a href="<?php echo JRoute::_('index.php?option=com_publications&amp;id='.$this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/'.$this->pub->id.$v; ?></a></td>
+							<td class="tbl-input"><a href="<?php echo Route::url('index.php?option=com_publications&amp;id='.$this->pub->id.$v); ?>"><?php echo trim($site, DS) .'/publications/'.$this->pub->id.$v; ?></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -293,7 +293,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } else { ?>
 							<li id="next-edit">
 								<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_RESUBMIT'); ?></p>
-								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES'); ?></a></p>
+								<p class="next-controls"><a href="<?php echo Route::url( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES'); ?></a></p>
 							</li>
 						<?php }
 						break;
@@ -318,7 +318,7 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						<?php } else { ?>
 							<li id="next-edit">
 								<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_CURATE'); ?></p>
-								<p class="next-controls"><a href="<?php echo JRoute::_( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a></p>
+								<p class="next-controls"><a href="<?php echo Route::url( $pubRoute ) . '?action=continue&amp;version=' .$this->pub->version; ?>" id="start-curation" class="btn btn-primary active icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a></p>
 							</li>
 						<?php } ?>
 

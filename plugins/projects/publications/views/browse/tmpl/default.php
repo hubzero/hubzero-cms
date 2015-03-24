@@ -34,7 +34,7 @@ $next_start = $this->filters['start'] + $this->filters['limit'];
 
 // URL
 $route 	= 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications';
-$url 	= JRoute::_($route);
+$url 	= Route::url($route);
 
 // Check used space against quota (percentage)
 $inuse = round(($this->dirsize * 100 ) / $this->quota);
@@ -103,8 +103,8 @@ $i = 1;
 				$i++;
 			?>
 			<tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->id; ?>">
-				<td class="pub-image"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" /></td>
-				<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if ($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a> v.<?php echo $row->version_label; ?></td>
+				<td class="pub-image"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" /></td>
+				<td><a href="<?php echo Route::url($route . '&pid=' . $row->id); ?>" <?php if ($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a> v.<?php echo $row->version_label; ?></td>
 				<td><?php echo $row->id; ?></td>
 				<td class="restype"><?php echo $row->base; ?></td>
 				<td class="showstatus">
@@ -113,25 +113,25 @@ $i = 1;
 				</td>
 				<td>
 				<?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label)
-				{ echo '<a href="'. JRoute::_($route . '&pid=' . $row->id) . '/?version=dev'
-				.'">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
-				.' <strong>'.$row->dev_version_label.'</strong></a> '
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
+				{ echo '<a href="'. Route::url($route . '&pid=' . $row->id) . '/?version=dev'
+				. '">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
+				. ' <strong>' . $row->dev_version_label.'</strong></a> '
+				. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
 				if ($this->pubconfig->get('curation', 0))
 				{
-					echo ' <span class="block"><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+					echo ' <span class="block"><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				}
 
 				} elseif ($row->state == 3 && $this->pubconfig->get('curation', 0))
 				{
-					echo ' <span><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
-				} elseif ($row->state == 7) { echo ' <span><a href="' . JRoute::_($route . '&pid=' . $row->id) . '/?action=continue&version=' . $row->version_number . '" class="btn mini icon-next btn-action">' . JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>
+					echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+				} elseif ($row->state == 7) { echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=' . $row->version_number . '" class="btn mini icon-next btn-action">' . JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>
 
 				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid=' . $row->id . '&action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
 				<td class="autowidth">
-					<a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" class="manageit" title="<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
+					<a href="<?php echo Route::url($route . '&pid=' . $row->id); ?>" class="manageit" title="<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
 
-					<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
+					<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
 			</tr>
 			<?php
 		}

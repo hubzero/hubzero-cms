@@ -27,8 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 $block   	= $this->block;
 $step  	 	= $this->step;
@@ -41,7 +41,7 @@ $element = isset($elements->$elementId) ? $elements->$elementId: $elements->$def
 $params  = $element->params;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 // Get attachment type model
 $attModel = new \Components\Publications\Models\Attachments($this->database);
@@ -104,7 +104,7 @@ if ($attachments)
 				<?php } ?>
 			</ul>
 			<?php } else { ?>
-			<p class="warning"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block">Go to <a href="<?php echo JRoute::_($route . '&active=databases'); ?>">Databases</a> to create a new database</span></p>
+			<p class="warning"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block">Go to <a href="<?php echo Route::url($route . '&active=databases'); ?>">Databases</a> to create a new database</span></p>
 		<?php } ?>
 		</form>
 	</div>

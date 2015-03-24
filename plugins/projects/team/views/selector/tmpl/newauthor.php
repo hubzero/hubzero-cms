@@ -30,7 +30,7 @@ $route = $this->project->provisioned == 1
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $i = 0;
@@ -56,7 +56,7 @@ if (count($this->authors) > 0)
 <script src="/plugins/projects/team/js/selector.js"></script>
 <div id="abox-content">
 <h3><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?> </h3>
-		<form id="add-author" class="add-author" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias); ?>">
+		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

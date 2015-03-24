@@ -29,13 +29,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $route = $this->project->provisioned
 	? 'index.php?option=com_publications&task=submit'
 	: 'index.php?option=com_projects&alias=' . $this->project->alias;
-$p_url = JRoute::_($route . '&active=files');
+$p_url = Route::url($route . '&active=files');
 
 $shown = array();
 $skipped = 0;
 
 ?>
-<form action="<?php echo JRoute::_($route).'?active=publications'; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
+<form action="<?php echo Route::url($route) . '?active=publications'; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
 	<ul id="c-browser" 	<?php if (count($this->files) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?>>
 		<?php
 		if (count($this->files) > 0) {

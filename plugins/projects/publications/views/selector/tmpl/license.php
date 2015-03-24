@@ -53,5 +53,5 @@ $pubParams = new JParameter( $this->publication->params );
 </ul>
 
 <?php if ($this->pubconfig->get('suggest_licence')) { ?>
-	<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license' . a . 'version=' . $this->publication->version_number; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
+	<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN') ; ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->version_number; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
 <?php } ?>

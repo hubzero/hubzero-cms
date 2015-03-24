@@ -77,7 +77,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 				</noscript>
 			</div>
 			<div id="pick-authors" class="addnew">
-			<form action="<?php echo JRoute::_($this->route . a . 'active=publications'); ?>" method="post" id="addmember-form">
+			<form action="<?php echo JRoute::_($this->route . '&active=publications'); ?>" method="post" id="addmember-form">
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 					<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
@@ -116,9 +116,9 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			<?php } ?>
 			<?php if ($this->project->provisioned == 1 ) { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
-				. JRoute::_('index.php?option=com_publications' . a . 'task=submit' . a . 'pid='
-				. $this->pub->id) . '?active=team' . a . 'action=editauthors' . a . 'version='. $this->pub->version_number . '" class="showinbox">'
-				.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM').'</a>.'; ?></p>
+				. JRoute::_('index.php?option=com_publications&task=submit&pid='
+				. $this->pub->id) . '?active=team&amp;action=editauthors&amp;version='. $this->pub->version_number . '" class="showinbox">'
+				. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM') . '</a>.'; ?></p>
 			<?php } ?>
 		 </div>
 		</div>
@@ -172,7 +172,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 						<li id="clone-author::<?php echo $author->project_owner_id; ?>" class="c-drag <?php if ($active == 0) { echo 'i-missing'; } ?> clone-<?php echo $author->project_owner_id; ?>" >
 							<span class="a-ordernum"><?php echo $o; ?></span>
 							<?php if ($canedit) { ?>
-							<span class="c-edit"><a href="<?php echo $this->url.'?vid='.$this->row->id.a.'uid='.$author->user_id.a.'move='.$this->move.a.'action=editauthor'.a.'owner='.$author->project_owner_id . a . 'version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
+							<span class="c-edit"><a href="<?php echo $this->url . '?vid=' . $this->row->id . '&amp;uid=' . $author->user_id . '&amp;move=' . $this->move . '&amp;action=editauthor&amp;owner=' . $author->project_owner_id . '&amp;version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
 							<?php } ?>
 							<span class="a-wrap">
 								<span class="a-authorname"><?php echo stripslashes($name); ?></span><span class="a-org"><?php echo $org ? ', '.stripslashes($org) : ''; ?></span>

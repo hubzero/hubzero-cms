@@ -159,9 +159,9 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			if (!$h->loggedin)
 			{
 				$rtrn = JRequest::getVar('REQUEST_URI',
-					JRoute::_('index.php?option=' . $option . '&id='.$model->id.'&active=reviews&v=' . $model->version_number), 'server');
+					Route::url('index.php?option=' . $option . '&id='.$model->id.'&active=reviews&v=' . $model->version_number), 'server');
 				$this->redirect(
-					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 					JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
 					'warning'
 				);
@@ -210,13 +210,13 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 
 			if ($model->alias)
 			{
-				$url = JRoute::_('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number);
-				$url2 = JRoute::_('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
+				$url = Route::url('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number);
+				$url2 = Route::url('index.php?option='.$option.'&alias='.$model->alias.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
 			}
 			else
 			{
-				$url = JRoute::_('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number);
-				$url2 = JRoute::_('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
+				$url = Route::url('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number);
+				$url2 = Route::url('index.php?option='.$option.'&id='.$model->id.'&active=reviews&v=' . $model->version_number . '&action=addreview#reviewform');
 			}
 
 			$view->reviews = $reviews;
@@ -512,9 +512,9 @@ class PlgPublicationsReviewsHelper extends JObject
 		if ($juser->get('guest'))
 		{
 			$rtrn = JRequest::getVar('REQUEST_URI',
-				JRoute::_('index.php?option=' . $this->option . '&id='.$rid.'&active=reviews'), 'server');
+				Route::url('index.php?option=' . $this->option . '&id='.$rid.'&active=reviews'), 'server');
 			$this->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_VOTE'),
 				'warning'
 			);
@@ -569,7 +569,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			}
 			else
 			{
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$rid.'&active=reviews');
+				$this->_redirect = Route::url('index.php?option='.$this->_option.'&id='.$rid.'&active=reviews');
 			}
 		}
 	}
@@ -816,7 +816,7 @@ class PlgPublicationsReviewsHelper extends JObject
 		$pub->calculateRating();
 		$pub->updateRating();
 
-		$this->_redirect = JRoute::_('index.php?option='.$this->_option.'&id='.$publication->id.'&active=reviews');
+		$this->_redirect = Route::url('index.php?option='.$this->_option.'&id='.$publication->id.'&active=reviews');
 		return;
 	}
 }

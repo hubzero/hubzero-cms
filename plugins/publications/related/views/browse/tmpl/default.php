@@ -45,9 +45,9 @@ foreach ($this->related as $line)
 {
 	if ($line->section == 'Topic') {
 		if ($line->group != '' && $line->scope != '') {
-			$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
+			$sef = Route::url('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
 		} else {
-			$sef = JRoute::_('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
+			$sef = Route::url('index.php?option=com_topics&scope='.$line->scope.'&pagename='.$line->alias);
 		}
 	}
 	else {
@@ -68,9 +68,9 @@ foreach ($this->related as $line)
 
 		// Get the SEF for the publication
 		if ($line->alias) {
-			$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $line->alias);
+			$sef = Route::url('index.php?option='.$this->option.'&alias='. $line->alias);
 		} else {
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $line->id);
+			$sef = Route::url('index.php?option='.$this->option.'&id='. $line->id);
 		}
 	}
 

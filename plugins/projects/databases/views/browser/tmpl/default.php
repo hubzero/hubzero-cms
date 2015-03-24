@@ -41,9 +41,9 @@ if ($this->primary && !empty($this->attachments))
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
-$p_url = JRoute::_($route . a . 'active=databases');
+	? 'index.php?option=com_publications' . '&task=submit'
+	: 'index.php?option=com_projects' . '&alias=' . $this->project->alias;
+$p_url = Route::url($route . '&active=databases');
 
 ?>
 <ul id="c-browser" <?php if (count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?> >
@@ -101,5 +101,5 @@ $p_url = JRoute::_($route . a . 'active=databases');
 <?php } ?>
 
 <?php if (!$this->project->provisioned) { ?>
-	<p class="addnew">Go to <a href="<?php echo JRoute::_($route).'?active=databases'; ?>">Databases</a> to create a new database</p>
+	<p class="addnew">Go to <a href="<?php echo Route::url($route).'?active=databases'; ?>">Databases</a> to create a new database</p>
 <?php } ?>

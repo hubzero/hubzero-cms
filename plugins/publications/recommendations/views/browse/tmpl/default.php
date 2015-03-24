@@ -41,9 +41,9 @@ $this->js()
 	{
 		// Get the SEF for the publication
 		if ($line->alias) {
-			$sef = JRoute::_('index.php?option='.$this->option.'&alias='. $line->alias.'&rec_ref='.$this->publication->id);
+			$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $line->alias . '&rec_ref=' . $this->publication->id);
 		} else {
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $line->id.'&rec_ref='.$this->publication->id);
+			$sef = Route::url('index.php?option=' . $this->option . '&id=' . $line->id . '&rec_ref=' . $this->publication->id);
 		}
 ?>
 		<li>

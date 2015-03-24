@@ -76,14 +76,14 @@ if (!$this->getError()) {
 ?>
 	<pre><?php echo htmlentities($this->data); ?></pre>
 <?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) { 
-		$source = JRoute::_('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->embed );
+		$source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->embed );
 	?>
 	<div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
 	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $source; ?>" id="pdf_content">
 		<embed src="<?php echo $source; ?>" type="application/pdf" />
 		<p><?php echo JText::_('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
 		<?php if ($this->image) { ?>
-			<img alt="" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->image ); ?>" />
+			<img alt="" src="<?php echo Route::url('index.php?option=' . $this->option . '&task=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->image ); ?>" />
 		<?php } ?>
 		</p>
 	  </object>

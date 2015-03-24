@@ -27,9 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
-$p_url = JRoute::_($route . a . 'active=team');
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+$p_url = JRoute::_($route . '&active=team');
 
 ?>
 <div id="abox-content">

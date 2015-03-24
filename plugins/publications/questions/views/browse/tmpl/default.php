@@ -39,7 +39,7 @@ $this->css();
 </h3>
 <div class="container">
 	<p class="section-options">
-		<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
+		<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions&action=new'); ?>"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
 	</p>
 	<table class="questions entries">
 		<caption>
@@ -71,7 +71,7 @@ $this->css();
 				$user = JUser::getInstance($row->get('created_by'));
 				if (is_object($user))
 				{
-					$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
+					$name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
 				}
 				else
 				{
@@ -89,7 +89,7 @@ $this->css();
 				</th>
 				<td>
 				<?php if (!$row->isReported()) { ?>
-					<a class="entry-title" href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
+					<a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a><br />
 				<?php } else { ?>
 					<span class="entry-title"><?php echo JText::_('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
 				<?php } ?>
@@ -103,7 +103,7 @@ $this->css();
 						</span>
 						<span class="entry-details-divider">&bull;</span>
 						<span class="entry-comments">
-							<a href="<?php echo JRoute::_($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('There are %s responses to this question.', $row->get('rcount')); ?>">
+							<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('There are %s responses to this question.', $row->get('rcount')); ?>">
 								<?php echo $row->get('rcount'); ?>
 							</a>
 						</span>
@@ -123,7 +123,7 @@ $this->css();
 							<?php echo $row->get('helpful', 0); ?><span> Like</span>
 						</span>
 					<?php } else { ?>
-						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo JRoute::_('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
+						<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&vote=1'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
 							<?php echo $row->get('helpful', 0); ?><span> Like</span>
 						</a>
 					<?php } ?>

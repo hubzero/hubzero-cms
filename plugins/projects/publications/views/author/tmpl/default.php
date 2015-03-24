@@ -33,7 +33,7 @@ $name = trim($name) ? $name : $author->invited_email;
 ?>
 	<span class="a-ordernum"></span>
 	<?php if($this->canedit) { ?>
-	<span class="c-edit"><a href="<?php echo $this->url.'?vid='.$this->vid.a.'uid='.$author->user_id.a.'move='.$this->move.a.'action=editauthor'.a.'owner='.$this->owner; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
+	<span class="c-edit"><a href="<?php echo $this->url . '?vid=' . $this->vid .  '&amp;uid=' . $author->user_id . '&amp;move=' . $this->move . '&amp;action=editauthor&amp;owner='.$this->owner; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
 	<?php } ?>
 	<span class="a-wrap">
 		<span class="a-authorname"><?php echo stripslashes($name); ?></span><span class="a-org"><?php echo $org ? ', '.stripslashes($org) : ''; ?></span>

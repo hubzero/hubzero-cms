@@ -33,9 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <p class="answer">
 	<?php if ($this->publication->alias) : ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_publications&alias='.$this->publication->alias.'&active=questions'); ?>">
+		<a href="<?php echo Route::url('index.php?option=com_publications&alias='.$this->publication->alias.'&active=questions'); ?>">
 	<?php else : ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_publications&id='.$this->publication->id.'&active=questions'); ?>">
+		<a href="<?php echo Route::url('index.php?option=com_publications&id='.$this->publication->id.'&active=questions'); ?>">
 	<?php endif; ?>
 		<?php
 			if ($this->count == 1)

@@ -152,7 +152,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 					'name'    => 'metadata'
 				)
 			);
-			$view->url = JRoute::_('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number);
+			$view->url = Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number);
 			$view->citations = $citations;
 
 			$arr['metadata'] = $view->loadTemplate();

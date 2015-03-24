@@ -1134,7 +1134,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				// Record project activity
 				$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 				$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $objPD->id, 'databases',
-					JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=databases'),
+					Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=databases'),
 					'databases', 1);
 				ob_clean();
 				$this->_msg = 'Database successfully created';
@@ -1242,7 +1242,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 			$msg = 'updated file "' . $file . '" in project ';
 			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $file, 'files',
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=files'),
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=files'),
 				'files', 1 );
 			ob_clean();
 		}
@@ -1284,7 +1284,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$prjAct = new \Components\Projects\Tables\Activity($this->_database);
 			$msg = 'removed database "' . $title . '" from project ';
 			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $id, 'databases',
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=databases'),
+				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=databases'),
 				'databases', 1);
 		}
 

@@ -92,7 +92,7 @@ $dispatcher = JDispatcher::getInstance();
 		<span><?php echo ucfirst(JText::_('COM_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
 	 	<span id="team-manage" class="manage-options hidden">
 		<span class="faded"><?php echo JText::_('COM_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo JText::_('COM_PROJECTS_DELETE'); ?></a>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo JText::_('COM_PROJECTS_DELETE'); ?></a>
 		</span>
 	</p>
 	</div>
@@ -102,10 +102,10 @@ $dispatcher = JDispatcher::getInstance();
 			<tr>
 				<th class="checkbox"></th>
 				<th class="th_image"></th>
-				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=name&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
-				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=role&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
-				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=status&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
-				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=group&t_sortdir='.$sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
+				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=name&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=role&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=status&t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
+				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->project->alias . '&active=team').'/?t_sortby=group&t_sortdir='.$sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -148,12 +148,12 @@ $dispatcher = JDispatcher::getInstance();
 		if ($this->filters['start'] == 0) {	?>
 			<span>&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></span>
 		<?php	} else {  ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&task=' . $this->task . '&active=team&t_sortby='.$this->filters['sortby'] . '&t_limitstart=' . $prev_start . '&t_sortdir='.$this->filters['sortdir']); ?>">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=' . $this->task . '&active=team&t_sortby=' . $this->filters['sortby'] . '&t_limitstart=' . $prev_start . '&t_sortdir=' . $this->filters['sortdir']); ?>">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
 		<?php } ?><span>&nbsp; | &nbsp;</span>
 		<?php
 		if ( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 			<span><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</span>
 		<?php	} else { ?>
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&task=' . $this->task . '&active=team&t_sortby='.$this->filters['sortby'] . '&t_limitstart=' . $next_start . '&t_sortdir='.$this->filters['sortdir']); ?>"><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</a>
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=' . $this->task . '&active=team&t_sortby='.$this->filters['sortby'] . '&t_limitstart=' . $next_start . '&t_sortdir='.$this->filters['sortdir']); ?>"><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</a>
 		<?php } ?></p>
 	</div>

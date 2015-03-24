@@ -110,8 +110,8 @@ tooltip: true,
 		?>
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
-					<img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
-					<span class="h-title"><a href="<?php echo JRoute::_('index.php?option=com_publications' . a . 'id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
+					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
+					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
 					<span class="block mini faded"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, 'M d, Y') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
 				</td></tr>
 				<tr>

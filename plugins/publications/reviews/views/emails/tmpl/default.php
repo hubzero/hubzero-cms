@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juri = JURI::getInstance();
-$sef = JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=reviews');
+$sef = Route::url('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=reviews');
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }

@@ -30,7 +30,7 @@ $route = $this->project->provisioned == 1
 		: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 // Save Selection URL
-$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
+$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 $i = 0;
@@ -53,9 +53,9 @@ if (count($this->authors) > 0)
 }
 
 $newauthorUrl   = $this->project->provisioned == 1
-		? JRoute::_( $route) . '?active=team&action=newauthor'
-		: JRoute::_( $route . '&active=team&action=newauthor') .'/?p=' . $this->props . a . 'pid='
-		. $this->publication->id . a . 'vid=' . $this->publication->version_id;
+		? Route::url( $route) . '?active=team&action=newauthor'
+		: Route::url( $route . '&active=team&action=newauthor') .'/?p=' . $this->props . '&amp;pid='
+		. $this->publication->id . '&amp;vid=' . $this->publication->version_id;
 
 ?>
 <div id="abox-content-wrap">

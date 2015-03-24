@@ -51,11 +51,11 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 		<?php if ($dropbox) { ?>
 		<span class="dropbox"></span>
 		<?php } ?>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
 		<?php } 
 			// Connected to Google
 			if ($this->oparams->get('google_token') && $active) {  ?>
-				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
+				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
 		<?php } ?>
 	</span>
 </p>

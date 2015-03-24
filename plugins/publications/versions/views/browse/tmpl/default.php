@@ -29,9 +29,9 @@ $this->css('assets/css/versions.css');
 
 // Build pub url
 $route = $this->publication->project_provisioned == 1
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->publication->project_alias . a . 'active=publications';
-$url = JRoute::_($route . a . 'pid=' . $this->publication->id);
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
+$url = Route::url($route . '&pid=' . $this->publication->id);
 
 ?>
 <h3>
@@ -70,9 +70,9 @@ if ($this->versions && count($this->versions) > 0) {
 			<td><?php echo ($v->published_up && $v->published_up!='0000-00-00 00:00:00') ? JHTML::_('date',$v->published_up, 'M d, Y') : 'N/A'; ?></td>
 			<td><?php echo $v->doi ? $v->doi : JText::_('COM_PUBLICATIONS_NA'); ?></td>
 			<td class="<?php echo $v->state == 1 ? 'state_published' : 'state_unpublished'; ?>"><?php echo $v->state == 1 ? JText::_('PLG_PUBLICATION_VERSIONS_PUBLISHED') : JText::_('PLG_PUBLICATION_VERSIONS_UNPUBLISHED'); ?></td>
-			<td><a href="<?php echo JRoute::_('index.php?option='
-			.$this->option.a.'id='.
-			$this->publication->id).'/?v='.$v->version_number; ?>"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VIEW'); ?></a></td>
+			<td><a href="<?php echo Route::url('index.php?option='
+			. $this->option . '&id=' .
+			$this->publication->id . '&v=' . $v->version_number); ?>"><?php echo JText::_('PLG_PUBLICATION_VERSIONS_VIEW'); ?></a></td>
 		</tr>
 <?php
 	}

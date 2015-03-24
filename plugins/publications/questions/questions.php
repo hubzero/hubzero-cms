@@ -222,7 +222,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 		{
 			$app = JFactory::getApplication();
 			$app->redirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
 				JText::_('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);
@@ -367,7 +367,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 
 		// Redirect to the question
 		JFactory::getApplication()->redirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions')
+			Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=questions')
 		);
 	}
 }

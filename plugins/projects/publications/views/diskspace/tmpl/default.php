@@ -45,7 +45,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
 <div id="plg-header">
-	<h3 class="publications"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . a . 'active=publications'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?></span></h3>
+	<h3 class="publications"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=publications'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?></span></h3>
 </div>
 	<div id="disk-usage" <?php if($warning) { echo 'class="quota-warning"'; } ?>>
 		<div class="disk-usage-wrapper">

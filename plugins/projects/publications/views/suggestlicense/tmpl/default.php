@@ -88,7 +88,7 @@ if ($this->getError()) {
 			<?php if($this->ajax) { ?>
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else { ?>
-			<a href="<?php echo $this->url . '?section=license' . a . 'version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+			<a href="<?php echo $this->url . '?section=license&version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 </form>

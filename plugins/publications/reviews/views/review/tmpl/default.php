@@ -37,7 +37,7 @@ if ($this->review->id) {
 		<a name="reviewform"></a>
 		<?php echo $title; ?>
 	</h3>
-	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->review->publication_id.'&active=reviews'); ?>" method="post" id="commentform">
+	<form action="<?php echo Route::url('index.php?option='.$this->option.'&id='.$this->review->publication_id.'&active=reviews'); ?>" method="post" id="commentform">
 			<p class="comment-member-photo">
 <?php
 			if (!$this->juser->get('guest')) {

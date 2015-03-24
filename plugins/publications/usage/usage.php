@@ -108,11 +108,11 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 
 		if ($publication->alias)
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&alias=' . $publication->alias . '&active=usage');
+			$url = Route::url('index.php?option=' . $option . '&alias=' . $publication->alias . '&active=usage');
 		}
 		else
 		{
-			$url = JRoute::_('index.php?option=' . $option . '&id=' . $publication->id . '&active=usage');
+			$url = Route::url('index.php?option=' . $option . '&id=' . $publication->id . '&active=usage');
 		}
 
 		if (!in_array($table, $tables))

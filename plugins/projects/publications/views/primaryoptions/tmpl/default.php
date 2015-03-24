@@ -39,8 +39,8 @@ elseif ($this->used)
 		$other = '';
 		foreach($this->used as $used) {
 			$other .= ' <a href="' . JRoute::_('index.php?option=' . $this->option
-				   . a . 'active=publications' . a . 'alias=' . $this->project->alias
-				   . a . 'pid=' . $used->id) . '/?section=content">'
+				   . '&active=publications&alias=' . $this->project->alias
+				   . '&pid=' . $used->id) . '/?section=content">'
 				   . stripslashes($used->title) . ' (' . $used->id . ')' . '</a>,';
 		}
 		$other = substr($other,0,strlen($other) - 1);

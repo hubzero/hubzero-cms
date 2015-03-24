@@ -38,13 +38,13 @@ $allow_import = $config->get('citation_import', 1);
 
 // Build url
 $route = $this->project->provisioned
-	? 'index.php?option=com_publications' . a . 'task=submit'
-	: 'index.php?option=com_projects' . a . 'alias=' . $this->project->alias;
+	? 'index.php?option=com_publications&task=submit'
+	: 'index.php?option=com_projects&alias=' . $this->project->alias;
 
 $newCiteUrl   = $this->project->provisioned == 1
-		? JRoute::_( $route) . '?active=links&action=editcite'
-		: JRoute::_( $route . '&active=links&action=editcite') .'/?pid='
-		. $this->pub->id . a . 'vid=' . $this->pub->version_id;
+		? Route::url( $route) . '?active=links&action=editcite'
+		: Route::url( $route . '&active=links&action=editcite') .'/?pid='
+		. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 
 ?>
 <?php echo $this->project->provisioned == 1
@@ -66,7 +66,7 @@ $newCiteUrl   = $this->project->provisioned == 1
 					<?php echo JText::_('REQUIRED'); ?></span><?php } ?>
 			</h4>
 
-			<form action="<?php echo JRoute::_($this->route . a . 'active=publications'); ?>" method="post" id="addmember-form">
+			<form action="<?php echo Route::url($this->route . '&active=publications'); ?>" method="post" id="addmember-form">
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 					<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
@@ -129,7 +129,7 @@ $newCiteUrl   = $this->project->provisioned == 1
 								: \Components\Citations\Helpers\Format::formatReference($cite, '');
 						?>
 						<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
-							<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
+							<span class="c-delete"><a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->alias . '&active=links&action=deletecitation').'/?pid=' . $this->pub->id . '&amp;cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
 							<span class="c-edit"><a href="<?php echo $newCiteUrl .'&cid=' . $cite->id; ?>" class="showinbox" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
 							<span class="c-citation"><?php echo $citeText; ?></span>
 						</li>

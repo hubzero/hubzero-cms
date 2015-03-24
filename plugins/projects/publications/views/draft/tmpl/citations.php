@@ -41,8 +41,8 @@ $route = $prov
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=links' . a . 'action=select' . a . 'p=' . $props
-			. a . 'vid=' . $this->pub->version_id
+		? JRoute::_( $route) . '?active=links&amp;action=select&amp;p=' . $props
+			. '&amp;vid=' . $this->pub->version_id
 		: JRoute::_( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
 			. $this->pub->id . '&vid=' . $this->pub->version_id;
 

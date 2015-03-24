@@ -828,14 +828,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Start url
 		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias='
-						. $this->_project->alias . a . 'active=publications';
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $this->_project->alias . '&active=publications';
 
 		// Error loading publication record
 		if ((!$pub || !$pub->id) && $new == false)
 		{
-			$this->_referer = JRoute::_($route);
+			$this->_referer = Route::url($route);
 			$this->_message = array(
 				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
@@ -972,7 +972,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'apply' || !$move)
 		{
 			// Stay where you were
-			$route .= a . 'section=' . $block . a . 'step=' . $sequence;
+			$route .= a . 'section=' . $block . '&step=' . $sequence;
 
 			if ($next)
 			{
@@ -1011,7 +1011,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect
-		$this->_referer = htmlspecialchars_decode(JRoute::_($route));
+		$this->_referer = htmlspecialchars_decode(Route::url($route));
 		return;
 	}
 
@@ -1045,8 +1045,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   $this->get('_activity'), $pub->id, $pubTitle,
-				   JRoute::_('index.php?option=' . $this->_option . a .
-				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
+				   Route::url('index.php?option=' . $this->_option . a .
+				   'alias=' . $this->_project->alias . '&active=publications' . a .
 				   'pid=' . $pub->id) . '/?version=' . $versionNumber, 'publication', 1 );
 		}
 
@@ -1066,8 +1066,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$aid   = $objAA->recordActivity( $this->_project->id, $this->_uid,
 				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
 					.' (id ' . $row->publication_id . ')', $row->publication_id, 'publication',
-				   JRoute::_('index.php?option=' . $this->_option . a .
-				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
+				   Route::url('index.php?option=' . $this->_option . a .
+				   'alias=' . $this->_project->alias . '&active=publications' . a .
 				   'pid=' . $row->publication_id), 'publication', 1 );
 		}
 
@@ -1079,9 +1079,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 			$juri = JURI::getInstance();
 
-			$sef = JRoute::_('index.php?option=' . $this->_option . a
-				. 'alias=' . $this->_project->alias . a . 'active=publications'
-				. a . 'pid=' . $row->publication_id);
+			$sef = Route::url('index.php?option=' . $this->_option . a
+				. 'alias=' . $this->_project->alias . '&active=publications'
+				. '&pid=' . $row->publication_id);
 			$sef = trim($sef, DS);
 
 			\Components\Projects\Helpers\Html::sendHUBMessage(
@@ -1131,12 +1131,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->route = $this->_project->provisioned
 					? 'index.php?option=com_publications&task=submit'
 					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-		$view->url = JRoute::_($view->route);
+		$view->url = Route::url($view->route);
 
 		// Do we have a choice?
 		if (count($choices) <= 1 )
 		{
-			$this->_referer = JRoute::_($view->route . '&action=edit');
+			$this->_referer = Route::url($view->route . '&action=edit');
 			return;
 		}
 
@@ -1375,7 +1375,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$firstBlock    = $curationModel->_blocks->$sequence->name;
 
 			// Redirect to first block
-			$this->_referer = JRoute::_($route . '&pid=' . $pub->id )
+			$this->_referer = Route::url($route . '&pid=' . $pub->id )
 				. '?move=continue&step=' . $sequence . '&section=' . $firstBlock;
 			return;
 		}
@@ -1387,14 +1387,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Start url
 		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias='
-						. $this->_project->alias . a . 'active=publications';
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $this->_project->alias . '&active=publications';
 
 		// If publication not found, raise error
 		if (($pid && !$pub) || $pub->state == 2)
 		{
-			$this->_referer = JRoute::_($route);
+			$this->_referer = Route::url($route);
 			$this->_message = array(
 				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
@@ -1501,7 +1501,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->task			= $this->_task;
 
 		// Build pub url
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Append breadcrumbs
 		$this->_appendBreadcrumbs( $pub->title, $view->url, $version);
@@ -1767,9 +1767,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route);
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route);
 
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
@@ -1861,9 +1861,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . '?action=start');
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '?action=start');
 
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
@@ -1988,7 +1988,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					? 'index.php?option=com_publications&task=submit'
 					: 'index.php?option=com_projects&alias=' . $this->_project->alias
 					. '&active=publications';
-		$view->url 			= $pid ? JRoute::_($view->route . '&pid=' . $pid) : JRoute::_($view->route);
+		$view->url 			= $pid ? Route::url($view->route . '&pid=' . $pid) : Route::url($view->route);
 		$view->title		= $this->_area['title'];
 
 		// Get messages	and errors
@@ -2032,14 +2032,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Start url
 		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias='
-						. $this->_project->alias . a . 'active=publications';
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $this->_project->alias . '&active=publications';
 
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			$this->_referer = JRoute::_($route);
+			$this->_referer = Route::url($route);
 			$this->_message = array(
 				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
@@ -2151,7 +2151,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->route = $route;
 
 		// Build pub url
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Instantiate publication version
 		$row->loadVersion($pid, $version);
@@ -2159,7 +2159,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
-		$url = $version != 'default' ? $view->url.a.'version='.$version : $view->url;
+		$url = $version != 'default' ? $view->url . '&amp;version=' . $version : $view->url;
 		$pathway->addItem(
 			stripslashes($row->title),
 			$view->url
@@ -2399,9 +2399,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = Route::url($route . '&pid=' . $pid);
 
 		if ($this->_task == 'save_license')
 		{
@@ -2619,7 +2619,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$route = $this->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-		$url = JRoute::_($route . '&pid=' . $pid);
+		$url = Route::url($route . '&pid=' . $pid);
 
 		// Check if dev version is already there
 		if ($row->checkVersion($pid, 'dev'))
@@ -2849,8 +2849,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 					$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 						   $action, $pid, $pubtitle,
-						   JRoute::_('index.php?option=' . $this->_option . a .
-						   'alias=' . $this->_project->alias . a . 'active=publications' . a .
+						   Route::url('index.php?option=' . $this->_option . a .
+						   'alias=' . $this->_project->alias . '&active=publications' . a .
 						   'pid=' . $pid) . '/?version=' . $new->version_number, 'publication', 1 );
 				}
 				else
@@ -2967,9 +2967,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
@@ -3676,9 +3676,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Determine redirect path
 		$url = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($url . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = Route::url($url . '&pid=' . $pid);
 
 		if ($section == 'review' or $inreview)
 		{
@@ -3754,12 +3754,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Start url
 		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias='
-						. $this->_project->alias . a . 'active=publications';
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias='
+						. $this->_project->alias . '&active=publications';
 
 		// Determine redirect path
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+		$url = Route::url($route . '&pid=' . $pid);
 
 		// Agreement to terms is required
 		if ($confirm && !$agree)
@@ -3791,7 +3791,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Error loading publication record
 		if (!$model->exists())
 		{
-			$this->_referer = JRoute::_($route);
+			$this->_referer = Route::url($route);
 			$this->_message = array(
 				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
@@ -3822,7 +3822,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Make sure the publication belongs to the project
 		if ($this->_project->id != $model->_project->id)
 		{
-			$this->_referer = JRoute::_($route);
+			$this->_referer = Route::url($route);
 			$this->_message = array(
 				'message' => JText::_('Oups! The publication you are trying to change is hosted by another project.'),
 				'type' => 'error');
@@ -4055,7 +4055,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
 				break;
 		}
-		$this->_msg .= ' <a href="'.JRoute::_('index.php?option=com_publications' . a .
+		$this->_msg .= ' <a href="'.Route::url('index.php?option=com_publications' . a .
 			    'id=' . $row->publication_id ) .'">'. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
 
 		$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
@@ -4069,8 +4069,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 					$action, $row->publication_id, $pubtitle,
-					JRoute::_('index.php?option=' . $this->_option . a .
-					'alias=' . $this->_project->alias . a . 'active=publications' . a .
+					Route::url('index.php?option=' . $this->_option . a .
+					'alias=' . $this->_project->alias . '&active=publications' . a .
 					'pid=' . $row->publication_id) . '/?version=' . $row->version_number,
 					'publication', 1 );
 		}
@@ -4242,7 +4242,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$route = $this->_project->provisioned
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-		$url = JRoute::_($route . '&pid=' . $pid);
+		$url = Route::url($route . '&pid=' . $pid);
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -4328,8 +4328,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 						$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 							   $action, $pid, $pubtitle,
-							   JRoute::_('index.php?option=' . $this->_option . a .
-							   'alias=' . $this->_project->alias . a . 'active=publications' . a .
+							   Route::url('index.php?option=' . $this->_option . a .
+							   'alias=' . $this->_project->alias . '&active=publications' . a .
 							   'pid=' . $pid) . '/?version=' . $row->version_number, 'publication', 0 );
 					}
 				}
@@ -4391,7 +4391,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 						$objP->delete($pid);
 						$objP->deleteExistence($pid);
-						$url  = JRoute::_($route);
+						$url  = Route::url($route);
 
 						// Delete related publishing activity from feed
 						$objAA = new \Components\Projects\Tables\Activity( $this->_database );
@@ -4514,9 +4514,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		$view->row 		= $row;
 		$view->item 	= $item;
@@ -4610,9 +4610,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		$url = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($url . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = Route::url($url . '&pid=' . $pid);
 
 		$url .= '?section=content&primary='.$role;
 		$url .= '&version='.$version;
@@ -4658,9 +4658,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = Route::url($route . '&pid=' . $pid);
 
 		// Get attachment info
 		$att = new \Components\Publications\Tables\Attachment( $this->_database );
@@ -4777,9 +4777,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias
+					. '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		$view->selections 	= $selections;
 		$view->serveas 		= $serveas;
@@ -5045,10 +5046,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
-			. a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $this->_pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+			. '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $this->_pid);
 
 		$view->project 	= $this->_project;
 		$view->pid 		= $this->_pid;
@@ -5184,9 +5185,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		$view->uid 		= $uid;
 		$view->vid 		= $vid;
@@ -5470,10 +5471,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Redirect
 		$url  = $this->_project->provisioned
-			  ? 'index.php?option=com_publications' . a . 'task=submit'
-			  : 'index.php?option=com_projects' . a
-			  . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url  = JRoute::_($url . a . 'pid=' . $pid);
+			  ? 'index.php?option=com_publications&task=submit'
+			  : 'index.php?option=com_projects'
+			  . '&alias=' . $this->_project->alias . '&active=publications';
+		$url  = Route::url($url . '&pid=' . $pid);
 		$url .= '?section=authors';
 		$url .= '&version='.$version;
 		$url .= $move ? '&move=' . $move : '';
@@ -5846,9 +5847,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-					? 'index.php?option=com_publications' . a . 'task=submit'
-					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+					? 'index.php?option=com_publications&task=submit'
+					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		$view->shot 		= $pScreenshot;
 		$view->ima 			= $ima;
@@ -5949,9 +5950,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			// Build pub url
 			$view->route = $this->_project->provisioned
-				? 'index.php?option=com_publications' . a . 'task=submit'
-				: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-			$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+			$view->url = Route::url($view->route . '&pid=' . $pid);
 
 			$view->project 	= $this->_project;
 			$view->option 	= $this->_option;
@@ -6144,9 +6145,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$url = Route::url($route . '&pid=' . $pid);
 
 		$url .= '?section=gallery';
 		$url .= '&version=' . $version;
@@ -6318,9 +6319,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		$view->pid 		= $pid;
 		$view->vid 		= $vid;
@@ -6367,9 +6368,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build pub url
 		$view->route = $this->_project->provisioned
-			? 'index.php?option=com_publications' . a . 'task=submit'
-			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
-		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+		$view->url = Route::url($view->route . '&pid=' . $pid);
 
 		// Append breadcrumbs
 		$app = JFactory::getApplication();
@@ -7312,7 +7313,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$obj = new \Components\Projects\Tables\Project( $database );
 
 		// Get referenced path
-		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$pubconfig = Component::params( 'com_publications' );
 		$base_path = $pubconfig->get('webpath');
 		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 
