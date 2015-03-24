@@ -777,20 +777,21 @@ class File extends Base
 	 */
 	public function getFilePath( $path, $id, $configs = NULL, $params = NULL, $suffix = NULL )
 	{
+		if (!$suffix && $params)
+		{
+			// Get file attachment params
+			$fParams = new \JParameter( $params );
+			$suffix  = $fParams->get('suffix');
+		}
 		// Do we transfer file with subdirectories?
 		if ($configs->dirHierarchy == 1)
 		{
-			$fpath = $configs->pubPath . DS . trim($path, DS);
+			$path = trim($path, DS);
+			$name = $suffix ? \Components\Projects\Helpers\Html::fixFileName($path, ' (' . $suffix . ')') : $path;
+			$fpath  = $configs->pubPath . DS . $name;
 		}
 		elseif ($configs->dirHierarchy == 2)
 		{
-			if (!$suffix && $params)
-			{
-				// Get file attachment params
-				$fParams = new \JParameter( $params );
-				$suffix  = $fParams->get('suffix');
-			}
-
 			// Do not preserve dir hierarchy, but append number for same-name files
 			$name 	= $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
 			$fpath  = $configs->pubPath . DS . $name;
