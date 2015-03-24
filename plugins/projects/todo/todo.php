@@ -58,6 +58,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	protected $_message = NULL;
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return	   array   Plugin name and title
@@ -112,16 +119,15 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 * @param	   string  $areas			Plugins to return data
 	 * @return	   array   Return array of html
 	 */
-	public function onProject ( $project, $option, $authorized,
-		$uid, $msg = '', $error = '', $action = '', $areas = null )
+	public function onProject ( $project, $authorized, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'msg'=>'',
-			'referer'=>''
+			'html'     =>'',
+			'metadata' =>'',
+			'msg'      =>'',
+			'referer'  =>''
 		);
 
 		// Get this area details
@@ -163,19 +169,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->_task		= $action ? $action : JRequest::getVar('action','');
 			$this->_todoid		= JRequest::getInt('todoid', 0);
 			$this->_database	= JFactory::getDBO();
-			$this->_option		= $option;
 			$this->_authorized	= $authorized;
-			$this->_msg			= $msg;
-			if ($error)
-			{
-				$this->setError( $error );
-			}
-			$this->_uid = $uid;
-			if (!$this->_uid)
-			{
-				$juser = JFactory::getUser();
-				$this->_uid = $juser->get('id');
-			}
+			$this->_msg			= NULL;
+			$this->_uid 		= User::get('id');
 
 			switch ($this->_task)
 			{
@@ -197,7 +193,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Return data
 		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;
+		$arr['msg']     = $this->_message;
 		return $arr;
 	}
 

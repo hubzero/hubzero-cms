@@ -58,6 +58,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected $_message = NULL;
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -95,25 +102,20 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific project
 	 *
 	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $option, $authorized,
-		$uid, $msg = '', $error = '', $action = '', $areas = null )
+	public function onProject ( $project, $authorized, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'msg'=>'',
-			'referer'=>''
+			'html'     =>'',
+			'metadata' =>'',
+			'msg'      =>'',
+			'referer'  =>''
 		);
 
 		// Get this area details
@@ -140,26 +142,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			// Load component configs
 			$this->_config = Component::params( 'com_projects' );
 
-			$database = JFactory::getDBO();
-
 			// Set vars
 			$this->_task 		= $action ? $action : JRequest::getVar('action','');
 			$this->_project 	= $project;
-			$this->_database 	= $database;
-			$this->_option 		= $option;
+			$this->_database 	= JFactory::getDBO();
 			$this->_authorized 	= $authorized;
-			$this->_uid 		= $uid;
-			if (!$this->_uid)
-			{
-				$juser = JFactory::getUser();
-				$this->_uid = $juser->get('id');
-			}
-			$this->_msg = $msg;
-
-			if ($error)
-			{
-				$this->setError($error);
-			}
+			$this->_uid 		= User::get('id');
+			$this->_msg 	    = NULL;
 
 			switch ($this->_task)
 			{
@@ -208,7 +197,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;
+		$arr['msg']     = $this->_message;
 
 		// Return data
 		return $arr;

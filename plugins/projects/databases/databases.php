@@ -65,6 +65,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	public $dataviewer = 'dataviewer';
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call after databases initialized
 	 *
 	 * @return     array   Plugin name and title
@@ -138,24 +145,18 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific project
 	 *
 	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ($project, $option, $authorized,
-		$uid, $msg = '', $error = '',
-		$action = 'view', $areas = null)
+	public function onProject ($project, $authorized, $action = 'view', $areas = null)
 	{
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'message'=>'',
-			'error'=>''
+			'html'     =>'',
+			'metadata' =>'',
+			'message'  =>'',
+			'error'    =>''
 		);
 
 		// Get this area details
@@ -226,15 +227,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->_project 	= $project;
-		$this->_option 		= $option;
 		$this->_database 	= JFactory::getDBO();
 		$this->_authorized  = $authorized;
-		$this->_uid = $uid;
-		if (!$this->_uid)
-		{
-			$juser = JFactory::getUser();
-			$this->_uid = $juser->get('id');
-		}
+		$this->_uid 		= User::get('id');
 
 		// Publishing?
 		if ($action == 'browser')

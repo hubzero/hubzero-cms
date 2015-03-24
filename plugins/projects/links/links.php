@@ -58,6 +58,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	protected $_message = NULL;
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -97,19 +104,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific project
 	 *
 	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $option, $authorized,
-		$uid, $msg = '', $error = '', $action = '', $areas = NULL)
+	public function onProject ( $project, $authorized, $action = '', $areas = NULL)
 	{
-
 		// What's the task?
 		$this->_task = $action ? $action : JRequest::getVar('action');
 
@@ -136,16 +137,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			// Set vars
 			$this->_database 	= JFactory::getDBO();
-			$this->_option 		= $option;
 			$this->_authorized 	= $authorized;
-			$this->_uid 		= $uid;
-			$this->_msg 		= $msg;
-
-			if (!$this->_uid)
-			{
-				$juser = JFactory::getUser();
-				$this->_uid = $juser->get('id');
-			}
+			$this->_uid 		= User::get('id');
+			$this->_msg        = NULL;
 
 			// Load component configs
 			$this->_config 		= Component::params('com_projects');

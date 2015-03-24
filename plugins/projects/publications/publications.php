@@ -61,6 +61,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected $_message = NULL;
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -143,32 +150,28 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific project
 	 *
 	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $option, $authorized,
-		$uid, $msg = '', $error = '', $action = '', $areas = null )
+	public function onProject ( $project, $authorized, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'message'=>'',
-			'error'=>''
+			'html'      =>'',
+			'metadata'  =>'',
+			'message'   =>'',
+			'error'     =>''
 		);
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) {
+		if (is_array( $areas )) 
+		{
 			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
 				return;
@@ -181,8 +184,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			return $arr;
 		}
 
-		$database = JFactory::getDBO();
-
 		// Get task
 		$this->_task = JRequest::getVar('action','');
 		$this->_pid = JRequest::getInt('pid', 0);
@@ -191,13 +192,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$this->_task = $this->_pid ? 'publication' : $action;
 		}
 
-		$this->_uid = $uid;
-		if (!$this->_uid)
-		{
-			$juser = JFactory::getUser();
-			$this->_uid = $juser->get('id');
-		}
-		$this->_database = $database;
+		$this->_uid = User::get('id');
+		$this->_database = JFactory::getDBO();
 
 		// Load component configs
 		$this->_config = Component::params( 'com_projects' );
@@ -254,13 +250,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$this->_project 	= $project;
 		$this->_action 		= $action;
-		$this->_option 		= $option;
 		$this->_authorized 	= $authorized;
-		$this->_msg 		= $msg;
-		if ($error)
-		{
-			$this->setError( $error );
-		}
+		$this->_msg         = NULL;
 
 		// Get types helper
 		$this->_pubTypeHelper = new \Components\Publications\Models\Types($this->_database, $this->_project);
@@ -391,7 +382,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'diskspace':
-				$arr['html'] = $this->pubDiskSpace($option, $project, $this->_task, $this->_config);
+				$arr['html'] = $this->pubDiskSpace($this->_option, $project, $this->_task, $this->_config);
 				break;
 
 			// Handlers
@@ -427,7 +418,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		$arr['referer'] = $this->_referer;
-		$arr['msg'] = $this->_message;
+		$arr['msg']     = $this->_message;
 
 		// Return data
 		return $arr;

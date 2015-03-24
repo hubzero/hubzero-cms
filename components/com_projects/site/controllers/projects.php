@@ -748,11 +748,7 @@ class Projects extends Base
 				// Plugin params
 				$plugin_params = array(
 					$this->project,
-					$this->_option,
 					$authorized,
-					$this->juser->get('id'),
-					$this->_getNotifications('success'),
-					$this->_getNotifications('error'),
 					$action,
 					array($plugin)
 				);

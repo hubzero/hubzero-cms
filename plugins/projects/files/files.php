@@ -92,6 +92,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected $_route = NULL;
 
 	/**
+	 * Component name
+	 *
+	 * @var  string
+	 */
+	protected $_option = 'com_projects';
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -127,7 +134,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * Event call to return data for a specific project
 	 *
 	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
 	 * @param      integer $uid 			User ID
 	 * @param      integer $msg 			Message
@@ -137,9 +143,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 * @param      string  $case			Directory where .git sits ('files' or 'tool:toolname')
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project = '', $option = '', $authorized = '',
-		$uid = '', $msg = '', $error = '', $action = '',
-		$areas = null)
+	public function onProject ( $project = '', $authorized = '', $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
@@ -178,7 +182,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_audience    = 'internal';
 			$this->_data	    = NULL;
 			$this->_database    = \JFactory::getDBO();
-			$this->_option      = $option;
+			$this->_uid 		= User::get('id');
+			$this->_msg         = NULL;
 
 			// Contribute process outside of projects
 			if (!is_object($this->_project) or !$this->_project->id)
@@ -199,17 +204,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 										'auto'		=> NULL
 										);
 
-			$this->_msg = $msg;
-			if ($error)
-			{
-				$this->setError($error);
-			}
-
 			$this->_task   = $action ? $action : Request::getVar('action', 'browse');
-
-			// Set acting user
-			$juser = \JFactory::getUser();
-			$this->_uid = $juser->get('id');
 
 			// MIME types
 			$this->mt = new \Hubzero\Content\Mimetypes();

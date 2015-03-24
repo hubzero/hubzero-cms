@@ -775,12 +775,9 @@ class Setup extends Base
 				// Save team
 				$content = $dispatcher->trigger( 'onProject', array(
 					$obj,
-					$this->_option,
 					$this->authorized,
-					$this->juser->get('id'),
-					NULL,
-					NULL,
-					'save'
+					'save',
+					array('team')
 				));
 
 				if (isset($content[0]) && $this->next == $this->section)
@@ -892,12 +889,9 @@ class Setup extends Base
 		// Get plugin output
 		$content = $dispatcher->trigger( 'onProject', array(
 			$this->project,
-			$this->option,
 			$this->authorized,
-			$this->juser->get('id'),
-			NULL,
-			NULL,
-			$this->_task
+			$this->_task,
+			array('team')
 		));
 
 		if (!isset($content[0]))
