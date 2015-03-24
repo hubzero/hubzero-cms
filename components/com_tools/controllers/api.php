@@ -191,7 +191,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 
 		//get screenshots
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 		$ts = new \Components\Resources\Tables\Screenshot($database);
 		$tv = new ToolVersion($database);

@@ -120,14 +120,14 @@ class Element extends Object
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description)
 		{
-			$output .= ' class="hasTip" title="' . \JText::_($label) . '::' . \JText::_($description) . '">';
+			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= \JText::_($label);
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . \JText::_('JOPTION_REQUIRED') . '</span>' : '';
+		$output .= Lang::txt($label);
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;
@@ -158,7 +158,7 @@ class Element extends Object
 	 */
 	public function fetchOptions($name, $value, &$element, $control_name)
 	{
-		return \JText::_('COM_RESOURCES_NONE');
+		return Lang::txt('COM_RESOURCES_NONE');
 	}
 
 	/**

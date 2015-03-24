@@ -30,13 +30,170 @@
 
 namespace Components\Resources\Helpers;
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+include_once(__DIR__ . DS . 'tags.php');
 
 /**
  * Resources helper class for misc. HTML and display
  */
 class Html
 {
+	/**
+	 * Short description for 'writeRating'
+	 *
+	 * Long description (if any) ...
+	 *
+	 * @param      string $rating Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public static function writeRating($rating)
+	{
+		switch ($rating)
+		{
+			case 0.5: $class = ' half';      break;
+			case 1:   $class = ' one';       break;
+			case 1.5: $class = ' onehalf';   break;
+			case 2:   $class = ' two';       break;
+			case 2.5: $class = ' twohalf';   break;
+			case 3:   $class = ' three';     break;
+			case 3.5: $class = ' threehalf'; break;
+			case 4:   $class = ' four';      break;
+			case 4.5: $class = ' fourhalf';  break;
+			case 5:   $class = ' five';      break;
+			case 0:
+			default:  $class = ' none';      break;
+		}
+
+		return '<p class="avgrating'.$class.'"><span>Rating: '.$rating.' out of 5 stars</span></p>';
+	}
+
+	/**
+	 * Generate a select access list
+	 *
+	 * @param      array  $as    Access levels
+	 * @param      string $value Value to select
+	 * @return     string HTML
+	 */
+	public static function selectAccess($as, $value, $name = 'access')
+	{
+		$as = explode(',',$as);
+		$html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
+		for ($i=0, $n=count($as); $i < $n; $i++)
+		{
+			$html .= "\t" . '<option value="' . $i . '"';
+			if ($value == $i)
+			{
+				$html .= ' selected="selected"';
+			}
+			$html .= '>' . trim($as[$i]) . '</option>' . "\n";
+		}
+		$html .= '</select>' . "\n";
+		return $html;
+	}
+
+	/**
+	 * Generate a select list for groups
+	 *
+	 * @param      array  $groups Groups to populate list
+	 * @param      string $value  Value to select
+	 * @return     string HTML
+	 */
+	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
+	{
+		$html  = '<select class="'.$class.'" name="'.$name.'" id="field-' . str_replace(array('[',']'), '', $name) . '"';
+		if (!$groups)
+		{
+			$html .= ' disabled="disabled"';
+		}
+		$html .= '>' . "\n";
+		$html .= ' <option value="">' . \JText::_('Select group ...') . '</option>' . "\n";
+		if ($groups)
+		{
+			foreach ($groups as $group)
+			{
+				$html .= ' <option value="' . $group->cn . '"';
+				if ($value == $group->cn)
+				{
+					$html .= ' selected="selected"';
+				}
+				$html .= '>' . stripslashes($group->description) . '</option>' . "\n";
+			}
+		}
+		$html .= '</select>' . "\n";
+		return $html;
+	}
+
+	/**
+	 * Generate a section select list
+	 *
+	 * @param      string  $name  Name of the field
+	 * @param      array   $array Values to populate list
+	 * @param      integer $value Value to select
+	 * @param      string  $class Class name of field
+	 * @param      string  $id    ID of field
+	 * @return     string HTML
+	 */
+	public static function selectSection($name, $array, $value, $class='', $id)
+	{
+		$html  = '<select name="' . $name . '" id="' . $name . '" onchange="return listItemTask(\'cb' . $id . '\',\'regroup\')"';
+		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
+		$html .= ' <option value="0"';
+		$html .= ($id == $value || $value == 0) ? ' selected="selected"' : '';
+		$html .= '>' . \JText::_('[ none ]') . '</option>' . "\n";
+		foreach ($array as $anode)
+		{
+			$selected = ($anode->id == $value || $anode->type == $value)
+					  ? ' selected="selected"'
+					  : '';
+			$html .= ' <option value="' . $anode->id . '"' . $selected . '>' . $anode->type . '</option>' . "\n";
+		}
+		$html .= '</select>' . "\n";
+		return $html;
+	}
+
+	/**
+	 * Generate a type select list
+	 *
+	 * @param      array  $arr      Values to populate list
+	 * @param      string $name     Name of the field
+	 * @param      mixed  $value    Value to select
+	 * @param      string $shownone Show a 'none' option?
+	 * @param      string $class    Class name of field
+	 * @param      string $js       Scripts to add to field
+	 * @param      string $skip     ITems to skip
+	 * @return     string HTML
+	 */
+	public static function selectType($arr, $name, $value='', $shownone='', $class='', $js='', $skip='')
+	{
+		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
+		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
+		if ($shownone != '')
+		{
+			$html .= "\t" . '<option value=""';
+			$html .= ($value == 0 || $value == '') ? ' selected="selected"' : '';
+			$html .= '>' . $shownone . '</option>' . "\n";
+		}
+		if ($skip)
+		{
+			$skips = explode(',', $skip);
+		}
+		else
+		{
+			$skips = array();
+		}
+		foreach ($arr as $anode)
+		{
+			if (!in_array($anode->id, $skips))
+			{
+				$selected = ($value && ($anode->id == $value || $anode->type == $value))
+					  ? ' selected="selected"'
+					  : '';
+				$html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>' . stripslashes($anode->type) . '</option>' . "\n";
+			}
+		}
+		$html .= '</select>' . "\n";
+		return $html;
+	}
+
 	/**
 	 * Generate a select form
 	 *
@@ -71,6 +228,23 @@ class Html
 	public static function niceidformat($someid)
 	{
 		return \Hubzero\Utility\String::pad($someid);
+	}
+
+	/**
+	 * Convert a date to a path
+	 *
+	 * @param      string $date Date to convert (0000-00-00 00:00:00)
+	 * @return     string
+	 */
+	public static function dateToPath($date)
+	{
+		if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs))
+		{
+			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
+		}
+		$dir_year  = date('Y', $date);
+		$dir_month = date('m', $date);
+		return $dir_year . DS . $dir_month;
 	}
 
 	/**
@@ -202,17 +376,17 @@ class Html
 		// View more link?
 		if ($docs > 0 && $otherdocs > 0)
 		{
-			$supln .= ' <li class="otherdocs"><a href="' . \JRoute::_('index.php?option=' . $option
+			$supln .= ' <li class="otherdocs"><a href="' . Route::url('index.php?option=' . $option
 				. '&id=' . $publication->id . '&active=supportingdocs')
-				.'" title="' . \JText::_('COM_RESOURCES_VIEW_ALL') . ' ' . $docs.' ' . \JText::_('COM_RESOURCES_SUPPORTING_DOCUMENTS').' ">'
-				. $otherdocs . ' ' . \JText::_('COM_RESOURCES_MORE') . '</a></li>' . "\n";
+				.'" title="' . Lang::txt('COM_RESOURCES_VIEW_ALL') . ' ' . $docs.' ' . Lang::txt('COM_RESOURCES_SUPPORTING_DOCUMENTS').' ">'
+				. $otherdocs . ' ' . Lang::txt('COM_RESOURCES_MORE') . '</a></li>' . "\n";
 		}
 
 		if (!$sdocs && $docs > 0)
 		{
-			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . \JRoute::_('index.php?option='
+			$html .= "\t\t" . '<p class="viewalldocs"><a href="' . Route::url('index.php?option='
 				. $option . '&id=' . $publication->id . '&active=supportingdocs') . '">'
-				. \JText::_('COM_RESOURCES_ADDITIONAL_MATERIALS_AVAILABLE') . ' (' . $docs .')</a></p>'."\n";
+				. Lang::txt('COM_RESOURCES_ADDITIONAL_MATERIALS_AVAILABLE') . ' (' . $docs .')</a></p>'."\n";
 		}
 
 		$supln .= '</ul>'."\n";
@@ -240,7 +414,7 @@ class Html
 	 */
 	public static function license($license)
 	{
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'license.php');
 
 		$license = str_replace(' ', '-', strtolower($license));
 		$license = preg_replace("/[^a-zA-Z0-9\-_]/", '', $license);
@@ -267,7 +441,7 @@ class Html
 			}
 			else
 			{
-				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . \JRoute::_('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
+				$html = '<p class="' . $rl->name . ' license">Licensed according to <a rel="license" class="popup" href="' . Route::url('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">this deed</a>.</p>';
 			}
 		}
 		return $html;
@@ -339,11 +513,11 @@ class Html
 			{
 				if ($alias)
 				{
-					$url = \JRoute::_('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
+					$url = Route::url('index.php?option=' . $option . '&alias=' . $alias . '&active=' . $name);
 				}
 				else
 				{
-					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
+					$url = Route::url('index.php?option=' . $option . '&id=' . $id . '&active=' . $name);
 				}
 				if (strtolower($name) == $active)
 				{
@@ -389,7 +563,7 @@ class Html
 		$html  = '<span class="Z3988" title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal';
 
 		// Get contribtool params
-		$tconfig = \JComponentHelper::getParams('com_tools');
+		$tconfig = Component::params('com_tools');
 		$doi = '';
 
 		/*
@@ -468,7 +642,7 @@ class Html
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
 
-		$html  = '<p>' . \JText::_('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
+		$html  = '<p>' . Lang::txt('COM_RESOURCES_CITATION_INSTRUCTIONS') . '</p>' . "\n";
 		if (trim($citations))
 		{
 			$html .= '<ul class="citations results">' . "\n";
@@ -485,8 +659,8 @@ class Html
 			if (is_numeric($rev) || (is_string($rev) && $rev != 'dev'))
 			{
 				$html .= "\t\t" . '<p class="details">' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . \JText::_('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . \JText::_('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=bibtex&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
+				$html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&format=endnote&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
 				$html .= "\t\t" . '</p>' . "\n";
 			}
 			$html .= "\t" . '</li>' . "\n";
@@ -496,10 +670,10 @@ class Html
 
 		/*if ($type == 7)
 		{
-			$html .= '<p>'.\JText::_('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
+			$html .= '<p>'.Lang::txt('In addition, we would appreciate it if you would add the following acknowledgment to your publication:').'</p>' . "\n";
 			$html .= '<ul class="citations results">' . "\n";
 			$html .= "\t".'<li>' . "\n";
-			$html .= "\t\t".'<p>'.\JText::_('Simulation services for results presented here were provided by the Network for Computational Nanotechnology (NCN) at nanoHUB.org').'</p>' . "\n";
+			$html .= "\t\t".'<p>'.Lang::txt('Simulation services for results presented here were provided by the Network for Computational Nanotechnology (NCN) at nanoHUB.org').'</p>' . "\n";
 			$html .= "\t".'</li>' . "\n";
 			$html .= '</ul>' . "\n";
 		}*/
@@ -556,7 +730,6 @@ class Html
 	public static function processPath($option, $item, $pid=0, $action=0)
 	{
 		$database = \JFactory::getDBO();
-		$juser = \JFactory::getUser();
 
 		//$rt = new \Components\Resources\Tables\Type($database);
 		//$rt->load($item->type);
@@ -565,7 +738,7 @@ class Html
 
 		if ($item->standalone == 1)
 		{
-			$url = \JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
+			$url = Route::url('index.php?option=' . $option . '&id=' .  $item->id);
 		}
 		else
 		{
@@ -580,26 +753,26 @@ class Html
 					else
 					{
 						// internal link but a resource
-						$url = \JRoute::_('index.php?option=' . $option . '&id=' .  $item->id);
+						$url = Route::url('index.php?option=' . $option . '&id=' .  $item->id);
 					}
 				break;
 
 				case 'video':
-					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
+					$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
 				break;
 
 				case 'hubpresenter':
-					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
+					$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch');
 				break;
 
 				case 'breeze':
-					$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+					$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 				break;
 
 				default:
 					if ($action == 2)
 					{
-						$url = \JRoute::_('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+						$url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
 					}
 					else
 					{
@@ -609,7 +782,7 @@ class Html
 						}
 						else
 						{
-							$url = \JRoute::_('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
+							$url = Route::url('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
 						}
 					}
 				break;
@@ -631,7 +804,6 @@ class Html
 	 */
 	public static function primary_child($option, $resource, $firstChild, $xact='')
 	{
-		$juser    = \JFactory::getUser();
 		$database = \JFactory::getDBO();
 
 		$html = '';
@@ -639,23 +811,21 @@ class Html
 		switch ($resource->type)
 		{
 			case 7:
-				$authorized = $juser->authorise('core.manage', 'com_tools.' . $resource->id);
+				$authorized = User::authorise('core.manage', 'com_tools.' . $resource->id);
 
-				$juser = \JFactory::getUser();
-
-				$mconfig = \JComponentHelper::getParams('com_tools');
+				$mconfig = Component::params('com_tools');
 
 				// Ensure we have a connection to the middleware
 				if (!$mconfig->get('mw_on')
 				 || ($mconfig->get('mw_on') > 1 && !$authorized))
 				{
-					$pop   = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 					return $html;
 				}
 
 				//get tool params
-				$params = \JComponentHelper::getParams('com_tools');
+				$params = Component::params('com_tools');
 				$launchOnIpad = $params->get('launch_ipad', 0);
 
 				// Generate the URL that launches a tool session
@@ -696,7 +866,7 @@ class Html
 				}
 
 				// Get current users groups
-				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members');
+				$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 				$ingroup = false;
 				$groups = array();
 				if ($xgroups)
@@ -706,7 +876,7 @@ class Html
 						$groups[] = $xgroup->cn;
 					}
 					// Check if they're in the admin tool group
-					$admingroup = \JComponentHelper::getParams('com_tools')->get('admingroup');
+					$admingroup = Component::params('com_tools')->get('admingroup');
 					if ($admingroup && in_array($admingroup, $groups))
 					{
 						$ingroup = true;
@@ -728,33 +898,33 @@ class Html
 					}
 				}
 
-				if (!$juser->get('guest') && !$ingroup && $toolgroups)
+				if (!User::isGuest() && !$ingroup && $toolgroups)
 				{ // see if tool is restricted to a group and if current user is in that group
-					$pop = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision))
 				{ // dev or published tool
-					//if ($juser->get('guest')) {
+					//if (User::isGuest()) {
 						// Not logged-in = show message
-						//$html .= self::primaryButton('launchtool disabled', $lurl, \JText::_('COM_RESOURCES_LAUNCH_TOOL'));
-						//$html .= self::warning('You must <a href="'.\JRoute::_('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
+						//$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+						//$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
-						$pop = ($juser->get('guest')) ? '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
-						$pop = ($resource->revision =='dev') ? '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
-						$html .= self::primaryButton('launchtool', $lurl, \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
+						$pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
+						$pop = ($resource->revision =='dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
+						$html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
 					//}
 				}
 				else
 				{ // tool unpublished
-					$pop   = '<p class="warning">' . \JText::_('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', \JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 			break;
 
 			case 4:
 				// write primary button and downloads for a Learning Module
-				$html .= self::primaryButton('', \JRoute::_('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
+				$html .= self::primaryButton('', Route::url('index.php?option=com_resources&id=' . $resource->id . '&task=play'), 'Start learning module');
 			break;
 
 			case 6:
@@ -762,11 +932,11 @@ class Html
 			case 31:
 			case 2:
 				// do nothing
-				$mesg  = \JText::_('COM_RESOURCES_VIEW') . ' ';
+				$mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' ';
 				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
 				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
 				$mesg .= $resource->type == 6 ? '' : 'Series';
-				$html .= self::primaryButton('download', \JRoute::_('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
+				$html .= self::primaryButton('download', Route::url('index.php?option=com_resources&id=' . $resource->id) . '#series', $mesg, '', $mesg, '');
 			break;
 
 			default:
@@ -801,14 +971,14 @@ class Html
 				switch ($rtLinkAction)
 				{
 					case 'download':
-						$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
+						$mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
 						$class = 'download';
 						//$action = 'rel="download"';
 						$linkAction = 3;
 					break;
 
 					case 'lightbox':
-						$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
 						$class = 'play';
 						//$action = 'rel="internal"';
 						$linkAction = 2;
@@ -816,7 +986,7 @@ class Html
 
 					case 'newwindow':
 					case 'external':
-						$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
+						$mesg = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
 						//$class = 'popup';
 						$action = 'rel="external"';
 						$linkAction = 1;
@@ -831,12 +1001,12 @@ class Html
 
 						if (in_array($lt->alias, $downtypes))
 						{
-							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 						elseif (in_array($rt->alias, $mediatypes))
 						{
-							$mesg  = \JText::_('COM_RESOURCES_VIEW_PRESENTATION');
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_PRESENTATION');
 							$mediatypes = array('flash_paper','breeze','32','26');
 							if (in_array($firstChild->type, $mediatypes))
 							{
@@ -845,13 +1015,13 @@ class Html
 						}
 						else
 						{
-							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 
 						if ($firstChild->standalone == 1)
 						{
-							$mesg  = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
 							$class = ''; //'play';
 						}
 
@@ -865,17 +1035,17 @@ class Html
 						 || substr($firstChild->path, 0, 7) == 'feed://'
 						 || substr($firstChild->path, 0, 6) == 'mms://')
 						{
-							$mesg  = \JText::_('COM_RESOURCES_VIEW_LINK');
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_LINK');
 						}
 					break;
 				}
 
 				// IF (not a simulator) THEN show the first child as the primary button
-				if ($firstChild->access==1 && $juser->get('guest'))
+				if ($firstChild->access==1 && User::isGuest())
 				{
 					// first child is for registered users only and the visitor is not logged in
-					$pop  = '<p class="warning">' . \JText::_('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', \JRoute::_('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
+					$pop  = '<p class="warning">' . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
+					$html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{
@@ -887,17 +1057,17 @@ class Html
 					switch ($linkAction)
 					{
 						case 3:
-							$mesg  = \JText::_('COM_RESOURCES_DOWNLOAD');
+							$mesg  = Lang::txt('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						break;
 
 						case 2:
-							$mesg  = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg  = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
 							$class = 'play';
 						break;
 
 						case 1:
-							$mesg = \JText::_('COM_RESOURCES_VIEW_RESOURCE');
+							$mesg = Lang::txt('COM_RESOURCES_VIEW_RESOURCE');
 							//$class = 'popup';
 							$action = 'rel="external"';
 						break;

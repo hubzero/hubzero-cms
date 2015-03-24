@@ -590,7 +590,7 @@ class Elements
 		/*if ($description = $this->_schema[$group]->description)
 		{
 			// Add the params description to the display
-			$desc   = \JText::_($description);
+			$desc   = Lang::txt($description);
 			$html[] = '<p class="paramrow_desc">'.$desc.'</p>';
 		}*/
 
@@ -722,7 +722,7 @@ class Elements
 		{
 			$result = new stdClass;
 			$result->label    = $node->label;
-			$result->element = \JText::_('Element not defined for type').' = '.$type;
+			$result->element = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
 			$result->text    = $result->label;
 			$result->name    = $result->name;
@@ -757,7 +757,7 @@ class Elements
 		{
 			$result = new stdClass;
 			$result->label   = $node->label;
-			$result->element = \JText::_('Element not defined for type').' = '.$type;
+			$result->element = Lang::txt('Element not defined for type').' = '.$type;
 			$result->description = '';
 			$result->text    = $result->label;
 			$result->name    = $result->label;

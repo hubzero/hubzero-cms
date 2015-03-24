@@ -74,7 +74,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get some needed libraries
-		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'resources' . DS . 'recommendations' . DS . 'resources.recommendation.php');
+		include_once(__DIR__ . DS . 'resources.recommendation.php');
 
 		// Set some filters for returning results
 		$filters = array(

@@ -121,7 +121,7 @@ class Usage
 		$this->cites    = $cites;
 		$this->lastcite = $lastcite;
 
-		$this->dateFormat = \JText::_('DATE_FORMAT_HZ1');
+		$this->dateFormat = Lang::txt('DATE_FORMAT_HZ1');
 	}
 
 	/**
@@ -136,23 +136,23 @@ class Usage
 		{
 			case 'CURR':
 				$period  = 1;
-				$caption = \JText::_('Current Month');
+				$caption = Lang::txt('Current Month');
 			break;
 
 			case 'LAST':
 				$period  = 2;
-				$caption = \JText::_('Last Month');
+				$caption = Lang::txt('Last Month');
 			break;
 
 			case 'YEAR':
 				$period  = 12;
-				$caption = \JText::_('Last 12 Months');
+				$caption = Lang::txt('Last 12 Months');
 			break;
 
 			case 'ALL':
 			default:
 				$period  = 14;
-				$caption = \JText::_('Total');
+				$caption = Lang::txt('Total');
 			break;
 		}
 

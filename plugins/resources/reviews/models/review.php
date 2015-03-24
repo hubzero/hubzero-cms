@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
-require_once(__DIR__ . '/comment.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Resources review mdoel

@@ -32,7 +32,7 @@ namespace Components\Resources\Helpers;
 
 use Hubzero\Base\Object;
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'screenshot.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php');
 
 /**
  * Information retrieval for items/info linked to a resource
@@ -275,7 +275,7 @@ class Helper extends Object
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . Route::url('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else
 				{
@@ -325,7 +325,7 @@ class Helper extends Object
 			{
 				if (count($names) > 0)
 				{
-					$html = '<p>'.ucfirst(\JText::_('By')).' ';
+					$html = '<p>'.ucfirst(Lang::txt('By')).' ';
 					//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= count($contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
 					$html .= '</p>';
@@ -412,7 +412,7 @@ class Helper extends Object
 				$name = str_replace('"', '&quot;', $name);
 				if ($contributor->id)
 				{
-					$link  = '<a href="' . \JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
+					$link  = '<a href="' . Route::url('index.php?option=com_members&id=' . $contributor->id) . '" data-rel="submitter" class="resource-submitter" title="View the profile of ' . $name . '">' . $name . '</a>';
 				}
 				else
 				{
@@ -838,7 +838,7 @@ class Helper extends Object
 			return false;
 		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'review.php');
+		include_once(dirname(__DIR__) . DS . 'tables' . DS . 'review.php');
 
 		$rr = new Review($this->_db);
 

@@ -55,7 +55,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 		$database = JFactory::getDBO();
 

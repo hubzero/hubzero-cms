@@ -115,14 +115,14 @@ class Tools extends Base
 		$html = '';
 		if ($this->users != 'unavailable' && $this->jobs != 'unavailable' && $this->avg_exec != 'unavailable')
 		{
-			$html .= '<table class="usagestats" summary="' . \JText::_('Statistics for this resource') . '">' . "\n";
-			$html .= ' <caption>' . \JText::_('Usage Stats') . '</caption>' . "\n";
+			$html .= '<table class="usagestats" summary="' . Lang::txt('Statistics for this resource') . '">' . "\n";
+			$html .= ' <caption>' . Lang::txt('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . \JText::_('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
+				$html .= ': ' . Lang::txt('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";
@@ -131,14 +131,14 @@ class Tools extends Base
 			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.\JText::_('Users').':</th>' . "\n";
+				$html .= '   <th scope="row">'.Lang::txt('Users').':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}
 			if ($this->jobs != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.\JText::_('Jobs').':</th>' . "\n";
+				$html .= '   <th scope="row">'.Lang::txt('Jobs').':</th>' . "\n";
 				$html .= '   <td>' . $this->jobs . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}

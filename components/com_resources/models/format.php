@@ -71,7 +71,7 @@ abstract class Format
 				}
 				else
 				{
-					throw new Exception(\JText::_('Format not found.'), 500, E_ERROR);
+					throw new Exception(Lang::txt('Format not found.'), 500, E_ERROR);
 				}
 			}
 

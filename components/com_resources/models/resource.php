@@ -34,7 +34,7 @@ use Components\Resources\Tables;
 use Components\Resources\Helpers;
 use Hubzero\Base\Object;
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+include_once(dirname(__DIR__) . DS . 'tables' . DS . 'resource.php');
 
 /**
  * Information retrieval for items/info linked to a resource
@@ -76,7 +76,7 @@ class Resource extends Object
 		$this->resource = new Tables\Resource($this->_db);
 		$this->resource->load($oid);
 
-		$this->params = \JComponentHelper::getParams('com_resources');
+		$this->params = Component::params('com_resources');
 		$this->params->merge(new \JRegistry($this->resource->params));
 
 		$this->attribs = new \JRegistry($this->resource->attribs);
@@ -133,7 +133,7 @@ class Resource extends Object
 					}
 				}
 
-				$tconfig = \JComponentHelper::getParams('com_tools');
+				$tconfig = Component::params('com_tools');
 				// Replace resource info with requested version
 				$tv->compileResource($this->thistool, $this->curtool, $this->resource, $revision, $tconfig);
 			}
@@ -298,10 +298,8 @@ class Resource extends Object
 	 */
 	private function _authorize()
 	{
-		$juser = \JFactory::getUser();
-
 		// NOT logged in
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			// If the resource is published and public
 			if ($this->published() && ($this->resource->access == 0 || $this->resource->access == 3))
@@ -319,12 +317,12 @@ class Resource extends Object
 
 		if ($this->isTool())
 		{
-			$tconfig = \JComponentHelper::getParams('com_tools');
+			$tconfig = Component::params('com_tools');
 
 			if (($admingroup = trim($tconfig->get('admingroup', ''))))
 			{
 				// Check if they're a member of admin group
-				$ugs = \Hubzero\User\Helper::getGroups($juser->get('id'));
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 				if ($ugs && count($ugs) > 0)
 				{
 					$admingroup = strtolower($admingroup);
@@ -352,8 +350,8 @@ class Resource extends Object
 		else
 		{
 			// Check if they're a site admin (from Joomla)
-			$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
-			$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
+			$this->params->set('access-admin-resource', User::authorise('core.admin', null));
+			$this->params->set('access-manage-resource', User::authorise('core.manage', null));
 			if ($this->params->get('access-admin-resource')
 			 || $this->params->get('access-manage-resource'))
 			{
@@ -381,7 +379,7 @@ class Resource extends Object
 			}
 
 			// Check if they're the resource creator
-			if ($this->resource->created_by == $juser->get('id'))
+			if ($this->resource->created_by == User::get('id'))
 			{
 				// Give full access
 				$this->params->set('access-view-resource', true);
@@ -394,7 +392,7 @@ class Resource extends Object
 				$this->params->set('access-edit-own-resource', true);
 			}
 			// Listed as a contributor
-			else if (in_array($juser->get('id'), $this->contributors('id')))
+			else if (in_array(User::get('id'), $this->contributors('id')))
 			{
 				// Give full access
 				$this->params->set('access-view-resource', true);
@@ -421,7 +419,7 @@ class Resource extends Object
 				}
 
 				// Get the groups the user has access to
-				$xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 				$usersgroups = array();
 				if (!empty($xgroups))
 				{
@@ -587,7 +585,7 @@ class Resource extends Object
 					}
 				}
 			}
-			$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+			$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 			return false;
 		}
 
@@ -638,7 +636,7 @@ class Resource extends Object
 				}
 				else
 				{
-					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -817,7 +815,7 @@ class Resource extends Object
 				}
 				else
 				{
-					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -925,7 +923,7 @@ class Resource extends Object
 			}
 			else
 			{
-				$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+				$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 				return false;
 			}
 		}
@@ -972,7 +970,7 @@ class Resource extends Object
 				}
 				else
 				{
-					$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+					$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 					return false;
 				}
 			}
@@ -1047,7 +1045,7 @@ class Resource extends Object
 			}
 			else
 			{
-				$this->setError(\JText::_('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
+				$this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
 				return false;
 			}
 		}
@@ -1175,7 +1173,7 @@ class Resource extends Object
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => \JRequest::getCmd('option', 'com_resources'),
+						'option'   => Request::getCmd('option', 'com_resources'),
 						'scope'    => 'resources' . DS . $this->resource->id,
 						'pagename' => 'resources',
 						'pageid'   => $this->resource->id,

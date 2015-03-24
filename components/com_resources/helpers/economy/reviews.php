@@ -146,8 +146,8 @@ class Reviews extends Object
 			if (intval($points) > 0)
 			{
 				$msg = ($type=='royalty')
-					 ? \JText::sprintf('Royalty payment for posting a review on resource #%s', $review->rid)
-					 : \JText::sprintf('Commission for posting a review on resource #%s', $review->rid);
+					 ? Lang::txt('Royalty payment for posting a review on resource #%s', $review->rid)
+					 : Lang::txt('Commission for posting a review on resource #%s', $review->rid);
 				$BTL->deposit($points, $msg, $cat, $review->id);
 			}
 		}

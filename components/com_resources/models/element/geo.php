@@ -66,14 +66,14 @@ class Geo extends Base
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
 		if ($description)
 		{
-			$output .= ' class="hasTip" title="' . \JText::_($label) . '::' . \JText::_($description) . '">';
+			$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
 		}
 		else
 		{
 			$output .= '>';
 		}
-		$output .= \JText::_($label) . ' <span class="hint">' . \JText::_('(street, city, state/province postal-code, country)') . '</span>';
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . \JText::_('JOPTION_REQUIRED') . '</span>' : '';
+		$output .= Lang::txt($label) . ' <span class="hint">' . Lang::txt('(street, city, state/province postal-code, country)') . '</span>';
+		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 		$output .= '</label>';
 
 		return $output;

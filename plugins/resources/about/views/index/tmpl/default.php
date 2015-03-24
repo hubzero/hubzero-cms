@@ -275,7 +275,7 @@ $maintext = $this->model->description('parsed');
 				<div id="submitterlist">
 					<?php
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'site',
 						'name'   => 'view',
 						'layout' => '_submitters',
 					));

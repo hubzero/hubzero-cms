@@ -86,26 +86,26 @@ class Andmore extends Base
 
 		if ($this->_type == 1)
 		{
-			$vlabel  = \JText::_('Views');
-			$avlabel = \JText::_('Avg. view time');
+			$vlabel  = Lang::txt('Views');
+			$avlabel = Lang::txt('Avg. view time');
 		}
 		else
 		{
-			$vlabel = \JText::_('Downloads');
-			$avlabel = \JText::_('Avg. downloads');
+			$vlabel = Lang::txt('Downloads');
+			$avlabel = Lang::txt('Avg. downloads');
 		}
 
 		$html = '';
 		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
 		{
-			$html .= '<table class="usagestats" summary="' . \JText::_('Statistics for this resource') . '">' . "\n";
-			$html .= ' <caption>'.\JText::_('Usage Stats') . '</caption>' . "\n";
+			$html .= '<table class="usagestats" summary="' . Lang::txt('Statistics for this resource') . '">' . "\n";
+			$html .= ' <caption>'.Lang::txt('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . \JText::_('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
+				$html .= ': ' . Lang::txt('updated') . ' ' . \JHTML::_('date', $this->datetime, $this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";
@@ -114,7 +114,7 @@ class Andmore extends Base
 			if ($this->users != 'unavailable')
 			{
 				$html .= '  <tr>' . "\n";
-				$html .= '   <th scope="row">'.\JText::_('Users').':</th>' . "\n";
+				$html .= '   <th scope="row">'.Lang::txt('Users').':</th>' . "\n";
 				$html .= '   <td>' . $this->users . '</td>' . "\n";
 				$html .= '  </tr>' . "\n";
 			}

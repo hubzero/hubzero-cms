@@ -114,14 +114,14 @@ class Date extends Base
 			$output = '<legend id="' . $control_name . $name . '-lgd"';
 			if (isset($element->description) && $element->description)
 			{
-				$output .= ' class="hasTip" title="' . \JText::_($label) . '::' . \JText::_($element->description) . '">';
+				$output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($element->description) . '">';
 			}
 			else
 			{
 				$output .= '>';
 			}
-			$output .= \JText::_($label);
-			$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . \JText::_('JOPTION_REQUIRED') . '</span>' : '';
+			$output .= Lang::txt($label);
+			$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
 			$output .= '</legend>';
 
 			$html[] = $output;
@@ -164,7 +164,7 @@ class Date extends Base
 			}
 
 			$options = array_reverse($options);
-			array_unshift($options, \JHTML::_('select.option', '0', \JText::_('Year...')));
+			array_unshift($options, \JHTML::_('select.option', '0', Lang::txt('Year...')));
 
 			$html[] = \JHTML::_('select.genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
 		}
@@ -175,7 +175,7 @@ class Date extends Base
 
 			// Build the list of years
 			$options = array(
-				\JHTML::_('select.option', '0', \JText::_('Month...'))
+				\JHTML::_('select.option', '0', Lang::txt('Month...'))
 			);
 			$i = 1;
 			$y = 13;
@@ -193,7 +193,7 @@ class Date extends Base
 
 			// Build the list of years
 			$options = array(
-				\JHTML::_('select.option', '0', \JText::_('Day...'))
+				\JHTML::_('select.option', '0', Lang::txt('Day...'))
 			);
 			$i = 1;
 			$y = 32;
@@ -222,18 +222,18 @@ class Date extends Base
 	{
 		switch ($month)
 		{
-			case 1: $monthname = \JText::_('January');   break;
-			case 2: $monthname = \JText::_('February');  break;
-			case 3: $monthname = \JText::_('March');     break;
-			case 4: $monthname = \JText::_('April');     break;
-			case 5: $monthname = \JText::_('May');       break;
-			case 6: $monthname = \JText::_('June');      break;
-			case 7: $monthname = \JText::_('July');      break;
-			case 8: $monthname = \JText::_('August');    break;
-			case 9: $monthname = \JText::_('September'); break;
-			case 10: $monthname = \JText::_('October');   break;
-			case 11: $monthname = \JText::_('November');  break;
-			case 12: $monthname = \JText::_('December');  break;
+			case 1: $monthname = Lang::txt('January');   break;
+			case 2: $monthname = Lang::txt('February');  break;
+			case 3: $monthname = Lang::txt('March');     break;
+			case 4: $monthname = Lang::txt('April');     break;
+			case 5: $monthname = Lang::txt('May');       break;
+			case 6: $monthname = Lang::txt('June');      break;
+			case 7: $monthname = Lang::txt('July');      break;
+			case 8: $monthname = Lang::txt('August');    break;
+			case 9: $monthname = Lang::txt('September'); break;
+			case 10: $monthname = Lang::txt('October');   break;
+			case 11: $monthname = Lang::txt('November');  break;
+			case 12: $monthname = Lang::txt('December');  break;
 			default: $monthname = $month; break;
 		}
 		return $monthname;
@@ -321,13 +321,13 @@ class Date extends Base
 		$html[] = '<table class="admintable" id="'.$name.'">';
 		$html[] = '<tbody>';
 		$html[] = '<tr>';
-		$html[] = '<td><label for="'. $control_name . '-' . $name . '-year">' . \JText::_('Year') . '</label></td>';
+		$html[] = '<td><label for="'. $control_name . '-' . $name . '-year">' . Lang::txt('Year') . '</label></td>';
 		$html[] = '<td><input type="checkbox" name="' . $control_name . '[' . $name . '][year]" id="'. $control_name . '-' . $name . '-year" value="1" ' . (isset($element->year) && $element->year == 1 ? 'checked="checked"' : '') . ' /></td>';
 		if (isset($element->options) && is_array($element->options))
 		{
 			foreach ($element->options as $option)
 			{
-				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? \JText::_('Start') : \JText::_('End')) . '</label></td>';
+				$html[] = '<td><label for="'. $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? Lang::txt('Start') : Lang::txt('End')) . '</label></td>';
 				$html[] = '<td><input type="text" size="4" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="'. $control_name . '-' . $name . '-label-' . $k . '" value="' . ($k == 0 ? ($option->label ? $option->label : 1950) : $option->label) . '" /></td>';
 
 				$k++;
@@ -335,11 +335,11 @@ class Date extends Base
 		}
 		$html[] = '</tr>';
 		$html[] = '<tr>';
-		$html[] = '<td><label for="'. $control_name . '-' . $name . '-month">' . \JText::_('Month') . '</label></td>';
+		$html[] = '<td><label for="'. $control_name . '-' . $name . '-month">' . Lang::txt('Month') . '</label></td>';
 		$html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][month]" id="'. $control_name . '-' . $name . '-month" value="1" ' . (isset($element->month) && $element->month == 1 ? 'checked="checked"' : '') . ' /></td>';
 		$html[] = '</tr>';
 		$html[] = '<tr>';
-		$html[] = '<td><label for="'. $control_name . '-' . $name . '-day">' . \JText::_('Day') . '</label></td>';
+		$html[] = '<td><label for="'. $control_name . '-' . $name . '-day">' . Lang::txt('Day') . '</label></td>';
 		$html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][day]" id="'. $control_name . '-' . $name . '-day" value="1" ' . (isset($element->day) && $element->day == 1 ? 'checked="checked"' : '') . ' /></td>';
 		$html[] = '</tr>';
 		$html[] = '</tbody>';
