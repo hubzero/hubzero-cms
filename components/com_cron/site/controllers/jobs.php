@@ -32,6 +32,8 @@ namespace Components\Cron\Site\Controllers;
 
 use Components\Cron\Models\Manager;
 use Hubzero\Component\SiteController;
+use Request;
+use User;
 use stdClass;
 
 /**
@@ -58,9 +60,9 @@ class Jobs extends SiteController
 	 */
 	public function displayTask()
 	{
-		if (!$this->juser->authorise('core.manage', $this->_option))
+		if (!User::authorise('core.manage', $this->_option))
 		{
-			$ip = \JRequest::ip();
+			$ip = Request::ip();
 
 			$ips = explode(',', $this->config->get('whitelist',''));
 			$ips = array_map('trim', $ips);
@@ -82,8 +84,8 @@ class Jobs extends SiteController
 			}
 		}
 
-		\JRequest::setVar('no_html', 1);
-		\JRequest::setVar('tmpl', 'component');
+		Request::setVar('no_html', 1);
+		Request::setVar('tmpl', 'component');
 
 		$model = new Manager();
 
@@ -138,7 +140,7 @@ class Jobs extends SiteController
 		}
 
 		$this->view
-			->set('no_html', \JRequest::getInt('no_html', 0))
+			->set('no_html', Request::getInt('no_html', 0))
 			->set('output', $output)
 			->display();
 	}

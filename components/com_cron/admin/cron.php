@@ -30,14 +30,14 @@
 
 namespace Components\Cron\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_cron'))
+if (!\User::authorise('core.manage', 'com_cron'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_CRON_JOBS'),
-	Route::url('index.php?option=com_cron'),
+	\Lang::txt('COM_CRON_JOBS'),
+	\Route::url('index.php?option=com_cron'),
 	true
 );
 
@@ -45,8 +45,8 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' 
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
 	\JSubMenuHelper::addEntry(
-		Lang::txt('COM_CRON_PLUGINS'),
-		Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
+		\Lang::txt('COM_CRON_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
 	);
 }
 

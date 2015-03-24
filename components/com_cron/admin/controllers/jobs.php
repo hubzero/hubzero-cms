@@ -64,7 +64,6 @@ class Jobs extends AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -72,7 +71,7 @@ class Jobs extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.jobs.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -113,13 +112,13 @@ class Jobs extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Load info from database
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = intval($id[0]);
@@ -207,10 +206,10 @@ class Jobs extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		$recurrence = array();
 		if (isset($fields['minute']))
@@ -253,7 +252,7 @@ class Jobs extends AdminController
 		}
 
 		$p = new \JRegistry('');
-		$p->loadArray(\JRequest::getVar('params', '', 'post'));
+		$p->loadArray(Request::getVar('params', '', 'post'));
 
 		$row->set('params', $p->toString());
 
@@ -285,10 +284,10 @@ class Jobs extends AdminController
 	public function runTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
@@ -366,10 +365,10 @@ class Jobs extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -410,12 +409,12 @@ class Jobs extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$state = $this->_task == 'publish' ? 1 : 0;
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
