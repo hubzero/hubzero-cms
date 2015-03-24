@@ -412,6 +412,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				{
 					$event->url .= '&end=' . $event->end;
 				}
+
+				$end_day = strtotime($event->end . '+ 24 hours');
+				$down = date('Y-m-d H:i:s', $end_day);
+				$event->end = $down;
 			}
 
 			array_push($events, $event);
