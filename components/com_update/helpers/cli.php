@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,7 +38,7 @@ class Cli
 	/**
 	 * Get the version of the code in the repository
 	 *
-	 * @return (string) - version identifier
+	 * @return string
 	 **/
 	public static function version()
 	{
@@ -55,7 +55,7 @@ class Cli
 	/**
 	 * Get the repository management mechanism
 	 *
-	 * @return (string) - mechanism name
+	 * @return string
 	 **/
 	public static function mechanism()
 	{
@@ -72,7 +72,7 @@ class Cli
 	/**
 	 * Check repository status
 	 *
-	 * @return (string) - mechanism status
+	 * @return string
 	 **/
 	public static function status()
 	{
@@ -82,13 +82,13 @@ class Cli
 	/**
 	 * Get repository log
 	 *
-	 * @param  int    $length the number of messages to include in log
-	 * @param  int    $start the commit number to start at
-	 * @param  string $search the search query
-	 * @param  bool   $upcoming whether or not to include upcoming commits
+	 * @param  int    $length    the number of messages to include in log
+	 * @param  int    $start     the commit number to start at
+	 * @param  string $search    the search query
+	 * @param  bool   $upcoming  whether or not to include upcoming commits
 	 * @param  bool   $installed whether or not to include installed commits
-	 * @param  bool   $count whether to return count of entries
-	 * @param  string $source the repo source to get logs from
+	 * @param  bool   $count     whether to return count of entries
+	 * @param  string $source    the repo source to get logs from
 	 * @return string
 	 **/
 	public static function log($length=null, $start=null, $search=null, $upcoming=false, $installed=true, $count=false, $source=null)
@@ -132,9 +132,9 @@ class Cli
 	 *
 	 * In dry run mode, only list changes that would come in
 	 *
-	 * @param  bool   $dryRun whether or not to do a dry run
-	 * @param  bool   $allowNonFf whether or not to allow non fast forward pulls
-	 * @param  string $source the repo source to update from
+	 * @param  bool   $dryRun      whether or not to do a dry run
+	 * @param  bool   $allowNonFf  whether or not to allow non fast forward pulls
+	 * @param  string $source      the repo source to update from
 	 * @param  string $autoPushRef the ref to auto push to after an update
 	 * @return string
 	 **/
@@ -167,7 +167,7 @@ class Cli
 	/**
 	 * Rollback to last checkpoint
 	 *
-	 * @return (string) - response
+	 * @return string
 	 **/
 	public static function rollback()
 	{
@@ -175,12 +175,12 @@ class Cli
 	}
 
 	/**
-	 * Migrate db
+	 * Migrate database
 	 *
-	 * @param  (bool)   - dry run
-	 * @param  (bool)   - ignore dates
-	 * @param  (string) - specific file to run
-	 * @return (string) - response
+	 * @param  bool   $dryRun      dry run - basically like returning a status
+	 * @param  bool   $ignoreDates ignore dates
+	 * @param  string $file        specific file to run
+	 * @return string
 	 **/
 	public static function migration($dryRun=true, $ignoreDates=false, $file=null)
 	{
@@ -205,9 +205,10 @@ class Cli
 	/**
 	 * Make actual muse calls
 	 *
-	 * @param  (string) - command to run
-	 * @param  (array)  - command arguments
-	 * @return (string) - command output
+	 * @param  string $cmd  the command to run
+	 * @param  string $task the muse task to run (only repository and migration will work)
+	 * @param  array  $args the command arguments
+	 * @return string
 	 **/
 	private static function call($cmd, $task='repository', $args=array())
 	{

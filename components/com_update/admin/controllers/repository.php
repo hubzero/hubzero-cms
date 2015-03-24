@@ -49,12 +49,11 @@ class Repository extends AdminController
 		$this->view->filters = array();
 
 		// Paging
-		$app    = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::getValue('config.list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
@@ -113,7 +112,6 @@ class Repository extends AdminController
 		$this->view->total = $this->view->total[0];
 
 		// Initiate paging
-		jimport('joomla.html.pagination');
 		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
@@ -140,7 +138,7 @@ class Repository extends AdminController
 	 */
 	public function updateTask()
 	{
-		$env         = \JFactory::getConfig()->getValue('config.application_env', 'production');
+		$env         = Config::getValue('config.application_env', 'production');
 		$source      = Component::params('com_update')->get('git_repository_source', null);
 		$autoPushRef = Component::params('com_update')->get('git_auto_push_ref', null);
 		$allowNonFf  = ($env == 'production') ? false : true;

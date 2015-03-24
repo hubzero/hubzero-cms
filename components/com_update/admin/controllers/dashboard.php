@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -54,14 +54,13 @@ class Dashboard extends AdminController
 			}
 		}
 
-		$config = \JFactory::getConfig();
 		$source = Component::params('com_update')->get('git_repository_source', null);
 
 		$this->view->repositoryVersion   = json_decode(Cli::version());
 		$this->view->repositoryVersion   = $this->view->repositoryVersion[0];
 		$this->view->repositoryMechanism = json_decode(Cli::mechanism());
 		$this->view->repositoryMechanism = $this->view->repositoryMechanism[0];
-		$this->view->databaseMechanism   = $config->get('dbtype');
+		$this->view->databaseMechanism   = Config::get('dbtype');
 		$this->view->databaseVersion     = \JFactory::getDbo()->getVersion();
 		$this->view->status    = json_decode(Cli::status());
 		$this->view->upcoming  = json_decode(Cli::update(true, false, $source));

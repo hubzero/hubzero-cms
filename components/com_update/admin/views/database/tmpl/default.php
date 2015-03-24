@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(Lang::txt('CMS Updater: database'));
-JToolBarHelper::custom('migrate', 'purge', '', 'Update repository', false);
+JToolBarHelper::custom('migrate', 'purge', '', 'Run pending migrations', false);
 
 $this->css();
 ?>

@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -57,15 +57,13 @@ class Database extends AdminController
 		$this->view->filters = array();
 
 		// Paging
-		$app    = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = \JFactory::getApplication()->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::getValue('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = \JFactory::getApplication()->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -91,7 +89,6 @@ class Database extends AdminController
 		}
 
 		// Initiate paging
-		jimport('joomla.html.pagination');
 		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
@@ -109,7 +106,7 @@ class Database extends AdminController
 	 */
 	public function migrateTask()
 	{
-		$file     = \JRequest::getVar('file', null);
+		$file     = Request::getVar('file', null);
 		$response = Cli::migration(false, true, $file);
 		$response = json_decode($response);
 		$message  = 'Migration complete!';

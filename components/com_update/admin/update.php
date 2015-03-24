@@ -32,14 +32,14 @@ namespace Components\Update\Admin;
 
 $option = 'com_update';
 
-if (!\JFactory::getUser()->authorise('core.admin', $option))
+if (!User::authorise('core.admin', $option))
 {
 	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'cli.php';
 
-$controllerName = \JRequest::getCmd('controller', 'dashboard');
+$controllerName = Request::getCmd('controller', 'dashboard');
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
