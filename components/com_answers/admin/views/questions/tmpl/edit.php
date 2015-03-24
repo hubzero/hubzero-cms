@@ -132,7 +132,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-created_by"><?php echo Lang::txt('COM_ANSWERS_FIELD_CREATOR'); ?>:</label><br />
-				<input type="text" name="question[created_by]" id="field-created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', JFactory::getUser()->get('id')); ?>" />
+				<input type="text" name="question[created_by]" id="field-created_by" size="25" maxlength="50" value="<?php echo $this->row->get('created_by', User::get('id')); ?>" />
 			</div>
 
 			<div class="input-wrap">

@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,6 +31,7 @@
 namespace Components\Answers\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * Permissions helper
@@ -60,7 +61,6 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user   = \JFactory::getUser();
 		$result = new Object;
 
 		$actions = array(
@@ -74,7 +74,7 @@ class Permissions
 
 		foreach ($actions as $action)
 		{
-			$result->set($action, $user->authorise($action, $assetName));
+			$result->set($action, User::authorise($action, $assetName));
 		}
 
 		return $result;

@@ -48,7 +48,7 @@ class Answers extends AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = \Component::params('com_members')->get('bankAccounts');
+		$this->banking = Component::params('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
@@ -65,7 +65,6 @@ class Answers extends AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -85,7 +84,7 @@ class Answers extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -145,14 +144,14 @@ class Answers extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$qid = \JRequest::getInt('qid', 0);
+		$qid = Request::getInt('qid', 0);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			$id = (is_array($id) && !empty($id)) ? $id[0] : $id;
 
 			$row = new Response($id);
@@ -183,10 +182,10 @@ class Answers extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$answer = \JRequest::getVar('answer', array(), 'post', 'none', 2);
+		$answer = Request::getVar('answer', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new Response(intval($answer['id']));
@@ -229,10 +228,10 @@ class Answers extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -251,7 +250,7 @@ class Answers extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . JRequest::getInt('qid', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . Request::getInt('qid', 0), false)
 		);
 	}
 
@@ -263,11 +262,11 @@ class Answers extends AdminController
 	public function acceptTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$qid = \JRequest::getInt('qid', 0);
-		$id  = \JRequest::getVar('id', array(0));
+		$qid = Request::getInt('qid', 0);
+		$id  = Request::getVar('id', array(0));
 
 		if (!is_array($id))
 		{
@@ -362,10 +361,10 @@ class Answers extends AdminController
 	public function resetTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$answer = \JRequest::getVar('answer', array());
+		$answer = Request::getVar('answer', array());
 
 		// Reset some values
 		$model = new Response(intval($answer['id']));

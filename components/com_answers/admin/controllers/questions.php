@@ -47,7 +47,7 @@ class Questions extends AdminController
 	 */
 	public function execute()
 	{
-		$this->banking = \Component::params('com_members')->get('bankAccounts');
+		$this->banking = Component::params('com_members')->get('bankAccounts');
 
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
@@ -65,7 +65,6 @@ class Questions extends AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -89,7 +88,7 @@ class Questions extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -147,13 +146,13 @@ class Questions extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Load object
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			$id = is_array($id) ? $id[0] : $id;
 
 			$row = new Question($id);
@@ -180,10 +179,10 @@ class Questions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming data
-		$fields = \JRequest::getVar('question', array(), 'post', 'none', 2);
+		$fields = Request::getVar('question', array(), 'post', 'none', 2);
 
 		// Initiate model
 		$row = new Question($fields['id']);
@@ -215,7 +214,7 @@ class Questions extends AdminController
 		}
 
 		// Add the tag(s)
-		$row->tag($fields['tags'], $this->juser->get('id'));
+		$row->tag($fields['tags'], User::get('id'));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -237,10 +236,10 @@ class Questions extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -288,10 +287,10 @@ class Questions extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = ($this->getTask() == 'close') ? 1 : 0;

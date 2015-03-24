@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -52,8 +52,7 @@ if ($this->item->get('vote', null))
 	}
 }
 
-$juser = JFactory::getUser();
-if (!$juser->get('guest'))
+if (!User::isGuest())
 {
 	$like_title    = Lang::txt('COM_ANSWERS_VOTE_LIKE_TITLE', $this->item->get('helpful', 0));
 	$dislike_title = Lang::txt('COM_ANSWERS_VOTE_DISLIKE_TITLE', $this->item->get('nothelpful', 0));
@@ -67,7 +66,7 @@ else
 }
 ?>
 <?php if (!$this->item->get('vote')) { ?>
-	<?php if ($juser->get('guest')) { ?>
+	<?php if (User::isGuest()) { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
 			<span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>

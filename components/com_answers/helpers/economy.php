@@ -163,8 +163,6 @@ class Economy extends Object
 	 */
 	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
 	{
-		$juser = \JFactory::getUser();
-
 		if ($qid === NULL)
 		{
 			$qid = $this->qid;
@@ -247,7 +245,6 @@ class Economy extends Object
 		// Reward others
 		$ba_user = \JUser::getInstance($BA_owner);
 
-		//$ba_user = \Hubzero\User\Profile::getInstance($BA_owner);
 		if (is_object($ba_user) && $ba_user->get('id'))
 		{
 			// Reward other responders

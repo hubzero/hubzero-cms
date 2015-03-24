@@ -64,7 +64,7 @@ class QuestionsLog extends \JTable
 		$this->voter = intval($this->voter);
 		if (!$this->voter)
 		{
-			$this->voter = \JFactory::getUser()->get('id');
+			$this->voter = User::get('id');
 		}
 
 		if (!$this->expires)

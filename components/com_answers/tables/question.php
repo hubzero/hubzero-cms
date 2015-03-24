@@ -64,7 +64,7 @@ class Question extends \JTable
 
 		// Updating entry
 		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
+		$this->created_by = $this->created_by ?: User::get('id');
 
 		return true;
 	}
@@ -77,8 +77,6 @@ class Question extends \JTable
 	 */
 	public function buildQuery($filters=array())
 	{
-		$juser = \JFactory::getUser();
-
 		if (!isset($filters['tag']))
 		{
 			$filters['tag'] = '';
@@ -128,11 +126,11 @@ class Question extends \JTable
 		}
 		if (isset($filters['mine']) && $filters['mine'] != 0)
 		{
-			$query .= " AND C.created_by=" . $this->_db->Quote($juser->get('id')) . " ";
+			$query .= " AND C.created_by=" . $this->_db->Quote(User::get('id')) . " ";
 		}
 		if (isset($filters['mine']) && $filters['mine'] == 0)
 		{
-			$query .= " AND C.created_by!=" . $this->_db->Quote($juser->get('id')) . " ";
+			$query .= " AND C.created_by!=" . $this->_db->Quote(User::get('id')) . " ";
 		}
 		if (isset($filters['created_before']) && $filters['created_before'] != '')
 		{

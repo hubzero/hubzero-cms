@@ -33,7 +33,7 @@ namespace Components\Answers\Site;
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'questions'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'questions'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'questions';

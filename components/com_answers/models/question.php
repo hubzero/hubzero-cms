@@ -657,7 +657,7 @@ class Question extends Base
 			$aql = new Tables\QuestionsLog($this->_db);
 			$this->set(
 				'voted',
-				$aql->checkVote($this->get('id'), \JRequest::ip(), $juser->get('id'))
+				$aql->checkVote($this->get('id'), Request::ip(), $juser->get('id'))
 			);
 		}
 
@@ -689,7 +689,7 @@ class Question extends Base
 
 		$al = new Tables\QuestionsLog($this->_db);
 		$al->question_id = $this->get('id');
-		$al->ip          = \JRequest::ip();
+		$al->ip          = Request::ip();
 		$al->voter       = $juser->get('id');
 
 		if ($al->checkVote($al->question_id, $al->ip, $al->voter))
@@ -772,7 +772,7 @@ class Question extends Base
 				$BT->deleteRecords('answers', 'hold', $this->get('id'));
 
 				// Make credit adjustment
-				$BTL_Q = new Teller($this->_db, \JFactory::getUser()->get('id'));
+				$BTL_Q = new Teller($this->_db, User::get('id'));
 				$BTL_Q->credit_adjustment($BTL_Q->credit_summary() - $reward);
 			}
 			else

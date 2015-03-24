@@ -70,7 +70,7 @@ class Vote extends \JTable
 		if (!$this->id)
 		{
 			$this->voted = ($this->voted) ? $this->voted : \JFactory::getDate()->toSql();
-			$this->voter = ($this->voter) ? $this->voter : \JFactory::getUser()->get('id');
+			$this->voter = ($this->voter) ? $this->voter : User::get('id');
 		}
 
 		if (!Validate::ip($this->ip))

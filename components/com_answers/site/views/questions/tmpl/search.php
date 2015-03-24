@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,9 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js('vote.js');
-
-$juser = JFactory::getUser();
-$jconfig = JFactory::getConfig();
 
 if (!$this->filters['filterby'])
 {
@@ -78,7 +75,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 					</fieldset>
 				</div><!-- / .container -->
 
-			<?php if (!$juser->get('guest')) { ?>
+			<?php if (!User::isGuest()) { ?>
 				<ul class="entries-menu user-options">
 					<li>
 						<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search&filterby=' . urlencode($this->filters['filterby']).'&sortby=' . urlencode($this->filters['sortby'])); ?>">
@@ -175,7 +172,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						}
 						$cls  = ($row->isclosed())   ? 'answered' : '';
 						$cls  = ($row->isReported()) ? 'flagged'  : $cls;
-						$cls .= ($row->get('created_by') == $juser->get('id')) ? ' mine' : '';
+						$cls .= ($row->get('created_by') == User::get('id')) ? ' mine' : '';
 					?>
 							<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 								<th>
@@ -223,7 +220,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 							<?php } ?>
 								<td class="voting">
 									<span class="vote-like">
-									<?php if ($juser->get('guest')) { ?>
+									<?php if (User::isGuest()) { ?>
 										<span class="vote-button <?php echo ($row->get('helpful') > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE_LOGIN'); ?>">
 											<?php echo $row->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
 										</span>
@@ -268,7 +265,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_ANSWERS_NEED_AN_ANSWER'); ?></h3>
 				<p>
-					<?php echo Lang::txt('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . Route::url('index.php?option=com_kb') . '">' . Lang::txt('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', $jconfig->getValue('config.sitename')); ?>
+					<?php echo Lang::txt('COM_ANSWERS_CANT_FIND_ANSWER', '<a href="' . Route::url('index.php?option=com_kb') . '">' . Lang::txt('COM_ANSWERS_KNOWLEDGE_BASE') . '</a>', Config::get('sitename')); ?>
 				</p>
 			</div><!-- / .container -->
 			<div class="container">

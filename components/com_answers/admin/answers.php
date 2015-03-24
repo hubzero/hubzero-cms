@@ -30,29 +30,29 @@
 
 namespace Components\Answers\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_answers'))
+if (!\User::authorise('core.manage', 'com_answers'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php');
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'question.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'questions');
+$controllerName = \Request::getCmd('controller', 'questions');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'questions';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_ANSWERS_QUESTIONS'),
-	Route::url('index.php?option=com_answers'),
+	\Lang::txt('COM_ANSWERS_QUESTIONS'),
+	\Route::url('index.php?option=com_answers'),
 	($controllerName == 'questions')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_ANSWERS_RESPONSES'),
-	Route::url('index.php?option=com_answers&controller=answers&qid=0'),
+	\Lang::txt('COM_ANSWERS_RESPONSES'),
+	\Route::url('index.php?option=com_answers&controller=answers&qid=0'),
 	($controllerName == 'answers')
 );
 

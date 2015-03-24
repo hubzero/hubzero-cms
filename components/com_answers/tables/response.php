@@ -82,7 +82,7 @@ class Response extends \JTable
 		}
 
 		$this->created    = $this->created    ?: \JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ?: \JFactory::getUser()->get('id');
+		$this->created_by = $this->created_by ?: User::get('id');
 
 		return true;
 	}
@@ -95,8 +95,6 @@ class Response extends \JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		$juser = \JFactory::getUser();
-
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
 		$ab = new \Components\Support\Tables\ReportAbuse($this->_db);
 
@@ -113,7 +111,7 @@ class Response extends \JTable
 			return false;
 		}
 
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$query  = "SELECT r.*";
 			$query .= ", (SELECT COUNT(*) FROM $ab->_tbl AS a WHERE a.category='answers' AND a.state=0 AND a.referenceid=r.id) AS reports";
