@@ -1382,10 +1382,12 @@
 		padding: 0;
 	}
 	/* Upload list */
+	#hubForm ul.qq-upload-list,
 	.qq-upload-list {
 		list-style: none;
 		margin: 1em 0;
 	}
+	#hubForm ul.qq-upload-list li,
 	.qq-upload-list li {
 		color: #FFFFFF;
 		margin: 0 0 1px;
