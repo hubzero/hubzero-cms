@@ -991,6 +991,13 @@ class Wishlists extends SiteController
 			}
 		}
 
+		// Verify subject is in, before it hits the table
+		$subject = $row->get('subject');
+		if (!!isset($subject) || $subject == '')
+		{
+			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_SUBJECT'));
+		}
+
 		// Error view
 		if ($this->getError())
 		{
