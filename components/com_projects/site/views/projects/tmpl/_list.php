@@ -50,7 +50,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php
 foreach ($this->rows as $row)
 {
-	if ($row->owned_by_group && !$row->groupcn)
+	if ($row->get('owned_by_group') && !$row->groupOwner())
 	{
 		continue; // owner group has been deleted
 	}
@@ -59,7 +59,7 @@ foreach ($this->rows as $row)
 	$this->view('_item')
 	     ->set('option', $this->option)
 	     ->set('filters', $this->filters)
-	     ->set('config', $this->config)
+	     ->set('model', $this->model)
 	     ->set('row', $row)
 	     ->display();
 }

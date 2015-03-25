@@ -124,7 +124,7 @@ class Projects extends Base
 		$action  = Request::getVar( 'action', '' );
 
 		// When logging in
-		if ($this->juser->get('guest') && $action == 'login')
+		if (User::isGuest() && $action == 'login')
 		{
 			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_YOUR_PROJECTS');
 			$this->_login();
@@ -136,25 +136,6 @@ class Projects extends Base
 		$this->view->filters['mine']   	= 1;
 		$this->view->filters['updates'] = 1;
 		$this->view->filters['sortby'] 	= 'myprojects';
-
-		// Get a record count
-		$obj = new Tables\Project( $this->database );
-		$this->view->total = $obj->getCount(
-			$this->view->filters,
-			$admin = false,
-			$this->juser->get('id'),
-			0,
-			$this->_setupComplete
-		);
-
-		// Get records
-		$this->view->rows = $obj->getRecords(
-			$this->view->filters,
-			$admin = false,
-			$this->juser->get('id'),
-			0,
-			$this->_setupComplete
-		);
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -168,11 +149,8 @@ class Projects extends Base
 
 		// Output HTML
 		$this->view->option 	= $this->_option;
-		$this->view->config 	= $this->config;
-		$this->view->database 	= $this->database;
+		$this->view->model 		= $this->model;
 		$this->view->publishing = $this->_publishing;
-		$this->view->uid 		= $this->juser->get('id');
-		$this->view->guest 		= $this->juser->get('guest');
 		$this->view->msg 		= isset($this->_msg) && $this->_msg
 								? $this->_msg
 								: $this->_getNotifications('success');
@@ -210,7 +188,6 @@ class Projects extends Base
 		// Output HTML
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
-		$this->view->guest  	= $this->juser->get('guest');
 		$this->view->publishing	= $this->_publishing;
 
 		if ($this->getError())
@@ -239,25 +216,21 @@ class Projects extends Base
 		$this->_buildTitle();
 
 		// Check reviewer authorization
-		if ($reviewer == 'sensitive' || $reviewer == 'sponsored' )
+		if ($reviewer && User::isGuest())
 		{
-			if ($this->juser->get('guest'))
-			{
-				$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_REVIEWER');
-				$this->_login();
-				return;
-			}
-
-			if (!$this->_checkReviewerAuth($reviewer))
-			{
-				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
-				$this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
-				$this->view->title = $reviewer == 'sponsored'
-							 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
-							 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
-				$this->view->display();
-				return;
-			}
+			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_REVIEWER');
+			$this->_login();
+			return;
+		}
+		if ($reviewer && !$this->model->reviewerAccess($reviewer))
+		{
+			$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
+			$this->view->error  = Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
+			$this->view->title = $reviewer == 'sponsored'
+						 ? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
+						 : Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
+			$this->view->display();
+			return;
 		}
 
 		// Incoming
@@ -271,7 +244,6 @@ class Projects extends Base
 		$this->view->filters['sortby'] 		= Request::getVar( 'sortby', 'title' );
 		$this->view->filters['search'] 		= Request::getVar( 'search', '' );
 		$this->view->filters['sortdir']		= Request::getVar( 'sortdir', 'ASC');
-		$this->view->filters['getowner']	= 1;
 		$this->view->filters['reviewer']	= $reviewer;
 		$this->view->filters['filterby']	= 'all';
 
@@ -281,54 +253,23 @@ class Projects extends Base
 		}
 
 		// Login for private projects
-		if ($this->juser->get('guest') && $action == 'login')
+		if (User::isGuest() && $action == 'login')
 		{
 			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PRIVATE_PROJECTS');
 			$this->_login();
 			return;
 		}
 
-		// Get a record count
-		$obj = new Tables\Project( $this->database );
-
-		// Get count
-		$this->view->total = $obj->getCount(
-			$this->view->filters,
-			$admin = false,
-			$this->juser->get('id'),
-			0,
-			$this->_setupComplete
-		);
-
-		// Get records
-		$this->view->rows = $obj->getRecords(
-			$this->view->filters,
-			$admin = false,
-			$this->juser->get('id'),
-			0,
-			$this->_setupComplete
-		);
-
-		// Initiate paging
-		$this->view->pageNav = new \JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Log activity
 		$this->_logActivity(0, 'general', 'browse');
 
 		// Output HTML
+		$this->view->model		= $this->model;
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
-		$this->view->database 	= $this->database;
-		$this->view->uid 		= $this->juser->get('id');
-		$this->view->guest 		= $this->juser->get('guest');
 		$this->view->title 		= $this->title;
 		$this->view->reviewer 	= $reviewer;
-		$this->view->msg 		= isset($this->_msg) && $this->_msg
-								? $this->_msg : $this->_getNotifications('success');
+		$this->view->msg 		= $this->_getNotifications('success');
 		if ($this->getError())
 		{
 			$this->view->setError( $this->getError() );
@@ -352,7 +293,7 @@ class Projects extends Base
 		$sync 			=  0;
 
 		// Stop ajax action if user got logged out
-		if ($ajax && $this->juser->get('guest'))
+		if ($ajax && User::isGuest())
 		{
 			// Project on hold
 			$this->view 		= new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
@@ -487,7 +428,7 @@ class Projects extends Base
 		$authorized = $this->project->owner ? $role : 0;
 
 		// Do we need to login?
-		if ($this->juser->get('guest') && $action == 'login')
+		if (User::isGuest() && $action == 'login')
 		{
 			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
 			$this->_login();
@@ -496,7 +437,7 @@ class Projects extends Base
 
 		// Check if they're a member of reviewer group
 		$reviewer = false;
-		if (!$this->juser->get('guest') && $authorized != 1)
+		if (!User::isGuest() && $authorized != 1)
 		{
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 			if ($ugs && count($ugs) > 0)
@@ -526,7 +467,7 @@ class Projects extends Base
 		if ($confirmcode && (!$this->project->owner or !$this->project->confirmed))
 		{
 			$match = $obj->matchInvite( $pid, $confirmcode, $email );
-			if ($this->juser->get('guest') && $match)
+			if (User::isGuest() && $match)
 			{
 				$layout = 'invited';
 			}
@@ -573,7 +514,7 @@ class Projects extends Base
 				{
 					$layout = 'provisioned';
 				}
-				elseif ($this->juser->get('guest'))
+				elseif (User::isGuest())
 				{
 					$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
 					$this->_login();
@@ -606,7 +547,7 @@ class Projects extends Base
 		if ($this->project->private && $layout != 'invited')
 		{
 			// Login required
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 				$this->_login();
@@ -1093,7 +1034,7 @@ class Projects extends Base
 		}
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 			$this->_login();

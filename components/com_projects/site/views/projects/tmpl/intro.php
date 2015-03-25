@@ -25,34 +25,33 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 $this->css('introduction.css', 'system')
      ->css()
      ->js();
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
+
 <div id="content-header-extra">
     <ul id="useroptions">
     	<li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
+
 <div class="clear"></div>
-<?php if ($this->getError() || $this->msg) { ?>
-<div class="status-msg">
+
 <?php
-	// Display error or success message
-	if ($this->getError()) {
-		echo ('<p class="witherror">' . $this->getError().'</p>');
-	}
-	else if ($this->msg) {
-		echo ('<p>' . $this->msg . '</p>');
-	} ?>
-</div>
-<?php } ?>
+	// Display status message
+	$this->view('_statusmsg', 'projects')
+	     ->set('error', $this->getError())
+	     ->set('msg', $this->msg)
+	     ->display();
+?>
+
 <div class="clear block">&nbsp;</div>
+
 <section id="introduction" class="section">
  <div id="introbody">
 	<div class="grid">
@@ -86,20 +85,21 @@ $this->css('introduction.css', 'system')
 	</div>
 	<div class="col span10 omega">
 		<?php
-		if (count($this->rows) > 0) { 	?>
+		if ($rows = $this->model->entries('list', $this->filters)) { ?>
 			<ul class="flow">
-				<?php foreach ($this->rows as $row) {
-				$setup = ($row->setup_stage < $setup_complete) ? Lang::txt('COM_PROJECTS_COMPLETE_SETUP') : '';
+				<?php foreach ($rows as $row) 
+				{
+					$setup = ($row->inSetup()) ? Lang::txt('COM_PROJECTS_COMPLETE_SETUP') : '';
 				?>
-				<li <?php if ($setup) { echo 'class="s-dev"'; } else if ($row->state == 0) { echo 'class="s-inactive"'; } else if ($row->state == 5) { echo 'class="s-pending"'; } ?>>
-					<?php  if (!$setup && $row->private) { ?><span class="s-private">&nbsp;</span><?php }  ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $row->alias); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="" /><span class="block"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->title), 30); ?></span></a><?php if ($setup) { ?><span class="s-complete"><?php echo Lang::txt('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if ($row->state == 0) { ?><span class="s-suspended"><?php echo Lang::txt('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if ($row->state == 5) { ?><span class="s-suspended"><?php echo Lang::txt('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
-				<?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?>
+				<li <?php if ($setup) { echo 'class="s-dev"'; } else if ($row->get('state') == 0) { echo 'class="s-inactive"'; } else if ($row->get('state') == 5) { echo 'class="s-pending"'; } ?>>
+				<?php  if (!$setup && !$row->isPublic()) { ?><span class="s-private">&nbsp;</span><?php }  ?>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $row->get('alias')); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $row->get('alias') . '&task=media'); ?>" alt="" /><span class="block"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->get('title')), 30); ?></span></a><?php if ($setup) { ?><span class="s-complete"><?php echo Lang::txt('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if ($row->get('state') == 0) { ?><span class="s-suspended"><?php echo Lang::txt('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if ($row->get('state') == 5) { ?><span class="s-suspended"><?php echo Lang::txt('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
+				<?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?><span class="s-new"><?php echo $row->get('newactivity'); ?></span><?php } ?>
 				</li>
 				<?php }	?>
 			</ul>
 		<?php } else { ?>
-			<div class="noresults"><?php echo ($this->guest) ? Lang::txt('COM_PROJECTS_PLEASE').' <a href="'.Route::url('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
+			<div class="noresults"><?php echo (User::isGuest()) ? Lang::txt('COM_PROJECTS_PLEASE').' <a href="'.Route::url('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?></div>
 		<?php }	?>
 	</div>
 </div>

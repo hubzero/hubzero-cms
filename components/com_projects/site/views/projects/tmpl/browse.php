@@ -34,9 +34,10 @@ if (in_array($this->filters['reviewer'], array('sponsored', 'sensitive')))
 		->css('jquery.fancybox.css', 'system');
 }
 
-$html  = '';
-
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
+
+// Get count
+$total = $this->model->entries('count', $this->filters);
 
 ?>
 <header id="content-header">
@@ -84,36 +85,40 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 			<div class="clearfix"></div>
 			<div class="container-block">
 			<?php
-			if ($this->rows)
+			if ($rows = $this->model->entries('list', $this->filters))
 			{
 				// Display List of items
 				$this->view('_list')
-				     ->set('rows', $this->rows)
-				     ->set('total', $this->total)
+				     ->set('rows', $rows)
 				     ->set('filters', $this->filters)
-				     ->set('config', $this->config)
+				     ->set('model', $this->model)
 				     ->set('option', $this->option)
-				     ->set('guest', $this->guest)
-				     ->set('pageNav', $this->pageNav)
 				     ->display();
 
 				// Pagination
-				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-				$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-				$this->pageNav->setAdditionalUrlParam('reviewer', $this->filters['reviewer']);
-				$this->pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
+				$pageNav = new \JPagination(
+					$total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+				$pageNav->setAdditionalUrlParam('reviewer', $this->filters['reviewer']);
+				$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sortdir']);
 
-				$pagenavhtml = $this->pageNav->getListFooter();
+				$pagenavhtml = $pageNav->getListFooter();
 				$pagenavhtml = str_replace('projects/?','projects/browse/?', $pagenavhtml);
 				?>
 				<fieldset>
 					<?php echo $pagenavhtml; ?>
 				</fieldset>
 			<?php	echo '<div class="clear"></div>';
-			} else {
-				if ($this->guest)
+			} 
+			else 
+			{
+				if (User::isGuest())
 				{
-					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND').' '.Lang::txt('COM_PROJECTS_PLEASE').' <a href="'.Route::url('index.php?option=' . $this->option . '&task=browse').'?action=login">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
+					echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND').' '.Lang::txt('COM_PROJECTS_PLEASE').' <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') .'">'.Lang::txt('COM_PROJECTS_LOGIN').'</a> '.Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
 				}
 			else
 			{

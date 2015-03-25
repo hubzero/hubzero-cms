@@ -44,6 +44,7 @@ require_once(__DIR__ . DS . 'tags.php');
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
+use Hubzero\Base\ItemList;
 
 /**
  * Project model
@@ -101,9 +102,10 @@ class Project extends Model
 			{
 				$this->_tbl->loadProject($oid);
 			}
-
-			$this->params = new \JRegistry($this->_tbl->get('params'));
 		}
+
+		$this->params = new \JRegistry($this->_tbl->get('params'));
+
 	}
 
 	/**
@@ -192,19 +194,19 @@ class Project extends Model
 	/**
 	 * Get project member
 	 *
-	 * @return     mixed
+	 * @return     Components\Projects\Tables\Owner
 	 */
 	public function member()
 	{
 		if (!$this->exists())
 		{
-			return array();
+			return false;
 		}
 		if (!isset($this->_member))
 		{
 			$member = new Tables\Owner($this->_db);
 			$member->loadOwner($this->get('id'), User::get('id'));
-			$this->_member = $member && $member->status != 2 ? $member : array();
+			$this->_member = $member && $member->status != 2 ? $member : false;
 		}
 
 		return $this->_member;
@@ -266,11 +268,39 @@ class Project extends Model
 	}
 
 	/**
+	 * Is project pending approval?
+	 *
+	 * @return     boolean
+	 */
+	public function isPending()
+	{
+		if ($this->get('state') == 5)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is project suspended?
+	 *
+	 * @return     boolean
+	 */
+	public function isInactive()
+	{
+		if ($this->get('state') == 0 && !$this->inSetup())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Is project in setup?
 	 *
 	 * @return     boolean
 	 */
-	public function isInSetup()
+	public function inSetup()
 	{
 		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
 		if ($this->get('setup_stage') < $setupComplete)
@@ -299,6 +329,54 @@ class Project extends Model
 				// Allow public view access
 				$this->params->set('access-view-project', true);
 			}
+			return;
+		}
+
+		// Check reviewer access?
+		if ($reviewer)
+		{
+			// Get user groups
+			if (!isset($this->_userGroups))
+			{
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
+				$this->_userGroups = $this->getGroupProperty($ugs);
+			}
+
+			switch (strtolower($reviewer))
+			{
+				case 'general':
+				case 'admin':
+				default:
+					$reviewer = 'admin';
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'));
+				break;
+
+				case 'sensitive':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'));
+				break;
+
+				case 'sponsored':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'));
+				break;
+
+				case 'reports':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'));
+				break;
+			}
+
+			$authorized = false;
+			if ($this->_userGroups && count($this->_userGroups) > 0)
+			{
+				foreach ($this->_userGroups as $cn)
+				{
+					if ($group && $cn == $group->get('cn'))
+					{
+						$authorized = true;
+					}
+				}
+			}
+
+			$this->params->set('access-reviewer-' . strtolower($reviewer) . '-project', $authorized);
 			return;
 		}
 
@@ -368,53 +446,6 @@ class Project extends Model
 				break;
 			}
 		}
-
-		// Check reviewer access?
-		if ($reviewer)
-		{
-			// Get user groups
-			if (!$this->_userGroups)
-			{
-				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-				$this->_userGroups = $this->getGroupProperty($ugs);
-			}
-
-			switch (strtolower($reviewer))
-			{
-				case 'general':
-				case 'admin':
-				default:
-					$reviewer = 'admin';
-					$group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'));
-				break;
-
-				case 'sensitive':
-					$group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'));
-				break;
-
-				case 'sponsored':
-					$group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'));
-				break;
-
-				case 'reports':
-					$group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'));
-				break;
-			}
-
-			$authorized = false;
-			if ($this->_userGroups && count($this->_userGroups) > 0)
-			{
-				foreach ($this->_userGroups as $cn)
-				{
-					if ($group && $cn == $group->get('cn'))
-					{
-						$authorized = true;
-					}
-				}
-			}
-
-			$this->params->set('access-reviewer-' . strtolower($reviewer) . '-project', $authorized);
-		}
 	}
 
 	/**
@@ -460,7 +491,7 @@ class Project extends Model
 	 */
 	public function owner($property=null)
 	{
-		if (!($this->_owner instanceof \Hubzero\User\Profile))
+		if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\Profile))
 		{
 			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('owned_by_user'));
 		}
@@ -483,7 +514,7 @@ class Project extends Model
 	 */
 	public function groupOwner($property=null)
 	{
-		if (!($this->_groupOwner instanceof \Hubzero\User\Group))
+		if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group))
 		{
 			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));
 		}
@@ -693,5 +724,55 @@ class Project extends Model
 			}
 		}
 		return $arr;
+	}
+
+	/**
+	 * Get a count of new activity
+	 *
+	 * @return  integer
+	 */
+	public function newCount($refresh = false)
+	{
+		if (!isset($this->_activity))
+		{
+			$this->_activity = new Tables\Activity( $this->_db );
+		}
+		if (!isset($this->_newCount) || $refresh == true)
+		{
+			$this->_newCount = $this->_activity->getNewActivityCount( $this->get('id'), User::get('id'));
+		}
+
+		return $this->_newCount;
+	}
+
+	/**
+	 * Get a count of, model for, or list of entries
+	 *
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $admin    Admin?
+	 * @return  mixed
+	 */
+	public function entries($rtrn = 'list', $filters = array(), $admin = false)
+	{
+		$showDeleted = $admin ? true : false;
+		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
+
+		switch (strtolower($rtrn))
+		{
+			case 'count':
+				return (int) $this->_tbl->getCount($filters, $admin, User::get('id'), $showDeleted, $setupComplete);
+			break;
+		}
+
+		if ($results = $this->_tbl->getRecords($filters, $admin, User::get('id'), $showDeleted, $setupComplete))
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key] = new self($result);
+			}
+		}
+
+		return new ItemList($results);
 	}
 }
