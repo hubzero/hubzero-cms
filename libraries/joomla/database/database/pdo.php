@@ -93,8 +93,15 @@ class JDatabasePDO extends JDatabase
 			}
 		}
 
+		// Add extra configuration options as necessary
+		$extras = array();
+		if (isset($options['ssl_ca']))
+		{
+			$extras[PDO::MYSQL_ATTR_SSL_CA] = $options['ssl_ca'];
+		}
+
 		// Attempt to connect to the server.
-		if (!($this->connection = new PDO("mysql:host=${options['host']}", $options['user'], $options['password']))) 
+		if (!($this->connection = new PDO("mysql:host=${options['host']}", $options['user'], $options['password'], $extras))) 
 		{
 
 			// Legacy error handling switch based on the JError::$legacy switch.

@@ -36,6 +36,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="statsDBPassword" type="text" menu="hide" label="COM_USAGE_DBPASSWORD_LABEL" default="" description="COM_USAGE_DBPASSWORD_DESC" />
 		<field name="statsDBDatabase" type="text" menu="hide" label="COM_USAGE_DBDATABASE_LABEL" default="" description="COM_USAGE_DBDATABASE_DESC" />
 		<field name="statsDBPrefix" type="text" menu="hide" label="COM_USAGE_DBPREFIX_LABEL" default="" description="COM_USAGE_DBPREFIX_DESC" />
+		<field name="statsDBSSLCa" type="text" menu="hide" label="COM_USAGE_DBSSLCA_LABEL" default="" description="COM_USAGE_DBSSLCA_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="mapsApiKey" type="text" menu="hide" label="COM_USAGE_MAPSAPIKEY_LABEL" default="" description="COM_USAGE_MAPSAPIKEY_DESC" />
 		<field name="stats_path" type="text" menu="hide" label="COM_USAGE_PATH_STATS_LABEL" default="/site/usage" description="COM_USAGE_PATH_STATS_DESC" />
