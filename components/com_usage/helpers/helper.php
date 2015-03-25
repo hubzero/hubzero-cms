@@ -55,6 +55,7 @@ class Helper
 			$options['password'] = $config->get('statsDBPassword');
 			$options['database'] = $config->get('statsDBDatabase');
 			$options['prefix']   = $config->get('statsDBPrefix');
+			$options['ssl_ca']   = $config->get('statsDBSSLCa');
 
 			if ((!isset($options['password']) || $options['password'] == '')
 			 && (!isset($options['user']) || $options['user'] == '')
