@@ -95,7 +95,7 @@ class JDatabasePDO extends JDatabase
 
 		// Add extra configuration options as necessary
 		$extras = array();
-		if (isset($options['ssl_ca']))
+		if (isset($options['ssl_ca']) && $options['ssl_ca'] && $options['host'] != 'localhost')
 		{
 			$extras[PDO::MYSQL_ATTR_SSL_CA] = $options['ssl_ca'];
 		}
