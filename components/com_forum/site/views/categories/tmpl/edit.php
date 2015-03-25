@@ -31,8 +31,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
-
-$juser = JFactory::getUser();
 ?>
 	<header id="content-header">
 		<h2><?php echo Lang::txt('COM_FORUM'); ?></h2>

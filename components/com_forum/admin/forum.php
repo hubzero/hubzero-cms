@@ -30,9 +30,9 @@
 
 namespace Components\Forum\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_forum'))
+if (!\User::authorise('core.manage', 'com_forum'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
@@ -41,25 +41,25 @@ require_once(__DIR__ . DS . 'models' . DS . 'admincategory.php');
 require_once(__DIR__ . DS . 'models' . DS . 'adminthread.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'sections');
+$controllerName = \Request::getCmd('controller', 'sections');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'sections';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_FORUM_SECTIONS'),
-	Route::url('index.php?option=com_forum&controller=sections'),
+	\Lang::txt('COM_FORUM_SECTIONS'),
+	\Route::url('index.php?option=com_forum&controller=sections'),
 	($controllerName == 'sections')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_FORUM_CATEGORIES'),
-	Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
+	\Lang::txt('COM_FORUM_CATEGORIES'),
+	\Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
 	($controllerName == 'categories')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_FORUM_THREADS'),
-	Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
+	\Lang::txt('COM_FORUM_THREADS'),
+	\Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
 	($controllerName == 'threads')
 );
 

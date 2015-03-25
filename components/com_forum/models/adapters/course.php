@@ -66,7 +66,7 @@ class Course extends Base
 		$this->_segments['gid']      = $course->get('alias');
 		$this->_segments['offering'] = $offering->alias();
 		$this->_segments['active']   = 'discussions';
-		if (\JRequest::getVar('active') == 'outline')
+		if (Request::getVar('active') == 'outline')
 		{
 			$this->_segments['active']   = 'outline';
 		}

@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$juser = JFactory::getUser();
-
 if (!function_exists('sortDir'))
 {
 	function sortDir($filters, $current, $dir='DESC')
@@ -199,12 +197,12 @@ $this->category->set('section_alias', $this->filters['section']);
 										</td>
 										<?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
 											<td class="entry-options">
-												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
+												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == User::get('id'))) { ?>
 													<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>">
 														<?php echo Lang::txt('COM_FORUM_EDIT'); ?>
 													</a>
 												<?php } ?>
-												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == $juser->get('id'))) { ?>
+												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == User::get('id'))) { ?>
 													<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>">
 														<?php echo Lang::txt('COM_FORUM_DELETE'); ?>
 													</a>

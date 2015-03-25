@@ -31,7 +31,7 @@
 namespace Components\Store\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_store'))
+if (!\User::authorise('core.manage', 'com_store'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -44,7 +44,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'cart.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'imghandler.php');
 
-$controllerName = \JRequest::getCmd('controller', 'orders');
+$controllerName = \Request::getCmd('controller', 'orders');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'orders';

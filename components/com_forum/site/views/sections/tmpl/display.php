@@ -32,8 +32,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js();
-
-$juser = JFactory::getUser();
 ?>
 <header id="content-header">
 	<h2><?php echo Lang::txt('COM_FORUM'); ?></h2>
@@ -73,7 +71,7 @@ $juser = JFactory::getUser();
 			<?php
 			foreach ($this->sections as $section)
 			{
-				$t = $section->categories('list', array('access' => ($juser->get('guest') ? 0 : array(0, 1))), true)->total();
+				$t = $section->categories('list', array('access' => (User::isGuest() ? 0 : array(0, 1))), true)->total();
 				if (!$section->exists() && $t)
 				{
 					continue;
@@ -157,7 +155,7 @@ $juser = JFactory::getUser();
 										</td>
 									<?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-categort')) { ?>
 										<td class="entry-options">
-											<?php if (($row->get('created_by') == $juser->get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
+											<?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
 												<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('COM_FORUM_EDIT'); ?>">
 													<span><?php echo Lang::txt('COM_FORUM_EDIT'); ?></span>
 												</a>

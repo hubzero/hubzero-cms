@@ -32,7 +32,7 @@ namespace Components\Forum\Site;
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'manager.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'sections'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'sections';

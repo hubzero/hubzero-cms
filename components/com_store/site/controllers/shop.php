@@ -53,7 +53,7 @@ class Shop extends SiteController
 	public function execute()
 	{
 		// Get the component parameters
-		$aconfig = \JComponentHelper::getParams('com_answers');
+		$aconfig = Component::params('com_answers');
 		$this->infolink = $aconfig->get('infolink', '/kb/points/');
 
 		parent::execute();
@@ -164,7 +164,7 @@ class Shop extends SiteController
 	 */
 	public function loginTask()
 	{
-		$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller), 'server');
 
 		$this->setRedirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
@@ -180,9 +180,9 @@ class Shop extends SiteController
 	{
 		// Incoming
 		$this->view->filters = array(
-			'limit'  => \JRequest::getInt('limit', \JFactory::getConfig()->getValue('config.list_limit')),
-			'start'  => \JRequest::getInt('limitstart', 0),
-			'sortby' => \JRequest::getVar('sortby', '')
+			'limit'  => Request::getInt('limit', \JFactory::getConfig()->getValue('config.list_limit')),
+			'start'  => Request::getInt('limitstart', 0),
+			'sortby' => Request::getVar('sortby', '')
 		);
 
 		// Get the most recent store items
@@ -210,7 +210,7 @@ class Shop extends SiteController
 	public function cartTask()
 	{
 		// Need to login to view cart
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -241,8 +241,8 @@ class Shop extends SiteController
 		}
 
 		// Incoming
-		$this->view->action = \JRequest::getVar('action', '');
-		$this->view->id = \JRequest::getInt('item', 0);
+		$this->view->action = Request::getVar('action', '');
+		$this->view->id = Request::getInt('item', 0);
 
 		// Check if item exists
 		$purchasetype = '';
@@ -267,12 +267,12 @@ class Shop extends SiteController
 		{
 			case 'add':
 				// Check if item is already there, then update quantity or save new
-				$found = $item->checkCartItem($this->view->id, $this->juser->get('id'));
+				$found = $item->checkCartItem($this->view->id, User::get('id'));
 
 				if (!$found && $this->view->id)
 				{
 					$item->itemid = $this->view->id;
-					$item->uid = $this->juser->get('id');
+					$item->uid = User::get('id');
 					$item->type = $purchasetype;
 					$item->added = \JFactory::getDate()->toSql();
 					$item->quantity = 1;
@@ -290,20 +290,20 @@ class Shop extends SiteController
 
 			case 'update':
 				// Update quantaties and selections
-				$item->saveCart(array_map('trim', $_POST), $this->juser->get('id'));
+				$item->saveCart(array_map('trim', $_POST), User::get('id'));
 			break;
 
 			case 'remove':
 				// Update quantaties and selections
 				if ($this->view->id)
 				{
-					$item->deleteCartItem($this->view->id, $this->juser->get('id'));
+					$item->deleteCartItem($this->view->id, User::get('id'));
 				}
 			break;
 
 			case 'empty':
 				// Empty all
-				$item->deleteCartItem('', $this->juser->get('id'), 'all');
+				$item->deleteCartItem('', User::get('id'), 'all');
 			break;
 
 			default:
@@ -312,20 +312,20 @@ class Shop extends SiteController
 		}
 
 		// Check available user funds
-		$BTL = new Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
 		$this->view->funds = ($funds > 0) ? $funds : 0;
 
 		// Calculate total
-		$this->view->cost = $item->getCartItems($this->juser->get('id'), 'cost');
+		$this->view->cost = $item->getCartItems(User::get('id'), 'cost');
 
 		// Get cart items
-		$this->view->rows = $item->getCartItems($this->juser->get('id'));
+		$this->view->rows = $item->getCartItems(User::get('id'));
 
 		// Output HTML
-		$this->view->juser = $this->juser;
+		$this->view->juser = User::getRoot();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -343,7 +343,7 @@ class Shop extends SiteController
 	public function checkoutTask()
 	{
 		// Check authorization
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -362,13 +362,13 @@ class Shop extends SiteController
 		$item = new Cart($this->database);
 
 		// Update quantaties and selections
-		$item->saveCart(array_map('trim', $_POST), $this->juser->get('id'));
+		$item->saveCart(array_map('trim', $_POST), User::get('id'));
 
 		// Calculate total
-		$this->view->cost = $item->getCartItems($this->juser->get('id'), 'cost');
+		$this->view->cost = $item->getCartItems(User::get('id'), 'cost');
 
 		// Check available user funds
-		$BTL = new Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -381,18 +381,18 @@ class Shop extends SiteController
 		}
 
 		// Get cart items
-		$this->view->items = $item->getCartItems($this->juser->get('id'));
+		$this->view->items = $item->getCartItems(User::get('id'));
 
 		// Clean-up unavailable items
-		$item->deleteUnavail($this->juser->get('id'), $this->view->items);
+		$item->deleteUnavail(User::get('id'), $this->view->items);
 
 		// Updated item list
-		$this->view->items = $item->getCartItems($this->juser->get('id'));
+		$this->view->items = $item->getCartItems(User::get('id'));
 
 		// Output HTML
 		$this->view->juser = $this->juser;
 		$this->view->xprofile = new Profile;
-		$this->view->xprofile->load($this->juser->get('id'));
+		$this->view->xprofile->load(User::get('id'));
 		$this->view->posted = array();
 
 		foreach ($this->getErrors() as $error)
@@ -417,7 +417,7 @@ class Shop extends SiteController
 		$this->_buildPathway();
 
 		// Check authorization
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -429,17 +429,17 @@ class Shop extends SiteController
 		$item = new Cart($this->database);
 
 		// Calculate total
-		$cost = $item->getCartItems($this->juser->get('id'),'cost');
+		$cost = $item->getCartItems(User::get('id'),'cost');
 
 		// Check available user funds
-		$BTL = new Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;
 		$funds = ($funds > 0) ? $funds : '0';
 
 		// Get cart items
-		$items = $item->getCartItems($this->juser->get('id'));
+		$items = $item->getCartItems(User::get('id'));
 		if (!$items or $cost > $funds)
 		{
 			$this->cartTask();
@@ -471,7 +471,7 @@ class Shop extends SiteController
 
 		// Register a new order
 		$order = new Order($this->database);
-		$order->uid     = $this->juser->get('id');
+		$order->uid     = User::get('id');
 		$order->total   = $cost;
 		$order->status  = '0'; // order placed
 		$order->ordered = $now;
@@ -486,7 +486,7 @@ class Shop extends SiteController
 
 		// Get order ID
 		$objO = new Order($this->database);
-		$orderid = $objO->getOrderID($this->juser->get('id'), $now);
+		$orderid = $objO->getOrderID(User::get('id'), $now);
 
 		if ($orderid)
 		{
@@ -494,7 +494,7 @@ class Shop extends SiteController
 			foreach ($items as $itm)
 			{
 				$orderitem = new OrderItem($this->database);
-				$orderitem->uid        = $this->juser->get('id');
+				$orderitem->uid        = User::get('id');
 				$orderitem->oid        = $orderid;
 				$orderitem->itemid     = $itm->itemid;
 				$orderitem->price      = $itm->price;
@@ -509,15 +509,13 @@ class Shop extends SiteController
 			}
 
 			// Put the purchase amount on hold
-			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, User::get('id'));
 			$BTL->hold($order->total, Lang::txt('COM_STORE_BANKING_HOLD'), 'store', $orderid);
-
-			$jconfig = \JFactory::getConfig();
 
 			// Compose confirmation "from"
 			$hub = array(
-				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+				'email' => Config::get('mailfrom'),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
 			);
 
 			// Compose confirmation subject
@@ -529,7 +527,7 @@ class Shop extends SiteController
 				'layout' => 'confirmation'
 			));
 			$eview->option = $this->_option;
-			$eview->sitename = $jconfig->getValue('config.sitename');
+			$eview->sitename = Config::get('sitename');
 			$eview->orderid = $orderid;
 			$eview->cost = $cost;
 			$eview->now = $now;
@@ -541,14 +539,14 @@ class Shop extends SiteController
 			// Send confirmation
 			\JPluginHelper::importPlugin('xmessage');
 			$dispatcher = \JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('store_notifications', $subject, $message, $hub, array($this->juser->get('id')), $this->_option)))
+			if (!$dispatcher->trigger('onSendMessage', array('store_notifications', $subject, $message, $hub, array(User::get('id')), $this->_option)))
 			{
 				$this->setError(Lang::txt('COM_STORE_ERROR_MESSAGE_FAILED'));
 			}
 		}
 
 		// Empty cart
-		$item->deleteCartItem('', $this->juser->get('id'), 'all');
+		$item->deleteCartItem('', User::get('id'), 'all');
 
 		$this->view->infolink = $this->infolink;
 
@@ -574,7 +572,7 @@ class Shop extends SiteController
 	public function processTask()
 	{
 		// Check authorization
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -590,7 +588,7 @@ class Shop extends SiteController
 		$item = new Cart($this->database);
 
 		// Calculate total
-		$cost = $item->getCartItems($this->juser->get('id'), 'cost');
+		$cost = $item->getCartItems(User::get('id'), 'cost');
 
 		if (!$cost)
 		{
@@ -598,7 +596,7 @@ class Shop extends SiteController
 		}
 
 		// Check available user funds
-		$BTL = new Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds = $balance - $credit;
@@ -610,7 +608,7 @@ class Shop extends SiteController
 		}
 
 		// Get cart items
-		$items = $item->getCartItems($this->juser->get('id'));
+		$items = $item->getCartItems(User::get('id'));
 
 		// Get shipping info
 		$this->view->posted = array_map('trim', $_POST);
@@ -623,7 +621,7 @@ class Shop extends SiteController
 		}
 
 		// Incoming
-		$action = \JRequest::getVar('action', '');
+		$action = Request::getVar('action', '');
 
 		// Output HTML
 		if (!$this->getError() && $action != 'change')
@@ -646,7 +644,7 @@ class Shop extends SiteController
 		$this->view->infolink = $this->infolink;
 		$this->view->juser = $this->juser;
 		$this->view->xprofile = new Profile;
-		$this->view->xprofile->load($this->juser->get('id'));
+		$this->view->xprofile->load(User::get('id'));
 
 		foreach ($this->getErrors() as $error)
 		{

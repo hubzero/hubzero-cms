@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$juser = JFactory::getUser();
-
 $this->category->set('section_alias', $this->filters['section']);
 
 $this->thread->set('section', $this->filters['section']);
@@ -116,19 +114,19 @@ $this->thread->set('category', $this->category->get('alias'));
 				<form action="<?php echo Route::url($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
 					<p class="comment-member-photo">
 						<?php
-						$anon = (!$juser->get('guest') ? 0 : 1);
+						$anon = (!User::isGuest() ? 0 : 1);
 						$now  = JFactory::getDate();
 						?>
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($juser, $anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
+						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), $anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
 					</p>
 
 					<fieldset>
-						<?php if ($juser->get('guest')) { ?>
+						<?php if (User::isGuest()) { ?>
 							<p class="warning"><?php echo Lang::txt('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
 						<?php } else if ($this->config->get('access-create-post')) { ?>
 							<p class="comment-title">
 								<strong>
-									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id')); ?>"><?php echo $this->escape(stripslashes($juser->get('name'))); ?></a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
 								</strong>
 								<span class="permalink">
 									<span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>

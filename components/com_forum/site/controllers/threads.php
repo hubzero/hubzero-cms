@@ -134,11 +134,11 @@ class Threads extends SiteController
 
 		// Incoming
 		$this->view->filters = array(
-			'limit'    => \JRequest::getInt('limit', 25),
-			'start'    => \JRequest::getInt('limitstart', 0),
-			'section'  => \JRequest::getVar('section', ''),
-			'category' => \JRequest::getCmd('category', ''),
-			'parent'   => \JRequest::getInt('thread', 0),
+			'limit'    => Request::getInt('limit', 25),
+			'start'    => Request::getInt('limitstart', 0),
+			'section'  => Request::getVar('section', ''),
+			'category' => Request::getCmd('category', ''),
+			'parent'   => Request::getInt('thread', 0),
 			'state'    => 1
 		);
 
@@ -160,7 +160,7 @@ class Threads extends SiteController
 		$this->view->thread = $this->view->category->thread($this->view->filters['parent']);
 
 		// Check logged in status
-		if ($this->view->thread->get('access') > 0 && $this->juser->get('guest'))
+		if ($this->view->thread->get('access') > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'] . '&thread=' . $this->view->filters['parent'], false, true));
 			$this->setRedirect(
@@ -215,17 +215,14 @@ class Threads extends SiteController
 		$doc = new \JDocumentFeed;
 		$doc->link = Route::url('index.php?option=' . $this->_option);
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Paging variables
-		$start = \JRequest::getInt('limitstart', 0);
-		$limit = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$start = Request::getInt('limitstart', 0);
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . Lang::txt('COM_FORUM_RSS_TITLE');
-		$doc->description = Lang::txt('COM_FORUM_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = Lang::txt('COM_FORUM_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->title  = Config::get('sitename') . ' - ' . Lang::txt('COM_FORUM_RSS_TITLE');
+		$doc->description = Lang::txt('COM_FORUM_RSS_DESCRIPTION', Config::get('sitename'));
+		$doc->copyright   = Lang::txt('COM_FORUM_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 		$doc->category    = Lang::txt('COM_FORUM_RSS_CATEGORY');
 
 		// get all forum posts on site forum
@@ -245,8 +242,8 @@ class Threads extends SiteController
 				$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
 
 				if ($forum_access == 'nobody'
-				 || ($forum_access == 'registered' && $this->juser->get('guest'))
-				 || ($forum_access == 'members' && !in_array($this->juser->get('id'), $group->get('members'))))
+				 || ($forum_access == 'registered' && User::isGuest())
+				 || ($forum_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 				{
 					unset($group_forum[$k]);
 				}
@@ -365,11 +362,11 @@ class Threads extends SiteController
 	 */
 	public function editTask($post=null)
 	{
-		$id       = \JRequest::getInt('thread', 0);
-		$category = \JRequest::getCmd('category', '');
-		$section  = \JRequest::getVar('section', '');
+		$id       = Request::getInt('thread', 0);
+		$category = Request::getCmd('category', '');
+		$section  = Request::getVar('section', '');
 
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category . '&task=new');
 			if ($id)
@@ -410,9 +407,9 @@ class Threads extends SiteController
 		if (!$id)
 		{
 			$this->view->post->set('scope', $this->model->get('scope'));
-			$this->view->post->set('created_by', $this->juser->get('id'));
+			$this->view->post->set('created_by', User::get('id'));
 		}
-		elseif ($this->view->post->get('created_by') != $this->juser->get('id') && !$this->config->get('access-edit-thread'))
+		elseif ($this->view->post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -451,7 +448,7 @@ class Threads extends SiteController
 	 */
 	public function saveTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option)))
@@ -460,12 +457,12 @@ class Threads extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$section = \JRequest::getVar('section', '');
+		$section = Request::getVar('section', '');
 
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		$assetType = 'thread';
@@ -477,7 +474,7 @@ class Threads extends SiteController
 		if ($fields['id'])
 		{
 			$old = new Post(intval($fields['id']));
-			if ($old->get('created_by') == $this->juser->get('id'))
+			if ($old->get('created_by') == User::get('id'))
 			{
 				$this->config->set('access-edit-' . $assetType, true);
 			}
@@ -530,7 +527,7 @@ class Threads extends SiteController
 		$this->uploadTask($parent, $model->get('id'));
 
 		// Save tags
-		$model->tag(\JRequest::getVar('tags', '', 'post'), $this->juser->get('id'));
+		$model->tag(Request::getVar('tags', '', 'post'), User::get('id'));
 
 		// Determine message
 		if (!$fields['id'])
@@ -566,11 +563,11 @@ class Threads extends SiteController
 	 */
 	public function deleteTask()
 	{
-		$section  = \JRequest::getVar('section', '');
-		$category = \JRequest::getVar('category', '');
+		$section  = Request::getVar('section', '');
+		$category = Request::getVar('category', '');
 
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -581,7 +578,7 @@ class Threads extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('thread', 0);
+		$id = Request::getInt('thread', 0);
 
 		// Load the post
 		$model = new Tables\Post($this->database);
@@ -650,11 +647,11 @@ class Threads extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$section  = \JRequest::getVar('section', '');
-		$category = \JRequest::getVar('category', '');
-		$thread   = \JRequest::getInt('thread', 0);
-		$post = \JRequest::getInt('post', 0);
-		$file = \JRequest::getVar('file', '');
+		$section  = Request::getVar('section', '');
+		$category = Request::getVar('category', '');
+		$thread   = Request::getInt('thread', 0);
+		$post     = Request::getInt('post', 0);
+		$file     = Request::getVar('file', '');
 
 		// Ensure we have a database object
 		if (!$this->database)
@@ -689,7 +686,7 @@ class Threads extends SiteController
 		}
 
 		// Check logged in status
-		if ($row->access > 0 && $this->juser->get('guest'))
+		if ($row->access > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread . '&post=' . $post . '&file=' . $file));
 			$this->setRedirect(
@@ -769,7 +766,7 @@ class Threads extends SiteController
 	public function uploadTask($listdir, $post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
@@ -781,13 +778,13 @@ class Threads extends SiteController
 		}
 
 		$row = new Tables\Attachment($this->database);
-		$row->load(\JRequest::getInt('attachment', 0));
-		$row->description = trim(\JRequest::getVar('description', ''));
+		$row->load(Request::getInt('attachment', 0));
+		$row->description = trim(Request::getVar('description', ''));
 		$row->post_id = $post_id;
 		$row->parent = $listdir;
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			if ($row->id)
@@ -860,7 +857,7 @@ class Threads extends SiteController
 	public function markForDelete($post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
@@ -888,7 +885,7 @@ class Threads extends SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -904,27 +901,27 @@ class Threads extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
 			if ($assetType == 'post' || $assetType == 'thread')
 			{
 				$this->config->set('access-create-' . $assetType, true);
-				$val = $this->juser->authorise('core.create' . $at, $asset);
+				$val = User::authorise('core.create' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-create-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit' . $at, $asset);
+				$val = User::authorise('core.edit' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-own-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit.own' . $at, $asset);
+				$val = User::authorise('core.edit.own' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-own-' . $assetType, $val);
@@ -932,13 +929,13 @@ class Threads extends SiteController
 			}
 			else
 			{
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+				$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+				$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 			}
 
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 		}
 	}
 }

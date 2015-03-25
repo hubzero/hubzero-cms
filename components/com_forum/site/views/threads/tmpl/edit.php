@@ -32,8 +32,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
-$juser = JFactory::getUser();
-
 $this->category->set('section_alias', $this->section->get('alias'));
 $this->post->set('section', $this->section->get('alias'));
 $this->post->set('category', $this->category->get('alias'));
@@ -81,7 +79,7 @@ else
 				<a class="comment-anchor" name="commentform"></a>
 				<?php
 				$jxuser = new \Hubzero\User\Profile();
-				$jxuser->load($this->post->get('created_by', $juser->get('id')));
+				$jxuser->load($this->post->get('created_by', User::get('id')));
 				?>
 				<img src="<?php echo $jxuser->getPicture(); ?>" alt="" />
 			</p>

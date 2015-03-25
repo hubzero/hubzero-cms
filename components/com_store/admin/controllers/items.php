@@ -68,14 +68,13 @@ class Items extends AdminController
 
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.items.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -127,13 +126,13 @@ class Items extends AdminController
 	 */
 	public function editTask()
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Instantiate a new view
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Load info from database
 		$this->view->row = new Store($this->database);
@@ -178,10 +177,10 @@ class Items extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$_POST = array_map('trim', $_POST);
 
@@ -283,9 +282,9 @@ class Items extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
-		$id = \JRequest::getInt('id', 0, 'get');
+		$id = Request::getInt('id', 0, 'get');
 
 		switch ($this->_task)
 		{

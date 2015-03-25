@@ -51,7 +51,6 @@ class Categories extends AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -59,7 +58,7 @@ class Categories extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -172,17 +171,17 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$section = \JRequest::getInt('section_id', 0);
+		$section = Request::getInt('section_id', 0);
 
 		$this->view->section = new Section($this->database);
 		$this->view->section->load($section);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -196,7 +195,7 @@ class Categories extends AdminController
 
 		if (!$this->view->row->id)
 		{
-			$this->view->row->created_by = $this->juser->get('id');
+			$this->view->row->created_by = User::get('id');
 			$this->view->row->section_id = $section;
 			$this->view->row->scope      = $this->view->section->scope;
 			$this->view->row->scope_id   = $this->view->section->scope_id;
@@ -252,10 +251,10 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -306,12 +305,12 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$section = \JRequest::getInt('section_id', 0);
+		$section = Request::getInt('section_id', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -376,12 +375,12 @@ class Categories extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$section = \JRequest::getInt('section_id', 0);
+		$section = Request::getInt('section_id', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -433,13 +432,13 @@ class Categories extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$section = \JRequest::getInt('section_id', 0);
-		$state   = \JRequest::getInt('access', 0);
+		$section = Request::getInt('section_id', 0);
+		$state   = Request::getInt('access', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -479,7 +478,7 @@ class Categories extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = \JRequest::getVar('fields', array());
+		$fields = Request::getVar('fields', array());
 
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false)

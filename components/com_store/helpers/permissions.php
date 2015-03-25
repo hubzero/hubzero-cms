@@ -31,6 +31,7 @@
 namespace Components\Store\Helpers;
 
 use Hubzero\Base\Object;
+use User;
 
 /**
  * Permissions helper
@@ -60,7 +61,7 @@ class Permissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user   = \JFactory::getUser();
+		$user   = User::getRoot();
 		$result = new Object;
 
 		$actions = array(

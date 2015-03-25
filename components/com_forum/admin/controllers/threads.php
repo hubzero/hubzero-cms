@@ -52,7 +52,6 @@ class Threads extends AdminController
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -60,7 +59,7 @@ class Threads extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -211,7 +210,6 @@ class Threads extends AdminController
 	public function threadTask()
 	{
 		// Get Joomla configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Filters
@@ -219,7 +217,7 @@ class Threads extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.thread.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -367,11 +365,11 @@ class Threads extends AdminController
 	 */
 	public function editTask($post=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = \JRequest::getVar('id', array(0));
-		$parent = \JRequest::getInt('parent', 0);
+		$id = Request::getVar('id', array(0));
+		$parent = Request::getInt('parent', 0);
 		$this->view->parent = $parent;
 		if (is_array($id))
 		{
@@ -496,10 +494,10 @@ class Threads extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		if ($fields['id'])
@@ -549,7 +547,7 @@ class Threads extends AdminController
 
 		$msg = Lang::txt('COM_FORUM_THREAD_SAVED');
 		$p = '';
-		if (($parent = \JRequest::getInt('parent', 0)))
+		if (($parent = Request::getInt('parent', 0)))
 		{
 			$msg = Lang::txt('COM_FORUM_POST_SAVED');
 			$p = '&task=thread&parent=' . $parent;
@@ -580,13 +578,13 @@ class Threads extends AdminController
 		}
 
 		$row = new Attachment($this->database);
-		$row->load(\JRequest::getInt('attachment', 0));
-		$row->description = trim(\JRequest::getVar('description', ''));
+		$row->load(Request::getInt('attachment', 0));
+		$row->description = trim(Request::getVar('description', ''));
 		$row->post_id = $post_id;
 		$row->parent = $listdir;
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			if ($row->id)
@@ -658,12 +656,12 @@ class Threads extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = \JRequest::getInt('category_id', 0);
+		$category = Request::getInt('category_id', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -722,12 +720,12 @@ class Threads extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = \JRequest::getInt('category_id', 0);
+		$category = Request::getInt('category_id', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 		//attachment state
 		$attachment_state = 0;
@@ -790,13 +788,13 @@ class Threads extends AdminController
 	public function stickyTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = \JRequest::getInt('category_id', 0);
-		$state    = \JRequest::getInt('sticky', 0);
+		$category = Request::getInt('category_id', 0);
+		$state    = Request::getInt('sticky', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -848,13 +846,13 @@ class Threads extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$category = \JRequest::getInt('category_id', 0);
-		$state    = \JRequest::getInt('access', 0);
+		$category = Request::getInt('category_id', 0);
+		$state    = Request::getInt('access', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -894,14 +892,13 @@ class Threads extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$fields = \JRequest::getVar('fields', array());
+		$fields = Request::getVar('fields', array());
 		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
 
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
 		);
 	}
-
 
 	/**
 	 * Marks a file for deletion
@@ -912,7 +909,7 @@ class Threads extends AdminController
 	public function markForDelete($post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
@@ -928,9 +925,7 @@ class Threads extends AdminController
 		{
 			$this->setError($row->getError());
 		}
-
 	}
-
 
 	/**
 	 * Marks a file for deletion
@@ -941,7 +936,7 @@ class Threads extends AdminController
 	public function markForPublish($post_id)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}

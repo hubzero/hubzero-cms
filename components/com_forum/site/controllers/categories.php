@@ -119,41 +119,41 @@ class Categories extends SiteController
 		// Incoming
 		$this->view->filters = array(
 			'authorized' => 1,
-			'limit'      => \JRequest::getInt('limit', 25),
-			'start'      => \JRequest::getInt('limitstart', 0),
-			'section'    => \JRequest::getVar('section', ''),
-			'category'   => \JRequest::getCmd('category', ''),
-			'search'     => \JRequest::getVar('q', ''),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'section'    => Request::getVar('section', ''),
+			'category'   => Request::getCmd('category', ''),
+			'search'     => Request::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
 			'parent'     => 0,
 			// Show based on if logged in or not
-			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
+			'access'     => (User::isGuest() ? 0 : array(0, 1))
 		);
 
-		$this->view->filters['sortby'] = \JRequest::getWord('sortby', 'activity');
+		$this->view->filters['sortby'] = Request::getWord('sortby', 'activity');
 		switch ($this->view->filters['sortby'])
 		{
 			case 'title':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
-				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'ASC'));
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$this->view->filters['sort'] = 'c.sticky DESC, replies';
-				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
-				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$this->view->filters['sort'] = 'c.sticky DESC, activity';
-				$this->view->filters['sort_Dir'] = strtoupper(\JRequest::getVar('sortdir', 'DESC'));
+				$this->view->filters['sort_Dir'] = strtoupper(Request::getVar('sortdir', 'DESC'));
 			break;
 		}
 
@@ -174,7 +174,7 @@ class Categories extends SiteController
 		$this->_authorize('thread');
 
 		// Check logged in status
-		if ($this->view->category->get('access') > 0 && $this->juser->get('guest'))
+		if ($this->view->category->get('access') > 0 && User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $this->view->filters['section'] . '&category=' . $this->view->filters['category'], false, true));
 			$this->setRedirect(
@@ -216,14 +216,14 @@ class Categories extends SiteController
 		// Incoming
 		$this->view->filters = array(
 			'authorized' => 1,
-			'limit'      => \JRequest::getInt('limit', 25),
-			'start'      => \JRequest::getInt('limitstart', 0),
-			'search'     => \JRequest::getVar('q', ''),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
 			// Show based on if logged in or not
-			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
+			'access'     => (User::isGuest() ? 0 : array(0, 1))
 		);
 
 		$this->view->section = $this->model->section(0);
@@ -299,7 +299,7 @@ class Categories extends SiteController
 	 */
 	public function editTask($model=null)
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = Route::url('index.php?option=' . $this->_option, false, true);
 			$this->setRedirect(
@@ -308,7 +308,7 @@ class Categories extends SiteController
 			return;
 		}
 
-		$this->view->section = $this->model->section(\JRequest::getVar('section', ''));
+		$this->view->section = $this->model->section(Request::getVar('section', ''));
 
 		// Incoming
 		if (is_object($model))
@@ -318,7 +318,7 @@ class Categories extends SiteController
 		else
 		{
 			$this->view->category = new Category(
-				\JRequest::getVar('category', ''),
+				Request::getVar('category', ''),
 				$this->view->section->get('id')
 			);
 		}
@@ -327,10 +327,10 @@ class Categories extends SiteController
 
 		if (!$this->view->category->exists())
 		{
-			$this->view->category->set('created_by', $this->juser->get('id'));
+			$this->view->category->set('created_by', User::get('id'));
 			$this->view->category->set('section_id', $this->view->section->get('id'));
 		}
-		elseif ($this->view->category->get('created_by') != $this->juser->get('id') && !$this->config->get('access-create-category'))
+		elseif ($this->view->category->get('created_by') != User::get('id') && !$this->config->get('access-create-category'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option)
@@ -362,9 +362,9 @@ class Categories extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		$model = new Category($fields['id']);
@@ -409,7 +409,7 @@ class Categories extends SiteController
 	public function deleteTask()
 	{
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
@@ -420,10 +420,10 @@ class Categories extends SiteController
 		}
 
 		// Load the section
-		$section = $this->model->section(\JRequest::getVar('section', ''));
+		$section = $this->model->section(Request::getVar('section', ''));
 
 		// Load the category
-		$category = $section->category(\JRequest::getVar('category', ''));
+		$category = $section->category(Request::getVar('category', ''));
 
 		// Make the sure the category exist
 		if (!$category->exists())
@@ -483,7 +483,7 @@ class Categories extends SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -499,27 +499,27 @@ class Categories extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
 			if ($assetType == 'post' || $assetType == 'thread')
 			{
 				$this->config->set('access-create-' . $assetType, true);
-				$val = $this->juser->authorise('core.create' . $at, $asset);
+				$val = User::authorise('core.create' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-create-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit' . $at, $asset);
+				$val = User::authorise('core.edit' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-own-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit.own' . $at, $asset);
+				$val = User::authorise('core.edit.own' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-own-' . $assetType, $val);
@@ -527,13 +527,13 @@ class Categories extends SiteController
 			}
 			else
 			{
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+				$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+				$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 			}
 
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 		}
 	}
 }

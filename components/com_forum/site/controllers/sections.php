@@ -71,16 +71,16 @@ class Sections extends SiteController
 			//'authorized' => 1,
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
-			'search'     => \JRequest::getVar('q', ''),
+			'search'     => Request::getVar('q', ''),
 			//'section_id' => 0,
 			'state'      => 1,
 			// Show based on if logged in or not
-			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
+			'access'     => (User::isGuest() ? 0 : array(0, 1))
 		);
 
 		// Flag to indicate if a section is being put into edit mode
 		$this->view->edit = null;
-		if (($section = \JRequest::getVar('section', '')) && $this->_task == 'edit')
+		if (($section = Request::getVar('section', '')) && $this->_task == 'edit')
 		{
 			$this->view->edit = $section;
 		}
@@ -90,7 +90,7 @@ class Sections extends SiteController
 
 		if (!$this->view->sections->total()
 		 && $this->config->get('access-create-section')
-		 && \JRequest::getWord('action') == 'populate')
+		 && Request::getWord('action') == 'populate')
 		{
 			if (!$this->model->setup())
 			{
@@ -124,10 +124,10 @@ class Sections extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming posted data
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Instantiate a new table row and bind the incoming data
@@ -167,7 +167,7 @@ class Sections extends SiteController
 	public function deleteTask()
 	{
 		// Is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option, false, true))),
@@ -178,7 +178,7 @@ class Sections extends SiteController
 		}
 
 		// Load the section
-		$section = $this->model->section(\JRequest::getVar('section', ''));
+		$section = $this->model->section(Request::getVar('section', ''));
 
 		// Make the sure the section exist
 		if (!$section->exists())
@@ -233,7 +233,7 @@ class Sections extends SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -249,27 +249,27 @@ class Sections extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
 			if ($assetType == 'post' || $assetType == 'thread')
 			{
 				$this->config->set('access-create-' . $assetType, true);
-				$val = $this->juser->authorise('core.create' . $at, $asset);
+				$val = User::authorise('core.create' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-create-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit' . $at, $asset);
+				$val = User::authorise('core.edit' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-' . $assetType, $val);
 				}
 
 				$this->config->set('access-edit-own-' . $assetType, true);
-				$val = $this->juser->authorise('core.edit.own' . $at, $asset);
+				$val = User::authorise('core.edit.own' . $at, $asset);
 				if ($val !== null)
 				{
 					$this->config->set('access-edit-own-' . $assetType, $val);
@@ -277,13 +277,13 @@ class Sections extends SiteController
 			}
 			else
 			{
-				$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-				$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-				$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+				$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+				$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+				$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 			}
 
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
 		}
 	}
 

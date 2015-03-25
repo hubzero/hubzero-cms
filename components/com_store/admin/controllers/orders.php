@@ -49,7 +49,7 @@ class Orders extends AdminController
 	 */
 	public function execute()
 	{
-		$upconfig = \JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
 		parent::execute();
@@ -67,14 +67,13 @@ class Orders extends AdminController
 
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.items.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -135,7 +134,7 @@ class Orders extends AdminController
 	public function receiptTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Load the order
 		$row = new Order($this->database);
@@ -194,9 +193,6 @@ class Orders extends AdminController
 		// Include needed libraries
 		// require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
-		// Get the Joomla config
-		$jconfig = \JFactory::getConfig();
-
 		// Build the link displayed
 		$juri = \JURI::getInstance();
 		$sef = Route::url('index.php?option=' . $this->_option);
@@ -229,7 +225,7 @@ class Orders extends AdminController
 		$hubaddress[] = $this->config->get('hubphone') ? $this->config->get('hubphone') : '' ;
 
 		$headertext_ln1 = $this->config->get('headertext_ln1') ? $this->config->get('headertext_ln1') : '' ;
-		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : $jconfig->getValue('config.sitename') ;
+		$headertext_ln2 = $this->config->get('headertext_ln2') ? $this->config->get('headertext_ln2') : Config::get('sitename') ;
 		$footertext     = $this->config->get('footertext')     ? $this->config->get('footertext')     : 'Thank you for contributions to our HUB!' ;
 		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
 
@@ -339,7 +335,7 @@ class Orders extends AdminController
 		$this->view->store_enabled = $this->config->get('store_enabled');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Load data
 		$this->view->row = new Order($this->database);
@@ -403,9 +399,7 @@ class Orders extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
-
-		$jconfig = \JFactory::getConfig();
+		Request::checkToken() or jexit('Invalid Token');
 
 		$statusmsg = '';
 		$email = 1; // turn emailing on/off
@@ -431,7 +425,7 @@ class Orders extends AdminController
 			$BTL_Q = new Teller($this->database, $xprofile->get('id'));
 
 			// start email message
-			$emailbody .= Lang::txt('COM_STORE_THANKYOU').' '.Lang::txt('COM_STORE_IN_THE').' '.$jconfig->getValue('config.sitename').' '.Lang::txt('COM_STORE_STORE').'!'."\r\n\r\n";
+			$emailbody .= Lang::txt('COM_STORE_THANKYOU').' '.Lang::txt('COM_STORE_IN_THE').' '.Config::get('sitename').' '.Lang::txt('COM_STORE_STORE').'!'."\r\n\r\n";
 			$emailbody .= Lang::txt('COM_STORE_EMAIL_UPDATE').':'."\r\n";
 			$emailbody .= '----------------------------------------------------------'."\r\n";
 			$emailbody .= Lang::txt('COM_STORE_ORDER').' '.Lang::txt('COM_STORE_NUM').': '. $id ."\r\n";
@@ -448,7 +442,7 @@ class Orders extends AdminController
 					$BTL_Q->credit_adjustment($adjusted);
 
 					// remove hold
-					$sql = "DELETE FROM #__users_transactions WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
+					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
 					$this->database->setQuery($sql);
 					if (!$this->database->query())
 					{
@@ -473,7 +467,7 @@ class Orders extends AdminController
 					$BTL_Q->credit_adjustment($adjusted);
 
 					// remove hold
-					$sql = "DELETE FROM #__users_transactions WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
+					$sql = "DELETE FROM `#__users_transactions` WHERE category='store' AND type='hold' AND referenceid='".$id."' AND uid=".$row->uid;
 					$this->database->setQuery($sql);
 					if (!$this->database->query())
 					{
@@ -534,9 +528,9 @@ class Orders extends AdminController
 			{
 				if ($email)
 				{
-					$admin_email = $jconfig->getValue('config.mailfrom');
-					$subject     = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_STORE_STORE') . ': ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
-					$from        = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_STORE_STORE');
+					$admin_email = Config::get('mailfrom');
+					$subject     = Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE') . ': ' . Lang::txt('COM_STORE_EMAIL_UPDATE_SHORT') . ' #' . $id;
+					$from        = Config::get('sitename') . ' ' . Lang::txt('COM_STORE_STORE');
 
 					$message = new \Hubzero\Mail\Message();
 					$message->setSubject($subject)

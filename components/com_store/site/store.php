@@ -36,7 +36,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'orderitem.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'cart.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'shop'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'shop'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'shop';

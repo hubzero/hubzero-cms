@@ -48,10 +48,10 @@ class Media extends AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_STORE_FEEDBACK_NO_ID'));
@@ -60,7 +60,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_STORE_FEEDBACK_NO_FILE'));
@@ -99,7 +99,7 @@ class Media extends AdminController
 			$ih = new ImgHandler();
 
 			// Do we have an old file we're replacing?
-			if (($curfile = \JRequest::getVar('currentfile', '')))
+			if (($curfile = Request::getVar('currentfile', '')))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
@@ -152,10 +152,10 @@ class Media extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_STORE_FEEDBACK_NO_ID'));
@@ -164,7 +164,7 @@ class Media extends AdminController
 		}
 
 		// Incoming picture
-		$picture = \JRequest::getVar('current', '');
+		$picture = Request::getVar('current', '');
 
 		// Build the file path
 		$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $id;
@@ -196,10 +196,10 @@ class Media extends AdminController
 		$this->view->config = $this->config;
 
 		// Do have an ID or do we need to get one?
-		$this->view->id = ($id) ? $id : \JRequest::getInt('id', 0);
+		$this->view->id = ($id) ? $id : Request::getInt('id', 0);
 
 		// Do we have a file or do we need to get one?
-		//$this->view->file = ($file) ? $file : \JRequest::getVar('file', '');
+		//$this->view->file = ($file) ? $file : Request::getVar('file', '');
 		// Build the directory path
 		$this->view->path = DS . trim($this->config->get('webpath', '/site/store'), DS) . DS . $this->view->id;
 

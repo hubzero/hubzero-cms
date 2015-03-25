@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,15 +24,11 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
-JLoader::import('Hubzero.Api.Controller');
-
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'forum.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
 
 /**
  * API controller class for forum posts
@@ -46,11 +42,11 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
-		$this->config = JComponentHelper::getParams('com_forum');
-		$this->database = JFactory::getDBO();
+		$this->config = Component::params('com_forum');
+		$this->database = \JFactory::getDBO();
 
 		switch ($this->segments[0])
 		{
@@ -76,60 +72,60 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'forum';
 		$response->tasks = array(
 			'sections' => array(
-				'description' => JText::_('Get a list of available sections and stats for each.'),
+				'description' => Lang::txt('Get a list of available sections and stats for each.'),
 				'parameters'  => array(
 				),
 			),
 			'categories' => array(
-				'description' => JText::_('Get a list of categories for a specific section.'),
+				'description' => Lang::txt('Get a list of categories for a specific section.'),
 				'parameters'  => array(
 					'section' => array(
-						'description' => JText::_('Section alias.'),
+						'description' => Lang::txt('Section alias.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 				),
 			),
 			'threads' => array(
-				'description' => JText::_('Get a list of threads for a specific section and category.'),
+				'description' => Lang::txt('Get a list of threads for a specific section and category.'),
 				'parameters'  => array(
 					'section' => array(
-						'description' => JText::_('Section alias.'),
+						'description' => Lang::txt('Section alias.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'category' => array(
-						'description' => JText::_('Category alias.'),
+						'description' => Lang::txt('Category alias.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -137,7 +133,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -148,7 +144,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function sections()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$model = new \Components\Forum\Models\Manager('site', 0);
 
@@ -159,7 +155,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$juri = \JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($model->sections('list', array('state' => 1)) as $section)
@@ -176,7 +172,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 				$obj->threads    = $section->count('threads');
 				$obj->posts      = $section->count('posts');
 
-				$obj->url        = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias')), DS);
+				$obj->url        = $base . DS . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias')), DS);
 
 				$response->sections[] = $obj;
 			}
@@ -194,16 +190,16 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function categories()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$filters = array(
 			'authorized' => 1,
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'section'    => JRequest::getVar('section', ''),
-			'search'     => JRequest::getVar('search', ''),
-			'scope'      => JRequest::getWord('scope', 'site'),
-			'scope_id'   => JRequest::getInt('scope_id', 0),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'section'    => Request::getVar('section', ''),
+			'search'     => Request::getVar('search', ''),
+			'scope'      => Request::getWord('scope', 'site'),
+			'scope_id'   => Request::getInt('scope_id', 0),
 			'state'      => 1,
 			'parent'     => 0
 		);
@@ -215,8 +211,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		{
 			$this->errorMessage(
 				500,
-				JText::_('Section not found.'),
-				JRequest::getWord('format', 'json')
+				Lang::txt('Section not found.'),
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
@@ -236,7 +232,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$juri = \JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($section->categories('list', array('state' => 1)) as $category)
@@ -253,7 +249,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 				$obj->threads     = $category->count('threads');
 				$obj->posts       = $category->count('posts');
 
-				$obj->url         = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias')), DS);
+				$obj->url         = $base . DS . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias')), DS);
 
 				$response->categories[] = $obj;
 			}
@@ -271,17 +267,17 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function threads()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$filters = array(
 			'authorized' => 1,
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'section'    => JRequest::getVar('section', ''),
-			'category'   => JRequest::getVar('category', ''),
-			'search'     => JRequest::getVar('search', ''),
-			'scope'      => JRequest::getWord('scope', 'site'),
-			'scope_id'   => JRequest::getInt('scope_id', 0),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'section'    => Request::getVar('section', ''),
+			'category'   => Request::getVar('category', ''),
+			'search'     => Request::getVar('search', ''),
+			'scope'      => Request::getWord('scope', 'site'),
+			'scope_id'   => Request::getInt('scope_id', 0),
 			'state'      => 1,
 			'parent'     => 0
 		);
@@ -293,8 +289,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		{
 			$this->errorMessage(
 				500,
-				JText::_('Section not found.'),
-				JRequest::getWord('format', 'json')
+				Lang::txt('Section not found.'),
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
@@ -304,8 +300,8 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 		{
 			$this->errorMessage(
 				500,
-				JText::_('Category not found.'),
-				JRequest::getWord('format', 'json')
+				Lang::txt('Category not found.'),
+				Request::getWord('format', 'json')
 			);
 			return;
 		}
@@ -334,7 +330,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = JURI::getInstance();
+			$juri = \JURI::getInstance();
 			$base = str_replace('/api', '', rtrim($juri->base(), DS));
 
 			foreach ($category->threads('list', array('state' => 1)) as $thread)
@@ -356,7 +352,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 				$obj->posts       = $thread->posts('count');
 
-				$obj->url         = $base . DS . ltrim(JRoute::_('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')), DS);
+				$obj->url         = $base . DS . ltrim(Route::url('index.php?option=com_forum&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id')), DS);
 
 				$response->threads[] = $obj;
 			}
@@ -375,33 +371,31 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 	private function thread()
 	{
 		//get request vars
-		$format = JRequest::getVar('format', 'json');
-		$find   = strtolower(JRequest::getWord('find', 'results'));
-
-		$jconfig = JFactory::getConfig();
+		$format = Request::getVar('format', 'json');
+		$find   = strtolower(Request::getWord('find', 'results'));
 
 		$filters = array();
-		$filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$filters['start']    = JRequest::getInt('limitstart', 0);
+		$filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']    = Request::getInt('limitstart', 0);
 
-		$filters['section']  = JRequest::getCmd('section', '');
-		$filters['category'] = JRequest::getCmd('category', '');
-		if ($thread = JRequest::getInt('thread', 0))
+		$filters['section']  = Request::getCmd('section', '');
+		$filters['category'] = Request::getCmd('category', '');
+		if ($thread = Request::getInt('thread', 0))
 		{
 			$filters['thread'] = $thread;
 		}
 
-		$filters['state']     = JRequest::getInt('state', 1);
-		$filters['scope']     = JRequest::getWord('scope', '');
-		$filters['scope_id']  = JRequest::getInt('scope_id', 0);
-		$filters['scope_sub_id']  = JRequest::getInt('scope_sub_id', 0);
-		$filters['object_id'] = JRequest::getInt('object_id', 0);
+		$filters['state']     = Request::getInt('state', 1);
+		$filters['scope']     = Request::getWord('scope', '');
+		$filters['scope_id']  = Request::getInt('scope_id', 0);
+		$filters['scope_sub_id']  = Request::getInt('scope_sub_id', 0);
+		$filters['object_id'] = Request::getInt('object_id', 0);
 		$filters['sticky']    = false;
 
-		$filters['start_id'] = JRequest::getInt('start_id', 0);
-		$filters['start_at'] = JRequest::getVar('start_at', '');
+		$filters['start_id'] = Request::getInt('start_id', 0);
+		$filters['start_at'] = Request::getVar('start_at', '');
 
-		$sort = JRequest::getVar('sort', 'newest');
+		$sort = Request::getVar('sort', 'newest');
 		switch ($sort)
 		{
 			case 'oldest':
@@ -442,7 +436,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			$post->loadByObject($filters['object_id'], $filters['scope_id'], $filters['scope']);
 			if ($post->id)
 			{
-				$filters['start_at'] = JRequest::getVar('threads_start', '');
+				$filters['start_at'] = Request::getVar('threads_start', '');
 				$filters['parent'] = 0; //$post->id;
 			}
 			$data->threads = $post->count($filters);
@@ -454,7 +448,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			{
 				if ($filters['start_id'])
 				{
-					$filters['limit'] = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+					$filters['limit'] = Request::getInt('limit', $jconfig->getValue('config.list_limit'));
 
 					$children = array(
 						0 => array()

@@ -30,8 +30,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
-
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -83,14 +81,14 @@ defined('_JEXEC') or die('Restricted access');
 			<?php if (
 						$this->config->get('access-manage-thread')
 						||
-						(!$this->comment->get('parent') && $this->comment->get('created_by') == $juser->get('id') &&
+						(!$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id') &&
 							(
 								$this->config->get('access-delete-thread') ||
 								$this->config->get('access-edit-thread')
 							)
 						)
 						||
-						($this->comment->get('parent') && $this->comment->get('created_by') == $juser->get('id') &&
+						($this->comment->get('parent') && $this->comment->get('created_by') == User::get('id') &&
 							(
 								$this->config->get('access-delete-post') ||
 								$this->config->get('access-edit-post')
@@ -110,7 +108,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php } ?>
 					<?php if (!$this->comment->isReported()) { ?>
 						<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-							<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
+							<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
 							<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_FORUM_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_FORUM_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 							--><?php echo Lang::txt('COM_FORUM_CANCEL'); ?><!--
 						--></a>
@@ -127,8 +125,8 @@ defined('_JEXEC') or die('Restricted access');
 				</p>
 			<?php } ?>
 
-			<?php if (!$juser->get('guest') && !$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-				<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+			<?php if (!User::isGuest() && !$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
+				<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
 					<form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
 						<fieldset>
 							<legend><span><?php echo Lang::txt('COM_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('COM_FORUM_ANONYMOUS'))); ?></span></legend>
@@ -144,7 +142,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 							<input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
 							<input type="hidden" name="fields[created]" value="" />
-							<input type="hidden" name="fields[created_by]" value="<?php echo $juser->get('id'); ?>" />
+							<input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
 
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
