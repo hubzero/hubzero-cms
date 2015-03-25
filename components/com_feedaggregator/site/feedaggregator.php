@@ -28,9 +28,9 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Feedaggregator;
+namespace Components\Feedaggregator\Site;
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'posts'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'posts'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'feeds';

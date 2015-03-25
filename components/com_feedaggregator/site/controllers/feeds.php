@@ -28,13 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Feedaggregator\Controllers;
+namespace Components\Feedaggregator\Site\Controllers;
 
 use Components\Feedaggregator\Models;
 use Hubzero\Component\SiteController;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'feeds.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'posts.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feeds.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'posts.php');
 
 /**
  *  Feed Aggregator controller class
@@ -48,31 +48,31 @@ class Feeds extends SiteController
 	 */
 	public function displayTask()
 	{
-		$authlevel = \JAccess::getAuthorisedViewLevels($this->juser->get('id'));
+		$authlevel = \JAccess::getAuthorisedViewLevels(User::get('id'));
 		$access_level = 3; //author_level
 
-		if (in_array($access_level, $authlevel) && $this->juser->get('id'))
+		if (in_array($access_level, $authlevel) && User::get('id'))
 		{
 			$model = new Models\Feeds;
 
 			$this->view->feeds = $model->loadAll();
-			$this->view->title = \JText::_('COM_FEEDAGGREGATOR');
+			$this->view->title = Lang::txt('COM_FEEDAGGREGATOR');
 			$this->view->display();
 		}
-		else if ($this->juser->get('id'))
+		else if (User::get('id'))
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_feedaggregator'),
-				\JText::_('COM_FEEDAGGREGATOR_NOT_AUTH'),
+				Route::url('index.php?option=com_feedaggregator'),
+				Lang::txt('COM_FEEDAGGREGATOR_NOT_AUTH'),
 				'warning'
 			);
 		}
-		else if ($this->juser->get('guest')) // have person login
+		else if (User::isguest()) // have person login
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
 			);
 		}
@@ -88,9 +88,9 @@ class Feeds extends SiteController
 		//isset ID kinda deal
 		$model = new Models\Feeds;
 
-		$this->view->feed  = $model->loadbyId(\JRequest::getInt('id', 0));
-		$this->view->user  = $this->juser;
-		$this->view->title = \JText::_('COM_FEEDAGGREGATOR_EDIT_FEEDS');
+		$this->view->feed  = $model->loadbyId(Request::getInt('id', 0));
+		$this->view->user  = User::getRoot();
+		$this->view->title = Lang::txt('COM_FEEDAGGREGATOR_EDIT_FEEDS');
 		$this->view->display();
 	}
 
@@ -102,7 +102,7 @@ class Feeds extends SiteController
 	public function newTask()
 	{
 		$this->view
-			->set('title', \JText::_('COM_FEEDAGGREGATOR_ADD_FEED'))
+			->set('title', Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'))
 			->setLayout('edit')
 			->display();
 	}
@@ -114,8 +114,8 @@ class Feeds extends SiteController
 	 */
 	public function statusTask()
 	{
-		$id = \JRequest::getInt('id');
-		$action = \JRequest::getVar('action');
+		$id = Request::getInt('id');
+		$action = Request::getVar('action');
 		$model = new Models\Feeds();
 
 		if ($action == 'enable')
@@ -123,8 +123,8 @@ class Feeds extends SiteController
 			$model->updateActive($id, 1);
 			// Output messsage and redirect
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				\JText::_('COM_FEEDAGGREGATOR_FEED_ENABLED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				Lang::txt('COM_FEEDAGGREGATOR_FEED_ENABLED')
 			);
 		}
 		elseif ($action == 'disable')
@@ -133,15 +133,15 @@ class Feeds extends SiteController
 
 			// Output messsage and redirect
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				\JText::_('COM_FEEDAGGREGATOR_FEED_DISABLED')
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				Lang::txt('COM_FEEDAGGREGATOR_FEED_DISABLED')
 			);
 		}
 		else
 		{
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-				\JText::_('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				Lang::txt('COM_FEEDAGGREGATOR_ERROR_ENABLE_DISABLE_FAILED'),
 				'error'
 			);
 		}
@@ -154,15 +154,15 @@ class Feeds extends SiteController
 	 */
 	public function saveTask()
 	{
-		//do a \JRequest instead of a bind()
+		//do a Request instead of a bind()
 		$feed = new Models\Feeds;
 
 		//get the URL first in order to validate
-		$feed->set('url', \JRequest::getVar('url'));
-		$feed->set('name', \JRequest::getVar('name'));
-		$feed->set('id', \JRequest::getVar('id'));
-		$feed->set('enabled', \JRequest::getVar('enabled'));
-		$feed->set('description', \JRequest::getVar('description'));
+		$feed->set('url', Request::getVar('url'));
+		$feed->set('name', Request::getVar('name'));
+		$feed->set('id', Request::getVar('id'));
+		$feed->set('enabled', Request::getVar('enabled'));
+		$feed->set('description', Request::getVar('description'));
 
 		//validate url
 		if (!filter_var($feed->get('url'), FILTER_VALIDATE_URL))
@@ -171,8 +171,8 @@ class Feeds extends SiteController
 
 			//redirect
 			$this->setRedirect(
-				\JRoute::_('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
-				\JText::_('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
+				Route::url('index.php?option=' . $this->_option . '&controller=feeds&task=new'),
+				Lang::txt('COM_FEEDAGGREGATOR_ERROR_INVALID_URL'),
 				'warning'
 			);
 		}
@@ -182,15 +182,15 @@ class Feeds extends SiteController
 			{
 				// Output messsage and redirect
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					\JText::_('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					Lang::txt('COM_FEEDAGGREGATOR_INFORMATION_UPDATED')
 				);
 			}
 			else
 			{
 				$this->setRedirect(
-					\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-					\JText::_('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
+					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+					Lang::txt('COM_FEEDAGGREGATOR_ERROR_UPDATE_FAILED'),
 					'warning'
 				);
 			}

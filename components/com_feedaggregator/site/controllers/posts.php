@@ -28,15 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Feedaggregator\Controllers;
+namespace Components\Feedaggregator\Site\Controllers;
 
 use Components\Feedaggregator\Models;
 use Hubzero\Component\SiteController;
 use Guzzle\Http\Client;
 use Exception;
 
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'feeds.php');
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'posts.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'feeds.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'posts.php');
 
 /**
  *  Feed Aggregator controller class
@@ -55,15 +55,15 @@ class Posts extends SiteController
 		$authlevel = \JAccess::getAuthorisedViewLevels($userId);
 		$access_level = 3; //author_level
 
-		if (in_array($access_level, $authlevel) && $this->juser->get('id'))
+		if (in_array($access_level, $authlevel) && User::get('id'))
 		{
 			if (isset($posts))
 			{
 				$this->view->filters = array(
-					'limit'    => \JRequest::getInt('limit', 25),
-					'start'    => \JRequest::getInt('limitstart', 0),
-					'time'     => \JRequest::getString('timesort', ''),
-					'filterby' => \JRequest::getString('filterby', 'all')
+					'limit'    => Request::getInt('limit', 25),
+					'start'    => Request::getInt('limitstart', 0),
+					'time'     => Request::getString('timesort', ''),
+					'filterby' => Request::getString('filterby', 'all')
 				);
 
 				$this->setView('posts','display');
@@ -75,10 +75,10 @@ class Posts extends SiteController
 				$this->view->setLayout('display');
 				// Incoming
 				$this->view->filters = array(
-					'limit'    => \JRequest::getInt('limit', 25),
-					'start'    => \JRequest::getInt('limitstart', 0),
-					'time'     => \JRequest::getString('timesort', ''),
-					'filterby' => \JRequest::getString('filterby', 'all')
+					'limit'    => Request::getInt('limit', 25),
+					'start'    => Request::getInt('limitstart', 0),
+					'time'     => Request::getString('timesort', ''),
+					'filterby' => Request::getString('filterby', 'all')
 				);
 
 				// Don't have a 0, because then it won't return anything. Doing mysql-workbench default
@@ -173,22 +173,22 @@ class Posts extends SiteController
 				} //end switch
 			} //end foreach
 			$this->view->posts = $posts;
-			$this->view->title = \JText::_('COM_FEEDAGGREGATOR');
+			$this->view->title = Lang::txt('COM_FEEDAGGREGATOR');
 			$this->view->display();
 		}
-		else if ($this->juser->get('id'))
+		else if (User::get('id'))
 		{
 			$this->view
-				->set('title', \JText::_('COM_FEEDAGGREGATOR'))
+				->set('title', Lang::txt('COM_FEEDAGGREGATOR'))
 				->setLayout('feedurl')
 				->display();
 		}
-		else if ($this->juser->get('id') == FALSE) // have person login
+		else if (User::isGuest()) // have person login
 		{
-			$rtrn = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
+			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task), 'server');
 			$this->setRedirect(
-				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-				\JText::_('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('COM_FEEDAGGREGATOR_LOGIN_NOTICE'),
 				'warning'
 			);
 		}
@@ -201,8 +201,8 @@ class Posts extends SiteController
 	 */
 	public function updateStatusTask()
 	{
-		$id = \JRequest::getVar('id', '');
-		$action = \JRequest::getVar('action', '');
+		$id = Request::getVar('id', '');
+		$action = Request::getVar('action', '');
 		$model = new Models\Posts;
 
 		switch ($action)
@@ -234,7 +234,7 @@ class Posts extends SiteController
 	public function PostsByIdTask()
 	{
 		$model = new Models\Posts;
-		$posts = $model->loadPostsByFeedId(\JRequest::getVar('id', ''));
+		$posts = $model->loadPostsByFeedId(Request::getVar('id', ''));
 
 		$this->displayTask($posts);
 	}
@@ -334,7 +334,7 @@ class Posts extends SiteController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=posts&filterby=all',
-				\JText::_('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
+				Lang::txt('COM_FEEDAGGREGATOR_GOT_NEW_POSTS')
 			);
 		} //end try
 		catch (Exception $e)
@@ -362,13 +362,10 @@ class Posts extends SiteController
 		// Start a new feed object
 		$doc = new \JDocumentFeed;
 
-		// Build some basic RSS document information
-		$jconfig = \JFactory::getConfig();
-
-		$doc->title       = $jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED');
-		$doc->description = \JText::_($jconfig->getValue('config.sitename') . ' ' . \JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
-		$doc->copyright   = \JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = \JText::_('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
+		$doc->title       = Config::get('sitename') . ' ' . Lang::txt('COM_FEEDAGGREGATOR_AGGREGATED_FEED');
+		$doc->description = Lang::txt(Config::get('sitename') . ' ' . Lang::txt('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
+		$doc->copyright   = Lang::txt(date("Y"), Config::get('sitename'));
+		$doc->category    = Lang::txt('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
 
 		// Start outputing results if any found
 		if (count($posts) > 0)
