@@ -982,6 +982,12 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$this->setError(JText::_('COM_WISHLIST_ERROR_NO_FUNDS'));
 			}
 		}
+		//verify subject is entered.
+		$subject = $row->get('subject');
+		if (!isset($subject) || $subject == '')
+		{
+			$this->setError(JText::_('COM_WISHLIST_ERROR_NO_SUBJECT'));
+		}
 
 		// Error view
 		if ($this->getError())
