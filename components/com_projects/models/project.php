@@ -72,6 +72,41 @@ class Project extends Model
 	protected $_config = NULL;
 
 	/**
+	 * Authorized
+	 *
+	 * @var mixed
+	 */
+	private $_authorized = false;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   mixed    $oid       ID (int) or alias (string)
+	 *
+	 * @return  void
+	 */
+	public function __construct($oid = NULL)
+	{
+		$this->_db = \JFactory::getDBO();
+
+		$this->_tbl = new Tables\Project($this->_db);
+
+		if ($oid)
+		{
+			if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
+			else
+			{
+				$this->_tbl->loadProject($oid);
+			}
+
+			$this->params = new \JRegistry($this->_tbl->get('params'));
+		}
+	}
+
+	/**
 	 * Returns a reference to an article model
 	 *
 	 * @param      mixed $oid Article ID or alias
@@ -152,6 +187,312 @@ class Project extends Model
 				return $this->get($key);
 			break;
 		}
+	}
+
+	/**
+	 * Get project member
+	 *
+	 * @return     mixed
+	 */
+	public function member()
+	{
+		if (!$this->exists())
+		{
+			return array();
+		}
+		if (!isset($this->_member))
+		{
+			$member = new Tables\Owner($this->_db);
+			$member->loadOwner($this->get('id'), User::get('id'));
+			$this->_member = $member && $member->status != 2 ? $member : array();
+		}
+
+		return $this->_member;
+	}
+
+	/**
+	 * Check if the project is public
+	 *
+	 * @return     array
+	 */
+	public function isPublic()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+		if ($this->get('private') == 1)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if the project is active
+	 *
+	 * @return     array
+	 */
+	public function isActive()
+	{
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
+
+		if ($this->get('state') == 1 && $this->get('setup_stage') >= $setupComplete)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is project deleted?
+	 *
+	 * @return     boolean
+	 */
+	public function isDeleted()
+	{
+		if ($this->get('state') == 2)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Is project in setup?
+	 *
+	 * @return     boolean
+	 */
+	public function isInSetup()
+	{
+		$setupComplete = $this->config()->get('confirm_step') ? 3 : 2;
+		if ($this->get('setup_stage') < $setupComplete)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Authorize current user
+	 *
+	 * @param      mixed $idx Index value
+	 * @return     array
+	 */
+	private function _authorize($reviewer = false)
+	{
+		$this->_authorized = true;
+
+		// NOT logged in
+		if (User::isGuest())
+		{
+			// If the project is active and public
+			if ($this->isPublic() && $this->isActive())
+			{
+				// Allow public view access
+				$this->params->set('access-view-project', true);
+			}
+			return;
+		}
+
+		// Allowed to create a project
+		if (!$this->exists())
+		{
+			if ($this->config()->get('creatorgroup'))
+			{
+				$group = \Hubzero\User\Group::getInstance($this->config()->get('creatorgroup'));
+				if ($group)
+				{
+					if ($group->is_member_of('members', User::get('id')) ||
+						$group->is_member_of('managers', User::get('id')))
+					{
+						$this->params->set('access-create-project', true);
+					}
+				}
+			}
+			else
+			{
+				$this->params->set('access-create-project', true);
+			}
+		}
+
+		// Is user project member?
+		$member = $this->member();
+		if (empty($member))
+		{
+			if ($this->isPublic() && $this->isActive())
+			{
+				// Allow public view access
+				$this->params->set('access-view-project', true);
+			}
+		}
+		else
+		{
+			$this->params->set('access-view-project', true);
+			$this->params->set('access-member-project', true); // internal project view
+
+			// Project roles
+			switch ($member->role)
+			{
+				case 1:
+					// Manager
+					$this->params->set('access-manager-project', true);
+					$this->params->set('access-collaborator-project', true);
+					$this->params->set('access-content-project', true);
+
+					// Owner (principal user/creator)
+					if ($this->owner('id') == $member->userid)
+					{
+						$this->params->set('access-owner-project', true);
+					}
+				break;
+
+				case 2:
+				case 3:
+				default:
+					// Collaborator/author
+					$this->params->set('access-collaborator-project', true);
+					$this->params->set('access-content-project', true);
+				break;
+
+				case 5:
+					// Read-only
+					$this->params->set('access-readonly-project', true);
+				break;
+			}
+		}
+
+		// Check reviewer access?
+		if ($reviewer)
+		{
+			// Get user groups
+			if (!$this->_userGroups)
+			{
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
+				$this->_userGroups = $this->getGroupProperty($ugs);
+			}
+
+			switch (strtolower($reviewer))
+			{
+				case 'general':
+				case 'admin':
+				default:
+					$reviewer = 'admin';
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('admingroup'));
+				break;
+
+				case 'sensitive':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('sdata_group'));
+				break;
+
+				case 'sponsored':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('ginfo_group'));
+				break;
+
+				case 'reports':
+					$group = \Hubzero\User\Group::getInstance($this->config()->get('reportgroup'));
+				break;
+			}
+
+			$authorized = false;
+			if ($this->_userGroups && count($this->_userGroups) > 0)
+			{
+				foreach ($this->_userGroups as $cn)
+				{
+					if ($group && $cn == $group->get('cn'))
+					{
+						$authorized = true;
+					}
+				}
+			}
+
+			$this->params->set('access-reviewer-' . strtolower($reviewer) . '-project', $authorized);
+		}
+	}
+
+	/**
+	 * Check a user's authorization
+	 *
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function access($action = 'view')
+	{
+		if (!$this->_authorized)
+		{
+			$this->_authorize();
+		}
+		return $this->params->get('access-' . strtolower($action) . '-project');
+	}
+
+	/**
+	 * Check a reviewer's authorization
+	 *
+	 * @param      string $action Action to check
+	 * @return     boolean True if authorized, false if not
+	 */
+	public function reviewerAccess($reviewer = false)
+	{
+		if (!$reviewer)
+		{
+			return false;
+		}
+
+		$this->_authorize($reviewer);
+		return $this->params->get('access-reviewer-' . strtolower($reviewer) . '-project');
+	}
+
+	/**
+	 * Get the owner of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function owner($property=null)
+	{
+		if (!($this->_owner instanceof \Hubzero\User\Profile))
+		{
+			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('owned_by_user'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_owner->get($property);
+		}
+		return $this->_owner;
+	}
+
+	/**
+	 * Get the group owner of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire JUser object
+	 *
+	 * @return     mixed
+	 */
+	public function groupOwner($property=null)
+	{
+		if (!($this->_groupOwner instanceof \Hubzero\User\Group))
+		{
+			$this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_groupOwner ? $this->_groupOwner->get($property) : NULL;
+		}
+		return $this->_groupOwner;
 	}
 
 	/**
@@ -328,5 +669,29 @@ class Project extends Model
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get group property
+	 *
+	 * @param      object 	$groups
+	 * @param      string 	$get
+	 *
+	 * @return     array
+	 */
+	public function getGroupProperty($groups, $get = 'cn')
+	{
+		$arr = array();
+		if (!empty($groups))
+		{
+			foreach ($groups as $group)
+			{
+				if ($group->regconfirmed)
+				{
+					$arr[] = $get == 'cn' ? $group->cn : $group->gidNumber;
+				}
+			}
+		}
+		return $arr;
 	}
 }
