@@ -37,10 +37,13 @@ use Components\Time\Models\Proxy;
 use Components\Time\Models\liaison;
 use Components\Time\Helpers\Filters;
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
-
-JLoader::import('Hubzero.Api.Controller');
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
 
 /**
  * API controller for the time component
@@ -55,23 +58,14 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	function execute()
 	{
 		// Import some Joomla libraries
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		\JLoader::import('joomla.environment.request');
+		\JLoader::import('joomla.application.component.helper');
 
 		// Get the request type
-		$this->format = JRequest::getVar('format', 'application/json');
+		$this->format = Request::getVar('format', 'application/json');
 
 		// Get a database object
-		$this->db = JFactory::getDBO();
-
-		// Import time JTable libraries
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
+		$this->db = \JFactory::getDBO();
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
 		switch ($this->segments[0])
@@ -120,28 +114,28 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		$record = Record::all();
 
-		if ($task_id = JRequest::getInt('tid', false))
+		if ($task_id = Request::getInt('tid', false))
 		{
 			$record->whereEquals('task_id', $task_id);
 		}
-		if ($start_date = JRequest::getVar('startdate', false))
+		if ($start_date = Request::getVar('startdate', false))
 		{
 			$record->where('date', '>=', $start_date);
 		}
-		if ($end_date = JRequest::getVar('enddate', false))
+		if ($end_date = Request::getVar('enddate', false))
 		{
 			$record->where('date', '<=', $end_date);
 		}
-		if ($limit = JRequest::getInt('limit', 20))
+		if ($limit = Request::getInt('limit', 20))
 		{
 			$record->limit($limit);
 		}
-		if ($start = JRequest::getInt('start', 0))
+		if ($start = Request::getInt('start', 0))
 		{
 			$record->start($start);
 		}
-		if (($orderby  = JRequest::getCmd('orderby', 'id'))
-		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		if (($orderby  = Request::getCmd('orderby', 'id'))
+		 && ($orderdir = Request::getCmd('orderdir', 'asc')))
 		{
 			$record->order($orderby, $orderdir);
 		}
@@ -173,15 +167,15 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Incoming posted data (grab individually for added security)
 		$r = [];
-		$r['task_id']     = JRequest::getInt('task_id');
-		$r['date']        = JFactory::getDate(JRequest::getVar('date'))->toSql();
-		$r['description'] = JRequest::getVar('description');
-		$r['time']        = JRequest::getVar('time');
+		$r['task_id']     = Request::getInt('task_id');
+		$r['date']        = \JFactory::getDate(Request::getVar('date'))->toSql();
+		$r['description'] = Request::getVar('description');
+		$r['time']        = Request::getVar('time');
 		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
 		$r['end']         = date('Y-m-d H:i:s', (strtotime($r['date']) + ($r['time']*3600)));
 
 		// Create object and store content
-		$record = Record::oneOrNew(JRequest::getInt('id'))->set($r);
+		$record = Record::oneOrNew(Request::getInt('id'))->set($r);
 
 		// Do the actual save
 		if (!$record->save())
@@ -217,24 +211,24 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		$task = Task::all();
 
-		if ($hub_id = JRequest::getInt('hid', false))
+		if ($hub_id = Request::getInt('hid', false))
 		{
 			$task->whereEquals('hub_id', $hub_id);
 		}
-		if ($active = JRequest::getInt('pactive', false))
+		if ($active = Request::getInt('pactive', false))
 		{
 			$task->whereEquals('active', $active);
 		}
-		if ($limit = JRequest::getInt('limit', 20))
+		if ($limit = Request::getInt('limit', 20))
 		{
 			$task->limit($limit);
 		}
-		if ($start = JRequest::getInt('start', 0))
+		if ($start = Request::getInt('start', 0))
 		{
 			$task->start($start);
 		}
-		if (($orderby  = JRequest::getCmd('orderby', 'name'))
-		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		if (($orderby  = Request::getCmd('orderby', 'name'))
+		 && ($orderdir = Request::getCmd('orderdir', 'asc')))
 		{
 			$task->order($orderby, $orderdir);
 		}
@@ -270,20 +264,20 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		$hub = Hub::all();
 
-		if ($active = JRequest::getInt('active', 1))
+		if ($active = Request::getInt('active', 1))
 		{
 			$hub->whereEquals('active', $active);
 		}
-		if ($limit = JRequest::getInt('limit', 100))
+		if ($limit = Request::getInt('limit', 100))
 		{
 			$hub->limit($limit);
 		}
-		if ($start = JRequest::getInt('start', 0))
+		if ($start = Request::getInt('start', 0))
 		{
 			$hub->start($start);
 		}
-		if (($orderby  = JRequest::getCmd('orderby', 'id'))
-		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		if (($orderby  = Request::getCmd('orderby', 'id'))
+		 && ($orderdir = Request::getCmd('orderdir', 'asc')))
 		{
 			$hub->order($orderby, $orderdir);
 		}
@@ -314,7 +308,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Incoming posted data
-		$id = JRequest::getInt('id');
+		$id = Request::getInt('id');
 
 		// Error checking
 		if (empty($id))
@@ -370,11 +364,11 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Incoming posted data (grab individually for added security)
 		$c = array();
-		$c['name']   = JRequest::getString('name');
-		$c['phone']  = JRequest::getString('phone');
-		$c['email']  = JRequest::getString('email');
-		$c['role']   = JRequest::getString('role');
-		$c['hub_id'] = JRequest::getInt('hid');
+		$c['name']   = Request::getString('name');
+		$c['phone']  = Request::getString('phone');
+		$c['email']  = Request::getString('email');
+		$c['role']   = Request::getString('role');
+		$c['hub_id'] = Request::getInt('hid');
 
 		// Create object and store new content
 		$contact = Contact::blank()->set($c);
@@ -443,8 +437,8 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get table and column values
-		$table  = JRequest::getVar('table', '');
-		$column = JRequest::getVar('column', '');
+		$table  = Request::getVar('table', '');
+		$column = Request::getVar('column', '');
 
 		// Make sure those values haven't been tampered with
 		$acceptable = array('time_tasks', 'time_records');
@@ -496,9 +490,9 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Create object and get records
-		$records = Record::whereEquals('user_id', JFactory::getApplication()->getAuthn('user_id'))
-                         ->where('date', '>=', JFactory::getDate(strtotime('today'))->toSql())
-                         ->where('date', '<', JFactory::getDate(strtotime('today+1day'))->toSql());
+		$records = Record::whereEquals('user_id', \JFactory::getApplication()->getAuthn('user_id'))
+                         ->where('date', '>=', \JFactory::getDate(strtotime('today'))->toSql())
+                         ->where('date', '<', \JFactory::getDate(strtotime('today+1day'))->toSql());
 
 		$results = array();
 
@@ -542,9 +536,9 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$today = \JFactory::getDate()->format('N') - 1;
 
 		// Create object and get records
-		$records = Record::whereEquals('user_id', JFactory::getApplication()->getAuthn('user_id'))
-                         ->where('date', '>=',    JFactory::getDate(strtotime("today-{$today}days"))->toSql())
-                         ->where('date', '<',     JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql());
+		$records = Record::whereEquals('user_id', \JFactory::getApplication()->getAuthn('user_id'))
+                         ->where('date', '>=',    \JFactory::getDate(strtotime("today-{$today}days"))->toSql())
+                         ->where('date', '<',     \JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql());
 
 		$results = array();
 
@@ -578,15 +572,15 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 
 		// Incoming posted data (grab individually for added security)
 		$r = [];
-		$r['task_id']     = JRequest::getInt('task_id');
-		$r['date']        = JFactory::getDate(JRequest::getVar('start'))->toSql();
-		$r['end']         = JFactory::getDate(JRequest::getVar('end'))->toSql();
-		$r['description'] = JRequest::getVar('description');
+		$r['task_id']     = Request::getInt('task_id');
+		$r['date']        = \JFactory::getDate(Request::getVar('start'))->toSql();
+		$r['end']         = \JFactory::getDate(Request::getVar('end'))->toSql();
+		$r['description'] = Request::getVar('description');
 		$r['time']        = (strtotime($r['end']) - strtotime($r['date'])) / 3600;
-		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
+		$r['user_id']     = \JFactory::getApplication()->getAuthn('user_id');
 
 		// Create object and store content
-		$record = Record::oneOrNew(JRequest::getInt('id'))->set($r);
+		$record = Record::oneOrNew(Request::getInt('id'))->set($r);
 		$update = false;
 
 		// See if we have an incoming id, indicating update
@@ -636,7 +630,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	private function authorize()
 	{
 		// Get the user id
-		$user_id = JFactory::getApplication()->getAuthn('user_id');
+		$user_id = \JFactory::getApplication()->getAuthn('user_id');
 
 		if (!is_numeric($user_id))
 		{

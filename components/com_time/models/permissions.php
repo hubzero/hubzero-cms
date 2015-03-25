@@ -60,7 +60,6 @@ class Permissions extends Object
 	public function __construct($option)
 	{
 		$this->option = $option;
-		$this->juser  = \JFactory::getUser();
 	}
 
 	/**
@@ -91,7 +90,7 @@ class Permissions extends Object
 
 		if (!isset($this->permissions[$key]))
 		{
-			$this->permissions[$key] = $this->juser->authorise($action, $name);
+			$this->permissions[$key] = User::authorise($action, $name);
 		}
 
 		return $this->permissions[$key];
@@ -108,12 +107,12 @@ class Permissions extends Object
 
 		if (!isset($authorized))
 		{
-			$config      = \JComponentHelper::getParams('com_time');
+			$config      = Component::params('com_time');
 			$accessgroup = $config->get('accessgroup', 'time');
 			$authorized  = false;
 
 			// Check if they're a member of admin group
-			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+			$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 			if ($ugs && count($ugs) > 0)
 			{
 				foreach ($ugs as $ug)
