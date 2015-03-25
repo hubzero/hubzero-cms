@@ -807,7 +807,7 @@ class Comment extends \JTable
 			$filters['sort_Dir'] = 'ASC';
 		}
 		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-		if (!empty($filters['start']) && !empty($filters['limit']))
+		if (isset($filters['start']) && isset($filters['limit']))
 		{
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
