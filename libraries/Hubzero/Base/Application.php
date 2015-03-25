@@ -333,6 +333,12 @@ class Application extends Container
 		// Mark afterRoute in the profiler.
 		JPROFILE ? $_PROFILER->mark('afterRoute') : null;
 
+		// Authenticate
+		if (method_exists($app, 'authenticate'))
+		{
+			$app->authenticate();
+		}
+
 		// Dispatch the application.
 		$app->dispatch();
 
