@@ -74,6 +74,21 @@ class Loader
 	}
 
 	/**
+	 * Make sure component name follows naming conventions
+	 *
+	 * @param   string   $option  The element value for the extension
+	 * @return  string
+	 */
+	public function canonical($option)
+	{
+		if (substr($option, 0, strlen('com_')) != 'com_')
+		{
+			$option = 'com_' . $option;
+		}
+		return $option;
+	}
+
+	/**
 	 * Render the component.
 	 *
 	 * @param   string  $option  The component option.
@@ -96,6 +111,8 @@ class Loader
 			// Throw 404 if no component
 			App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
 		}
+
+		$option = $this->canonical($option);
 
 		// Record the scope
 		$scope = $app->scope;
@@ -173,6 +190,8 @@ class Loader
 	 */
 	public function load($option, $strict = false)
 	{
+		$option = $this->canonical($option);
+
 		if (isset(self::$components[$option]))
 		{
 			return self::$components[$option];
