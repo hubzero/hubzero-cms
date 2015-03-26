@@ -147,14 +147,14 @@ $row = &$this->rows[$i];
 						if ($row->publish_up == '0000-00-00 00:00:00') {
 							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JText::_('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 						} else {
-							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '.JHTML::_('date', $row->publish_up, 'Y-m-d H:i:s').'<br />';
+							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '. date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
 						}
 					}
 					if (isset($row->publish_down)) {
 						if ($row->publish_down == '0000-00-00 00:00:00') {
 							$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JText::_('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 						} else {
-							$times .= JText::_('COM_EVENTS_CAL_LANG_TO').' : '.JHTML::_('date', $row->publish_down, 'Y-m-d H:i:s').'<br />';
+							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '. date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
 						}
 					}
 
