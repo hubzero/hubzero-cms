@@ -260,7 +260,7 @@ class Helper extends Module
 		// Get the user's profile
 		$juser = JFactory::getUser();
 		$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-		$session_quota = $xprofile->get('jobsAllowed');
+
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 
 		// show tool contributions separately?

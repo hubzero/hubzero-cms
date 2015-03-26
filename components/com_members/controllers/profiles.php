@@ -975,15 +975,29 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			switch ($k)
 			{
 				case 'sessions':
-					$oldlimit = intval($profile->get('jobsAllowed'));
+					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+
+					$preferences = new ToolsTablePreferences($this->database);
+					$preferences->loadByUser($profile->get('uidNumber'));
+					if (!$preferences || !$preferences->id)
+					{
+						$default = $preferences->find('one', array('alias' => 'default'));
+						$preferences->user_id  = $profile->get('uidNumber');
+						$preferences->class_id = $default->id;
+						$preferences->jobs     = $default->jobs;
+						$preferences->store();
+					}
+
+					$oldlimit = $preferences->jobs;
 					$newlimit = $oldlimit + 3;
 
 					$resourcemessage = 'session limit from '. $oldlimit .' to '. $newlimit .' sessions ';
 
 					if ($this->view->authorized == 'admin')
 					{
-						$profile->set('jobsAllowed', $newlimit);
-						$profile->update();
+						$preferences->class_id = 0;
+						$preferences->jobs     = $newlimit;
+						$preferences->store();
 						$resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
 					}
 					else if ($request === null)

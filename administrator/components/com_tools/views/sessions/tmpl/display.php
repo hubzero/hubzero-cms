@@ -52,6 +52,11 @@ function submitbutton(pressbutton)
 }
 </script>
 
+<?php
+	$this->view('_submenu')
+	     ->display();
+?>
+
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<a class="refresh button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=&appname=&exechost=&start=0'); ?>">
@@ -96,7 +101,7 @@ if ($this->rows)
 					</span>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=<?php echo $row->username; ?>">
 						<span><?php echo $this->escape($row->username); ?></span>
 					</a>
 				</td>
@@ -111,17 +116,17 @@ if ($this->rows)
 					</time>
 				</td>
 				<td>
-					<a class="tool" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
+					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;appname=<?php echo $row->appname; ?>">
 						<span><?php echo $this->escape($row->appname); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="tool" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
+					<a class="tool" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;exechost=<?php echo $row->exechost; ?>">
 						<span><?php echo $this->escape($row->exechost); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->sessnum . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE'); ?>">
+					<a class="state trash" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;id[]=<?php echo $row->sessnum; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_TOOLS_TERMINATE'); ?>">
 						<span><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></span>
 					</a>
 				</td>

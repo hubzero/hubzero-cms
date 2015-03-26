@@ -129,7 +129,61 @@ class plgUserMiddleware extends JPlugin
 				// Session limits
 				//
 
-				// @TODO
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
+				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+
+				$row = new ToolsTablePreferences($db);
+
+				// Check for an existing quota record
+				$db->setQuery("SELECT * FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
+				if ($quota = $db->loadObject())
+				{
+					$row->bind($quota);
+				}
+				else
+				{
+					$row->user_id = $userId;
+				}
+
+				// If (no quota record OR a record and a quota class [e.g., not custom]) ...
+				if (!$row->id || ($row->id && $row->class_id))
+				{
+					$val = array(
+						'jobs'  => 0
+					);
+
+					$db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c LEFT JOIN `#__tool_session_class_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
+					$cids = $db->loadObjectList();
+					if (count($cids) <= 0)
+					{
+						$db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c WHERE c.`alias`=" . $db->quote('default'));
+						$cids = $db->loadObjectList();
+					}
+					// Loop through each usergroup and find the highest 'jobs allowed' value
+					foreach ($cids as $cls);
+					{
+						$cls->jobs = intval($cls->jobs);
+
+						if ($cls->jobs > $val['jobs'])
+						{
+							$row->class_id = $cls->id;
+						}
+
+						$val['jobs'] = ($val['jobs'] > $cls->jobs ? $val['jobs'] : $cls->jobs);
+					}
+
+					$row->jobs  = $val['jobs'];
+
+					if (!$row->check())
+					{
+						throw new Exception($row->getError());
+					}
+
+					if (!$row->store())
+					{
+						throw new Exception($row->getError());
+					}
+				}
 			}
 			catch (Exception $e)
 			{
@@ -165,7 +219,15 @@ class plgUserMiddleware extends JPlugin
 			try
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery("DELETE FROM `#__user_quotas` WHERE `user_id`=" . $userId);
+				$db->setQuery("DELETE FROM `#__users_quotas` WHERE `user_id`=" . $userId);
+
+				if (!$db->query())
+				{
+					throw new Exception($db->getErrorMsg());
+				}
+
+				$db = JFactory::getDbo();
+				$db->setQuery("DELETE FROM `#__users_tool_preferences` WHERE `user_id`=" . $userId);
 
 				if (!$db->query())
 				{

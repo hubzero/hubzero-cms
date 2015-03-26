@@ -145,11 +145,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$target_xprofile->set('homeDirectory', $hubHomeDir . '/' . $target_xprofile->get('username'));
 		}
 
-		if ($target_xprofile->get('jobsAllowed') == '')
-		{
-			$target_xprofile->set('jobsAllowed', 3);
-		}
-
 		if ($target_xprofile->get('regIP') == '')
 		{
 			$target_xprofile->set('regIP', JRequest::getVar('REMOTE_ADDR','','server'));
@@ -426,11 +421,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if ($xprofile->get('homeDirectory') == '')
 			{
 				$xprofile->set('homeDirectory', $hubHomeDir . '/' . $xprofile->get('username'));
-			}
-
-			if ($xprofile->get('jobsAllowed') == '')
-			{
-				$xprofile->set('jobsAllowed', 3);
 			}
 
 			if ($xprofile->get('regIP') == '')

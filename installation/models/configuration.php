@@ -317,7 +317,7 @@ class JInstallationModelConfiguration extends JModelLegacy
 		}
 
 		// add the basic profile
-		$query = "INSERT INTO #__xprofiles (uidNumber,name,givenName,username,gidNumber,gid,homeDirectory,email,userPassword,registerDate,modifiedDate,emailConfirmed,jobsAllowed) VALUES (62, 'Administrator', 'Administrator', 'admin', '100', 'users', " . $db->Quote("/home/admin") . ", " . $db->Quote($options->admin_email) .", " . $db->Quote($cryptpass) .", " . $db->quote($installdate) . ", " . $db->quote($nullDate) . ", '1','3')";
+		$query = "INSERT INTO #__xprofiles (uidNumber,name,givenName,username,gidNumber,gid,homeDirectory,email,userPassword,registerDate,modifiedDate,emailConfirmed) VALUES (62, 'Administrator', 'Administrator', 'admin', '100', 'users', " . $db->Quote("/home/admin") . ", " . $db->Quote($options->admin_email) .", " . $db->Quote($cryptpass) .", " . $db->quote($installdate) . ", " . $db->quote($nullDate) . ", '1')";
 		$db->setQuery($query);
 		try
                 {

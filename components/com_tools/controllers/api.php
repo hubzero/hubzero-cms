@@ -454,7 +454,19 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$jobs = $ms->getCount($result->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		$remain = $result->get('jobsAllowed') - $jobs;
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+
+		$preferences = new ToolsTablePreferences($database);
+		$preferences->loadByUser($result->get('uidNumber'));
+		if (!$preferences || !$preferences->id)
+		{
+			$default = $preferences->find('one', array('alias' => 'default'));
+			$preferences->user_id  = $result->get('uidNumber');
+			$preferences->class_id = $default->id;
+			$preferences->jobs     = $default->jobs;
+			$preferences->store();
+		}
+		$remain = $preferences->jobs - $jobs;
 
 		//can we open another session
 		if ($remain <= 0)
