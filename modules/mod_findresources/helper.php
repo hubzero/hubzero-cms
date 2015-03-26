@@ -46,7 +46,7 @@ class Helper extends Module
 	public function run()
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$database = \JFactory::getDBO();
 
