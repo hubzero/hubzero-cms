@@ -52,9 +52,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<?php
+	$this->view('_submenu')
+	     ->display();
+?>
+
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<a class="refresh button" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;username=&amp;appname=&amp;exechost=&amp;start=0">
+		<a class="refresh button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=&appname=&exechost=&start=0'); ?>">
 			<span><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></span>
 		</a>
 	</fieldset>

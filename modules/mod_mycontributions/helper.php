@@ -293,7 +293,7 @@ class modMyContributions extends \Hubzero\Module\Module
 		// Get the user's profile
 		$xprofile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		$juser = JFactory::getUser();
-		$session_quota = $xprofile->get('jobsAllowed');
+
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 
 		// show tool contributions separately?

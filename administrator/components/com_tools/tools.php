@@ -77,6 +77,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_tools&controller=sessions',
 	$controllerName == 'sessions'
 );
+JSubMenuHelper::addEntry(
+	JText::_('COM_TOOLS_USER_PREFS'),
+	'index.php?option=com_tools&controller=preferences',
+	$controllerName == 'preferences'
+);
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ToolsController' . ucfirst($controllerName);

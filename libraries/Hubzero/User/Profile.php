@@ -189,13 +189,6 @@ class Profile extends Object
 	private $usageAgreement = null;
 
 	/**
-	 * Number of tool jobs allowed
-	 *
-	 * @var integer
-	 */
-	private $jobsAllowed = null;
-
-	/**
 	 * Timestamp for last time profile was modified
 	 *
 	 * @var string

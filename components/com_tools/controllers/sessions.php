@@ -575,8 +575,21 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$jobs = $ms->getCount($this->juser->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
+		include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'preferences.php');
+
+		$preferences = new ToolsTablePreferences($this->database);
+		$preferences->loadByUser($this->juser->get('id'));
+		if (!$preferences || !$preferences->id)
+		{
+			$default = $preferences->find('one', array('alias' => 'default'));
+			$preferences->user_id  = $this->juser->get('id');
+			$preferences->class_id = $default->id;
+			$preferences->jobs     = $default->jobs;
+			$preferences->store();
+		}
+
 		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-		$remain = $xprofile->get('jobsAllowed') - $jobs;
+		$remain = $preferences->jobs - $jobs;
 
 		// Have they reached their session quota?
 		if ($remain <= 0)

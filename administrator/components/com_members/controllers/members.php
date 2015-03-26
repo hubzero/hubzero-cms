@@ -408,8 +408,6 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 		$profile->set('modifiedDate', JFactory::getDate()->toSql());
 
-		$profile->set('jobsAllowed', intval(trim($p['jobsAllowed'])));
-
 		$profile->set('homeDirectory', trim($p['homeDirectory']));
 
 		$profile->set('loginShell', trim($p['loginShell']));

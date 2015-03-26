@@ -35,6 +35,8 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclassgroup.php');
 
 /**
  * Controller class for tool sessions
@@ -274,6 +276,245 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	{
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+
+	/**
+	 * Display quota classes
+	 *
+	 * @return  void
+	 */
+	public function classesTask()
+	{
+		// Get configuration
+		$config = JFactory::getConfig();
+		$app = JFactory::getApplication();
+
+		// Incoming
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', $config->getValue('config.list_limit'), 'int'),
+			'start'=> $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+		);
+
+		$obj = new ToolsTableSessionClass($this->database);
+
+		// Get a record count
+		$this->view->total = $obj->find('count', $this->view->filters);
+		$this->view->rows  = $obj->find('list', $this->view->filters);
+
+		if (!$this->view->total)
+		{
+			$obj->createDefault();
+
+			$this->view->total = $obj->find('count', $this->view->filters);
+			$this->view->rows  = $obj->find('list', $this->view->filters);
+		}
+
+		$this->view->config = $this->config;
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Output the HTML
+		$this->view
+			->setLayout('classes')
+			->display();
+	}
+
+	/**
+	 * Create a new quota class
+	 *
+	 * @return  void
+	 */
+	public function addTask()
+	{
+		// Output the HTML
+		$this->editTask();
+	}
+
+	/**
+	 * Edit a quota class
+	 *
+	 * @param   integer  $id  ID of class to edit
+	 * @return  void
+	 */
+	public function editTask($id=0)
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		if (!$id)
+		{
+			// Incoming
+			$id = JRequest::getVar('id', array());
+
+			// Get the single ID we're working with
+			if (is_array($id))
+			{
+				$id = (!empty($id)) ? $id[0] : 0;
+			}
+		}
+
+		// Initiate database class and load info
+		$this->view->row = new ToolsTableSessionClass($this->database);
+		$this->view->row->load($id);
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Output the HTML
+		$this->view
+			->setLayout('edit')
+			->display();
+	}
+
+	/**
+	 * Apply changes to a quota class item
+	 *
+	 * @return  void
+	 */
+	public function applyTask()
+	{
+		// Save without redirect
+		$this->saveTask();
+	}
+
+	/**
+	 * Save quota class
+	 *
+	 * @param   integer  $redirect  Whether or not to redirect after save
+	 * @return  void
+	 */
+	public function saveTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming fields
+		$fields = JRequest::getVar('fields', array(), 'post');
+
+		// Load the profile
+		$row = new ToolsTableSessionClass($this->database);
+		$row->load($fields['id']);
+
+		$old = $row->jobs;
+
+		// Try to save
+		if (!$row->save($fields))
+		{
+			$this->setError($row->getError());
+			$this->editTask($row);
+			return;
+		}
+
+		// Save class/access-group association
+		if (isset($fields['groups']))
+		{
+			if (!$row->setGroupIds($fields['groups']))
+			{
+				$this->view->task = 'edit';
+				$this->setError($row->getError());
+				$this->editTask($row);
+				return;
+			}
+		}
+
+		// If changing, update members referencing this class
+		if ($old != $row->jobs)
+		{
+			$prefs = new ToolsTablePreferences($this->database);
+			$prefs->updateUsersByClassId($row->id);
+		}
+
+		// Redirect
+		if ($this->_task == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
+			JText::_('COM_TOOLS_SESSION_CLASS_SAVE_SUCCESSFUL'),
+			'message'
+		);
+	}
+
+	/**
+	 * Removes class(es)
+	 *
+	 * @return  void
+	 */
+	public function deleteTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
+		// Do we have any IDs?
+		if (!empty($ids))
+		{
+			// Loop through each ID and delete the necessary items
+			foreach ($ids as $id)
+			{
+				$id = intval($id);
+
+				$row = new ToolsTableSessionClass($this->database);
+				$row->load($id);
+
+				if ($row->alias == 'default')
+				{
+					// Output message and redirect
+					$this->setRedirect(
+						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
+						JText::_('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'),
+						'warning'
+					);
+
+					return;
+				}
+
+				// Remove the record
+				$row->delete($id);
+
+				$prefs = new ToolsTablePreferences($this->database);
+				$prefs->restoreDefaultClass($id);
+			}
+		}
+		else // no rows were selected
+		{
+			// Output message and redirect
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
+				JText::_('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'),
+				'warning'
+			);
+		}
+
+		// Output messsage and redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false),
+			JText::_('COM_TOOLS_SESSION_CLASS_DELETE_SUCCESSFUL')
+		);
+	}
+
+	/**
+	 * Cancel a task (redirects to default task)
+	 *
+	 * @return  void
+	 */
+	public function cancelclassTask()
+	{
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=classes', false)
 		);
 	}
 }

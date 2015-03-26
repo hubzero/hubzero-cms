@@ -344,7 +344,6 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('emailConfirmed', '3');
 			$xprofile->set('username', $user['username']);
-			$xprofile->set('jobsAllowed', 3);
 			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
 			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
@@ -416,8 +415,7 @@ class plgUserXusers extends JPlugin
 			{
 				$xprofile->set('ftpShell', '/usr/lib/sftp-server');
 
-				// This isn't right, but we're using an empty shell as an indicator that we should also update jobs allowed and default privacy
-				$xprofile->set('jobsAllowed', 3);
+				// This isn't right, but we're using an empty shell as an indicator that we should also update default privacy
 				$xprofile->set('public', $params->get('privacy', 0));
 
 				$update = true;

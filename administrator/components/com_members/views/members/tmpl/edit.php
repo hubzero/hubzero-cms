@@ -595,10 +595,6 @@ function submitbutton(pressbutton)
 				<?php } ?>
 			</div>
 			<div class="input-wrap">
-				<label for="jobsAllowed"><?php echo JText::_('COM_MEMBERS_FIELD_JOBS_ALLOWED'); ?></label>
-				<input type="text" name="profile[jobsAllowed]" id="jobsAllowed" value="<?php echo $this->escape($this->profile->get('jobsAllowed')); ?>" />
-			</div>
-			<div class="input-wrap">
 				<label for="homeDirectory"><?php echo JText::_('COM_MEMBERS_FIELD_HOMEDIRECTORY'); ?></label>
 				<input type="text" name="profile[homeDirectory]" id="homeDirectory" value="<?php echo $this->escape($this->profile->get('homeDirectory')); ?>" />
 			</div>
