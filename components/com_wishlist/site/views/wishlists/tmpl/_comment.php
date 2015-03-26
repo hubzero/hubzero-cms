@@ -30,8 +30,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
-
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	if ($this->wish->get('proposed_by') == $this->comment->get('created_by'))
@@ -88,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php } ?>
 
 			<p class="comment-options">
-			<?php /*if ($this->config->get('access-edit-thread')) { // || $juser->get('id') == $this->comment->created_by ?>
+			<?php /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->get('created_by') ?>
 				<?php if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo Route::url($this->wish->link() . '&action=delete&comment=' . $this->comment->get('id')); ?>"><!--
 						--><?php echo Lang::txt('COM_WISHLIST_DELETE'); ?><!--
@@ -102,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php }*/ ?>
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
-					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
+					<?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
 					<a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WISHLIST_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
 					--><?php echo Lang::txt('COM_WISHLIST_CANCEL'); ?><!--
 				--></a>
@@ -119,8 +117,8 @@ defined('_JEXEC') or die('Restricted access');
 			</p>
 
 		<?php if ($this->depth < $this->wish->config()->get('comments_depth', 3)) { ?>
-			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<?php if ($juser->get('guest')) { ?>
+			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+				<?php if (User::isGuest()) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('COM_WISHLIST_PLEASE_LOGIN_TO_COMMENT', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->wish->link(), false, true))) . '">' . Lang::txt('COM_WISHLIST_LOGIN') . '</a>'); ?>
 				</p>

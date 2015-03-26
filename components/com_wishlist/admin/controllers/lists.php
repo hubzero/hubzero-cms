@@ -64,7 +64,6 @@ class Lists extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -94,7 +93,7 @@ class Lists extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -124,12 +123,12 @@ class Lists extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -154,7 +153,7 @@ class Lists extends AdminController
 			$this->view->setError($error);
 		}
 
-		$this->view->juser = $this->juser;
+		$this->view->juser = User::getRoot();
 
 		// Output the HTML
 		$this->view
@@ -170,10 +169,10 @@ class Lists extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -223,10 +222,10 @@ class Lists extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID to work with
@@ -276,10 +275,10 @@ class Lists extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -341,8 +340,8 @@ class Lists extends AdminController
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$ids = \JRequest::getVar('id', array());
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID

@@ -31,9 +31,9 @@
 namespace Components\Wishlist\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_wishlist'))
+if (!\User::authorise('core.manage', 'com_wishlist'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -46,25 +46,25 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'lists');
+$controllerName = \Request::getCmd('controller', 'lists');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'lists';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_WISHLIST_LISTS'),
-	Route::url('index.php?option=com_wishlist&controller=lists'),
+	\Lang::txt('COM_WISHLIST_LISTS'),
+	\Route::url('index.php?option=com_wishlist&controller=lists'),
 	($controllerName == 'lists')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_WISHLIST_WISHES'),
-	Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=-1'),
+	\Lang::txt('COM_WISHLIST_WISHES'),
+	\Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=-1'),
 	($controllerName == 'wishes')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_WISHLIST_COMMENTS'),
-	Route::url('index.php?option=com_wishlist&controller=comments&wish=-1'),
+	\Lang::txt('COM_WISHLIST_COMMENTS'),
+	\Route::url('index.php?option=com_wishlist&controller=comments&wish=-1'),
 	($controllerName == 'comments')
 );
 

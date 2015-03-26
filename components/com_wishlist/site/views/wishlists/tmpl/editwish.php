@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->js();
-$tags = $this->wish->tags('string') ? $this->wish->tags('string') : JRequest::getVar('tag', '');
+$tags = $this->wish->tags('string') ? $this->wish->tags('string') : Request::getVar('tag', '');
 
 if ($this->wishlist->exists())
 {

@@ -805,13 +805,11 @@ class Wish extends Base
 	 */
 	public function rank($effort, $importance)
 	{
-		$juser = \JFactory::getUser();
-
 		$tbl = new Tables\Wish\Rank($this->_db);
-		$tbl->load_vote($juser->get('id'), $this->get('id'));
+		$tbl->load_vote(User::get('id'), $this->get('id'));
 
 		$tbl->wishid     = $this->get('id');
-		$tbl->userid     = $juser->get('id');
+		$tbl->userid     = User::get('id');
 		$tbl->voted      = \JFactory::getDate()->toSql();
 		$tbl->importance = $importance;
 		$tbl->effort     = $effort;
@@ -844,9 +842,7 @@ class Wish extends Base
 			return false;
 		}
 
-		$juser = \JFactory::getUser();
-
-		if ($this->get('proposed_by') == $juser->get('id'))
+		if ($this->get('proposed_by') == User::get('id'))
 		{
 			$this->setError(Lang::txt('Cannot vote for your own entry.'));
 			return false;
@@ -857,9 +853,9 @@ class Wish extends Base
 		$vote = strtolower($vote);
 
 		// Check if the user already voted
-		if ($voted = $tbl->checkVote($this->get('id'), 'wish', $juser->get('id')))
+		if ($voted = $tbl->checkVote($this->get('id'), 'wish', User::get('id')))
 		{
-			$tbl->loadVote($this->get('id'), 'wish', $juser->get('id'));
+			$tbl->loadVote($this->get('id'), 'wish', User::get('id'));
 			if ($vote == $tbl->helpful)
 			{
 				return true;
@@ -868,8 +864,8 @@ class Wish extends Base
 
 		$tbl->referenceid = $this->get('id');
 		$tbl->category    = 'wish';
-		$tbl->voter       = $juser->get('id');
-		$tbl->ip          = \JRequest::ip();
+		$tbl->voter       = User::get('id');
+		$tbl->ip          = Request::ip();
 		$tbl->voted       = \JFactory::getDate()->toSql();
 		$tbl->helpful     = $vote;
 
@@ -1188,11 +1184,10 @@ class Wish extends Base
 					}
 
 					// Is the user logged in?
-					$juser = \JFactory::getUser();
-					if (!$juser->get('guest'))
+					if (!User::isGuest())
 					{
 						// Is the user the wish proposer?
-						if ($juser->get('id') == $this->get('proposed_by'))
+						if (User::get('id') == $this->get('proposed_by'))
 						{
 							// Grant access to view and edit
 							$this->config()->set('access-view-wish', true);

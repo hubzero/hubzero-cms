@@ -71,7 +71,6 @@ class Wishes extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -112,7 +111,7 @@ class Wishes extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -155,14 +154,14 @@ class Wishes extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$this->view->wishlist = \JRequest::getInt('wishlist', 0);
+		$this->view->wishlist = Request::getInt('wishlist', 0);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			if (is_array($id) && !empty($id))
 			{
@@ -217,7 +216,7 @@ class Wishes extends AdminController
 			{
 				if ($list->category == 'resource')
 				{
-					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 					$list->resource = new \Components\Resources\Tables\Resource($this->database);
 					$list->resource->load($list->referenceid);
 				}
@@ -256,7 +255,7 @@ class Wishes extends AdminController
 		$this->view->plan = $plan ? $plan[0] : $objPlan;
 
 		// Get tags on this wish
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 		$tagging = new Tags($this->view->row->id);
 		$this->view->tags = $tagging->render('string');
 
@@ -282,10 +281,10 @@ class Wishes extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -317,11 +316,11 @@ class Wishes extends AdminController
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 		$tagging = new Tags($row->id);
-		$tagging->setTags($fields['tags'], $this->juser->get('id'));
+		$tagging->setTags($fields['tags'], User::get('id'));
 
-		$plan = \JRequest::getVar('plan', array(), 'post', 'none', 2);
+		$plan = Request::getVar('plan', array(), 'post', 'none', 2);
 		$plan['create_revision'] = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
 		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->id);
 
@@ -388,12 +387,12 @@ class Wishes extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$wishlist = \JRequest::getInt('wishlist', 0);
+		$wishlist = Request::getInt('wishlist', 0);
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
@@ -428,10 +427,10 @@ class Wishes extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -490,13 +489,13 @@ class Wishes extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		$state = $this->getTask() == 'grant' ? 1 : 0;
 
 		// Incoming
-		$cid = \JRequest::getInt('cid', 0);
-		$ids = \JRequest::getVar('id', array());
+		$cid = Request::getInt('cid', 0);
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
@@ -548,7 +547,7 @@ class Wishes extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$wishlist = \JRequest::getInt('wishlist', 0);
+		$wishlist = Request::getInt('wishlist', 0);
 
 		// Set the redirect
 		$this->setRedirect(

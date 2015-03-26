@@ -35,8 +35,7 @@ $this->css()
      ->css('vote.css', 'com_answers')
      ->js();
 
-$jconfig = JFactory::getConfig();
-$sitename = $jconfig->getValue('config.sitename');
+$sitename = Config::get('sitename');
 
 $base = $this->wishlist->link();
 
@@ -166,7 +165,7 @@ if ($this->wishlist->exists())
 							<li><a class="filter-accepted<?php if ($this->filters['filterby'] == 'accepted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=accepted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_ACCEPTED'); ?></a></li>
 							<li><a class="filter-rejected<?php if ($this->filters['filterby'] == 'rejected') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=rejected&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_REJECTED'); ?></a></li>
 							<li><a class="filter-granted<?php if ($this->filters['filterby'] == 'granted') { echo ' active'; } ?>" href="<?php echo Route::url($base .'&filterby=granted&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_GRANTED'); ?></a></li>
-						<?php if (!$this->juser->get('guest')) { ?>
+						<?php if (!User::isGuest()) { ?>
 							<li><a class="filter-submitter<?php if ($this->filters['filterby'] == 'submitter') { echo ' active'; } ?>" href="<?php echo Route::url($base . '&filterby=submitter&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo Lang::txt('COM_WISHLIST_FILTER_SUBMITTER'); ?></a></li>
 						<?php } ?>
 						<?php if ($this->wishlist->access('manage')) { //1 or 2?>
@@ -440,8 +439,8 @@ if ($this->wishlist->exists())
 						 && $this->wishlist->get('category') == 'general'
 						 && $this->filters['filterby'] == 'all')
 						{
-							JRequest::setVar('rid', $this->wishlist->get('referenceid'));
-							JRequest::setVar('category', $this->wishlist->get('category'));
+							Request::setVar('rid', $this->wishlist->get('referenceid'));
+							Request::setVar('category', $this->wishlist->get('category'));
 
 							echo \Hubzero\Module\Helper::renderModules('wishvoters');
 						}

@@ -163,9 +163,9 @@ class Wishlists extends SiteController
 	 */
 	public function loginTask()
 	{
-		if (\JFactory::getUser()->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(\JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
 			\JFactory::getApplication()->redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
@@ -183,10 +183,10 @@ class Wishlists extends SiteController
 	public function wishlistTask()
 	{
 		// Incoming
-		$id     = \JRequest::getInt('id', 0);
-		$refid  = \JRequest::getInt('rid', 1);
-		$cat   	= \JRequest::getVar('category', 'general');
-		$saved  = \JRequest::getInt('saved', 0);
+		$id     = Request::getInt('id', 0);
+		$refid  = Request::getInt('rid', 1);
+		$cat   	= Request::getVar('category', 'general');
+		$saved  = Request::getInt('saved', 0);
 
 		// are we viewing this from within a plugin?
 		$plugin = (isset($this->plugin) && $this->plugin!='') ? $this->plugin : '';
@@ -231,13 +231,13 @@ class Wishlists extends SiteController
 		$this->authorize_admin();
 
 		// Authorize list owners
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
-			if (in_array($this->juser->get('id'), $model->owners('individuals')))
+			if (in_array(User::get('id'), $model->owners('individuals')))
 			{
 				$this->_admin = 2;
 			}
-			else if (in_array($this->juser->get('id'), $model->owners('advisory')))
+			else if (in_array(User::get('id'), $model->owners('advisory')))
 			{
 				$this->_admin = 3;
 			}
@@ -254,7 +254,7 @@ class Wishlists extends SiteController
 		$this->_buildPathway($model);
 
 		// need to log in to private list
-		if (!$model->isPublic() && $this->juser->get('guest'))
+		if (!$model->isPublic() && User::isGuest())
 		{
 			if (!$plugin)
 			{
@@ -288,7 +288,7 @@ class Wishlists extends SiteController
 		$model->set('banking', ($this->banking ? $this->banking : 0));
 		$model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking)); // do not allow points for individual wish lists
 
-		\JRequest::setVar('id', $id);
+		Request::setVar('id', $id);
 
 		$this->view->setLayout('display');
 		$this->view->title    = $this->_title;
@@ -314,14 +314,14 @@ class Wishlists extends SiteController
 	 */
 	public function wishTask()
 	{
-		$wishid  = \JRequest::getInt('wishid', 0);
-		$id      = \JRequest::getInt('id', 0);
-		$refid   = \JRequest::getInt('rid', 0);
-		$cat     = \JRequest::getVar('category', '');
-		$action  = \JRequest::getVar('action', '');
-		$com     = \JRequest::getInt('com', 0, 'get');
+		$wishid  = Request::getInt('wishid', 0);
+		$id      = Request::getInt('id', 0);
+		$refid   = Request::getInt('rid', 0);
+		$cat     = Request::getVar('category', '');
+		$action  = Request::getVar('action', '');
+		$com     = Request::getInt('com', 0, 'get');
 		$canedit = false;
-		$saved   = \JRequest::getInt('saved', 0);
+		$saved   = Request::getInt('saved', 0);
 
 		//$wishid = $this->wishid && !$wishid ? $this->wishid : $wishid;
 
@@ -368,7 +368,7 @@ class Wishlists extends SiteController
 				return;
 			}
 
-			if (!$wishlist->isPublic() && $this->juser->get('guest'))
+			if (!$wishlist->isPublic() && User::isGuest())
 			{
 				// need to log in to private list
 				$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_PRIVATE_LOGIN_REQUIRED');
@@ -376,7 +376,7 @@ class Wishlists extends SiteController
 				return;
 			}
 
-			if ($wish->isPrivate() && $this->juser->get('guest'))
+			if ($wish->isPrivate() && User::isGuest())
 			{
 				// need to log in to view private wish
 				$this->_msg = Lang::txt('COM_WISHLIST_WARNING_LOGIN_PRIVATE_WISH');
@@ -470,7 +470,7 @@ class Wishlists extends SiteController
 			// check available user funds
 			if ($action == 'addbonus' && $this->banking)
 			{
-				$BTL = new Teller($this->database, $this->juser->get('id'));
+				$BTL = new Teller($this->database, User::get('id'));
 				$balance = $BTL->summary();
 				$credit  = $BTL->credit_summary();
 				$funds   = $balance - $credit;
@@ -519,8 +519,8 @@ class Wishlists extends SiteController
 	 */
 	public function savesettingsTask()
 	{
-		$listid  = \JRequest::getInt('listid', 0);
-		$action  = \JRequest::getVar('action', '');
+		$listid  = Request::getInt('listid', 0);
+		$action  = Request::getVar('action', '');
 
 		// Make sure we have list id
 		if (!$listid)
@@ -542,8 +542,8 @@ class Wishlists extends SiteController
 		// Deeleting a user/group
 		if ($action == 'delete')
 		{
-			$user  = \JRequest::getInt('user', 0);
-			$group = \JRequest::getInt('group', 0);
+			$user  = Request::getInt('user', 0);
+			$group = Request::getInt('group', 0);
 
 			if ($user)
 			{
@@ -564,31 +564,29 @@ class Wishlists extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		if (!$wishlist->bind(\JRequest::getVar('fields', array(), 'post')))
+		if (!$wishlist->bind(Request::getVar('fields', array(), 'post')))
 		{
-			JError::raiseError(500, $obj->getError());
-			return;
+			throw new Exception($obj->getError(), 500);
 		}
 
 		// store new content
 		if (!$wishlist->store())
 		{
-			JError::raiseError(500, $wishlist->getError());
-			return;
+			throw new Exception($wishlist->getError(), 500);
 		}
 
 		// Save new owners
-		if ($newowners = \JRequest::getVar('newowners', '', 'post'))
+		if ($newowners = Request::getVar('newowners', '', 'post'))
 		{
 			$wishlist->add('individuals', $newowners);
 		}
-		if ($newadvisory = \JRequest::getVar('newadvisory', '', 'post'))
+		if ($newadvisory = Request::getVar('newadvisory', '', 'post'))
 		{
 			$wishlist->add('advisory', $newadvisory);
 		}
-		if ($newgroups = \JRequest::getVar('newgroups', '', 'post'))
+		if ($newgroups = Request::getVar('newgroups', '', 'post'))
 		{
 			$wishlist->add('groups', $newgroups);
 		}
@@ -609,15 +607,14 @@ class Wishlists extends SiteController
 	public function settingsTask()
 	{
 		// get list id
-		$id  = \JRequest::getInt('id', 0);
+		$id  = Request::getInt('id', 0);
 
 		$wishlist = new Wishlist($id);
 
 		if (!$wishlist->exists())
 		{
 			// list not found
-			JError::raiseError(404, Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'));
-			return;
+			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 500);
 		}
 
 		// Get List Title
@@ -658,7 +655,7 @@ class Wishlists extends SiteController
 	 */
 	public function saveplanTask()
 	{
-		$wishid = \JRequest::getInt('wishid', 0);
+		$wishid = Request::getInt('wishid', 0);
 
 		// Make sure we have wish id
 		if (!$wishid)
@@ -699,15 +696,15 @@ class Wishlists extends SiteController
 			return;
 		}
 
-		$pageid = \JRequest::getInt('pageid', 0, 'post');
+		$pageid = Request::getInt('pageid', 0, 'post');
 
 		// Initiate extended database class
 		$page = new Plan($pageid);
 		$old  = new Plan($pageid);
 
-		$page->set('version', \JRequest::getInt('version', 1, 'post'));
+		$page->set('version', Request::getInt('version', 1, 'post'));
 
-		$create_revision = \JRequest::getInt('create_revision', 0, 'post');
+		$create_revision = Request::getInt('create_revision', 0, 'post');
 		if ($create_revision)
 		{
 			$page->set('id', 0);
@@ -715,10 +712,10 @@ class Wishlists extends SiteController
 		}
 
 		$page->set('wishid', $wishid);
-		$page->set('created_by', \JRequest::getInt('created_by', $this->juser->get('id'), 'post'));
+		$page->set('created_by', Request::getInt('created_by', User::get('id'), 'post'));
 		$page->set('created', \JFactory::getDate()->toSql());
 		$page->set('approved', 1);
-		$page->set('pagetext', \JRequest::getVar('pagetext', '', 'post', 'none'));
+		$page->set('pagetext', Request::getVar('pagetext', '', 'post', 'none'));
 
 		// Stripslashes just to make sure
 		$oldpagetext = rtrim(stripslashes($old->get('pagetext')));
@@ -738,8 +735,8 @@ class Wishlists extends SiteController
 		}
 
 		// do we have a due date?
-		$isdue  = \JRequest::getInt('isdue', 0);
-		$due    = \JRequest::getVar('publish_up', '');
+		$isdue  = Request::getInt('isdue', 0);
+		$due    = Request::getVar('publish_up', '');
 
 		if ($due)
 		{
@@ -748,7 +745,7 @@ class Wishlists extends SiteController
 		}
 
 		//is this wish assigned to anyone?
-		$assignedto = \JRequest::getInt('assigned', 0);
+		$assignedto = Request::getInt('assigned', 0);
 
 		$new_assignee = ($assignedto && $objWish->get('assigned') != $assignedto) ? 1 : 0;
 
@@ -763,15 +760,14 @@ class Wishlists extends SiteController
 		else if ($new_assignee)
 		{
 			// Build e-mail components
-			$jconfig = \JFactory::getConfig();
-			$admin_email = $jconfig->getValue('config.mailfrom');
+			$admin_email = Config::get('mailfrom');
 
 			// to wish assignee
 			$subject = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-				'email' => $jconfig->getValue('config.mailfrom')
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'email' => Config::get('mailfrom')
 			);
 
 			$message = array();
@@ -819,10 +815,10 @@ class Wishlists extends SiteController
 	public function addwishTask()
 	{
 		// Incoming
-		$wishid   = \JRequest::getInt('wishid', 0);
-		$listid   = \JRequest::getInt('id', 0);
-		$refid    = \JRequest::getInt('rid', 0);
-		$category = \JRequest::getVar('category', '');
+		$wishid   = Request::getInt('wishid', 0);
+		$listid   = Request::getInt('id', 0);
+		$refid    = Request::getInt('rid', 0);
+		$category = Request::getVar('category', '');
 
 		$wish = new Wish($wishid);
 
@@ -882,7 +878,7 @@ class Wishlists extends SiteController
 		// Get some defaults
 		if (!$wish->exists())
 		{
-			$wish->set('proposed_by', $this->juser->get('id'));
+			$wish->set('proposed_by', User::get('id'));
 			$wish->set('status', 0);
 			$wish->set('anonymous', 0);
 			$wish->set('private', 0);
@@ -898,7 +894,7 @@ class Wishlists extends SiteController
 		$funds = 0;
 		if ($this->banking)
 		{
-			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, User::get('id'));
 			$balance = $BTL->summary();
 			$credit  = $BTL->credit_summary();
 			$funds   = $balance - $credit;
@@ -933,14 +929,14 @@ class Wishlists extends SiteController
 	 */
 	public function savewishTask()
 	{
-		$listid = \JRequest::getInt('wishlist', 0);
-		$wishid = \JRequest::getInt('id', 0);
-		$reward = \JRequest::getVar('reward', '');
-		$funds  = \JRequest::getVar('funds', '0');
-		$tags   = \JRequest::getVar('tags', '');
+		$listid = Request::getInt('wishlist', 0);
+		$wishid = Request::getInt('id', 0);
+		$reward = Request::getVar('reward', '');
+		$funds  = Request::getVar('funds', '0');
+		$tags   = Request::getVar('tags', '');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_ADD');
 			$this->loginTask();
@@ -962,7 +958,7 @@ class Wishlists extends SiteController
 		$row = new Wish($_POST);
 
 		// If we are editing
-		$by = \JRequest::getVar('by', '', 'post');
+		$by = Request::getVar('by', '', 'post');
 		if ($by)
 		{
 			$ruser = \JUser::getInstance($by);
@@ -1030,8 +1026,8 @@ class Wishlists extends SiteController
 			return;
 		}
 
-		$row->set('anonymous', \JRequest::getInt('anonymous', 0));
-		$row->set('private', \JRequest::getInt('private', 0));
+		$row->set('anonymous', Request::getInt('anonymous', 0));
+		$row->set('private', Request::getInt('private', 0));
 		//$row->set('about', Sanitize::clean($row->get('about')));
 		$row->set('proposed', ($wishid ? $row->get('proposed') : \JFactory::getDate()->toSql()));
 
@@ -1048,8 +1044,7 @@ class Wishlists extends SiteController
 		if (!$wishid)
 		{
 			// Build e-mail components
-			$jconfig = \JFactory::getConfig();
-			$admin_email = $jconfig->getValue('config.mailfrom');
+			$admin_email = Config::get('mailfrom');
 
 			// Get author name
 			$name  = $row->proposer('name', Lang::txt('COM_WISHLIST_UNKNOWN'));
@@ -1065,8 +1060,8 @@ class Wishlists extends SiteController
 
 			$subject = Lang::txt(strtoupper($this->_name)).', '.Lang::txt('COM_WISHLIST_NEW_WISH').' '.Lang::txt('COM_WISHLIST_FOR').' '. $this->_list_title.' '.Lang::txt('from').' '.$name;
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-				'email' => $jconfig->getValue('config.mailfrom')
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'email' => Config::get('mailfrom')
 			);
 
 			$message = array();
@@ -1103,7 +1098,7 @@ class Wishlists extends SiteController
 		if ($reward && $this->banking)
 		{
 			// put the  amount on hold
-			$BTL = new Teller($this->database, $this->juser->get('id'));
+			$BTL = new Teller($this->database, User::get('id'));
 			$BTL->hold($reward, Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
 		}
 
@@ -1120,15 +1115,15 @@ class Wishlists extends SiteController
 	 */
 	public function editwishTask()
 	{
-		$refid  = \JRequest::getInt('rid', 0);
-		$cat    = \JRequest::getVar('category', '');
-		$status = \JRequest::getVar('status', '');
-		$vid    = \JRequest::getInt('vid', 0);
+		$refid  = Request::getInt('rid', 0);
+		$cat    = Request::getVar('category', '');
+		$status = Request::getVar('status', '');
+		$vid    = Request::getInt('vid', 0);
 
 		// Check if wish exists on this list
-		if ($id = \JRequest::getInt('id', 0))
+		if ($id = Request::getInt('id', 0))
 		{
-			$wishlist = Wishlist::getInstance(\JRequest::getInt('id', 0));
+			$wishlist = Wishlist::getInstance(Request::getInt('id', 0));
 		}
 		else
 		{
@@ -1140,7 +1135,7 @@ class Wishlists extends SiteController
 		}
 
 		// load wish
-		$wish = new Wish(\JRequest::getInt('wishid', 0));
+		$wish = new Wish(Request::getInt('wishid', 0));
 		if (!$wish->exists())
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
@@ -1163,14 +1158,14 @@ class Wishlists extends SiteController
 			return;
 		}
 
-		if (!$wishlist->access('manage') && $wish->get('proposed_by') != $this->juser->get('id'))
+		if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id'))
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
 		}
 
 		if ($this->_task == 'editprivacy')
 		{
-			$private = \JRequest::getInt('private', 0, 'get');
+			$private = Request::getInt('private', 0, 'get');
 			if ($wish->get('private') != $private)
 			{
 				$wish->set('private', $private);
@@ -1178,7 +1173,7 @@ class Wishlists extends SiteController
 			}
 		}
 
-		if ($this->_task == 'editwish' && ($status = \JRequest::getVar('status', '')))
+		if ($this->_task == 'editwish' && ($status = Request::getVar('status', '')))
 		{
 			$former_status   = $wish->get('status');
 			$former_accepted = $wish->get('accepted');
@@ -1192,7 +1187,7 @@ class Wishlists extends SiteController
 				case 'accepted':
 					$wish->set('status', 0);
 					$wish->set('accepted', 1);
-					$wish->set('assigned', $this->juser->get('id')); // assign to person who accepted the wish
+					$wish->set('assigned', User::get('id')); // assign to person who accepted the wish
 				break;
 
 				case 'rejected':
@@ -1210,11 +1205,11 @@ class Wishlists extends SiteController
 				case 'granted':
 					$wish->set('status', 1);
 					$wish->set('granted', \JFactory::getDate()->toSql());
-					$wish->set('granted_by', $this->juser->get('id'));
+					$wish->set('granted_by', User::get('id'));
 					$wish->set('granted_vid', ($vid ? $vid : 0));
 
 					$objWish = new Tables\Wish($this->database);
-					$w = $objWish->get_wish($wish->get('id'), $this->juser->get('id'));
+					$w = $objWish->get_wish($wish->get('id'), User::get('id'));
 					$wish->set('points', $w->bonus);
 
 					if ($this->banking)
@@ -1235,8 +1230,6 @@ class Wishlists extends SiteController
 			if ($changed)
 			{
 				// Build e-mail components
-				$jconfig = \JFactory::getConfig();
-				//$admin_email = $jconfig->getValue('config.mailfrom');
 
 				// to wish author
 				$subject1 = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
@@ -1245,8 +1238,8 @@ class Wishlists extends SiteController
 				$subject2 = Lang::txt(strtoupper($this->_name)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_HAS_BEEN') . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
 				$from = array(
-					'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-					'email' => $jconfig->getValue('config.mailfrom')
+					'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+					'email' => Config::get('mailfrom')
 				);
 
 				$message = array();
@@ -1321,21 +1314,21 @@ class Wishlists extends SiteController
 	 */
 	public function movewishTask()
 	{
-		$listid   = \JRequest::getInt('wishlist', 0);
-		$wishid   = \JRequest::getInt('wish', 0);
-		$category = \JRequest::getVar('type', '');
-		$refid    = \JRequest::getInt('resource', 0);
+		$listid   = Request::getInt('wishlist', 0);
+		$wishid   = Request::getInt('wish', 0);
+		$category = Request::getVar('type', '');
+		$refid    = Request::getInt('resource', 0);
 		if ($category == 'group')
 		{
-			$refid    = \JRequest::getVar('group', '');
+			$refid    = Request::getVar('group', '');
 		}
 
 		// some transfer options
 		$options = array();
-		$options['keepplan']     = \JRequest::getInt('keepplan', 0);
-		$options['keepcomments'] = \JRequest::getInt('keepcomments', 0);
-		$options['keepstatus']   = \JRequest::getInt('keepstatus', 0);
-		$options['keepfeedback'] = \JRequest::getInt('keepfeedback', 0);
+		$options['keepplan']     = Request::getInt('keepplan', 0);
+		$options['keepcomments'] = Request::getInt('keepcomments', 0);
+		$options['keepstatus']   = Request::getInt('keepstatus', 0);
+		$options['keepfeedback'] = Request::getInt('keepfeedback', 0);
 
 		// missing wish id
 		if (!$wishid)
@@ -1438,8 +1431,7 @@ class Wishlists extends SiteController
 					}
 				}
 
-					// send message about transferred wish
-				$jconfig = \JFactory::getConfig();
+				// send message about transferred wish
 
 				$oldtitle = $oldlist->get('title'); //$objWishlist->getTitle($listid);
 				$newtitle = $newlist->get('title'); //$objWishlist->getTitle($newlist);
@@ -1456,8 +1448,8 @@ class Wishlists extends SiteController
 				$subject2 = Lang::txt(strtoupper($this->_name)).', '.Lang::txt('COM_WISHLIST_YOUR_WISH').' #'.$wishid.' '.Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
 				$from = array(
-					'name'  => $jconfig->getValue('config.sitename').' '.Lang::txt(strtoupper($this->_name)),
-					'email' => $jconfig->getValue('config.mailfrom')
+					'name'  => Config::get('sitename').' '.Lang::txt(strtoupper($this->_name)),
+					'email' => Config::get('mailfrom')
 				);
 
 				$message = array();
@@ -1516,34 +1508,34 @@ class Wishlists extends SiteController
 	 */
 	public function addbonusTask()
 	{
-		//$listid = \JRequest::getInt('wishlist', 0);
-		$wishid = \JRequest::getInt('wish', 0);
-		$amount = \JRequest::getInt('amount', 0);
+		//$listid = Request::getInt('wishlist', 0);
+		$wishid = Request::getInt('wish', 0);
+		$amount = Request::getInt('amount', 0);
 
 		// missing wish id
 		/*if (!$wishid or !$listid)
 		{
-			JError::raiseError(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 			return;
 		}*/
 
 		//$objWishlist = new Wishlist($this->database);
 		//$objWish = new Wish($this->database);
 
-		$wishlist = new Wishlist(\JRequest::getInt('wishlist', 0));
+		$wishlist = new Wishlist(Request::getInt('wishlist', 0));
 		if (!$wishlist->exists())
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
-		$wish = new Wish(\JRequest::getInt('wish', 0));
+		$wish = new Wish(Request::getInt('wish', 0));
 		if (!$wish->exists())
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
 		}
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Set page title
 			if (!$wishlist->isPublic() && !$wishlist->access('manage'))
@@ -1559,7 +1551,7 @@ class Wishlists extends SiteController
 		}
 
 		// check available user funds
-		$BTL = new \Hubzero\Bank\Teller($this->database, $this->juser->get('id'));
+		$BTL = new \Hubzero\Bank\Teller($this->database, User::get('id'));
 		$balance = $BTL->summary();
 		$credit  = $BTL->credit_summary();
 		$funds   = $balance - $credit;
@@ -1580,7 +1572,7 @@ class Wishlists extends SiteController
 		}
 
 		// put the  amount on hold
-		$BTL = new Teller($this->database, $this->juser->get('id'));
+		$BTL = new Teller($this->database, User::get('id'));
 		$BTL->hold(
 			$amount,
 			Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
@@ -1602,15 +1594,15 @@ class Wishlists extends SiteController
 	{
 		// Check if wish exists on this list
 		$wishlist = new Wishlist(
-			\JRequest::getInt('rid', 0),
-			\JRequest::getVar('category', '')
+			Request::getInt('rid', 0),
+			Request::getVar('category', '')
 		);
 		if (!$wishlist->exists())
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'), 404);
 		}
 
-		$wish = new Wish(\JRequest::getInt('wishid', 0));
+		$wish = new Wish(Request::getInt('wishid', 0));
 		if (!$wish->exists())
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'), 404);
@@ -1636,7 +1628,7 @@ class Wishlists extends SiteController
 		//$this->authorize_admin($wishlist->id);
 
 		//$objWish->load($wishid);
-		if (!$wishlist->access('manage') && $wish->get('proposed_by') != $this->juser->get('id'))
+		if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id'))
 		{
 			throw new Exception(Lang::txt('COM_WISHLIST_ALERTNOTAUTH'), 403);
 		}
@@ -1683,13 +1675,10 @@ class Wishlists extends SiteController
 	 */
 	public function savevoteTask()
 	{
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		//$this->database =& \JFactory::getDBO();
-		//$juser =& \JFactory::getUser();
-
-		$refid    = \JRequest::getInt('rid', 0);
-		$category = \JRequest::getVar('category', '');
+		$refid    = Request::getInt('rid', 0);
+		$category = Request::getVar('category', '');
 
 		$wishlist = Wishlist::getInstance($refid, $category);
 		if (!$wishlist->exists())
@@ -1697,7 +1686,7 @@ class Wishlists extends SiteController
 			throw new Exception(Lang::txt('COM_WISHLIST_ERROR_WISHLIST_NOT_FOUND'), 404);
 		}
 
-		$wishid   = \JRequest::getInt('wishid', 0);
+		$wishid   = Request::getInt('wishid', 0);
 
 		$wish = Wish::getInstance($wishid);
 		if (!$wish->exists())
@@ -1737,8 +1726,8 @@ class Wishlists extends SiteController
 		}*/
 
 		// get vote
-		$effort     = \JRequest::getVar('effort', '', 'post');
-		$importance = \JRequest::getVar('importance', '', 'post');
+		$effort     = Request::getVar('effort', '', 'post');
+		$importance = Request::getVar('importance', '', 'post');
 
 		// Login required
 		if ($this->juser->get('guest'))
@@ -1803,14 +1792,14 @@ class Wishlists extends SiteController
 	 */
 	public function savereplyTask()
 	{
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id       = \JRequest::getInt('referenceid', 0);
-		$listid   = \JRequest::getInt('listid', 0);
-		$wishid   = \JRequest::getInt('wishid', 0);
-		$ajax     = \JRequest::getInt('ajax', 0);
-		$category = \JRequest::getVar('cat', '');
+		$id       = Request::getInt('referenceid', 0);
+		$listid   = Request::getInt('listid', 0);
+		$wishid   = Request::getInt('wishid', 0);
+		$ajax     = Request::getInt('ajax', 0);
+		$category = Request::getVar('cat', '');
 		$when     = \JFactory::getDate()->toSql();
 
 		// Get wishlist info
@@ -1882,8 +1871,6 @@ class Wishlists extends SiteController
 			}
 
 			// Build e-mail components
-			$jconfig = \JFactory::getConfig();
-
 			$name  = $row->creator('name', Lang::txt('UNKNOWN'));
 			$login = $row->creator('username', Lang::txt('UNKNOWN'));
 
@@ -1896,8 +1883,8 @@ class Wishlists extends SiteController
 
 			// email components
 			$from = array(
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
-				'email' => $jconfig->getValue('config.mailfrom')
+				'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+				'email' => Config::get('mailfrom')
 			);
 
 			// for the wish owner
@@ -2008,7 +1995,7 @@ class Wishlists extends SiteController
 	{
 		// Incoming
 		$row = new Comment(
-			\JRequest::getInt('replyid', 0)
+			Request::getInt('replyid', 0)
 		);
 
 		// Do we have a reply ID?
@@ -2018,10 +2005,10 @@ class Wishlists extends SiteController
 			return;
 		}
 
-		if ($row->get('added_by') != $this->juser->get('id'))
+		if ($row->get('added_by') != User::get('id'))
 		{
 			$this->setRedirect(
-				\JRequest::getVar('HTTP_REFERER', NULL, 'server'),
+				Request::getVar('HTTP_REFERER', NULL, 'server'),
 				Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
 				'error'
 			);
@@ -2038,7 +2025,7 @@ class Wishlists extends SiteController
 
 		// Go back to the page
 		$this->setRedirect(
-			\JRequest::getVar('HTTP_REFERER', NULL, 'server')
+			Request::getVar('HTTP_REFERER', NULL, 'server')
 		);
 	}
 
@@ -2050,12 +2037,12 @@ class Wishlists extends SiteController
 	public function replyTask()
 	{
 		// is the user logged in?
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			// Get wishlist info
 			$wishlist = new Wishlist(
-				\JRequest::getInt('refid', 0),
-				\JRequest::getVar('cat', '')
+				Request::getInt('refid', 0),
+				Request::getVar('cat', '')
 			);
 
 			// Set page title
@@ -2080,7 +2067,7 @@ class Wishlists extends SiteController
 	public function rateitemTask()
 	{
 		$wish = new Wish(
-			\JRequest::getInt('refid', 1)
+			Request::getInt('refid', 1)
 		);
 
 		if (!$wish->exists())
@@ -2108,8 +2095,8 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming
-		$page = \JRequest::getVar('page', 'wishlist');
-		$vote = \JRequest::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
+		$page = Request::getVar('page', 'wishlist');
+		$vote = Request::getWord('vote', ''); // assuming text only vote. Fix for sql injection ticket 1182
 
 		//$this->authorize_admin($listid);
 		$filters = self::getFilters($wishlist->access('manage'));
@@ -2120,7 +2107,7 @@ class Wishlists extends SiteController
 		}
 
 		// update display
-		if (\JRequest::getInt('ajax', 0))
+		if (Request::getInt('ajax', 0))
 		{
 			$this->view->setLayout('_vote');
 
@@ -2158,10 +2145,10 @@ class Wishlists extends SiteController
 	{
 		// Query filters defaults
 		$filters = array();
-		$filters['sortby']   = \JRequest::getVar('sortby', '');
-		$filters['filterby'] = \JRequest::getVar('filterby', 'all');
-		$filters['search']   = \JRequest::getVar('search', '');
-		$filters['tag']      = \JRequest::getVar('tags', '');
+		$filters['sortby']   = Request::getVar('sortby', '');
+		$filters['filterby'] = Request::getVar('filterby', 'all');
+		$filters['search']   = Request::getVar('search', '');
+		$filters['tag']      = Request::getVar('tags', '');
 
 		if ($admin)
 		{
@@ -2173,15 +2160,12 @@ class Wishlists extends SiteController
 			$filters['sortby'] = ($filters['sortby']) ? $filters['sortby'] : $default;
 		}
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Paging vars
-		$filters['limit']    = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$filters['start']    = \JRequest::getInt('limitstart', 0);
-		$filters['new']      = \JRequest::getInt('newsearch', 0);
+		$filters['limit']    = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start']    = Request::getInt('limitstart', 0);
+		$filters['new']      = Request::getInt('newsearch', 0);
 		$filters['start']    = $filters['new'] ? 0 : $filters['start'];
-		$filters['comments'] = \JRequest::getVar('comments', 1, 'get');
+		$filters['comments'] = Request::getVar('comments', 1, 'get');
 
 		// Return the array
 		return $filters;
@@ -2197,7 +2181,7 @@ class Wishlists extends SiteController
 	public function authorize_admin($listid = 0, $admin = 0)
 	{
 		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage'))
+		if (User::authorize($this->_option, 'manage'))
 		{
 			$admin = 1;
 		}
@@ -2212,13 +2196,13 @@ class Wishlists extends SiteController
 			$managers =  $owners['individuals'];
 			$advisory =  $owners['advisory'];
 
-			if (!$juser->get('guest'))
+			if (!User::isGuest())
 			{
-				if (in_array($this->juser->get('id'), $managers))
+				if (in_array(User::get('id'), $managers))
 				{
 					$admin = 2;  // individual group manager
 				}
-				if (in_array($this->juser->get('id'), $advisory))
+				if (in_array(User::get('id'), $advisory))
 				{
 					$admin = 3;  // advisory committee member
 				}
@@ -2295,7 +2279,7 @@ class Wishlists extends SiteController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WISHLIST_ERROR_NO_FILE'));
@@ -2304,13 +2288,13 @@ class Wishlists extends SiteController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		//make sure that file is acceptable type
 		$attachment = new Attachment(array(
 			'id'          => 0,
-			'description' => \JRequest::getVar('description', ''),
+			'description' => Request::getVar('description', ''),
 			'wish'        => $listdir,
 			'filename'    => $file['name']
 		));
@@ -2371,8 +2355,8 @@ class Wishlists extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$file   = \JRequest::getVar('file', '');
-		$wishid = \JRequest::getInt('wishid', 0);
+		$file   = Request::getVar('file', '');
+		$wishid = Request::getInt('wishid', 0);
 
 		$wish = new Wish($wishid);
 
