@@ -89,7 +89,7 @@ class Router extends Base
 
 		if (!isset($vars['task']) || !$vars['task'])
 		{
-			$vars['task'] = \JRequest::getWord('task', '');
+			$vars['task'] = \Request::getWord('task', '');
 		}
 
 		switch ($vars['task'])

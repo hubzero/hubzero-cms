@@ -37,13 +37,11 @@ $pathway->addItem(
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'
 );
 
-$jconfig  = JFactory::getConfig();
-$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
-$term  = JRequest::getVar('q', '');
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
+$term  = Request::getVar('q', '');
 
 $weight = '(match(wp.title) against (' . $database->Quote($term) . ') + match(wv.pagetext) against (' . $database->Quote($term) . '))';
 

@@ -58,7 +58,7 @@ class Site extends Base
 	{
 		$this->_segments['pagename'] = $pagename;
 		$this->_segments['scope']    = $scope;
-		$this->_segments['option']   = \JRequest::getCmd('option', 'com_wiki');
+		$this->_segments['option']   = Request::getCmd('option', 'com_wiki');
 	}
 
 	/**

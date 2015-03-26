@@ -67,14 +67,13 @@ class Revisions extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
 			// Paging
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -136,9 +135,9 @@ class Revisions extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$pageid = \JRequest::getInt('pageid', 0);
+		$pageid = Request::getInt('pageid', 0);
 		if (!$pageid)
 		{
 			$this->setRedirect(
@@ -154,7 +153,7 @@ class Revisions extends AdminController
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -170,7 +169,7 @@ class Revisions extends AdminController
 			// Creating new
 			$this->view->revision = $this->view->page->revision('current');
 			$this->view->revision->set('version', $this->view->revision->get('version') + 1);
-			$this->view->revision->set('created_by', $this->juser->get('id'));
+			$this->view->revision->set('created_by', User::get('id'));
 			$this->view->revision->set('id', 0);
 			$this->view->revision->set('pageid', $this->view->page->get('id'));
 		}
@@ -195,10 +194,10 @@ class Revisions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$revision = \JRequest::getVar('revision', array(), 'post', 'none', 2);
+		$revision = Request::getVar('revision', array(), 'post', 'none', 2);
 		$revision = array_map('trim', $revision);
 
 		// Initiate extended database class
@@ -275,9 +274,9 @@ class Revisions extends AdminController
 	 */
 	public function removeTask()
 	{
-		$pageid = \JRequest::getInt('pageid', 0);
+		$pageid = Request::getInt('pageid', 0);
 
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -291,14 +290,14 @@ class Revisions extends AdminController
 		}
 
 		// Incoming
-		$step = \JRequest::getInt('step', 1);
+		$step = Request::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
 		// What step are we on?
 		switch ($step)
 		{
 			case 1:
-				\JRequest::setVar('hidemainmenu', 1);
+				Request::setVar('hidemainmenu', 1);
 
 				$this->view->ids = $ids;
 				$this->view->pageid = $pageid;
@@ -315,10 +314,10 @@ class Revisions extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				// Check if they confirmed
-				$confirmed = \JRequest::getInt('confirm', 0);
+				$confirmed = Request::getInt('confirm', 0);
 				if (!$confirmed)
 				{
 					// Instantiate a new view
@@ -377,17 +376,17 @@ class Revisions extends AdminController
 	public function approveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$pageid = \JRequest::getInt('pageid', 0);
-		$id = \JRequest::getInt('id', 0);
+		$pageid = Request::getInt('pageid', 0);
+		$id = Request::getInt('id', 0);
 
 		if ($id)
 		{
 			// Load the revision, approve it, and save
 			$revision = new Revision($id);
-			$revision->set('approved', \JRequest::getInt('approve', 0));
+			$revision->set('approved', Request::getInt('approve', 0));
 
 			if (!$revision->store())
 			{
@@ -413,7 +412,7 @@ class Revisions extends AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . \JRequest::getInt('pageid', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false)
 		);
 	}
 }

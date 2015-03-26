@@ -355,7 +355,7 @@ class Book extends Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \Component::params('com_wiki');
+			$this->_config = Component::params('com_wiki');
 		}
 		if ($key)
 		{
@@ -374,15 +374,15 @@ class Book extends Object
 	{
 		if (!isset($this->_cache['page']) && $id === null)
 		{
-			$pagename = trim(\JRequest::getVar('pagename', '', 'default', 'none', 2));
+			$pagename = trim(Request::getVar('pagename', '', 'default', 'none', 2));
 			if (substr(strtolower($pagename), 0, strlen('image:')) != 'image:'
 			 && substr(strtolower($pagename), 0, strlen('file:')) != 'file:')
 			{
 				$pagename = $this->_tbl->normalize($pagename);
 			}
-			\JRequest::setVar('pagename', $pagename);
+			Request::setVar('pagename', $pagename);
 
-			$scope = \JRequest::getVar('scope', '');
+			$scope = Request::getVar('scope', '');
 			if ($scope)
 			{
 				// Clean the scope. Since scope is built of a chain of pagenames or groups/groupname/wiki
@@ -393,10 +393,10 @@ class Book extends Object
 					$bits[$i] = $this->_tbl->normalize($bit);
 				}
 				$scope = implode('/', $bits);
-				\JRequest::setVar('scope', $scope);
+				Request::setVar('scope', $scope);
 			}
 
-			$task = trim(\JRequest::getWord('task', ''));
+			$task = trim(Request::getWord('task', ''));
 
 			// No page name given! Default to the home page
 			if (!$pagename && $task != 'new')
@@ -442,7 +442,7 @@ class Book extends Object
 
 			if (!$this->_cache['page'])
 			{
-				$this->_cache['page'] = Page::getInstance($id, \JRequest::getVar('scope', ''));
+				$this->_cache['page'] = Page::getInstance($id, Request::getVar('scope', ''));
 			}
 		}
 
@@ -542,7 +542,7 @@ class Book extends Object
 	{
 		$filters['namespace'] = 'Template';
 		$filters['sortby']    = 'title ASC';
-		$filters['scope']     = \JRequest::getVar('scope', '');
+		$filters['scope']     = Request::getVar('scope', '');
 
 		return $this->pages($what, $filters, $clear);
 	}

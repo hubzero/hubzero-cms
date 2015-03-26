@@ -68,7 +68,7 @@ class History extends SiteController
 
 		if ($this->_sub)
 		{
-			\JRequest::setVar('task', \JRequest::getWord('action'));
+			Request::setVar('task', Request::getWord('action'));
 		}
 
 		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
@@ -173,8 +173,8 @@ class History extends SiteController
 		$this->view->sub       = $this->_sub;
 
 		// Incoming
-		$oldid = \JRequest::getInt('oldid', 0);
-		$diff  = \JRequest::getInt('diff', 0);
+		$oldid = Request::getInt('oldid', 0);
+		$diff  = Request::getInt('diff', 0);
 
 		// Do some error checking
 		if (!$diff)
@@ -250,9 +250,9 @@ class History extends SiteController
 	public function deleteTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -260,7 +260,7 @@ class History extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('oldid', 0);
+		$id = Request::getInt('oldid', 0);
 
 		if (!$id || !$this->page->access('delete'))
 		{
@@ -314,9 +314,9 @@ class History extends SiteController
 	public function approveTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -324,7 +324,7 @@ class History extends SiteController
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('oldid', 0);
+		$id = Request::getInt('oldid', 0);
 
 		if (!$id || !$this->page->access('manage'))
 		{

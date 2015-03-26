@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$no_html = JRequest::getVar('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
+$base = JURI::base(true);
 
 if (!$no_html) {
 	$this->css();
@@ -73,7 +74,7 @@ if (!$no_html) {
 <?php } ?>
 	<div id="attachments">
 <?php if (!$no_html) { ?>
-		<form action="index.php" method="post" id="filelist">
+		<form action="<?php echo $base; ?>/index.php" method="post" id="filelist">
 <?php } ?>
 <?php if (count($this->docs) == 0) { ?>
 			<p><?php echo Lang::txt('COM_WIKI_ERROR_NO_FILES_FOUND'); ?></p>
@@ -84,7 +85,6 @@ if (!$no_html) {
 				if ($this->docs)
 				{
 					jimport('joomla.filesystem.file');
-					$base = JURI::base(true);
 
 					foreach ($this->docs as $path => $name)
 					{

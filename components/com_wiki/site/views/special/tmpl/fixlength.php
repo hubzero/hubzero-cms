@@ -37,8 +37,6 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig  = JFactory::getConfig();
-$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
 $query = "SELECT wv.id, wv.pageid, wv.pagetext FROM `#__wiki_version` AS wv WHERE wv.length = '0'";

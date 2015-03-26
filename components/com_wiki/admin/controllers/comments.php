@@ -64,7 +64,6 @@ class Comments extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$jconfig = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -94,7 +93,7 @@ class Comments extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$jconfig->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -227,12 +226,12 @@ class Comments extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -246,8 +245,8 @@ class Comments extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('pageid', \JRequest::getInt('pageid', 0));
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('pageid', Request::getInt('pageid', 0));
+			$this->view->row->set('created_by', User::get('id'));
 			$this->view->row->set('created', \JFactory::getDate()->toSql());  // use gmdate() ?
 		}
 
@@ -271,10 +270,10 @@ class Comments extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
@@ -314,10 +313,10 @@ class Comments extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -336,7 +335,7 @@ class Comments extends AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . \JRequest::getInt('pageid', 0), false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false),
 			Lang::txt('COM_WIKI_COMMENTS_DELETED', count($ids))
 		);
 	}
@@ -349,14 +348,14 @@ class Comments extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		$state = $this->getTask() == 'unpublish' ? 2 : 0;
 
 		// Incoming
-		$ids    = \JRequest::getVar('id', array());
+		$ids    = Request::getVar('id', array());
 		$ids    = (!is_array($ids) ? array($ids) : $ids);
-		$pageid = \JRequest::getInt('pageid', 0);
+		$pageid = Request::getInt('pageid', 0);
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -408,7 +407,7 @@ class Comments extends AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . \JRequest::getInt('pageid', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false)
 		);
 	}
 }

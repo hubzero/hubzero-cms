@@ -37,13 +37,10 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
 $database = JFactory::getDBO();
 
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
 
 $query = "SELECT COUNT(*)
 			FROM `#__wiki_version` AS wv

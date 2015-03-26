@@ -37,11 +37,8 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
 
 $database = JFactory::getDBO();
 
@@ -97,7 +94,7 @@ $pageNav = new JPagination(
 <?php
 if ($rows)
 {
-	$p = WikiHelperParser::getInstance();
+	$p = \Components\Wiki\Helpers\Parser::getInstance();
 
 	foreach ($rows as $row)
 	{

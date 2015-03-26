@@ -30,8 +30,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-	$juser = JFactory::getUser();
-
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	if ($this->page->get('created_by') == $this->comment->get('created_by'))
@@ -139,8 +137,8 @@ defined('_JEXEC') or die('Restricted access');
 			</p>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-			<div class="addcomment comment-add<?php if (JRequest::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-				<?php if ($juser->get('guest')) { ?>
+			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+				<?php if (User::isGuest()) { ?>
 				<p class="warning">
 					<?php echo Lang::txt('COM_WIKI_WARNING_LOGIN_REQUIRED', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->page->link('comments'), false, true))) . '">' . Lang::txt('COM_WIKI_LOGIN') . '</a>'); ?>
 				</p>
@@ -154,7 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
 						<input type="hidden" name="comment[pageid]" value="<?php echo $this->page->get('id'); ?>" />
 						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
+						<input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 						<input type="hidden" name="comment[version]" value="<?php echo $this->page->revision()->get('version'); ?>" />
 						<input type="hidden" name="comment[status]" value="1" />
 
@@ -197,7 +195,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			$this->view('_list', 'comments')
-			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+			     ->setBasePath(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'site')
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('page', $this->page)
 			     ->set('option', $this->option)

@@ -37,13 +37,11 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig  = JFactory::getConfig();
-$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
-if (JRequest::getInt('force_fix', 0))
+if (Request::getInt('force_fix', 0))
 {
-	$cn = JRequest::getVar('cn', '');
+	$cn = Request::getVar('cn', '');
 	$query = "UPDATE `#__wiki_page` SET version_id=0 WHERE " . ($cn ? "group_cn=" . $database->quote($cn) : "(group_cn='' OR group_cn IS NULL)");
 	$database->setQuery($query);
 	$database->query();

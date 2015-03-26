@@ -37,22 +37,19 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
-$sort = strtolower(JRequest::getVar('sort', 'created'));
+$sort = strtolower(Request::getVar('sort', 'created'));
 if (!in_array($sort, array('created', 'title', 'summary', 'created_by')))
 {
 	$sort = 'created';
 }
-$dir = strtoupper(JRequest::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getVar('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';
 }
 
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
 
 $database = JFactory::getDBO();
 

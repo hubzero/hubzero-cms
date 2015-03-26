@@ -32,7 +32,6 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-JLoader::import('Hubzero.Component.ApiController');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 /**
@@ -47,10 +46,10 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
-		$this->config   = JComponentHelper::getParams('com_wiki');
+		$this->config   = Component::params('com_wiki');
 		$this->database = JFactory::getDBO();
 
 		switch ($this->segments[0])
@@ -87,7 +86,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -103,90 +102,90 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'wiki';
 		$response->tasks = array(
 			'pages' => array(
-				'description' => JText::_('Get a list of pages.'),
+				'description' => Lang::txt('Get a list of pages.'),
 				'parameters'  => array(
 					'sort' => array(
-						'description' => JText::_('Field to sort results by.'),
+						'description' => Lang::txt('Field to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'created',
 						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
 					),
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 				),
 			),
 			'page' => array(
-				'description' => JText::_('Get the contents of a page. If no revision number is provided, the page will default to the most current revision.'),
+				'description' => Lang::txt('Get the contents of a page. If no revision number is provided, the page will default to the most current revision.'),
 				'parameters'  => array(
 					'pagename' => array(
-						'description' => JText::_('Page name to retrieve data for.'),
+						'description' => Lang::txt('Page name to retrieve data for.'),
 						'type'        => 'string',
 						'default'     => ''
 					),
 					'scope' => array(
-						'description' => JText::_('Page scope.'),
+						'description' => Lang::txt('Page scope.'),
 						'type'        => 'string',
 						'default'     => ''
 					),
 					'revision' => array(
-						'description' => JText::_('Revision number of page.'),
+						'description' => Lang::txt('Revision number of page.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 				),
 			),
 			'revisions' => array(
-				'description' => JText::_('Get a list of revisions for a page.'),
+				'description' => Lang::txt('Get a list of revisions for a page.'),
 				'parameters'  => array(
 					'pageid' => array(
-						'description' => JText::_('The ID of the page to return revisions for.'),
+						'description' => Lang::txt('The ID of the page to return revisions for.'),
 						'type'        => 'integer',
 						'default'     => '0',
 						'required'    => 'true'
 					),
 					'sort' => array(
-						'description' => JText::_('Field to sort results by.'),
+						'description' => Lang::txt('Field to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'created',
 						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
 					),
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -194,7 +193,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -205,19 +204,19 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function pagesTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
-		$group = JRequest::getVar('group', '');
+		$group = Request::getVar('group', '');
 
 		$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
-			'sort'       => JRequest::getWord('sort', 'title'),
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'ASC')),
-			'group'      => JRequest::getWord('sort', 'title')
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
+			'sort'       => Request::getWord('sort', 'title'),
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC')),
+			'group'      => Request::getWord('sort', 'title')
 		);
 		$filters['state'] = array(0, 1);
 		$filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
@@ -237,7 +236,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 				$obj->title     = $entry->get('title');
 				$obj->name      = $entry->get('name');
 				$obj->scope     = $entry->get('scope');
-				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($entry->link()), DS));
+				$obj->url       = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($entry->link()), DS));
 				$obj->revisions = $entry->revisions('count');
 
 				$response->pages[] = $obj;
@@ -256,14 +255,14 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function pageTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
-		$group = JRequest::getVar('group', '');
+		$group = Request::getVar('group', '');
 
 		$book = new \Components\Wiki\Models\Book(($group ? $group : '__site__'));
 		$page = $book->page();
 
-		$revision = $page->revision(JRequest::getInt('revision', 0));
+		$revision = $page->revision(Request::getInt('revision', 0));
 
 		$response = new stdClass;
 		$response->page = new stdClass;
@@ -276,7 +275,7 @@ class WikiControllerApi extends \Hubzero\Component\ApiController
 		$response->page->revision_id = $page->get('version_id');
 		$response->revisions = 0;
 
-		$response->page->url = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(JRoute::_($page->link()), DS));
+		$response->page->url = str_replace('/api', '', rtrim($juri->base(), DS) . DS . ltrim(Route::url($page->link()), DS));
 
 		$response->success = true;
 

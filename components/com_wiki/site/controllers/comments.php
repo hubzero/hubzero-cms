@@ -48,7 +48,7 @@ class Comments extends SiteController
 	 */
 	public function __construct($config=array())
 	{
-		$this->_base_path = PATH_CORE . DS . 'components' . DS . 'com_wiki';
+		$this->_base_path = dirname(__DIR__);
 		if (isset($config['base_path']))
 		{
 			$this->_base_path = $config['base_path'];
@@ -68,7 +68,7 @@ class Comments extends SiteController
 
 		if ($this->_sub)
 		{
-			\JRequest::setVar('task', \JRequest::getWord('action'));
+			Request::setVar('task', Request::getWord('action'));
 		}
 
 		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
@@ -125,9 +125,9 @@ class Comments extends SiteController
 		$this->view->sub       = $this->_sub;
 
 		// Viewing comments for a specific version?
-		$this->view->v = \JRequest::getInt('version', 0);
+		$this->view->v = Request::getInt('version', 0);
 
-		if (!isset($this->view->mycomment) && !$this->juser->get('guest'))
+		if (!isset($this->view->mycomment) && !User::isGuest())
 		{
 			$this->view->mycomment = new Comment(0);
 			// No ID, so we're creating a new comment
@@ -136,8 +136,8 @@ class Comments extends SiteController
 
 			$this->view->mycomment->set('pageid', $revision->get('pageid'));
 			$this->view->mycomment->set('version', $revision->get('version'));
-			$this->view->mycomment->set('parent', \JRequest::getInt('parent', 0));
-			$this->view->mycomment->set('created_by', $this->juser->get('id'));
+			$this->view->mycomment->set('parent', Request::getInt('parent', 0));
+			$this->view->mycomment->set('created_by', User::get('id'));
 		}
 
 		// Prep the pagename for display
@@ -167,7 +167,7 @@ class Comments extends SiteController
 		);
 
 		// Output content
-		$this->view->juser = $this->juser;
+		$this->view->juser   = User::getRoot();
 		$this->view->message = $this->_message;
 
 		foreach ($this->getErrors() as $error)
@@ -199,9 +199,9 @@ class Comments extends SiteController
 	{
 		// Is the user logged in?
 		// If not, then we need to stop everything else and display a login form
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -209,7 +209,7 @@ class Comments extends SiteController
 		}
 
 		// Retrieve a comment ID if we're editing
-		$id = \JRequest::getInt('comment', 0);
+		$id = Request::getInt('comment', 0);
 
 		// Add the comment object to our controller's registry
 		// This is how comments() knows if it needs to display a form or not
@@ -223,8 +223,8 @@ class Comments extends SiteController
 
 			$this->view->mycomment->set('pageid', $revision->get('pageid'));
 			$this->view->mycomment->set('version', $revision->get('version'));
-			$this->view->mycomment->set('parent', \JRequest::getInt('parent', 0));
-			$this->view->mycomment->set('created_by', $this->juser->get('id'));
+			$this->view->mycomment->set('parent', Request::getInt('parent', 0));
+			$this->view->mycomment->set('created_by', User::get('id'));
 		}
 
 		$this->displayTask();
@@ -238,9 +238,9 @@ class Comments extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = \JRequest::getVar('comment', array(), 'post');
+		$fields = Request::getVar('comment', array(), 'post');
 
 		// Bind the form data to our object
 		$comment = new Comment($fields['id']);
@@ -293,7 +293,7 @@ class Comments extends SiteController
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if (($id = \JRequest::getInt('comment', 0)))
+		if (($id = Request::getInt('comment', 0)))
 		{
 			// Make sure they're authorized to delete (must be an author)
 			if ($this->page->access('delete', 'comment'))

@@ -31,9 +31,9 @@
 namespace Components\Wiki\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_wiki'))
+if (!\User::authorise('core.manage', 'com_wiki'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
@@ -43,7 +43,7 @@ include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php');
 include_once(dirname(__DIR__) . DS . 'models' . DS . 'book.php');
 
 // Initiate controller
-$controllerName = \JRequest::getCmd('controller', 'pages');
+$controllerName = \Request::getCmd('controller', 'pages');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'pages';
@@ -52,8 +52,8 @@ require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_WIKI_PAGES'),
-	Route::url('index.php?option=com_wiki'),
+	\Lang::txt('COM_WIKI_PAGES'),
+	\Route::url('index.php?option=com_wiki'),
 	true
 );
 
@@ -62,8 +62,8 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' 
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
 	\JSubMenuHelper::addEntry(
-		Lang::txt('COM_WIKI_PLUGINS'),
-		Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
+		\Lang::txt('COM_WIKI_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
 	);
 }
 

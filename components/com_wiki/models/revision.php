@@ -195,12 +195,12 @@ class Revision extends Model
 				$p = Parser::getInstance();
 
 				$wikiconfig = array(
-					'option'   => \JRequest::getCmd('option', 'com_wiki'),
-					'scope'    => $this->get('scope', \JRequest::getVar('scope')),
-					'pagename' => $this->get('pagename', \JRequest::getVar('pagename')),
+					'option'   => Request::getCmd('option', 'com_wiki'),
+					'scope'    => $this->get('scope', Request::getVar('scope')),
+					'pagename' => $this->get('pagename', Request::getVar('pagename')),
 					'pageid'   => $this->get('pageid'),
 					'filepath' => '',
-					'domain'   => $this->get('group_cn', \JRequest::getVar('group'))
+					'domain'   => $this->get('group_cn', Request::getVar('group'))
 				);
 
 				$this->set('pagetext_parsed', $p->parse(stripslashes($this->get('pagetext')), $wikiconfig));

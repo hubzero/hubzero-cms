@@ -78,7 +78,7 @@ class Page extends SiteController
 
 		if ($this->_sub)
 		{
-			\JRequest::setVar('task', \JRequest::getWord('action'));
+			Request::setVar('task', Request::getWord('action'));
 		}
 
 		$this->book = new Book(($this->_group ? $this->_group : '__site__'));
@@ -159,7 +159,7 @@ class Page extends SiteController
 			// Set the layout
 			$this->view->setLayout('special');
 			$this->view->layout = $this->page->denamespaced();
-			$this->view->page->set('scope', \JRequest::getVar('scope', ''));
+			$this->view->page->set('scope', Request::getVar('scope', ''));
 			$this->view->page->set('group_cn', $this->_group);
 			$this->view->message = $this->_message;
 
@@ -243,7 +243,7 @@ class Page extends SiteController
 		);
 
 		// Retrieve a specific version if given
-		$this->view->version  = \JRequest::getInt('version', 0);
+		$this->view->version  = Request::getInt('version', 0);
 		$this->view->revision = $this->page->revision($this->view->version);
 
 		if (!$this->view->revision->exists())
@@ -259,9 +259,9 @@ class Page extends SiteController
 			return;
 		}
 
-		if (\JRequest::getVar('format', '') == 'raw')
+		if (Request::getVar('format', '') == 'raw')
 		{
-			\JRequest::setVar('no_html', 1);
+			Request::setVar('no_html', 1);
 
 			echo nl2br($this->view->revision->get('pagetext'));
 			return;
@@ -343,9 +343,9 @@ class Page extends SiteController
 	public function editTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -388,7 +388,7 @@ class Page extends SiteController
 		if (!is_object($this->revision))
 		{
 			$this->revision = $this->page->revision('current'); //getCurrentRevision();
-			$this->revision->set('created_by', $this->juser->get('id'));
+			$this->revision->set('created_by', User::get('id'));
 			$this->revision->set('summary', '');
 		}
 
@@ -396,7 +396,7 @@ class Page extends SiteController
 		if (!$this->page->exists())
 		{
 			$this->page->set('access', 0);
-			$this->page->set('created_by', $this->juser->get('id'));
+			$this->page->set('created_by', User::get('id'));
 
 			if ($this->_group)
 			{
@@ -413,8 +413,8 @@ class Page extends SiteController
 			}
 		}
 
-		$this->view->tags = trim(\JRequest::getVar('tags', $this->page->tags('string'), 'post'));
-		$this->view->authors = trim(\JRequest::getVar('authors', $this->page->authors('string'), 'post'));
+		$this->view->tags = trim(Request::getVar('tags', $this->page->tags('string'), 'post'));
+		$this->view->authors = trim(Request::getVar('authors', $this->page->authors('string'), 'post'));
 
 		// Prep the pagename for display
 		// e.g. "MainPage" becomes "Main Page"
@@ -461,7 +461,7 @@ class Page extends SiteController
 			$this->view->preview = $this->preview;
 
 			$pageid = $this->page->get('id');
-			$lid = \JRequest::getInt('lid', 0, 'post');
+			$lid = Request::getInt('lid', 0, 'post');
 			if ($lid != $this->page->get('id'))
 			{
 				$pageid = $lid;
@@ -515,7 +515,7 @@ class Page extends SiteController
 		}
 		$this->view->tree = $tree; //$items;
 
-		$this->view->tplate = trim(\JRequest::getVar('tplate', ''));
+		$this->view->tplate = trim(Request::getVar('tplate', ''));
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -533,12 +533,12 @@ class Page extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -546,7 +546,7 @@ class Page extends SiteController
 		}
 
 		// Incoming revision
-		$rev = \JRequest::getVar('revision', array(), 'post', 'none', 2);
+		$rev = Request::getVar('revision', array(), 'post', 'none', 2);
 		//$rev['pageid'] = (isset($rev['pageid'])) ? intval($rev['pageid']) : 0;
 
 		$this->revision = $this->page->revision('current');
@@ -560,7 +560,7 @@ class Page extends SiteController
 		$this->revision->set('id', 0);
 
 		// Incoming page
-		$page = \JRequest::getVar('page', array(), 'post', 'none', 2);
+		$page = Request::getVar('page', array(), 'post', 'none', 2);
 
 		$this->page = new Article(intval($rev['pageid']));
 		if (!$this->page->bind($page))
@@ -569,15 +569,12 @@ class Page extends SiteController
 			$this->editTask();
 			return;
 		}
-		$this->page->set('pagename', trim(\JRequest::getVar('pagename', '', 'post')));
-		$this->page->set('scope', trim(\JRequest::getVar('scope', '', 'post')));
+		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'post')));
+		$this->page->set('scope', trim(Request::getVar('scope', '', 'post')));
 
 		// Get parameters
-		$paramClass = 'JRegistry';
-		$bindMethod = 'loadArray';
-
-		$params = new $paramClass($this->page->get('params', ''));
-		$params->$bindMethod(\JRequest::getVar('params', array(), 'post'));
+		$params = new \JRegistry($this->page->get('params', ''));
+		$params->loadArray(Request::getVar('params', array(), 'post'));
 
 		$this->page->set('params', $params->toString());
 
@@ -585,7 +582,7 @@ class Page extends SiteController
 		if (!$rev['pageid'])
 		{
 			// New page - save it to the database
-			$this->page->set('created_by', $this->juser->get('id'));
+			$this->page->set('created_by', User::get('id'));
 
 			$old = new Revision(0);
 		}
@@ -596,18 +593,18 @@ class Page extends SiteController
 		}
 
 		// Was the preview button pushed?
-		$this->preview = trim(\JRequest::getVar('preview', ''));
+		$this->preview = trim(Request::getVar('preview', ''));
 		if ($this->preview)
 		{
 			// Set the component task
 			if (!$rev['pageid'])
 			{
-				\JRequest::setVar('task', 'new');
+				Request::setVar('task', 'new');
 				$this->_task = 'new';
 			}
 			else
 			{
-				\JRequest::setVar('task', 'edit');
+				Request::setVar('task', 'edit');
 				$this->_task = 'edit';
 			}
 
@@ -634,7 +631,7 @@ class Page extends SiteController
 		}
 
 		// Get allowed authors
-		if (!$this->page->updateAuthors(\JRequest::getVar('authors', '', 'post')))
+		if (!$this->page->updateAuthors(Request::getVar('authors', '', 'post')))
 		{
 			$this->setError($this->page->getError());
 			$this->editTask();
@@ -646,7 +643,7 @@ class Page extends SiteController
 		$path = $wpa->filespace();
 
 		// Rename the temporary upload directory if it exist
-		$lid = \JRequest::getInt('lid', 0, 'post');
+		$lid = Request::getInt('lid', 0, 'post');
 		if ($lid != $this->page->get('id'))
 		{
 			if (is_dir($path . DS . $lid))
@@ -671,8 +668,8 @@ class Page extends SiteController
 			// Set revisions to NOT approved
 			$this->revision->set('approved', 0);
 			// If an author or the original page creator, set to approved
-			if ($this->page->get('created_by') == $this->juser->get('id')
-			 || $this->page->isAuthor($this->juser->get('id')))
+			if ($this->page->get('created_by') == User::get('id')
+			 || $this->page->isAuthor(User::get('id')))
 			{
 				$this->revision->set('approved', 1);
 			}
@@ -727,7 +724,7 @@ class Page extends SiteController
 		}
 
 		// Process tags
-		$this->page->tag(\JRequest::getVar('tags', ''));
+		$this->page->tag(Request::getVar('tags', ''));
 
 		// Redirect
 		$this->setRedirect(
@@ -743,9 +740,9 @@ class Page extends SiteController
 	public function deleteTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -773,13 +770,13 @@ class Page extends SiteController
 			return;
 		}
 
-		$confirmed = \JRequest::getInt('confirm', 0, 'post');
+		$confirmed = Request::getInt('confirm', 0, 'post');
 
 		switch ($confirmed)
 		{
 			case 1:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				$this->page->set('state', 2);
 				if (!$this->page->store(false, 'page_removed'))
@@ -848,9 +845,9 @@ class Page extends SiteController
 	public function renameTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -921,12 +918,12 @@ class Page extends SiteController
 	public function saverenameTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+			$url = Request::getVar('REQUEST_URI', '', 'server');
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))
 			);
@@ -934,9 +931,9 @@ class Page extends SiteController
 		}
 
 		// Incoming
-		$oldpagename = trim(\JRequest::getVar('oldpagename', '', 'post'));
-		$newpagename = trim(\JRequest::getVar('newpagename', '', 'post'));
-		$scope       = trim(\JRequest::getVar('scope', '', 'post'));
+		$oldpagename = trim(Request::getVar('oldpagename', '', 'post'));
+		$newpagename = trim(Request::getVar('newpagename', '', 'post'));
+		$scope       = trim(Request::getVar('scope', '', 'post'));
 
 		// Load the page
 		$this->page = new Article($oldpagename, $scope);
@@ -987,7 +984,7 @@ class Page extends SiteController
 		}
 
 		// Retrieve a specific version if given
-		$this->view->revision = $this->page->revision(\JRequest::getInt('version', 0));
+		$this->view->revision = $this->page->revision(Request::getInt('version', 0));
 		if (!$this->view->revision->exists())
 		{
 			foreach ($this->getErrors() as $error)
@@ -1002,7 +999,7 @@ class Page extends SiteController
 			return;
 		}
 
-		\JRequest::setVar('format', 'pdf');
+		Request::setVar('format', 'pdf');
 
 		$pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 

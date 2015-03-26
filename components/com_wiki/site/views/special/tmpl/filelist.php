@@ -37,23 +37,21 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig  = JFactory::getConfig();
-$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
-$sort = strtolower(JRequest::getVar('sort', 'created'));
+$sort = strtolower(Request::getVar('sort', 'created'));
 if (!in_array($sort, array('created', 'filename', 'description', 'created_by')))
 {
 	$sort = 'created';
 }
-$dir = strtoupper(JRequest::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getVar('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';
 }
 
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
 
 $where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
 if ($this->sub)

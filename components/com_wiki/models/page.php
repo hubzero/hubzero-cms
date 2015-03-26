@@ -159,7 +159,7 @@ class Page extends Model
 
 		if (!$this->get('group_cn'))
 		{
-			$this->set('group_cn', \JRequest::getVar('cn', ''));
+			$this->set('group_cn', Request::getVar('cn', ''));
 		}
 
 		/*if ($space == 'special')
@@ -745,7 +745,7 @@ class Page extends Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \Component::params('com_wiki');
+			$this->_config = Component::params('com_wiki');
 		}
 		if ($key)
 		{
@@ -778,16 +778,14 @@ class Page extends Model
 			$this->config()->set('access-comment-delete', false);
 			$this->config()->set('access-comment-edit', false);
 
-			$juser = \JFactory::getUser();
-
 			// Check if they are logged in
-			if ($juser->get('guest'))
+			if (User::isGuest())
 			{
 				// Not logged-in = can only view
 				$this->config()->set('access-check-done', true);
 			}
 
-			$option = \JRequest::getCmd('option', 'com_wiki');
+			$option = Request::getCmd('option', 'com_wiki');
 
 			if (!$this->config('access-check-done', false))
 			{
@@ -797,7 +795,7 @@ class Page extends Model
 					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
 
 					// Is this a group manager?
-					if ($group && $group->is_member_of('managers', $juser->get('id')))
+					if ($group && $group->is_member_of('managers', User::get('id')))
 					{
 						// Allow access to all options
 						$this->config()->set('access-page-manage', true);
@@ -819,8 +817,8 @@ class Page extends Model
 							// Knowledge article
 							// This means there's a defined set of authors
 							case 'knol':
-								if ($this->get('created_by') == $juser->get('id')
-								 || $this->isAuthor($juser->get('id')))
+								if ($this->get('created_by') == User::get('id')
+								 || $this->isAuthor(User::get('id')))
 								{
 									$this->config()->set('access-page-create', true);
 									$this->config()->set('access-page-delete', true);
@@ -842,7 +840,7 @@ class Page extends Model
 							// Standard wiki
 							default:
 								// 1 = private to group, 2 = ...um, can't remember
-								if ($group && $group->is_member_of('members', $juser->get('id')))
+								if ($group && $group->is_member_of('members', User::get('id')))
 								{
 									$this->config()->set('access-page-create', true);
 									if ($this->get('state') != 1)
@@ -860,7 +858,7 @@ class Page extends Model
 					}
 				}
 				// Check if they're a site admin (from Joomla)
-				else if ($juser->authorize($option, 'manage'))
+				else if (User::authorize($option, 'manage'))
 				{
 					$this->config()->set('access-page-admin', true);
 					$this->config()->set('access-page-manage', true);
@@ -887,8 +885,8 @@ class Page extends Model
 						// Knowledge article
 						// This means there's a defined set of authors
 						case 'knol':
-							if ($this->get('created_by') == $juser->get('id')
-							 || $this->isAuthor($juser->get('id')))
+							if ($this->get('created_by') == User::get('id')
+							 || $this->isAuthor(User::get('id')))
 							{
 								$this->config()->set('access-page-delete', true);
 								$this->config()->set('access-page-edit', true);
@@ -1140,7 +1138,7 @@ class Page extends Model
 			$scope = 'site';
 			if ($this->get('group_cn'))
 			{
-				$scope = strtolower(\JRequest::getCmd('option'));
+				$scope = strtolower(Request::getCmd('option'));
 				$scope = ($scope ? substr($scope, 4) : 'site');
 			}
 			$cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);

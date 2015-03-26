@@ -37,17 +37,14 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
-$dir = strtoupper(JRequest::getVar('dir', 'DESC'));
+$dir = strtoupper(Request::getVar('dir', 'DESC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'DESC';
 }
 
-$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-$start = JRequest::getInt('limitstart', 0);
+$limit = Request::getInt('limit', Config::get('list_limit'));
+$start = Request::getInt('limitstart', 0);
 
 $database = JFactory::getDBO();
 

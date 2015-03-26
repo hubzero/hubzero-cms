@@ -93,7 +93,7 @@ class Media extends SiteController
 	 */
 	public function downloadTask()
 	{
-		$this->page->set('pagename', trim(\JRequest::getVar('pagename', '', 'default', 'none', 2)));
+		$this->page->set('pagename', trim(Request::getVar('pagename', '', 'default', 'none', 2)));
 
 		// Instantiate an attachment object
 		$attachment = new Tables\Attachment($this->database);
@@ -106,7 +106,7 @@ class Media extends SiteController
 		// Get the scope of the parent page the file is attached to
 		if (!$this->scope)
 		{
-			$this->scope = trim(\JRequest::getVar('scope', ''));
+			$this->scope = trim(Request::getVar('scope', ''));
 		}
 		$segments = explode('/', $this->scope);
 		$pagename = array_pop($segments);
@@ -177,14 +177,14 @@ class Media extends SiteController
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			echo json_encode(array('error' => Lang::txt('COM_WIKI_WARNING_LOGIN')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = JRequest::getInt('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_WIKI_NO_ID')));
@@ -287,9 +287,9 @@ class Media extends SiteController
 		// Create database entry
 		$attachment->pageid      = $listdir;
 		$attachment->filename    = $filename . '.' . $ext;
-		$attachment->description = trim(\JRequest::getVar('description', '', 'post'));
+		$attachment->description = trim(Request::getVar('description', '', 'post'));
 		$attachment->created     = \JFactory::getDate()->toSql();
-		$attachment->created_by  = $this->juser->get('id');
+		$attachment->created_by  = User::get('id');
 
 		if (!$attachment->check())
 		{
@@ -316,19 +316,19 @@ class Media extends SiteController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = \JRequest::getInt('listdir', 0, 'post');
+		$listdir = Request::getInt('listdir', 0, 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
@@ -337,7 +337,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
@@ -378,9 +378,9 @@ class Media extends SiteController
 			// Create database entry
 			$attachment->pageid      = $listdir;
 			$attachment->filename    = $file['name'];
-			$attachment->description = trim(\JRequest::getVar('description', '', 'post'));
+			$attachment->description = trim(Request::getVar('description', '', 'post'));
 			$attachment->created     = \JFactory::getDate()->toSql();
-			$attachment->created_by  = $this->juser->get('id');
+			$attachment->created_by  = User::get('id');
 
 			if (!$attachment->check())
 			{
@@ -404,14 +404,14 @@ class Media extends SiteController
 	public function deletefolderTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming group ID
-		$listdir = \JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
@@ -420,7 +420,7 @@ class Media extends SiteController
 		}
 
 		// Incoming folder
-		$folder = trim(\JRequest::getVar('folder', '', 'get'));
+		$folder = trim(Request::getVar('folder', '', 'get'));
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_DIRECTORY'));
@@ -449,7 +449,7 @@ class Media extends SiteController
 		}
 
 		// Push through to the media view
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->listTask();
 		}
@@ -466,14 +466,14 @@ class Media extends SiteController
 	public function deletefileTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming
-		$listdir = \JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_ID'));
@@ -482,7 +482,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = trim(\JRequest::getVar('file', '', 'get'));
+		$file = trim(Request::getVar('file', '', 'get'));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_WIKI_NO_FILE'));
@@ -505,7 +505,7 @@ class Media extends SiteController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!\JFile::delete($path . DS . $file))
 			{
 				$this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_DELETE_FILE', $file));
 			}
@@ -517,7 +517,7 @@ class Media extends SiteController
 		}
 
 		// Push through to the media view
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->listTask();
 		}
@@ -539,7 +539,7 @@ class Media extends SiteController
 
 		$this->view
 			->set('config', $this->config)
-			->set('listdir', \JRequest::getInt('listdir', 0, 'request'))
+			->set('listdir', Request::getInt('listdir', 0, 'request'))
 			->setLayout('display')
 			->display();
 	}
@@ -552,7 +552,7 @@ class Media extends SiteController
 	public function listTask()
 	{
 		// Incoming
-		$listdir = \JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 
 		if (!$listdir)
 		{

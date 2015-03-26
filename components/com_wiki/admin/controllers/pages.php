@@ -67,54 +67,52 @@ class Pages extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
-			'authorized' => true
+			'authorized' => true,
+			// Paging
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Filters
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'namespace' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.namespace',
+				'namespace',
+				''
+			),
+			'group' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.group',
+				'group',
+				''
+			),
+			'state' => array(0, 1, 2)
 		);
-		// Paging
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		// Sorting
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
-
-		// Filters
-		$this->view->filters['search'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['namespace'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.namespace',
-			'namespace',
-			''
-		));
-		$this->view->filters['group'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.group',
-			'group',
-			''
-		));
-		$this->view->filters['state'] = array(0, 1, 2);
+		$this->view->filters['sortby' => $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -146,12 +144,12 @@ class Pages extends AdminController
 	 */
 	public function editTask($row = null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -166,7 +164,7 @@ class Pages extends AdminController
 		if (!$this->view->row->exists())
 		{
 			// Creating new
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created_by', User::get('id'));
 		}
 
 		// Set any errors
@@ -189,10 +187,10 @@ class Pages extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$page = \JRequest::getVar('page', array(), 'post');
+		$page = Request::getVar('page', array(), 'post');
 		$page = array_map('trim', $page);
 
 		// Initiate extended database class
@@ -205,7 +203,7 @@ class Pages extends AdminController
 		}
 
 		// Get parameters
-		$params = \JRequest::getVar('params', array(), 'post');
+		$params = Request::getVar('params', array(), 'post');
 		if (is_array($params))
 		{
 			$pparams = new \JRegistry($row->get('params'));
@@ -233,7 +231,7 @@ class Pages extends AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			\JRequest::setVar('id', $row->get('id'));
+			Request::setVar('id', $row->get('id'));
 
 			return $this->editTask($row);
 		}
@@ -253,7 +251,7 @@ class Pages extends AdminController
 	public function removeTask()
 	{
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
@@ -266,14 +264,14 @@ class Pages extends AdminController
 			return;
 		}
 
-		$step = \JRequest::getInt('step', 1);
+		$step = Request::getInt('step', 1);
 		$step = (!$step) ? 1 : $step;
 
 		// What step are we on?
 		switch ($step)
 		{
 			case 1:
-				\JRequest::setVar('hidemainmenu', 1);
+				Request::setVar('hidemainmenu', 1);
 
 				// Instantiate a new view
 				$this->view->ids = $ids;
@@ -290,10 +288,10 @@ class Pages extends AdminController
 
 			case 2:
 				// Check for request forgeries
-				\JRequest::checkToken() or jexit('Invalid Token');
+				Request::checkToken() or jexit('Invalid Token');
 
 				// Check if they confirmed
-				$confirmed = \JRequest::getInt('confirm', 0);
+				$confirmed = Request::getInt('confirm', 0);
 				if (!$confirmed)
 				{
 					// Instantiate a new view
@@ -335,10 +333,10 @@ class Pages extends AdminController
 	public function accessTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -386,10 +384,10 @@ class Pages extends AdminController
 	public function resethitsTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -430,10 +428,10 @@ class Pages extends AdminController
 	public function stateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -448,7 +446,7 @@ class Pages extends AdminController
 
 		// Load and reset the article's hits
 		$page = new Page(intval($id));
-		$page->set('state', \JRequest::getInt('state', 0));
+		$page->set('state', Request::getInt('state', 0));
 
 		if (!$page->store())
 		{

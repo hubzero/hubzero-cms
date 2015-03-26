@@ -55,7 +55,7 @@ class PagePermissions extends \JModelAdmin
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = \JRequest::getVar($key, array());
+		$pk = \Request::getVar($key, array());
 		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);

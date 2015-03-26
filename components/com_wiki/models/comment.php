@@ -192,12 +192,12 @@ class Comment extends Model
 				$p = Parser::getInstance();
 
 				$wikiconfig = array(
-					'option'   => \JRequest::getCmd('option', 'com_wiki'),
-					'scope'    => \JRequest::getVar('scope'),
-					'pagename' => \JRequest::getVar('pagename'),
+					'option'   => Request::getCmd('option', 'com_wiki'),
+					'scope'    => Request::getVar('scope'),
+					'pagename' => Request::getVar('pagename'),
 					'pageid'   => $this->get('pageid'),
 					'filepath' => '',
-					'domain'   => \JRequest::getVar('group', '')
+					'domain'   => Request::getVar('group', '')
 				);
 
 				$this->set('parsed', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
@@ -239,9 +239,9 @@ class Comment extends Model
 	{
 		if (!isset($this->_base))
 		{
-			$this->_base  = 'index.php?option=' . \JRequest::getCmd('option', 'com_wiki') . '&scope=' . \JRequest::getVar('scope') . '&pagename=' . \JRequest::getVar('pagename');
+			$this->_base  = 'index.php?option=' . Request::getCmd('option', 'com_wiki') . '&scope=' . Request::getVar('scope') . '&pagename=' . Request::getVar('pagename');
 		}
-		$task = \JRequest::getVar('cn', '') ? 'action' : 'task';
+		$task = Request::getVar('cn', '') ? 'action' : 'task';
 
 		$link = $this->_base;
 

@@ -57,8 +57,8 @@ class Projects extends Base
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-		$project = \JRequest::getVar('project', NULL);
-		$segments['scope'] = \JRequest::getVar('scope', NULL);
+		$project = Request::getVar('project', NULL);
+		$segments['scope'] = Request::getVar('scope', NULL);
 		if (!$segments['scope'] && is_object($project))
 		{
 			$segments['scope'] = 'projects/' . $project->alias . '/notes';
