@@ -22,27 +22,37 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions' . DS . 'BaseSubscription.php');
-
-class Access_Group_Membership_Subscription extends BaseSubscription
+class Pro_Membership_Custom_Handler extends Custom_Handler
 {
-
-    public function __construct($pId, $uId)
+    /**
+     * Constructor
+     *
+     * @param 	void
+     * @return 	void
+     */
+    public function __construct($item, $crtId)
     {
-        parent::__construct($pId, $uId);
+        parent::__construct($item, $crtId);
     }
 
-    public function _getExpiration()
+    public function handle()
     {
-        // This will get expiration from the correct place
-        echo 'ff';
-        throw new Exception('not implemented');
-    }
+        // Get user ID for the cart
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+        $userId = CartModelCart::getCartUser($this->crtId);
 
+        // Get number of points to add
+        if (!empty($this->item['meta']['addPoints']) && is_numeric($this->item['meta']['addPoints']))
+        {
+            // Update points account
+            $db = JFactory::getDBO();
+            $BTL = new \Hubzero\Bank\Teller($db, $userId);
+            $BTL->deposit($this->item['meta']['addPoints'], 'PRO Membership Bonus', 'PRO', $this->item['info']->sId);
+        }
+    }
 }

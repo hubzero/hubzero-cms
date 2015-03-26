@@ -22,27 +22,36 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions' . DS . 'BaseSubscription.php');
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
-class Access_Group_Membership_Subscription extends BaseSubscription
+
+/**
+ * Product type handler. Parent class for all type handlers.
+ */
+class Custom_Handler
 {
+    // Database instance
+    var $db = NULL;
 
-    public function __construct($pId, $uId)
+    // Item info
+    var $item;
+
+    // Cart ID
+    var $crtId;
+
+    /**
+     * Constructor
+     *
+     */
+    public function __construct($item, $crtId)
     {
-        parent::__construct($pId, $uId);
+        $this->item = $item;
+        $this->crtId = $crtId;
     }
-
-    public function _getExpiration()
-    {
-        // This will get expiration from the correct place
-        echo 'ff';
-        throw new Exception('not implemented');
-    }
-
 }

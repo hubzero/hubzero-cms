@@ -95,7 +95,6 @@ class CartControllerOrder extends ComponentController
             } else {
                 $token = $customVar;
             }
-            /* Lookup the order */
 
             // Verify token
             if (!$token || !CartModelCart::verifySecurityToken($token, $tId)) {
@@ -193,13 +192,13 @@ class CartControllerOrder extends ComponentController
 	 */
 	public function postbackTask()
 	{
-		$test = false;
+        $test = false;
 		// TESTING ***********************
 		if ($test) {
-			$postBackTransactionId = 243;
+			$postBackTransactionId = 331;
 		}
 
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+        $params =  JComponentHelper::getParams(JRequest::getVar('option'));
 
 		if (empty($_POST) && !$test)
 		{
@@ -230,6 +229,12 @@ class CartControllerOrder extends ComponentController
 				return false;
 			}
 		}
+        // test
+        else {
+            include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+            $paymentDispatcher = new PaymentDispatcher('DUMMY AUTO PAYMENT');
+            $pay = $paymentDispatcher->getPaymentProvider();
+        }
 
 		// Get transaction info
 		$tInfo = CartModelCart::getTransactionFacts($postBackTransactionId);
@@ -262,7 +267,7 @@ class CartControllerOrder extends ComponentController
         // Get the action. Post back will normally be triggered on payment success, but can also be the cancel post back
         $postBackAction = $pay->getPostBackAction();
 
-		if ($postBackAction == 'payment')
+        if ($postBackAction == 'payment' || $test)
         {
             // verify payment
             if (!$test && !$pay->verifyPayment($tInfo))
@@ -334,14 +339,14 @@ class CartControllerOrder extends ComponentController
 	 */
 	private function completeOrder($tInfo)
 	{
-		// Initialize logger
-		$logger = new CartMessenger('Complete order');
-
-		// Send emails to customer and admin
-		$logger->emailOrderComplete($tInfo->info);
-
 		// Handle transaction according to items handlers
 		CartModelCart::completeTransaction($tInfo);
+
+		// Initialize logger
+        $logger = new CartMessenger('Complete order');
+
+        // Send emails to customer and admin
+        $logger->emailOrderComplete($tInfo->info);
 	}
 
 }

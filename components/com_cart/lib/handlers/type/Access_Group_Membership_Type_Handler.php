@@ -66,7 +66,11 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
             require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
             $userGId = StorefrontModelProduct::getMeta($this->item['info']->pId, 'userGroupId');
 
-            JUserHelper::addUserToGroup($userId, $userGId);
+            $add = JUserHelper::addUserToGroup($userId, $userGId);
+            if($add instanceof Exception) {
+                $config = JFactory::getConfig();
+                mail($config->getValue('config.mailfrom'), 'Error adding to the group', $add->getMessage() . ' Cart #' . $this->crtId);
+            }
 
             $table = JTable::getInstance('User', 'JTable', array());
             $table->load($userId);
@@ -78,10 +82,8 @@ class Access_Group_Membership_Type_Handler extends Type_Handler
         catch (Exception $e)
         {
             // Error
-            mail('ilya@shunko.com', 'PRO member purchase error', $e->getMessage());
             return false;
         }
 
-        mail('ilya@shunko.com', 'PRO member purchase', serialize($membership));
     }
 }

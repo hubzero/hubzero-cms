@@ -65,6 +65,17 @@ class Membership_Auditor extends BaseAuditor
                 /* Check if the current user has the existing subscription and how much is left on it
                  i.e. figure out if he may extend his current subscription */
 
+                /*
+                 *  This is not working very well for multiple SKUs with multiple subscriptionMaxLen's
+                 *  at this point code doesn't know what SKU will be added,
+                 *  so for one SKU subscriptionMaxLen should
+                 *  be set to time less than actual membership length, ie if membership is sold for 1 year and
+                 *  cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
+                 *  if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
+                 *
+                 *  so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
+                 */
+
                 // Get the proper product type subscription object reference
                 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
                 $subscription = StorefrontModelMemberships::getSubscriptionObject($this->type, $this->pId, $this->uId);

@@ -366,7 +366,7 @@ abstract class CartModelCart
         }
 
         // Run the auditor
-        if ($mode == 'add')
+        if ($mode != 'sync')
         {
             require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
             $auditor = Audit::getAuditor($skuInfo, $this->crtId);
@@ -773,7 +773,7 @@ abstract class CartModelCart
 
         // Check if the transaction can be released (status is pending)
         // Get info
-        $sql = "SELECT t.`tStatus` FROM `#__cart_transactions` t WHERE t.tStatus = 'pending' AND t.`tId` = {$tId}";
+        $sql = "SELECT t.`tStatus` FROM `#__cart_transactions` t WHERE t.`tId` = {$tId}";
         $db->setQuery($sql);
         $db->query();
 

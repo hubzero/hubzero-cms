@@ -121,7 +121,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$auditorResponse = $auditor->audit();
 		//print_r($auditor); die;
 
-		if ($auditorResponse->status != 'ok')
+		if (!empty($auditorResponse) && $auditorResponse->status != 'ok')
 		{
 			if ($auditorResponse->status == 'error')
 			{

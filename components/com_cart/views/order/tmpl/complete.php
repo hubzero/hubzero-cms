@@ -56,9 +56,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				//print_r($transactionItems); die;
 
-				echo '<h2>Order contents</h2>';
+				echo '<h2>Order summary</h2>';
 				echo '<table id="cartContents">';
-				echo '<tr><th>Item</th><th>Status</th><th>Action</th></tr>';
+				echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
 				foreach ($transactionItems as $sId => $item)
 				{
 					$info = $item['info'];

@@ -91,7 +91,7 @@ class PaymentProvider
 	 */
 	public function getPaymentCode()
 	{
-        $code  = '<form method="post" action="' . $this->getPostURL() . '"';
+        $code  = '<form method="post" action="' . $this->getPostURL() . '">';
         $code .= '<input type="hidden" value="' . $this->siteDetails->siteId . '" name="UPAY_SITE_ID">';
 
         foreach ($this->transactionDetails as $k => $v)
@@ -200,6 +200,7 @@ class PaymentProvider
             return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
         }
         else {
+            //return 'http://www.conmerge.com/temp/post.php';
             return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
         }
     }
