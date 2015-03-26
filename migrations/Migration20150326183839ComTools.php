@@ -53,7 +53,7 @@ class Migration20150326183839ComTools extends Base
 				$this->db->setQuery($query);
 				$this->db->query();
 
-				$query = "ALTER TABLE `#__users_tool_preferences` INDEX `idx_class_id` (`class_id`)";
+				$query = "ALTER TABLE `#__users_tool_preferences` ADD INDEX `idx_class_id` (`class_id`)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
