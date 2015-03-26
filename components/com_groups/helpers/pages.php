@@ -139,18 +139,38 @@ class GroupsHelperPages
 		$group = Hubzero\User\Group::getInstance($cn);
 
 		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
-		$base = JRoute::_('index.php?option=com_groups&cn=' .$group->get('cn'));
+		$base = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
 
-		// remove /groups/{group_cname} from path
-		$path = trim(str_replace($base, '', $uri->getPath()), DS);
-
-		if ($path == 'index.php')
+		if (preg_match("/\/?groups\/(.*?)/i", $uri->getPath()))
 		{
-			return array();
+			// remove /groups/{group_cname} from path
+			$path = trim(str_replace($base, '', $uri->getPath()), '/');
+
+			if ($path == 'index.php')
+			{
+				return array();
+			}
+
+			$segments = explode('/', $path);
+		}
+		else
+		{
+			// Try to find a menu item
+			$item = \JFactory::getApplication()->getMenu(true)->getActive();
+			// Strip the menu route from the URI
+			$up = ltrim($uri->getPath(), '/');
+			$path = trim(substr($up, strlen($item->route)), '/');
+			// Check if the first segment is the group name.
+			// Due to the way some paths are built, a menu item can result
+			// in a path like /menualias/cn/page instead of /menualias/page
+			$segments = explode('/', $path);
+			if (isset($segments[0]) && $segments[0] == $cn)
+			{
+				array_shift($segments);
+			}
 		}
 
 		// get path segments & clean up
-		$segments = explode(DS, $path);
 		$segments = array_filter($segments);
 
 		// return path segments
