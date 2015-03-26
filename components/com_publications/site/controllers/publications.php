@@ -2016,11 +2016,7 @@ class Publications extends SiteController
 
 		// Plugin params
 		$plugin_params = array( $project,
-								$this->_option,
 								$authorized,
-								$this->juser->get('id'),
-								$this->getNotifications('success'),
-								$this->getNotifications('error'),
 								$action,
 								$areas = array($plugin)
 		);
