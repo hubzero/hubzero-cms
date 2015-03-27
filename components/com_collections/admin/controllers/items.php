@@ -60,7 +60,6 @@ class Items extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -86,7 +85,7 @@ class Items extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -116,12 +115,12 @@ class Items extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			if (is_array($id))
 			{
@@ -136,7 +135,7 @@ class Items extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created_by', User::get('id'));
 			$this->view->row->set('created', \JFactory::getDate()->toSql());
 		}
 
@@ -160,10 +159,10 @@ class Items extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new Item($fields['id']);
@@ -175,12 +174,12 @@ class Items extends AdminController
 		}
 
 		// Add some data
-		if ($files  = \JRequest::getVar('fls', '', 'files', 'array'))
+		if ($files  = Request::getVar('fls', '', 'files', 'array'))
 		{
 			$row->set('_files', $files);
 		}
-		$row->set('_assets', \JRequest::getVar('assets', null, 'post'));
-		$row->set('_tags', trim(\JRequest::getVar('tags', '')));
+		$row->set('_assets', Request::getVar('assets', null, 'post'));
+		$row->set('_tags', trim(Request::getVar('tags', '')));
 
 		// Store new content
 		if (!$row->store(true))
@@ -191,7 +190,7 @@ class Items extends AdminController
 		}
 
 		// Process tags
-		$row->tag(trim(\JRequest::getVar('tags', '')));
+		$row->tag(trim(Request::getVar('tags', '')));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -213,10 +212,10 @@ class Items extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)

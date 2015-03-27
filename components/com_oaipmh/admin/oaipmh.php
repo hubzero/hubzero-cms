@@ -29,12 +29,12 @@
 
 namespace Components\Oaipmh\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_oaipmh')) 
+if (!\User::authorise('core.manage', 'com_oaipmh')) 
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-$controllerName = \JRequest::getCmd('controller', 'config');
+$controllerName = \Request::getCmd('controller', 'config');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'config';
@@ -42,24 +42,24 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-$task = \JRequest::getCmd('task');
+$task = \Request::getCmd('task');
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_OAIPMH_ABOUT'),
-	Route::url('index.php?option=com_oaipmh'),
+	\Lang::txt('COM_OAIPMH_ABOUT'),
+	\Route::url('index.php?option=com_oaipmh'),
 	(!$task || $task == 'display')
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_OAIPMH_SCHEMAS'),
-	Route::url('index.php?option=com_oaipmh&task=schemas'),
+	\Lang::txt('COM_OAIPMH_SCHEMAS'),
+	\Route::url('index.php?option=com_oaipmh&task=schemas'),
 	($task == 'schemas')
 );
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
 	\JSubMenuHelper::addEntry(
-		Lang::txt('COM_OAIPMH_PLUGINS'),
-		Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+		\Lang::txt('COM_OAIPMH_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
 	);
 }
 

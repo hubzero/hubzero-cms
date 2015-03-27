@@ -32,7 +32,7 @@ namespace Components\Oaipmh\Site;
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'service.php');
 
-$controllerName = \JRequest::getCmd('controller', 'xml');
+$controllerName = \Request::getCmd('controller', 'xml');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'xml';

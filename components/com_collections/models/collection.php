@@ -189,7 +189,7 @@ class Collection extends Base
 		);
 		if (!$result['created_by'])
 		{
-			$result['created_by'] = \JFactory::getUser()->get('id');
+			$result['created_by'] = User::get('id');
 		}
 		$this->bind($result);
 
@@ -355,7 +355,7 @@ class Collection extends Base
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = (\JFactory::getUser()->get('guest') ? 0 : array(0, 1));
+			$filters['access'] = (User::isGuest() ? 0 : array(0, 1));
 		}
 		if (!isset($filters['sort']))
 		{
@@ -540,7 +540,7 @@ class Collection extends Base
 
 			if (!$follower_id && $follower_type == 'member')
 			{
-				$follower_id = \JFactory::getUser()->get('id');
+				$follower_id = User::get('id');
 			}
 
 			$follow = new Following($this->get('id'), 'collection', $follower_id, $follower_type);
@@ -632,7 +632,7 @@ class Collection extends Base
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', \JRequest::getCmd('option')),
+						'option'   => $this->get('option', Request::getCmd('option')),
 						'scope'    => $this->get('scope', 'collection'),
 						'pagename' => $this->get('alias'),
 						'pageid'   => 0,
@@ -713,13 +713,13 @@ class Collection extends Base
 	{
 		if (!$user_id)
 		{
-			$user_id = \JFactory::getUser()->get('id');
+			$user_id = User::get('id');
 		}
 
 		// If registered
 		if ($this->get('access') == 1)
 		{
-			return (\JFactory::getUser()->get('guest') ? false : true);
+			return (User::isGuest() ? false : true);
 		}
 
 		// If private

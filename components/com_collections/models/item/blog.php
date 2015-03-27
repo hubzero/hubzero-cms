@@ -69,12 +69,12 @@ class Blog extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_blog')
+		if (Request::getCmd('option') != 'com_blog')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getVar('alias'))
+		if (!Request::getVar('alias'))
 		{
 			return false;
 		}
@@ -95,14 +95,14 @@ class Blog extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('id', 0));
+		$id = ($id ?: Request::getInt('id', 0));
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'post.php');
 		$post = null;
 
 		if (!$id)
 		{
-			$alias = \JRequest::getVar('alias', '');
+			$alias = Request::getVar('alias', '');
 
 			$post = new Entry($alias, 'site');
 			$id = $post->get('id');

@@ -69,12 +69,12 @@ class Courses extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_courses')
+		if (Request::getCmd('option') != 'com_courses')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getVar('gid'))
+		if (!Request::getVar('gid'))
 		{
 			return false;
 		}
@@ -95,14 +95,14 @@ class Courses extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('id', 0));
+		$id = ($id ?: Request::getInt('id', 0));
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_course' . DS . 'models' . DS . 'courses.php');
 		$course = null;
 
 		if (!$id)
 		{
-			$course = \CoursesModelCourse::getInstance(\JRequest::getVar('gid', ''));
+			$course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
 
 			$id = $course->get('id');
 		}

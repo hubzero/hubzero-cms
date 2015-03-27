@@ -30,34 +30,34 @@
 
 namespace Components\Collections\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_collections'))
+if (!\User::authorise('core.manage', 'com_collections'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'archive.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', 'collections');
+$controllerName = \Request::getCmd('controller', 'collections');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'collections';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_COLLECTIONS_COLLECTIONS'),
-	Route::url('index.php?option=com_collections'),
+	\Lang::txt('COM_COLLECTIONS_COLLECTIONS'),
+	\Route::url('index.php?option=com_collections'),
 	$controllerName == 'collections'
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_COLLECTIONS_POSTS'),
-	Route::url('index.php?option=com_collections&controller=posts'),
+	\Lang::txt('COM_COLLECTIONS_POSTS'),
+	\Route::url('index.php?option=com_collections&controller=posts'),
 	$controllerName == 'posts'
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_COLLECTIONS_ITEMS'),
-	Route::url('index.php?option=com_collections&controller=items'),
+	\Lang::txt('COM_COLLECTIONS_ITEMS'),
+	\Route::url('index.php?option=com_collections&controller=items'),
 	$controllerName == 'items'
 );
 

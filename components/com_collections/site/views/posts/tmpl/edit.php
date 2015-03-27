@@ -46,7 +46,7 @@ if (!$this->entry->exists())
 	$this->entry->set('original', 1);
 }
 
-$type = 'file'; //strtolower(JRequest::getWord('type', $item->get('type')));
+$type = 'file'; //strtolower(Request::getWord('type', $item->get('type')));
 if (!$type)
 {
 	$type = 'file';

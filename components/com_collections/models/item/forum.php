@@ -69,12 +69,12 @@ class Forum extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_forum')
+		if (Request::getCmd('option') != 'com_forum')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getInt('thread', 0))
+		if (!Request::getInt('thread', 0))
 		{
 			return false;
 		}
@@ -95,7 +95,7 @@ class Forum extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('thread', 0));
+		$id = ($id ?: Request::getInt('thread', 0));
 
 		$this->_tbl->loadType($id, $this->_type);
 

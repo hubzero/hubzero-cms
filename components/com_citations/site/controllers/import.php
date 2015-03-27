@@ -76,7 +76,7 @@ class Import extends SiteController
 	 */
 	public function displayTask()
 	{
-		$gid = \JRequest::getVar('group');
+		$gid = Request::getVar('group');
 		if (isset($gid) && $gid != '')
 		{
 			$this->view->gid = $gid;
@@ -140,7 +140,7 @@ class Import extends SiteController
 	public function uploadTask()
 	{
 		// get file
-		$file = \JRequest::getVar('citations_file', null, 'files', 'array');
+		$file = Request::getVar('citations_file', null, 'files', 'array');
 
 		// make sure we have a file
 		if (!$file['name'])
@@ -200,7 +200,7 @@ class Import extends SiteController
 		$file2 = \JFile::write($p2, serialize($citations[0]['no_attention']));
 
 		//get group ID
-		$group = \JRequest::getVar('group');
+		$group = Request::getVar('group');
 
 		if (isset($group) && $group != '')
 		{
@@ -228,7 +228,7 @@ class Import extends SiteController
 	public function reviewTask()
 	{
 		// get the session object
-		$session = JFactory::getSession();
+		$session = \JFactory::getSession();
 		$sessionid = $session->getId();
 
 		// get the citations
@@ -238,14 +238,14 @@ class Import extends SiteController
 		$citations_require_no_attention = null;
 		if (file_exists($p1))
 		{
-			$citations_require_attention    = unserialize(JFile::read($p1));
+			$citations_require_attention    = unserialize(\JFile::read($p1));
 		}
 		if (file_exists($p2))
 		{
-			$citations_require_no_attention = unserialize(JFile::read($p2));
+			$citations_require_no_attention = unserialize(\JFile::read($p2));
 		}
 
-		$group = \JRequest::getVar('group');
+		$group = Request::getVar('group');
 
 		if (isset($group) && $group != '')
 		{
@@ -311,14 +311,14 @@ class Import extends SiteController
 		// read in contents of citations file
 		$p1 = $this->getTmpPath() . DS . 'citations_require_attention_' . $sessionid . '.txt';
 		$p2 = $this->getTmpPath() . DS . 'citations_require_no_attention_' . $sessionid . '.txt';
-		$cites_require_attention    = unserialize(JFile::read($p1));
-		$cites_require_no_attention = unserialize(JFile::read($p2));
+		$cites_require_attention    = unserialize(\JFile::read($p1));
+		$cites_require_no_attention = unserialize(\JFile::read($p2));
 
 		// action for citations needing attention
-		$citations_action_attention = \JRequest::getVar('citation_action_attention', array());
+		$citations_action_attention = Request::getVar('citation_action_attention', array());
 
 		// action for citations needing no attention
-		$citations_action_no_attention = \JRequest::getVar('citation_action_no_attention', array());
+		$citations_action_no_attention = Request::getVar('citation_action_no_attention', array());
 
 		// check to make sure we have citations
 		if (!$cites_require_attention && !$cites_require_no_attention)
@@ -405,7 +405,7 @@ class Import extends SiteController
 				unset($cra['duplicate']);
 
 				//sets group if set
-				$group = \JRequest::getVar('group');
+				$group = Request::getVar('group');
 				if (isset($group) && $group != '')
 				{
 					$cra['gid'] = $group;
@@ -496,7 +496,7 @@ class Import extends SiteController
 				unset($crna['duplicate']);
 
 				//sets group if set
-				$group = \JRequest::getVar('group');
+				$group = Request::getVar('group');
 				if (isset($group) && $group != '')
 				{
 					$crna['gid'] = $group;
@@ -714,7 +714,7 @@ class Import extends SiteController
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . \JRequest::getVar('format', 'apa');
+		echo 'format' . Request::getVar('format', 'apa');
 	}
 
 	/**

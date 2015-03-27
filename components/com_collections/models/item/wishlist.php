@@ -69,12 +69,12 @@ class Wishlist extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_wishlist')
+		if (Request::getCmd('option') != 'com_wishlist')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getInt('wishid', 0))
+		if (!Request::getInt('wishid', 0))
 		{
 			return false;
 		}
@@ -95,7 +95,7 @@ class Wishlist extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('wishid', 0));
+		$id = ($id ?: Request::getInt('wishid', 0));
 
 		$this->_tbl->loadType($id, $this->_type);
 

@@ -26,14 +26,11 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-JLoader::import('Hubzero.Api.Controller');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 /**
@@ -48,10 +45,10 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
-		$this->config   = JComponentHelper::getParams('com_blog');
+		$this->config   = Component::params('com_blog');
 		$this->database = JFactory::getDBO();
 
 		switch ($this->segments[0])
@@ -89,7 +86,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 		     ->setErrorMessage($object->error->code, $object->error->message);
 
 		//add error to message body
-		$this->setMessageType(JRequest::getWord('format', $format));
+		$this->setMessageType(Request::getWord('format', $format));
 		$this->setMessage($object);
 	}
 
@@ -105,57 +102,57 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'collections';
 		$response->tasks = array(
 			'collections' => array(
-				'description' => JText::_('Get a list of collections.'),
+				'description' => Lang::txt('Get a list of collections.'),
 				'parameters'  => array(
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 				),
 			),
 			'posts' => array(
-				'description' => JText::_('Get a list of posts.'),
+				'description' => Lang::txt('Get a list of posts.'),
 				'parameters'  => array(
 					'collection' => array(
-						'description' => JText::_('ID of the collection to retrieve posts for.'),
+						'description' => Lang::txt('ID of the collection to retrieve posts for.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
 					'sort_Dir' => array(
-						'description' => JText::_('Direction to sort results by.'),
+						'description' => Lang::txt('Direction to sort results by.'),
 						'type'        => 'string',
 						'default'     => 'desc',
 						'accepts'     => array('asc', 'desc')
 					),
 					'search' => array(
-						'description' => JText::_('A word or phrase to search for.'),
+						'description' => Lang::txt('A word or phrase to search for.'),
 						'type'        => 'string',
 						'default'     => 'null'
 					),
 					'limit' => array(
-						'description' => JText::_('Number of result to return.'),
+						'description' => Lang::txt('Number of result to return.'),
 						'type'        => 'integer',
 						'default'     => '25'
 					),
 					'limitstart' => array(
-						'description' => JText::_('Number of where to start returning results.'),
+						'description' => Lang::txt('Number of where to start returning results.'),
 						'type'        => 'integer',
 						'default'     => '0'
 					),
@@ -163,7 +160,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -174,21 +171,21 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function postsTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$model = new \Component\Collections\Models\Collection();
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
 			'sort'       => 'p.created',
 			'state'      => 1,
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'DESC')),
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'is_default' => 0
 		);
 
-		if ($collection = JRequest::getInt('collection', 0))
+		if ($collection = Request::getInt('collection', 0))
 		{
 			$filters['collection_id'] = $collection;
 		}
@@ -219,7 +216,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 				$obj->type      = $item->get('type');;
 				$obj->posted    = $entry->get('created');
 				$obj->author    = $entry->creator()->get('name');
-				$obj->url       = $base . DS . ltrim(JRoute::_($entry->link()), DS);
+				$obj->url       = $base . DS . ltrim(Route::url($entry->link()), DS);
 
 				$obj->tags      = $item->tags('string');
 				$obj->comments  = $item->get('comments', 0);
@@ -235,7 +232,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 						$a = new stdClass;
 						$a->title       = ltrim($asset->get('filename'), '/');
 						$a->description = $asset->get('description');
-						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . DS . ltrim(JRoute::_($href . $entry->get('id') . '&task=download&file=' . $a->title), DS));
+						$a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . DS . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), DS));
 
 						$obj->assets[] = $a;
 					}
@@ -257,16 +254,16 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function collectionsTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$model = new \Components\Collections\Models\Archive();
 
 		$filters = array(
-			'limit'      => JRequest::getInt('limit', 25),
-			'start'      => JRequest::getInt('limitstart', 0),
-			'search'     => JRequest::getVar('search', ''),
+			'limit'      => Request::getInt('limit', 25),
+			'start'      => Request::getInt('limitstart', 0),
+			'search'     => Request::getVar('search', ''),
 			'state'      => 1,
-			'sort_Dir'   => strtoupper(JRequest::getWord('sortDir', 'DESC')),
+			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'DESC')),
 			'is_default' => 0,
 			'access'     => 0
 		);
@@ -296,7 +293,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 				$obj->type        = 'collection';
 				$obj->posted      = $entry->created();
 				$obj->author      = $entry->creator('name');
-				$obj->url         = $base . DS . ltrim(JRoute::_($collection->link()), DS);
+				$obj->url         = $base . DS . ltrim(Route::url($collection->link()), DS);
 
 				$obj->files       = $collection->count('file');
 				$obj->links       = $collection->count('link');
@@ -328,7 +325,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function postTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response = new stdClass;
 		$response->success = true;

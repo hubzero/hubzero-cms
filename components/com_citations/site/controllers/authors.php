@@ -49,7 +49,7 @@ class Authors extends SiteController
 	public function execute()
 	{
 		// Incoming member ID
-		$id = \JRequest::getInt('citation', 0);
+		$id = Request::getInt('citation', 0);
 
 		if ($id == 0)
 		{
@@ -79,7 +79,7 @@ class Authors extends SiteController
 	public function addTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		if ($this->getError())
 		{
@@ -87,7 +87,7 @@ class Authors extends SiteController
 		}
 
 		// Incoming host
-		$m = \JRequest::getVar('author', '');
+		$m = Request::getVar('author', '');
 
 		$mbrs = explode(',', $m);
 		$mbrs = array_map('trim', $mbrs);
@@ -141,14 +141,14 @@ class Authors extends SiteController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		if ($this->getError())
 		{
 			return $this->displayTask();
 		}
 
-		$mbrs = \JRequest::getVar('author', array());
+		$mbrs = Request::getVar('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		$users = array();
@@ -176,7 +176,7 @@ class Authors extends SiteController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		if ($this->getError())
 		{
@@ -185,7 +185,7 @@ class Authors extends SiteController
 
 		$author = new Author($this->database);
 
-		$mbrs = \JRequest::getVar('author', array());
+		$mbrs = Request::getVar('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		$users = array();

@@ -49,8 +49,8 @@ class Media extends AdminController
 	 */
 	public function downloadTask()
 	{
-		$file = \JRequest::getVar('file', '');
-		$item = \JRequest::getInt('post', 0);
+		$file = Request::getVar('file', '');
+		$item = Request::getInt('post', 0);
 
 		$post = Post::getInstance($item);
 
@@ -64,7 +64,7 @@ class Media extends AdminController
 		}
 
 		// Check authorization
-		if ($post->item()->get('access') == 4 && $this->juser->get('guest'))
+		if ($post->item()->get('access') == 4 && User::isGuest())
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED_TO_FILE'), 403);
 		}
@@ -115,20 +115,20 @@ class Media extends AdminController
 	 */
 	public function createTask()
 	{
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxCreateTask();
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = \JRequest::getInt('dir', 0, 'post');
+		$listdir = Request::getInt('dir', 0, 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
@@ -155,7 +155,7 @@ class Media extends AdminController
 		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', \JRequest::getVar('description', '', 'post'));
+		$asset->set('description', Request::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
@@ -175,14 +175,14 @@ class Media extends AdminController
 	public function ajaxCreateTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(\JRequest::getVar('dir', ''));
+		$listdir = strtolower(Request::getVar('dir', ''));
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
@@ -216,7 +216,7 @@ class Media extends AdminController
 		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', 'http://');
-		$asset->set('description', \JRequest::getVar('description', '', 'post'));
+		$asset->set('description', Request::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'link');
 
@@ -249,14 +249,14 @@ class Media extends AdminController
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
 			return;
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = strtolower(\JRequest::getVar('dir', ''));
+		$listdir = strtolower(Request::getVar('dir', ''));
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_NO_ID')));
@@ -376,7 +376,7 @@ class Media extends AdminController
 		// Create database entry
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
-		$asset->set('description', \JRequest::getVar('description', '', 'post'));
+		$asset->set('description', Request::getVar('description', '', 'post'));
 		$asset->set('state', 1);
 		$asset->set('type', 'file');
 
@@ -392,7 +392,7 @@ class Media extends AdminController
 			'name'   => 'media',
 			'layout' => '_asset'
 		));
-		$view->i          = \JRequest::getInt('i', 0);
+		$view->i          = Request::getInt('i', 0);
 		$view->option     = $this->_option;
 		$view->controller = $this->_controller;
 		$view->asset      = $asset;
@@ -416,19 +416,19 @@ class Media extends AdminController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Ensure we have an ID to work with
-		$listdir = \JRequest::getInt('dir', 0, 'post');
+		$listdir = Request::getInt('dir', 0, 'post');
 		if (!$listdir)
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
@@ -437,7 +437,7 @@ class Media extends AdminController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
@@ -478,7 +478,7 @@ class Media extends AdminController
 			// Create database entry
 			$asset->set('item_id', intval($listdir));
 			$asset->set('filename', $file['name']);
-			$asset->set('description', \JRequest::getVar('description', '', 'post'));
+			$asset->set('description', Request::getVar('description', '', 'post'));
 			$asset->set('state', 1);
 			$asset->set('type', 'file');
 
@@ -499,20 +499,20 @@ class Media extends AdminController
 	 */
 	public function deleteTask()
 	{
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}
 
 		// Incoming asset
-		$id = \JRequest::getInt('asset', 0, 'get');
+		$id = Request::getInt('asset', 0, 'get');
 
 		$model = new Asset($id);
 
@@ -537,7 +537,7 @@ class Media extends AdminController
 	public function ajaxDeleteTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('asset', 0);
+		$id = Request::getInt('asset', 0);
 
 		if ($id)
 		{
@@ -572,7 +572,7 @@ class Media extends AdminController
 	public function displayTask()
 	{
 		// Incoming
-		$this->view->listdir = \JRequest::getInt('dir', 0, 'request');
+		$this->view->listdir = Request::getInt('dir', 0, 'request');
 
 		// Output HTML
 		$this->view->config = $this->config;
@@ -595,7 +595,7 @@ class Media extends AdminController
 	public function listTask()
 	{
 		// Incoming
-		$listdir = \JRequest::getInt('dir', 0, 'get');
+		$listdir = Request::getInt('dir', 0, 'get');
 
 		if (!$listdir)
 		{

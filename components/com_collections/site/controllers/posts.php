@@ -65,11 +65,11 @@ class Posts extends SiteController
 	public function displayTask()
 	{
 		$this->view->config  = $this->config;
-		$this->view->juser   = $this->juser;
+		$this->view->juser   = User::getRoot();
 		$this->view->model   = $this->model;
-		$this->view->no_html = \JRequest::getInt('no_html', 0);
+		$this->view->no_html = Request::getInt('no_html', 0);
 
-		$post_id = \JRequest::getInt('post', 0);
+		$post_id = Request::getInt('post', 0);
 
 		$this->view->post = Post::getInstance($post_id);
 
@@ -102,28 +102,28 @@ class Posts extends SiteController
 	public function editTask()
 	{
 		// Login is required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
-		$this->view->juser      = $this->juser;
+		$this->view->juser      = User::getRoot();
 		$this->view->config     = $this->config;
 
 		// Incoming
-		$this->view->no_html = \JRequest::getInt('no_html', 0);
+		$this->view->no_html = Request::getInt('no_html', 0);
 
-		$id = \JRequest::getInt('post', 0);
+		$id = Request::getInt('post', 0);
 
-		$this->view->collection = $this->model->collection(\JRequest::getVar('board', 0));
+		$this->view->collection = $this->model->collection(Request::getVar('board', 0));
 
 		// Get all collections for a user
 		$this->view->collections = $this->model->collections();
 		if (!$this->view->collections->total())
 		{
-			$this->view->collection->setup($this->juser->get('id'), 'member');
+			$this->view->collection->setup(User::get('id'), 'member');
 			$this->view->collections = $this->model->collections();
-			$this->view->collection  = $this->model->collection(\JRequest::getVar('board', 0));
+			$this->view->collection  = $this->model->collection(Request::getVar('board', 0));
 		}
 
 		// Load the post
@@ -134,7 +134,7 @@ class Posts extends SiteController
 		}
 
 		// Are we removing an asset?
-		if ($remove = \JRequest::getInt('remove', 0))
+		if ($remove = Request::getInt('remove', 0))
 		{
 			if (!$this->view->entry->item()->removeAsset($remove))
 			{
@@ -147,10 +147,10 @@ class Posts extends SiteController
 		if (!$this->view->no_html)
 		{
 			$filters = array(
-				'count' => true,
-				'access' => 0,
-				'state' => 1,
-				'user_id' => $this->juser->get('id')
+				'count'   => true,
+				'access'  => 0,
+				'state'   => 1,
+				'user_id' => User::get('id')
 			);
 			$this->view->counts['collections'] = $this->model->collections($filters);
 			$this->view->counts['posts'] = $this->model->posts($filters);
@@ -176,16 +176,16 @@ class Posts extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Login is required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Get model
 		$row = new Item();
@@ -199,8 +199,8 @@ class Posts extends SiteController
 
 		// Add some data
 		//$row->set('_files', $files);
-		$row->set('_assets', \JRequest::getVar('assets', array(), 'post'));
-		$row->set('_tags', trim(\JRequest::getVar('tags', '')));
+		$row->set('_assets', Request::getVar('assets', array(), 'post'));
+		$row->set('_tags', trim(Request::getVar('tags', '')));
 		$row->set('state', 1);
 
 		// Store new content
@@ -211,7 +211,7 @@ class Posts extends SiteController
 		}
 
 		// Create a post entry linking the item to the board
-		$p = \JRequest::getVar('post', array(), 'post');
+		$p = Request::getVar('post', array(), 'post');
 
 		// Load a post entry
 		$post = new Post($p['id']);
@@ -223,12 +223,12 @@ class Posts extends SiteController
 		}
 
 		// Are we creating a new collection for it?
-		$coltitle = \JRequest::getVar('collection_title', '', 'post');
+		$coltitle = Request::getVar('collection_title', '', 'post');
 		if (!$p['collection_id'] && $coltitle)
 		{
 			$collection = new Collection();
 			$collection->set('title', $coltitle);
-			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_id', User::get('id'));
 			$collection->set('object_type', 'member');
 			$collection->store();
 
@@ -268,16 +268,16 @@ class Posts extends SiteController
 	public function savecommentTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
 		// Incoming
-		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = Request::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
 		$row = new Comment($this->database);
@@ -312,13 +312,13 @@ class Posts extends SiteController
 	public function deletecommentTask()
 	{
 		// Ensure the user is logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('comment', 0);
+		$id = Request::getInt('comment', 0);
 		if (!$id)
 		{
 			return $this->displayTask();
@@ -346,13 +346,13 @@ class Posts extends SiteController
 	 */
 	public function voteTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
 		// Incoming
-		$id = \JRequest::getInt('post', 0);
+		$id = Request::getInt('post', 0);
 
 		// Get the post model
 		$post = Post::getInstance($id);
@@ -364,7 +364,7 @@ class Posts extends SiteController
 		}
 
 		// Display updated item stats if called via AJAX
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 		if ($no_html)
 		{
 			echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive'));
@@ -384,22 +384,22 @@ class Posts extends SiteController
 	 */
 	public function collectTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return $this->loginTask();
 		}
 
-		$model = new Archive('member', $this->juser->get('id'));
+		$model = new Archive('member', User::get('id'));
 
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		// No collection ID selected so present repost form
-		$repost = \JRequest::getInt('repost', 0);
+		$repost = Request::getInt('repost', 0);
 		if (!$repost)
 		{
 			// Incoming
-			$post_id       = \JRequest::getInt('post', 0);
-			$collection_id = \JRequest::getVar('board', 0);
+			$post_id       = Request::getInt('post', 0);
+			$collection_id = Request::getVar('board', 0);
 
 			if (!$post_id && $collection_id)
 			{
@@ -420,7 +420,7 @@ class Posts extends SiteController
 
 			//$this->view->name          = $this->_name;
 			$this->view->option        = $this->_option;
-			$this->view->juser         = $this->juser;
+			$this->view->juser         = User::getRoot();
 			$this->view->no_html       = $no_html;
 			$this->view->post_id       = $post_id;
 			$this->view->collection_id = $collection_id;
@@ -430,15 +430,15 @@ class Posts extends SiteController
 			return;
 		}
 
-		$collection_title = \JRequest::getVar('collection_title', '');
-		$collection_id = \JRequest::getInt('collection_id', 0);
-		$item_id       = \JRequest::getInt('item_id', 0);
+		$collection_title = Request::getVar('collection_title', '');
+		$collection_id = Request::getInt('collection_id', 0);
+		$item_id       = Request::getInt('item_id', 0);
 
 		if ($collection_title)
 		{
 			$collection = new Collection();
 			$collection->set('title', $collection_title);
-			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_id', User::get('id'));
 			$collection->set('object_type', 'member');
 			if (!$collection->store())
 			{
@@ -456,7 +456,7 @@ class Posts extends SiteController
 			// No record found -- we're OK to add one
 			$post->item_id       = $item_id;
 			$post->collection_id = $collection_id;
-			$post->description   = \JRequest::getVar('description', '');
+			$post->description   = Request::getVar('description', '');
 			if ($post->check())
 			{
 				$this->setError($post->getError());
@@ -493,10 +493,10 @@ class Posts extends SiteController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$posts = \JRequest::getVar('post', array());
+		$posts = Request::getVar('post', array());
 
 		if (is_array($posts))
 		{
@@ -547,11 +547,11 @@ class Posts extends SiteController
 	 */
 	public function metadataTask()
 	{
-		$id = \JRequest::getInt('post', 0);
+		$id = Request::getInt('post', 0);
 
 		$post = new Post($id);
 
-		if (!\JRequest::getInt('no_html', 0))
+		if (!Request::getInt('no_html', 0))
 		{
 			// Output messsage and redirect
 			$this->setRedirect(

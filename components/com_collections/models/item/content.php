@@ -69,12 +69,12 @@ class Content extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_content')
+		if (Request::getCmd('option') != 'com_content')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getInt('id', 0))
+		if (!Request::getInt('id', 0))
 		{
 			return false;
 		}
@@ -95,7 +95,7 @@ class Content extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('id', 0));
+		$id = ($id ?: Request::getInt('id', 0));
 
 		$this->_tbl->loadType($id, $this->_type);
 
@@ -119,7 +119,7 @@ class Content extends GenericItem
 		$text = str_replace(array("\n", "\r", "\t"), ' ', $text);
 		$text = preg_replace('/\s+/', ' ', $text);
 
-		$url = \JRequest::getVar('REQUEST_URI', '', 'server');
+		$url = Request::getVar('REQUEST_URI', '', 'server');
 		$url = ($url ?: Route::url('index.php?option=com_content&id=' . $article->alias));
 		$url = str_replace('?tryto=collect', '', $url);
 		$url = str_replace('no_html=1', '', $url);

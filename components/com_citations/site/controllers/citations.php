@@ -102,7 +102,7 @@ class Citations extends SiteController
 		$this->view->allow_import = $this->config->get('citation_import', 1);
 		$this->view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 		$this->view->isAdmin = false;
-		if ($this->juser->authorize($this->_option, 'import'))
+		if (User::authorize($this->_option, 'import'))
 		{
 			$this->view->isAdmin = true;
 		}
@@ -127,7 +127,7 @@ class Citations extends SiteController
 		$this->view->database = $this->database;
 		$this->view->config   = $this->config;
 		$this->view->isAdmin  = false;
-		if ($this->juser->authorize($this->_option, 'import'))
+		if (User::authorize($this->_option, 'import'))
 		{
 			$this->view->isAdmin = true;
 		}
@@ -141,29 +141,29 @@ class Citations extends SiteController
 		// Incoming
 		$this->view->filters = array(
 			// Paging filters
-			'limit'           => \JRequest::getInt('limit', 50, 'request'),
-			'start'           => \JRequest::getInt('limitstart', 0, 'get'),
+			'limit'           => Request::getInt('limit', 50, 'request'),
+			'start'           => Request::getInt('limitstart', 0, 'get'),
 			// Search/filtering params
-			'id'              => \JRequest::getInt('id', 0),
-			'tag'             => \JRequest::getVar('tag', '', 'request', 'none', 2),
-			'search'          => \JRequest::getVar('search', ''),
-			'type'            => \JRequest::getVar('type', ''),
-			'author'          => \JRequest::getVar('author', ''),
-			'publishedin'     => \JRequest::getVar('publishedin', ''),
-			'year_start'      => \JRequest::getInt('year_start', $earliest_year),
-			'year_end'        => \JRequest::getInt('year_end', date("Y")),
-			'filter'          => \JRequest::getVar('filter', ''),
-			'sort'            => \JRequest::getVar('sort', 'created DESC'),
-			'reftype'         => \JRequest::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
-			'geo'             => \JRequest::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
-			'aff'             => \JRequest::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
-			'startuploaddate' => \JRequest::getVar('startuploaddate', '0000-00-00'),
-			'enduploaddate'   => \JRequest::getVar('enduploaddate', '0000-00-00'),
+			'id'              => Request::getInt('id', 0),
+			'tag'             => Request::getVar('tag', '', 'request', 'none', 2),
+			'search'          => Request::getVar('search', ''),
+			'type'            => Request::getVar('type', ''),
+			'author'          => Request::getVar('author', ''),
+			'publishedin'     => Request::getVar('publishedin', ''),
+			'year_start'      => Request::getInt('year_start', $earliest_year),
+			'year_end'        => Request::getInt('year_end', date("Y")),
+			'filter'          => Request::getVar('filter', ''),
+			'sort'            => Request::getVar('sort', 'created DESC'),
+			'reftype'         => Request::getVar('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1)),
+			'geo'             => Request::getVar('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1)),
+			'aff'             => Request::getVar('aff', array('university' => 1, 'industry' => 1, 'government' => 1)),
+			'startuploaddate' => Request::getVar('startuploaddate', '0000-00-00'),
+			'enduploaddate'   => Request::getVar('enduploaddate', '0000-00-00'),
 			'group'           => ''
 		);
 
 		// Do we have a group filter?
-		if ($group = \JRequest::getVar('group', ''))
+		if ($group = Request::getVar('group', ''))
 		{
 			$this->view->filters['scope']    = 'groups';
 			$this->view->filters['scope_id'] = $group;
@@ -209,7 +209,7 @@ class Citations extends SiteController
 		}
 		else
 		{
-			$this->view->filters['idlist'] = \JRequest::getVar('idlist', $session->get('idlist'));
+			$this->view->filters['idlist'] = Request::getVar('idlist', $session->get('idlist'));
 			$session->set('idlist', $this->view->filters['idlist']);
 		}
 
@@ -286,7 +286,7 @@ class Citations extends SiteController
 		));
 
 		// Get the users id to make lookup
-		$users_ip = \JRequest::ip();
+		$users_ip = Request::ip();
 
 		// Get the param for ip regex to use machine ip
 		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
@@ -377,12 +377,12 @@ class Citations extends SiteController
 	public function viewTask()
 	{
 		// get request vars
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		//make sure we have an id
 		if (!$id || $id == 0)
 		{
-			\JError::raiseError(404, Lang::txt('COM_CITATIONS_MUST_HAVE_ID'));
+			App::abort(404, Lang::txt('COM_CITATIONS_MUST_HAVE_ID'));
 			return;
 		}
 
@@ -396,14 +396,14 @@ class Citations extends SiteController
 		//make sure we got a citation
 		if (!isset($this->view->citation->title) || $this->view->citation->title == '')
 		{
-			\JError::raiseError(404, Lang::txt('COM_CITATIONS_NO_CITATION_WITH_ID'));
+			App::abort(404, Lang::txt('COM_CITATIONS_NO_CITATION_WITH_ID'));
 			return;
 		}
 
 		// make sure citation is published
 		if (!$this->view->citation->published)
 		{
-			\JError::raiseError(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
+			App::abort(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
 			return;
 		}
 
@@ -450,7 +450,7 @@ class Citations extends SiteController
 		//get any messages & display view
 		$this->view->messages = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->config   = $this->config;
-		$this->view->juser    = $this->juser;
+		$this->view->juser    = User::getRoot();
 		$this->view->display();
 	}
 
@@ -469,7 +469,7 @@ class Citations extends SiteController
 		);
 
 		// get the users id to make lookup
-		$userIp = \JRequest::ip();
+		$userIp = Request::ip();
 
 		// get the param for ip regex to use machine ip
 		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
@@ -554,7 +554,7 @@ class Citations extends SiteController
 	public function editTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -562,7 +562,7 @@ class Citations extends SiteController
 
 		// Check if admin
 		$isAdmin = false;
-		if ($this->juser->authorize($this->_option, 'manage'))
+		if (User::authorize($this->_option, 'manage'))
 		{
 			$isAdmin = true;
 		}
@@ -570,7 +570,7 @@ class Citations extends SiteController
 		// are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);
 		if ($allowImport == 0
-		|| ($allowImport == 2 && $this->juser->get('usertype') == 'Super Administrator'))
+		|| ($allowImport == 2 && User::get('usertype') == 'Super Administrator'))
 		{
 			// Redirect
 			$this->setRedirect(
@@ -610,7 +610,7 @@ class Citations extends SiteController
 		));
 
 		// Incoming - expecting an array id[]=4232
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Pub author
 		$pubAuthor = false;
@@ -667,7 +667,7 @@ class Citations extends SiteController
 		// Set the ID of the creator
 		if (!$id)
 		{
-			$this->view->row->uid = $this->juser->get('id');
+			$this->view->row->uid = User::get('id');
 
 			// It's new - no associations to get
 			$this->view->assocs = array();
@@ -730,7 +730,7 @@ class Citations extends SiteController
 				{
 					$objO = new \ProjectOwner($this->database);
 
-					if ($objO->isOwner($this->juser->get('id'), $objP->project_id))
+					if ($objO->isOwner(User::get('id'), $objP->project_id))
 					{
 						return true;
 					}
@@ -749,7 +749,7 @@ class Citations extends SiteController
 	public function saveTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
@@ -763,11 +763,11 @@ class Citations extends SiteController
 		}
 
 		//get tags
-		$tags = trim(\JRequest::getVar('tags', ''));
+		$tags = trim(Request::getVar('tags', ''));
 		unset($c['tags']);
 
 		//get badges
-		$badges = trim(\JRequest::getVar('badges', ''));
+		$badges = trim(Request::getVar('badges', ''));
 		unset($c['badges']);
 
 		// clean vars
@@ -795,7 +795,7 @@ class Citations extends SiteController
 		}
 
 		// Field named 'uri' due to conflict with existing 'url' variable
-		$row->url = \JRequest::getVar('uri', '', 'post');
+		$row->url = Request::getVar('uri', '', 'post');
 		$row->url = Sanitize::clean($row->url);
 		if (!filter_var($row->url, FILTER_VALIDATE_URL))
 		{
@@ -819,7 +819,7 @@ class Citations extends SiteController
 		}
 
 		// Incoming associations
-		$arr = \JRequest::getVar('assocs', array());
+		$arr = Request::getVar('assocs', array());
 
 		$ignored = array();
 
@@ -875,14 +875,14 @@ class Citations extends SiteController
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
 			$ct1 = new Tags($row->id);
-			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
+			$ct1->setTags($tags, User::get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
 			$ct2 = new Tags($row->id);
-			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
+			$ct2->setTags($badges, User::get('id'), 0, 1, 'badge');
 		}
 
 		// Redirect
@@ -912,14 +912,14 @@ class Citations extends SiteController
 	public function deleteTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask();
 			return;
 		}
 
 		// Incoming (we're expecting an array)
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -935,7 +935,7 @@ class Citations extends SiteController
 			foreach ($ids as $id)
 			{
 				// Fetch and delete all the associations to this citation
-				$isAdmin = ($this->juser->get("usertype") == "Super Administrator") ? true : false;
+				$isAdmin = (User::get("usertype") == "Super Administrator") ? true : false;
 				$assocs = $assoc->getRecords(array('cid' => $id), $isAdmin);
 				foreach ($assocs as $a)
 				{
@@ -956,7 +956,7 @@ class Citations extends SiteController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			Route::url('index.php?option=' . $this->_option)
 		);
 	}
 
@@ -968,8 +968,8 @@ class Citations extends SiteController
 	public function downloadTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0, 'request');
-		$format = strtolower(\JRequest::getVar('format', 'bibtex', 'request'));
+		$id = Request::getInt('id', 0, 'request');
+		$format = strtolower(Request::getVar('format', 'bibtex', 'request'));
 
 		// Esnure we have an ID to work with
 		if (!$id)
@@ -1020,11 +1020,11 @@ class Citations extends SiteController
 	public function downloadbatchTask()
 	{
 		// get the submit buttons value
-		$download = \JRequest::getVar('download', '', 'post');
+		$download = Request::getVar('download', '', 'post');
 
 		// get the citations we want to export
-		$citationsString = \JRequest::getVar("idlist", '' , "post");
-		$citations       = explode("-", $citationsString);
+		$citationsString = Request::getVar('idlist', '' , "post");
+		$citations       = explode('-', $citationsString);
 
 		// return to browse mode if we really dont wanna download
 		if (strtolower($download) != 'endnote'
@@ -1180,7 +1180,7 @@ class Citations extends SiteController
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . \JRequest::getVar('format', 'apa');
+		echo 'format' . Request::getVar('format', 'apa');
 	}
 
 	/**
@@ -1191,7 +1191,7 @@ class Citations extends SiteController
 	public function downloadimageTask()
 	{
 		// get the image we want to serve
-		$image = \JRequest::getVar('image', '');
+		$image = Request::getVar('image', '');
 
 		// if we dont have an image were done
 		if ($image == '') return;

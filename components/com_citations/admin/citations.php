@@ -30,7 +30,7 @@
 
 namespace Components\Citations\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_citations'))
+if (!\User::authorise('core.manage', 'com_citations'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -46,7 +46,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'format.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'format.php');
 
-$controllerName = \JRequest::getCmd('controller', 'citations');
+$controllerName = \Request::getCmd('controller', 'citations');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'citations';
@@ -55,12 +55,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 \JSubMenuHelper::addEntry(
 	\Lang::txt('CITATIONS'),
 	\Route::url('index.php?option=com_citations&controller=citations'),
-	($controllerName == 'citations' && \JRequest::getVar('task', '') != 'stats')
+	($controllerName == 'citations' && \Request::getVar('task', '') != 'stats')
 );
 \JSubMenuHelper::addEntry(
 	\Lang::txt('CITATION_STATS'),
 	\Route::url('index.php?option=com_citations&controller=citations&task=stats'),
-	($controllerName == 'citations' && \JRequest::getVar('task', '') == 'stats')
+	($controllerName == 'citations' && \Request::getVar('task', '') == 'stats')
 );
 \JSubMenuHelper::addEntry(
 	\Lang::txt('CITATION_TYPES'),

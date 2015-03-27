@@ -62,7 +62,6 @@ class Collections extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get filters
@@ -98,7 +97,7 @@ class Collections extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -130,12 +129,12 @@ class Collections extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			if (is_array($id))
 			{
@@ -150,7 +149,7 @@ class Collections extends AdminController
 
 		if (!$this->view->row->exists())
 		{
-			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created_by', User::get('id'));
 		}
 
 		// Set any errors
@@ -173,10 +172,10 @@ class Collections extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
 		$row = new Collection($fields['id']);
@@ -196,7 +195,7 @@ class Collections extends AdminController
 		}
 
 		// Process tags
-		//$row->tag(trim(\JRequest::getVar('tags', '')));
+		//$row->tag(trim(Request::getVar('tags', '')));
 
 		if ($this->getTask() == 'apply')
 		{
@@ -218,10 +217,10 @@ class Collections extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -295,10 +294,10 @@ class Collections extends AdminController
 	public function accessTask($access=0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
@@ -341,12 +340,12 @@ class Collections extends AdminController
 	public function stateTask($state=0)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$state = $this->getTask() == 'publish' ? 1 : 0;
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource

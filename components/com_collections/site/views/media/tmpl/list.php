@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 
 if (!$no_html)
 {

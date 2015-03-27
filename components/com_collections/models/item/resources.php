@@ -69,14 +69,14 @@ class Resources extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_resources')
+		if (Request::getCmd('option') != 'com_resources')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getInt('id', 0))
+		if (!Request::getInt('id', 0))
 		{
-			if (!\JRequest::getVar('alias', ''))
+			if (!Request::getVar('alias', ''))
 			{
 				return false;
 			}
@@ -98,14 +98,14 @@ class Resources extends GenericItem
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('id', 0));
+		$id = ($id ?: Request::getInt('id', 0));
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
 		$resource = null;
 
 		if (!$id)
 		{
-			$alias = \JRequest::getVar('alias', '');
+			$alias = Request::getVar('alias', '');
 
 			$resource = new Resource($this->_db);
 			$resource->loadAlias($alias);

@@ -47,7 +47,7 @@ class Collections extends SiteController
 	public function execute()
 	{
 		// This needs to be called to ensure scripts are pushed to the document
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
 		}
@@ -72,14 +72,14 @@ class Collections extends SiteController
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'   => \JRequest::getInt('limit', 25),
-			'start'   => \JRequest::getInt('limitstart', 0),
-			'search'  => \JRequest::getVar('search', ''),
-			'id'      => \JRequest::getInt('id', 0),
-			'user_id' => $this->juser->get('id'),
+			'limit'   => Request::getInt('limit', 25),
+			'start'   => Request::getInt('limitstart', 0),
+			'search'  => Request::getVar('search', ''),
+			'id'      => Request::getInt('id', 0),
+			'user_id' => User::get('id'),
 			'sort'    => 'p.created',
 			'state'   => 1,
-			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
+			'access'  => (!User::isGuest() ? array(0, 1) : 0)
 		);
 		if ($this->view->filters['id'])
 		{
@@ -98,7 +98,7 @@ class Collections extends SiteController
 
 		$this->view->collections = $model->collections(array(
 			'count'      => true,
-			'access'     => (!$this->juser->get('guest') ? array(0, 1) : 0),
+			'access'     => (!User::isGuest() ? array(0, 1) : 0),
 			'state'      => 1
 		));
 
@@ -121,12 +121,12 @@ class Collections extends SiteController
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'limit'   => \JRequest::getInt('limit', 25),
-			'start'   => \JRequest::getInt('limitstart', 0),
-			'search'  => \JRequest::getVar('search', ''),
-			'id'      => \JRequest::getInt('id', 0),
+			'limit'   => Request::getInt('limit', 25),
+			'start'   => Request::getInt('limitstart', 0),
+			'search'  => Request::getVar('search', ''),
+			'id'      => Request::getInt('id', 0),
 			'state'   => 1,
-			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
+			'access'  => (!User::isGuest() ? array(0, 1) : 0)
 		);
 		if ($this->view->filters['id'])
 		{
@@ -138,7 +138,7 @@ class Collections extends SiteController
 		$this->view->filters['count'] = true;
 		$this->view->total = $model->collections($this->view->filters);
 
-		$this->view->filters['user_id'] = $this->juser->get('id');
+		$this->view->filters['user_id'] = User::get('id');
 
 		$this->view->posts = $model->posts($this->view->filters);
 		unset($this->view->filters['user_id']);
@@ -165,11 +165,11 @@ class Collections extends SiteController
 
 		// Filters for returning results
 		$this->view->filters = array(
-			'id'      => \JRequest::getInt('id', 0),
-			'search'  => \JRequest::getVar('search', ''),
+			'id'      => Request::getInt('id', 0),
+			'search'  => Request::getVar('search', ''),
 			'sort'    => 'p.created',
 			'state'   => 1,
-			'access'  => (!$this->juser->get('guest') ? array(0, 1) : 0)
+			'access'  => (!User::isGuest() ? array(0, 1) : 0)
 		);
 		if ($this->view->filters['id'])
 		{
@@ -186,7 +186,7 @@ class Collections extends SiteController
 		$this->view->collections = $model->collections(array(
 			'count'  => true,
 			'state'  => 1,
-			'access' => (!$this->juser->get('guest') ? array(0, 1) : 0)
+			'access' => (!User::isGuest() ? array(0, 1) : 0)
 		));
 
 		$this->_buildTitle();
@@ -207,7 +207,7 @@ class Collections extends SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -223,14 +223,14 @@ class Collections extends SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 		}
 	}
 

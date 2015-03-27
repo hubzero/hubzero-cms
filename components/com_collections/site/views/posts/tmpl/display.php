@@ -33,10 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $item = $this->post->item();
 
-$juser = JFactory::getUser();
-
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) {
 	$this->css();
@@ -194,16 +192,16 @@ if (!$no_html) {
 					<?php } ?>
 					</ol>
 				<?php } ?>
-				<?php if (!$juser->get('guest')) { ?>
+				<?php if (!User::isGuest()) { ?>
 					<form action="<?php echo Route::url($base . '&post=' . $this->post->get('id') . '&task=savecomment' . ($this->no_html ? '&no_html=' . $this->no_html  : '')); ?>" method="post" id="commentform" enctype="multipart/form-data">
 						<p class="comment-member-photo">
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, 0); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->juser->get('name')))); ?>" />
+							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto(User::getRoot(), 0); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes(User::get('name')))); ?>" />
 						</p>
 
 						<fieldset>
 							<p class="comment-title">
-								<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->juser->get('id')); ?>">
-									<?php echo $this->escape(stripslashes($this->juser->get('name'))); ?>
+								<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
+									<?php echo $this->escape(stripslashes(User::get('name'))); ?>
 								</a>
 								<span class="permalink">
 									<?php
@@ -271,8 +269,8 @@ if (!$no_html) {
 							</span>
 						</p>
 						<div class="actions">
-							<?php if (!$this->juser->get('guest')) { ?>
-								<?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == $this->juser->get('id')) { ?>
+							<?php if (!User::isGuest()) { ?>
+								<?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == User::get('id')) { ?>
 										<a class="edit" data-id="<?php echo $this->collection->get('id'); ?>" href="<?php echo Route::url($this->collection->link() . '/edit'); ?>">
 											<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
 										</a>
@@ -366,8 +364,8 @@ if (!$no_html) {
 								</span>
 							</p>
 							<div class="actions">
-								<?php if (!$this->juser->get('guest')) { ?>
-									<?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == $this->juser->get('id')) { ?>
+								<?php if (!User::isGuest()) { ?>
+									<?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == User::get('id')) { ?>
 											<a class="edit" data-id="<?php echo $collection->get('id'); ?>" href="<?php echo Route::url($collection->link() . '/edit'); ?>">
 												<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
 											</a>

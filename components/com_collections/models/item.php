@@ -444,7 +444,7 @@ class Item extends Base
 		{
 			$this->_tags = new Tags($this->get('id'));
 		}
-		$user_id = $user_id ?: \JFactory::getUser()->get('id');
+		$user_id = $user_id ?: User::get('id');
 
 		return $this->_tags->setTags($tags, $user_id, $admin);
 	}
@@ -476,16 +476,14 @@ class Item extends Base
 	{
 		require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
 
-		$juser = \JFactory::getUser();
-
 		$vote = new Tables\Vote($this->_db);
-		$vote->loadByBulletin($this->get('id'), $juser->get('id'));
+		$vote->loadByBulletin($this->get('id'), User::get('id'));
 
 		$like = true;
 
 		if (!$vote->id)
 		{
-			$vote->user_id = $juser->get('id');
+			$vote->user_id = User::get('id');
 			$vote->item_id = $this->get('id');
 			// Store the record
 			if (!$vote->check())
@@ -675,7 +673,7 @@ class Item extends Base
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => $this->get('option', \JRequest::getCmd('option', 'com_collections')),
+						'option'   => $this->get('option', Request::getCmd('option', 'com_collections')),
 						'scope'    => 'collections',
 						'pagename' => 'collections',
 						'pageid'   => 0,
@@ -807,7 +805,7 @@ class Item extends Base
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = (!\JFactory::getUser()->get('guest') ? array(0, 1) : 0);
+			$filters['access'] = (!User::isGuest() ? array(0, 1) : 0);
 		}
 
 		switch (strtolower($what))
@@ -853,12 +851,12 @@ class Item extends Base
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_collections')
+		if (Request::getCmd('option') != 'com_collections')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getInt('post', 0))
+		if (!Request::getInt('post', 0))
 		{
 			return false;
 		}
@@ -879,7 +877,7 @@ class Item extends Base
 			return true;
 		}
 
-		$id = ($id ?: \JRequest::getInt('post', 0));
+		$id = ($id ?: Request::getInt('post', 0));
 
 		if (!$this->_tbl->loadType($id, $this->_type))
 		{

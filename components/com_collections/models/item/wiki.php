@@ -70,12 +70,12 @@ class Wiki extends GenericItem
 	 */
 	public function canCollect()
 	{
-		if (\JRequest::getCmd('option') != 'com_wiki')
+		if (Request::getCmd('option') != 'com_wiki')
 		{
 			return false;
 		}
 
-		if (!\JRequest::getVar('pagename', ''))
+		if (!Request::getVar('pagename', ''))
 		{
 			return false;
 		}
@@ -101,7 +101,7 @@ class Wiki extends GenericItem
 
 		if (!$id)
 		{
-			$group = \JRequest::getVar('cn', '');
+			$group = Request::getVar('cn', '');
 
 			$book = new Book(($group ? $group : '__site__'));
 			$page = $book->page();

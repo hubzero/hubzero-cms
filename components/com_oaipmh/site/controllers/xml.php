@@ -46,11 +46,11 @@ class Xml extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$metadata   = \JRequest::getVar('metadataPrefix', 'oai_dc');
-		$from       = \JRequest::getVar('from');
-		$until      = \JRequest::getVar('until');
-		$set        = \JRequest::getVar('set');
-		$resumption = \JRequest::getVar('resumptionToken');
+		$metadata   = \Request::getVar('metadataPrefix', 'oai_dc');
+		$from       = \Request::getVar('from');
+		$until      = \Request::getVar('until');
+		$set        = \Request::getVar('set');
+		$resumption = \Request::getVar('resumptionToken');
 
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
@@ -59,7 +59,7 @@ class Xml extends SiteController
 
 		$service = new Service($metadata);
 		$service->set('metadataPrefix', $metadata)
-				->set('repositoryName', $this->config->get('repository_name', \JFactory::getConfig()->get('sitename')))
+				->set('repositoryName', $this->config->get('repository_name', \Config::get('sitename')))
 				->set('baseURL', $hubname)
 				->set('protocolVersion', '2.0')
 				->set('adminEmail', $this->config->get('email'))
@@ -72,11 +72,11 @@ class Xml extends SiteController
 				->set('gran', $this->config->get('gran', 'c'))
 				->set('resumption', $resumption);
 
-		$verb = \JRequest::getVar('verb');
+		$verb = \Request::getVar('verb');
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$service->record(\JRequest::getVar('identifier'));
+				$service->record(\Request::getVar('identifier'));
 			break;
 
 			case 'Identify':

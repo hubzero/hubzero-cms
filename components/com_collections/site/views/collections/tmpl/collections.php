@@ -31,9 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
 $base  = 'index.php?option=' . $this->option;
-$mode  = JRequest::getWord('mode', 'grid');
+$mode  = Request::getWord('mode', 'grid');
 
 $this->css()
      ->js('jquery.masonry')
@@ -79,9 +78,9 @@ $this->css()
 	<section class="main section">
 		<?php if ($this->rows->total() > 0) { ?>
 			<div id="posts" data-base="<?php echo JURI::base(true); ?>" class="view-as <?php echo $mode; ?>">
-				<?php if (!$juser->get('guest') && !JRequest::getInt('no_html', 0)) { ?>
+				<?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-post">
-						<a class="icon-add add" href="<?php echo Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=collections&task=new'); ?>">
+						<a class="icon-add add" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=new'); ?>">
 							<?php echo Lang::txt('COM_COLLECTIONS_NEW_COLLECTION'); ?>
 						</a>
 					</div>
@@ -109,8 +108,8 @@ $this->css()
 									</span>
 								</p>
 								<div class="actions">
-									<?php if (!$juser->get('guest')) { ?>
-										<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == $juser->get('id')) { ?>
+									<?php if (!User::isGuest()) { ?>
+										<?php if ($row->get('object_type') == 'member' && $row->get('object_id') == User::get('id')) { ?>
 												<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($row->link() . '/edit'); ?>">
 													<span><?php echo Lang::txt('COM_COLLECTIONS_EDIT'); ?></span>
 												</a>

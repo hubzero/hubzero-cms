@@ -74,10 +74,10 @@ class Format extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		//get format
-		$format = \JRequest::getVar('format', array());
+		$format = Request::getVar('format', array());
 
 		$citationsFormat = new Tables\Format($this->database);
 		$citationsFormat->save($format);

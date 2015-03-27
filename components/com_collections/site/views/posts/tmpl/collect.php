@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->collection_id)
 {
-	$task = JRequest::getVar('board', 0) . '/collect';
+	$task = Request::getVar('board', 0) . '/collect';
 }
 ?>
 
@@ -113,7 +113,7 @@ if ($this->collection_id)
 	<input type="hidden" name="item_id" value="<?php echo $this->item_id; ?>" />
 	<input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 
-	<input type="hidden" name="id" value="<?php echo $this->juser->get('id'); ?>" />
+	<input type="hidden" name="id" value="<?php echo User::get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="collect" />

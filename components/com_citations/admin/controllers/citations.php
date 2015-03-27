@@ -53,7 +53,6 @@ class Citations extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -61,7 +60,7 @@ class Citations extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -118,10 +117,10 @@ class Citations extends AdminController
 	public function editTask()
 	{
 		//stop menu from working?
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		//get request vars - expecting an array id[]=4232
-		$id = \JRequest::getVar('id', array());
+		$id = Request::getVar('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : 0;
@@ -163,7 +162,7 @@ class Citations extends AdminController
 		else
 		{
 			//set the creator
-			$this->view->row->uid = $this->juser->get('id');
+			$this->view->row->uid = User::get('id');
 
 			// It's new - no associations to get
 			$this->view->assocs = array();
@@ -228,7 +227,7 @@ class Citations extends AdminController
 	public function publishTask()
 	{
 		//get request vars - expecting an array id[]=4232
-		$id = \JRequest::getVar('id', array());
+		$id = Request::getVar('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : 0;
@@ -262,7 +261,7 @@ class Citations extends AdminController
 	public function unpublishTask()
 	{
 		//get request vars - expecting an array id[]=4232
-		$id = \JRequest::getVar('id', array());
+		$id = Request::getVar('id', array());
 		if (is_array($id))
 		{
 			$id = (!empty($id)) ? $id[0] : 0;
@@ -311,14 +310,14 @@ class Citations extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$citation = array_map('trim', \JRequest::getVar('citation', array(), 'post'));
-		$exclude = \JRequest::getVar('exclude', '', 'post');
-		$rollover = \JRequest::getInt("rollover", 0);
-		$this->tags = trim(\JRequest::getVar('tags', ''));
-		$this->badges = trim(\JRequest::getVar('badges', ''));
-		$this->sponsors = \JRequest::getVar('sponsors', array(), 'post');
+		$citation = array_map('trim', Request::getVar('citation', array(), 'post'));
+		$exclude = Request::getVar('exclude', '', 'post');
+		$rollover = Request::getInt("rollover", 0);
+		$this->tags = trim(Request::getVar('tags', ''));
+		$this->badges = trim(Request::getVar('badges', ''));
+		$this->sponsors = Request::getVar('sponsors', array(), 'post');
 
 		// Bind incoming data to object
 		$row = new Citation($this->database);
@@ -361,7 +360,7 @@ class Citations extends AdminController
 		}
 
 		// Incoming associations
-		$arr = \JRequest::getVar('assocs', array(), 'post');
+		$arr = Request::getVar('assocs', array(), 'post');
 		$ignored = array();
 		foreach ($arr as $a)
 		{
@@ -412,8 +411,8 @@ class Citations extends AdminController
 
 		//add tags & badges
 		$ct = new Tags($row->id);
-		$ct->setTags($this->tags, $this->juser->get('id'), 0, 1, '');
-		$ct->setTags($this->badges, $this->juser->get('id'), 0, 1, 'badge');
+		$ct->setTags($this->tags, User::get('id'), 0, 1, '');
+		$ct->setTags($this->badges, User::get('id'), 0, 1, 'badge');
 
 		// Redirect
 		$this->setRedirect(
@@ -462,7 +461,7 @@ class Citations extends AdminController
 	public function removeTask()
 	{
 		// Incoming (we're expecting an array)
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
