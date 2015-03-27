@@ -66,7 +66,7 @@ class Migration20150326183839ComTools extends Base
 			}
 
 			// Create a preferences entry for anyone who has a non-default value for jobs allowed
-			$query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` WHERE `jobsAllowed`!=3";
+			$query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
 			$this->db->setQuery($query);
 			if ($rows = $this->db->loadObjectList())
 			{
