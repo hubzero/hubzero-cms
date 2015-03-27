@@ -157,7 +157,7 @@ class NewsletterControllerApi extends \Hubzero\Component\ApiController
 		$newsletters = $newsletterNewsletter->getNewsletters();
 
 		//add newsletter details to return array
-		foreach($newsletters as $k => $newsletter)
+		foreach ($newsletters as $k => $newsletter)
 		{
 			$result[$k]['id'] = $newsletter->issue;
 			$result[$k]['title'] = $newsletter->name;

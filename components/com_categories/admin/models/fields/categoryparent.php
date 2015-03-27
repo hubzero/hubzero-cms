@@ -134,16 +134,16 @@ class JFormFieldCategoryParent extends JFormFieldList
 						if ($user->authorise('core.edit.state', $extension . '.category.' . $oldCat) != true)
 						{
 							if ($option->value != $oldCat)
-							{echo 'y';
+							{
+								echo 'y';
 								unset($options[$i]);
 							}
 						}
 						// However, if you can edit.state you can also move this to another category for which you have
 						// create permission and you should also still be able to save in the current category.
-						elseif
-							(($user->authorise('core.create', $extension . '.category.' . $option->value) != true)
-							&& $option->value != $oldCat)
-						{echo 'x';
+						else if (($user->authorise('core.create', $extension . '.category.' . $option->value) != true) && $option->value != $oldCat)
+						{
+							echo 'x';
 							unset($options[$i]);
 						}
 					}

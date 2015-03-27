@@ -18,7 +18,7 @@ defined('_JEXEC') or die;
 		<?php echo $this->form->getInput('metakey'); ?>
 	</div>
 
-	<?php foreach($this->form->getGroup('metadata') as $field): ?>
+	<?php foreach ($this->form->getGroup('metadata') as $field): ?>
 		<?php if ($field->hidden): ?>
 			<?php echo $field->input; ?>
 		<?php else: ?>
