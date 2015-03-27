@@ -194,7 +194,7 @@ class Migration20150327144022ComStorefront extends Base
 				(21,'Membership','membership'),
 				(22,'Access Group Membership','membership')";
 			$this->db->setQuery($query);
-			$this->db->query(); 
+			$this->db->query();
 
 			/* `#__storefront_products` */
 			$query = "DROP TABLE IF EXISTS `#__storefront_products`";
