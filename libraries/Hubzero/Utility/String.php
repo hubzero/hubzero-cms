@@ -566,4 +566,83 @@ class String
 		}
 		return $pre . $value;
 	}
+
+	/**
+	 * Looks for literal occurances of a string (i.e. unquoted) and returns their positions
+	 *
+	 * @param  string $needle   the item of interest
+	 * @param  string $haystack the text in which to look for the needle
+	 * @return array
+	 * @since  2.0.0
+	 */
+	public static function findLiteral($needle, $haystack)
+	{
+		// Initialize vars
+		$open      = false;
+		$quoteChar = '';
+		$length    = strlen($haystack);
+		$instances = [];
+
+		// Go character by character through the sql statement
+		for ($i = 0; $i < $length; $i++)
+		{
+			// Grab the current character
+			$current = substr($haystack, $i, 1);
+
+			// If we come across a quote...
+			if ($current == '"' || $current == '\'')
+			{
+				// Work backwards to make sure the quote isn't escaped
+				$n = 2;
+				while (substr($haystack, $i - $n + 1, 1) == '\\' && $n < $i)
+				{
+					$n++;
+				}
+
+				// Even number of escapes means it's a real quote, odd number means it's actually escaped
+				if ($n % 2 == 0)
+				{
+					// If we had an open quote already, then make sure this is a close of the same type
+					if ($open)
+					{
+						// We're at a closing quote
+						if ($current == $quoteChar)
+						{
+							// Reset open status and quote character
+							$open      = false;
+							$quoteChar = '';
+						}
+					}
+					else
+					{
+						// This is an open quote
+						$open      = true;
+						$quoteChar = $current;
+					}
+				}
+			}
+
+			// If we find a needle and we're not in open quotes
+			if ($current == substr($needle, 0, 1) && !$open)
+			{
+				$match = true;
+
+				// Make sure the entire needle matches by going forward the length of the needle
+				for ($j=0; $j < strlen($needle); $j++)
+				{
+					// If at any point we stop matching, break out
+					if (substr($needle, $j, 1) != substr($haystack, $i + $j, 1))
+					{
+						$match = false;
+						break;
+					}
+				}
+
+				// If it all matched, record the position
+				if ($match) $instances[] = $i;
+			}
+		}
+
+		return $instances;
+	}
 }
