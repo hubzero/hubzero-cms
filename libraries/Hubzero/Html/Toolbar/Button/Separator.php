@@ -28,19 +28,48 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cache\Admin;
+namespace Hubzero\Html\Toolbar\Button;
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_cache'))
+use Hubzero\Html\Toolbar\Button;
+
+/**
+ * Renders a button separator
+ */
+class Separator extends Button
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	/**
+	 * Button type
+	 *
+	 * @var   string
+	 */
+	protected $_name = 'Separator';
+
+	/**
+	 * Get the HTML for a separator in the toolbar
+	 *
+	 * @param   array  &$definition  Class name and custom width
+	 * @return  The HTML for the separator
+	 */
+	public function render(&$definition)
+	{
+		// Initialise variables.
+		$class = null;
+		$style = null;
+
+		// Separator class name
+		$class = (empty($definition[1])) ? 'spacer' : $definition[1];
+		// Custom width
+		$style = (empty($definition[2])) ? null : ' style="width:' . intval($definition[2]) . 'px;"';
+
+		return '<li class="' . $class . '"' . $style . ">\n</li>\n";
+	}
+
+	/**
+	 * Empty implementation (not required for separator)
+	 *
+	 * @return  void
+	 */
+	public function fetchButton()
+	{
+	}
 }
-
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'cache.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'cache.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
-
-// Instantiate controller
-$controller = new Controllers\Cleanser();
-$controller->execute();
-$controller->redirect();

@@ -32,22 +32,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Answers\Helpers\Permissions::getActions('question');
 
-JToolBarHelper::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS'), 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS'), 'answers.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('questions');
+Toolbar::spacer();
+Toolbar::help('questions');
 
 ?>
 <script type="text/javascript">

@@ -24,23 +24,11 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cache\Admin;
-
-// Access check.
-if (!\User::authorise('core.manage', 'com_cache'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-}
-
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'cache.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'cache.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
-
-// Instantiate controller
-$controller = new Controllers\Cleanser();
-$controller->execute();
-$controller->redirect();
+return array(
+	'Toolbar' => 'Hubzero\Facades\Toolbar',
+	'Submenu' => 'Hubzero\Facades\Submenu',
+);

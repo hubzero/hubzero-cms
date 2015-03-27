@@ -31,15 +31,15 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(Lang::txt('COM_CACHE_CLEAR_CACHE'), 'clear.png');
-JToolBarHelper::custom('delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
-JToolBarHelper::divider();
-if (JFactory::getUser()->authorise('core.admin', 'com_cache'))
+Toolbar::title(Lang::txt('COM_CACHE_CLEAR_CACHE'), 'clear.png');
+Toolbar::custom('delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
+Toolbar::divider();
+if (User::authorise('core.admin', 'com_cache'))
 {
-	JToolBarHelper::preferences('com_cache');
+	Toolbar::preferences('com_cache');
 }
-JToolBarHelper::divider();
-JToolBarHelper::help('clear');
+Toolbar::divider();
+Toolbar::help('clear');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -65,13 +65,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th scope="col" class="title nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center nowrap">
-					<?php echo JHtml::_('grid.sort',  'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center">
-					<?php echo JHtml::_('grid.sort',  'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_CACHE_SIZE', 'size', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>

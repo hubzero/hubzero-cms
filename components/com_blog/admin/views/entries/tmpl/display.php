@@ -33,32 +33,32 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
-JToolBarHelper::title(Lang::txt('COM_BLOG_TITLE'), 'blog.png');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('', 'delete');
+	Toolbar::deleteList('', 'delete');
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('entries');
+Toolbar::spacer();
+Toolbar::help('entries');
 
 JHTML::_('behavior.tooltip');
 ?>

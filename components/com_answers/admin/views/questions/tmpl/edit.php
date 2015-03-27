@@ -34,16 +34,16 @@ $canDo = \Components\Answers\Helpers\Permissions::getActions('question');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
+Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS') . ': ' . $text, 'answers.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('question');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('question');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

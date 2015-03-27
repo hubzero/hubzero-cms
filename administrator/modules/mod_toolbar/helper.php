@@ -31,7 +31,6 @@
 namespace Modules\Toolbar;
 
 use Hubzero\Module\Module;
-use JToolBar;
 
 /**
  * Module class for displaying component toolbar
@@ -45,11 +44,8 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		// Import dependancies.
-		jimport('joomla.html.toolbar');
-
 		// Get the toolbar.
-		$toolbar = JToolBar::getInstance('toolbar')->render('toolbar');
+		$toolbar = \Toolbar::render('toolbar');
 
 		// Get the view
 		require $this->getLayoutPath($this->params->get('layout', 'default'));

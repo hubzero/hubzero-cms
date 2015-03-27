@@ -72,6 +72,23 @@ $app['app'] = $app;
 
 /*
 |--------------------------------------------------------------------------
+| Register The Core Service Providers
+|--------------------------------------------------------------------------
+|
+| Register all of the core pieces of the framework including session, 
+| caching, and more.
+|
+*/
+
+$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
+$services = file_exists($providers) ? require $providers : array();
+foreach ($services as $service)
+{
+	$app->register($service);
+}
+
+/*
+|--------------------------------------------------------------------------
 | Load The Aliases
 |--------------------------------------------------------------------------
 |

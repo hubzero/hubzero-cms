@@ -35,16 +35,16 @@ $canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS') . ': ' . $text, 'blog.png');
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS') . ': ' . $text, 'blog.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('comment');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('comment');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

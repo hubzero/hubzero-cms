@@ -42,17 +42,17 @@ require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 $scope = \Request::getCmd('scope', 'site');
 $controllerName = \Request::getCmd('controller', 'entries');
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_BLOG_SCOPE_SITE'),
 	\Route::url('index.php?option=com_blog&controller=entries&scope=site'),
 	($controllerName == 'entries' && $scope == 'site')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_BLOG_SCOPE_MEMBER'),
 	\Route::url('index.php?option=com_blog&controller=entries&scope=member'),
 	($controllerName == 'entries' && $scope == 'member')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_BLOG_SCOPE_GROUP'),
 	\Route::url('index.php?option=com_blog&controller=entries&scope=group'),
 	($controllerName == 'entries' && $scope == 'group')

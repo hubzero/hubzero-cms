@@ -45,12 +45,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'questions';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_ANSWERS_QUESTIONS'),
 	\Route::url('index.php?option=com_answers'),
 	($controllerName == 'questions')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_ANSWERS_RESPONSES'),
 	\Route::url('index.php?option=com_answers&controller=answers&qid=0'),
 	($controllerName == 'answers')

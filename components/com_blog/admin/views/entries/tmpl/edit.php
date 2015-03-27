@@ -34,16 +34,17 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = \Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-JToolBarHelper::title(Lang::txt('COM_BLOG_TITLE') . ': ' . $text, 'blog.png');
+
+Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . $text, 'blog.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('entry');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('entry');
 ?>
 <script type="text/javascript">
 Joomla.submitbutton = function(pressbutton) {

@@ -28,19 +28,32 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Cache\Admin;
+namespace Hubzero\Facades;
 
-// Access check.
-if (!\User::authorise('core.manage', 'com_cache'))
+/**
+ * Submenu facade
+ */
+class Submenu extends Facade
 {
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+	/**
+	 * Get the registered name.
+	 *
+	 * @return  string
+	 */
+	public static function getAccessor()
+	{
+		return 'submenu';
+	}
+
+	/**
+	 * Method to add a menu item to submenu.
+	 *
+	 * @param  string  $name  Name of the menu item.
+	 * @param  string  $link  URL of the menu item.
+	 * @param  bool    True if the item is active, false otherwise.
+	 */
+	public static function addEntry($name, $link = '', $active = false)
+	{
+		static::getRoot()->appendButton($name, $link, $active);
+	}
 }
-
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'cache.php');
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'cache.php');
-require_once(__DIR__ . DS . 'controllers' . DS . 'cleanser.php');
-
-// Instantiate controller
-$controller = new Controllers\Cleanser();
-$controller->execute();
-$controller->redirect();

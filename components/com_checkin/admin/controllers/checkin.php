@@ -83,7 +83,7 @@ class Checkin extends AdminController
 	public function checkinTask()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
 		$ids = Request::getVar('cid', array(), '', 'array');
@@ -114,17 +114,17 @@ class Checkin extends AdminController
 	 */
 	protected function addSubmenu($vName)
 	{
-		\JSubMenuHelper::addEntry(
+		Submenu::addEntry(
 			Lang::txt('JGLOBAL_SUBMENU_CHECKIN'),
 			Route::url('index.php?option=com_checkin'),
 			$vName == 'com_checkin'
 		);
-		\JSubMenuHelper::addEntry(
+		Submenu::addEntry(
 			Lang::txt('JGLOBAL_SUBMENU_CLEAR_CACHE'),
 			Route::url('index.php?option=com_cache'),
 			$vName == 'cache'
 		);
-		\JSubMenuHelper::addEntry(
+		Submenu::addEntry(
 			Lang::txt('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
 			Route::url('index.php?option=com_cache&view=purge'),
 			$vName == 'purge'

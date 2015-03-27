@@ -31,15 +31,15 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(Lang::txt('COM_CACHE_PURGE_EXPIRED_CACHE'), 'purge.png');
-JToolBarHelper::custom('purge', 'delete.png', 'delete_f2.png', 'COM_CACHE_PURGE_EXPIRED', false);
-JToolBarHelper::divider();
-if (JFactory::getUser()->authorise('core.admin', 'com_cache'))
+Toolbar::title(Lang::txt('COM_CACHE_PURGE_EXPIRED_CACHE'), 'purge.png');
+Toolbar::custom('purge', 'delete.png', 'delete_f2.png', 'COM_CACHE_PURGE_EXPIRED', false);
+Toolbar::divider();
+if (User::authorise('core.admin', 'com_cache'))
 {
-	JToolBarHelper::preferences('com_cache');
-	JToolBarHelper::divider();
+	Toolbar::preferences('com_cache');
+	Toolbar::divider();
 }
-JToolBarHelper::help('purge_expired');
+Toolbar::help('purge_expired');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">

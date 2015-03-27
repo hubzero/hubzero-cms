@@ -30,8 +30,9 @@
 
 namespace Components\Cache\Helpers;
 
-use JSubMenuHelper;
-use JHtml;
+use Submenu;
+use Route;
+use Lang;
 
 /**
  * Cache component helper.
@@ -47,8 +48,8 @@ class Cache
 	{
 		// Build the filter options.
 		return array(
-			JHtml::_('select.option', '0', \Lang::txt('JSITE')),
-			JHtml::_('select.option', '1', \Lang::txt('JADMINISTRATOR'))
+			\JHtml::_('select.option', '0', Lang::txt('JSITE')),
+			\JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'))
 		);
 	}
 
@@ -60,19 +61,19 @@ class Cache
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			\Lang::txt('JGLOBAL_SUBMENU_CHECKIN'),
-			\Route::url('index.php?option=com_checkin'),
+		Submenu::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_CHECKIN'),
+			Route::url('index.php?option=com_checkin'),
 			$vName == 'com_checkin'
 		);
-		JSubMenuHelper::addEntry(
-			\Lang::txt('JGLOBAL_SUBMENU_CLEAR_CACHE'),
-			\Route::url('index.php?option=com_cache'),
+		Submenu::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_CLEAR_CACHE'),
+			Route::url('index.php?option=com_cache'),
 			$vName == 'cache'
 		);
-		JSubMenuHelper::addEntry(
-			\Lang::txt('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
-			\Route::url('index.php?option=com_cache&view=purge'),
+		Submenu::addEntry(
+			Lang::txt('JGLOBAL_SUBMENU_PURGE_EXPIRED_CACHE'),
+			Route::url('index.php?option=com_cache&view=purge'),
 			$vName == 'purge'
 		);
 	}
