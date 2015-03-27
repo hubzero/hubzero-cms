@@ -179,10 +179,8 @@ class Polls extends AdminController
 		// Dearch filter
 		$lists['search']    = $search;
 
-		$user = \JFactory::getUser();
-
 		$this->view
-			->set('user', $user)
+			->set('user', User::getRoot())
 			->set('lists', $lists)
 			->set('items', $rows)
 			->set('pagination', $pagination)
@@ -196,12 +194,12 @@ class Polls extends AdminController
 	 */
 	public function previewTask()
 	{
-		\JRequest::setVar('hidemainmenu', 1);
-		\JRequest::setVar('tmpl', 'component');
+		Request::setVar('hidemainmenu', 1);
+		Request::setVar('tmpl', 'component');
 
 		$db = \JFactory::getDBO();
 
-		$id = \JRequest::getVar('cid', array(0));
+		$id = Request::getVar('cid', array(0));
 		if (is_array($id) && !empty($id))
 		{
 			$id = $id[0];
@@ -232,14 +230,14 @@ class Polls extends AdminController
 	 */
 	public function editTask($poll=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		$db = \JFactory::getDBO();
-		$user = \JFactory::getUser();
+		$user = User::getRoot();
 
 		if (!$poll)
 		{
-			$id = \JRequest::getVar('cid', array(0));
+			$id = Request::getVar('cid', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -297,9 +295,9 @@ class Polls extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$post = \JRequest::get('post');
+		$post = Request::get('post');
 
 		// Save the poll parent information
 		$db = \JFactory::getDBO();
@@ -345,7 +343,7 @@ class Polls extends AdminController
 			}
 		}
 
-		switch (\JRequest::getVar('task', 'save'))
+		switch (Request::getVar('task', 'save'))
 		{
 			case 'apply':
 				$msg  = Lang::txt('COM_POLL_ITEM_SAVED');
@@ -370,10 +368,10 @@ class Polls extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		$db  = \JFactory::getDBO();
-		$cid = \JRequest::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 		\JArrayHelper::toInteger($cid);
 
 		$msg = '';
@@ -402,12 +400,12 @@ class Polls extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
-		$cid = \JRequest::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 		\JArrayHelper::toInteger($cid);
 
-		$publish = (\JRequest::getVar('task') == 'publish' ? 1 : 0);
+		$publish = (Request::getVar('task') == 'publish' ? 1 : 0);
 
 		if (count($cid) < 1)
 		{
@@ -423,7 +421,7 @@ class Polls extends AdminController
 		$cids = implode( ',', $cid);
 
 		$db   = \JFactory::getDBO();
-		$user = \JFactory::getUser();
+		$user = User::getRoot();
 
 		$query = 'UPDATE `#__polls`'
 			. ' SET published = ' . (int) $publish
@@ -454,12 +452,12 @@ class Polls extends AdminController
 	public function openTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
-		$cid = \JRequest::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 		\JArrayHelper::toInteger($cid);
 
-		$publish = (\JRequest::getVar('task') == 'open' ? 1 : 0);
+		$publish = (Request::getVar('task') == 'open' ? 1 : 0);
 
 		if (count($cid) < 1)
 		{
@@ -475,7 +473,7 @@ class Polls extends AdminController
 		$cids = implode( ',', $cid);
 
 		$db   = \JFactory::getDBO();
-		$user = \JFactory::getUser();
+		$user = User::getRoot();
 
 		$query = 'UPDATE `#__polls`'
 			. ' SET open = ' . (int) $publish
@@ -506,9 +504,9 @@ class Polls extends AdminController
 	public function cancelTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		if ($id  = \JRequest::getVar('id', 0, '', 'int'))
+		if ($id  = Request::getVar('id', 0, '', 'int'))
 		{
 			$db  = \JFactory::getDBO();
 			$row = new Poll($db);

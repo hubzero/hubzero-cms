@@ -30,7 +30,7 @@
 
 namespace Components\Usage\Site;
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'results'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'results'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'results';

@@ -31,12 +31,12 @@
 namespace Components\Usage\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_usage'))
+if (!\User::authorise('core.manage', 'com_usage'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
-$controllerName = \JRequest::getCmd('controller', 'data');
+$controllerName = \Request::getCmd('controller', 'data');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'data';
@@ -48,4 +48,3 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 $controller = new $controllerName();
 $controller->execute();
 $controller->redirect();
-

@@ -78,7 +78,7 @@ class Mailing extends AdminController
 	public function trackingTask()
 	{
 		//get request vars
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids)) ? $ids[0] : null;
 
 		//instantiate newsletter mailing object
@@ -149,12 +149,12 @@ class Mailing extends AdminController
 	public function getOpensGeoTask($mailingId = null)
 	{
 		//are we getting through ajax
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		//get the mailing id
 		if (is_null($mailingId))
 		{
-			$mailingId = \JRequest::getVar('mailingid', 0);
+			$mailingId = Request::getVar('mailingid', 0);
 		}
 
 		$states = array(
@@ -254,7 +254,7 @@ class Mailing extends AdminController
 	public function stopTask()
 	{
 		//get request vars
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids)) ? $ids[0] : null;
 
 		//instantiate newsletter mailing object
@@ -274,21 +274,8 @@ class Mailing extends AdminController
 
 		//inform and redirect
 		$this->setRedirect(
-			Route::url('index.php?option=com_newsletter&controller=mailing', false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_NEWSLETTER_MAILING_STOPPED')
-		);
-	}
-
-
-	/**
-	 * Cancel on Mailings Controller
-	 *
-	 * @return 	void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			Route::url('index.php?option=com_newsletter&controller=mailing', false)
 		);
 	}
 }

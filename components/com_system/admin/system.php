@@ -30,34 +30,34 @@
 
 namespace Components\System\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_system'))
+if (!\User::authorise('core.manage', 'com_system'))
 {
-	return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'info'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'info';
 }
 
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_SYSTEM_LDAP'),
-	Route::url('index.php?option=com_system&controller=ldap'),
+	\Lang::txt('COM_SYSTEM_LDAP'),
+	\Route::url('index.php?option=com_system&controller=ldap'),
 	$controllerName == 'ldap'
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_SYSTEM_GEO'),
-	Route::url('index.php?option=com_system&controller=geodb'),
+	\Lang::txt('COM_SYSTEM_GEO'),
+	\Route::url('index.php?option=com_system&controller=geodb'),
 	$controllerName == 'geodb'
 );
 \JSubMenuHelper::addEntry(
-	Lang::txt('COM_SYSTEM_APC'),
-	Route::url('index.php?option=com_system&controller=apc'),
+	\Lang::txt('COM_SYSTEM_APC'),
+	\Route::url('index.php?option=com_system&controller=apc'),
 	$controllerName == 'apc'
 );
 

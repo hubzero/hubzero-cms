@@ -46,7 +46,7 @@ class Apc extends AdminController
 	public function execute()
 	{
 		// Get the task
-		$this->_task = \JRequest::getVar('task', '');
+		$this->_task = Request::getVar('task', '');
 
 		// Set the version id
 		$this->VERSION = '$Id: apc.php 271315 2008-12-16 07:15:07Z shire $';
@@ -189,7 +189,7 @@ class Apc extends AdminController
 		if (!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
 		{
 			$this->setError(Lang::txt('No cache info available.  APC does not appear to be running.'));
-			\JRequest::setVar('task', 'error');
+			Request::setVar('task', 'error');
 			parent::execute();
 			return;
 		}

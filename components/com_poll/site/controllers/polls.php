@@ -65,7 +65,7 @@ class Polls extends SiteController
 		$document = \JFactory::getDocument();
 		$pathway  = $app->getPathway();
 
-		$poll_id = \JRequest::getVar('id', 0, '', 'int');
+		$poll_id = Request::getVar('id', 0, '', 'int');
 
 		$poll = new Poll($this->database);
 		$poll->load($poll_id);
@@ -296,10 +296,10 @@ class Polls extends SiteController
 	public function voteTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$poll_id   = \JRequest::getVar('id', 0, '', 'int');
-		$option_id = \JRequest::getVar('voteid', 0, 'post', 'int');
+		$poll_id   = Request::getVar('id', 0, '', 'int');
+		$option_id = Request::getVar('voteid', 0, 'post', 'int');
 
 		$poll = new Poll($this->database);
 		if (!$poll->load($poll_id) || $poll->published != 1)
@@ -312,7 +312,7 @@ class Polls extends SiteController
 		$cookieName = \JUtility::getHash($app->getName() . 'poll' . $poll_id);
 
 		// ToDo - may be adding those information to the session?
-		$voted = \JRequest::getVar($cookieName, '0', 'COOKIE', 'INT');
+		$voted = Request::getVar($cookieName, '0', 'COOKIE', 'INT');
 
 		if ($voted || !$option_id)
 		{

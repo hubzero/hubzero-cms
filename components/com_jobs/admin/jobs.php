@@ -30,7 +30,7 @@
 
 namespace Components\Jobs\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_jobs'))
+if (!\User::authorise('core.manage', 'com_jobs'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -50,7 +50,7 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
-$controllerName = \JRequest::getCmd('controller', 'jobs');
+$controllerName = \Request::getCmd('controller', 'jobs');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'jobs';

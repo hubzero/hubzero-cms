@@ -102,8 +102,8 @@ class Jobs extends SiteController
 		// Set component administrator priviliges
 		$this->_masteradmin = $this->_admin && !$this->_emp ? 1 : 0;
 
-		$this->_task    = \JRequest::getVar('task', '');
-		$this->_jobcode = \JRequest::getVar('code', '');
+		$this->_task    = Request::getVar('task', '');
+		$this->_jobcode = Request::getVar('code', '');
 
 		switch ($this->_task)
 		{
@@ -273,7 +273,7 @@ class Jobs extends SiteController
 	 */
 	public function login()
 	{
-		$rtrn = \JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+		$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 		$this->setRedirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
@@ -288,7 +288,7 @@ class Jobs extends SiteController
 	public function plugin()
 	{
 		// Incoming
-		$trigger = trim(\JRequest::getVar('trigger', ''));
+		$trigger = trim(Request::getVar('trigger', ''));
 
 		// Ensure we have a trigger
 		if (!$trigger)
@@ -320,7 +320,7 @@ class Jobs extends SiteController
 	public function shortlist()
 	{
 		// Shortlisted user
-		$oid  = \JRequest::getInt('oid', 0);
+		$oid  = Request::getInt('oid', 0);
 
 		// Get Members plugins
 		\JPluginHelper::importPlugin('members', 'resume');
@@ -331,7 +331,7 @@ class Jobs extends SiteController
 
 		// Go back to the page
 		$this->setRedirect(
-			\JRequest::getVar('HTTP_REFERER', NULL, 'server')  // What page they came from
+			Request::getVar('HTTP_REFERER', NULL, 'server')  // What page they came from
 		);
 	}
 
@@ -356,26 +356,26 @@ class Jobs extends SiteController
 		$this->_buildPathway();
 
 		// Do we need to list only jobs from a specified employer?
-		$subscriptioncode = \JRequest::getVar('employer', '');
+		$subscriptioncode = Request::getVar('employer', '');
 		$employer = new Employer($this->database);
 		$thisemployer = $subscriptioncode ? $employer->getEmployer(0, $subscriptioncode) : '';
 
 		// get action
-		$action = \JRequest::getVar('action', '');
-		if ($action == 'login' && $this->juser->get('guest'))
+		$action = Request::getVar('action', '');
+		if ($action == 'login' && User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_JOBS_MSG_PLEASE_LOGIN_OPTIONS');
 			$this->login();
 			return;
 		}
 
-		if (!$this->juser->get('guest') && ($this->_task == 'browse' or !$this->_allowsubscriptions))
+		if (!User::isGuest() && ($this->_task == 'browse' or !$this->_allowsubscriptions))
 		{
 			// save incoming prefs
-			$this->updatePrefs($this->database, $this->juser, 'job');
+			$this->updatePrefs($this->database, User::getRoot(), 'job');
 
 			// get stored preferences
-			$this->getPrefs($this->database, $this->juser, 'job');
+			$this->getPrefs($this->database, User::getRoot(), 'job');
 		}
 
 		// Get filters
@@ -387,9 +387,9 @@ class Jobs extends SiteController
 
 		// Get jobs
 		$adminoptions = ($this->_task != 'browse' && $this->_allowsubscriptions)  ? 0 : $this->_admin;
-		$jobs = $obj->get_openings($filters, $this->juser->get('id'), $adminoptions, $subscriptioncode);
+		$jobs = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptioncode);
 
-		$total = $obj->get_openings($filters, $this->juser->get('id'), $adminoptions, $subscriptioncode, 1);
+		$total = $obj->get_openings($filters, User::get('id'), $adminoptions, $subscriptioncode, 1);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -409,7 +409,7 @@ class Jobs extends SiteController
 			$view->config = $this->config;
 			$view->option = $this->_option;
 			$view->emp = $this->_emp;
-			$view->guest = $this->juser->get('guest');
+			$view->guest = User::isGuest();
 			$view->admin = $this->_admin;
 			$view->masteradmin = $this->_masteradmin;
 			$view->pageNav = $pageNav;
@@ -424,7 +424,7 @@ class Jobs extends SiteController
 		$view->config = $this->config;
 		$view->option = $this->_option;
 		$view->emp = $this->_emp;
-		$view->guest = $this->juser->get('guest');
+		$view->guest = User::isGuest();
 		$view->admin = $this->_admin;
 		$view->masteradmin = $this->_masteradmin;
 		$view->total = $jtotal;
@@ -455,7 +455,7 @@ class Jobs extends SiteController
 		$this->js();
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if ($this->_allowsubscriptions)
 			{
@@ -477,10 +477,10 @@ class Jobs extends SiteController
 			$this->_buildPathway();
 
 			// save incoming prefs
-			$this->updatePrefs($this->database, $this->juser);
+			$this->updatePrefs($this->database, User::getRoot());
 
 			// get stored preferences
-			$this->getPrefs($this->database, $this->juser);
+			$this->getPrefs($this->database, User::getRoot());
 
 			// get filters
 			$filters = self::getFilters($this->_admin, $this->_emp);
@@ -497,8 +497,8 @@ class Jobs extends SiteController
 
 			// get users with resumes
 			$js = new JobSeeker($this->database);
-			$seekers = $js->getSeekers($filters, $this->juser->get('id'), 0, $this->_masteradmin);
-			$total   = $js->countSeekers($filters, $this->juser->get('id'), 0, $this->_masteradmin);
+			$seekers = $js->getSeekers($filters, User::get('id'), 0, $this->_masteradmin);
+			$total   = $js->countSeekers($filters, User::get('id'), 0, $this->_masteradmin);
 
 			// Initiate paging
 			jimport('joomla.html.pagination');
@@ -527,11 +527,11 @@ class Jobs extends SiteController
 		{
 			// need to subscribe first
 			$employer = new Employer($this->database);
-			if ($employer->loadEmployer($this->juser->get('id')))
+			if ($employer->loadEmployer(User::get('id')))
 			{
 				//do we have a pending subscription?
 				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, $this->juser->get('id'), '', $status=array(0)))
+				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status=array(0)))
 				{
 					$this->_msg_warning = Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING');
 					$this->dashboard();
@@ -557,25 +557,24 @@ class Jobs extends SiteController
 	protected function subscribe()
 	{
 		$database = \JFactory::getDBO();
-		$juser = \JFactory::getUser();
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->intro_employer();
 			return;
 		}
 
 		// are we viewing other person's subscription? (admins only)
-		$uid = \JRequest::getInt('uid', 0);
+		$uid = Request::getInt('uid', 0);
 
-		if ($uid && $this->juser->get('id') != $uid && !$this->_admin)
+		if ($uid && User::get('id') != $uid && !$this->_admin)
 		{
 			// not authorized
 			App::abort(403, Lang::txt('COM_JOBS_ALERTNOTAUTH'));
 		}
 
-		$uid = $uid ? $uid : $this->juser->get('id');
+		$uid = $uid ? $uid : User::get('id');
 
 		// Set page title
 		$this->_buildTitle();
@@ -670,27 +669,27 @@ class Jobs extends SiteController
 	protected function confirm()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->intro_employer();
 			return;
 		}
 
-		$uid = \JRequest::getInt('uid', $this->juser->get('id'));
-		if ($uid && $this->juser->get('id') != $uid && !$this->_admin)
+		$uid = Request::getInt('uid', User::get('id'));
+		if ($uid && User::get('id') != $uid && !$this->_admin)
 		{
 			// not authorized
 			App::abort(403, Lang::txt('COM_JOBS_ALERTNOTAUTH'));
 		}
 
-		$uid = $uid ? $uid : $this->juser->get('id');
+		$uid = $uid ? $uid : User::get('id');
 
 		// Get the member's info
 		$profile = new \Hubzero\User\Profile();
 		$profile->load($uid);
 
 		// are we renewing?
-		$subid = \JRequest::getInt('subid', 0);
+		$subid = Request::getInt('subid', 0);
 		$sconfig = Component::params('com_services');
 		$autoapprove = $sconfig->get('autoapprove');
 
@@ -704,9 +703,9 @@ class Jobs extends SiteController
 
 		$subid = $employer->subscriptionid ? $employer->subscriptionid : $subid;
 
-		$employer->companyName     = \JRequest::getVar('companyName', $profile->get('organization'));
-		$employer->companyLocation = \JRequest::getVar('companyLocation', $profile->get('countryresident'));
-		$employer->companyWebsite  = \JRequest::getVar('companyWebsite', $profile->get('url'));
+		$employer->companyName     = Request::getVar('companyName', $profile->get('organization'));
+		$employer->companyLocation = Request::getVar('companyLocation', $profile->get('countryresident'));
+		$employer->companyWebsite  = Request::getVar('companyWebsite', $profile->get('url'));
 
 		if (!$employer->companyName || !$employer->companyLocation)
 		{
@@ -725,7 +724,7 @@ class Jobs extends SiteController
 			$subscription = new Subscription($this->database);
 		}
 
-		$serviceid 	= \JRequest::getInt('serviceid', 0);
+		$serviceid 	= Request::getInt('serviceid', 0);
 		// get service
 		$service = new Service($this->database);
 
@@ -734,8 +733,8 @@ class Jobs extends SiteController
 			throw new Exception(Lang::txt('COM_JOBS_ERROR_SUBSCRIPTION_CHOOSE_SERVICE'), 500);
 		}
 
-		$units 		= \JRequest::getInt('units_' . $serviceid, 0);
-		$contact 	= \JRequest::getVar('contact', '');
+		$units 		= Request::getInt('units_' . $serviceid, 0);
+		$contact 	= Request::getVar('contact', '');
 		$total 		= $service->unitprice * $units;
 		$now 		= \JFactory::getDate()->toSql();
 		$new 		= 0;
@@ -879,21 +878,21 @@ class Jobs extends SiteController
 	protected function cancel()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->intro_employer();
 			return;
 		}
 
-		$uid = \JRequest::getInt('uid', $this->juser->get('id'));
+		$uid = Request::getInt('uid', User::get('id'));
 
 		// non-admins can only cancel their own subscription
-		if ($uid && $this->juser->get('id') != $uid && !$this->_admin)
+		if ($uid && User::get('id') != $uid && !$this->_admin)
 		{
 			// not authorized
 			App::abort(403, Lang::txt('COM_JOBS_ALERTNOTAUTH'));
 		}
-		$uid = $uid ? $uid : $this->juser->get('id');
+		$uid = $uid ? $uid : User::get('id');
 
 		// load Employer
 		$employer = new Employer($this->database);
@@ -940,23 +939,23 @@ class Jobs extends SiteController
 	protected function dashboard()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->intro_employer();
 			return;
 		}
 
 		// Incoming message
-		$this->_msg_passed = $this->_msg_passed ? $this->_msg_passed : \JRequest::getVar('msg', '');
+		$this->_msg_passed = $this->_msg_passed ? $this->_msg_passed : Request::getVar('msg', '');
 
-		$uid = \JRequest::getInt('uid', $this->juser->get('id'));
-		if ($uid && $this->juser->get('id') != $uid && !$this->_admin)
+		$uid = Request::getInt('uid', User::get('id'));
+		if ($uid && User::get('id') != $uid && !$this->_admin)
 		{
 			// not authorized
 			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
-		$uid = $uid ? $uid : $this->juser->get('id');
-		$admin = $this->_admin && !$this->_emp && $this->juser->get('id') == $uid ? 1 : 0;
+		$uid = $uid ? $uid : User::get('id');
+		$admin = $this->_admin && !$this->_emp && User::get('id') == $uid ? 1 : 0;
 
 		// Make sure we have special admin subscription
 		if ($admin)
@@ -1096,10 +1095,8 @@ class Jobs extends SiteController
 	 */
 	public function addresume()
 	{
-		$juser = \JFactory::getUser();
-
 		// Login required
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_JOBS_MSG_LOGIN_RESUME');
 			$this->login();
@@ -1107,7 +1104,7 @@ class Jobs extends SiteController
 		else
 		{
 			$this->setRedirect(
-				Route::url('index.php?option=com_members&id=' . $juser->get('id') . '&active=resume')
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume')
 			);
 		}
 	}
@@ -1120,10 +1117,9 @@ class Jobs extends SiteController
 	public function apply()
 	{
 		$database = \JFactory::getDBO();
-		$juser    = \JFactory::getUser();
 
 		// Incoming
-		$code = \JRequest::getVar('code', '');
+		$code = Request::getVar('code', '');
 
 		// Set page title
 		$this->_buildTitle();
@@ -1162,7 +1158,7 @@ class Jobs extends SiteController
 		$this->css();
 
 		// Login required
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_JOBS_MSG_LOGIN_APPLY');
 			$this->login();
@@ -1172,7 +1168,7 @@ class Jobs extends SiteController
 		$ja = new JobApplication($database);
 
 		// if application already exists, load it to edit
-		if ($ja->loadApplication ($juser->get('id'), 0, $code) && $ja->status != 2)
+		if ($ja->loadApplication (User::get('id'), 0, $code) && $ja->status != 2)
 		{
 			$this->_task = 'editapp';
 		}
@@ -1183,7 +1179,7 @@ class Jobs extends SiteController
 		}
 
 		$js = new JobSeeker($database);
-		$seeker = $js->getSeeker($juser->get('id'), $juser->get('id'));
+		$seeker = $js->getSeeker(User::get('id'), User::get('id'));
 		$seeker = count($seeker) > 0 ? $seeker[0] : NULL;
 
 		// Output HTML
@@ -1215,8 +1211,8 @@ class Jobs extends SiteController
 	public function saveapp()
 	{
 		// Incoming job id
-		$code  = \JRequest::getVar('code', '');
-		$appid = \JRequest::getInt('appid', 0, 'post');
+		$code  = Request::getVar('code', '');
+		$appid = Request::getInt('appid', 0, 'post');
 
 		if (!$code)
 		{
@@ -1225,7 +1221,7 @@ class Jobs extends SiteController
 		}
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_JOBS_MSG_LOGIN_SAVE_APPLICATION');
 			$this->login();
@@ -1242,7 +1238,7 @@ class Jobs extends SiteController
 		}
 
 		// Load application if exists
-		if (!$ja->loadApplication($this->juser->get('id'), 0, $code))
+		if (!$ja->loadApplication(User::get('id'), 0, $code))
 		{
 			$ja = new JobApplication($this->database);
 		}
@@ -1259,7 +1255,7 @@ class Jobs extends SiteController
 			{
 				$ja->withdrawn = $now;
 				$ja->status    = 2;
-				$ja->reason    = \JRequest::getVar('reason', '');
+				$ja->reason    = Request::getVar('reason', '');
 			}
 			else
 			{
@@ -1295,14 +1291,13 @@ class Jobs extends SiteController
 	public function job()
 	{
 		$database = \JFactory::getDBO();
-		$juser    = \JFactory::getUser();
 
 		// Incoming
-		$code = \JRequest::getVar('code', '');
+		$code = Request::getVar('code', '');
 		$code = !$code && $this->_jobcode ? $this->_jobcode : $code;
 
 		$obj = new Job($database);
-		$job = $obj->get_opening (0, $juser->get('id'), $this->_masteradmin, $code);
+		$job = $obj->get_opening (0, User::get('id'), $this->_masteradmin, $code);
 
 		// Push some styles to the template
 		$this->css();
@@ -1336,7 +1331,7 @@ class Jobs extends SiteController
 			return;
 		}
 
-		if ($juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin)
+		if (User::get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin)
 		{
 			// check validity of subscription
 			$this->_msg_warning = Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID');
@@ -1349,11 +1344,11 @@ class Jobs extends SiteController
 		$this->_jobtitle = $job->title;
 		$this->_buildPathway();
 
-		if ($juser->get('guest') && $job->status != 1)
+		if (User::isGuest() && $job->status != 1)
 		{
 			// Not authorized
 			$error  = Lang::txt('COM_JOBS_ERROR_NOT_AUTHORIZED_JOB_VIEW');
-			$error .= $juser->get('guest') ? ' ' . Lang::txt('COM_JOBS_WARNING_LOGIN_REQUIRED') : '';
+			$error .= User::isGuest() ? ' ' . Lang::txt('COM_JOBS_WARNING_LOGIN_REQUIRED') : '';
 			$this->setError($error);
 
 			// Output HTML
@@ -1366,7 +1361,7 @@ class Jobs extends SiteController
 			$view->display();
 			return;
 		}
-		if ($job->status != 1 && !$this->_admin && (!$this->_emp && $juser->get('id') != $job->employerid))
+		if ($job->status != 1 && !$this->_admin && (!$this->_emp && User::get('id') != $job->employerid))
 		{
 			// Not authorized
 			App::abort(403, Lang::txt('COM_JOBS_ERROR_NOT_AUTHORIZED_JOB_VIEW'));
@@ -1384,7 +1379,7 @@ class Jobs extends SiteController
 
 		// Get applications
 		$ja = new JobApplication($database);
-		$job->applications = ($this->_admin or ($this->_emp && $juser->get('id') == $job->employerid)) ? $ja->getApplications ($job->id) : array();
+		$job->applications = ($this->_admin or ($this->_emp && User::get('id') == $job->employerid)) ? $ja->getApplications ($job->id) : array();
 
 		// Get profile info of applicants
 		$job->withdrawnlist = array();
@@ -1432,15 +1427,15 @@ class Jobs extends SiteController
 	public function savejob()
 	{
 		// Incoming
-		$employerid = \JRequest::getInt('employerid', 0);
+		$employerid = Request::getInt('employerid', 0);
 		$min = ($this->_task == 'confirmjob'
 				or $this->_task == 'unpublish'
 				or $this->_task == 'reopen'
 				or $this->_task == 'remove') ? 1 : 0;
-		$code = $this->_jobcode ? $this->_jobcode : \JRequest::getVar('code', '');
+		$code = $this->_jobcode ? $this->_jobcode : Request::getVar('code', '');
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->intro_employer();
 			return;
@@ -1462,8 +1457,8 @@ class Jobs extends SiteController
 
 			// check if user is authorized to edit
 			if ($this->_admin
-			 or $jobadmin->isAdmin($this->juser->get('id'), $job->id)
-			 or $this->juser->get('id') == $job->employerid)
+			 or $jobadmin->isAdmin(User::get('id'), $job->id)
+			 or User::get('id') == $job->employerid)
 			{
 				// we are editing
 				$code = $job->code;
@@ -1472,13 +1467,13 @@ class Jobs extends SiteController
 				App::abort(403, Lang::txt('COM_JOBS_ALERTNOTAUTH'));
 			}
 
-			$job->editedBy = $this->juser->get('id');
+			$job->editedBy = User::get('id');
 			$job->edited   = \JFactory::getDate()->toSql();
 		}
 		else
 		{
 			$job->added   = \JFactory::getDate()->toSql();
-			$job->addedBy = $this->juser->get('id');
+			$job->addedBy = User::get('id');
 		}
 
 		$employerid = $code ? $job->employerid : $employerid;
@@ -1491,7 +1486,7 @@ class Jobs extends SiteController
 		}
 
 		// check validity of subscription
-		if ($this->juser->get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin)
+		if (User::get('id') == $job->employerid && !$this->_emp && !$this->_masteradmin)
 		{
 			$this->_msg_warning = Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID');
 			$this->dashboard();
@@ -1504,8 +1499,8 @@ class Jobs extends SiteController
 			$job->title           = rtrim(stripslashes($_POST['title']));
 			$job->companyName     = rtrim(stripslashes($_POST['companyName']));
 			$job->companyLocation = rtrim(stripslashes($_POST['companyLocation']));
-			$applyInternal        = \JRequest::getInt('applyInternal', 0);
-			$applyExternalUrl     = \JRequest::getVar('applyExternalUrl', '');
+			$applyInternal        = Request::getInt('applyInternal', 0);
+			$applyExternalUrl     = Request::getVar('applyExternalUrl', '');
 
 			// Need at least one way to apply to a job
 			//$job->applyInternal    	= ($applyInternal or !$applyExternalUrl) ? 1 : 0;
@@ -1532,14 +1527,14 @@ class Jobs extends SiteController
 			$job->title   			= rtrim(stripslashes($_POST['title']));
 			$job->companyName   	= rtrim(stripslashes($_POST['companyName']));
 			$job->companyLocation   = rtrim(stripslashes($_POST['companyLocation']));
-			$job->applyInternal		= \JRequest::getInt('applyInternal', 0);
-			$job->applyExternalUrl	= \JRequest::getVar('applyExternalUrl', '');
+			$job->applyInternal		= Request::getInt('applyInternal', 0);
+			$job->applyExternalUrl	= Request::getVar('applyExternalUrl', '');
 
 		}
 		else if ($job->status==4 && $this->_task == 'confirmjob')
 		{
 			// make sure we aren't over quota
-			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota($job, $this->juser, $this->database);
+			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota($job, User::getRoot(), $this->database);
 
 			if ($allowed_ads <=0)
 			{
@@ -1561,7 +1556,7 @@ class Jobs extends SiteController
 		else if ($job->status==3 && $this->_task == 'reopen')
 		{
 			// make sure we aren't over quota
-			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota($job, $this->juser, $this->database);
+			$allowed_ads = $this->_masteradmin && $employerid==1 ? 1 : $this->checkQuota($job, User::getRoot(), $this->database);
 
 			if ($allowed_ads <= 0)
 			{
@@ -1617,12 +1612,12 @@ class Jobs extends SiteController
 		$live_site = rtrim(\JURI::base(), '/');
 
 		// Incoming
-		$code  = \JRequest::getVar('code', '');
-		$empid = $this->_admin ? 1 : $this->juser->get('id');
+		$code  = Request::getVar('code', '');
+		$empid = $this->_admin ? 1 : User::get('id');
 		$code  = !$code && $this->_jobcode ? $this->_jobcode : $code;
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if ($this->_allowsubscriptions)
 			{
@@ -1647,7 +1642,7 @@ class Jobs extends SiteController
 			{
 				//do we have a pending subscription?
 				$subscription = new Subscription($this->database);
-				if ($subscription->loadSubscription($employer->subscriptionid, $this->juser->get('id'), '', $status=array(0)))
+				if ($subscription->loadSubscription($employer->subscriptionid, User::get('id'), '', $status=array(0)))
 				{
 					$this->_msg_warning = Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING');
 					$this->dashboard();
@@ -1669,8 +1664,8 @@ class Jobs extends SiteController
 			}
 			// check if user is authorized to edit
 			if ($this->_admin
-			 or $jobadmin->isAdmin($this->juser->get('id'), $job->id)
-			 or $this->juser->get('id') == $job->employerid)
+			 or $jobadmin->isAdmin(User::get('id'), $job->id)
+			 or User::get('id') == $job->employerid)
 			{
 				// we are editing
 				$code = $job->code;
@@ -1687,8 +1682,8 @@ class Jobs extends SiteController
 			$job = $this->_job;
 		}
 
-		$uid = $code ? $job->employerid : $this->juser->get('id');
-		$job->admins = $code ? $jobadmin->getAdmins($job->id) : array($this->juser->get('id'));
+		$uid = $code ? $job->employerid : User::get('id');
+		$job->admins = $code ? $jobadmin->getAdmins($job->id) : array(User::get('id'));
 
 		// Get the member's info
 		$profile = new \Hubzero\User\Profile();
@@ -1703,7 +1698,7 @@ class Jobs extends SiteController
 		{
 			$employer->uid = 1;
 			$employer->subscriptionid  = 1;
-			$employer->companyName     = $jconfig->getValue('config.sitename');
+			$employer->companyName     = Config::get('sitename');
 			$employer->companyLocation = '';
 			$employer->companyWebsite  = $live_site;
 			$uid = 1; // site admin
@@ -1774,7 +1769,7 @@ class Jobs extends SiteController
 		$employer = new Employer($this->database);
 		if ($admin)
 		{
-			$adminemp = $employer->isEmployer($this->juser->get('id'), 1);
+			$adminemp = $employer->isEmployer(User::get('id'), 1);
 			if (!$adminemp)
 			{
 				// will require setup only once
@@ -1815,7 +1810,7 @@ class Jobs extends SiteController
 		}
 		else
 		{
-			$emp = $employer->isEmployer($this->juser->get('id'));
+			$emp = $employer->isEmployer(User::get('id'));
 		}
 
 		$this->_emp = $emp;
@@ -1829,11 +1824,11 @@ class Jobs extends SiteController
 	 */
 	public function authorize_admin($admin = 0)
 	{
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			// Check if they're a site admin (from Joomla)
-			$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
-			$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
+			$this->config->set('access-admin-component', User::authorise('core.admin', null));
+			$this->config->set('access-manage-component', User::authorise('core.manage', null));
 			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
 			{
 				$admin = 1;
@@ -1843,7 +1838,7 @@ class Jobs extends SiteController
 			$admingroup = $this->config->get('admingroup', '');
 			if ($admingroup)
 			{
-				$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+				$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 				if ($ugs && count($ugs) > 0)
 				{
 					foreach ($ugs as $ug)
@@ -1863,20 +1858,20 @@ class Jobs extends SiteController
 	 * Search Preferences
 	 *
 	 * @param      object $database JDatabase
-	 * @param      object $juser    JUser
+	 * @param      object $user     User
 	 * @param      string $category Preferences category
 	 * @return     void
 	 */
-	public function updatePrefs($database, $juser, $category = 'resume')
+	public function updatePrefs($database, $user, $category = 'resume')
 	{
-		$saveprefs  = \JRequest::getInt('saveprefs', 0, 'post');
+		$saveprefs  = Request::getInt('saveprefs', 0, 'post');
 
 		$p = new Prefs($this->database);
 
 		$filters = $this->getFilters (0, 0, 0);
 		if ($category == 'job')
 		{
-			$filters['sortby'] = trim(\JRequest::getVar('sortby', 'title'));
+			$filters['sortby'] = trim(Request::getVar('sortby', 'title'));
 		}
 
 		$text = 'filterby=' . $filters['filterby'] . '&amp;match=1&amp;search='
@@ -1886,10 +1881,10 @@ class Jobs extends SiteController
 		if ($category == 'job' && isset($_GET['performsearch']))
 		{
 			$text .= $filters['sortby'];
-			if (!$p->loadPrefs($juser->get('id'), $category))
+			if (!$p->loadPrefs($user->get('id'), $category))
 			{
 				$p = new Prefs($this->database);
-				$p->uid = $juser->get('id');
+				$p->uid = $user->get('id');
 				$p->category = $category;
 			}
 			$p->filters = $text;
@@ -1904,10 +1899,10 @@ class Jobs extends SiteController
 		{
 			if ($saveprefs && isset($_POST['performsearch']))
 			{
-				if (!$p->loadPrefs($juser->get('id'), $category))
+				if (!$p->loadPrefs($user->get('id'), $category))
 				{
 					$p = new Prefs($this->database);
-					$p->uid = $juser->get('id');
+					$p->uid = $user->get('id');
 					$p->category = $category;
 					$text .= 'bestmatch';
 				}
@@ -1924,7 +1919,7 @@ class Jobs extends SiteController
 					throw new Exception($p->getError(), 500);
 				}
 			}
-			else if ($p->loadPrefs($juser->get('id'), $category) && isset($_POST["performsearch"]))
+			else if ($p->loadPrefs($user->get('id'), $category) && isset($_POST["performsearch"]))
 			{
 				// delete prefs
 				$p->delete();
@@ -1936,14 +1931,14 @@ class Jobs extends SiteController
 	 * Get a user's preferences
 	 *
 	 * @param      object $database JDatabase
-	 * @param      object $juser    JUser
+	 * @param      object $user     User
 	 * @param      string $category Preferences category
 	 * @return     void
 	 */
-	public function getPrefs($database, $juser, $category = 'resume')
+	public function getPrefs($database, $user, $category = 'resume')
 	{
 		$p = new Prefs($database);
-		if ($p->loadPrefs($juser->get('id'), $category))
+		if ($p->loadPrefs($user->get('id'), $category))
 		{
 			if (isset($p->filters) && $p->filters)
 			{
@@ -1982,29 +1977,29 @@ class Jobs extends SiteController
 		if ($jobs)
 		{
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
-								 ? $this->getVar('sortby', 'title') : trim(\JRequest::getVar('sortby', 'title'));
+								 ? $this->getVar('sortby', 'title') : trim(Request::getVar('sortby', 'title'));
 			$filters['category'] = $this->getVar('category') && $checkstored
-								 ? $this->getVar('category') : \JRequest::getInt('category',  'all');
+								 ? $this->getVar('category') : Request::getInt('category',  'all');
 		}
 		else
 		{
 			$filters['sortby']   = $this->getVar('sortby') && $checkstored
-								 ? $this->getVar('sortby') : trim(\JRequest::getVar('sortby', 'lastupdate'));
+								 ? $this->getVar('sortby') : trim(Request::getVar('sortby', 'lastupdate'));
 			$filters['category'] = $this->getVar('category') && $checkstored
-								 ? $this->getVar('category') : \JRequest::getInt('category',  0);
+								 ? $this->getVar('category') : Request::getInt('category',  0);
 		}
 
-		$filters['type']     = $this->getVar('type') && $checkstored ? $this->getVar('type') : \JRequest::getInt('type',  0);
-		$filters['search']   = $this->getVar('search') && $checkstored ? $this->getVar('search') : trim(\JRequest::getVar('q', ''));
-		$filters['filterby'] = trim(\JRequest::getVar('filterby', 'all'));
-		$filters['sortdir']  = \JRequest::getVar('sortdir', 'ASC');
+		$filters['type']     = $this->getVar('type') && $checkstored ? $this->getVar('type') : Request::getInt('type',  0);
+		$filters['search']   = $this->getVar('search') && $checkstored ? $this->getVar('search') : trim(Request::getVar('q', ''));
+		$filters['filterby'] = trim(Request::getVar('filterby', 'all'));
+		$filters['sortdir']  = Request::getVar('sortdir', 'ASC');
 
 		// did we get stored prefs?
-		$filters['match']    = $this->getVar('match') && $checkstored ? $this->getVar("match") : \JRequest::getInt('match', 0);
+		$filters['match']    = $this->getVar('match') && $checkstored ? $this->getVar("match") : Request::getInt('match', 0);
 
 		// Paging vars
-		$filters['limit']    = \JRequest::getInt('limit', $this->config->get('jobslimit'));
-		$filters['start']    = \JRequest::getInt('limitstart', 0, 'get');
+		$filters['limit']    = Request::getInt('limit', $this->config->get('jobslimit'));
+		$filters['start']    = Request::getInt('limitstart', 0, 'get');
 
 		// admins and employers
 		$filters['admin']   = $admin;
@@ -2022,7 +2017,7 @@ class Jobs extends SiteController
 	public function batch()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if ($this->_allowsubscriptions)
 			{
@@ -2051,7 +2046,7 @@ class Jobs extends SiteController
 		}
 
 		// Incoming
-		$pile = \JRequest::getVar('pile', 'all');
+		$pile = Request::getVar('pile', 'all');
 
 		// Zip the requested resumes
 		$archive = $this->archiveResumes($pile);
@@ -2098,7 +2093,7 @@ class Jobs extends SiteController
 	{
 		// Get available resume files
 		$resume = new Resume($this->database);
-		$files  = $resume->getResumeFiles($pile, $this->juser->get('id'), $this->_masteradmin);
+		$files  = $resume->getResumeFiles($pile, User::get('id'), $this->_masteradmin);
 		$batch  = array();
 
 		if (count($files) > 0)
@@ -2116,7 +2111,7 @@ class Jobs extends SiteController
 			\JPluginHelper::importPlugin('members', 'resume');
 			$dispatcher = \JDispatcher::getInstance();
 
-			$pile .= $pile != 'all' ? '_' . $this->juser->get('id') : '';
+			$pile .= $pile != 'all' ? '_' . User::get('id') : '';
 			$zipname = Lang::txt('Resumes') . '_' . $pile . '.zip';
 
 			$mconfig = Component::params('com_members');
@@ -2127,7 +2122,7 @@ class Jobs extends SiteController
 				$base_path = DS . trim($base_path, DS);
 			}
 
-			$base_path .= DS . \Hubzero\Utility\String::pad($this->juser->get('id'));
+			$base_path .= DS . \Hubzero\Utility\String::pad(User::get('id'));
 
 			$i = 0;
 
@@ -2178,15 +2173,15 @@ class Jobs extends SiteController
 	 * Check job ad quota depending on subscription
 	 *
 	 * @param      object $job      Job
-	 * @param      object $juser    JUser
+	 * @param      object $user     User
 	 * @param      object $database JDatabase
 	 * @return     integer
 	 */
-	public function checkQuota($job, $juser, $database)
+	public function checkQuota($job, $user, $database)
 	{
 		// make sure we aren't over quota
 		$service = new Service($database);
-		$servicename = $service->getUserService($juser->get('id'));
+		$servicename = $service->getUserService($user->get('id'));
 		if (!$service->loadService($servicename))
 		{
 			return 0;
@@ -2195,7 +2190,7 @@ class Jobs extends SiteController
 		{
 			$this->getServiceParams($service);
 			$maxads = $service->maxads > 0 ? $service->maxads : 1;
-			$activejobs = $job->countMyActiveOpenings($juser->get('id'), 1);
+			$activejobs = $job->countMyActiveOpenings($user->get('id'), 1);
 			$allowed_ads = $maxads - $activejobs;
 			return $allowed_ads;
 		}

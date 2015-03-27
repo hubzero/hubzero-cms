@@ -96,7 +96,7 @@ class Mailinglist extends AdminController
 		$this->view->list->email_count = null;
 
 		// get request vars
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// are we editing or adding a new list
@@ -124,10 +124,10 @@ class Mailinglist extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// get request vars
-		$list = \JRequest::getVar('list', array(), 'post');
+		$list = Request::getVar('list', array(), 'post');
 
 		// instantiate mailing list object
 		$newsletterMailinglist = new MailList($this->database);
@@ -156,7 +156,7 @@ class Mailinglist extends AdminController
 	public function deleteTask()
 	{
 		// get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 
 		// make sure we have ids
 		if (isset($ids) && count($ids) > 0)
@@ -196,13 +196,13 @@ class Mailinglist extends AdminController
 	public function manageTask()
 	{
 		//get request vars
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		//get request vars
 		$this->view->id = $id;
-		$this->view->filters['status'] = \JRequest::getWord('status', 'active');
-		$this->view->filters['sort']   = \JRequest::getVar('sort', 'email ASC');
+		$this->view->filters['status'] = Request::getWord('status', 'active');
+		$this->view->filters['sort']   = Request::getVar('sort', 'email ASC');
 
 		//instantiate mailing list object
 		$newsletterMailinglist      = new MailList($this->database);
@@ -232,7 +232,7 @@ class Mailinglist extends AdminController
 	public function addEmailTask()
 	{
 		// get request vars
-		$mailinglistId = \JRequest::getVar('id', 0);
+		$mailinglistId = Request::getVar('id', 0);
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
 
 		if (!$mailinglistId)
@@ -280,11 +280,11 @@ class Mailinglist extends AdminController
 		$emailBoxEmails   = array();
 
 		// get request vars
-		$this->mid               = \JRequest::getInt('mid', 0);
-		$this->emailFile         = \JRequest::getVar('email_file', array(), 'files');
-		$this->emailGroup        = \JRequest::getInt('email_group', 0);
-		$this->emailBox          = \JRequest::getVar('email_box', '');
-		$this->emailConfirmation = \JRequest::getVar('email_confirmation', '-1');
+		$this->mid               = Request::getInt('mid', 0);
+		$this->emailFile         = Request::getVar('email_file', array(), 'files');
+		$this->emailGroup        = Request::getInt('email_group', 0);
+		$this->emailBox          = Request::getVar('email_box', '');
+		$this->emailConfirmation = Request::getVar('email_confirmation', '-1');
 
 		// make sure we have selected whether or not to send confirmation emails
 		if ($this->emailConfirmation == '-1')
@@ -446,8 +446,8 @@ class Mailinglist extends AdminController
 	public function editEmailTask()
 	{
 		// get request vars
-		$id  = \JRequest::getInt('id', 0);
-		$mid = \JRequest::getInt('mid', 0);
+		$id  = Request::getInt('id', 0);
+		$mid = Request::getInt('mid', 0);
 
 		// load mailing list
 		$this->view->list = new MailList($this->database);
@@ -481,7 +481,7 @@ class Mailinglist extends AdminController
 	public function saveEmailTask()
 	{
 		// get request vars
-		$email = \JRequest::getVar('email', array(), 'post');
+		$email = Request::getVar('email', array(), 'post');
 
 		// instantiate mailing list object
 		$newsletterMailinglistEmail = new MailingListEmail($this->database);
@@ -496,8 +496,8 @@ class Mailinglist extends AdminController
 		}
 		else
 		{
-			\JRequest::setVar('id', $email['id']);
-			\JRequest::setVar('mid', $email['mid']);
+			Request::setVar('id', $email['id']);
+			Request::setVar('mid', $email['mid']);
 			$this->email = $email['email'];
 			$this->setError(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_FAILED'));
 			$this->editEmailTask();
@@ -513,8 +513,8 @@ class Mailinglist extends AdminController
 	public function deleteEmailTask()
 	{
 		// get request vars
-		$ids = \JRequest::getVar('email_id', array());
-		$mailinglistId = \JRequest::getVar('id', array());
+		$ids = Request::getVar('email_id', array());
+		$mailinglistId = Request::getVar('id', array());
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
 
 		// make sure we have ids
@@ -555,8 +555,8 @@ class Mailinglist extends AdminController
 	public function subscribeEmailTask()
 	{
 		// get request vars
-		$id = \JRequest::getInt('id', 0);
-		$mid = \JRequest::getInt('mid', 0);
+		$id = Request::getInt('id', 0);
+		$mid = Request::getInt('mid', 0);
 
 		// instantiate mailing list object
 		$newsletterMailinglistEmail = new MailingListEmail($this->database);
@@ -591,8 +591,8 @@ class Mailinglist extends AdminController
 	public function sendConfirmationTask()
 	{
 		// get request vars
-		$id = \JRequest::getInt('id', 0);
-		$mid = \JRequest::getInt('mid', 0);
+		$id = Request::getInt('id', 0);
+		$mid = Request::getInt('mid', 0);
 
 		// instantiate mailing list object
 		$newsletterMailinglist = new MailList($this->database);
@@ -620,7 +620,7 @@ class Mailinglist extends AdminController
 	public function exportTask()
 	{
 		// get request vars
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// instantiate mailing list object
@@ -657,9 +657,9 @@ class Mailinglist extends AdminController
 	 */
 	public function cancelEmailTask()
 	{
-		$email = \JRequest::getVar('email', array(), 'post');
+		$email = Request::getVar('email', array(), 'post');
 
-		$mid = ($email['mid']) ? $email['mid'] : \JRequest::getInt('mid');
+		$mid = ($email['mid']) ? $email['mid'] : Request::getInt('mid');
 
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
@@ -674,7 +674,7 @@ class Mailinglist extends AdminController
 	public function emailCountTask()
 	{
 		// get the mailing list
-		$mailinglistId = \JRequest::getInt('mailinglistid', '-1');
+		$mailinglistId = Request::getInt('mailinglistid', '-1');
 
 		// get list of emails
 		$newsletterMailinglist = new MailList($this->database);

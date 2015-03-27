@@ -30,10 +30,10 @@
 
 namespace Components\Login\Admin;
 
-$task = \JRequest::getCmd('task');
+$task = \Request::getCmd('task');
 if ($task != 'login' && $task != 'logout')
 {
-	\JRequest::setVar('task', '');
+	\Request::setVar('task', '');
 }
 
 require_once(dirname(__DIR__) . DS . 'models' . DS . 'login.php');

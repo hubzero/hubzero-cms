@@ -31,7 +31,7 @@
 namespace Components\Checkin\Admin;
 
 // Access check.
-if (!\JFactory::getUser()->authorise('core.manage', 'com_checkin'))
+if (!\User::authorise('core.manage', 'com_checkin'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }

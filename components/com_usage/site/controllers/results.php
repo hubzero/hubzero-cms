@@ -79,7 +79,7 @@ class Results extends SiteController
 		$monthsReverse = array_reverse($months, TRUE);
 
 		// Incoming
-		$enddate = \JRequest::getVar('selectedPeriod', 0, 'post');
+		$enddate = \Request::getVar('selectedPeriod', 0, 'post');
 
 		// Establish a connection to the usage database
 		$udb = Helper::getUDBO();
@@ -88,7 +88,7 @@ class Results extends SiteController
 			throw new Exception(Lang::txt('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
 		}
 
-		$this->view->no_html = \JRequest::getVar('no_html', 0);
+		$this->view->no_html = \Request::getVar('no_html', 0);
 
 		// Get plugins
 		\JPluginHelper::importPlugin('usage');

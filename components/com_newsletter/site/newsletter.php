@@ -42,7 +42,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.action.p
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
 
 //build controller path and name
-$controllerName = \JRequest::getCmd('controller', 'newsletter');
+$controllerName = \Request::getCmd('controller', 'newsletter');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'newsletter';

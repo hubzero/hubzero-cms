@@ -52,14 +52,13 @@ class Jobs extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
 			// Get paging variables
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -96,8 +95,8 @@ class Jobs extends AdminController
 		// Get data
 		$obj = new Job($this->database);
 
-		$this->view->rows  = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
-		$this->view->total = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1, '', 1);
+		$this->view->rows  = $obj->get_openings($this->view->filters, User::get('id'), 1);
+		$this->view->total = $obj->get_openings($this->view->filters, User::get('id'), 1, '', 1);
 
 		$this->view->config = $this->config;
 
@@ -124,21 +123,20 @@ class Jobs extends AdminController
 	 */
 	public function editTask($isnew=0)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$jconfig = \JFactory::getConfig();
 		$live_site = rtrim(\JURI::base(),'/');
 
 		// Push some styles to the template
 		$this->css();
 
 		// Incoming job ID
-		$id = \JRequest::getVar('id', array(0));
+		$id = Request::getVar('id', array(0));
 		$id = is_array($id) ? $id[0] : $id;
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
-		$this->view->return['sortby'] = \JRequest::getVar('sortby', 'added');
+		$this->view->return['sortby'] = Request::getVar('sortby', 'added');
 
 		$this->view->row = new Job($this->database);
 
@@ -149,7 +147,7 @@ class Jobs extends AdminController
 		if (!$id)
 		{
 			$this->view->row->created      = \JFactory::getDate()->toSql();
-			$this->view->row->created_by   = $this->juser->get('id');
+			$this->view->row->created_by   = User::get('id');
 			$this->view->row->modified     = '0000-00-00 00:00:00';
 			$this->view->row->modified_by  = 0;
 			$this->view->row->publish_up   = \JFactory::getDate()->toSql();
@@ -165,7 +163,7 @@ class Jobs extends AdminController
 			return;
 		}
 
-		$this->view->job = $this->view->row->get_opening($id, $this->juser->get('id'), 1);
+		$this->view->job = $this->view->row->get_opening($id, User::get('id'), 1);
 
 		// Get employer information
 		if ($this->view->row->employerid != 1)
@@ -185,7 +183,7 @@ class Jobs extends AdminController
 			// site admin
 			$this->view->employer->uid             = 1;
 			$this->view->employer->subscriptionid  = 1;
-			$this->view->employer->companyName     = $jconfig->getValue('config.sitename');
+			$this->view->employer->companyName     = Config::get('sitename');
 			$this->view->employer->companyLocation = '';
 			$this->view->employer->companyWebsite  = $live_site;
 		}
@@ -231,14 +229,14 @@ class Jobs extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$data       = array_map('trim',$_POST);
-		$action     = \JRequest::getVar('action', '');
-		$message    = \JRequest::getVar('message', '');
-		$id         = \JRequest::getInt('id', 0);
-		$employerid = \JRequest::getInt('employerid', 0);
+		$action     = Request::getVar('action', '');
+		$message    = Request::getVar('message', '');
+		$id         = Request::getInt('id', 0);
+		$employerid = Request::getInt('employerid', 0);
 		$emailbody  = '';
 		$statusmsg  = '';
 
@@ -264,8 +262,8 @@ class Jobs extends AdminController
 			$code = $subscription->generateCode(8, 8, 0, 1, 0);
 			$job->code = $code;
 
-			$job->added = \JFactory::getDate()->toSql();
-			$job->addedBy = $this->juser->get('id');
+			$job->added   = \JFactory::getDate()->toSql();
+			$job->addedBy = User::get('id');
 		}
 
 		$subject = $id ? Lang::txt('COM_JOBS_MESSAGE_SUBJECT', $job->code) : '';
@@ -316,7 +314,7 @@ class Jobs extends AdminController
 				break;
 			}
 
-			$job->editedBy = $this->juser->get('id');
+			$job->editedBy = User::get('id');
 			$job->edited = \JFactory::getDate()->toSql();
 		}
 
@@ -332,17 +330,13 @@ class Jobs extends AdminController
 
 		if (($message && $action == 'message' && $id) || ($action && $action != 'message'))
 		{
-			// Email all the contributors
-			$jconfig = \JFactory::getConfig();
-
 			// E-mail "from" info
 			$from = array(
-				'email' => $jconfig->getValue('config.mailfrom'),
-				'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
+				'email' => Config::get('mailfrom'),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
 			);
 
 			$juri    = \JURI::getInstance();
-			$jconfig = \JFactory::getConfig();
 
 			$base = rtrim($juri->base(), DS);
 			if (substr($base, -13) == 'administrator')
@@ -407,10 +401,10 @@ class Jobs extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

@@ -50,8 +50,8 @@ class Login extends AdminController
 		// after a session timeout. We must reset the view and layout prior to display
 		// otherwise an error will occur.
 
-		\JRequest::setVar('view', 'login');
-		//\JRequest::setVar('layout', 'default');
+		\Request::setVar('view', 'login');
+		//\Request::setVar('layout', 'default');
 
 		$this->view
 			->setLayout('default')
@@ -96,7 +96,7 @@ class Login extends AdminController
 
 		$app = \JFactory::getApplication();
 
-		$userid = \JRequest::getInt('uid', null);
+		$userid = \Request::getInt('uid', null);
 
 		$result = $app->logout($userid, array(
 			'clientid' => ($userid ? 0 : 1)

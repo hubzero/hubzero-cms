@@ -89,7 +89,7 @@ class Template extends AdminController
 		$this->view->template->template = null;
 
 		//get request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		//are we editing or adding a new tempalte
@@ -134,10 +134,10 @@ class Template extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		//get request vars
-		$template = \JRequest::getVar("template", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
+		$template = Request::getVar('template', array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 
 		//instantiate newsletter template object
 		$newsletterTemplate = new NewsletterTemplate($this->database);
@@ -168,7 +168,7 @@ class Template extends AdminController
 	public function deleteTask()
 	{
 		//get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
@@ -216,7 +216,7 @@ class Template extends AdminController
 	public function duplicateTask()
 	{
 		//get request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		//are we editing or adding a new tempalte

@@ -138,13 +138,11 @@ class Cache extends JModelList
 	 */
 	public function getCache()
 	{
-		$conf = JFactory::getConfig();
-
 		$options = array(
 			'defaultgroup' => '',
-			'storage'      => $conf->get('cache_handler', ''),
+			'storage'      => \Config::get('cache_handler', ''),
 			'caching'      => true,
-			'cachebase'    => ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
+			'cachebase'    => ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : \Config::get('cache_path', JPATH_SITE . '/cache')
 		);
 
 		$cache = JCache::getInstance('', $options);

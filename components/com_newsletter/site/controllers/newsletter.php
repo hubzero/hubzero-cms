@@ -45,7 +45,7 @@ class Newsletter extends SiteController
 	public function execute()
 	{
 		//get request vars
-		$this->id = \JRequest::getInt('id', 0);
+		$this->id = Request::getInt('id', 0);
 
 		//disable default task
 		$this->disableDefaultTask();
@@ -118,7 +118,7 @@ class Newsletter extends SiteController
 
 		//do we want to stip tags
 		$stripTags = true;
-		if (\JRequest::getCmd('tmpl', '') == 'component')
+		if (Request::getCmd('tmpl', '') == 'component')
 		{
 			$stripTags = false;
 		}
@@ -147,7 +147,7 @@ class Newsletter extends SiteController
 
 			//build newsletter
 			$this->view->newsletter = $newsletterNewsletter->buildnewsletter($currentNewsletter, $stripTags);
-			$this->view->newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", "", $this->view->newsletter);
+			$this->view->newsletter = str_replace("{{UNSUBSCRIBE_LINK}}", '', $this->view->newsletter);
 		}
 		else
 		{
@@ -155,7 +155,7 @@ class Newsletter extends SiteController
 		}
 
 		//are we trying to output the newsletter by itself?
-		if (\JRequest::getInt('no_html', 0))
+		if (Request::getInt('no_html', 0))
 		{
 			echo $this->view->newsletter;
 			return;

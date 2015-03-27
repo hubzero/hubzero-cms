@@ -149,7 +149,7 @@ class Newsletter extends AdminController
 		$this->view->templates = $newsletterTemplate->getTemplates();
 
 		// get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		if ($task == 'add')
@@ -215,7 +215,7 @@ class Newsletter extends AdminController
 	public function saveTask($apply = false)
 	{
 		//get post
-		$newsletter = \JRequest::getVar("newsletter", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
+		$newsletter = Request::getVar("newsletter", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 
 		//make sure we have valid alias
 		if ($newsletter['alias'])
@@ -239,7 +239,7 @@ class Newsletter extends AdminController
 		{
 			//update the modified info
 			$newsletter['created']    = \JFactory::getDate()->toSql();
-			$newsletter['created_by'] = $this->juser->get('id');
+			$newsletter['created_by'] = User::get('id');
 		}
 		else
 		{
@@ -282,7 +282,7 @@ class Newsletter extends AdminController
 
 		//update the modified info
 		$newsletter['modified']    = \JFactory::getDate()->toSql();
-		$newsletter['modified_by'] = $this->juser->get('id');
+		$newsletter['modified_by'] = User::get('id');
 
 		// if no plain text was entered lets take the html content
 		if (isset($newsletter['plain_content']))
@@ -319,7 +319,7 @@ class Newsletter extends AdminController
 			$this->newsletter->params        = $newsletterNewsletter->params;
 
 			//set the id so we can pick up the stories
-			\JRequest::setVar('id', array($this->newsletter->id));
+			Request::setVar('id', array($this->newsletter->id));
 
 			$this->setError($newsletterNewsletter->getError());
 			$this->editTask();
@@ -351,7 +351,7 @@ class Newsletter extends AdminController
 	public function duplicateTask()
 	{
 		//get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
@@ -380,7 +380,7 @@ class Newsletter extends AdminController
 	public function deleteTask()
 	{
 		//get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
@@ -440,7 +440,7 @@ class Newsletter extends AdminController
 	private function togglePublishedStateTask($publish = 1)
 	{
 		//get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 
 		//make sure we have ids
 		if (isset($ids) && count($ids) > 0)
@@ -483,8 +483,8 @@ class Newsletter extends AdminController
 	public function previewTask()
 	{
 		//get the request vars
-		$id = \JRequest::getInt('id', 0);
-		$no_html = \JRequest::getInt('no_html', 0);
+		$id = Request::getInt('id', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		//get the newsletter
 		$newsletterNewsletter = new Letter($this->database);
@@ -516,7 +516,7 @@ class Newsletter extends AdminController
 		$this->view->setLayout('test');
 
 		//get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		//make sure we have an id
@@ -553,8 +553,8 @@ class Newsletter extends AdminController
 		$badEmails = array();
 
 		//get request vars
-		$emails       = \JRequest::getVar('emails', '');
-		$newsletterId = \JRequest::getInt('nid', 0);
+		$emails       = Request::getVar('emails', '');
+		$newsletterId = Request::getInt('nid', 0);
 
 		//parse emails
 		$emails = array_filter(array_map("strtolower", array_map("trim", explode(",", $emails))));
@@ -620,7 +620,7 @@ class Newsletter extends AdminController
 	public function sendNewsletterTask()
 	{
 		// get the request vars
-		$ids = \JRequest::getVar("id", array());
+		$ids = Request::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
 		// make sure we have an id
@@ -671,8 +671,8 @@ class Newsletter extends AdminController
 	public function doSendNewsletterTask()
 	{
 		//get request vars
-		$newsletterId  = \JRequest::getInt('nid', 0);
-		$mailinglistId = \JRequest::getInt('mailinglist', '-1');
+		$newsletterId  = Request::getInt('nid', 0);
+		$mailinglistId = Request::getInt('mailinglist', '-1');
 
 		//instantiate newsletter campaign object & load campaign
 		$newsletterNewsletter = new Letter($this->database);
@@ -771,13 +771,10 @@ class Newsletter extends AdminController
 	 */
 	private function _send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
 	{
-		//get site config
-		$config = \JFactory::getConfig();
-
 		//set default mail from and reply-to names and addresses
-		$defaultMailFromName       = $config->getValue("sitename") . ' Newsletter';
+		$defaultMailFromName       = Config::get("sitename") . ' Newsletter';
 		$defaultMailFromAddress    = 'contact@' . $_SERVER['HTTP_HOST'];
-		$defaultMailReplytoName    = $config->getValue("sitename") . ' Newsletter - Do Not Reply';
+		$defaultMailReplytoName    = Config::get("sitename") . ' Newsletter - Do Not Reply';
 		$defaultMailReplytoAddress = 'do-not-reply@' . $_SERVER['HTTP_HOST'];
 
 		//get the config mail from and reply-to names and addresses
@@ -798,7 +795,7 @@ class Newsletter extends AdminController
 		$mailReplyTo = '"' . $mailReplytoName . '" <' . $mailReplytoAddress . '>';
 
 		//set subject and body
-		$mailSubject   = ($newsletter->name) ? $newsletter->name : 'Your ' . $config->getValue("sitename") . '.org Newsletter';
+		$mailSubject   = ($newsletter->name) ? $newsletter->name : 'Your ' . Config::get("sitename") . '.org Newsletter';
 		$mailHtmlBody  = $newsletterHtmlContent;
 		$mailPlainBody = $newsletterPlainContent;
 
@@ -874,7 +871,7 @@ class Newsletter extends AdminController
 		}
 
 		//get the scheduling
-		$scheduler = \JRequest::getInt('scheduler', 1);
+		$scheduler = Request::getInt('scheduler', 1);
 
 		if ($scheduler == '1')
 		{
@@ -882,10 +879,10 @@ class Newsletter extends AdminController
 		}
 		else
 		{
-			$schedulerDate = \JRequest::getVar('scheduler_date', '');
-			$schedulerHour = \JRequest::getVar('scheduler_date_hour', '00');
-			$schedulerMinute = \JRequest::getVar('scheduler_date_minute', '00');
-			$schedulerMeridian = \JRequest::getVar('scheduler_date_meridian', 'AM');
+			$schedulerDate = Request::getVar('scheduler_date', '');
+			$schedulerHour = Request::getVar('scheduler_date_hour', '00');
+			$schedulerMinute = Request::getVar('scheduler_date_minute', '00');
+			$schedulerMeridian = Request::getVar('scheduler_date_meridian', 'AM');
 
 			//make sure we have at least the date or we use now
 			if (!$schedulerDate)

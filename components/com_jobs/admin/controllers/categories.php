@@ -47,14 +47,13 @@ class Categories extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		$this->view->filters = array(
 			// Get paging variables
 			'limit' =>$app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -95,10 +94,10 @@ class Categories extends AdminController
 	public function saveorderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$order = \JRequest::getVar('order', array(), 'post', 'array');
+		$order = Request::getVar('order', array(), 'post', 'array');
 		\JArrayHelper::toInteger($order);
 
 		// Instantiate an object
@@ -137,12 +136,12 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			$id = (is_array($id)) ? $id[0] : $id;
 
 			// Load the object
@@ -170,7 +169,7 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Initiate extended database class
 		$row = new JobCategory($this->database);
@@ -204,10 +203,10 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with

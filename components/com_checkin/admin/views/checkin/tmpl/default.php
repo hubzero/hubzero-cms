@@ -32,7 +32,7 @@
 defined('_JEXEC') or die;
 
 JToolBarHelper::title(Lang::txt('COM_CHECKIN_GLOBAL_CHECK_IN'), 'checkin.png');
-if (JFactory::getUser()->authorise('core.admin', 'com_checkin'))
+if (User::authorise('core.admin', 'com_checkin'))
 {
 	JToolBarHelper::custom('checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
 	JToolBarHelper::divider();

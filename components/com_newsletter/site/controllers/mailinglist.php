@@ -120,7 +120,7 @@ class Mailinglist extends SiteController
 		$this->view->setLayout('subscribe');
 
 		//must be logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			//build return url and redirect url
 			$return   = Route::url('index.php?option=com_newsletter&task=subscribe');
@@ -133,7 +133,7 @@ class Mailinglist extends SiteController
 
 		//get mailing lists user belongs to
 		$newsletterMailinglist = new MailList($this->database);
-		$this->view->mylists = $newsletterMailinglist->getListsForEmail($this->juser->get('email'));
+		$this->view->mylists = $newsletterMailinglist->getListsForEmail(User::get('email'));
 
 		//get all lists
 		$this->view->alllists = $newsletterMailinglist->getLists(null, 'public');
@@ -159,14 +159,14 @@ class Mailinglist extends SiteController
 	public function doSingleSubscribeTask()
 	{
 		//check to make sure we have a valid token
-		if (!\JRequest::checkToken()) die('Invalid Token');
+		if (!Request::checkToken()) die('Invalid Token');
 
 		//get request vars
-		$list   = \JRequest::getInt('list_' . \JUtility::getToken(), '', 'post');
-		$email  = \JRequest::getVar('email_' . \JUtility::getToken(), $this->juser->get('email'), 'post');
-		$sid    = \JRequest::getInt('subscriptionid', 0);
-		$hp1    = \JRequest::getVar('hp1', '', 'post');
-		$return = base64_decode(\JRequest::getVar('return', '/', 'post'));
+		$list   = Request::getInt('list_' . \JUtility::getToken(), '', 'post');
+		$email  = Request::getVar('email_' . \JUtility::getToken(), User::get('email'), 'post');
+		$sid    = Request::getInt('subscriptionid', 0);
+		$hp1    = Request::getVar('hp1', '', 'post');
+		$return = base64_decode(Request::getVar('return', '/', 'post'));
 
 		//check to make sure our honey pot is good
 		if ($hp1 != '')
@@ -229,8 +229,8 @@ class Mailinglist extends SiteController
 	public function doMultiSubscribeTask()
 	{
 		//get request vars
-		$lists = \JRequest::getVar('lists', array(), 'post');
-		$email = $this->juser->get('email');
+		$lists = Request::getVar('lists', array(), 'post');
+		$email = User::get('email');
 
 		//get my lists
 		$newsletterMailinglist = new MailList($this->database);
@@ -321,8 +321,8 @@ class Mailinglist extends SiteController
 		$this->view->setLayout('unsubscribe');
 
 		//get request vars
-		$email = \JRequest::getVar('e', '');
-		$token = \JRequest::getVar('t', '');
+		$email = Request::getVar('e', '');
+		$token = Request::getVar('t', '');
 
 		//parse token
 		$recipient = Helper::parseMailingToken($token);
@@ -403,7 +403,7 @@ class Mailinglist extends SiteController
 			$this->_messageType = 'error';
 			$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ALREADY_UNSUBSCRIBED', $mailinglist->name);
 			$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_redirect = Route::url('index.php?option=com_newsletter');
 			}
@@ -418,7 +418,7 @@ class Mailinglist extends SiteController
 
 		//set vars for view
 		$this->view->title       = $this->_title;
-		$this->view->juser       = $this->juser;
+		$this->view->juser       = User::getRoot();
 		$this->view->mailinglist = $mailinglist;
 
 		//output
@@ -433,10 +433,10 @@ class Mailinglist extends SiteController
 	public function doUnsubscribeTask()
 	{
 		//get request vars
-		$email      = \JRequest::getVar('e', '');
-		$token      = \JRequest::getVar('t', '');
-		$reason     = \JRequest::getVar('reason', '');
-		$reason_alt = \JRequest::getVar('reason-alt', '');
+		$email      = Request::getVar('e', '');
+		$token      = Request::getVar('t', '');
+		$reason     = Request::getVar('reason', '');
+		$reason_alt = Request::getVar('reason-alt', '');
 
 		//grab the reason explaination if user selected other
 		if ($reason == 'Other')
@@ -473,9 +473,9 @@ class Mailinglist extends SiteController
 		$sql = '';
 		if ($mailing->lid == '-1')
 		{
-			if (!$this->juser->get('guest'))
+			if (!User::isGuest())
 			{
-				$sql = "UPDATE #__xprofiles SET mailPreferenceOption=0 WHERE uidNumber=" . $this->database->quote($this->juser->get('id'));
+				$sql = "UPDATE #__xprofiles SET mailPreferenceOption=0 WHERE uidNumber=" . $this->database->quote(User::get('id'));
 			}
 			else
 			{
@@ -518,7 +518,7 @@ class Mailinglist extends SiteController
 		$this->_messageType = 'success';
 		$this->_message     = Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_SUCCESS');
 		$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_redirect = Route::url('index.php?option=com_newsletter');
 		}
@@ -533,8 +533,8 @@ class Mailinglist extends SiteController
 	public function confirmTask()
 	{
 		//get request vars
-		$email = \JRequest::getVar('e', '');
-		$token = \JRequest::getVar('t', '');
+		$email = Request::getVar('e', '');
+		$token = Request::getVar('t', '');
 
 		//make sure we have an email
 		$mailinglistEmail = Helper::parseConfirmationToken($token);
@@ -566,7 +566,7 @@ class Mailinglist extends SiteController
 		$this->_redirect    = Route::url('index.php?option=com_newsletter&task=subscribe');
 
 		//if were not logged in go back to newsletter page
-		if (\JFactory::getUser()->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_redirect = Route::url('index.php?option=com_newsletter');
 		}
@@ -581,8 +581,8 @@ class Mailinglist extends SiteController
 	public function removeTask()
 	{
 		//get request vars
-		$email = \JRequest::getVar('e', '');
-		$token = \JRequest::getVar('t', '');
+		$email = Request::getVar('e', '');
+		$token = Request::getVar('t', '');
 
 		//make sure we have an email
 		$mailinglistEmail = Helper::parseConfirmationToken($token);
@@ -621,17 +621,17 @@ class Mailinglist extends SiteController
 	public function resendConfirmationTask()
 	{
 		//get request vars
-		$mid = \JRequest::getInt('mid', 0);
+		$mid = Request::getInt('mid', 0);
 
 		//instantiate mailing list object
 		$newsletterMailinglist = new MailList($this->database);
 		$newsletterMailinglist->load($mid);
 
 		//send confirmation email
-		Helper::sendMailinglistConfirmationEmail($this->juser->get('email'), $newsletterMailinglist, false);
+		Helper::sendMailinglistConfirmationEmail(User::get('email'), $newsletterMailinglist, false);
 
 		//inform user and redirect
-		$this->_message  = Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', $this->juser->get('email'));
+		$this->_message  = Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONFIRM_SENT', User::get('email'));
 		$this->_redirect = Route::url('index.php?option=com_newsletter&task=subscribe');
 		return;
 	}

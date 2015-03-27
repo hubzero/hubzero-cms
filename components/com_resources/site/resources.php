@@ -44,7 +44,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'resources'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'resources'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'resources';

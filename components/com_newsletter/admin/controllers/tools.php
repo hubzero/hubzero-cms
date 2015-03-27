@@ -31,6 +31,7 @@
 namespace Components\Newsletter\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
+use Hubzero\Image\Mozify;
 
 /**
  * Newsletter tools Controller
@@ -67,9 +68,9 @@ class Tools extends AdminController
 	public function mozifyTask()
 	{
 		//get request vars
-		$imageFile  = \JRequest::getVar('image-file','', 'files');
-		$imageUrl   = \JRequest::getVar('image-url','', 'post');
-		$mosaicSize = \JRequest::getInt('mosaic-size', 5, 'post');
+		$imageFile  = Request::getVar('image-file','', 'files');
+		$imageUrl   = Request::getVar('image-url','', 'post');
+		$mosaicSize = Request::getInt('mosaic-size', 5, 'post');
 
 		//temp upload path
 		$uploadPath = PATH_APP . DS . 'tmp' . DS . 'newsletter' . DS . 'mozify';
@@ -124,7 +125,7 @@ class Tools extends AdminController
 		);
 
 		//instantiate new hubzero image mozify object
-		$hubzeroImageMozify = new \Hubzero\Image\Mozify($config);
+		$hubzeroImageMozify = new Mozify($config);
 		if (!$hubzeroImageMozify->getError())
 		{
 			$this->code     = $hubzeroImageMozify->mozify();

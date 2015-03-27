@@ -59,9 +59,9 @@ class Story extends AdminController
 	public function editTask()
 	{
 		//get request vars
-		$this->view->type = strtolower(\JRequest::getVar("type", "primary"));
-		$this->view->id   = \JRequest::getInt("id", 0);
-		$this->view->sid  = \JRequest::getInt("sid", 0);
+		$this->view->type = strtolower(Request::getVar("type", "primary"));
+		$this->view->id   = Request::getInt("id", 0);
+		$this->view->sid  = Request::getInt("sid", 0);
 
 		//load campaign
 		$this->view->newsletter = new Newsletter($this->database);
@@ -110,8 +110,8 @@ class Story extends AdminController
 	public function saveTask()
 	{
 		//get story
-		$story = \JRequest::getVar("story", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
-		$type  = \JRequest::getVar("type", "primary");
+		$story = Request::getVar("story", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
+		$type  = Request::getVar("type", "primary");
 
 		//are we working with a primary or secondary story
 		if ($type == "primary")
@@ -156,10 +156,10 @@ class Story extends AdminController
 	public function reorderTask()
 	{
 		//get request vars
-		$id = \JRequest::getInt('id', 0);
-		$sid = \JRequest::getInt('sid', 0);
-		$type = \JRequest::getWord('type', 'primary');
-		$direction = \JRequest::getWord('direction', 'down');
+		$id = Request::getInt('id', 0);
+		$sid = Request::getInt('sid', 0);
+		$type = Request::getWord('type', 'primary');
+		$direction = Request::getWord('direction', 'down');
 
 		//what kind of story do we want
 		if (strtolower($type) == 'primary')
@@ -239,9 +239,9 @@ class Story extends AdminController
 	public function deleteTask()
 	{
 		//get the request vars
-		$id   = \JRequest::getInt('id', 0);
-		$sid  = \JRequest::getInt('sid', 0);
-		$type = \JRequest::getWord('type', 'primary');
+		$id   = Request::getInt('id', 0);
+		$sid  = Request::getInt('sid', 0);
+		$type = Request::getWord('type', 'primary');
 
 		if (strtolower($type) == 'primary')
 		{
@@ -281,7 +281,7 @@ class Story extends AdminController
 	 */
 	public function cancelTask()
 	{
-		$story = \JRequest::getVar("story", array());
+		$story = Request::getVar("story", array());
 
 		$this->setRedirect(
 			Route::url('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $story['nid'], false)

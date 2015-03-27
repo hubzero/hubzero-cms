@@ -60,7 +60,7 @@ class Cleanser extends AdminController
 	public function displayTask()
 	{
 		// Set the default view name and format from the Request.
-		$vName = \JRequest::getCmd('view', 'cache');
+		$vName = \Request::getCmd('view', 'cache');
 
 		// Get and render the view.
 		switch ($vName)
@@ -100,9 +100,9 @@ class Cleanser extends AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		\Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
-		$cid = \JRequest::getVar('cid', array(), 'post', 'array');
+		$cid = \Request::getVar('cid', array(), 'post', 'array');
 
 		if (empty($cid))
 		{
@@ -126,7 +126,7 @@ class Cleanser extends AdminController
 	public function purgeTask()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
+		\Request::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		$ret = $this->model->purge();
 

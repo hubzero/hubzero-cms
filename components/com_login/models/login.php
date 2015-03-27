@@ -45,13 +45,13 @@ class Login extends \JModelLegacy
 	protected function populateState()
 	{
 		$credentials = array(
-			'username' => \JRequest::getVar('username', '', 'method', 'username'),
-			'password' => \JRequest::getVar('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
+			'username' => \Request::getVar('username', '', 'method', 'username'),
+			'password' => \Request::getVar('passwd', '', 'post', 'string', JREQUEST_ALLOWRAW)
 		);
 		$this->setState('credentials', $credentials);
 
 		// check for return URL from the request first
-		if ($return = \JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = \Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
 			if (!\JURI::isInternal($return))

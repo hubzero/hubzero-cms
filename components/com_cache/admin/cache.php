@@ -31,7 +31,7 @@
 namespace Components\Cache\Admin;
 
 // Access check.
-if (!\JFactory::getUser()->authorise('core.manage', 'com_cache'))
+if (!\User::uthorise('core.manage', 'com_cache'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }

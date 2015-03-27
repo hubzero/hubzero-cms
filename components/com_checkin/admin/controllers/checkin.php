@@ -58,7 +58,7 @@ class Checkin extends AdminController
 	public function displayTask()
 	{
 		// Load the submenu.
-		$this->addSubmenu(\JRequest::getWord('option', 'com_checkin'));
+		$this->addSubmenu(Request::getWord('option', 'com_checkin'));
 
 		$this->view->items      = $this->model->getItems();
 		$this->view->pagination = $this->model->getPagination();
@@ -86,7 +86,7 @@ class Checkin extends AdminController
 		\JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
-		$ids = \JRequest::getVar('cid', array(), '', 'array');
+		$ids = Request::getVar('cid', array(), '', 'array');
 
 		$msg = '';
 

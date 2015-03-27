@@ -30,7 +30,7 @@
 
 namespace Components\Newsletter\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_newsletter'))
+if (!\User::authorise('core.manage', 'com_newsletter'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -48,7 +48,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'mailing.recipient.action.p
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
 
 //instantiate controller
-$controllerName = \JRequest::getCmd('controller', 'newsletter');
+$controllerName = \Request::getCmd('controller', 'newsletter');
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
@@ -64,7 +64,7 @@ $menuItems = array(
 //add menu items
 foreach ($menuItems as $k => $v)
 {
-	$active = (\JRequest::getCmd('controller', 'newsletter') == $k) ? true : false ;
+	$active = (\Request::getCmd('controller', 'newsletter') == $k) ? true : false ;
 	\JSubMenuHelper::addEntry($v, \Route::url('index.php?option=com_newsletter&controller=' . $k), $active);
 }
 

@@ -47,7 +47,7 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'stats.php');
 include_once(dirname(__DIR__) . DS . 'tables' . DS . 'type.php');
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 
-$controllerName = \JRequest::getCmd('controller', 'jobs');
+$controllerName = \Request::getCmd('controller', 'jobs');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'jobs';

@@ -47,7 +47,7 @@ class NewsletterControllerMailing extends SiteController
 	 */
 	public function trackTask()
 	{
-		$type = \JRequest::getVar('type');
+		$type = Request::getVar('type');
 		switch ($type)
 		{
 			case 'open':    $this->openTrackingTask();    break;
@@ -65,7 +65,7 @@ class NewsletterControllerMailing extends SiteController
 	private function openTrackingTask()
 	{
 		//get reqest vars
-		$token = \JRequest::getVar('t', '');
+		$token = Request::getVar('t', '');
 
 		//parse mailing token
 		$recipient = Helper::parseMailingToken($token);
@@ -107,8 +107,8 @@ class NewsletterControllerMailing extends SiteController
 	private function clickTrackingTask()
 	{
 		//get reqest vars
-		$token = \JRequest::getVar('t', '');
-		$link  = \JRequest::getVar('l', '', 'get', 'STRING', JREQUEST_ALLOWRAW);
+		$token = Request::getVar('t', '');
+		$link  = Request::getVar('l', '', 'get', 'STRING', JREQUEST_ALLOWRAW);
 
 		//parse mailing token
 		$recipient = Helper::parseMailingToken($token);
@@ -156,7 +156,7 @@ class NewsletterControllerMailing extends SiteController
 	private function printTrackingTask()
 	{
 		//get reqest vars
-		$token = \JRequest::getVar('t', '');
+		$token = Request::getVar('t', '');
 
 		//parse mailing token
 		$recipient = Helper::parseMailingToken($token);
@@ -190,7 +190,7 @@ class NewsletterControllerMailing extends SiteController
 	private function forwardTrackingTask()
 	{
 		//get reqest vars
-		$token = \JRequest::getVar('t', '');
+		$token = Request::getVar('t', '');
 
 		//parse mailing token
 		$recipient = Helper::parseMailingToken($token);
