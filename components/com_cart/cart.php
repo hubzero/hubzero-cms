@@ -35,6 +35,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 
+// enable only if PRO is enabled
+$juser = JFactory::getUser();
+if(!$juser->proEnabled)
+{
+    JError::raiseError(404, JText::_('Component is not available at this time'));
+}
+
 // require base component controller
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . 'component.php');
 

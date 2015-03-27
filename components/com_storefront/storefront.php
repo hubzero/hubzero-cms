@@ -35,14 +35,15 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 
-//require needed files
-//require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
-//require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'warehouse.php');
-//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
+// enable only if PRO is enabled
+$juser = JFactory::getUser();
+if(!$juser->proEnabled)
+{
+    JError::raiseError(404, JText::_('Component is not available at this time'));
+}
 
-// require base component controller
-//require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'component.php');
+//require needed files
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', '');
