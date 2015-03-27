@@ -68,8 +68,8 @@ class Help extends Button
 			$doTask = $this->_getCommand($ref, $com, $override, $component);
 		}
 
-		$html  = '<a data-title="' . $text . '" href="#" onclick="' . $doTask . '" rel="help" class="toolbar">';
-		$html .= '<span class="' . $class . '">' . $text . '</span>';
+		$html  = '<a data-title="' . $text . '" href="#" onclick="' . $doTask . '" rel="help" class="toolbar">' . "\n";
+		$html .= '<span class="' . $class . '">' . "\n" . $text . "\n" . '</span>' . "\n";
 		$html .= '</a>' . "\n";
 
 		return $html;
