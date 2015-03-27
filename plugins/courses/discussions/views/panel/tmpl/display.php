@@ -18,8 +18,14 @@ if (count($inst) > 0)
 ?>
 <?php if (!$this->course->offering()->section()->access('view')) : ?>
 	<?php
-		$this->view('_not_enrolled')
-		     ->set('course', $this->course)
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => 'courses',
+			'element' => 'outline',
+			'name'    => 'shared',
+			'layout'  => '_not_enrolled'
+		));
+
+		$view->set('course', $this->course)
 		     ->set('option', $this->option)
 		     ->set('message', 'You must be enrolled to utilize the discussion feature.')
 		     ->display();

@@ -142,8 +142,14 @@ $base = $this->offering->link();
 </div>
 <?php else : ?>
 	<?php
-		$this->view('_not_enrolled')
-		     ->set('course', $this->course)
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => 'courses',
+			'element' => 'outline',
+			'name'    => 'shared',
+			'layout'  => '_not_enrolled'
+		));
+
+		$view->set('course', $this->course)
 		     ->set('option', $this->option)
 		     ->set('message', JText::_('PLG_COURSES_NOTES_ENROLLMENT_REQUIRED'))
 		     ->display();

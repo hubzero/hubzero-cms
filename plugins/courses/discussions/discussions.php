@@ -487,8 +487,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$view = new \Hubzero\Plugin\View(array(
 				'folder'  => 'courses',
-				'element' => 'discussions',
-				'name'    => 'panel',
+				'element' => 'outline',
+				'name'    => 'shared',
 				'layout'  => '_not_enrolled'
 			));
 

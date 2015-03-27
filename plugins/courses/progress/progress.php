@@ -82,7 +82,13 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		// Check to see if user is member and plugin access requires members
 		if (!$course->offering()->section()->access('view'))
 		{
-			$view = $this->view('_not_enrolled', 'report');
+			$view = new \Hubzero\Plugin\View(array(
+				'folder'  => 'courses',
+				'element' => 'outline',
+				'name'    => 'shared',
+				'layout'  => '_not_enrolled'
+			));
+
 			$view->set('course', $course)
 			     ->set('option', 'com_courses')
 			     ->set('message', 'You must be enrolled to utilize the progress feature.');
