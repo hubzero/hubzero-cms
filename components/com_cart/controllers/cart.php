@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
+
 /**
  * Cart controller class
  */
@@ -62,49 +64,50 @@ class CartControllerCart extends ComponentController
 	 */
 	public function homeTask()
 	{
-		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 
-		// update cart if needed for non-ajax transactions
-		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
-
-		$pIds = JRequest::getVar('pId', false, 'post');
-
-		//print_r($pIds); die;
-
-		// If pIds are posted, convert them to SKUs
-		if (!empty($pIds))
-		{
-			$skus = array();
-			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-			$warehouse = new StorefrontModelWarehouse();
-
-			foreach ($pIds as $pId => $qty)
-			{
-				$product_skus = $warehouse->getProductSkus($pId);
-
-				// must be only one sku to work
-				if (sizeof($product_skus) != 1)
-				{
-					continue;
-				}
-
-				$skus[$product_skus[0]] = $qty;
-
-				// each pId must map to one SKU, otherwise ignored
-			}
-		}
-		else
-		{
-			$skus = JRequest::getVar('skus', false, 'post');
-		}
-		//print_r($skus); die;
-
-		// Initialize errors array
+        // Initialize errors array
 		$errors = array();
 
-		if ($updateCartRequest && $skus)
+		// Update cart if needed
+		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');
+
+		// If pIds are posted, convert them to SKUs
+		$pIds = JRequest::getVar('pId', false, 'post');
+		//print_r($pIds); die;
+		$skus = JRequest::getVar('skus', false, 'post');
+
+		if ($updateCartRequest && ($pIds || $skus))
 		{
+			if (!empty($pIds))
+			{
+				$skus = array();
+				include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+				$warehouse = new StorefrontModelWarehouse();
+
+				foreach ($pIds as $pId => $qty)
+				{
+					$product_skus = $warehouse->getProductSkus($pId);
+
+					// each pId must map to one SKU, otherwise ignored, since there is no way which SKU is being added
+					// Must be only one sku...
+					if (sizeof($product_skus) != 1)
+					{
+						continue;
+					}
+
+					$skus[$product_skus[0]] = $qty;
+				}
+			}
+			else
+			{
+				if(!is_array($skus))
+				{
+					$skus = array($skus => 1);
+				}
+			}
+			//print_r($skus); die;
+
 			// Turn off syncing to prevent redundant session update queries
 			$cart->setSync(false);
 			foreach ($skus as $sId => $qty)
@@ -115,22 +118,48 @@ class CartControllerCart extends ComponentController
 				}
 				catch (Exception $e)
 				{
-					$updateErrors[] = $e->getMessage();
+					$cart->setMessage($e->getMessage(), 'error');
 				}
 			}
 
-			if (!empty($errors))
+			// set flag to redirect
+			$redirect = true;
+			if ($cart->hasMessages())
 			{
 				$redirect = false;
 			}
-			else
+		}
+		// Check if there is a delete request
+		else
+		{
+			$allPost = JFactory::getApplication()->input->getArray($_POST);
+			foreach ($allPost as $var => $val)
 			{
-				// set flag to redirect
-				$redirect = true;
+				if ($val == 'delete')
+				{
+					$toDelete = explode('_', $var);
+					//print_r($toDelete);	die;
+
+					if ($toDelete[0] == 'delete')
+					{
+						$sId = $toDelete[1];
+						// Delete the requested item by setting its QTY to zero
+						$redirect = true;
+						try
+						{
+							$cart->update($sId, 0);
+						}
+						catch (Exception $e)
+						{
+							$cart->setMessage($e->getMessage(), 'error');
+							$redirect = false;
+						}
+					}
+				}
 			}
 		}
 
-		// add coupon if needed
+		// Add coupon if needed
 		$addCouponRequest = JRequest::getVar('addCouponCode', false, 'post');
 		$couponCode = JRequest::getVar('couponCode', false, 'post');
 
@@ -146,35 +175,45 @@ class CartControllerCart extends ComponentController
 			}
 			catch (Exception $e)
 			{
-				$errors[] = $e->getMessage();
+				$cart->setMessage($e->getMessage(), 'error');
 			}
 
-			if (!empty($errors))
+			// set flag to redirect
+			$redirect = true;
+			if ($cart->hasMessages())
 			{
 				$redirect = false;
 			}
-			else
-			{
-				// set flag to redirect
-				$redirect = true;
-			}
 		}
 
+		// Check for express add to cart
 		if (!empty($redirect) && $redirect)
 		{
+			// If this is an express checkout (go to the confirm page right away) there shouldn't be any items in the cart
+			// Since redirect is set, there are no errors
+			$expressCheckout = JRequest::getVar('expressCheckout', false, 'post');
+
+			// make sure the cart is empty
+			if ($expressCheckout && !empty($skus) && $cart->isEmpty())
+			{
+				// Get the latest synced cart info, it will also enable cart syncing that was turned off before
+				$cart->getCartInfo(true);
+
+				// Redirect directly to checkout, skip the cart page
+				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . DS . 'checkout';
+				$app = JFactory::getApplication();
+				$app->redirect($redirect_url);
+			}
+
 			// prevent resubmitting form by refresh
-			// If not an ajax call, redirect to cart
+			// redirect to cart
 			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');
 			$app = JFactory::getApplication();
 			$app->redirect($redirect_url);
 		}
 
-		// Set errors
-		$this->view->setError($errors);
-
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
 		$cartInfo = $cart->getCartInfo(true);
-		//print_r($cartInfo); die;
 		$this->view->cartInfo = $cartInfo;
 
 		// Handle coupons
@@ -187,11 +226,11 @@ class CartControllerCart extends ComponentController
 		//print_r($membershipInfo); die;
 		$this->view->membershipInfo = $membershipInfo;
 
-		// Check if there are changes to display
-		if ($cart->cartChanged())
+		// At this point the cart is lifted and may have some issues/errors (say, after merging), get them
+		if ($cart->hasMessages())
 		{
-			$cartChanges = $cart->getCartChanges();
-			$this->view->setError($cartChanges);
+			$cartMessages = $cart->getMessages();
+			$this->view->notifications = $cartMessages;
 		}
 
 		$this->view->display();

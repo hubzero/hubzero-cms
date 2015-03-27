@@ -51,10 +51,11 @@ class CartControllerRequest extends ComponentController
 
 	public function addTask()
 	{
+		$response = new stdClass();
 		$response->status = 'ok';
 
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 
 		// update cart
 		$updateCartRequest = JRequest::getVar('updateCart', false, 'post');

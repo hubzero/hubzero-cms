@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Product handler. Handled purchased products/items.
+ * Product handler. Handles purchased products/items. Runs a proper handler on each purchased item.
  */
 class Cart_ProductHandler
 {
@@ -50,8 +50,6 @@ class Cart_ProductHandler
 	{
 		$this->item = $item;
 		$this->crtId = $crtId;
-
-		//print_r($crtId); die;
 	}
 
 	/**
@@ -61,156 +59,66 @@ class Cart_ProductHandler
 	 * @return 	bool
 	 */
 	public function handle()
-	{
-		// Get product type info
-		$ptId = $this->item['info']->ptId;
+    {
+        // Get product type info
+        $ptId = $this->item['info']->ptId;
 
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-		$warehouse = new StorefrontModelWarehouse();
+        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+        $warehouse = new StorefrontModelWarehouse();
 
-		$ptIdIndo = $warehouse->getProductTypeInfo($ptId);
+        $ptIdTypeInfo = $warehouse->getProductTypeInfo($ptId);
 
-		// run both product model and type handlers if needed. Model handlers must go first for type handlers to potentially use their updates
+        // Run both product model handler and type handler if needed.
+        // Model handlers must go first for type handlers to potentially use their updates
 
-		$modelHandlerclass = ucfirst($ptIdIndo['ptModel']) . '_Model_Handler';
-		if (class_exists($modelHandlerclass))
-		{
-			$modelHandler = new $modelHandlerclass($this->item, $this->crtId);
-			$modelHandler->handle();
-		}
+        $handlersPath = JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'handlers';
 
-		$typeHandlerClass = ucfirst($ptIdIndo['ptName']) . '_Type_Handler';
-		if (class_exists($typeHandlerClass))
-		{
-			$typeHandler = new $typeHandlerClass($this->item, $this->crtId);
-			$typeHandler->handle();
-		}
+        // MODEL HANDLER
+        $modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';
+        if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php')) {
+            // Include the parent class
+            include_once($handlersPath . DS . 'ModelHandler.php');
+
+            // Include the handler file
+            include_once($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php');
+
+            $modelHandler = new $modelHandlerClass($this->item, $this->crtId);
+            $modelHandler->handle();
+        }
+
+
+        // TYPE HANDLER
+        $typeHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptName']))) . '_Type_Handler';
+        //print_r($typeHandlerClass); die;
+        if (file_exists($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php')) {
+            // Include the parent class
+            include_once($handlersPath . DS . 'TypeHandler.php');
+
+            // Include the handler file
+            include_once($handlersPath . DS . 'type' . DS . $typeHandlerClass . '.php');
+
+            $typeHandler = new $typeHandlerClass($this->item, $this->crtId);
+            $typeHandler->handle();
+        }
+
+
+        // CUSTOM HANDLERS (if any)
+        if (!empty($this->item['meta']['customHandler']))
+        {
+            $customHandler = $this->item['meta']['customHandler'];
+            $customHandlerClass = str_replace(' ', '_', ucwords(strtolower($customHandler))) . '_Custom_Handler';
+
+            if (file_exists($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php')) {
+                // Include the parent class
+                include_once($handlersPath . DS . 'CustomHandler.php');
+
+                // Include the handler file
+                include_once($handlersPath . DS . 'custom' . DS . $customHandlerClass . '.php');
+
+                $customHandler = new $customHandlerClass($this->item, $this->crtId);
+                $customHandler->handle();
+            }
+        }
 	}
 
-}
-
-// ==================================================== Type handlers
-
-class Type_Handler
-{
-	// Database instance
-	var $db = NULL;
-
-	// Item info
-	var $item;
-
-	var $crtId;
-
-	/**
-	 * Constructor
-	 *
-	 */
-	public function __construct($item, $crtId)
-	{
-		$this->item = $item;
-		$this->crtId = $crtId;
-	}
-}
-
-class Course_Type_Handler extends Type_Handler
-{
-	/**
-	 * Constructor
-	 *
-	 * @param 	void
-	 * @return 	void
-	 */
-	public function __construct($item, $crtId)
-	{
-		parent::__construct($item, $crtId);
-	}
-
-	public function handle()
-	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
-		$ms = new StorefrontModelMemberships();
-
-		// Get current registration
-		$membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
-		$expiration = $membership['crtmExpires'];
-
-		// Get course ID
-		$courseId = $this->item['meta']['courseId'];
-
-		// Initialize static cart
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart(NULL, true);
-
-		// Get user id
-		$userId = $cart->getCartUser($this->crtId);
-
-		// Load courses model and register
-		// registerForCourse($userId, $courseId, $expiration);
-
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-
-		$course = CoursesModelCourse::getInstance($this->item['meta']['courseId']);
-
-		if (!$course->offerings()->count()) {
-			// error enrolling
-		}
-		else
-		{
-			// Get to the first and probably the only offering
-			//$offering = $course->offerings()->current();
-			$offering = $course->offering($this->item['meta']['offeringId']);
-
-			$offering->add($userId);
-			//$offering->remove($userId);
-		}
-	}
-}
-
-// ==================================================== Model handlers
-
-class Model_Handler
-{
-	// Database instance
-	var $db = NULL;
-
-	// Item info
-	var $item;
-
-	var $crtId;
-
-	/**
-	 * Constructor
-	 *
-	 */
-	public function __construct($item, $crtId)
-	{
-		$this->item = $item;
-		$this->crtId = $crtId;
-	}
-}
-
-class Membership_Model_Handler extends Model_Handler
-{
-	/**
-	 * Constructor
-	 *
-	 * @param 	void
-	 * @return 	void
-	 */
-	public function __construct($item, $crtId)
-	{
-		parent::__construct($item, $crtId);
-	}
-
-	public function handle()
-	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
-		$ms = new StorefrontModelMemberships();
-
-		// Get new expiraton date
-		$productMembership = $ms->getNewExpirationInfo($this->crtId, $this->item);
-
-		// Update/Create membership expiration date with new value
-		$ms->setMembershipExpiration($this->crtId, $this->item['info']->pId, $productMembership->newExpires);
-	}
 }

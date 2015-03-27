@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Product viewing controller class
  */
-class StorefrontControllerProduct extends ComponentController
+class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task
@@ -43,39 +43,10 @@ class StorefrontControllerProduct extends ComponentController
 	 */
 	public function execute()
 	{
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		$this->pathway = $pathway;
-
-		// Get the task
-		$this->_task  = JRequest::getCmd('task', '');
-
-		if (empty($this->_task))
-		{
-			JError::raiseError(404, JText::_('COM_STOREFRONT_PAGE_NOT_FOUND'));
-		}
-		elseif (!method_exists($this, $this->_task . 'Task'))
-		{
-			// Try to find a corresponding collection
-			$pId = $this->warehouse->productExists($this->_task);
-			if ($pId)
-			{
-				// if match is found -- display the product
-				$executed = true;
-				$this->displayProduct($pId);
-			}
-			else {
-				JError::raiseError(404, JText::_('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
-			}
-		}
-		else
-		{
-			parent::execute();
-		}
+		parent::execute();
 	}
 
 	/**
@@ -84,15 +55,28 @@ class StorefrontControllerProduct extends ComponentController
 	 * @param		$pId
 	 * @return     	void
 	 */
-	private function displayProduct($pId)
+	public function displayTask()
 	{
-		$view = new \Hubzero\Component\View( array('name'=>'product', 'layout' => 'display') );
-		$view->pId = $pId;
-		$view->css();
-		$view->js('product_display.js');
+		$pId = $this->warehouse->productExists(JRequest::getVar('product', ''));
+		if (!$pId)
+		{
+			JError::raiseError(404, JText::_('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
+		}
+
+		$this->view->pId = $pId;
+		$this->view->css();
+		$this->view->js('product_display.js');
+
+		// A flag whether the item is available for purchase (for any reason, used by the auditors)
+		$productAvailable = true;
+
+		$pageMessages = array();
+
+		// Get the cart
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
 
 		// POST add to cart request
-		// handle add to cart requests if needed for non-ajax transactions
 		$addToCartRequest = JRequest::getVar('addToCart', false, 'post');
 		$options = JRequest::getVar('og', false, 'post');
 		$qty = JRequest::getInt('qty', 1, 'post');
@@ -106,39 +90,57 @@ class StorefrontControllerProduct extends ComponentController
 			try
 			{
 				$sku = $this->warehouse->mapSku($pId, $options);
-
-				include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-				$cart = new CartModelCart();
 				$cart->add($sku, $qty);
 			}
 			catch (Exception $e)
 			{
 				$errors[] = $e->getMessage();
+				$pageMessages[] = array($e->getMessage(), 'error');
 			}
 
 			if (!empty($errors))
 			{
-				$view->setError($errors);
+				$this->view->setError($errors);
 			}
 			else {
 				// prevent resubmitting by refresh
 				// If not an ajax call, redirect to cart
 				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
-				$app  =  JFactory::getApplication();
+				$app = JFactory::getApplication();
 				$app->redirect($redirect_url);
 			}
 		}
 
 		// Get the product info
 		$product = $this->warehouse->getProductInfo($pId);
-		$view->product = $product;
+		$this->view->product = $product;
 
-		//print_r($product); die;
+		// Run the auditor
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
+		$auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
+		$auditorResponse = $auditor->audit();
+		//print_r($auditor); die;
+
+		if (!empty($auditorResponse) && $auditorResponse->status != 'ok')
+		{
+			if ($auditorResponse->status == 'error')
+			{
+				// Product is not available for purchase
+				$productAvailable = false;
+				foreach ($auditorResponse->notices as $notice)
+				{
+					$pageMessages[] = array($notice, 'warning');
+				}
+			}
+		}
 
 		// Get option groups with options and SKUs
 		$data = $this->warehouse->getProductOptions($pId);
-		$view->options = $data->options;
-
+		if ($data)
+		{
+			//JError::raiseError(404 , JText::_('COM_STOREFRONT_PRODUCT_ERROR'));
+			$this->view->options = $data->options;
+		}
 		//print_r($data); die;
 
 		// Find a price range for the product
@@ -151,61 +153,108 @@ class StorefrontControllerProduct extends ComponentController
 		$qtyDropDownMaxVal = 0;
 
 		$inStock = true;
-		if (!count($data->skus))
+		if (!$data || !count($data->skus))
 		{
 			$inStock = false;
 		}
-		$view->inStock = $inStock;
+		$this->view->inStock = $inStock;
 
-		if (count($data->skus) == 1)
+		if ($data && count($data->skus) == 1)
 		{
+			// Set the max value for the dropdown QTY
+			// TODO: add it to the SKU table to set on the per SKU level
+			$qtyDropDownMaxValLimit = 20;
+
 			// Get the first and the only value
 			$sku = array_shift(array_values($data->skus));
 
-			$qtyDropDownMaxVal = $sku['info']->sInventory;
+			// If no inventory tracking, there is no limit on how many can be purchased
+			$qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
+			if ($sku['info']->sTrackInventory)
+			{
+				$qtyDropDownMaxVal = $sku['info']->sInventory;
+			}
 
 			if ($qtyDropDownMaxVal < 1)
 			{
 				$qtyDropDownMaxVal = 1;
 			}
 			// Limit to max number
-			elseif ($qtyDropDownMaxVal > 20)
+			elseif ($qtyDropDownMaxVal > $qtyDropDownMaxValLimit)
 			{
-				$qtyDropDownMaxVal = 20;
+				$qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
 			}
 
-			// If the SKU doesn't allow multiple items, reset the dropdown
+			// If the SKU doesn't allow multiple items, set the dropdown to 1
 			if (!$sku['info']->sAllowMultiple)
 			{
-				$qtyDropDownMaxVal = 0;
+				$qtyDropDownMaxVal = 1;
 			}
 		}
 
-		$view->qtyDropDown = $qtyDropDownMaxVal;
+		$this->view->qtyDropDown = $qtyDropDownMaxVal;
 
-		foreach ($data->skus as $sId => $info)
+		if ($data)
 		{
-			$info = $info['info'];
+			foreach ($data->skus as $sId => $info) {
+				$info = $info['info'];
 
-			if ($info->sPrice > $priceRange['high'])
-			{
-				$priceRange['high'] = $info->sPrice;
-			}
-			if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice)
-			{
-				$priceRange['low'] = $info->sPrice;
+				if ($info->sPrice > $priceRange['high']) {
+					$priceRange['high'] = $info->sPrice;
+				}
+				if (!$priceRange['low'] || $priceRange['low'] > $info->sPrice) {
+					$priceRange['low'] = $info->sPrice;
+				}
 			}
 		}
-		$view->price = $priceRange;
+		$this->view->price = $priceRange;
 
 		// Add custom page JS
-		$js = $this->getDisplayJs($data->options, $data->skus);
-		$doc->addScriptDeclaration($js);
+		if ($data && (count($data->options) > 1 || count($data->skus) > 1)) {
+			$js = $this->getDisplayJs($data->options, $data->skus);
+			$doc =& JFactory::getDocument();
+			$doc->addScriptDeclaration($js);
+		}
 
-		// Breadcrumbs
-		$this->pathway->addItem($product->pName, JRoute::_('index.php?id=' . '5'));
+		// Get images (if any), gets all images from /site/storefront/products/$pId
+		$allowedImgExt = array('jpg', 'gif', 'png');
+		$productImg = array();
+		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $pId;
+		$imgPath = JPATH_ROOT . $imgWebPath;
 
-		$view->display();
+        if (file_exists($imgPath))
+        {
+            $files = scandir($imgPath);
+            foreach ($files as $file)
+            {
+                if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt)) {
+                    if (substr($file, 0, 7) == 'default')
+                    {
+                        // Let the default image to be the first one
+                        array_unshift($productImg, $imgWebPath . DS . $file);
+                    }
+                    else
+                    {
+                        $productImg[] = $imgWebPath . DS . $file;
+                    }
+                }
+            }
+        }
+        else
+        {
+            $productImg[] = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . 'noimage.png';
+        }
+		$this->view->productImg = $productImg;
+
+		$this->view->productAvailable = $productAvailable;
+
+		//build pathway
+		$this->_buildPathway($product->pName);
+
+		// Set notifications
+		$this->view->notifications = $pageMessages;
+
+		$this->view->display();
 	}
 
 	/**
@@ -351,6 +400,31 @@ class StorefrontControllerProduct extends ComponentController
 
 		$js .= "\t}";
 		return $js;
+	}
+
+	/**
+	 * Method to set the document path
+	 *
+	 * @param      array $course_pages List of roup pages
+	 * @return     void
+	 */
+	public function _buildPathway($product)
+	{
+		$pathway = JFactory::getApplication()->getPathway();
+
+		if (count($pathway->getPathWay()) <= 0)
+		{
+			$pathway->addItem(
+				JText::_(strtoupper($this->_option)),
+				'index.php?option=' . $this->_option
+			);
+		}
+		if ($this->_task)
+		{
+			$pathway->addItem(
+				JText::_($product)
+			);
+		}
 	}
 }
 

@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php');
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
 
 /**
  * Cart order controller class
@@ -83,38 +83,32 @@ class CartControllerOrder extends ComponentController
 		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 		$verificationVar = PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
-		// Check the GET values passed
-		$customVar = JRequest::getVar($verificationVar, '');
+        if ($verificationVar) {
+            // Check the GET values passed
+            $customVar = JRequest::getVar($verificationVar, '');
 
-		$tId = false;
-		if (strstr($customVar, '-'))
-		{
-			$customData = explode('-', $customVar);
-			$token = $customData[0];
-			$tId = $customData[1];
-		}
-		else
-		{
-			$token = $customVar;
-		}
-		//print_r($tId); die;
+            $tId = false;
+            if (strstr($customVar, '-')) {
+                $customData = explode('-', $customVar);
+                $token = $customData[0];
+                $tId = $customData[1];
+            } else {
+                $token = $customVar;
+            }
 
-		// Lookup the order
-		$cart = new CartModelCart(NULL, true);
-
-		// Verify token
-		if (!$token || !$cart->verifyToken($token, $tId))
-		{
-			die('Error processing your order. Failed to verify security token.');
-		}
+            // Verify token
+            if (!$token || !CartModelCart::verifySecurityToken($token, $tId)) {
+                die('Error processing your order. Failed to verify security token.');
+            }
+        }
 
 		// Get transaction info
-		$tInfo = $cart->getTransactionFacts($tId);
+		$tInfo = CartModelCart::getTransactionFacts($tId);
 		//print_r($tId); die;
-		//print_r($tInfo);
+		//print_r($tInfo);die;
 
 		if(empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
-			die('Error processing your order.');
+			die('Error processing your order...');
 			//JError::raiseError(404, JText::_('Error processing transaction.'));
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
 			$app  =  JFactory::getApplication();
@@ -138,7 +132,7 @@ class CartControllerOrder extends ComponentController
 	public function placeTask()
 	{
 		// Get the current active trancsaction
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
 		//print_r($transaction); die;
@@ -192,45 +186,60 @@ class CartControllerOrder extends ComponentController
 	}
 
 	/**
-	 * Payment gateway postback make sure everything checks out and complete transaction
+	 * Payment gateway postback: make sure everything checks out and complete transaction
 	 *
 	 * @return     void
 	 */
 	public function postbackTask()
 	{
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+        $test = false;
+		// TESTING ***********************
+		if ($test) {
+			$postBackTransactionId = 331;
+		}
+		
+		mail('ilya@shunko.com', 'POST', serialize($_POST));
 
-		if (empty($_POST))
+        $params =  JComponentHelper::getParams(JRequest::getVar('option'));
+
+		if (empty($_POST) && !$test)
 		{
 			JError::raiseError(404, JText::_('Page not found'));
 		}
 
-		// Get payment provider
-		$paymentGatewayProivder = $params->get('paymentProvider');
-
-		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
-		$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
-		$pay = $paymentDispatcher->getPaymentProvider();
-
-		$postBackTransactionId = $pay->setPostBack($_POST);
-
-		if (!$postBackTransactionId)
-		{
-			// error postback not verified (TO DO)
-			die('not verified');
-		}
-
-		// TESTING ***********************
-		//$postBackTransactionId = 1;
-
-		// Initialize static cart
-		$cart = new CartModelCart(NULL, true);
-
 		// Initialize logger
 		$logger = new CartMessenger('Payment Postback');
 
+		// Get payment provider
+		if (!$test) {
+			$paymentGatewayProivder = $params->get('paymentProvider');
+
+			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+			$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
+			$pay = $paymentDispatcher->getPaymentProvider();
+
+			// Extract the transaction id from postback information
+			$postBackTransactionId = $pay->setPostBack($_POST);
+
+			if (!$postBackTransactionId) {
+				// Transaction id couldn't be extracted
+				$error = 'Post back did not have the valid transaction ID ';
+
+				$logger->setMessage($error);
+				$logger->setPostback($_POST);
+				$logger->log(LoggingLevel::ERROR);
+				return false;
+			}
+		}
+        // test
+        else {
+            include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+            $paymentDispatcher = new PaymentDispatcher('DUMMY AUTO PAYMENT');
+            $pay = $paymentDispatcher->getPaymentProvider();
+        }
+
 		// Get transaction info
-		$tInfo = $cart->getTransactionFacts($postBackTransactionId);
+		$tInfo = CartModelCart::getTransactionFacts($postBackTransactionId);
 		//print_r($tInfo); die;
 
 		// Check if it exists
@@ -243,10 +252,9 @@ class CartControllerOrder extends ComponentController
 			$logger->setPostback($_POST);
 			$logger->log(LoggingLevel::ERROR);
 			return false;
-
 		}
 
-		// Check if it can be processed
+		// Check if the transaction can be processed (it can only be processed if the transaction is awaiting payment)
 		if ($tInfo->info->tStatus != 'awaiting payment')
 		{
 			// Transaction cannot be processed, log error
@@ -258,35 +266,72 @@ class CartControllerOrder extends ComponentController
 			return false;
 		}
 
-		// verify payment
-		if (!$pay->verifyPayment($tInfo))
-		{
-			// Since payment has not been verified get error.
-			$error = $pay->getError()->msg;
+        // Get the action. Post back will normally be triggered on payment success, but can also be the cancel post back
+        $postBackAction = $pay->getPostBackAction();
 
-			$error .= ' Transaction ID: ' . $postBackTransactionId;
+        if ($postBackAction == 'payment' || $test)
+        {
+            // verify payment
+            if (!$test && !$pay->verifyPayment($tInfo))
+            {
+                // Payment has not been verified, get verification error
+                $error = $pay->getError()->msg;
 
-			// Log error
-			$logger->setMessage($error);
-			$logger->setPostback($_POST);
-			$logger->log(LoggingLevel::ERROR);
+                $error .= ' Transaction ID: ' . $postBackTransactionId;
 
-			// Handle error
-			$cart->handleTransactionError($postBackTransactionId, $error);
+                // Log error
+                $logger->setMessage($error);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::ERROR);
 
-			return false;
-		}
+                // Handle error
+                CartModelCart::handleTransactionError($postBackTransactionId, $error);
 
-		// No error -- mark the transaction as paid
-		$message = 'Transaction completed';
-		$message .= ' Transaction ID: ' . $postBackTransactionId;
+                return false;
+            }
 
-		$logger->setMessage($message);
-		$logger->setPostback($_POST);
-		$logger->log(LoggingLevel::INFO);
+            // No error
+            $message = 'Transaction completed. ';
+            $message .= 'Transaction ID: ' . $postBackTransactionId;
 
-		return($this->completeOrder($tInfo));
+            // Log info
+            if (!$test)
+            {
+                $logger->setMessage($message);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::INFO);
+            }
 
+            // Finalize order -- whatever needs to be done
+            $this->completeOrder($tInfo);
+        }
+        elseif ($postBackAction == 'cancel')
+        {
+            // Cancel transaction
+            $message = 'Transaction cancelled. ';
+            $message .= 'Transaction ID: ' . $postBackTransactionId;
+
+            // Log info
+            if (!$test)
+            {
+                $logger->setMessage($message);
+                $logger->setPostback($_POST);
+                $logger->log(LoggingLevel::INFO);
+            }
+
+            // Release the transaction
+            CartModelCart::releaseTransaction($postBackTransactionId);
+        }
+        else
+        {
+            // No supported action, log error
+            $error = 'Post back action is invalid: ' . $postBackAction;
+
+            $logger->setMessage($error);
+            $logger->setPostback($_POST);
+            $logger->log(LoggingLevel::ERROR);
+            return false;
+        }
 	}
 
 	/**
@@ -296,16 +341,14 @@ class CartControllerOrder extends ComponentController
 	 */
 	private function completeOrder($tInfo)
 	{
-		// Initialize static cart
-		$cart = new CartModelCart(NULL, true);
+		// Handle transaction according to items handlers
+		CartModelCart::completeTransaction($tInfo);
 
 		// Initialize logger
-		$logger = new CartMessenger('Complete order');
+        $logger = new CartMessenger('Complete order');
 
-		// Send emails to customer and admin
-		$logger->emailOrderComplete($tInfo->info);
-
-		return $cart->completeTransaction($tInfo);
+        // Send emails to customer and admin
+        $logger->emailOrderComplete($tInfo->info);
 	}
 
 }

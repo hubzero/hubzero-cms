@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<h2>Browsing collection</h2>
 </header>
 
-<section class="main section">
+<section class="section">
 	<div class="section-inner">
 
 	<?php

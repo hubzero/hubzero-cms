@@ -48,7 +48,7 @@ class StorefrontModelProduct
 	var $skus = array();
 
 	/**
-	 * Contructor
+	 * Constructor
 	 *
 	 * @param  void
 	 * @return void
@@ -100,7 +100,7 @@ class StorefrontModelProduct
 	}
 
 	/**
-	 * add product to collection
+	 * Add product to collection
 	 *
 	 * @param	int		collection ID
 	 * @return	bool	true
@@ -351,20 +351,39 @@ class StorefrontModelProduct
 		return($warehouse->updateProduct($this));
 	}
 
-	/**
-	 * Debug
-	 *
-	 * @param	void
-	 * @return	void
-	 */
-	public function debug()
-	{
-		echo "\n\n<br><br>";
-		print_r($this->data);
-		echo "\n\n<br><br>";
+	/* ************************************* Static functions ***************************************************/
 
-		print_r($this->skus);
-		echo "\n\n<br><br>";
+	/**
+	 * Get product meta value by name or all product meta values if $metaKey is false
+	 *
+	 * @param  	int		Product ID
+	 * @param	String	Optional: Meta key to get a certain value, if empty returns all product meta
+	 * @return 	mixed	Product meta
+	 */
+	public static function getMeta($pId, $metaKey = false)
+	{
+		$db = JFactory::getDBO();
+
+		$sql  = 'SELECT ';
+		if (!$metaKey)
+		{
+			$sql .= '`pmKey`, ';
+		}
+		$sql .= '`pmValue` FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($pId);
+		if ($metaKey)
+		{
+			$sql .= ' AND `pmKey` = ' . $db->quote($metaKey);
+		}
+		$db->setQuery($sql);
+		if ($metaKey)
+		{
+			$meta = $db->loadResult();
+		}
+		else
+		{
+			$meta = $db->loadObjectList();
+		}
+		return $meta;
 	}
 
 }

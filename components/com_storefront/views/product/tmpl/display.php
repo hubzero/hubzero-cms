@@ -31,20 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-?>
-
-<?php
-
-$errors = $this->getError();
-if (!empty($errors))
-{
-	echo '<div class="messages errors">';
-		foreach ($errors as $error)
-		{
-			echo '<p>' . $error . '</p>';
-		}
-	echo '</div>';
-}
+setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
@@ -52,107 +39,177 @@ if (!empty($errors))
 	<h2><?php echo $this->product->pName; ?></h2>
 </header>
 
-<section class="main section">
+<?php
+
+if (!empty($this->notifications))
+{
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
+}
+
+?>
+
+<section class="section">
 	<div class="section-inner">
 
-	<?php
-		// format price/price range
-		$price = $this->price;
-		$priceRange = '$';
+		<div class="grid">
 
-		if ($price['high'] == $price['low'])
-		{
-			$priceRange .= $price['high'];
-		}
-		else {
-			$priceRange .= $price['low'] . ' &ndash; $' . $price['high'];
-		}
+			<div class="col span6">
 
-		if(!$this->inStock)
-		{
-			$priceRange = 'Out of stock';
-		}
-
-	?>
-
-	<div id="price"><?php echo $priceRange; ?></div>
-
-	<form id="productInfo" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-	<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
-
-	<?php
-	if (count($this->options))
-	{
-	?>
-
-	<h3>Product options</h3>
-
-	<div id="productOptions">
-
-	<?php
-
-		foreach ($this->options as $optionGroupId => $info)
-		{
-			echo '<p>' . $info['info']->ogName . '</p>';
-			echo '<ul>';
-
-			foreach ($info['options'] as $opt)
-			{
-				echo '<li><input type="radio" name="og[' . $optionGroupId . ']" value="' . $opt->oId . '" id="option_' . $opt->oId . '">';
-				echo '<label for="option_' . $opt->oId . '">' . $opt->oName . '</label></li>';
-			}
-
-			echo '</ul>';
-		}
-
-	?>
-
-	</div>
-
-	<?php
-	}
-	?>
-
-	<h3>Product info</h3>
-
-	<?php
-
-		foreach ($this->product as $k => $val)
-		{
-			echo '<p>' . $k . ': ' . $val . '</p>';
-		}
-
-	?>
-
-	<div id="qtyWrap">
-	<?php
-
-		$addToCartEnabled = false;
-		if ($this->qtyDropDown)
-		{
-			$addToCartEnabled = true;
-			if ($this->qtyDropDown > 1)
-			{
-				echo '<select name="qty" id="qty">';
-					for ($i = 1; $i <= $this->qtyDropDown; $i++)
+				<?php
+					if (!empty($this->productImg))
 					{
-						echo '<option value="' . $i . '">' . $i . '</option>';
+						echo '<div class="productImages">';
 					}
-				echo '</select>';
-			}
-		}
-	?>
-	</div>
 
-	<?php
-	if($this->inStock)
-	{
-	?>
-	<input type="submit" value="Add to cart" class="btn <?php  echo($addToCartEnabled ? 'enabled' : 'disabled'); ?>" name="addToCart" id="addToCart" />
-	<?php
-	}
-	?>
-	</form>
+					if (!strstr($this->productImg[0], 'noimage'))
+                    {
+                        echo '<a href="' . $this->productImg[0] . '"';
+                        echo ' rel="lightbox">';
+                    }
+                    echo '<img src="' . $this->productImg[0] . '" />';
+                    if (!strstr($this->productImg[0], 'noimage'))
+                    {
+                        echo '</a>';
+                    }
 
+					if (!empty($this->productImg))
+					{
+						echo '</div>';
+					}
+
+				?>
+
+				</form>
+
+			</div>
+
+			<div class="col span6 omega">
+
+				<?php
+				// format price/price range
+				$price = $this->price;
+				$priceRange = '';
+
+				if ($price['high'] == $price['low'])
+				{
+					$priceRange .= money_format('%n', $price['high']);
+				}
+				else {
+					$priceRange .= money_format('%n', $price['low']) . ' &ndash; ' . money_format('%n', $price['high']);
+				}
+
+				$out = false;
+				if(!$this->inStock)
+				{
+					$priceRange = 'Out of stock';
+					$out = true;
+				}
+
+				?>
+
+				<div id="price" class="<?php echo $out ? 'outofstock' : ''; ?>"><?php echo $priceRange; ?></div>
+
+				<form id="productInfo" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+					<input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
+
+					<?php
+					if (isset($this->options) && count($this->options))
+					{
+						?>
+
+						<!--h3>Product options</h3-->
+
+						<div id="productOptions">
+
+							<?php
+
+							foreach ($this->options as $optionGroupId => $info)
+							{
+								echo '<p class="option-label">' . $info['info']->ogName . ':</p>';
+								echo '<ul class="product-options">';
+
+								foreach ($info['options'] as $opt)
+								{
+									echo '<li><input type="radio" name="og[' . $optionGroupId . ']" value="' . $opt->oId . '" id="option_' . $opt->oId . '">';
+									echo '<label for="option_' . $opt->oId . '">' . $opt->oName . '</label></li>';
+								}
+
+								echo '</ul>';
+							}
+
+							?>
+
+						</div>
+
+					<?php
+					}
+					?>
+
+					<div id="qtyWrap">
+						<?php
+
+						$addToCartEnabled = false;
+						if ($this->qtyDropDown)
+						{
+							$addToCartEnabled = true;
+							if ($this->qtyDropDown > 1)
+							{
+								echo '<div class="inner">';
+								echo '<label>Quantity </label>';
+
+								echo '<select name="qty" id="qty">';
+								for ($i = 1; $i <= $this->qtyDropDown; $i++)
+								{
+									echo '<option value="' . $i . '">' . $i . '</option>';
+								}
+								echo '</select>';
+								echo '</div>';
+							}
+						}
+						?>
+					</div>
+
+					<?php
+					if($this->inStock && $this->productAvailable)
+					{
+						?>
+						<p class="submit">
+							<input type="submit" value="Add to cart"
+								   class="btn <?php  echo($addToCartEnabled ? 'enabled' : 'disabled'); ?>"
+								   name="addToCart" id="addToCart" />
+						</p>
+					<?php
+					}
+					?>
+
+				</form>
+
+
+				<?php
+
+				//echo '<h3>' . $this->product->pName . '</h3>';
+				echo '<h3>' . $this->product->pTagline . '</h3>';
+
+				echo '<div class="description">';
+				echo $this->product->pDescription;
+				echo '</div>';
+
+				if (!empty($this->product->pFeatures))
+				{
+					echo '<div class="features">';
+					echo $this->product->pFeatures;
+					echo '</div>';
+				}
+
+				foreach ($this->product as $k => $val)
+				{
+					//echo '<p>' . $k . ': ' . $val . '</p>';
+				}
+				?>
+
+			</div>
+		</div>
 	</div>
 </section>

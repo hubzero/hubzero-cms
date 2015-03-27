@@ -40,6 +40,17 @@ $this->css();
 	<h2>Review your order</h2>
 </header>
 
+<?php
+
+if (!empty($this->notifications))
+{
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
+}
+
+?>
+
 <section class="main section">
 	<div class="section-inner">
 		<?php
@@ -143,4 +154,4 @@ $this->css();
 			<a href="<?php echo $buttonLink; ?>" class="btn"><?php echo $buttonLabel; ?></a>
 		</p>
 	</div>
-</div>
+</section>

@@ -41,18 +41,36 @@ $this->css()
 	<h2><?php echo  JText::_('COM_CART'); ?></h2>
 </header>
 
+<?php
+
+if (!empty($this->notifications))
+{
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
+}
+
+?>
+
+<?php
+/*
+$errors = $this->getError();
+if (!empty($errors))
+{
+	echo '<section class="section messages errors">';
+		echo '<div class="section-inner">';
+		foreach ($errors as $error)
+		{
+			echo '<p class="error">' . $error . '</p>';
+		}
+		echo '</section>';
+	echo '</section>';
+}
+*/
+?>
+
 <section class="main section">
 	<div class="section-inner">
-		<?php
-		$errors = $this->getError();
-		if (!empty($errors))
-		{
-			foreach ($errors as $error)
-			{
-				echo '<p class="error">' . $error . '</p>';
-			}
-		}
-		?>
 
 		<div class="grid break3">
 
@@ -117,9 +135,14 @@ $this->css()
 						echo '</td>';
 
 						echo '<td>';
-						echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
-						echo $item['cartInfo']->qty;
-						echo '">';
+						if ($info->sAllowMultiple) {
+							echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" class="numericOnly" name="skus[' . $info->sId . ']" value="';;
+							echo $item['cartInfo']->qty;
+							echo '">';
+						}
+						else {
+							echo '&nbsp;';
+						}
 						echo '</td>';
 
 						echo '<td class="rightJustify price">';
@@ -130,7 +153,9 @@ $this->css()
 							echo '<br><span>' . money_format('%n', $info->sPrice) . ' each</span>';
 						}
 
-						echo '</p></td>';
+						echo '</p>';
+						echo '<input type="submit" class="deleteItem link" name="delete_' . $info->sId . '" value="delete">';
+						echo '</td>';
 
 						echo '</tr>';
 
@@ -158,6 +183,7 @@ $this->css()
 					echo '</table>';
 
 					echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';
+
 				}
 				else
 				{

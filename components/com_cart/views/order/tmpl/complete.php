@@ -39,9 +39,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <section class="main section">
 	<div class="section-inner">
-		<p>Thank you for your order.</p>
-		<p>You will receive an email confirmation shortly the the email address associated with your account. Your transaction is now complete.</p>
 
+
+		<p>Thank you for your order.</p>
+		<p>You will receive an email confirmation shortly at the email address associated with your account. Your transaction is now complete.</p>
+
+		<section class="section">
 		<?php
 
 			if (!empty($this->transactionInfo))
@@ -53,9 +56,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 				//print_r($transactionItems); die;
 
-				echo '<h2>Order contents</h2>';
+				echo '<h2>Order summary</h2>';
 				echo '<table id="cartContents">';
-				echo '<tr><th>Item</th><th>Status</th><th>Action</th></tr>';
+				echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
 				foreach ($transactionItems as $sId => $item)
 				{
 					$info = $item['info'];
@@ -92,7 +95,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						// Check is there is any membership info for this item
 						if (!empty($membershipInfo[$sId]))
 						{
-							echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
+							//echo ', valid until ' . date('M j, Y', $membershipInfo[$sId]->newExpires);
 						}
 
 					echo '</td>';
@@ -109,5 +112,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 			}
 		?>
+		</section>
+
 	</div>
 </section>

@@ -1,6 +1,24 @@
+.productImages a {
+    border-bottom: 0;
+}
+
+#price {
+	font-size: 2em;
+	line-height: 1em;
+	margin: 0 0 0.2em;
+}
+
+#productInfo {
+	margin-bottom: 4em;
+}
+
 #productOptions ul {
 	margin: 0;
 	padding: 0;
+}
+
+p.option-label {
+	margin: 1em 0 0;
 }
 
 #productOptions ul li {
@@ -22,20 +40,30 @@
 	border-color: #E5E5E5;
 }
 
+#productOptions ul li input[type="radio"] {
+	vertical-align: baseline;
+}
+
+#productOptions ul li label {
+	margin-left: 5px;
+}
+
+#qtyWrap .inner {
+	padding: 1em 0;
+}
+
+#qtyWrap label {
+	margin-right: 10px;
+}
+
+#qty {
+	vertical-align: baseline;
+}
+
 #addToCart.disabled {
 	color: #999;
 }
 
 #addToCart.enafled {
 	color: #000;
-}
-
-div.messages {
-	border: 2px solid #C60;
-	padding: 20px;
-	margin: 20px 0;
-}
-
-div.messages p {
-	margin: 0.2em 0;
 }

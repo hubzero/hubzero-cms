@@ -65,7 +65,6 @@ class StorefrontModelMemberships
 	{
 		$sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql;
 		$membershipTypes = $this->_db->loadResultArray();
 
 		return $membershipTypes;
@@ -80,7 +79,8 @@ class StorefrontModelMemberships
 	 */
 	public function getMembershipInfo($crtId, $pId)
 	{
-		$sql = "SELECT `crtmExpires`, IF(`crtmExpires` < NOW(), 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
+		$now = JFactory::getDate()->toSql();
+        $sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$membershipInfo = $this->_db->loadAssoc();
@@ -88,83 +88,75 @@ class StorefrontModelMemberships
 		return $membershipInfo;
 	}
 
-	/**
-	 * Set membership expiration
-	 *
-	 * @param  int			cart ID
-	 * @param  int			membership product ID
-	 * @param  int			new expiration time (UNIX format)
-	 * @return array		membership info
-	 */
-	public function setMembershipExpiration($crtId, $pId, $expires)
-	{
-		$sql = "INSERT INTO `#__cart_memberships` SET
-				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . "),
-				`pId` = " . $this->_db->quote($pId) . ",
-				`crtId` = " . $this->_db->quote($crtId) . "
-				ON DUPLICATE KEY UPDATE
-				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . ")";
-
-		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql; die;
-		$this->_db->query();
-	}
+	/* ****************************** Static Functions *********************************/
 
 	/**
-	 * Calculate new and return old expiration info for a product
-	 *
-	 * @param  string		TTL
-	 * @return void
+	 * Find the proper Product Type Subscription Object and return it
+	 * @param	String 	Product type
+	 * @param 	Object  Product ID
+	 * @return 	Subscription Object	If not found returns a generic subscription object
 	 */
-	public function getNewExpirationInfo($crtId, $item)
+	public static function getSubscriptionObject($type, $pId, $uId)
 	{
-		// Get current membership (if any)
-		$membershipInfo = $this->getMembershipInfo($crtId, $item['info']->pId);
+		// Find if there is a corresponding object
+		$lookupPath  = JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes';
+		$lookupPath .= DS . 'Subscriptions';
 
-		// Calculate correct TTL for one SKU (sku tll * qty)
-		$ttl = $this->_getTtl($item['meta']['ttl'], $item['cartInfo']->qty);
-
-		// Calculate the new expiration date
-		if ($membershipInfo && $membershipInfo['crtmActive'])
+		$objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';
+		if (file_exists($lookupPath . DS . $objectClass . '.php'))
 		{
-			// New expiration date is an old not-expired date + TTL
-			$membershipSIdInfo->newExpires = strtotime('+ ' . $ttl, strtotime($membershipInfo['crtmExpires']));
-			$membershipSIdInfo->existingExpires = strtotime($membershipInfo['crtmExpires']);
-			//echo date('l dS \o\f F Y h:i:s A', strtotime('+ 10 YEAR', strtotime($membershipInfo['crtmExpires']))); die;
+			// Include the class file
+			require_once($lookupPath . DS . $objectClass . '.php');
+			return new $objectClass($pId, $uId);
 		}
 		else
 		{
-			// New expiration date is now + TTL
-			$membershipSIdInfo->newExpires = strtotime('+ ' . $ttl);
+			require_once($lookupPath . DS . 'BaseSubscription.php');
+			return new BaseSubscription($pId, $uId);
 		}
-
-		return $membershipSIdInfo;
 	}
 
 	/**
-	 * Check TTL format
+	 * Calculate and return new expiration date for a SKU
 	 *
-	 * @param  string		TTL
-	 * @return void
+	 * @param  	string	Current subscription expiration (MySQL format)
+	 * @param	Array	SKU/Cart info
+	 * @return 	string	Calculated new expiration (MySQL format)
 	 */
-	public function checkTtl($ttl)
+	public static function calculateNewExpiration($currentExpiration, $item)
 	{
-		if (!preg_match("/^[1-9]+[0-9]* (year|month|day)+$/i", $ttl))
+		// Calculate correct TTL for the SKU (sku tll * qty)
+		$ttl = self::getTtl($item['meta']['ttl'], $item['cartInfo']->qty);
+
+		// Calculate the new expiration date
+		if ($currentExpiration && $currentExpiration['crtmActive'])
 		{
-			throw new Exception(JText::_('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
+			// Set the date to the current expiration
+			$date = JFactory::getDate($currentExpiration['crtmExpires']);
+			// Add TTL to the current expiration
+			$date->modify('+ ' . $ttl);
 		}
+		else
+		{
+			// Get current time
+			$date = JFactory::getDate();
+			// Add TTL to the current time
+			$date->modify('+ ' . $ttl);
+		}
+
+		return $date->toSql();
 	}
 
 	/**
-	 * Calculate correct TTL
+	 * Calculate TTL with respect to the quantity
 	 *
 	 * @param  string		single item TTL
 	 * @param  int			number of items
 	 * @return string		combined TTL
 	 */
-	private function _getTtl($ttl, $qty)
+	private static function getTtl($ttl, $qty)
 	{
-		StorefrontModelMemberships::checkTtl($ttl);
+		self::checkTtl($ttl);
 		// Split ttl into parts
 		$ttlParts = explode(' ', $ttl);
 		$ttlParts[0] = $qty * $ttlParts[0];
@@ -172,4 +164,40 @@ class StorefrontModelMemberships
 		$ttl = implode(' ', $ttlParts);
 		return $ttl;
 	}
+
+	/**
+	 * Check TTL format
+	 *
+	 * @param  string	TTL
+	 * @return void
+	 */
+	public static function checkTtl($ttl)
+	{
+		if (!preg_match("/^[1-9]+[0-9]* (year|month|day)+$/i", $ttl))
+		{
+			throw new Exception(JText::_('Bad TTL formatting. Please use something like 1 DAY, 2 MONTH or 3 YEAR'));
+		}
+	}
+
+    /**
+     * Lookup membership info by user (almost identical as above)
+     *
+     * @param  int			user ID
+     * @param  int			membership product ID
+     * @return array		membership info
+     */
+    public static function getMembershipInfoByUser($uId, $pId)
+    {
+        $db = JFactory::getDBO();
+
+        $now = JFactory::getDate()->toSql();
+        $sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
+        $sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
+        $sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);
+        $db->setQuery($sql);
+        $membershipInfo = $db->loadAssoc();
+
+        return $membershipInfo;
+    }
+
 }

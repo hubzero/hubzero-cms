@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Product browsing controller class
  */
-class StorefrontControllerBrowse extends ComponentController
+class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Execute a task

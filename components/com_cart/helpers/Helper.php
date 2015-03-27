@@ -38,19 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 class Cart_Helper
 {
 
-	/**
-	 * Dump system message (debugging function)
-	 *
-	 * @param      mixed var: whatever needs to be ptinted
-	 * @return     void
-	 */
-	function dump($var)
-	{
-		echo '<br>----<br>';
-		print_r($var);
-		echo '<br>----<br>';
-	}
-
 	function getUsStates()
 	{
 		$states = array('AL' => "Alabama",
@@ -109,20 +96,23 @@ class Cart_Helper
 	}
 
 	/**
-	 * Short description for 'is_positiveint'
+	 * Check if the number is a non negative integer
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $x Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param	int 	Integer
+	 * @param   bool 	$notZero Flag if zero should be accepted (by default zero is ok)
+	 * @return  bool
 	 */
-	public function is_positiveint($x)
+	public function isNonNegativeInt($x, $zeroAccepted = true)
 	{
-		if (is_numeric($x) && intval($x) == $x && $x >= 0)
+		if (isset($x) && is_numeric($x) && intval($x) == $x && $x >= 0)
 		{
-			return(true);
+			if (!$zeroAccepted && $x == 0)
+			{
+				return false;
+			}
+			return true;
 		}
-		return(false);
+		return false;
 	}
 
 	/**

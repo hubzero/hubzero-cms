@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-ximport('Hubzero_Controller');
-
 /**
  * Cart controller class
  */
@@ -48,11 +46,9 @@ class CartControllerTest extends ComponentController
 		// Get the task
 		$this->_task  = JRequest::getVar('task', '');
 
-		$this->_getStyles();
-
 		if (empty($this->_task))
 		{
-			$this->_task = 'home';
+			$this->_task = 'display';
 			$this->registerTask('__default', $this->_task);
 		}
 
@@ -64,7 +60,7 @@ class CartControllerTest extends ComponentController
 	 *
 	 * @return     void
 	 */
-	public function homeTask()
+	public function displayTask()
 	{
 
 		die('no access');
@@ -87,7 +83,7 @@ class CartControllerTest extends ComponentController
 			{
 				// Constructor take the coupon code
 				$coupon = new StorefrontModelCoupon('hui');
-				// Couponn description (shows up in the cart)
+				// Coupon description (shows up in the cart)
 				$coupon->setDescription('Test coupon, 10% off product with ID 3');
 				// Expiration date
 				$coupon->setExpiration('Feb 22, 2022');
@@ -127,7 +123,7 @@ class CartControllerTest extends ComponentController
 			return;
 		}
 
-		if (1)
+		if (0)
 		{
 			// CREATE NEW COURSE
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
@@ -178,7 +174,7 @@ class CartControllerTest extends ComponentController
 		}
 
 		if (0) {
-			// UPDATE COURSE by recreatiing it
+			// UPDATE COURSE by recreating it
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new StorefrontModelCourse();
 			$course->setName('Operations Management 104');
@@ -333,6 +329,7 @@ class CartControllerTest extends ComponentController
 		$passport = $badges->getProvider();
 
 		// Set credentials and settings (outh in not secured at this point)
+		$credentials = new stdClass();
 		$credentials->clientId = 43;
 		$credentials->issuerId = 17;
 		// These are not used so far, but have some value
@@ -351,6 +348,7 @@ class CartControllerTest extends ComponentController
 		}
 
 		// Set badges details
+		$badge = new stdClass();
 		$badge->id = 83;
 		$badge->evidenceUrl = 'http://hubzero.org';
 
@@ -400,7 +398,7 @@ class CartControllerTest extends ComponentController
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
@@ -408,7 +406,7 @@ class CartControllerTest extends ComponentController
 			$curl_err = curl_error($ch);
 			curl_close($ch);
 
-			//print_r($curl_result); die;
+			//print_r($req); echo '<br>'; print_r($curl_err); die;
 
 			// Redirect to confirmation page
 			$redirect_url  = JURI::root() . 'cart/order/complete?' . $req;
@@ -420,5 +418,14 @@ class CartControllerTest extends ComponentController
 
 	}
 
+	/**
+	 * Test express add to cart task
+	 *
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		$this->view->display();
+	}
 }
 

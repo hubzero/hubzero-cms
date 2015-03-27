@@ -42,18 +42,18 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'mode
  * Products inventory and structure (only product lookup and inventory management)
  *
  */
-class StorefrontModelWarehouse
+class StorefrontModelWarehouse extends \Hubzero\Base\Object
 {
 	/**
 	 * array Product categories to look at (to define scope)
 	 */
-	var $lookupCollections		= NULL;
+	var $lookupCollections = NULL;
 
 	// Database instance
 	var $db = NULL;
 
 	/**
-	 * Contructor method
+	 * Constructor method
 	 *
 	 * @param  void
 	 * @return void
@@ -82,7 +82,7 @@ class StorefrontModelWarehouse
 	}
 
 	/**
-	 * Raset instance lookup scope
+	 * Reset instance lookup scope
 	 *
 	 * @param  void
 	 * @return void
@@ -111,7 +111,7 @@ class StorefrontModelWarehouse
 	 * Check if collection exists
 	 *
 	 * @param  $c -- collection ID (+ alias in the future)
-	 * @return int cId on sucess, false if no match found
+	 * @return int cId on success, false if no match found
 	 */
 	public function collectionExists($c)
 	{
@@ -127,21 +127,30 @@ class StorefrontModelWarehouse
 	/**
 	 * Check if product exists
 	 *
-	 * @param  	int		product ID (+ alias in the future)
-	 * @return 	int 	pId on sucess, null if no match found
+	 * @param  	int		product ID or alias
+	 * @return 	int 	pId on success, null if no match found
 	 */
-	public function productExists($pId, $showInactive = false)
+	public function productExists($product, $showInactive = false)
 	{
-		$sql = "SELECT pId FROM `#__storefront_products` p WHERE p.`pId` = '{$pId}'";
+		// Integer is a pID, string must be an alias
+		if (is_numeric($product))
+		{
+			$lookupField = 'pId';
+		}
+		else {
+			$lookupField = 'pAlias';
+		}
+
+		$sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
 		if (!$showInactive)
 		{
 			$sql .= " AND p.`pActive` = 1";
 		}
 
 		$this->_db->setQuery($sql);
-		$cId = $this->_db->loadResult();
+		$pId = $this->_db->loadResult();
 
-		return $cId;
+		return $pId;
 	}
 
 	/**
@@ -168,7 +177,8 @@ class StorefrontModelWarehouse
 	 */
 	public function getProducts()
 	{
-		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
+		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p
+				JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
 		$sql .= " WHERE p.`pActive` = 1";
 
 		foreach	($this->lookupCollections as $cId)
@@ -177,14 +187,13 @@ class StorefrontModelWarehouse
 		}
 
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql; die;
 		$products = $this->_db->loadObjectList();
 
 		return $products;
 	}
 
 	/**
-	 * Get product inforamtion
+	 * Get product information
 	 *
 	 * @param	int			Product ID
 	 * @param  	bool		Flag whether to show inactive product info
@@ -215,7 +224,8 @@ class StorefrontModelWarehouse
 	{
 		// Get all SKUs' options and option groups
 		$sql  = "	SELECT
-					s.`sId` AS skuId, so.`oId` AS skusOptionId, s.`sPrice`, s.`sAllowMultiple`, s.`sInventory`, s.`sTrackInventory`, og.`ogId`, `oName`, `ogName`";
+					s.`sId` AS skuId, so.`oId` AS skusOptionId, s.`sPrice`, s.`sAllowMultiple`, s.`sInventory`,
+					s.`sTrackInventory`, og.`ogId`, `oName`, `ogName`";
 		$sql .= "	FROM `#__storefront_skus` s
 					LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 					LEFT JOIN `#__storefront_options` o ON so.`oId` = o.`oId`
@@ -223,11 +233,11 @@ class StorefrontModelWarehouse
 
 					WHERE s.`pId` = {$pId} AND s.`sActive` = 1 AND (s.`sInventory` > 0 OR s.`sTrackInventory` = 0)
 
-					ORDER BY og.`ogId`";
+					ORDER BY og.`ogId`, o.`oId`";
 
 		$this->_db->setQuery($sql);
-		//print_r($this->_db->_sql); die;
 		$this->_db->query();
+		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 		if (!$this->_db->getNumRows())
 		{
 			return false;
@@ -242,16 +252,14 @@ class StorefrontModelWarehouse
 
 		// Parse result and populate $options with option groups and corresponding options
 		$currentOgId = false;
-		foreach ($res as $line)
-		{
+		foreach ($res as $line) {
 			// Populate options
-			if ($line->ogId)
-			{
+			if ($line->ogId) {
 				// Keep track of option groups and do not do anything if no options
-				if ($currentOgId != $line->ogId)
-				{
+				if ($currentOgId != $line->ogId) {
 					$currentOgId = $line->ogId;
 
+					$ogInfo = new stdClass();
 					$ogInfo->ogId = $line->ogId;
 					$ogInfo->ogName = $line->ogName;
 
@@ -259,6 +267,7 @@ class StorefrontModelWarehouse
 					unset($ogInfo);
 				}
 
+				$oInfo = new stdClass();
 				$oInfo->oId = $line->skusOptionId;
 				$oInfo->oName = $line->oName;
 				$options[$currentOgId]['options'][$line->skusOptionId] = $oInfo;
@@ -266,7 +275,7 @@ class StorefrontModelWarehouse
 			}
 
 			// populate SKUs for JS
-
+			$skusInfo = new stdClass();
 			$skusInfo->sId = $line->skuId;
 			//$skusInfo->sId = $line->skusOptionId;
 			$skusInfo->sPrice = $line->sPrice;
@@ -280,6 +289,7 @@ class StorefrontModelWarehouse
 
 		}
 
+		$ret = new stdClass();
 		$ret->options = $options;
 		$ret->skus = $skus;
 
@@ -298,11 +308,24 @@ class StorefrontModelWarehouse
 	public function mapSku($pId, $options)
 	{
 		// Find the number of options required for this product
-		$sql = "SELECT COUNT(pog.`ogId`) FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
+		//$sql = "SELECT COUNT(pog.`ogId`) FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
+		$sql = "SELECT COUNT(s.`sId`) AS cnt FROM `#__storefront_skus` s
+				INNER JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
+				WHERE s.`pId` = '{$pId}' AND s.`sActive` > 0
+				GROUP BY s.`sId` ORDER BY cnt DESC LIMIT 1";
 		$this->_db->setQuery($sql);
-		$totalOptionsRequired = $this->_db->loadResult();
+		$this->_db->execute();
 
-		if ($totalOptionsRequired > count($options))
+		if ($this->_db->getNumRows() < 1)
+		{
+			$totalOptionsRequired = 0;
+		}
+		else {
+			$totalOptionsRequired = $this->_db->loadResult();
+		}
+		//print_r($this->_db->replacePrefix( (string) $sql )); die;
+
+		if (!empty($options) && $totalOptionsRequired > count($options))
 		{
 			throw new Exception(JText::_('COM_STOREFRONT_NOT_ENOUGH_OPTIONS'));
 		}
@@ -320,12 +343,14 @@ class StorefrontModelWarehouse
 
 		$sql = "SELECT s.`sId`, COUNT(so.`oId`) AS matches FROM `#__storefront_skus` s
 				LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
-				WHERE s.`pId` = '{$pId}'";
+				WHERE s.`pId` = '{$pId}' AND s.sActive > 0";
 		if (!empty($options))
 		{
 			$sql .= " AND {$skuOptionsSql}";
 		}
 		$sql .= " GROUP BY s.`sId` HAVING matches = {$totalOptionsRequired}";
+
+		//print_r($this->_db->replacePrefix( (string) $sql )); die;
 
 		$this->_db->setQuery($sql);
 		$sId = $this->_db->loadObject();
@@ -355,7 +380,7 @@ class StorefrontModelWarehouse
 		}
 		$sqlIn .= ')';
 
-		// Get only results for exixting SKUs and exixting products associated with each SKU
+		// Get only results for existing SKUs and existing products associated with each SKU
 		$sql = "SELECT p.*, s.*, o.`oId`, o.`oName`, m.`smKey`, m.`smValue` FROM `#__storefront_skus` s
 				LEFT JOIN `#__storefront_products` p ON s.`pId` = p.`pId`
 				LEFT JOIN `#__storefront_sku_options` so ON so.`sId` = s.`sId`
@@ -374,11 +399,13 @@ class StorefrontModelWarehouse
 				ORDER BY s.`sId`";
 
 		$this->_db->setQuery($sql);
-		// echo $this->_db->_sql; die;
+		$this->_db->execute();
+		$found = $this->_db->getNumRows();
+
 		$rawSkusInfo = $this->_db->loadObjectList();
 
 		/*
-			Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of optinos):
+			Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
 
 			$skusInfo => Array(
 				[sId] => Array(
@@ -450,26 +477,6 @@ class StorefrontModelWarehouse
 	}
 
 	/**
-	 * TODO: delete
-	 * Get basic info for a single SKU provided
-	 *
-	 * @param SKU ID
-	 * @return object
-	 */
-	public function _DELETE_getSkuInfo($sId)
-	{
-		$sql = "SELECT s.`sAllowMultiple`, s.`sInventory`, s.`sTrackInventory`, s.`sPrice` FROM `#__storefront_skus` s WHERE s.`sId` = {$sId}";
-		$this->_db->setQuery($sql);
-		$skuInventoryInfo = $this->_db->loadObject();
-
-		if ($skuInventoryInfo)
-		{
-			return $skuInventoryInfo;
-		}
-		return false;
-	}
-
-	/**
 	 * Get product SKU IDs
 	 *
 	 * @param	int			product id
@@ -485,7 +492,7 @@ class StorefrontModelWarehouse
 	}
 
 	/**
-	 * Update SKU inventory
+	 * Update SKU inventory if the item is tracking inventory
 	 *
 	 * @param int SKU ID
 	 * @param qty quantity
@@ -750,7 +757,7 @@ class StorefrontModelWarehouse
 		// check if this is a product
 		if (!($product instanceof StorefrontModelProduct))
 		{
-			throw new Exception(JText::_('Bad product. Unable to nable to .'));
+			throw new Exception(JText::_('Bad product.'));
 		}
 
 		if ($action == 'update')
@@ -968,6 +975,7 @@ class StorefrontModelWarehouse
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
+		$return = new stdClass();
 		$return->pId = $pId;
 		return $return;
 	}
@@ -980,8 +988,10 @@ class StorefrontModelWarehouse
 	 */
 	public function getCoupon($code)
 	{
-		// Create a StorefrontModelCoupon
+		// Seems like unused code
+		throw new Exception('Not sure if this is ever used. Warehouse.php');
 
+		// Create a StorefrontModelCoupon
 		if ($productType == 'product')
 		{
 			$product = new StorefrontModelProduct();
@@ -1164,7 +1174,6 @@ class StorefrontModelWarehouse
 		}
 
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 		if (empty($cnId))
 		{
@@ -1223,6 +1232,7 @@ class StorefrontModelWarehouse
 		//echo '<br>'; echo $this->_db->_sql;
 		$this->_db->query();
 
+		$return = new stdClass();
 		$return->cnId = $cnId;
 		return $return;
 	}

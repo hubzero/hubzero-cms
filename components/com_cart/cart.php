@@ -31,15 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import needed joomla libs
+//import needed Joomla! libs
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 
-//require needed files
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'Helper.php');
+// enable only if PRO is enabled
+$juser = JFactory::getUser();
+if(!$juser->proEnabled)
+{
+    JError::raiseError(404, JText::_('Component is not available at this time'));
+}
 
 // require base component controller
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'component.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . 'component.php');
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', '');
@@ -49,17 +53,18 @@ if (empty($controllerName))
 	// Load default controller if no controller provided
 	$controllerName = 'cart';
 }
-elseif (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+
+elseif (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	JError::raiseError(404, JText::_('Page Not Found'));
 }
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CartController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();
-$controller->disableDefaultTask();
+//$controller->disableDefaultTask();
 $controller->execute();
 $controller->redirect();
 
