@@ -195,7 +195,7 @@ else
 						{
 							$ownedby = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . Lang::txt('COM_PROJECTS_GROUP') . ' ' . $cn . '</a>';
 						}
-						else 
+						else
 						{
 							$ownedby = '<a href="' . Route::url('index.php?option=com_members&id=' . $this->model->owner('id')) . '">' . $this->model->owner('name') . '</a>';
 						} echo '<span class="mini">' . $ownedby . '</span>'; ?>

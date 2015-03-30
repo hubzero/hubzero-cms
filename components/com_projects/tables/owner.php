@@ -1161,7 +1161,7 @@ class Owner extends \JTable
 				{
 					foreach ($params as $p)
 					{
-						if (trim($p) != '' && trim($p) != '=' && trim($p) != '{}') 
+						if (trim($p) != '' && trim($p) != '=' && trim($p) != '{}')
 						{
 							$extracted = explode('=', $p);
 							if (!empty($extracted))

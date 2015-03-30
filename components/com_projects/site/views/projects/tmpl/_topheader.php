@@ -83,7 +83,7 @@ $start = ($this->publicView == false && $this->model->access('member')) ? '<span
 				     ->set('option', $this->option)
 				     ->display();
 			}
- 			?>
+?>
 		</div>
 		<div class="clear"></div>
 	</div>

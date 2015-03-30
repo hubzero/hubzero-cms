@@ -285,7 +285,7 @@ class Setup extends Base
 			if ($this->_finalize())
 			{
 				$this->_setNotification(Lang::txt('COM_PROJECTS_NEW_PROJECT_CREATED'), 'success');
-	
+
 				// Some follow-up actions
 				$this->_onAfterProjectCreate();
 
@@ -363,7 +363,7 @@ class Setup extends Base
 				// Save params
 				$this->model->saveParam('restricted_data', $restricted);
 			}
-			
+
 			// Restricted data with specific questions
 			if ($this->config->get('restricted_data', 0) == 1)
 			{
@@ -596,7 +596,7 @@ class Setup extends Base
 		{
 			case 'describe':
 			case 'info':
-			
+
 				// Incoming
 				$name       = trim(Request::getVar( 'name', '', 'post' ));
 				$title      = trim(Request::getVar( 'title', '', 'post' ));
@@ -805,7 +805,7 @@ class Setup extends Base
 	/**
 	 * Load team editor
 	 *
-	 * @return  html 
+	 * @return  html
 	 */
 	protected function _loadTeamEditor()
 	{
