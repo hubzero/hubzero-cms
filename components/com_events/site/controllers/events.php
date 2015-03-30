@@ -1227,7 +1227,7 @@ class Events extends SiteController
 		if ($register['firstname'] && $register['lastname'] && ($validemail == 1))
 		{
 			$email = $event->email;
-			$subject = Lang::txt('EVENTS_EVENT_REGISTRATION') . ' (' . $event->id . ')';
+			$subject = Lang::txt('EVENTS_EVENT_REGISTRATION') . ': ' . $event->title;
 			$hub = array(
 				'email' => $register['email'],
 				'name'  => Config::get('sitename') . ' ' . Lang::txt('EVENTS_EVENT_REGISTRATION')
@@ -1246,8 +1246,12 @@ class Events extends SiteController
 			$eview->bos = $bos;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
-
+			
+			// one for the event manager
 			$this->_sendEmail($hub, $email, $subject, $message);
+
+			// one for the attendee
+			$this->_sendEmail($hub, $register['email'], $subject, $message);
 
 			$this->_log($register);
 
