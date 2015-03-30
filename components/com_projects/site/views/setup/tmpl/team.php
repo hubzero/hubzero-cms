@@ -32,10 +32,8 @@ $this->css()
 
 // Display page title
 $this->view('_title')
-     ->set('project', $this->project)
+     ->set('model', $this->model)
      ->set('step', $this->step)
-     ->set('gid', $this->gid)
-     ->set('group', $this->group)
      ->set('option', $this->option)
      ->set('title', $this->title)
      ->display();
@@ -53,7 +51,7 @@ $this->view('_title')
 	<?php
 		// Display metadata
 		$this->view('_metadata')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('step', $this->step)
 		     ->set('option', $this->option)
 		     ->display();
@@ -61,7 +59,7 @@ $this->view('_title')
 	<?php
 	// Display steps
 	$this->view('_steps')
-	     ->set('project', $this->project)
+	     ->set('model', $this->model)
 	     ->set('step', $this->step)
 	     ->display();
 	?>
@@ -82,7 +80,7 @@ $this->view('_title')
 					<li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
 					<li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
 				</ul>
-				<?php if ($this->gid) { ?>
+				<?php if ($this->model->get('owned_by_group')) { ?>
 					<h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_PROJECT'); ?></h4>
 					<p><?php echo Lang::txt('COM_PROJECTS_HOWTO_GROUP_EXPLAIN'); ?></p>
 				<?php } ?>
@@ -91,9 +89,8 @@ $this->view('_title')
 				<?php 
 				// Display form fields
 				$this->view('_form')
-				     ->set('project', $this->project)
+				     ->set('model', $this->model)
 				     ->set('step', $this->step)
-				     ->set('gid', $this->gid)
 				     ->set('option', $this->option)
 				     ->set('controller', 'setup')
 				     ->set('section', $this->section)

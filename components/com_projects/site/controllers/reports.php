@@ -31,6 +31,9 @@
 namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
+use Exception;
+
+require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
 
 /**
  * Projects Reports controller class
@@ -44,19 +47,6 @@ class Reports extends Base
 	 */
 	public function displayTask()
 	{
-		// Incoming
-		$period = Request::getVar( 'period', 'alltime');
-
-		// Instantiate a project and related classes
-		$obj   = new Tables\Project( $this->database );
-		$objAA = new Tables\Activity ( $this->database );
-
-		// Is user in special admin group to view advanced stats?
-		$admin = $this->_checkReviewerAuth('general');
-
-		// Get all test projects
-		$testProjects = $obj->getTestProjects();
-
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -64,22 +54,18 @@ class Reports extends Base
 		$this->_buildTitle();
 		$this->view->title = $this->title;
 
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
+		$this->_tblStats = new Tables\Stats($this->database);
 
-		$objStats = new Tables\Stats($this->database);
-
-		$monthly = $objStats->monthlyStats(2, true);
+		$monthly = $this->_tblStats->monthlyStats(2, true);
 		$this->view->monthly = ($monthly && count($monthly) > 1) ? $monthly : NULL;
 
 		// Output HTML
 		$this->view->task 		= $this->_task;
-		$this->view->admin 		= $admin;
+		$this->view->admin 		= $this->model->reviewerAccess('admin');
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
-		$this->view->uid 		= $this->juser->get('id');
-		$this->view->guest 		= $this->juser->get('guest');
-		$this->view->stats		= $obj->getStats($period, $admin, $this->config, $testProjects, $this->_publishing);
-		$this->view->publishing	= $this->_publishing;
+		$this->view->publishing = $this->_publishing;
+		$this->view->stats		= $this->_tblStats->getStats($this->model, false, $this->_publishing);
 
 		if ($this->getError())
 		{
@@ -120,27 +106,20 @@ class Reports extends Base
 			$this->setError(Lang::txt('The start date of report should be earlier than the end date'));
 		}
 
-		// Instantiate a project and related classes
-		$obj   = new Tables\Project( $this->database );
-
-		// Is user in special admin group to view advanced stats?
-		$admin = $this->_checkReviewerAuth('general');
+		// Project table class
+		$obj = $this->model->table();
 
 		// Check authorization
-		$groups = $this->config->get('reportgroup', '')
-				? array($this->config->get('reportgroup', '')) : array();
-		$authorized   = $this->_authorize(0, $groups);
-
-		if (!$authorized)
+		if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports'))
 		{
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
@@ -153,7 +132,7 @@ class Reports extends Base
 			$objLog = new \Components\Publications\Tables\Log($this->database);
 
 			// Get all test projects
-			$exclude = $obj->getTestProjects();
+			$exclude = $obj->getProjectsByTag('test', true, 'id');
 
 			$stats = $objLog->getCustomStats($from, $to, $exclude, $filter);
 
@@ -218,14 +197,8 @@ class Reports extends Base
 	{
 		$this->view->setLayout('custom');
 
-		// Instantiate a project and related classes
-		$obj   = new Tables\Project( $this->database );
-
-		// Is user in special admin group to view advanced stats?
-		$admin = $this->_checkReviewerAuth('general');
-
-		// Get all test projects
-		$testProjects = $obj->getTestProjects();
+		// Instantiate a project
+		$obj = $this->model->table();
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -235,25 +208,21 @@ class Reports extends Base
 		$this->view->title = $this->title;
 
 		// Check authorization
-		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
-		$authorized   = $this->_authorize(0, $groups);
-
-		if (!$authorized)
+		if (!$this->model->reviewerAccess('admin') && !$this->model->reviewerAccess('reports'))
 		{
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PUBLICATIONS_REPORTS_LOGIN');
 				$this->_login();
 				return;
 			}
 
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_REPORTS_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
 		// Output HTML
 		$this->view->task 		= $this->_task;
-		$this->view->admin 		= $admin;
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
 

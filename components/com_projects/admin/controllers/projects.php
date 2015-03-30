@@ -217,12 +217,12 @@ class Projects extends AdminController
 		$this->view = $this->view;
 		$this->view->config = $this->config;
 
-		$obj = new Tables\Project( $this->database );
-		$objAC = new Tables\Activity( $this->database );
+		$model = new Models\Project( $id );
+		$objAC = $model->table('Activity');
 
 		if ($id)
 		{
-			if (!$obj->loadProject($id))
+			if (!$model->exists())
 			{
 				$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 					Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
@@ -239,7 +239,7 @@ class Projects extends AdminController
 		}
 
 		// Get project types
-		$objT = new Tables\Type( $this->database );
+		$objT = $model->table('Type');
 		$this->view->types = $objT->getTypes();
 
 		// Get plugin
@@ -247,15 +247,15 @@ class Projects extends AdminController
 		$dispatcher = \JDispatcher::getInstance();
 
 		// Get activity counts
-		$dispatcher->trigger( 'onProjectCount', array( $obj, &$counts, 1) );
-		$counts['activity'] = $objAC->getActivityCount( $obj->id, $this->juser->get('id'));
+		$dispatcher->trigger( 'onProjectCount', array( $model, &$counts, 1) );
+		$counts['activity'] = $objAC->getActivityCount( $model->get('id'), User:: get('id'));
 		$this->view->counts = $counts;
 
 		// Get team
-		$objO = new Tables\Owner( $this->database );
+		$objO = $model->table('Owner');
 
 		// Sync with system group
-		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
+		$objO->sysGroup($model->get('alias'), $this->config->get('group_prefix', 'pr-'));
 
 		// Get members and managers
 		$this->view->managers = $objO->getOwnerNames($id, 0, '1', 1);
@@ -270,19 +270,19 @@ class Projects extends AdminController
 		// Was project suspended?
 		$this->view->suspended = false;
 		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
+		if ($model->isInactive())
 		{
 			$this->view->suspended = $objAC->checkActivity( $id, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		// Get project params
-		$this->view->params = new \JParameter( $obj->params );
+		$this->view->params = $model->params;
 
 		// Get Disk Usage
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
-		$project = $obj->getProject($id, $this->juser->get('id'));
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', '', $this->config, NULL));
+
+		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $model->project(), 'files', 'admin', '', $this->config, NULL));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
@@ -296,7 +296,7 @@ class Projects extends AdminController
 		$this->view->tags = $cloud->render('string');
 
 		// Output the HTML
-		$this->view->obj = $obj;
+		$this->view->obj = $model->project();
 		$this->view->publishing	= $this->_publishing;
 		$this->view->display();
 	}

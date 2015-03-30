@@ -25,19 +25,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!$this->project->id)
+if (!$this->model->exists())
 {
 	return;
 }
 ?>
 <div class="info_blurb grid">
 	<div class="col span1">
-		<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" />
+		<img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=media'); ?>" alt="" />
 	</div>
 	<div class="col span6">
-		<?php echo '<span class="prominent">' . Lang::txt('COM_PROJECTS_PROJECT'). '</span>: ' . $this->project->title; ?>
-		(<span><?php echo $this->project->alias; ?></span>)
-		<span class="block faded"><?php echo Lang::txt('COM_PROJECTS_CREATED') . ' ' . JHTML::_('date', $this->project->created, 'M d, Y'); ?></span>
+		<?php echo '<span class="prominent">' . Lang::txt('COM_PROJECTS_PROJECT'). '</span>: ' . $this->escape($this->model->get('title')); ?>
+		(<span><?php echo $this->model->get('alias'); ?></span>)
+		<span class="block faded"><?php echo Lang::txt('COM_PROJECTS_CREATED') . ' ' . JHTML::_('date', $this->model->get('created'), 'M d, Y'); ?></span>
 	</div>
 	<div class="col span5 omega">
 	</div>

@@ -24,8 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 shuffle($this->suggestions);
 $i= 0;
+
 ?>
 <div class="sidebox suggestions">
 	<h4><?php echo Lang::txt('COM_PROJECTS_SUGGESTIONS'); ?>:</h4>

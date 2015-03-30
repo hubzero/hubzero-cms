@@ -65,6 +65,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -84,16 +91,16 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model 		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $project, &$counts )
+	public function &onProjectCount( $model, &$counts )
 	{
 		$database = JFactory::getDBO();
 
-		$objO = new \Components\Projects\Tables\Owner($database);
-		$counts['team'] = $objO->countOwners($project->id, $filters = array());
+		$model->member();
+		$counts['team'] = $model->_tblOwner->countOwners($model->get('id'), $filters = array());
 
 		return $counts;
 	}
@@ -101,13 +108,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $authorized, $action = '', $areas = null )
+	public function onProject ( $model, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
@@ -130,25 +136,30 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Is the user logged in?
-		if (!$authorized && !$project->owner)
+		// Check that project exists
+		if (!$model->exists())
 		{
 			return $arr;
 		}
 
+		// Check authorization
+		if (!$model->access('member'))
+		{
+			return $arr;
+		}
+
+		// Model
+		$this->model = $model;
+
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Load component configs
-			$this->_config = Component::params( 'com_projects' );
-
 			// Set vars
 			$this->_task 		= $action ? $action : JRequest::getVar('action','');
-			$this->_project 	= $project;
+			$this->_project 	= $model->project();
 			$this->_database 	= JFactory::getDBO();
-			$this->_authorized 	= $authorized;
 			$this->_uid 		= User::get('id');
-			$this->_msg 	    = NULL;
+			$this->_config      = $model->config();
 
 			switch ($this->_task)
 			{
@@ -263,7 +274,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->setup 		= $setup;
 		$view->config 		= $this->_config;
@@ -400,7 +410,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -469,7 +478,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
 		$view->versionid 	= $versionid;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->pid 			= $pid;
@@ -782,7 +790,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$view->checked 		= $checked;
 			$view->option 		= $this->_option;
 			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->setup 		= $setup;
 			$view->aid 			= $objO->getOwnerID($this->_project->id, $this->_uid);
@@ -902,7 +909,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$view->option 		= $this->_option;
 			$view->database 	= $this->_database;
 			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->config 		= $this->_config;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -979,7 +985,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$view->checked 		= $checked;
 			$view->option 		= $this->_option;
 			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->aid 			= $objO->getOwnerID($this->_project->id, $this->_uid);
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -1263,7 +1268,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->task 		= $this->_task;

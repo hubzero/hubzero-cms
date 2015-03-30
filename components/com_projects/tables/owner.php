@@ -788,44 +788,6 @@ class Owner extends \JTable
 	}
 
 	/**
-	 * Record project page view for owner
-	 *
-	 * @param      integer $projectid
-	 * @param      integer $uid
-	 * @return     boolean true if recorded successfully
-	 */
-	public function recordView( $projectid = NULL, $uid = NULL )
-	{
-		if ($projectid === NULL or $uid === NULL ) {
-			return false;
-		}
-
-		$query  = "SELECT * FROM $this->_tbl WHERE projectid=" . $this->_db->Quote($projectid) . " AND userid=" . $this->_db->Quote($uid) . " LIMIT 1";
-		$this->_db->setQuery( $query );
-
-		if ($result = $this->_db->loadAssoc())
-		{
-			$this->bind( $result );
-
-			$timecheck = \JFactory::getDate(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
-			if ($this->num_visits == 0 or $this->lastvisit < $timecheck)
-			{
-				$this->num_visits = $this->num_visits + 1; // record visit in a day
-				$this->prev_visit = $this->lastvisit;
-			}
-
-			$this->lastvisit = \JFactory::getDate()->toSql();
-
-			if (!$this->store())
-			{
-				$this->setError( Lang::txt('Failed to record user last visit.') );
-				return false;
-			}
-			return true;
-		}
-	}
-
-	/**
 	 * Remove project owners
 	 *
 	 * @param      integer $projectid
@@ -1119,7 +1081,7 @@ class Owner extends \JTable
 					elseif ($found != 1)
 					{
 						// Inactive/deleted - activate
-						$query = "UPDATE $this->_tbl SET added = " . $this->_db->Quote($noew) . ", status = 1, groupid = " . $this->_db->Quote($gidNumber) . ", role = " . $this->_db->Quote($role) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($owner);
+						$query = "UPDATE $this->_tbl SET added = " . $this->_db->Quote($now) . ", status = 1, groupid = " . $this->_db->Quote($gidNumber) . ", role = " . $this->_db->Quote($role) . "  WHERE projectid = " . $this->_db->Quote($projectid) . " AND userid = " . $this->_db->Quote($owner);
 						$this->_db->setQuery( $query );
 						if ($this->_db->query())
 						{
@@ -1186,8 +1148,6 @@ class Owner extends \JTable
 			return false;
 		}
 
-		$objT = new \Components\Projects\Tables\Type( $this->_db );
-
 		if ($this->loadOwner($projectid, $owner))
 		{
 			if ($this->params)
@@ -1201,11 +1161,12 @@ class Owner extends \JTable
 				{
 					foreach ($params as $p)
 					{
-						if (trim($p) != '' && trim($p) != '=') {
+						if (trim($p) != '' && trim($p) != '=' && trim($p) != '{}') 
+						{
 							$extracted = explode('=', $p);
 							if (!empty($extracted))
 							{
-								$in .= $extracted[0].'=';
+								$in .= $extracted[0] . '=';
 								$default = isset($extracted[1]) ? $extracted[1] : 0;
 								$in .= $extracted[0] == $param ? $value : $default;
 								$in	.= "\n";
@@ -1266,10 +1227,10 @@ class Owner extends \JTable
 				$tquery = '';
 				foreach ($exclude as $ex)
 				{
-					$tquery .= "'".$ex."',";
+					$tquery .= "'" . $ex . "',";
 				}
-				$tquery = substr($tquery,0,strlen($tquery) - 1);
-				$query .= $tquery.") ";
+				$tquery = substr($tquery, 0, strlen($tquery) - 1);
+				$query .= $tquery . ") ";
 			}
 
 			$this->_db->setQuery( $query );
@@ -1305,10 +1266,10 @@ class Owner extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'".$ex."',";
+				$tquery .= "'" . $ex . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 
 		if ($get == 'average' || $get == 'multi')
@@ -1391,10 +1352,10 @@ class Owner extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'".$ex."',";
+				$tquery .= "'" . $ex . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 
 		$query .= " GROUP BY p.id ";
@@ -1403,5 +1364,39 @@ class Owner extends \JTable
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Match invite
+	 *
+	 * @param      string $identifier
+	 * @param      string $code
+	 * @param      string $email
+	 * @return     boolean
+	 */
+	public function matchInvite( $identifier = NULL, $code = '', $email = '' )
+	{
+		if ($identifier === NULL)
+		{
+			return false;
+		}
+		if (!$code or !$email)
+		{
+			return false;
+		}
+		$query  = "SELECT o.id as owner";
+		$query .= " FROM #__projects AS p ";
+		$query .= " LEFT JOIN $this->_tbl AS o ON o.projectid=p.id
+					AND o.userid=0 AND o.status != 2 AND o.invited_email=" . $this->_db->Quote( $email) . "
+					AND o.invited_code=" . $this->_db->Quote( $code );
+		$query .= " WHERE ";
+		$query .= is_numeric($identifier)
+			? " p.id=" . $this->_db->Quote($identifier)
+			: " p.alias=" . $this->_db->Quote($identifier);
+
+		$query .= " LIMIT 1 ";
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadResult();
 	}
 }

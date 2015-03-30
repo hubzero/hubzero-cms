@@ -31,7 +31,9 @@
 namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
+use Components\Projects\Models;
 use Components\Projects\Helpers;
+use Exception;
 
 /**
  * Primary component controller
@@ -72,14 +74,8 @@ class Projects extends Base
 			'getowner' => 1
 		);
 
-		// Get a record count
-		$obj = new Tables\Project( $this->database );
-
 		// Get records
-		$rows = $obj->getRecords(
-			$this->view->filters, false,
-			$this->juser->get('id'), 0, $this->_setupComplete
-		);
+		$rows = $this->model->entries('list', $this->view->filters, false);
 
 		// Output search results in JSON format
 		$json = array();
@@ -87,16 +83,16 @@ class Projects extends Base
 		{
 			foreach ($rows as $row)
 			{
-				$title = str_replace("\n", '', stripslashes(trim($row->title)));
+				$title = str_replace("\n", '', stripslashes(trim($row->get('title'))));
 				$title = str_replace("\r", '', $title);
 
 				$item = array(
-					'id'   => $row->alias,
+					'id'   => $row->get('alias'),
 					'name' => $title
 				);
 
 				// Push exact matches to the front
-				if ($row->alias == $filters['search'])
+				if ($row->get('alias') == $filters['search'])
 				{
 					array_unshift($json, $item);
 				}
@@ -286,135 +282,102 @@ class Projects extends Base
 	public function viewTask()
 	{
 		// Incoming
-		$preview 		=  Request::getInt( 'preview', 0 );
-		$this->active 	=  Request::getVar( 'active', 'feed' );
-		$ajax 			=  Request::getInt( 'ajax', 0 );
-		$action  		=  Request::getVar( 'action', '' );
-		$sync 			=  0;
+		$preview 		= Request::getInt( 'preview', 0 );
+		$this->active 	= Request::getVar( 'active', 'feed' );
+		$ajax 			= Request::getInt( 'ajax', 0 );
+		$action  		= Request::getVar( 'action', '' );
+		$confirmcode 	= Request::getVar( 'confirm', '' );
+		$email       	= Request::getVar( 'email', '' );
+		$sync 			= false;
 
 		// Stop ajax action if user got logged out
 		if ($ajax && User::isGuest())
 		{
 			// Project on hold
-			$this->view 		= new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
+			$this->view 		= new \Hubzero\Component\View( array('name' => 'error', 'layout' => 'default') );
 			$this->view->error  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN');
 			$this->view->title  = Lang::txt('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
 			$this->view->display();
 			return;
 		}
 
-		// Cannot proceed without project id/alias
-		if (!$this->_identifier)
+		// Check that project exists
+		if (!$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 			return;
-		}
-
-		// Instantiate a project and related classes
-		$obj  	= new Tables\Project( $this->database );
-		$objO 	= new Tables\Owner( $this->database );
-		$objAA 	= new Tables\Activity( $this->database );
-
-		// Is user invited to project?
-		$confirmcode = Request::getVar( 'confirm', '' );
-		$email 		 = Request::getVar( 'email', '' );
-
-		// Load project
-		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
-		if (!$this->project)
-		{
-			$this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
-			$this->introTask();
-			return;
-		}
-		else
-		{
-			$pid 	= $this->project->id;
-			$alias  = $this->project->alias;
 		}
 
 		// Is this a group project?
-		$this->group = NULL;
-		if ($this->project->owned_by_group)
+		$this->group = $this->model->groupOwner();
+		if ($this->model->get('owned_by_group') && !$this->group)
 		{
-			$this->group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
+			$this->_buildPathway();
+			$this->_buildTitle();
 
-			// Was owner group deleted?
-			if (!$this->group)
+			// Options for project creator
+			if ($this->model->access('owner'))
 			{
-				$this->_buildPathway();
-				$this->_buildTitle();
-
-				// Options for project creator
-				if ($this->project->created_by_user == $this->juser->get('id'))
-				{
-					$view 			= new \Hubzero\Component\View( array('name'=>'changeowner', 'layout' =>'default') );
-					$view->project 	= $this->project;
-					$view->task 	= $this->_task;
-					$view->option 	= $this->_option;
-					$view->config 	= $this->config;
-					$view->uid 		= $this->juser->get('id');
-					$view->guest 	= $this->juser->get('guest');
-					$view->display();
-					return;
-				}
-				else
-				{
-					// Error
-					$this->setError(Lang::txt('COM_PROJECTS_PROJECT_OWNER_DELETED'));
-					$this->title = Lang::txt('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
-					$this->_showError();
-					return;
-				}
+				$view = new \Hubzero\Component\View(
+					array('name' => 'changeowner', 'layout' => 'default')
+				);
+				$view->project  = $this->model;
+				$view->task 	= $this->_task;
+				$view->option 	= $this->_option;
+				$view->display();
+				return;
+			}
+			else
+			{
+				// Error
+				$this->setError(Lang::txt('COM_PROJECTS_PROJECT_OWNER_DELETED'));
+				$this->title = Lang::txt('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
+				$this->_showError();
+				return;
 			}
 		}
+
+		// Load acting team member
+		$member = $this->model->member();
 
 		// Reconcile members of project groups
 		if (!$ajax)
 		{
-			if ($objO->reconcileGroups($pid, $this->project->owned_by_group))
+			if ($this->model->_tblOwner->reconcileGroups(
+				$this->model->get('id'),
+				$this->model->get('owned_by_group')
+			))
 			{
-				$sync = 1;
+				$sync = true;
 			}
 		}
 
 		// Is project deleted?
-		if ($this->project->state == 2)
+		if ($this->model->isDeleted())
 		{
 			$this->setError(Lang::txt('COM_PROJECTS_PROJECT_DELETED'));
 			$this->introTask();
 			return;
 		}
 
-		// Get publication of a provisioned project
-		if ($this->project->provisioned == 1)
-		{
-			if (!$this->_publishing)
-			{
-				$this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
-				$this->introTask();
-				return;
-			}
-
-			$objPub = new \Components\Publications\Tables\Publication($this->database);
-			$pub = $objPub->getProvPublication($this->project->id);
-		}
-
 		// Check if project is in setup
-		if ($this->project->setup_stage < $this->_setupComplete && (!$ajax && $this->active != 'team'))
+		if ($this->model->inSetup() && !$ajax)
 		{
 			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&alias=' . $this->project->alias);
+				. '&task=setup&alias=' . $this->model->get('alias'));
 			return;
 		}
 
 		// Sync with system group in case of changes
-		if ($sync)
+		if ($sync == true)
 		{
-			$objO->sysGroup($this->project->alias, $this->config->get('group_prefix', 'pr-'));
+			$this->model->_tblOwner->sysGroup(
+				$this->model->get('alias'),
+				$this->config->get('group_prefix', 'pr-')
+			);
 
-			// Reload project
-			$this->project = $obj->getProject($this->project->alias, $this->juser->get('id'));
+			// Reload member
+			$this->model->member(true);
 		}
 
 		// Set the pathway
@@ -422,10 +385,6 @@ class Projects extends Base
 
 		// Set the page title
 		$this->_buildTitle();
-
-		// Check authorization
-		$role = $this->project->owner && $this->project->role == 0 ? 4 : $this->project->role;
-		$authorized = $this->project->owner ? $role : 0;
 
 		// Do we need to login?
 		if (User::isGuest() && $action == 'login')
@@ -435,63 +394,92 @@ class Projects extends Base
 			return;
 		}
 
-		// Check if they're a member of reviewer group
-		$reviewer = false;
-		if (!User::isGuest() && $authorized != 1)
-		{
-			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0)
-			{
-				$sdata_group 	= $this->config->get('sdata_group', '');
-				$ginfo_group 	= $this->config->get('ginfo_group', '');
+		// Determine layout to load
+		$layout = ($this->model->access('member')) ? 'internal' : 'external';
+		$layout = $this->model->access('member')
+				&& $preview && $this->model->isPublic()
+				? 'external' : $layout;
 
-				foreach ($ugs as $ug)
-				{
-					if ($this->config->get('approve_restricted') && $sdata_group && $ug->cn == $sdata_group )
-					{
-						$reviewer = 'sensitive';
-					}
-					elseif ($this->config->get('grantinfo') && $ginfo_group && $ug->cn == $ginfo_group )
-					{
-						$reviewer = 'sponsored';
-					}
-				}
+		// Is this a provisioned project?
+		if ($this->model->isProvisioned())
+		{
+			if (!$this->_publishing)
+			{
+				$this->setError(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'));
+				$this->introTask();
+				return;
+			}
+
+			// Redirect to publication
+			$pub = $this->model->getPublication();
+			if ($pub && $pub->id)
+			{
+				$this->_redirect = Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id);
+				return;
+			}
+			else
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
+				return;
+			}
+			$this->view->pub 	   = isset($pub) ? $pub : '';
+			$this->view->team 	   = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
+			$this->view->suggested = Helpers\Html::suggestAlias($pub->title);
+			$this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);
+			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
+		}
+
+		// Check if they are a reviewer
+		$reviewer = false;
+		if (!$this->model->access('member'))
+		{
+			if ($this->model->reviewerAccess('sensitive'))
+			{
+				$reviewer = 'sensitive';
+			}
+			if ($this->model->reviewerAccess('sponsored'))
+			{
+				$reviewer = 'sponsored';
 			}
 		}
 
-		// Determine internal (private for team)/external (public) layout to load
-		$layout = ($authorized) ? 'internal' : 'external';
-		$layout = ($authorized) && $preview && !$this->project->private ? 'external' : $layout;
-
 		// Invitation view
-		if ($confirmcode && (!$this->project->owner or !$this->project->confirmed))
+		if ($confirmcode && (!$member or $member->status != 1))
 		{
-			$match = $obj->matchInvite( $pid, $confirmcode, $email );
+			$match = $this->model->_tblOwner->matchInvite(
+				$this->model->get('id'),
+				$confirmcode,
+				$email
+			);
+
 			if (User::isGuest() && $match)
 			{
 				$layout = 'invited';
 			}
-			elseif ($match && $objO->load($match))
+			elseif ($match && $this->model->_tblOwner->load($match))
 			{
-				if ($this->juser->get('email') == $email)
+				if (User::get('email') == $email)
 				{
 					// Confirm user
-					$objO->status = 1;
-					$objO->userid = $this->juser->get('id');
+					$this->model->_tblOwner->status = 1;
+					$this->model->_tblOwner->userid = User::get('id');
 
-					if (!$objO->store())
+					if (!$this->model->_tblOwner->store())
 					{
-						$this->setError( $objO->getError() );
+						$this->setError( $this->model->_tblOwner->getError() );
 						return false;
 					}
 					else
 					{
 						// Sync with system group
-						$objO->sysGroup($this->project->alias, $this->config->get('group_prefix', 'pr-'));
+						$this->model->_tblOwner->sysGroup(
+							$this->model->get('alias'),
+							$this->config->get('group_prefix', 'pr-')
+						);
 
 						// Go to project page
 						$this->_redirect = Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->project->alias);
+							. '&alias=' . $this->model->get('alias'));
 						return;
 					}
 				}
@@ -505,46 +493,8 @@ class Projects extends Base
 			}
 		}
 
-		// Is this a provisioned project?
-		if ($this->project->provisioned == 1)
-		{
-			if ($action == 'activate')
-			{
-				if ($this->juser->get('id') == $this->project->created_by_user && $this->project->setup_stage >= $this->_setupComplete)
-				{
-					$layout = 'provisioned';
-				}
-				elseif (User::isGuest())
-				{
-					$this->_msg = Lang::txt('COM_PROJECTS_LOGIN_TO_VIEW_PROJECT');
-					$this->_login();
-					return;
-				}
-				else
-				{
-					$this->setError(Lang::txt('COM_PROJECTS_ERROR_MUST_BE_PROJECT_CREATOR'));
-					$this->_showError();
-					return;
-				}
-			}
-			else
-			{
-				// Redirect to publication
-				if (isset($pub) && $pub->id)
-				{
-					$this->_redirect = Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id);
-					return;
-				}
-				else
-				{
-					\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
-					return;
-				}
-			}
-		}
-
 		// Private project
-		if ($this->project->private && $layout != 'invited')
+		if (!$this->model->isPublic() && $layout != 'invited')
 		{
 			// Login required
 			if (User::isGuest())
@@ -553,38 +503,34 @@ class Projects extends Base
 				$this->_login();
 				return;
 			}
-			if (!$authorized && !$reviewer)
+			if (!$this->model->access('member') && !$reviewer)
 			{
-				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 				return;
 			}
 		}
 
 		// Is project suspended?
-		$suspended = 0;
-		if ($this->project->state == 0 && $this->project->setup_stage == $this->_setupComplete)
+		if ($this->model->isInactive())
 		{
-			if (!$authorized)
+			if (!$this->model->access('member'))
 			{
-				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 				return;
 			}
 			$layout = 'suspended';
-
-			// Check who suspended project
-			$suspended = $objAA->checkActivity( $pid, Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 		}
 
 		// Is project pending approval?
-		if ($this->project->state == 5 && $this->project->setup_stage == $this->_setupComplete)
+		if ($this->model->isPending())
 		{
 			if ($reviewer)
 			{
 				$layout = 'external';
 			}
-			elseif ($this->juser->get('id') != $this->project->created_by_user)
+			elseif (!$this->model->access('owner'))
 			{
-				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 				return;
 			}
 			else
@@ -593,67 +539,25 @@ class Projects extends Base
 			}
 		}
 
+		// Set layout
 		$this->view->setLayout( $layout );
 
-		$this->view->project 	= $this->project;
-		$this->view->suspended 	= $suspended;
-		$this->view->reviewer 	= $reviewer;
-
-		// Provisioned project
-		if ($this->project->provisioned == 1)
+		// Record join activity
+		if ($this->active == 'feed' && !$ajax)
 		{
-			// Get JS & CSS
-			$document = \JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'publications.css');
-
-			$this->view->pub 	   = isset($pub) ? $pub : '';
-			$this->view->team 	   = $objO->getOwnerNames($this->_identifier);
-			$this->view->suggested = Helpers\Html::suggestAlias($pub->title);
-			$this->view->verified  = $this->model->check($this->view->suggested, $pid, 0);
-			$this->view->suggested = $this->view->verified ? $this->view->suggested : '';
+			// First-time visit, record join activity
+			$this->model->recordFirstJoinActivity();
 		}
 
-		// First-time visit, record join activity
-		if ($this->project->owner && !$this->project->provisioned && $this->active == 'feed' && $this->project->confirmed && !$ajax)
-		{
-			if (!$this->project->lastvisit )
-			{
-				$aid = $this->_postActivity(Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), '', '', 'team');
-				if ($aid)
-				{
-					$objO->saveParam ( $pid, $this->juser->get('id'), $param = 'join_activityid', $value = $aid );
-				}
-
-				// If newly created - remove join activity of project creator
-				$timecheck = \JFactory::getDate(time() - (10 * 60)); // last second
-				if ($this->project->created_by_user == $this->juser->get('id') && $timecheck <= $this->project->created)
-				{
-				    $objAA->deleteActivity($aid);
-				}
-			}
-		}
-
-		// Get latest log from user session
-		$jsession = \JFactory::getSession();
-
-		// Log activity
-		if (!$jsession->get('projects-nolog'))
-		{
-			$this->_logActivity($pid, 'project', $this->active, $action, $authorized);
-		}
-
-		// Allow future logging
-		if ($this->config->get('logging', 0))
-		{
-			$jsession->set('projects-nolog', 0);
-		}
-
-		// Get plugin
+		// Get project plugins
 		\JPluginHelper::importPlugin( 'projects');
 		$dispatcher = \JDispatcher::getInstance();
 
-		// Get all plugins
-		$plugins 	= $dispatcher->trigger( 'onProjectAreas', array( 'all' => true ) );
+		// Get available plugins
+		$plugins = $dispatcher->trigger(
+			'onProjectAreas',
+			array( 'alias' => $this->model->get('alias'), 'all' => true )
+		);
 
 		// Get tabbed plugins
 		$this->view->tabs = Helpers\Html::getTabs($plugins);
@@ -682,14 +586,13 @@ class Projects extends Base
 					}
 
 					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->project->alias);
+						. '&task=view&alias=' . $this->model->get('alias'));
 					return;
 				}
 
 				// Plugin params
 				$plugin_params = array(
-					$this->project,
-					$authorized,
+					$this->model,
 					$action,
 					array($plugin)
 				);
@@ -706,7 +609,6 @@ class Projects extends Base
 						{
 							$this->_setNotification($section['msg']['message'], $section['msg']['type']);
 						}
-
 						if (isset($section['html']) && $section['html'])
 						{
 							if ($ajax)
@@ -723,88 +625,59 @@ class Projects extends Base
 						}
 						elseif (isset($section['referer']) && $section['referer'] != '')
 						{
-							if ($this->config->get('logging', 0))
-							{
-								$jsession->set('projects-nolog', 1);
-							}
 							$this->_redirect = $section['referer'];
 							return;
 						}
-					} // end foreach
+					}
 				}
 				else
 				{
 					// No html output
 					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->project->alias);
+						. '&task=view&alias=' . $this->model->get('alias'));
 					return;
 				}
 			}
 
-			$dispatcher->trigger( 'onProjectCount', array( $this->project, &$counts) );
-			$counts['newactivity'] = $objAA->getNewActivityCount( $this->project->id, $this->juser->get('id'));
-			$this->view->project->counts = $counts;
-		}
+			// Get item counts
+			$dispatcher->trigger( 'onProjectCount', array( $this->model, &$counts) );
+			$this->model->set('counts', $counts);
 
-		// Record page view
-		if ($this->project->owner && $this->active == 'feed' && $this->project->confirmed)
-		{
-			$objO->recordView($pid, $this->juser->get('id'));
-		}
+			// Record page visit
+			if ($this->active == 'feed' && !$ajax)
+			{
+				$this->model->recordVisit();
+			}
 
-		// Get project params
-		$this->view->params = new \JParameter( $this->project->params );
-
-		// Get team for public page
-		if ($layout == 'external' && $this->view->params->get('team_public', 0))
-		{
-			$this->view->team = $objO->getOwners( $pid, $filters = array('status' => 1) );
-		}
-
-		// Get additional modules for team members
-		if ($layout == 'internal')
-		{
+			// Hide suggestions
 			if ($this->active == 'feed')
 			{
 				// Hide welcome screen?
 				$c = Request::getInt( 'c', 0 );
 				if ($c)
 				{
-					$objO->saveParam(
-						$this->project->id,
-						$this->juser->get('id'),
+					$this->model->_tblOwner->saveParam(
+						$this->model->get('id'),
+						User::get('id'),
 						$param = 'hide_welcome', 1
 					);
 					$this->_redirect = Route::url('index.php?option=' . $this->_option
-						. '&task=view&alias=' . $this->project->alias);
+						. '&task=view&alias=' . $this->model->get('alias'));
 					return;
 				}
 			}
-
-			// Get notification
-			$notification       		= $dispatcher->trigger('onProjectNotification',
-				array( $this->project, $this->juser->get('id'), $this->active, $this->_option )
-			);
-			$this->view->notification 	= $notification && !empty($notification)
-				? $notification[0] : NULL;
-
-			// Get side content
-			$sideContent       			= $dispatcher->trigger('onProjectExtras',
-				array( $this->project, $this->juser->get('id'), $this->active, $this->_option )
-			);
-			$this->view->sideContent 	= $sideContent && !empty($sideContent)
-				? $sideContent[0] : NULL;
 		}
 
 		// Output HTML
+		$this->view->params     = $this->model->params;
+		$this->view->model 		= $this->model;
+		$this->view->reviewer 	= $reviewer;
+		$this->view->project    = $this->model->project();
 		$this->view->title  	= $this->title;
 		$this->view->active 	= $this->active;
 		$this->view->task 		= $this->_task;
-		$this->view->authorized	= $authorized;
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
-		$this->view->uid 		= $this->juser->get('id');
-		$this->view->guest 		= $this->juser->get('guest');
 		$this->view->msg 		= $this->_getNotifications('success');
 
 		if ($layout == 'invited')
@@ -813,11 +686,12 @@ class Projects extends Base
 			$this->view->email		  = $email;
 		}
 
-		$error 	= $this->getError() ? $this->getError() : $this->_getNotifications('error');
+		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
 		}
+
 		$this->view->display();
 		return;
 	}
@@ -830,66 +704,60 @@ class Projects extends Base
 	public function activateTask()
 	{
 		// Cannot proceed without project id/alias
-		if (!$this->_identifier)
+		if (!$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
-			return;
-		}
-
-		// Instantiate needed classes
-		$obj  = new Tables\Project( $this->database );
-		$objO = new Tables\Owner( $this->database );
-
-		// Get Project
-		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
-		if (!$obj->loadProject($this->_identifier) or !$this->project)
-		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 			return;
 		}
 
 		// Must be project creator
-		if ($this->project->created_by_user != $this->juser->get('id'))
+		if (!$this->model->access('owner'))
 		{
-			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
 
 		// Must be a provisioned project to be activated
-		if ($this->project->provisioned != 1)
+		if (!$this->model->isProvisioned())
 		{
 			// Redirect to project page
 			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $this->project->alias);
+				. '&alias=' . $this->model->get('alias'));
 			return;
 		}
 
 		// Redirect to setup if activation not complete
-		if ($this->project->setup_stage < $this->_setupComplete)
+		if ($this->model->inSetup())
 		{
 			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&alias=' . $this->project->alias);
+				. '&task=setup&alias=' . $this->model->get('alias'));
 			return;
 		}
 
 		// Get publication of a provisioned project
-		$objPub = new \Components\Publications\Tables\Publication($this->database);
-		$pub = $objPub->getProvPublication($this->project->id);
+		$pub = $this->model->getPublication();
+
+		if (empty($pub))
+		{
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
+			return;
+		}
 
 		// Incoming
-		$name  = trim(Request::getVar( 'new-alias', '', 'post' ));
-		$title = trim(Request::getVar( 'title', '', 'post' ));
-		$pubid = trim(Request::getInt( 'pubid', 0, 'post' ));
+		$name    = trim(Request::getVar( 'new-alias', '', 'post' ));
+		$title   = trim(Request::getVar( 'title', '', 'post' ));
+		$confirm = trim(Request::getInt( 'confirm', 0, 'post' ));
 
 		$name = preg_replace('/ /', '', $name);
 		$name = strtolower($name);
 
 		// Check incoming data
-		if (!$this->model->check($name, $this->project->id))
+		$verified = $this->model->check($name, $this->model->get('id'));
+		if ($confirm && !$verified)
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 		}
-		elseif ($title == '' or strlen($title) < 3)
+		elseif ($confirm && ($title == '' || strlen($title) < 3))
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY') );
 		}
@@ -900,28 +768,25 @@ class Projects extends Base
 		// Set the page title
 		$this->_buildTitle();
 
-		// Return to page in case of error
-		if ($this->getError())
+		// Display page
+		if (!$confirm || $this->getError())
 		{
 			$this->view->setLayout( 'provisioned' );
-			$this->view->project 		= $this->project;
-			$this->view->project->title = $title;
+			$this->view->model 			= $this->model;
+
+			$this->view->team 	 		= $this->model->_tblOwner->getOwnerNames($this->model->get('alias'));
 
 			// Output HTML
 			$this->view->pub 		 	= isset($pub) ? $pub : '';
-			$this->view->team 	 		= $objO->getOwnerNames($this->_identifier);
 			$this->view->suggested 		= $name;
-			$this->view->verified  		= $this->model->check($name, $this->project->id);
-			$this->view->suggested 		= $this->view->verified ? $this->view->suggested : '';
+			$this->view->verified  		= $verified;
+			$this->view->suggested 		= $verified ? $this->view->suggested : '';
 			$this->view->title  		= $this->title;
 			$this->view->active 		= $this->active;
 			$this->view->task 			= $this->_task;
 			$this->view->authorized 	= 1;
 			$this->view->option 		= $this->_option;
-			$this->view->config 		= $this->config;
-			$this->view->uid 			= $this->juser->get('id');
-			$this->view->guest 			= $this->juser->get('guest');
-			$this->view->msg 			= isset($this->_msg) ? $this->_msg : '';
+			$this->view->msg 			= $this->_getNotifications('success');
 
 			if ($this->getError())
 			{
@@ -932,8 +797,29 @@ class Projects extends Base
 			return;
 		}
 
+		// Save new alias & title
+		if (!$this->getError())
+		{
+			$this->model->set('title', \Hubzero\Utility\String::truncate($title, 250));
+			$this->model->set('alias', $name);
+
+			$state = $this->_setupComplete == 3 ? 0 : 1;
+
+			$this->model->set('state', $state);
+			$this->model->set('setup_stage', 2);
+			$this->model->set('provisioned', 0);
+			$this->model->set('modified', \JFactory::getDate()->toSql());
+			$this->model->set('modified_by', User::get('id'));
+
+			// Save changes
+			if (!$this->model->store())
+			{
+				$this->setError( $this->model->getError() );
+			}
+		}
+
 		// Get project parent directory
-		$path    =  Helpers\Html::getProjectRepoPath($this->project->alias);
+		$path    =  Helpers\Html::getProjectRepoPath($this->model->get('alias'));
 		$newpath =  Helpers\Html::getProjectRepoPath($name, 'files', true);
 
 		// Rename project parent directory
@@ -951,33 +837,12 @@ class Projects extends Base
 			}
 		}
 
-		// Save new alias & title
-		if (!$this->getError())
-		{
-			$obj->title 		= \Hubzero\Utility\String::truncate($title, 250);
-			$obj->alias 		= $name;
-			$obj->state 		= 0;
-			$obj->setup_stage 	= $this->_setupComplete - 1;
-			$obj->modified		= \JFactory::getDate()->toSql();
-			$obj->modified_by 	= $this->juser->get('id');
-
-			// Save changes
-			if (!$obj->store())
-			{
-				$this->setError( $obj->getError() );
-			}
-			if (!$obj->id)
-			{
-				$obj->checkin();
-			}
-		}
-
 		// Log activity
-		$this->_logActivity($obj->id, 'provisioned', 'activate', 'save', 1);
+		$this->_logActivity($this->model->get('id'), 'provisioned', 'activate', 'save', 1);
 
 		// Send to continue setup
 		$this->_redirect = Route::url('index.php?option=' . $this->_option
-			. '&task=setup&alias=' . $obj->alias);
+			. '&task=setup&alias=' . $this->model->get('alias'));
 		return;
 	}
 
@@ -988,47 +853,28 @@ class Projects extends Base
 	 */
 	public function changestateTask()
 	{
-		if (!$this->_identifier)
+		// Cannot proceed without project id/alias
+		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
-			return;
-		}
-
-		// Instantiate a project and related classes
-		$obj = new Tables\Project( $this->database );
-		$objAA = new Tables\Activity ( $this->database );
-
-		// Load project
-		if (!$obj->loadProject($this->_identifier))
-		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
-			return;
-		}
-
-		// Is project deleted?
-		if ($obj->state == 2)
-		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 			return;
 		}
 
 		// Already suspended
-		if ($this->_task == 'suspend' && $obj->state == 0)
+		if ($this->_task == 'suspend' && $this->model->isInactive())
 		{
 			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&alias=' . $obj->alias);
+				. '&alias=' . $this->model->get('alias'));
 			return;
 		}
 
 		// Suspended by admin: manager cannot activate
 		if ($this->_task == 'reinstate')
 		{
-			$suspended = $objAA->checkActivity( $obj->id,
-				Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
-			);
+			$suspended = $this->model->checkActivity( Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
 			if ($suspended == 1)
 			{
-				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 				return;
 			}
 		}
@@ -1041,81 +887,81 @@ class Projects extends Base
 			return;
 		}
 
+		// Only managers can change project state
+		if (!$this->model->access('manager'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Fix ownership?
 		if ($this->_task == 'fixownership')
 		{
 			$keep 	 = Request::getInt( 'keep', 0 );
-			$groupid = $obj->owned_by_group;
-			if ($obj->created_by_user != $this->juser->get('id'))
+
+			if (!$this->model->access('owner'))
 			{
-				\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 				return;
 			}
-			if (!$groupid)
+			if (!$this->model->groupOwner('id'))
 			{
 				// Nothing to fix
 				$this->_redirect = Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $obj->alias);
+					. '&alias=' . $this->model->get('alias'));
 				return;
 			}
-			$obj->owned_by_group = 0;
+			$this->model->set('owned_by_group', 0);
 
 			// Make sure creator is still in team
-			$objO = new Tables\Owner( $this->database );
-			$objO->saveOwners ( $obj->id, $this->juser->get('id'), $this->juser->get('id'), 0, 1, 1, 1 );
+			$objO = $this->model->table('Owner');
+			$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), 0, 1, 1, 1 );
 
 			// Remove owner group affiliation for all team members
-			$objO->removeGroupDependence( $obj->id, $groupid );
+			$objO->removeGroupDependence($this->model->get('id'), $this->model->groupOwner('id') );
 
 			if ($keep)
 			{
-				$obj->owned_by_user = $this->juser->get('id');
+				$this->model->set('owned_by_user', User::get('id'));
 			}
 			else
 			{
-				$obj->state = 2;
+				$this->model->set('state', 2);
 			}
 		}
 
-		// Check authorization
-		$authorized = $this->_authorize();
-		if ($authorized != 1)
-		{
-			// Only managers can change project state
-			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
-			return;
-		}
-
 		// Update project
-		$obj->modified = \JFactory::getDate()->toSql();
-		$obj->modified_by = $this->juser->get('id');
+		$this->model->set('modified', \JFactory::getDate()->toSql());
+		$this->model->set('modified_by', User::get('id'));
+
 		if ($this->_task != 'fixownership')
 		{
-			$obj->state = $this->_task == 'suspend' ? 0 : 1;
-			$obj->state = $this->_task == 'delete' ? 2 : $obj->state;
+			$state = $this->_task == 'suspend' ? 0 : 1;
+			$state = $this->_task == 'delete' ? 2 : $this->model->get('state');
+			$this->model->set('state', $state);
 		}
 
-		if (!$obj->store())
+		if (!$this->model->store())
 		{
-			$this->setError( $obj->getError() );
+			$this->setError( $this->model->getError() );
 			return false;
 		}
 
 		// Log activity
-		$this->_logActivity($obj->id, 'project', 'status', $this->_task, $authorized);
+		$this->_logActivity($this->model->get('id'), 'project', 'status', $this->_task, 1);
 
 		if ($this->_task != 'fixownership')
 		{
 			// Add activity
-			$what = ($this->_task == 'suspend')
+			$activity = ($this->_task == 'suspend')
 				? Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED')
 				: Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_REINSTATED');
 
 			if ($this->_task == 'delete')
 			{
-				$what = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+				$activity = Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
 			}
-			$objAA->recordActivity( $obj->id, $this->juser->get('id'), $what );
+			$this->model->recordActivity($activity);
 
 			// Send to project page
 			$this->_msg = $this->_task == 'suspend'
@@ -1151,13 +997,10 @@ class Projects extends Base
 		$json 	=  json_decode($json);
 
 		$service = $json->service ? $json->service : 'google';
-		$this->_identifier = $json->alias;
 
-		// Load project
-		$obj = new Tables\Project( $this->database );
-		if (!$this->_identifier || !$obj->loadProject($this->_identifier) )
+		if (!$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1165,7 +1008,7 @@ class Projects extends Base
 		if ($code)
 		{
 			$return  = Route::url('index.php?option=' . $this->_option . '&alias='
-				. $this->_identifier . '&active=files&action=connect&service='
+				. $this->model->get('alias') . '&active=files&action=connect&service='
 				. $service . '&code=' . $code);
 		}
 		elseif (isset($json->return))
@@ -1202,28 +1045,18 @@ class Projects extends Base
 		$filterby  	= Request::getVar( 'filterby', 'pending' );
 		$notify 	= Request::getVar( 'notify', 0, 'post' );
 
-		// Instantiate a project and related classes
-		$obj 		= new Tables\Project( $this->database );
-		$objAA 		= new Tables\Activity ( $this->database );
-
-		// Check authorization
-		$authorized = $this->_checkReviewerAuth($reviewer);
-		if (!$authorized)
+		// Cannot proceed without project id/alias
+		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 			return;
 		}
 
-		// We need to have a project
-		if (!$this->_identifier)
+		// Authorize
+		if (!$this->model->reviewerAccess($reviewer))
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
-		}
-
-		// Load project
-		if (!$obj->loadProject($this->_identifier))
-		{
-			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
 		}
 
 		// Set the pathway
@@ -1233,25 +1066,22 @@ class Projects extends Base
 		$this->_buildTitle();
 
 		// Get project params
-		$params = new \JParameter( $obj->params );
+		$params = $this->model->params;
 
-		// Log activity
-		$this->_logActivity($obj->id, 'reviewer', $reviewer, $action, $authorized);
-
-		if ($action == 'save' && !$this->getError() && $obj->id)
+		if ($action == 'save' && !$this->getError())
 		{
-			$cbase = $obj->admin_notes;
+			$cbase = $this->model->get('admin_notes');
 
 			// Meta data for comment
 			$now = \JFactory::getDate()->toSql();
-			$actor = $this->juser->get('name');
-			$meta = '<meta>' . \JHTML::_('date', $now, 'M d, Y') . ' - ' . $actor . '</meta>';
+			$meta = '<meta>' . \JHTML::_('date', $now, 'M d, Y') . ' - ' . User::get('name') . '</meta>';
 
 			// Save approval
 			if ($reviewer == 'sensitive')
 			{
-				$approve = $approve == 1 && $obj->state == 5 ? 1 : 0; // can only approve pending project
-				$obj->state = $approve ? 1 : $obj->state;
+				$approve = $approve == 1 && $this->model->get('state') == 5 ? 1 : 0; // can only approve pending project
+				$state = $approve ? 1 : $this->model->get('state');
+				$this->model->set('state', $state);
 			}
 			elseif ($reviewer == 'sponsored')
 			{
@@ -1272,12 +1102,12 @@ class Projects extends Base
 					// Bump up quota
 					$premiumQuota = Helpers\Html::convertSize(
 						floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
-					$obj->saveParam($obj->id, 'quota', htmlentities($premiumQuota));
+					$this->model->saveParam('quota', $premiumQuota);
 
 					// Bump up publication quota
 					$premiumPubQuota = Helpers\Html::convertSize(
 						floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
-					$obj->saveParam($obj->id, 'pubQuota', htmlentities($premiumPubQuota));
+					$this->model->saveParam('pubQuota', $premiumPubQuota);
 				}
 
 				// Reject
@@ -1286,14 +1116,14 @@ class Projects extends Base
 					$approve = 2;
 				}
 
-				$obj->saveParam($obj->id, 'grant_budget', htmlentities($grant_budget));
-				$obj->saveParam($obj->id, 'grant_agency', htmlentities($grant_agency));
-				$obj->saveParam($obj->id, 'grant_title', htmlentities($grant_title));
-				$obj->saveParam($obj->id, 'grant_PI', htmlentities($grant_PI));
-				$obj->saveParam($obj->id, 'grant_approval', htmlentities($grant_approval));
+				$this->model->saveParam('grant_budget', $grant_budget);
+				$this->model->saveParam('grant_agency', $grant_agency);
+				$this->model->saveParam('grant_title', $grant_title);
+				$this->model->saveParam('grant_PI', $grant_PI);
+				$this->model->saveParam('grant_approval', $grant_approval);
 				if ($approve)
 				{
-					$obj->saveParam($obj->id, 'grant_status', $approve);
+					$this->model->saveParam('grant_status', $approve);
 				}
 			}
 
@@ -1333,18 +1163,15 @@ class Projects extends Base
 				}
 			}
 
-			$obj->admin_notes = $cbase;
+			$this->model->set('admin_notes', $cbase);
 
 			// Save changes
 			if ($approve || $comment)
 			{
-				if (!$obj->store())
+				if (!$this->model->store())
 				{
-					$this->setError( $obj->getError() );
+					$this->setError( $this->model->getError() );
 				}
-
-				// Get updated project
-				$this->project = $obj->getProject($obj->id, $this->juser->get('id'));
 
 				$admingroup = $reviewer == 'sensitive'
 					? $this->config->get('sdata_group', '')
@@ -1354,7 +1181,7 @@ class Projects extends Base
 				{
 					$admins = Helpers\Html::getGroupMembers($admingroup);
 					$admincomment = $comment
-						? $actor . ' ' . Lang::txt('COM_PROJECTS_SAID') . ': ' . $comment
+						? User::get('name') . ' ' . Lang::txt('COM_PROJECTS_SAID') . ': ' . $comment
 						: '';
 
 					// Send out email to admins
@@ -1363,7 +1190,7 @@ class Projects extends Base
 						Helpers\Html::sendHUBMessage(
 							$this->_option,
 							$this->config,
-							$this->project,
+							$this->model->project(),
 							$admins,
 							Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 							'projects_new_project_admin',
@@ -1421,21 +1248,17 @@ class Projects extends Base
 
 					if ($activity)
 					{
-						$objAA = new Tables\Activity( $this->database );
-						$aid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
-							$activity, $obj->id, '', '', 'admin', 0, 1, 1 );
+						$aid = $this->model->recordActivity( $activity, $this->model->get('id'), '', '', 'admin', 0, 1, 1 );
 
 						// Append comment to activity
 						if ($comment && $aid)
 						{
 							$objC = new Tables\Comment( $this->database );
-							$cid = $objC->addComment( $aid, 'activity', $comment,
-							$this->juser->get('id'), $aid, 1 );
+							$cid = $objC->addComment( $aid, 'activity', $comment, User::get('id'), $aid, 1 );
 
 							if ($cid)
 							{
-								$objAA = new Tables\Activity( $this->database );
-								$caid = $objAA->recordActivity( $obj->id, $this->juser->get('id'),
+								$caid = $this->model->recordActivity(
 									Lang::txt('COM_PROJECTS_COMMENTED') . ' '
 									. Lang::txt('COM_PROJECTS_ON') . ' '
 									.  Lang::txt('COM_PROJECTS_AN_ACTIVITY'),
@@ -1466,15 +1289,14 @@ class Projects extends Base
 			$this->view->ajax 		= Request::getInt( 'ajax', 0 );
 			$this->view->title 		= $this->title;
 			$this->view->option 	= $this->_option;
-			$this->view->project	= $obj;
+			$this->view->project	= $this->model->project();
 			$this->view->params		= $params;
 			$this->view->config 	= $this->config;
 			$this->view->database 	= $this->database;
 			$this->view->action		= $action;
 			$this->view->filterby	= $filterby;
-			$this->view->uid 		= $this->juser->get('id');
-			$this->view->msg 		= isset($this->_msg) && $this->_msg
-									? $this->_msg : $this->_getNotifications('success');
+			$this->view->uid 		= User::get('id');
+			$this->view->msg 		= $this->_getNotifications('success');
 			if ($this->getError())
 			{
 				$this->view->setError( $this->getError() );

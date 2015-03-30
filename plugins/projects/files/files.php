@@ -99,6 +99,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -118,13 +125,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $project, &$counts )
+	public function &onProjectCount( $model, &$counts )
 	{
-		$count =  $this->getCount($project->alias, 'files');
+		$count =  $this->getCount($model->get('alias'), 'files');
 		$counts['files'] = $count;
 
 		return $counts;
@@ -133,17 +140,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
-	 * @param      string  $case			Directory where .git sits ('files' or 'tool:toolname')
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project = '', $authorized = '', $action = '', $areas = null)
+	public function onProject ( $model, $action = '', $areas = null)
 	{
 		$returnhtml = true;
 
@@ -166,30 +168,34 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Is the user logged in?
-		if (!$authorized && !$project->owner)
-		{
-			return $arr;
-		}
+		// Model
+		$this->model = $model;
 
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			$this->_config      = Component::params('com_projects');
+			$this->_config      = $model->config();
 			$this->_publishing  = \JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
-			$this->_project     = $project;
 			$this->_tool	    = NULL;
 			$this->_audience    = 'internal';
 			$this->_data	    = NULL;
 			$this->_database    = \JFactory::getDBO();
 			$this->_uid 		= User::get('id');
-			$this->_msg         = NULL;
 
 			// Contribute process outside of projects
-			if (!is_object($this->_project) or !$this->_project->id)
+			if (!$model->exists())
 			{
 				$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 				$this->_project->provisioned = 1;
+			}
+			else
+			{
+				// Check authorization
+				if (!$model->access('member'))
+				{
+					return $arr;
+				}
+				$this->_project     = $model->project();
 			}
 
 			// Remote connections

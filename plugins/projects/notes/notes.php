@@ -93,6 +93,13 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	protected $_controllerName = NULL;
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Component name
 	 *
 	 * @var  string
@@ -119,29 +126,26 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model 		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $project, &$counts )
+	public function &onProjectCount( $model, &$counts )
 	{
 		$database = JFactory::getDBO();
 
-		// Load component configs
-		$this->_config = Component::params('com_projects');
-
-		$group_prefix = $this->_config->get('group_prefix', 'pr-');
-		$groupname = $group_prefix . $project->alias;
-		$scope = 'projects' . DS . $project->alias . DS . 'notes';
+		$group_prefix = $model->config()->get('group_prefix', 'pr-');
+		$groupname = $group_prefix . $model->get('alias');
+		$scope = 'projects' . DS . $model->get('alias') . DS . 'notes';
 
 		// Include note model
 		include_once(PATH_ROOT . DS . 'components' . DS . 'com_projects'
 			. DS . 'models' . DS . 'note.php');
 
 		// Get our model
-		$this->model = new \Components\Projects\Models\Note($scope, $groupname, $project->id);
+		$note = new \Components\Projects\Models\Note($scope, $groupname, $model->get('id'));
 
-		$counts['notes'] = $this->model->getNoteCount();
+		$counts['notes'] = $note->getNoteCount();
 
 		return $counts;
 	}
@@ -149,22 +153,21 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @param      string  $tool			Name of tool wiki belongs to
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $authorized, $action = '', $areas = null, $tool = NULL )
+	public function onProject ( $model, $action = '', $areas = null, $tool = NULL )
 	{
 		$returnhtml = true;
 
 		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'msg'=>'',
-			'referer'=>''
+			'html'     =>'',
+			'metadata' =>'',
+			'msg'      =>'',
+			'referer'  =>''
 		);
 
 		// Get this area details
@@ -178,22 +181,20 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
-
-		// Is the user logged in?
-		if ( !$authorized && !$project->owner )
+		// Check that project exists
+		if (!$model->exists())
 		{
 			return $arr;
 		}
 
-		// Do we have a project ID?
-		if ( !is_object($project) or !$project->id )
+		// Check authorization
+		if (!$model->access('member'))
 		{
 			return $arr;
 		}
-		else
-		{
-			$this->_project = $project;
-		}
+
+		// Model
+		$this->model = $model;
 
 		// Are we returning HTML?
 		if ($returnhtml)
@@ -204,13 +205,12 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			$lang->load('com_wiki');
 
 			// Set vars
+			$this->_project     = $model->project();
 			$this->_database 	= JFactory::getDBO();
-			$this->_authorized 	= $authorized;
 			$this->_uid 		= User::get('id');
-			$this->_msg         = NULL;
 
 			// Load component configs
-			$this->_config = Component::params('com_projects');
+			$this->_config = $model->config();
 			$this->_group = $this->_config->get('group_prefix', 'pr-') . $this->_project->alias;
 
 			// Incoming
@@ -222,7 +222,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				. DS . 'models' . DS . 'note.php');
 
 			// Get our model
-			$this->model = new \Components\Projects\Models\Note(
+			$this->note = new \Components\Projects\Models\Note(
 				$this->_masterScope,
 				$this->_group,
 				$this->_project->id
@@ -343,7 +343,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get first project note
-		$view->firstNote = $this->model->getFirstNote( $pagePrefix);
+		$view->firstNote = $this->note->getFirstNote( $pagePrefix);
 
 		// Default view to first available note if no page is requested
 		if (!$this->_pagename && $this->_task != 'new' && $this->_task != 'save')
@@ -357,7 +357,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$canDelete = 1;
 
 		// Get page
-		$view->page = $this->model->page($this->_pagename, $scope);
+		$view->page = $this->note->page($this->_pagename, $scope);
 		$view->content = NULL;
 		$exists = $view->page->get('id') ? true : false;
 
@@ -420,9 +420,9 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 					$controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=notes') , 'notes', 0);
 
 				// Record page order for new pages
-				$lastorder = $this->model->getLastNoteOrder($scope);
+				$lastorder = $this->note->getLastNoteOrder($scope);
 				$order = intval($lastorder + 1);
-				$this->model->saveNoteOrder($scope, $order);
+				$this->note->saveNoteOrder($scope, $order);
 			}
 
 			// Make sure all scopes of subpages are valid after rename
@@ -431,7 +431,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 				// Incoming
 				$oldpagename = trim(Request::getVar( 'oldpagename', '', 'post' ));
 				$newpagename = trim(Request::getVar( 'newpagename', '', 'post' ));
-				$this->model->fixScopePaths($scope, $oldpagename, $newpagename);
+				$this->note->fixScopePaths($scope, $oldpagename, $newpagename);
 			}
 
 			$controller->redirect();
@@ -450,12 +450,11 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->title 		= $this->_area['title'];
-		$view->model 		= $this->model;
+		$view->model 		= $this->note;
 		$view->task 		= $this->_task;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->pagename 	= $this->_pagename;
 		$view->scope 		= $scope;
@@ -698,7 +697,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];

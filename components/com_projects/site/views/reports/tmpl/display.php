@@ -71,17 +71,17 @@ tooltip: true,
 </header><!-- / #content-header -->
 
 <section class="main section" id="project-stats">
-	<div class="status-msg">
 	<?php
-		// Display error or success message
-		if ($this->getError()) {
-			echo ('<p class="witherror">' . $this->getError().'</p>');
-		}
-		else if ($this->msg) {
-			echo ('<p>' . $this->msg . '</p>');
-		} ?>
-	</div>
-
+		// Display status message
+		$this->view('_statusmsg', 'projects')
+		     ->set('error', $this->getError())
+		     ->set('msg', $this->msg)
+		     ->display();
+	?>
+	<?php if (empty($this->stats)) { ?>
+		<p class="error"><?php echo Lang::txt('Statistics unavailable'); ?></p>
+</section>
+	<?php return; } ?>
 	<table class="stats-wrap">
 		<tr class="stats-general">
 			<th class="stats-h" rowspan="2"><span><?php echo Lang::txt('Overview'); ?></span></th>

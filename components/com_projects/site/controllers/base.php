@@ -73,7 +73,7 @@ class Base extends SiteController
 		$this->_gid  = Request::getVar( 'gid', 0 );
 
 		// Model
-		$this->model = new Models\Project();
+		$this->model = new Models\Project($this->_identifier);
 
 		// Execute the task
 		parent::execute();
@@ -328,27 +328,22 @@ class Base extends SiteController
 	protected function _buildTitle()
 	{
 		$active  = isset($this->active) ? $this->active : NULL;
-		$project = isset($this->project) ? $this->project : NULL;
 
 		// Set the title
 		$this->title  = $this->_task == 'edit'
 			? Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task))
 			: Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
-		// Add project title
-		if (is_object($project) && $project->alias)
+		// Project info
+		if ($this->model->exists())
 		{
-			if ($project->provisioned == 1)
+			if ($this->model->isProvisioned())
 			{
 				$this->title .= ': ' . Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT');
 			}
 			else
 			{
-				$this->title .= ': '.stripslashes($project->title);
-				if ($active && !$this->juser->get('guest'))
-				{
-					$this->title .= ' :: ' . ucfirst(Lang::txt('COM_PROJECTS_TAB_' . strtoupper($active)));
-				}
+				$this->title .= ': ' . stripslashes($this->model->get('title'));
 			}
 		}
 
@@ -375,6 +370,7 @@ class Base extends SiteController
 			case 'process':
 			case 'setup':
 			case 'edit':
+			case 'activate':
 				// Nothing to add
 				break;
 
@@ -404,7 +400,6 @@ class Base extends SiteController
 		$pathway = $app->getPathway();
 
 		$group_tasks = array('start', 'setup', 'view');
-		$project     = isset($this->project) ? $this->project : NULL;
 		$group       = isset($this->group) ? $this->group : NULL;
 		$active      = isset($this->active) ? $this->active : NULL;
 
@@ -434,21 +429,28 @@ class Base extends SiteController
 		}
 
 		// Project path
-		if (is_object($project) && $project->alias)
+		if ($this->model->exists())
 		{
-			if ($project->provisioned == 1)
+			$alias = $this->model->get('alias');
+			$provisioned = $this->model->isProvisioned();
+			$title = $this->model->get('title');
+		}
+
+		if (!empty($alias))
+		{
+			if (!empty($provisioned))
 			{
 				$pathway->addItem(
 					stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
 					Route::url('index.php?option=' . $this->_option . '&alias='
-					.$project->alias . '&action=activate')
+					. $alias . '&action=activate')
 				);
 			}
 			else
 			{
 				$pathway->addItem(
-					stripslashes($project->title),
-					Route::url('index.php?option=' . $this->_option . '&alias=' . $project->alias)
+					stripslashes($title),
+					Route::url('index.php?option=' . $this->_option . '&alias=' . $alias)
 				);
 			}
 		}
@@ -477,9 +479,9 @@ class Base extends SiteController
 		switch ($this->_task)
 		{
 			case 'view':
-				if ($this->active && is_object($project))
+				if ($active && !empty($alias))
 				{
-					switch ($this->active)
+					switch ($active)
 					{
 						case 'feed':
 							// nothing to add
@@ -489,7 +491,7 @@ class Base extends SiteController
 							$pathway->addItem(
 								ucfirst(Lang::txt('COM_PROJECTS_TAB_'.strtoupper($this->active))),
 								Route::url('index.php?option=' . $this->_option . '&alias='
-								. $project->alias . '&active=' . $this->active)
+								. $alias . '&active=' . $active)
 							);
 						break;
 					}
@@ -498,7 +500,7 @@ class Base extends SiteController
 
 			case 'setup':
 			case 'edit':
-				if (!is_object($project) || !$project->id)
+				if (empty($alias))
 				{
 					$pathway->addItem(
 						Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),

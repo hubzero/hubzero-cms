@@ -58,6 +58,34 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
+
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
+
+	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
+	 * Repository path
+	 *
+	 * @var	   array
+	 */
+	protected $_path = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -75,15 +103,29 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Event call to return count of items
+	 *
+	 * @param      object  $model 		Project
+	 * @param      integer &$counts
+	 * @return     array   integer
+	 */
+	public function &onProjectCount( $model, &$counts )
+	{
+		// New activity count
+		$counts['new'] = $model->newCount();
+
+		return $counts;
+	}
+
+	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject($project, $authorized, $action = '', $areas = NULL)
+	public function onProject($model, $action = '', $areas = NULL)
 	{
 		$returnhtml = true;
 
@@ -105,32 +147,29 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
-
-		// Do we have a project ID?
-		if (!is_object($project) or !$project->id)
+		// Check that project exists
+		if (!$model->exists())
 		{
 			return $arr;
 		}
-		else
+
+		// Check authorization
+		if (!$model->access('member'))
 		{
-			$this->_project = $project;
+			return $arr;
 		}
 
-		$this->_referer = '';
-		$this->_message = array();
-		$this->_path    = NULL;
+		// Model
+		$this->model = $model;
 
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Load component configs
-			$this->_config = Component::params('com_projects');
-
 			// Set vars
-			$this->_task       = JRequest::getVar('action', '');
+			$this->_project    = $model->project();
+			$this->_config     = $model->config();
+			$this->_task       = Request::getVar('action', '');
 			$this->_database   = JFactory::getDBO();
-			$this->_authorized = $authorized;
-			$this->_msg        = NULL;
 			$this->_uid        = User::get('id');
 
 			switch ($this->_task)
@@ -169,7 +208,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return
 	 */
-	public function onProjectExtras( $project, $uid = 0, $area, $option, $side = 'righthand')
+	public function onProjectExtras( $model, $area )
 	{
 		// Check if our area is the one we want to return results for
 		if ($area != 'feed')
@@ -181,35 +220,23 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		// Get user ID
-		if (!$uid)
+		$limit = $model->config()->get('sidebox_limit', 3);
+
+		// Acting member
+		$member = $model->member();
+		if (!is_object($member->params))
 		{
-			$juser 	= JFactory::getUser();
-			$uid 	= $juser->get('id');
+			$member->params = new \JParameter($member->params);
 		}
 
-		// Load component configs
-		$this->_config = Component::params('com_projects');
-		$limit = $this->_config->get('sidebox_limit', 3);
-
-		// Get project params
-		$params = new JParameter( $project->params );
-
 		// Show welcome screen?
-		$owner_params = new JParameter( $project->owner_params );
-		if ($owner_params->get('hide_welcome', 0) == 1)
+		if ($member && is_object($member->params) && $member->params->get('hide_welcome') == 1)
 		{
 			// Get suggestions
-			$suggestions = \Components\Projects\Helpers\Html::getSuggestions(
-				$project,
-				$option,
-				$uid,
-				$this->_config,
-				$params
-			);
+			$suggestions = \Components\Projects\Helpers\Html::getSuggestions( $model );
 
 			// Show side module with suggestions
-			if (count($suggestions) > 1 && $project->num_visits < 20)
+			if (count($suggestions) > 1 && $member->num_visits < 20)
 			{
 				$view = new \Hubzero\Plugin\View(
 					array(
@@ -219,65 +246,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 						'layout'  => 'suggestions'
 					)
 				);
-				$view->option 		= $option;
+				$view->option 		= $this->_option;
 				$view->suggestions 	= $suggestions;
-				$view->project 		= $project;
-				$html 		   .= $view->loadTemplate();
-			}
-		}
-
-		// Get todo's
-		$objTD = new \Components\Projects\Tables\Todo( $database );
-		$todos = $objTD->getTodos ($project->id, $filters = array(
-			'sortby' => 'due DESC, p.duedate ASC', 'limit' => $limit
-		  )
-		);
-
-		// To-do side module
-		if ($todos)
-		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'projects',
-					'element' => 'blog',
-					'name'    => 'modules',
-					'layout'  => 'todo'
-				)
-			);
-			$view->option 	= $option;
-			$view->items 	= $todos;
-			$view->project 	= $project;
-			$html 	   		.= $view->loadTemplate();
-		}
-
-		// Get Publications
-		if (JPluginHelper::isEnabled('projects', 'publications'))
-		{
-			$objP = new \Components\Publications\Tables\Publication( $database );
-			$pubs = $objP->getRecords($filters = array(
-				'sortby' => 'random', 'limit' => $limit, 'project' => $project->id,
-				'ignore_access' => 1, 'dev' => 1
-			));
-
-			if ($pubs && count($pubs) > 0)
-			{
-				// Get language file
-				$lang = JFactory::getLanguage();
-				$lang->load('plg_projects_publications');
-
-				// Publications side module
-				$view = new \Hubzero\Plugin\View(
-					array(
-						'folder'  => 'projects',
-						'element' => 'blog',
-						'name'    => 'modules',
-						'layout'  => 'publications'
-					)
-				);
-				$view->option 	= $option;
-				$view->items 	= $pubs;
-				$view->project 	= $project;
-				$html 	   		.= $view->loadTemplate();
+				$view->model 		= $model;
+				$html 		       .= $view->loadTemplate();
 			}
 		}
 
@@ -289,7 +261,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return
 	 */
-	public function onProjectNotification( $project, $uid = 0, $area, $option)
+	public function onProjectNotification( $model, $area)
 	{
 		// Check if our area is the one we want to return results for
 		if ($area != 'feed')
@@ -299,28 +271,21 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		$html = '';
 
-		// Load component configs
-		$this->_config = Component::params('com_projects');
-
-		// Get project params
-		$params = new JParameter( $project->params );
+		// Acting member
+		$member = $model->member();
+		if (!is_object($member->params))
+		{
+			$member->params = new \JParameter($member->params);
+		}
 
 		// Show welcome screen?
-		$owner_params = new JParameter( $project->owner_params );
-		$show_welcome = ((!$project->lastvisit or $project->num_visits < 5)
-						&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
+		$showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0  ? 1 : 0;
 
 		// Show welcome banner with suggestions
-		if ($show_welcome)
+		if ($showWelcome)
 		{
 			// Get suggestions
-			$suggestions = \Components\Projects\Helpers\Html::getSuggestions(
-				$project,
-				$option,
-				$uid,
-				$this->_config,
-				$params
-			);
+			$suggestions = \Components\Projects\Helpers\Html::getSuggestions( $model );
 
 			// Display welcome message
 			$view = new \Hubzero\Plugin\View(
@@ -331,11 +296,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					'layout'  => '_welcome'
 				)
 			);
-			$view->option 		= $option;
+			$view->option 		= $this->_option;
 			$view->suggestions 	= $suggestions;
-			$view->project 		= $project;
-			$view->creator 		= $project->created_by_user == $uid ? 1 : 0;
-			$html 		   .= $view->loadTemplate();
+			$view->model	    = $model;
+			$html 		       .= $view->loadTemplate();
 		}
 
 		return $html;
@@ -375,7 +339,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];
@@ -522,7 +485,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			$objAA->loadActivity($eid, $this->_project->id);
 
-			if ($this->_project->role == 1 or $this->_authorized or $objAA->userid == $this->_uid)
+			if ($this->model->access('content') || $objAA->userid == $this->_uid)
 			{
 				// Get associated commenting activities
 				$objC = new \Components\Projects\Tables\Comment($this->_database);

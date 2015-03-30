@@ -68,30 +68,27 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		$area = array();
 
 		// Check if plugin is restricted to certain projects
 		$projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
 
-		if (!empty($projects))
+		if (!empty($projects) && $alias)
 		{
-			$alias  = JRequest::getVar( 'alias', '' );
-			$id     = JRequest::getVar( 'id', '' );
-
-			if (!$alias)
-			{
-				$database = JFactory::getDBO();
-				$obj = new \Components\Projects\Tables\Project( $database );
-				$alias = $obj->getAlias( $id );
-			}
-
-			if (!$alias || !in_array($alias, $projects))
+			if (!in_array($alias, $projects))
 			{
 				return $area;
 			}
@@ -113,18 +110,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model 		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount( $project, &$counts )
+	public function &onProjectCount( $model, &$counts )
 	{
 		// Get this area details
 		$this->_area = $this->onProjectAreas();
 
 		$counts['publications'] = 0;
 
-		if (empty($this->_area) || !$project)
+		if (empty($this->_area) || !$model->exists())
 		{
 			return $counts;
 		}
@@ -136,7 +133,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objP = new \Components\Publications\Tables\Publication( $database );
 
 			$filters = array();
-			$filters['project']  		= $project->id;
+			$filters['project']  		= $model->get('id');
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 
@@ -149,13 +146,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $authorized, $action = '', $areas = null )
+	public function onProject ( $model, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
@@ -178,25 +174,26 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Is the user logged in?
-		if ( !$authorized && !$project->owner )
+		// Check authorization
+		if ($model->exists() && !$model->access('member'))
 		{
 			return $arr;
 		}
 
+		// Model
+		$this->model = $model;
+
 		// Get task
 		$this->_task = JRequest::getVar('action','');
-		$this->_pid = JRequest::getInt('pid', 0);
+		$this->_pid  = JRequest::getInt('pid', 0);
 		if (!$this->_task)
 		{
 			$this->_task = $this->_pid ? 'publication' : $action;
 		}
 
-		$this->_uid = User::get('id');
-		$this->_database = JFactory::getDBO();
-
-		// Load component configs
-		$this->_config = Component::params( 'com_projects' );
+		$this->_uid       = User::get('id');
+		$this->_database  = JFactory::getDBO();
+		$this->_config    = $model->config();
 		$this->_pubconfig = Component::params( 'com_publications' );
 
 		// Areas that can be updated after publication
@@ -212,11 +209,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Use new curation flow?
 		$this->useBlocks  = $this->_pubconfig->get('curation', 0);
 
+		$this->_project 	= $model->project();
+		$this->_action 		= $action;
+
 		// Contribute process outside of projects
-		if (!is_object($project) or !$project->id)
+		if (!is_object($this->_project) or !$this->_project->id)
 		{
-			$project = new \Components\Projects\Tables\Project( $this->_database );
-			$project->provisioned = 1;
+			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
+			$this->_project->provisioned = 1;
 
 			$ajax_tasks  = array('showoptions', 'save', 'showitem');
 			$this->_task = $action == 'start' ? 'start' : 'contribute';
@@ -229,7 +229,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_task = $action;
 			}
 		}
-		elseif ($project->provisioned == 1 && !$this->_pid)
+		elseif ($this->_project->provisioned == 1 && !$this->_pid)
 		{
 			// No browsing within provisioned project
 			$this->_task = $action == 'browse' ? 'contribute' : $action;
@@ -248,23 +248,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginScript('projects', 'publications');
 		}
 
-		$this->_project 	= $project;
-		$this->_action 		= $action;
-		$this->_authorized 	= $authorized;
-		$this->_msg         = NULL;
-
 		// Get types helper
 		$this->_pubTypeHelper = new \Components\Publications\Models\Types($this->_database, $this->_project);
-
-		// In case of read-only access
-		if ($authorized == 3 && $this->_pid)
-		{
-			$valid_tasks = array('contribute', 'browse', 'review', 'versions');
-			if (!in_array($this->_task, $valid_tasks))
-			{
-				$this->_task = 'review';
-			}
-		}
 
 		// Actions
 		switch ($this->_task)
@@ -647,7 +632,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -1144,7 +1128,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->choices 		= $choices;
@@ -1698,7 +1681,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->filters 		= $filters;
 		$view->config 		= $this->_config;
@@ -1775,7 +1757,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->choices 		= $choices;
@@ -1890,7 +1871,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->base 		= $base;
 		$view->active 		= 'content';
@@ -1967,7 +1947,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->pid 			= $pid;
 		$view->pub			= $objP->getPublication($pid, $version, $this->_project->id);
@@ -2337,7 +2316,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->pid 			= $pid;
 		$view->version 		= $version;
@@ -2498,7 +2476,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->option 		= $this->_option;
 			$view->database 	= $this->_database;
 			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->pid 			= $pid;
 			$view->pub 			= $pub;
@@ -2865,7 +2842,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->option 		= $this->_option;
 			$view->database 	= $this->_database;
 			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
 			$view->uid 			= $this->_uid;
 			$view->pid 			= $pid;
 			$view->pub 			= $pub;
@@ -2919,12 +2895,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Check that version number exists
 		$row = new \Components\Publications\Tables\Version( $this->_database );
 		$version = $version && $row->checkVersion($pid, $version) ? $version : 'dev';
-
-		// Load default version preview for users with read-only access
-		if ($this->_authorized == 3)
-		{
-			$version = 'default';
-		}
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -3063,7 +3033,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->juser		= JFactory::getUser();
 		$view->pid 			= $pid;
@@ -4415,7 +4384,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->option 			= $this->_option;
 			$view->database 		= $this->_database;
 			$view->project 			= $this->_project;
-			$view->authorized 		= $this->_authorized;
 			$view->uid 				= $this->_uid;
 			$view->pid 				= $pid;
 			$view->version 			= $version;
@@ -6378,7 +6346,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->pid 			= $pid;
 		$view->task 		= $this->_task;

@@ -30,19 +30,18 @@ $this->css()
     ->js()
 	->css('jquery.fancybox.css', 'system');
 
+$counts = $this->model->get('counts');
+$new = isset($counts['new']) && $counts['new'] > 0 ? $counts['new'] : 0;
+
 // Add new activity count to page title
 $document = JFactory::getDocument();
-$title = $this->project->counts['newactivity'] > 0
-	&& $this->active == 'feed'
-	? $this->title . ' (' . $this->project->counts['newactivity'] . ')'
+$title = $new && $this->active == 'feed'
+	? $this->title . ' (' . $new . ')'
 	: $this->title;
 $document->setTitle( $title );
 
-// Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
-
 // Get project params
-$params = new JParameter( $this->project->params );
+$params = $this->model->params;
 
 // Get layout from project params or component
 $layout = $params->get('layout', $this->config->get('layout', 'standard'));
@@ -61,22 +60,40 @@ else
 	$this->css('standard.css');
 }
 
+// Get project plugins
+\JPluginHelper::importPlugin( 'projects');
+$dispatcher = \JDispatcher::getInstance();
+
+// Get notifications
+$notification = $dispatcher->trigger('onProjectNotification',
+	array( $this->model, $this->active )
+);
+$notification 	= $notification && !empty($notification)
+	? $notification[0] : NULL;
+
+// Get side content
+$sideContent = $dispatcher->trigger('onProjectExtras',
+	array( $this->model, $this->active )
+);
+$sideContent 	= $sideContent && !empty($sideContent)
+	? $sideContent[0] : NULL;
+
 ?>
 <div id="project-wrap" class="theme">
 	<?php if ($layout == 'extended') {
 		// Draw top header
 		$this->view('_topheader')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('publicView', false)
 		     ->set('option', $this->option)
 		     ->display();
 		// Draw top menu
 		$this->view('_topmenu', 'projects')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('active', $this->active)
 		     ->set('tabs', $this->tabs)
 		     ->set('option', $this->option)
-		     ->set('guest', $this->guest)
+		     ->set('guest', User::isGuest())
 		     ->set('publicView', false)
 		     ->display();
 	?>
@@ -88,13 +105,13 @@ else
 			<?php
 			// Draw image
 			$this->view('_image', 'projects')
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 			     ->set('option', $this->option)
 			     ->display();
 
 			// Draw left menu
 			$this->view('_menu', 'projects')
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 			     ->set('active', $this->active)
 			     ->set('tabs', $this->tabs)
 			     ->set('option', $this->option)
@@ -105,7 +122,7 @@ else
 	<?php
 		// Draw traditional header
 		$this->view('_header')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('showPic', 0)
 		     ->set('showPrivacy', 2)
 		     ->set('goBack', 0)
@@ -115,7 +132,7 @@ else
 
 		// Member options
 		$this->view('_options', 'projects')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('option', $this->option)
 		     ->display();
 	} ?>
@@ -127,8 +144,8 @@ else
 				     ->display();
 			?>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
-			<?php if ($this->notification) { echo $this->notification; } ?>
-			<?php if ($this->sideContent) { ?>
+			<?php if ($notification) { echo $notification; } ?>
+			<?php if ($sideContent) { ?>
 			<div class="grid">
 				<div class="col span9 main-col">
 					<?php } ?>
@@ -136,15 +153,15 @@ else
 					<?php if ($this->active == 'info') {
 							// Display project info
 							$this->view('_info')
-							     ->set('info', $this)
-							     ->set('goto', 'alias=' . $this->project->alias)
+							     ->set('model', $this->model)
+							     ->set('option', $this->option)
 							     ->display();
 					 } ?>
-					<?php if ($this->sideContent) { ?>
+					<?php if ($sideContent) { ?>
 				</div>
 				<div class="col span3 omega side-col">
 					<div class="side-content">
-					<?php echo $this->sideContent; ?>
+					<?php echo $sideContent; ?>
 					</div>
 				</div>
 			</div> <!-- / .grid -->

@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (!$this->project->id)
+if (!$this->model->exists())
 {
 	return;
 }
@@ -33,13 +33,13 @@ if (!$this->project->id)
 <div class="grid pictureframe js">
 	<div class="col span3">
 		<div id="project-image-box" class="project-image-box">
-			<img id="project-image-content" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=master'); ?>" alt="" />
+			<img id="project-image-content" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->model->get('alias') . '&media=master'); ?>" alt="" />
 		</div>
-		<?php if ($this->project->picture) { ?>
-		<p class="actionlink"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=deleteimg&alias=' . $this->project->alias ); ?>" id="deleteimg">[ <?php echo Lang::txt('COM_PROJECTS_DELETE'); ?> ]</a></p>
+		<?php if ($this->model->get('picture')) { ?>
+		<p class="actionlink"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=deleteimg&alias=' . $this->model->get('alias') ); ?>" id="deleteimg">[ <?php echo Lang::txt('COM_PROJECTS_DELETE'); ?> ]</a></p>
 		<?php } ?>
 	</div>
-	<div class="col span9 omega" id="ajax-upload" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=doajaxupload&no_html=1'); ?>">
+	<div class="col span9 omega" id="ajax-upload" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=doajaxupload&no_html=1'); ?>">
 		<h5><?php echo Lang::txt('COM_PROJECTS_UPLOAD_NEW_IMAGE'); ?> <span class="hint"><?php echo Lang::txt('COM_PROJECTS_WILL_REPLACE_EXISTING_IMAGE'); ?></span></h5>
 		<p id="status-box"></p>
 		<label>

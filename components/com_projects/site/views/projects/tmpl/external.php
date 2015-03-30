@@ -30,14 +30,8 @@ $this->css()
 	 ->css('external')
 	 ->css('extended.css');
 
-// Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
-
-$project = new \Components\Projects\Models\Project($this->project);
-$this->project->about = $project->about('parsed');
-
 // Get project params
-$params = new JParameter( $this->project->params );
+$params = $this->model->params;
 $theme = $params->get('theme', $this->config->get('theme', 'light'));
 
 // Include theme CSS
@@ -52,9 +46,9 @@ $this->css('theme' . $theme . '.css');
 		</ul>
 	</div><!-- / #content-header-extra -->
 
-	<?php if (($this->authorized or $this->project->owner) && !$this->reviewer) { // Public preview for authorized users ?>
+	<?php if ($this->model->access('member') && !$this->reviewer) { // Public preview for authorized users ?>
 		<div id="project-preview">
-			<p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
+			<p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
 		</div>
 	<?php } else if ($this->reviewer) { ?>
 		<div id="project-preview">
@@ -63,29 +57,29 @@ $this->css('theme' . $theme . '.css');
 	<?php } ?>
 	<?php // Draw top header
 	$this->view('_topheader')
-	     ->set('project', $this->project)
+	     ->set('model', $this->model)
 	     ->set('publicView', true)
 	     ->set('option', $this->option)
 	     ->display();
 	// Draw top menu
 	$this->view('_topmenu', 'projects')
-	     ->set('project', $this->project)
+		 ->set('model', $this->model)
 	     ->set('active', $this->active)
 	     ->set('tabs', $this->tabs)
 	     ->set('option', $this->option)
-	     ->set('guest', $this->guest)
+	     ->set('guest', User::isGuest())
 	     ->set('publicView', true)
 	     ->display();
 	?>
 
 	<div class="project-inner-wrap">
 		<section class="main section">
-				<?php if ($this->project->about) { ?>
+				<?php if ($this->model->get('about')) { ?>
 				<div class="public-list-header">
 					<h3><?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?></h3>
 				</div>
 				<div class="public-list-wrap">
-					<?php echo $this->project->about; ?>
+					<?php echo $this->model->about('parsed'); ?>
 				</div>
 				<?php } ?>
 
@@ -137,6 +131,9 @@ $this->css('theme' . $theme . '.css');
 
 				<?php if ($this->params->get('team_public', 0))
 				{
+					// Get team
+					$team = $this->model->_tblOwner->getOwners( $this->model->get('id'), $filters = array('status' => 1) );
+
 					// Show team
 					$view = new \Hubzero\Plugin\View(
 						array(
@@ -149,7 +146,7 @@ $this->css('theme' . $theme . '.css');
 					$view->option 	= $this->option;
 					$view->project 	= $this->project;
 					$view->goto 	= 'alias=' . $this->project->alias;
-					$view->team 	= $this->team;
+					$view->team 	= $team;
 					echo $view->loadTemplate();
 				 } ?>
 		</section><!-- / .main section -->

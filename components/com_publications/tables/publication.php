@@ -667,7 +667,7 @@ class Publication extends \JTable
 			$query  = " SELECT COUNT( DISTINCT p.id) as used ";
 			$query .= " FROM #__projects as p ";
 			$query .= " JOIN $this->_tbl as pub ON p.id = pub.project_id  ";
-			$query .= " WHERE p.state != 2 ";
+			$query .= " WHERE p.state != 2 AND p.provisioned != 1";
 			if (!empty($validProjects))
 			{
 				$query .= " AND p.id IN ( ";

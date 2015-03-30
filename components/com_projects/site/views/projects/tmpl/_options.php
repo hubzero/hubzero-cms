@@ -26,24 +26,26 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $role  = Lang::txt('COM_PROJECTS_PROJECT') . ' <span>';
-$role .= $this->project->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+$role .= $this->model->access('manager') ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 $role .= '</span>';
+
+$counts = $this->model->get('counts');
 
 ?>
 <ul id="member_options">
 	<li><?php echo ucfirst($role); ?>
 		<div id="options-dock">
-			<div><p><?php echo Lang::txt('COM_PROJECTS_JOINED') . ' ' . JHTML::_('date', $this->project->since, 'M d, Y'); ?></p>
+			<div><p><?php echo Lang::txt('COM_PROJECTS_JOINED') . ' ' . JHTML::_('date', $this->model->get('created'), 'M d, Y'); ?></p>
 				<ul>
-		<?php if ($this->project->role == 1) { ?>
-					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=edit'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></li>
-					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=edit&active=team'); ?>"><?php echo Lang::txt('COM_PROJECTS_INVITE_PEOPLE'); ?></a></li>
+		<?php if ($this->model->access('manager')) { ?>
+					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=edit'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></li>
+					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=edit&active=team'); ?>"><?php echo Lang::txt('COM_PROJECTS_INVITE_PEOPLE'); ?></a></li>
 		<?php } ?>
-		<?php if (!$this->project->private) { ?>
-					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a></li>
+		<?php if ($this->model->isPublic()) { ?>
+					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a></li>
 		<?php } ?>
-		<?php if (isset($this->project->counts['team']) && $this->project->counts['team'] > 1) { ?>
-					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></li>
+		<?php if (isset($counts['team']) && $counts['team'] > 1) { ?>
+					<li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></li>
 		<?php } ?>
 				</ul>
 			</div>

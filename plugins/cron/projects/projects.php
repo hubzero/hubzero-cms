@@ -79,23 +79,11 @@ class plgCronProjects extends JPlugin
 	 */
 	public function computeStats(\Components\Cron\Models\Job $job)
 	{
-		$database = JFactory::getDBO();
-		$juri = JURI::getInstance();
-
-		$jconfig = JFactory::getConfig();
-		$pconfig = JComponentHelper::getParams('com_projects');
-
-		$period = 'alltime';
-
+		$database   = JFactory::getDBO();
 		$publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'activity.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'microblog.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'comment.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'owner.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'type.php');
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'todo.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'models' . DS . 'project.php');
+		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
 
 		if ($publishing)
 		{
@@ -103,15 +91,11 @@ class plgCronProjects extends JPlugin
 			require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 		}
 
-		require_once(PATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
-
-		$obj = new \Components\Projects\Tables\Project( $database );
-
-		// Get all test projects
-		$testProjects = $obj->getTestProjects();
+		$tblStats = new \Components\Projects\Tables\Stats($database);
+		$model = new \Components\Projects\Models\Project();
 
 		// Compute and store stats
-		$stats  = $obj->getStats($period, 1, $pconfig, $testProjects, $publishing);
+		$stats  = $tblStats->getStats($model, true, $publishing);
 
 		return true;
 	}

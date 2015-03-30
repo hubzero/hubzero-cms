@@ -115,8 +115,8 @@ class Stats extends \JTable
 		$objO = new Owner( $this->_db );
 		$objP = new \Components\Publications\Tables\Publication( $this->_db );
 
-		$testProjects    = $obj->getTestProjects();
-		$validProjectIds = $obj->getValidProjects($testProjects, array(), NULL, false, 'id' );
+		$testProjects    = $obj->getProjectsByTag('test', true, 'id');
+		$validProjectIds = $obj->getProjectsByTag('test', false, 'id');
 
 		$n = ($includeCurrent) ? 0 : 1;
 
@@ -146,6 +146,170 @@ class Stats extends \JTable
 				}
 			}
 		}
+		return $stats;
+	}
+
+	/**
+	 * Collect overall projects stats
+	 *
+	 * @return  array
+	 */
+	public function getStats($model, $cron = false, $publishing = false, $period = 'alltime', $limit = 3 )
+	{
+		// Incoming
+		$period = Request::getVar( 'period', $period);
+		$limit  = Request::getInt( 'limit', $limit);
+
+		if ($cron == true)
+		{
+			$publicOnly = false;
+			$saveLog    = true;
+		}
+		else
+		{
+			$publicOnly = $model->reviewerAccess('admin') ? false : true;
+			$saveLog    = false;
+		}
+
+		// Collectors
+		$stats   = array();
+		$updated = NULL;
+		$lastLog = NULL;
+
+		$pastMonth 		= \JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
+		$thisYearNum 	= \JFactory::getDate()->format('y');
+		$thisMonthNum 	= \JFactory::getDate()->format('m');
+		$thisWeekNum	= \JFactory::getDate()->format('W');
+
+		// Pull recent stats
+		if ($this->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))
+		{
+			$lastLog = json_decode($this->stats, true);
+			$updated = $this->processed;
+		}
+		else
+		{
+			// Save stats
+			$saveLog = true;
+		}
+
+		// Get project table class
+		$tbl = $model->table();
+
+		// Get inlcude /exclude lists
+		$exclude = $tbl->getProjectsByTag('test', true, 'id');
+		$include = $tbl->getProjectsByTag('test', false, 'id');
+		$validProjects = $tbl->getProjectsByTag('test', false, 'alias');
+		$validCount = count($validProjects) > 0 ? count($validProjects) : 1;
+
+		// Collect overview stats
+		$stats['general'] = array(
+			'total'     => $tbl->getCount(array('exclude' => $exclude, 'all' => 1 ), true),
+			'setup'     => $tbl->getCount(array('exclude' => $exclude, 'setup' => 1 ), true),
+			'active'    => $tbl->getCount(array('exclude' => $exclude, 'active' => 1 ), true),
+			'public'    => $tbl->getCount(array('exclude' => $exclude, 'private' => '0' ), true),
+			'sponsored' => $tbl->getCount(array('exclude' => $exclude, 'reviewer' => 'sponsored' ), true),
+			'sensitive' => $tbl->getCount(array('exclude' => $exclude, 'reviewer' => 'sensitive' ), true),
+			'new'       => $tbl->getCount(array('exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1 ), true)
+		);
+		$active = $stats['general']['active'] ? $stats['general']['active'] : 1;
+		$total = $stats['general']['total'] ? $stats['general']['total'] : 1;
+
+		// Activity stats
+		$objAA = new Activity( $this->_db );
+		$recentlyActive = $tbl->getCount(array('exclude' => $exclude, 'timed' => $pastMonth, 'active' => 1 ), true);
+
+		$perc = round(($recentlyActive * 100)/$active) . '%';
+		$stats['activity'] = array(
+			'total'    => $objAA->getActivityStats($include, 'total'),
+			'average'  => $objAA->getActivityStats($include, 'average'),
+			'usage'    => $perc
+		);
+
+		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
+
+		// Collect team stats
+		$objO = new Owner( $this->_db );
+		$multiTeam         = $objO->getTeamStats($exclude, 'multi');
+		$activeTeam        = $objO->getTeamStats($exclude, 'registered');
+		$invitedTeam       = $objO->getTeamStats($exclude, 'invited');
+		$multiProjectUsers = $objO->getTeamStats($exclude, 'multiusers');
+		$teamTotal         = $activeTeam + $invitedTeam;
+
+		$perc = round(($multiTeam * 100)/$total) . '%';
+		$stats['team'] = array(
+			'total'      => $teamTotal,
+			'average'    => $objO->getTeamStats($exclude, 'average'),
+			'multi'      => $perc,
+			'multiusers' => $multiProjectUsers
+		);
+
+		$stats['topTeamProjects'] = $objO->getTopTeamProjects($exclude, $limit, $publicOnly);
+
+		// Collect files stats
+		if ($lastLog)
+		{
+			$stats['files'] = $lastLog['files'];
+		}
+		else
+		{
+			// Compute
+			\JPluginHelper::importPlugin( 'projects', 'files');
+			$dispatcher = \JDispatcher::getInstance();
+			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
+			$fTotal 	= $fTotal[0];
+			$fAverage 	= number_format($fTotal/$validCount, 0);
+			$fUsage 	= $dispatcher->trigger( 'getStats', array($validProjects, 'usage') );
+			$fUsage 	= $fUsage[0];
+			$fDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'diskspace') );
+			$fDSpace 	= $fDSpace[0];
+			$fCommits 	= $dispatcher->trigger( 'getStats', array($validProjects, 'commitCount') );
+			$fCommits 	= $fCommits[0];
+			$pDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'pubspace') );
+			$pDSpace 	= $pDSpace[0];
+
+			$perc = round(($fUsage * 100)/$active) . '%';
+
+			$stats['files'] = array(
+				'total'     => $fTotal,
+				'average'   => $fAverage,
+				'usage'     => $perc,
+				'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
+				'commits'   => $fCommits,
+				'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
+			);
+		}
+
+		// Collect publication stats
+		if ($publishing)
+		{
+			$objP  = new \Components\Publications\Tables\Publication( $this->_db );
+			$objPV = new \Components\Publications\Tables\Version( $this->_db );
+			$prPub = $objP->getPubStats($include, 'usage');
+			$perc = round(($prPub * 100)/$total) . '%';
+
+			$stats['pub'] = array(
+				'total'     => $objP->getPubStats($include, 'total'),
+				'average'   => $objP->getPubStats($include, 'average'),
+				'usage'     => $perc,
+				'released'  => $objP->getPubStats($include, 'released'),
+				'versions'  => $objPV->getPubStats($include)
+			);
+		}
+
+		// Save weekly stats
+		if ($saveLog)
+		{
+			$this->year 		= $thisYearNum;
+			$this->month 	    = $thisMonthNum;
+			$this->week 		= $thisWeekNum;
+			$this->processed    = \JFactory::getDate()->toSql();
+			$this->stats 	    = json_encode($stats);
+			$this->store();
+		}
+
+		$stats['updated'] = $updated ? $updated : NULL;
+
 		return $stats;
 	}
 }

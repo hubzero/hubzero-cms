@@ -42,16 +42,13 @@ $this->css()
 
 		<h3 class="prov-header"><a href="<?php echo $route; ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $url; ?>"> "<?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?>"</a> &raquo; <?php echo Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT'); ?></h3>
 
-		<div class="status-msg">
 		<?php
-			// Display error or success message
-			if ($this->getError()) {
-				echo ('<p class="witherror">' . $this->getError().'</p>');
-			}
-			else if ($this->msg) {
-				echo ('<p>' . $this->msg . '</p>');
-			} ?>
-		</div>
+			// Display status message
+			$this->view('_statusmsg', 'projects')
+			     ->set('error', $this->getError())
+			     ->set('msg', $this->msg)
+			     ->display();
+		?>
 
 		<div id="activate-intro">
 			<div class="grid">
@@ -78,10 +75,11 @@ $this->css()
 				<div class="col span6 omega">
 					<div id="activate-body">
 						<h3><?php echo Lang::txt('COM_PROJECTS_ACTIVATE_YOUR_NEW_PROJECT'); ?></h3>
-						<form action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->alias . '&task=activate'); ?>" method="post" id="activate-form" enctype="multipart/form-data">
+						<form action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=activate'); ?>" method="post" id="activate-form" enctype="multipart/form-data">
 							<fieldset>
-								<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
+								<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" id="projectid" />
 								<input type="hidden" name="task" value="activate" />
+								<input type="hidden" name="confirm" value="1" />
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden" name="verified" id="verified" value="<?php echo $this->verified; ?>" />
 								<input type="hidden" name="pubid" value="<?php echo $this->pub->id; ?>" />

@@ -622,8 +622,9 @@ class Html extends \JObject
 			$config = Component::params('com_projects');
 		}
 		$path    = trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
-		$default = trim($config->get('masterpic', '../site/assets/img/projects-large.gif'), DS);
-		$default = is_file( PATH_APP . DS . $default ) ? $default : NULL;
+		$default = trim($config->get('masterpic', '/components/com_projects/site/assets/img/projects-large.gif'), DS);
+
+		$default = is_file( PATH_ROOT . DS . $default ) ? $default : NULL;
 
 		$src  = $picture && is_file( PATH_APP . DS . $path . DS . $picture )
 				? $path . DS . $picture
@@ -1218,14 +1219,16 @@ class Html extends \JObject
 	 * @param      array $params
 	 * @return     void
 	 */
-	public static function getSuggestions( $project, $option, $uid = 0, $config, $params )
+	public static function getSuggestions( $model )
 	{
 		$suggestions = array();
-		$creator = $project->created_by_user == $uid ? 1 : 0;
-		$goto  = '&alias=' . $project->alias;
+
+		$goto   = '&alias=' . $model->get('alias');
+		$option = 'com_projects';
+		$counts = $model->get('counts');
 
 		// Adding a picture
-		if ($creator && !$project->picture)
+		if ($model->access('owner') && !$model->get('picture'))
 		{
 			$suggestions[] = array(
 				'class' => 's-picture',
@@ -1235,7 +1238,8 @@ class Html extends \JObject
 		}
 
 		// Adding grant information
-		if ($creator && $config->get('grantinfo') && !$params->get('grant_title', ''))
+		if ($model->access('owner') && $model->config()->get('grantinfo')
+			&& !$model->params->get('grant_title', ''))
 		{
 			$suggestions[] = array(
 				'class' => 's-about',
@@ -1245,7 +1249,7 @@ class Html extends \JObject
 		}
 
 		// Adding about text
-		if ($creator && !$project->about && $project->private == 0)
+		if ($model->access('owner') && !$model->get('about') && $model->isPublic())
 		{
 			$suggestions[] = array(
 				'class' => 's-about',
@@ -1255,10 +1259,9 @@ class Html extends \JObject
 		}
 
 		// File upload
-		if ($project->counts['files'] == 0 || (!$creator && $project->num_visits < 5)
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['files'] == 0 ) )
+		if (!empty($counts['files']) && $counts['files'] == 0)
 		{
-			$text = $creator
+			$text = $model->access('owner')
 				? Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES')
 				: Lang::txt('COM_PROJECTS_WELCOME_SHARE_FILES');
 			$suggestions[] = array(
@@ -1269,7 +1272,7 @@ class Html extends \JObject
 		}
 
 		// Inviting others
-		if ($project->counts['team'] == 1 && $project->role == 1)
+		if ($model->access('manager'))
 		{
 			$suggestions[] = array(
 				'class' => 's-team',
@@ -1279,26 +1282,18 @@ class Html extends \JObject
 		}
 
 		// Todo items
-		if ($project->counts['todo'] == 0 || (!$creator && $project->num_visits < 5)
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['todo'] == 0 ) )
-		{
-			$suggestions[] = array(
-				'class' => 's-todo',
-				'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
-				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
-			);
-		}
+		$suggestions[] = array(
+			'class' => 's-todo',
+			'text'  => Lang::txt('COM_PROJECTS_WELCOME_ADD_TODO'),
+			'url'   => Route::url('index.php?option=' . $option . $goto . '&active=todo')
+		);
 
 		// Notes
-		if ($project->counts['notes'] == 0 || (!$creator && $project->num_visits < 5)
-			|| ($creator && $project->num_visits < 5 &&  $project->counts['notes'] == 0 )  )
-		{
-			$suggestions[] = array(
-				'class' => 's-notes',
-				'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
-				'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
-			);
-		}
+		$suggestions[] = array(
+			'class' => 's-notes',
+			'text'  => Lang::txt('COM_PROJECTS_WELCOME_START_NOTE'),
+			'url'   => Route::url('index.php?option=' . $option . $goto . '&active=notes')
+		);
 
 		return $suggestions;
 	}

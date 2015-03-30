@@ -67,7 +67,6 @@ $canpublish = ($this->pub->state == 1
 				|| $this->pub->state == 5
 				|| $this->pub->state == 0
 				|| $this->pub->state == 6
-				|| $this->authorized == 3
 			  ) ? 0 : 1;
 
 // Do we have panels enabled?
@@ -227,22 +226,14 @@ $append .= '</span>';
 		</div>
 	<?php } ?>
 </div>
-<?php }
-else if ($this->authorized == 3)
-{ ?>
-	<p class="review-controls"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_READ_ONLY'); ?></p>
 <?php } ?>
 </form>
 
 <div id="review-wrap">
 	<div class="pub-review-content">
 		<?php
-
-		if ($this->authorized != 3)
-		{
-			// Draw status bar
-			\Components\Publications\Helpers\Html::drawStatusBar($this, NULL, false, 1);
-		}
+		// Draw status bar
+		\Components\Publications\Helpers\Html::drawStatusBar($this, NULL, false, 1);
 
 		$model = new \Components\Publications\Models\Publication($this->pub);
 		$description = '';

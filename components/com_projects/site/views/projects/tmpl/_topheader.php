@@ -25,16 +25,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->project->private)
+if (!$this->model->isPublic())
 {
 	$privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE')) . '</span>';
 }
 else
 {
-	$privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&preview=1') .'" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
+	$privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1') .'" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
 }
 
-$start = ($this->publicView == false && $this->project->owner) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
+$start = ($this->publicView == false && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 
 ?>
 <div id="project-header" class="project-header">
@@ -44,30 +44,30 @@ $start = ($this->publicView == false && $this->project->owner) ? '<span class="h
 			<?php
 			// Draw image
 			$this->view('_image', 'projects')
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 			     ->set('option', $this->option)
 			     ->display();
 			?>
 			</div>
 			<div class="ptitle-container">
-				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>"><?php echo \Hubzero\Utility\String::truncate($this->project->title, 50); ?> <span>(<?php echo $this->project->alias; ?>)</span></a></h2>
+				<h2><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></a></h2>
 				<p>
-				<?php echo $start .' '.Lang::txt('COM_PROJECTS_BY').' ';
-				if ($this->project->owned_by_group)
+				<?php echo $start .' ' . Lang::txt('COM_PROJECTS_BY').' ';
+				if ($this->model->groupOwner())
 				{
-					$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
-					if ($group)
+					if ($cn = $this->model->groupOwner('cn'))
 					{
-						echo ' '.Lang::txt('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
+						echo ' ' . Lang::txt('COM_PROJECTS_GROUP')
+							. ' <a href="/groups/' . $cn . '">' . $cn . '</a>';
 					}
 					else
 					{
-						echo Lang::txt('COM_PROJECTS_UNKNOWN').' '.Lang::txt('COM_PROJECTS_GROUP');
+						echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
 					}
 				}
 				else
 				{
-					echo '<a href="/members/'.$this->project->owned_by_user.'">'.$this->project->fullname.'</a>';
+					echo '<a href="/members/' . $this->model->owner('id') . '">' . $this->model->owner('name') . '</a>';
 				}
 				?>
 				</p>
@@ -79,7 +79,7 @@ $start = ($this->publicView == false && $this->project->owner) ? '<span class="h
 			if ($this->publicView == false)
 			{
 				$this->view('_options', 'projects')
-				     ->set('project', $this->project)
+				     ->set('model', $this->model)
 				     ->set('option', $this->option)
 				     ->display();
 			}

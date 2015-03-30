@@ -145,6 +145,22 @@ class Project extends Model
 	}
 
 	/**
+	 * (Temp) get project object
+	 *
+	 * @param      string $as What data to return
+	 * @return     string
+	 */
+	public function project( $reload = false )
+	{
+		if (!isset($this->_project) || $reload == true)
+		{
+			$this->_project = $this->_tbl->getProject($this->get('id'), User::get('id'));
+		}
+
+		return $this->_project;
+	}
+
+	/**
 	 * Return a formatted created timestamp
 	 *
 	 * @param      string $as What data to return
@@ -196,20 +212,40 @@ class Project extends Model
 	 *
 	 * @return     Components\Projects\Tables\Owner
 	 */
-	public function member()
+	public function member($reload = false)
 	{
 		if (!$this->exists())
 		{
 			return false;
 		}
-		if (!isset($this->_member))
+		if (!isset($this->_tblOwner))
 		{
-			$member = new Tables\Owner($this->_db);
-			$member->loadOwner($this->get('id'), User::get('id'));
-			$this->_member = $member && $member->status != 2 ? $member : false;
+			$this->_tblOwner = new Tables\Owner($this->_db);
+		}
+		if (!isset($this->_member) || $reload == true)
+		{
+			$this->_tblOwner->loadOwner($this->get('id'), User::get('id'));
+			$this->_member = $this->_tblOwner && $this->_tblOwner->status != 2 ? $this->_tblOwner : false;
+			$this->_member->params = new \JParameter($this->_member->params);
 		}
 
 		return $this->_member;
+	}
+
+	/**
+	 * Check if the member is confirmed
+	 *
+	 * @return     array
+	 */
+	public function isMemberConfirmed()
+	{
+		$member = $this->member();
+
+		if ($member && $member->status == 1)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -265,6 +301,56 @@ class Project extends Model
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Is project provisioned?
+	 *
+	 * @return     boolean
+	 */
+	public function isProvisioned()
+	{
+		if ($this->get('provisioned') == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get publication of a provisioned project
+	 *
+	 * @return     boolean
+	 */
+	public function getPublication()
+	{
+		if (!$this->exists() || !$this->isProvisioned())
+		{
+			return false;
+		}
+		if (!isset($this->_publication))
+		{
+			$this->_objPub = new \Components\Publications\Tables\Publication($this->_db);
+			$this->_publication = $this->_objPub->getProvPublication($this->get('id'));
+		}
+		return $this->_publication;
+	}
+
+	/**
+	 * Get provisioned project
+	 *
+	 * @return     boolean
+	 */
+	public function loadProvisioned($pid = NULL)
+	{
+		if (!intval($pid))
+		{
+			return false;
+		}
+
+		// Load by publication ID
+		$this->_tbl->loadProvisionedProject($pid);
+		$this->params = new \JRegistry($this->_tbl->get('params'));
 	}
 
 	/**
@@ -421,9 +507,8 @@ class Project extends Model
 			{
 				case 1:
 					// Manager
-					$this->params->set('access-manager-project', true);
-					$this->params->set('access-collaborator-project', true);
-					$this->params->set('access-content-project', true);
+					$this->params->set('access-manager-project', true); // May edit project properties
+					$this->params->set('access-content-project', true); // May add/edit/delete all content
 
 					// Owner (principal user/creator)
 					if ($this->owner('id') == $member->userid)
@@ -436,7 +521,6 @@ class Project extends Model
 				case 3:
 				default:
 					// Collaborator/author
-					$this->params->set('access-collaborator-project', true);
 					$this->params->set('access-content-project', true);
 				break;
 
@@ -621,7 +705,13 @@ class Project extends Model
 	 */
 	public function store($check=true)
 	{
-		// Do nothing here yet.
+		$this->_tbl->store();
+		if (!$this->_tbl->getError())
+		{
+			return true;
+		}
+		$this->setError($this->_tbl->getError());
+		return false;
 	}
 
 	/**
@@ -727,22 +817,70 @@ class Project extends Model
 	}
 
 	/**
+	 * Save param
+	 *
+	 * @param      string 	$param
+	 * @param      string 	$value
+	 *
+	 * @return     void
+	 */
+	public function saveParam($param = '', $value = '')
+	{
+		$this->_tbl->saveParam($this->get('id'), trim($param), htmlentities($value));
+	}
+
+	/**
 	 * Get a count of new activity
 	 *
 	 * @return  integer
 	 */
 	public function newCount($refresh = false)
 	{
-		if (!isset($this->_activity))
+		if (!isset($this->_tblActivity))
 		{
-			$this->_activity = new Tables\Activity( $this->_db );
+			$this->_tblActivity = new Tables\Activity( $this->_db );
 		}
 		if (!isset($this->_newCount) || $refresh == true)
 		{
-			$this->_newCount = $this->_activity->getNewActivityCount( $this->get('id'), User::get('id'));
+			$this->_newCount = $this->_tblActivity->getNewActivityCount( $this->get('id'), User::get('id'));
 		}
 
 		return $this->_newCount;
+	}
+
+	/**
+	 * Get project table
+	 *
+	 * @return  object
+	 */
+	public function table($name = NULL)
+	{
+		if ($name == 'Activity')
+		{
+			if (!isset($this->_tblActivity))
+			{
+				$this->_tblActivity = new Tables\Activity( $this->_db );
+			}
+			return $this->_tblActivity;
+		}
+		if ($name == 'Owner')
+		{
+			if (!isset($this->_tblOwner))
+			{
+				$this->_tblOwner = new Tables\Owner($this->_db);
+			}
+			return $this->_tblOwner;
+		}
+		if ($name == 'Type')
+		{
+			if (!isset($this->_tblType))
+			{
+				$this->_tblType = new Tables\Type($this->_db);
+			}
+			return $this->_tblType;
+		}
+
+		return $this->_tbl;
 	}
 
 	/**
@@ -774,5 +912,118 @@ class Project extends Model
 		}
 
 		return new ItemList($results);
+	}
+
+	/**
+	 * Record activity
+	 *
+	 * @return  integer
+	 */
+	public function recordActivity(
+		$activity = '', $refid = '', $underline = '',
+		$url = '', $class = 'project',
+		$commentable = 0, $admin = 0, $managers_only = 0
+	)
+	{
+		if (!isset($this->_tblActivity))
+		{
+			$this->_tblActivity = new Tables\Activity( $this->_db );
+		}
+		if ($activity)
+		{
+			$refid = $refid ? $refid : $this->get('id');
+
+			return $this->_tblActivity->recordActivity(
+				$this->get('id'),
+				User::get('id'),
+				$activity,
+				$refid,
+				$underline,
+				$url,
+				$class,
+				$commentable,
+				$admin,
+				$managers_only
+			);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Record project page visit
+	 *
+	 * @return  void
+	 */
+	public function recordVisit()
+	{
+		$member = $this->member();
+
+		if ($member && $this->isActive() && $this->isMemberConfirmed() && !$this->isProvisioned())
+		{
+			$timecheck = \JFactory::getDate(time() - (6 * 60 * 60))->toSql(); // visit in last 6 hours
+			if ($member->num_visits == 0 or $member->lastvisit < $timecheck)
+			{
+				$member->num_visits = $member->num_visits + 1; // record visit in a day
+				$member->prev_visit = $member->lastvisit;
+			}
+			$member->lastvisit = \JFactory::getDate()->toSql();
+			$member->store();
+		}
+	}
+
+	/**
+	 * Record first join activity
+	 *
+	 * @return  void
+	 */
+	public function checkActivity($activity = NULL)
+	{
+		if (!isset($this->_tblActivity))
+		{
+			$this->_tblActivity = new Tables\Activity( $this->_db );
+		}
+		if ($activity)
+		{
+			return $this->_tblActivity->checkActivity($this->get('id'), $activity);
+		}
+		return false;
+	}
+
+	/**
+	 * Record first join activity
+	 *
+	 * @return  void
+	 */
+	public function recordFirstJoinActivity()
+	{
+		if (!isset($this->_tblActivity))
+		{
+			$this->_tblActivity = new Tables\Activity( $this->_db );
+		}
+
+		if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive())
+		{
+			if (!$this->member()->lastvisit)
+			{
+				$aid = $this->recordActivity(Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), $this->get('id'), '', '', 'team', 1);
+				if ($aid)
+				{
+					$this->_tblOwner->saveParam (
+						$this->get('id'),
+						User::get('id'),
+						$param = 'join_activityid',
+						$value = $aid
+					);
+				}
+
+				// If newly created - remove join activity of project creator
+				$timecheck = \JFactory::getDate(time() - (10 * 60)); // last second
+				if ($this->access('owner') && $timecheck <= $this->get('created'))
+				{
+				    $this->_tblActivity->deleteActivity($aid);
+				}
+			}
+		}
 	}
 }

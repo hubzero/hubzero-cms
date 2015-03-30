@@ -72,6 +72,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call after databases initialized
 	 *
 	 * @return     array   Plugin name and title
@@ -86,7 +93,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas()
+	public function &onProjectAreas($alias = NULL)
 	{
 		//default areas returned to nothing
 		$area = array();
@@ -94,19 +101,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Check if plugin is restricted to certain projects
 		$projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
 
-		if (!empty($projects))
+		if (!empty($projects) && $alias)
 		{
-			$alias  = JRequest::getVar( 'alias', '' );
-			$id     = JRequest::getVar( 'id', '' );
-
-			if (!$alias)
-			{
-				$database = JFactory::getDBO();
-				$obj = new \Components\Projects\Tables\Project( $database );
-				$alias = $obj->getAlias( $id );
-			}
-
-			if (!$alias || !in_array($alias, $projects))
+			if (!in_array($alias, $projects))
 			{
 				return $area;
 			}
@@ -125,16 +122,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function &onProjectCount($project, &$counts)
+	public function &onProjectCount($model, &$counts)
 	{
 		$database = JFactory::getDBO();
 
 		$objPD = new \Components\Projects\Tables\Database($database);
-		$total = $objPD->getItems($project->id, array('count' => 1));
+		$total = $objPD->getItems($model->get('id'), array('count' => 1));
 
 		$counts['databases'] = $total;
 
@@ -144,13 +141,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ($project, $authorized, $action = 'view', $areas = null)
+	public function onProject ($model, $action = 'view', $areas = null)
 	{
 		$arr = array(
 			'html'     =>'',
@@ -170,9 +166,23 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				return;
 			}
 		}
+		// Check that project exists
+		if (!$model->exists())
+		{
+			return $arr;
+		}
+
+		// Check authorization
+		if (!$model->access('member'))
+		{
+			return $arr;
+		}
+
+		// Model
+		$this->model = $model;
 
 		// Load component configs
-		$this->_config 		= Component::params('com_projects');
+		$this->_config 		= $model->config();
 		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
 
 		// Check if the plugin parameters the two mysql accounts are properly set
@@ -220,15 +230,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Is the user logged in?
-		if ( !$authorized && !$project->owner )
-		{
-			return $arr;
-		}
-
-		$this->_project 	= $project;
+		$this->_project 	= $model->project();
 		$this->_database 	= JFactory::getDBO();
-		$this->_authorized  = $authorized;
 		$this->_uid 		= User::get('id');
 
 		// Publishing?
@@ -391,7 +394,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->element		= $element;
@@ -458,7 +460,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];

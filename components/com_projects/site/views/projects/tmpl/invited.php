@@ -30,14 +30,6 @@ $this->css()
 
 $html  = '';
 
-// Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
-$this->project->about = rtrim(stripslashes($this->escape($this->project->about)));
-
-$project = new \Components\Projects\Models\Project($this->project);
-
-$this->project->about = $project->about('parsed');
-
 $rtrn = JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
 
 ?>
@@ -45,7 +37,7 @@ $rtrn = JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->
 	<section class="main section">
 		<?php
 			$this->view('_header')
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 			     ->set('showPic', 1)
 			     ->set('showPrivacy', 0)
 			     ->set('goBack', 0)
@@ -58,7 +50,7 @@ $rtrn = JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->
 			<div class="grid">
 				<div class="col span6">
 					<p>
-						<?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM_SCREEN').' "'.$this->project->title.'". '. Lang::txt('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
+						<?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM_SCREEN') . ' "' . $this->model->get('title') . '". ' . Lang::txt('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
 					</p>
 				</div>
 				<div class="col span6 omega">

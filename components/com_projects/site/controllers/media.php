@@ -97,6 +97,7 @@ class Media extends Base
 			echo json_encode(array('error' => Lang::txt('File is too large. Max file upload size is ') . $max));
 			return;
 		}
+
 		//check to make sure we have an allowable extension
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
@@ -112,17 +113,15 @@ class Media extends Base
 		jimport('joomla.filesystem.file');
 		$file = \JFile::makeSafe($file);
 
-		// Load project
-		$obj = new Tables\Project( $this->database );
-		if (!$obj->loadProject($this->_identifier))
+		// Check project exists
+		if (!$this->model->exists())
 		{
 			echo json_encode(array('error' => Lang::txt('Error loading project')));
 			return;
 		}
 
 		// Make sure user is authorized (project manager)
-		$authorized = $this->_authorize();
-		if ($authorized != 1)
+		if (!$this->model->access('manager'))
 		{
 			echo json_encode(array('error' => Lang::txt('Unauthorized action')));
 			return;
@@ -130,7 +129,7 @@ class Media extends Base
 
 		// Build project image path
 		$path  = PATH_APP . DS . trim($this->config->get('imagepath', '/site/projects'), DS);
-		$path .= DS . $obj->alias . DS . 'images';
+		$path .= DS . $this->model->get('alias') . DS . 'images';
 
 		if (!is_dir( $path ))
 		{
@@ -216,23 +215,23 @@ class Media extends Base
 			}
 
 			// Save picture name
-			$obj->picture = $file;
-			if (!$obj->store())
+			$this->model->set('picture', $file);
+			if (!$this->model->store())
 			{
-				echo json_encode(array('error' => $obj->getError()));
+				echo json_encode(array('error' => $this->model->getError()));
 				return;
 			}
-			elseif ($obj->setup_stage >= $this->_setupComplete)
+			elseif (!$this->model->inSetup())
 			{
 				// Record activity
-				$this->project = $obj;
-				$this->_postActivity(Lang::txt('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
+				$this->model->recordActivity(Lang::txt('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
 			}
 		}
 
 		echo json_encode(array(
 			'success'   => true
 		));
+		return;
 	}
 
 	/**
@@ -245,10 +244,8 @@ class Media extends Base
 		// Incoming
 		$ajax = Request::getInt( 'ajax', 0 );
 
-		$prefix = PATH_APP;
-
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			if ($ajax)
 			{
@@ -260,7 +257,7 @@ class Media extends Base
 		}
 
 		// Incoming project ID
-		if (!$this->_identifier)
+		if (!$this->model->exists() || !$this->model->access('manager'))
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_ERROR_NO_ID') );
 			if ($ajax)
@@ -272,22 +269,9 @@ class Media extends Base
 			return;
 		}
 
-		// Load project
-		$obj = new Tables\Project( $this->database );
-		$obj->loadProject($this->_identifier);
-
-		if ($obj->alias)
-		{
-			$dir = $obj->alias;
-		}
-		else
-		{
-			$dir = \Hubzero\Utility\String::pad( $obj->id );
-		}
-
 		// Incoming file
 		$file = Request::getVar( 'file', '' );
-		$file = $file ? $file : $obj->picture;
+		$file = $file ? $file : $this->model->get('picture');
 		if (!$file)
 		{
 			$this->setError( Lang::txt('COM_PROJECTS_FILE_NOT_FOUND') );
@@ -300,12 +284,9 @@ class Media extends Base
 			return;
 		}
 
+		// Build path
 		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
-		$path   = $prefix . $webdir;
-		$path  .= !$this->_identifier && $tempid ? DS . 'temp' : '';
-		$path  .= DS . $dir;
-		$tpath  = $path;
-		$path  .= DS . 'images';
+		$path   = PATH_APP . $webdir . DS . $this->model->get('alias') . DS . 'images';
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
@@ -350,23 +331,16 @@ class Media extends Base
 				}
 			}
 
-			// Clean up temp folder
-			if (!$this->_identifier && $tempid)
-			{
-				jimport('joomla.filesystem.folder');
-				\JFolder::delete( $tpath);
-			}
-
 			// Instantiate a project, change some info and save
-			if ($obj->id && !file_exists($path . DS . $file))
+			if (!file_exists($path . DS . $file))
 			{
-				$obj->picture = '';
-				if (!$obj->store())
+				$this->model->set('picture', '');
+				if (!$this->model->store())
 				{
-					$this->setError( $obj->getError() );
+					$this->setError( $this->model->getError() );
 					if ($ajax)
 					{
-						echo json_encode(array('error' => $obj->getError()));
+						echo json_encode(array('error' => $this->model->getError()));
 						return;
 					}
 					return;
@@ -394,7 +368,7 @@ class Media extends Base
 		}
 
 		// Return to project page
-		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+		$this->_redirect = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'));
 		return;
 	}
 
@@ -407,12 +381,11 @@ class Media extends Base
 	{
 		// Incoming
 		$media   = trim(Request::getVar( 'media', 'thumb' ));
-		$alias 	 = trim(Request::getVar( 'alias', '' ));
 		$source	 = NULL;
 		$redirect= false;
 		$dir	 = 'preview';
 
-		if (!$alias)
+		if (!$this->model->exists())
 		{
 			return false;
 		}
@@ -427,31 +400,25 @@ class Media extends Base
 		// Show project thumbnail
 		if ($media == 'thumb')
 		{
-			$source = Helpers\Html::getThumbSrc( $alias, '', $this->config );
+			$source = Helpers\Html::getThumbSrc( $this->model->get('alias'), '', $this->config );
 		}
 		elseif ($media)
 		{
-			$obj = new Tables\Project( $this->database );
-			if (!$obj->loadProject($alias))
-			{
-				return false;
-			}
-
 			if ($media == 'master')
 			{
 				// Public picture
-				$source = Helpers\Html::getProjectImageSrc( $alias, $obj->picture, $this->config );
+				$source = Helpers\Html::getProjectImageSrc( $this->model->get('alias'), $this->model->get('picture'), $this->config );
 			}
 			else
 			{
-				// Athorization required
-				if (!$this->_authorize())
+				// Authorization required
+				if ($this->model->access('member'))
 				{
 					return;
 				}
 
-				$path 	= trim($this->config->get('imagepath', '/site/projects'), DS);
-				$source = $path . DS . $alias . DS . $dir . DS . $media;
+				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
+				$source   = $path . DS . $this->model->get('alias') . DS . $dir . DS . $media;
 				$redirect = true;
 			}
 		}

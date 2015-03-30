@@ -52,8 +52,9 @@ $filter = JRequest::getVar( 'searchterm', '');
 		} ?>
 	</div>
 	<div class="report-block">
-		<form id="reportForm" method="post" action="">
+		<form id="reportForm" method="post" action="index.php">
 			<fieldset>
+				<input type="hidden"  name="option" value="com_projects" />
 				<input type="hidden"  name="controller" value="reports" />
 				<input type="hidden"  name="task" value="generate" />
 				<input type="hidden"  name="no_html" value="1" />

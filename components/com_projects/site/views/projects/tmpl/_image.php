@@ -27,6 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 	<div id="pimage" class="pimage">
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" title="<?php echo $this->project->title . ' - ' . Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&controller=media&media=master');  ?>" alt="<?php echo $this->project->title; ?>" /></a>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo $this->model->get('title') . ' - ' . Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=master');  ?>" alt="<?php echo $this->model->get('title'); ?>" /></a>
 	</div>
 

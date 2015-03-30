@@ -95,7 +95,16 @@ class Project extends \JTable
 					? $filters['which'] : '';
 
 		$query  = " FROM $this->_tbl AS p ";
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->_db->Quote($uid);
+
+		if (isset($filters['timed']) && isset($filters['active']))
+		{
+			$query .= " JOIN #__project_activity AS pa
+						ON pa.projectid=p.id AND pa.state != 2 ";
+			$query .= "AND pa.recorded >= " . $this->_db->Quote($filters['timed']);
+		}
+
+		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
+				. $this->_db->Quote($uid);
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
@@ -178,6 +187,60 @@ class Project extends \JTable
 		if ($search)
 		{
 			$query .= " AND (p.title LIKE '%" . $search . "%' OR p.alias LIKE '%" . $search . "%') ";
+		}
+
+		if (isset($filters['private']))
+		{
+			$query .= " AND p.private = " . $filters['private'];
+		}
+
+		// Exclude
+		if (!empty($filters['exclude']))
+		{
+			$query .= " AND p.id NOT IN ( ";
+
+			$tquery = '';
+			foreach ($filters['exclude'] as $ex)
+			{
+				$tquery .= "'" . $ex . "',";
+			}
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
+		}
+
+		// Include
+		if (!empty($filters['include']))
+		{
+			$query .= " AND p.id IN ( ";
+
+			$tquery = '';
+			foreach ($filters['include'] as $ex)
+			{
+				$tquery .= "'" . $ex . "',";
+			}
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
+		}
+
+		if (isset($filters['created']))
+		{
+			$query .= " AND p.created LIKE '" . $filters['created'] . "%' ";
+		}
+		if (isset($filters['setup']) && $filters['setup'])
+		{
+			$query .= " AND p.setup_stage < $setup_complete ";
+		}
+		elseif (isset($filters['all']) && $filters['all'])
+		{
+			// all projects
+		}
+		elseif (isset($filters['active']) && $filters['active'])
+		{
+			$query .= " AND p.setup_stage >= $setup_complete ";
+		}
+		if (isset($filters['timed']) && isset($filters['active']))
+		{
+			$query .= " GROUP BY p.id ";
 		}
 
 		if (!$filters['count'])
@@ -316,184 +379,21 @@ class Project extends \JTable
 	}
 
 	/**
-	 * Get projects stats
-	 *
-	 * @param      string 	$period
-	 * @param      boolean 	$admin
-	 * @param      array 	$config
-	 * @param      array 	$exclude
-	 * @param      integer 	$publishing
-	 * @return     array
-	 */
-	public function getStats($period, $admin = false, $config = array(), $exclude = array(), $publishing = 0)
-	{
-		$stats   = array();
-		$lastLog = NULL;
-		$saveLog = 0;
-		$updated = NULL;
-
-		$pastMonth 		= \JFactory::getDate(time() - (32 * 24 * 60 * 60))->toSql('Y-m-d');
-
-		$thisYearNum 	= \JFactory::getDate()->format('y');
-		$thisMonthNum 	= \JFactory::getDate()->format('m');
-		$thisWeekNum	= \JFactory::getDate()->format('W');
-
-		// Do we have a recent saved stats log?
-		$logged = (is_file(PATH_CORE . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'stats.php')) ? 1 : 0;
-
-		if ($logged)
-		{
-			require_once(PATH_CORE . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'stats.php');
-
-			$objStats = new \Components\Projects\Tables\Stats($this->_db);
-			if ($objStats->loadLog($thisYearNum, $thisMonthNum, $thisWeekNum ))
-			{
-				$lastLog = json_decode($objStats->stats, true);
-				$updated = $objStats->processed;
-			}
-			else
-			{
-				// Save stats
-				$saveLog = 1;
-			}
-		}
-
-		$validProjects 	 = $this->getValidProjects($exclude, array(), $config, false, 'alias' );
-		$validProjectIds = $this->getValidProjects($exclude, array(), $config, false, 'id' );
-
-		$active = count($validProjects);
-		$setup = $this->getValidProjects($exclude, array('setup' => 1), $config, 1 );
-		$total = $active + $setup;
-
-		$publicOnly = $admin ? false : true;
-		$limit = 3;
-
-		// Collect overview stats
-		$stats['general'] = array(
-			'total' 	=> $total,
-			'setup' 	=> $setup,
-			'active'	=> $active,
-			'public'	=> $this->getValidProjects($exclude, array('private' => '0'), $config, 1 ),
-			'sponsored'	=> $this->getValidProjects($exclude, array('sponsored' => 1), $config, 1 ),
-			'sensitive'	=> $this->getValidProjects($exclude, array('sensitive' => 1), $config, 1 ),
-			'new'		=> $this->getValidProjects($exclude, array('created' => date('Y-m', time()), 'all' => 1), $config, 1 )
-		);
-
-		// Collect activity stats
-		$objAA = new Activity( $this->_db );
-		$recentlyActive = count($this->getValidProjects($exclude, array('timed' => $pastMonth, 'active' => 1), $config ));
-		$perc = round(($recentlyActive * 100)/$active) . '%';
-		$stats['activity'] = array(
-			'total' => $objAA->getActivityStats($validProjectIds, 'total'),
-			'average' => $objAA->getActivityStats($validProjectIds, 'average'),
-			'usage'=> $perc
-		);
-
-		$stats['topActiveProjects'] = $objAA->getTopActiveProjects($exclude, 5, $publicOnly);
-
-		// Collect team stats
-		$objO = new Owner( $this->_db );
-		$multiTeam = $objO->getTeamStats($exclude, 'multi');
-		$activeTeam = $objO->getTeamStats($exclude, 'registered');
-		$invitedTeam = $objO->getTeamStats($exclude, 'invited');
-		$multiProjectUsers = $objO->getTeamStats($exclude, 'multiusers');
-
-		$teamTotal = $activeTeam + $invitedTeam;
-
-		$perc = round(($multiTeam * 100)/$total) . '%';
-		$stats['team'] = array(
-			'total' => $teamTotal,
-			'average' => $objO->getTeamStats($exclude, 'average'),
-			'multi' => $perc,
-			'multiusers' => $multiProjectUsers
-		);
-
-		$stats['topTeamProjects'] = $objO->getTopTeamProjects($exclude, $limit, $publicOnly);
-
-		// Collect files stats
-		if ($lastLog)
-		{
-			$stats['files'] = $lastLog['files'];
-		}
-		else
-		{
-			// Compute
-			\JPluginHelper::importPlugin( 'projects', 'files');
-			$dispatcher = \JDispatcher::getInstance();
-			$fTotal 	= $dispatcher->trigger( 'getStats', array($validProjects) );
-			$fTotal 	= $fTotal[0];
-			$fAverage 	= number_format($fTotal/count($validProjects), 0);
-			$fUsage 	= $dispatcher->trigger( 'getStats', array($validProjects, 'usage') );
-			$fUsage 	= $fUsage[0];
-			$fDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'diskspace') );
-			$fDSpace 	= $fDSpace[0];
-			$fCommits 	= $dispatcher->trigger( 'getStats', array($validProjects, 'commitCount') );
-			$fCommits 	= $fCommits[0];
-			$pDSpace 	= $dispatcher->trigger( 'getStats', array($validProjects, 'pubspace') );
-			$pDSpace 	= $pDSpace[0];
-
-			$perc = round(($fUsage * 100)/$active) . '%';
-
-			$stats['files'] = array(
-				'total'     => $fTotal,
-				'average'   => $fAverage,
-				'usage'     => $perc,
-				'diskspace' => \Hubzero\Utility\Number::formatBytes($fDSpace),
-				'commits'   => $fCommits,
-				'pubspace'  => \Hubzero\Utility\Number::formatBytes($pDSpace)
-			);
-		}
-
-		// Collect publication stats
-		if ($publishing)
-		{
-			$objP = new \Components\Publications\Tables\Publication( $this->_db );
-			$objPV = new \Components\Publications\Tables\Version( $this->_db );
-			$prPub = $objP->getPubStats($validProjectIds, 'usage');
-			$perc = round(($prPub * 100)/$total) . '%';
-
-			$stats['pub'] = array(
-				'total'     => $objP->getPubStats($validProjectIds, 'total'),
-				'average'   => $objP->getPubStats($validProjectIds, 'average'),
-				'usage'     => $perc,
-				'released'  => $objP->getPubStats($validProjectIds, 'released'),
-				'versions'  => $objPV->getPubStats($validProjectIds)
-			);
-		}
-
-		// Save weekly stats
-		if ($saveLog)
-		{
-			$objStats = new \Components\Projects\Tables\Stats($this->_db);
-			$objStats->year 		= $thisYearNum;
-			$objStats->month 		= $thisMonthNum;
-			$objStats->week 		= $thisWeekNum;
-			$objStats->processed 	= \JFactory::getDate()->toSql();
-			$objStats->stats 		= json_encode($stats);
-			$objStats->store();
-		}
-
-		$stats['updated'] = $updated ? $updated : NULL;
-
-		return $stats;
-	}
-
-	/**
-	 * Get test project ids
+	 * Get project ids/aliased by tag
 	 *
 	 * @return     array
 	 */
-	public function getTestProjects()
+	public function getProjectsByTag( $tag = 'test', $include = true, $get = 'id')
 	{
 		$ids = array();
 
-		$query  = "SELECT DISTINCT p.id ";
-		$query .= "FROM $this->_tbl AS p ";
-		$query .= "LEFT JOIN #__tags_object AS RTA ON p.id = RTA.objectid ";
-		$query .= "LEFT JOIN #__tags AS TA ON RTA.tagid = TA.id AND RTA.tbl='projects' ";
-		$query .= "WHERE TA.tag = 'test' ";
+		$get    = $get == 'id' ? 'id' : 'alias';
+		$query  = "SELECT DISTINCT p.$get, ";
+		$query .= "(SELECT COUNT(*) FROM #__tags_object AS RTA
+					JOIN #__tags AS TA ON RTA.tagid = TA.id
+		  			AND RTA.tbl='projects'
+		  			WHERE TA.tag=" . $this->_db->Quote($tag) . " AND RTA.objectid=p.id) as count";
+		$query .= " FROM $this->_tbl AS p ";
 
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
@@ -501,112 +401,14 @@ class Project extends \JTable
 		{
 			foreach ($result as $r)
 			{
-				$ids[] = $r->id;
+				if (($include == true && $r->count > 0) || ($include == false && $r->count == 0))
+				{
+					$ids[] = $r->$get;
+				}
 			}
 		}
 
 		return $ids;
-	}
-
-	/**
-	 * Get non-test projects
-	 *
-	 * @param      array $exclude
-	 * @param      array $filters
-	 * @param      array $config
-	 * @param      boolean $count
-	 * @return     mixed
-	 */
-	public function getValidProjects($exclude = array(), $filters = array(), $config = array(), $count = false, $get = '' )
-	{
-
-		$setup_complete = !empty($config) && $config->get('confirm_step', 0) ? 3 : 2;
-
-		$query  = $count ? "SELECT count(DISTINCT p.id) " : "SELECT DISTINCT p.* ";
-		$query .= "FROM $this->_tbl AS p ";
-
-		if (isset($filters['timed']) && isset($filters['active']))
-		{
-			$query .= " JOIN #__project_activity AS pa
-						ON pa.projectid=p.id AND pa.state != 2 ";
-			$query .= "AND pa.recorded >= " . $this->_db->Quote($filters['timed']);
-		}
-
-		$query .= " WHERE p.state != 2 AND p.provisioned = 0 ";
-
-		if (isset($filters['created']))
-		{
-			$query .= " AND p.created LIKE '" . $filters['created'] . "%' ";
-		}
-
-		if (isset($filters['setup']) && $filters['setup'] == 1)
-		{
-			$query .= " AND p.setup_stage < $setup_complete ";
-		}
-		elseif (isset($filters['all']) && $filters['all'] == 1)
-		{
-			// all projects
-		}
-		else
-		{
-			$query .= " AND p.setup_stage >= $setup_complete ";
-		}
-
-		if (isset($filters['private']))
-		{
-			$query .= " AND p.private = " . $filters['private'];
-		}
-
-		if (isset($filters['sponsored']) && $filters['sponsored'] == 1)
-		{
-			$query .= " AND (p.params LIKE '%grant_status=1%') ";
-		}
-
-		if (isset($filters['sensitive']) && $filters['sensitive'] == 1)
-		{
-			$query .= " AND (p.params LIKE '%hipaa_data=yes%' ";
-			$query .= " OR p.params LIKE '%ferpa_data=yes%' ";
-			$query .= " OR p.params LIKE '%export_data=yes%' ";
-			$query .= " OR p.params LIKE 'restricted_data=maybe%' ";
-			$query .= " OR p.params LIKE '%followup=yes%') ";
-		}
-
-		if (!empty($exclude))
-		{
-			$query .= " AND p.id NOT IN ( ";
-
-			$tquery = '';
-			foreach ($exclude as $ex)
-			{
-				$tquery .= "'".$ex."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
-		}
-
-		if (isset($filters['timed']) && isset($filters['active']))
-		{
-			$query .= " GROUP BY p.id ";
-		}
-
-		$this->_db->setQuery( $query );
-		if ($count)
-		{
-			return $this->_db->loadResult();
-		}
-
-		$results = $this->_db->loadObjectList();
-
-		if ($get == 'alias' || $get == 'id')
-		{
-			$out = array();
-			foreach ($results as $r)
-			{
-				$out[] = $get == 'alias' ? $r->alias : $r->id;
-			}
-			return $out;
-		}
-		return $results;
 	}
 
 	/**
@@ -796,40 +598,6 @@ class Project extends \JTable
 	}
 
 	/**
-	 * Match invite
-	 *
-	 * @param      string $identifier
-	 * @param      string $code
-	 * @param      string $email
-	 * @return     boolean
-	 */
-	public function matchInvite( $identifier = NULL, $code = '', $email = '' )
-	{
-		if ($identifier === NULL)
-		{
-			return false;
-		}
-		if (!$code or !$email)
-		{
-			return false;
-		}
-		$query  = "SELECT o.id as owner";
-		$query .= " FROM $this->_tbl AS p ";
-		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id
-					AND o.userid=0 AND o.status != 2 AND o.invited_email=" . $this->_db->Quote( $email) . "
-					AND o.invited_code=" . $this->_db->Quote( $code );
-		$query .= " WHERE ";
-		$query .= is_numeric($identifier)
-			? " p.id=" . $this->_db->Quote($identifier)
-			: " p.alias=" . $this->_db->Quote($identifier);
-
-		$query .= " LIMIT 1 ";
-
-		$this->_db->setQuery( $query );
-		return $this->_db->loadResult();
-	}
-
-	/**
 	 * Get project
 	 *
 	 * @param      string $identifier
@@ -990,6 +758,30 @@ class Project extends \JTable
 		$name = is_numeric($identifier) ? 'id' : 'alias';
 
 		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE $name=" . $this->_db->Quote($identifier) . " LIMIT 1" );
+		if ($result = $this->_db->loadAssoc())
+		{
+			return $this->bind( $result );
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Load a record and bind to $this
+	 *
+	 * @param      string $identifier project id or alias name
+	 * @return     object or false
+	 */
+	public function loadProvisionedProject ( $pid = NULL )
+	{
+		if (!intval($pid))
+		{
+			return false;
+		}
+
+		$this->_db->setQuery( "SELECT p.* FROM #__publications AS pu JOIN $this->_tbl AS p ON pu.project_id=p.id WHERE pu.id=" . $this->_db->Quote($pid) . " LIMIT 1" );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );

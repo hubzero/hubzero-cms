@@ -484,8 +484,8 @@ class Log extends \JTable
 		$toM 	= intval(end($parts));
 
 		$datequery = $fromY == $toY
-					? "AND (year=$fromY AND month >= $fromM AND month <= $toM )"
-					: "AND ((year=$fromY AND month >= $fromM ) OR (year=$toY AND month <= $toM))";
+					? "AND (L.year=$fromY AND L.month>=$fromM AND L.month<=$toM )"
+					: "AND ((L.year=$fromY AND L.month >= $fromM ) OR (L.year=$toY AND L.month <= $toM))";
 
 		$citeFrom  = \JFactory::getDate($from)->toSql();
 		$citeTo    = \JFactory::getDate($to)->toSql();
@@ -495,11 +495,11 @@ class Log extends \JTable
 
 		$query .= ", (SELECT COALESCE( SUM(L.primary_accesses) , 0 )
 					FROM $this->_tbl as L
-					WHERE L.publication_id=V.publication_id " . $this->_db->Quote($datequery) . ") AS downloads ";
+					WHERE L.publication_id=V.publication_id " . $datequery . ") AS downloads ";
 
 		$query .= ", (SELECT COALESCE( SUM(L.page_views) , 0 )
 					FROM $this->_tbl as L
-					WHERE L.publication_id=V.publication_id " . $this->_db->Quote($datequery) . ") AS views ";
+					WHERE L.publication_id=V.publication_id " . $datequery . ") AS views ";
 
 		$query .= ", (SELECT COUNT(*)
 					FROM #__citations as C
@@ -531,8 +531,8 @@ class Log extends \JTable
 			{
 				$tquery .= "'".$ex."',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery . " ) ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 
 		if ($filter)

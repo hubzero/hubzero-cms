@@ -27,11 +27,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
-<input type="hidden" name="pid" id="pid" value="<?php echo $this->project->id; ?>" />
+<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
+<input type="hidden" name="pid" id="pid" value="<?php echo $this->model->get('id'); ?>" />
 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 <input type="hidden" name="task" value="save" />
-<input type="hidden" name="setup" id="insetup" value="<?php echo $this->project->state == 1 ? 0 : 1; ?>" />
+<input type="hidden" name="setup" id="insetup" value="<?php echo $this->model->inSetup() ? 1 : 0; ?>" />
 <input type="hidden" name="active" value="<?php echo $this->section; ?>" />
 <input type="hidden" name="step" id="step" value="<?php echo $this->step; ?>" />
-<input type="hidden" name="gid" value="<?php echo $this->gid; ?>" />
+<input type="hidden" name="gid" value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0 ; ?>" />

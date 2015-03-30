@@ -69,7 +69,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array   Plugin name and title
 	 */
-	public function &onProjectAreas( $all = false )
+	public function &onProjectAreas( $alias = NULL, $all = false )
 	{
 		// Not showing side panel
 		$area = array();
@@ -90,11 +90,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
+	 * @param      object  $model 		Project
 	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
-	public function onProjectCount( $project, &$counts )
+	public function onProjectCount( $model, &$counts )
 	{
 		// Not counting
 		return false;
@@ -103,19 +103,18 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer $authorized 		Authorization
+	 * @param      object  $model           Project model
 	 * @param      string  $action			Plugin task
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ( $project, $authorized, $action = '', $areas = NULL)
+	public function onProject ( $model, $action = '', $areas = NULL)
 	{
 		// What's the task?
 		$this->_task = $action ? $action : JRequest::getVar('action');
 
 		// Get this area details
-		$this->_area = $this->onProjectAreas(true);
+		$this->_area = $this->onProjectAreas(NULL, true);
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ))
@@ -126,6 +125,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// Model
+		$this->model = $model;
+
 		$tasks = array('browser', 'select' , 'parseurl',
 			'parsedoi', 'addcitation', 'deletecitation',
 			'newcite', 'editcite', 'savecite');
@@ -133,16 +135,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Publishing?
 		if ( in_array($this->_task, $tasks) )
 		{
-			$this->_project = $project;
-
 			// Set vars
 			$this->_database 	= JFactory::getDBO();
-			$this->_authorized 	= $authorized;
 			$this->_uid 		= User::get('id');
-			$this->_msg        = NULL;
+			$this->_project 	= $model->project();
 
 			// Load component configs
-			$this->_config 		= Component::params('com_projects');
+			$this->_config 		= $model->config();;
 			$this->_pubconfig 	= Component::params('com_publications');
 
 			// Actions
@@ -759,7 +758,6 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -854,7 +852,6 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->task			= $this->_task;
 		$view->ajax			= JRequest::getInt( 'ajax', 0 );
@@ -907,7 +904,6 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
 		$view->project 		= $this->_project;
-		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->primary		= $primary;

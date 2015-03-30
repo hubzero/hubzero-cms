@@ -65,6 +65,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return	   array   Plugin name and title
@@ -84,20 +91,20 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param	   object  $project			Project
+	 * @param	   object  $model			Project
 	 * @param	   integer &$counts
 	 * @return	   array   integer
 	 */
-	public function &onProjectCount( $project, &$counts, $admin = 0 )
+	public function &onProjectCount( $model, &$counts, $admin = 0 )
 	{
 		$database = JFactory::getDBO();
 
 		$objTD = new \Components\Projects\Tables\Todo( $database );
-		$counts['todo'] = $objTD->getTodos($project->id, $filters = array('count' => 1));
+		$counts['todo'] = $objTD->getTodos($model->get('id'), $filters = array('count' => 1));
 
 		if ($admin == 1)
 		{
-			$counts['todos_completed'] = $objTD->getTodos($project->id, $filters = array(
+			$counts['todos_completed'] = $objTD->getTodos($model->get('id'), $filters = array(
 				'count' => 1,
 				'state' => 1)
 			);
@@ -109,17 +116,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param	   object  $project			Project
-	 * @param	   string  $option			Component name
-	 * @param	   integer $authorized		Authorization
-	 * @param	   integer $uid				User ID
-	 * @param	   integer $msg				Message
-	 * @param	   integer $error			Error
+	 * @param      object  $model           Project model
 	 * @param	   string  $action			Plugin task
 	 * @param	   string  $areas			Plugins to return data
 	 * @return	   array   Return array of html
 	 */
-	public function onProject ( $project, $authorized, $action = '', $areas = null )
+	public function onProject ( $model, $action = '', $areas = null )
 	{
 		$returnhtml = true;
 
@@ -134,44 +136,45 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) {
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+		if (is_array( $areas )) 
+		{
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
+			{
 				return;
 			}
 		}
 
-		// Is the user authorized?
-		if (!$authorized && !$project->owner)
+		// Check that project exists
+		if (!$model->exists())
 		{
 			return $arr;
 		}
 
-		// Do we have a project ID?
-		if (!is_object($project) or !$project->id )
+		// Check authorization
+		if (!$model->access('member'))
 		{
 			return $arr;
 		}
-		else
-		{
-			$this->_project = $project;
-		}
 
-		// Include model
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
-
-		// Get our model
-		$this->model = new \Components\Projects\Models\Todo();
+		// Model
+		$this->model = $model;
 
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
+			// Include model
+			include_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+				. DS . 'models' . DS . 'todo.php');
+
+			// Get our To do model
+			$this->todo = new \Components\Projects\Models\Todo();
+
 			// Set vars
 			$this->_task		= $action ? $action : JRequest::getVar('action','');
 			$this->_todoid		= JRequest::getInt('todoid', 0);
 			$this->_database	= JFactory::getDBO();
-			$this->_authorized	= $authorized;
-			$this->_msg			= NULL;
 			$this->_uid 		= User::get('id');
+			$this->_project     = $model->project();
 
 			switch ($this->_task)
 			{
@@ -241,7 +244,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$view->project		= $this->_project;
 		$view->uid			= $this->_uid;
 		$view->title		= $this->_area['title'];
-		$view->model		= $this->model;
+		$view->model		= $this->todo;
 
 		// Update view preference if changed
 		if ($layout != $defaultView)
@@ -284,7 +287,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->option = $this->option;
-		$view->model  = $this->model;
+		$view->model  = $this->todo;
 		$view->params = new JParameter($this->_project->params);
 		$view->project		= $this->_project;
 
@@ -298,7 +301,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->row = $this->model->entry($todoid);
+			$view->row = $this->todo->entry($todoid);
 		}
 
 		if (!$view->row->exists() && $this->_task != 'new')

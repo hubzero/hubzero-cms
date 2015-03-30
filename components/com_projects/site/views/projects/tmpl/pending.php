@@ -28,14 +28,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
 	->js();
 
-// Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
 ?>
 <div id="project-wrap">
 	<section class="main section">
 		<?php
 			$this->view('_header')
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 			     ->set('showPic', 1)
 			     ->set('showPrivacy', 0)
 			     ->set('goBack', 0)

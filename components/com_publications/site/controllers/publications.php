@@ -1887,26 +1887,12 @@ class Publications extends SiteController
 		$action  = $this->_task == 'start' ? 'start' : $action;
 		$ajax 	 = Request::getInt( 'ajax', 0 );
 
-		// Load projects config
-		$pconfig = Component::params( 'com_projects' );
-
 		// Redirect if publishing is turned off
 		if (!$this->_contributable || !$this->config->get('contribute', 0))
 		{
 			$this->_redirect = Route::url('index.php?option=' . $this->_option);
 			return;
 		}
-
-		// Include needed classes
-		require_once( PATH_CORE . DS . 'components' . DS . 'com_projects' . DS
-			. 'helpers' . DS . 'html.php' );
-		require_once( PATH_CORE . DS . 'components' . DS
-			. 'com_projects' . DS . 'tables' . DS . 'activity.php' );
-
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .
-			DS . 'models' . DS . 'publication.php');
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_publications' .
-			DS . 'models' . DS . 'curation.php');
 
 		$lang = \JFactory::getLanguage();
 		$lang->load('com_projects');
@@ -1921,6 +1907,7 @@ class Publications extends SiteController
 
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
+		\Hubzero\Document\Assets::addComponentScript('com_projects');
 		\Hubzero\Document\Assets::addComponentScript('com_projects', 'assets/js/projects');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/uploader');
 		\Hubzero\Document\Assets::addPluginScript('projects', 'files','js/jquery.fileuploader.js');
@@ -1941,7 +1928,7 @@ class Publications extends SiteController
 		\JPluginHelper::importPlugin( 'projects', $plugin);
 		$dispatcher = \JDispatcher::getInstance();
 
-		if ($this->juser->get('guest') && ($action == 'login' || $this->_task == 'start'))
+		if (User::isGuest() && ($action == 'login' || $this->_task == 'start'))
 		{
 			$this->_msg = $this->_task == 'start'
 						? Lang::txt('COM_PUBLICATIONS_LOGIN_TO_START')
@@ -1950,73 +1937,51 @@ class Publications extends SiteController
 			return;
 		}
 
+		// Get project model
+		$project = new \Components\Projects\Models\Project($this->_identifier);
+
 		// Get project information
 		if ($pid)
 		{
-			$obj = new \Components\Projects\Tables\Project( $this->database );
-			$project = $obj->getProject(NULL, $this->juser->get('id'), $pid);
+			$project->loadProvisioned($pid);
 
-			if (!$project)
+			if (!$project->exists())
 			{
 				$this->_redirect = Route::url('index.php?option=' . $this->_option . '&task=submit');
 				$this->_task = 'submit';
 				return;
 			}
-			else
-			{
-				// Check authorization
-				$authorized = $this->_authorize($project->id);
-			}
 
 			// Block unauthorized access
-			if (!$authorized)
+			if (!$project->access('owner'))
 			{
 				$this->_blockAccess();
 				return;
 			}
 
 			// Redirect to project if not provisioned
-			if ($project->provisioned != 1)
+			if (!$project->isProvisioned())
 			{
-				$this->_redirect = Route::url('index.php?option=com_projects&alias=' . $project->alias
-				. '&active=publications&pid=' . $pid).'?action=' . $action;
+				$this->_redirect = Route::url('index.php?option=com_projects&alias='
+					. $project->get('alias')
+					. '&active=publications&pid=' . $pid . '&action=' . $action);
 				return;
 			}
 		}
-		else
-		{
-			$authorized = true;
-			$project 	= NULL;
-		}
 
-		// Is project registration restricted to a group?
-		if ($action == 'start')
+		// Is project registration restricted?
+		if ($action == 'start' && !$project->access('create'))
 		{
-			$pconfig = Component::params( 'com_projects' );
-			$creatorgroup = $pconfig->get('creatorgroup', '');
-
-			if ($creatorgroup)
-			{
-				$cgroup = \Hubzero\User\Group::getInstance($creatorgroup);
-				if ($cgroup)
-				{
-					if (!$cgroup->is_member_of('members',$this->juser->get('id')) &&
-						!$cgroup->is_member_of('managers',$this->juser->get('id')))
-					{
-						$this->_buildPathway(null);
-						$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-						$this->view->error  = Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
-						$this->view->title = $this->title;
-						$this->view->display();
-						return;
-					}
-				}
-			}
+			$this->_buildPathway(null);
+			$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+			$this->view->error  = Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
+			$this->view->title = $this->title;
+			$this->view->display();
+			return;
 		}
 
 		// Plugin params
 		$plugin_params = array( $project,
-								$authorized,
 								$action,
 								$areas = array($plugin)
 		);
@@ -2047,9 +2012,9 @@ class Publications extends SiteController
 		}
 
 		// Output HTML
-		$this->view->project= isset($project) ? $project : '';
+		$this->view->project= $project->project();
 		$this->view->action = $action;
-		$this->view->uid	= $this->juser->get('id');
+		$this->view->uid	= User::get('id');
 		$this->view->pid 	= $pid;
 		$this->view->title 	= $this->_title;
 		$this->view->msg 	= $this->getNotifications('success');

@@ -32,10 +32,8 @@ $this->css()
 
 // Display page title
 $this->view('_title')
-     ->set('project', $this->project)
+     ->set('model', $this->model)
      ->set('step', $this->step)
-     ->set('gid', $this->gid)
-     ->set('group', $this->group)
      ->set('option', $this->option)
      ->set('title', $this->title)
      ->display();
@@ -57,7 +55,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 	<?php
 		// Display metadata
 		$this->view('_metadata')
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('step', $this->step)
 		     ->set('option', $this->option)
 		     ->display();
@@ -65,7 +63,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 	<?php
 	// Display steps
 	$this->view('_steps')
-	     ->set('project', $this->project)
+	     ->set('model', $this->model)
 	     ->set('step', $this->step)
 	     ->display();
 	?>
@@ -87,9 +85,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 				<?php 
 				// Display form fields
 				$this->view('_form')
-				     ->set('project', $this->project)
+				     ->set('model', $this->model)
 				     ->set('step', $this->step)
-				     ->set('gid', $this->gid)
 				     ->set('option', $this->option)
 				     ->set('controller', 'setup')
 				     ->set('section', $this->section)
@@ -100,18 +97,18 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 				<?php if ($this->config->get('restricted_data', 0) == 1) { ?>
 				<h4 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span></h4>
 				<label class="terms-label dark">
-					<input class="option restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?php if ($this->params->get('restricted_data') == 'yes') { echo 'checked="checked"'; } ?> />
+					<input class="option restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?php if ($this->model->params->get('restricted_data') == 'yes') { echo 'checked="checked"'; } ?> />
 					<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES'); ?>
 				</label>
 				<div class="ipadded" id="restricted-choice">
 					<p class="hint prominent"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_MAKE_CHOICE'); ?></p>
 					<label class="terms-label">
-						<input class="option restricted-opt" name="export" id="export" type="checkbox" value="yes" <?php if ($this->params->get('export_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+						<input class="option restricted-opt" name="export" id="export" type="checkbox" value="yes" <?php if ($this->model->params->get('export_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED'); ?>
 					</label>
 					<div id="stop-export" class="stopaction hidden"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT'); ?></div>
 					<label class="terms-label">
-						<input class="option restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?php if ($this->params->get('irb_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+						<input class="option restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?php if ($this->model->params->get('irb_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_IRB'); ?>
 					</label>
 					<div id="stop-irb" class="extraaction hidden">
@@ -123,12 +120,12 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 						</label>
 					</div>
 					<label class="terms-label">
-						<input class="option restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?php if ($this->params->get('hipaa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+						<input class="option restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?php if ($this->model->params->get('hipaa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
 					</label>
 					<div id="stop-hipaa" class="stopaction hidden"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA'); ?></div>
 					<label class="terms-label">
-						<input class="option restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?php if ($this->params->get('ferpa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
+						<input class="option restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?php if ($this->model->params->get('ferpa_data') == 'yes' ) { echo 'checked="checked"'; } ?> />
 						<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_FERPA'); ?>
 					</label>
 					<div id="stop-ferpa" class="extraaction hidden">
@@ -141,7 +138,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 					</div>
 				</div>
 				<label class="terms-label dark">
-					<input class="option restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?php if ($this->params->get('restricted_data') == 'no' ) { echo 'checked="checked"'; } ?> />
+					<input class="option restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?php if ($this->model->params->get('restricted_data') == 'no' ) { echo 'checked="checked"'; } ?> />
 					<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
 				</label>
 
@@ -164,16 +161,16 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 				<legend><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></legend>
 				<p class="notice"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_INFO_WHY'); ?></p>
 				<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-				 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>" class="long" />
+				 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->model->params->get('grant_title'); ?>" class="long" />
 				</label>
 				<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-				 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->params->get('grant_PI'); ?>" class="long" />
+				 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->model->params->get('grant_PI'); ?>" class="long" />
 				</label>
 				<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-				 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>" class="long" />
+				 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->model->params->get('grant_agency'); ?>" class="long" />
 				</label>
 				<label class="terms-label"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-				 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->params->get('grant_budget'); ?>" class="long" />
+				 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->model->params->get('grant_budget'); ?>" class="long" />
 				</label>
 			</fieldset>
 			<?php } ?>

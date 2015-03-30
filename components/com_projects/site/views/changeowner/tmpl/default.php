@@ -30,13 +30,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Do some text cleanup
-$this->project->title = $this->escape($this->project->title);
+$title = $this->escape($this->model->get('title'));
+
 ?>
 <div id="project-wrap">
 	<section class="main section">
 		<?php
 		$this->view('_header', 'projects')
-		     ->set('project', $this->project)
+		     ->set('project', $this->model->project())
 		     ->set('showPic', 0)
 		     ->set('showPrivacy', 0)
 		     ->set('goBack', 0)
@@ -45,9 +46,9 @@ $this->project->title = $this->escape($this->project->title);
 		     ->display();
 		?>
 		<p class="warning"><?php echo Lang::txt('COM_PROJECTS_INFO_OWNER_DELETED'); ?></p>
-		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>" id="hubForm">
+		<form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" id="hubForm">
 			<fieldset >
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="task" value="fixownership" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<h4><?php echo Lang::txt('COM_PROJECTS_OWNER_DELETED_OPTIONS'); ?></h4>

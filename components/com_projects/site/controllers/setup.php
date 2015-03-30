@@ -32,6 +32,7 @@ namespace Components\Projects\Site\Controllers;
 
 use Components\Projects\Tables;
 use Components\Projects\Helpers;
+use Exception;
 
 /**
  * Projects setup controller class
@@ -50,12 +51,10 @@ class Setup extends Base
 		// Incoming
 		$defaultSection = $this->_task == 'edit' ? 'info' : '';
 		$this->section  = Request::getVar( 'active', $defaultSection );
-
-		$this->project  = NULL;
 		$this->group    = NULL;
 
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = $this->_task == 'edit'
 				? Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA')
@@ -76,67 +75,32 @@ class Setup extends Base
 	{
 		$this->_task = 'setup';
 
-		// Instantiate a project
-		$obj = new Tables\Project( $this->database );
-
 		// Get project information
 		if ($this->_identifier)
 		{
-			// Get Project
-			$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
-
-			if (!$obj->loadProject($this->_identifier) or !$this->project)
+			if (!$this->model->exists() || $this->model->isDeleted())
 			{
-				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+				throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
 				return;
-			}
-
-			$pid = $this->project->id;
-			$alias = $this->project->alias;
-
-			// Is project deleted?
-			if ($this->project->state == 2)
-			{
-				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
-				return;
-			}
-
-			// If this is a group project
-			if (intval($obj->owned_by_group) > 0)
-			{
-				$this->_gid = $obj->owned_by_group;
 			}
 		}
-		else
+		elseif (!$this->model->exists())
 		{
-			// Is project registration restricted to a group?
-			$creatorgroup = $this->config->get('creatorgroup', '');
-
-			// Check authorization
-			if ($creatorgroup)
+			// Is user authorized to create a project?
+			if (!$this->model->access('create'))
 			{
-				$cgroup = \Hubzero\User\Group::getInstance($creatorgroup);
-				if ($cgroup)
-				{
-					if (!$cgroup->is_member_of('members',$this->juser->get('id')) &&
-						!$cgroup->is_member_of('managers',$this->juser->get('id')))
-					{
-						// Dispay error
-						$this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
-						$this->_showError();
-						return;
-					}
-				}
+				// Dispay error
+				$this->setError(Lang::txt('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP'));
+				$this->_showError();
+				return;
 			}
 
-			// New entry defaults
-			$obj->id 			= 0;
-			$obj->alias 		= Request::getCmd( 'name', '', 'post' );
-			$obj->title 		= Request::getVar( 'title', '', 'post' );
-			$obj->about 		= trim(Request::getVar( 'about', '', 'post', 'none', 2 ));
-			$obj->type 			= Request::getInt( 'type', 1, 'post' );
-			$obj->setup_stage 	= 0;
-			$obj->private 		= 1;
+			$this->model->set('alias', Request::getVar( 'name', '', 'post' ));
+			$this->model->set('title', Request::getVar( 'title', '', 'post' ));
+			$this->model->set('about', trim(Request::getVar( 'about', '', 'post', 'none', 2 )));
+			$this->model->set('private', 1);
+			$this->model->set('setup_stage', 0);
+			$this->model->set('type', Request::getInt( 'type', 1, 'post' ));
 		}
 
 		// Get group ID
@@ -148,33 +112,33 @@ class Setup extends Base
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				JError::raiseError( 404, Lang::txt('COM_PROJECTS_NO_GROUP_FOUND') );
+				throw new Exception(Lang::txt('COM_PROJECTS_NO_GROUP_FOUND'), 404);
 				return;
 			}
 			$this->_gid = $this->group->get('gidNumber');
+			$this->model->set('owned_by_group', $this->_gid);
 
 			// Make sure we have up-to-date group membership information
-			$objO = new Tables\Owner( $this->database );
-			$objO->reconcileGroups($obj->id);
+			if ($this->model->exists())
+			{
+				$objO = $this->model->table('Owner');
+				$objO->reconcileGroups($this->model->get('id'));
+			}
 		}
 
 		// Check authorization
-		$this->view->authorized = $this->_authorize();
-		if ($obj->id && (!$this->view->authorized
-			|| $this->view->authorized != 1
-			|| $obj->created_by_user != $this->juser->get('id'))
-		)
+		if ($this->model->exists() && !$this->model->access('owner'))
 		{
-			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
-		elseif (!$obj->id && $this->_gid && !$this->view->authorized)
+		elseif (!$this->model->exists() && $this->_gid)
 		{
 			// Check group authorization to create a project
-			if (!$this->group->is_member_of('members', $this->juser->get('id'))
-				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
+			if (!$this->group->is_member_of('members', User::get('id'))
+				&& !$this->group->is_member_of('managers', User::get('id')))
 			{
-				\JError::raiseError( 403, Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
+				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
 				return;
 			}
 		}
@@ -188,7 +152,7 @@ class Setup extends Base
 
 		// Send to requested page
 		$step = $this->section ? array_search($this->section, $setupSteps) : NULL;
-		$step = $step !== NULL && $step <= $obj->setup_stage ? $step : $obj->setup_stage;
+		$step = $step !== NULL && $step <= $this->model->get('setup_stage') ? $step : $this->model->get('setup_stage');
 
 		if ($step < $this->_setupComplete)
 		{
@@ -198,7 +162,7 @@ class Setup extends Base
 		else
 		{
 			// Setup complete, go to project page
-			$this->_redirect 	= Route::url('index.php?option=' . $this->_option . '&alias=' . $obj->alias);
+			$this->_redirect 	= Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias'));
 			return;
 		}
 
@@ -211,29 +175,22 @@ class Setup extends Base
 		// Set the page title
 		$this->_buildTitle();
 
-		if ($obj->id)
-		{
-			$this->view->params = new \JParameter( $obj->params );
-		}
 		if ($this->section == 'team')
 		{
 			$this->view->content = $this->_loadTeamEditor();
 		}
 
 		// Output HTML
-		$this->view->juser  		= $this->juser;
-		$this->view->project  		= $obj;
+		$this->view->model  		= $this->model;
 		$this->view->step			= $step;
 		$this->view->section  		= $this->section;
 		$this->view->title  		= $this->title;
 		$this->view->option 		= $this->_option;
 		$this->view->config 		= $this->config;
-		$this->view->gid 			= $this->_gid;
-		$this->view->group 			= $this->group;
 		$this->view->extended       = Request::getInt( 'extended', 0, 'post');
 
 		// Get messages	and errors
-		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->_getNotifications('success');
+		$this->view->msg = $this->_getNotifications('success');
 		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
@@ -254,20 +211,15 @@ class Setup extends Base
 		// Incoming
 		$step = Request::getInt( 'step', '0'); // Where do we go next?
 
-		// Instantiate a project
-		$obj = new Tables\Project( $this->database );
-
-		if ($this->_identifier && !$obj->loadProject($this->_identifier))
+		if ($this->_identifier && !$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 			return;
 		}
 
-		// Are we in setup?
-		$setup = $obj->id && $obj->state == 1 ? 0 : 1;
-
 		// New project?
-		$new = $obj->id ? false : true;
+		$new = $this->model->exists() ? false : true;
+		$setup = ($new || $this->model->inSetup()) ? true : false;
 
 		// Determine setup steps
 		$setupSteps = array('describe', 'team', 'finalize');
@@ -281,30 +233,38 @@ class Setup extends Base
 
 		// Are we allowed to save this step?
 		$current = array_search($this->section, $setupSteps);
-		if ($setup && !$this->_identifier && $current > 0)
+		if ($new && $current > 0)
 		{
 			// Error
 			return;
 		}
 
 		// Cannot save a new project unless in setup
-		if (!$setup && !$obj->id)
+		if ($new && !$setup)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 			return;
 		}
 
 		// Check authorization
-		$this->authorized = $this->_authorize();
-		if ($obj->id && (!$this->authorized
-			|| $this->authorized != 1
-			|| ($setup && $obj->created_by_user != $this->juser->get('id')))
-		)
+		if ($this->model->exists() && !$this->model->access('owner'))
 		{
-			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
-		elseif (!$obj->id && $this->_gid && !$this->authorized)
+		elseif (!$this->model->exists() && $this->_gid)
+		{
+			// Check group authorization to create a project
+			if (!$this->group->is_member_of('members', User::get('id'))
+				&& !$this->group->is_member_of('managers', User::get('id')))
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
+				return;
+			}
+		}
+
+		// Get group ID
+		if ($this->_gid)
 		{
 			// Load the group
 			$this->group = \Hubzero\User\Group::getInstance( $this->_gid );
@@ -312,17 +272,11 @@ class Setup extends Base
 			// Ensure we found the group info
 			if (!is_object($this->group) || (!$this->group->get('gidNumber') && !$this->group->get('cn')) )
 			{
-				\JError::raiseError( 404, Lang::txt('COM_PROJECTS_NO_GROUP_FOUND') );
+				throw new Exception(Lang::txt('COM_PROJECTS_NO_GROUP_FOUND'), 404);
 				return;
 			}
-
-			// Check group authorization to create a project
-			if (!$this->group->is_member_of('members',$this->juser->get('id'))
-				&& !$this->group->is_member_of('managers',$this->juser->get('id')))
-			{
-				\JError::raiseError( 403, Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP') );
-				return;
-			}
+			$this->_gid = $this->group->get('gidNumber');
+			$this->model->set('owned_by_group', $this->_gid);
 		}
 
 		if ($this->section == 'finalize')
@@ -336,7 +290,7 @@ class Setup extends Base
 				$this->_onAfterProjectCreate();
 
 				$this->_redirect = Route::url('index.php?option=' . $this->_option
-					. '&alias=' . $obj->alias);
+					. '&alias=' . $this->model->get('alias'));
 				return;
 			}
 		}
@@ -346,13 +300,11 @@ class Setup extends Base
 			$this->_process();
 		}
 
-		// Get Project after updates
-		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
-
 		// Record setup stage and move on
-		if ($setup && !$this->getError() && $step > $obj->setup_stage)
+		if ($setup && !$this->getError() && $step > $this->model->get('setup_stage'))
 		{
-			$obj->saveStage($this->project->id, $step);
+			$this->model->set('setup_stage', $step);
+			$this->model->store();
 		}
 
 		// Don't go next in case of error
@@ -369,9 +321,9 @@ class Setup extends Base
 
 		// Redirect
 		$task   = $setup ? 'setup' : 'edit';
-		$append = $new && $this->project->id && $this->next == 'describe' ? '#describearea' : '';
+		$append = $new && $this->model->exists() && $this->next == 'describe' ? '#describearea' : '';
 		$this->_redirect = Route::url('index.php?option=' . $this->_option
-			. '&task=' . $task . '&alias=' . $this->project->alias
+			. '&task=' . $task . '&alias=' . $this->model->get('alias')
 			. '&active=' . $this->next ) . $append;
 		return;
 	}
@@ -389,11 +341,10 @@ class Setup extends Base
 		$agree_ferpa 		= Request::getInt( 'agree_ferpa', 0, 'post' );
 		$state				= 1;
 
-		// Load project
-		$obj = new Tables\Project( $this->database );
-		if (!$obj->loadProject($this->_identifier))
+		// Cannot save a new project unless in setup
+		if (!$this->model->exists())
 		{
-			$this->setError( Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 			return;
 		}
 
@@ -410,7 +361,7 @@ class Setup extends Base
 				}
 
 				// Save params
-				$obj->saveParam($obj->id, 'restricted_data', htmlentities($restricted));
+				$this->model->saveParam('restricted_data', $restricted);
 			}
 			
 			// Restricted data with specific questions
@@ -426,7 +377,7 @@ class Setup extends Base
 				// Save individual restrictions
 				foreach ($restrictions as $key => $value)
 				{
-					$obj->saveParam($obj->id, $key, $value);
+					$this->model->saveParam($key, $value);
 				}
 
 				// No selections?
@@ -448,7 +399,7 @@ class Setup extends Base
 				}
 
 				// Handle restricted data choice, save params
-				$obj->saveParam($obj->id, 'restricted_data', htmlentities($restricted));
+				$this->model->saveParam('restricted_data', $restricted);
 
 				if ($restricted == 'yes')
 				{
@@ -489,7 +440,7 @@ class Setup extends Base
 				}
 				elseif ($restricted == 'maybe')
 				{
-					$obj->saveParam($obj->id, 'followup', 'yes');
+					$this->model->saveParam('followup', 'yes');
 				}
 			}
 
@@ -507,44 +458,38 @@ class Setup extends Base
 				$grant_title     = Request::getVar( 'grant_title', '' );
 				$grant_PI        = Request::getVar( 'grant_PI', '' );
 				$grant_budget    = Request::getVar( 'grant_budget', '' );
-				$obj->saveParam($obj->id, 'grant_budget', htmlentities($grant_budget));
-				$obj->saveParam($obj->id, 'grant_agency', htmlentities($grant_agency));
-				$obj->saveParam($obj->id, 'grant_title', htmlentities($grant_title));
-				$obj->saveParam($obj->id, 'grant_PI', htmlentities($grant_PI));
-				$obj->saveParam($obj->id, 'grant_status', 0);
+				$this->model->saveParam('grant_budget', $grant_budget);
+				$this->model->saveParam('grant_agency', $grant_agency);
+				$this->model->saveParam('grant_title', $grant_title);
+				$this->model->saveParam('grant_PI', $grant_PI);
+				$this->model->saveParam('grant_status', 0);
 			}
 		}
 
 		// Is the project active already?
-		$active = $obj->state == 1 ? 1 : 0;
+		$active = $this->model->get('state') == 1 ? 1 : 0;
 
 		// Sync with system group
-		$objO = new Tables\Owner( $this->database );
-		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
+		$objO = $this->model->table('Owner');
+		$objO->sysGroup($this->model->get('alias'), $this->config->get('group_prefix', 'pr-'));
 
 		// Activate project
 		if (!$active)
 		{
-			$obj->state = $state;
-			$obj->provisioned = 0; // remove provisioned flag if any
-			$obj->created = \JFactory::getDate()->toSql();
-			$obj->setup_stage = $this->_setupComplete;
+			$this->model->set('state', $state);
+			$this->model->set('provisioned', 0); // remove provisioned flag if any
+			$this->model->set('setup_stage', $this->_setupComplete);
+			$this->model->set('created', \JFactory::getDate()->toSql());
 
 			// Save changes
-			if (!$obj->store())
+			if (!$this->model->store())
 			{
-				$this->setError( $obj->getError() );
+				$this->setError( $this->model->getError() );
 				return false;
 			}
 
 			$this->_notify = $state == 1 ? true : false;
 		}
-
-		// Get updated project
-		$this->project = $obj->getProject(
-			$obj->id,
-			$this->juser->get('id')
-		);
 
 		return true;
 	}
@@ -578,7 +523,7 @@ class Setup extends Base
 				Helpers\Html::sendHUBMessage(
 					$this->_option,
 					$this->config,
-					$this->project,
+					$this->model->project(),
 					$admins,
 					Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 					'projects_new_project_admin',
@@ -591,7 +536,7 @@ class Setup extends Base
 		if (isset($this->_notify) && $this->_notify === true)
 		{
 			// Record activity
-			$this->_postActivity(Lang::txt('COM_PROJECTS_PROJECT_STARTED'));
+			$this->model->recordActivity(Lang::txt('COM_PROJECTS_PROJECT_STARTED'));
 
 			// Send out emails
 			$this->_notifyTeam();
@@ -605,13 +550,13 @@ class Setup extends Base
 	 */
 	protected function _iniGitRepo()
 	{
-		if (!isset($this->project) || !is_object($this->project) || !$this->project->alias)
+		if (!$this->model->exists())
 		{
 			return false;
 		}
 
 		// Build project repo path
-		$path = Helpers\Html::getProjectRepoPath($this->project->alias, 'files', false);
+		$path = Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'files', false);
 
 		// Create project repo path
 		if (!is_dir( $path ))
@@ -637,18 +582,14 @@ class Setup extends Base
 	 */
 	protected function _process()
 	{
-		// Load project
-		$obj = new Tables\Project( $this->database );
-		$obj->loadProject($this->_identifier);
-
 		// New project?
-		$new = $obj->id ? false : true;
+		$new = $this->model->exists() ? false : true;
 
 		// Are we in setup?
-		$setup = $obj->id && $obj->state == 1 ? false : true;
+		$setup = ($new || $this->model->inSetup()) ? true : false;
 
 		// Incoming
-		$private    = Request::getInt( 'private', 1, 'post' );
+		$private = Request::getInt( 'private', 1, 'post' );
 
 		// Save section
 		switch ($this->section)
@@ -659,7 +600,6 @@ class Setup extends Base
 				// Incoming
 				$name       = trim(Request::getVar( 'name', '', 'post' ));
 				$title      = trim(Request::getVar( 'title', '', 'post' ));
-				$type       = Request::getInt( 'type', 1, 'post' );
 
 				$name = preg_replace('/ /', '', $name);
 				$name = strtolower($name);
@@ -669,7 +609,7 @@ class Setup extends Base
 				$title = $this->_txtClean($title);
 
 				// Check incoming data
-				if ($setup && $new && !$this->model->check($name, $obj->id))
+				if ($setup && $new && !$this->model->check($name, $this->model->get('id')))
 				{
 					$this->setError( Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY') );
 					return false;
@@ -680,61 +620,57 @@ class Setup extends Base
 					return false;
 				}
 
-				if ($obj->id)
+				if ($this->model->exists())
 				{
-					$obj->modified    = \JFactory::getDate()->toSql();
-					$obj->modified_by = $this->juser->get('id');
+					$this->model->set('modified', \JFactory::getDate()->toSql());
+					$this->model->set('modified_by', User::get('id'));
 				}
 				else
 				{
-					$obj->alias             = $name;
-					$obj->private 			= $this->config->get('privacy', 1);
-					$obj->created 			= \JFactory::getDate()->toSql();
-					$obj->created_by_user 	= $this->juser->get('id');
-					$obj->owned_by_user 	= $this->juser->get('id');
-					$obj->owned_by_group 	= $this->_gid;
+					$this->model->set('alias', $name);
+					$this->model->set('created', \JFactory::getDate()->toSql());
+					$this->model->set('created_by_user', User::get('id'));
+					$this->model->set('owned_by_group', $this->_gid);
+					$this->model->set('owned_by_user', User::get('id'));
+					$this->model->set('private', $this->config->get('privacy', 1));
 				}
 
-				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
-				$obj->about = trim(Request::getVar( 'about', '', 'post', 'none', 2 ));
-				$obj->type 	= $type;
+				$this->model->set('title', \Hubzero\Utility\String::truncate($title, 250));
+				$this->model->set('about', trim(Request::getVar( 'about', '', 'post', 'none', 2 )));
+				$this->model->set('type', Request::getInt( 'type', 1, 'post' ));
 
 				// save advanced permissions
 				if (isset($_POST['private']))
 				{
-					$obj->private = $private;
+					$this->model->set('private', $private);
 				}
 
-				if ($setup && !$obj->id)
+				if ($setup && !$this->model->exists())
 				{
 					// Copy params from default project type
-					$objT 	= new Tables\Type( $this->database );
-					$obj->params = $objT->getParams ($obj->type);
+					$objT = $this->model->table('Type');
+					$this->model->set('params', $objT->getParams ($this->model->get('type')));
 				}
 
 				// Save changes
-				if (!$obj->store())
+				if (!$this->model->store())
 				{
-					$this->setError( $obj->getError() );
+					$this->setError( $this->model->getError() );
 					return false;
-				}
-				if (!$obj->id)
-				{
-					$obj->checkin();
 				}
 
 				// Save owners for new projects
 				if ($new)
 				{
-					$this->_identifier = $obj->alias;
+					$this->_identifier = $this->model->get('alias');
 
 					// Group owners
-					$objO 	= new Tables\Owner( $this->database );
+					$objO 	= $this->model->table('Owner');
 					if ($this->_gid)
 					{
 						if (!$objO->saveOwners (
-							$obj->id, $this->juser->get('id'), 0, $this->_gid,
-							0, 1, 1, '', $split_group_roles = 0
+							$this->model->get('id'), User::get('id'),
+							0, $this->_gid, 0, 1, 1, '', $split_group_roles = 0
 						))
 						{
 							$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
@@ -743,14 +679,14 @@ class Setup extends Base
 						}
 						// Make sure project creator is manager
 						$objO->reassignRole (
-							$obj->id,
+							$this->model->get('id'),
 							$users = array($this->juser->get('id')),
 							0 ,
 							1
 						);
 					}
-					elseif (!$objO->saveOwners ( $obj->id, $this->juser->get('id'),
-						$this->juser->get('id'), $this->_gid, 1, 1, 1 )
+					elseif (!$objO->saveOwners ( $this->model->get('id'), User::get('id'),
+						User::get('id'), $this->_gid, 1, 1, 1 )
 					)
 					{
 						$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
@@ -774,8 +710,7 @@ class Setup extends Base
 
 				// Save team
 				$content = $dispatcher->trigger( 'onProject', array(
-					$obj,
-					$this->authorized,
+					$this->model,
 					'save',
 					array('team')
 				));
@@ -800,12 +735,12 @@ class Setup extends Base
 				// Save privacy
 				if (isset($_POST['private']))
 				{
-					$obj->private = $private;
+					$this->model->set('private', $private);
 
 					// Save changes
-					if (!$obj->store())
+					if (!$this->model->store())
 					{
-						$this->setError( $obj->getError() );
+						$this->setError( $this->model->getError() );
 						return false;
 					}
 				}
@@ -814,35 +749,27 @@ class Setup extends Base
 				$incoming   = Request::getVar( 'params', array() );
 				if (!empty($incoming))
 				{
-					$old_params = $obj->params;
 					foreach ($incoming as $key => $value)
 					{
-						$obj->saveParam($obj->id, $key, htmlentities($value));
-
-						// Get updated project
-						$this->project = $obj->getProject(
-							$obj->id,
-							$this->juser->get('id')
-						);
+						$this->model->saveParam($key, $value);
 
 						// If grant information changed
-						if ($key == 'grant_status'
-							&& $old_params != $this->project->params)
+						if ($key == 'grant_status')
 						{
 							// Meta data for comment
 							$meta = '<meta>' . \JHTML::_('date', \JFactory::getDate(), 'M d, Y')
-							. ' - ' . $this->juser->get('name') . '</meta>';
+							. ' - ' . User::get('name') . '</meta>';
 
-							$cbase   = $obj->admin_notes;
+							$cbase   = $this->model->get('admin_notes');
 							$cbase  .= '<nb:sponsored>'
 							. Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
 							. $meta . '</nb:sponsored>';
-							$obj->admin_notes = $cbase;
+							$this->model->set('admin_notes', $cbase);
 
 							// Save admin notes
-							if (!$obj->store())
+							if (!$this->model->store())
 							{
-								$this->setError( $obj->getError() );
+								$this->setError( $this->model->getError() );
 								return false;
 							}
 
@@ -858,7 +785,7 @@ class Setup extends Base
 									Helpers\Html::sendHUBMessage(
 										$this->_option,
 										$this->config,
-										$this->project,
+										$this->model->project(),
 										$admins,
 										Lang::txt('COM_PROJECTS_EMAIL_ADMIN_REVIEWER_NOTIFICATION'),
 										'projects_new_project_admin',
@@ -888,8 +815,7 @@ class Setup extends Base
 
 		// Get plugin output
 		$content = $dispatcher->trigger( 'onProject', array(
-			$this->project,
-			$this->authorized,
+			$this->model,
 			$this->_task,
 			array('team')
 		));
@@ -914,15 +840,27 @@ class Setup extends Base
 	 */
 	public function editTask()
 	{
-		// Cannot proceed without project id/alias
-		if (!$this->_identifier)
+		// Check that project exists
+		if (!$this->model->exists() || $this->model->isDeleted())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 			return;
 		}
 
-		// Instantiate a project and related classes
-		$obj = new Tables\Project( $this->database );
+		// Check if project is in setup
+		if ($this->model->inSetup())
+		{
+			$this->_redirect = Route::url('index.php?option=' . $this->_option
+				. '&task=setup&id=' . $this->model->get('id'));
+			return;
+		}
+
+		// Only managers can edit project
+		if (!$this->model->access('manager'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Which section are we editing?
 		$sections = array('info', 'team', 'settings');
@@ -932,59 +870,24 @@ class Setup extends Base
 		}
 		$this->section = in_array( $this->section, $sections ) ? $this->section : 'info';
 
-		// Load project
-		$this->project = $obj->getProject($this->_identifier, $this->juser->get('id'));
-		if (!$this->project)
-		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
-			return;
-		}
-
-		// Check if project is in setup
-		if ($this->project->setup_stage < $this->_setupComplete)
-		{
-			$this->_redirect = Route::url('index.php?option=' . $this->_option
-				. '&task=setup&id=' . $this->project->id);
-			return;
-		}
-
-		// Is project deleted?
-		if ($this->project->state == 2)
-		{
-			\JError::raiseError( 404, Lang::txt('COM_PROJECTS_PROJECT_DELETED') );
-			return;
-		}
-
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Set the page title
 		$this->_buildTitle();
 
-		// Check authorization
-		$this->authorized = $this->_authorize();
-		if ($this->authorized != 1)
-		{
-			// Only managers can edit
-			\JError::raiseError( 403, Lang::txt('ALERTNOTAUTH') );
-			return;
-		}
-
 		$this->view->setLayout( 'edit' );
-		$this->view->project = $this->project;
-		$this->view->params = new \JParameter( $this->view->project->params );
-
 		if ($this->section == 'team')
 		{
 			$this->view->content = $this->_loadTeamEditor();
 		}
 
 		// Output HTML
-		$this->view->uid 		= $this->juser->get('id');
+		$this->view->model  	= $this->model;
+		$this->view->uid 		= User::get('id');
 		$this->view->section 	= $this->section;
 		$this->view->sections 	= $sections;
 		$this->view->title  	= $this->title;
-		$this->view->authorized = $this->authorized;
 		$this->view->option 	= $this->_option;
 		$this->view->config 	= $this->config;
 		$this->view->task 		= $this->_task;
