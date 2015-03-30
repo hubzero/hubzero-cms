@@ -30,4 +30,5 @@
 
 return array(
 	'Hubzero\Html\ToolbarServiceProvider',
+	'Hubzero\Module\ModuleServiceProvider',
 );

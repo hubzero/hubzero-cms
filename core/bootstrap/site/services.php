@@ -29,7 +29,5 @@
  */
 
 return array(
-	'Toolbar' => 'Hubzero\Facades\Toolbar',
-	'Submenu' => 'Hubzero\Facades\Submenu',
-	'Module'  => 'Hubzero\Facades\Module',
+	'Hubzero\Module\ModuleServiceProvider',
 );

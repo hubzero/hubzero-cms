@@ -28,8 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+// Create aliaes for runtime
 return array(
-	'Toolbar' => 'Hubzero\Facades\Toolbar',
-	'Submenu' => 'Hubzero\Facades\Submenu',
 	'Module'  => 'Hubzero\Facades\Module',
 );

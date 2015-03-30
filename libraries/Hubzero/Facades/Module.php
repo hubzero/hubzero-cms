@@ -24,12 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-return array(
-	'Toolbar' => 'Hubzero\Facades\Toolbar',
-	'Submenu' => 'Hubzero\Facades\Submenu',
-	'Module'  => 'Hubzero\Facades\Module',
-);
+namespace Hubzero\Facades;
+
+/**
+ * Module loader facade
+ */
+class Module extends Facade
+{
+	/**
+	 * Get the registered name.
+	 *
+	 * @return  string
+	 */
+	public static function getAccessor()
+	{
+		return 'module';
+	}
+}

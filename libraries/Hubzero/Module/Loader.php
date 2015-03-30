@@ -1,46 +1,53 @@
 <?php
 /**
- * @package     Joomla.Platform
- * @subpackage  Application
+ * HUBzero CMS
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('JPATH_PLATFORM') or die;
-
-jimport('joomla.application.component.helper');
+namespace Hubzero\Module;
 
 /**
- * Module helper class
- *
- * @package     Joomla.Platform
- * @subpackage  Application
- * @since       11.1
+ * Module loader class
  */
-abstract class JModuleHelper
+class Loader
 {
 	/**
 	 * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
 	 *
 	 * @param   string  $name   The name of the module
 	 * @param   string  $title  The title of the module, optional
-	 *
 	 * @return  object  The Module object
-	 *
-	 * @since   11.1
 	 */
-	public static function getModule($name, $title = null)
+	public function byName($name, $title = null)
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::byName($name, $title);
-		}
-
 		$result = null;
-		$modules =& JModuleHelper::_load();
-		$total = count($modules);
+
+		$modules = $this->all();
+		$total   = count($modules);
 
 		for ($i = 0; $i < $total; $i++)
 		{
@@ -51,8 +58,8 @@ abstract class JModuleHelper
 				if (!$title || $modules[$i]->title == $title)
 				{
 					// Found it
-					$result = &$modules[$i];
-					break; // Found it
+					$result =& $modules[$i];
+					break;
 				}
 			}
 		}
@@ -60,7 +67,7 @@ abstract class JModuleHelper
 		// If we didn't find it, and the name is mod_something, create a dummy object
 		if (is_null($result) && substr($name, 0, 4) == 'mod_')
 		{
-			$result            = new stdClass;
+			$result = new \stdClass;
 			$result->id        = 0;
 			$result->title     = '';
 			$result->module    = $name;
@@ -79,40 +86,31 @@ abstract class JModuleHelper
 	 * Get modules by position
 	 *
 	 * @param   string  $position  The position of the module
-	 *
-	 * @return  array  An array of module objects
-	 *
-	 * @since   11.1
+	 * @return  array   An array of module objects
 	 */
-	public static function getModules($position)
+	public function byPosition($position)
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::byPosition($position);
-		}
-
 		$position = strtolower($position);
-		$result = array();
+		$result   = array();
 
-		$modules =& JModuleHelper::_load();
+		$modules = $this->all();
 
 		$total = count($modules);
 		for ($i = 0; $i < $total; $i++)
 		{
 			if ($modules[$i]->position == $position)
 			{
-				$result[] = &$modules[$i];
+				$result[] =& $modules[$i];
 			}
 		}
 
 		if (count($result) == 0)
 		{
-			if (JRequest::getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display'))
+			if (\Request::getBool('tp') && \Component::params('com_templates')->get('template_positions_display'))
 			{
-				$result[0] = JModuleHelper::getModule('mod_' . $position);
-				$result[0]->title = $position;
-				$result[0]->content = $position;
+				$result[0] = $this->get('mod_' . $position);
+				$result[0]->title    = $position;
+				$result[0]->content  = $position;
 				$result[0]->position = $position;
 			}
 		}
@@ -124,20 +122,11 @@ abstract class JModuleHelper
 	 * Checks if a module is enabled
 	 *
 	 * @param   string  $module  The module name
-	 *
 	 * @return  boolean
-	 *
-	 * @since   11.1
 	 */
-	public static function isEnabled($module)
+	public function isEnabled($module)
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::isEnabled($module);
-		}
-
-		$result = JModuleHelper::getModule($module);
+		$result = $this->byName($module);
 
 		return !is_null($result);
 	}
@@ -147,27 +136,18 @@ abstract class JModuleHelper
 	 *
 	 * @param   object  $module   A module object.
 	 * @param   array   $attribs  An array of attributes for the module (probably from the XML).
-	 *
 	 * @return  string  The HTML content of the module output.
-	 *
-	 * @since   11.1
 	 */
-	public static function renderModule($module, $attribs = array())
+	public function render($module, $attribs = array())
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::render($module, $attribs);
-		}
-
 		static $chrome;
 
 		if (constant('JDEBUG'))
 		{
-			JProfiler::getInstance('Application')->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
+			\JProfiler::getInstance('Application')->mark('beforeRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
 
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Record the scope.
 		$scope = $app->scope;
@@ -176,7 +156,7 @@ abstract class JModuleHelper
 		$app->scope = $module->module;
 
 		// Get module parameters
-		$params = new JRegistry;
+		$params = new \JRegistry;
 		$params->loadString($module->params);
 
 		// Get module path
@@ -187,7 +167,7 @@ abstract class JModuleHelper
 		// $module->user is a check for 1.0 custom modules and is deprecated refactoring
 		if (empty($module->user) && file_exists($path))
 		{
-			$lang = JFactory::getLanguage();
+			$lang = \JFactory::getLanguage();
 			// 1.5 or Core then 1.6 3PD
 				$lang->load($module->module, JPATH_BASE, null, false, true)
 			||	$lang->load($module->module, dirname($path), null, false, true);
@@ -225,7 +205,7 @@ abstract class JModuleHelper
 		}
 
 		// Dynamically add outline style
-		if (JRequest::getBool('tp') && JComponentHelper::getParams('com_templates')->get('template_positions_display'))
+		if (\Request::getBool('tp') && \Component::params('com_templates')->get('template_positions_display'))
 		{
 			$attribs['style'] .= ' outline';
 		}
@@ -251,7 +231,7 @@ abstract class JModuleHelper
 
 		if (constant('JDEBUG'))
 		{
-			JProfiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
+			\JProfiler::getInstance('Application')->mark('afterRenderModule ' . $module->module . ' (' . $module->title . ')');
 		}
 
 		return $module->content;
@@ -262,20 +242,11 @@ abstract class JModuleHelper
 	 *
 	 * @param   string  $module  The name of the module
 	 * @param   string  $layout  The name of the module layout. If alternative layout, in the form template:filename.
-	 *
 	 * @return  string  The path to the module layout
-	 *
-	 * @since   11.1
 	 */
-	public static function getLayoutPath($module, $layout = 'default')
+	public function getLayoutPath($module, $layout = 'default')
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::getLayoutPath($module, $layout);
-		}
-
-		$template = JFactory::getApplication()->getTemplate();
+		$template = \JFactory::getApplication()->getTemplate();
 		$defaultLayout = $layout;
 
 		if (strpos($layout, ':') !== false)
@@ -311,10 +282,8 @@ abstract class JModuleHelper
 	 * Load published modules.
 	 *
 	 * @return  array
-	 *
-	 * @since   11.1
 	 */
-	protected static function &_load()
+	public function all()
 	{
 		static $clean;
 
@@ -323,19 +292,19 @@ abstract class JModuleHelper
 			return $clean;
 		}
 
-		$Itemid = JRequest::getInt('Itemid');
-		$app = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$Itemid = \Request::getInt('Itemid');
+		$app    = \JFactory::getApplication();
+		$user   = \User::getRoot();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
-		$lang = JFactory::getLanguage()->getTag();
+		$lang   = \JFactory::getLanguage()->getTag();
 		$clientId = (int) $app->getClientId();
 
-		$cache = JFactory::getCache('com_modules', '');
+		$cache = \JFactory::getCache('com_modules', '');
 		$cacheid = md5(serialize(array($Itemid, $groups, $clientId, $lang)));
 
 		if (!($clean = $cache->get($cacheid)))
 		{
-			$db = JFactory::getDbo();
+			$db = \JFactory::getDbo();
 
 			$query = $db->getQuery(true);
 			$query->select('m.id, m.title, m.module, m.position, m.content, m.showtitle, m.params, mm.menuid');
@@ -346,7 +315,7 @@ abstract class JModuleHelper
 			$query->join('LEFT', '#__extensions AS e ON e.element = m.module AND e.client_id = m.client_id');
 			$query->where('e.enabled = 1');
 
-			$date = JFactory::getDate();
+			$date = \JFactory::getDate();
 			$now = $date->toSql();
 			$nullDate = $db->getNullDate();
 			$query->where('(m.publish_up = ' . $db->Quote($nullDate) . ' OR m.publish_up <= ' . $db->Quote($now) . ')');
@@ -371,7 +340,7 @@ abstract class JModuleHelper
 
 			if ($db->getErrorNum())
 			{
-				JError::raiseWarning(500, JText::sprintf('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()));
+				throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_MODULE_LOAD', $db->getErrorMsg()), 500);
 				return $clean;
 			}
 
@@ -441,21 +410,10 @@ abstract class JModuleHelper
 	 * @param   object  $module        Module object
 	 * @param   object  $moduleparams  Module parameters
 	 * @param   object  $cacheparams   Module cache parameters - id or url parameters, depending on the module cache mode
-	 *
 	 * @return  string
-	 *
-	 * @since   11.1
-	 *
-	 * @link JFilterInput::clean()
 	 */
-	public static function moduleCache($module, $moduleparams, $cacheparams)
+	public function cache($module, $moduleparams, $cacheparams)
 	{
-		// [!] HUBzero compatibility
-		if (class_exists('\Module'))
-		{
-			return \Module::cache($module, $moduleparams, $cacheparams);
-		}
-
 		if (!isset($cacheparams->modeparams))
 		{
 			$cacheparams->modeparams = null;
@@ -466,9 +424,9 @@ abstract class JModuleHelper
 			$cacheparams->cachegroup = $module->module;
 		}
 
-		$user = JFactory::getUser();
-		$cache = JFactory::getCache($cacheparams->cachegroup, 'callback');
-		$conf = JFactory::getConfig();
+		$user  = \User::getRoot();
+		$cache = \JFactory::getCache($cacheparams->cachegroup, 'callback');
+		$conf  = \JFactory::getConfig();
 
 		// Turn cache off for internal callers if parameters are set to off and for all logged in users
 		if ($moduleparams->get('owncache', null) === '0' || $conf->get('caching') == 0 || $user->get('id'))
@@ -500,14 +458,14 @@ abstract class JModuleHelper
 				$secureid = null;
 				if (is_array($cacheparams->modeparams))
 				{
-					$uri = JRequest::get();
-					$safeuri = new stdClass;
+					$uri = \Request::get();
+					$safeuri = new \stdClass;
 					foreach ($cacheparams->modeparams as $key => $value)
 					{
 						// Use int filter for id/catid to clean out spamy slugs
 						if (isset($uri[$key]))
 						{
-							$safeuri->$key = JRequest::_cleanVar($uri[$key], 0, $value);
+							$safeuri->$key = \Request::_cleanVar($uri[$key], 0, $value);
 						}
 					}
 				}
@@ -523,8 +481,7 @@ abstract class JModuleHelper
 
 			case 'static':
 				$ret = $cache->get(
-					array($cacheparams->class,
-						$cacheparams->method),
+					array($cacheparams->class, $cacheparams->method),
 					$cacheparams->methodparams,
 					$module->module . md5(serialize($cacheparams->methodparams)),
 					$wrkarounds,
@@ -547,7 +504,7 @@ abstract class JModuleHelper
 				$ret = $cache->get(
 					array($cacheparams->class, $cacheparams->method),
 					$cacheparams->methodparams,
-					$module->id . $view_levels . JRequest::getVar('Itemid', null, 'default', 'INT'),
+					$module->id . $view_levels . \Request::getVar('Itemid', null, 'default', 'INT'),
 					$wrkarounds,
 					$wrkaroundoptions
 				);
@@ -555,5 +512,32 @@ abstract class JModuleHelper
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Get the parameters for a module
+	 *
+	 * @param   integer  $id  Module ID
+	 * @return  object
+	 */
+	public function params($id)
+	{
+		//database object
+		$db = \JFactory::getDBO();
+
+		//select module params based on name passed in
+		if (is_numeric($id))
+		{
+			$query = "SELECT params FROM `#__modules` WHERE `id`=" . $db->quote(intval($id)) . " AND `published`=1";
+		}
+		else
+		{
+			$query = "SELECT params FROM `#__modules` WHERE `module`=" . $db->quote($id) . " AND `published`=1";
+		}
+		$db->setQuery($query);
+		$params = $db->loadResult();
+
+		//return params
+		return new \JRegistry($params);
 	}
 }

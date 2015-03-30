@@ -43,14 +43,12 @@ class Helper
 	 */
 	public static function countModules($condition)
 	{
-		jimport('joomla.application.module.helper');
-
 		$words = explode(' ', $condition);
 		for ($i = 0; $i < count($words); $i+=2)
 		{
 			// odd parts (modules)
 			$name = strtolower($words[$i]);
-			$words[$i] = count(\JModuleHelper::getModules($name));
+			$words[$i] = count(\Module::byPosition($name));
 		}
 
 		$str = 'return ' . implode(' ', $words) . ';';
@@ -93,10 +91,9 @@ class Helper
 	 */
 	public static function renderModule($name, $style=-1)
 	{
-		$module = \JModuleHelper::getModule($name);
-		$params = array('style' => $style);
+		$module = \Module::byName($name);
 
-		return \JModuleHelper::renderModule($module, $params);
+		return \Module::render($module, array('style' => $style));
 	}
 
 	/**
@@ -113,7 +110,7 @@ class Helper
 		$params   = array('style' => $style);
 
 		$contents = '';
-		foreach (\JModuleHelper::getModules($position) as $mod)
+		foreach (\Module::byPosition($position) as $mod)
 		{
 			if ($mod->showtitle != 0)
 			{
@@ -133,15 +130,7 @@ class Helper
 	 */
 	public function getParams($id)
 	{
-		//database object
-		$db = \JFactory::getDBO();
-
-		//select module params based on name passed in
-		$db->setQuery("SELECT params FROM `#__modules` WHERE id='" . intval($id) . "' AND published=1");
-		$params = $db->loadResult();
-
-		//return params
-		return new \JRegistry($params);
+		return \Module::params($id);
 	}
 }
 
