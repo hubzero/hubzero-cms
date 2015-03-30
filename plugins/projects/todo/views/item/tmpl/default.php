@@ -57,8 +57,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 ?>
 <div id="plg-header">
 	<h3 class="todo"><a href="<?php echo Route::url($url); ?>"><?php echo $this->title; ?></a>
-	<?php if ($listName) { ?> &raquo; <a href="<?php echo Route::url($url).'/?list=' . $color; ?>"><span class="indlist <?php echo 'pin_' . $color; ?>"><?php echo $listName; ?></span></a> <?php } ?>
-	<?php if ($this->row->isComplete()) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo Route::url($url).'/?state=1'; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php } ?>
+	<?php if ($listName) { ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $color; ?>"><span class="indlist <?php echo 'pin_' . $color; ?>"><?php echo $listName; ?></span></a> <?php } ?>
+	<?php if ($this->row->isComplete()) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo Route::url($url) . '/?state=1'; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php } ?>
 	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->row->get('content'), 60); ?></span>
 	</h3>
 </div>
@@ -80,14 +80,14 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 					<p><?php echo Lang::txt('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>'; ?></p>
 					<p><?php echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
 				<?php } else if ($this->row->isComplete()) { ?>
-						<p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '.Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')); ?></p>
+						<p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')); ?></p>
 						<p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
 				<?php } ?>
 				</div>
 			</div>
 		</section>
 	<p class="td-options">
-		<?php if (!$this->row->isComplete()) { ?>
+		<?php if (!$this->row->isComplete() && $this->model->access('content')) { ?>
 		<span class="edit"><a href="<?php echo Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
 		<span class="checked"><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1'; ?>" class="confirm-checkoff"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
 		<?php } ?>

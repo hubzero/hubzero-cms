@@ -25,6 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+if (!$this->model->access('content'))
+{
+	return;
+}
+
 $max_s = 3;
 $actual_s = count($this->suggestions) >= $max_s ? $max_s : count($this->suggestions);
 

@@ -55,7 +55,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 		 ->set('listName', $listName)
 		 ->display();
 	?>
-	<?php if (!$this->filters['state']) { ?>
+	<?php if (!$this->filters['state'] && $this->model->access('content')) { ?>
 	<ul id="page_options" class="pluginOptions">
 		<li>
 			<a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">

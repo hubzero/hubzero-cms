@@ -24,6 +24,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+if (!$this->model->access('content'))
+{
+	return;
+}
 ?>
 <div id="blab" class="miniblog">
 	<form id="blogForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . $this->goto) . '/?active=feed'; ?>">

@@ -276,6 +276,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$todoid = $this->_todoid ? $this->_todoid : Request::getInt('todoid', 0);
 		$layout = ($this->_task == 'edit' || $this->_task == 'new') ? 'edit' : 'default';
 
+		// Check permission
+		if ($this->_task == 'edit' && !$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => $this->_type,
@@ -356,6 +363,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$task		= $this->_task;
 
 		$new = 0;
+
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
 
 		// Check if assignee is owner
 		$objO = $this->model->table('Owner');
@@ -615,6 +629,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function delete()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$todoid = $this->_todoid;
 		$list = Request::getVar('dl', '');
@@ -723,6 +744,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function reorder()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			return $this->page();
+		}
+
 		// AJAX
 		// Incoming
 		$newid = Request::getInt('newid', 0);
@@ -774,6 +801,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteComment()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$cid	= Request::getInt( 'cid', 0 );
 		$todoid = $this->_todoid;
@@ -824,6 +858,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveComment()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$itemid = Request::getInt( 'itemid', 0, 'post' );
 		$comment = trim(Request::getVar( 'comment', '', 'post' ));

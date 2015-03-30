@@ -50,7 +50,7 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
-	<?php if ($deletable) { ?>
+	<?php if ($deletable && $this->model->access('content')) { ?>
 		<span class="m_options">
 			<span class="delit" id="pu_<?php echo $comment->id; ?>">
 			 <a href="<?php echo Route::url('index.php?option=' . $this->option

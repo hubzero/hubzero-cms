@@ -364,6 +364,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$managers = Request::getInt('managers_only', 0);
 		$entry = trim(Request::getVar('blogentry', ''));
@@ -445,6 +452,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _delete()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$tbl = trim(Request::getVar('tbl', 'activity'));
 		$eid = Request::getInt('eid', 0);
@@ -939,6 +953,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _saveComment()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$itemid          = Request::getInt('itemid', 0, 'post');
 		$tbl             = trim(Request::getVar('tbl', 'activity', 'post'));
@@ -1023,6 +1044,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteComment()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$cid  = Request::getInt('cid', 0);
 

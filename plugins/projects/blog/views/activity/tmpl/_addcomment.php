@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 $a = $this->activity;
 
 // Add Comment
-if ($a->commentable) { ?>
+if ($a->commentable && $this->model->access('content')) { ?>
 <div class="addcomment <?php if (count($this->comments) == 0) { echo 'hidden'; } ?>" id="commentform_<?php echo $a->id; ?>">
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=feed'); ?>" method="post">
 		<fieldset>
