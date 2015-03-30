@@ -59,11 +59,14 @@ class ToolsTablePreferences extends JTable
 			$this->user_id = \JFactory::getUser()->get('id');
 		}
 
-		$test = new self($this->_db);
-		$test->loadByUser($this->user_id);
-		if ($test->id)
+		if (!$this->id)
 		{
-			$this->setError(\JText::sprintf('User with ID of %s already has a record.', $this->user_id));
+			$test = new self($this->_db);
+			$test->loadByUser($this->user_id);
+			if ($test->id)
+			{
+				$this->setError(\JText::sprintf('User with ID of %s already has a record.', $this->user_id));
+			}
 		}
 
 		if ($this->getError())
