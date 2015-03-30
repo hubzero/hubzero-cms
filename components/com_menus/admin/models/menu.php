@@ -105,7 +105,7 @@ class MenusModelMenu extends JModelForm
 	{
 		// Initialise variables.
 		$itemId = (!empty($itemId)) ? $itemId : (int)$this->getState('menu.id');
-		$false	= false;
+		$false = false;
 
 		// Get a menu item row instance.
 		$table = $this->getTable();
@@ -114,7 +114,8 @@ class MenusModelMenu extends JModelForm
 		$return = $table->load($itemId);
 
 		// Check for a table object error.
-		if ($return === false && $table->getError()) {
+		if ($return === false && $table->getError())
+		{
 			$this->setError($table->getError());
 			return $false;
 		}
@@ -136,7 +137,8 @@ class MenusModelMenu extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_menus.menu', 'menu', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -154,7 +156,8 @@ class MenusModelMenu extends JModelForm
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_menus.edit.menu.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -169,32 +172,36 @@ class MenusModelMenu extends JModelForm
 	 */
 	public function save($data)
 	{
-		$id	= (!empty($data['id'])) ? $data['id'] : (int)$this->getState('menu.id');
-		$isNew	= true;
+		$id = (!empty($data['id'])) ? $data['id'] : (int)$this->getState('menu.id');
+		$isNew = true;
 
 		// Get a row instance.
 		$table = $this->getTable();
 
 		// Load the row if saving an existing item.
-		if ($id > 0) {
+		if ($id > 0)
+		{
 			$table->load($id);
 			$isNew = false;
 		}
 
 		// Bind the data.
-		if (!$table->bind($data)) {
+		if (!$table->bind($data))
+		{
 			$this->setError($table->getError());
 			return false;
 		}
 
 		// Check the data.
-		if (!$table->check()) {
+		if (!$table->check())
+		{
 			$this->setError($table->getError());
 			return false;
 		}
 
 		// Store the data.
-		if (!$table->store()) {
+		if (!$table->store())
+		{
 			$this->setError($table->getError());
 			return false;
 		}
@@ -223,7 +230,8 @@ class MenusModelMenu extends JModelForm
 		$table = $this->getTable();
 
 		// Iterate the items to delete each one.
-		foreach ($itemIds as $itemId) {
+		foreach ($itemIds as $itemId)
+		{
 			// TODO: Delete the menu associations - Menu items and Modules
 
 			if (!$table->delete($itemId))
@@ -260,12 +268,14 @@ class MenusModelMenu extends JModelForm
 
 		$result = array();
 
-		foreach ($modules as &$module) {
+		foreach ($modules as &$module)
+		{
 			$params = new JRegistry;
 			$params->loadString($module->params);
 
 			$menuType = $params->get('menutype');
-			if (!isset($result[$menuType])) {
+			if (!isset($result[$menuType]))
+			{
 				$result[$menuType] = array();
 			}
 			$result[$menuType][] = &$module;
@@ -279,7 +289,8 @@ class MenusModelMenu extends JModelForm
 	 *
 	 * @since	1.6
 	 */
-	protected function cleanCache($group = null, $client_id = 0) {
+	protected function cleanCache($group = null, $client_id = 0)
+	{
 		parent::cleanCache('com_modules');
 		parent::cleanCache('mod_menu');
 	}

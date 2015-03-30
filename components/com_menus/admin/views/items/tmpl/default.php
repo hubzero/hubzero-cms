@@ -10,18 +10,18 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$app		= JFactory::getApplication();
-$userId		= $user->get('id');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$ordering 	= ($listOrder == 'a.lft');
-$canOrder	= $user->authorise('core.edit.state',	'com_menus');
-$saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
+$user      = JFactory::getUser();
+$app       = JFactory::getApplication();
+$userId    = $user->get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$ordering  = ($listOrder == 'a.lft');
+$canOrder  = $user->authorise('core.edit.state', 'com_menus');
+$saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 ?>
 <?php //Set up the filter bar. ?>
 <form action="<?php echo JRoute::_('index.php?option=com_menus&view=items');?>" method="post" name="adminForm" id="adminForm">
@@ -144,7 +144,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php else : ?>
 								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
 							<?php endif; ?>
-						<?php elseif($item->type =='url' && $item->note) : ?>
+						<?php elseif ($item->type =='url' && $item->note) : ?>
 							<?php echo JText::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note));?>
 						<?php endif; ?></p>
 				</td>
@@ -212,9 +212,9 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 		</tbody>
 	</table>
 	<?php //Load the batch processing form.is user is allowed ?>
-	<?php if($user->authorize('core.create', 'com_menus') && $user->authorize('core.edit', 'com_menus') && $user->authorize('core.edit.state', 'com_menus')) : ?>
+	<?php if ($user->authorize('core.create', 'com_menus') && $user->authorize('core.edit', 'com_menus') && $user->authorize('core.edit.state', 'com_menus')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
-	<?php endif;?>
+	<?php endif; ?>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
