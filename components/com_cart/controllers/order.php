@@ -198,8 +198,6 @@ class CartControllerOrder extends ComponentController
 			$postBackTransactionId = 331;
 		}
 		
-		mail('ilya@shunko.com', 'POST', serialize($_POST));
-
         $params =  JComponentHelper::getParams(JRequest::getVar('option'));
 
 		if (empty($_POST) && !$test)
