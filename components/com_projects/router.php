@@ -154,7 +154,7 @@ function ProjectsParseRoute($segments)
 	// General project tasks
 	$tasks = array(	'start', 'setup', 'edit',
 		'browse', 'intro', 'features', 'auth',
-		'delete', 'fixownership','stats'
+		'delete', 'fixownership','stats', 'process'
 	);
 
 	// Valid tasks
