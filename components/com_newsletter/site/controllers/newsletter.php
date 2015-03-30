@@ -205,17 +205,35 @@ class Newsletter extends SiteController
 		$newsletterPdfFolder = PATH_APP . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
 		$newsletterPdf = $newsletterPdfFolder . DS . $newsletter->alias . '.pdf';
 
+		// check for upload path
+		if (!is_dir($newsletterPdfFolder))
+		{
+			// Build the path if it doesn't exist
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($newsletterPdfFolder))
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+					JText::_('Unable to create the filepath.'),
+					'error'
+				);
+				return;
+			}
+		}
+
 		// check multiple places for wkhtmltopdf lib
 		// fallback on phantomjs
 		$cmd = '';
 		$fallback = '';
-		if (file_exists('/usr/bin/wkhtmltopdf'))
+		if (file_exists('/usr/bin/wkhtmltopdf') && file_exists('/usr/bin/xvfb-run'))
 		{
-			$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			//$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			$cmd = '/usr/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
-		else if (file_exists('/usr/local/bin/wkhtmltopdf'))
+		else if (file_exists('/usr/local/bin/wkhtmltopdf') && file_exists('/usr/local/bin/xvfb-run'))
 		{
-			$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			//$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			$cmd = '/usr/local/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
 
 		if (file_exists('/usr/bin/phantomjs'))
