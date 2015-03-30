@@ -33,10 +33,11 @@ $newComment = $this->project->lastvisit && $this->project->lastvisit <= $comment
 $deletable = ($comment->created_by == $this->uid or $this->project->role == 1) ? 1 : 0;
 
 $longComment = stripslashes($comment->comment);
+$longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
 
 $shorten = (strlen($longComment) > 250) ? 1 : 0;
 $shortComment = $shorten
-	? \Hubzero\Utility\String::truncate($longComment, 250) : $longComment;
+	? \Hubzero\Utility\String::truncate($longComment, 250, array('html' => true)) : $longComment;
 
 $longComment = \Components\Projects\Helpers\Html::replaceUrls($longComment, 'external');
 $shortComment = \Components\Projects\Helpers\Html::replaceUrls($shortComment, 'external');

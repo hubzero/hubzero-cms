@@ -215,17 +215,17 @@ HUB.ProjectTodo = {
 
 		$('.commentarea').each(function(i, item) {
 			$(item).on('keyup', function(e) {
-				HUB.Projects.setCounter(this);
+				//HUB.Projects.setCounter(this);
 			});
 
 			if ($(item).val()=='') {
 				$(item).css('color', '#999')
-					.css('height', '40px');
+					.css('height', '60px');
 			}
 			$(item).on('focus', function(e)
 			{
 				$(item).css('color', '#000')
-					.css('height', '100px');
+					.css('height', '150px');
 			});
 		});
 

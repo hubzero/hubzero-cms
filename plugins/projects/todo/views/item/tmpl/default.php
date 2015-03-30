@@ -114,7 +114,6 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 				<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
 					<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_WRITE_COMMENT'); ?>"></textarea>
 				</label>
-					<span class="hint"><?php echo Lang::txt('PLG_PROJECTS_TODO_COMMENT_HINT'); ?></span>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 					<input type="hidden" name="action" value="savecomment" />
