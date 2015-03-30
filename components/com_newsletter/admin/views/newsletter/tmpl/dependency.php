@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
 ?>
 
 <p class="warning">

@@ -32,11 +32,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_CATEGORIES') . ': ' . $text, 'support.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::spacer();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_CATEGORIES') . ': ' . $text, 'support.png');
+Toolbar::apply();
+Toolbar::save();
+Toolbar::spacer();
+Toolbar::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

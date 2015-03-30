@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
-JToolBarHelper::save();
-//JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
+Toolbar::save();
+//Toolbar::cancel();
 
 $reporter = JUser::getInstance($this->report->created_by);
 

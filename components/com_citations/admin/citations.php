@@ -52,27 +52,27 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'citations';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('CITATIONS'),
 	\Route::url('index.php?option=com_citations&controller=citations'),
 	($controllerName == 'citations' && \Request::getVar('task', '') != 'stats')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('CITATION_STATS'),
 	\Route::url('index.php?option=com_citations&controller=citations&task=stats'),
 	($controllerName == 'citations' && \Request::getVar('task', '') == 'stats')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('CITATION_TYPES'),
 	\Route::url('index.php?option=com_citations&controller=types'),
 	$controllerName == 'types'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('CITATION_SPONSORS'),
 	\Route::url('index.php?option=com_citations&controller=sponsors'),
 	$controllerName == 'sponsors'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('CITATION_FORMAT'),
 	\Route::url('index.php?option=com_citations&controller=format'),
 	$controllerName == 'format'

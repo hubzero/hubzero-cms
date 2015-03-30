@@ -45,7 +45,7 @@ class Info extends AdminController
 	 */
 	public function displayTask()
 	{
-		if (!$this->juser->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}

@@ -32,16 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set the title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES'), 'template.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES'), 'template.png');
 
 //add toolbar buttons
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
-JToolBarHelper::spacer();
-JToolBarHelper::deleteList('COM_NEWSLETTER_TEMPLATE_DELETE_CHECK', 'delete');
-JToolBarHelper::spacer();
-JToolBarHelper::preferences($this->option, '550');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
+Toolbar::spacer();
+Toolbar::deleteList('COM_NEWSLETTER_TEMPLATE_DELETE_CHECK', 'delete');
+Toolbar::spacer();
+Toolbar::preferences($this->option, '550');
 ?>
 <?php
 	if ($this->getError())

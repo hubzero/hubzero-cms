@@ -60,7 +60,6 @@ class Tickets extends AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$obj = new Tables\Ticket($this->database);
@@ -74,7 +73,7 @@ class Tickets extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -98,7 +97,7 @@ class Tickets extends AdminController
 		// Get query list
 		$sf = new Tables\QueryFolder($this->database);
 		$this->view->folders = $sf->find('list', array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
@@ -107,12 +106,12 @@ class Tickets extends AdminController
 		if (!count($this->view->folders))
 		{
 			// Get all the default folders
-			$this->view->folders = $sf->cloneCore($this->juser->get('id'));
+			$this->view->folders = $sf->cloneCore(User::get('id'));
 		}
 
 		$sq = new Tables\Query($this->database);
 		$queries = $sq->getRecords(array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
@@ -219,11 +218,11 @@ class Tickets extends AdminController
 		$watching = new Tables\Watching($this->database);
 		$this->view->watch = array(
 			'open' => $watching->count(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => 1
 			)),
 			'closed' => $watching->count(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => 0
 			))
 		);
@@ -246,7 +245,7 @@ class Tickets extends AdminController
 				));
 			}
 			$records = $watching->find(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => ($this->view->filters['show'] == -1 ? 1 : 0)
 			));
 			if (count($records))
@@ -289,12 +288,12 @@ class Tickets extends AdminController
 	 */
 	public function editTask($comment = null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		$layout = 'edit';
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Initiate database class and load info
 		$row = Ticket::getInstance($id);
@@ -308,9 +307,9 @@ class Tickets extends AdminController
 			$row->set('severity', 'normal');
 			$row->set('status', 0);
 			$row->set('created', \JFactory::getDate()->toSql());
-			$row->set('login', $this->juser->get('username'));
-			$row->set('name', $this->juser->get('name'));
-			$row->set('email', $this->juser->get('email'));
+			$row->set('login', User::get('username'));
+			$row->set('name', User::get('name'));
+			$row->set('email', User::get('email'));
 			$row->set('cookies', 1);
 
 			$browser = new \Hubzero\Browser\Detector();
@@ -318,10 +317,10 @@ class Tickets extends AdminController
 			$row->set('os', $browser->platform() . ' ' . $browser->platformVersion());
 			$row->set('browser', $browser->name() . ' ' . $browser->version());
 
-			$row->set('uas', \JRequest::getVar('HTTP_USER_AGENT','','server'));
+			$row->set('uas', Request::getVar('HTTP_USER_AGENT','','server'));
 
-			$row->set('ip', \JRequest::ip());
-			$row->set('hostname', gethostbyaddr(\JRequest::getVar('REMOTE_ADDR','','server')));
+			$row->set('ip', Request::ip());
+			$row->set('hostname', gethostbyaddr(Request::getVar('REMOTE_ADDR','','server')));
 			$row->set('section', 1);
 		}
 
@@ -362,17 +361,17 @@ class Tickets extends AdminController
 
 		$this->view->row = $row;
 
-		if ($watch = \JRequest::getWord('watch', ''))
+		if ($watch = Request::getWord('watch', ''))
 		{
 			$watch = strtolower($watch);
 
 			// Already watching
-			if ($this->view->row->isWatching($this->juser))
+			if ($this->view->row->isWatching(User::getRoot()))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$this->view->row->stopWatching($this->juser);
+					$this->view->row->stopWatching(User::getRoot());
 				}
 			}
 			// Not already watching
@@ -381,8 +380,8 @@ class Tickets extends AdminController
 				// Start watching?
 				if ($watch == 'start')
 				{
-					$this->view->row->watch($this->juser);
-					if (!$this->view->row->isWatching($this->juser, true))
+					$this->view->row->watch(User::getRoot());
+					if (!$this->view->row->isWatching(User::getRoot(), true))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}
@@ -425,11 +424,11 @@ class Tickets extends AdminController
 	public function saveTask($redirect=1)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$isNew = true;
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if ($id)
 		{
 			$isNew = false;
@@ -447,14 +446,14 @@ class Tickets extends AdminController
 			throw new Exception($row->getError(), 500);
 		}
 
-		$comment = \JRequest::getVar('comment', '', 'post', 'none', 2);
+		$comment = Request::getVar('comment', '', 'post', 'none', 2);
 		$rowc = new Comment();
 		$rowc->set('ticket', $id);
 
 		// Check if changes were made inbetween the time the comment was started and posted
 		if ($id)
 		{
-			$started = \JRequest::getVar('started', \JFactory::getDate()->toSql(), 'post');
+			$started = Request::getVar('started', \JFactory::getDate()->toSql(), 'post');
 			$lastcomment = $row->comments('list', array(
 				'sort'     => 'created',
 				'sort_Dir' => 'DESC',
@@ -497,11 +496,10 @@ class Tickets extends AdminController
 		}
 
 		// Save the tags
-		$row->tag(\JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
+		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
 		$row->set('tags', $row->tags('string'));
 
 		$juri = \JURI::getInstance();
-		$jconfig = \JFactory::getConfig();
 
 		$base = $juri->base();
 		if (substr($base, -14) == 'administrator/')
@@ -534,10 +532,10 @@ class Tickets extends AdminController
 			{
 				// Get some email settings
 				$msg = new \Hubzero\Mail\Message();
-				$msg->setSubject($jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $row->get('id')));
+				$msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $row->get('id')));
 				$msg->addFrom(
-					$jconfig->getValue('config.mailfrom'),
-					$jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+					Config::get('mailfrom'),
+					Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
 				);
 
 				// Plain text email
@@ -588,7 +586,7 @@ class Tickets extends AdminController
 					// Check if the address should come from Joomla config
 					if ($def == '{config.mailfrom}')
 					{
-						$def = $jconfig->getValue('config.mailfrom');
+						$def = Config::get('mailfrom');
 					}
 					// Check for a valid address
 					if (Validate::email($def))
@@ -605,26 +603,26 @@ class Tickets extends AdminController
 		if ($comment)
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($row->isWaiting() && $this->juser->get('username') == $row->get('login'))
+			if ($row->isWaiting() && User::get('username') == $row->get('login'))
 			{
 				$row->open();
 			}
 		}
 
 		// Create a new support comment object and populate it
-		$access = \JRequest::getInt('access', 0);
+		$access = Request::getInt('access', 0);
 
 		//$rowc = new Comment();
 		$rowc->set('ticket', $row->get('id'));
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', \JFactory::getDate()->toSql());
-		$rowc->set('created_by', $this->juser->get('id'));
+		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$rowc->changelog()->diff($old, $row);
 
-		$rowc->changelog()->cced(\JRequest::getVar('cc', ''));
+		$rowc->changelog()->cced(Request::getVar('cc', ''));
 
 		// Save the data
 		if (!$rowc->store())
@@ -646,7 +644,7 @@ class Tickets extends AdminController
 		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner') || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
-			if (\JRequest::getInt('email_submitter', 0) == 1)
+			if (Request::getInt('email_submitter', 0) == 1)
 			{
 				// Is the comment private? If so, we do NOT send e-mail to the
 				// submitter regardless of the above setting
@@ -662,7 +660,7 @@ class Tickets extends AdminController
 			}
 
 			// Send e-mail to ticket owner?
-			if (\JRequest::getInt('email_owner', 0) == 1)
+			if (Request::getInt('email_owner', 0) == 1)
 			{
 				if ($row->get('owner'))
 				{
@@ -692,7 +690,7 @@ class Tickets extends AdminController
 					$rowc->addTo($watcher->user_id, 'watcher');
 				}
 			}
-			$this->acl->setUser($this->juser->get('id'));
+			$this->acl->setUser(User::get('id'));
 
 			if (count($rowc->to()))
 			{
@@ -700,8 +698,8 @@ class Tickets extends AdminController
 				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 				$from = array(
-					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-					'email'     => $jconfig->getValue('config.mailfrom'),
+					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
+					'email'     => Config::get('mailfrom'),
 					'multipart' => md5(date('U'))  // Html email
 				);
 
@@ -744,7 +742,7 @@ class Tickets extends AdminController
 					{
 						// The reply-to address contains the token
 						$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
-						$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+						$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
 					}
 
 					// Get the user's email address
@@ -773,7 +771,7 @@ class Tickets extends AdminController
 
 						$email = array(
 							$to['email'],
-							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+							'htc-' . $token . strstr(Config::get('mailfrom'), '@')
 						);
 
 						// In this case each item in email in an array, 1- To, 2:reply to address
@@ -820,7 +818,7 @@ class Tickets extends AdminController
 		// output messsage and redirect
 		if ($redirect)
 		{
-			$filters = \JRequest::getVar('filters', '');
+			$filters = Request::getVar('filters', '');
 			$filters = str_replace('&amp;','&', $filters);
 
 			// Redirect
@@ -842,11 +840,11 @@ class Tickets extends AdminController
 	 */
 	public function batchTask()
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$this->view->ids = \JRequest::getVar('id', array());
-		$this->view->tmpl = \JRequest::getVar('tmpl', '');
+		$this->view->ids = Request::getVar('id', array());
+		$this->view->tmpl = Request::getVar('tmpl', '');
 
 		$this->view->filters = Utilities::getFilters();
 		$this->view->lists = array();
@@ -876,22 +874,21 @@ class Tickets extends AdminController
 	public function processTask()
 	{
 		// Incoming
-		$tmpl    = \JRequest::getVar('tmpl');
+		$tmpl    = Request::getVar('tmpl');
 
-		$ids     = \JRequest::getVar('id', array());
-		$fields  = \JRequest::getVar('fields', array());
-		$tags    = \JRequest::getVar('tags', '');
+		$ids     = Request::getVar('id', array());
+		$fields  = Request::getVar('fields', array());
+		$tags    = Request::getVar('tags', '');
 		$access  = 1;
 
-		$fields['owner'] = \JRequest::getVar('owner', '');
-		/*$comment = nl2br(\JRequest::getVar('comment', '', 'post', 'none', 2));
-		$cc      = \JRequest::getVar('cc', '');
-		$access  = \JRequest::getInt('access', 0);
-		$email_submitter = \JRequest::getInt('email_submitter', 0);
-		$email_owner = \JRequest::getInt('email_owner', 0);
+		$fields['owner'] = Request::getVar('owner', '');
+		/*$comment = nl2br(Request::getVar('comment', '', 'post', 'none', 2));
+		$cc      = Request::getVar('cc', '');
+		$access  = Request::getInt('access', 0);
+		$email_submitter = Request::getInt('email_submitter', 0);
+		$email_owner = Request::getInt('email_owner', 0);
 
 		$juri    = \JURI::getInstance();
-		$jconfig = \JFactory::getConfig();
 
 		$base = $juri->base();
 		if (substr($base, -14) == 'administrator/')
@@ -958,7 +955,7 @@ class Tickets extends AdminController
 			if ($tags)
 			{
 				$row->set('tags', $tags);
-				$row->tag($row->get('tags'), $this->juser->get('id'), 1);
+				$row->tag($row->get('tags'), User::get('id'), 1);
 			}
 			else
 			{
@@ -970,7 +967,7 @@ class Tickets extends AdminController
 			$rowc->set('ticket', $id);
 			$rowc->set('comment', $comment);
 			$rowc->set('created', \JFactory::getDate()->toSql());
-			$rowc->set('created_by', $this->juser->get('id'));
+			$rowc->set('created_by', User::get('id'));
 			//$rowc->set('access', $access);
 
 			// Compare fields to find out what has changed for this ticket and build a changelog
@@ -980,7 +977,7 @@ class Tickets extends AdminController
 			// Save the data
 			if (!$rowc->store())
 			{
-				$this->setError(500, $rowc->getError());
+				$this->setError($rowc->getError());
 				continue;
 			}
 
@@ -1032,8 +1029,8 @@ class Tickets extends AdminController
 					$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 					$from = array(
-						'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-						'email'     => $jconfig->getValue('config.mailfrom'),
+						'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
+						'email'     => Config::get('mailfrom'),
 						'multipart' => md5(date('U'))  // Html email
 					);
 
@@ -1067,7 +1064,7 @@ class Tickets extends AdminController
 						{
 							// The reply-to address contains the token
 							$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
-							$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+							$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
 						}
 
 						// Get the user's email address
@@ -1090,7 +1087,7 @@ class Tickets extends AdminController
 
 							$email = array(
 								$to['email'],
-								'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+								'htc-' . $token . strstr(Config::get('mailfrom'), '@')
 							);
 
 							// In this case each item in email in an array, 1- To, 2:reply to address
@@ -1132,7 +1129,7 @@ class Tickets extends AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (\JRequest::getInt('no_html', 0) ? '&no_html=1' : ''), false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
 			Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
 		);
 	}
@@ -1145,10 +1142,10 @@ class Tickets extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -1347,7 +1344,7 @@ class Tickets extends AdminController
 	public function downloadTask()
 	{
 		// Get the ID of the file requested
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Instantiate an attachment object
 		$attach = new Tables\Attachment($this->database);
@@ -1416,7 +1413,7 @@ class Tickets extends AdminController
 	public function uploadTask($listdir, $comment = 0)
 	{
 		// Incoming
-		$description = \JRequest::getVar('description', '');
+		$description = Request::getVar('description', '');
 
 		if (!$listdir)
 		{
@@ -1425,7 +1422,7 @@ class Tickets extends AdminController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_ERROR_NO_FILE'));

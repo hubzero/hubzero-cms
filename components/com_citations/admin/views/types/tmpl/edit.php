@@ -34,14 +34,14 @@ $canDo = \Components\Citations\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edittype' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-JToolBarHelper::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_TYPES') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_TYPES') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('type');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('type');
 
 $id     = NULL;
 $type   = NULL;

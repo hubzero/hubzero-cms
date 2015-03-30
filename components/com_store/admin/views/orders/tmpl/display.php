@@ -34,13 +34,13 @@ $canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
-JToolBarHelper::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_store', '550');
+	Toolbar::preferences('com_store', '550');
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('orders');
+Toolbar::spacer();
+Toolbar::help('orders');
 
 ?>
 <script type="text/javascript">

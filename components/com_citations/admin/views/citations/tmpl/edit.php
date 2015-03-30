@@ -34,17 +34,16 @@ $canDo = \Components\Citations\Helpers\Permissions::getActions('citation');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-JToolBarHelper::title(Lang::txt('CITATION') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATION') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('citation');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('citation');
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+$editor = JFactory::getEditor();
 
 //set the escape callback
 $this->setEscape("htmlentities");

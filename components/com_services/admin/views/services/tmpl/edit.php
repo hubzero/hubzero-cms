@@ -34,14 +34,14 @@ $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

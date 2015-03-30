@@ -50,15 +50,15 @@ class Media extends SiteController
 	public function ajaxUploadTask()
 	{
 		// Check if they're logged in
-		/*if ($this->juser->get('guest'))
+		/*if (User::isGuest())
 		{
 			echo json_encode(array('error' => Lang::txt('Must be logged in.')));
 			return;
 		}*/
 
 		// Ensure we have an ID to work with
-		$ticket  = \JRequest::getInt('ticket', 0);
-		$comment = \JRequest::getInt('comment', 0);
+		$ticket  = Request::getInt('ticket', 0);
+		$comment = Request::getInt('comment', 0);
 		if (!$ticket)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
@@ -181,7 +181,7 @@ class Media extends SiteController
 			'ticket'      => $ticket,
 			'comment_id'  => $comment,
 			'filename'    => $filename . '.' . $ext,
-			'description' => \JRequest::getVar('description', '')
+			'description' => Request::getVar('description', '')
 		));
 		if (!$asset->store(true))
 		{
@@ -220,20 +220,20 @@ class Media extends SiteController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		/*if ($this->juser->get('guest'))
+		/*if (User::isGuest())
 		{
 			$this->displayTask();
 			return;
 		}*/
 
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
 		}
 
 		// Ensure we have an ID to work with
-		$ticket  = \JRequest::getInt('ticket', 0, 'post');
-		$comment = \JRequest::getInt('comment', 0, 'post');
+		$ticket  = Request::getInt('ticket', 0, 'post');
+		$comment = Request::getInt('comment', 0, 'post');
 		if (!$ticket)
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_ID'));
@@ -242,7 +242,7 @@ class Media extends SiteController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
@@ -314,7 +314,7 @@ class Media extends SiteController
 				'ticket'      => $ticket,
 				'comment_id'  => $comment,
 				'filename'    => $filename,
-				'description' => \JRequest::getVar('description', '')
+				'description' => Request::getVar('description', '')
 			));
 
 			if (!$asset->store(true))
@@ -334,13 +334,13 @@ class Media extends SiteController
 	 */
 	public function deleteTask()
 	{
-		if (\JRequest::getVar('no_html', 0))
+		if (Request::getVar('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
 		}
 
 		// Incoming asset
-		$id = \JRequest::getInt('asset', 0, 'get');
+		$id = Request::getInt('asset', 0, 'get');
 
 		$model = new Attachment($id);
 
@@ -349,7 +349,7 @@ class Media extends SiteController
 			// Check if they're logged in when the ticket ID
 			// is > 0. This means it's an attachment on a real
 			// ticket, not a temp.
-			if ($model->get('ticket') > 0 && $this->juser->get('guest'))
+			if ($model->get('ticket') > 0 && User::isGuest())
 			{
 				$this->displayTask();
 				return;
@@ -369,7 +369,7 @@ class Media extends SiteController
 	public function ajaxDeleteTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('asset', 0);
+		$id = Request::getInt('asset', 0);
 
 		if ($id)
 		{
@@ -403,8 +403,8 @@ class Media extends SiteController
 	public function displayTask()
 	{
 		// Incoming
-		$ticket  = \JRequest::getInt('ticket', 0);
-		$comment = \JRequest::getInt('comment', 0);
+		$ticket  = Request::getInt('ticket', 0);
+		$comment = Request::getInt('comment', 0);
 
 		if (!$ticket)
 		{

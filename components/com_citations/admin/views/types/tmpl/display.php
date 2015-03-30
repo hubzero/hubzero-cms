@@ -32,22 +32,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Citations\Helpers\Permissions::getActions('type');
 
-JToolBarHelper::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_TYPES'), 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_TYPES'), 'citation.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::spacer();
-	JToolBarHelper::deleteList();
+	Toolbar::spacer();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('types');
+Toolbar::spacer();
+Toolbar::help('types');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -75,7 +75,7 @@ function submitbutton(pressbutton)
 			<?php foreach ($this->types as $i => $t) : ?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" />
 					</td>
 					<td>
 						<?php echo $t['id']; ?>

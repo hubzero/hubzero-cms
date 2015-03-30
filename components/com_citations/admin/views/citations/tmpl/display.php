@@ -32,25 +32,25 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Citations\Helpers\Permissions::getActions('citation');
 
-JToolBarHelper::title(Lang::txt('CITATIONS'), 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS'), 'citation.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_citations', 600, 800);
+	Toolbar::preferences('com_citations', 600, 800);
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('citations');
+Toolbar::spacer();
+Toolbar::help('citations');
 
 //set the escape callback
 $this->setEscape("htmlentities");

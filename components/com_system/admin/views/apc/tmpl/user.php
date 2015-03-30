@@ -36,7 +36,7 @@ $this->MY_SELF   = str_replace('&amp;', '&', $this->MY_SELF);
 $this->MY_SELF   = str_replace('&', '&amp;', $this->MY_SELF);
 
 // Menu items
-JToolBarHelper::title(Lang::txt('COM_SYSTEM_APC_USER'), 'config.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_APC_USER'), 'config.png');
 
 $this->css('apc.css');
 ?>

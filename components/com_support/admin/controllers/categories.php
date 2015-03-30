@@ -60,14 +60,13 @@ class Categories extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.categories.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -114,12 +113,12 @@ class Categories extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getInt('id', 0);
+			$id = Request::getInt('id', 0);
 
 			// Initiate database class and load info
 			$row = new Category($this->database);
@@ -158,10 +157,10 @@ class Categories extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$fields = \JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		// Initiate class and bind posted items to database fields
 		$row = new Category($this->database);
@@ -208,10 +207,10 @@ class Categories extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		if (!is_array($ids))
 		{
 			$ids = array(0);

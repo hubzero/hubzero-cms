@@ -61,14 +61,13 @@ class Resolutions extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.resolutions.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -104,12 +103,12 @@ class Resolutions extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = \JRequest::getInt('id', 0);
+			$id = Request::getInt('id', 0);
 
 			// Initiate database class and load info
 			$row = new Resolution($this->database);
@@ -138,10 +137,10 @@ class Resolutions extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$res = \JRequest::getVar('res', array(), 'post');
+		$res = Request::getVar('res', array(), 'post');
 		$res = array_map('trim', $res);
 
 		// Initiate class and bind posted items to database fields
@@ -184,10 +183,10 @@ class Resolutions extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		// Check for an ID
 		if (count($ids) < 1)

@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS') . ': ' . $text, 'support.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS') . ': ' . $text, 'support.png');
+Toolbar::save();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

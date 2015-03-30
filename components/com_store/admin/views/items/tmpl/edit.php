@@ -34,14 +34,14 @@ $canDo = \Components\Store\Helpers\PErmissions::getActions('item');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
-JToolBarHelper::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('item');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('item');
 
 $created = NULL;
 if (intval($this->row->created) <> 0)

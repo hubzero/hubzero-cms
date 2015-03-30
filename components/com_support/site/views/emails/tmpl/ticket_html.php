@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
 
 if (!($this->ticket instanceof \Components\Support\Models\Ticket))
 {
@@ -111,14 +110,14 @@ $this->css(
 		<tbody>
 			<tr>
 				<td width="10%" align="left" valign="bottom" nowrap="nowrap" class="sitename">
-					<?php echo $jconfig->getValue('config.sitename'); ?>
+					<?php echo Config::get('sitename'); ?>
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
 						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
 					</span>
 					<br />
-					<span class="description"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
+					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
 					<?php echo Lang::txt('COM_SUPPORT_CENTER'); ?>
@@ -262,7 +261,7 @@ $this->css(
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo Lang::txt('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, '#' . $this->ticket->get('id'), $base, $base); ?></span>
+					<span><?php echo Lang::txt('COM_SUPPORT_EMAIL_WHY_NOTFIED', Config::get('sitename'), $link, '#' . $this->ticket->get('id'), $base, $base); ?></span>
 				</td>
 			</tr>
 		</tbody>

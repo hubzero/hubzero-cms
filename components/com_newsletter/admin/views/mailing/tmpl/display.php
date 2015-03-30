@@ -32,16 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
+Toolbar::title(Lang::txt( 'COM_NEWSLETTER_NEWSLETTER_MAILINGS' ), 'mailing.png');
 
 //add buttons to toolbar
-//JToolBarHelper::custom('process', 'options', '', 'Process', false);
-//JToolBarHelper::custom('processips', 'refresh', '', 'IPs', false);
-JToolBarHelper::spacer();
-JToolBarHelper::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
-JToolBarHelper::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');
-JToolBarHelper::spacer();
-JToolBarHelper::preferences($this->option, '550');
+//Toolbar::custom('process', 'options', '', 'Process', false);
+//Toolbar::custom('processips', 'refresh', '', 'IPs', false);
+Toolbar::spacer();
+Toolbar::custom('tracking', 'stats', '', 'COM_NEWSLETTER_TOOLBAR_STATS');
+Toolbar::custom('stop', 'trash', '', 'COM_NEWSLETTER_TOOLBAR_STOP');
+Toolbar::spacer();
+Toolbar::preferences($this->option, '550');
 ?>
 
 <script type="text/javascript">

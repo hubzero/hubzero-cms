@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_SYSTEM_APC'), 'config.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_APC'), 'config.png');
 
 $this->css('apc.css');
 

@@ -34,14 +34,14 @@ $canDo = \Components\Citations\Helpers\Permissions::getActions('sponsor');
 
 $text = ($this->task == 'edit' ? Lang::txt('EDIT') : Lang::txt('NEW'));
 
-JToolBarHelper::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_SPONSORS') . ': ' . $text, 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ' ' . Lang::txt('CITATION_SPONSORS') . ': ' . $text, 'citation.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('sponsor');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('sponsor');
 
 $id      = null;
 $sponsor = null;

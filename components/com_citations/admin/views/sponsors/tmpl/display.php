@@ -32,13 +32,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Citations\Helpers\Permissions::getActions('sponsor');
 
-JToolBarHelper::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_SPONSORS'), 'citation.png');
+Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_SPONSORS'), 'citation.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('sponsors');
+Toolbar::spacer();
+Toolbar::help('sponsors');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

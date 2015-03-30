@@ -46,12 +46,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'services';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SERVICES_SERVICES'),
 	\Route::url('index.php?option=com_services&controller=services'),
 	$controllerName == 'services'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SERVICES_SUBSCRIPTIONS'),
 	\Route::url('index.php?option=com_services&controller=subscriptions'),
 	$controllerName == 'subscriptions'

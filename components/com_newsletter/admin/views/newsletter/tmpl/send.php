@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_SEND') . ': ' . $this->newsletter->name, 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', false);
-JToolBarHelper::cancel();
+Toolbar::custom('dosendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND', false);
+Toolbar::cancel();
 
 // add jquery ui
 JHTML::_('behavior.framework', true);

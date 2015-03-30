@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_SYSTEM_GEO_CONFIGURATION'), 'config.png');
-JToolBarHelper::preferences($this->option, '550');
+Toolbar::title(Lang::txt('COM_SYSTEM_GEO_CONFIGURATION'), 'config.png');
+Toolbar::preferences($this->option, '550');
 
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">

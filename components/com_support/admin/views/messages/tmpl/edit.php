@@ -32,15 +32,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_MESSAGES') . ': ' . $text, 'support.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::spacer();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('messages');
-
-$jconfig = JFactory::getConfig();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_MESSAGES') . ': ' . $text, 'support.png');
+Toolbar::apply();
+Toolbar::save();
+Toolbar::spacer();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('messages');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -84,10 +82,10 @@ function submitbutton(pressbutton)
 			<dd><?php echo Lang::txt('COM_SUPPORT_MESSAGE_TICKET_NUM_EXPLANATION'); ?></dd>
 
 			<dt>{sitename}</dt>
-			<dd><?php echo $jconfig->getValue('config.sitename'); ?></dd>
+			<dd><?php echo Config::get('sitename'); ?></dd>
 
 			<dt>{siteemail}</dt>
-			<dd><?php echo $jconfig->getValue('config.mailfrom'); ?></dd>
+			<dd><?php echo Config::get('mailfrom'); ?></dd>
 		</dl>
 	</div>
 	<div class="clr"></div>

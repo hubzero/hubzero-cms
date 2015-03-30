@@ -86,7 +86,7 @@ class Queries extends SiteController
 
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		$this->view->row = new Query($this->database);
 		$this->view->row->load($id);
@@ -121,12 +121,12 @@ class Queries extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = \JRequest::getVar('fields', array(), 'post');
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$fields  = Request::getVar('fields', array(), 'post');
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		$row = new Query($this->database);
 		if (!$row->bind($fields))
@@ -194,9 +194,9 @@ class Queries extends SiteController
 	public function removeTask()
 	{
 		// Incoming
-		$id      = \JRequest::getInt('id', 0);
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$id      = Request::getInt('id', 0);
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		// Check for an ID
 		if (!$id)
@@ -241,14 +241,14 @@ class Queries extends SiteController
 		// Get query list
 		$sf = new QueryFolder($this->database);
 		$this->view->folders = $sf->find('list', array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
 
 		$sq = new Query($this->database);
 		$queries = $sq->find('list', array(
-			'user_id'  => $this->juser->get('id'),
+			'user_id'  => User::get('id'),
 			'sort'     => 'ordering',
 			'sort_Dir' => 'asc'
 		));
@@ -293,7 +293,7 @@ class Queries extends SiteController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=tickets&task=display'
+			Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display', false)
 		);
 	}
 
@@ -315,11 +315,11 @@ class Queries extends SiteController
 	 */
 	public function editfolderTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -360,12 +360,12 @@ class Queries extends SiteController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = \JRequest::getVar('fields', array());
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$fields  = Request::getVar('fields', array());
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		$response = new stdClass;
 		$response->success = 1;
@@ -449,13 +449,13 @@ class Queries extends SiteController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (is_array($ids) ?: array($ids));
 
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		foreach ($ids as $id)
 		{
@@ -487,11 +487,11 @@ class Queries extends SiteController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$folders = \JRequest::getVar('folder', array());
-		$queries = \JRequest::getVar('queries', array());
+		$folders = Request::getVar('folder', array());
+		$queries = Request::getVar('queries', array());
 
 		if (is_array($folders))
 		{

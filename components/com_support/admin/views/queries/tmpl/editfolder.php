@@ -30,18 +30,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$tmpl = JRequest::getWord('tmpl', '');
-$no_html = JRequest::getInt('no_html', 0);
+$tmpl = Request::getWord('tmpl', '');
+$no_html = Request::getInt('no_html', 0);
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 if (!$no_html && !$tmpl)
 {
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_QUERY_FOLDER') . ': ' . $text, 'support.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::spacer();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_QUERY_FOLDER') . ': ' . $text, 'support.png');
+Toolbar::apply();
+Toolbar::save();
+Toolbar::spacer();
+Toolbar::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 

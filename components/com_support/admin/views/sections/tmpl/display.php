@@ -28,12 +28,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title( Lang::txt( 'Ticket Sections' ), 'addedit.png' );
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+Toolbar::title( Lang::txt('Ticket Sections'), 'addedit.png');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -52,7 +52,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->rows );?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th><?php echo Lang::txt('SUPPORT_COL_ID'); ?></th>
 				<th><?php echo Lang::txt('SUPPORT_COL_SECTION'); ?></th>
 			</tr>
@@ -73,12 +73,12 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 ?>
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
+				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape($row->section); ?></a></td>
 			</tr>

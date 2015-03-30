@@ -33,11 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $text, 'list.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $text, 'list.png');
 
 //add toolbar buttons
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <?php

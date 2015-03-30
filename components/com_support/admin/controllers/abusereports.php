@@ -59,7 +59,7 @@ class Abusereports extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				\JFactory::getConfig()->get('list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -74,7 +74,7 @@ class Abusereports extends AdminController
 				0,
 				'int'
 			),
-			'sortby' => \JRequest::getVar('sortby', 'a.created DESC')
+			'sortby' => Request::getVar('sortby', 'a.created DESC')
 		);
 
 		$model = new ReportAbuse($this->database);
@@ -96,11 +96,11 @@ class Abusereports extends AdminController
 	 */
 	public function viewTask()
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
-		$cat = \JRequest::getVar('cat', '');
+		$id = Request::getInt('id', 0);
+		$cat = Request::getVar('cat', '');
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -200,11 +200,11 @@ class Abusereports extends AdminController
 	public function releaseTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
-		$parentid = \JRequest::getInt('parentid', 0);
+		$id = Request::getInt('id', 0);
+		$parentid = Request::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -220,7 +220,7 @@ class Abusereports extends AdminController
 		$report->load($id);
 		$report->state = 1;
 		$report->reviewed = \JFactory::getDate()->toSql();
-		$report->reviewed_by = $this->juser->get('id');
+		$report->reviewed_by = User::get('id');
 		if (!$report->store())
 		{
 			throw new Exception($report->getError(), 500);
@@ -262,11 +262,11 @@ class Abusereports extends AdminController
 	public function removeTask($isSpam=false)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
-		$parentid = \JRequest::getInt('parentid', 0);
+		$id = Request::getInt('id', 0);
+		$parentid = Request::getInt('parentid', 0);
 
 		// Ensure we have an ID to work with
 		if (!$id)
@@ -286,8 +286,8 @@ class Abusereports extends AdminController
 		$report->load($id);
 
 		$report->reviewed = \JFactory::getDate()->toSql();
-		$report->reviewed_by = $this->juser->get('id');
-		$report->note = \JRequest::getVar('note', '');
+		$report->reviewed_by = User::get('id');
+		$report->note = Request::getVar('note', '');
 
 		// Load plugins
 		\JPluginHelper::importPlugin('support');
@@ -348,8 +348,6 @@ class Abusereports extends AdminController
 			throw new Exception($report->getError(), 500);
 		}
 
-		$jconfig = \JFactory::getConfig();
-
 		// Notify item owner
 		if ($email)
 		{
@@ -357,13 +355,13 @@ class Abusereports extends AdminController
 
 			// Email "from" info
 			$from = array(
-				'name' => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT'),
-				'email' => $jconfig->getValue('config.mailfrom'),
+				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
+				'email' => Config::get('mailfrom'),
 				'multipart' => md5(date('U'))
 			);
 
 			// Email subject
-			$subject = Lang::txt('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
+			$subject = Lang::txt('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', Config::get('sitename'));
 
 			// Plain text
 			$eview = new View(array(

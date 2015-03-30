@@ -30,7 +30,7 @@
 
 namespace Components\Support\Admin;
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_support'))
+if (!\User::authorise('core.manage', 'com_support'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
@@ -46,48 +46,48 @@ include_once(dirname(__DIR__) . DS . 'tables' . DS . 'category.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php');
 
-$controllerName = \JRequest::getCmd('controller', 'tickets');
+$controllerName = \Request::getCmd('controller', 'tickets');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'tickets';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_TICKETS'),
 	\Route::url('index.php?option=com_support&controller=tickets'),
 	$controllerName == 'tickets'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_CATEGORIES'),
 	\Route::url('index.php?option=com_support&controller=categories'),
 	$controllerName == 'categories'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_QUERIES'),
 	\Route::url('index.php?option=com_support&controller=queries'),
 	$controllerName == 'queries'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_MESSAGES'),
 	\Route::url('index.php?option=com_support&controller=messages'),
 	$controllerName == 'messages'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_STATUSES'),
 	\Route::url('index.php?option=com_support&controller=statuses'),
 	$controllerName == 'statuses'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_ABUSE_REPORTS'),
 	\Route::url('index.php?option=com_support&controller=abusereports'),
 	$controllerName == 'abusereports'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_STATS'),
 	\Route::url('index.php?option=com_support&controller=stats'),
 	$controllerName == 'stats'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SUPPORT_ACL'),
 	\Route::url('index.php?option=com_support&controller=acl'),
 	$controllerName == 'acl'

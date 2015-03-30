@@ -57,14 +57,13 @@ class Queries extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -121,7 +120,7 @@ class Queries extends AdminController
 	 */
 	public function editTask()
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		$this->view->lists = array();
 
@@ -131,7 +130,7 @@ class Queries extends AdminController
 
 		$this->view->lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-		$id = \JRequest::getVar('id', array(0));
+		$id = Request::getVar('id', array(0));
 		if (is_array($id))
 		{
 			$id = (!empty($id) ? $id[0] : 0);
@@ -172,12 +171,12 @@ class Queries extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = \JRequest::getVar('fields', array(), 'post');
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$fields  = Request::getVar('fields', array(), 'post');
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		$row = new Query($this->database);
 		if (!$row->bind($fields))
@@ -304,14 +303,14 @@ class Queries extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or \JRequest::checkToken('get') or jexit('Invalid Token');
+		Request::checkToken() or Request::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -365,11 +364,11 @@ class Queries extends AdminController
 	 */
 	public function editfolderTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
-			$id = \JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id) ? intval($id[0]) : 0);
@@ -411,12 +410,12 @@ class Queries extends AdminController
 	public function savefolderTask($redirect=true)
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields  = \JRequest::getVar('fields', array());
-		$no_html = \JRequest::getInt('no_html', 0);
-		$tmpl    = \JRequest::getVar('component', '');
+		$fields  = Request::getVar('fields', array());
+		$no_html = Request::getInt('no_html', 0);
+		$tmpl    = Request::getVar('component', '');
 
 		$response = new stdClass;
 		$response->success = 1;
@@ -501,13 +500,13 @@ class Queries extends AdminController
 	public function removefolderTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (is_array($ids) ?: array($ids));
 
-		$no_html = \JRequest::getInt('no_html', 0);
+		$no_html = Request::getInt('no_html', 0);
 
 		foreach ($ids as $id)
 		{
@@ -538,11 +537,11 @@ class Queries extends AdminController
 	public function saveorderingTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken('get') or \JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$folders = \JRequest::getVar('folder', array());
-		$queries = \JRequest::getVar('queries', array());
+		$folders = Request::getVar('folder', array());
+		$queries = Request::getVar('queries', array());
 
 		if (is_array($folders))
 		{

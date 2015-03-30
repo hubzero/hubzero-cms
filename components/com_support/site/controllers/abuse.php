@@ -84,21 +84,21 @@ class Abuse extends SiteController
 	public function displayTask()
 	{
 		// Login required
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(\JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
 			return;
 		}
 
-		$this->view->juser    = $this->juser;
+		$this->view->juser    = User::getRoot();
 
 		// Incoming
-		$this->view->refid    = \JRequest::getInt('id', 0);
-		$this->view->parentid = \JRequest::getInt('parent', 0);
-		$this->view->cat      = \JRequest::getVar('category', '');
+		$this->view->refid    = Request::getInt('id', 0);
+		$this->view->parentid = Request::getInt('parent', 0);
+		$this->view->cat      = Request::getVar('category', '');
 
 		// Check for a reference ID
 		if (!$this->view->refid)
@@ -169,13 +169,13 @@ class Abuse extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$this->view->cat = \JRequest::getVar('category', '');
-		$this->view->refid = \JRequest::getInt('referenceid', 0);
-		$this->view->returnlink = \JRequest::getVar('link', '');
-		$no_html = \JRequest::getInt('no_html', 0);
+		$this->view->cat = Request::getVar('category', '');
+		$this->view->refid = Request::getInt('referenceid', 0);
+		$this->view->returnlink = Request::getVar('link', '');
+		$no_html = Request::getInt('no_html', 0);
 
 		// Trim and addslashes all posted items
 		$incoming = array_map('trim', $_POST);
@@ -194,7 +194,7 @@ class Abuse extends SiteController
 				));
 				return;
 			}
-			\JRequest::setVar('id', $this->view->refid);
+			Request::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;
@@ -202,7 +202,7 @@ class Abuse extends SiteController
 
 		$row->report     = Sanitize::clean($row->report);
 		$row->report     = nl2br($row->report);
-		$row->created_by = $this->juser->get('id');
+		$row->created_by = User::get('id');
 		$row->created    = \JFactory::getDate()->toSql();
 		$row->state      = 0;
 
@@ -219,7 +219,7 @@ class Abuse extends SiteController
 				));
 				return;
 			}
-			\JRequest::setVar('id', $this->view->refid);
+			Request::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;
@@ -238,7 +238,7 @@ class Abuse extends SiteController
 				));
 				return;
 			}
-			\JRequest::setVar('id', $this->view->refid);
+			Request::setVar('id', $this->view->refid);
 			$this->setError($row->getError());
 			$this->displayTask();
 			return;

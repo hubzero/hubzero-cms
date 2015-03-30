@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu items
-JToolBarHelper::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config.png');
+Toolbar::title(Lang::txt('COM_SYSTEM_APC_HOST'), 'config.png');
 
 $this->css('apc.css');
 

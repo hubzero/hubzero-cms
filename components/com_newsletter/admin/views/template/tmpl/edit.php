@@ -33,13 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES') . ': ' . $text, 'template.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATES') . ': ' . $text, 'template.png');
 
 //add toolbar buttons
-JToolBarHelper::help('index.php?option=com_help&component=com_newsletter&page=template', true);
-JToolBarHelper::spacer();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::help('index.php?option=com_help&component=com_newsletter&page=template', true);
+Toolbar::spacer();
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <?php

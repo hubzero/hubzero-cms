@@ -153,9 +153,9 @@ class Tickets extends SiteController
 	public function statsTask()
 	{
 		// Check authorization
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(\JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -175,16 +175,15 @@ class Tickets extends SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$type = \JRequest::getVar('type', 'submitted');
+		$type = Request::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = \JRequest::getVar('group', '_none_');
+		$this->view->group = Request::getVar('group', '_none_');
 
 		// Set up some dates
-		$jconfig = \JFactory::getConfig();
-		$this->offset = $jconfig->getValue('config.offset');
+		$this->offset = Config::get('offset');
 
-		$year  = \JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->view->year = $year;
@@ -267,7 +266,7 @@ class Tickets extends SiteController
 		$startyear  = $first;
 		$startmonth = 1;
 
-		$this->view->start = \JRequest::getVar('start', $first . '-01');
+		$this->view->start = Request::getVar('start', $first . '-01');
 		if ($this->view->start != $first . '-01')
 		{
 			if (preg_match("/([0-9]{4})-([0-9]{2})/", $this->view->start, $regs))
@@ -278,7 +277,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$this->view->end   = \JRequest::getVar('end', '');
+		$this->view->end   = Request::getVar('end', '');
 
 		$endmonth = $month;
 		$endyear = date("Y");
@@ -545,9 +544,9 @@ class Tickets extends SiteController
 	 */
 	public function displayTask()
 	{
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(\JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -616,7 +615,7 @@ class Tickets extends SiteController
 		else
 		{
 			$this->view->folders = $sf->find('list', array(
-				'user_id'  => $this->juser->get('id'),
+				'user_id'  => User::get('id'),
 				'sort'     => 'ordering',
 				'sort_Dir' => 'asc'
 			));
@@ -625,11 +624,11 @@ class Tickets extends SiteController
 			if (!count($this->view->folders))
 			{
 				// Get all the default folders
-				$this->view->folders = $sf->cloneCore($this->juser->get('id'));
+				$this->view->folders = $sf->cloneCore(User::get('id'));
 			}
 
 			$queries = $sq->find('list', array(
-				'user_id'  => $this->juser->get('id'),
+				'user_id'  => User::get('id'),
 				'sort'     => 'ordering',
 				'sort_Dir' => 'asc'
 			));
@@ -740,18 +739,18 @@ class Tickets extends SiteController
 		$watching = new Tables\Watching($this->database);
 		$this->view->watch = array(
 			'open' => $watching->count(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => 1
 			)),
 			'closed' => $watching->count(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => 0
 			))
 		);
 		if ($this->view->filters['show'] < 0)
 		{
 			$records = $watching->find(array(
-				'user_id' => $this->juser->get('id'),
+				'user_id' => User::get('id'),
 				'open'    => ($this->view->filters['show'] == -1 ? 1 : 0)
 			));
 			if (count($records))
@@ -808,20 +807,20 @@ class Tickets extends SiteController
 			$row = new Ticket();
 			$row->set('open', 1)
 				->set('status', 0)
-				->set('ip', \JRequest::ip())
-				->set('uas', \JRequest::getVar('HTTP_USER_AGENT', '', 'server'))
-				->set('referrer', base64_encode(\JRequest::getVar('HTTP_REFERER', NULL, 'server')))
-				->set('cookies', (\JRequest::getVar('sessioncookie', '', 'cookie') ? 1 : 0))
+				->set('ip', Request::ip())
+				->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'))
+				->set('referrer', base64_encode(Request::getVar('HTTP_REFERER', NULL, 'server')))
+				->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0))
 				->set('instances', 1)
 				->set('section', 1)
-				->set('tool', \JRequest::getVar('tool', ''))
+				->set('tool', Request::getVar('tool', ''))
 				->set('verified', 0);
 
-			if (!$this->juser->get('guest'))
+			if (!User::isGuest())
 			{
-				$row->set('name', $this->juser->get('name'));
-				$row->set('login', $this->juser->get('username'));
-				$row->set('email', $this->juser->get('email'));
+				$row->set('name', User::get('name'));
+				$row->set('login', User::get('username'));
+				$row->set('email', User::get('email'));
 			}
 		}
 
@@ -832,10 +831,10 @@ class Tickets extends SiteController
 			->set('browser', $browser->name())
 			->set('browserver', $browser->version());
 
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$profile = new Profile();
-			$profile->load($this->juser->get('id'));
+			$profile->load(User::get('id'));
 			$emailConfirmed = $profile->get('emailConfirmed');
 			if (($emailConfirmed == 1) || ($emailConfirmed == 3))
 			{
@@ -910,7 +909,7 @@ class Tickets extends SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		$live_site = rtrim(\JURI::base(), '/');
 
@@ -922,30 +921,30 @@ class Tickets extends SiteController
 		$dispatcher->trigger('onPreTicketSubmission', array());
 
 		// Incoming
-		$no_html  = \JRequest::getInt('no_html', 0);
-		$verified = \JRequest::getInt('verified', 0);
+		$no_html  = Request::getInt('no_html', 0);
+		$verified = Request::getInt('verified', 0);
 		if (!isset($_POST['reporter']) || !isset($_POST['problem']))
 		{
 			// This really, REALLY shouldn't happen.
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_DATA'), 400);
 		}
-		$reporter = \JRequest::getVar('reporter', array(), 'post', 'none', 2);
-		$problem  = \JRequest::getVar('problem', array(), 'post', 'none', 2);
+		$reporter = Request::getVar('reporter', array(), 'post', 'none', 2);
+		$problem  = Request::getVar('problem', array(), 'post', 'none', 2);
 		//$reporter = array_map('trim', $_POST['reporter']);
 		//$problem  = array_map('trim', $_POST['problem']);
 
-		// Normally calling \JRequest::getVar calls _cleanVar, but b/c of the way this page processes the posts
+		// Normally calling Request::getVar calls _cleanVar, but b/c of the way this page processes the posts
 		// (with array square brackets in the html names) against the $_POST collection, we explicitly
 		// call the clean_var function on these arrays after fetching them
-		//$reporter = array_map(array('\JRequest', '_cleanVar'), $reporter);
-		//$problem  = array_map(array('\JRequest', '_cleanVar'), $problem);
+		//$reporter = array_map(array('Request', '_cleanVar'), $reporter);
+		//$problem  = array_map(array('Request', '_cleanVar'), $problem);
 
 		// [!] zooley - Who added this? Why?
 		// Reporter login can only be for authenticated users -- ignore any form submitted login names
 		//$reporterLogin = $this->_getUser();
 		//$reporter['login'] = $reporterLogin['login'];
 
-		// Probably redundant after the change to call \JRequest::_cleanVar change above, It is a bit hard to
+		// Probably redundant after the change to call Request::_cleanVar change above, It is a bit hard to
 		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call
 		$reporter = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $reporter);
 		//$problem  = array_map(array('\\Hubzero\\Utility\\Sanitize', 'stripAll'), $problem);
@@ -977,15 +976,15 @@ class Tickets extends SiteController
 		 || !$problem['long']
 		 || !$customValidation)
 		{
-			\JRequest::setVar('task', 'new');
+			Request::setVar('task', 'new');
 			// Output form with error messages
 			$this->view->setError(2);
 			return $this->newTask();
 		}
 
 		// Get the user's IP
-		$ip = \JRequest::ip();
-		$hostname = gethostbyaddr(\JRequest::getVar('REMOTE_ADDR','','server'));
+		$ip = Request::ip();
+		$hostname = gethostbyaddr(Request::getVar('REMOTE_ADDR','','server'));
 
 		if (!$verified)
 		{
@@ -1013,7 +1012,7 @@ class Tickets extends SiteController
 				return;
 			}
 			// Quick bot check
-			$botcheck = \JRequest::getVar('botcheck', '');
+			$botcheck = Request::getVar('botcheck', '');
 			if ($botcheck)
 			{
 				$this->setError(Lang::txt('COM_SUPPORT_ERROR_INVALID_BOTCHECK'));
@@ -1038,7 +1037,7 @@ class Tickets extends SiteController
 			}
 			else
 			{
-				\JRequest::setVar('task', 'new');
+				Request::setVar('task', 'new');
 				$this->view->setError($this->getError());
 				return $this->newTask();
 			}
@@ -1054,7 +1053,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		$group = \JRequest::getVar('group', '');
+		$group = Request::getVar('group', '');
 
 		// Initiate class and bind data to database fields
 		$row = new Ticket();
@@ -1074,9 +1073,9 @@ class Tickets extends SiteController
 		$row->set('browser', $problem['browser'] . ' ' . $problem['browserver']);
 		$row->set('ip', $ip);
 		$row->set('hostname', $hostname);
-		$row->set('uas', \JRequest::getVar('HTTP_USER_AGENT', '', 'server'));
+		$row->set('uas', Request::getVar('HTTP_USER_AGENT', '', 'server'));
 		$row->set('referrer', base64_decode($problem['referer']));
-		$row->set('cookies', (\JRequest::getVar('sessioncookie', '', 'cookie') ? 1 : 0));
+		$row->set('cookies', (Request::getVar('sessioncookie', '', 'cookie') ? 1 : 0));
 		$row->set('instances', 1);
 		$row->set('section', 1);
 		$row->set('group', $group);
@@ -1102,11 +1101,8 @@ class Tickets extends SiteController
 		$attachment = $this->uploadTask($row->get('id'));
 
 		// Save tags
-		$row->set('tags', \JRequest::getVar('tags', '', 'post'));
-		$row->tag($row->get('tags'), $this->juser->get('id'), 1);
-
-		// Get some email settings
-		$jconfig = \JFactory::getConfig();
+		$row->set('tags', Request::getVar('tags', '', 'post'));
+		$row->tag($row->get('tags'), User::get('id'), 1);
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
@@ -1114,10 +1110,10 @@ class Tickets extends SiteController
 		if ($defs)
 		{
 			$message = new \Hubzero\Mail\Message();
-			$message->setSubject($jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')));
+			$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')));
 			$message->addFrom(
-				$jconfig->getValue('config.mailfrom'),
-				$jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+				Config::get('mailfrom'),
+				Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
 			);
 
 			// Plain text email
@@ -1167,7 +1163,7 @@ class Tickets extends SiteController
 				// Check if the address should come from Joomla config
 				if ($def == '{config.mailfrom}')
 				{
-					$def = $jconfig->getValue('config.mailfrom');
+					$def = Config::get('mailfrom');
 				}
 				// Check for a valid address
 				if (Validate::email($def))
@@ -1179,7 +1175,7 @@ class Tickets extends SiteController
 			}
 		}
 
-		if (!$this->juser->get('guest') && $this->acl->check('update', 'tickets') > 0)
+		if (!User::isGuest() && $this->acl->check('update', 'tickets') > 0)
 		{
 			// Only do the following if a comment was posted
 			// otherwise, we're only recording a changelog
@@ -1193,14 +1189,14 @@ class Tickets extends SiteController
 			$rowc = new Comment();
 			$rowc->set('ticket', $row->get('id'));
 			$rowc->set('created', \JFactory::getDate()->toSql());
-			$rowc->set('created_by', $this->juser->get('id'));
+			$rowc->set('created_by', User::get('id'));
 			$rowc->set('access', 1);
 			$rowc->set('comment', Lang::txt('COM_SUPPORT_TICKET_SUBMITTED'));
 
 			// Compare fields to find out what has changed for this ticket and build a changelog
 			$rowc->changelog()->diff($old, $row);
 
-			$rowc->changelog()->cced(\JRequest::getVar('cc', ''));
+			$rowc->changelog()->cced(Request::getVar('cc', ''));
 
 			// Were there any changes, CCs, or comments to record?
 			if (count($rowc->changelog()->get('changes')) > 0 || count($rowc->changelog()->get('cc')) > 0)
@@ -1246,8 +1242,8 @@ class Tickets extends SiteController
 					$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 					$from = array(
-						'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-						'email'     => $jconfig->getValue('config.mailfrom'),
+						'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
+						'email'     => Config::get('mailfrom'),
 						'multipart' => md5(date('U'))
 					);
 
@@ -1283,7 +1279,7 @@ class Tickets extends SiteController
 						{
 							// The reply-to address contains the token
 							$token = $encryptor->buildEmailToken(1, 1, $to['id'], $row->get('id'));
-							$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+							$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
 						}
 
 						// Get the user's email address
@@ -1306,7 +1302,7 @@ class Tickets extends SiteController
 
 							$email = array(
 								$to['email'],
-								'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+								'htc-' . $token . strstr(Config::get('mailfrom'), '@')
 							);
 
 							// In this case each item in email in an array, 1- To, 2:reply to address
@@ -1441,7 +1437,7 @@ class Tickets extends SiteController
 	public function ticketTask($comment = null)
 	{
 		// Get the ticket ID
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
 			$this->setRedirect(
@@ -1461,7 +1457,7 @@ class Tickets extends SiteController
 		}
 
 		// Check authorization
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url($this->view->row->link(), false, true));
 			$this->setRedirect(
@@ -1510,15 +1506,15 @@ class Tickets extends SiteController
 			))
 		);
 
-		if ($watch = \JRequest::getWord('watch', ''))
+		if ($watch = Request::getWord('watch', ''))
 		{
 			// Already watching
-			if ($this->view->row->isWatching($this->juser))
+			if ($this->view->row->isWatching(User::getRoot()))
 			{
 				// Stop watching?
 				if ($watch == 'stop')
 				{
-					$this->view->row->stopWatching($this->juser);
+					$this->view->row->stopWatching(User::getRoot());
 				}
 			}
 			// Not already watching
@@ -1527,8 +1523,8 @@ class Tickets extends SiteController
 				// Start watching?
 				if ($watch == 'start')
 				{
-					$this->view->row->watch($this->juser);
-					if (!$this->view->row->isWatching($this->juser, true))
+					$this->view->row->watch(User::getRoot());
+					if (!$this->view->row->isWatching(User::getRoot(), true))
 					{
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
 					}
@@ -1625,7 +1621,7 @@ class Tickets extends SiteController
 	public function updateTask()
 	{
 		// Make sure we are still logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true));
 			$this->setRedirect(
@@ -1635,17 +1631,17 @@ class Tickets extends SiteController
 		}
 
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = \JRequest::getInt('id', 0, 'post');
+		$id = Request::getInt('id', 0, 'post');
 		if (!$id)
 		{
 			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'), 500);
 		}
 
-		$comment  = \JRequest::getVar('comment', '', 'post', 'none', 2);
-		$incoming = \JRequest::getVar('ticket', array(), 'post');
+		$comment  = Request::getVar('comment', '', 'post', 'none', 2);
+		$incoming = Request::getVar('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
 		// Load the old ticket so we can compare for the changelog
@@ -1663,7 +1659,7 @@ class Tickets extends SiteController
 		$rowc->set('ticket', $id);
 
 		// Check if changes were made inbetween the time the comment was started and posted
-		$started = \JRequest::getVar('started', \JFactory::getDate()->toSql(), 'post');
+		$started = Request::getVar('started', \JFactory::getDate()->toSql(), 'post');
 		$lastcomment = $row->comments('list', array(
 			'sort'     => 'created',
 			'sort_Dir' => 'DESC',
@@ -1702,7 +1698,7 @@ class Tickets extends SiteController
 		if ($comment)
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($row->isWaiting() && $this->juser->get('username') == $row->get('login'))
+			if ($row->isWaiting() && User::get('username') == $row->get('login'))
 			{
 				$row->open();
 			}
@@ -1715,22 +1711,22 @@ class Tickets extends SiteController
 		}
 
 		// Save the tags
-		$row->tag(\JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
+		$row->tag(Request::getVar('tags', '', 'post'), User::get('id'), 1);
 		$row->set('tags', $row->tags('string'));
 
 		// Create a new support comment object and populate it
-		$access = \JRequest::getInt('access', 0);
+		$access = Request::getInt('access', 0);
 
 		$rowc->set('ticket', $id);
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', \JFactory::getDate()->toSql());
-		$rowc->set('created_by', $this->juser->get('id'));
+		$rowc->set('created_by', User::get('id'));
 		$rowc->set('access', $access);
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$rowc->changelog()->diff($old, $row);
 
-		$rowc->changelog()->cced(\JRequest::getVar('cc', ''));
+		$rowc->changelog()->cced(Request::getVar('cc', ''));
 
 		// Save the data
 		if (!$rowc->store())
@@ -1743,7 +1739,7 @@ class Tickets extends SiteController
 		$dispatcher->trigger('onTicketUpdate', array($row, $rowc));
 
 		$attach = new Tables\Attachment($this->database);
-		if ($tmp = \JRequest::getInt('tmp_dir'))
+		if ($tmp = Request::getInt('tmp_dir'))
 		{
 			$attach->updateCommentId($tmp, $rowc->get('id'));
 		}
@@ -1755,7 +1751,7 @@ class Tickets extends SiteController
 		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner') || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
-			if (\JRequest::getInt('email_submitter', 0) == 1)
+			if (Request::getInt('email_submitter', 0) == 1)
 			{
 				// Is the comment private? If so, we do NOT send e-mail to the
 				// submitter regardless of the above setting
@@ -1771,7 +1767,7 @@ class Tickets extends SiteController
 			}
 
 			// Send e-mail to ticket owner?
-			if (\JRequest::getInt('email_owner', 0) == 1)
+			if (Request::getInt('email_owner', 0) == 1)
 			{
 				if ($row->get('owner'))
 				{
@@ -1800,7 +1796,7 @@ class Tickets extends SiteController
 					$rowc->addTo($watcher->user_id, 'watcher');
 				}
 			}
-			$this->acl->setUser($this->juser->get('id'));
+			$this->acl->setUser(User::get('id'));
 
 			if (count($rowc->to()))
 			{
@@ -1817,14 +1813,12 @@ class Tickets extends SiteController
 					}
 				}
 
-				$jconfig = \JFactory::getConfig();
-
 				// Build e-mail components
 				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
 
 				$from = array(
-					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-					'email'     => $jconfig->getValue('config.mailfrom'),
+					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
+					'email'     => Config::get('mailfrom'),
 					'multipart' => md5(date('U'))  // Html email
 				);
 
@@ -1867,7 +1861,7 @@ class Tickets extends SiteController
 					{
 						// The reply-to address contains the token
 						$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
-						$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+						$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
 					}
 
 					// Get the user's email address
@@ -1896,7 +1890,7 @@ class Tickets extends SiteController
 
 						$email = array(
 							$to['email'],
-							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+							'htc-' . $token . strstr(Config::get('mailfrom'), '@')
 						);
 
 						// In this case each item in email in an array, 1- To, 2:reply to address
@@ -1955,7 +1949,7 @@ class Tickets extends SiteController
 	public function deleteTask()
 	{
 		// Incoming
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Check for an ID
 		if (!$id)
@@ -2044,7 +2038,7 @@ class Tickets extends SiteController
 
 		// Check for a session token
 		$sessnum = '';
-		if ($sess = \JRequest::getVar('sesstoken', ''))
+		if ($sess = Request::getVar('sesstoken', ''))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 			$mwdb = \ToolsHelperUtils::getMWDBO();
@@ -2102,7 +2096,7 @@ class Tickets extends SiteController
 				$rowc->set('ticket', $ticket);
 				$rowc->set('comment', '');
 				$rowc->set('created', \JFactory::getDate()->toSql());
-				$rowc->set('created_by', $this->juser->get('id'));
+				$rowc->set('created_by', User::get('id'));
 				$rowc->set('access', 1);
 
 				// Compare fields to find out what has changed for this ticket and build a changelog
@@ -2148,7 +2142,7 @@ class Tickets extends SiteController
 				return;
 			}
 
-			$row->tag($incoming['tags'], $this->juser->get('id'), 1);
+			$row->tag($incoming['tags'], User::get('id'), 1);
 
 			if ($attachment = $this->uploadTask($row->get('id')))
 			{
@@ -2175,9 +2169,9 @@ class Tickets extends SiteController
 	public function downloadTask()
 	{
 		// Check logged in status
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(\JRequest::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
 			$this->setRedirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);
@@ -2185,7 +2179,7 @@ class Tickets extends SiteController
 		}
 
 		// Get the ID of the file requested
-		$id = \JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 
 		// Instantiate an attachment object
 		$attach = new Tables\Attachment($this->database);
@@ -2206,8 +2200,8 @@ class Tickets extends SiteController
 		}
 
 		// Load ACL
-		if ($row->login == $this->juser->get('username')
-		 || $row->owner == $this->juser->get('id'))
+		if ($row->login == User::get('username')
+		 || $row->owner == User::get('id'))
 		{
 			if (!$this->acl->check('read', 'tickets'))
 			{
@@ -2295,7 +2289,7 @@ class Tickets extends SiteController
 		$row = new Tables\Attachment($this->database);
 
 		// Rename temp directories
-		if ($tmp = \JRequest::getInt('tmp_dir'))
+		if ($tmp = Request::getInt('tmp_dir'))
 		{
 			$tmpPath = PATH_APP . DS . trim($this->config->get('webpath', '/site/tickets'), DS) . DS . $tmp;
 			if (is_dir($tmpPath))
@@ -2311,7 +2305,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming file
-		$file = \JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!isset($file['name']) || !$file['name'])
 		{
 			//$this->setError(Lang::txt('SUPPORT_NO_FILE'));
@@ -2319,7 +2313,7 @@ class Tickets extends SiteController
 		}
 
 		// Incoming
-		$description = \JRequest::getVar('description', '');
+		$description = Request::getVar('description', '');
 
 		// Build the path if it doesn't exist
 		if (!is_dir($path))
@@ -2414,21 +2408,18 @@ class Tickets extends SiteController
 			'owner'      => '',
 			'reportedby' => '',
 			'severity'   => 'normal',
-			'sort'       => trim(\JRequest::getVar('filter_order', 'created')),
-			'sortdir'    => trim(\JRequest::getVar('filter_order_Dir', 'DESC')),
+			'sort'       => trim(Request::getVar('filter_order', 'created')),
+			'sortdir'    => trim(Request::getVar('filter_order_Dir', 'DESC')),
 			'severity'   => ''
 		);
 
-		// Get configuration
-		$jconfig = \JFactory::getConfig();
-
 		// Paging vars
-		$filters['limit'] = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$filters['start'] = \JRequest::getInt('limitstart', 0);
+		$filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
+		$filters['start'] = Request::getInt('limitstart', 0);
 
 		// Incoming
-		$filters['_find'] = urldecode(trim(\JRequest::getVar('find', '', 'post')));
-		$filters['_show'] = urldecode(trim(\JRequest::getVar('show', '', 'post')));
+		$filters['_find'] = urldecode(trim(Request::getVar('find', '', 'post')));
+		$filters['_show'] = urldecode(trim(Request::getVar('show', '', 'post')));
 
 		if ($filters['_find'] != '' || $filters['_show'] != '')
 		{
@@ -2436,8 +2427,8 @@ class Tickets extends SiteController
 		}
 		else
 		{
-			$filters['_find'] = urldecode(trim(\JRequest::getVar('find', '', 'get')));
-			$filters['_show'] = urldecode(trim(\JRequest::getVar('show', '', 'get')));
+			$filters['_find'] = urldecode(trim(Request::getVar('find', '', 'get')));
+			$filters['_show'] = urldecode(trim(Request::getVar('show', '', 'get')));
 		}
 
 		// Break it apart so we can get our filters
@@ -2510,13 +2501,13 @@ class Tickets extends SiteController
 				case 'owner':
 					if (isset($pieces[1]) && $pieces[1] == 'me')
 					{
-						$pieces[1] = $this->juser->get('id');
+						$pieces[1] = User::get('id');
 					}
 				break;
 				case 'reportedby':
 					if (isset($pieces[1]) && $pieces[1] == 'me')
 					{
-						$pieces[1] = $this->juser->get('username');
+						$pieces[1] = User::get('username');
 					}
 				break;
 				case 'severity':

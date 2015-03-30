@@ -33,59 +33,58 @@ defined('_JEXEC') or die;
 
 $canDo = \Components\Redirect\Helpers\Redirect::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_REDIRECT_MANAGER_LINKS'), 'redirect');
+Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINKS'), 'redirect');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.edit.state'))
 {
 	if ($this->state->get('filter.state') != 2)
 	{
-		JToolBarHelper::divider();
-		JToolBarHelper::publish('publish', 'JTOOLBAR_ENABLE', true);
-		JToolBarHelper::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
+		Toolbar::divider();
+		Toolbar::publish('publish', 'JTOOLBAR_ENABLE', true);
+		Toolbar::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
 	}
 	if ($this->state->get('filter.state') != -1 )
 	{
-		JToolBarHelper::divider();
+		Toolbar::divider();
 		if ($this->state->get('filter.state') != 2)
 		{
-			JToolBarHelper::archiveList('archive');
+			Toolbar::archiveList('archive');
 		}
 		elseif ($this->state->get('filter.state') == 2)
 		{
-			JToolBarHelper::unarchiveList('publish', 'JTOOLBAR_UNARCHIVE');
+			Toolbar::unarchiveList('publish', 'JTOOLBAR_UNARCHIVE');
 		}
 	}
 }
 if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
-	JToolBarHelper::divider();
+	Toolbar::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
+	Toolbar::divider();
 }
 elseif ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::trash('trash');
-	JToolBarHelper::divider();
+	Toolbar::trash('trash');
+	Toolbar::divider();
 }
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_redirect');
-	JToolBarHelper::divider();
+	Toolbar::preferences('com_redirect');
+	Toolbar::divider();
 }
-JToolBarHelper::help('links');
+Toolbar::help('links');
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user = JFactory::getUser();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -155,11 +154,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</tr>
 		</tfoot>
 		<tbody>
-		<?php foreach ($this->items as $i => $item) :
-			$canCreate = $user->authorise('core.create', $this->option);
-			$canEdit   = $user->authorise('core.edit', $this->option);
-			$canChange = $user->authorise('core.edit.state', $this->option);
-			?>
+		<?php
+		$canCreate = User::authorise('core.create', $this->option);
+		$canEdit   = User::authorise('core.edit', $this->option);
+		$canChange = User::authorise('core.edit.state', $this->option);
+		foreach ($this->items as $i => $item) :
+		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>

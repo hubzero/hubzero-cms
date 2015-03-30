@@ -32,10 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_STATS'), 'stats.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_STATS'), 'stats.png');
 
 //add buttons
-JToolBarHelper::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', false);
+Toolbar::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', false);
 
 // add css & js to view
 $this->css();

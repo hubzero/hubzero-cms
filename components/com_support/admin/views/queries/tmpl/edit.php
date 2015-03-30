@@ -37,17 +37,15 @@ $this->css('conditions.css')
      ->js('json2.js')
      ->js('condition.builder.js');
 
-$tmpl = JRequest::getVar('tmpl', '');
+$tmpl = Request::getVar('tmpl', '');
 
 if (!$tmpl)
 {
 	$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-	JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text, 'support.png');
-	JToolBarHelper::save();
-	JToolBarHelper::cancel();
+	Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text, 'support.png');
+	Toolbar::save();
+	Toolbar::cancel();
 }
-
-$juser = JFactory::getUser();
 ?>
 <?php if (!$tmpl) { ?>
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
@@ -129,11 +127,11 @@ $juser = JFactory::getUser();
 
 		<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
-		<input type="hidden" name="fields[user_id]" value="<?php echo $juser->get('id'); ?>" />
+		<input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : JRequest::getInt('no_html', 0); ?>" />
+		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 
@@ -255,11 +253,11 @@ $juser = JFactory::getUser();
 
 		<input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
-		<input type="hidden" name="fields[user_id]" value="<?php echo $juser->get('id'); ?>" />
+		<input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : JRequest::getInt('no_html', 0); ?>" />
+		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
 		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 		<input type="hidden" name="task" value="save" />
 

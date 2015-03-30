@@ -32,14 +32,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if (!$this->tmpl)
 {
-	JToolBarHelper::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('Batch Process'), 'support.png');
-	JToolBarHelper::save('process');
-	JToolBarHelper::cancel();
-	JToolBarHelper::spacer();
-	JToolBarHelper::help('ticket');
+	Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('Batch Process'), 'support.png');
+	Toolbar::save('process');
+	Toolbar::cancel();
+	Toolbar::spacer();
+	Toolbar::help('ticket');
 }
-
-$juser = JFactory::getUser();
 
 JHTML::_('behavior.tooltip');
 $this->css();

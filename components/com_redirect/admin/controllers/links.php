@@ -104,7 +104,7 @@ class Links extends AdminController
 	public function addTask()
 	{
 		// Access check.
-		if (!($this->juser->authorise('core.create', $this->_option))) // || count($this->juser->getAuthorisedCategories($this->_option, 'core.create'))))
+		if (!(User::authorise('core.create', $this->_option))) // || count(User::getAuthorisedCategories($this->_option, 'core.create'))))
 		{
 			// Set the internal error and also the redirect error.
 			$this->setRedirect(
@@ -128,7 +128,7 @@ class Links extends AdminController
 		$append = '';
 
 		// Setup redirect info.
-		if ($tmpl = \JRequest::getCmd('tmpl'))
+		if ($tmpl = Request::getCmd('tmpl'))
 		{
 			$append .= '&tmpl=' . $tmpl;
 		}
@@ -148,12 +148,12 @@ class Links extends AdminController
 		$append = '';
 
 		// Setup redirect info.
-		if ($tmpl = \JRequest::getCmd('tmpl'))
+		if ($tmpl = Request::getCmd('tmpl'))
 		{
 			$append .= '&tmpl=' . $tmpl;
 		}
 
-		if ($layout = \JRequest::getCmd('layout', 'edit'))
+		if ($layout = Request::getCmd('layout', 'edit'))
 		{
 			$append .= '&layout=' . $layout;
 		}
@@ -173,11 +173,11 @@ class Links extends AdminController
 	 */
 	public function editTask()
 	{
-		$cid = \JRequest::getVar('cid', array(), 'post', 'array');
-		$recordId = (int) (count($cid) ? $cid[0] : \JRequest::getInt('id'));
+		$cid = Request::getVar('cid', array(), 'post', 'array');
+		$recordId = (int) (count($cid) ? $cid[0] : Request::getInt('id'));
 
 		// Access check.
-		if (!$this->juser->authorise('core.edit', $this->_option))
+		if (!User::authorise('core.edit', $this->_option))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
@@ -214,17 +214,17 @@ class Links extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app     = \JFactory::getApplication();
-		$data    = \JRequest::getVar('fields', array(), 'post', 'array');
+		$data    = Request::getVar('fields', array(), 'post', 'array');
 		$context = "$this->_option.edit.link";
 		$model   = new Link($this->database);
 
 		// Determine the name of the primary key for the data.
 		$urlVar = $model->getKeyName();
-		$recordId = \JRequest::getInt($urlVar);
+		$recordId = Request::getInt($urlVar);
 
 		// Populate the row id from the session.
 		$data[$urlVar] = $recordId;
@@ -239,7 +239,7 @@ class Links extends AdminController
 
 		// Access check.
 		//if (!$this->allowSave($data, $key))
-		if (!$this->juser->authorise('core.edit', $this->_option) && !$this->juser->authorise('core.create', $this->_option))
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . $this->getRedirectToListAppend(), false),
@@ -333,12 +333,12 @@ class Links extends AdminController
 	public function activateTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids     = \JRequest::getVar('cid', array(), '', 'array');
-		$newUrl  = \JRequest::getString('new_url');
-		$comment = \JRequest::getString('comment');
+		$ids     = Request::getVar('cid', array(), '', 'array');
+		$newUrl  = Request::getString('new_url');
+		$comment = Request::getString('comment');
 
 		if (empty($ids))
 		{
@@ -373,10 +373,10 @@ class Links extends AdminController
 	public function publishTask()
 	{
 		// Check for request forgeries
-		\JSession::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
+		Request::checkToken() or die(Lang::txt('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$cid = \JRequest::getVar('cid', array(), '', 'array');
+		$cid = Request::getVar('cid', array(), '', 'array');
 		$data = array(
 			'publish'   => 1,
 			'unpublish' => 0,

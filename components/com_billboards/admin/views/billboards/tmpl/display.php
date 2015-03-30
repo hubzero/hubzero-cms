@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,18 +33,18 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 
 // Menu
-JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'addedit.png');
-JToolBarHelper::preferences($this->option, '200', '500');
-JToolBarHelper::spacer();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::spacer();
-JToolBarHelper::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
-JToolBarHelper::spacer();
-JToolBarHelper::help('billboards');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS'), 'addedit.png');
+Toolbar::preferences($this->option, '200', '500');
+Toolbar::spacer();
+Toolbar::publishList();
+Toolbar::unpublishList();
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::spacer();
+Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+Toolbar::spacer();
+Toolbar::help('billboards');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

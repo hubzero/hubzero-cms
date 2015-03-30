@@ -33,15 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_STORY_'.strtoupper($this->type)) . ': ' . $text, 'addedit.png');
-
-//add buttons to toolbar
-JToolBarHelper::save();
-JToolBarHelper::cancel();
-
-//instantiate joomla editor
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+Toolbar::title(Lang::txt('COM_NEWSLETTER_STORY_'.strtoupper($this->type)) . ': ' . $text, 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
@@ -88,10 +82,7 @@ $editor = JEditor::getInstance();
 						</span>
 					</td>
 					<td>
-						<?php
-							$params = array("full_paths"=>true);
-							echo $editor->display("story[story]", $this->escape($this->story->story), '100%', '300px', '50', '10', true, '', '', '', $params);
-						?>
+						<?php echo JFactory::getEditor()->display("story[story]", $this->escape($this->story->story), '100%', '300px', '50', '10', true, '', '', '', array('full_paths' => true)); ?>
 					</td>
 				</tr>
 				<tr>

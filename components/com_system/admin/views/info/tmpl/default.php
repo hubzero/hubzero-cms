@@ -31,8 +31,8 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo.png');
-JToolBarHelper::help('sysinfo');
+Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo.png');
+Toolbar::help('sysinfo');
 
 // Add specific helper files for html generation
 JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');

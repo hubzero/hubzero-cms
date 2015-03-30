@@ -33,17 +33,15 @@ use Components\Billboards\Models\Billboard;
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.html.editor');
-
 // Change title depending on whether or not we're editing or creating a new billboard
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
 // Menu items
-JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('billboard');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('billboard');
 ?>
 
 <script type="text/javascript">

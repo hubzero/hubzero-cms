@@ -32,17 +32,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS'), 'list.png');
 
 //add buttons to toolbar
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
-JToolBarHelper::spacer();
-JToolBarHelper::custom('manage', 'user', '', 'COM_NEWSLETTER_TOOLBAR_MANAGE');
-JToolBarHelper::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
-JToolBarHelper::spacer();
-JToolBarHelper::preferences($this->option, '550');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_CHECK', 'delete');
+Toolbar::spacer();
+Toolbar::custom('manage', 'user', '', 'COM_NEWSLETTER_TOOLBAR_MANAGE');
+Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
+Toolbar::spacer();
+Toolbar::preferences($this->option, '550');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

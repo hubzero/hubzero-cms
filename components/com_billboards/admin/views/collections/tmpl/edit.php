@@ -32,11 +32,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('collection');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('collection');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

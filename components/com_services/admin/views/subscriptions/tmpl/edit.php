@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCRIPTIONS'), 'addedit.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SUCSCRIPTIONS'), 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
 
 $added   = (intval( $this->subscription->added ) <> 0)   ? JHTML::_('date', $this->subscription->added, Lang::txt('DATE_FORMAT_HZ1')) : NULL;
 $updated = (intval( $this->subscription->updated ) <> 0) ? JHTML::_('date', $this->subscription->updated, Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');

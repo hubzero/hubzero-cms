@@ -32,21 +32,21 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Services\Helpers\Permissions::getActions('service');
 
-JToolBarHelper::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_SERVICES') . ': ' . Lang::txt('COM_SERVICES_SERVICES'), 'addedit.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('services');
+Toolbar::spacer();
+Toolbar::help('services');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

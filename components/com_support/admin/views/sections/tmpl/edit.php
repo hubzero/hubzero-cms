@@ -28,12 +28,12 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-$text = ( $this->task == 'edit' ? Lang::txt( 'Edit' ) : Lang::txt( 'New' ) );
-JToolBarHelper::title( Lang::txt( 'Ticket Section' ).': '. $text, 'addedit.png' );
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+$text = ( $this->task == 'edit' ? Lang::txt('Edit') : Lang::txt('New'));
+Toolbar::title(Lang::txt('Ticket Section') . ': ' . $text, 'addedit.png');
+Toolbar::save();
+Toolbar::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

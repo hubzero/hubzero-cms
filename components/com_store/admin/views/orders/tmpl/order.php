@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = \Components\Store\Helpers\Permissions::getActions('component');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
-JToolBarHelper::title(Lang::txt('COM_STORE_MANAGER') . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('order');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('order');
 
 $order_date = (intval($this->row->ordered) <> 0) ? JHTML::_('date', $this->row->ordered, Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL ;
 $status_changed = (intval($this->row->status_changed) <> 0) ? JHTML::_('date', $this->row->status_changed, Lang::txt('COM_STORE_DATE_FORMAT_HZ1')) : NULL;
@@ -149,7 +149,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label><?php echo Lang::txt('COM_STORE_CURRENT_BALANCE'); ?>:</label><br />
-				<strong><?php echo $this->funds ?></strong> points
+				<?php echo Lang::txt('<strong>%s</strong> points', $this->funds); ?>
 			</div>
 
 		<?php if ($this->row->status == 0) { ?>

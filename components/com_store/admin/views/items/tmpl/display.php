@@ -34,17 +34,17 @@ $canDo = \Components\Store\Helpers\PErmissions::getActions('item');
 
 $text = (!$this->store_enabled) ? ' (store is disabled)' : '';
 
-JToolBarHelper::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
+Toolbar::title(Lang::txt('COM_STORE_MANAGER') . $text, 'store.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
+	Toolbar::preferences($this->option, '550');
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('items');
+Toolbar::spacer();
+Toolbar::help('items');
 
 ?>
 <script type="text/javascript">

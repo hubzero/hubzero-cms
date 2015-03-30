@@ -35,22 +35,22 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.modal');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER'), 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
-JToolBarHelper::deleteList('COM_NEWSLETTER_DELETE_CHECK', 'delete');
-JToolBarHelper::spacer();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::custom('preview', 'preview', '', 'COM_NEWSLETTER_TOOLBAR_PREVIEW');
-JToolBarHelper::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
-JToolBarHelper::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
-JToolBarHelper::spacer();
-JToolBarHelper::preferences($this->option, '550');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::custom('duplicate', 'copy', '', 'COM_NEWSLETTER_TOOLBAR_COPY');
+Toolbar::deleteList('COM_NEWSLETTER_DELETE_CHECK', 'delete');
+Toolbar::spacer();
+Toolbar::publishList();
+Toolbar::unpublishList();
+Toolbar::spacer();
+Toolbar::custom('preview', 'preview', '', 'COM_NEWSLETTER_TOOLBAR_PREVIEW');
+Toolbar::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
+Toolbar::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
+Toolbar::spacer();
+Toolbar::preferences($this->option, '550');
 
 // add js
 $this->js();

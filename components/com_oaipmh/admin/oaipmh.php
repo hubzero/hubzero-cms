@@ -44,12 +44,12 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 $task = \Request::getCmd('task');
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_OAIPMH_ABOUT'),
 	\Route::url('index.php?option=com_oaipmh'),
 	(!$task || $task == 'display')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_OAIPMH_SCHEMAS'),
 	\Route::url('index.php?option=com_oaipmh&task=schemas'),
 	($task == 'schemas')
@@ -57,7 +57,7 @@ $task = \Request::getCmd('task');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
-	\JSubMenuHelper::addEntry(
+	\Submenu::addEntry(
 		\Lang::txt('COM_OAIPMH_PLUGINS'),
 		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
 	);

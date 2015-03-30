@@ -32,10 +32,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS'), 'support.png');
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS'), 'support.png');
 
-JToolBarHelper::spacer();
-JToolBarHelper::help('stats');
+Toolbar::spacer();
+Toolbar::help('stats');
 
 JHTML::_('behavior.framework');
 $this->css();

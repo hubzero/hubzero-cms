@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS'), 'support.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_RESOLUTIONS'), 'support.png');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -50,17 +50,16 @@ class Stats extends AdminController
 		// Instantiate a new view
 		$this->view->title = Lang::txt(strtoupper($this->_name));
 
-		$type = \JRequest::getVar('type', 'submitted');
+		$type = Request::getVar('type', 'submitted');
 		$this->view->type = ($type == 'automatic') ? 1 : 0;
 
-		$this->view->group = \JRequest::getVar('group', '');
+		$this->view->group = Request::getVar('group', '');
 
-		$this->view->sort = \JRequest::getVar('sort', 'name');
+		$this->view->sort = Request::getVar('sort', 'name');
 
-		$jconfig = \JFactory::getConfig();
-		$this->offset = $jconfig->getValue('config.offset');
+		$this->offset = Config::get('offset');
 
-		$year  = \JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->view->year = $year;

@@ -31,10 +31,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 //add title and save button to toolbar
-JToolBarHelper::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_FORMAT'), 'citation.png');
-JToolBarHelper::save();
-JToolBarHelper::spacer();
-JToolBarHelper::help('format');
+Toolbar::title(Lang::txt('CITATIONS') . ': ' . Lang::txt('CITATION_FORMAT'), 'citation.png');
+Toolbar::save();
+Toolbar::spacer();
+Toolbar::help('format');
 
 // include citations format class
 // new citations format object

@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
 
 if (!($this->ticket instanceof \Components\Support\Models\Ticket))
 {

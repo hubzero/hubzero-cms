@@ -60,14 +60,13 @@ class Sections extends AdminController
 	{
 		// Get configuration
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Get paging variables
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.sections.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -111,7 +110,7 @@ class Sections extends AdminController
 	 */
 	public function editTask($row=null)
 	{
-		\JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($edit))
 		{
@@ -149,10 +148,10 @@ class Sections extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$sec = \JRequest::getVar('sec', array(), 'post');
+		$sec = Request::getVar('sec', array(), 'post');
 		$sec = array_map('trim', $sec);
 
 		// Initiate class and bind posted items to database fields
@@ -198,10 +197,10 @@ class Sections extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = \JRequest::getVar('id', array(0));
+		$ids = Request::getVar('id', array(0));
 		if (!is_array($ids))
 		{
 			$ids = array(0);

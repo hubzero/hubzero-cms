@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list.png');
 
 //add toolbar buttons
-JToolBarHelper::custom('doaddemail', 'save', '', 'COM_NEWSLETTER_TOOLBAR_SUBMIT', false);
-JToolBarHelper::cancel('cancelemail');
+Toolbar::custom('doaddemail', 'save', '', 'COM_NEWSLETTER_TOOLBAR_SUBMIT', false);
+Toolbar::cancel('cancelemail');
 ?>
 
 <?php

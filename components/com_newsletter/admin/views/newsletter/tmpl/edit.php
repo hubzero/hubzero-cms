@@ -32,36 +32,29 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->js()
-	 ->js('jquery.formwatcher', 'system');
+     ->js('jquery.formwatcher', 'system');
 
 //set title
 $text = ($this->task == 'edit' ? Lang::txt('COM_NEWSLETTER_EDIT') : Lang::txt('COM_NEWSLETTER_NEW'));
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::apply();
+Toolbar::apply();
 if ($this->newsletter->id)
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 //primary and secondary stories
 $primary = $this->newsletter_primary;
 $secondary = $this->newsletter_secondary;
-
-// Instantiate the sliders object
-//jimport('joomla.html.pane');
-//$tabs = JPane::getInstance('sliders');
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
 ?>
 
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	submitform( pressbutton );
+	submitform(pressbutton);
 }
 </script>
 
@@ -190,7 +183,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
 							<td>
 								<?php
-									$user = JUser::getInstance( $this->newsletter->created_by );
+									$user = JUser::getInstance($this->newsletter->created_by);
 									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
 								?>
 								<input type="hidden" name="newsletter[created_by]" value="<?php echo $this->newsletter->created_by; ?>" />
@@ -213,7 +206,7 @@ function submitbutton(pressbutton)
 							<th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
 							<td>
 								<?php
-									$user = JUser::getInstance( $this->newsletter->modified_by );
+									$user = JUser::getInstance($this->newsletter->modified_by);
 									echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
 								?>
 								<input type="hidden" name="newsletter[modified_by]" value="<?php echo $this->newsletter->modified_by; ?>" />
@@ -224,7 +217,7 @@ function submitbutton(pressbutton)
 			</table>
 
 			<?php
-				$params = new JParameter( $this->newsletter->params );
+				$params = new JParameter($this->newsletter->params);
 			?>
 			<fieldset class="adminform">
 				<legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
@@ -267,13 +260,13 @@ function submitbutton(pressbutton)
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?>">
 						<label for="newsletter-html_content"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML'); ?></label>
-						<textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->html_content ); ?></textarea>
+						<textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100" rows="20"><?php echo $this->escape($this->newsletter->html_content); ?></textarea>
 						<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?>">
 						<label for="newsletter-plain_content"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN'); ?></label>
-						<textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->plain_content ); ?></textarea>
+						<textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100" rows="20"><?php echo $this->escape($this->newsletter->plain_content); ?></textarea>
 						<span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?></span>
 					</div>
 				</fieldset>

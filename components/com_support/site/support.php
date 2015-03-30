@@ -38,7 +38,7 @@ include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php');
 include_once(dirname(__DIR__) . DS . 'helpers' . DS . 'html.php');
 include_once(dirname(__DIR__) . DS . 'models' . DS . 'ticket.php');
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'index'));
+$controllerName = Request::getCmd('controller', Request::getCmd('view', 'index'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'index';

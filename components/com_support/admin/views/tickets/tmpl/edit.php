@@ -30,10 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 $user = new \Hubzero\User\Profile();
-$user->load($juser->get('id'));
+$user->load(User::get('id'));
 
 $unknown  = true;
 $name     = '';
@@ -89,17 +87,17 @@ $dispatcher = JDispatcher::getInstance();
 
 $cc = array();
 
-$no_html = JRequest::getInt('no_html', 0);
+$no_html = Request::getInt('no_html', 0);
 if (!$no_html)
 {
 	$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-	JToolBarHelper::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
-	JToolBarHelper::save();
-	JToolBarHelper::apply();
-	JToolBarHelper::cancel();
-	JToolBarHelper::spacer();
-	JToolBarHelper::help('ticket');
+	Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
+	Toolbar::save();
+	Toolbar::apply();
+	Toolbar::cancel();
+	Toolbar::spacer();
+	Toolbar::help('ticket');
 
 	JHTML::_('behavior.tooltip');
 	$this->css();
@@ -616,7 +614,7 @@ if (!$no_html)
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
+	<input type="hidden" name="username" value="<?php echo User::get('username'); ?>" />
 
 	<?php if ($no_html) { ?>
 		<p class="submit"><input type="submit" value="<?php echo Lang::txt('Save'); ?>" /></p>

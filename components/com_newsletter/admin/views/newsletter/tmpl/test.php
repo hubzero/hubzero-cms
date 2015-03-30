@@ -32,11 +32,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 //set title
-JToolBarHelper::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter.png');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_TEST_SENDING') . ': ' . $this->newsletter->name, 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::custom('dosendtest', 'send','', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST', false);
-JToolBarHelper::cancel();
+Toolbar::custom('dosendtest', 'send','', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST', false);
+Toolbar::cancel();
 ?>
 
 <script type="text/javascript">

@@ -45,17 +45,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'info';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SYSTEM_LDAP'),
 	\Route::url('index.php?option=com_system&controller=ldap'),
 	$controllerName == 'ldap'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SYSTEM_GEO'),
 	\Route::url('index.php?option=com_system&controller=geodb'),
 	$controllerName == 'geodb'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_SYSTEM_APC'),
 	\Route::url('index.php?option=com_system&controller=apc'),
 	$controllerName == 'apc'

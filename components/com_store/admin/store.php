@@ -50,12 +50,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'orders';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('Orders'),
 	\Route::url('index.php?option=com_store&controller=orders'),
 	($controllerName == 'orders')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('Store Items'),
 	\Route::url('index.php?option=com_store&controller=items'),
 	($controllerName == 'items')

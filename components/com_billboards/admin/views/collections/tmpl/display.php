@@ -31,13 +31,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Add the toolbar items
-JToolBarHelper::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::spacer();
-JToolBarHelper::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
-JToolBarHelper::spacer();
-JToolBarHelper::help('collections');
+Toolbar::title(Lang::txt('COM_BILLBOARDS_MANAGER') . ': ' . Lang::txt('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::spacer();
+Toolbar::deleteList(Lang::txt('COM_BILLBOARDS_CONFIRM_DELETE'));
+Toolbar::spacer();
+Toolbar::help('collections');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

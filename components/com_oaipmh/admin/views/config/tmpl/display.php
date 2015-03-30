@@ -29,10 +29,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
-JToolBarHelper::preferences('com_oaipmh', 500);
-JToolBarHelper::spacer();
-JToolBarHelper::help('oaipmh');
+Toolbar::title(Lang::txt('COM_OAIPMH_SETTINGS'), 'generic.png');
+Toolbar::preferences('com_oaipmh', 500);
+Toolbar::spacer();
+Toolbar::help('oaipmh');
 
 $this->css();
 

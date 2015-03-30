@@ -30,13 +30,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS'), 'support.png');
-JToolBarHelper::preferences('com_support', '550');
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::deleteList();
-JToolBarHelper::spacer();
-JToolBarHelper::help('tickets');
+Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKETS'), 'support.png');
+Toolbar::preferences('com_support', '550');
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::deleteList();
+Toolbar::spacer();
+Toolbar::help('tickets');
 
 JHTML::_('behavior.tooltip');
 
@@ -204,7 +204,7 @@ $this->css();
 						$alltags = $st->checkTags($ids);
 					}
 
-					$tid = JRequest::getInt('ticket', 0);
+					$tid = Request::getInt('ticket', 0);
 
 					$tsformat = JFactory::getDBO()->getDateFormat();
 

@@ -28,13 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Support\Helpers;
 
 /**
  * Support helper class for misc. HTML
  */
-class SupportHelperHtml
+class Html
 {
 	/**
 	 * Generate a select list from a simply array of values

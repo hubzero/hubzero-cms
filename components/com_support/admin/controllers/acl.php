@@ -69,11 +69,11 @@ class Acl extends AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		//\JRequest::checkToken('get') or jexit('Invalid Token');
+		//Request::checkToken('get') or jexit('Invalid Token');
 
-		$id     = \JRequest::getInt('id', 0);
-		$action = \JRequest::getVar('action', '');
-		$value  = \JRequest::getInt('value', 0);
+		$id     = Request::getInt('id', 0);
+		$action = Request::getVar('action', '');
+		$value  = Request::getInt('value', 0);
 
 		$row = new AroAco($this->database);
 		$row->load($id);
@@ -113,9 +113,9 @@ class Acl extends AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$ids = \JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		foreach ($ids as $id)
 		{
@@ -152,10 +152,10 @@ class Acl extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		\JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Trim and addslashes all posted items
-		$aro = \JRequest::getVar('aro', array(), 'post');
+		$aro = Request::getVar('aro', array(), 'post');
 		$aro = array_map('trim', $aro);
 
 		// Initiate class and bind posted items to database fields
@@ -209,7 +209,7 @@ class Acl extends AdminController
 		}
 
 		// Trim and addslashes all posted items
-		$map = \JRequest::getVar('map', array(), 'post');
+		$map = Request::getVar('map', array(), 'post');
 
 		foreach ($map as $k => $v)
 		{

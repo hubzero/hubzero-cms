@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
 
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=';
 

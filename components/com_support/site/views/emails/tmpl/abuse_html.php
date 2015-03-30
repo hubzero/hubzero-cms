@@ -32,7 +32,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri = JURI::getInstance();
-$jconfig = JFactory::getConfig();
 
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
@@ -64,14 +63,14 @@ $this->css(
 		<tbody>
 			<tr>
 				<td width="10%" align="left" valign="bottom" nowrap="nowrap" class="sitename">
-					<?php echo $jconfig->getValue('config.sitename'); ?>
+					<?php echo Config::get('sitename'); ?>
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
 						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
 					</span>
 					<br />
-					<span class="description"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
+					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
 					<?php echo Lang::txt('COM_SUPPORT_CENTER'); ?>
@@ -213,7 +212,7 @@ $this->css(
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $base; ?>"><?php echo $base; ?></a>. Visit our <a href="<?php echo $base; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $base; ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $base; ?>"><?php echo $base; ?></a>. Visit our <a href="<?php echo $base; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $base; ?>/support">Support Center</a> if you have any questions.</span>
 				</td>
 			</tr>
 		</tbody>

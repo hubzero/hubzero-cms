@@ -32,14 +32,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
-JToolBarHelper::save();
-//JToolBarHelper::apply();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('ticket');
-
-$juser = JFactory::getUser();
+Toolbar::title(Lang::txt('COM_SUPPORT') . ': ' . Lang::txt('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
+Toolbar::save();
+//Toolbar::apply();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('ticket');
 
 JHTML::_('behavior.tooltip');
 $this->css();
@@ -202,7 +200,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<input type="hidden" name="username" value="<?php echo $this->escape($juser->get('username')); ?>" />
+	<input type="hidden" name="username" value="<?php echo $this->escape(User::get('username')); ?>" />
 	<input type="hidden" name="task" value="save" />
 
 	<?php echo JHTML::_('form.token'); ?>

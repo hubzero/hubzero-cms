@@ -31,37 +31,37 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-JRequest::setVar('hidemainmenu', true);
+Request::setVar('hidemainmenu', true);
 
 $canDo = \Components\Redirect\Helpers\Redirect::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_REDIRECT_MANAGER_LINK'), 'redirect');
+Toolbar::title(Lang::txt('COM_REDIRECT_MANAGER_LINK'), 'redirect');
 // If not checked out, can save the item.
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
+	Toolbar::apply();
+	Toolbar::save();
 }
 // This component does not support Save as Copy due to uniqueness checks.
 // While it can be done, it causes too much confusion if the user does
 // not change the Old URL.
 if ($canDo->get('core.edit') && $canDo->get('core.create'))
 {
-	JToolBarHelper::save2new();
+	Toolbar::save2new();
 }
 
 if (empty($this->item->id))
 {
-	JToolBarHelper::spacer();
-	JToolBarHelper::cancel('cancel');
+	Toolbar::spacer();
+	Toolbar::cancel('cancel');
 }
 else
 {
-	JToolBarHelper::spacer();
-	JToolBarHelper::cancel('cancel', 'JTOOLBAR_CLOSE');
+	Toolbar::spacer();
+	Toolbar::cancel('cancel', 'JTOOLBAR_CLOSE');
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('link');
+Toolbar::spacer();
+Toolbar::help('link');
 
 // Include the HTML helpers.
 JHtml::addIncludePath(dirname(JPATH_COMPONENT) . '/helpers/html');
