@@ -1238,6 +1238,30 @@ class Relational implements \IteratorAggregate
 	}
 
 	/**
+	 * Finds the named class, checking a handful of scopes
+	 *
+	 * @param  string $name the name of the relationship to resolve
+	 * @return object
+	 * @since  1.3.2
+	 * @throws \Hubzero\Error\Exception\RuntimeException if a class of name cannot be found
+	 **/
+	private function resolve($name)
+	{
+		if (!class_exists($name))
+		{
+			// Get the scope of the current class and check there too
+			$name = with(new \ReflectionClass($this))->getNamespaceName() . '\\' . $name;
+
+			if (!class_exists($name))
+			{
+				throw new RuntimeException("Relationship '{$name}' not found");
+			}
+		}
+
+		return new $name;
+	}
+
+	/**
 	 * Retrieves a one to one model relationship
 	 *
 	 * @param  string $model the name of the primary model
@@ -1248,7 +1272,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function oneToOne($model, $thisKey=null, $childKey=null)
 	{
-		$child = new $model;
+		$child = $this->resolve($model);
 
 		// Default the keys if not set
 		$thisKey  = $thisKey  ?: strtolower($child->getModelName()) . '_id';
@@ -1272,7 +1296,7 @@ class Relational implements \IteratorAggregate
 		$thisKey    = $thisKey    ?: $this->getPrimaryKey();
 		$relatedKey = $relatedKey ?: strtolower($this->getModelName()) . '_id';
 
-		return new OneToMany($this, new $model, $thisKey, $relatedKey);
+		return new OneToMany($this, $this->resolve($model), $thisKey, $relatedKey);
 	}
 
 	/**
@@ -1287,7 +1311,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function manyToMany($model, $associativeTable=null, $thisKey=null, $relatedKey=null)
 	{
-		$related   = new $model;
+		$related   = $this->resolve($model);
 		$names     = [strtolower($this->getModelName()), strtolower($related->getModelName())];
 		$namespace = (!$this->namespace ? '' : $this->namespace . '_');
 
@@ -1313,7 +1337,7 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function belongsToOne($model, $parentKey=null, $thisKey=null)
 	{
-		$parent = new $model;
+		$parent = $this->resolve($model);
 
 		// Default the keys if not set
 		$parentKey = $parentKey ?: $this->getPrimaryKey();
@@ -1335,8 +1359,8 @@ class Relational implements \IteratorAggregate
 	public function oneToManyThrough($model, $through, $relatedKey=null, $localKey=null)
 	{
 		// Format the model name and instantiate new object
-		$related = new $model;
-		$through = new $through;
+		$related = $this->resolve($model);
+		$through = $this->resolve($through);
 
 		// Keys 
 		$localKey   = $localKey   ?: strtolower($this->getModelName()) . '_id';
