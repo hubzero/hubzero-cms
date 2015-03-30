@@ -29,7 +29,7 @@
 
 namespace Components\Oaipmh\Admin;
 
-if (!\User::authorise('core.manage', 'com_oaipmh')) 
+if (!\User::authorise('core.manage', 'com_oaipmh'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }

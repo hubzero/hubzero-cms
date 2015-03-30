@@ -280,7 +280,7 @@ class Abuse extends SiteController
 
 			// Get any set emails that should be notified of ticket submission
 			$defs = str_replace("\r", '', $this->config->get('abuse_emails', '{config.mailfrom}'));
-			$defs = str_replace('\n', "\n", $defs); 
+			$defs = str_replace('\n', "\n", $defs);
 			$defs = explode("\n", $defs);
 			$defs = array_map('trim', $defs);
 
