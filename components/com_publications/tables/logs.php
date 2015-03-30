@@ -89,9 +89,7 @@ class Log extends \JTable
 	{
 		$filename = 'pub-' . $pid . '-v-' . $vid . '.' . \JFactory::getDate()->format('Y-m') . '.log';
 
-		$juser  = \JFactory::getUser();
-		$uid 	= $juser->get('id');
-		$uid 	= $uid ? $uid : 'guest';
+		$uid 	= User::isGuest() ? 'guest' : User::get('id');
 
 		$log = \JFactory::getDate()->toSql() . "\t" . $ip . "\t" . $uid . "\t" . $type . "\n";
 

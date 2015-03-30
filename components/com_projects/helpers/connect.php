@@ -130,13 +130,7 @@ class Connect extends \JObject {
 	{
 		$this->_db		= $db;
 		$this->_project = $project;
-		$this->_uid		= $userid;
-
-		if (!$userid)
-		{
-			$juser = \JFactory::getUser();
-			$this->_uid = $juser->get('id');
-		}
+		$this->_uid = $userid ? $userid : User::get('id');
 
 		// Set configurations
 		$this->setConfigs();

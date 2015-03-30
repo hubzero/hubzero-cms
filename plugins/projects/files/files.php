@@ -3174,7 +3174,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$project || ($limited == 1 && !$project->owner))
 		{
 			// Throw error
-			\JError::raiseError( 403, \JText::_('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED'));
+			throw new Exception(\JText::_('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED'), 403);
 			return;
 		}
 
@@ -3196,7 +3196,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!\JFolder::create( $tempPath ))
 				{
 					// Throw error
-					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
+					throw new Exception(\JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
 					return;
 				}
 			}
@@ -3221,7 +3221,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!file_exists($serve))
 		{
 			// Throw error
-			\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'));
+			throw new Exception(\JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -3243,7 +3243,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		if (!$result)
 		{
 			// Should only get here on error
-			\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
+			throw new Exception(\JText::_('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
 		}
 		else
 		{
@@ -3534,7 +3534,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					if (!$openLink)
 					{
 						// Throw error
-						\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file );
+						throw new Exception(\JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $file, 404 );
 						return;
 					}
 					$this->_referer = $openLink;
@@ -3599,7 +3599,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!file_exists($fullpath))
 			{
 				// Throw error
-				\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND') . ' ' . $fullpath );
+				throw new Exception(\JText::_('PLG_PROJECTS_FILES_FILE_NOT_FOUND'), 404);
 				return;
 			}
 
@@ -3634,7 +3634,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
+					throw new Exception(\JText::_('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
 				}
 				else
 				{
@@ -3899,7 +3899,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				if (!$result)
 				{
 					// Should only get here on error
-					\JError::raiseError( 404, \JText::_('PLG_PROJECTS_FILES_SERVER_ERROR') );
+					throw new Exception(\JText::_('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
 				}
 				else
 				{

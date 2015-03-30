@@ -34,6 +34,7 @@ use Hubzero\Component\SiteController;
 use Components\Publications\Tables;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
+use Exception;
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
@@ -410,10 +411,10 @@ class Publications extends SiteController
 		);
 
 		// Get projects user has access to
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$obj = new \Components\Projects\Tables\Project( $this->database );
-			$this->view->filters['projects']  = $obj->getUserProjectIds($this->juser->get('id'));
+			$this->view->filters['projects']  = $obj->getUserProjectIds(User::get('id'));
 		}
 
 		// Get major types
@@ -742,7 +743,7 @@ class Publications extends SiteController
 
 		if (!$this->publication)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -755,7 +756,7 @@ class Publications extends SiteController
 		}
 		else
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -776,7 +777,7 @@ class Publications extends SiteController
 		if (!isset($this->publication->_attachments['elements'][$element])
 			|| empty($this->publication->_attachments['elements'][$element]))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
@@ -818,7 +819,7 @@ class Publications extends SiteController
 		// No content served
 		if ($content === NULL || $content == false)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 		else
@@ -846,7 +847,7 @@ class Publications extends SiteController
 	{
 		if (!$this->publication)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1009,7 +1010,7 @@ class Publications extends SiteController
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1073,7 +1074,7 @@ class Publications extends SiteController
 		// We do need an attachment!
 		if (count($attachments) == 0)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
@@ -1222,14 +1223,14 @@ class Publications extends SiteController
 		// Ensure we have attachment information
 		if (empty($downloadable))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
 			return;
 		}
 
 		// Ensure the file exist
 		if (!file_exists($downloadable['path']))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1243,7 +1244,7 @@ class Publications extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 		}
 		else
 		{
@@ -1272,7 +1273,7 @@ class Publications extends SiteController
 		// Ensure we what we need
 		if (!$pid || !$vid || !$file )
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
@@ -1310,7 +1311,7 @@ class Publications extends SiteController
 		// Ensure the file exist
 		if (!file_exists(PATH_APP . $path . DS . $file))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
@@ -1324,7 +1325,7 @@ class Publications extends SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 		}
 		else
 		{
@@ -1406,14 +1407,14 @@ class Publications extends SiteController
 
 		if (!$pageid)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
 		// Make sure we got a result from the database
 		if (!$this->publication)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1425,7 +1426,7 @@ class Publications extends SiteController
 		$page = $this->model->getWikiPage($pageid, $masterscope, $revision);
 		if (!$page)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS'), 404);
 			return;
 		}
 
@@ -1486,9 +1487,7 @@ class Publications extends SiteController
 			}
 			else
 			{
-				\JError::raiseError( 404,
-					Lang::txt('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
-				);
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY'), 404);
 				return;
 			}
 		}
@@ -2036,7 +2035,7 @@ class Publications extends SiteController
 	public function savetagsTask()
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->pageTask();
 			return;
@@ -2050,7 +2049,7 @@ class Publications extends SiteController
 		// Process tags
 		$database = \JFactory::getDBO();
 		$rt = new Helpers\Tags( $database );
-		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 0);
+		$rt->tag_object(User::get('id'), $id, $tags, 1, 0);
 
 		if (!$no_html)
 		{
@@ -2080,7 +2079,7 @@ class Publications extends SiteController
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
-		if ($publication->access == 1 && $this->juser->get('guest'))
+		if ($publication->access == 1 && User::isGuest())
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option),
@@ -2138,7 +2137,7 @@ class Publications extends SiteController
 		$this->_buildPathway();
 
 		// Instantiate a new view
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_PUBLICATIONS_PRIVATE_PUB_LOGIN');
 			$this->_login();
@@ -2164,7 +2163,7 @@ class Publications extends SiteController
 	protected function _authorize( $project_id = 0, $curatorgroups = array(), $curator = NULL )
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -2177,7 +2176,7 @@ class Publications extends SiteController
 			$authorized = 'admin';
 		}
 		// Assigned curator?
-		if ($curator == $this->juser->get('id'))
+		if ($curator == User::get('id'))
 		{
 			$authorized = 'curator';
 		}
@@ -2197,7 +2196,7 @@ class Publications extends SiteController
 					if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
 					{
 						// Check if they're a member of this group
-						$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+						$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 						if ($ugs && count($ugs) > 0)
 						{
 							foreach ($ugs as $ug)
@@ -2217,7 +2216,7 @@ class Publications extends SiteController
 		if ($project_id)
 		{
 			$objO = new \Components\Projects\Tables\Owner($this->database);
-			$owner = $objO->isOwner($this->juser->get('id'), $project_id);
+			$owner = $objO->isOwner(User::get('id'), $project_id);
 			if ($owner)
 			{
 				$authorized = $owner;
@@ -2237,7 +2236,7 @@ class Publications extends SiteController
 	 */
 	private function _checkGroupAccess( $publication, $version = 'default', $usersgroups = array() )
 	{
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			// Check if they're a site admin (from Joomla)
 			if ($this->juser->authorize($this->_option, 'manage'))
@@ -2248,7 +2247,7 @@ class Publications extends SiteController
 			// Get the groups the user has access to
 			if (empty($usersgroups))
 			{
-				$xgroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'), 'all');
+				$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 				$usersgroups = $this->getGroupProperty($xgroups);
 			}
 		}
@@ -2266,7 +2265,7 @@ class Publications extends SiteController
 		if ( $publication->access == 3 || $publication->access == 2 )
 		{
 			// Are they logged in?
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				// Not logged in
 				$restricted = true;

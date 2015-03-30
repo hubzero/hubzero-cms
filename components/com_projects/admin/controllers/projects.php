@@ -348,7 +348,7 @@ class Projects extends AdminController
 		$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean($formdata['about']));
 		$obj->type 			= isset($formdata['type']) ? $formdata['type'] : 1;
 		$obj->modified 		= \JFactory::getDate()->toSql();
-		$obj->modified_by 	= $this->juser->get('id');
+		$obj->modified_by 	= User::get('id');
 		$obj->private 		= Request::getVar( 'private', 0 );
 
 		$this->_message = Lang::txt('COM_PROJECTS_SUCCESS_SAVED');
@@ -362,7 +362,7 @@ class Projects extends AdminController
 
 		$subject 		= Lang::txt('COM_PROJECTS_PROJECT').' "'.$obj->alias.'" ';
 		$sendmail 		= 0;
-		$project 		= $obj->getProject($id, $this->juser->get('id'));
+		$project 		= $obj->getProject($id, User::get('id'));
 
 		// Get project managers
 		$objO = new Tables\Owner( $this->database );
@@ -403,7 +403,7 @@ class Projects extends AdminController
 			}
 
 			// Add activity
-			$objAA->recordActivity( $obj->id, $this->juser->get('id'), $what, 0, '', '', 'project', 0, $admin = 1 );
+			$objAA->recordActivity( $obj->id, User::get('id'), $what, 0, '', '', 'project', 0, $admin = 1 );
 			$sendmail = 1;
 		}
 		elseif ($message)
@@ -425,7 +425,7 @@ class Projects extends AdminController
 
 		// Save the tags
 		$cloud = new Models\Tags($obj->id);
-		$cloud->setTags($tags, $this->juser->get('id'), 1);
+		$cloud->setTags($tags, User::get('id'), 1);
 
 		// Save params
 		$incoming   = Request::getVar( 'params', array() );
@@ -517,7 +517,7 @@ class Projects extends AdminController
 			// Ensure we found an account
 			if ($profile)
 			{
-				$objO->saveOwners ( $id, $this->juser->get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
+				$objO->saveOwners ( $id, User::get('id'), $profile->get('uidNumber'), 0, $role, $status = 1, 0);
 			}
 		}
 	}
@@ -754,7 +754,7 @@ class Projects extends AdminController
 		// Get Disk Usage
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
-		$project = $obj->getProject($id, $this->juser->get('id'));
+		$project = $obj->getProject($id, User::get('id'));
 
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->config, NULL));
 

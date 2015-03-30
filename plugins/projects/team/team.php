@@ -1175,7 +1175,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		if (!$pid)
 		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1188,10 +1188,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'team',
-				'name'=>'edit',
-				'layout'=>'authors'
+				'folder'  =>'projects',
+				'element' =>'team',
+				'name'    =>'edit',
+				'layout'  =>'authors'
 			)
 		);
 

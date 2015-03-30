@@ -32,7 +32,7 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 {
 	?>
 	<div class="mysubmissions">
-<?php	if ($this->juser->get('guest'))
+<?php	if (User::isGuest())
 	{
 		// Have user log in
 		echo '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' .

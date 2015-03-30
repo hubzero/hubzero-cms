@@ -680,7 +680,7 @@ class Setup extends Base
 						// Make sure project creator is manager
 						$objO->reassignRole (
 							$this->model->get('id'),
-							$users = array($this->juser->get('id')),
+							$users = array(User::get('id')),
 							0 ,
 							1
 						);

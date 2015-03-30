@@ -753,7 +753,7 @@ class File extends Base
 				if (!$xserver->serve())
 				{
 					// Should only get here on error
-					\JError::raiseError( 404, Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE') );
+					throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_SERVE'), 404);
 				}
 				else
 				{

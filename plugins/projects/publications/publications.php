@@ -1210,7 +1210,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Make sure we got type info
 		if (!$mType)
 		{
-			JError::raiseError( 'Error loading publication type' );
+			throw new Exception( 'Error loading publication type' );
 			return false;
 		}
 
@@ -1238,7 +1238,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$objP->access 			= 0;
 		if (!$objP->store())
 		{
-			JError::raiseError( $objP->getError() );
+			throw new Exception( $objP->getError() );
 			return false;
 		}
 		if (!$objP->id)
@@ -1257,7 +1257,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_project->delete();
 				$objP->delete();
 
-				JError::raiseError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
+				throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
 				return false;
 			}
 			else
@@ -1294,7 +1294,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Roll back
 			$objP->delete();
 
-			JError::raiseError( $row->getError() );
+			throw new Exception( $row->getError(), 500 );
 			return false;
 		}
 		if (!$row->id)
@@ -3127,7 +3127,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// If publication not found, raise error
 		if (!$objP->load($pid) && $section != 'content')
 		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND') );
+			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 			return;
 		}
 		// Save new publication
@@ -3205,7 +3205,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$objP->access 			= 0;
 				if (!$objP->store())
 				{
-					JError::raiseError( $objP->getError() );
+					throw new Exception( $objP->getError(), 500);
 					return false;
 				}
 				if (!$objP->id)
@@ -3223,7 +3223,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						// Roll back
 						$this->_project->delete();
 						$objP->delete();
-						JError::raiseError( 500, $this->getError() );
+						throw new Exception($this->getError(), 500);
 						return false;
 					}
 					else
@@ -3264,7 +3264,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Roll back
 					$objP->delete();
 
-					JError::raiseError( 500, $row->getError() );
+					throw new Exception($row->getError(), 500);
 					return false;
 				}
 				if (!$row->id)
@@ -3298,7 +3298,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		elseif ($objP->project_id != $this->_project->id)
 		{
 			// Publication belongs to another project
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_PROJECT_ERROR') );
+			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_PROJECT_ERROR'), 404);
 			return;
 		}
 
@@ -3312,7 +3312,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$row = new \Components\Publications\Tables\Version( $this->_database );
 			if (!$row->loadVersion( $pid, $version ))
 			{
-				JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
+				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404 );
 				return;
 			}
 			// Disable editing for some DOI-related info, if published
@@ -3402,7 +3402,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if (!$row->store())
 					{
-						JError::raiseError( 500, $row->getError() );
+						throw new Exception($row->getError(), 500);
 						return false;
 					}
 
@@ -3456,7 +3456,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$row->access = $access;
 					if (!$row->store())
 					{
-						JError::raiseError( 500, $row->getError() );
+						throw new Exception($row->getError(), 500);
 						return false;
 					}
 
@@ -3492,7 +3492,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							$row->license_type = $selected_license->id;
 							if (!$row->store())
 							{
-								JError::raiseError( 500, $row->getError() );
+								throw new Exception($row->getError(), 500);
 								return false;
 							}
 							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SAVED');
@@ -3545,7 +3545,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$row->release_notes = $notes;
 					if (!$row->store())
 					{
-						JError::raiseError( 500, $row->getError() );
+						throw new Exception($row->getError(), 500);
 						return false;
 					}
 					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_NOTES_SAVED');
@@ -3944,7 +3944,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Save data
 			if (!$model->version->store())
 			{
-				JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
+				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 				return;
 			}
 
@@ -4218,7 +4218,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND') );
+				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 				return;
 			}
 		}
@@ -4227,7 +4227,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->loadVersion($pid, $version))
 		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND') );
+			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -4273,7 +4273,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if (!$row->store())
 					{
-						JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED') );
+						throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
 						return;
 					}
 					else
@@ -4300,7 +4300,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Delete draft version
 					if (!$row->delete())
 					{
-						JError::raiseError( 403, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED') );
+						throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
 						return;
 					}
 
@@ -6321,7 +6321,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->pub = $objP->getPublication($pid, 'default', $this->_project->id);
 		if (!$view->pub)
 		{
-			JError::raiseError( 404, JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND') );
+			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -7275,13 +7275,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$base_path = $pubconfig->get('webpath');
 		$pubPath = \Components\Publications\Helpers\Html::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
 
-		$serve = JPATH_ROOT . $pubPath . DS . $fpath;
+		$serve = PATH_APP . $pubPath . DS . $fpath;
 
 		// Ensure the file exist
 		if (!file_exists($serve))
 		{
 			// Throw error
-			JError::raiseError( 404, JText::_('COM_PROJECTS_FILE_NOT_FOUND'));
+			throw new Exception(JText::_('COM_PROJECTS_FILE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -7295,7 +7295,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_SERVER_ERROR') );
+			throw new Exception(JText::_('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 		}
 		else
 		{

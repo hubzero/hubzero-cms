@@ -938,7 +938,6 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$d 		= json_decode($d, true);
 
 		$db 	= $this->get_ds_db($this->_project->id);
-		$juser 	=  JFactory::getUser();
 		$table 	= array();
 
 		// Add new or Recreate

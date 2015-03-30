@@ -33,6 +33,7 @@ namespace Components\Publications\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use stdClass;
+use Exception;
 
 /**
  * Manage publication batch
@@ -88,7 +89,7 @@ class Batchcreate extends AdminController
 			if (!$xserver->serve())
 			{
 				// Should only get here on error
-				\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_SERVER_ERROR') );
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 			}
 			else
 			{
@@ -248,7 +249,7 @@ class Batchcreate extends AdminController
 	public function parse( $dryRun = 1, $output = NULL )
 	{
 		// Set common props
-		$this->_uid = $this->juser->get('id');
+		$this->_uid = User::get('id');
 
 		// No errors. Let's rewind and parse
 		$this->reader = new \XMLReader();

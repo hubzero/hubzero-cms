@@ -35,6 +35,7 @@ use Components\Publications\Tables;
 use Components\Publications\Models;
 use Components\Publications\Helpers;
 use stdClass;
+use Exception;
 
 include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
@@ -85,7 +86,7 @@ class Curation extends SiteController
 	public function displayTask()
 	{
 		// Must be logged in to be a curator
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 			$this->_login();
@@ -93,7 +94,7 @@ class Curation extends SiteController
 		}
 
 		// Get all user groups
-		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+		$usergroups = \Hubzero\User\Helper::getGroups(User::get('id'));
 
 		// Check authorization
 		$mt  = new Tables\MasterType( $this->database );
@@ -225,7 +226,7 @@ class Curation extends SiteController
 
 		if (!$pid)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception( Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404 );
 			return;
 		}
 
@@ -251,7 +252,7 @@ class Curation extends SiteController
 		// If publication not found, raise error
 		if (!$pub)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -275,13 +276,13 @@ class Curation extends SiteController
 
 		if (!$authorized)
 		{
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
@@ -360,7 +361,7 @@ class Curation extends SiteController
 
 		if (!$pid)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -385,7 +386,7 @@ class Curation extends SiteController
 				$this->view->display();
 				return;
 			}
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'), 404);
 			return;
 		}
 
@@ -406,7 +407,7 @@ class Curation extends SiteController
 				$this->view->display();
 				return;
 			}
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
@@ -469,12 +470,12 @@ class Curation extends SiteController
 				$this->view->display();
 				return;
 			}
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'), 404);
 			return;
 		}
 
 		// Get all user groups
-		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+		$usergroups = \Hubzero\User\Helper::getGroups(User::get('id'));
 
 		// Check authorization
 		$mt  = new Tables\MasterType( $this->database );
@@ -493,7 +494,7 @@ class Curation extends SiteController
 				$this->view->display();
 				return;
 			}
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
@@ -569,7 +570,7 @@ class Curation extends SiteController
 					// Create new record
 					$obj->publication_version_id 	= $row->id;
 					$obj->created 					= \JFactory::getDate()->toSql();
-					$obj->created_by				= $this->juser->get('id');
+					$obj->created_by				= User::get('id');
 					$obj->changelog					= $changelog;
 					$obj->curator					= 1;
 					$obj->newstatus					= $row->state;
@@ -631,27 +632,27 @@ class Curation extends SiteController
 		if (!$this->model->exists()
 			|| $this->model->version->publication_id != $this->model->publication->id)
 		{
-			JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
 		// Check authorization
 		if (!$this->model->access('curator'))
 		{
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
 		$this->model->version->state       = 1; // published
 		$this->model->version->accepted    = \JFactory::getDate()->toSql();
 		$this->model->version->reviewed    = \JFactory::getDate()->toSql();
-		$this->model->version->reviewed_by = $this->juser->get('id');
+		$this->model->version->reviewed_by = User::get('id');
 
 		// Archive (mkAIP) if no grace period and not previously archived
 		if (!$this->getError() && !$this->config->get('graceperiod', 0)
@@ -671,7 +672,7 @@ class Curation extends SiteController
 
 		if (!$this->model->version->store())
 		{
-			\JError::raiseError( 403, Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 			return;
 		}
 
@@ -721,7 +722,7 @@ class Curation extends SiteController
 		// Load version
 		if (!$row->load($vid) || $row->publication_id != $pid)
 		{
-			\JError::raiseError( 404, Lang::txt('Error loading version') );
+			throw new Exception(Lang::txt('Error loading version'), 404);
 			return;
 		}
 
@@ -730,7 +731,7 @@ class Curation extends SiteController
 
 		if (!$pub)
 		{
-			\JError::raiseError( 404, Lang::txt('Error loading publication') );
+			throw new Exception(Lang::txt('Error loading publication'), 404);
 			return;
 		}
 
@@ -743,24 +744,24 @@ class Curation extends SiteController
 
 		if (!$authorized)
 		{
-			if ($this->juser->get('guest'))
+			if (User::isGuest())
 			{
 				$this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
 				$this->_login();
 				return;
 			}
-			\JError::raiseError( 403, Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
 			return;
 		}
 
 		// Change publication status
 		$row->state 		= 7; // pending author changes
 		$row->reviewed 		= \JFactory::getDate()->toSql();
-		$row->reviewed_by 	= $this->juser->get('id');
+		$row->reviewed_by 	= User::get('id');
 
 		if (!$row->store())
 		{
-			\JError::raiseError( 403, Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED') );
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 			return;
 		}
 
@@ -865,7 +866,7 @@ class Curation extends SiteController
 
 		$data 					= new stdClass;
 		$data->reviewed 		= \JFactory::getDate()->toSql();
-		$data->reviewed_by 		= $this->juser->get('id');
+		$data->reviewed_by 		= User::get('id');
 		$data->review_status 	= $action == 'pass' ? 1 : 2;
 		if ($action == 'pass')
 		{
@@ -921,7 +922,7 @@ class Curation extends SiteController
 		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
 
 		// Log activity in curation history
-		$pub->_curationModel->saveHistory($pub, $this->juser->get('id'), $pub->state, $status, 1 );
+		$pub->_curationModel->saveHistory($pub, User::get('id'), $pub->state, $status, 1 );
 
 		// Add activity
 		$activity .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version_label . ' '
@@ -936,7 +937,7 @@ class Curation extends SiteController
 		$objAA = new \Components\Projects\Tables\Activity ( $this->database );
 		$aid   = $objAA->recordActivity(
 				$pub->project_id,
-				$this->juser->get('id'),
+				User::get('id'),
 				$activity,
 				$pub->id,
 				$pubtitle,
@@ -1007,7 +1008,7 @@ class Curation extends SiteController
 	protected function _authorize( $curatorgroups = array(), $curator = 0 )
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -1019,7 +1020,7 @@ class Curation extends SiteController
 		{
 			$authorized = 'admin';
 		}
-		if ($curator && $curator == $this->juser->get('id'))
+		if ($curator && $curator == User::get('id'))
 		{
 			$authorized = 'owner';
 			return $authorized;
@@ -1038,7 +1039,7 @@ class Curation extends SiteController
 				if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
 				{
 					// Check if they're a member of this group
-					$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+					$ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
 					if ($ugs && count($ugs) > 0)
 					{
 						foreach ($ugs as $ug)

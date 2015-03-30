@@ -34,6 +34,7 @@ use Hubzero\Component\AdminController;
 use Components\Publications\Tables;
 use Components\Publications\Helpers;
 use Components\Publications\Models;
+use Exception;
 
 /**
  * Manage publications
@@ -169,7 +170,7 @@ class Items extends AdminController
 		}
 
 		// Incoming version
-		$version 	= Request::getVar( 'version', '' );
+		$version = Request::getVar( 'version', '' );
 
 		// Grab some filters for returning to place after editing
 		$this->view->return = array();
@@ -195,7 +196,7 @@ class Items extends AdminController
 		// If publication not found, raise error
 		if (!$this->view->pub)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -209,7 +210,7 @@ class Items extends AdminController
 
 		// Fail if checked out not by 'me'
 		if ($this->view->objP->checked_out
-		 && $this->view->objP->checked_out <> $this->juser->get('id'))
+		 && $this->view->objP->checked_out <> User::get('id'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
@@ -220,7 +221,7 @@ class Items extends AdminController
 		}
 
 		// Editing existing
-		$this->view->objP->checkout($this->juser->get('id'));
+		$this->view->objP->checkout(User::get('id'));
 
 		if (trim($this->view->row->published_down) == '0000-00-00 00:00:00')
 		{
@@ -351,7 +352,7 @@ class Items extends AdminController
 		// If publication not found, raise error
 		if (!$this->view->pub)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -438,13 +439,13 @@ class Items extends AdminController
 
 		if (!$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
 		if (!$this->_curated)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_CURATION_NEEDED'), 404);
 			return;
 		}
 		else
@@ -503,7 +504,7 @@ class Items extends AdminController
 		$this->view->author = new Tables\Author( $this->database );
 		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
 			return;
 		}
 
@@ -516,7 +517,7 @@ class Items extends AdminController
 		// Load version
 		if (!$this->view->row->load($vid))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -524,7 +525,7 @@ class Items extends AdminController
 		$pid = Request::getInt( 'pid', $this->view->row->publication_id );
 		if (!$this->view->pub->load($pid))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -654,7 +655,7 @@ class Items extends AdminController
 		$blocksModel = new Models\Blocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
 
-		$block->reorder(NULL, 0, $model, $this->juser->get('id'));
+		$block->reorder(NULL, 0, $model, User::get('id'));
 		if ($block->getError())
 		{
 			$this->setRedirect(
@@ -742,11 +743,11 @@ class Items extends AdminController
 
 		if ($author)
 		{
-			$block->saveItem(NULL, 0, $model, $this->juser->get('id'), 0 , $author);
+			$block->saveItem(NULL, 0, $model, User::get('id'), 0 , $author);
 		}
 		else
 		{
-			$block->addItem(NULL, 0, $model, $this->juser->get('id'));
+			$block->addItem(NULL, 0, $model, User::get('id'));
 		}
 
 		if ($block->getError())
@@ -831,7 +832,7 @@ class Items extends AdminController
 
 		if (!$this->model->exists())
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -981,7 +982,7 @@ class Items extends AdminController
 
 		// Save the tags
 		$rt = new Helpers\Tags($this->database);
-		$rt->tag_object($this->juser->get('id'), $id, $tags, 1, true);
+		$rt->tag_object(User::get('id'), $id, $tags, 1, true);
 
 		// Email config
 		$pubtitle 	= \Hubzero\Utility\String::truncate($this->model->version->title, 100);
@@ -1120,7 +1121,7 @@ class Items extends AdminController
 		if (!$this->getError())
 		{
 			$this->model->version->modified    = \JFactory::getDate()->toSql();
-			$this->model->version->modified_by = $this->juser->get('id');
+			$this->model->version->modified_by = User::get('id');
 
 			// Store content
 			if (!$this->model->version->store())
@@ -1145,7 +1146,7 @@ class Items extends AdminController
 
 				if ($action != 'message' && !$this->getError())
 				{
-					$aid = $objAA->recordActivity( $project->id, $this->juser->get('id'),
+					$aid = $objAA->recordActivity( $project->id, User::get('id'),
 						$activity, $id, $pubtitle, $link, 'publication', 0, $admin = 1 );
 					$sendmail = $this->config->get('email') ? 1 : 0;
 
@@ -1165,7 +1166,7 @@ class Items extends AdminController
 						$objC->comment          = $comment;
 						$objC->admin            = 1;
 						$objC->created          = \JFactory::getDate()->toSql();
-						$objC->created_by       = $this->juser->get('id');
+						$objC->created_by       = User::get('id');
 						$objC->store();
 
 						// Get new entry ID
@@ -1180,7 +1181,7 @@ class Items extends AdminController
 						{
 							$what = Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 							$curl = '#tr_'.$aid; // same-page link
-							$caid = $objAA->recordActivity( $pub->project_id, $this->juser->get('id'),
+							$caid = $objAA->recordActivity( $pub->project_id, User::get('id'),
 							Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON')
 								. ' ' . $what, $objC->id, $what, $curl, 'quote', 0, 1 );
 
@@ -1412,7 +1413,7 @@ class Items extends AdminController
 		$this->view->pub = $objP->getPublication($id);
 		if (!$this->view->pub)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'), 404);
 			return;
 		}
 
@@ -1468,7 +1469,7 @@ class Items extends AdminController
 			$objP = new Tables\Publication( $this->database );
 			if (!$objP->load($id))
 			{
-				\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+				throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 				return;
 			}
 
@@ -1487,14 +1488,14 @@ class Items extends AdminController
 				// Load version
 				if (!$row->loadVersion($id, $version))
 				{
-					\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
+					throw new Exception(Lang::txt('COM_PUBLICATIONS_VERSION_NOT_FOUND'), 404);
 					return;
 				}
 
 				// Cannot delete main version if other versions exist
 				if ($row->main)
 				{
-					\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE') );
+					throw new Exception(Lang::txt('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE'), 404);
 					return;
 				}
 				if ($erase == 1)
@@ -1732,13 +1733,13 @@ class Items extends AdminController
 
 		if (!$objP->load($pid) || !$objV->load($vid))
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_NOT_FOUND') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
 			return;
 		}
 		$pub = $objP->getPublication($pid, $objV->version_number, $objP->project_id);
 		if (!$pub)
 		{
-			\JError::raiseError( 404, Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'), 404);
 			return;
 		}
 

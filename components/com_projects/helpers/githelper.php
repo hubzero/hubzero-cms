@@ -73,8 +73,7 @@ class Git extends \JObject
 		$this->_path = $path;
 
 		// Set acting user
-		$juser = \JFactory::getUser();
-		$this->_uid = $juser->get('id');
+		$this->_uid = User::get('id');
 	}
 
 	/**

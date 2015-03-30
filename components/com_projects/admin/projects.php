@@ -32,9 +32,9 @@ namespace Components\Projects\Admin;
 
 $option = Request::getCmd('option','com_projects');
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_projects'))
+if (!\User::authorise('core.manage', 'com_projects'))
 {
-	return \JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts

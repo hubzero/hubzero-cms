@@ -33,9 +33,9 @@ namespace Components\Publications\Admin;
 $option = Request::getCmd('option','com_publications');
 $task = Request::getWord('task', '');
 
-if (!\JFactory::getUser()->authorise('core.manage', 'com_publications'))
+if (!\User::authorise('core.manage', 'com_publications'))
 {
-	return \JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
