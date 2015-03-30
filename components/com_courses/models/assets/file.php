@@ -50,8 +50,9 @@ class FileAssetHandler extends AssetHandler
 			'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
 			'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
 			'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'r',
-			'wm2d', 'slx', 'srt'),
-		);
+			'wm2d', 'slx', 'srt'
+		),
+	);
 
 	/**
 	 * Create method for this handler
@@ -61,8 +62,8 @@ class FileAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
 
 		jimport('joomla.filesystem.folder');

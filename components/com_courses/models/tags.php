@@ -117,7 +117,7 @@ class CoursesModelTags extends \Components\Tags\Models\Cloud
 				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
-						'base_path' => JPATH_ROOT . '/components/com_courses',
+						'base_path' => JPATH_ROOT . '/components/com_courses/site',
 						'name'      => 'courses',
 						'layout'    => '_tags'
 					));

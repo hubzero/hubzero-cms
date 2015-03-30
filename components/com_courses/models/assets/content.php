@@ -45,9 +45,9 @@ class ContentAssetHandler extends AssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'As textual content',
-			'responds_to'    => array('text')
-		);
+		'action_message' => 'As textual content',
+		'responds_to'    => array('text')
+	);
 
 	/**
 	 * Create method for this handler
@@ -58,7 +58,7 @@ class ContentAssetHandler extends AssetHandler
 	{
 		// Include needed files
 		require_once JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php';
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+		require_once JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 
 		// Create our asset table object
 		$asset = new CoursesModelAsset();
@@ -217,7 +217,7 @@ class ContentAssetHandler extends AssetHandler
 		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 		{
 			// Create asset assoc object
-			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php';
 			$assoc = new CoursesTableAssetAssociation($this->db);
 
 			if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))

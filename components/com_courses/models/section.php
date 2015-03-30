@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'code.php');
@@ -858,7 +858,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		{
 			// Return the web path to the image
 			$path .= '/' . $file;
-			if (file_exists(JPATH_ROOT . $path))
+			if (file_exists(PATH_APP . $path))
 			{
 				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
 			}

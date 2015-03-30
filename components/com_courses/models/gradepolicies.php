@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.policies.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.policies.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section.php');
 
@@ -76,7 +76,7 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 
 				if (!$section->get('is_default'))
 				{
-					$config  = JComponentHelper::getParams('com_courses');
+					$config  = Component::params('com_courses');
 					$canEdit = $config->get('section_grade_policy', true);
 
 					if (!$canEdit)

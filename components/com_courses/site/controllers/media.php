@@ -44,8 +44,8 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function trackingTask()
 	{
 		// Include need media tracking library
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
 		$juser    = JFactory::getUser();
@@ -227,7 +227,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Build the upload path if it doesn't exist
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
 
 		if (!is_dir($path))
 		{
@@ -299,7 +299,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Build the upload path if it doesn't exist
-		$uploadDirectory = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir . DS;
+		$uploadDirectory = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir . DS;
 
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
@@ -403,11 +403,11 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$del_folder = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS) . DS . ltrim($folder, DS);
 
 		// Delete the folder
-		if (is_dir(JPATH_ROOT . $del_folder))
+		if (is_dir(PATH_APP . $del_folder))
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete(JPATH_ROOT . $del_folder))
+			if (!JFolder::delete(PATH_APP . $del_folder))
 			{
 				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
@@ -455,7 +455,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
@@ -528,7 +528,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
 		}
 
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
+		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
 		// Get the directory we'll be reading out of
 		$d = @dir($path);
@@ -652,7 +652,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$file_path = $base_path . DS . $file;
 
 		// Ensure the file exist
-		if (!file_exists(JPATH_ROOT . DS . $file_path))
+		if (!file_exists(PATH_APP . DS . $file_path))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
 			return;
@@ -660,7 +660,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		// Serve up the file
 		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename(JPATH_ROOT . DS . $file_path);
+		$xserver->filename(PATH_APP . DS . $file_path);
 		$xserver->disposition('attachment');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		if (!$xserver->serve())

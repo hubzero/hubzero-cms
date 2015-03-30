@@ -45,9 +45,9 @@ class SubtitleAssetHandler extends AssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'Add to HUBpresenter Video',
-			'responds_to'    => array('srt'),
-		);
+		'action_message' => 'Add to HUBpresenter Video',
+		'responds_to'    => array('srt'),
+	);
 
 	/**
 	 * Create method for this handler
@@ -57,8 +57,8 @@ class SubtitleAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
 
 		// joomla libs
@@ -139,7 +139,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$pathToAssetFolder = trim(dirname($pathToAsset), DS);
 
 		// build target path
-		$target_path = JPATH_ROOT . DS . $pathToAssetFolder . DS . $filename . '.' . $ext;
+		$target_path = PATH_APP . DS . $pathToAssetFolder . DS . $filename . '.' . $ext;
 
 		// Move the file to the site folder
 		set_time_limit(60);
@@ -162,7 +162,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$jsonFile = $pathToAssetFolder . DS . 'presentation.json';
 
 		// get manifest
-		$manifest = file_get_contents(JPATH_ROOT . DS . $jsonFile);
+		$manifest = file_get_contents(PATH_APP . DS . $jsonFile);
 		$manifest = json_decode($manifest);
 
 		// make sure we have a subtitles section
@@ -203,7 +203,7 @@ class SubtitleAssetHandler extends AssetHandler
 		}
 
 		// update json file
-		file_put_contents(JPATH_ROOT . DS . $jsonFile, json_encode($manifest, JSON_PRETTY_PRINT));
+		file_put_contents(PATH_APP . DS . $jsonFile, json_encode($manifest, JSON_PRETTY_PRINT));
 
 		//parse subtitle file
 		$lines = self::_parseSubtitleFile($target_path);
@@ -251,10 +251,10 @@ class SubtitleAssetHandler extends AssetHandler
 		}
 
 		// Get courses config
-		$cconfig = JComponentHelper::getParams('com_courses');
+		$cconfig = Component::params('com_courses');
 
 		// Build the upload path if it doesn't exist
-		$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+		$uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
 
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))

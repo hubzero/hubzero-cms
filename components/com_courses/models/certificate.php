@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'certificate.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'certificate.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
@@ -267,7 +267,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			case 'sys':
 			case 'system':
 			case 'upload':
-				return JPATH_ROOT . $this->_base;
+				return PATH_APP . $this->_base;
 			break;
 
 			case 'web':

@@ -37,7 +37,7 @@ switch ($this->action)
 {
 	case 'image':
 		// Build the upload path
-		$img_location  = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
+		$img_location  = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS);
 		$img_location .= DS . 'badges' . DS . $this->badge->get('id') . DS;
 
 		if (is_dir($img_location))
@@ -91,9 +91,9 @@ switch ($this->action)
 			JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
 		}
 
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
 		$db = JFactory::getDBO();
 

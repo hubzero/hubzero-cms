@@ -325,7 +325,7 @@ Class CoursesTablePage extends JTable
 			$page_id = $this->page_id;
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.hit.php');
+		require_once(__DIR__ . DS . 'page.hit.php');
 
 		$tbl = new CoursesTablePageHit($this->_db);
 		if (!$tbl->hit($offering_id, $page_id))

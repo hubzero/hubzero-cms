@@ -39,11 +39,11 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'courses.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'log.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'courses.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
 
 $controllerName = JRequest::getCmd('controller', 'courses');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'courses';
 }
@@ -79,7 +79,7 @@ if ($canDo->get('core.manage'))
 	);
 }
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CoursesController' . ucfirst($controllerName);
 
 // Instantiate controller

@@ -155,7 +155,7 @@ class PdfFormRespondent
 	 **/
 	public function saveToGradebook()
 	{
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
 
 		$database  = JFactory::getDBO();
 

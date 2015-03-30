@@ -31,8 +31,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-JLoader::import('Hubzero.Api.Controller');
-
 /**
  * API controller for the time component
  */
@@ -43,11 +41,11 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	 *
 	 * @return void
 	 */
-	function execute()
+	public function execute()
 	{
 		// Import some Joomla libraries
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
 		// Get the request type
 		$this->format = JRequest::getVar('format', 'application/json');
@@ -663,7 +661,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Include needed file(s)
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
 
 		// Grab incoming id, if applicable
 		$id = JRequest::getInt('id', null);
@@ -951,8 +949,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
 
 		// First, delete the asset association
 		$assocObj = new CoursesTableAssetAssociation($this->db);
@@ -1099,7 +1097,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Get our asset group object
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
 		$assetAssocationObj = new CoursesTableAssetAssociation($this->db);
 
 		$assets   = JRequest::getVar('asset', array());
@@ -1295,7 +1293,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType($this->format);
 
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
 
 		$tbl = new CoursesTablePrerequisites($this->db);
 		$tbl->set('item_scope', JRequest::getWord('item_scope', 'asset'));
@@ -1325,7 +1323,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType($this->format);
 
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
 
 		if (!$id = JRequest::getInt('id', false))
 		{
@@ -1574,7 +1572,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$now = JFactory::getDate()->toSql();
 
 		// Save the unity details
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.unity.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.unity.php';
 		$unity = new CoursesTableAssetUnity($this->db);
 		$unity->set('member_id', $member_id);
 		$unity->set('asset_id', $asset_id);
@@ -1588,7 +1586,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Now set/update the gradebook item
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
 		$gradebook = new CoursesTableGradeBook($this->db);
 		$gradebook->loadByUserAndAssetId($member_id, $asset_id);
 

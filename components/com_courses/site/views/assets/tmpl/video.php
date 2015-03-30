@@ -36,9 +36,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 
 // Get the manifest
-if (is_dir(JPATH_ROOT . $path))
+if (is_dir(PATH_APP . $path))
 {
-	$manifests = JFolder::files(JPATH_ROOT . $path, '.json', true, true);
+	$manifests = JFolder::files(PATH_APP . $path, '.json', true, true);
 	$manifest  = (count($manifests) > 0) ? $manifests[0] : '';
 }
 
@@ -129,7 +129,7 @@ if ($type == 'hubpresenter')
 	$contents = file_get_contents($media_path);
 
 	// Content folder
-	$content_folder = ltrim(rtrim($media_dir, DS), JPATH_ROOT);
+	$content_folder = ltrim(rtrim($media_dir, DS), PATH_APP);
 
 	// Decode the json formatted manifest so we can use the information
 	$presentation = json_decode($contents);
@@ -154,7 +154,7 @@ if ($type == 'hubpresenter')
 	$local_subs = array();
 	if (is_dir($content_folder))
 	{
-		$local_subs = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT', true, false);
+		$local_subs = JFolder::files(PATH_APP . DS . $content_folder, '.srt|.SRT', true, false);
 	}
 
 	// add local subtitles too
@@ -211,7 +211,7 @@ elseif ($type == 'html5')
 if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
-	require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
+	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
 	$dbo = JFactory::getDBO();
 	$mediaTracking = new ResourceMediaTracking($dbo);
 
@@ -298,7 +298,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							if (substr($subtitle->source, 0, 4) != 'http')
 							{
 								$source   = $base . $source;
-								$modified = filemtime( JPATH_ROOT . $source );
+								$modified = filemtime(PATH_APP . $source);
 							}
 							else
 							{
@@ -699,11 +699,11 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									<?php
 										// Use thumb if possible
 										$thumb = '';
-										if (isset($slide->thumb) && $slide->thumb && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->thumb))
+										if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP.DS.$content_folder.DS.$slide->thumb))
 										{
 											$thumb = $content_folder.DS.$slide->thumb;
 										}
-										else if (!is_array($slide->media) && file_exists(JPATH_ROOT.DS.$content_folder.DS.$slide->media))
+										else if (!is_array($slide->media) && file_exists(PATH_APP.DS.$content_folder.DS.$slide->media))
 										{
 											$thumb = $content_folder.DS.$slide->media;
 										}
@@ -749,7 +749,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	<?php
 		jimport('joomla.filesystem.file');
 		$path = $path . DS . $this->model->get('url');
-		$ext  = strtolower(JFile::getExt(JPATH_ROOT . $path));
+		$ext  = strtolower(JFile::getExt(PATH_APP . $path));
 		$doc  = JFactory::getDocument();
 		$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 		$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');

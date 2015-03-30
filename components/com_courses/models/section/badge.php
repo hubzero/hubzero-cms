@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php');
 
 /**
  * Courses model class for badges
@@ -190,7 +190,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	 */
 	private function getUrl($type='Claim')
 	{
-		$cconfig        = JComponentHelper::getParams('com_courses');
+		$cconfig        = Component::params('com_courses');
 		$request_type   = $cconfig->get('badges_request_type', 'oauth');
 		$badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($this->get('provider_name')), $request_type);
 		$badgesProvider = $badgesHandler->getProvider();

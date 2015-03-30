@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'page.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
@@ -183,7 +183,7 @@ class CoursesModelPage extends CoursesModelAbstract
 			$src .= DS . 'pagefiles' . ($o_id ? DS . $o_id : '');
 		}
 
-		if (file_exists(JPATH_ROOT . $src))
+		if (file_exists(PATH_APP . $src))
 		{
 			$dest = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id');
 			if ($this->get('section_id'))
@@ -195,10 +195,10 @@ class CoursesModelPage extends CoursesModelAbstract
 				$dest .= DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : '');
 			}
 
-			if (!file_exists(JPATH_ROOT . $dest))
+			if (!file_exists(PATH_APP . $dest))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::copy($src, $dest, JPATH_ROOT))
+				if (!JFolder::copy($src, $dest, PATH_APP))
 				{
 					$this->setError(JText::_('Failed to copy page files.'));
 				}

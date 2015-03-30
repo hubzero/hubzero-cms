@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
@@ -43,7 +43,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'page.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'gradebook.php');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'role.php');
 
 /**
  * Courses model class for a course
@@ -1378,14 +1378,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 			if ($file = $this->logo('file'))
 			{
 				$src  = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $c_id . '/offerings/' . $o_id . '/' . $file;
-				if (file_exists(JPATH_ROOT . $src))
+				if (file_exists(PATH_APP . $src))
 				{
 					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
 
-					if (!is_dir(JPATH_ROOT . $dest))
+					if (!is_dir(PATH_APP . $dest))
 					{
 						jimport('joomla.filesystem.folder');
-						if (!JFolder::create(JPATH_ROOT . $dest))
+						if (!JFolder::create(PATH_APP . $dest))
 						{
 							$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
@@ -1394,7 +1394,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 					$dest .= '/' . $file;
 
 					jimport('joomla.filesystem.file');
-					if (!JFile::copy($src, $dest, JPATH_ROOT))
+					if (!JFile::copy($src, $dest, PATH_APP))
 					{
 						$this->setError(JText::_('Failed to copy offering logo.'));
 					}
@@ -1535,7 +1535,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			// Return the web path to the image
 			$path .= '/' . $file;
-			if (file_exists(JPATH_ROOT . $path))
+			if (file_exists(PATH_APP . $path))
 			{
 				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
 			}
