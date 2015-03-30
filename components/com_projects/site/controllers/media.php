@@ -412,7 +412,7 @@ class Media extends Base
 			else
 			{
 				// Authorization required
-				if ($this->model->access('member'))
+				if (!$this->model->access('member'))
 				{
 					return;
 				}
