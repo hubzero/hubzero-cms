@@ -96,7 +96,7 @@ class Hub extends Relational
 	 **/
 	public function tasks()
 	{
-		return $this->oneToMany(__NAMESPACE__ . '\\Task');
+		return $this->oneToMany('Task');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Hub extends Relational
 	 **/
 	public function records()
 	{
-		return $this->oneToManyThrough(__NAMESPACE__ . '\\Record', __NAMESPACE__ . '\\Task');
+		return $this->oneToManyThrough('Record', 'Task');
 	}
 
 	/**
@@ -118,7 +118,7 @@ class Hub extends Relational
 	 **/
 	public function contacts()
 	{
-		return $this->oneToMany(__NAMESPACE__ . '\\Contact');
+		return $this->oneToMany('Contact');
 	}
 
 	/**

@@ -95,15 +95,13 @@ class Filters
 	public static function getColumnNames($table, $exclude=array())
 	{
 		// Get the column names
-		$prefix = Config::get('dbprefix');
-		$db     = \JFactory::getDbo();
-		$cols   = $db->getTableFields($prefix.$table);
-
+		$prefix  = Config::get('dbprefix');
+		$db      = App::get('db');
+		$cols    = $db->getTableColumns($prefix.$table);
 		$columns = array();
 
 		// Loop through them and make a guess at the human readable equivalent
-		$cols = array_keys($cols[$prefix.$table]);
-		foreach ($cols as $c)
+		foreach ($cols as $c => $type)
 		{
 			if (!in_array($c, $exclude))
 			{
@@ -158,9 +156,8 @@ class Filters
 	public static function filtersMap($q=array())
 	{
 		// Initialize variables
-		$db        = \JFactory::getDbo();
-		$filters   = array();
-		$return    = array();
+		$filters   = [];
+		$return    = [];
 		$dcolumn   = '';
 		$doperator = '';
 		$dvalue    = '';
@@ -181,7 +178,7 @@ class Filters
 						$val['human_column']   = 'User';
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$val['human_value']    = \JFactory::getUser($val['value'])->name;
+						$val['human_value']    = User::getInstance($val['value'])->name;
 						$filters[]  = $val;
 					}
 					// Augment name information for multiple fields
@@ -190,7 +187,7 @@ class Filters
 						$val['human_column']   = ucwords(str_replace('_id', '', $val['column']));
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$val['human_value']    = \JFactory::getUser($val['value'])->name;
+						$val['human_value']    = User::getInstance($val['value'])->name;
 
 						if (is_null($val['human_value']))
 						{
@@ -270,8 +267,7 @@ class Filters
 	 */
 	public static function filtersOverrides($vals, $column)
 	{
-		$db     = \JFactory::getDbo();
-		$return = array();
+		$return = [];
 
 		if ($column == 'task_id')
 		{
@@ -292,7 +288,7 @@ class Filters
 			if ($column == 'assignee_id' || $column == 'liaison_id' || $column == 'user_id')
 			{
 				$x['value']   = $value;
-				$x['display'] = \JFactory::getUser($value)->get('name');
+				$x['display'] = User::getInstance($value)->get('name');
 
 				if ($value == 0)
 				{

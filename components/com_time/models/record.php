@@ -71,7 +71,7 @@ class Record extends Relational
 	 **/
 	public function task()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Task');
+		return $this->belongsToOne('Task');
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Record extends Relational
 	 **/
 	public function proxies()
 	{
-		return $this->oneToMany(__NAMESPACE__ . '\\Proxy', 'user_id', 'user_id');
+		return $this->oneToMany('Proxy', 'user_id', 'user_id');
 	}
 
 	/**

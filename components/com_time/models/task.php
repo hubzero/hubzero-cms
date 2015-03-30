@@ -72,7 +72,7 @@ class Task extends Relational
 	 **/
 	public function records()
 	{
-		return $this->oneToMany(__NAMESPACE__ . '\\Record');
+		return $this->oneToMany('Record');
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Task extends Relational
 	 **/
 	public function hub()
 	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Hub');
+		return $this->belongsToOne('Hub');
 	}
 
 	/**

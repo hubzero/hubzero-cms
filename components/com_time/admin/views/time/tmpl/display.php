@@ -27,8 +27,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-JToolBarHelper::title(Lang::txt('COM_TIME'));
-JToolBarHelper::preferences('com_time', '550');
+Toolbar::title(Lang::txt('COM_TIME'));
+Toolbar::preferences('com_time', '550');
 ?>
 
 <form action="index.php?option=com_time" name="adminForm" id="item-form">

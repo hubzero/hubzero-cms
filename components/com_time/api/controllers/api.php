@@ -37,13 +37,13 @@ use Components\Time\Models\Proxy;
 use Components\Time\Models\liaison;
 use Components\Time\Helpers\Filters;
 
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
+require_once PATH_CORE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
 
 /**
  * API controller for the time component
@@ -65,7 +65,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->format = Request::getVar('format', 'application/json');
 
 		// Get a database object
-		$this->db = \JFactory::getDBO();
+		$this->db = App::get('db');
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
 		switch ($this->segments[0])
