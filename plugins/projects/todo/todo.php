@@ -398,13 +398,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($task == 'save' && $content != '')
 		{
 			$content			= rtrim(stripslashes($content));
+			$content            = \Hubzero\Utility\Sanitize::stripAll($content);
 			$objTD->content		= $content ? $content : $objTD->content;
-			$objTD->content		= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
 
 			// Save access under details
-			if (strlen($objTD->content) > 255)
+			if (strlen($content) > 255)
 			{
-				$objTD->details = $objTD->content;
+				$objTD->details = $content;
 			}
 			$objTD->content		= \Hubzero\Utility\String::truncate($objTD->content, 255);
 
@@ -520,7 +520,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 						// Record activity
 						$objAA = new ProjectActivity ( $this->_database );
 						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
+							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to do',
 							JRoute::_('index.php?option=' . $this->_option . a .
 							'alias=' . $this->_project->alias . a . 'active=todo'. a .
 							'action=view') . '/?todoid=' . $objTD->id, 'todo', 1 );
@@ -561,7 +561,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($new)
 		{
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
+				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to do',
 				JRoute::_('index.php?option=' . $this->_option . a .
 				'alias=' . $this->_project->alias . a . 'active=todo' . a .
 				'action=view') . '/?todoid=' . $objTD->id, 'todo', 1);
@@ -833,17 +833,21 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$comment = trim(JRequest::getVar( 'comment', '', 'post' ));
 		$parent_activity = JRequest::getInt( 'parent_activity', 0, 'post' );
 
+		// Clean-up
+		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
+		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
+		$comment = \Hubzero\Utility\String::truncate($comment, 800);
+
 		// Instantiate comment
 		$objC = new ProjectComment( $this->_database );
 		if ($comment)
 		{
-			$objC->itemid = $itemid;
-			$objC->tbl = 'todo';
+			$objC->itemid          = $itemid;
+			$objC->tbl             = 'todo';
 			$objC->parent_activity = $parent_activity;
-			$comment = \Hubzero\Utility\String::truncate($comment, 250);
-			$objC->comment = \Hubzero\Utility\Sanitize::stripAll($comment);
-			$objC->created = JFactory::getDate()->toSql();
-			$objC->created_by = $this->_uid;
+			$objC->comment         = $comment;
+			$objC->created         = JFactory::getDate()->toSql();
+			$objC->created_by      = $this->_uid;
 			if (!$objC->store())
 			{
 				$this->setError( $objC->getError() );
@@ -853,7 +857,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_POSTED');
 			}
 			// Get new entry ID
-			if (!$objC->id) {
+			if (!$objC->id)
+			{
 				$objC->checkin();
 			}
 

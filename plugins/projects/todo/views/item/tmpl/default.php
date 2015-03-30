@@ -114,7 +114,6 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PL
 				<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
 					<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="<?php echo JText::_('PLG_PROJECTS_TODO_WRITE_COMMENT'); ?>"></textarea>
 				</label>
-					<span class="hint"><?php echo JText::_('PLG_PROJECTS_TODO_COMMENT_HINT'); ?></span>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 					<input type="hidden" name="action" value="savecomment" />

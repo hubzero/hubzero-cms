@@ -715,7 +715,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 						{
 							continue;
 						}
-						$body 		= $todo ? $todo[0]->content : '';
+
+						$body 		= $todo[0]->details ? $todo[0]->details : $todo[0]->content;
 						$eid 		= $todo[0]->id;
 						$etbl 		= 'todo';
 						$deletable 	= 0; // Cannot delete to-do related activity
