@@ -5,7 +5,7 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
- /* Newsfeeds Component Route Helper
+/* Newsfeeds Component Route Helper
  *
  * @package		Joomla.Site
  * @subpackage	com_newsfeeds
@@ -76,7 +76,7 @@ function NewsfeedsBuildRoute(&$query)
 				$path = array_reverse($path);
 
 				$array = array();
-				foreach($path as $id)
+				foreach ($path as $id)
 				{
 					if ((int) $id == (int)$menuCatid)
 					{
@@ -159,10 +159,10 @@ function NewsfeedsParseRoute($segments)
 	$vars['catid'] = $id;
 	$vars['id'] = $id;
 	$found = 0;
-	foreach($segments as $segment)
+	foreach ($segments as $segment)
 	{
 		$segment = $advanced ? str_replace(':', '-', $segment) : $segment;
-		foreach($categories as $category)
+		foreach ($categories as $category)
 		{
 			if ($category->slug == $segment || $category->alias == $segment)
 			{
