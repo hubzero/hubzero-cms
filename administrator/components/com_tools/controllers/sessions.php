@@ -37,6 +37,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclass.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'sessionclassgroup.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 /**
  * Controller class for tool sessions
