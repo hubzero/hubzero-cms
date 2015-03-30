@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="task" value="view" />
 				<input type="hidden" name="active" value="feed" />
 				<input type="hidden" name="action" value="save" />
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="managers_only" value="0" />
 				<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
 			</p>

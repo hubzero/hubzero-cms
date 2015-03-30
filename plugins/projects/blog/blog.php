@@ -166,7 +166,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Set vars
-			$this->_project    = $model->project();
 			$this->_config     = $model->config();
 			$this->_task       = Request::getVar('action', '');
 			$this->_database   = JFactory::getDBO();
@@ -279,7 +278,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Show welcome screen?
-		$showWelcome = $member && is_object($member->params) && $member->params->get('hide_welcome') == 0  ? 1 : 0;
+		$showWelcome = $member && is_object($member->params)
+			&& $member->params->get('hide_welcome') == 0  ? 1 : 0;
 
 		// Show welcome banner with suggestions
 		if ($showWelcome)
@@ -297,17 +297,13 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				)
 			);
 			$view->option 		= $this->_option;
-			$view->suggestions 	= $suggestions;
+			$view->suggestions  = $suggestions;
 			$view->model	    = $model;
 			$html 		       .= $view->loadTemplate();
 		}
 
 		return $html;
 	}
-
-	//----------------------------------------
-	// Views
-	//----------------------------------------
 
 	/**
 	 * View of project updates
@@ -325,20 +321,25 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Get activities
-		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-		$view->filters 			= array();
-		$view->filters['role'] 	= $this->_project->role;
-		$view->total 			= $objAC->getActivities($this->_project->id, $view->filters, 1, $this->_uid);
 		$view->limit 			= intval($this->params->get('limit', 25));
-		$view->filters['limit'] = JRequest::getVar('limit', $view->limit, 'request');
-		$view->activities 		= $this->_prepActivities($view->filters, $view->limit);
+
+		// Get activities
+		$objAC                  = $this->model->table('Activity');
+		$view->filters 			= array(
+			'role'    => $this->model->member()->role,
+			'limit'   => Request::getVar('limit', $view->limit, 'request')
+		);
+
+		// Get count
+		$view->total = $objAC->getActivities($this->model->get('id'), $view->filters, 1, $this->_uid);
+
+		$view->activities = $this->_prepActivities($view->filters, $view->limit);
 
 		// Output html
-		$view->params 		= new JParameter($this->_project->params);
+		$view->params 		= new JParameter($this->model->params);
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];
@@ -364,8 +365,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _save()
 	{
 		// Incoming
-		$managers = JRequest::getInt('managers_only', 0);
-		$entry = trim(JRequest::getVar('blogentry', ''));
+		$managers = Request::getInt('managers_only', 0);
+		$entry = trim(Request::getVar('blogentry', ''));
 
 		// Text clean-up
 		$entry = \Hubzero\Utility\Sanitize::stripScripts($entry);
@@ -375,11 +376,11 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$objM = new \Components\Projects\Tables\Blog($this->_database);
 		if ($entry)
 		{
-			$objM->projectid = $this->_project->id;
-			$objM->blogentry = $entry;
-			$objM->managers_only = $managers;
-			$objM->posted = JFactory::getDate()->toSql();
-			$objM->posted_by = $this->_uid;
+			$objM->projectid      = $this->model->get('id');
+			$objM->blogentry      = $entry;
+			$objM->managers_only  = $managers;
+			$objM->posted         = JFactory::getDate()->toSql();
+			$objM->posted_by      = $this->_uid;
 
 			// Save new blog entry
 			if (!$objM->store())
@@ -398,14 +399,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// Record activity
-			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($objM->id)
 			{
-				$aid = $objAA->recordActivity(
-					$this->_project->id,
-					$this->_uid,
+				$aid = $this->model->recordActivity(
 					Lang::txt('COM_PROJECTS_SAID'),
-					$objM->id, '', '', 'blog', 1
+					$objM->id,
+					'', '', 'blog', 1
 				);
 			}
 
@@ -434,7 +433,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option
+			. '&alias=' . $this->model->get('alias') . '&active=feed');
 		return;
 	}
 
@@ -446,8 +446,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _delete()
 	{
 		// Incoming
-		$tbl = trim(JRequest::getVar('tbl', 'activity'));
-		$eid = JRequest::getInt('eid', 0);
+		$tbl = trim(Request::getVar('tbl', 'activity'));
+		$eid = Request::getInt('eid', 0);
 
 		// Are we deleting a blog entry?
 		if ($tbl == 'blog')
@@ -472,8 +472,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					// Delete all associated activities
 					foreach ($activities as $a)
 					{
-						$objAA = new \Components\Projects\Tables\Activity($this->_database);
-						$objAA->loadActivity($a, $this->_project->id);
+						$objAA = $this->model->table('Activity');
+						$objAA->loadActivity($a, $this->model->get('id'));
 						$objAA->deleteActivity();
 					}
 				}
@@ -482,8 +482,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		// Are we deleting activity?
 		if ($tbl == 'activity')
 		{
-			$objAA = new \Components\Projects\Tables\Activity($this->_database);
-			$objAA->loadActivity($eid, $this->_project->id);
+			$objAA = $this->model->table('Activity');
+			$objAA->loadActivity($eid, $this->model->get('id'));
 
 			if ($this->model->access('content') || $objAA->userid == $this->_uid)
 			{
@@ -501,8 +501,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					// Delete all associated activities
 					foreach ($activities as $a)
 					{
-						$objAA = new \Components\Projects\Tables\Activity($this->_database);
-						$objAA->loadActivity($a, $this->_project->id);
+						$objAA = $this->model->table('Activity');
+						$objAA->loadActivity($a, $this->model->get('id'));
 						$objAA->deleteActivity();
 					}
 				}
@@ -531,7 +531,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=feed');
 		return;
 	}
 
@@ -554,15 +554,20 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				'name'    => 'activity'
 			)
 		);
-		$objAC = new \Components\Projects\Tables\Activity($this->_database);
+		$objAC                  = $this->model->table('Activity');
 		$view->filters 			= array();
-		$view->total 			= $objAC->getActivities($this->_project->id, $view->filters, 1, $this->_uid);
+		$view->total 			= $objAC->getActivities(
+			$this->model->get('id'),
+			$view->filters,
+			1,
+			$this->_uid
+		);
 		$view->limit 			= intval($this->params->get('limit', 25));
-		$view->filters['limit'] = JRequest::getVar('limit', $view->limit, 'request');
+		$view->filters['limit'] = Request::getVar('limit', $view->limit, 'request');
 		$view->option 			= $this->_option;
-		$view->project 			= $this->_project;
+		$view->model 			= $this->model;
 		$view->activities 		= $this->_prepActivities($view->filters, $view->limit);
-		$view->goto  			= '&alias=' . $this->_project->alias;
+		$view->goto  			= '&alias=' . $this->model->get('alias');
 		$view->uid 				= $this->_uid;
 		$view->database 		= $this->_database;
 		$view->title			= $this->_area['title'];
@@ -580,8 +585,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _prepActivities($filters, $limit)
 	{
 		// Get latest activity
-		$objAC = new \Components\Projects\Tables\Activity($this->_database);
-		$activities = $objAC->getActivities ($this->_project->id, $filters, 0, $this->_uid);
+		$objAC = $this->model->table('Activity');
+		$activities = $objAC->getActivities ($this->model->get('id'), $filters, 0, $this->_uid);
 
 		// Instantiate some classes
 		$objM = new \Components\Projects\Tables\Blog($this->_database);
@@ -603,7 +608,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				if ($a->class == 'quote')
 				{
 					// Get comment
-					$c = $objC->getComments(NULL, NULL, $a->id, $this->_project->lastvisit);
+					$c = $objC->getComments(NULL, NULL, $a->id, $this->model->member()->lastvisit);
 					if (!$c)
 					{
 						continue;
@@ -617,7 +622,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					{
 						// get and add parent activity
 						$filters['id'] = $c->parent_activity;
-						$pa = $objAC->getActivities ($this->_project->id, $filters, 0, $this->_uid);
+						$pa = $objAC->getActivities ($this->model->get('id'), $filters, 0, $this->_uid);
 						if ($pa && count($pa) > 0)
 						{
 							$a = $pa[0];
@@ -634,69 +639,81 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				{
 					$shown[] = $a->id;
 					$class = $a->class ? $a->class : 'activity';
-					$new = $this->_project->lastvisit && $this->_project->lastvisit <= $a->recorded ? true : false;
+					$new = $this->model->member()->lastvisit
+						&& $this->model->member()->lastvisit <= $a->recorded
+						? true : false;
 
 					// Display hyperlink
 					if ($a->highlighted && $a->url)
 					{
-						$a->activity = str_replace($a->highlighted, '<a href="'.$a->url.'">'.$a->highlighted.'</a>', $a->activity);
+						$a->activity = str_replace($a->highlighted, '<a href="' . $a->url . '">'
+							. $a->highlighted . '</a>', $a->activity);
 					}
 
 					// Set vars
-					$body      = '';
-					$eid       = $a->id;
-					$etbl      = 'activity';
-					$deletable = 0;
-					$preview   = '';
+					$ebody       = '';
+					$eid         = $a->id;
+					$etbl        = 'activity';
+					$deletable   = 0;
+					$preview     = '';
 
 					// Get blog entry
 					if ($class == 'blog')
 					{
-						$blog = $objM->getEntries($this->_project->id, $bfilters = array('activityid' => $a->id), $a->referenceid);
+						$blog = $objM->getEntries(
+							$this->model->get('id'),
+							$bfilters = array('activityid' => $a->id),
+							$a->referenceid
+						);
 						if (!$blog)
 						{
 							continue;
 						}
-						$body 		= $blog ? $blog[0]->blogentry : '';
-						$eid 		= $blog[0]->id;
-						$etbl 		= 'blog';
-						$deletable 	= 1;
-					}
 
-					// Get todo item
-					if ($class == 'todo')
+						$ebody = $this->drawBodyText($blog[0]->blogentry);
+						$eid 		= $a->referenceid;
+						$etbl 		= 'blog';
+						$deletable  = 1;
+					}
+					elseif ($class == 'todo')
 					{
-						$todo = $objTD->getTodos($this->_project->id, $tfilters = array('activityid' => $a->id), $a->referenceid);
+						$todo = $objTD->getTodos(
+							$this->model->get('id'),
+							$tfilters = array('activityid' => $a->id),
+							$a->referenceid
+						);
 						if (!$todo)
 						{
 							continue;
 						}
-						$body 		= $todo ? $todo[0]->content : '';
-						$eid 		= $todo[0]->id;
+
+						$content    = $todo[0]->details ? $todo[0]->details : $todo[0]->content;
+						$ebody 		= $this->drawBodyText($content);
+						$eid 		= $a->referenceid;
 						$etbl 		= 'todo';
-						$deletable 	= 0; // Cannot delete to-do related activity
+						$deletable  = 0; // Cannot delete to-do related activity
 					}
 
-					// Get/parse item preview if available
-					$ebody   = $body ? $this->drawBodyText($body) : '';
+					// Get/parse & save item preview if available
 					$preview = $this->getItemPreview($class, $a);
 
 					// Get comments
 					$comments = $objC->getComments($eid, $etbl);
 
 					// Is user allowed to delete item?
-					$deletable = $deletable && ($a->userid == $this->_uid or $this->_project->role == 1) ? 1 : 0;
+					$deletable = $deletable && $this->model->access('content')
+						&& ($a->userid == $this->_uid or $this->model->access('manager')) ? 1 : 0;
 
 					$prep[] = array(
-						'activity' => $a,
-						'eid' => $eid,
-						'etbl' => $etbl,
-						'body' => $ebody,
-						'deletable' => $deletable,
-						'comments' => $comments,
-						'class' => $class,
-						'new' => $new,
-						'preview' => $preview
+						'activity'   => $a,
+						'eid'        => $eid,
+						'etbl'       => $etbl,
+						'body'       => $ebody,
+						'deletable'  => $deletable,
+						'comments'   => $comments,
+						'class'      => $class,
+						'new'        => $new,
+						'preview'    => $preview
 					);
 				}
 			}
@@ -755,9 +772,15 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 * @param      object	$activity   Individual activity
 	 * @return     HTML
 	 */
-	public function getItemPreview($type = NULL, $activity = NULL, $body = NULL)
+	public function getItemPreview($type = NULL, $activity = NULL, $body = NULL, $reload = false)
 	{
 		$ref = $activity->referenceid;
+
+		// Do we have a saved preview?
+		if ($activity->preview && !$reload)
+		{
+			return $activity->preview;
+		}
 
 		if ($body)
 		{
@@ -780,45 +803,16 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			case 'notes':
 				$previewBody = $this->_getNotesPreview($ref);
 				break;
+		}
 
-			case 'tools':
-				$previewBody = $this->_getToolPreview($activity);
-				break;
+		// Save preview
+		if ($previewBody)
+		{
+			$objA = $this->model->table('Activity');
+			$objA->saveActivityPreview($activity->id, $previewBody);
 		}
 
 		return $previewBody;
-	}
-
-	/**
-	 * Get Tool Preview
-	 *
-	 * @param      object	$activity   Individual activity
-	 * @return     void, redirect
-	 */
-	protected function _getToolPreview($activity = NULL, $body = NULL)
-	{
-		if (!$activity)
-		{
-			return false;
-		}
-
-		// Get app log
-		if (is_file(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php'))
-		{
-			require_once(PATH_CORE . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'project.tool.log.php');
-
-			$objLog = new ProjectToolLog($this->_database);
-			$aLog = $objLog->getLog($activity->referenceid, $activity->id);
-
-			if ($aLog)
-			{
-				$aLog = rtrim(stripslashes($aLog));
-				$aLog = \Hubzero\Utility\Sanitize::stripAll($aLog);
-				$body = $aLog;
-			}
-		}
-
-		return $body;
 	}
 
 	/**
@@ -829,22 +823,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _getNotesPreview($ref = '')
 	{
-		if (!$ref)
-		{
-			return false;
-		}
-
-		// Import some needed libraries
-		include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
-
-		$page = new \Components\Wiki\Tables\Page($this->_database);
-		if ($page->loadById($ref))
-		{
-			$revision = $page->getCurrentRevision();
-			// TBD
-			// return $revision->get('pagehtml');
-		}
-
+		// TBD
 		return false;
 	}
 
@@ -864,7 +843,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		if (!$this->_path)
 		{
 			// Get project file path
-			$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->_project->alias);
+			$this->_path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
 		}
 
 		// We do need project file path
@@ -881,7 +860,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$maxWidth	 = 0;
 
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
-		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+		$to_path = DS . $imagepath . DS . strtolower($this->model->get('alias')) . DS . 'preview';
 
 		foreach ($files as $item)
 		{
@@ -949,7 +928,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->minHeight	= ($minHeight > 400) ? 400 : $minHeight;
 		$view->selected		= $selected;
 		$view->option 		= $this->_option;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		return $view->loadTemplate();
 	}
 
@@ -961,10 +940,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _saveComment()
 	{
 		// Incoming
-		$itemid = JRequest::getInt('itemid', 0, 'post');
-		$tbl = trim(JRequest::getVar('tbl', 'activity', 'post'));
-		$comment = trim(JRequest::getVar('comment', '', 'post'));
-		$parent_activity = JRequest::getInt('parent_activity', 0, 'post');
+		$itemid          = Request::getInt('itemid', 0, 'post');
+		$tbl             = trim(Request::getVar('tbl', 'activity', 'post'));
+		$comment         = trim(Request::getVar('comment', '', 'post'));
+		$parent_activity = Request::getInt('parent_activity', 0, 'post');
 
 		// Clean-up
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
@@ -976,7 +955,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		{
 			$objC->itemid 			= $itemid;
 			$objC->tbl 				= $tbl;
-			$objC->parent_activity 	= $parent_activity;
+			$objC->parent_activity  = $parent_activity;
 			$objC->comment 			= $comment;
 			$objC->created 			= JFactory::getDate()->toSql();
 			$objC->created_by 		= $this->_uid;
@@ -989,21 +968,21 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_POSTED');
 			}
 			// Get new entry ID
-			if (!$objC->id) {
+			if (!$objC->id) 
+			{
 				$objC->checkin();
 			}
 
 			// Record activity
-			$objAA = new \Components\Projects\Tables\Activity($this->_database);
 			if ($objC->id)
 			{
-				$what = $tbl == 'blog' ? Lang::txt('COM_PROJECTS_BLOG_POST') : Lang::txt('COM_PROJECTS_AN_ACTIVITY');
+				$what = $tbl == 'blog'
+					? Lang::txt('COM_PROJECTS_BLOG_POST')
+					: Lang::txt('COM_PROJECTS_AN_ACTIVITY');
 				$what = $tbl == 'todo' ? Lang::txt('COM_PROJECTS_TODO_ITEM') : $what;
-				$url = '#tr_'.$parent_activity; // same-page link
-				$aid = $objAA->recordActivity(
-					$this->_project->id,
-					$this->_uid,
-					Lang::txt('COM_PROJECTS_COMMENTED').' '.Lang::txt('COM_PROJECTS_ON').' '.$what,
+				$url = '#tr_' . $parent_activity; // same-page link
+				$aid = $this->model->recordActivity(
+					Lang::txt('COM_PROJECTS_COMMENTED') . ' ' . Lang::txt('COM_PROJECTS_ON') . ' ' . $what,
 					$objC->id, $what, $url, 'quote', 0
 				);
 			}
@@ -1033,7 +1012,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=feed');
 		return;
 	}
 
@@ -1045,7 +1024,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	protected function _deleteComment()
 	{
 		// Incoming
-		$cid  = JRequest::getInt('cid', 0);
+		$cid  = Request::getInt('cid', 0);
 
 		// Instantiate comment
 		$objC = new \Components\Projects\Tables\Comment($this->_database);
@@ -1061,7 +1040,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 
 			// delete associated activity
-			$objAA = new \Components\Projects\Tables\Activity($this->_database);
+			$objAA = $this->model->table('Activity');
 			if ($activityid && $objAA->load($activityid))
 			{
 				$objAA->deleteActivity();
@@ -1085,7 +1064,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect back to feed
-		$this->_referer = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&active=feed');
+		$this->_referer = Route::url('index.php?option=' . $this->_option
+			. '&alias=' . $this->model->get('alias') . '&active=feed');
 		return;
 	}
 }

@@ -38,7 +38,7 @@ if (!$this->comments || count($this->comments) == 0)
 		$this->view('_comment')
 	     ->set('option', $this->option)
 	     ->set('comment', $comment)
-	     ->set('project', $this->project)
+	     ->set('model', $this->model)
 		 ->set('activity', $this->activity)
 		 ->set('uid', $this->uid)
 	     ->display();

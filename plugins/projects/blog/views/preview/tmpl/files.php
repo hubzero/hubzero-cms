@@ -83,7 +83,7 @@ if ($empty)
 		if (isset($selected[$i]['image']))
 		{
 			$style = $genStyle . 'background:url(\'' . Route::url('index.php?option=' . $this->option . '&alias='
-				. $this->project->alias . '&controller=media&media=' . $selected[$i]['image']) . '\') no-repeat;';
+				. $this->model->get('alias') . '&controller=media&media=' . $selected[$i]['image']) . '\') no-repeat;';
 		}
 		else
 		{

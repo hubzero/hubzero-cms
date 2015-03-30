@@ -26,11 +26,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 $comment = $this->comment;
-$newComment = $this->project->lastvisit && $this->project->lastvisit <= $comment->created
+$newComment = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $comment->created
 	? true : false;
 
 // Is user allowed to delete item?
-$deletable = ($comment->created_by == $this->uid or $this->project->role == 1) ? 1 : 0;
+$deletable = ($comment->created_by == $this->uid or $this->model->member()->role == 1) ? 1 : 0;
 
 $longComment = stripslashes($comment->comment);
 $longComment = str_replace('<!-- {FORMAT:HTML} -->', '', $longComment);
@@ -54,7 +54,7 @@ $creator = \Hubzero\User\Profile::getInstance($comment->created_by);
 		<span class="m_options">
 			<span class="delit" id="pu_<?php echo $comment->id; ?>">
 			 <a href="<?php echo Route::url('index.php?option=' . $this->option
-			. '&alias=' . $this->project->alias . '&task=view&active=feed')
+			. '&alias=' . $this->model->get('alias') . '&task=view&active=feed')
 			.'/?action=deletecomment&amp;cid=' . $comment->id; ?>">x</a>
 			</span>
 		</span>

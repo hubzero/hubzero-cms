@@ -318,6 +318,31 @@ class Activity extends \JTable
 	}
 
 	/**
+	 * Save activity preview
+	 *
+	 * @param      integer $aid
+	 * @param      text $preview
+	 * @return     boolean true on success
+	 */
+	public function saveActivityPreview ( $aid = 0, $preview = NULL )
+	{
+		if (!$aid || intval($aid) == 0)
+		{
+			return false;
+		}
+		$query  = "UPDATE $this->_tbl SET preview =" . $this->_db->Quote($preview);
+		$query .= " WHERE id=" . $aid;
+
+		$this->_db->setQuery( $query );
+		if (!$this->_db->query())
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Delete activities
 	 *
 	 * @param      integer $projectid
@@ -418,10 +443,10 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($exclude as $ex)
 			{
-				$tquery .= "'".$ex."',";
+				$tquery .= "'" . $ex . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 
 		$query .= " GROUP BY p.id ";
@@ -457,10 +482,10 @@ class Activity extends \JTable
 			$tquery = '';
 			foreach ($validProjects as $v)
 			{
-				$tquery .= "'".$v."',";
+				$tquery .= "'" . $v . "',";
 			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") ";
+			$tquery = substr($tquery, 0, strlen($tquery) - 1);
+			$query .= $tquery . ") ";
 		}
 
 		if ($get == 'average')

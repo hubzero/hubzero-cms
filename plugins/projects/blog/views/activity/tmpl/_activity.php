@@ -43,7 +43,7 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
 				<?php if ($deletable) { ?>
 				<span class="m_options">
-					<span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=feed') . '/?action=delete&amp;tbl=' . $etbl . '&amp;eid=' . $eid;  ?>">x</a>
+					<span class="delit" id="mo_<?php echo $a->id; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=feed') . '/?action=delete&amp;tbl=' . $etbl . '&amp;eid=' . $eid;  ?>">x</a>
 					</span>
 				</span>
 				<?php } ?>
@@ -52,8 +52,9 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 					<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
 					<?php  if ($a->commentable && count($comments) == 0) { ?>
 					<span class="item-time">
+					<?php if ($this->model->access('content')) { ?>
 						&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a>
-					</span>
+					</span><?php } ?>
 					<?php } ?>
 					<div class="<?php echo $class; ?> activity <?php if ($a->admin) { echo ' admin-action'; } ?>">
 						 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
@@ -67,19 +68,23 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 				$this->view('_comments')
 			     ->set('option', $this->option)
 			     ->set('comments', $comments)
-			     ->set('project', $this->project)
+			     ->set('model', $this->model)
 				 ->set('activity', $a)
 				 ->set('uid', $this->uid)
 			     ->display();
 
 				// Add comment
-				$this->view('_addcomment')
-			     ->set('option', $this->option)
-			     ->set('comments', $comments)
-			     ->set('project', $this->project)
-				 ->set('activity', $a)
-				 ->set('uid', $this->uid)
-				 ->set('etbl', $etbl)
-				 ->set('eid', $eid)
-			     ->display(); ?>
+				if ($this->model->access('content'))
+				{
+					$this->view('_addcomment')
+				     ->set('option', $this->option)
+				     ->set('comments', $comments)
+				     ->set('model', $this->model)
+					 ->set('activity', $a)
+					 ->set('uid', $this->uid)
+					 ->set('etbl', $etbl)
+					 ->set('eid', $eid)
+				     ->display();
+				}
+			?>
 		</div>

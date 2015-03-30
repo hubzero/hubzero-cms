@@ -36,8 +36,8 @@ $this->css()
 	// New update form
 	$this->view('default', 'addupdate')
 	     ->set('option', $this->option)
-	     ->set('project', $this->project)
-	     ->set('goto', '&alias=' . $this->project->alias)
+	     ->set('model', $this->model)
+	     ->set('goto', '&alias=' . $this->model->get('alias'))
 	     ->display();
 ?>
 
@@ -46,9 +46,9 @@ $this->css()
 		// Display item list
 		$this->view('default', 'activity')
 		     ->set('option', $this->option)
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('activities', $this->activities)
-		     ->set('goto', '&alias=' . $this->project->alias)
+		     ->set('goto', '&alias=' . $this->model->get('alias'))
 		     ->set('limit', $this->limit)
 		     ->set('total', $this->total)
 		     ->set('filters', $this->filters)
@@ -56,9 +56,9 @@ $this->css()
 		     ->set('database', $this->database)
 		     ->display();
 		?>
-	<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias) . '/?active=feed'; ?>">
+	<form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')) . '/?active=feed'; ?>">
 		<div>
-			<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
+			<input type="hidden" id="pid" name="id" value="<?php echo $this->model->get('id'); ?>" />
 			<input type="hidden" name="task" value="view" />
 			<input type="hidden" name="action" value="" />
 		</div>
