@@ -1246,7 +1246,7 @@ class Events extends SiteController
 			$eview->bos = $bos;
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
-			
+
 			// one for the event manager
 			$this->_sendEmail($hub, $email, $subject, $message);
 
