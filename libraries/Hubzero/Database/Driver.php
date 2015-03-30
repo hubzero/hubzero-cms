@@ -88,6 +88,14 @@ abstract class Driver
 	protected $statement;
 
 	/**
+	 * The prepared statement bindings
+	 *
+	 * @var   array
+	 * @since 2.0.0
+	 */
+	protected $bindings = [];
+
+	/**
 	 * The internal query log
 	 *
 	 * For prepared statements, we'll try to interpolate prepared statement into basic strings,
