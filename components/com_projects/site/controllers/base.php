@@ -109,12 +109,16 @@ class Base extends SiteController
 		}
 
 		// Logging and stats
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'stats.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'log.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'stats.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'log.php');
 
 		// Include external file connection
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'remotefile.php');
-		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'tables' . DS . 'remotefile.php');
+		require_once(PATH_CORE . DS . 'components' . DS . 'com_projects'
+			. DS . 'helpers' . DS . 'connect.php');
 	}
 
 	/**
@@ -193,131 +197,13 @@ class Base extends SiteController
 	protected function _showError( $layout = 'default' )
 	{
 		// Need to be project creator
-		$view 			= new \Hubzero\Component\View(
+		$view = new \Hubzero\Component\View(
 			array('name' => 'error', 'layout' => $layout)
 		);
 		$view->error  	= $this->getError();
 		$view->title 	= $this->title;
 		$view->display();
 		return;
-	}
-
-	/**
-	 * Authorize users
-	 *
-	 * @param  int $check_site_admin
-	 * @return void
-	 */
-	protected function _authorize( $check_site_admin = 0, $groups = array() )
-	{
-		// Check login
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		// Check whether user belongs to the project
-		if ($this->_identifier)
-		{
-			$pOwner = new Tables\Owner( $this->database );
-			if ($result = $pOwner->isOwner($this->juser->get('id'), $this->_identifier))
-			{
-				return $result;
-			}
-		}
-
-		// Check if they're a site admin (from Joomla)
-		if ($check_site_admin)
-		{
-			if ($this->juser->get('id') && $this->juser->authorize($this->_option, 'manage'))
-			{
-				return 'admin';
-			}
-		}
-
-		// Check if user is in authorized groups (e.g. reviewers)
-		if (!empty($groups))
-		{
-			foreach ($groups as $gr)
-			{
-				if ($group = \Hubzero\User\Group::getInstance($gr))
-				{
-					// Check if they're a member of this group
-					$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-					if ($ugs && count($ugs) > 0)
-					{
-						foreach ($ugs as $ug)
-						{
-							if ($group && $ug->cn == $group->get('cn'))
-							{
-								$authorized = true;
-								return $authorized;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Authorize reviewer
-	 *
-	 * @return     void
-	 */
-	protected function _checkReviewerAuth($reviewer)
-	{
-		$reviewers = array('sponsored', 'sensitive', 'general');
-		if (!in_array($reviewer, $reviewers))
-		{
-			return false;
-		}
-
-		// Needs to be logged in
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		$sdata_group 	= $this->config->get('sdata_group', '');
-		$ginfo_group 	= $this->config->get('ginfo_group', '');
-		$admingroup 	= $this->config->get('admingroup', '');
-		$group      	= '';
-		$authorized 	= false;
-
-		// Get authorized group
-		if ($reviewer == 'sensitive' && $sdata_group)
-		{
-			$group = \Hubzero\User\Group::getInstance($sdata_group);
-		}
-		elseif ($reviewer == 'sponsored' && $ginfo_group)
-		{
-			$group = \Hubzero\User\Group::getInstance($ginfo_group);
-		}
-		elseif ($reviewer == 'general' && $admingroup)
-		{
-			$group = \Hubzero\User\Group::getInstance($admingroup);
-		}
-
-		if ($group)
-		{
-			// Check if they're a member of this group
-			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0)
-			{
-				foreach ($ugs as $ug)
-				{
-					if ($group && $ug->cn == $group->get('cn'))
-					{
-						$authorized = true;
-					}
-				}
-			}
-		}
-
-		return $authorized;
 	}
 
 	/**
@@ -580,7 +466,7 @@ class Base extends SiteController
 		// Log activity
 		$objLog  				= new Tables\Log( $this->database );
 		$objLog->projectid 		= $pid;
-		$objLog->userid 		= $this->juser->get('id');
+		$objLog->userid 		= User::get('id');
 		$objLog->owner 			= intval($owner);
 		$objLog->ip 			= Request::ip();
 		$objLog->section 		= $section;
@@ -619,7 +505,7 @@ class Base extends SiteController
 		if (!isset($this->project) || !is_object($this->project) || !$this->project->alias)
 		{
 			$obj 		= new Tables\Project( $this->database );
-			$this->project 	= $obj->getProject($this->_identifier, $this->juser->get('id'));
+			$this->project 	= $obj->getProject($this->_identifier, User::get('id'));
 			if (!$this->project)
 			{
 				return false;
@@ -656,7 +542,7 @@ class Base extends SiteController
 		$eview->hubShortName 	= Config::get('config.sitename');
 		$eview->project 		= $this->project;
 		$eview->goto 			= 'alias=' . $this->project->alias;
-		$eview->user 			= $this->juser->get('id');
+		$eview->user 			= User::get('id');
 		$eview->delimiter  		= '';
 
 		// Get profile of author group
@@ -669,7 +555,7 @@ class Base extends SiteController
 		foreach ($team as $member)
 		{
 			$eview->role = $member->role;
-			if ($member->userid && $member->userid != $this->juser->get('id') )
+			if ($member->userid && $member->userid != User::get('id') )
 			{
 				$eview->uid = $member->userid;
 				$message['plaintext'] 	= $eview->loadTemplate();
@@ -719,23 +605,5 @@ class Base extends SiteController
 					. ': ' . $subject_pending, $message, $from);
 			}
 		}
-	}
-
-	/**
-	 * Post activity to project feed
-	 *
-	 * @return     void
-	 */
-	protected function _postActivity($activity = '', $underline = '', $url = '', $class = 'project')
-	{
-		$objAA = new Tables\Activity ( $this->database );
-
-		if (isset($this->project) && is_object($this->project) && $this->project->id && $activity)
-		{
-			return $objAA->recordActivity( $this->project->id, $this->juser->get('id'),
-				$activity, $this->project->id, $underline, $url, $class
-			);
-		}
-		return false;
 	}
 }
