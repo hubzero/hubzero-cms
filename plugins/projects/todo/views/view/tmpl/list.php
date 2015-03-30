@@ -31,9 +31,9 @@ $this->css('jquery.datepicker.css', 'system')
 	 ->js('jquery.timepicker', 'system')
 	 ->js();
 
-$total = $this->model->entries('count', $this->filters);
-$rows  = $this->model->entries('list', $this->filters);
-$listName = $this->model->getListName($this->project->id, $this->filters);
+$total = $this->todo->entries('count', $this->filters);
+$rows  = $this->todo->entries('list', $this->filters);
+$listName = $this->todo->getListName($this->model->get('id'), $this->filters);
 
 $whatsleft = $total - $this->filters['start'] - $this->filters['limit'];
 $team_ids = array('0' => '');
@@ -41,14 +41,14 @@ $which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_
 $where = $listName ? ' '.Lang::txt('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
 $where.= $this->filters['mine'] == 1 ? ' '.Lang::txt('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
 
-$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=todo';
+$url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=todo';
 ?>
 <form action="<?php echo Route::url($url); ?>" method="post" id="plg-form" >
 	<?php // View header
 	$this->view('_header')
 		 ->set('option', $this->option)
-		 ->set('project', $this->project)
 		 ->set('model', $this->model)
+		 ->set('todo', $this->todo)
 		 ->set('filters', $this->filters)
 		 ->set('title', $this->title)
 		 ->set('listName', $listName)
@@ -68,8 +68,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 		// View menu
 		$this->view('_menu')
 			 ->set('option', $this->option)
-			 ->set('project', $this->project)
 			 ->set('model', $this->model)
+			 ->set('todo', $this->todo)
 			 ->set('filters', $this->filters)
 			 ->display();
 	?>
@@ -113,8 +113,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 		// View footer
 		$this->view('_footer')
 			 ->set('option', $this->option)
-			 ->set('project', $this->project)
 			 ->set('model', $this->model)
+			 ->set('todo', $this->todo)
 			 ->set('filters', $this->filters)
 			 ->set('uid', $this->uid)
 			 ->display();

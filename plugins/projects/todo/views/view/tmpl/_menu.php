@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=todo';
+$url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=todo';
 
 $sortAppend = '';
 $sortAppend.= $this->filters['mine'] == 1 ? '&mine=1' : ''; // show mine?
@@ -34,7 +34,7 @@ $sortAppend.= $this->filters['state'] == 1 ? '&state=1' : ''; // show complete?
 $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend.= '&sortdir=' . urlencode($sortbyDir);
 
-$lists = $this->model->getLists($this->project->id);
+$lists = $this->todo->getLists($this->model->get('id'));
 
 $colors = array(
 	'orange', 'lightblue', 'green',

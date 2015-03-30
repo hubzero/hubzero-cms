@@ -35,7 +35,7 @@ if (!$this->ajax)
 }
 
 $color = $this->row->get('color');
-$lists = $this->model->getLists($this->project->id);
+$lists = $this->todo->getLists($this->model->get('id'));
 
 $used = array();
 if (!empty($lists))
@@ -58,10 +58,10 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
 <h3><?php echo $this->row->get('id') ? Lang::txt('PLG_PROJECTS_TODO_EDIT_TODO') : Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?></h3>
 
 <div class="pinboard">
-	<form action="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=todo'); ?>" method="post" id="plg-form" >
+	<form action="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->model->get('alias') . '&active=todo'); ?>" method="post" id="plg-form" >
 		<fieldset>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="id" id="pid" value="<?php echo $this->project->id; ?>" />
+			<input type="hidden" name="id" id="pid" value="<?php echo $this->model->get('id'); ?>" />
 			<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 			<input type="hidden" name="active" value="todo" />
 			<input type="hidden" name="action" value="save" />
