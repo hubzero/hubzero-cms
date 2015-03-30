@@ -857,7 +857,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				$this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_POSTED');
 			}
 			// Get new entry ID
-			if (!$objC->id) 
+			if (!$objC->id)
 			{
 				$objC->checkin();
 			}
