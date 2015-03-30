@@ -93,6 +93,19 @@ class Mysql
 	}
 
 	/**
+	 * Sets a new bind value
+	 *
+	 * @param  string $value the value to bind
+	 * @param  string $type  the value type
+	 * @return $this
+	 * @since  2.0.0
+	 **/
+	protected function bind($value, $type=null)
+	{
+		$this->bindings[] = $value;
+	}
+
+	/**
 	 * Sets a select element on the query
 	 *
 	 * @param  string $column the column to select
@@ -105,7 +118,7 @@ class Mysql
 	{
 		// A default * is often added, get rid of it if anything else is added
 		// This wouldn't get rid of table.* as that is likely added intentionally
-		if (isset($this->select[0]) && $this->select[0] == '*')
+		if (isset($this->select[0]) && $this->select[0]['column'] == '*')
 		{
 			$this->select = [];
 		}
@@ -335,10 +348,11 @@ class Mysql
 			// See if we're including an alias
 			if (isset($select['as'])) $string .= " AS {$select['as']}";
 
+			// @FIXME: not quoting name here because we could have a function here as well
+			// $selects[] = $this->connection->quoteName($string, $select['as']);
 			$selects[] = $string;
 		}
 
-		// @FIXME: not quoting name here because we could have a function here as well
 		return 'SELECT ' . implode(',', $selects);
 	}
 
@@ -436,13 +450,15 @@ class Mysql
 				$values = array();
 				foreach ($constraint['value'] as $value)
 				{
-					$values[] = $this->connection->quote($value);
+					$values[] = '?';
+					$this->bind($value);
 				}
 				$string .= ' (' . ((!empty($values)) ? implode(',', $values) : "''") . ')';
 			}
 			else
 			{
-				$string .= ' ' . $this->connection->quote($constraint['value']);
+				$string .= ' ?';
+				$this->bind($constraint['value']);
 			}
 
 			$strings[] = $string;
@@ -468,7 +484,8 @@ class Mysql
 
 		foreach ($this->set as $field => $value)
 		{
-			$updates[] = $this->connection->quoteName($field) . ' = ' . ((is_null($value)) ? 'NULL' : $this->connection->quote(trim($value)));
+			$updates[] = $this->connection->quoteName($field) . ' = ' . ((is_null($value)) ? 'NULL' : '?');
+			$this->bind(trim($value));
 		}
 
 		return 'SET ' . implode(',', $updates);
@@ -488,7 +505,8 @@ class Mysql
 		foreach ($this->values as $field => $value)
 		{
 			$fields[] = $this->connection->quoteName($field);
-			$values[] = (is_null($value)) ? 'NULL' : $this->connection->quote(trim($value));
+			$values[] = (is_null($value)) ? 'NULL' : '?';
+			$this->bind(trim($value));
 		}
 
 		return '(' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
@@ -517,11 +535,9 @@ class Mysql
 
 		foreach ($this->having as $having)
 		{
-			$string  = $having['column'];
-			$string .= ' ' . $having['operator'];
-			$string .= ' ' . $this->connection->quote($having['value']);
+			$havings[] = $having['column'] . ' ' . $having['operator'] . ' ?';
 
-			$havings[] = $string;
+			$this->bind(trim($having['value']));
 		}
 
 		return 'HAVING ' . implode(" AND ", $havings);
@@ -536,8 +552,8 @@ class Mysql
 	public function buildLimit()
 	{
 		$string  = 'LIMIT ';
-		$string .= ((!empty($this->start)) ? $this->start . ',' : '');
-		$string .= ((!empty($this->limit)) ? $this->limit : '18446744073709551615');
+		$string .= ((!empty($this->start)) ? (int)$this->start . ',' : '');
+		$string .= ((!empty($this->limit)) ? (int)$this->limit : '18446744073709551615');
 
 		return $string;
 	}

@@ -144,7 +144,7 @@ class Query
 	 **/
 	public function __construct($connection=null)
 	{
-		$this->connection = $connection ?: \JFactory::getDbo();
+		$this->connection = $connection ?: App::get('db');
 		$this->reset();
 
 		// Set debugging
@@ -589,7 +589,7 @@ class Query
 		// Check the type of query to decide what to return
 		list($type) = explode(' ', $query, 2);
 
-		$this->connection->setQuery($query);
+		$this->connection->prepare($query)->bind($this->syntax->getBindings());
 
 		$result = (strtolower($type) == 'select')
 		        ? $this->connection->{constant('self::' . strtoupper($structure))}()
