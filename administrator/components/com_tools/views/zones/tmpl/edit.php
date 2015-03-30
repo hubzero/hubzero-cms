@@ -73,6 +73,9 @@ function submitbutton(pressbutton)
 	</nav><!-- / .sub-navigation -->
 
 	<div id="zone-document">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+		<?php } ?>
 		<div id="page-profile" class="tab">
 			<div class="col width-60 fltlft">
 
@@ -93,6 +96,11 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_TITLE'); ?>:</label>
 					<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+				</div>
+
+				<div class="input-wrap">
+					<label for="field-description"><?php echo JText::_('COM_TOOLS_FIELD_DESCRIPTION'); ?>:</label>
+					<textarea name="fields[description]" id="field-description" cols="35" rows="2"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
 				</div>
 
 				<div class="input-wrap">
