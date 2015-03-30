@@ -30,15 +30,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_EVENTS_MANAGER').': '.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES'), 'event.png');
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
-
-$juser = JFactory::getUser();
+Toolbar::title(Lang::txt('COM_EVENTS_MANAGER').': '.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORIES'), 'event.png');
+Toolbar::publishList();
+Toolbar::unpublishList();
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -83,14 +81,14 @@ JHTML::_('behavior.tooltip');
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
 					&nbsp;
 <?php } else { ?>
 					<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 <?php } ?>
 				</td>
 				<td>
-<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+<?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
 					<span class="checkedout hasTip" title="Checked out::<?php echo $row->editor; ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?> <?php echo $this->escape(stripslashes($row->title)); ?>
 					</span>

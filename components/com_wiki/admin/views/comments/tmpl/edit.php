@@ -34,15 +34,15 @@ $canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS') . ': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS') . ': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::apply();
+	Toolbar::save();
+	Toolbar::apply();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('comment');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('comment');
 
 ?>
 <script type="text/javascript">

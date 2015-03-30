@@ -33,28 +33,28 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_TAGS'), 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS'), 'tags.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::custom('pierce', 'copy', '', 'COM_TAGS_PIERCE', false);
-	JToolBarHelper::custom('merge', 'forward', '', 'COM_TAGS_MERGE', false);
-	JToolBarHelper::spacer();
+	Toolbar::custom('pierce', 'copy', '', 'COM_TAGS_PIERCE', false);
+	Toolbar::custom('merge', 'forward', '', 'COM_TAGS_MERGE', false);
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('entries');
+Toolbar::spacer();
+Toolbar::help('entries');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

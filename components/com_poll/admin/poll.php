@@ -31,7 +31,7 @@
 namespace Components\Poll\Admin;
 
 // Authorization check
-if (!\JFactory::getUser()->authorise('core.manage', 'com_poll'))
+if (!\User::authorise('core.manage', 'com_poll'))
 {
 	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }

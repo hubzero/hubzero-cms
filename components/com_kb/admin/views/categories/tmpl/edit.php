@@ -34,15 +34,15 @@ $canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('category');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_KB_EDIT') : Lang::txt('COM_KB_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_CATEGORY') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_CATEGORY') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
+	Toolbar::apply();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('category');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('category');
 
 ?>
 <script type="text/javascript">

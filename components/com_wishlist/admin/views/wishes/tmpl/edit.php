@@ -34,19 +34,16 @@ $canDo = \Components\Wishlist\Helpers\Permissions::getActions('list');
 
 $text = ($this->row->id ? Lang::txt('COM_WISHLIST_EDIT') : Lang::txt('COM_WISHLIST_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_WISH') . ': ' . $text, 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_WISH') . ': ' . $text, 'wishlist.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('wish');
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('wish');
 
 JHTML::_('behavior.tooltip');
 ?>

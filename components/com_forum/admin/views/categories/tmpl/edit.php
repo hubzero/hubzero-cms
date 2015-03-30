@@ -32,15 +32,15 @@ $canDo = \Components\Forum\Helpers\Permissions::getActions('section');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_CATEGORIES') . ': ' . $text, 'forum.png');
-JToolBarHelper::spacer();
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . Lang::txt('COM_FORUM_CATEGORIES') . ': ' . $text, 'forum.png');
+Toolbar::spacer();
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('category');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('category');
 
 $create_date = NULL;
 if (intval($this->row->created) <> 0)

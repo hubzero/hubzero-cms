@@ -33,12 +33,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_PIERCE'), 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_PIERCE'), 'tags.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save('pierce');
+	Toolbar::save('pierce');
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

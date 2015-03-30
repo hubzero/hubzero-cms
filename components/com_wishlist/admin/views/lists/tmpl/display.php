@@ -32,32 +32,32 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Wishlist\Helpers\Permissions::getActions('component');
 
-JToolBarHelper::title(Lang::txt('COM_WISHLIST'), 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST'), 'wishlist.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('lists');
+Toolbar::spacer();
+Toolbar::help('lists');
 ?>
 <script type="text/javascript">
 /*function submitbutton(pressbutton)

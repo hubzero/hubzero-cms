@@ -30,37 +30,37 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$cid  = JRequest::getVar('cid', array(0), '', 'array');
-$edit = JRequest::getVar('edit', true );
+$cid  = Request::getVar('cid', array(0), '', 'array');
+$edit = Request::getVar('edit', true );
 JArrayHelper::toInteger($cid, array(0));
 
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 
 $text = ($edit ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_POLL') . ': ' . $text, 'poll.png');
+Toolbar::title(Lang::txt('COM_POLL') . ': ' . $text, 'poll.png');
 if ($this->poll->id)
 {
-	JToolBarHelper::preview('index.php?option=' . $this->option . '&task=preview&cid=' . $cid[0]);
-	JToolBarHelper::spacer();
+	Toolbar::preview('index.php?option=' . $this->option . '&task=preview&cid=' . $cid[0]);
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::apply();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::apply();
+	Toolbar::spacer();
 }
 if ($edit)
 {
 	// for existing items the button is renamed `close`
-	JToolBarHelper::cancel('cancel', 'COM_POLL_CLOSE');
+	Toolbar::cancel('cancel', 'COM_POLL_CLOSE');
 }
 else
 {
-	JToolBarHelper::cancel();
+	Toolbar::cancel();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('poll');
+Toolbar::spacer();
+Toolbar::help('poll');
 ?>
 
 <script type="text/javascript">

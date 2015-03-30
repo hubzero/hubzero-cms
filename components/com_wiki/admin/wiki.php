@@ -51,7 +51,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_WIKI_PAGES'),
 	\Route::url('index.php?option=com_wiki'),
 	true
@@ -61,7 +61,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' 
 
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
-	\JSubMenuHelper::addEntry(
+	\Submenu::addEntry(
 		\Lang::txt('COM_WIKI_PLUGINS'),
 		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
 	);

@@ -56,17 +56,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'jobs';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_JOBS_JOBS'),
 	\Route::url('index.php?option=com_jobs&controller=jobs'),
 	$controllerName == 'jobs'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_JOBS_CATEGORIES'),
 	\Route::url('index.php?option=com_jobs&controller=categories'),
 	$controllerName == 'categories'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_JOBS_TYPES'),
 	\Route::url('index.php?option=com_jobs&controller=types'),
 	$controllerName == 'types'

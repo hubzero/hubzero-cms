@@ -34,33 +34,33 @@ JHTML::_('behavior.tooltip');
 
 $canDo = \Components\Poll\Helpers\Permissions::getActions('component');
 
-JToolBarHelper::title(Lang::txt('COM_POLL'), 'poll.png');
+Toolbar::title(Lang::txt('COM_POLL'), 'poll.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_poll', '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences('com_poll', '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
-	JToolBarHelper::spacer();
+	Toolbar::deleteList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editListX();
+	Toolbar::editListX();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNewX();
+	Toolbar::addNewX();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('polls');
+Toolbar::spacer();
+Toolbar::help('polls');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">

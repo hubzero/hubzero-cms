@@ -34,15 +34,15 @@ $canDo = \Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_KB_EDIT') : Lang::txt('COM_KB_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_ARTICLE') . ': ' . $text, 'kb.png');
+Toolbar::title(Lang::txt('COM_KB') . ': ' . Lang::txt('COM_KB_ARTICLE') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
+	Toolbar::apply();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('article');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('article');
 
 $selected = null;
 ?>

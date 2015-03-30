@@ -33,21 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('type');
 
-JToolBarHelper::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES'), 'addedit.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('types');
+Toolbar::spacer();
+Toolbar::help('types');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
@@ -83,7 +83,7 @@ if ($this->rows)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $avalue ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $avalue; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($avalue); ?>

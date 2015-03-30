@@ -35,16 +35,16 @@ $canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
 
 $text = ($this->task == 'editrevision' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::apply();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::apply();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('revision');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('revision');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -31,32 +31,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = Components\Cron\Helpers\Permissions::getActions('component');
+$canDo = \Components\Cron\Helpers\Permissions::getActions('component');
 
-JToolBarHelper::title(Lang::txt('COM_CRON'), 'cron.png');
+Toolbar::title(Lang::txt('COM_CRON'), 'cron.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences($this->option, '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences($this->option, '550');
+	Toolbar::spacer();
 }
-JToolBarHelper::custom('run', 'purge', '', 'COM_CRON_RUN', false);
-JToolBarHelper::spacer();
+Toolbar::custom('run', 'purge', '', 'COM_CRON_RUN', false);
+Toolbar::spacer();
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('jobs');
+Toolbar::spacer();
+Toolbar::help('jobs');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

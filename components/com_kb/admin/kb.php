@@ -46,12 +46,12 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'categories';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_KB_CATEGORIES'),
 	\Route::url('index.php?option=com_kb&id=0', false),
 	$controllerName == 'categories'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_KB_ARTICLES'),
 	\Route::url('index.php?option=com_kb&controller=articles&id=0', false),
 	$controllerName == 'articles'

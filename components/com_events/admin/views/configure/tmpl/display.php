@@ -29,9 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-JToolBarHelper::title( Lang::txt( 'COM_EVENTS_MANAGER' ).': '.Lang::txt( 'COM_EVENTS_CONFIGURATION' ), 'event.png' );
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+
+Toolbar::title( Lang::txt( 'COM_EVENTS_MANAGER' ) . ': ' . Lang::txt( 'COM_EVENTS_CONFIGURATION' ), 'event.png' );
+Toolbar::save();
+Toolbar::cancel();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
@@ -171,5 +172,5 @@ JToolBarHelper::cancel();
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

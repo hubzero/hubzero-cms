@@ -33,22 +33,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('category');
 
-JToolBarHelper::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_CATEGORIES'), 'addedit.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
-JToolBarHelper::save('saveorder', 'COM_JOBS_SAVE_ORDER');
+Toolbar::save('saveorder', 'COM_JOBS_SAVE_ORDER');
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('categories');
+Toolbar::spacer();
+Toolbar::help('categories');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">

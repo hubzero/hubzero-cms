@@ -33,22 +33,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki.png');
 
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('', 'delete');
+	Toolbar::deleteList('', 'delete');
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('comments');
+Toolbar::spacer();
+Toolbar::help('comments');
 
 JHTML::_('behavior.tooltip');
 ?>

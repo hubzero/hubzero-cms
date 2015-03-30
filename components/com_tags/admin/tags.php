@@ -45,17 +45,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 }
 $task = \Request::getCmd('task', '');
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_TAGS'),
 	\Route::url('index.php?option=com_tags'),
 	($controllerName == 'entries')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_TAGS_RELATIONSHIPS'),
 	\Route::url('index.php?option=com_tags&controller=relationships'),
 	($controllerName == 'relationships' && $task != 'meta' && $task != 'updatefocusareas')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_TAGS_FOCUS_AREAS'),
 	\Route::url('index.php?option=com_tags&controller=relationships&task=meta'),
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
@@ -63,7 +63,7 @@ $task = \Request::getCmd('task', '');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
 if (\PluginsHelper::getActions()->get('core.manage'))
 {
-	\JSubMenuHelper::addEntry(
+	\Submenu::addEntry(
 		\Lang::txt('COM_TAGS_PLUGINS'),
 		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
 	);

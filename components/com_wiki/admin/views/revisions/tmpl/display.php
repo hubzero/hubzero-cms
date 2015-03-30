@@ -33,21 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS'), 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS'), 'wiki.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('revisions');
+Toolbar::spacer();
+Toolbar::help('revisions');
 
 ?>
 <script type="text/javascript">

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,30 +23,29 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = Components\Feedback\Helpers\Permissions::getActions('quote');
+$canDo = \Components\Feedback\Helpers\Permissions::getActions('quote');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_FEEDBACK') . ': ' . $text, 'feedback.png');
+Toolbar::title(Lang::txt('COM_FEEDBACK') . ': ' . $text, 'feedback.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('quote');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('quote');
 
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
+$editor = JFactory::getEditor();
 
 $short_quote = stripslashes($this->row->short_quote);
 $miniquote = stripslashes($this->row->miniquote);

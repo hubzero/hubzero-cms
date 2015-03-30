@@ -34,16 +34,16 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_POSTS') . ': ' . $text, 'collection.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('collection');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('collection');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

@@ -35,16 +35,16 @@ $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_TAGGED') . ': ' . $text, 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_TAGGED') . ': ' . $text, 'tags.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('edittagged');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('edittagged');
 
 JHTML::_('behavior.framework');
 ?>
@@ -72,7 +72,7 @@ if ($this->getError())
 }
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>

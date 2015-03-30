@@ -52,17 +52,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'lists';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_WISHLIST_LISTS'),
 	\Route::url('index.php?option=com_wishlist&controller=lists'),
 	($controllerName == 'lists')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_WISHLIST_WISHES'),
 	\Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=-1'),
 	($controllerName == 'wishes')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_WISHLIST_COMMENTS'),
 	\Route::url('index.php?option=com_wishlist&controller=comments&wish=-1'),
 	($controllerName == 'comments')

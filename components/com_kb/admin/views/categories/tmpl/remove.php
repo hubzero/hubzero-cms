@@ -30,8 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_KB'), 'kb.png');
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_KB'), 'kb.png');
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

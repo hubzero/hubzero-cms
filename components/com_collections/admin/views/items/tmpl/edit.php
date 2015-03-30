@@ -40,16 +40,16 @@ if (!$dir)
 	$dir = 'tmp' . time(); // . rand(0, 100);
 }
 
-JToolBarHelper::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
+Toolbar::title(Lang::txt('COM_COLLECTIONS') . ': ' . Lang::txt('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('collection');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('collection');
 
 $this->css()
      ->js('jquery.fileuploader.js', 'system')

@@ -31,20 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$canDo = Components\Cron\Helpers\Permissions::getActions('component');
+$canDo = \Components\Cron\Helpers\Permissions::getActions('component');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_CRON') . ': ' . $text, 'cron.png');
+Toolbar::title(Lang::txt('COM_CRON') . ': ' . $text, 'cron.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('job');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('job');
 
 JHTML::_('behavior.calendar');
 

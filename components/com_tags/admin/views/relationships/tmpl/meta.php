@@ -32,11 +32,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_FOCUS_AREAS'), 'tags.png');
-//JToolBarHelper::cancel();
-//JToolBarHelper::custom('index', 'edit', ' ', 'Tag Relationships', false);
-JToolBarHelper::spacer();
-JToolBarHelper::help('focusareas');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_FOCUS_AREAS'), 'tags.png');
+//Toolbar::cancel();
+//Toolbar::custom('index', 'edit', ' ', 'Tag Relationships', false);
+Toolbar::spacer();
+Toolbar::help('focusareas');
 
 JHTML::_('behavior.framework');
 

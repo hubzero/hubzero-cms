@@ -51,17 +51,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'events';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_EVENTS'),
 	\Route::url('index.php?option=com_events&controller=events'),
 	$controllerName == 'events'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_EVENTS_CATEGORIES'),
 	\Route::url('index.php?option=com_categories&extension=com_events'),
 	$controllerName == 'categories'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_EVENTS_CONFIGURATION'),
 	\Route::url('index.php?option=com_events&controller=configure'),
 	$controllerName == 'configure'

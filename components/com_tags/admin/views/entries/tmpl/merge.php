@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_MERGE'), 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_MERGE'), 'tags.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save('merge');
+	Toolbar::save('merge');
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('merge');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('merge');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

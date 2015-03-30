@@ -34,18 +34,14 @@ $canDo = \Components\Wishlist\Helpers\Permissions::getActions('list');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_WISHLIST_EDIT') : Lang::txt('COM_WISHLIST_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist.png');
+Toolbar::title(Lang::txt('COM_WISHLIST') . ': ' . Lang::txt('COM_WISHLIST_LIST') . ': ' . $text, 'wishlist.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('list');
-
-jimport('joomla.html.editor');
-$editor = JEditor::getInstance();
-
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('list');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)

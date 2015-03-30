@@ -35,14 +35,14 @@ $canDo = \Components\Jobs\Helpers\Permissions::getActions('job');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_JOBS') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('job');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('job');
 
 $now = JFactory::getDate()->toSql();
 

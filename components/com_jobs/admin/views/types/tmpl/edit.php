@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-JToolBarHelper::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES') . ': ' . $text, 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS') . ': ' . Lang::txt('COM_JOBS_TYPES') . ': ' . $text, 'addedit.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('type');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('type');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 	}
 }
 </script>
-<form action="index.php" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<?php if ($this->task == 'edit') { ?>
 	<p class="warning">
 		<?php echo Lang::txt('COM_JOBS_WARNING_EDIT_TYPE'); ?>

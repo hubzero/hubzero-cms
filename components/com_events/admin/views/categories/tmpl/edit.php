@@ -31,18 +31,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'editcat') ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW');
-JToolBarHelper::title(Lang::txt('COM_EVENTS_EVENT').': '. $text.' '.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'), 'event.png');
-JToolBarHelper::spacer();
-JToolBarHelper::save();
-//JToolBarHelper::spacer();
-//JToolBarHelper::media_manager();
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_EVENTS_EVENT') . ': ' . $text . ' ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'), 'event.png');
+Toolbar::spacer();
+Toolbar::save();
+//Toolbar::spacer();
+//Toolbar::media_manager();
+Toolbar::cancel();
 
-if ($this->row->image == '') {
+if ($this->row->image == '')
+{
 	$this->row->image = 'blank.png';
 }
-
-$editor = JFactory::getEditor();
 ?>
 
 <script language="javascript" type="text/javascript">

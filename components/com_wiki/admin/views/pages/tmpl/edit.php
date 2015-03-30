@@ -31,20 +31,20 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo =\Components\Wiki\Helpers\Permissions::getActions('page');
+$canDo = \Components\Wiki\Helpers\Permissions::getActions('page');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::apply();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::apply();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('page');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('page');
 
 ?>
 <script type="text/javascript">

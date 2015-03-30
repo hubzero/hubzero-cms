@@ -32,8 +32,8 @@
 defined('_JEXEC') or die;
 
 // Set toolbar items for the page
-JToolBarHelper::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
-JToolBarHelper::help('cpanel');
+Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
+Toolbar::help('cpanel');
 
 echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
 

@@ -47,17 +47,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'sections';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_FORUM_SECTIONS'),
 	\Route::url('index.php?option=com_forum&controller=sections'),
 	($controllerName == 'sections')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_FORUM_CATEGORIES'),
 	\Route::url('index.php?option=com_forum&controller=categories&section_id=-1'),
 	($controllerName == 'categories')
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_FORUM_THREADS'),
 	\Route::url('index.php?option=com_forum&controller=threads&category_id=-1'),
 	($controllerName == 'threads')

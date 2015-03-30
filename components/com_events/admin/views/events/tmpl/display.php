@@ -30,19 +30,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_EVENTS_MANAGER'), 'event.png');
-JToolBarHelper::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
-JToolBarHelper::custom('respondents', 'user', 'COM_EVENTS_VIEW_RESPONDENTS', 'COM_EVENTS_VIEW_RESPONDENTS', true, false);
-JToolBarHelper::spacer();
-JToolBarHelper::publishList();
-JToolBarHelper::unpublishList();
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event.png');
+Toolbar::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
+Toolbar::custom('respondents', 'user', 'COM_EVENTS_VIEW_RESPONDENTS', 'COM_EVENTS_VIEW_RESPONDENTS', true, false);
+Toolbar::spacer();
+Toolbar::publishList();
+Toolbar::unpublishList();
+Toolbar::spacer();
+Toolbar::addNew();
+Toolbar::editList();
+Toolbar::deleteList();
 
-JToolBarHelper::spacer();
-JToolBarHelper::help('events');
+Toolbar::spacer();
+Toolbar::help('events');
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -97,7 +97,7 @@ $database = JFactory::getDBO();
 $p = new \Components\Events\Tables\Page($database);
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
-$row = &$this->rows[$i];
+	$row = &$this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -143,16 +143,16 @@ $row = &$this->rows[$i];
 					$times = '';
 					if (isset($row->publish_up)) {
 						if ($row->publish_up == '0000-00-00 00:00:00') {
-							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM').' : '.Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
+							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS').'<br />';
 						} else {
-							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '. date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
+							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
 						}
 					}
 					if (isset($row->publish_down)) {
 						if ($row->publish_down == '0000-00-00 00:00:00') {
-							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO').' : '.Lang::txt('COM_EVENTS_CAL_LANG_NEVER').'<br />';
+							$times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER').'<br />';
 						} else {
-							$times .= JText::_('COM_EVENTS_CAL_LANG_FROM').' : '. date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
+							$times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
 						}
 					}
 
@@ -160,7 +160,7 @@ $row = &$this->rows[$i];
 
 					if ($times) {
 					?>
-						<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
+						<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>

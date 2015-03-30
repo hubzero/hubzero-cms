@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Tags\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_RELATIONSHIPS'), 'tags.png');
+Toolbar::title(Lang::txt('COM_TAGS') . ': ' . Lang::txt('COM_TAGS_RELATIONSHIPS'), 'tags.png');
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
@@ -116,7 +116,7 @@ $this->css('tag_graph.css');
 	<div class="clr"></div>
 </div>
 
-<form name="adminForm" method="get" action="index.php">
+<form name="adminForm" method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>">
 	<input type="hidden" value="<?php echo $this->option; ?>" name="option" />
 	<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 	<input type="hidden" value="" name="task" />

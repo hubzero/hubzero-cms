@@ -1,15 +1,42 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit') ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW');
-JToolBarHelper::title(Lang::txt('COM_EVENTS_EVENT').': '. $text, 'event.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('event');
 
-$editor = JFactory::getEditor();
+Toolbar::title(Lang::txt('COM_EVENTS_EVENT') . ': '. $text, 'event.png');
+Toolbar::save();
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('event');
 
 $xprofilec = \Hubzero\User\Profile::getInstance($this->row->created_by);
 $xprofilem = \Hubzero\User\Profile::getInstance($this->row->modified_by);
@@ -36,7 +63,7 @@ var HUB = {};
 			<legend><span><?php echo Lang::txt('COM_EVENTS_EVENT'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required">required</span></label><br />
+				<label for="field-title"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" /></td>
 			</div>
 
@@ -47,7 +74,7 @@ var HUB = {};
 
 			<div class="input-wrap">
 				<label for="field-econtent"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACTIVITY'); ?>:</label><br />
-				<?php echo $editor->display('econtent', $this->row->content, '', '', '45', '10', false, 'field-econtent'); ?></td>
+				<?php echo JFactory::getEditor()->display('econtent', $this->row->content, '', '', '45', '10', false, 'field-econtent'); ?></td>
 			</div>
 
 			<div class="input-wrap">
@@ -69,7 +96,7 @@ var HUB = {};
 				{
 				?>
 					<div class="input-wrap">
-						<label for="field-<?php echo $field[0]; ?>"><?php echo $field[1]; ?>: <?php echo ($field[3]) ? '<span class="required">required</span>' : ''; ?></label><br />
+						<label for="field-<?php echo $field[0]; ?>"><?php echo $field[1]; ?>: <?php echo ($field[3]) ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : ''; ?></label><br />
 						<?php
 						if ($field[2] == 'checkbox') {
 							echo '<input type="checkbox" name="fields['. $field[0] .']" id="field-'. $field[0] .'" value="1"';
@@ -124,13 +151,13 @@ var HUB = {};
 				<?php echo JHTML::_('calendar', $this->row->registerby, 'registerby', 'field-registerby'); ?>
 			</div>
 
-			<div class="input-wrap" data-hint="The email registrations will be sent to.">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_EMAIL_HINT'); ?>">
 				<label for="field-email"><?php echo Lang::txt('COM_EVENTS_EMAIL'); ?>:</label><br />
 				<input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->email); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_EVENTS_EMAIL_HINT'); ?></span>
 			</div>
 
-			<div class="input-wrap" data-hint="If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.">
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?>">
 				<label for="field-restricted"><?php echo Lang::txt('COM_EVENTS_RESTRICTED'); ?>:</label><br />
 				<input type="text" name="restricted" id="field-restricted" value="<?php echo $this->escape($this->row->restricted); ?>" />
 				<span class="hint"><?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?></span>
@@ -142,16 +169,16 @@ var HUB = {};
 			<tbody>
 				<tr>
 					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-					<td><?php echo $this->row->state > 0 ? Lang::txt('COM_EVENTS_EVENT_PUBLISHED') : ($this->row->state < 0 ? Lang::txt('COM_EVENTS_EVENT_ARCHIVED') : Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED'));?></td>
+					<td><?php echo $this->row->state > 0 ? Lang::txt('COM_EVENTS_EVENT_PUBLISHED') : ($this->row->state < 0 ? Lang::txt('COM_EVENTS_EVENT_ARCHIVED') : Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED')); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
-					<td><?php echo $this->row->created ? JHTML::_('date', $this->row->created, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT');?></td>
+					<td><?php echo $this->row->created ? JHTML::_('date', $this->row->created, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
 				</tr>
 			<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
 				<tr>
 					<th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
-					<td><?php echo $this->row->modified ? JHTML::_('date', $this->row->modified, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED');?></td>
+					<td><?php echo $this->row->modified ? JHTML::_('date', $this->row->modified, 'F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>

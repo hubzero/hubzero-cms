@@ -2,10 +2,10 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png' );
-JToolBarHelper::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
-JToolBarHelper::deleteList( '', 'remove', 'COM_EVENTS_DELETE' );
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png' );
+Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
+Toolbar::deleteList( '', 'remove', 'COM_EVENTS_DELETE' );
+Toolbar::cancel();
 
 $rows = $this->resp->getRecords();
 $pageNav = $this->resp->getPaginator();

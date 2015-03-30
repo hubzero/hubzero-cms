@@ -2,8 +2,8 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANT'), 'user.png' );
-//JToolBarHelper::cancel();
+Toolbar::title(Lang::txt( 'COM_EVENTS' ).': '.Lang::txt('COM_EVENTS_RESPONDANT'), 'user.png' );
+//Toolbar::cancel();
 
 $resp = $this->resp;
 

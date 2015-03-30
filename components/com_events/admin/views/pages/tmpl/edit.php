@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,11 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW'));
 
-JToolBarHelper::title(Lang::txt('COM_EVENTS_PAGE' ) . ': ' . $text, 'event.png');
-JToolBarHelper::save();
-JToolBarHelper::cancel();
-
-jimport('joomla.html.editor');
+Toolbar::title(Lang::txt('COM_EVENTS_PAGE' ) . ': ' . $text, 'event.png');
+Toolbar::save();
+Toolbar::cancel();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -74,7 +72,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-				<?php echo JEditor::getInstance()->display('pagetext', $this->escape(stripslashes($this->page->pagetext)), '', '', 40, 20); ?>
+				<?php echo JFactory::getEditor()->display('pagetext', $this->escape(stripslashes($this->page->pagetext)), '', '', 40, 20); ?>
 			</div>
 		</fieldset>
 	</div>

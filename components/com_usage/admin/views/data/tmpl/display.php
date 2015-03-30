@@ -30,10 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(Lang::txt('COM_USAGE'), 'usage.png');
-JToolBarHelper::preferences('com_usage', '550');
+Toolbar::title(Lang::txt('COM_USAGE'), 'usage.png');
+Toolbar::preferences('com_usage', '550');
 ?>
 
-<form action="index.php?option=com_usage" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=com_usage'); ?>" name="adminForm" id="item-form">
 	<p class="warning"><?php echo Lang::txt('COM_USAGE_WARNING'); ?></p>
 </form>

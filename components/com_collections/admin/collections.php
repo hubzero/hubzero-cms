@@ -45,17 +45,17 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 	$controllerName = 'collections';
 }
 
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_COLLECTIONS_COLLECTIONS'),
 	\Route::url('index.php?option=com_collections'),
 	$controllerName == 'collections'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_COLLECTIONS_POSTS'),
 	\Route::url('index.php?option=com_collections&controller=posts'),
 	$controllerName == 'posts'
 );
-\JSubMenuHelper::addEntry(
+\Submenu::addEntry(
 	\Lang::txt('COM_COLLECTIONS_ITEMS'),
 	\Route::url('index.php?option=com_collections&controller=items'),
 	$controllerName == 'items'

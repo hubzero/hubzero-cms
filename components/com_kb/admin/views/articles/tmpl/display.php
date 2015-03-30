@@ -38,29 +38,27 @@ if ($this->filters['orphans'])
 	$ttle .= Lang::txt('COM_KB_ARTICLES') . ' ' . Lang::txt('COM_KB_ORPHANS');
 }
 
-JToolBarHelper::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb.png');
+Toolbar::title(Lang::txt('COM_KB') . ': ' . $ttle, 'kb.png');
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::spacer();
+	Toolbar::publishList();
+	Toolbar::unpublishList();
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('articles');
-
-$juser = JFactory::getUser();
+Toolbar::spacer();
+Toolbar::help('articles');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -179,7 +177,7 @@ foreach ($this->rows as $row)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
+					<?php if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) { ?>
 							<span class="checkedout" title="<?php echo Lang::txt('JLIB_HTML_CHECKED_OUT'); ?> :: <?php echo $this->escape($row->get('editor')); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</span>

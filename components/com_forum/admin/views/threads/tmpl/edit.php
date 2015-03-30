@@ -36,15 +36,15 @@ $canDo = \Components\Forum\Helpers\Permissions::getActions('thread');
 $text = ($this->row->parent ? Lang::txt('COM_FORUM_THREADS') : Lang::txt('COM_FORUM_POSTS')) . ': ';
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(Lang::txt('COM_FORUM') . ': ' . $text, 'forum.png');
+Toolbar::title(Lang::txt('COM_FORUM') . ': ' . $text, 'forum.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('post');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('post');
 
 $post = new \Components\Forum\Models\Post($this->row);
 

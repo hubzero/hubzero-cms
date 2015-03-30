@@ -31,8 +31,8 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_DELETE'), 'wiki.png');
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_DELETE'), 'wiki.png');
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">

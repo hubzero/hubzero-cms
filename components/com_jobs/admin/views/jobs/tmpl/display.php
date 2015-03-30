@@ -33,26 +33,26 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Jobs\Helpers\Permissions::getActions('job');
 
-JToolBarHelper::title(Lang::txt('COM_JOBS'), 'addedit.png');
+Toolbar::title(Lang::txt('COM_JOBS'), 'addedit.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_jobs', '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences('com_jobs', '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('jobs');
+Toolbar::spacer();
+Toolbar::help('jobs');
 
 $this->css();
 
