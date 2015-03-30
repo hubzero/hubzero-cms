@@ -1205,7 +1205,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$jconfig = JFactory::getConfig();
 
 			$email = $event->email;
-			$subject = JText::_('EVENTS_EVENT_REGISTRATION') . ' (' . $event->id . ')';
+
+			$subject = JText::_('EVENTS_EVENT_REGISTRATION') . ': ' . $event->title;
 			$hub = array(
 				'email' => $register['email'],
 				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('EVENTS_EVENT_REGISTRATION')
@@ -1225,7 +1226,11 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$message = $eview->loadTemplate();
 			$message = str_replace("\n", "\r\n", $message);
 
+			// one for the event manager
 			$this->_sendEmail($hub, $email, $subject, $message);
+
+			// one for the attendee
+			$this->_sendEmail($hub, $register['email'], $subject, $message);
 
 			$this->_log($register);
 
