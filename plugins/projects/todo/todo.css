@@ -910,6 +910,10 @@
 		width: 85%;
 		border: 1px solid #CCC;
 		padding: 0 1em;
+		-webkit-transform: none;
+		-moz-transform: none;
+		-o-transform: none;
+		transform: none;
 	}
 	/* Do not rotate on hover */
 	/*
