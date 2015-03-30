@@ -31,6 +31,7 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Pagination\Paginator;
+use Config;
 
 /**
  * Create a pagination object and return it
@@ -48,7 +49,7 @@ class Pagination extends AbstractHelper
 	public function __invoke($total, $start, $limit)
 	{
 		$start = $start ?: 0;
-		$limit = $limit ?: \JFactory::getConfig()->get('list_limit');
+		$limit = $limit ?: Config::get('list_limit');
 
 		return new Paginator($total, $start, $limit);
 	}

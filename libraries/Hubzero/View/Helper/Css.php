@@ -81,6 +81,6 @@ class Css extends AbstractHelper
 		{
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}
-		return $this->getView()->get('option', \JRequest::getCmd('option'));
+		return $this->getView()->get('option', \Request::getCmd('option'));
 	}
 }

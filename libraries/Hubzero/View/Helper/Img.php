@@ -31,6 +31,8 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Image;
+use Hubzero\Plugin\View;
+use Request;
 
 /**
  * Helper for generating paths to image assets.
@@ -66,11 +68,11 @@ class Img extends AbstractHelper
 	 */
 	private function _extension()
 	{
-		if ($this->getView() instanceof \Hubzero\Plugin\View)
+		if ($this->getView() instanceof View)
 		{
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}
 
-		return $this->getView()->get('option', \JRequest::getCmd('option'));
+		return $this->getView()->get('option', Request::getCmd('option'));
 	}
 }

@@ -31,6 +31,8 @@
 namespace Hubzero\View\Helper;
 
 use Hubzero\Document\Asset\Javascript;
+use Hubzero\Plugin\View;
+use Request;
 
 /**
  * Helper for pushing scripts to the document.
@@ -77,11 +79,11 @@ class Js extends AbstractHelper
 	 */
 	private function _extension()
 	{
-		if ($this->getView() instanceof \Hubzero\Plugin\View)
+		if ($this->getView() instanceof View)
 		{
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}
 
-		return $this->getView()->get('option', \JRequest::getCmd('option'));
+		return $this->getView()->get('option', Request::getCmd('option'));
 	}
 }

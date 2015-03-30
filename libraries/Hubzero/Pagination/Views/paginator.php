@@ -17,11 +17,11 @@ if ($this->limits)
  * @param   Item    $item  The object with which to make an active link.
  * @return  string  HTML link
  */
-function paginator_item_active($item)
+function paginator_item_active($item, $prefix)
 {
 	if (JFactory::getApplication()->isAdmin())
 	{
-		return '<a title="' . $item->text . '" onclick="document.adminForm.' . $this->prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : 0) . '; Joomla.submitform();return false;">' . $item->text . '</a>';
+		return '<a title="' . $item->text . '" onclick="document.adminForm.' . $prefix . 'limitstart.value=' . ($item->base > 0 ? $item->base : 0) . '; Joomla.submitform();return false;">' . $item->text . '</a>';
 	}
 	else
 	{
@@ -48,11 +48,11 @@ function paginator_item_active($item)
 			// If there are results found.
 			if ($this->total > 0)
 			{
-				echo JText::sprintf('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
+				echo Lang::txt('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
 			}
 			else
 			{
-				echo JText::_('JLIB_HTML_NO_RECORDS_FOUND');
+				echo Lang::txt('JLIB_HTML_NO_RECORDS_FOUND');
 			}
 			?>
 		</li>
@@ -73,14 +73,14 @@ function paginator_item_active($item)
 		</li>
 		<li class="pagination-start start">
 			<?php if ($this->pages->start->base !== null) { ?>
-				<?php echo paginator_item_active($this->pages->start); ?>
+				<?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
 			<?php } else { ?>
 				<span class="pagenav"><?php echo $this->pages->start->text; ?></span>
 			<?php } ?>
 		</li>
 		<li class="pagination-prev prev">
 			<?php if ($this->pages->previous->base !== null) { ?>
-				<?php echo paginator_item_active($this->pages->previous); ?>
+				<?php echo paginator_item_active($this->pages->previous, $this->prefix); ?>
 			<?php } else { ?>
 				<span class="pagenav"><?php echo $this->pages->previous->text; ?></span>
 			<?php } ?>
@@ -97,7 +97,7 @@ function paginator_item_active($item)
 				if ($page->base !== null)
 				{
 					?>
-					<li class="page"><?php echo paginator_item_active($page); ?></li>
+					<li class="page"><?php echo paginator_item_active($page, $this->prefix); ?></li>
 					<?php
 				}
 				else
@@ -114,14 +114,14 @@ function paginator_item_active($item)
 		<?php } ?>
 		<li class="pagination-next next">
 			<?php if ($this->pages->next->base !== null) { ?>
-				<?php echo paginator_item_active($this->pages->next); ?>
+				<?php echo paginator_item_active($this->pages->next, $this->prefix); ?>
 			<?php } else { ?>
 				<span class="pagenav"><?php echo $this->pages->next->text; ?></span>
 			<?php } ?>
 		</li>
 		<li class="pagination-end end">
 			<?php if ($this->pages->end->base !== null) { ?>
-				<?php echo paginator_item_active($this->pages->end); ?>
+				<?php echo paginator_item_active($this->pages->end, $this->prefix); ?>
 			<?php } else { ?>
 				<span class="pagenav"><?php echo $this->pages->end->text; ?></span>
 			<?php } ?>

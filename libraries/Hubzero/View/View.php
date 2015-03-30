@@ -344,17 +344,17 @@ class View extends Object
 	{
 		if (empty($this->_name))
 		{
-			$this->_name = \JRequest::getCmd('controller');
+			$this->_name = \Request::getCmd('controller');
 			if (!$this->_name)
 			{
 				$r = null;
 				if (!preg_match('/View((view)*(.*(view)?.*))$/i', get_class($this), $r))
 				{
-					\JError::raiseError(500, \JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'));
+					throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME'), 500);
 				}
 				if (strpos($r[3], 'view'))
 				{
-					\JError::raiseWarning('SOME_ERROR_CODE', JText::_('JLIB_APPLICATION_ERROR_VIEW_GET_NAME_SUBSTRING'));
+					throw new \Exception(\Lang::txt('JLIB_APPLICATION_ERROR_VIEW_GET_NAME_SUBSTRING'), 500);
 				}
 				$this->_name = strtolower($r[3]);
 			}
@@ -516,7 +516,7 @@ class View extends Object
 		}
 		else
 		{
-			throw new InvalidLayoutException(\JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
+			throw new InvalidLayoutException(\Lang::txt('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
 		}
 	}
 
