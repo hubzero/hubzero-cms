@@ -33,20 +33,29 @@ namespace Hubzero\Database;
 use Hubzero\Base\ServiceProvider;
 
 /**
- * Component loader service provider
+ * Database service provider
  */
 class DatabaseServiceProvider extends ServiceProvider
 {
 	/**
-	 * Register the service provider.
+	 * Register the service provider
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	public function register()
 	{
 		$this->app['db'] = function($app)
 		{
-			return new Connection($app['config']->get('database'));
+			$options = [
+				'driver'   => Config::get('dbtype'),
+				'host'     => Config::get('host'),
+				'user'     => Config::get('user'),
+				'password' => Config::get('password'),
+				'database' => Config::get('db'),
+				'prefix'   => Config::get('dbprefix')
+			];
+
+			return Driver::getInstance($options);
 		};
 	}
 }

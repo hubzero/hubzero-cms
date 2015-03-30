@@ -59,6 +59,7 @@ class Application extends Container
 		'Hubzero\Routing\RouterServiceProvider',
 		'Hubzero\Log\LogServiceProvider',
 		'Hubzero\Component\ComponentServiceProvider',
+		'Hubzero\Database\DatabaseServiceProvider',
 	);
 
 	/**
