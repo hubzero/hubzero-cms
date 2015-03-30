@@ -30,10 +30,10 @@ $this->css('reports')
 	->js('reports');
 
 // Incoming
-$data   = JRequest::getVar( 'data', array(), 'post', 'array' );
-$from   = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
-$to     = JRequest::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
-$filter = JRequest::getVar( 'searchterm', '');
+$data   = Request::getVar( 'data', array(), 'post', 'array' );
+$from   = Request::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );
+$to     = Request::getVar( 'todate', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m') );
+$filter = Request::getVar( 'searchterm', '');
 
 ?>
 <header id="content-header" class="reports">
