@@ -64,7 +64,7 @@ class Log
 	public static function write($statement)
 	{
 		$logger = new \Hubzero\Log\Writer(
-			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')), 
+			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
 			\JDispatcher::getInstance()
 		);
 
@@ -82,7 +82,7 @@ class Log
 	 **/
 	public static function parseBacktrace()
 	{
-		$file = '';
+		$file = '-';
 		$line = 0;
 
 		// Loop through the backtrace items

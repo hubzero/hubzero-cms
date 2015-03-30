@@ -820,7 +820,7 @@ abstract class Driver
 			$query = $this->statement;
 		}
 
-		Event::fire('log.query', $query, $time);
+		Event::fire('database.query', $query, $time);
 
 		// Add it to the internal logs
 		$this->log[] = $query;

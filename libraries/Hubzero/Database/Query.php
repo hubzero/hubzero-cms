@@ -56,13 +56,6 @@ class Query
 	private $syntax = null;
 
 	/**
-	 * The debug state of the union
-	 *
-	 * @var bool
-	 **/
-	private static $debug = null;
-
-	/**
 	 * The query results cache
 	 *
 	 * This is a key value dictionary of query md5 hash and query results.
@@ -146,11 +139,6 @@ class Query
 	{
 		$this->connection = $connection ?: App::get('db');
 		$this->reset();
-
-		// Set debugging
-		self::$debug = (isset(self::$debug))
-		             ? self::$debug
-		             : \Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false);
 	}
 
 	/**
@@ -594,9 +582,6 @@ class Query
 		$result = (strtolower($type) == 'select')
 		        ? $this->connection->{constant('self::' . strtoupper($structure))}()
 		        : $this->connection->query();
-
-		// @FIXME: move to driver
-		if (self::$debug) Log::add($query, $this->connection->timer);
 
 		return $result;
 	}
