@@ -203,17 +203,35 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		$newsletterPdfFolder = JPATH_ROOT . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
 		$newsletterPdf = $newsletterPdfFolder . DS . $newsletter->alias . '.pdf';
 
+		// check for upload path
+		if (!is_dir($newsletterPdfFolder))
+		{
+			// Build the path if it doesn't exist
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($newsletterPdfFolder))
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&id=' . $id),
+					JText::_('Unable to create the filepath.'),
+					'error'
+				);
+				return;
+			}
+		}
+
 		// check multiple places for wkhtmltopdf lib
 		// fallback on phantomjs
 		$cmd = '';
 		$fallback = '';
-		if (file_exists('/usr/bin/wkhtmltopdf'))
+		if (file_exists('/usr/bin/wkhtmltopdf') && file_exists('/usr/bin/xvfb-run'))
 		{
-			$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			//$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			$cmd = '/usr/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
-		else if (file_exists('/usr/local/bin/wkhtmltopdf'))
+		else if (file_exists('/usr/local/bin/wkhtmltopdf') && file_exists('/usr/local/bin/xvfb-run'))
 		{
-			$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			//$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+			$cmd = '/usr/local/bin/xvfb-run -a -s "-screen 0 640x480x16" wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
 		}
 
 		if (file_exists('/usr/bin/phantomjs'))
@@ -225,11 +243,10 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 				$cmd = $fallback;
 			}
 		}
-
-		if ($cmd)
+		if (isset($cmd))
 		{
 			// exec command
-			exec($cmd, $ouput, $status);
+			$task = exec($cmd, $ouput, $status);
 
 			// wkhtmltopdf failed, so let's try phantomjs
 			if (!file_exists($newsletterPdf) && $fallback && $cmd != $fallback)
@@ -238,7 +255,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 			}
 		}
 
-		//make sure we have a file to output
+				//make sure we have a file to output
 		if (!file_exists($newsletterPdf))
 		{
 			$this->setRedirect(
@@ -255,6 +272,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		header("Pragma: no-cache");
 		header("Expires: 0");
 		echo file_get_contents($newsletterPdf);
+
 		exit();
 	}
 }
