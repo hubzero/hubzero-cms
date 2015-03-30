@@ -93,6 +93,13 @@ class MwZones extends JTable
 	var $picture;
 
 	/**
+	 * varchar(250)
+	 *
+	 * @var string
+	 */
+	var $description;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase

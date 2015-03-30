@@ -214,7 +214,7 @@ if (!$this->app->sess) {
 						<?php } ?>
 					</p>
 					<p>
-						<?php echo JText::sprintf('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone'))); ?>
+						<?php echo $this->zone->get('description', JText::sprintf('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
 					</p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
