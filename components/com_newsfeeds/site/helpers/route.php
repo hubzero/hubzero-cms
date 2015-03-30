@@ -125,7 +125,7 @@ abstract class NewsfeedsHelperRoute
 			{
 				if (isset(self::$lookup[$view]))
 				{
-					foreach($ids as $id)
+					foreach ($ids as $id)
 					{
 						if (isset(self::$lookup[$view][(int)$id])) {
 							return self::$lookup[$view][(int)$id];

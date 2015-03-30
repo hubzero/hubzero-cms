@@ -85,7 +85,7 @@ $canDo = LanguagesHelper::getActions();
 
 		<?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'metadata'); ?>
 			<fieldset class="panelform">
-				<?php foreach($this->form->getFieldset('metadata') as $field): ?>
+				<?php foreach ($this->form->getFieldset('metadata') as $field): ?>
 					<?php if (!$field->hidden): ?>
 						<div class="input-wrap">
 							<?php echo $field->label; ?><br />
@@ -99,7 +99,7 @@ $canDo = LanguagesHelper::getActions();
 
 		<?php echo JHtml::_('sliders.panel', JText::_('COM_LANGUAGES_FIELDSET_SITE_NAME_LABEL'), 'site_name'); ?>
 			<fieldset class="panelform">
-				<?php foreach($this->form->getFieldset('site_name') as $field): ?>
+				<?php foreach ($this->form->getFieldset('site_name') as $field): ?>
 					<?php if (!$field->hidden): ?>
 						<div class="input-wrap">
 							<?php echo $field->label; ?><br />

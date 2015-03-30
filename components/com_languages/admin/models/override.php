@@ -119,11 +119,11 @@ class LanguagesModelOverride extends JModelAdmin
 		$app = JFactory::getApplication();
 		require_once JPATH_COMPONENT.'/helpers/languages.php';
 
-		$client		= $app->getUserState('com_languages.overrides.filter.client', 0);
-		$language	= $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
+		$client   = $app->getUserState('com_languages.overrides.filter.client', 0);
+		$language = $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
 
 		// If the override should be created for both
-		if($opposite_client)
+		if ($opposite_client)
 		{
 			$client = 1 - $client;
 		}
@@ -171,7 +171,7 @@ class LanguagesModelOverride extends JModelAdmin
 
 		// If the override should be stored for both clients save
 		// it also for the other one and prevent endless recursion
-		if(isset($data['both']) && $data['both'] && !$opposite_client)
+		if (isset($data['both']) && $data['both'] && !$opposite_client)
 		{
 			return $this->save($data, true);
 		}

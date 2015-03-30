@@ -16,9 +16,9 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$user      = JFactory::getUser();
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_templates&view=templates'); ?>" method="post" name="adminForm" id="adminForm">
@@ -79,15 +79,15 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo  JText::sprintf( 'COM_TEMPLATES_TEMPLATE_DETAILS', ucfirst($item->name)) ;?>
 					</a>
 					<p>
-					<?php if($this->preview && $item->client_id == '0'): ?>
+					<?php if ($this->preview && $item->client_id == '0'): ?>
 						<a href="<?php echo JURI::root().'index.php?tp=1&template='.$item->element; ?>" target="_blank">
 							<?php echo  JText::sprintf('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
 						</a>
 					<?php elseif ($item->client_id == '1'): ?>
-						<?php echo  JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?>
+						<?php echo JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?>
 					<?php else: ?>
 						<span class="hasTip" title="<?php echo JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>::<?php echo JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_DESC'); ?>">
-							<?php echo  JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>
+							<?php echo JText::sprintf('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>
 						</span>
 					<?php endif; ?>
 					</p>

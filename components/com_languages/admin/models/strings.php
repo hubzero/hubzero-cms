@@ -49,8 +49,8 @@ class LanguagesModelStrings extends JModelLegacy
 					->columns('constant, string, file');
 
 		// Initialize some variables
-		$client		= $app->getUserState('com_languages.overrides.filter.client', 'site') ? 'administrator' : 'site';
-		$language	= $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
+		$client   = $app->getUserState('com_languages.overrides.filter.client', 'site') ? 'administrator' : 'site';
+		$language = $app->getUserState('com_languages.overrides.filter.language', 'en-GB');
 
 
 		$base = constant('JPATH_'.strtoupper($client));
@@ -59,7 +59,7 @@ class LanguagesModelStrings extends JModelLegacy
 		$files = array();
 
 		// Parse common language directory
-		if(JFolder::exists($path))
+		if (JFolder::exists($path))
 		{
 			$files = JFolder::files($path, $language.'.*ini$', false, true);
 		}

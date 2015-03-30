@@ -66,7 +66,7 @@ if ($lang->isRTL() && $myrtl == 0) {
 			<?php if ($this->params->get('show_item_description') && $item->get_description()) : ?>
 				<div class="feed-item-description">
 				<?php $text = $item->get_description();
-				if($this->params->get('show_feed_image', 0) == 0)
+				if ($this->params->get('show_feed_image', 0) == 0)
 				{
 					$text = JFilterOutput::stripImages($text);
 				}

@@ -62,10 +62,10 @@ function NewsfeedsBuildRoute(&$query)
 
 	if (isset($view) and ($view == 'category' or $view == 'newsfeed')) {
 		if ($mId != intval($query['id']) || $mView != $view) {
-			if($view == 'newsfeed' && isset($query['catid']))
+			if ($view == 'newsfeed' && isset($query['catid']))
 			{
 				$catid = $query['catid'];
-			} elseif(isset($query['id'])) {
+			} elseif (isset($query['id'])) {
 				$catid = $query['id'];
 			}
 			$menuCatid = $mId;
@@ -78,11 +78,11 @@ function NewsfeedsBuildRoute(&$query)
 				$array = array();
 				foreach($path as $id)
 				{
-					if((int) $id == (int)$menuCatid)
+					if ((int) $id == (int)$menuCatid)
 					{
 						break;
 					}
-					if($advanced)
+					if ($advanced)
 					{
 						list($tmp, $id) = explode(':', $id, 2);
 					}
@@ -90,9 +90,9 @@ function NewsfeedsBuildRoute(&$query)
 				}
 				$segments = array_merge($segments, array_reverse($array));
 			}
-			if($view == 'newsfeed')
+			if ($view == 'newsfeed')
 			{
-				if($advanced)
+				if ($advanced)
 				{
 					list($tmp, $id) = explode(':', $query['id'], 2);
 				} else {
@@ -176,7 +176,7 @@ function NewsfeedsParseRoute($segments)
 		}
 		if ($found == 0)
 		{
-			if($advanced)
+			if ($advanced)
 			{
 				$db = JFactory::getDBO();
 				$query = 'SELECT id FROM #__newsfeeds WHERE catid = '.$vars['catid'].' AND alias = '.$db->Quote($segment);

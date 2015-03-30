@@ -247,8 +247,8 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 				$path[] = array('title' => $category->title, 'link' => NewsfeedsHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
 			}
- 			$path = array_reverse($path);
-			foreach($path as $item)
+			$path = array_reverse($path);
+			foreach ($path as $item)
 			{
 				$pathway->addItem($item['title'], $item['link']);
 			}

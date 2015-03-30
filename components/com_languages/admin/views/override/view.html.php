@@ -57,9 +57,9 @@ class LanguagesViewOverride extends JViewLegacy
 		JHtml::_('behavior.framework');
 		$doc->addScript(JURI::root().'media/overrider/js/overrider.js');
 
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
+		$this->form  = $this->get('Form');
+		$this->item  = $this->get('Item');
+		$this->state = $this->get('State');
 
 		// Check for errors
 		if (count($errors = $this->get('Errors')))
@@ -71,7 +71,7 @@ class LanguagesViewOverride extends JViewLegacy
 
 		// Check whether the cache has to be refreshed
 		$cached_time = JFactory::getApplication()->getUserState('com_languages.overrides.cachedtime.'.$this->state->get('filter.client').'.'.$this->state->get('filter.language'), 0);
-		if(time() - $cached_time > 60 * 5)
+		if (time() - $cached_time > 60 * 5)
 		{
 			$this->state->set('cache_expired', true);
 		}
