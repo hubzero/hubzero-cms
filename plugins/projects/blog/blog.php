@@ -968,7 +968,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				$this->_msg = Lang::txt('COM_PROJECTS_COMMENT_POSTED');
 			}
 			// Get new entry ID
-			if (!$objC->id) 
+			if (!$objC->id)
 			{
 				$objC->checkin();
 			}
