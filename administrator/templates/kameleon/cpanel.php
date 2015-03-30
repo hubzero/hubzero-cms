@@ -143,17 +143,7 @@ $browser = new \Hubzero\Browser\Detector();
 
 				<section id="main" class="<?php echo JRequest::getCmd('option', ''); ?>">
 					<!-- Content begins -->
-					<div class="hero width-100">
-						<jdoc:include type="modules" name="cpanelhero" style="cpanel" />
-					</div>
-					<div class="cpanel-wrap">
-						<div class="cpanel col width-48 fltlft">
-							<jdoc:include type="modules" name="icon" style="cpanel" />
-						</div>
-						<div class="cpanel col width-48 fltrt">
-							<jdoc:include type="modules" name="cpanel" style="cpanel" />
-						</div>
-					</div>
+					<jdoc:include type="component" />
 					<!-- Content ends -->
 
 					<noscript>

@@ -48,11 +48,20 @@ class Cpanel extends AdminController
 		// from the selected admin template.
 		\Request::setVar('tmpl', 'cpanel');
 
-		// Display the cpanel modules
-		$this->view->modules = \JModuleHelper::getModules('cpanel');
-
 		$this->view
 			->setLayout('default')  // Preserve potential view overrides
+			->display();
+	}
+
+	/**
+	 * Display a specific module
+	 *
+	 * @return  void
+	 */
+	public function moduleTask()
+	{
+		$this->view
+			->setLayout('module')  // Preserve potential view overrides
 			->display();
 	}
 }

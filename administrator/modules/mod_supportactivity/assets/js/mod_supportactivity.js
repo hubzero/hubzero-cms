@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        administrator/modules/mod_supportactivity/assets/js/mod_supportactivity.js
- * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -23,10 +23,13 @@ jQuery(document).ready(function($){
 
 		// Heartbeat for checking for new posts
 		setInterval(function () {
+			if (_DEBUG) {
+				window.console && console.log(list.attr('data-url') + list.children().first().attr('data-time'));
+			}
 			$.get(list.attr('data-url') + list.children().first().attr('data-time'), {}, function(data){
 				if (data && !data.match('/<body(.*?)>/i')) {
 					if (_DEBUG) {
-						window.console && console.log(data);
+						//window.console && console.log(data);
 					}
 					data = data.replace('<div id="panel-sliders" class="pane-sliders">', '');
 

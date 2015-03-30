@@ -37,9 +37,11 @@ Toolbar::help('cpanel');
 
 echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
 
-foreach ($this->modules as $module)
+$modules = \Module::byPosition('cpanel');
+
+foreach ($modules as $module)
 {
-	$output = JModuleHelper::renderModule($module);
+	$output = \Module::render($module);
 
 	$params = new JRegistry;
 	$params->loadString($module->params);

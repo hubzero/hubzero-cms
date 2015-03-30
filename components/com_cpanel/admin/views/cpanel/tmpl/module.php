@@ -28,17 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
-?>
-				<li data-parent="activity-list<?php echo $this->module->id; ?>" data-time="<?php echo $result->created; ?>" class="<?php echo $this->escape($result->category); ?>">
-					<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=edit&id=' . $result->ticket . ($result->id ? '#c' . $result->id : '')); ?>">
-						<span class="activity-event">
-							<?php echo Lang::txt('MOD_SUPPORTACTIVITY_' . strtoupper($result->category), $result->ticket); ?>
-						</span>
-						<span class="activity-details">
-							<span class="activity-time"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-							<span class="activity-date"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-						</span>
-					</a>
-				</li>
+// no direct access
+defined('_JEXEC') or die;
+
+$name = Request::getVar('module');
+
+if ($name && !User::isGuest())
+{
+	if (substr($name, 0, 4) != 'mod_')
+	{
+		$name = 'mod_' . $name;
+	}
+
+	$module = Module::byName($name);
+	echo Module::render($module);
+}

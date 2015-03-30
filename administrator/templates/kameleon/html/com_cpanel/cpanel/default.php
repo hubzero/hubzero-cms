@@ -28,17 +28,38 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+// no direct access
+defined('_JEXEC') or die;
+
+// Set toolbar items for the page
+Toolbar::title(Lang::txt('COM_CPANEL'), 'cpanel.png');
+Toolbar::help('cpanel');
+
+$attr = array('style' => 'cpanel');
 ?>
-				<li data-parent="activity-list<?php echo $this->module->id; ?>" data-time="<?php echo $result->created; ?>" class="<?php echo $this->escape($result->category); ?>">
-					<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=edit&id=' . $result->ticket . ($result->id ? '#c' . $result->id : '')); ?>">
-						<span class="activity-event">
-							<?php echo Lang::txt('MOD_SUPPORTACTIVITY_' . strtoupper($result->category), $result->ticket); ?>
-						</span>
-						<span class="activity-details">
-							<span class="activity-time"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-							<span class="activity-date"><time datetime="<?php echo $result->created; ?>"><?php echo JHTML::_('date', $result->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
-						</span>
-					</a>
-				</li>
+<div class="hero width-100">
+	<?php
+	foreach (\Module::byPosition('cpanelhero') as $module)
+	{
+		echo \Module::render($module, $attr);
+	}
+	?>
+</div>
+<div class="cpanel-wrap">
+	<div class="cpanel col width-48 fltlft">
+		<?php
+		foreach (\Module::byPosition('icon') as $module)
+		{
+			echo \Module::render($module, $attr);
+		}
+		?>
+	</div>
+	<div class="cpanel col width-48 fltrt">
+		<?php
+		foreach (\Module::byPosition('cpanel') as $module)
+		{
+			echo \Module::render($module, $attr);
+		}
+		?>
+	</div>
+</div>

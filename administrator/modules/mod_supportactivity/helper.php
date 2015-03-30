@@ -47,7 +47,7 @@ class Helper extends Module
 		$database = \JFactory::getDBO();
 
 		$where = "";
-		if ($start = \JRequest::getVar('start', ''))
+		if ($start = \Request::getVar('start', ''))
 		{
 			$where = "WHERE a.created > " . $database->quote($start);
 		}
@@ -61,7 +61,7 @@ class Helper extends Module
 		$database->setQuery($query);
 		$this->results = $database->loadObjectList();
 
-		$this->feed = \JRequest::getInt('feedactivity', 0);
+		$this->feed = \Request::getInt('feedactivity', 0);
 
 		if ($this->feed == 1)
 		{
