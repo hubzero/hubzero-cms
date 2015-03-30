@@ -130,7 +130,7 @@ class ToolsTableSessionClass extends \JTable
 	 */
 	public function userCount()
 	{
-		$this->_db->setQuery("SELECT COUNT(*) FROM `#__xprofiles` WHERE `jobsAllowed`=" . $this->_db->Quote($this->jobs));
+		$this->_db->setQuery("SELECT COUNT(*) FROM `#__users_tool_preferences` WHERE `class_id`=" . $this->_db->Quote($this->id));
 		return $this->_db->loadResult();
 	}
 
