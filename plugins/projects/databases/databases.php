@@ -108,6 +108,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				return $area;
 			}
 		}
+
 		// Hide section completely if not configured
 		if ($this->_checkConfig() == false)
 		{
@@ -183,8 +184,11 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		{
 			$this->_configured = false;
 		}
+		else
+		{
+			$this->_configured = true;
+		}
 
-		$this->_configured = true;
 		return $this->_configured;
 	}
 
@@ -352,7 +356,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
@@ -361,7 +365,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publication)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -596,12 +600,15 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$list = array();
 		$error = false;
 
-		if (file_exists($path) && is_dir($path)) {
+		if (file_exists($path) && is_dir($path))
+		{
 			chdir($path);
 			exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $list);
 			sort($list);
-		} else {
-			$error = 'Missing file repository, Please contact the administrator.';
+		}
+		else
+		{
+			$error = Lang::txt('PLG_PROJECTS_DATABASES_MISSING_REPO');
 		}
 
 		// Get project database object
@@ -672,7 +679,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status'=>'failed', 'msg'=>'Invalid File'));
+			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -694,13 +701,14 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$list =array();
 			chdir($path);
 			exec('find . -type d -not \( -name ".?*" -prune \)', $list);
-			foreach ($list as $d) {
+			foreach ($list as $d)
+			{
 				$d = ltrim($d, './');
-				if ($d != '.' && $d != '') {
+				if ($d != '.' && $d != '')
+				{
 					$sub_dirs[] = $d;
 				}
 			}
-
 
 			$table['repo'] = array(
 				'prj_alias' => $this->model->get('alias'),
@@ -964,7 +972,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		if (!$file)
 		{
-			print json_encode(array('status'=>'failed', 'msg'=>'Invalid file'));
+			print json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
 			return;
 		}
 
@@ -1119,7 +1127,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->data_definition = $dd;
 				$objPD->updated 		= JFactory::getDate()->toSql();
 				$objPD->updated_by 		= $this->_uid;
-				$msg = 'updated database "' . $title . '" in project ';
+				$msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
 			}
 			else
 			{
@@ -1133,7 +1141,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->data_definition = $dd;
 				$objPD->created 		= JFactory::getDate()->toSql();
 				$objPD->created_by 		= $this->_uid;
-				$msg = 'created database "' . $title . '" in project ';
+
+				$msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED_DATABASE')
+					. ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
 			}
 
 			// Store new/update record
@@ -1151,13 +1161,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 					. '&alias=' . $this->model->get('alias') . '&active=databases'),
 					'databases', 1);
 				ob_clean();
-				$this->_msg = 'Database successfully created';
+				$this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED');
 			}
 		}
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
 
-		print json_encode(array('status'=>'success', 'data'=>$url));
+		print json_encode(array('status' => 'success', 'data' => $url));
 
 		// Success message
 		if (isset($this->_msg) && $this->_msg)
@@ -1230,7 +1240,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			fclose($fp);
 
 			// Commit update file
-			$commit_message = 'Updated file ' . escapeshellarg($file);
+			$commit_message = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' ' . escapeshellarg($file);
 			$author = escapeshellarg(User::get('name') . ' <' . User::get('email') . '> ');
 
 			chdir($path);
@@ -1246,7 +1256,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$objPD->source_revision = $hash;
 			$objPD->store();
 
-			$msg = 'updated file "' . $file . '" in project ';
+			$msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' "' . $file . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
 			$this->model->recordActivity(str_replace("'", "\'", $msg), $file, 'files',
 				Route::url('index.php?option=' . $this->_option
 				. '&alias=' . $this->model->get('alias') . '&active=files'),
@@ -1284,17 +1294,18 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$ds_db->setQuery($sql);
 				$ds_db->query();
 
-				$this->_message = array('message'=>'Database successfully deleted', 'type'=>'success');
+				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_DATABASES_DELETED'), 'type' => 'success');
 			}
 
 			// Record project activity
-			$msg = 'removed database "' . $title . '" from project ';
+			$msg = Lang::txt('PLG_PROJECTS_DATABASES_REMOVED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_FROM_PROJECT');
 			$this->model->recordActivity(str_replace("'", "\'", $msg), $id, 'databases',
-				Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases'), 'databases', 1);
+				Route::url('index.php?option=' . $this->_option
+				. '&alias=' . $this->model->get('alias') . '&active=databases'), 'databases', 1);
 		}
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
-		return array('referer'=>$url, 'msg'=>$this->_message);
+		return array('referer' => $url, 'msg' => $this->_message);
 	}
 
 	/**
@@ -1325,7 +1336,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$objPD->data_definition = json_encode($dd);
 				$objPD->store();
 
-				$this->_message = array('message'=>'Database successfully updated', 'type'=>'success');
+				$this->_message = array('message' => Lang::txt('PLG_PROJECTS_DATABASES_UPDATED'), 'type'=>'success');
 			}
 		}
 
@@ -1347,7 +1358,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	{
 		if (!$identifier || $project == NULL)
 		{
-			$this->setError( Lang::txt('Error: missing database identifier') );
+			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID') );
 			return false;
 		}
 
@@ -1358,7 +1369,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
-			$this->setError( Lang::txt('Error: failed to load database record') );
+			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD') );
 			return false;
 		}
 
@@ -1423,13 +1434,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	{
 		if (!$identifier || $project == NULL)
 		{
-			$this->setError( Lang::txt('Error: missing database identifier') );
+			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_MISSING_ID') );
 			return false;
 		}
 
 		if ($version === NULL || trim($version) == '')
 		{
-			$this->setError( Lang::txt('Error: invalid database version') );
+			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_INVALID_VERSION') );
 			return false;
 		}
 
@@ -1440,7 +1451,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$objPD = new \Components\Projects\Tables\Database($db);
 		if (!$objPD->loadRecord($identifier))
 		{
-			$this->setError( Lang::txt('Error: failed to load database record') );
+			$this->setError( Lang::txt('PLG_PROJECTS_DATABASES_ERROR_LOAD_RECORD') );
 			return false;
 		}
 
