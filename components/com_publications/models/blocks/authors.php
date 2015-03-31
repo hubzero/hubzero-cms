@@ -467,13 +467,16 @@ class Authors extends Base
 			\JPluginHelper::importPlugin( 'projects', 'team' );
 			$dispatcher = \JDispatcher::getInstance();
 
+			// Get project model
+			$project = new \Components\Projects\Models\Project($pub->_project->id);
+
 			// Plugin params
 			$plugin_params = array(
 				$uid,
 				$email,
 				$code,
 				2,
-				$pub->_project,
+				$project,
 				'com_projects'
 			);
 
@@ -622,13 +625,16 @@ class Authors extends Base
 			\JPluginHelper::importPlugin( 'projects', 'team' );
 			$dispatcher = \JDispatcher::getInstance();
 
+			// Get project model
+			$project = new \Components\Projects\Models\Project($pub->_project->id);
+
 			// Plugin params
 			$plugin_params = array(
 				0,
 				$email,
 				$code,
 				2,
-				$pub->_project,
+				$project,
 				'com_projects'
 			);
 
