@@ -337,6 +337,36 @@ class Query
 	}
 
 	/**
+	 * Applies a raw where clause to the pending query
+	 *
+	 * @param  string $string   the raw where clause
+	 * @param  array  $bindings any bindings to apply to the where clause
+	 * @param  int    $depth    the depth level of the clause, for sub clauses
+	 * @return $this
+	 * @since  1.3.2.
+	 **/
+	public function whereRaw($string, $bindings=[], $depth=0)
+	{
+		$this->syntax->setRawWhere($string, $bindings, 'and', $depth);
+		return $this;
+	}
+
+	/**
+	 * Applies a raw where clause to the pending query
+	 *
+	 * @param  string $string   the raw where clause
+	 * @param  array  $bindings any bindings to apply to the where clause
+	 * @param  int    $depth    the depth level of the clause, for sub clauses
+	 * @return $this
+	 * @since  1.3.2.
+	 **/
+	public function orWhereRaw($string, $bindings=[], $depth=0)
+	{
+		$this->syntax->setRawWhere($string, $bindings, 'or', $depth);
+		return $this;
+	}
+
+	/**
 	 * Applies a where clause comparing a field to the current juser id
 	 *
 	 * @param  string $column the field to use for ownership, defaulting to 'created_by'

@@ -277,6 +277,26 @@ class Mysql
 	}
 
 	/**
+	 * Sets a raw where element on the query
+	 *
+	 * @param  string $raw      the raw where clause
+	 * @param  array  $bindings the clause bindings, if any
+	 * @param  string $logical  the operator between multiple clauses
+	 * @param  int    $depth    the depth level of the clause, for sub clauses
+	 * @return void
+	 * @since  2.0.0
+	 **/
+	public function setRawWhere($raw, $bindings=[], $logical='and', $depth=0)
+	{
+		$this->where[] = [
+			'raw'      => $raw,
+			'bindings' => $bindings,
+			'logical'  => $logical,
+			'depth'    => $depth
+		];
+	}
+
+	/**
 	 * Sets a limit element on the query
 	 *
 	 * @param  int $limit number of results to return on next query
@@ -443,22 +463,36 @@ class Mysql
 			$string .= ($constraint['depth'] < $depth) ? ') ' : '';
 			$string .= ($first) ? 'WHERE ' : strtoupper($constraint['logical']) . ' ';
 			$string .= ($constraint['depth'] > $depth) ? '(' : '';
-			$string .= $this->connection->quoteName($constraint['column']);
-			$string .= ' ' . $constraint['operator'];
-			if (is_array($constraint['value']))
+
+			// Make sure this isn't a 'raw' where clause
+			if (array_key_exists('raw', $constraint))
 			{
-				$values = array();
-				foreach ($constraint['value'] as $value)
+				$string .= $constraint['raw'];
+
+				foreach ($constraint['bindings'] as $binding)
 				{
-					$values[] = '?';
-					$this->bind($value);
+					$this->bind($binding);
 				}
-				$string .= ' (' . ((!empty($values)) ? implode(',', $values) : "''") . ')';
 			}
 			else
 			{
-				$string .= ' ?';
-				$this->bind($constraint['value']);
+				$string .= $this->connection->quoteName($constraint['column']);
+				$string .= ' ' . $constraint['operator'];
+				if (is_array($constraint['value']))
+				{
+					$values = array();
+					foreach ($constraint['value'] as $value)
+					{
+						$values[] = '?';
+						$this->bind($value);
+					}
+					$string .= ' (' . ((!empty($values)) ? implode(',', $values) : "''") . ')';
+				}
+				else
+				{
+					$string .= ' ?';
+					$this->bind($constraint['value']);
+				}
 			}
 
 			$strings[] = $string;
