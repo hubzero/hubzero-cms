@@ -92,3 +92,33 @@
 		}
 	}
 }
+
+@media (max-width: 50em) {
+	.dark .toolbar-box {
+		ul {
+			color: #fff;
+
+			&:before {
+				border-color: rgba(255, 255, 255, 0.4);
+			}
+			&:hover {
+				color: #222;
+			}
+
+			li {
+				a {
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.4);
+					}
+
+					span {
+						&:before,
+						&:after {
+							color: #444;
+						}
+					}
+				}
+			}
+		}
+	}
+}
