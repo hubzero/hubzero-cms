@@ -406,7 +406,7 @@ function filter($res, $dd)
 
 						$links = array();
 
-						for($i=0; $i<count($multi_val); $i++) {
+						for ($i=0; $i<count($multi_val); $i++) {
 							$preview = '';
 							if (isset($prv_list[$i])) {
 								$preview = 'data-preview-img="' . trim($prv_list[$i]) . '"';

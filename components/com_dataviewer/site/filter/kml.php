@@ -56,7 +56,7 @@ function filter($res, &$dd)
 		$pm .= '<description><![CDATA[<div dir="ltr">' . htmlentities($rec[$dd['maps'][0]['title']]);
 		if (isset($dd['maps'][0]['info'])) {
 			$info_str = $dd['maps'][0]['info'];
-			foreach($rec as $key=>$val) {
+			foreach ($rec as $key=>$val) {
 				$info_str = str_replace('{' . $key . '}', $rec[$key], $info_str);
 				$info_str = str_replace('{' . $key . '|html}', $rec[$key], $info_str);
 			}
@@ -78,7 +78,8 @@ function filter($res, &$dd)
 <?php
 }
 
-function dms2dc($cood) {
+function dms2dc($cood)
+{
 	$cood = explode('° ', $cood);
 	$d = $cood[0];
 	$cood = explode('\' ', $cood[1]);
