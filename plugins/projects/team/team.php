@@ -879,9 +879,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$this->_msg = Lang::txt('COM_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
 				// Record activity
-				$objAA = new \Components\Projects\Tables\Activity($this->_database);
-				$aid = $objAA->recordActivity( $this->model->get('id'), $this->_uid,
-					Lang::txt('COM_PROJECTS_TEAM_PROJECT_QUIT') , 0, '', '', 'team', 0 );
+				$aid = $this->model->recordActivity(
+					Lang::txt('COM_PROJECTS_TEAM_PROJECT_QUIT') , 0, '', '', 'team', 0
+				);
 
 				// Sync with system group
 				$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
@@ -1101,7 +1101,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$eview->option 			= $option;
 		$eview->hubShortName 	= Config::get('config.sitename');
-		$eview->model 		    = $this->model;
+		$eview->model 		    = $model;
 		$eview->code 			= $code;
 		$eview->email 			= $email;
 		$eview->uid			    = $uid;
