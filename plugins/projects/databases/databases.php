@@ -1104,7 +1104,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$objPD = new \Components\Projects\Tables\Database($this->_database);
 
 			// Recreate or Expert mode
-			if ($recreate) 
+			if ($recreate)
 			{
 				$objPD->loadRecord($db_id);
 
@@ -1160,7 +1160,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		print json_encode(array('status'=>'success', 'data'=>$url));
 
 		// Success message
-		if (isset($this->_msg) && $this->_msg) 
+		if (isset($this->_msg) && $this->_msg)
 		{
 			$this->_message = array('message' => $this->_msg, 'type' => 'success');
 		}
