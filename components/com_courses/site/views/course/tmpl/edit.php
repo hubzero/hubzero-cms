@@ -156,7 +156,7 @@ This course is intended to be broadly accessible to those with a background in '
 				<?php echo Lang::txt('Overview'); ?> <span class="optional"><?php echo Lang::txt('COM_COURSES_OPTIONAL'); ?></span>
 
 				<?php
-					echo \\JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
+					echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
 				?>
 				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 

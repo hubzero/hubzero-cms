@@ -213,7 +213,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
 
 			// Get the courses config
-			$config = JComponentHelper::getParams('com_courses');
+			$config = Component::params('com_courses');
 			$asset_groups = explode(',', $config->getValue('default_asset_groups', 'Lectures, Homework, Exam'));
 			array_map('trim', $asset_groups);
 
@@ -1600,7 +1600,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			if ($score > $gradebook->get('score'))
 			{
 				$gradebook->set('score', $score);
-				$gradebook->set('score_recorded', \\JFactory::getDate()->toSql());
+				$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
 				if (!$gradebook->store())
 				{
 					$this->setMessage($gradebook->getError(), 500, 'Internal error');
@@ -1614,7 +1614,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$gradebook->set('score', $score);
 			$gradebook->set('scope', 'asset');
 			$gradebook->set('scope_id', $asset_id);
-			$gradebook->set('score_recorded', \\JFactory::getDate()->toSql());
+			$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
 			if (!$gradebook->store())
 			{
 				$this->setMessage($gradebook->getError(), 500, 'Internal error');
