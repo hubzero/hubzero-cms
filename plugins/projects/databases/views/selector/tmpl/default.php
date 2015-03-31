@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 $block   	= $this->block;
 $step  	 	= $this->step;
@@ -41,7 +41,7 @@ $element = isset($elements->$elementId) ? $elements->$elementId: $elements->$def
 $params  = $element->params;
 
 // Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 // Get attachment type model
 $attModel = new \Components\Publications\Models\Attachments($this->database);
@@ -64,16 +64,16 @@ if ($attachments)
 <div id="abox-content-wrap">
 	<div id="abox-content">
 	<script src="/plugins/projects/publications/js/selector.js"></script>
-		<h3><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR'); ?> 	<span class="abox-controls">
-				<a class="btn btn-success active" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
+		<h3><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR'); ?> 	<span class="abox-controls">
+				<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
 				<?php if ($this->ajax) { ?>
-				<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_DATABASES_CANCEL'); ?></a>
+				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_CANCEL'); ?></a>
 				<?php } ?>
 			</span>
 		</h3>
 		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
 			<fieldset >
-				<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
@@ -104,7 +104,7 @@ if ($attachments)
 				<?php } ?>
 			</ul>
 			<?php } else { ?>
-			<p class="warning"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block">Go to <a href="<?php echo Route::url($route . '&active=databases'); ?>">Databases</a> to create a new database</span></p>
+			<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block">Go to <a href="<?php echo Route::url($route . '&active=databases'); ?>">Databases</a> to create a new database</span></p>
 		<?php } ?>
 		</form>
 	</div>

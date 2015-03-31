@@ -42,16 +42,11 @@ if ($this->error) {
 	return;
 }
 
-
 $document = JFactory::getDocument();
-
 $document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
 $document->addStyleSheet('/plugins/projects/databases/res/dataTables/jquery.dataTables.css');
-
-
 $document->addStyleSheet('/plugins/projects/databases/res/chosen/chosen.css');
 $document->addScript('/plugins/projects/databases/res/chosen/chosen.jquery.js');
-
 $document->addStyleSheet('/plugins/projects/databases/res/spectrum/spectrum.css');
 $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 
@@ -62,7 +57,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	}
 </style>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->project->alias); ?>"><?php echo Lang::txt('Databases'); ?></a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? Lang::txt('Update Database') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
+<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('Databases'); ?></a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? Lang::txt('Update Database') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
@@ -70,7 +65,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3><?php echo Lang::txt('Step 1: Select a file'); ?></h3>
-	<form id="prj-db-select-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=databases&action=preview_data&raw_op=1')?>">
+	<form id="prj-db-select-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
 		<select id="prj-db-select-src" title="<?php echo Lang::txt('Select a CSV file to convert in to a database'); ?>">
 		<?php foreach ($this->files as $dir => $files): ?>
 			<?php
@@ -93,7 +88,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3><?php echo Lang::txt('Loading database'); ?>: <em><?php echo $this->title?></em>...</h3>
-	<form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=databases&action=preview_data&raw_op=1')?>">
+	<form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
 		<select id="prj-db-select-src">
 			<option selected data-dir="<?php echo $this->dir?>" value="<?php echo $this->file?>" class="preview"><?php echo $this->file?></option>
 		</select>
@@ -110,9 +105,9 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3><?php echo Lang::txt('Sorry, you need to have CSV formatted spreadsheet files to create databases.'); ?></h3>
-	<p><?php echo Lang::txt('Maybe the file has already been used for a database. Please'); ?> <a href="/projects/<?php echo $this->project->alias?>/databases"><?php echo Lang::txt('go back'); ?></a> <?php echo Lang::txt('and remove the database that\'s using the file'); ?></p>
+	<p><?php echo Lang::txt('Maybe the file has already been used for a database. Please'); ?> <a href="/projects/<?php echo $this->model->get('alias')?>/databases"><?php echo Lang::txt('go back'); ?></a> <?php echo Lang::txt('and remove the database that\'s using the file'); ?></p>
 	<p>or</p>
-	<p><a href="/projects/<?php echo $this->project->alias?>/files">Click here</a> to upload a new CSV file.</p>
+	<p><a href="/projects/<?php echo $this->model->get('alias')?>/files">Click here</a> to upload a new CSV file.</p>
 <?php
 	}
 ?>
@@ -128,7 +123,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
 	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-step='3' style="float: right;" />
 	<h3>Step 3: Title &amp; Description, Finish</h3>
-	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=databases&action=create_database&raw_op=1')?>">
+	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1')?>">
 		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
 		<label for="prj-db-desc" >Description:</label><br /><textarea type="text" name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
 		<input type="submit" value="Finish" class="btn" id="prj-db-finish-btn" />

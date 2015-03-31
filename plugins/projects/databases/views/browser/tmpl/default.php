@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Get databases to choose from
 $objPD = new \Components\Projects\Tables\Database($this->database);
-$items = $objPD->getItems($this->project->id, array());
+$items = $objPD->getItems($this->model->get('id'), array());
 
 $missing = array();
 $shown = array();
@@ -40,9 +40,9 @@ if ($this->primary && !empty($this->attachments))
 }
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications' . '&task=submit'
-	: 'index.php?option=com_projects' . '&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects' . '&alias=' . $this->model->get('alias');
 $p_url = Route::url($route . '&active=databases');
 
 ?>
@@ -89,7 +89,7 @@ $p_url = Route::url($route . '&active=databases');
 		{
 			foreach ($missing as $miss)
 			{ ?>
-				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
+				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
 		<?php	}
 		}
 	}
@@ -97,9 +97,9 @@ $p_url = Route::url($route . '&active=databases');
 </ul>
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
-	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_DATA_NO_SELECTION_ITEMS_FOUND_DATA'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_DATA_NO_SELECTION_ITEMS_FOUND_DATA'); ?></p>
 <?php } ?>
 
-<?php if (!$this->project->provisioned) { ?>
+<?php if (!$this->model->isProvisioned()) { ?>
 	<p class="addnew">Go to <a href="<?php echo Route::url($route).'?active=databases'; ?>">Databases</a> to create a new database</p>
 <?php } ?>

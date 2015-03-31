@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div id="prj-db-list">
-	<div class="addnew" style="float: right;"><a href="/projects/<?php echo $this->project->alias; ?>/databases/create#content"><?php echo JText::_('PLG_PROJECTS_DATA_START'); ?></a></div>
+	<div class="addnew" style="float: right;"><a href="/projects/<?php echo $this->model->get('alias'); ?>/databases/create#content"><?php echo Lang::txt('PLG_PROJECTS_DATA_START'); ?></a></div>
 	<div id="plg-header">
 		<h3 class="databases">Databases</h3>
 	</div>
@@ -61,13 +61,13 @@ defined('_JEXEC') or die('Restricted access');
 					$full_path = htmlspecialchars($r['source_file']);
 				}
 
-				$file_url = '/projects/' . $this->project->alias
+				$file_url = '/projects/' . $this->model->get('alias')
 					. '/files/?action=download&case=files&subdir='
 					. trim($r['source_dir'], '/') . '&file=' . $r['source_file'];
 
 				$file_name = '<a href="' . $file_url . '">' . $r['source_file'] . '</a>';
 
-				$recreate = '<a href="/projects/' . $this->project->alias
+				$recreate = '<a href="/projects/' . $this->model->get('alias')
 					. '/databases/create/?db_id=' . $r['id']
 					. '" class="re-create-db">Update Database</a>';
 
@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 			<tr class="mini faded">
 				<td title="<?php echo htmlspecialchars($r['description']); ?>" data-db-title="<?php echo htmlspecialchars($r['title']); ?>"  data-db-id="<?php echo $r['id']; ?>">
-					<a target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->project->alias; ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $r['title']; ?></a>
+					<a target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $r['title']; ?></a>
 					<span class="db-update" title="Click to edit the Title &amp; Description"></span>
 				</td>
 				<td <?php  echo $file_extra; ?>>
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo $recreate; ?>
 				</td>
 				<td>
-					<a href="/projects/<?php echo $this->project->alias; ?>/databases/delete/?db_id=<?php echo $r['id']; ?>" class="delete-db">Delete</a>
+					<a href="/projects/<?php echo $this->model->get('alias'); ?>/databases/delete/?db_id=<?php echo $r['id']; ?>" class="delete-db">Delete</a>
 				</td>
 			</tr>
 		<?php
@@ -151,12 +151,12 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	else
 	{
-		echo ('<p class="noresults">' . JText::_('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="' . Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->project->alias . '&action=create#content') . '" >' . JText::_('PLG_PROJECTS_DATA_START') . '</a></span></p>');
+		echo ('<p class="noresults">' . Lang::txt('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="' . Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias') . '&action=create#content') . '" >' . Lang::txt('PLG_PROJECTS_DATA_START') . '</a></span></p>');
 	}
 	?>
 </div>
 <div id="prj-db-update-dialog" title="Update Title &amp; Description" style="display: none;">
-	<form id="prj-db-update-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=databases&action=update'); ?>">
+	<form id="prj-db-update-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=update'); ?>">
 		<input type="hidden" name="db_id" />
 		<label for="db_title" >Title:</label><br />
 		<input type="text" name="db_title" style="width: 550px;" /><br /><br />
