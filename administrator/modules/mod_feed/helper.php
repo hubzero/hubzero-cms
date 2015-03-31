@@ -1,171 +1,101 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Modules\Feed;
+
+use Hubzero\Module\Module;
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	mod_feed
+ * Module class for reading feed data
  */
-abstract class modFeedHelper
+class Helper extends Module
 {
-	public static function render($params)
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
 	{
-		// module params
-		$rssurl				= $params->get('rssurl', '');
-		$rssitems			= $params->get('rssitems', 5);
-		$rssdesc			= $params->get('rssdesc', 1);
-		$rssimage			= $params->get('rssimage', 1);
-		$rssitemdesc		= $params->get('rssitemdesc', 1);
-		$words				= $params->def('word_count', 0);
-		$rsstitle			= $params->get('rsstitle', 1);
-		$rssrtl				= $params->get('rssrtl', 0);
-		$moduleclass_sfx	= $params->get('moduleclass_sfx', '');
+		// [!] Backwards compatibility for any view overrides
+		$params = $this->params;
 
-		$filter = JFilterInput::getInstance();
+		$rssurl = $this->params->get('rssurl', '');
+		$rssrtl = $this->params->get('rssrtl', 0);
+
+		//check if cache diretory is writable as cache files will be created for the feed
+		$cacheDir = JPATH_CACHE;
+		if (!is_writable($cacheDir))
+		{
+			echo '<div class="error">';
+			echo Lang::txt('MOD_FEED_ERR_CACHE');
+			echo '</div>';
+			return;
+		}
+
+		//check if feed URL has been set
+		if (empty ($rssurl))
+		{
+			echo '<div class="error">';
+			echo Lang::txt('MOD_FEED_ERR_NO_URL');
+			echo '</div>';
+			return;
+		}
+
+		// module params
+		$rssurl          = $this->params->get('rssurl', '');
+		$rssitems        = $this->params->get('rssitems', 5);
+		$rssdesc         = $this->params->get('rssdesc', 1);
+		$rssimage        = $this->params->get('rssimage', 1);
+		$rssitemdesc     = $this->params->get('rssitemdesc', 1);
+		$words           = $this->params->def('word_count', 0);
+		$rsstitle        = $this->params->get('rsstitle', 1);
+		$rssrtl          = $this->params->get('rssrtl', 0);
+		$moduleclass_sfx = $this->params->get('moduleclass_sfx', '');
+
+		$filter = \JFilterInput::getInstance();
 
 		// get RSS parsed object
 		$cache_time = 0;
-		if ($params->get('cache'))
+		if ($this->params->get('cache'))
 		{
-			/*
-			 * The cache_time will get fed into JCache to initiate the feed_parser cache group and eventually
-			 * JCacheStorage will multiply the value by 60 and use that for its lifetime. The only way to sync
-			 * the feed_parser cache (which caches with an empty dataset anyway) with the module cache is to
-			 * first divide the module's cache time by 60 then inject that forward, which once stored into the
-			 * JCacheStorage object, will be the correct value in minutes.
-			 */
-			$cache_time  = $params->get('cache_time', 15) / 60;
+			// The cache_time will get fed into JCache to initiate the feed_parser cache group and eventually
+			// JCacheStorage will multiply the value by 60 and use that for its lifetime. The only way to sync
+			// the feed_parser cache (which caches with an empty dataset anyway) with the module cache is to
+			// first divide the module's cache time by 60 then inject that forward, which once stored into the
+			// JCacheStorage object, will be the correct value in minutes.
+			$cache_time  = $this->params->get('cache_time', 15) / 60;
 		}
 
-		$rssDoc = JFactory::getFeedParser($rssurl, $cache_time);
+		$rssDoc = \JFactory::getFeedParser($rssurl, $cache_time);
 
-		if ($rssDoc != false)
-		{
-			// channel header and link
-			$channel['title'] = $filter->clean($rssDoc->get_title());
-			$channel['link'] = $filter->clean($rssDoc->get_link());
-			$channel['description'] = $filter->clean($rssDoc->get_description());
-
-			// channel image if exists
-			$image['url'] = $rssDoc->get_image_url();
-			$image['title'] = $rssDoc->get_image_title();
-
-			//image handling
-			$iUrl	= isset($image['url']) ? $image['url'] : null;
-			$iTitle = isset($image['title']) ? $image['title'] : null;
-
-			// items
-			$items = $rssDoc->get_items();
-
-			// feed elements
-			$items = array_slice($items, 0, $rssitems);
-			?>
-			<table cellpadding="0" cellspacing="0" class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
-			<?php
-			// feed description
-			if (!is_null($channel['title']) && $rsstitle) {
-			?>
-				<tr>
-				<td>
-					<strong>
-						<a href="<?php echo htmlspecialchars(str_replace('&', '&amp;', $channel['link'])); ?>" target="_blank">
-						<?php echo htmlspecialchars($channel['title']); ?></a>
-					</strong>
-				</td>
-				</tr>
-			<?php
-			}
-
-			// feed description
-			if ($rssdesc) {
-			?>
-				<tr>
-					<td>
-						<?php echo $channel['description']; ?>
-					</td>
-				</tr>
-			<?php
-			}
-
-			// feed image
-			if ($rssimage && $iUrl) {
-			?>
-				<tr>
-					<td align="center">
-						<img src="<?php echo htmlspecialchars($iUrl); ?>" alt="<?php echo htmlspecialchars(@$iTitle); ?>"/>
-					</td>
-				</tr>
-			<?php
-			}
-
-			$actualItems = count($items);
-			$setItems = $rssitems;
-
-			if ($setItems > $actualItems) {
-				$totalItems = $actualItems;
-			} else {
-				$totalItems = $setItems;
-			}
-			?>
-			<tr>
-			<td>
-				<ul class="newsfeed<?php echo htmlspecialchars($moduleclass_sfx); ?>"  >
-				<?php
-				for ($j = 0; $j < $totalItems; $j ++)
-				{
-					$currItem = & $items[$j];
-					// item title
-					?>
-					<li>
-					<?php
-					if (!is_null($currItem->get_link())) {
-					?>
-						<a href="<?php echo htmlspecialchars($currItem->get_link()); ?>" target="_child">
-						<?php echo htmlspecialchars($currItem->get_title()); ?></a>
-					<?php
-					}
-
-					// item description
-					if ($rssitemdesc)
-					{
-						// item description
-						$text = $filter->clean(html_entity_decode($currItem->get_description(), ENT_COMPAT, 'UTF-8'));
-						$text = str_replace('&apos;', "'", $text);
-
-						// word limit check
-						if ($words) {
-							$texts = explode(' ', $text);
-							$count = count($texts);
-							if ($count > $words) {
-								$text = '';
-								for ($i = 0; $i < $words; $i ++)
-								{
-									$text .= ' '.$texts[$i];
-								}
-								$text .= '...';
-							}
-						}
-						?>
-						<div style="text-align: <?php echo $rssrtl ? 'right': 'left'; ?> !important">
-							<?php echo $text; ?>
-						</div>
-						<?php
-					}
-					?>
-					</li>
-					<?php
-				}
-				?>
-				</ul>
-			</td>
-			</tr>
-		</table>
-		<?php
-		}
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }
