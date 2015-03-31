@@ -56,7 +56,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 
 		if ($user->get('id') == $member->get('uidNumber'))
 		{
-			$areas['courses'] = JText::_('PLG_MEMBERS_COURSES');
+			$areas['courses'] = Lang::txt('PLG_MEMBERS_COURSES');
 			$areas['icon'] = 'f09c';
 		}
 		return $areas;
@@ -144,8 +144,8 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 				0,
 				'int'
 			);
-			$view->filters['task'] = strtolower(JRequest::getVar('action', ''));
-			$view->filters['sort'] = strtolower(JRequest::getWord('sort', 'enrolled'));
+			$view->filters['task'] = strtolower(Request::getVar('action', ''));
+			$view->filters['sort'] = strtolower(Request::getWord('sort', 'enrolled'));
 			if (!in_array($view->filters['sort'], array('enrolled', 'title')))
 			{
 				$view->filters['sort'] = 'enrolled';
@@ -393,7 +393,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 	public function onMembersContributionsAreas()
 	{
 		return array(
-			'courses' => JText::_('PLG_MEMBERS_COURSES')
+			'courses' => Lang::txt('PLG_MEMBERS_COURSES')
 		);
 	}
 
@@ -469,7 +469,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
 
 		// Instantiate some needed objects
 		$tbl = new CoursesTableCourse($database);
@@ -497,7 +497,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_courses&gid=' . $row->alias);
+					$rows[$key]->href = Route::url('index.php?option=com_courses&gid=' . $row->alias);
 					$rows[$key]->text = $row->blurb;
 					$rows[$key]->section = 'courses';
 				}
