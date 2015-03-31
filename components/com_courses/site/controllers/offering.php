@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,20 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\Content\Server;
+use Exception;
 
 /**
  * Courses controller class for an offering
  */
-class CoursesControllerOffering extends \Hubzero\Component\SiteController
+class Offering extends SiteController
 {
 	/**
 	 * Execute a task
@@ -43,7 +46,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		$this->gid = JRequest::getVar('gid', '');
+		$this->gid = Request::getVar('gid', '');
 		if (!$this->gid)
 		{
 			$this->setRedirect(
@@ -53,20 +56,19 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Load the course page
-		$this->course = CoursesModelCourse::getInstance($this->gid);
+		$this->course = \CoursesModelCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
 		if (!$this->course->exists() || $this->course->isDeleted() || $this->course->isUnpublished())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// No offering provided
-		if (!($offering = JRequest::getVar('offering', '')))
+		if (!($offering = Request::getVar('offering', '')))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
+				Route::url('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
 			);
 			return;
 		}
@@ -76,15 +78,13 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		 || $this->course->offering($offering)->isDeleted()
 		 || (!$this->course->offering($offering)->access('manage', 'section') && $this->course->offering($offering)->isUnpublished()))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
 		}
 
 		// Ensure the course has been published or has been approved
 		if (!$this->course->offering()->access('manage', 'section') && !$this->course->isAvailable())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NOT_PUBLISHED'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NOT_PUBLISHED'));
 		}
 
 		parent::execute();
@@ -98,12 +98,12 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -133,7 +133,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function _buildTitle()
 	{
 		//set title used in view
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = Lang::txt(strtoupper($this->_option));
 
 		if ($this->course->exists())
 		{
@@ -146,7 +146,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		//set title of browser window
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -157,11 +157,11 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function loginTask($message = '')
 	{
-		$rtrn = base64_encode(JRoute::_($this->course->offering()->link() . '&task=' . $this->_task, false, true));
-		$link = str_replace('&amp;', '&', JRoute::_('index.php?option=com_users&view=login&return=' . $rtrn));
+		$rtrn = base64_encode(Route::url($this->course->offering()->link() . '&task=' . $this->_task, false, true));
+		$link = str_replace('&amp;', '&', Route::url('index.php?option=com_users&view=login&return=' . $rtrn));
 		$this->setRedirect(
 			$link,
-			JText::_($message),
+			Lang::txt($message),
 			'warning'
 		);
 		return;
@@ -177,24 +177,23 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		// Check if the offering is available
 		if (!$this->course->offering()->access('manage', 'section') && !$this->course->offering()->isAvailable())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
 		}
 
 		$tmpl = $this->config->get('tmpl', '');
 
-		if ($tmpl && !JRequest::getWord('tmpl', false))
+		if ($tmpl && !Request::getWord('tmpl', false))
 		{
-			JRequest::setVar('tmpl', $tmpl);
+			Request::setVar('tmpl', $tmpl);
 		}
 
 		// Get the active tab (section)
 		$this->view->nonadmin = 0;
 		if ($this->course->offering()->access('manage', 'section'))
 		{
-			$app = JFactory::getApplication();
+			$app = \JFactory::getApplication();
 
-			$this->view->nonadmin = JRequest::getInt('nonadmin', $app->getUserState(
+			$this->view->nonadmin = Request::getInt('nonadmin', $app->getUserState(
 				$this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
 				0
 			));
@@ -204,9 +203,6 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			);
 		}
 
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
 		// Build the title
 		$this->_buildTitle();
 
@@ -214,8 +210,8 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Get plugins
-		JPluginHelper::importPlugin('courses');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('courses');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$plugins = $dispatcher->trigger('onCourse', array(
@@ -224,7 +220,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		));
 
 		$this->view->course        = $this->course;
-		$this->view->user          = $this->juser;
+		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
 		$this->view->plugins       = $plugins;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -239,9 +235,9 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function enrollTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRES_LOGIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_ENROLLMENT_REQUIRES_LOGIN'));
 			return;
 		}
 
@@ -253,14 +249,14 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			// Yes! Already enrolled
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($offering->link()),
-				JText::_('COM_COURSES_ALREADY_ENROLLED')
+				Route::url($offering->link()),
+				Lang::txt('COM_COURSES_ALREADY_ENROLLED')
 			);
 			return;
 		}
 
 		$this->view->course = $this->course;
-		$this->view->juser  = $this->juser;
+		$this->view->juser  = User::getRoot();
 
 		// Build the title
 		$this->_buildTitle();
@@ -279,7 +275,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		$enrolled = false;
 
 		// If enrollment is open OR a coupon code was posted
-		if (!$offering->section()->get('enrollment') || ($code = JRequest::getVar('code', '')))
+		if (!$offering->section()->get('enrollment') || ($code = Request::getVar('code', '')))
 		{
 			$section_id = $offering->section()->get('id');
 
@@ -291,19 +287,19 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 				// Is it a valid code?
 				if (!$coupon->exists())
 				{
-					$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_INVALID', $code));
+					$this->setError(Lang::txt('COM_COURSES_ERROR_CODE_INVALID', $code));
 				}
 				// Has it already been redeemed?
 				if ($coupon->isRedeemed())
 				{
-					$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_ALREADY_REDEEMED', $code));
+					$this->setError(Lang::txt('COM_COURSES_ERROR_CODE_ALREADY_REDEEMED', $code));
 				}
 				else
 				{
 					// Has it expired?
 					if ($coupon->isExpired())
 					{
-						$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_EXPIRED', $code));
+						$this->setError(Lang::txt('COM_COURSES_ERROR_CODE_EXPIRED', $code));
 					}
 				}
 				if (!$this->getError())
@@ -311,22 +307,22 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 					// Is this a coupon for a different section?
 					if ($offering->section()->get('id') != $coupon->get('section_id'))
 					{
-						$section = CoursesModelSection::getInstance($coupon->get('section_id'));
+						$section = \CoursesModelSection::getInstance($coupon->get('section_id'));
 						if ($section->exists() && $section->get('offering_id') != $offering->get('id'))
 						{
-							$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
+							$offering = \CoursesModelOffering::getInstance($section->get('offering_id'));
 							if ($offering->exists() && $offering->get('course_id') != $this->course->get('id'))
 							{
-								$this->course = CoursesModelCourse::getInstance($offering->get('course_id'));
+								$this->course = \CoursesModelCourse::getInstance($offering->get('course_id'));
 							}
 						}
 						$this->setRedirect(
-							JRoute::_($offering->link() . '&task=enroll&code=' . $code)
+							Route::url($offering->link() . '&task=enroll&code=' . $code)
 						);
 						return;
 					}
 					// Redeem the code
-					$coupon->redeem($this->juser->get('id'));// set('redeemed_by', $this->juser->get('id'));
+					$coupon->redeem(User::get('id'));// set('redeemed_by', User::get('id'));
 					//$coupon->store();
 				}
 			}
@@ -335,8 +331,8 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			if (!$this->getError())
 			{
 				// Add the user to the course
-				$model = new CoursesModelMember(0); //::getInstance($this->juser->get('id'), $offering->get('id'));
-				$model->set('user_id', $this->juser->get('id'));
+				$model = new \CoursesModelMember(0); //::getInstance(User::get('id'), $offering->get('id'));
+				$model->set('user_id', User::get('id'));
 				$model->set('course_id', $this->course->get('id'));
 				$model->set('offering_id', $offering->get('id'));
 				$model->set('section_id', $offering->section()->get('id'));
@@ -367,8 +363,8 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		{
 			$link = $offering->link();
 
-			JPluginHelper::importPlugin('courses');
-			$data = JDispatcher::getInstance()->trigger('onCourseEnrolled', array(
+			\JPluginHelper::importPlugin('courses');
+			$data = \JDispatcher::getInstance()->trigger('onCourseEnrolled', array(
 				$this->course, $offering, $offering->section()
 			));
 			if ($data && count($data) > 0)
@@ -376,7 +372,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 				$link = implode('', $data);
 			}
 			$this->setRedirect(
-				JRoute::_($link)
+				Route::url($link)
 			);
 			return;
 		}
@@ -426,9 +422,9 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	 */
 	public function assetTask()
 	{
-		$sparams    = new JRegistry($this->course->offering()->section()->get('params'));
+		$sparams    = new \JRegistry($this->course->offering()->section()->get('params'));
 		$section_id = $this->course->offering()->section()->get('id');
-		$asset      = new CoursesModelAsset(JRequest::getInt('asset_id', null));
+		$asset      = new \CoursesModelAsset(Request::getInt('asset_id', null));
 		$asset->set('section_id', $section_id);
 
 		// First, check if current user has access to course
@@ -441,17 +437,17 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			if (!$preview || $asset->get('type') == 'form')
 			{
 				// Check if they're logged in
-				if ($this->juser->get('guest'))
+				if (User::isGuest())
 				{
-					$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
+					$this->loginTask(Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
 					return;
 				}
 				else
 				{
 					// Redirect back to the course outline
 					$this->setRedirect(
-						JRoute::_($this->course->offering()->link()),
-						JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
+						Route::url($this->course->offering()->link()),
+						Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 						'warning'
 					);
 					return;
@@ -467,17 +463,17 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 						if ($unit->get('ordering') > 1)
 						{
 							// Check if they're logged in
-							if ($this->juser->get('guest'))
+							if (User::isGuest())
 							{
-								$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
+								$this->loginTask(Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
 								return;
 							}
 							else
 							{
 								// Redirect back to the course outline
 								$this->setRedirect(
-									JRoute::_($this->course->offering()->link()),
-									JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
+									Route::url($this->course->offering()->link()),
+									Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 									'warning'
 								);
 								return;
@@ -491,7 +487,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		// If not a manager and either the offering or section is unpublished...
 		if (!$this->course->offering()->access('manage') && (!$this->course->offering()->isPublished() || !$this->course->offering()->section()->isPublished()))
 		{
-			JError::raiseError(403, JText::_('COM_COURSES_ERROR_ASSET_UNAVAILABLE'));
+			return App::abort(403, Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'));
 		}
 
 		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
@@ -501,8 +497,8 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			{
 				// Redirect back to the course outline
 				$this->setRedirect(
-					JRoute::_($this->course->offering()->link()),
-					JText::_('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
+					Route::url($this->course->offering()->link()),
+					Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
 					'warning'
 				);
 				return;
@@ -510,7 +506,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Check prerequisites
-		$member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+		$member = $this->course->offering()->section()->member(\JFactory::getUser()->get('id'));
 		if (is_null($member->get('section_id')))
 		{
 			$member->set('section_id', $section_id);
@@ -523,7 +519,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			$requirements = array();
 			foreach ($prereqs as $pre)
 			{
-				$reqAsset = new CoursesModelAsset($pre['scope_id']);
+				$reqAsset = new \CoursesModelAsset($pre['scope_id']);
 				$requirements[] = $reqAsset->get('title');
 			}
 
@@ -531,15 +527,15 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 			// Redirect back to the course outline
 			$this->setRedirect(
-				JRoute::_($this->course->offering()->link()),
-				JText::sprintf('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
+				Route::url($this->course->offering()->link()),
+				Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
 				'warning'
 			);
 			return;
 		}
 
 		// If requesting a file from a wiki type asset, then serve that up directly
-		if ($asset->get('subtype') == 'wiki' && JRequest::getVar('file', false))
+		if ($asset->get('subtype') == 'wiki' && Request::getVar('file', false))
 		{
 			echo $asset->download($this->course);
 		}
@@ -555,15 +551,15 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}
 
@@ -577,7 +573,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function deleteTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}
 
@@ -592,10 +588,10 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		{
 			$logo = $this->course->offering()->logo();
 		}
-		$file = JPATH_ROOT . $logo;
+		$file = PATH_APP . $logo;
 
 		// Initiate a new content server and serve up the file
-		$server = new \Hubzero\Content\Server();
+		$server = new Server();
 		$server->filename($file);
 		$server->disposition('inline');
 		$server->acceptranges(false);
@@ -603,7 +599,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		if (!$server->serve())
 		{
 			// Should only get here on error
-			throw new JException(JText::_('COM_COURSES_SERVER_ERROR'), 404);
+			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 404);
 		}
 		else
 		{

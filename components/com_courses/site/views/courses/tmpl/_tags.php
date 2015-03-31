@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			$tll[$tag->get('tag')]  = '<li' . $class . '>';
-			$tll[$tag->get('tag')] .= '<a href="' . JRoute::_($this->base . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
+			$tll[$tag->get('tag')] .= '<a href="' . Route::url($this->base . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
 			$tll[$tag->get('tag')] .= '</li>';
 		}
 		else
@@ -119,7 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 
 				$tll[$tag->get('tag')] .= '<span style="font-size: ' . round($size, 1) . 'em;">';
 			}
-			$tll[$tag->get('tag')] .= '<a href="' . JRoute::_('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+			$tll[$tag->get('tag')] .= '<a href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
 			if ($this->config->get('show_tag_count', 0))
 			{
 				$tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';

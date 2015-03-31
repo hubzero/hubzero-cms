@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,22 +40,22 @@ switch ($this->count)
 ?>
 <div class="col <?php echo $cls; ?>">
 	<div class="course">
-		<a href="<?php echo JRoute::_($this->course->link()); ?>">
+		<a href="<?php echo Route::url($this->course->link()); ?>">
 			<div class="course-details">
 				<div class="course-identity">
 					<?php if ($logo = $this->course->logo('url')) { ?>
-						<img src="<?php echo JRoute::_($logo); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+						<img src="<?php echo Route::url($logo); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 					<?php } else { ?>
 						<span></span>
 					<?php } ?>
 
 					<?php if ($this->course->get('rating', 0) > 4) { ?>
 					<div>
-						<strong><?php echo JText::_('COM_COURSES_TOP_RATED_COURSE'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+						<strong><?php echo Lang::txt('COM_COURSES_TOP_RATED_COURSE'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
 					</div>
 					<?php } else if ($this->course->get('popularity', 0) > 7) { ?>
 					<div>
-						<strong><?php echo JText::_('COM_COURSES_POPULAR_COURSE'); ?></strong> <span class="popularity">&#xf091;</span>
+						<strong><?php echo Lang::txt('COM_COURSES_POPULAR_COURSE'); ?></strong> <span class="popularity">&#xf091;</span>
 					</div>
 					<?php } ?>
 				</div>

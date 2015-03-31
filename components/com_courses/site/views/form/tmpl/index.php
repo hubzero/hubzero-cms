@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -51,16 +51,16 @@ $this->css('form.css')
 	<form action="index.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="pdf" accept="application/pdf" required autofocus />
 		<input type="hidden" name="task" value="upload" />
-		<button type="submit"><?php echo JText::_('COM_COURSES_UPLOAD'); ?></button>
+		<button type="submit"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?></button>
 	</form>
 
-	<h2><?php echo JText::_('COM_COURSES_SELECT_PREVIOUS_PDF'); ?></h2>
+	<h2><?php echo Lang::txt('COM_COURSES_SELECT_PREVIOUS_PDF'); ?></h2>
 	<table class="tablesorter">
 		<thead>
 			<tr>
-				<th><?php echo JText::_('COM_COURSES_HEADER_TITLE'); ?></th>
-				<th><?php echo JText::_('COM_COURSES_HEADER_CREATED'); ?></th>
-				<th><?php echo JText::_('COM_COURSES_HEADER_UPDATED'); ?></th>
+				<th><?php echo Lang::txt('COM_COURSES_HEADER_TITLE'); ?></th>
+				<th><?php echo Lang::txt('COM_COURSES_HEADER_CREATED'); ?></th>
+				<th><?php echo Lang::txt('COM_COURSES_HEADER_UPDATED'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -68,25 +68,25 @@ $this->css('form.css')
 			<tr>
 				<td>
 					<span class="title"><?php echo $form['title'] ?></span>
-					<form action="<?php echo JRoute::_('index.php?option=com_courses&controller=form'); ?>" method="get">
+					<form action="<?php echo Route::url('index.php?option=com_courses&controller=form'); ?>" method="get">
 						<input type="hidden" name="task" value="deploy" />
 						<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
-						<button type="submit"><?php echo JText::_('COM_COURSES_DEPLOY'); ?></button>
+						<button type="submit"><?php echo Lang::txt('COM_COURSES_DEPLOY'); ?></button>
 					</form>
-					<form action="<?php echo JRoute::_('index.php?option=com_courses&controller=form'); ?>" method="get">
+					<form action="<?php echo Route::url('index.php?option=com_courses&controller=form'); ?>" method="get">
 						<input type="hidden" name="task" value="layout" />
 						<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
-						<button type="submit"><?php echo JText::_('COM_COURSES_EDIT'); ?></button>
+						<button type="submit"><?php echo Lang::txt('COM_COURSES_EDIT'); ?></button>
 					</form>
 					<br />
 					<?php if (($deps = PdfFormDeployment::forForm($form['id']))): ?>
 					<table class="tablesorter nested">
 						<thead>
 							<tr>
-								<th><?php echo JText::_('COM_COURSES_HEADER_DEPLOYMENT'); ?></th>
-								<th><?php echo JText::_('COM_COURSES_HEADER_USER'); ?></th>
-								<th><?php echo JText::_('COM_COURSES_HEADER_START_DATE'); ?></th>
-								<th><?php echo JText::_('COM_COURSES_HEADER_END_DATE'); ?></th>
+								<th><?php echo Lang::txt('COM_COURSES_HEADER_DEPLOYMENT'); ?></th>
+								<th><?php echo Lang::txt('COM_COURSES_HEADER_USER'); ?></th>
+								<th><?php echo Lang::txt('COM_COURSES_HEADER_START_DATE'); ?></th>
+								<th><?php echo Lang::txt('COM_COURSES_HEADER_END_DATE'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -94,7 +94,7 @@ $this->css('form.css')
 							<tr>
 								<td>
 									<span class="state"><?php echo $dep->getState() ?></span>
-									<a href="<?php echo JRoute::_($this->base . '&task=showDeployment&id='.$dep->getId().'&formId='.$form['id']); ?>">
+									<a href="<?php echo Route::url($this->base . '&task=showDeployment&id='.$dep->getId().'&formId='.$form['id']); ?>">
 										<?php echo $dep->getLink() ?>
 									</a>
 								</td>

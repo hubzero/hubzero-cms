@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,23 +23,23 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_ROLES') . ': ' . $text, 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_ROLES') . ': ' . $text, 'courses.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
+	Toolbar::save();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 ?>
 <script type="text/javascript">
@@ -55,22 +55,22 @@ function submitbutton(pressbutton)
 	// form field validation
 	var field = document.getElementById('field-title');
 	if (field.value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
+		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform( pressbutton );
 	}
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-offering_id"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label><br />
+				<label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
 				<select name="fields[offering_id]" id="field-offering_id">
-					<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+					<option value="0"<?php if (0 == $this->row->offering_id) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 					<?php foreach ($this->courses as $course) { ?>
 							<optgroup label="<?php echo $course->get('alias'); ?>">
 						<?php foreach ($course->offerings() as $offering) { ?>
@@ -81,13 +81,13 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias" size="50" value="<?php echo $this->escape($this->row->alias); ?>" />
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
@@ -100,13 +100,13 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_COURSES_FIELD_OFFERING'); ?></th>
+					<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING'); ?></th>
 					<td>
 						<?php echo $this->row->offering_id; ?>
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_COURSES_FIELD_ID'); ?></th>
+					<th class="key"><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 					<td>
 						<?php echo $this->row->id; ?>
 					</td>

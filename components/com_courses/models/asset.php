@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -295,20 +295,20 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		if (!$course || !is_object($course))
 		{
-			$gid      = JRequest::getVar('gid');
-			$offering = JRequest::getVar('offering');
-			$section  = JRequest::getVar('section');
+			$gid      = Request::getVar('gid');
+			$offering = Request::getVar('offering');
+			$section  = Request::getVar('section');
 
 			$course = new CoursesModelCourse($gid);
 			$course->offering($offering);
 			$course->offering()->section($section);
 		}
 
-		$member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
+		$member = $course->offering()->section()->member(\JFactory::getUser()->get('id'));
 
 		if (!$member->get('id'))
 		{
-			$member = $course->offering()->member(JFactory::getUser()->get('id'));
+			$member = $course->offering()->member(\JFactory::getUser()->get('id'));
 		}
 
 		if (!$member || !is_object($member) || !$member->get('id'))
@@ -319,13 +319,13 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$view = new CoursesTableAssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
-		$view->viewed            = JFactory::getDate()->toSql();
+		$view->viewed            = \JFactory::getDate()->toSql();
 		$view->viewed_by         = $member->get('id');
 		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 		$view->referrer          = (isset($_SERVER['HTTP_REFERRER']) ? $_SERVER['HTTP_REFERRER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
-		$view->session_id        = JFactory::getSession()->getId();
+		$view->session_id        = \JFactory::getSession()->getId();
 		if (!$view->store())
 		{
 			$this->setError($view->getError());
@@ -381,12 +381,12 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// Get some needed libraries
 		if (!$course->access('view'))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = JRequest::getVar('file', '');
+		$filename = Request::getVar('file', '');
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));
@@ -421,7 +421,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
+			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 			return;
 		}
 
@@ -434,7 +434,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{

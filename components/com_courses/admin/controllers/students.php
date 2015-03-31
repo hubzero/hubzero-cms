@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,21 +24,23 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php');
+use Hubzero\Component\AdminController;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php');
 
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerStudents extends \Hubzero\Component\AdminController
+class Students extends AdminController
 {
 	/**
 	 * Displays a list of courses
@@ -48,51 +50,50 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['offering']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.offering',
-			'offering',
-			0
-		);
-		$this->view->filters['section_id']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.section',
-			'section',
-			0
+		$this->view->filters = array(
+			'offering' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.offering',
+				'offering',
+				0
+			),
+			'section_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.section',
+				'section',
+				0
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Filters for returning results
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
 		/*if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
+				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
 		}*/
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
-
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		//$this->view->filters['role'] = 'student';
@@ -117,7 +118,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		}
 		$this->view->filters['student'] = 1;
 
-		$tbl = new CoursesTableMember($this->database);
+		$tbl = new \CoursesTableMember($this->database);
 
 		$this->view->total = $tbl->count($this->view->filters); //$this->view->offering->students($this->view->filters);
 
@@ -128,17 +129,9 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		{
 			foreach ($this->view->rows as $key => $row)
 			{
-				$this->view->rows[$key] = new CoursesModelStudent($row);
+				$this->view->rows[$key] = new \CoursesModelStudent($row);
 			}
 		}
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -157,16 +150,16 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	 */
 	public function addTask()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$offering = JRequest::getInt('offering', 0);
-		$this->view->offering = CoursesModelOffering::getInstance($offering);
+		$offering = Request::getInt('offering', 0);
+		$this->view->offering = \CoursesModelOffering::getInstance($offering);
 
 		$id = 0;
 
-		$this->view->row = CoursesModelMember::getInstance($id, $offering);
+		$this->view->row = \CoursesModelMember::getInstance($id, $offering);
 
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -185,15 +178,15 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($model=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
-		$offering = JRequest::getInt('offering', 0);
-		$this->view->offering = CoursesModelOffering::getInstance($offering);
+		$offering = Request::getInt('offering', 0);
+		$this->view->offering = \CoursesModelOffering::getInstance($offering);
 
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -204,12 +197,12 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			$course_id  = $this->view->offering->get('course_id');
 			$section_id = $this->view->offering->section()->get('id');
 
-			$model = CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
+			$model = \CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
 		}
 
 		$this->view->row = $model;
 
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -241,10 +234,10 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		if (strstr($fields['user_id'], ','))
 		{
@@ -256,22 +249,22 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			$user_ids = array($fields['user_id']);
 		}
 
-		$offering = JRequest::getInt('offering', 0);
+		$offering = Request::getInt('offering', 0);
 		if (!$offering && isset($fields['offering_id']))
 		{
 			$offering = $fields['offering_id'];
 		}
-		$offeringObj = CoursesModelOffering::getInstance($offering);
+		$offeringObj = \CoursesModelOffering::getInstance($offering);
 
 		$c = 0;
 		foreach ($user_ids as $user_id)
 		{
 			if (!is_int($user_id))
 			{
-				$user = JUser::getInstance($user_id);
+				$user = User::getInstance($user_id);
 				if (!is_object($user))
 				{
-					$this->addComponentMessage(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
+					$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $user_id);
 					$this->editTask( );
 					return;
 				}
@@ -286,20 +279,20 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			//$section_id = $offeringObj->section()->get('id');
 
 			//$model = CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], $offering, $section_id);
-			$model = CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], null, null);
+			$model = \CoursesModelMember::getInstance($fields['user_id'], $fields['course_id'], null, null);
 
 			// Is there an existing record and are they a student?
 			if ($model->exists() && !$model->get('student'))
 			{
-				//$this->addComponentMessage(JText::sprintf('User "%s" is a course manager and cannot be added as a student.', $user_id), 'error');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id), 'error');
+				//$this->addComponentMessage(Lang::txt('User "%s" is a course manager and cannot be added as a student.', $user_id), 'error');
+				\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_ALREADY_COURSE_MANAGER', $user_id), 'error');
 				continue;
 			}
 			// If the section is the same
 			if ($model->exists() && $model->get('section_id') == $fields['section_id'])
 			{
-				//$this->addComponentMessage(JText::sprintf('User "%s" is already a student of the selected section.', $user_id), 'warning');
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id), 'warning');
+				//$this->addComponentMessage(Lang::txt('User "%s" is already a student of the selected section.', $user_id), 'warning');
+				\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_ALREADY_STUDENT', $user_id), 'warning');
 				continue;
 			}
 
@@ -336,8 +329,8 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'], false),
-				($c > 0 ? JText::sprintf('COM_COURSES_STUDENTS_SAVED', $c) : null)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'], false),
+				($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null)
 			);
 			return;
 		}
@@ -354,14 +347,14 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$offering_id = JRequest::getInt('offering', 0);
-		$section_id  = JRequest::getInt('section', 0);
+		$offering_id = Request::getInt('offering', 0);
+		$section_id  = Request::getInt('section', 0);
 
 		$num = 0;
 
@@ -371,7 +364,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the student record
-				$model = CoursesModelStudent::getInstance($id, null, null, null); //, $offering->get('course_id'), $offering_id, $section_id);
+				$model = \CoursesModelStudent::getInstance($id, null, null, null); //, $offering->get('course_id'), $offering_id, $section_id);
 
 				// Ensure we found the course info
 				if (!$model->exists())
@@ -382,7 +375,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')), 'error');
+					\JFactory::getApplication()->enqueueMessage(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')), 'error');
 					continue;
 				}
 
@@ -392,8 +385,8 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false),
-			($num > 0 ? JText::sprintf('COM_COURSES_STUDENTS_REMOVED', $num) : null)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false),
+			($num > 0 ? Lang::txt('COM_COURSES_STUDENTS_REMOVED', $num) : null)
 		);
 	}
 
@@ -404,11 +397,11 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$offering_id = JRequest::getInt('offering', 0);
-		$section_id  = JRequest::getInt('section', 0);
+		$offering_id = Request::getInt('offering', 0);
+		$section_id  = Request::getInt('section', 0);
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false)
 		);
 	}
 
@@ -420,23 +413,24 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	public function csvTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
-		$this->view->filters['offering']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.offering',
-			'offering',
-			0
-		);
-		$this->view->filters['section_id']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.section',
-			'section',
-			0
+		$this->view->filters = array(
+			'offering' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.offering',
+				'offering',
+				0
+			),
+			'section_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.section',
+				'section',
+				0
+			)
 		);
 
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->filters['offering']);
+		$this->view->offering = \CoursesModelOffering::getInstance($this->view->filters['offering']);
 		$this->view->filters['offering_id'] = $this->view->filters['offering'];
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		if (!$this->view->filters['offering_id'])
 		{
@@ -448,14 +442,14 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		}
 		$this->view->filters['student'] = 1;
 
-		$tbl = new CoursesTableMember($this->database);
+		$tbl = new \CoursesTableMember($this->database);
 
 		$this->view->rows = $tbl->find($this->view->filters); //$this->view->offering->students($this->view->filters);
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as $key => $row)
 			{
-				$this->view->rows[$key] = new CoursesModelStudent($row);
+				$this->view->rows[$key] = new \CoursesModelStudent($row);
 			}
 		}
 

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,24 +23,24 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . $text . ' ' . JText::_('COM_COURSES_STUDENTS'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES').': ' . $text . ' ' . Lang::txt('COM_COURSES_STUDENTS'), 'courses.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
+Toolbar::cancel();
 
 $base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 
@@ -69,10 +69,10 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if (document.getElementById('acmembers').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_USER_INFO'); ?>');
+		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_USER_INFO'); ?>');
 		return false;
 	} else if (document.getElementById('offering_id').value == '-1') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
+		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_OFFERING'); ?>');
 		return false;
 	} else {
 		submitform(pressbutton);
@@ -82,10 +82,10 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
@@ -96,9 +96,9 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="fields[student]" value="1" />
 
 			<div class="input-wrap">
-				<label for="acmembers"><?php echo JText::_('COM_COURSES_FIELD_USER'); ?></label><br />
+				<label for="acmembers"><?php echo Lang::txt('COM_COURSES_FIELD_USER'); ?></label><br />
 				<input type="text" name="fields[user_id]" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_USER_HINT'); ?></span>
 
 				<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
 				<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
@@ -116,16 +116,16 @@ function submitbutton(pressbutton)
 					)
 				));
 				if (count($mc) > 0) {
-					echo $mc[0] . '<span class="hint">' . JText::_('COM_COURSES_FIELD_USER_HINT') . '</span>';
+					echo $mc[0] . '<span class="hint">' . Lang::txt('COM_COURSES_FIELD_USER_HINT') . '</span>';
 				} else { ?>
 				<input type="text" name="fields[user_id]" id="acmembers" value="" size="35" />
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_USER_HINT'); ?></span>
 				<?php }*/ ?>
 			</div>
 			<div class="input-wrap">
-				<label for="offering_id"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label><br />
+				<label for="offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
 					<select name="fields[offering_id]" id="offering_id" onchange="changeDynaList('section_id', offeringsections, document.getElementById('offering_id').options[document.getElementById('offering_id').selectedIndex].value, 0, 0);">
-						<option value="-1"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+						<option value="-1"><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
 			<?php
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
 				$model = CoursesModelCourses::getInstance();
@@ -156,9 +156,9 @@ function submitbutton(pressbutton)
 					</select>
 			</div>
 			<div class="input-wrap">
-				<label for="section_id"><?php echo JText::_('COM_COURSES_SECTION'); ?></label><br />
+				<label for="section_id"><?php echo Lang::txt('COM_COURSES_SECTION'); ?></label><br />
 				<select name="fields[section_id]" id="section_id">
-					<option value="-1"><?php echo JText::_('COM_COURSES_SELECT'); ?></option>
+					<option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 					<?php
 					foreach ($this->offering->sections() as $k => $section)
 					{
@@ -170,7 +170,7 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="enrolled"><?php echo JText::_('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
+				<label for="enrolled"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
 				<?php echo JHTML::_('calendar', $this->row->get('enrolled'), 'fields[enrolled]', 'enrolled', 'Y-m-d H:i:s', array('class' => 'inputbox')); ?>
 			</div>
 		</fieldset>
@@ -179,7 +179,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('COM_COURSES_FIELD_ID'); ?></th>
+					<th><?php echo Lang::txt('COM_COURSES_FIELD_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 			</tbody>

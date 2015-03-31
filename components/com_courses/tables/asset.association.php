@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -95,21 +95,21 @@ class CoursesTableAssetAssociation extends JTable
 		$this->asset_id = intval($this->asset_id);
 		if (!$this->asset_id)
 		{
-			$this->setError(JText::_('COM_COURSES_MUST_HAVE_ASSET_ID'));
+			$this->setError(Lang::txt('COM_COURSES_MUST_HAVE_ASSET_ID'));
 			return false;
 		}
 
 		$this->scope_id = intval($this->scope_id);
 		if (!$this->scope_id)
 		{
-			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE_ID'));
+			$this->setError(Lang::txt('COM_COURSES_MUST_HAVE_SCOPE_ID'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(JText::_('COM_COURSES_MUST_HAVE_SCOPE'));
+			$this->setError(Lang::txt('COM_COURSES_MUST_HAVE_SCOPE'));
 			return false;
 		}
 

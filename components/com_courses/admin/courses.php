@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,63 +24,60 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin;
 
-$option = 'com_courses';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\User::authorise('core.manage', 'com_courses'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'courses.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'log.php');
 
-$controllerName = JRequest::getCmd('controller', 'courses');
+$controllerName = \Request::getCmd('controller', 'courses');
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'courses';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_COURSES'),
-	'index.php?option=' .  $option . '&controller=courses',
+\Submenu::addEntry(
+	\Lang::txt('COM_COURSES_COURSES'),
+	\Route::url('index.php?option=com_courses&controller=courses'),
 	(!in_array($controllerName, array('students', 'roles', 'pages')))
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_PAGES'),
-	'index.php?option=' .  $option . '&controller=pages&course=0',
+\Submenu::addEntry(
+	\Lang::txt('COM_COURSES_PAGES'),
+	\Route::url('index.php?option=com_courses&controller=pages&course=0'),
 	$controllerName == 'pages'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_STUDENTS'),
-	'index.php?option=' .  $option . '&controller=students&offering=0&section=0',
+\Submenu::addEntry(
+	\Lang::txt('COM_COURSES_STUDENTS'),
+	\Route::url('index.php?option=com_courses&controller=students&offering=0&section=0'),
 	$controllerName == 'students'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_ROLES'),
-	'index.php?option=' .  $option . '&controller=roles',
+\Submenu::addEntry(
+	\Lang::txt('COM_COURSES_ROLES'),
+	\Route::url('index.php?option=com_courses&controller=roles'),
 	$controllerName == 'roles'
 );
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_plugins' . DS . 'admin' . DS . 'helpers' . DS . 'plugins.php');
-$canDo = PluginsHelper::getActions();
+$canDo = \PluginsHelper::getActions();
 if ($canDo->get('core.manage'))
 {
-	JSubMenuHelper::addEntry(
-		JText::_('COM_COURSES_PLUGINS'),
-		'index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses'
+	\Submenu::addEntry(
+		\Lang::txt('COM_COURSES_PLUGINS'),
+		\Route::url('index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses')
 	);
 }
 
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'CoursesController' . ucfirst($controllerName);
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

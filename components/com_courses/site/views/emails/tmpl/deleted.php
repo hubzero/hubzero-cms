@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,16 +33,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juri = JURI::getInstance();
 
-$sef = JRoute::_('index.php?option='.$this->option.'&gid='. $this->course->get('cn'));
+$sef = Route::url('index.php?option='.$this->option.'&gid='. $this->course->get('cn'));
 if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-$message  = JText::sprintf('COURSES_USER_HAS_DELETED_COURSE', $this->gcn, $this->juser->get('username'))."\n\n";
+$message  = Lang::txt('COURSES_USER_HAS_DELETED_COURSE', $this->gcn, $this->juser->get('username'))."\n\n";
 if ($this->msg) {
 	$message .= stripslashes($this->msg)."\n\n";
 }
-$message .= JText::sprintf('COURSES_EMAIL_USER_IF_QUESTIONS', $this->juser->get('username'), $this->juser->get('email'))."\n";
+$message .= Lang::txt('COURSES_EMAIL_USER_IF_QUESTIONS', $this->juser->get('username'), $this->juser->get('email'))."\n";
 $message .= $juri->base().$sef."\n";
 
 echo $message;

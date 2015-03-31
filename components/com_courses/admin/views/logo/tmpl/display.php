@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -31,11 +31,11 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="media">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 		<table class="formed">
 			<thead>
 				<tr>
-					<th><label for="image"><?php echo JText::_('COM_COURSES_UPLOAD'); ?> <?php echo JText::_('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+					<th><label for="image"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?> <?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="task" value="upload" />
 
 						<input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
-						<input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" />
+						<input type="submit" value="<?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="formed">
 			<thead>
 				<tr>
-					<th colspan="4"><label for="image"><?php echo JText::_('COM_COURSES_LOGO'); ?></label></th>
+					<th colspan="4"><label for="image"><?php echo Lang::txt('COM_COURSES_LOGO'); ?></label></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -76,30 +76,30 @@ defined('_JEXEC') or die('Restricted access');
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 				<tr>
-					<td rowspan="6"><img src="<?php echo '../' . substr($this->path, strlen(JPATH_ROOT . '/')) . DS . $this->file; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
-					<td><?php echo JText::_('COM_COURSES_FILE'); ?>:</td>
+					<td rowspan="6"><img src="<?php echo '../' . substr($this->path, strlen(JPATH_ROOT . '/')) . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
+					<td><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</td>
 					<td><?php echo $this->file; ?></td>
 				</tr>
 				<tr>
-					<td><?php echo JText::_('COM_COURSES_PICTURE_SIZE'); ?>:</td>
+					<td><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</td>
 					<td><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></td>
 				</tr>
 				<tr>
-					<td><?php echo JText::_('COM_COURSES_PICTURE_WIDTH'); ?>:</td>
+					<td><?php echo Lang::txt('COM_COURSES_PICTURE_WIDTH'); ?>:</td>
 					<td><?php echo $width; ?> px</td>
 				</tr>
 				<tr>
-					<td><?php echo JText::_('COM_COURSES_PICTURE_HEIGHT'); ?>:</td>
+					<td><?php echo Lang::txt('COM_COURSES_PICTURE_HEIGHT'); ?>:</td>
 					<td><?php echo $height; ?> px</td>
 				</tr>
 				<tr>
 					<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-					<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id=' . $this->id . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo JText::_('COM_COURSES_DELETE'); ?> ]</a></td>
+					<td><a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id=' . $this->id . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo Lang::txt('COM_COURSES_DELETE'); ?> ]</a></td>
 				</tr>
 <?php } else { ?>
 				<tr>
 					<td colspan="4">
-						<?php echo JText::_('COM_COURSES_LOGO_NONE'); ?>
+						<?php echo Lang::txt('COM_COURSES_LOGO_NONE'); ?>
 						<input type="hidden" name="currentfile" value="" />
 					</td>
 				</tr>

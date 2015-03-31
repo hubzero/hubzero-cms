@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,30 +23,30 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_PAGES'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_PAGES'), 'courses.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('pages');
+Toolbar::spacer();
+Toolbar::help('pages');
 ?>
 
 <script type="text/javascript">
@@ -56,21 +56,21 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-active').val('-1');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-active').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-active"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<label for="filter-active"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
 			<select name="active" id="filter-active" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['active'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="0"<?php if ($this->filters['active'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></option>
-				<option value="1"<?php if ($this->filters['active'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></option>
+				<option value="-1"<?php if ($this->filters['active'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+				<option value="0"<?php if ($this->filters['active'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+				<option value="1"<?php if ($this->filters['active'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -88,27 +88,38 @@ function submitbutton(pressbutton)
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
 					<?php if ($this->offering->exists()) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>:
 					<?php } ?>
 				<?php } else { ?>
-					<?php echo JText::_('COM_COURSES_PAGES_USER_GUIDE'); ?>:
+					<?php echo Lang::txt('COM_COURSES_PAGES_USER_GUIDE'); ?>:
 				<?php } ?>
-					<?php echo JText::_('COM_COURSES_PAGES'); ?>
+					<?php echo Lang::txt('COM_COURSES_PAGES'); ?>
 				</th>
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TITLE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_STATE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ORDERING'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ORDERING'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="5">
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -135,7 +146,7 @@ function submitbutton(pressbutton)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $this->escape($page->get('id'))); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $this->escape($page->get('id'))); ?>">
 						<?php echo $this->escape(stripslashes($page->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -147,27 +158,27 @@ function submitbutton(pressbutton)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($page->get('active') == 1) { ?>
-					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_UNPUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
 						<span class="state publish">
-							<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 2) { ?>
-					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state trash">
-							<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 3) { ?>
-					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state pending">
-							<span class="text"><?php echo JText::_('COM_COURSES_DRAFT'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 0) { ?>
-					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } ?>
@@ -175,8 +186,8 @@ function submitbutton(pressbutton)
 				</td>
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $page->get('ordering'); ?>
-					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($rows[$i - 1]), 'orderup', 'COM_COURSES_MOVE_UP', true); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>
+					<span><?php echo $pageNav->orderUpIcon($i, isset($rows[$i - 1]), 'orderup', 'COM_COURSES_MOVE_UP', true); ?></span>
+					<span><?php echo $pageNav->orderDownIcon($i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>
 				</td>
 			</tr>
 	<?php
@@ -185,7 +196,7 @@ function submitbutton(pressbutton)
 	?>
 <?php } else { ?>
 			<tr>
-				<td colspan="5"><?php echo JText::_('COM_COURSES_NONE_FOUND'); ?></td>
+				<td colspan="5"><?php echo Lang::txt('COM_COURSES_NONE_FOUND'); ?></td>
 			</tr>
 <?php } ?>
 		</tbody>

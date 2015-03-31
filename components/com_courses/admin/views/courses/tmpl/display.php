@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,37 +23,37 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES'), 'courses.png');
 if ($canDo->get('core.admin'))
 {
-	JToolBarHelper::preferences('com_courses', '550');
-	JToolBarHelper::spacer();
+	Toolbar::preferences('com_courses', '550');
+	Toolbar::spacer();
 }
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-	JToolBarHelper::spacer();
-	JToolBarHelper::addNew();
+	Toolbar::custom('copy', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+	Toolbar::spacer();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
-JToolBarHelper::spacer();
-JToolBarHelper::help('courses');
+Toolbar::spacer();
+Toolbar::help('courses');
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -70,23 +70,23 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
 			<select name="state" id="filter-state" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></option>
-				<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></option>
-				<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_DRAFT'); ?></option>
-				<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_TRASHED'); ?></option>
+				<option value="-1"<?php if ($this->filters['state'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+				<option value="0"<?php if ($this->filters['state'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+				<option value="1"<?php if ($this->filters['state'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+				<option value="3"<?php if ($this->filters['state'] == 3) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
+				<option value="2"<?php if ($this->filters['state'] == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -100,15 +100,26 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CERTIFICATE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_MANAGERS'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_OFFERINGS'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_PAGES'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_MANAGERS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_OFFERINGS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_PAGES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="9">
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -132,7 +143,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape($row->get('title')); ?>
 					</a>
 				<?php } else { ?>
@@ -143,7 +154,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape($row->get('alias')); ?>
 					</a>
 				<?php } else { ?>
@@ -153,27 +164,27 @@ foreach ($this->rows as $row)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->get('state') == 1) { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_UNPUBLISHED')); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
 							<span class="state publish">
-								<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
 							</span>
 						</a>
 					<?php } else if ($row->get('state') == 2) { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 							<span class="state trash">
-								<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
 							</span>
 						</a>
 					<?php } else if ($row->get('state') == 3) { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 							<span class="state pending">
-								<span class="text"><?php echo JText::_('COM_COURSES_DRAFT'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
 							</span>
 						</a>
 					<?php } else if ($row->get('state') == 0) { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
 							<span class="state unpublish">
-								<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
 							</span>
 						</a>
 					<?php } ?>
@@ -181,15 +192,15 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($row->certificate()->exists() && $row->certificate()->hasFile()) { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=certificates&course=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_COURSES_CERTIFICATE_SET'); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=certificates&course=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_COURSES_CERTIFICATE_SET'); ?>">
 							<span class="state yes">
-								<span class="text"><?php echo JText::_('COM_COURSES_CERTIFICATE_SET'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_CERTIFICATE_SET'); ?></span>
 							</span>
 						</a>
 					<?php } else { ?>
-						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=certificates&course=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_COURSES_CERTIFICATE_NOT_SET'); ?>">
+						<a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=certificates&course=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_COURSES_CERTIFICATE_NOT_SET'); ?>">
 							<span class="state no">
-								<span class="text"><?php echo JText::_('COM_COURSES_CERTIFICATE_NOT_SET'); ?></span>
+								<span class="text"><?php echo Lang::txt('COM_COURSES_CERTIFICATE_NOT_SET'); ?></span>
 							</span>
 						</a>
 					<?php } ?>
@@ -201,14 +212,14 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $offerings > 0) { ?>
-						<a class="glyph list" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id')); ?>">
+						<a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id')); ?>">
 							<?php echo $offerings; ?>
 						</a>
 					<?php } else { ?>
 						<?php echo $offerings; ?>
 						<?php if ($canDo->get('core.manage')) { ?>
 							&nbsp;
-							<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id') . '&task=add'); ?>">
+							<a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $row->get('id') . '&task=add'); ?>">
 								<span>[ + ]</span>
 							</a>
 						<?php } ?>
@@ -216,14 +227,14 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $pages > 0) { ?>
-						<a class="glyph list" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id') . '&offering=0'); ?>">
+						<a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id') . '&offering=0'); ?>">
 							<?php echo $pages; ?>
 						</a>
 					<?php } else { ?>
 						<?php echo $pages; ?>
 						<?php if ($canDo->get('core.manage')) { ?>
 							&nbsp;
-							<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id') . '&offering=0&task=add'); ?>">
+							<a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&course=' . $row->get('id') . '&offering=0&task=add'); ?>">
 								<span>[ + ]</span>
 							</a>
 						<?php } ?>

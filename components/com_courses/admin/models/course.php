@@ -28,12 +28,12 @@ class CoursesModelCourse extends JModelAdmin
 	protected function populateState()
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = \JFactory::getApplication('administrator');
 		$table = $this->getTable();
 		$key = $table->getKeyName();
 
 		// Get the pk of the record from the request.
-		$pk = JRequest::getVar($key, array());
+		$pk = Request::getVar($key, array());
 		if (!empty($pk))
 		{
 			$pk = intval($pk[0]);
@@ -88,7 +88,7 @@ class CoursesModelCourse extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_courses.edit.course.data', array());
+		$data = \JFactory::getApplication()->getUserState('com_courses.edit.course.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();

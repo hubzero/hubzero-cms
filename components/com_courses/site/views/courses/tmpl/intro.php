@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,7 +40,7 @@ $this->css('introduction', 'system')
 	<?php if ($this->config->get('access-create-course')) { ?>
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('COM_COURSES_CREATE_COURSE'); ?></a>
+			<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo Lang::txt('COM_COURSES_CREATE_COURSE'); ?></a>
 		</p>
 	</div><!-- / #content-header-extra -->
 	<?php } ?>
@@ -57,22 +57,22 @@ if (count($this->notifications) > 0)
 ?>
 
 <section id="introduction" class="section">
-	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
+	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
 		<div class="grid">
 			<div class="col span8">
 				<div class="container data-entry">
-					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
+					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_COURSES_SEARCH'); ?>" />
 					<fieldset class="entry-search">
-						<input type="text" name="search" value="" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_INTRO_PLACEHOLDER'); ?>" />
+						<input type="text" name="search" value="" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_INTRO_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-				<p><?php echo JText::_('COM_COURSES_WATCH_LEARN_TEST_EARN'); ?></p>
-				<p><a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>"><?php echo JText::_('COM_COURSES_HOW_COURSES_WORK'); ?></a></p>
+				<p><?php echo Lang::txt('COM_COURSES_WATCH_LEARN_TEST_EARN'); ?></p>
+				<p><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>"><?php echo Lang::txt('COM_COURSES_HOW_COURSES_WORK'); ?></a></p>
 			</div>
 			<div class="col span3 offset1 omega">
 				<div>
-					<a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
-						<?php echo JText::_('COM_COURSES_BROWSE_CATALOG'); ?>
+					<a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+						<?php echo Lang::txt('COM_COURSES_BROWSE_CATALOG'); ?>
 					</a>
 				</div>
 			</div>
@@ -112,7 +112,7 @@ if (count($this->notifications) > 0)
 				?>
 			</div><!-- / .popularcourses clearfix top -->
 		<?php } else { ?>
-			<p class="info"><?php echo JText::_('COM_COURSES_NO_POPULAR_COURSES'); ?></p>
+			<p class="info"><?php echo Lang::txt('COM_COURSES_NO_POPULAR_COURSES'); ?></p>
 		<?php } ?>
 	<?php endif; ?>
 	</div>

@@ -15,7 +15,7 @@ $timeLeft = max($realLimit*60, 0);
 if ($this->resp->getStartTime())
 {
 	// This is the time left since starting form
-	$timeLeft2 = max(($this->dep->getTimeLimit() * 60) - (strtotime(JFactory::getDate()) - strtotime($this->resp->getStartTime())), 0);
+	$timeLeft2 = max(($this->dep->getTimeLimit() * 60) - (strtotime(\JFactory::getDate()) - strtotime($this->resp->getStartTime())), 0);
 
 	// Take individual time remaining...assuming it's less than actual time remaining
 	if ($timeLeft2 < $timeLeft)
@@ -43,7 +43,7 @@ if ($this->resp->getStartTime())
 		endif;
 		$layout = $pdf->getPageLayout();
 		if ($incomplete):
-			echo '<p class="error incomplete">' . JText::_('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
+			echo '<p class="error incomplete">' . Lang::txt('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
 		endif;
 	?>
 	<form action="index.php" method="post">
@@ -74,7 +74,7 @@ if ($this->resp->getStartTime())
 				<input type="hidden" name="task" value="submit" />
 				<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 				<input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber() ?>" />
-				<button class="btn btn-primary" type="submit"><?php echo JText::_('COM_COURSES_SUBMIT'); ?></button>
+				<button class="btn btn-primary" type="submit"><?php echo Lang::txt('COM_COURSES_SUBMIT'); ?></button>
 			</p>
 		</fieldset>
 	</form>

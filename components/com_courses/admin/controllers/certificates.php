@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,20 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'certificate.php');
+use Hubzero\Component\AdminController;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php');
 
 /**
  * Courses controller class for managing membership and course info
  */
-class CoursesControllerCertificates extends \Hubzero\Component\AdminController
+class Certificates extends AdminController
 {
 	/**
 	 * Displays a list of courses
@@ -46,10 +48,10 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->cert_id   = JRequest::getInt('certificate', 0);
-		$this->view->course_id = JRequest::getInt('course', 0);
+		$this->view->cert_id   = Request::getInt('certificate', 0);
+		$this->view->course_id = Request::getInt('course', 0);
 
-		$this->view->certificate = CoursesModelCertificate::getInstance($this->view->cert_id, $this->view->course_id);
+		$this->view->certificate = \CoursesModelCertificate::getInstance($this->view->cert_id, $this->view->course_id);
 
 		if (!$this->view->certificate->exists())
 		{
@@ -61,7 +63,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 			return $this->editTask($this->view->certificate);
 		}
 
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -93,13 +95,13 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = CoursesModelCertificate::getInstance($fields['id'], $fields['course_id']);
+		$model = \CoursesModelCertificate::getInstance($fields['id'], $fields['course_id']);
 
 		if (!$model->bind($fields))
 		{
@@ -119,8 +121,8 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
-				JText::_('COM_COURSES_SETTINGS_SAVED')
+				Route::url('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
+				Lang::txt('COM_COURSES_SETTINGS_SAVED')
 			);
 			return;
 		}
@@ -136,18 +138,18 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function previewTask()
 	{
 		// Load certificate record
-		$certificate = CoursesModelCertificate::getInstance(JRequest::getInt('certificate', 0));
+		$certificate = \CoursesModelCertificate::getInstance(Request::getInt('certificate', 0));
 		if (!$certificate->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false),
-				JText::_('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+				Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
 				'error'
 			);
 			return;
 		}
 
-		$certificate->render($this->juser);
+		$certificate->render(User::getRoot());
 	}
 
 	/**
@@ -167,12 +169,12 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($model=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array());
+			$id = Request::getVar('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -180,14 +182,14 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = new CoursesModelCertificate($id);
+			$model = new \CoursesModelCertificate($id);
 		}
 
 		$this->view->row = $model;
 
 		if (!$this->view->row->get('course_id'))
 		{
-			$this->view->row->set('course_id', JRequest::getInt('course', 0));
+			$this->view->row->set('course_id', Request::getInt('course', 0));
 		}
 
 		if (!$this->view->row->exists())
@@ -215,18 +217,18 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$cert_id   = JRequest::getInt('certificate', 0, 'post');
-		$course_id = JRequest::getInt('course', 0, 'post');
+		$cert_id   = Request::getInt('certificate', 0, 'post');
+		$course_id = Request::getInt('course', 0, 'post');
 		if (!$course_id)
 		{
-			$this->setError(JText::_('COURSES_NO_LISTDIR'));
+			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
 			$this->displayTask();
 			return;
 		}
 
-		$model = CoursesModelCertificate::getInstance($cert_id, $course_id);
+		$model = \CoursesModelCertificate::getInstance($cert_id, $course_id);
 		$model->set('name', 'certificate.pdf');
 		if (!$model->exists())
 		{
@@ -240,29 +242,29 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask();
 				return;
 			}
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_NO_FILE_FOUND'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));
 			$this->displayTask();
 			return;
 		}
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($file['name']);
+		$ext = \JFile::getExt($file['name']);
 		if (strtolower($ext) != 'pdf')
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_FILE_TYPE'));
 			$this->displayTask();
 			return;
 		}
@@ -270,9 +272,9 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		$file['name'] = $model->get('name');
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
+			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING') . $path . DS . $file['name']);
 		}
 
 		$model->renderPageImages();
@@ -289,18 +291,18 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$cert_id   = JRequest::getInt('certificate', 0, 'post');
-		$course_id = JRequest::getInt('course', 0, 'post');
+		$cert_id   = Request::getInt('certificate', 0, 'post');
+		$course_id = Request::getInt('course', 0, 'post');
 		if (!$course_id)
 		{
-			$this->setError(JText::_('COURSES_NO_LISTDIR'));
+			$this->setError(Lang::txt('COURSES_NO_LISTDIR'));
 			$this->displayTask();
 			return;
 		}
 
-		$model = CoursesModelCertificate::getInstance($cert_id, $course_id);
+		$model = \CoursesModelCertificate::getInstance($cert_id, $course_id);
 		if ($model->exists())
 		{
 			$model->set('properties', '');
@@ -317,7 +319,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
 
-			$dirIterator = new DirectoryIterator($path);
+			$dirIterator = new \DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
 				if ($file->isDot())
@@ -328,18 +330,18 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 				if ($file->isDir())
 				{
 					$name = $file->getFilename();
-					if (!JFolder::delete($path . DS . $file->getFilename()))
+					if (!\JFolder::delete($path . DS . $file->getFilename()))
 					{
-						$this->setError(JText::_('COM_COURSES_UNABLE_TO_DELETE_FILE'));
+						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
 					}
 					continue;
 				}
 
 				if ($file->isFile())
 				{
-					if (!JFile::delete($path . DS . $file->getFilename()))
+					if (!\JFile::delete($path . DS . $file->getFilename()))
 					{
-						$this->setError(JText::_('COM_COURSES_UNABLE_TO_DELETE_FILE'));
+						$this->setError(Lang::txt('COM_COURSES_UNABLE_TO_DELETE_FILE'));
 					}
 				}
 			}
@@ -347,8 +349,8 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false),
-			JText::_('COM_COURSES_ITEM_REMOVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=courses', false),
+			Lang::txt('COM_COURSES_ITEM_REMOVED')
 		);
 	}
 
@@ -360,7 +362,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
+			Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 		);
 	}
 }

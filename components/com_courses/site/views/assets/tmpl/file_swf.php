@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,7 +25,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -38,14 +38,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->course->offering()->link() . '&active=outline'); ?>">
-				<?php echo JText::_('Back to course'); ?>
+			<a class="icon-prev back btn" href="<?php echo Route::url($this->course->offering()->link() . '&active=outline'); ?>">
+				<?php echo Lang::txt('Back to course'); ?>
 			</a>
 		</p>
 	</div>
 </header>
 
 <object type="application/x-shockwave-flash" width="100%" height="100%">
-	<param name="movie" value="<?php echo JRoute::_($this->model->path($this->course->get('id'))); ?>"></param>
+	<param name="movie" value="<?php echo Route::url($this->model->path($this->course->get('id'))); ?>"></param>
 	<param name="wmode" value="opaque"></param>
 </object>

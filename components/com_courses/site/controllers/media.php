@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Resources\Tables\MediaTrackingDetailed;
+use Components\Resources\Tables\MediaTracking;
+use stdClass;
 
 /**
  * Courses controller class for media
  */
-class CoursesControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Track video viewing progress
@@ -48,16 +52,15 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.detailed.php');
 
 		// Instantiate objects
-		$juser    = JFactory::getUser();
-		$database = JFactory::getDBO();
-		$session  = JFactory::getSession();
+		$database = \JFactory::getDBO();
+		$session  = \JFactory::getSession();
 
 		// Get request vars
-		$time       = JRequest::getVar('time', 0);
-		$duration   = JRequest::getVar('duration', 0);
-		$event      = JRequest::getVar('event', 'update');
-		$resourceid = JRequest::getVar('resourceid', 0);
-		$detailedId = JRequest::getVar('detailedTrackingId', 0);
+		$time       = Request::getVar('time', 0);
+		$duration   = Request::getVar('duration', 0);
+		$event      = Request::getVar('event', 'update');
+		$resourceid = Request::getVar('resourceid', 0);
+		$detailedId = Request::getVar('detailedTrackingId', 0);
 		$ipAddress  = $_SERVER['REMOTE_ADDR'];
 
 		// Check for asset id
@@ -68,18 +71,18 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Instantiate new media tracking object
-		$mediaTracking         = new ResourceMediaTracking($database);
-		$mediaTrackingDetailed = new ResourceMediaTrackingDetailed($database);
+		$mediaTracking         = new MediaTracking($database);
+		$mediaTrackingDetailed = new MediaTrackingDetailed($database);
 
 		// Load tracking information for user for this resource
-		$trackingInformation         = $mediaTracking->getTrackingInformationForUserAndResource($juser->get('id'), $resourceid, 'course');
+		$trackingInformation         = $mediaTracking->getTrackingInformationForUserAndResource(User::get('id'), $resourceid, 'course');
 		$trackingInformationDetailed = $mediaTrackingDetailed->loadByDetailId($detailedId);
 
 		// Are we creating a new tracking record
 		if (!is_object($trackingInformation))
 		{
 			$trackingInformation                              = new stdClass;
-			$trackingInformation->user_id                     = $juser->get('id');
+			$trackingInformation->user_id                     = User::get('id');
 			$trackingInformation->session_id                  = $session->getId();
 			$trackingInformation->ip_address                  = $ipAddress;
 			$trackingInformation->object_id                   = $resourceid;
@@ -87,8 +90,8 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformation->object_duration             = $duration;
 			$trackingInformation->current_position            = $time;
 			$trackingInformation->farthest_position           = $time;
-			$trackingInformation->current_position_timestamp  = JFactory::getDate()->toSql();
-			$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformation->current_position_timestamp  = \JFactory::getDate()->toSql();
+			$trackingInformation->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			$trackingInformation->completed                   = 0;
 			$trackingInformation->total_views                 = 1;
 			$trackingInformation->total_viewing_time          = 0;
@@ -107,7 +110,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 			// Set the new current position
 			$trackingInformation->current_position           = $time;
-			$trackingInformation->current_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformation->current_position_timestamp = \JFactory::getDate()->toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -119,7 +122,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
 				$trackingInformation->farthest_position           = $time;
-				$trackingInformation->farthest_position_timestamp = JFactory::getDate()->toSql();
+				$trackingInformation->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			}
 
 			// If event type is start, means we need to increment view count
@@ -139,7 +142,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		if ($event == 'start' || !$trackingInformationDetailed)
 		{
 			$trackingInformationDetailed                              = new stdClass;
-			$trackingInformationDetailed->user_id                     = $juser->get('id');
+			$trackingInformationDetailed->user_id                     = User::get('id');
 			$trackingInformationDetailed->session_id                  = $session->getId();
 			$trackingInformationDetailed->ip_address                  = $ipAddress;
 			$trackingInformationDetailed->object_id                   = $resourceid;
@@ -147,15 +150,15 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			$trackingInformationDetailed->object_duration             = $duration;
 			$trackingInformationDetailed->current_position            = $time;
 			$trackingInformationDetailed->farthest_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp  = JFactory::getDate()->toSql();
-			$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformationDetailed->current_position_timestamp  = \JFactory::getDate()->toSql();
+			$trackingInformationDetailed->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			$trackingInformationDetailed->completed                   = 0;
 		}
 		else
 		{
 			// Set the new current position
 			$trackingInformationDetailed->current_position           = $time;
-			$trackingInformationDetailed->current_position_timestamp = JFactory::getDate()->toSql();
+			$trackingInformationDetailed->current_position_timestamp = \JFactory::getDate()->toSql();
 
 			// Set the object duration
 			if ($duration > 0)
@@ -167,7 +170,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 			if (isset($trackingInformationDetailed->farthest_position) && $trackingInformationDetailed->current_position > $trackingInformationDetailed->farthest_position)
 			{
 				$trackingInformationDetailed->farthest_position           = $time;
-				$trackingInformationDetailed->farthest_position_timestamp = JFactory::getDate()->toSql();
+				$trackingInformationDetailed->farthest_position_timestamp = \JFactory::getDate()->toSql();
 			}
 
 			// If event type is end, we need to increment completed count
@@ -200,28 +203,28 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function uploadTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming
-		$listdir = JRequest::getInt('listdir', 0, 'post');
+		$listdir = Request::getInt('listdir', 0, 'post');
 
 		// Ensure we have an ID to work with
 		if (!$listdir)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = Request::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_FILE'), 'error');
 			$this->mediaTask();
 			return;
 		}
@@ -232,9 +235,9 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->addComponentMessage(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
+				$this->addComponentMessage(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'), 'error');
 				$this->mediaTask();
 				return;
 			}
@@ -243,13 +246,13 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = urldecode($file['name']);
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->addComponentMessage(JText::_('ERROR_UPLOADING'), 'error');
+			$this->addComponentMessage(Lang::txt('ERROR_UPLOADING'), 'error');
 		}
 
 		//push a success message
@@ -267,20 +270,20 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	private function ajaxuploadTask()
 	{
-		//get config
-		$config = JComponentHelper::getParams('com_media');
+		// get config
+		$config = Component::params('com_media');
 
 		// Incoming
-		$listdir = JRequest::getInt('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 
-		//allowed extensions for uplaod
+		// allowed extensions for uplaod
 		$allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
 
-		//max upload size
+		// max upload size
 		$sizeLimit = $config->get('upload_maxsize');
 		$sizeLimit = $sizeLimit * 1024 * 1024;
 
-		//get the file
+		// get the file
 		if (isset($_GET['qqfile']))
 		{
 			$stream = true;
@@ -304,7 +307,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		//make sure upload directory is writable
 		if (!is_dir($uploadDirectory))
 		{
-			if (!JFolder::create($uploadDirectory))
+			if (!\JFolder::create($uploadDirectory))
 			{
 				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
 				return;
@@ -376,26 +379,26 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function deletefolderTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming course ID
-		$listdir = JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming file
-		$folder = trim(JRequest::getVar('folder', '', 'get'));
+		$folder = trim(Request::getVar('folder', '', 'get'));
 		if (!$folder)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_DIRECTORY'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_DIRECTORY'), 'error');
 			$this->mediaTask();
 			return;
 		}
@@ -407,9 +410,9 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete(PATH_APP . $del_folder))
+			if (!\JFolder::delete(PATH_APP . $del_folder))
 			{
-				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_DIRECTORY'), 'error');
+				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_DIRECTORY'), 'error');
 			}
 			else
 			{
@@ -430,26 +433,26 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function deletefileTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming course ID
-		$listdir = JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 		if (!$listdir)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 			$this->mediaTask();
 			return;
 		}
 
 		// Incoming file
-		$file = trim(JRequest::getVar('file', '', 'get'));
+		$file = trim(Request::getVar('file', '', 'get'));
 		if (!$file)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_FILE'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_FILE'), 'error');
 			$this->mediaTask();
 			return;
 		}
@@ -459,7 +462,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->addComponentMessage(JText::_('FILE_NOT_FOUND'), 'error');
+			$this->addComponentMessage(Lang::txt('FILE_NOT_FOUND'), 'error');
 			$this->mediaTask();
 			return;
 		}
@@ -467,9 +470,9 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!\JFile::delete($path . DS . $file))
 			{
-				$this->addComponentMessage(JText::_('UNABLE_TO_DELETE_FILE'), 'error');
+				$this->addComponentMessage(Lang::txt('UNABLE_TO_DELETE_FILE'), 'error');
 			}
 		}
 
@@ -488,13 +491,13 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function mediaTask()
 	{
 		// Incoming
-		$listdir = JRequest::getInt('listdir', 0);
+		$listdir = Request::getInt('listdir', 0);
 		if (!$listdir)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 		}
 
-		$course = CoursesModelCourse::getInstance($listdir);
+		$course = \CoursesModelCourse::getInstance($listdir);
 
 		// Output HTML
 		$this->view->config = $this->config;
@@ -515,7 +518,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function listfilesTask()
 	{
 		// Incoming
-		$listdir = JRequest::getInt('listdir', 0, 'get');
+		$listdir = Request::getInt('listdir', 0, 'get');
 
 		// Check if coming from another function
 		if ($listdir == '')
@@ -525,7 +528,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 
 		if (!$listdir)
 		{
-			$this->addComponentMessage(JText::_('COURSES_NO_ID'), 'error');
+			$this->addComponentMessage(Lang::txt('COURSES_NO_ID'), 'error');
 		}
 
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
@@ -591,7 +594,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 	public function downloadTask($filename)
 	{
 		//get the course
-		$course = CoursesModelCourse::getInstance($this->gid);
+		$course = \CoursesModelCourse::getInstance($this->gid);
 
 		//authorize
 		$authorized = $this->_authorize();
@@ -610,37 +613,32 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		if ($this->active == 'wiki')
 		{
 			//check to make sure user has access to wiki section
-			if (!in_array($this->juser->get('id'), $course->get('members'))
-			 || $this->juser->get('guest'))
+			if (!in_array(User::get('id'), $course->get('members')) || User::isGuest())
 			{
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
-				return;
+				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
 			}
 
 			//load wiki page from db
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'page.php');
 			$page = new \Components\Wiki\Tables\Page($this->database);
-			$page->load(JRequest::getVar('pagename'), $course->get('cn') . DS . 'wiki');
+			$page->load(Request::getVar('pagename'), $course->get('cn') . DS . 'wiki');
 
 			//check specific wiki page access
-			if ($page->get('access') == 1 && !in_array($this->juser->get('id'), $course->get('members')) && $authorized != 'admin')
+			if ($page->get('access') == 1 && !in_array(User::get('id'), $course->get('members')) && $authorized != 'admin')
 			{
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
-				return;
+				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
 			}
 
 			//get the config and build base path
-			$wiki_config = JComponentHelper::getParams('com_wiki');
+			$wiki_config = Component::params('com_wiki');
 			$base_path = $wiki_config->get('filepath') . DS . $page->get('id');
 		}
 		else
 		{
 			//check to make sure we can access it
-			if (!in_array($this->juser->get('id'), $course->get('members'))
-			 || $this->juser->get('guest') == 1)
+			if (!in_array(User::get('id'), $course->get('members')) || User::isGuest())
 			{
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH') . ' ' . $file);
-				return;
+				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
 			}
 
 			// Build the path
@@ -654,8 +652,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		// Ensure the file exist
 		if (!file_exists(PATH_APP . DS . $file_path))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
 		}
 
 		// Serve up the file
@@ -665,7 +662,7 @@ class CoursesControllerMedia extends \Hubzero\Component\SiteController
 		$xserver->acceptranges(false); // @TODO fix byte range support
 		if (!$xserver->serve())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+			return App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{

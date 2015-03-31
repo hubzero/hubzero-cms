@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -154,7 +154,7 @@ class PdfFormDeployment
 			$rv[] = $dep;
 		}
 
-		$uid = JFactory::getUser()->id;
+		$uid = \JFactory::getUser()->id;
 		usort($rv, function($a, $b) use($uid)
 		{
 			$au = $a->getUserId();
@@ -475,7 +475,7 @@ class PdfFormDeployment
 			return $this->timeLimit;
 		}
 
-		return min($this->timeLimit, (strtotime($this->endTime) - strtotime(JFactory::getDate()))/60);
+		return min($this->timeLimit, (strtotime($this->endTime) - strtotime(\JFactory::getDate()))/60);
 	}
 
 	/**
@@ -505,12 +505,12 @@ class PdfFormDeployment
 	 **/
 	public function getState()
 	{
-		if ($this->endTime && strtotime($this->endTime) <= strtotime(JFactory::getDate()))
+		if ($this->endTime && strtotime($this->endTime) <= strtotime(\JFactory::getDate()))
 		{
 			return 'expired';
 		}
 
-		return (!$this->startTime || strtotime($this->startTime) <= strtotime(JFactory::getDate())) ? 'active' : 'pending';
+		return (!$this->startTime || strtotime($this->startTime) <= strtotime(\JFactory::getDate())) ? 'active' : 'pending';
 	}
 
 	/**
@@ -547,7 +547,7 @@ class PdfFormDeployment
 			{
 				$this->errors['timeLimit'] = array('Expected a positive, nonzero, integer number of minutes');
 			}
-			if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(JFactory::getDate()))
+			if (!$update && $this->endTime && strtotime($this->endTime) <= strtotime(\JFactory::getDate()))
 			{
 				if (!isset($this->errors['endTime']))
 				{
@@ -609,7 +609,7 @@ class PdfFormDeployment
 
 			if (($key == 'endTime' || $key == 'startTime') && !empty($data[$key]))
 			{
-				$data[$key] = JFactory::getDate(strtotime($data[$key]))->toSql();
+				$data[$key] = \JFactory::getDate(strtotime($data[$key]))->toSql();
 			}
 
 			$dep->$key = $data[$key];
@@ -631,7 +631,7 @@ class PdfFormDeployment
 
 		if (!$dbh)
 		{
-			$dbh = JFactory::getDBO();
+			$dbh = \JFactory::getDBO();
 		}
 
 		return $dbh;
@@ -657,7 +657,7 @@ class PdfFormDeployment
 					$dbh->quote($this->resultsClosed).', '.
 					(int)$this->timeLimit.', '.
 					$dbh->quote($this->crumb).', '.
-					(int)JFactory::getUser()->id.', '.
+					(int)\JFactory::getUser()->id.', '.
 					(int)$this->allowedAttempts.
 				')'
 			);

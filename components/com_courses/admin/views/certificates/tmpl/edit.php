@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,19 +23,19 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_CERTIFICATE') . ': ' . $text, 'courses.png');
-JToolBarHelper::cancel();
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_CERTIFICATE') . ': ' . $text, 'courses.png');
+Toolbar::cancel();
 
 JHTML::_('behavior.framework');
 ?>
@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if ($('#upload').val() == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_FILE'); ?>');
+		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_FILE'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -60,21 +60,21 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_COURSES_UPLOAD'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input type="file" name="upload" id="upload" size="17" />
 			</div>
 			<div class="input-wrap">
-				<input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>" />
 			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
-		<p><?php echo JText::_('COM_COURSES_CERTIFICATE_HELP'); ?></p>
+		<p><?php echo Lang::txt('COM_COURSES_CERTIFICATE_HELP'); ?></p>
 	</div>
 	<div class="clr"></div>
 

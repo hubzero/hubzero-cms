@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -79,9 +79,9 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 </script>
 
 <div id="file_list">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="filelist">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="filelist">
 		<?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('COM_COURSES_NO_FILES_FOUND'); ?></p>
+			<p><?php echo Lang::txt('COM_COURSES_NO_FILES_FOUND'); ?></p>
 		<?php } else { ?>
 			<table>
 				<tbody>
@@ -115,8 +115,8 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 							<span class="icon-folder"><?php echo $folder_name; ?></span>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-								<?php echo JText::_('JACTION_DELETE'); ?>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<?php echo Lang::txt('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -145,14 +145,14 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
-								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>">
-									<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>
+								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
+									<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
 								</a>
 							<?php endif; ?>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-								<?php echo JText::_('JACTION_DELETE'); ?>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<?php echo Lang::txt('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -171,14 +171,14 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
-								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>">
-									<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>
+								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
+									<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
 								</a>
 							<?php endif; ?>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-								<?php echo JText::_('JACTION_DELETE'); ?>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+								<?php echo Lang::txt('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+use Hubzero\Component\AdminController;
+use PHPQRCode\QRcode;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
 
 /**
  * Courses controller class for membership codes
  */
-class CoursesControllerCodes extends \Hubzero\Component\AdminController
+class Codes extends AdminController
 {
 	/**
 	 * Displays a list of codes
@@ -46,8 +49,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array(
@@ -70,7 +72,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -81,16 +83,16 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			)
 		);
 
-		$this->view->section = CoursesModelSection::getInstance($this->view->filters['section']);
+		$this->view->section = \CoursesModelSection::getInstance($this->view->filters['section']);
 		if (!$this->view->section->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				Route::url('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
 		}
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->section->get('offering_id'));
-		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
+		$this->view->offering = \CoursesModelOffering::getInstance($this->view->section->get('offering_id'));
+		$this->view->course = \CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -102,14 +104,6 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		$this->view->filters['count'] = false;
 
 		$this->view->rows = $this->view->section->codes($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -138,12 +132,12 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($model=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($model))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 
 			// Get the single ID we're working with
 			if (is_array($id))
@@ -151,17 +145,17 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$model = new CoursesModelSectionCode($id);
+			$model = new \CoursesModelSectionCode($id);
 		}
 
 		$this->view->row = $model;
 
 		if (!$this->view->row->get('offering_id'))
 		{
-			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
+			$this->view->row->set('offering_id', Request::getInt('offering', 0));
 		}
 
-		$this->view->section = CoursesModelSection::getInstance($this->view->row->get('section_id'));
+		$this->view->section = \CoursesModelSection::getInstance($this->view->row->get('section_id'));
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -183,13 +177,13 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 
 		// Instantiate a Course object
-		$model = new CoursesModelSectionCode($fields['id']);
+		$model = new \CoursesModelSectionCode($fields['id']);
 
 		if (!$model->bind($fields))
 		{
@@ -207,8 +201,8 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'), false),
-			JText::_('COM_COURSES_CODE_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'), false),
+			Lang::txt('COM_COURSES_CODE_SAVED')
 		);
 	}
 
@@ -220,10 +214,10 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -239,7 +233,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Load the code
-				$model = new CoursesModelSectionCode($id);
+				$model = new \CoursesModelSectionCode($id);
 
 				// Ensure we found a record
 				if (!$model->exists())
@@ -250,7 +244,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 				// Delete record
 				if (!$model->delete())
 				{
-					throw new Exception(JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
+					throw new Exception(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
 				}
 
 				$num++;
@@ -259,8 +253,8 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
-			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
+			Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 
@@ -272,12 +266,12 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	public function generateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$section = JRequest::getInt('section', 0);
-		$num = JRequest::getInt('num', 1);
+		$section = Request::getInt('section', 0);
+		$num = Request::getInt('num', 1);
 
-		$expires = JRequest::getVar('expires', array());
+		$expires = Request::getVar('expires', array());
 		$expires = implode('-', $expires) . ' 12:00:00';
 
 		if ($num > 0)
@@ -285,7 +279,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			$codes = array();
 			for ($i = 0; $i < $num; $i++)
 			{
-				$model = new CoursesModelSectionCode(0);
+				$model = new \CoursesModelSectionCode(0);
 				$model->set('code', $this->_generateCode());
 				$model->set('section_id', $section);
 				$model->set('expires', $expires);
@@ -302,10 +296,10 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			die();
 		}
 
-		if (!JRequest::getInt('no_html', 0))
+		if (!Request::getInt('no_html', 0))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
 			);
 		}
 	}
@@ -317,23 +311,23 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	 */
 	public function qrcodeTask()
 	{
-		$no_html = JRequest::getInt('no_html', 0);
-		$code = JRequest::getVar('code');
+		$no_html = Request::getInt('no_html', 0);
+		$code = Request::getVar('code');
 
 		if (!$code)
 		{
-			throw new Exception(JText::_('No code provided'), 500);
+			throw new Exception(Lang::txt('No code provided'), 500);
 		}
 
-		$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
+		$url = rtrim(\JURI::base(), '/') . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
 
 		if ($no_html)
 		{
-			echo \PHPQRCode\QRcode::png($url);
+			echo QRcode::png($url);
 			return;
 		}
 
-		echo \PHPQRCode\QRcode::text($url);
+		echo QRcode::text($url);
 	}
 
 	/**
@@ -343,9 +337,9 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	 */
 	public function optionsTask()
 	{
-		$section = JRequest::getInt('section', 0);
+		$section = Request::getInt('section', 0);
 
-		$this->view->section = CoursesModelSection::getInstance($section);
+		$this->view->section = \CoursesModelSection::getInstance($section);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -381,7 +375,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false)
 		);
 	}
 
@@ -426,28 +420,28 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	{
 		$fields  = array('id', 'code', 'created', 'expires', 'redeemed', 'redeemed by');
 		$rows    = array();
-		$section = JRequest::getInt('section', 0);
+		$section = Request::getInt('section', 0);
 
 		if (!$section)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
-				JText::_('No section specified'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
+				Lang::txt('No section specified'),
 				'warning'
 			);
 			return;
 		}
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (is_array($ids) ? $ids : array($ids));
 
 		// Do we have any IDs?
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
-				JText::_('No codes selected'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . Request::getInt('section', 0), false),
+				Lang::txt('No codes selected'),
 				'warning'
 			);
 			return;
@@ -469,7 +463,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Load the code
-			$model = new CoursesModelSectionCode($id);
+			$model = new \CoursesModelSectionCode($id);
 
 			// Ensure we found a record
 			if (!$model->exists())

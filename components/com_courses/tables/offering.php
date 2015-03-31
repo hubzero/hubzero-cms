@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -164,7 +164,7 @@ class CoursesTableOffering extends JTable
 
 		if (!isset($instances[$alias]))
 		{
-			$inst = new CoursesTableOffering(JFactory::getDBO());
+			$inst = new CoursesTableOffering(\JFactory::getDBO());
 			$inst->load($alias);
 
 			$instances[$alias] = $inst;
@@ -207,14 +207,14 @@ class CoursesTableOffering extends JTable
 		$this->course_id = intval($this->course_id);
 		if (!$this->course_id)
 		{
-			$this->setError(JText::_('Please provide a course ID.'));
+			$this->setError(Lang::txt('Please provide a course ID.'));
 			return false;
 		}
 
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(Lang::txt('Please provide a title.'));
 			return false;
 		}
 
@@ -227,8 +227,8 @@ class CoursesTableOffering extends JTable
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -284,7 +284,7 @@ class CoursesTableOffering extends JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 
 			$where[] = "(ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->_db->Quote($now) . ")";

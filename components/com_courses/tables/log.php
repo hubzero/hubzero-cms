@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -113,21 +113,21 @@ class CoursesTableLog extends JTable
 		$this->scope_id = intval($this->scope_id);
 		if (!$this->scope_id)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_scope_id'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_scope_id'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_scope'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_scope'));
 			return false;
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 

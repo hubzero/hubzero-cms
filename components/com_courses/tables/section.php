@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -170,7 +170,7 @@ class CoursesTableSection extends JTable
 
 		if (!isset($instances[$alias . '_' . $offering_id]))
 		{
-			$inst = new CoursesTableSection(JFactory::getDBO());
+			$inst = new CoursesTableSection(\JFactory::getDBO());
 			$inst->load($alias, $offering_id);
 
 			$instances[$alias . '_' . $offering_id] = $inst;
@@ -224,14 +224,14 @@ class CoursesTableSection extends JTable
 		$this->offering_id = intval($this->offering_id);
 		if (!$this->offering_id)
 		{
-			$this->setError(JText::_('Please provide an offering ID.'));
+			$this->setError(Lang::txt('Please provide an offering ID.'));
 			return false;
 		}
 
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(Lang::txt('Please provide a title.'));
 			return false;
 		}
 
@@ -245,14 +245,14 @@ class CoursesTableSection extends JTable
 		$id = $this->_db->loadResult();
 		if ($id && $id != $this->id)
 		{
-			$this->setError(JText::sprintf('A section with the alias "%s" already exists for the specified offering.', $this->alias));
+			$this->setError(Lang::txt('A section with the alias "%s" already exists for the specified offering.', $this->alias));
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -307,7 +307,7 @@ class CoursesTableSection extends JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 
 			$where[] = "(os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->Quote($now) . ")";
@@ -315,7 +315,7 @@ class CoursesTableSection extends JTable
 
 		if (isset($filters['started']))
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 
 			if ($filters['started'] === true)
 			{
@@ -329,7 +329,7 @@ class CoursesTableSection extends JTable
 
 		if (isset($filters['ended']))
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 
 			if ($filters['ended'] === true)
 			{

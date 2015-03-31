@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,7 +41,7 @@ function dirup()
 	var urlquery = frames['imgManager'].location.search.substring(1);
 	var curdir = urlquery.substring(urlquery.indexOf('listdir=')+8);
 	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['imgManager'].location.href='<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir;
+	frames['imgManager'].location.href='<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir;
 }
 
 function goUpDir()
@@ -49,17 +49,17 @@ function goUpDir()
 	var listdir = document.getElementById('listdir');
 	var selection = document.forms[0].subdir;
 	var dir = selection.options[selection.selectedIndex].value;
-	frames['imgManager'].location.href='<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir.value +'&subdir='+ dir;
+	frames['imgManager'].location.href='<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>&listdir=' + listdir.value +'&subdir='+ dir;
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<fieldset>
 		<legend>
-			<span><?php echo JText::_('COM_COURSES_FILES'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
+			<span><?php echo Lang::txt('COM_COURSES_FILES'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
 		</legend>
 		<div id="ajax-uploader-before">&nbsp;</div>
-		<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course=' . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
+		<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course=' . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
 			<table>
 				<tbody>
 					<tr>
@@ -67,10 +67,10 @@ function goUpDir()
 							<input type="file" name="upload" id="upload" />
 						</td>
 						<td style="white-space:nowrap;">
-							<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo JText::_('Unpack (.zip, .tar, etc)'); ?></label>
+							<input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo Lang::txt('Unpack (.zip, .tar, etc)'); ?></label>
 						</td>
 						<td>
-							<input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" />
+							<input type="submit" value="<?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>" />
 						</td>
 					</tr>
 				</tbody>
@@ -87,8 +87,8 @@ function goUpDir()
 					multiple: true,
 					debug: true,
 					template: '<div class="qq-uploader">' +
-								'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-								'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+								'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+								'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 								'<ul class="qq-upload-list"></ul>' +
 							'</div>',
 					onComplete: function(id, file, response) {
@@ -195,7 +195,7 @@ function goUpDir()
 		</style>
 
 		<div id="themanager" class="manager">
-			<iframe src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>
+			<iframe src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"></iframe>
 		</div>
 
 		<input type="hidden" name="tmpl" value="component" />

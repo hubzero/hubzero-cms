@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,42 +24,43 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use PdfFormDeployment;
+use PdfForm;
 
 // Include required forms models
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'form.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formRespondent.php');
-require_once(JPATH_COMPONENT . DS . 'models' . DS . 'formDeployment.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formRespondent.php');
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formDeployment.php');
 
 /**
  * Courses form controller class
  */
-class CoursesControllerForm extends \Hubzero\Component\SiteController
+class Form extends SiteController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		$this->getCourseInfo();
 
 		// Get the courses member
-		$this->juser  = JFactory::getUser();
-		$this->member = $this->course->offering()->section()->member($this->juser->get('id'))->get('id');
+		$this->member = $this->course->offering()->section()->member(User::get('id'))->get('id');
 		if (!$this->member || !is_numeric($this->member))
 		{
-			$this->member = $this->course->offering()->member($this->juser->get('id'))->get('id');
+			$this->member = $this->course->offering()->member(User::get('id'))->get('id');
 			if (!$this->member || !is_numeric($this->member))
 			{
-				JError::raiseError(422, 'No user found');
-				return false;
+				throw new Exception(Lang::txt('No user found'), 422);
 			}
 		}
 
@@ -72,34 +73,34 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 
 		$pathway->addItem(
-			JText::_(ucfirst($this->course->get('title'))),
+			Lang::txt(ucfirst($this->course->get('title'))),
 			'index.php?option=com_courses&controller=form&gid=' . $this->course->get('alias')
 		);
 
 		$pathway->addItem(
-			JText::_(ucfirst($this->course->offering()->get('title'))),
+			Lang::txt(ucfirst($this->course->offering()->get('title'))),
 			$this->base
 		);
 
 		if ($this->_task != 'index')
 		{
 			$pathway->addItem(
-				JText::_(ucfirst($this->_task)),
+				Lang::txt(ucfirst($this->_task)),
 				'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task
 			);
 		}
@@ -108,12 +109,12 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _buildTitle($append='')
 	{
 		// Set the title used in the view
-		$this->_title = JText::_('COM_COURSES_FORMS');
+		$this->_title = Lang::txt('COM_COURSES_FORMS');
 
 		if (!empty($append))
 		{
@@ -121,14 +122,14 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		}
 
 		//set title of browser window
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
 	/**
 	 * Default index view of all forms
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function indexTask()
 	{
@@ -155,7 +156,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Upload a PDF and render images
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -179,16 +180,19 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		else
 		{
 			// Just return JSON
-			if (JRequest::getInt('no_html', false))
+			if (Request::getInt('no_html', false))
 			{
-				echo json_encode(array('success'=>true, 'id'=>$pdf->getId()));
+				echo json_encode(array(
+					'success' => true,
+					'id'      => $pdf->getId()
+				));
 				exit();
 			}
 			else // Otherwise, redirect
 			{
 				$this->setRedirect(
-					JRoute::_('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
-					JText::_('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
+					Route::url('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
+					Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
 					'passed'
 				);
 				return;
@@ -199,7 +203,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * PDF layout view, annotate rendered images
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function layoutTask()
 	{
@@ -212,7 +216,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 		$this->view->pdf      = new PdfForm($this->assertFormId());
 		$this->view->title    = $this->view->pdf->getTitle();
-		$this->view->readonly = JRequest::getInt('readonly', false);
+		$this->view->readonly = Request::getInt('readonly', false);
 		$this->view->base     = $this->base;
 		$this->view->display();
 	}
@@ -220,7 +224,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Save layout
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveLayoutTask()
 	{
@@ -229,7 +233,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 		$pdf = $this->assertExistentForm();
 
-		if (JRequest::getVar('title', false))
+		if (Request::getVar('title', false))
 		{
 			$pdf->setTitle($_POST['title']);
 		}
@@ -245,14 +249,14 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			$pdf->renderPageImages();
 		}
 
-		echo json_encode(array('result'=>'success'));
+		echo json_encode(array('result' => 'success'));
 		exit();
 	}
 
 	/**
 	 * Deploy form view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deployTask($dep=NULL)
 	{
@@ -274,13 +278,13 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Create deployment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function createDeploymentTask()
 	{
-		if (!$deployment = JRequest::getVar('deployment'))
+		if (!$deployment = Request::getVar('deployment'))
 		{
-			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
+			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
 
 		$pdf = $this->assertExistentForm();
@@ -295,17 +299,21 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			if (JRequest::getInt('no_html', false))
+			if (Request::getInt('no_html', false))
 			{
-				echo json_encode(array('success'=>true, 'id'=>$dep->save(), 'formId'=>$pdf->getId()));
+				echo json_encode(array(
+					'success' => true,
+					'id'      => $dep->save(),
+					'formId'  => $pdf->getId()
+				));
 				exit();
 			}
 			else
 			{
-				$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
+				$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
 				$this->setRedirect(
-					JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save().'&formId='.$pdf->getId().$tmpl, false),
-					JText::_('COM_COURSES_DEPLOYMENT_CREATED'),
+					Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId() . $tmpl, false),
+					Lang::txt('COM_COURSES_DEPLOYMENT_CREATED'),
 					'passed'
 				);
 				return;
@@ -316,18 +324,18 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Update an existing deployment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateDeploymentTask()
 	{
-		if (!$deployment = JRequest::getVar('deployment'))
+		if (!$deployment = Request::getVar('deployment'))
 		{
-			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
+			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
 
-		if (!$deploymentId = JRequest::getInt('deploymentId'))
+		if (!$deploymentId = Request::getInt('deploymentId'))
 		{
-			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT_ID'));
+			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_DEPLOYMENT_ID'));
 		}
 
 		$pdf = $this->assertExistentForm();
@@ -342,10 +350,10 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
+			$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
 			$this->setRedirect(
-				JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId().$tmpl, false),
-				JText::_('COM_COURSES_DEPLOYMENT_UPDATED'),
+				Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save($deploymentId) . '&formId=' . $pdf->getId() . $tmpl, false),
+				Lang::txt('COM_COURSES_DEPLOYMENT_UPDATED'),
 				'passed'
 			);
 			return;
@@ -355,13 +363,13 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Show deployment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function showDeploymentTask($dep=NULL)
 	{
-		if (!$id = JRequest::getInt('id', false))
+		if (!$id = Request::getInt('id', false))
 		{
-			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
+			App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
 		}
 
 		// Set the title and pathway
@@ -380,31 +388,31 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Take a form/exam
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function completeTask()
 	{
-		if (!$crumb = JRequest::getVar('crumb', false))
+		if (!$crumb = Request::getVar('crumb', false))
 		{
-			JError::raiseError(422);
+			App::abort(422);
 		}
 
 		$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
-		$dbg = JRequest::getVar('dbg', false);
+		$dbg = Request::getVar('dbg', false);
 
 		switch ($dep->getState())
 		{
 			case 'pending':
-				JError::raiseError(422, JText::_('COM_COURSES_DEPLOYMENT_UNAVAILABLE'));
+				App::abort(422, Lang::txt('COM_COURSES_DEPLOYMENT_UNAVAILABLE'));
 			break;
 
 			case 'expired':
-				$attempt = JRequest::getInt('attempt', 1);
+				$attempt = Request::getInt('attempt', 1);
 
 				// Make sure they're not trying to take the form too many times
 				if ($attempt > $dep->getAllowedAttempts())
 				{
-					JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+					App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 				}
 
 				$this->setView('results', $dep->getResultsClosed());
@@ -425,12 +433,12 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			break;
 
 			case 'active':
-				$attempt = JRequest::getInt('attempt', 1);
+				$attempt = Request::getInt('attempt', 1);
 
 				// Make sure they're not trying to take the form too many times
 				if ($attempt > $dep->getAllowedAttempts())
 				{
-					JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+					App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 				}
 
 				$resp = $dep->getRespondent($this->member, $attempt);
@@ -473,24 +481,24 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Mark the start of a time form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function startWorkTask()
 	{
-		if (!$crumb = JRequest::getVar('crumb', false))
+		if (!$crumb = Request::getVar('crumb', false))
 		{
-			JError::raiseError(422);
+			App::abort(422);
 		}
 
-		$attempt = JRequest::getInt('attempt', 1);
+		$attempt = Request::getInt('attempt', 1);
 
 		PdfFormDeployment::fromCrumb($crumb)->getRespondent($this->member, $attempt)->markStart();
 
-		$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=' . JRequest::getWord('tmpl') : '';
+		$tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=' . Request::getWord('tmpl') : '';
 		$att  = ($attempt > 1) ? '&attempt='.$attempt : '';
 
 		$this->setRedirect(
-			JRoute::_($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false)
+			Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att . $tmpl, false)
 		);
 		return;
 	}
@@ -498,17 +506,17 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Save progress, called via JS ajax
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveProgressTask()
 	{
 		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer']))
 		{
-			echo JText::_('COM_COURSES_ERROR_MISSING_CRUMB_QUESTION_OR_ANSWER');
+			echo Lang::txt('COM_COURSES_ERROR_MISSING_CRUMB_QUESTION_OR_ANSWER');
 			exit();
 		}
 
-		$attempt = JRequest::getInt('attempt', 1);
+		$attempt = Request::getInt('attempt', 1);
 
 		$resp = PdfFormDeployment::fromCrumb($_POST['crumb'])->getRespondent($this->member, $attempt);
 
@@ -524,16 +532,16 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Submit and save a form response
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function submitTask()
 	{
-		if (!$crumb = JRequest::getVar('crumb', false))
+		if (!$crumb = Request::getVar('crumb', false))
 		{
-			JError::raiseError(422);
+			App::abort(422);
 		}
 
-		$attempt = JRequest::getInt('attempt', 1);
+		$attempt = Request::getInt('attempt', 1);
 		$att     = ($attempt > 1) ? '&attempt='.$attempt : '';
 		$dep     = PdfFormDeployment::fromCrumb($crumb);
 		$ended   = false;
@@ -541,7 +549,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		// Make sure they're not trying to take the form too many times
 		if ($attempt > $dep->getAllowedAttempts())
 		{
-			JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
+			App::abort(403, Lang::txt('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 		}
 
 		// Check to see if the time limit has been reached
@@ -549,7 +557,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		{
 			$resp = $dep->getRespondent($this->member, $attempt);
 
-			$now   = strtotime(JFactory::getDate());
+			$now   = strtotime(\JFactory::getDate());
 			$start = strtotime($resp->getStartTime());
 			$end   = strtotime($dep->getEndTime());
 			$dur   = $limit * 60;
@@ -570,7 +578,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 				$resp->saveAnswers($_POST)->markEnd();
 			}
 
-			$this->setRedirect(JRoute::_($this->base . '&task=form.complete&crumb='.$crumb.$att, false));
+			$this->setRedirect(Route::url($this->base . '&task=form.complete&crumb=' . $crumb . $att, false));
 			return;
 		}
 		else
@@ -585,16 +593,16 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Check authorization
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function authorize()
 	{
 		// Make sure they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=form'));
+			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=form'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . $return),
+				Route::url('index.php?option=com_users&view=login&return=' . $return),
 				$message,
 				'warning'
 			);
@@ -602,7 +610,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		}
 
 		// Check for super admins
-		if ($this->juser->usertype == 'Super Administrator')
+		if (User::get('usertype') == 'Super Administrator')
 		{
 			// Let them through
 		}
@@ -612,7 +620,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			if (!$this->authorizeCourse())
 			{
 				// Otherwise, a course id should be provided, and we need to make sure they are authorized
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
+				App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 			}
 		}
 	}
@@ -620,7 +628,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Get form ID
 	 *
-	 * @return     int
+	 * @return  integer
 	 */
 	public function assertFormId()
 	{
@@ -633,13 +641,13 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			return $_GET['formId'];
 		}
 
-		JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
+		App::abort(422, Lang::txt('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
 	}
 
 	/**
 	 * Check that form ID exists
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function assertExistentForm()
 	{
@@ -647,7 +655,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 		if (!$pdf->isStored())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_ERROR_UNKNOWN_IDENTIFIER'));
+			App::abort(404, Lang::txt('COM_COURSES_ERROR_UNKNOWN_IDENTIFIER'));
 		}
 
 		return $pdf;
@@ -656,15 +664,15 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Get course info from route
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public function getCourseInfo()
 	{
-		$gid      = JRequest::getVar('gid');
-		$offering = JRequest::getVar('offering');
-		$section  = JRequest::getVar('section');
+		$gid      = Request::getVar('gid');
+		$offering = Request::getVar('offering');
+		$section  = Request::getVar('section');
 
-		$this->course = new CoursesModelCourse($gid);
+		$this->course = new \CoursesModelCourse($gid);
 		$this->course->offering($offering);
 		$this->course->offering()->section($section);
 	}
@@ -672,7 +680,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	/**
 	 * Check if form is part of a course
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public function authorizeCourse()
 	{
@@ -688,7 +696,7 @@ class FormHelper
 	/**
 	 * Time remaining (in human readable language)
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public static function timeDiff($secs)
 	{
@@ -726,7 +734,7 @@ class FormHelper
 	/**
 	 * Convert integer to ordinal number
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public static function toOrdinal($int)
 	{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+use Hubzero\Component\AdminController;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
 
 /**
  * Courses controller class for managing course pages
  */
-class CoursesControllerAssets extends \Hubzero\Component\AdminController
+class Assets extends AdminController
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -60,49 +62,48 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['tmpl']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.tmpl',
-			'tmpl',
-			''
-		);
-		$this->view->filters['asset_scope']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.scope',
-			'scope',
-			'asset_group'
-		);
-		$this->view->filters['asset_scope_id']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.scope_id',
-			'scope_id',
-			0,
-			'int'
-		);
-		$this->view->filters['course_id']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.course_id',
-			'course_id',
-			0,
-			'int'
+		$this->view->filters = array(
+			'tmpl' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.tmpl',
+				'tmpl',
+				''
+			),
+			'asset_scope' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.scope',
+				'scope',
+				'asset_group'
+			),
+			'asset_scope_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.scope_id',
+				'scope_id',
+				0,
+				'int'
+			),
+			'course_id' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.course_id',
+				'course_id',
+				0,
+				'int'
+			),
+			// Filters for returning results
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
-		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		$tbl = new CoursesTableAsset($this->database);
+		$tbl = new \CoursesTableAsset($this->database);
 
 		$rows = $tbl->find(array(
 			'w' => $this->view->filters
@@ -132,14 +133,6 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 
 		$this->view->total = count($this->view->rows);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -158,17 +151,17 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	public function linkTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$asset_id  = JRequest::getInt('asset', 0);
-		$tmpl      = JRequest::getVar('tmpl', '');
-		$scope     = JRequest::getVar('scope', 'asset_group');
-		$scope_id  = JRequest::getInt('scope_id', 0);
-		$course_id = JRequest::getInt('course_id', 0);
+		$asset_id  = Request::getInt('asset', 0);
+		$tmpl      = Request::getVar('tmpl', '');
+		$scope     = Request::getVar('scope', 'asset_group');
+		$scope_id  = Request::getInt('scope_id', 0);
+		$course_id = Request::getInt('course_id', 0);
 
 		// Get the element moving down - item 1
-		$tbl = new CoursesTableAssetAssociation($this->database);
+		$tbl = new \CoursesTableAssetAssociation($this->database);
 		$tbl->scope    = $scope;
 		$tbl->scope_id = $scope_id;
 		$tbl->asset_id = $asset_id;
@@ -182,7 +175,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
 		);
@@ -196,17 +189,17 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	public function unlinkTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$asset_id  = JRequest::getInt('asset', 0);
-		$tmpl      = JRequest::getVar('tmpl', '');
-		$scope     = JRequest::getVar('scope', 'asset_group');
-		$scope_id  = JRequest::getInt('scope_id', 0);
-		$course_id = JRequest::getInt('course_id', 0);
+		$asset_id  = Request::getInt('asset', 0);
+		$tmpl      = Request::getVar('tmpl', '');
+		$scope     = Request::getVar('scope', 'asset_group');
+		$scope_id  = Request::getInt('scope_id', 0);
+		$course_id = Request::getInt('course_id', 0);
 
 		// Load association
-		$tbl = new CoursesTableAssetAssociation($this->database);
+		$tbl = new \CoursesTableAssetAssociation($this->database);
 		$tbl->loadByAssetScope($asset_id, $scope_id, $scope);
 
 		// Remove association
@@ -215,7 +208,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 			$this->setError($tbl->getError());
 		}
 
-		$model = new CoursesModelAsset($asset_id);
+		$model = new \CoursesModelAsset($asset_id);
 		// Is this asset linked anywhere else?
 		if ($model->parents(array('count' => true)) <= 0)
 		{
@@ -227,7 +220,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
 		);
@@ -240,12 +233,12 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($model = null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($model))
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$ids = Request::getVar('id', array());
 
 			// Get the single ID we're working with
 			if (is_array($ids))
@@ -257,16 +250,16 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 				$id = 0;
 			}
 
-			$model = new CoursesTableAsset($this->database);
+			$model = new \CoursesTableAsset($this->database);
 			$model->load($id);
 		}
 
 		$this->view->row = $model;
 
-		$this->view->tmpl      = JRequest::getVar('tmpl', '');
-		$this->view->scope     = JRequest::getVar('scope', 'asset_group');
-		$this->view->scope_id  = JRequest::getInt('scope_id', 0);
-		$this->view->course_id = JRequest::getInt('course_id', 0);
+		$this->view->tmpl      = Request::getVar('tmpl', '');
+		$this->view->scope     = Request::getVar('scope', 'asset_group');
+		$this->view->scope_id  = Request::getInt('scope_id', 0);
+		$this->view->course_id = Request::getInt('course_id', 0);
 		$this->view->config    = $this->config;
 
 		// Set any errors
@@ -289,14 +282,14 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// load the request vars
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
-		$tmpl   = JRequest::getVar('tmpl', '');
+		$fields = Request::getVar('fields', array(), 'post', 'none', 2);
+		$tmpl   = Request::getVar('tmpl', '');
 
 		// instatiate course page object for saving
-		$row = new CoursesTableAsset($this->database);
+		$row = new \CoursesTableAsset($this->database);
 
 		if (!$row->bind($fields))
 		{
@@ -321,7 +314,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 
 		$fields['asset_id'] = $row->get('id');
 
-		$row2 = new CoursesTableAssetAssociation($this->database);
+		$row2 = new \CoursesTableAssetAssociation($this->database);
 		$row2->loadByAssetScope($fields['asset_id'], $fields['scope_id'], $fields['scope']);
 		if (!$row2->id)
 		{
@@ -351,29 +344,29 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		$lid = $fields['lid'];
 		if ($lid != $row->get('id'))
 		{
-			$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
+			$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
 			if (is_dir($path . DS . $lid))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::move($path . DS . $lid, $path . DS . $row->get('id')))
+				if (!\JFolder::move($path . DS . $lid, $path . DS . $row->get('id')))
 				{
-					$this->setError(JFolder::move($path . DS . $lid, $path . DS . $row->get('id')));
+					$this->setError(\JFolder::move($path . DS . $lid, $path . DS . $row->get('id')));
 				}
 			}
 		}
 
 		// Incoming file
-		/*$file = JRequest::getVar('upload', '', 'files', 'array');
+		/*$file = Request::getVar('upload', '', 'files', 'array');
 		if ($file['name'])
 		{
-			$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'] . DS . $row->id;
+			$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'] . DS . $row->id;
 			// Make sure the upload path exist
 			if (!is_dir($path))
 			{
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($path))
 				{
-					$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
+					$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH').' '.$path);
 					$this->editTask($row);
 					return;
 				}
@@ -381,9 +374,9 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 
 			// Make the filename safe
 			jimport('joomla.filesystem.file');
-			$file['name'] = JFile::makeSafe($file['name']);
+			$file['name'] = \JFile::makeSafe($file['name']);
 			// Ensure file names fit.
-			$ext = JFile::getExt($file['name']);
+			$ext = \JFile::getExt($file['name']);
 			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{
@@ -392,9 +385,9 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 			}
 
 			// Perform the upload
-			if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+			if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 			{
-				$this->setError(JText::_('ERROR_UPLOADING'));
+				$this->setError(Lang::txt('ERROR_UPLOADING'));
 			}
 			else
 			{
@@ -404,7 +397,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 
 					if (!extension_loaded('zlib'))
 					{
-						$this->setError(JText::_('ZLIB_PACKAGE_REQUIRED'));
+						$this->setError(Lang::txt('ZLIB_PACKAGE_REQUIRED'));
 					}
 					else
 					{
@@ -413,7 +406,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 						// unzip the file
 						if (!($do = $zip->extract($path)))
 						{
-							$this->setError(JText::_('UNABLE_TO_EXTRACT_PACKAGE'));
+							$this->setError(Lang::txt('UNABLE_TO_EXTRACT_PACKAGE'));
 						}
 						else
 						{
@@ -437,13 +430,13 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				echo '<p class="message">' . JText::_('COM_COURSES_ITEM_SAVED') . '</p>';
+				echo '<p class="message">' . Lang::txt('COM_COURSES_ITEM_SAVED') . '</p>';
 			}
 			return;
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false)
 		);
 	}
 
@@ -455,21 +448,21 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	public function reorderTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		$move = $this->_task == 'orderup' ? -1 : 1;
 
 		// Incoming
-		$id = JRequest::getVar('id', array());
+		$id = Request::getVar('id', array());
 		$id = $id[0];
 
-		$tmpl      = JRequest::getVar('tmpl', '');
-		$scope     = JRequest::getVar('scope', 'asset_group');
-		$scope_id  = JRequest::getInt('scope_id', 0);
-		$course_id = JRequest::getInt('course_id', 0);
+		$tmpl      = Request::getVar('tmpl', '');
+		$scope     = Request::getVar('scope', 'asset_group');
+		$scope_id  = Request::getInt('scope_id', 0);
+		$course_id = Request::getInt('course_id', 0);
 
 		// Get the element moving down - item 1
-		$tbl = new CoursesTableAssetAssociation($this->database);
+		$tbl = new \CoursesTableAssetAssociation($this->database);
 		$tbl->loadByAssetScope($id, $scope_id, $scope);
 
 		if (!$tbl->move($move, "scope=" . $this->database->Quote($scope) . " AND scope_id=" . $this->database->Quote(intval($scope_id))))
@@ -479,7 +472,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}
 
@@ -490,13 +483,13 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$tmpl      = JRequest::getVar('tmpl', '');
-		$scope     = JRequest::getVar('scope', 'asset_group');
-		$scope_id  = JRequest::getInt('scope_id', 0);
-		$course_id = JRequest::getInt('course_id', 0);
+		$tmpl      = Request::getVar('tmpl', '');
+		$scope     = Request::getVar('scope', 'asset_group');
+		$scope_id  = Request::getInt('scope_id', 0);
+		$course_id = Request::getInt('course_id', 0);
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}
 }

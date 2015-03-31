@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -102,7 +102,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 */
 	public function __construct($oid=null, $offering_id=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		if ($this->_tbl_name)
 		{
@@ -507,8 +507,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$dt->set('section_id', $this->get('section_id'));
 				$dt->set('scope', $this->_scope);
 				$dt->set('scope_id', $this->get('id'));
-				$dt->set('created', JFactory::getDate()->toSql());
-				$dt->set('created_by', JFactory::getUser()->get('id'));
+				$dt->set('created', \JFactory::getDate()->toSql());
+				$dt->set('created_by', \JFactory::getUser()->get('id'));
 			}
 
 			if (!$dt->store())

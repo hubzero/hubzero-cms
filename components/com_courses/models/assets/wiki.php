@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -56,26 +56,26 @@ class WikiAssetHandler extends ContentAssetHandler
 	 **/
 	public function create()
 	{
-		$this->asset['title']   = JRequest::getString('title', '');
+		$this->asset['title']   = Request::getString('title', '');
 		$this->asset['type']    = 'text';
 		$this->asset['subtype'] = 'wiki';
 
-		if (!JRequest::getString('title', false))
+		if (!Request::getString('title', false))
 		{
 			return array('error' => 'Please provide a title!');
 		}
 
-		if (!JRequest::getInt('id', false))
+		if (!Request::getInt('id', false))
 		{
 			// Create asset
-			$this->asset['course_id'] = JRequest::getInt('course_id');
+			$this->asset['course_id'] = Request::getInt('course_id');
 			$return = parent::create();
 		}
 		else
 		{
-			$this->asset['course_id'] = JRequest::getInt('course_id');
-			$this->assoc['asset_id']  = JRequest::getInt('id');
-			$this->assoc['scope_id']  = JRequest::getInt('scope_id');
+			$this->asset['course_id'] = Request::getInt('course_id');
+			$this->assoc['asset_id']  = Request::getInt('id');
+			$this->assoc['scope_id']  = Request::getInt('scope_id');
 
 			// Save asset
 			$return = parent::save();

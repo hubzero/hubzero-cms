@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,7 +25,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -51,7 +51,7 @@ if (isset($manifest) && is_file($manifest))
 	if (is_null($manifest))
 	{
 		$type  = 'none';
-		$error = JText::_('COM_COURSES_VIDEO_ERROR_INVALID_JSON');
+		$error = Lang::txt('COM_COURSES_VIDEO_ERROR_INVALID_JSON');
 	}
 	else
 	{
@@ -87,7 +87,7 @@ if ($type == 'hubpresenter')
 		// If we dont have all the necessary media formats
 		if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2))
 		{
-			$this->setError(JText::_('COM_COURSES_VIDEO_ERROR_MISSING_FORMATS'));
+			$this->setError(Lang::txt('COM_COURSES_VIDEO_ERROR_MISSING_FORMATS'));
 		}
 
 		// Make sure if any slides are video we have three formats of video and backup image for mobile
@@ -115,12 +115,12 @@ if ($type == 'hubpresenter')
 		{
 			if (count($v) < 3)
 			{
-				$this->setError(JText::sprintf('COM_COURSES_VIDEO_ERROR_MISSING_SLIDES_FORMAT', count($v), $k . implode(", {$k}.", array_keys($v))));
+				$this->setError(Lang::txt('COM_COURSES_VIDEO_ERROR_MISSING_SLIDES_FORMAT', count($v), $k . implode(", {$k}.", array_keys($v))));
 			}
 
 			if (!file_exists($slide_path . DS . $k . '.png'))
 			{
-				$this->setError(JText::sprintf('COM_COURSES_VIDEO_ERROR_MISSING_STILL_IMAGE', $k));
+				$this->setError(Lang::txt('COM_COURSES_VIDEO_ERROR_MISSING_STILL_IMAGE', $k));
 			}
 		}
 	}
@@ -212,14 +212,14 @@ if ($type == 'hubpresenter' || $type == 'html5')
 {
 	// Include media tracking for html5 and hubpresenter videos
 	require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'media.tracking.php');
-	$dbo = JFactory::getDBO();
+	$dbo = \JFactory::getDBO();
 	$mediaTracking = new ResourceMediaTracking($dbo);
 
 	// Get tracking for this user for this resource
-	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(JFactory::getUser()->get('id'), $this->asset->id, 'course');
+	$tracking = $mediaTracking->getTrackingInformationForUserAndResource(\JFactory::getUser()->get('id'), $this->asset->id, 'course');
 
 	// Check to see if we already have a time query param
-	$hasTime = (JRequest::getVar('time', '') != '') ? true : false;
+	$hasTime = (Request::getVar('time', '') != '') ? true : false;
 
 	// Do we want to redirect user with time added to url
 	if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration)
@@ -228,7 +228,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 
 		// do we have tmpl=componet in url?
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
-		if (JRequest::getVar('tmpl', '') == 'component')
+		if (Request::getVar('tmpl', '') == 'component')
 		{
 			$redirect .= $delimeter . 'tmpl=component';
 		}
@@ -239,7 +239,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		$redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
-		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
+		\JFactory::getApplication()->redirect(Route::url($redirect, false), '','',false);
 	}
 }
 
@@ -319,67 +319,67 @@ if ($type == 'hubpresenter' || $type == 'html5')
 			<div id="progress-bar"></div>
 			<div id="control-buttons">
 				<div id="control-buttons-left" class="cf">
-					<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
+					<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
 					<div id="media-progress"></div>
 				</div>
 				<div id="control-buttons-right" class="cf">
 					<a id="subtitle" class="control" href="javascript:void(0);">
-						<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
+						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
 						<div class="control-container subtitle-controls">
-							<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
+							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
 							<div class="grid">
 								<div class="col span4 label">
-									<label for="subtitle-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
+									<label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
 								</div>
 								<div class="col span8 omega input">
 									<select id="subtitle-selector">
-										<option value=""><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+										<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
 									</select>
 								</div>
 							</div>
 							<div class="grid">
 								<div class="col span4 label">
-									<label for="transcript-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
+									<label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
 								</div>
 								<div class="col span8 omega input">
 									<select class="transcript-selector">
-										<option value=""><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+										<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
 									</select>
 								</div>
 							</div>
 
-							<span class="options-toggle"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
+							<span class="options-toggle"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
 							<div class="subtitle-settings hide">
 								<div class="grid">
 									<div class="col span6 label">
-										<label for="font-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
+										<label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
 										<select id="font-selector">
-											<option value="Arial" selected><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-											<option value="Times New Roman"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-											<option value="Tahoma"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-											<option value="Trebuchet MS"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-											<option value="Verdana"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-											<option value="Courier New"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
+											<option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
+											<option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
+											<option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
+											<option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
+											<option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
+											<option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
 										</select>
 									</div>
 								</div>
 								<div class="grid">
 									<div class="col span6 label">
-										<label for="font-size-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
+										<label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
 										<select id="font-size-selector">
-											<option value="12"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-											<option value="18" selected><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-											<option value="24"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
+											<option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
+											<option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
+											<option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
 										</select>
 									</div>
 								</div>
 								<div class="grid">
 									<div class="col span6 label">
-										<label for="font-color"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
+										<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
 										<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
@@ -387,7 +387,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 								</div>
 								<div class="grid">
 									<div class="col span6 label">
-										<label for="background-color"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
+										<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 									</div>
 									<div class="col span6 omega input">
 										<div id="background-color" data-color="000" style="background-color: #000;"></div>
@@ -396,38 +396,38 @@ if ($type == 'hubpresenter' || $type == 'html5')
 								<div class="grid">
 									<div class="col span12 omega subtitle-settings-preview-container">
 										<div class="subtitle-settings-preview">
-											<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+											<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 										</div>
 									</div>
 								</div>
 								<div class="actions">
-									<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
+									<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
 								</div>
 							</div>
 						</div>
 					</a>
 					<a id="volume" class="control " href="javascript:void(0);">
-						<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
+						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
 						<div class="control-container volume-controls">
 							<div id="volume-bar"></div>
 						</div>
 					</a>
 					<a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
-						<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
+						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
 						<div class="control-container settings-controls">
-							<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
+							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
 							<div class="grid">
 								<div class="col span6 label">
-									<label for="speed"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
+									<label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
 								</div>
 								<div class="col span6 omega input">
 									<select id="speed">
-										<option value=".25"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
-										<option value=".5"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
-										<option selected value="1"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
-										<option value="1.25"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
-										<option value="1.5"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
-										<option value="2"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
+										<option value=".25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
+										<option value=".5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
+										<option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
+										<option value="1.25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
+										<option value="1.5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
+										<option value="2"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
 									</select>
 								</div>
 							</div>
@@ -443,19 +443,19 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							</div> -->
 						</div>
 					</a>
-					<a id="link" class="control" href="javascript:void(0);" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
-						<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
+					<a id="link" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
+						<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
 						<div class="control-container link-controls">
-							<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
+							<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
 							<div class="grid">
 								<div class="col span12 omega">
 									<input type="text" value="ss" />
-									<span class="hint"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
+									<span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
 								</div>
 							</div>
 						</div>
 					</a>
-					<a id="full-screen" class="control" href="javascript:void(0);" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?></a>
+					<a id="full-screen" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?>"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_FULLSCREEN'); ?></a>
 				</div>
 			</div>
 		</div><!-- /#control-box -->
@@ -505,69 +505,69 @@ if ($type == 'hubpresenter' || $type == 'html5')
 					<div id="progress-bar"></div>
 					<div id="control-buttons">
 						<div id="control-buttons-left" class="cf">
-							<a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PREV'); ?></a>
-							<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
-							<a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_NEXT'); ?></a>
+							<a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PREV'); ?></a>
+							<a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
+							<a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_NEXT'); ?></a>
 							<div id="media-progress"></div>
 						</div>
 						<div id="control-buttons-right" class="cf">
 							<a id="subtitle" class="control" href="javascript:void(0);">
-								<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
+								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
 								<div class="control-container subtitle-controls">
-									<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
+									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
 									<div class="grid">
 										<div class="col span4 label">
-											<label for="subtitle-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
+											<label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
 										</div>
 										<div class="col span8 omega input">
 											<select id="subtitle-selector">
-												<option value=""><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+												<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
 											</select>
 										</div>
 									</div>
 									<div class="grid">
 										<div class="col span4 label">
-											<label for="transcript-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
+											<label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
 										</div>
 										<div class="col span8 omega input">
 											<select class="transcript-selector">
-												<option value=""><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+												<option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
 											</select>
 										</div>
 									</div>
 
-									<span class="options-toggle"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
+									<span class="options-toggle"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></span>
 									<div class="subtitle-settings hide">
 										<div class="grid">
 											<div class="col span6 label">
-												<label for="font-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
+												<label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
 												<select id="font-selector">
-													<option value="Arial" selected><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-													<option value="Times New Roman"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-													<option value="Tahoma"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-													<option value="Trebuchet MS"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-													<option value="Verdana"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-													<option value="Courier New"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
+													<option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
+													<option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
+													<option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
+													<option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
+													<option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
+													<option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
 												</select>
 											</div>
 										</div>
 										<div class="grid">
 											<div class="col span6 label">
-												<label for="font-size-selector"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
+												<label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
 												<select id="font-size-selector">
-													<option value="12"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-													<option value="18" selected><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-													<option value="24"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
+													<option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
+													<option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
+													<option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
 												</select>
 											</div>
 										</div>
 										<div class="grid">
 											<div class="col span6 label">
-												<label for="font-color"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
+												<label for="font-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
 												<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
@@ -575,7 +575,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										</div>
 										<div class="grid">
 											<div class="col span6 label">
-												<label for="background-color"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
+												<label for="background-color"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
 											</div>
 											<div class="col span6 omega input">
 												<div id="background-color" data-color="000" style="background-color: #000;"></div>
@@ -584,38 +584,38 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<div class="grid">
 											<div class="col span12 omega subtitle-settings-preview-container">
 												<div class="subtitle-settings-preview">
-													<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+													<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
 												</div>
 											</div>
 										</div>
 										<div class="actions">
-											<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
+											<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
 										</div>
 									</div>
 								</div>
 							</a>
 							<a id="volume" class="control " href="javascript:void(0);">
-								<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
+								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?>
 								<div class="control-container volume-controls">
 									<div id="volume-bar"></div>
 								</div>
 							</a>
 							<a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
-								<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
+								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?>
 								<div class="control-container settings-controls">
-									<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
+									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
 									<div class="grid">
 										<div class="col span6 label">
-											<label for="speed"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
+											<label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
 										</div>
 										<div class="col span6 omega input">
 											<select id="speed">
-												<option value=".25"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
-												<option value=".5"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
-												<option selected value="1"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
-												<option value="1.25"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
-												<option value="1.5"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
-												<option value="2"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
+												<option value=".25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
+												<option value=".5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
+												<option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
+												<option value="1.25"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
+												<option value="1.5"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
+												<option value="2"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
 											</select>
 										</div>
 									</div>
@@ -631,19 +631,19 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									</div> -->
 								</div>
 							</a>
-							<a id="link" class="control" href="javascript:void(0);" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
-								<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
+							<a id="link" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>">
+								<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK'); ?>
 								<div class="control-container link-controls">
-									<h3><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
+									<h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
 									<div class="grid">
 										<div class="col span12 omega">
 											<input type="text" value="ss" />
-											<span class="hint"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
+											<span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_HINT'); ?></span>
 										</div>
 									</div>
 								</div>
 							</a>
-							<a id="switch" class="control" href="javascript:void(0);" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SWITCH_VIDEO_SLIDES'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SWITCH'); ?></a>
+							<a id="switch" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SWITCH_VIDEO_SLIDES'); ?>"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SWITCH'); ?></a>
 						</div>
 					</div>
 				</div><!-- /#control-box -->
@@ -750,7 +750,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		jimport('joomla.filesystem.file');
 		$path = $path . DS . $this->model->get('url');
 		$ext  = strtolower(JFile::getExt(PATH_APP . $path));
-		$doc  = JFactory::getDocument();
+		$doc  = \JFactory::getDocument();
 		$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
 		$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 	?>
@@ -778,5 +778,5 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		</video>
 	</div>
 <?php else : ?>
-	<p class="warning"><?php echo (isset($error)) ? $error : JText::_('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
+	<p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
 <?php endif; ?>

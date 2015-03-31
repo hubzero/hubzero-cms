@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,14 +24,14 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app = JFactory::getApplication();
+$app = \JFactory::getApplication();
 ?>
 	<script type="text/javascript">
 		function updateDir()
@@ -56,11 +56,11 @@ $app = JFactory::getApplication();
 		function deleteFolder(folder, numFiles)
 		{
 			if (numFiles > 0) {
-				alert('<?php echo JText::_('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo JText::_('COM_COURSES_FILES'); ?>: "' + numFiles + '"');
+				alert('<?php echo Lang::txt('COM_COURSES_CLEAR_FOLDER'); ?> <?php echo Lang::txt('COM_COURSES_FILES'); ?>: "' + numFiles + '"');
 				return false;
 			}
 
-			if (confirm('<?php echo JText::_('COM_COURSES_DELETE_FOLDER'); ?> "'+folder+'"')) {
+			if (confirm('<?php echo Lang::txt('COM_COURSES_DELETE_FOLDER'); ?> "'+folder+'"')) {
 				return true;
 			}
 
@@ -68,13 +68,13 @@ $app = JFactory::getApplication();
 		}
 	</script>
 	<div id="attachments">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
+		<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
 			<table summary="Files for this asset">
 				<tbody>
 <?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
 					<tr>
 						<td>
-							<?php echo JText::_('COM_COURSES_NO_FILE_FOUNDS'); ?>
+							<?php echo Lang::txt('COM_COURSES_NO_FILE_FOUNDS'); ?>
 						</td>
 					</tr>
 <?php } else { ?>
@@ -113,8 +113,8 @@ $app = JFactory::getApplication();
 							<?php echo $folderName; ?>
 						</td>
 						<td style="width:16px;">
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('COM_COURSES_DELETE'); ?>" />
+							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFolder('<?php echo $folderName; ?>', '<?php echo $numFiles; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+								<img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>
@@ -136,8 +136,8 @@ $app = JFactory::getApplication();
 							<?php echo $docs[$docName]; ?>
 						</td>
 						<td style="width:16px;">
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">
-								<img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('COM_COURSES_DELETE'); ?>" />
+							<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course=' . $this->course_id . '&' . JUtility::getToken() . '=1'); ?>" target="filelist" onclick="return deleteFile('<?php echo $docs[$docName]; ?>');" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">
+								<img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" />
 							</a>
 						</td>
 					</tr>

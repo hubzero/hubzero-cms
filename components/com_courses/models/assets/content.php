@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -64,7 +64,7 @@ class ContentAssetHandler extends AssetHandler
 		$asset = new CoursesModelAsset();
 
 		// Grab the incoming content
-		$content = JRequest::getVar('content', '', 'default', 'none', 2);
+		$content = Request::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
@@ -75,13 +75,13 @@ class ContentAssetHandler extends AssetHandler
 		$asset->set('url',          ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
 		$asset->set('graded',       ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
 		$asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
-		$asset->set('created',      JFactory::getDate()->toSql());
-		$asset->set('created_by',   JFactory::getApplication()->getAuthn('user_id'));
-		$asset->set('course_id',    JRequest::getInt('course_id', 0));
+		$asset->set('created',      \JFactory::getDate()->toSql());
+		$asset->set('created_by',   \JFactory::getApplication()->getAuthn('user_id'));
+		$asset->set('course_id',    Request::getInt('course_id', 0));
 		$asset->set('state',        0);
 
 		// Check whether asset should be graded
-		if ($graded = JRequest::getInt('graded', false))
+		if ($graded = Request::getInt('graded', false))
 		{
 			$asset->set('graded', $graded);
 			$asset->set('grade_weight', 'homework');
@@ -94,9 +94,9 @@ class ContentAssetHandler extends AssetHandler
 		}
 
 		// If we're saving progress calculation var
-		if ($progress = JRequest::getInt('progress_factors', false))
+		if ($progress = Request::getInt('progress_factors', false))
 		{
-			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>JRequest::getInt('section_id', 0)));
+			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>Request::getInt('section_id', 0)));
 			$asset->store();
 		}
 
@@ -104,8 +104,8 @@ class ContentAssetHandler extends AssetHandler
 		$assocObj = new CoursesTableAssetAssociation($this->db);
 
 		$this->assoc['asset_id'] = $asset->get('id');
-		$this->assoc['scope']    = JRequest::getCmd('scope', 'asset_group');
-		$this->assoc['scope_id'] = JRequest::getInt('scope_id', 0);
+		$this->assoc['scope']    = Request::getCmd('scope', 'asset_group');
+		$this->assoc['scope_id'] = Request::getInt('scope_id', 0);
 
 		// Save the asset association
 		if (!$assocObj->save($this->assoc))
@@ -114,12 +114,12 @@ class ContentAssetHandler extends AssetHandler
 		}
 
 		// Get the url to return to the page
-		$course_id      = JRequest::getInt('course_id', 0);
-		$offering_alias = JRequest::getCmd('offering', '');
+		$course_id      = Request::getInt('course_id', 0);
+		$offering_alias = Request::getCmd('offering', '');
 		$course         = new CoursesModelCourse($course_id);
 		$course->offering($offering_alias);
 
-		$url = JRoute::_($course->offering()->link() . '&asset=' . $asset->get('id'));
+		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),
@@ -159,11 +159,11 @@ class ContentAssetHandler extends AssetHandler
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
 		// Create our asset object
-		$id    = JRequest::getInt('id', null);
+		$id    = Request::getInt('id', null);
 		$asset = new CoursesModelAsset($id);
 
 		// Grab the incoming content
-		$content = JRequest::getVar('content', '', 'default', 'none', 2);
+		$content = Request::getVar('content', '', 'default', 'none', 2);
 
 		// Get everything ready to store
 		// Check if vars are already set (i.e. by a sub class), before setting them here
@@ -173,7 +173,7 @@ class ContentAssetHandler extends AssetHandler
 		$asset->set('content', ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
 
 		// If we have a state coming in as an int
-		if ($graded = JRequest::getInt('graded', false))
+		if ($graded = Request::getInt('graded', false))
 		{
 			$asset->set('graded', $graded);
 			// By default, weight asset as a 'homework' type
@@ -187,19 +187,19 @@ class ContentAssetHandler extends AssetHandler
 				$asset->set('grade_weight', $grade_weight);
 			}
 		}
-		elseif ($graded = JRequest::getInt('edit_graded', false))
+		elseif ($graded = Request::getInt('edit_graded', false))
 		{
 			$asset->set('graded', 0);
 		}
 
 		// If we're saving progress calculation var
-		if ($progress = JRequest::getInt('progress_factors', false))
+		if ($progress = Request::getInt('progress_factors', false))
 		{
-			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>JRequest::getInt('section_id', 0)));
+			$asset->set('progress_factors', array('asset_id'=>$asset->get('id'), 'section_id'=>Request::getInt('section_id', 0)));
 		}
-		elseif (JRequest::getInt('edit_progress_factors', false))
+		elseif (Request::getInt('edit_progress_factors', false))
 		{
-			$asset->set('section_id', JRequest::getInt('section_id', 0));
+			$asset->set('section_id', Request::getInt('section_id', 0));
 			$asset->set('progress_factors', 'delete');
 		}
 
@@ -209,9 +209,9 @@ class ContentAssetHandler extends AssetHandler
 			return array('error' => 'Asset save failed');
 		}
 
-		$scope_id          = JRequest::getInt('scope_id', null);
-		$original_scope_id = JRequest::getInt('original_scope_id', null);
-		$scope             = JRequest::getCmd('scope', 'asset_group');
+		$scope_id          = Request::getInt('scope_id', null);
+		$original_scope_id = Request::getInt('original_scope_id', null);
+		$scope             = Request::getCmd('scope', 'asset_group');
 
 		// Only worry about this if scope id is changing
 		if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
@@ -233,12 +233,12 @@ class ContentAssetHandler extends AssetHandler
 		}
 
 		// Get the url to return to the page
-		$course_id      = JRequest::getInt('course_id', 0);
-		$offering_alias = JRequest::getCmd('offering', '');
+		$course_id      = Request::getInt('course_id', 0);
+		$offering_alias = Request::getCmd('offering', '');
 		$course         = new CoursesModelCourse($course_id);
 		$course->offering($offering_alias);
 
-		$url = JRoute::_($course->offering()->link() . '&asset=' . $asset->get('id'));
+		$url = Route::url($course->offering()->link() . '&asset=' . $asset->get('id'));
 
 		$files = array(
 			'asset_id'       => $asset->get('id'),

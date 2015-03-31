@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -88,7 +88,7 @@ class PdfFormRespondent
 			JError::raiseError(403, 'This area requires authentication');
 		}
 
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 		$query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
 		$query .= ' WHERE deployment_id = '.(int)$depId.' AND member_id = '.(int)$member_id.' AND attempt='.(int)$attempt;
 		$dbh->setQuery($query);
@@ -130,7 +130,7 @@ class PdfFormRespondent
 	 **/
 	public function saveAnswers($answers)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 
 		$questions = $this->getQuestions();
 
@@ -157,7 +157,7 @@ class PdfFormRespondent
 	{
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
 
-		$database  = JFactory::getDBO();
+		$database  = \JFactory::getDBO();
 
 		// Get the asset id
 		$query  = "SELECT `asset_id`";
@@ -207,7 +207,7 @@ class PdfFormRespondent
 	 **/
 	public function getQuestions()
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 
 		$version = $this->getVersionNumber();
 
@@ -232,7 +232,7 @@ class PdfFormRespondent
 	 **/
 	public function getAnswers()
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('SELECT pfr.question_id, answer_id, pfa.id AS correct_answer_id, version FROM #__courses_form_latest_responses_view pfr INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr.question_id INNER JOIN #__courses_form_answers pfa ON pfr.question_id = pfa.question_id AND pfa.correct WHERE pfr.respondent_id = '.$this->id);
 
 		$rv = array(
@@ -289,10 +289,10 @@ class PdfFormRespondent
 	 **/
 	public function saveProgress($qid, $aid)
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id.' AND question_id = '.(int)$qid);
 		$dbh->query();
-		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(JFactory::getDate()->toSql()).')');
+		$dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES ('.(int)$this->id.', '.(int)$qid.', '.(int)$aid.', '.$dbh->Quote(\JFactory::getDate()->toSql()).')');
 		$dbh->query();
 
 		return $this;
@@ -305,7 +305,7 @@ class PdfFormRespondent
 	 **/
 	public function getProgress()
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('SELECT question_id, answer_id FROM #__courses_form_respondent_progress WHERE respondent_id = '.(int)$this->id);
 		return $dbh->loadAssocList('question_id');
 	}
@@ -347,7 +347,7 @@ class PdfFormRespondent
 	 **/
 	public function getCompletedAttempts()
 	{
-		$dbh   = JFactory::getDBO();
+		$dbh   = \JFactory::getDBO();
 		$query  = 'SELECT `attempt` FROM `#__courses_form_respondents` WHERE `deployment_id` = ' . $dbh->quote($this->depId);
 		$query .= ' AND `member_id` = ' . $dbh->quote($this->member_id) . ' AND `finished` IS NOT NULL ORDER BY `attempt` ASC';
 		$dbh->setQuery($query);
@@ -361,7 +361,7 @@ class PdfFormRespondent
 	 **/
 	public function getVersionNumber()
 	{
-		$dbh = JFactory::getDBO();
+		$dbh = \JFactory::getDBO();
 
 		$query  = "SELECT max(version) AS version";
 		$query .= " FROM `#__courses_form_questions` cfq";
@@ -381,8 +381,8 @@ class PdfFormRespondent
 	 **/
 	public function markStart()
 	{
-		$this->started = JFactory::getDate()->toSql();
-		$dbh = JFactory::getDBO();
+		$this->started = \JFactory::getDate()->toSql();
+		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
 		$dbh->query();
 
@@ -396,8 +396,8 @@ class PdfFormRespondent
 	 **/
 	public function markEnd()
 	{
-		$this->started = JFactory::getDate()->toSql();
-		$dbh = JFactory::getDBO();
+		$this->started = \JFactory::getDate()->toSql();
+		$dbh = \JFactory::getDBO();
 		$dbh->setQuery('UPDATE #__courses_form_respondents SET finished = \''.$this->started.'\' WHERE id = '.(int)$this->id);
 		$dbh->query();
 

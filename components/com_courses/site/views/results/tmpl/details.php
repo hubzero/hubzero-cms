@@ -45,8 +45,8 @@ $version = $record['summary']['version'];
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->base); ?>">
-				<?php echo JText::_('Back to course'); ?>
+			<a class="icon-prev back btn" href="<?php echo Route::url($this->base); ?>">
+				<?php echo Lang::txt('Back to course'); ?>
 			</a>
 		</p>
 	</div>
@@ -62,7 +62,7 @@ $version = $record['summary']['version'];
 			You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
 			This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
 		</p>
-		<form action="<?php echo JRoute::_($this->base . '&task=form.complete') ?>">
+		<form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 			<?php $completedAttempts = $resp->getCompletedAttempts(); ?>
 			<?php if ($completedAttempts && count($completedAttempts) > 0) : ?>
@@ -81,7 +81,7 @@ $version = $record['summary']['version'];
 
 			<?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
 				<p>
-					<a href="<?php echo JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
+					<a href="<?php echo Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
 						<button type="button" class="btn btn-warning">Take your next attempt!</button>
 					</a>
 				</p>

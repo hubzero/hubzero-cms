@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -173,14 +173,14 @@ class CoursesTableUnit extends JTable
 		$this->offering_id = intval($this->offering_id);
 		if (!$this->offering_id)
 		{
-			$this->setError(JText::_('Please provide a course offering ID.'));
+			$this->setError(Lang::txt('Please provide a course offering ID.'));
 			return false;
 		}
 
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Please provide a title.'));
+			$this->setError(Lang::txt('Please provide a title.'));
 			return false;
 		}
 
@@ -193,8 +193,8 @@ class CoursesTableUnit extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 
 			$this->state = ($this->state) ? $this->state : 1;

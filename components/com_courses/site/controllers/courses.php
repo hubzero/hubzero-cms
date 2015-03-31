@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Exception;
 
 /**
  * Courses controller class
  */
-class CoursesControllerCourses extends \Hubzero\Component\SiteController
+class Courses extends SiteController
 {
 	/**
 	 * Execute a task
@@ -43,16 +45,16 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		if ($section_id = JRequest::getInt('section', 0, 'get'))
+		if ($section_id = Request::getInt('section', 0, 'get'))
 		{
-			$section = CoursesModelSection::getInstance($section_id);
+			$section = \CoursesModelSection::getInstance($section_id);
 			if ($section->exists())
 			{
-				$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
+				$offering = \CoursesModelOffering::getInstance($section->get('offering_id'));
 				$offering->section($section->get('alias'));
 
 				$this->setRedirect(
-					JRoute::_($offering->link('overview'))
+					Route::url($offering->link('overview'))
 				);
 			}
 		}
@@ -72,19 +74,19 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	 */
 	public function _buildPathway($course_pages = array())
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task && $this->_task != 'intro')
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option . '_' . $this->_task)),
+				Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -98,15 +100,15 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	public function _buildTitle()
 	{
 		//set title used in view
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = Lang::txt(strtoupper($this->_option));
 
 		if ($this->_task && $this->_task != 'intro')
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task));
+			$this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 		}
 
 		//set title of browser window
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -124,7 +126,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Push some needed scripts to the template
-		$model = CoursesModelCourses::getInstance();
+		$model = \CoursesModelCourses::getInstance();
 
 		$this->view->popularcourses = $model->courses(array(
 			'limit' => 12,
@@ -135,7 +137,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		// Output HTML
 		$this->view->config   = $this->config;
 		$this->view->database = $this->database;
-		$this->view->user     = $this->juser;
+		$this->view->user     = User::getRoot();
 		$this->view->title    = $this->_title;
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
@@ -152,9 +154,9 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		// Filters
 		$this->view->filters = array(
 			'state'  => 1,
-			'search' => JRequest::getVar('search', ''),
-			'sortby' => strtolower(JRequest::getWord('sortby', 'title')),
-			'group'  => JRequest::getVar('group', '')
+			'search' => Request::getVar('search', ''),
+			'sortby' => strtolower(Request::getWord('sortby', 'title')),
+			'group'  => Request::getVar('group', '')
 		);
 		if ($this->view->filters['group'])
 		{
@@ -182,17 +184,17 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 			break;
 		}
 		// Filters for returning results
-		$this->view->filters['limit']  = JRequest::getInt('limit', JFactory::getConfig()->getValue('config.list_limit'));
+		$this->view->filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
 		$this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['index']  = strtolower(JRequest::getWord('index', ''));
+		$this->view->filters['start']  = Request::getInt('limitstart', 0);
+		$this->view->filters['index']  = strtolower(Request::getWord('index', ''));
 		if ($this->view->filters['index'] && !in_array($this->view->filters['index'], array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')))
 		{
 			$this->view->filters['index'] = '';
 		}
-		$this->view->filters['tag'] = JRequest::getVar('tag', '');
+		$this->view->filters['tag'] = Request::getVar('tag', '');
 
-		$model = CoursesModelCourses::getInstance();
+		$model = \CoursesModelCourses::getInstance();
 
 		// Get a record count
 		$this->view->filters['count'] = true;
@@ -201,14 +203,6 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		// Get records
 		$this->view->filters['count'] = false;
 		$this->view->courses = $model->courses($this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		//build the title
 		$this->_buildTitle();
@@ -231,27 +225,25 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	 */
 	public function badgeTask()
 	{
-		if ($badge_id = JRequest::getInt('badge_id', false))
+		if ($badge_id = Request::getInt('badge_id', false))
 		{
-			$badge = new CoursesModelSectionBadge($badge_id);
+			$badge = new \CoursesModelSectionBadge($badge_id);
 
 			if (!$badge->get('id'))
 			{
-				JError::raiseError(500, JText::_('COM_COURSES_BADGE_NOT_FOUND'));
-				return;
+				throw new Exception(Lang::txt('COM_COURSES_BADGE_NOT_FOUND'), 500);
 			}
 			else
 			{
 				$this->view->badge  = $badge;
 				$this->view->config = $this->config;
-				$this->view->action = JRequest::getWord('action', 'default');
-				$this->view->token  = JRequest::getVar('validation_token', false);
+				$this->view->action = Request::getWord('action', 'default');
+				$this->view->token  = Request::getVar('validation_token', false);
 			}
 		}
 		else
 		{
-			JError::raiseError(500, JText::_('COM_COURSES_BADGE_NOT_FOUND'));
-			return;
+			throw new Exception(Lang::txt('COM_COURSES_BADGE_NOT_FOUND'), 500);
 		}
 
 		$this->view->display();
@@ -265,7 +257,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, false);
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$asset  = $this->_option;
 			if ($assetId)
@@ -281,14 +273,14 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 			}
 
 			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
 			// Permissions
-			//$this->config->set('access-create-' . $assetType, $this->juser->authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, $this->juser->authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, $this->juser->authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, $this->juser->authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, $this->juser->authorise('core.edit.own' . $at, $asset));
+			//$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
 		}
 	}
 }

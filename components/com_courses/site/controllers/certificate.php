@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,34 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\Content\Server;
+use Exception;
 
 /**
  * Courses controller class for generation and viewing of certificates
  */
-class CoursesControllerCertificate extends \Hubzero\Component\SiteController
+class Certificate extends SiteController
 {
 	/**
 	 * Displays a list of courses
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$course   = CoursesModelCourse::getInstance(JRequest::getVar('course', ''));
-		$offering = $course->offering(JRequest::getVar('offering', ''));
+		$course   = \CoursesModelCourse::getInstance(Request::getVar('course', ''));
+		$offering = $course->offering(Request::getVar('offering', ''));
 
 		// Ensure the course exists
 		if (!$course->exists() || !$offering->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
+				Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -59,12 +62,12 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 
 		// Ensure specified user is enrolled in the course
 		//$student = $offering->member($this->juser->get('id'));
-		$student = CoursesModelMember::getInstance($this->juser->get('id'), $course->get('id'), $offering->get('id'), null, 1);
+		$student = \CoursesModelMember::getInstance($this->juser->get('id'), $course->get('id'), $offering->get('id'), null, 1);
 		if (!$student->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
+				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
+				Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -74,25 +77,24 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		if (!$certificate->exists() || !$certificate->hasFile())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
+				Route::url('index.php?option=' . $this->_option . '&controller=courses'),
+				Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
 				'error'
 			);
 			return;
 		}
 
 		// Path and file name
-		$dir = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'certificates';
+		$dir = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
 		$file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . $this->juser->get('id') . '.pdf';
 
 		// If the file exists and we want to force regenerate it
-		if (is_file($file) && JRequest::getInt('regenerate', 0))
+		if (is_file($file) && Request::getInt('regenerate', 0))
 		{
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($file))
+			if (!\JFile::delete($file))
 			{
-				JError::raiseError(500, JText::_('UNABLE_TO_DELETE_FILE'));
-				return;
+				throw new Exception(Lang::txt('UNABLE_TO_DELETE_FILE'), 500);
 			}
 		}
 
@@ -103,10 +105,9 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 			if (!is_dir($dir))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($dir))
+				if (!\JFolder::create($dir))
 				{
-					JError::raiseError(500, JText::_('COM_COURSES_ERROR_FAILED_TO_CREATE_DIRECTORY'));
-					return;
+					throw new Exception(Lang::txt('COM_COURSES_ERROR_FAILED_TO_CREATE_DIRECTORY'), 500);
 				}
 			}
 
@@ -119,7 +120,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 			$student->token();
 
 			// Serve up the file
-			$xserver = new \Hubzero\Content\Server();
+			$xserver = new Server();
 			$xserver->filename($file);
 			$xserver->serve_attachment($file); // Firefox and Chrome fail if served inline
 			exit;

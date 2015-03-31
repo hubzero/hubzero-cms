@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -48,7 +48,7 @@ $base = rtrim(JURI::base(true), '/');
 			<div id="ajax-uploader" data-action="<?php echo $base; ?>/index.php?option=com_courses&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
 				<noscript>
 					<p><input type="file" name="upload" id="upload" /></p>
-					<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
+					<p><input type="submit" value="<?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>" /></p>
 				</noscript>
 			</div>
 

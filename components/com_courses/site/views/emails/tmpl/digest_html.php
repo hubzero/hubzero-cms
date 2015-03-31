@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $juri    = JURI::getInstance();
-$jconfig = JFactory::getConfig();
+$jconfig = \JFactory::getConfig();
 $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 ?>
 
@@ -287,7 +287,7 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 																transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
 															<div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
 															<div style="color: #AAAAAA; font-size: 11px; text-align:center;">
-																<?php echo JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a'); ?>
+																<?php echo \JFactory::getUser($post->created_by)->get('name'); ?> | created: <?php echo JHTML::_('date', $post->created, 'M j, Y g:i:s a'); ?>
 															</div>
 															<div>
 																<?php echo $post->comment; ?>

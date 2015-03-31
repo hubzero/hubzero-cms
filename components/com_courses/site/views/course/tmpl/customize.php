@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //default logo
-$default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'course_default_logo.png';
+$default_logo = DS.'components'.DS.$this->option.DS.'site'.DS.'assets'.DS.'img'.DS.'course_default_logo.png';
 
 //access levels
 $levels = array(
@@ -52,7 +52,7 @@ $this->css('course.css')
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li class="last"><a class="course" href="<?php echo JRoute::_($this->course->link()); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
+			<li class="last"><a class="course" href="<?php echo Route::url($this->course->link()); ?>"><?php echo Lang::txt('Back to Course'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header>
@@ -66,7 +66,7 @@ $this->css('course.css')
 	<form name="customize" method="POST" action="index.php" id="hubForm">
 		<div class="explaination">
 			<div id="asset_browser">
-				<p><strong><?php echo JText::_('Upload files or images:'); ?></strong></p>
+				<p><strong><?php echo Lang::txt('Upload files or images:'); ?></strong></p>
 				<iframe width="100%" height="300" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;no_html=1&amp;task=media&amp;listdir=<?php echo $this->course->get('id'); ?>"></iframe>
 			</div><!-- / .asset_browser -->
 		</div>
@@ -79,7 +79,7 @@ $this->css('course.css')
 					<option value="">Select a course logo...</option>
 					<?php foreach ($this->logos as $logo) { ?>
 						<?php
-							$remove = JPATH_SITE . DS . 'site' . DS . 'courses' . DS . $this->course->get('gidNumber') . DS;
+							$remove = PATH_APP . DS . 'site' . DS . 'courses' . DS . $this->course->get('gidNumber') . DS;
 							$sel = (str_replace($remove,"",$logo) == $this->course->get('logo')) ? 'selected' : '';
 						?>
 						<option <?php echo $sel; ?> value="<?php echo str_replace(JPATH_SITE,"",$logo); ?>"><?php echo str_replace($remove,"",$logo); ?></option>
@@ -162,7 +162,7 @@ $this->css('course.css')
 		<fieldset id="bottom_box">
 			<h3>Course Custom Content</h3>
 			<p>Course Custom Content includes all the course pages and any course modules at also appear on those pages. Clicking the link below will take you to a different interface where you can add, edit, reorder, turn on/off any course page or module.</p>
-			<p><a class="leave_area" rel="You are about to leave the course customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=managepages'); ?>">Manage Course Pages</a></p>
+			<p><a class="leave_area" rel="You are about to leave the course customization area, and any changes you have made will not be saved. Are you sure you want to continue?" href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=managepages'); ?>">Manage Course Pages</a></p>
 		</fieldset>
 
 		<p class="submit">

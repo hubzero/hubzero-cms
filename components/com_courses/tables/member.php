@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -258,14 +258,14 @@ class CoursesTableMember extends JTable
 			$this->offering_id = intval($this->offering_id);
 			if (!$this->offering_id)
 			{
-				$this->setError(JText::_('Missing offering ID'));
+				$this->setError(Lang::txt('Missing offering ID'));
 				return false;
 			}
 
 			$this->section_id = intval($this->section_id);
 			if (!$this->section_id)
 			{
-				$this->setError(JText::_('Missing section ID'));
+				$this->setError(Lang::txt('Missing section ID'));
 				return false;
 			}
 		}
@@ -273,14 +273,14 @@ class CoursesTableMember extends JTable
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(JText::_('Missing user ID'));
+			$this->setError(Lang::txt('Missing user ID'));
 			return false;
 		}
 
 		$this->course_id = intval($this->course_id);
 		if (!$this->course_id)
 		{
-			$this->setError(JText::_('Missing course ID'));
+			$this->setError(Lang::txt('Missing course ID'));
 			return false;
 		}
 
@@ -288,7 +288,7 @@ class CoursesTableMember extends JTable
 
 		if (!$this->id)
 		{
-			$this->enrolled = JFactory::getDate()->toSql();
+			$this->enrolled = \JFactory::getDate()->toSql();
 		}
 
 		return true;
@@ -304,7 +304,7 @@ class CoursesTableMember extends JTable
 	{
 		if (!$token)
 		{
-			$this->setError(JText::_('No token provided.'));
+			$this->setError(Lang::txt('No token provided.'));
 			return 0;
 		}
 

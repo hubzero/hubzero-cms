@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -45,17 +45,17 @@ $this->css('offering');
 	<?php } ?>
 
 	<p id="page_identity">
-		<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-			<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+		<a class="prev" href="<?php echo Route::url($this->course->link()); ?>">
+			<?php echo Lang::txt('COM_COURSES_COURSE_OVERVIEW'); ?>
 		</a>
 		<strong>
-			<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+			<?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:
 		</strong>
 		<span>
 			<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 		</span>
 		<strong>
-			<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+			<?php echo Lang::txt('COM_COURSES_SECTION'); ?>:
 		</strong>
 		<span>
 			<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
@@ -72,18 +72,18 @@ $this->css('offering');
 			}
 		?>
 
-		<form action="<?php echo JRoute::_($this->course->offering()->link() . '&task=enroll'); ?>" method="post" id="hubForm">
+		<form action="<?php echo Route::url($this->course->offering()->link() . '&task=enroll'); ?>" method="post" id="hubForm">
 			<div class="explaination">
-				<h3><?php echo JText::_('COM_COURSES_CODE_NOT_WORKING'); ?></h3>
-				<p><?php echo JText::_('COM_COURSES_CODE_NOT_WORKING_EXPLANATION'); ?></p>
+				<h3><?php echo Lang::txt('COM_COURSES_CODE_NOT_WORKING'); ?></h3>
+				<p><?php echo Lang::txt('COM_COURSES_CODE_NOT_WORKING_EXPLANATION'); ?></p>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('COM_COURSES_REDEEM_COUPON_CODE'); ?></legend>
+				<legend><?php echo Lang::txt('COM_COURSES_REDEEM_COUPON_CODE'); ?></legend>
 
-				<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_RESTRICTED'); ?></p>
+				<p class="warning"><?php echo Lang::txt('COM_COURSES_ENROLLMENT_RESTRICTED'); ?></p>
 
 				<label for="field-code">
-					<?php echo JText::_('COM_COURSES_FIELD_COUPON_CODE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+					<?php echo Lang::txt('COM_COURSES_FIELD_COUPON_CODE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					<input type="text" name="code" id="field-code" size="35" value="" />
 				</label>
 			</fieldset>
@@ -96,7 +96,7 @@ $this->css('offering');
 			<input type="hidden" name="task" value="enroll" />
 
 			<p class="submit">
-				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_COURSES_REDEEM'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_COURSES_REDEEM'); ?>" />
 			</p>
 		</form>
 	</div>

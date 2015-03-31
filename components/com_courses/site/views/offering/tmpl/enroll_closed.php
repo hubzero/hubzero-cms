@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -45,17 +45,17 @@ $this->css('offering');
 	<?php } ?>
 
 	<p id="page_identity">
-		<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-			<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+		<a class="prev" href="<?php echo Route::url($this->course->link()); ?>">
+			<?php echo Lang::txt('COM_COURSES_COURSE_OVERVIEW'); ?>
 		</a>
 		<strong>
-			<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+			<?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:
 		</strong>
 		<span>
 			<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 		</span>
 		<strong>
-			<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+			<?php echo Lang::txt('COM_COURSES_SECTION'); ?>:
 		</strong>
 		<span>
 			<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
@@ -67,13 +67,13 @@ $this->css('offering');
 	<div class="section-inner">
 		<div id="offering-introduction">
 			<div class="instructions">
-				<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_CLOSED'); ?></p>
+				<p class="warning"><?php echo Lang::txt('COM_COURSES_ENROLLMENT_CLOSED'); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('COM_COURSES_I_SHOULD_HAVE_ACCESS'); ?></strong></p>
-				<p><?php echo JText::sprintf('COM_COURSES_I_SHOULD_HAVE_ACCESS_EXPLANATION', JRoute::_('index.php?option=com_support')); ?></p>
-				<p><strong><?php echo JText::_('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES'); ?></strong></p>
-				<p><?php echo JText::sprintf('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES_EXPLANATIONS', JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+				<p><strong><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS'); ?></strong></p>
+				<p><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS_EXPLANATION', Route::url('index.php?option=com_support')); ?></p>
+				<p><strong><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES'); ?></strong></p>
+				<p><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES_EXPLANATIONS', Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 			</div><!-- / .questions -->
 		</div><!-- / #offering-introduction -->
 	</div>

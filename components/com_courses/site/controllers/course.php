@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,27 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\Base\Object;
+use Hubzero\Content\Server;
+use Exception;
 
 /**
  * Courses controller class
  */
-class CoursesControllerCourse extends \Hubzero\Component\SiteController
+class Course extends SiteController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Load the course page
-		$this->course = CoursesModelCourse::getInstance(JRequest::getVar('gid', ''));
+		$this->course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
 
 		$this->registerTask('edit', 'display');
 
@@ -54,17 +58,17 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param      array $course_pages List of roup pages
-	 * @return     void
+	 * @param   array  $course_pages  List of roup pages
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -78,7 +82,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		else
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -87,12 +91,12 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
 		//set title used in view
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = Lang::txt(strtoupper($this->_option));
 
 		if ($this->course->exists())
 		{
@@ -102,25 +106,25 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			if ($this->_task && $this->_task != 'intro')
 			{
-				$this->_title .= JText::_(strtoupper($this->_option . '_' . $this->_task));
+				$this->_title .= Lang::txt(strtoupper($this->_option . '_' . $this->_task));
 			}
 		}
 
 		//set title of browser window
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
 	/**
 	 * Redirect to login page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function loginTask($message = '')
 	{
-		$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
+		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . $return, false),
+			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 			$message,
 			'warning'
 		);
@@ -130,20 +134,18 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	/**
 	 * View a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		if (!$this->course->isPublished() && !$this->course->isDraft())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		if (!$this->course->access('view'))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Build the title
@@ -152,10 +154,10 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		// Build pathway
 		$this->_buildPathway();
 
-		$this->view->active = JRequest::getVar('active', 'overview');
+		$this->view->active = Request::getVar('active', 'overview');
 
-		JPluginHelper::importPlugin('courses');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('courses');
+		$dispatcher = \JDispatcher::getInstance();
 
 		$this->view->plugins = $dispatcher->trigger(
 			'onCourseView',
@@ -169,7 +171,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			foreach ($pages as $page)
 			{
-				$plg = with(new \Hubzero\Base\Object)
+				$plg = with(new Object)
 					->set('name', $page->get('url'))
 					->set('title', $page->get('title'));
 
@@ -184,7 +186,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		}
 
 		$this->view->course        = $this->course;
-		$this->view->user          = $this->juser;
+		$this->view->user          = User::getRoot();
 		$this->view->config        = $this->config;
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 		$this->view->display();
@@ -193,7 +195,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newTask()
 	{
@@ -203,16 +205,14 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for editing a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
-		$this->view->setLayout('edit');
-
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
@@ -232,24 +232,22 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			// Ensure we found the course info
 			if (!$this->course->exists())
 			{
-				JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-				return;
+				return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 			}
 
 			// Check authorization
 			if (!$this->course->access('edit'))
 			{
-				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
-				return;
+				return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 			}
 
-			$this->view->title = JText::_('COM_COURSES_EDIT_COURSE') . ': ' . $this->course->get('title');
+			$this->view->title = Lang::txt('COM_COURSES_EDIT_COURSE') . ': ' . $this->course->get('title');
 		}
 		else
 		{
 			$this->course->set('state', 3);
 
-			$this->view->title = JText::_('COM_COURSES_NEW_COURSE');
+			$this->view->title = Lang::txt('COM_COURSES_NEW_COURSE');
 		}
 
 		//get directory for course file uploads
@@ -268,10 +266,12 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->course = $this->course;
-		$this->view->juser  = $this->juser;
+		$this->view->juser  = User::getRoot();
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -282,19 +282,19 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
 		// Incoming
-		$data = JRequest::getVar('course', array(), 'post', 'none', 2);
+		$data = Request::getVar('course', array(), 'post', 'none', 2);
 
-		$course = CoursesModelCourse::getInstance($data['id']);
+		$course = \CoursesModelCourse::getInstance($data['id']);
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -306,8 +306,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		// Check authorization
 		if (!$isNew && !$course->access('edit', 'course'))
 		{
-			JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
-			return;
+			return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Push back into edit mode if any errors
@@ -336,8 +335,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		if (isset($_POST['tags']))
 		{
-			$tags = trim(JRequest::getVar('tags', ''));
-			$course->tag($tags, $this->juser->get('id'));
+			$tags = trim(Request::getVar('tags', ''));
+			$course->tag($tags, User::get('id'));
 		}
 
 		// Rename the temporary upload directory if it exist
@@ -356,22 +355,22 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 					}
 				}
 			}
-			$course->add($this->juser->get('id'), $role_id);
+			$course->add(User::get('id'), $role_id);
 		}
 
 		// Show success message to user
 		if ($isNew)
 		{
-			$msg = JText::sprintf('COM_COURSES_COURSE_CREATED', $course->get('title'));
+			$msg = Lang::txt('COM_COURSES_COURSE_CREATED', $course->get('title'));
 		}
 		else
 		{
-			$msg = JText::sprintf('COM_COURSES_COURSE_UPDATED', $course->get('title'));
+			$msg = Lang::txt('COM_COURSES_COURSE_UPDATED', $course->get('title'));
 		}
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
+			Route::url('index.php?option=' . $this->_option . '&gid=' . $course->get('alias')),
 			$msg
 		);
 	}
@@ -384,16 +383,16 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function instructorsTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
-		$this->view->no_tml = JRequest::getInt('no_html', 0);
+		$this->view->no_tml = Request::getInt('no_html', 0);
 
 		$this->view->course = $this->course;
-		$this->view->juser  = $this->juser;
+		$this->view->juser  = User::getRoot();
 
 		$this->view->display();
 	}
@@ -406,13 +405,13 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function newofferingTask($offering=null)
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
-		$this->view->no_html = JRequest::getInt('no_html', 0);
+		$this->view->no_html = Request::getInt('no_html', 0);
 
 		if ($offering instanceof CoursesModelOffering)
 		{
@@ -424,9 +423,9 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		}
 
 		$this->view->course = $this->course;
-		$this->view->juser  = $this->juser;
+		$this->view->juser  = User::getRoot();
 
-		$this->view->title = JText::_('COM_COURSES_NEW_OFFERING');
+		$this->view->title = Lang::txt('COM_COURSES_NEW_OFFERING');
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
 		$this->view->display();
@@ -440,20 +439,20 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function saveofferingTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
-		$data = JRequest::getVar('offering', array(), 'post', 'none', 2);
-		$no_html = JRequest::getInt('no_html', 0);
+		$data    = Request::getVar('offering', array(), 'post', 'none', 2);
+		$no_html = Request::getInt('no_html', 0);
 
-		$course = CoursesModelCourse::getInstance($data['course_id']);
-		$offering = CoursesModelOffering::getInstance($data['id']);
+		$course   = \CoursesModelCourse::getInstance($data['course_id']);
+		$offering = \CoursesModelOffering::getInstance($data['id']);
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -497,7 +496,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$response->message = JText::_('COM_COURSES_OFFERING_SAVED');
+		$response->message = Lang::txt('COM_COURSES_OFFERING_SAVED');
 
 		if ($no_html)
 		{
@@ -507,7 +506,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($course->link()),
+				Route::url($course->link()),
 				$response->message
 			);
 		}
@@ -529,47 +528,45 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
 		// Ensure we found the course info
 		if (!$this->course->exists())
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Check authorization
 		if (!$this->course->access('delete'))
 		{
-			JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
-			return;
+			return App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Get number of course members
 		$managers = $this->course->get('managers');
 
 		// Get plugins
-		JPluginHelper::importPlugin('courses');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('courses');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Incoming
-		$process = JRequest::getVar('process', '');
-		$confirmdel = JRequest::getVar('confirmdel', '');
-		$msg = trim(JRequest::getVar('msg', '', 'post'));
+		$process = Request::getVar('process', '');
+		$confirmdel = Request::getVar('confirmdel', '');
+		$msg = trim(Request::getVar('msg', '', 'post'));
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
 		{
 			if ($process && !$confirmdel)
 			{
-				$this->addComponentMessage(JText::_('COM_COURSES_ERROR_CONFIRM_DELETION'), 'error');
+				$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_CONFIRM_DELETION'), 'error');
 			}
 
-			$log = JText::sprintf('COM_COURSES_MEMBERS_LOG', count($managers));
+			$log = Lang::txt('COM_COURSES_MEMBERS_LOG', count($managers));
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
@@ -580,7 +577,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			}
 
 			// Output HTML
-			$this->view->title  = JText::_('COM_COURSES_DELETE_COURSE') . ': ' . $this->course->get('title');
+			$this->view->title  = Lang::txt('COM_COURSES_DELETE_COURSE') . ': ' . $this->course->get('title');
 			$this->view->course = $course;
 			$this->view->log    = $log;
 			$this->view->msg    = $msg;
@@ -606,18 +603,16 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		}
 
 		// Get and set some vars
-		$date = JFactory::getDate();
-
-		$jconfig = JFactory::getConfig();
+		$date = \JFactory::getDate();
 
 		// Build the "from" info for e-mails
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_name)),
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name)),
+			'email' => Config::get('mailfrom')
 		);
 
 		// E-mail subject
-		$subject = JText::sprintf('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
+		$subject = Lang::txt('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
 		// Build the e-mail message
 		$eview = new \Hubzero\Component\View(array(
@@ -625,8 +620,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			'layout' => 'deleted'
 		));
 		$eview->option = $this->_option;
-		$eview->sitename = $jconfig->getValue('config.sitename');
-		$eview->juser = $this->juser;
+		$eview->sitename = Config::get('sitename');
+		$eview->juser = User::getRoot();
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
 		$eview->course = $deletedcourse;
@@ -635,21 +630,21 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		$message = str_replace("\n", "\r\n", $message);
 
 		// Send the message
-		JPluginHelper::importPlugin('xmessage');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('xmessage');
+		$dispatcher = \JDispatcher::getInstance();
 		if (!$dispatcher->trigger('onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option)))
 		{
-			$this->addComponentMessage(JText::_('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
+			$this->addComponentMessage(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'), 'error');
 		}
 
 		// Log the deletion
 		$xlog = new CoursesTableLog($this->database);
 		$xlog->gid       = $this->course->get('id');
-		$xlog->uid       = $this->juser->get('id');
-		$xlog->timestamp = JFactory::getDate()->toSql();
+		$xlog->uid       = User::get('id');
+		$xlog->timestamp = \JFactory::getDate()->toSql();
 		$xlog->action    = 'course_deleted';
 		$xlog->comments  = $log;
-		$xlog->actorid   = $this->juser->get('id');
+		$xlog->actorid   = User::get('id');
 		if (!$xlog->store())
 		{
 			$this->addComponentMessage($xlog->getError(), 'error');
@@ -657,8 +652,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option),
-			JText::sprintf('COM_COURSES_COURSE_DELETED', $this->course->get('title')),
+			Route::url('index.php?option=' . $this->_option),
+			Lang::txt('COM_COURSES_COURSE_DELETED', $this->course->get('title')),
 			'passed'
 		);
 	}
@@ -674,33 +669,33 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function savepageTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
+			$this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 
 		// Incoming
-		$page = JRequest::getVar('page', array(), 'post', 'none', 2);
+		$page = Request::getVar('page', array(), 'post', 'none', 2);
 
-		$course = CoursesModelCourse::getInstance($page['course_id']);
+		$course = \CoursesModelCourse::getInstance($page['course_id']);
 		if (!$course->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 		}
 
-		$model = new CoursesModelPage($page['id']);
+		$model = new \CoursesModelPage($page['id']);
 
 		if (!$model->bind($page))
 		{
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
+				Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
 			);
@@ -711,7 +706,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		{
 			// Redirect back to the course page
 			$this->setRedirect(
-				JRoute::_($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
+				Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
 				$model->getError(),
 				'error'
 			);
@@ -720,8 +715,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_($course->link() . '&active=' . $model->get('url')),
-			JText::_('COM_COURSES_PAGE_SAVED')
+			Route::url($course->link() . '&active=' . $model->get('url')),
+			Lang::txt('COM_COURSES_PAGE_SAVED')
 		);
 	}
 
@@ -733,7 +728,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	public function deletepageTask()
 	{
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$this->loginTask('COM_COURSES_NOT_LOGGEDIN');
 			return;
@@ -742,7 +737,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		if (!$this->course->exists())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
+				Route::url('index.php?option=' . $this->_option)
 			);
 			return;
 		}
@@ -750,12 +745,12 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		if (!$this->course->access('edit', 'course'))
 		{
 			$this->setRedirect(
-				JRoute::_($this->course->link())
+				Route::url($this->course->link())
 			);
 			return;
 		}
 
-		$model = $this->course->page(JRequest::getVar('active', ''));
+		$model = $this->course->page(Request::getVar('active', ''));
 
 		$msg = null;
 
@@ -771,8 +766,8 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Redirect back to the course page
 		$this->setRedirect(
-			JRoute::_($this->course->link()),
-			($msg ? $msg : JText::_('COM_COURSES_PAGE_REMOVED')),
+			Route::url($this->course->link()),
+			($msg ? $msg : Lang::txt('COM_COURSES_PAGE_REMOVED')),
 			($msg ? 'error' : null)
 		);
 	}
@@ -828,7 +823,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	private function courseAvailability($course = NULL)
 	{
 		//get the course
-		$course = (!is_null($course)) ? $course : JRequest::getVar('course', '');
+		$course = (!is_null($course)) ? $course : Request::getVar('course', '');
 		$course = strtolower(trim($course));
 
 		if ($course == '')
@@ -837,7 +832,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure the data passed is valid
-		$c = CoursesModelCourse::getInstance($course);
+		$c = \CoursesModelCourse::getInstance($course);
 		if (($course == 'new' || $course == 'browse') || !$this->_validCn($course) || $c->exists())
 		{
 			$availability = false;
@@ -847,7 +842,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			$availability = true;
 		}
 
-		if (JRequest::getVar('no_html', 0) == 1)
+		if (Request::getVar('no_html', 0) == 1)
 		{
 			echo json_encode(array('available' => $availability));
 			return;
@@ -865,10 +860,10 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	 */
 	public function logoTask()
 	{
-		$file = JPATH_ROOT . $this->course->logo();
+		$file = PATH_APP . $this->course->logo();
 
 		// Initiate a new content server and serve up the file
-		$server = new \Hubzero\Content\Server();
+		$server = new Server();
 		$server->filename($file);
 		$server->disposition('inline');
 		$server->acceptranges(false);
@@ -876,7 +871,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		if (!$server->serve())
 		{
 			// Should only get here on error
-			throw new JException(JText::_('COM_COURSES_SERVER_ERROR'), 404);
+			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 404);
 		}
 		else
 		{
@@ -894,12 +889,11 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		// Get some needed libraries
 		if (!$this->course->access('view'))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
 		// Get the scope of the parent page the file is attached to
-		$filename = JRequest::getVar('file', '');
+		$filename = Request::getVar('file', '');
 		if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 		{
 			$filename = substr($filename, strlen('image:'));
@@ -928,17 +922,16 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		}
 
 		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $filename;
+		$filename = PATH_APP . $filename;
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
-			return;
+			return App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 		}
 
 		// Initiate a new content server and serve up the file
-		$xserver = new \Hubzero\Content\Server();
+		$xserver = new Server();
 		$xserver->filename($filename);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
@@ -946,7 +939,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+			throw new Exception(Lang::txt('COM_COURSES_SERVER_ERROR'), 500);
 		}
 		else
 		{

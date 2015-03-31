@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -136,7 +136,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	 */
 	public function __construct($oid=null, $offering_id=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->_tbl = new CoursesTableSection($this->_db);
 
@@ -212,7 +212,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return false;
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		if ($this->get('start_date')
 		 && $this->get('start_date') != $this->_db->getNullDate()
@@ -236,7 +236,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		if ($this->get('end_date')
 		 && $this->get('end_date') != $this->_db->getNullDate()
@@ -261,7 +261,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		if ($this->get('publish_down')
 		 && $this->get('publish_down') != $this->_db->getNullDate()
@@ -303,7 +303,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		if (!$id)
 		{
-			$juser = JFactory::getUser();
+			$juser = \JFactory::getUser();
 			$id = $juser->get('id');
 		}
 		return $this->member($id)->exists();
@@ -557,7 +557,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$model = CoursesModelMember::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
 			if (!$model->exists())
 			{
-				$this->setError(JText::sprintf('Entry for user #%s, course #%s, offering #%s, section #%s not found.', $user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id')));
+				$this->setError(Lang::txt('Entry for user #%s, course #%s, offering #%s, section #%s not found.', $user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id')));
 				continue;
 			}
 			if (!$model->delete())

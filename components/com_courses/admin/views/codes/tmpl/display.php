@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,33 +23,33 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_COUPON_CODES'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODES'), 'courses.png');
 if ($canDo->get('core.create'))
 {
 	$bar =  JToolBar::getInstance('toolbar');
 	$bar->appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
 
-	JToolBarHelper::spacer();
-	JToolBarHelper::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
-	JToolBarHelper::spacer();
-	JToolBarHelper::addNew();
+	Toolbar::spacer();
+	Toolbar::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
+	Toolbar::spacer();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
+	Toolbar::deleteList('COM_COURSES_DELETE_CONFIRM', 'delete');
 }
 
 JHTML::_('behavior.tooltip');
@@ -67,21 +67,21 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');$('#filter-redeemed').val('-1');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-redeemed').val('-1');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-redeemed"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<label for="filter-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
 			<select name="redeemed" id="filter-redeemed" onchange="this.form.submit();">
-				<option value="-1"<?php if ($this->filters['redeemed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_ALL_STATES'); ?></option>
-				<option value="1"<?php if ($this->filters['redeemed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_FILTER_REDEEMED'); ?></option>
-				<option value="0"<?php if ($this->filters['redeemed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_FILTER_UNREDEEMED'); ?></option>
+				<option value="-1"<?php if ($this->filters['redeemed'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+				<option value="1"<?php if ($this->filters['redeemed'] == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_REDEEMED'); ?></option>
+				<option value="0"<?php if ($this->filters['redeemed'] == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_FILTER_UNREDEEMED'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -91,13 +91,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="7">
-					(<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+					(<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>:
 					<?php echo $this->escape(stripslashes($this->section->get('title'))); ?>
@@ -105,17 +105,28 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CODE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CREATED'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_EXPIRES'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_REDEEMED'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_REDEEMED_BY'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CODE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CREATED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_EXPIRES'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_REDEEMED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_REDEEMED_BY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="7"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="7">
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -133,7 +144,7 @@ foreach ($this->rows as $i => $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
 					</a>
 				<?php } else { ?>
@@ -143,25 +154,25 @@ foreach ($this->rows as $i => $row)
 				<?php } ?>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
-					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_NEVER'); ?>
+					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
 				</td>
 			<?php if ($row->get('redeemed')) { ?>
 				<td>
 					<span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
-						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) . '</time>' : JText::_('JNO'); ?></span>
+						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . JHTML::_('date', $row->get('redeemed'), Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
 					</span>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
 						<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
 					</a>
 				</td>
 			<?php } else { ?>
 				<td colspan="2">
-					<?php echo JText::_('COM_COURSES_UNREDEEMED'); ?>
+					<?php echo Lang::txt('COM_COURSES_UNREDEEMED'); ?>
 				</td>
 			<?php } ?>
 			</tr>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -126,13 +126,13 @@ Class CoursesTablePage extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Missing title'));
+			$this->setError(Lang::txt('Missing title'));
 			return false;
 		}
 
 		if (!$this->content)
 		{
-			$this->setError(JText::_('Missing content'));
+			$this->setError(Lang::txt('Missing content'));
 			return false;
 		}
 
@@ -157,7 +157,7 @@ Class CoursesTablePage extends JTable
 			$this->_db->setQuery($sql);
 			if ($this->_db->loadResult())
 			{
-				$this->setError(JText::sprintf('A page with the alias "%s" already exist.', $this->url));
+				$this->setError(Lang::txt('A page with the alias "%s" already exist.', $this->url));
 				return false;
 			}
 

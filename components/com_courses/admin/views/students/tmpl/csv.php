@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -46,13 +46,13 @@ foreach ($this->rows as $row)
 	echo ',';
 	echo encodeCSVField($row->get('email'));
 	echo ',';
-	echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('COM_COURSES_NONE');
+	echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE');
 	echo ',';
 	if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') {
-		echo encodeCSVField(JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')));
+		echo encodeCSVField(JHTML::_('date', $row->get('enrolled'), Lang::txt('DATE_FORMAT_HZ1')));
 	}
 	else {
-		echo encodeCSVField(JText::_('COM_COURSES_UNKNOWN'));
+		echo encodeCSVField(Lang::txt('COM_COURSES_UNKNOWN'));
 	}
 	echo "\n";
 

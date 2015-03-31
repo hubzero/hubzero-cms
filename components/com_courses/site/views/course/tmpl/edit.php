@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,14 +40,14 @@ $dispatcher = JDispatcher::getInstance();
 $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))) );
 
 //build back link
-$host = JRequest::getVar("HTTP_HOST", '', "SERVER");
-$referrer = JRequest::getVar("HTTP_REFERER", '', "SERVER");
+$host = Request::getVar("HTTP_HOST", '', "SERVER");
+$referrer = Request::getVar("HTTP_REFERER", '', "SERVER");
 
 //check to make sure referrer is a valid url
 //check to make sure the referrer is a link within the HUB
 if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == '' || strpos($referrer, $host) === false)
 {
-	$link = JRoute::_('index.php?option=' . $this->option);
+	$link = Route::url('index.php?option=' . $this->option);
 }
 else
 {
@@ -57,7 +57,7 @@ else
 //if we are in edit mode we want to redirect back to course
 if ($this->task == 'edit')
 {
-	$link = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'));
+	$link = Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'));
 	$title = 'Back to Course';
 }
 else
@@ -114,7 +114,7 @@ This course is intended to be broadly accessible to those with a background in '
 	?>
 
 <?php if ($this->task != 'new' && !$this->course->get('published')) { ?>
-	<p class="warning"><?php echo JText::_('COM_COURSES_STATUS_NEW_COURSE'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_COURSES_STATUS_NEW_COURSE'); ?></p>
 <?php } ?>
 
 	<form action="index.php" method="post" id="hubForm">
@@ -128,24 +128,24 @@ This course is intended to be broadly accessible to those with a background in '
 			<p>Here is where we'll create a catalog entry and start describing the course. We'll build an outline and add files in a later step.</p>
 		</div>
 		<fieldset id="top_box">
-			<legend><?php echo JText::_('Creating a catalog entry'); ?></legend>
+			<legend><?php echo Lang::txt('Creating a catalog entry'); ?></legend>
 <?php if ($this->task != 'new') { ?>
 			<input name="alias" type="hidden" value="<?php echo $this->course->get('alias'); ?>" />
 <?php } else { ?>
 			<label class="course_alias_label" for="course_alias_field">
-				<?php echo JText::_('Course identifier'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
+				<?php echo Lang::txt('Course identifier'); ?> <span class="required"><?php echo Lang::txt('COM_COURSES_REQUIRED'); ?></span>
 				<input name="course[alias]" id="course_alias_field" type="text" size="35" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" />
-				<span class="hint"><?php echo JText::_('This is a short identifier used for URLs, catalogs, etc. Allowed characters are letters, numbers, dashes, underscores, and periods. Example: biology101, chem.501'); ?></span>
+				<span class="hint"><?php echo Lang::txt('This is a short identifier used for URLs, catalogs, etc. Allowed characters are letters, numbers, dashes, underscores, and periods. Example: biology101, chem.501'); ?></span>
 			</label>
 <?php } ?>
 
 			<label for="field-title">
-				<?php echo JText::_('COM_COURSES_TITLE'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
+				<?php echo Lang::txt('COM_COURSES_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_COURSES_REQUIRED'); ?></span>
 				<input type="text" name="course[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 			</label>
 
 			<label for="field_blurb">
-				<?php echo JText::_('Brief description'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
+				<?php echo Lang::txt('Brief description'); ?> <span class="optional"><?php echo Lang::txt('COM_COURSES_OPTIONAL'); ?></span>
 				<textarea name="course[blurb]" id="field-blurb" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
 				<span class="hint">
 					A brief, one or two sentences about your course. Think of this as the text you would see in a course catalog.
@@ -153,12 +153,12 @@ This course is intended to be broadly accessible to those with a background in '
 			</label>
 
 			<label for="field_description">
-				<?php echo JText::_('Overview'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
+				<?php echo Lang::txt('Overview'); ?> <span class="optional"><?php echo Lang::txt('COM_COURSES_OPTIONAL'); ?></span>
 
 				<?php
-					echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
+					echo \\JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->get('description'))), '', '', 35, 30, false, 'field_description');
 				?>
-				<span class="hint"><a class="popup" href="<?php echo JRoute::_('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
+				<span class="hint"><a class="popup" href="<?php echo Route::url('index.php?option=com_wiki&scope=&pagename=Help:WikiFormatting'); ?>">Wiki formatting</a> is allowed.</span>
 
 				<dl>
 					<dt>What this is:</dt>
@@ -170,7 +170,7 @@ This course is intended to be broadly accessible to those with a background in '
 			</label>
 
 			<label for="actags">
-				<?php echo JText::_('Tags'); ?> <span class="optional"><?php echo JText::_('COM_COURSES_OPTIONAL'); ?></span>
+				<?php echo Lang::txt('Tags'); ?> <span class="optional"><?php echo Lang::txt('COM_COURSES_OPTIONAL'); ?></span>
 
 				<?php if (count($tf) > 0) {
 					echo $tf[0];
@@ -178,7 +178,7 @@ This course is intended to be broadly accessible to those with a background in '
 					<input type="text" name="tags" id="actags" value="<?php echo $this->couse->tags('string'); ?>" />
 				<?php } ?>
 
-				<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+				<span class="hint">These are keywords that describe your course and will help people find it when browsing, searching, or viewing related content. <?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -193,7 +193,7 @@ This course is intended to be broadly accessible to those with a background in '
 		<?php echo JHTML::_('form.token'); ?>
 
 		<p class="submit">
-			<input class="btn btn-success" type="submit" value="<?php echo JText::_('Save'); ?>" />
+			<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('Save'); ?>" />
 		</p>
 	</form>
 </section><!-- / .section -->

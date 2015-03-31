@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -139,7 +139,7 @@ class PdfForm
 		// If we don't already have one, create it
 		if (!$dbh)
 		{
-			$dbh = JFactory::getDBO();
+			$dbh = \JFactory::getDBO();
 		}
 
 		return $dbh;
@@ -289,8 +289,8 @@ class PdfForm
 		$idx = 0;
 		foreach ($images as $img)
 		{
-			$session_id = JFactory::getSession()->getId();
-			$secret     = JFactory::getConfig()->getValue('secret');
+			$session_id = \JFactory::getSession()->getId();
+			$secret     = \JFactory::getConfig()->getValue('secret');
 			$token      = hash('sha256', $session_id . ':' . $secret);
 			$path       = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&token='.$token;
 			$path      .= (isset($version_dir)) ? '&version=' . $version_dir : '';

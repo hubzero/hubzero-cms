@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -79,8 +79,8 @@ class CoursesModelPage extends CoursesModelAbstract
 				if ($content === null)
 				{
 					$config = array(
-						'option'   => JRequest::getCmd('option', 'com_courses'),
-						'scope'    => JRequest::getVar('gid', ''),
+						'option'   => Request::getCmd('option', 'com_courses'),
+						'scope'    => Request::getVar('gid', ''),
 						'pagename' => $this->get('url'),
 						'pageid'   => '',
 						'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
@@ -200,7 +200,7 @@ class CoursesModelPage extends CoursesModelAbstract
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::copy($src, $dest, PATH_APP))
 				{
-					$this->setError(JText::_('Failed to copy page files.'));
+					$this->setError(Lang::txt('Failed to copy page files.'));
 				}
 			}
 		}

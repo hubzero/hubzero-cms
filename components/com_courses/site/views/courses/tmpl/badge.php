@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -50,13 +50,13 @@ switch ($this->action)
 			}
 			else
 			{
-				JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
+				JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 				return;
 			}
 		}
 		else
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 			return;
 		}
 
@@ -69,7 +69,7 @@ switch ($this->action)
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{
@@ -79,7 +79,7 @@ switch ($this->action)
 	break;
 
 	case 'criteria':
-		$title = JText::_('COM_COURSES_BADGE_CRITERIA');
+		$title = Lang::txt('COM_COURSES_BADGE_CRITERIA');
 		$body  = "<div class=\"criteria-text\">\n";
 		$body .= $this->badge->get('criteria_text') . "\n";
 		$body .= "</div>\n";
@@ -88,21 +88,21 @@ switch ($this->action)
 	case 'validation':
 		if (!$this->token)
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$memberBadge = new CoursesTableMemberBadge($db);
 		$memberBadge->load(array('validation_token' => $this->token));
 
 		if (!$memberBadge->get('id'))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
+			JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		$memberTbl = new CoursesTableMember($db);
@@ -112,10 +112,10 @@ switch ($this->action)
 		$criteria = new CoursesTableSectionBadgeCriteria($db);
 		$criteria->load($memberBadge->get('criteria_id'));
 
-		$title = JText::_('COM_COURSES_BADGE_VALIDATION');
+		$title = Lang::txt('COM_COURSES_BADGE_VALIDATION');
 		$body  = "<img class=\"badge-img\" src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
 		$body .= "<div class=\"badge-validation\">\n";
-		$body .= JText::sprintf('COM_COURSES_BADGE_VALIDATION_TEXT', JFactory::getUser($user_id)->get('name'), JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y'));
+		$body .= Lang::txt('COM_COURSES_BADGE_VALIDATION_TEXT', \JFactory::getUser($user_id)->get('name'), \JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y'));
 		$body .= "</div>\n";
 		$body .= "<div class=\"badge-criteria\">\n";
 		$body .= $criteria->get('text');
@@ -123,13 +123,13 @@ switch ($this->action)
 	break;
 
 	default:
-		JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
+		JError::raiseError(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
 	break;
 }
 ?>
 
 <header id="content-header">
-	<h2><?php echo JText::_($title); ?></h2>
+	<h2><?php echo Lang::txt($title); ?></h2>
 </header>
 
 <section class="main section">

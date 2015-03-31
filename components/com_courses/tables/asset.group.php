@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -136,14 +136,14 @@ class CoursesTableAssetGroup extends JTable
 		$this->unit_id = intval($this->unit_id);
 		if (!$this->unit_id)
 		{
-			$this->setError(JText::_('Missing unit ID'));
+			$this->setError(Lang::txt('Missing unit ID'));
 			return false;
 		}
 
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->setError(JText::_('Missing title'));
+			$this->setError(Lang::txt('Missing title'));
 			return false;
 		}
 
@@ -161,8 +161,8 @@ class CoursesTableAssetGroup extends JTable
 
 			$this->state = ($this->state) ? $this->state : 1;
 
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 

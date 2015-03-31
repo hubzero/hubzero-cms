@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Incoming
-$d = JRequest::getVar('d', 'inline');
+$d = Request::getVar('d', 'inline');
 
 //make sure we have a proper disposition
 if ($d != "inline" && $d != "attachment")
@@ -46,7 +46,7 @@ $path = $this->model->path($this->course->get('id'));
 // Ensure we have a path
 if (empty($path))
 {
-	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND'));
+	JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
 	return;
 }
 
@@ -56,7 +56,7 @@ $filename = JPATH_ROOT . $path;
 // Ensure the file exist
 if (!file_exists($filename))
 {
-	JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
+	JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
 	return;
 }
 
@@ -78,7 +78,7 @@ $xserver->acceptranges(false); // @TODO fix byte range support
 if (!$xserver->serve())
 {
 	// Should only get here on error
-	JError::raiseError(500, JText::_('COM_COURSES_SERVER_ERROR'));
+	JError::raiseError(500, Lang::txt('COM_COURSES_SERVER_ERROR'));
 }
 else
 {

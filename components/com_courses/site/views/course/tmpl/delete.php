@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,7 +39,7 @@ $this->css()
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li class="last"><a class="course" href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias')); ?>"><?php echo JText::_('Back to Course'); ?></a></li>
+			<li class="last"><a class="course" href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('alias')); ?>"><?php echo Lang::txt('Back to Course'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header>
@@ -59,29 +59,29 @@ $this->css()
 
 			<p><strong>Alternative to deleting</strong></p>
 			<p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
+			<p><a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('cn').'&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
 			<!--
 			<div class="admin-options">
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=view'); ?>"><?php echo JText::_('COURSES_VIEW_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=edit'); ?>"><?php echo JText::_('COURSES_EDIT_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=customize'); ?>"><?php echo JText::_('COURSES_CUSTOMIZE_COURSE'); ?></a></p>
-				<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=invite'); ?>"><?php echo JText::_('COURSES_INVITE_USERS'); ?></a></p>
+				<p><a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=view'); ?>"><?php echo Lang::txt('COURSES_VIEW_COURSE'); ?></a></p>
+				<p><a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=edit'); ?>"><?php echo Lang::txt('COURSES_EDIT_COURSE'); ?></a></p>
+				<p><a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=customize'); ?>"><?php echo Lang::txt('COURSES_CUSTOMIZE_COURSE'); ?></a></p>
+				<p><a href="<?php echo Route::url('index.php?option='.$this->option.'&gid='.$this->course->get('alias').'&task=invite'); ?>"><?php echo Lang::txt('COURSES_INVITE_USERS'); ?></a></p>
 			</div>
 			-->
 		</div>
 		<fieldset>
-			<h3><?php echo JText::_('COURSES_DELETE_HEADER'); ?></h3>
+			<h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>
 
-	 		<p class="warning"><?php echo JText::sprintf('COURSES_DELETE_WARNING',$this->course->get('description')).'<br /><br />'.$this->log; ?></p>
+	 		<p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING',$this->course->get('description')).'<br /><br />'.$this->log; ?></p>
 
 			<label>
-				<?php echo JText::_('COURSES_DELETE_MESSAGE'); ?>
+				<?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
 				<textarea name="msg" id="msg" rows="12" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
 			</label>
 
 			<label>
 				<input type="checkbox" class="option" name="confirmdel" value="1" />
-				<?php echo JText::_('COURSES_DELETE_CONFIRM'); ?>
+				<?php echo Lang::txt('COURSES_DELETE_CONFIRM'); ?>
 			</label>
 		</fieldset>
 		<div class="clear"></div>
@@ -92,7 +92,7 @@ $this->css()
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 		<p class="submit">
-			<input class="btn btn-danger" type="submit" value="<?php echo JText::_('DELETE'); ?>" />
+			<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
 		</p>
 	</form>
 </section><!-- / .main section -->

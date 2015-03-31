@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,27 +23,27 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_STUDENTS'), 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_STUDENTS'), 'courses.png');
 if ($canDo->get('core.create'))
 {
-	JToolBarHelper::addNew();
+	Toolbar::addNew();
 }
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::editList();
+	Toolbar::editList();
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	Toolbar::deleteList();
 }
 
 JHTML::_('behavior.tooltip');
@@ -61,19 +61,19 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-30 fltlft">
-			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-70 fltrt">
-			<label for="filter_offering"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label>
+			<label for="filter_offering"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label>
 			<select name="offering" id="filter_offering" onchange="document.adminForm.submit();">
-				<option value="0"><?php echo JText::_('COM_COURSES_OFFERING_SELECT'); ?></option>
+				<option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
 				<?php
 				$offerings = array();
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
@@ -101,9 +101,9 @@ function submitbutton(pressbutton)
 			</select>
 
 		<?php if ($this->filters['offering']) { ?>
-			<label for="filter_section"><?php echo JText::_('COM_COURSES_SECTION'); ?>:</label>
+			<label for="filter_section"><?php echo Lang::txt('COM_COURSES_SECTION'); ?>:</label>
 			<select name="section" id="filter_section" onchange="document.adminForm.submit();">
-				<option value="0"><?php echo JText::_('COM_COURSES_SECTION_SELECT'); ?></option>
+				<option value="0"><?php echo Lang::txt('COM_COURSES_SECTION_SELECT'); ?></option>
 				<?php
 				if ($this->offering->sections()->total() > 0)
 				{
@@ -142,20 +142,31 @@ function submitbutton(pressbutton)
 		<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_NAME'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_EMAIL'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_NAME'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_EMAIL'); ?></th>
 			<?php if (!$this->filters['offering']) { ?>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_COURSE_OFFERING'); ?></th>
 			<?php } ?>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_SECTION'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_CERTIFICATE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ENROLLED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_SECTION'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CERTIFICATE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ENROLLED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>">
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
+				</td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -176,7 +187,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 						</a>
 					<?php } else { ?>
@@ -187,7 +198,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('email'))); ?>
 						</a>
 					<?php } else { ?>
@@ -198,11 +209,11 @@ foreach ($this->rows as $row)
 				</td>
 			<?php if (!$this->filters['offering']) { ?>
 				<td>
-					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : JText::_('COM_COURSES_UNKNOWN'); ?>
+					<?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : Lang::txt('COM_COURSES_UNKNOWN'); ?>
 				</td>
 			<?php } ?>
 				<td>
-					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : JText::_('COM_COURSES_NONE'); ?>
+					<?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE'); ?>
 				</td>
 				<td>
 					<span class="state <?php echo ($row->get('token') ? 'publish' : 'unpublish'); ?>">
@@ -211,9 +222,9 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
-						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')); ?></time>
+						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo JHTML::_('date', $row->get('enrolled'), Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php } else { ?>
-						<?php echo JText::_('COM_COURSES_UNKNOWN'); ?>
+						<?php echo Lang::txt('COM_COURSES_UNKNOWN'); ?>
 					<?php } ?>
 				</td>
 			</tr>

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -113,14 +113,14 @@ class CoursesTableSectionCode extends JTable
 		$this->section_id = intval($this->section_id);
 		if (!$this->section_id)
 		{
-			$this->setError(JText::_('Please provide a section.'));
+			$this->setError(Lang::txt('Please provide a section.'));
 			return false;
 		}
 
 		$this->code = trim($this->code);
 		if (!$this->code)
 		{
-			$this->setError(JText::_('Please provide a code.'));
+			$this->setError(Lang::txt('Please provide a code.'));
 			return false;
 		}
 
@@ -128,8 +128,8 @@ class CoursesTableSectionCode extends JTable
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = \JFactory::getUser()->get('id');
 		}
 
 		return true;

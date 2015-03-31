@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -68,7 +68,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 */
 	public function __construct($oid=null, $section_id=null)
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		if ($this->_tbl_name)
 		{
@@ -166,7 +166,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 			return true;
 		}
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		if ($this->get('expires')
 		 && $this->get('expires') != $this->_db->getNullDate()
@@ -209,10 +209,10 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 		}
 		if (!$redeemed_by)
 		{
-			$redeemed_by = JFactory::getUser()->get('id');
+			$redeemed_by = \JFactory::getUser()->get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
-		$this->set('redeemed', JFactory::getDate()->toSql());
+		$this->set('redeemed', \JFactory::getDate()->toSql());
 		return $this->store();
 	}
 }

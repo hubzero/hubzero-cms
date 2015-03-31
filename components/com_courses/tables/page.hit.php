@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -98,14 +98,14 @@ Class CoursesTablePageHit extends JTable
 		$this->offering_id = intval($this->offering_id);
 		if (!$this->offering_id)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_OFFERING_ID'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_OFFERING_ID'));
 			return false;
 		}
 
 		$this->page_id = intval($this->page_id);
 		if (!$this->page_id)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_PAGE_ID'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_PAGE_ID'));
 			return false;
 		}
 
@@ -113,21 +113,21 @@ Class CoursesTablePageHit extends JTable
 
 		if (!$this->id)
 		{
-			$this->timestamp = JFactory::getDate()->toSql();
+			$this->timestamp = \JFactory::getDate()->toSql();
 			if (!$this->ip)
 			{
-				$this->ip = JRequest::ip();
+				$this->ip = Request::ip();
 			}
 			if (!$this->user_id)
 			{
-				$this->user_id = JFactory::getUser()->get('id');
+				$this->user_id = User::get('id');
 			}
 		}
 
 		$this->user_id = intval($this->user_id);
 		if (!$this->user_id)
 		{
-			$this->setError(JText::_('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
+			$this->setError(Lang::txt('COM_COURSES_LOGS_MUST_HAVE_USER_ID'));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ Class CoursesTablePageHit extends JTable
 	{
 		if (!$user_id)
 		{
-			$user_id = JFactory::getUser()->get('id');
+			$user_id = \JFactory::getUser()->get('id');
 		}
 		$this->offering_id = $offering_id;
 		$this->page_id     = $page_id;

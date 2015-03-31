@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
+use Hubzero\Component\AdminController;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'role.php');
 
 /**
  * Manage course roles
  */
-class CoursesControllerRoles extends \Hubzero\Component\AdminController
+class Roles extends AdminController
 {
 	/**
 	 * List roles
@@ -46,15 +48,14 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Incoming
 		$this->view->filters = array(
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -81,21 +82,13 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 		);
 
 		// Instantiate an object
-		$model = new CoursesTableRole($this->database);
+		$model = new \CoursesTableRole($this->database);
 
 		// Get a record count
 		$this->view->total = $model->count($this->view->filters);
 
 		// Get records
 		$this->view->rows = $model->find($this->view->filters);
-
-		// initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -124,19 +117,19 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
-			$id = JRequest::getVar('id', array(0));
+			$id = Request::getVar('id', array(0));
 			if (is_array($id))
 			{
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
 			// Load the object
-			$row = new CoursesTableRole($this->database);
+			$row = new \CoursesTableRole($this->database);
 			$row->load($id);
 		}
 
@@ -144,12 +137,12 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 		if (!$this->view->row->id)
 		{
-			$this->view->row->created_by = $this->juser->get('id');
-			$this->view->row->created = JFactory::getDate()->toSql();
+			$this->view->row->created_by = User::get('id');
+			$this->view->row->created = \JFactory::getDate()->toSql();
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
-		$model = CoursesModelCourses::getInstance();
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php');
+		$model = \CoursesModelCourses::getInstance();
 		$this->view->courses = $model->courses();
 
 		// Set any errors
@@ -172,13 +165,13 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = Request::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new CoursesTableRole($this->database);
+		$row = new \CoursesTableRole($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -204,8 +197,8 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_COURSES_ITEM_SAVED')
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_COURSES_ITEM_SAVED')
 		);
 	}
 
@@ -217,10 +210,10 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('id', array());
+		$ids = Request::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
@@ -228,14 +221,14 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
 				'error'
 			);
 			return;
 		}
 
-		$rt = new CoursesTableRole($this->database);
+		$rt = new \CoursesTableRole($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -245,20 +238,8 @@ class CoursesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_COURSES_ITEMS_REMOVED', count($ids))
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_COURSES_ITEMS_REMOVED', count($ids))
 		);
 	}
 }

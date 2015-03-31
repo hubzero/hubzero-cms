@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -85,9 +85,9 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if ($course_id)
@@ -164,7 +164,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		{
 			if (!$this->exists())
 			{
-				$this->setError(JText::_('No pages exist for nonexistent certificate.'));
+				$this->setError(Lang::txt('No pages exist for nonexistent certificate.'));
 				return false;
 			}
 
@@ -175,7 +175,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($base))
 				{
-					$this->setError(JText::_('Unable to create directory.'));
+					$this->setError(Lang::txt('Unable to create directory.'));
 					return false;
 				}
 			}
@@ -238,7 +238,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		natsort($images);
 
 		$base  = $this->path('web');
-		$token = hash('sha256', JFactory::getSession()->getId() . ':' . JFactory::getConfig()->getValue('secret'));
+		$token = hash('sha256', \JFactory::getSession()->getId() . ':' . \JFactory::getConfig()->getValue('secret'));
 
 		$idx = 0;
 		foreach ($images as $img)
@@ -316,7 +316,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	{
 		if (!$user)
 		{
-			$user = JFactory::getUser();
+			$user = \JFactory::getUser();
 		}
 
 		if (!class_exists('CoursesModelCourse'))
@@ -373,7 +373,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 				break;
 
 				case 'date':
-					$val = JFactory::getDate()->format(JText::_('d M Y'));
+					$val = \JFactory::getDate()->format(Lang::txt('d M Y'));
 				break;
 			}
 
@@ -425,7 +425,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			jimport('joomla.filesystem.file');
 			if (!JFolder::delete($path))
 			{
-				$this->setError(JText::_('Unable to remove upload directory and files for certificate.'));
+				$this->setError(Lang::txt('Unable to remove upload directory and files for certificate.'));
 				return false;
 			}
 		}

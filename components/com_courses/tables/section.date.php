@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -154,28 +154,28 @@ class CoursesTableSectionDate extends JTable
 		$this->section_id = intval($this->section_id);
 		if (!$this->section_id)
 		{
-			$this->setError(JText::_('Please provide a section ID.'));
+			$this->setError(Lang::txt('Please provide a section ID.'));
 			return false;
 		}
 
 		$this->scope = trim($this->scope);
 		if (!$this->scope)
 		{
-			$this->setError(JText::_('Please provide a scope.'));
+			$this->setError(Lang::txt('Please provide a scope.'));
 			return false;
 		}
 
 		$this->scope_id = intval($this->scope_id);
 		if (!$this->scope_id)
 		{
-			$this->setError(JText::_('Please provide a scope ID.'));
+			$this->setError(Lang::txt('Please provide a scope ID.'));
 			return false;
 		}
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 
 			// Make sure the record doesn't already exist

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php else: ?>
 	<p><em>Time is already running because the form is close to expiring!</em></p>
 <?php endif; ?>
-<form action="<?php echo JRoute::_($this->base); ?>" method="post">
+<form action="<?php echo Route::url($this->base); ?>" method="post">
 	<fieldset>
 		<input type="hidden" name="task" value="startWork" />
 		<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -200,7 +200,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	{
 		$section = '!!default!!';
 
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
 		$this->_tbl = new CoursesTableOffering($this->_db);
 
@@ -353,7 +353,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		{
 			$filters['offering_id'] = (int) $this->get('id');
 		}
-		if (!isset($filters['available']) && !JFactory::getApplication()->isAdmin())
+		if (!isset($filters['available']) && !\JFactory::getApplication()->isAdmin())
 		{
 			$filters['available'] = true;
 		}
@@ -828,7 +828,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}*/
 		if (!$user_id)
 		{
-			$user_id = JFactory::getUser()->get('id');
+			$user_id = \JFactory::getUser()->get('id');
 		}
 		$filters['user_id'] = (int) $user_id;
 		$filters['sort'] = 'offering_id ASC, student';
@@ -1195,7 +1195,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		$section = new CoursesModelSection();
 		$section->set('offering_id', $this->get('id'));
 		$section->set('alias', $alias);
-		$section->set('title', JText::_('Default'));
+		$section->set('title', Lang::txt('Default'));
 		$section->set('state', 1);
 		$section->set('is_default', $is_default);
 		$section->set('enrollment', $this->config('default_enrollment', 0));
@@ -1387,7 +1387,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 						jimport('joomla.filesystem.folder');
 						if (!JFolder::create(PATH_APP . $dest))
 						{
-							$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+							$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
 					}
 
@@ -1396,7 +1396,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 					jimport('joomla.filesystem.file');
 					if (!JFile::copy($src, $dest, PATH_APP))
 					{
-						$this->setError(JText::_('Failed to copy offering logo.'));
+						$this->setError(Lang::txt('Failed to copy offering logo.'));
 					}
 				}
 			}

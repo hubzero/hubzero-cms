@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -122,8 +122,8 @@ class FormAssetHandler extends ContentAssetHandler
 			// Set the asset id on the form
 			$pdf->setAssetId($return['assets']['asset_id']);
 
-			$gid = JRequest::getVar('course_id');
-			$oid = JRequest::getVar('offering');
+			$gid = Request::getVar('course_id');
+			$oid = Request::getVar('offering');
 
 			// Build our JavaScript to return to the view to be executed
 			$js =
@@ -212,8 +212,8 @@ class FormAssetHandler extends ContentAssetHandler
 			return array('error' => "Asset " . $asset->get('id') . " is not associated with a valid form.");
 		}
 
-		$gid = JRequest::getVar('course_id');
-		$oid = JRequest::getVar('offering');
+		$gid = Request::getVar('course_id');
+		$oid = Request::getVar('offering');
 
 		// Compile our return var
 		$js =

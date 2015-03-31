@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -85,7 +85,7 @@ $this->css('form.css')
 			<?php if (!$this->readonly) : ?>
 				<div><a href="" id="save">Save and Close</a></div>
 				<div class="new-upload-button">
-					<input data-url="<?php echo JRoute::_($this->base.'&task=form.saveLayout&formId='.$this->pdf->getId()); ?>" type="file" name="pdf" id="new-upload" />
+					<input data-url="<?php echo Route::url($this->base.'&task=form.saveLayout&formId='.$this->pdf->getId()); ?>" type="file" name="pdf" id="new-upload" />
 					<span>Upload New PDF</span>
 				</div>
 			<?php endif; ?>

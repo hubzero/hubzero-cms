@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,27 +23,27 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('COM_COURSES_OFFERING') . ': ' . $text, 'courses.png');
+Toolbar::title(Lang::txt('COM_COURSES').': ' . Lang::txt('COM_COURSES_OFFERING') . ': ' . $text, 'courses.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::apply();
-	JToolBarHelper::save();
-	JToolBarHelper::spacer();
+	Toolbar::apply();
+	Toolbar::save();
+	Toolbar::spacer();
 }
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('offering');
+Toolbar::cancel();
+Toolbar::spacer();
+Toolbar::help('offering');
 
 $base = str_replace('/administrator', '', JURI::base(true));
 
@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 
 	// form field validation
 	if ($('field-title').value == '') {
-		alert('<?php echo JText::_('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
+		alert('<?php echo Lang::txt('COM_COURSES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform(pressbutton);
 	}
@@ -70,10 +70,10 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->row->get('course_id'); ?>" />
@@ -83,42 +83,42 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
+			<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
 				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
+				<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<select name="fields[state]" id="field-state">
-					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></option>
-					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></option>
-					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_TRASHED'); ?></option>
+					<option value="0"<?php if ($this->row->get('state') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+					<option value="1"<?php if ($this->row->get('state') == 1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+					<option value="2"<?php if ($this->row->get('state') == 2) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
 				</select>
 			</div>
 
-			<p><?php echo JText::_('COM_COURSES_OFFERING_START_END_HINT'); ?></p>
+			<p><?php echo Lang::txt('COM_COURSES_OFFERING_START_END_HINT'); ?></p>
 
 			<div class="col width-50 fltlft">
 				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
-					<label for="publish_up"><?php echo JText::_('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
+					<label for="publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
 					<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), 'fields[publish_up]', 'publish_up'); ?>
-					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
+					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
-					<label for="publish_down"><?php echo JText::_('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
+					<label for="publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
 					<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), 'fields[publish_down]', 'publish_down'); ?>
-					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
+					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
 				</div>
 			</div>
 			<div class="clr"></div>
@@ -128,22 +128,22 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('COM_COURSES_FIELD_COURSE_ID'); ?></th>
+					<th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('course_id')); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
+					<th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
 					<td><?php echo $this->escape($this->row->get('id')); ?></td>
 				</tr>
 			<?php if ($this->row->get('created')) { ?>
 				<tr>
-					<th><?php echo JText::_('COM_COURSES_FIELD_CREATED'); ?></th>
+					<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
 					<td><?php echo $this->escape($this->row->get('created')); ?></td>
 				</tr>
 			<?php } ?>
 			<?php if ($this->row->get('created_by')) { ?>
 				<tr>
-					<th><?php echo JText::_('COM_COURSES_FIELD_CREATOR'); ?></th>
+					<th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
 					<td><?php
 					$creator = JUser::getInstance($this->row->get('created_by'));
 					echo $this->escape(stripslashes($creator->get('name'))); ?></td>
@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_COURSES_LOGO'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_COURSES_LOGO'); ?></span></legend>
 
 			<?php
 			if ($this->row->exists())
@@ -161,9 +161,9 @@ function submitbutton(pressbutton)
 				$logo = $this->row->params('logo');
 				?>
 				<div style="padding-top: 2.5em">
-					<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
+					<div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
 						<noscript>
-							<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=offering&id=' . $this->row->get('id')); ?>"></iframe>
+							<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=offering&id=' . $this->row->get('id')); ?>"></iframe>
 						</noscript>
 					</div>
 				</div>
@@ -186,32 +186,32 @@ function submitbutton(pressbutton)
 					}
 					?>
 					<div id="img-container">
-						<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo JText::_('COM_COURSES_LOGO'); ?>" />
+						<img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
 						<input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($logo); ?>" />
 					</div>
 					<table class="formed">
 						<tbody>
 							<tr>
-								<th><?php echo JText::_('COM_COURSES_FILE'); ?>:</th>
+								<th><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</th>
 								<td>
-									<span id="img-name"><?php echo $this->row->params('logo', JText::_('COM_COURSES_NONE')); ?></span>
+									<span id="img-name"><?php echo $this->row->params('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
 								</td>
 								<td>
-									<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
+									<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>">[ x ]</a>
 								</td>
 							</tr>
 							<tr>
-								<th><?php echo JText::_('COM_COURSES_PICTURE_SIZE'); ?>:</th>
+								<th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
 								<td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
 								<td></td>
 							</tr>
 							<tr>
-								<th><?php echo JText::_('COM_COURSES_PICTURE_WIDTH'); ?>:</th>
+								<th><?php echo Lang::txt('COM_COURSES_PICTURE_WIDTH'); ?>:</th>
 								<td><span id="img-width"><?php echo $width; ?></span> px</td>
 								<td></td>
 							</tr>
 							<tr>
-								<th><?php echo JText::_('COM_COURSES_PICTURE_HEIGHT'); ?>:</th>
+								<th><?php echo Lang::txt('COM_COURSES_PICTURE_HEIGHT'); ?>:</th>
 								<td><span id="img-height"><?php echo $height; ?></span> px</td>
 								<td></td>
 							</tr>
@@ -235,8 +235,8 @@ function submitbutton(pressbutton)
 								multiple: true,
 								debug: true,
 								template: '<div class="qq-uploader">' +
-											'<div class="qq-upload-button"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-											'<div class="qq-upload-drop-area"><span><?php echo JText::_('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+											'<div class="qq-upload-button"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
+											'<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
 											'<ul class="qq-upload-list"></ul>' +
 										   '</div>',
 								onComplete: function(id, file, response) {
@@ -270,7 +270,7 @@ function submitbutton(pressbutton)
 					</script>
 			<?php
 			} else {
-				echo '<p class="warning">'.JText::_('COM_COURSES_PICTURE_ADDED_LATER').'</p>';
+				echo '<p class="warning">'.Lang::txt('COM_COURSES_PICTURE_ADDED_LATER').'</p>';
 			}
 			?>
 		</fieldset>
@@ -278,15 +278,15 @@ function submitbutton(pressbutton)
 		<?php $params = new JRegistry($this->row->get('params')); ?>
 
 		<fieldset class="adminform offeringparams">
-			<legend><?php echo JText::_('COM_COURSES_FIELDSET_PARAMS'); ?></legend>
+			<legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?></legend>
 			<div class="input-wrap">
-				<label for="params-progress-calculation"><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
+				<label for="params-progress-calculation"><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
 				<select name="params[progress_calculation]" id="params-progress-calculation">
-					<option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_INHERIT'); ?></option>
-					<option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?></option>
-					<option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?></option>
-					<option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?></option>
-					<option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?></option>
+					<option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_INHERIT'); ?></option>
+					<option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?></option>
+					<option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?></option>
+					<option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?></option>
+					<option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?></option>
 				</select>
 			</div>
 		</fieldset>
@@ -312,7 +312,7 @@ function submitbutton(pressbutton)
 					}
 					?>
 					<fieldset class="adminform eventparams" id="params-<?php echo $plugin['name']; ?>">
-						<legend><?php echo JText::sprintf('COM_COURSES_FIELDSET_PARAMETERS', $plugin['title']); ?></legend>
+						<legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMETERS', $plugin['title']); ?></legend>
 						<?php echo $out; ?>
 					</fieldset>
 					<?php

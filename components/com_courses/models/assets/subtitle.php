@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -105,10 +105,10 @@ class SubtitleAssetHandler extends AssetHandler
 		}
 
 		// get request vars
-		$course_id      = JRequest::getInt('course_id', 0);
-		$offering_alias = JRequest::getCmd('offering', '');
-		$scope          = JRequest::getCmd('scope', 'asset_group');
-		$scope_id       = JRequest::getInt('scope_id', 0);
+		$course_id      = Request::getInt('course_id', 0);
+		$offering_alias = Request::getCmd('offering', '');
+		$scope          = Request::getCmd('scope', 'asset_group');
+		$scope_id       = Request::getInt('scope_id', 0);
 
 		// get all assets in group
 		$assetGroup = new CoursesModelAssetgroup($scope_id);
@@ -228,8 +228,8 @@ class SubtitleAssetHandler extends AssetHandler
 		$this->asset['type']       = 'file';
 		$this->asset['subtype']    = 'file';
 		$this->asset['url']        = $info['filename'] . '.txt';
-		$this->asset['created']    = JFactory::getDate()->toSql();
-		$this->asset['created_by'] = JFactory::getApplication()->getAuthn('user_id');
+		$this->asset['created']    = \JFactory::getDate()->toSql();
+		$this->asset['created_by'] = \JFactory::getApplication()->getAuthn('user_id');
 		$this->asset['course_id']  = $course_id;
 
 		// Save the asset
@@ -276,11 +276,11 @@ class SubtitleAssetHandler extends AssetHandler
 		file_put_contents($transcript_target_path, $transcript);
 
 		// Get the url to return to the page
-		$course_id      = JRequest::getInt('course_id', 0);
-		$offering_alias = JRequest::getCmd('offering', '');
+		$course_id      = Request::getInt('course_id', 0);
+		$offering_alias = Request::getCmd('offering', '');
 		$course         = new CoursesModelCourse($course_id);
 
-		$url = JRoute::_('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
+		$url = Route::url('index.php?option=com_courses&controller=offering&gid='.$course->get('alias').'&offering='.$offering_alias.'&asset='.$assetObj->get('id'));
 
 		// build return info
 		$return_info = array(
@@ -290,7 +290,7 @@ class SubtitleAssetHandler extends AssetHandler
 			'asset_subtype'  => $this->asset['subtype'],
 			'asset_url'      => $url,
 			'course_id'      => $this->asset['course_id'],
-			'offering_alias' => JRequest::getCmd('offering', ''),
+			'offering_alias' => Request::getCmd('offering', ''),
 			'scope_id'       => $this->assoc['scope_id'],
 			'asset_ext'      => 'txt',
 			'upload_path'    => $uploadDirectory,

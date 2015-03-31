@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,7 +36,7 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 <div class="course-instructor">
 	<p class="course-instructor-photo">
 		<?php if ($this->instructor->get('public')) { ?>
-			<a href="<?php echo JRoute::_($this->instructor->getLink()); ?>">
+			<a href="<?php echo Route::url($this->instructor->getLink()); ?>">
 				<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $name; ?>" />
 			</a>
 		<?php } else { ?>
@@ -47,7 +47,7 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	<div class="course-instructor-content cf">
 		<h4>
 			<?php if ($this->instructor->get('public')) { ?>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
+				<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
 					<?php echo $name; ?>
 				</a>
 			<?php } else { ?>
@@ -62,14 +62,14 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
 	<?php
 	$params = new JRegistry($this->instructor->get('params'));
 	if ($params->get('access_bio') == 0 // public
-	 || ($params->get('access_bio') == 1 && !JFactory::getUser()->get('guest')) // registered members
+	 || ($params->get('access_bio') == 1 && !\JFactory::getUser()->get('guest')) // registered members
 	) {
 	?>
 	<div class="course-instructor-bio">
 		<?php if ($this->instructor->get('bio')) { ?>
 			<?php echo $this->instructor->getBio('parsed'); ?>
 		<?php } else { ?>
-			<em><?php echo JText::_('COM_COURSES_INSTRUCTOR_NO_BIO'); ?></em>
+			<em><?php echo Lang::txt('COM_COURSES_INSTRUCTOR_NO_BIO'); ?></em>
 		<?php } ?>
 	</div>
 	<?php } ?>

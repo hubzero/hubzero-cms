@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Admin\Controllers;
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+use Hubzero\Component\AdminController;
+use Exception;
+
+require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php');
 
 /**
  * Manage a course section's manager entries
  */
-class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
+class Supervisors extends AdminController
 {
 	/**
 	 * Add a user to the manager list
@@ -46,22 +48,22 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	public function addTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('offering', 0);
+		$id = Request::getInt('offering', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COURSES_NO_ID'));
+			$this->setError(Lang::txt('COURSES_NO_ID'));
 			$this->displayTask();
 			return;
 		}
-		$section = JRequest::getInt('section', 0);
+		$section = Request::getInt('section', 0);
 
-		$role_id = JRequest::getInt('role', 0);
+		$role_id = Request::getInt('role', 0);
 
 		// Load the profile
-		$model = CoursesModelOffering::getInstance($id);
+		$model = \CoursesModelOffering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
@@ -74,7 +76,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 		));
 
 		// Incoming host
-		$m = JRequest::getVar('usernames', '', 'post');
+		$m = Request::getVar('usernames', '', 'post');
 		$mbrs = explode(',', $m);
 
 		jimport('joomla.user.helper');
@@ -84,7 +86,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 		{
 			// Retrieve user's account info
 			$mbr = trim($mbr);
-			$uid = JUserHelper::getUserId($mbr);
+			$uid = \JUserHelper::getUserId($mbr);
 
 			// Ensure we found an account
 			if ($uid)
@@ -92,7 +94,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 				// Loop through existing members and make sure the user isn't already a member
 				if (isset($managers[$uid]))
 				{
-					$this->setError(JText::sprintf('COM_COURSES_ERROR_ALREADY_MANAGER', $mbr));
+					$this->setError(Lang::txt('COM_COURSES_ERROR_ALREADY_MANAGER', $mbr));
 					continue;
 				}
 
@@ -101,7 +103,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
+				$this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOTFOUND') . ' ' . $mbr);
 			}
 		}
 
@@ -122,25 +124,25 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('offering', 0);
+		$id = Request::getInt('offering', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
-		$section = JRequest::getInt('section', 0);
+		$section = Request::getInt('section', 0);
 
-		$model = CoursesModelOffering::getInstance($id);
+		$model = \CoursesModelOffering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
 		}
 
-		$mbrs = JRequest::getVar('entries', array(0), 'post');
+		$mbrs = Request::getVar('entries', array(0), 'post');
 
 		foreach ($mbrs as $mbr)
 		{
@@ -149,7 +151,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 				continue;
 			}
 
-			$member = CoursesModelMember::getInstance($mbr['select'], null, null, null);
+			$member = \CoursesModelMember::getInstance($mbr['select'], null, null, null);
 			if (!$member->delete())
 			{
 				$this->setError($member->getError());
@@ -168,30 +170,30 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	public function updateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('offering', 0);
+		$id = Request::getInt('offering', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_ID'));
 			$this->displayTask();
 			return;
 		}
-		$section = JRequest::getInt('section', 0);
+		$section = Request::getInt('section', 0);
 
-		$model = CoursesModelOffering::getInstance($id);
+		$model = \CoursesModelOffering::getInstance($id);
 		if ($section)
 		{
 			$model->section($section);
 		}
 
-		$entries = JRequest::getVar('entries', array(0), 'post');
+		$entries = Request::getVar('entries', array(0), 'post');
 
 		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$member = CoursesModelMember::getInstance($data['id'], null, null, null);
+			$member = \CoursesModelMember::getInstance($data['id'], null, null, null);
 			if ($member->get('role_id') == $data['role_id'])
 			{
 				continue;
@@ -216,10 +218,10 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	public function displayTask($model=null)
 	{
 		// Incoming
-		if (!($model instanceof CoursesModelOffering))
+		if (!($model instanceof \CoursesModelOffering))
 		{
-			$model = CoursesModelOffering::getInstance(JRequest::getInt('offering', 0, 'get'));
-			if (($section = JRequest::getInt('section', 0)))
+			$model = \CoursesModelOffering::getInstance(Request::getInt('offering', 0, 'get'));
+			if (($section = Request::getInt('section', 0)))
 			{
 				$model->section($section);
 			}

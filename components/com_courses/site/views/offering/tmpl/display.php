@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,8 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get no_html request var
-$no_html = JRequest::getInt('no_html', 0);
-$tmpl    = JRequest::getWord('tmpl', false);
+$no_html = Request::getInt('no_html', 0);
+$tmpl    = Request::getWord('tmpl', false);
 $sparams = new JRegistry($this->course->offering()->section()->get('params'));
 
 if (!$no_html && $tmpl != 'component') :
@@ -56,21 +56,21 @@ if (!$no_html && $tmpl != 'component') :
 		</h2>
 		<?php if ($src) { ?>
 		<p class="course-identity">
-			<img src="<?php echo JRoute::_($src); ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+			<img src="<?php echo Route::url($src); ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 		</p>
 		<?php } ?>
 		<p id="page_identity">
-			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-				<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+			<a class="prev" href="<?php echo Route::url($this->course->link()); ?>">
+				<?php echo Lang::txt('COM_COURSES_COURSE_OVERVIEW'); ?>
 			</a>
 			<strong>
-				<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+				<?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:
 			</strong>
 			<span>
 				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 			</span>
 			<strong>
-				<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+				<?php echo Lang::txt('COM_COURSES_SECTION'); ?>:
 			</strong>
 			<span>
 				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
@@ -85,23 +85,23 @@ if (!$no_html && $tmpl != 'component') :
 <?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
-					<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_REQUIRED'); ?></p>
+					<p class="warning"><?php echo Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED'); ?></p>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong><?php echo JText::_('COM_COURSES_HOW_TO_ENROLL'); ?></strong></p>
-					<p><?php echo JText::sprintf('COM_COURSES_HOW_TO_ENROLL_EXPLANATION', JRoute::_($this->course->link())); ?></p>
-					<p><strong><?php echo JText::_('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
-					<p><?php echo JText::sprintf('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+					<p><strong><?php echo Lang::txt('COM_COURSES_HOW_TO_ENROLL'); ?></strong></p>
+					<p><?php echo Lang::txt('COM_COURSES_HOW_TO_ENROLL_EXPLANATION', Route::url($this->course->link())); ?></p>
+					<p><strong><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
+					<p><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', Route::url($this->course->link()), Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 				</div><!-- / .post-type -->
 			</div><!-- / #collection-introduction -->
 <?php } else if ($this->course->offering()->section()->expired() && !$sparams->get('preview', 0)) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
-					<p class="warning"><?php echo JText::_('COM_COURSES_SECTION_EXPIRED'); ?></p>
+					<p class="warning"><?php echo Lang::txt('COM_COURSES_SECTION_EXPIRED'); ?></p>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong><?php echo JText::_('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
-					<p><?php echo JText::sprintf('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+					<p><strong><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
+					<p><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', Route::url($this->course->link()), Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 				</div><!-- / .post-type -->
 			</div><!-- / #collection-introduction -->
 <?php } else { ?>
@@ -111,7 +111,7 @@ if (!$no_html && $tmpl != 'component') :
 
 				<ul id="page_menu">
 					<?php
-					$active = JRequest::getVar('active');
+					$active = Request::getVar('active');
 
 					// Loop through each plugin and build menu item
 					foreach ($this->plugins as $plugin)
@@ -132,7 +132,7 @@ if (!$no_html && $tmpl != 'component') :
 						if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
 						{
 							?>
-							<li class="protected members-only course-<?php echo $plugin->get('name'); ?>-tab" data-title="<?php echo JText::_('COM_COURSES_RESTRICTED_PAGE'); ?>">
+							<li class="protected members-only course-<?php echo $plugin->get('name'); ?>-tab" data-title="<?php echo Lang::txt('COM_COURSES_RESTRICTED_PAGE'); ?>">
 								<span class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>">
 									<?php echo $this->escape($plugin->get('title')); ?>
 								</span>
@@ -141,7 +141,7 @@ if (!$no_html && $tmpl != 'component') :
 						}
 						else
 						{
-							$link = JRoute::_($this->course->offering()->link() . '&active=' . $plugin->get('name'));
+							$link = Route::url($this->course->offering()->link() . '&active=' . $plugin->get('name'));
 							?>
 							<li class="<?php echo ($active == $plugin->get('name') ? 'active' : ''); ?> course-<?php echo $plugin->get('name'); ?>-tab">
 								<a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')); ?>" href="<?php echo $link; ?>">

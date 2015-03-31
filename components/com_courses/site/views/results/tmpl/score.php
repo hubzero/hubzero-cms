@@ -41,8 +41,8 @@ $record = $resp->getAnswers();
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->base); ?>">
-				<?php echo JText::_('Back to course'); ?>
+			<a class="icon-prev back btn" href="<?php echo Route::url($this->base); ?>">
+				<?php echo Lang::txt('Back to course'); ?>
 			</a>
 		</p>
 	</div>
@@ -52,7 +52,7 @@ $record = $resp->getAnswers();
 	<p>Completed <?php echo JHTML::_('date', $resp->getEndTime(), 'r'); ?></p>
 	<p>Score <strong><?php echo $record['summary']['score'] ?>%</strong></p>
 	<?php if ($this->dep->getResultsClosed() == 'details'): ?>
-		<p>More detailed results will be available <?php echo ($dep->getEndTime()) ? JHTML::_('date', $dep->getEndTime(), 'r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(JFactory::getDate())) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
+		<p>More detailed results will be available <?php echo ($dep->getEndTime()) ? JHTML::_('date', $dep->getEndTime(), 'r') . " (about " . FormHelper::timeDiff(strtotime($this->dep->getEndTime()) - strtotime(\JFactory::getDate())) . " from now)" : 'soon'; ?>. Check the course progress page for more details.</p>
 	<?php endif; ?>
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<?php $attempt = $resp->getAttemptNumber(); ?>
@@ -60,7 +60,7 @@ $record = $resp->getAnswers();
 			You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
 			This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
 		</p>
-		<form action="<?php echo JRoute::_($this->base . '&task=form.complete') ?>">
+		<form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 			<?php $completedAttempts = $resp->getCompletedAttempts(); ?>
 			<?php if ($completedAttempts && count($completedAttempts) > 0) : ?>
@@ -79,7 +79,7 @@ $record = $resp->getAnswers();
 
 			<?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
 				<p>
-					<a href="<?php echo JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
+					<a href="<?php echo Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
 						<button type="button" class="btn btn-warning">Take your next attempt!</button>
 					</a>
 				</p>

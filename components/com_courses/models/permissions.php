@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -379,7 +379,7 @@ class CoursesModelPermissions extends JObject
 	 */
 	private function _calculate()
 	{
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 
 		// List of actions
 		$actions = array(
@@ -402,7 +402,7 @@ class CoursesModelPermissions extends JObject
 		if (!$this->get('course_id'))
 		{
 			// Try to get the course from request
-			$course = CoursesModelCourse::getInstance(JRequest::getVar('gid', ''));
+			$course = CoursesModelCourse::getInstance(Request::getVar('gid', ''));
 			if ($course->exists())
 			{
 				$this->set('course_id', $course->get('id'));
@@ -427,7 +427,7 @@ class CoursesModelPermissions extends JObject
 			$this->config()->set('access-view-course', true);
 		}
 
-		//$juser = JFactory::getUser();
+		//$juser = \JFactory::getUser();
 		// If they're logged in
 		if (!$juser->get('guest'))
 		{
@@ -485,7 +485,7 @@ class CoursesModelPermissions extends JObject
 		// If no offering ID is found
 		if (!$this->get('offering_id'))
 		{
-			$oid = JRequest::getVar('offering', '');
+			$oid = Request::getVar('offering', '');
 
 			//$course = CoursesModelCourse::getInstance($this->get('course_id'));
 			$offering = $course->offering($oid);

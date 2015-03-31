@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -136,14 +136,14 @@ class CoursesTableAnnouncement extends JTable
 		$this->offering_id = intval($this->offering_id);
 		if (!$this->offering_id)
 		{
-			$this->setError(JText::_('Missing offering ID'));
+			$this->setError(Lang::txt('Missing offering ID'));
 			return false;
 		}
 
 		$this->content = trim($this->content);
 		if (!$this->content)
 		{
-			$this->setError(JText::_('Missing content'));
+			$this->setError(Lang::txt('Missing content'));
 			return false;
 		}
 
@@ -191,8 +191,8 @@ class CoursesTableAnnouncement extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
+			$juser = \JFactory::getUser();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 
@@ -238,7 +238,7 @@ class CoursesTableAnnouncement extends JTable
 
 		if (isset($filters['published']))
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 			$where[] = "(a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->Quote($now) . ")";
 		}

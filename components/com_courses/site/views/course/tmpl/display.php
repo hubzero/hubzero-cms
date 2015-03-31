@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,15 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$field  = strtolower(JRequest::getWord('field', ''));
-$action = strtolower(JRequest::getWord('action', ''));
+$field  = strtolower(Request::getWord('field', ''));
+$action = strtolower(Request::getWord('action', ''));
 
 if ($this->course->isManager())
 {
@@ -60,12 +60,12 @@ $this->css('course.css')
      ->js('courses.overview.js');
 ?>
 <header id="content-header">
-	<h2><?php echo JText::_('COM_COURSES'); ?></h2>
+	<h2><?php echo Lang::txt('COM_COURSES'); ?></h2>
 
 	<div id="content-header-extra">
 		<p>
-			<a class="btn icon-browse browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
-				<?php echo JText::_('COM_COURSES_CATALOG'); ?>
+			<a class="btn icon-browse browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>">
+				<?php echo Lang::txt('COM_COURSES_CATALOG'); ?>
 			</a>
 		</p>
 	</div>
@@ -75,27 +75,27 @@ $this->css('course.css')
 	<div class="section-inner">
 		<div class="subject">
 			<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
-				<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
+				<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 					<label for="field_title">
-						<?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+						<?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 						<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape($this->course->get('title')); ?>" />
 					</label>
 
 					<label for="field_blurb">
-						<?php echo JText::_('COM_COURSES_FIELD_BLURB'); ?>
+						<?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
 						<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape($this->course->get('blurb')); ?></textarea>
 					</label>
 
 					<label for="actags">
-						<?php echo JText::_('COM_COURSES_FIELD_TAGS'); ?>
+						<?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
 						<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->course->tags('string')), 'actags'); ?>
-						<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
+						<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
 					</label>
 
 					<p class="submit">
-						<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_COURSES_SAVE'); ?>" />
-						<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
-							<?php echo JText::_('COM_COURSES_CANCEL'); ?>
+						<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
+						<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
+							<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
 						</a>
 					</p>
 
@@ -112,10 +112,10 @@ $this->css('course.css')
 			<?php } else { ?>
 				<?php if ($this->course->access('edit', 'course')) { ?>
 					<div class="manager-options">
-						<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=blurb'); ?>">
-							<?php echo JText::_('COM_COURSES_EDIT'); ?>
+						<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=blurb'); ?>">
+							<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
 						</a>
-						<span><strong><?php echo JText::_('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
+						<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
 					</div>
 				<?php } ?>
 
@@ -139,15 +139,15 @@ $this->css('course.css')
 						$atts = ($width > $height ? 'height="50"' : 'width="50"');
 						?>
 						<p class="course-group-img">
-							<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
 								<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
 							</a>
 						</p>
 						<p class="course-group-description">
-							<?php echo JText::_('COM_COURSES_BROUGHT_BY_GROUP'); ?>
+							<?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
 						</p>
 						<h3 class="course-group-title">
-							<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
 								<?php echo $this->escape(stripslashes($group->get('description'))); ?>
 							</a>
 						</h3>
@@ -160,7 +160,7 @@ $this->css('course.css')
 				<?php if ($logo = $this->course->logo('url')) { ?>
 					<img src="<?php 
 						$size = $this->course->logo('size');
-						echo JRoute::_($logo);
+						echo Route::url($logo);
 						?>" class="<?php echo ($size['width'] >= $size['height'] ? 'landscape' : 'portrait'); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 				<?php } else { ?>
 					<span></span>
@@ -175,14 +175,14 @@ $this->css('course.css')
 		<div class="section-inner">
 			<div class="subject">
 				<p>
-					<strong><?php echo JText::_('COM_COURSES_COURSE_NEEDS_AN_OFFERING'); ?></strong></p>
-					<?php echo JText::_('COM_COURSES_COURSE_NEEDS_AN_OFFERING_EXPLANATION'); ?>
+					<strong><?php echo Lang::txt('COM_COURSES_COURSE_NEEDS_AN_OFFERING'); ?></strong></p>
+					<?php echo Lang::txt('COM_COURSES_COURSE_NEEDS_AN_OFFERING_EXPLANATION'); ?>
 				</p>
 			</div><!-- / .subject -->
 			<aside class="aside">
 				<p>
-					<a class="icon-add btn" id="add-offering" href="<?php echo JRoute::_($this->course->link() . '&task=newoffering'); ?>">
-						<?php echo JText::_('COM_COURSES_CREATE_OFFERING'); ?>
+					<a class="icon-add btn" id="add-offering" href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
+						<?php echo Lang::txt('COM_COURSES_CREATE_OFFERING'); ?>
 					</a>
 				</p>
 			</aside><!-- / .aside -->
@@ -203,16 +203,16 @@ $this->css('course.css')
 			{
 				foreach ($this->plugins as $i => $plugin)
 				{
-					$url = JRoute::_($this->course->link() . '&active=' . $plugin->get('name'));
+					$url = Route::url($this->course->link() . '&active=' . $plugin->get('name'));
 
 					if ($plugin->get('name') == $this->active)
 					{
-						$pathway = JFactory::getApplication()->getPathway();
+						$pathway = \JFactory::getApplication()->getPathway();
 						$pathway->addItem($plugin->get('title'), $url);
 
 						if ($this->active != 'overview')
 						{
-							$document = JFactory::getDocument();
+							$document = \JFactory::getDocument();
 							$document->setTitle($document->getTitle() . ': ' . $plugin->get('title'));
 						}
 					}
@@ -228,8 +228,8 @@ $this->css('course.css')
 			?>
 			<?php if ($this->course->access('edit', 'course')) { ?>
 				<li class="add-page">
-					<a class="icon-add tab" href="<?php echo JRoute::_($this->course->link() . '&action=addpage'); ?>">
-						<?php echo JText::_('PLG_COURSES_PAGES_ADD_PAGE'); ?>
+					<a class="icon-add tab" href="<?php echo Route::url($this->course->link() . '&action=addpage'); ?>">
+						<?php echo Lang::txt('PLG_COURSES_PAGES_ADD_PAGE'); ?>
 					</a>
 				</li>
 			<?php } ?>
@@ -246,21 +246,21 @@ $this->css('course.css')
 			$page = $this->course->page($this->active);
 			?>
 			<div class="inner-section" id="addpage-section">
-				<form action="<?php echo JRoute::_($this->course->link()); ?>" class="form-inplace" method="post">
+				<form action="<?php echo Route::url($this->course->link()); ?>" class="form-inplace" method="post">
 					<fieldset>
 						<div class="grid">
 							<div class="col span-half">
 								<label for="field-title">
-									<?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_PAGES_REQUIRED'); ?></span>
+									<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_COURSES_PAGES_REQUIRED'); ?></span>
 									<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($page->get('title'))); ?>" />
-									<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
+									<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
 								</label>
 							</div>
 							<div class="col span-half omega">
 								<label for="field-url">
-									<?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo JText::_('PLG_COURSES_PAGES_OPTINAL'); ?></span>
+									<?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS'); ?> <span class="optional"><?php echo Lang::txt('PLG_COURSES_PAGES_OPTINAL'); ?></span>
 									<input type="text" name="page[url]" id="field-url" value="<?php echo $this->escape(stripslashes($page->get('url'))); ?>" />
-									<span class="hint"><?php echo JText::_('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
+									<span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
 								</label>
 							</div>
 						</div>
@@ -270,9 +270,9 @@ $this->css('course.css')
 						</label>
 
 						<p class="submit">
-							<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_COURSES_SAVE'); ?>" />
-							<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
-								<?php echo JText::_('COM_COURSES_CANCEL'); ?>
+							<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
+							<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
+								<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
 							</a>
 						</p>
 
@@ -303,13 +303,13 @@ $this->css('course.css')
 					<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
 						<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
 							<div class="manager-options">
-								<a class="icon-error btn btn-secondary btn-danger" href="<?php echo JRoute::_($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
-									<?php echo JText::_('COM_COURSES_DELETE'); ?>
+								<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
+									<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
 								</a>
-								<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
-									<?php echo JText::_('COM_COURSES_EDIT'); ?>
+								<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
+									<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
 								</a>
-								<span><strong><?php echo JText::_('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
+								<span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
 							</div>
 						<?php } ?>
 						<?php echo $html; ?>
@@ -322,21 +322,21 @@ $this->css('course.css')
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<?php if ($field == 'summary' && $this->course->access('edit', 'course')) { ?>
-			<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace course-summary" method="post">
+			<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace course-summary" method="post">
 				<label for="field_length">
-					<?php echo JText::_('COM_COURSES_COURSE_LENGTH'); ?><br />
-					<input type="text" name="course[length]" id="field_length" value="<?php echo $this->escape($this->course->get('length')); ?>" placeholder="<?php echo JText::_('COM_COURSES_COURSE_LENGTH_HINT'); ?>" />
+					<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH'); ?><br />
+					<input type="text" name="course[length]" id="field_length" value="<?php echo $this->escape($this->course->get('length')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH_HINT'); ?>" />
 				</label>
 
 				<label for="field_effort">
-					<?php echo JText::_('COM_COURSES_COURSE_EFFORT'); ?><br />
-					<input type="text" name="course[effort]" id="field_effort" value="<?php echo $this->escape($this->course->get('effort')); ?>" placeholder="<?php echo JText::_('COM_COURSES_COURSE_EFFORT_HINT'); ?>" />
+					<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT'); ?><br />
+					<input type="text" name="course[effort]" id="field_effort" value="<?php echo $this->escape($this->course->get('effort')); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT_HINT'); ?>" />
 				</label>
 
 				<p class="submit">
-					<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_COURSES_SAVE'); ?>" />
-					<a class="btn btn-secondary" href="<?php echo JRoute::_($this->course->link()); ?>">
-						<?php echo JText::_('COM_COURSES_CANCEL'); ?>
+					<input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
+					<a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
+						<?php echo Lang::txt('COM_COURSES_CANCEL'); ?>
 					</a>
 				</p>
 
@@ -356,10 +356,10 @@ $this->css('course.css')
 			{
 				?>
 				<div class="manager-options">
-					<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=summary'); ?>">
-						<?php echo JText::_('COM_COURSES_EDIT'); ?>
+					<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=summary'); ?>">
+						<?php echo Lang::txt('COM_COURSES_EDIT'); ?>
 					</a>
-					<span><strong><?php echo JText::_('COM_COURSES_SUMMARY'); ?></strong></span>
+					<span><strong><?php echo Lang::txt('COM_COURSES_SUMMARY'); ?></strong></span>
 				</div>
 				<?php
 			}
@@ -369,7 +369,7 @@ $this->css('course.css')
 					<tbody>
 						<?php if ($this->course->config('show_stats')) { ?>
 							<tr>
-								<th scope="row"><?php echo JText::_('COM_COURSES_COURSE_ENROLLED'); ?>:
+								<th scope="row"><?php echo Lang::txt('COM_COURSES_COURSE_ENROLLED'); ?>:
 								</th>
 								<td>
 									<?php echo number_format((int) $this->course->students(array('count' => true))); ?>
@@ -379,7 +379,7 @@ $this->css('course.css')
 						<?php if ($length = $this->course->get('length')) { ?>
 							<tr>
 								<th scope="row">
-									<?php echo JText::_('COM_COURSES_COURSE_LENGTH'); ?>:
+									<?php echo Lang::txt('COM_COURSES_COURSE_LENGTH'); ?>:
 								</th>
 								<td>
 									<?php echo $this->escape($length); ?>
@@ -389,7 +389,7 @@ $this->css('course.css')
 						<?php if ($effort = $this->course->get('effort')) { ?>
 							<tr>
 								<th scope="row">
-									<?php echo JText::_('COM_COURSES_COURSE_EFFORT'); ?>:
+									<?php echo Lang::txt('COM_COURSES_COURSE_EFFORT'); ?>:
 								</th>
 								<td>
 									<?php echo $this->escape($effort); ?>
@@ -420,10 +420,10 @@ $this->css('course.css')
 						?>
 							<tr>
 								<th scope="row">
-									<?php echo JText::_('COM_COURSES_COURSE_CERTIFICATE'); ?>:
+									<?php echo Lang::txt('COM_COURSES_COURSE_CERTIFICATE'); ?>:
 								</th>
 								<td>
-									<?php echo JText::_('COM_COURSES_COURSE_CERTIFICATE_AVAILABLE'); ?>
+									<?php echo Lang::txt('COM_COURSES_COURSE_CERTIFICATE_AVAILABLE'); ?>
 								</td>
 							</tr>
 						<?php } ?>
@@ -488,8 +488,8 @@ $this->css('course.css')
 								$offering->section($s[0]);
 								?>
 								<p>
-									<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-										<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
+									<a class="enroll btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+										<?php echo Lang::txt('COM_COURSES_ACCESS_COURSE'); ?>
 									</a>
 								</p>
 								<?php
@@ -559,8 +559,8 @@ $this->css('course.css')
 								}
 								?>
 								<p>
-									<a class="enroll btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
-										<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
+									<a class="enroll btn" href="<?php echo Route::url($offering->link('enter')); ?>">
+										<?php echo Lang::txt('COM_COURSES_ACCESS_COURSE'); ?>
 									</a>
 								</p>
 								<?php
@@ -579,7 +579,7 @@ $this->css('course.css')
 				{
 					?>
 					<p>
-						<?php echo JText::_('COM_COURSES_NO_OFFERINGS_AVAILABLE'); ?>
+						<?php echo Lang::txt('COM_COURSES_NO_OFFERINGS_AVAILABLE'); ?>
 					</p>
 					<?php
 				}
@@ -592,10 +592,10 @@ $this->css('course.css')
 		{
 			?>
 			<div class="manager-options">
-				<a class="icon-edit btn btn-secondary" id="manage-instructors" href="<?php echo JRoute::_($this->course->link() . '&task=instructors'); ?>">
-					<?php echo JText::_('COM_COURSES_MANAGE'); ?>
+				<a class="icon-edit btn btn-secondary" id="manage-instructors" href="<?php echo Route::url($this->course->link() . '&task=instructors'); ?>">
+					<?php echo Lang::txt('COM_COURSES_MANAGE'); ?>
 				</a>
-				<span><strong><?php echo JText::_('COM_COURSES_MANAGE_INSTRUCTORS'); ?></strong></span>
+				<span><strong><?php echo Lang::txt('COM_COURSES_MANAGE_INSTRUCTORS'); ?></strong></span>
 			</div>
 			<?php
 		}
@@ -605,7 +605,7 @@ $this->css('course.css')
 		?>
 		<div class="course-instructors" data-bio-length="200">
 			<h3>
-				<?php echo (count($instructors) > 1) ? JText::_('COM_COURSES_ABOUT_THE_INSTRUCTORS') : JText::_('COM_COURSES_ABOUT_THE_INSTRUCTOR'); ?>
+				<?php echo (count($instructors) > 1) ? Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTORS') : Lang::txt('COM_COURSES_ABOUT_THE_INSTRUCTOR'); ?>
 			</h3>
 			<?php
 			foreach ($instructors as $i)
@@ -623,7 +623,7 @@ $this->css('course.css')
 		{
 		?>
 		<div class="course-instructors-none">
-			<?php echo JText::_('COM_COURSES_NO_INSTRUCTORS_FOUND'); ?>
+			<?php echo Lang::txt('COM_COURSES_NO_INSTRUCTORS_FOUND'); ?>
 		</div>
 		<?php
 		}

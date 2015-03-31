@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,19 +35,19 @@ $offerings = $this->course->offerings();
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
-		<dt><?php echo JText::_('ERROR'); ?></dt>
+		<dt><?php echo Lang::txt('ERROR'); ?></dt>
 		<dd class="error"><?php echo implode('<br />', $this->getErrors()); ?></dd>
 	</dl>
 <?php } ?>
 <div id="groups">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post">
 		<table>
 			<tbody>
 				<tr>
 					<td>
 						<label>
 							<input type="text" name="usernames" value="" />
-							<?php echo JText::_('COM_COURSES_ENTER_USERS'); ?>
+							<?php echo Lang::txt('COM_COURSES_ENTER_USERS'); ?>
 						</label>
 					</td>
 					<td>
@@ -64,7 +64,7 @@ $offerings = $this->course->offerings();
 								continue;
 							}
 						?>
-							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<optgroup label="<?php echo Lang::txt('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
 							<?php foreach ($oroles as $role) { ?>
 								<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 							<?php } ?>
@@ -79,7 +79,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="task" value="add" />
 
-						<input type="submit" value="<?php echo JText::_('COM_COURSES_ADD_USER'); ?>" />
+						<input type="submit" value="<?php echo Lang::txt('COM_COURSES_ADD_USER'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -98,7 +98,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
 
-						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_REMOVE_USER'); ?>" />
+						<input type="submit" name="action" value="<?php echo Lang::txt('COM_COURSES_REMOVE_USER'); ?>" />
 					</th>
 				</tr>
 			</thead>
@@ -128,7 +128,7 @@ $offerings = $this->course->offerings();
 					</td>
 					<td class="paramlist_key">
 						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
-							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('COM_COURSES_UNKNOWN'); ?>
+							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN'); ?>
 						</a>
 					</td>
 					<td class="paramlist_value">
@@ -148,7 +148,7 @@ $offerings = $this->course->offerings();
 								continue;
 							}
 						?>
-							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+							<optgroup label="<?php echo Lang::txt('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
 							<?php foreach ($oroles as $role) { ?>
 								<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 							<?php } ?>

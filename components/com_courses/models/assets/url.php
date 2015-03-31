@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -56,7 +56,7 @@ class UrlAssetHandler extends ContentAssetHandler
 	 **/
 	public function create()
 	{
-		$url = JRequest::getVar('content');
+		$url = Request::getVar('content');
 
 		// Allow for multiple entries at once
 		if (strstr($url, ','))

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -986,7 +986,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 						jimport('joomla.filesystem.folder');
 						if (!JFolder::create(PATH_APP . $dest))
 						{
-							$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+							$this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 						}
 					}
 
@@ -995,14 +995,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 					jimport('joomla.filesystem.file');
 					if (!JFile::copy($src, $dest, PATH_APP))
 					{
-						$this->setError(JText::_('Failed to copy course logo.'));
+						$this->setError(Lang::txt('Failed to copy course logo.'));
 					}
 				}
 			}
 
 			// Copy tags
 			$tagger = new CoursesModelTags($c_id);
-			$this->tag($tagger->render('string', array('admin' => 1)), JFactory::getUser()->get('id'), 1);
+			$this->tag($tagger->render('string', array('admin' => 1)), \JFactory::getUser()->get('id'), 1);
 		}
 
 		return true;

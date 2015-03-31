@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -232,7 +232,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			'member_id'  => $member_id
 		);
 
-		$dbo = JFactory::getDBO();
+		$dbo = \JFactory::getDBO();
 
 		switch ($progress_calculation)
 		{
@@ -356,7 +356,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		);
 
 		// Get the asset views
-		$database   = JFactory::getDBO();
+		$database   = \JFactory::getDBO();
 		$assetViews = new CoursesTableAssetViews($database);
 		$results    = $assetViews->find($filters);
 
@@ -397,7 +397,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 		elseif (!is_null($asset_id) && is_numeric($asset_id))
 		{
-			$asset = new CoursesTableAsset(JFactory::getDBO());
+			$asset = new CoursesTableAsset(\JFactory::getDBO());
 			$asset->load($asset_id);
 			$course_id = $asset->course_id;
 
@@ -786,7 +786,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		if (!isset($assets))
 		{
 			// Get the graded assets
-			$asset  = new CoursesTableAsset(JFactory::getDBO());
+			$asset  = new CoursesTableAsset(\JFactory::getDBO());
 			$assets = $asset->find(
 				array(
 					'w' => array(
@@ -921,7 +921,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge->set('member_id', $m);
 						$badge->set('section_badge_id', $sb->get('id'));
 						$badge->set('earned', 1);
-						$badge->set('earned_on', JFactory::getDate()->toSql());
+						$badge->set('earned_on', \JFactory::getDate()->toSql());
 						$badge->set('criteria_id', $sb->get('criteria_id'));
 						$badge->store();
 
@@ -939,7 +939,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$credentials->clientId        = $this->config()->get($sb->get('provider_name').'_client_id');
 						$badgesProvider->setCredentials($credentials);
 
-						$dbo = JFactory::getDBO();
+						$dbo = \JFactory::getDBO();
 						$memberTbl = new CoursesTableMember($dbo);
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
@@ -948,7 +948,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$data->id           = $sb->get('provider_badge_id');
 						$data->evidenceUrl  = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $sb->get('id') . DS . 'validation' . DS . $badge->get('validation_token');
 						$users              = array();
-						$users[]            = JFactory::getUser($user_id)->get('email');
+						$users[]            = \JFactory::getUser($user_id)->get('email');
 
 						// Publish assertion
 						$badgesProvider->grantBadge($data, $users);

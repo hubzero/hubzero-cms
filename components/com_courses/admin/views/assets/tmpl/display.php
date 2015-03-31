@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,7 +36,15 @@ foreach ($this->rows as $row)
 	$ids[] = $row->id;
 }
 
-$canDo = CoursesHelper::getActions();
+$canDo = \Components\Courses\Helpers\Permissions::getActions();
+
+// Initiate paging
+jimport('joomla.html.pagination');
+$pageNav = new JPagination(
+	$this->total,
+	$this->filters['start'],
+	$this->filters['limit']
+);
 
 JHTML::_('behavior.modal');
 ?>
@@ -66,14 +74,14 @@ jQuery(document).ready(function($){
 
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th colspan="4">
 					<select name="asset" style="max-width: 15em;">
-						<option value="0"><?php echo JText::_('COM_COURSES_SELECT'); ?></option>
+						<option value="0"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
 						<?php if ($this->assets) { ?>
 							<?php
 							foreach ($this->assets as $asset)
@@ -87,18 +95,18 @@ jQuery(document).ready(function($){
 							<?php } ?>
 						<?php } ?>
 					</select>
-					<input type="submit" value="<?php echo JText::_('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
+					<input type="submit" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
 				</th>
 				<th colspan="4" style="text-align:right;">
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_COURSES_CREATE_ASSET'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
 				</th>
 			</tr>
 			<tr>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TITLE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_TYPE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_COURSES_COL_STATE'); ?></th>
-				<th scope="col" colspan="3"><?php echo JText::_('COM_COURSES_COL_ORDERING'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TYPE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('COM_COURSES_COL_STATE'); ?></th>
+				<th scope="col" colspan="3"><?php echo Lang::txt('COM_COURSES_COL_ORDERING'); ?></th>
 				<th scope="col">X</th>
 			</tr>
 		</thead>
@@ -117,7 +125,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>">
+					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				<?php } else { ?>
@@ -132,31 +140,31 @@ foreach ($this->rows as $row)
 				<td>
 					<?php if ($row->state == 2) { ?>
 						<span class="state delete">
-							<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					<?php } else if ($row->state == 1) { ?>
 						<span class="state publish">
-							<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					<?php } else { ?>
 						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
+							<span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>
 					<?php } ?>
 				</td>
 				<td>
-					<?php echo $this->pageNav->orderUpIcon($i, ($row->ordering != @$this->rows[$i-1]->ordering)); ?>
+					<?php echo $pageNav->orderUpIcon($i, ($row->ordering != @$this->rows[$i-1]->ordering)); ?>
 				</td>
 				<td>
-					<?php echo $this->pageNav->orderDownIcon($i, $n, ($row->ordering != @$this->rows[$i+1]->ordering)); ?>
+					<?php echo $pageNav->orderDownIcon($i, $n, ($row->ordering != @$this->rows[$i+1]->ordering)); ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->ordering)); ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="state delete" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unlink&asset=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl'] . '&' . JUtility::getToken() . '=1'); ?>">
-						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('COM_COURSES_REMOVE'); ?>" /></span>
+					<a class="state delete" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unlink&asset=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl'] . '&' . JUtility::getToken() . '=1'); ?>">
+						<span><?php echo Lang::txt('COM_COURSES_REMOVE'); ?></span>
 					</a>
 				<?php } ?>
 				</td>

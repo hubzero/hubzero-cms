@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css('browse.css');
 
 //$maxtextlen = 42;
-$juser = JFactory::getUser();
+$juser = \JFactory::getUser();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -42,7 +42,7 @@ $juser = JFactory::getUser();
 	<?php if ($this->config->get('access-create-course')) { ?>
 	<div id="content-header-extra">
 		<p>
-			<a class="add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo JText::_('COM_COURSES_CREATE_COURSE'); ?></a>
+			<a class="add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&task=new'); ?>"><?php echo Lang::txt('COM_COURSES_CREATE_COURSE'); ?></a>
 		</p>
 	</div><!-- / #content-header-extra -->
 	<?php } ?>
@@ -53,15 +53,15 @@ $juser = JFactory::getUser();
 <?php } ?>
 
 <section class="main section">
-	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
+	<form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
 		<div class="subject">
 
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_COURSES_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('COM_COURSES_SEARCH_LEGEND'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('COM_COURSES_SEARCH_LABEL'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+					<legend><?php echo Lang::txt('COM_COURSES_SEARCH_LEGEND'); ?></legend>
+					<label for="entry-search-field"><?php echo Lang::txt('COM_COURSES_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 				</fieldset>
@@ -81,7 +81,7 @@ $juser = JFactory::getUser();
 						{
 							?>
 							<li>
-								<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $this->model->parseTags($this->filters['tag'], $tag))); ?>">
+								<a href="<?php echo Route::url($url . '&tag=' . implode(',', $this->model->parseTags($this->filters['tag'], $tag))); ?>">
 									<?php echo $this->escape(stripslashes($tag)); ?>
 									<span class="remove">x</a>
 								</a>
@@ -103,15 +103,15 @@ $juser = JFactory::getUser();
 					$atts = ($width > $height ? 'height="50"' : 'width="50"');
 					?>
 					<p class="course-group-img">
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
 							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape($group->get('description')); ?>" />
 						</a>
 					</p>
 					<p class="course-group-description">
-						<?php echo JText::_('COM_COURSES_BROUGHT_BY_GROUP'); ?>
+						<?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
 					</p>
 					<h3 class="course-group-title">
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
 							<?php echo $this->escape($group->get('description')); ?>
 						</a>
 					</h3>
@@ -126,9 +126,9 @@ $juser = JFactory::getUser();
 				$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 				?>
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo JText::_('COM_COURSES_SORT_BY_TITLE'); ?>"><?php echo JText::_('COM_COURSES_SORT_TITLE'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=alias' . $qs); ?>" title="<?php echo JText::_('COM_COURSES_SORT_BY_ALIAS'); ?>"><?php echo JText::_('COM_COURSES_SORT_ALIAS'); ?></a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=popularity' . $qs); ?>" title="<?php echo JText::_('COM_COURSES_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('COM_COURSES_SORT_POPULARITY'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_TITLE'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=alias' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_ALIAS'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_ALIAS'); ?></a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option='.$this->option.'&task=browse&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('COM_COURSES_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('COM_COURSES_SORT_POPULARITY'); ?></a></li>
 				</ul>
 				<div class="clearfix"></div>
 
@@ -141,23 +141,23 @@ $juser = JFactory::getUser();
 						{
 							if ($this->filters['tag'] != '')
 							{
-								echo JText::sprintf('COM_COURSES_SEARCH_FOR_IN_WITH', $this->escape($this->filters['search']), $this->escape($this->filters['tag']));
+								echo Lang::txt('COM_COURSES_SEARCH_FOR_IN_WITH', $this->escape($this->filters['search']), $this->escape($this->filters['tag']));
 							}
 							else
 							{
-								echo JText::sprintf('COM_COURSES_SEARCH_FOR_IN', $this->escape($this->filters['search']));
+								echo Lang::txt('COM_COURSES_SEARCH_FOR_IN', $this->escape($this->filters['search']));
 							}
 						}
 						else if ($this->filters['tag'] != '')
 						{
-							echo JText::sprintf('COM_COURSES_COURSES_WITH', $this->escape($this->filters['tag']));
+							echo Lang::txt('COM_COURSES_COURSES_WITH', $this->escape($this->filters['tag']));
 						}
 						else
 						{
-							echo JText::_('COM_COURSES');
+							echo Lang::txt('COM_COURSES');
 						}
 						/*if ($this->filters['index']) { ?>
-							echo JText::_('starting with "%s"', strToUpper($this->filters['index']);
+							echo Lang::txt('starting with "%s"', strToUpper($this->filters['index']);
 						}*/
 					?>
 					<?php if ($this->courses->total() > 0) { ?>
@@ -190,14 +190,14 @@ $juser = JFactory::getUser();
 						<li<?php echo ($status) ? ' class="' . $status . '"' : ''; ?>>
 							<article>
 								<h4>
-									<a class="entry-title" href="<?php echo JRoute::_($course->link()); ?>">
+									<a class="entry-title" href="<?php echo Route::url($course->link()); ?>">
 										<?php echo $this->escape($course->get('title')); ?>
 									</a>
 								</h4>
 								<p class="course-identity">
-									<a href="<?php echo JRoute::_($course->link()); ?>">
+									<a href="<?php echo Route::url($course->link()); ?>">
 										<?php if ($logo = $course->logo('url')) { ?>
-											<img src="<?php echo JRoute::_($logo); ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
+											<img src="<?php echo Route::url($logo); ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
 										<?php } else { ?>
 											<span></span>
 										<?php } ?>
@@ -206,7 +206,7 @@ $juser = JFactory::getUser();
 								<dl class="entry-meta">
 									<dt>
 										<span>
-											<?php echo JText::sprintf('COM_COURSES_COURSE_NUMBER', $course->get('id')); ?>
+											<?php echo Lang::txt('COM_COURSES_COURSE_NUMBER', $course->get('id')); ?>
 										</span>
 									</dt>
 									<dd class="instructors">
@@ -220,9 +220,9 @@ $juser = JFactory::getUser();
 												$instructor = \Hubzero\User\Profile::getInstance($i->get('user_id'));
 												$name = $this->escape(stripslashes($instructor->get('name')));
 
-												$names[] = ($instructor->get('public') ? '<a href="' . JRoute::_($instructor->getLink()) . '">' . $name . '</a>' : $name);
+												$names[] = ($instructor->get('public') ? '<a href="' . Route::url($instructor->getLink()) . '">' . $name . '</a>' : $name);
 											}
-											echo JText::_('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span><?php
+											echo Lang::txt('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span><?php
 										}
 										?>
 									</dd>
@@ -235,26 +235,33 @@ $juser = JFactory::getUser();
 						<?php
 					} // for loop
 				} else { ?>
-					<li class="no-results"><p class="warning"><?php echo JText::_('COM_COURSES_NO_RESULTS_FOUND'); ?></p></li>
+					<li class="no-results"><p class="warning"><?php echo Lang::txt('COM_COURSES_NO_RESULTS_FOUND'); ?></p></li>
 				<?php } ?>
 				</ol>
 
 				<?php
-				$this->pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-				$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+				// Initiate paging
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+				$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
-				echo $this->pageNav->getListFooter();
+				echo $pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<div class="container">
-				<h3><?php echo JText::_('COM_COURSES_FINDING_A_COURSE'); ?></h3>
-				<p><?php echo JText::_('COM_COURSES_FINDING_A_COURSE_EXPLANATION'); ?></p>
+				<h3><?php echo Lang::txt('COM_COURSES_FINDING_A_COURSE'); ?></h3>
+				<p><?php echo Lang::txt('COM_COURSES_FINDING_A_COURSE_EXPLANATION'); ?></p>
 			</div><!-- / .container -->
 			<div class="container">
-				<h3><?php echo JText::_('COM_COURSES_POPULAR_CATEGORIES'); ?></h3>
+				<h3><?php echo Lang::txt('COM_COURSES_POPULAR_CATEGORIES'); ?></h3>
 				<?php
 				$tags = $this->model->tags('cloud', array(
 					'limit'    => 20,
@@ -269,7 +276,7 @@ $juser = JFactory::getUser();
 				if ($tags) {
 					echo $tags;
 				} else {
-					echo '<p>' . JText::_('COM_COURSES_POPULAR_CATEGORIES_NONE') . '</p>';
+					echo '<p>' . Lang::txt('COM_COURSES_POPULAR_CATEGORIES_NONE') . '</p>';
 				} ?>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->

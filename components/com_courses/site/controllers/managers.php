@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,27 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Site\Controllers;
+
+use Hubzero\Component\SiteController;
 
 /**
  * Manage a course's manager entries
  */
-class CoursesControllerManagers extends \Hubzero\Component\SiteController
+class Managers extends SiteController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		// Load the course page
-		$this->course = CoursesModelCourse::getInstance(JRequest::getVar('gid', ''));
+		$this->course = \CoursesModelCourse::getInstance(Request::getVar('gid', ''));
 
 		parent::execute();
 	}
@@ -52,18 +53,18 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 	/**
 	 * Add a user as a manager of a course
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_MISSING_COURSE'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_MISSING_COURSE'));
 			$this->displayTask();
 			return;
 		}
@@ -72,7 +73,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 		$managers = $this->course->managers(); //get('managers');
 
 		// Incoming host
-		$m = JRequest::getVar('usernames', '', 'post');
+		$m = Request::getVar('usernames', '', 'post');
 
 		$mbrs = explode(',', $m);
 
@@ -87,7 +88,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 			if (is_numeric($mbr))
 			{
 				// Make sure the user exists
-				$user = JUser::getInstance($mbr);
+				$user = User::getInstance($mbr);
 				if (is_object($user) && $user->get('username'))
 				{
 					$uid = $mbr;
@@ -96,7 +97,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 			// Username
 			else
 			{
-				$uid = JUserHelper::getUserId($mbr);
+				$uid = \JUserHelper::getUserId($mbr);
 			}
 
 			// Ensure we found an account
@@ -105,7 +106,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 				// Loop through existing members and make sure the user isn't already a member
 				if (isset($managers[$uid]))
 				{
-					$this->setError(JText::sprintf('COM_COURSES_ERROR_ALREADY_A_MANAGER', $mbr));
+					$this->setError(Lang::txt('COM_COURSES_ERROR_ALREADY_A_MANAGER', $mbr));
 					continue;
 				}
 
@@ -114,12 +115,12 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOT_FOUND') . ' ' . $mbr);
+				$this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOT_FOUND') . ' ' . $mbr);
 			}
 		}
 
 		// Add users
-		$this->course->add($users, JRequest::getInt('role', 0));
+		$this->course->add($users, Request::getInt('role', 0));
 
 		// Push through to the hosts view
 		$this->displayTask();
@@ -128,25 +129,25 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 	/**
 	 * Remove one or more users from the course manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_MISSING_COURSE'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_MISSING_COURSE'));
 			$this->displayTask();
 			return;
 		}
 
 		$managers = $this->course->managers();
 
-		$mbrs = JRequest::getVar('entries', array(0), 'post');
+		$mbrs = Request::getVar('entries', array(0), 'post');
 
 		$users = array();
 		foreach ($mbrs as $mbr)
@@ -157,7 +158,7 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 			}
 
 			// Retrieve user's account info
-			$targetuser = JUser::getInstance($mbr['user_id']);
+			$targetuser = User::getInstance($mbr['user_id']);
 
 			// Ensure we found an account
 			if (is_object($targetuser))
@@ -171,13 +172,13 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$this->setError(JText::_('COM_COURSES_ERROR_USER_NOT_FOUND') . ' ' . $mbr);
+				$this->setError(Lang::txt('COM_COURSES_ERROR_USER_NOT_FOUND') . ' ' . $mbr);
 			}
 		}
 
 		if (count($users) >= count($managers))
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_LAST_MANAGER'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_LAST_MANAGER'));
 		}
 		else
 		{
@@ -192,32 +193,32 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 	/**
 	 * Remove one or more users from the course manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken() or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = Request::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('COM_COURSES_ERROR_MISSING_COURSE'));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_MISSING_COURSE'));
 			$this->displayTask();
 			return;
 		}
 
-		$model = CoursesModelCourse::getInstance($id);
+		$model = \CoursesModelCourse::getInstance($id);
 
-		$entries = JRequest::getVar('entries', array(0), 'post');
+		$entries = Request::getVar('entries', array(0), 'post');
 
-		require_once(JPATH_ROOT . '/administrator/components/com_courses/tables/member.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php');
 
 		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$tbl = new CoursesTableMember($this->database);
+			$tbl = new \CoursesTableMember($this->database);
 			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
 			if ($tbl->role_id == $data['role_id'])
 			{
@@ -237,26 +238,22 @@ class CoursesControllerManagers extends \Hubzero\Component\SiteController
 	/**
 	 * Display a list of 'manager' for a specific course
 	 *
-	 * @param      object $profile \Hubzero\User\Profile
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		$this->view->course = $this->course;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 
