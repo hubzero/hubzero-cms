@@ -34,7 +34,7 @@ $minGitSize = 61440;
 
 // Check used space against quota (percentage)
 $inuse = round((($this->dirsize * 100 )/ $this->quota), 1);
-if ($this->total > 0 && $inuse < 1) 
+if ($this->total > 0 && $inuse < 1)
 {
 	$inuse = round((($this->dirsize * 100 )/ $this->quota), 2);
 	if ($inuse < 0.1) {

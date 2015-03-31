@@ -52,7 +52,7 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 		<span class="dropbox"></span>
 		<?php } ?>
 		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
-		<?php } 
+		<?php }
 			// Connected to Google
 			if ($this->oparams->get('google_token') && $active) {  ?>
 				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>

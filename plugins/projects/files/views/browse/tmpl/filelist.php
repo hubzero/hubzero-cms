@@ -255,7 +255,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('url', $this->url)
 						     ->display();
 					}
-			 		$c++;
+					$c++;
 				}
 			}
 
