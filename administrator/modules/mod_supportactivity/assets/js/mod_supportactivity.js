@@ -27,15 +27,16 @@ jQuery(document).ready(function($){
 				window.console && console.log(list.attr('data-url') + list.children().first().attr('data-time'));
 			}
 			$.get(list.attr('data-url') + list.children().first().attr('data-time'), {}, function(data){
-				if (data && !data.match('/<body(.*?)>/i')) {
-					if (_DEBUG) {
-						//window.console && console.log(data);
-					}
-					data = data.replace('<div id="panel-sliders" class="pane-sliders">', '');
-
-					list.prepend($(data).hide().fadeIn());
-					list.attr('data-start', list.children().first().attr('data-time'));
+				if (!data || !data.match('/<body(.*?)>/i') || !data.match('/<form(.*?)>/i')) {
+					clearInterval();
 				}
+				if (_DEBUG) {
+					//window.console && console.log(data);
+				}
+				data = data.replace('<div id="panel-sliders" class="pane-sliders">', '');
+
+				list.prepend($(data).hide().fadeIn());
+				list.attr('data-start', list.children().first().attr('data-time'));
 			});
 		}, 1 * 60 * 1000);
 	});
