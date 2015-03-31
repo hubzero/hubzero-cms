@@ -37,9 +37,9 @@ $c = 0;
 	<?php if (count($this->posts) > 0) : ?>
 		<ul class="blog-entries">
 		<?php 
-		foreach ($this->posts as $post) 
-		{ 
-			if ($c < $this->limit) 
+		foreach ($this->posts as $post)
+		{
+			if ($c < $this->limit)
 			{
 				?>
 					<li>
@@ -77,7 +77,7 @@ $c = 0;
 								<dd class="location">
 									<a href="<?php echo $post->link('base'); ?>">
 										<?php 
-										switch ($post->get('scope')) 
+										switch ($post->get('scope'))
 										{
 											case 'site':
 												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_SITE');

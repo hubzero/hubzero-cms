@@ -82,13 +82,13 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 		// support for `active_menu` of 'Link - Url' if link is relative
 		if ($id == '' && $mitem->type == 'url' && strpos('http', $mitem->link) === false) {
 			$url = array();
-			if(strpos($mitem->link, '&amp;') !== false) 
-			{ 
-			   $mitem->link = str_replace('&amp;','&',$mitem->link); 
-			} 
-			
+			if (strpos($mitem->link, '&amp;') !== false)
+			{
+				$mitem->link = str_replace('&amp;','&',$mitem->link);
+			}
+
 			parse_str($mitem->link, $url);
-			if (isset ($url['Itemid'])) {
+			if (isset($url['Itemid'])) {
 				if ($url['Itemid'] == $current_itemid) {
 					$id = 'id="active_menu' . $params->get('class_sfx') . '"';
 				}
@@ -270,16 +270,16 @@ function mosShowVIMenu(& $params)
 
 	// first pass - collect children
 	$cacheIndex = array();
-	if(is_array($rows) && count($rows)) {
-	    foreach ($rows as $index => $v) {
-		    if ($v->access <= $user->get('gid')) {
-			    $pt = $v->parent;
-			    $list = @ $children[$pt] ? $children[$pt] : array ();
-			    array_push($list, $v);
-			    $children[$pt] = $list;
-		    }
-		    $cacheIndex[$v->id] = $index;
-	    }
+	if (is_array($rows) && count($rows)) {
+		foreach ($rows as $index => $v) {
+			if ($v->access <= $user->get('gid')) {
+				$pt = $v->parent;
+				$list = @ $children[$pt] ? $children[$pt] : array();
+				array_push($list, $v);
+				$children[$pt] = $list;
+			}
+			$cacheIndex[$v->id] = $index;
+		}
 	}
 
 	// second pass - collect 'open' menus
@@ -347,7 +347,7 @@ function mosShowHFMenu(& $params, $style = 0)
 	$rows = $menu->getItems('menutype', $params->get('menutype'));
 
 	$links = array ();
-	if(is_array($rows) && count($rows)) {
+	if (is_array($rows) && count($rows)) {
 		foreach ($rows as $row)
 		{
 			if ($row->access <= $user->get('aid', 0)) {

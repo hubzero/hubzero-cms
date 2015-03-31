@@ -55,7 +55,7 @@ class Helper extends Module
 			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . JFactory::getApplication()->getCfg('sitename'));
 
 			JFactory::getDocument()->addHeadLink(
-				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . Route::url('&option=com_search&format=opensearch'), 
+				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . Route::url('&option=com_search&format=opensearch'),
 				'search',
 				'rel',
 				array('title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml')

@@ -54,11 +54,11 @@ class modMegaMenuHelper
 			    } else {
 				    // no parent yet so push item to back of list
 					// SAM: But if the key isn't in the list and we dont _add_ this is infinite, so check the unresolved queue
-					if(!array_key_exists($row->id, $unresolved) || $unresolved[$row->id] < $maxdepth) {
+					if (!array_key_exists($row->id, $unresolved) || $unresolved[$row->id] < $maxdepth) {
 						array_push($rows, $row);
 						// so let us do max $maxdepth passes
 						// TODO: Put a time check in this loop in case we get too close to the PHP timeout
-						if(!isset($unresolved[$row->id])) $unresolved[$row->id] = 1;
+						if (!isset($unresolved[$row->id])) $unresolved[$row->id] = 1;
 						else $unresolved[$row->id]++;
 					}
 			    }
@@ -94,7 +94,7 @@ class modMegaMenuHelper
 		{
 			$found = false;
 			$root = true;
-			if(!isset($active)){
+			if (!isset($active)){
 				$doc = false;
 			}
 			else{
@@ -241,7 +241,7 @@ class MegaMenuTree extends JTree
 			}
 			$this->_buffer .= '</ul>';
 		}
-		if($this->_buffer == '') { $this->_buffer = '<ul />'; }
+		if ($this->_buffer == '') { $this->_buffer = '<ul />'; }
 		return $this->_buffer;
 	}
 
@@ -282,8 +282,8 @@ class MegaMenuTree extends JTree
 		{
 			$menu = JFactory::getApplication()->getMenu();
 			if ($tmp = clone($menu->getItem($item->query['Itemid']))) {
-				$tmp->name	 = '<span><![CDATA['.$item->name.']]></span>';
-				$tmp->mid	 = $item->id;
+				$tmp->name   = '<span><![CDATA['.$item->name.']]></span>';
+				$tmp->mid    = $item->id;
 				$tmp->parent = $item->parent;
 			} else {
 				return false;
@@ -304,7 +304,7 @@ class MegaMenuTree extends JTree
 			case 'separator' :
 				if (preg_match('/(.*)\[module\((.*)\)\](.*)/', $tmp->name, $position)) {
 					$html = '<div class="megamenu-item">' . htmlentities(\Hubzero\Module\Helper::renderModules($position[2])) . '</div>';
-                } else {
+				} else {
 					$html = '<span class="separator">'.$image.$tmp->name.'</span>';
 				}
 				return $html;

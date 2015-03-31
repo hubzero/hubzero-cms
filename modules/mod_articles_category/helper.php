@@ -175,7 +175,7 @@ class Helper extends Module
 				$view   = Request::getCmd('view');
 				if ($option === 'com_content')
 				{
-					switch($view)
+					switch ($view)
 					{
 						case 'category':
 							$catids = array(Request::getInt('id'));
@@ -559,7 +559,7 @@ class Helper extends Module
 
 		if ($type === 'month_year')
 		{
-			foreach($grouped as $group => $items)
+			foreach ($grouped as $group => $items)
 			{
 				$date = new JDate($group);
 				$formatted_group = $date->format($month_year_format);
