@@ -172,6 +172,10 @@ jQuery(document).ready(function($){
 		// we just need to attach a click event listener to provoke iPhone/iPod/iPad's hover event
 		$('.main-navigation li.node').on('click', function(){ });
 	}*/
+	$('#toolbar ul').on('click', function(e){
+		$(this).toggleClass('active');
+	});
+
 	$('.main-navigation li.node>a').on('click', function(e){
 		$(this).parent().toggleClass('active');
 	});
