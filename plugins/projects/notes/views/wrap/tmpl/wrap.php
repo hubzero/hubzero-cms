@@ -28,12 +28,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
 	 ->js();
 
-$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=notes';
+$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes';
 
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
 
-$this->content = str_replace('projects/pr-' . $this->project->alias , 'projects/' . $this->project->alias, $this->content);
+$this->content = str_replace('projects/pr-' . $this->project->get('alias') , 'projects/' . $this->project->get('alias'), $this->content);
 
 // Get the page
 $page = $this->page;
@@ -41,10 +41,10 @@ $page = $this->page;
 $showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $page->get('id') ? true : false;
 
 // Get all project notes
-$notes = $this->model->getNotes();
+$notes = $this->note->getNotes();
 
 // Get page parent notes (for breadcrumbs)
-$parentNotes = $this->model->getParentNotes($this->scope);
+$parentNotes = $this->note->getParentNotes($this->scope);
 
 // Get parent scope (to add subpages)
 $parentScope = $this->scope . DS . $page->get('pagename');
@@ -76,7 +76,7 @@ if ($this->task != 'view' && in_array($this->task, $tasks))
 
 // Is note public?
 $publicStamp = $this->params->get('enable_publinks')
-	? $this->model->getPublicStamp($page->get('id')) : NULL;
+	? $this->note->getPublicStamp($page->get('id')) : NULL;
 
 $listed = $publicStamp ? $publicStamp->listed : false;
 
@@ -84,7 +84,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <div id="plg-header">
 	<h3 class="notes"><?php if ($bcrumb) { ?><a href="<?php echo Route::url($url); ?>"><?php } ?><?php echo $this->title; ?><?php if ($bcrumb) { ?></a><?php } ?> <?php  echo $bcrumb; ?></h3>
 </div>
-<?php if ($showSidePanel) { ?>
+<?php if ($showSidePanel && $this->project->access('content')) { ?>
 <ul id="page_options" class="pluginOptions">
 	<li>
 		<a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
@@ -103,7 +103,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 		<?php echo $this->content; ?>
 		<div id="scope" class="hidden"><?php echo $this->scope; ?></div>
 		</div>
-		<?php if ($this->params->get('enable_publinks') && $this->page->get('id')) {
+		<?php if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
 			$this->view('sharelink')
 			     ->set('option', $this->option)
 			     ->set('page', $this->page)
@@ -121,7 +121,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 				     ->set('page', $this->page)
 					 ->set('scope', $this->scope)
 				     ->set('task', $this->task)
-					 ->set('model', $this->model)
+					 ->set('note', $this->note)
 				     ->set('project', $this->project)
 				     ->display();
 				?>

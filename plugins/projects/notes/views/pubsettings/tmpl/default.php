@@ -42,7 +42,7 @@ if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 	<fieldset >
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="p" value="<?php echo $this->page->get('id'); ?>" />
@@ -51,7 +51,7 @@ if (!$this->getError()) {
 		<p class="publink"><?php echo trim($juri->base(), DS) . Route::url('index.php?option=' . $this->option . '&action=get&s=' . $this->publicStamp->stamp); ?></p>
 		<p class="about"><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_ABOUT'); ?></p>
 
-		<?php if ($this->project->private == 0) { ?>
+		<?php if ($this->project->isPublic()) { ?>
 		<h4><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>
 		<label>
 		<input type="radio" name="action" value="<?php echo 'publist'; ?>" <?php if ($this->publicStamp->listed) { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LIST'); ?>

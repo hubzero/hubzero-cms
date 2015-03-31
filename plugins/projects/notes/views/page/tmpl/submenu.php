@@ -35,7 +35,7 @@ $juser = JFactory::getUser();
 
 if (!isset($this->controller))
 {
-	$this->controller = JRequest::getWord('controller', 'page');
+	$this->controller = Request::getWord('controller', 'page');
 }
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">

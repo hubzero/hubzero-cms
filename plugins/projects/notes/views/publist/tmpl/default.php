@@ -33,7 +33,7 @@ $objSt 		= new \Components\Projects\Tables\Stamp( $database );
 $page		= new \Components\Wiki\Tables\Page( $database );
 
 // Get listed public notes
-$items = $objSt->getPubList($this->project->id, 'notes');
+$items = $objSt->getPubList($this->project->get('id'), 'notes');
 
 $link = Route::url('index.php?option=com_projects&task=get') . '/?s=';
 

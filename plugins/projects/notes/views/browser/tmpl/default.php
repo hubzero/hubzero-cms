@@ -25,17 +25,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$masterscope = 'projects' . DS . $this->project->alias . DS . 'notes';
+$masterscope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
 // Set project (system) group
 $group_prefix = $this->config->get('group_prefix', 'pr-');
-$group = $group_prefix . $this->project->alias;
+$group = $group_prefix . $this->model->get('alias');
 
 // Get our model
-$model = new \Components\Projects\Models\Note($masterscope, $group, $this->project->id);
+$note = new \Components\Projects\Models\Note($masterscope, $group, $this->model->get('id'));
 
 // Get notes to choose from
-$items = $model->getNotes();
+$items = $note->getNotes();
 
 // Sort notes to display hierarchy by scope
 $notes = array();
@@ -78,9 +78,9 @@ if ($this->primary && !empty($this->attachments))
 }
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 ?>
 <ul id="c-browser" <?php if (count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?> >
@@ -168,6 +168,6 @@ $route = $this->project->provisioned
 	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_NOTES_NO_SELECTION_ITEMS_FOUND'); ?></p>
 <?php } ?>
 
-<?php if (!$this->project->provisioned) { ?>
+<?php if (!$this->model->isProvisioned()) { ?>
 	<p class="addnew">Go to <a href="<?php echo Route::url($route . '&active=notes'); ?>">Notes</a> to create a new note</p>
 <?php } ?>
