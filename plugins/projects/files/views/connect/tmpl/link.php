@@ -33,11 +33,11 @@ $active = ($google['active'] || $dropbox['active']) ? 1 : 0;
 $on = ($google['on'] || $dropbox['on']) ? 1 : 0;
 
 // Project creator
-$creator = ($this->project->owned_by_user == $this->uid) ? 1 : 0;
+$creator = ($this->model->access('owner')) ? 1 : 0;
 
 $limited = $this->params->get('connectedProjects') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('connectedProjects')) : array();
 
-$authorized = (empty($limited) || (!empty($limited) && in_array($this->project->alias, $limited))) ? true : false;
+$authorized = (empty($limited) || (!empty($limited) && in_array($this->model->get('alias'), $limited))) ? true : false;
 
 $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $this->oparams->get('dropbox_token'))) ? 1 : 0;
 ?>
@@ -51,11 +51,11 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 		<?php if ($dropbox) { ?>
 		<span class="dropbox"></span>
 		<?php } ?>
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
 		<?php } 
 			// Connected to Google
 			if ($this->oparams->get('google_token') && $active) {  ?>
-				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
+				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
 		<?php } ?>
 	</span>
 </p>

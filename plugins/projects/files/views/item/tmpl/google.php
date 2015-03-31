@@ -62,8 +62,11 @@ if (in_array($item->remote_format, $texFormats)  || in_array($item->original_for
 	$tex = 1;
 }
 
+$member = $this->model->member();
+$params = new \JParameter($member->params);
+
 $author = $item->remote_author ? utf8_decode($item->remote_author) : '';
-$me = ($author == utf8_decode($this->oparams->get('google_name')) || $author == $this->juser->get('name') ) ? 1 : 0;
+$me = ($author == utf8_decode($params->get('google_name')) || $author == $this->juser->get('name') ) ? 1 : 0;
 
 ?>
 <tr class="mini faded mline google-resource">

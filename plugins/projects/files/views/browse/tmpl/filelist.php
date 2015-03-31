@@ -40,7 +40,7 @@ $empty = false;
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
-$class = $this->case == 'tools' ? 'tools' : 'files';
+$class = 'files';
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 $lastsync = '';
@@ -55,7 +55,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 	<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
 	<input type="hidden" name="sortby" id="sortby" value="<?php echo $this->filters['sortby']; ?>" />
 	<input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->filters['sortdir']; ?>" />
-	<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
+	<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
 	<input type="hidden" name="sync" id="sync" value="<?php echo $this->sync; ?>" />
 	<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 	<input type="hidden" name="sharing" id="sharing" value="<?php echo $this->sharing; ?>" />
@@ -91,7 +91,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		// NEW: connections to external services
 		$this->view('link', 'connect')
 		     ->set('option', $this->option)
-		     ->set('project', $this->project)
+		     ->set('model', $this->model)
 		     ->set('uid', $this->uid)
 		     ->set('database', $this->database)
 		     ->set('connect', $this->connect)
@@ -160,7 +160,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 					<td></td>
 					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>">
 							<fieldset>
-								<input type="hidden" name="<?php echo ($this->tool && $this->tool->name ) ? 'do' : 'action'; ?>" value="savedir" />
+								<input type="hidden" name="action" value="savedir" />
 								<label>
 									<span class="mini block prominent ipadded"><?php echo JText::_('PLG_PROJECTS_FILES_NEW_FOLDER'); ?>:</span>
 									<img src="/plugins/projects/files/images/folder.gif" alt="" />
@@ -202,12 +202,10 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('subdir', $this->subdir)
 						     ->set('item', $dir)
 						     ->set('option', $this->option)
-						     ->set('project', $this->project)
-						     ->set('juser', $this->juser)
+						     ->set('model', $this->model)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
 						     ->set('publishing', $this->publishing)
-						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
 						     ->set('url', $this->url)
@@ -232,12 +230,10 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('subdir', $this->subdir)
 						     ->set('item', $file)
 						     ->set('option', $this->option)
-						     ->set('project', $this->project)
-						     ->set('juser', $this->juser)
+						     ->set('model', $this->model)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
 						     ->set('publishing', $this->publishing)
-						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
 						     ->set('url', $this->url)
@@ -250,12 +246,10 @@ $connected = $this->oparams->get('google_token') ? true : false;
 						     ->set('subdir', $this->subdir)
 						     ->set('item', $item['item'])
 						     ->set('option', $this->option)
-						     ->set('project', $this->project)
-						     ->set('juser', $this->juser)
+						     ->set('model', $this->model)
 						     ->set('c', $c)
 						     ->set('connect', $this->connect)
 						     ->set('publishing', $this->publishing)
-						     ->set('oparams', $this->oparams)
 						     ->set('params', $this->fileparams)
 						     ->set('case', $this->case)
 						     ->set('url', $this->url)
@@ -269,14 +263,9 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
 					<td colspan="<?php echo $this->publishing ? 8 : 7; ?>" class="mini faded">
-						<?php if ($this->subdir || $this->tool)
+						<?php if ($this->subdir)
 							{
 								echo JText::_('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY');
-								if (!$this->tool)
-								{
-									echo ' <a href="' . $this->url . '/?action=deletedir&amp;dir='.urlencode($this->subdir) . '" class="delete" id="delete-dir">'
-									. JText::_('PLG_PROJECTS_FILES_DELETE_THIS_DIRECTORY') . '</a>';
-								}
 							}
 							else
 							{

@@ -29,12 +29,12 @@ $this->css()
      ->js();
 
 // Project creator?
-$creator = ($this->project->owned_by_user == $this->uid) ? 1 : 0;
+$creator = $this->model->access('owner') ? 1 : 0;
 
 $i = 0;
 ?>
 <div id="plg-header">
-	<h3 class="files"><a href="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></span></h3>
+	<h3 class="files"><a href="<?php echo Route::url('index.php?option='.$this->option . '&alias=' . $this->model->get('alias') . '&active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></span></h3>
 </div>
 
 <p><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT_EXPLAIN'); ?></p>
@@ -57,8 +57,8 @@ $i = 0;
 		}
 
 		$objO = new \Components\Projects\Tables\Owner( $this->database );
-		$numConnected = $objO->getConnected($this->project->id, $servicename);
-		$teamCount = $objO->countOwners($this->project->id);
+		$numConnected = $objO->getConnected($this->model->get('id'), $servicename);
+		$teamCount = $objO->countOwners($this->model->get('id'));
 
 		// Skip unavailable services entirely
 		if (!$service['on']) {
@@ -75,7 +75,7 @@ $i = 0;
 				<p><span class="connected"><?php echo ucfirst(JText::_('PLG_PROJECTS_FILES_CONNECT_CONNECTED')); ?></span></p>
 				<p><?php echo $this->oparams->get($servicename . '_email'); ?></p>
 			<?php } else { ?>
-				<p class="connect-action"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=connect&amp;service=' . $servicename; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a></p>
+				<p class="connect-action"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect&amp;service=' . $servicename; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a></p>
 			<?php } ?>
 		</div>
 		<?php } ?>
@@ -95,11 +95,11 @@ $i = 0;
 			<?php $removeData = $creator ? '&removedata=1' : '';  ?>
 			<p>
 				<span class=" <?php echo $creator ? ' creator' : ''; ?>">
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=disconnect&amp;service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo ucfirst(JText::_('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=disconnect&amp;service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo ucfirst(JText::_('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
 				</span>
 				&nbsp; &nbsp;
 				<span>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=files') . '?action=connect&amp;reauth=1&amp;service=' . $servicename; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect&amp;reauth=1&amp;service=' . $servicename; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
 				</span>
 			</p>
 			<?php } ?>

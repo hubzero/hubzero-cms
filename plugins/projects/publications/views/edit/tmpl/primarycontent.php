@@ -120,7 +120,7 @@ else
 				<input type="hidden" name="base" id="base" value="<?php echo $this->_pubTypeHelper->_base; ?>" />
 				<input type="hidden" name="primary" id="primary" value="1" />
 				<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="option" value="<?php echo $this->project->provisioned ? 'com_publications' : $this->option; ?>" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<?php if ($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />

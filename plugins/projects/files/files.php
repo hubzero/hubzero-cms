@@ -171,6 +171,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Model
 		$this->model = $model;
 
+		// Check authorization
+		if ($model->exists() && !$model->access('member'))
+		{
+			return $arr;
+		}
+
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
@@ -187,14 +193,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			{
 				$this->_project = new \Components\Projects\Tables\Project( $this->_database );
 				$this->_project->provisioned = 1;
+				$this->model->set('provisioned', 1);
 			}
 			else
 			{
-				// Check authorization
-				if (!$model->access('member'))
-				{
-					return $arr;
-				}
 				$this->_project     = $model->project();
 			}
 
@@ -220,15 +222,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->publication 	= Request::getInt('pid', 0);
 
 			// Set routing
-			$this->_route       = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
+			$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
 
 			// Get time zone
 			$zone = date_default_timezone_get();
 
 			//  Establish connection to external services
-			if (is_object($this->_project) && $this->_project->id && !$this->_project->provisioned)
+			if ($this->model->exists() && !$this->model->isProvisioned())
 			{
-				$this->_connect = new \Components\Projects\Helpers\Connect($this->_database, $this->_project, $this->_uid, $zone);
+				$this->_connect = new \Components\Projects\Helpers\Connect(
+					$this->model,
+					$this->_uid,
+					$zone
+				);
 
 				// Get services the project is connected to
 				$this->_rServices = $this->_connect->getActive();
@@ -305,7 +311,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				case 'optimize':
 				case 'advoptimize':
 					$arr['html'] 	= $this->diskspace(
-						$option, $project, $this->_case,
+						$this->_option, $this->model, $this->_case,
 						$this->_uid, $this->_task, $this->_config, $this->_tool);
 					break;
 
@@ -428,18 +434,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Get used space in project directory
 		$view->dirsize = $this->getDiskUsage($this->_path, $this->params->get('disk_usage'));
 
-		// Get connection details for user
-		$objO = new \Components\Projects\Tables\Owner( $this->_database );
-		$objO->loadOwner ($this->_project->id, $this->_uid);
-		$view->oparams = new \JParameter( $objO->params );
-
 		// Do we have any changes to report?
 		$this->onAfterUpdate();
-
-		// Get fresh data
-		$obj = new \Components\Projects\Tables\Project( $this->_database );
-		$obj->load($this->_project->id);
-		$view->params = new \JParameter( $obj->params );
 
 		// Get local files and folders
 		$localFiles 		= $this->getFiles($this->_path, $this->subdir,
@@ -455,6 +451,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_database);
 
+		// Load member params
+		$member = $this->model->member(true);
+		$view->oparams = new \JParameter($member->params);
+
 		// Remote service(s) active?
 		if (!empty($this->_rServices) && $this->_case == 'files')
 		{
@@ -466,7 +466,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				// Get stored remote connections
 				$remotes[$servicename] = $objRFile->getRemoteEditFiles($this->_project->id, $servicename, $this->subdir);
 
-				$sync	= $sync == 2 ? 0 : $view->params->get($servicename . '_sync_queue', 0);
+				$sync	= $sync == 2 ? 0 : $view->oparams->get($servicename . '_sync_queue', 0);
 			}
 		}
 
@@ -479,19 +479,18 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$filters['sortdir']
 		);
 
+		$view->params 		= $this->model->params;
 		$view->rSync 		= $this->_rSync;
 		$view->url			= $url;
 		$view->sync			= $sync;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
-		$view->juser		= \JFactory::getUser();
 		$view->filters 		= $filters;
 		$view->subdir 		= $this->subdir;
 		$view->task			= $this->_task;
 		$view->case 		= $this->_case;
-		$view->tool			= $this->_tool;
 		$view->config 		= $this->_config;
 		$view->publishing	= $this->_publishing;
 		$view->title		= $this->_area['title'];
@@ -524,9 +523,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 
-		// Provisioned project?
-		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
-
 		// Make sure Git helper is included
 		$this->_getGitHelper();
 
@@ -552,7 +548,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get publication
 		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
+			$view->version->version_number, $this->model->get('id'));
 
 		if (!$view->publication)
 		{
@@ -580,7 +576,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->_project;
+		$view->publication->_project 	= $this->model->project();
 
 		// Get attachments
 		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
@@ -599,7 +595,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Get file list
 		$view->items = NULL;
-		if ($this->_project->id)
+		if ($this->model->get('id'))
 		{
 			$this->minimal = true;
 			$view->items = $this->getList();
@@ -607,7 +603,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -618,7 +614,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->filter		= $filter;
 		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
 
-		if ($prov)
+		if ($this->model->isProvisioned())
 		{
 			$view->quota = \Components\Projects\Helpers\Html::convertSize(floatval($this->_config->get('pubQuota', '1')), 'GB', 'b');
 		}
@@ -652,14 +648,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Contribute process outside of projects
-		if (!is_object($this->_project) or !$this->_project->id)
+		if (!is_object($this->model) or !$this->model->exists())
 		{
-			$this->_project = new \Components\Projects\Tables\Project( $this->_database );
-			$this->_project->provisioned = 1;
+			$this->model->set('provisioned', 1);
 		}
-
-		// Provisioned project?
-		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
 
 		// Does subdirectory exist?
 		if (!is_dir($this->_path. DS . $this->subdir))
@@ -677,7 +669,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		);
 
 		// Get file list
-		if (!$this->_project->id)
+		if (!$this->model->exists())
 		{
 			$view->files = $this->getMemberFiles($this->_path, $this->subdir);
 		}
@@ -719,7 +711,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$view->shots = $pScreenshot->getScreenshots($versionid);
 		}
 
-		$view->exclude = $pContent->getAttachments($versionid, $filters = array('role' => $other, 'select' => 'a.path'));
+		$view->exclude = $pContent->getAttachments(
+			$versionid,
+			$filters = array('role' => $other, 'select' => 'a.path')
+		);
+
 		if ($view->exclude && !$images)
 		{
 			$excude_files = array();
@@ -733,10 +729,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->primary 		= $primary;
 		$view->images 		= $images;
 		$view->total 		= 0;
-		$view->params 		= new \JParameter( $this->_project->params );
+		$view->params 		= $this->model->params;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->subdir 		= $this->subdir;
 		$view->case 		= $this->_case;
@@ -3165,8 +3161,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Instantiate a project
 		$obj = new \Components\Projects\Tables\Project( $database );
 
-		$juser = \JFactory::getUser();
-		$uid   = $juser->get('id');
+		$uid   = User::get('id');
 
 		// Get Project
 		$project = $obj->getProject($projectid, $uid);
@@ -4317,29 +4312,29 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function diskspace( $option, $project, $case, $by, $action, $config, $tool = NULL )
+	public function diskspace( $option, $model, $case, $by, $action, $config, $tool = NULL )
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'files',
-				'name'=>'diskspace'
+				'folder'  =>'projects',
+				'element' =>'files',
+				'name'    =>'diskspace'
 			)
 		);
 
 		// Get path and initialize Git
 		if ($by == 'admin')
 		{
-			$this->_project = $project;
-			$this->_path = $this->getProjectPath($project->alias, $case);
-			$this->_config = Component::params('com_projects');
+			$this->model   = $model;
+			$this->_path   = $this->getProjectPath($this->model->get('alias'), $case);
+			$this->_config = $this->model->config();
 		}
 
 		// Make sure Git helper is included
 		$this->_getGitHelper();
 
-		$url 	= Route::url($this->_route . '&active=files&action=diskspace');
+		$url = Route::url($this->_route . '&active=files&action=diskspace');
 
 		// Run git-gc
 		if ($action == 'optimize' || $action == 'advoptimize')
@@ -4370,7 +4365,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Project params
-		$view->params = new \JParameter( $project->params );
+		$view->params = $this->model->params;
 
 		// Get publication usage
 		if (\JPluginHelper::isEnabled('projects', 'publications') && $by == 'admin')
@@ -4378,7 +4373,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			require_once(PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
 			$filters 					= array();
-			$filters['project']  		= $project->id;
+			$filters['project']  		= $this->model->get('id');
 			$filters['ignore_access']   = 1;
 			$filters['dev']   	 		= 1;
 
@@ -4403,7 +4398,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->tool		= $tool;
 		$view->action 	= $action;
 		$view->by 		= $by;
-		$view->project 	= $project;
+		$view->model 	= $this->model;
 		$view->option 	= $option;
 		$view->config 	= $config;
 		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
@@ -5106,9 +5101,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$diskSpace = 0;
 		$commits = 0;
 		$usage = 0;
-
-		$this->_project = new \Components\Projects\Tables\Project($this->_database);
-		$this->_project->provisioned = 0;
 
 		// Publication space
 		if ($get == 'pubspace')
@@ -6504,21 +6496,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$this->_database = \JFactory::getDBO();
 		$this->_uid 	 = $uid;
-		$this->_config 	 = Component::params('com_projects');
 
 		if (!$this->_uid)
 		{
-			$juser = \JFactory::getUser();
-			$this->_uid = $juser->get('id');
+			$this->_uid = User::get('id');
 		}
 
 		// Get project and check authorization
-		$objP = new \Components\Projects\Tables\Project( $this->_database );
-		$this->_project = $objP->getProject($identifier, $this->_uid);
-		if (!$this->_project || !$this->_project->owner)
+		$this->model = new Models\Project($identifier);
+
+		if (!$this->model->exists() || !$this->model->access('member'))
 		{
 			$arr['error']	= true;
-			$arr['message'] = !$this->_project
+			$arr['message'] = !$this->model->exists()
 							  ? \JText::_('PLG_PROJECTS_FILES_ERROR_UNABLE_TO_LOAD_PROJECT')
 							  : \JText::_('PLG_PROJECTS_FILES_ERROR_ANAUTHORIZED');
 			return $arr;
@@ -6529,9 +6519,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$this->_audience = 'external';
 		$this->_data	 = $data;
 		$this->_format	 = $format;
+		$this->_config 	 = $this->model->config();
 
 		// Set routing
-		$this->_route       = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias;
+		$this->_route = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias');
 
 		// MIME types
 		$this->mt = new \Hubzero\Content\Mimetypes();
@@ -6551,7 +6542,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir : trim(urldecode(Request::getVar('subdir', '')), DS);
+		$this->subdir 	= isset($this->_data->subdir) ? $this->_data->subdir
+						: trim(urldecode(Request::getVar('subdir', '')), DS);
 
 		$juri = JURI::getInstance();
 		$base = rtrim($juri->base(), DS);
@@ -6780,7 +6772,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$ch = curl_init();
 				curl_setopt($ch, $dataPath);
 
-				$tempPath = $this->getProjectPath ($this->_project->alias, 'temp') . DS . $file; // temp
+				$tempPath = $this->getProjectPath ($this->model->get('alias'), 'temp') . DS . $file; // temp
 				$tempFile = fopen($tempPath, 'w+');
 
 				if (!$tempFile)
@@ -7070,7 +7062,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$expires = \JFactory::getDate('+15 minutes')->toSql();
 
 			// Get short lived download URL
-			$stamp = $objSt->registerStamp($this->_project->id, json_encode($reference), 'files', 0, $expires);
+			$stamp = $objSt->registerStamp($this->model->get('id'), json_encode($reference), 'files', 0, $expires);
 			if ($stamp)
 			{
 				$obj->downloadUrl = $this->base . DS . 'projects' . DS . 'get?s=' . $stamp;
@@ -7096,33 +7088,32 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function getProjectPath($identifier = NULL, $case = NULL)
 	{
-		if (!isset($this->_project) || !is_object($this->_project))
+		if (!isset($this->model) || !is_object($this->model))
 		{
 			return NULL;
 		}
 
 		// Provisioned project with no repo
-		if ($this->_project->provisioned == 1 && !$this->_project->id)
+		if ($this->model->isProvisioned() && !$this->model->exists())
 		{
 			return $this->getMembersPath();
 		}
 
 		if (!$identifier)
 		{
-			$identifier = $this->_project->alias;
+			$identifier = $this->model->get('alias');
 		}
 		if (!$case)
 		{
 			$case = isset($this->_case) && $this->_case ? $this->_case : 'files';
 		}
 
-		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($identifier, $case, false);
-
 		if (!$case || !$identifier )
 		{
 			$this->setError( \JText::_('PLG_PROJECTS_FILES_UNABLE_TO_GET_PROJECT_PATH') );
 			return false;
 		}
+		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($identifier, $case, false);
 
 		// Do we need to create master directory off the web root?
 		if (isset($this->_config))

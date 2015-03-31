@@ -26,7 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $file 	= $this->item;
-$me 	= ($file['email'] == $this->juser->get('email') || $file['author'] == $this->juser->get('name'))  ? 1 : 0;
+$me 	= ($file['email'] == User::get('email') || $file['author'] == User::get('name'))  ? 1 : 0;
 $c 		= $this->c;
 
 $when 	= $file['date'] ? \Components\Projects\Helpers\Html::formatTime($file['date']) : 'N/A';
@@ -59,17 +59,17 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 		<td class="shrinked"></td>
 		<td class="shrinked"><?php echo $file['size']; ?></td>
 		<td class="shrinked"><?php if ($file['untracked'] == 0) { ?>
-		<a href="<?php echo $this->url . '/?action=history&amp;subdir='.urlencode($this->subdir) . '&amp;asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
+		<a href="<?php echo $this->url . '/?action=history&amp;subdir=' . urlencode($this->subdir) . '&amp;asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
 		<?php } ?></td>
 		<td class="shrinked pale"><?php if ($me) { echo JText::_('PLG_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
 		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete' . '&amp;subdir='.urlencode($this->subdir)
 		. '&amp;asset='.urlencode($file['name']); ?>"
 		 title="<?php echo JText::_('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
-		<a href="<?php echo $this->url . '/?action=move&amp;subdir='.urlencode($this->subdir)
+		<a href="<?php echo $this->url . '/?action=move&amp;subdir=' . urlencode($this->subdir)
 		. '&amp;asset='.urlencode($file['name']); ?>"
 		 title="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
 		<?php if ($this->publishing) { ?>
-		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=publications&alias=' . $this->project->alias . '&pid=' . $file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
+		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=publications&alias=' . $this->model->get('alias') . '&pid=' . $file['pid']) . '?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
 		<?php } ?>
 	</tr>

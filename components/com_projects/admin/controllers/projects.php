@@ -282,7 +282,7 @@ class Projects extends AdminController
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
 
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $model->project(), 'files', 'admin', '', $this->config, NULL));
+		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $model, 'files', 'admin', '', $this->config, NULL));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
@@ -741,9 +741,8 @@ class Projects extends AdminController
 	{
 		$id = Request::getVar( 'id', 0 );
 
-		// Initiate extended database class
-		$obj = new Tables\Project($this->database);
-		if (!$id or !$obj->loadProject($id))
+		$project = new Models\Project($id);
+		if (!$project->exists())
 		{
 			$this->setRedirect(Route::url('index.php?option=' . $this->_option, false),
 				Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'),
@@ -754,7 +753,6 @@ class Projects extends AdminController
 		// Get Disk Usage
 		\JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = \JDispatcher::getInstance();
-		$project = $obj->getProject($id, User::get('id'));
 
 		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->config, NULL));
 

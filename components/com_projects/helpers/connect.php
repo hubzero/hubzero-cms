@@ -51,7 +51,7 @@ class Connect extends \JObject {
 	 *
 	 * @var object
 	 */
-	private $_project		= NULL;
+	public $model		   = NULL;
 
 	/**
 	 * JDatabase
@@ -120,17 +120,16 @@ class Connect extends \JObject {
 	/**
 	 * Constructor
 	 *
-	 * @param	   object	&$db		JDatabase
-	 * @param	   object	$project	Project
+	 * @param	   object	$model	Project
 	 * @param	   integer	$userid		User ID
 	 * @param	   string	$zone		Default time zone
 	 * @return	   void
 	 */
-	public function __construct( &$db, $project = NULL, $userid = 0, $zone = 'UTC' )
+	public function __construct( $model = NULL, $userid = 0, $zone = 'UTC' )
 	{
-		$this->_db		= $db;
-		$this->_project = $project;
-		$this->_uid = $userid ? $userid : User::get('id');
+		$this->_db		= \JFactory::getDBO();
+		$this->model 	= $model;
+		$this->_uid 	= $userid ? $userid : User::get('id');
 
 		// Set configurations
 		$this->setConfigs();
@@ -267,7 +266,7 @@ class Connect extends \JObject {
 		$filesParams = new \JParameter($plugin->params);
 
 		// Get project params
-		$pparams = new \JParameter( $this->_project->params );
+		$pparams = $this->model->params;
 
 		$connect = array(
 			'google' => array(
@@ -281,7 +280,7 @@ class Connect extends \JObject {
 				'approvalPrompt'=> 'force',
 				'accessType'	=> 'offline',
 				'local_dir'		=> $pparams->get('google_local_dir', '#home'),
-				'remote_dir'	=> $pparams->get('google_dir', 'Project :: ' . $this->_project->alias),
+				'remote_dir'	=> $pparams->get('google_dir', 'Project :: ' . $this->model->get('alias')),
 				'remote_dir_id' => $pparams->get('google_dir_id', 1),
 				'active'		=> $pparams->get('google_token', 0)
 			),
@@ -291,7 +290,7 @@ class Connect extends \JObject {
 				'key'			=> $filesParams->get('dropbox_key', 0),
 				'secret'		=> $filesParams->get('dropbox_secret', 0),
 				'local_dir'		=> $pparams->get('dropbox_local_dir', '#home'),
-				'remote_dir'	=> $pparams->get('dropbox_dir', 'project_' . $this->_project->alias),
+				'remote_dir'	=> $pparams->get('dropbox_dir', 'project_' . $this->model->get('alias')),
 				'remote_dir_id' => $pparams->get('dropbox_dir_id', 1),
 				'active'		=> $pparams->get('dropbox_service', 0)
 			)
@@ -390,10 +389,9 @@ class Connect extends \JObject {
 					$this->storeParam($service . '_token_created', time());
 
 					// Store master token for project
-					if ($this->_uid == $this->_project->owned_by_user)
+					if ($this->_uid == $this->model->get('owned_by_user'))
 					{
-						$obj = new \Components\Projects\Tables\Project( $this->_db );
-						$obj->saveParam($this->_project->id, $service . '_token', $token->refresh_token);
+						$this->model->saveParam($service . '_token', $token->refresh_token);
 					}
 				}
 			}
@@ -549,7 +547,7 @@ class Connect extends \JObject {
 
 		// Is user connected?
 		$connected = $this->getStoredParam($service . '_token', $uid);
-		$uid = $connected ? $uid : $this->_project->owned_by_user;
+		$uid = $connected ? $uid : $this->model->get('owned_by_user');
 
 		if (!in_array($service, $this->_services))
 		{
@@ -614,13 +612,13 @@ class Connect extends \JObject {
 		// Get and save acting user access profile info
 		$profile = $this->getAccessProfile($service, $uid);
 
-		$objO = new \Components\Projects\Tables\Owner( $this->_db );
+		$objO = $this->model->table('Owner');
 
 		// Get email/name pairs of connected project owners
-		$connected = $objO->getConnected($this->_project->id, $service, $exclude = array($this->_project->owned_by_user));
+		$connected = $objO->getConnected($this->model->get('id'), $service, $exclude = array($this->model->get('owned_by_user')));
 
 		// Setup remote directory & update permissions
-		$dir = $this->getRemoteDirectory($service, $this->_project->owned_by_user, $connected);
+		$dir = $this->getRemoteDirectory($service, $this->model->get('owned_by_user'), $connected);
 
 		return true;
 	}
@@ -652,7 +650,7 @@ class Connect extends \JObject {
 		$folderID = $config['remote_dir_id'];
 
 		// Is this project owner?
-		$owner = $uid == $this->_project->owned_by_user ? 1 : 0;
+		$owner = $uid == $this->model->get('owned_by_user') ? 1 : 0;
 
 		if ($service == 'google')
 		{
@@ -684,7 +682,7 @@ class Connect extends \JObject {
 				if ($folderID)
 				{
 					$obj	= new \Components\Projects\Tables\Project( $this->_db );
-					$obj->saveParam($this->_project->id, $service . '_dir_id', $folderID);
+					$obj->saveParam($this->model->get('id'), $service . '_dir_id', $folderID);
 				}
 			}
 
@@ -1231,7 +1229,7 @@ class Connect extends \JObject {
 
 		if (!$projectid)
 		{
-			$projectid = $this->_project->id;
+			$projectid = $this->model->get('id');
 		}
 
 		if (!$projectid || !$title || !$parentId || !$path)
@@ -1326,7 +1324,7 @@ class Connect extends \JObject {
 	{
 		if (!$projectid)
 		{
-			$projectid = $this->_project->id;
+			$projectid = $this->model->get('id');
 		}
 
 		if (empty($local))
@@ -1622,7 +1620,7 @@ class Connect extends \JObject {
 		}
 
 		$objRFile = new \Components\Projects\Tables\RemoteFile ($this->_db);
-		$converted = $objRFile->getRemoteConnections($this->_project->id, $service, $dir, 1);
+		$converted = $objRFile->getRemoteConnections($this->model->get('id'), $service, $dir, 1);
 
 		if (!empty($converted['paths']))
 		{
@@ -1632,7 +1630,7 @@ class Connect extends \JObject {
 				if ($action == 'D')
 				{
 					$objRFile->deleteRecord(
-						$this->_project->id,
+						$this->model->get('id'),
 						$service,
 						$c['remote_id']
 					);
@@ -1643,7 +1641,7 @@ class Connect extends \JObject {
 					$fpath = $newdir . DS . basename($c['path']);
 
 					$update = $objRFile->updateRecord(
-						$this->_project->id,
+						$this->model->get('id'),
 						$service,
 						$c['remote_id'],
 						$fpath,
@@ -1812,7 +1810,7 @@ class Connect extends \JObject {
 				{
 					// Save renamed reference
 					$obj	= new \Components\Projects\Tables\Project( $this->_db );
-					$obj->saveParam($this->_project->id, $service . '_dir', $folder['title']);
+					$obj->saveParam($this->model->get('id'), $service . '_dir', $folder['title']);
 				}
 			}
 			catch (Exception $e)
@@ -1894,7 +1892,7 @@ class Connect extends \JObject {
 		}
 
 		// Get api
-		$apiService = $this->getAPI($service, $this->_project->owned_by_user);
+		$apiService = $this->getAPI($service, $this->model->owner('id'));
 
 		if (!$apiService)
 		{
@@ -2126,8 +2124,8 @@ class Connect extends \JObject {
 	public function getStoredParam ($param, $uid = 0)
 	{
 		$uid = $uid ? $uid : $this->_uid;
-		$objO = new \Components\Projects\Tables\Owner( $this->_db );
-		$objO->loadOwner ($this->_project->id, $uid);
+		$objO = $this->model->table('Owner');
+		$objO->loadOwner ($this->model->get('id'), $uid);
 		$params = new \JParameter( $objO->params );
 		return $params->get($param);
 	}
@@ -2145,9 +2143,9 @@ class Connect extends \JObject {
 	{
 		$uid = $uid ? $uid : $this->_uid;
 
-		$objO = new \Components\Projects\Tables\Owner( $this->_db );
+		$objO = $this->model->table('Owner');
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param,
 			$value
@@ -2231,10 +2229,10 @@ class Connect extends \JObject {
 				'approval_prompt=' . urlencode($config['approvalPrompt'])
 			);
 
-			$return = $return ? $return : Route::url('index.php?option=com_projects&alias=' . $this->_project->alias . '&active=files');
+			$return = $return ? $return : Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=files');
 
 			$array = array(
-				'alias'	 => $this->_project->alias,
+				'alias'	 => $this->model->get('alias'),
 				'return' => $return,
 				'service'=> $service
 			);
@@ -2316,10 +2314,10 @@ class Connect extends \JObject {
 			return false;
 		}
 
-		$objO = new \Components\Projects\Tables\Owner( $this->_db );
-		$objO->loadOwner ($this->_project->id, $uid);
+		$objO = $this->model->table('Owner');
+		$objO->loadOwner ($this->model->get('id'), $uid);
 
-		$creator = ($this->_project->owned_by_user == $uid) ? 1 : 0;
+		$creator = $uid == $this->model->get('owned_by_user')  ? 1 : 0;
 
 		// Get connection email & name
 		$email = $this->getStoredParam($service . '_email', $uid);
@@ -2327,7 +2325,7 @@ class Connect extends \JObject {
 
 		// Remove token
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param = $service . '_token',
 			''
@@ -2335,7 +2333,7 @@ class Connect extends \JObject {
 
 		// Remove time
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param = $service . '_token_created',
 			''
@@ -2343,7 +2341,7 @@ class Connect extends \JObject {
 
 		// Remove email
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param = $service . '_email',
 			''
@@ -2351,7 +2349,7 @@ class Connect extends \JObject {
 
 		// Remove name
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param = $service . '_name',
 			''
@@ -2359,7 +2357,7 @@ class Connect extends \JObject {
 
 		// Remove user id
 		$objO->saveParam (
-			$this->_project->id,
+			$this->model->get('id'),
 			$uid,
 			$param = $service . '_userid',
 			''
@@ -2371,7 +2369,7 @@ class Connect extends \JObject {
 		}
 
 		// Get api
-		$apiService = $this->getAPI($service, $this->_project->owned_by_user);
+		$apiService = $this->getAPI($service, $this->model->owner('id'));
 
 		if (!$apiService)
 		{
@@ -2413,20 +2411,20 @@ class Connect extends \JObject {
 
 		// Load project
 		$obj = new \Components\Projects\Tables\Project( $this->_db );
-		if (!$obj->loadProject($this->_project->id))
+		if (!$obj->loadProject($this->model->get('id')))
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA') );
 			return false;
 		}
 
 		// Get project params
-		$pparams = new \JParameter( $this->_project->params );
+		$pparams = $this->model->params;
 
 		// Remove all connection info and remote data
 		$remoteid = $pparams->get($service . '_dir_id');
 
 		// Project creator?
-		$creator = ($this->_project->owned_by_user == $this->_uid) ? 1 : 0;
+		$creator = $this->_uid == $this->model->get('owned_by_user')  ? 1 : 0;
 
 		// Clean up stored values for the disconnecting member
 		$this->disconnectMember($service, $this->_uid, $remoteid);
@@ -2437,8 +2435,8 @@ class Connect extends \JObject {
 			if ($removeData == true && $remoteid)
 			{
 				// Disconnect all members
-				$objO = new \Components\Projects\Tables\Owner( $this->_db );
-				$owners = $objO->getOwners($this->_project->id, $filters = array('connected' => 1));
+				$objO = $this->model->table('Owner');
+				$owners = $objO->getOwners($this->model->get('id'), $filters = array('connected' => 1));
 
 				if ($owners)
 				{
@@ -2449,20 +2447,20 @@ class Connect extends \JObject {
 					}
 				}
 
-				$this->deleteRemoteItem($this->_project->id, $service, $this->_uid, $remoteid, $permanent = true);
+				$this->deleteRemoteItem($this->model->get('id'), $service, $this->_uid, $remoteid, $permanent = true);
 
-				$obj->saveParam($this->_project->id, $service . '_sync', '');
-				$obj->saveParam($this->_project->id, $service . '_last_remote_change', '');
-				$obj->saveParam($this->_project->id, $service . '_last_local_change', '');
-				$obj->saveParam($this->_project->id, $service . '_sync_id', '');
-				$obj->saveParam($this->_project->id, $service . '_prev_sync_id', '');
-				$obj->saveParam($this->_project->id, $service . '_sync_lock', '');
-				$obj->saveParam($this->_project->id, $service . '_sync_queue', '');
-				$obj->saveParam($this->_project->id, $service . '_dir_id', '');
+				$obj->saveParam($this->model->get('id'), $service . '_sync', '');
+				$obj->saveParam($this->model->get('id'), $service . '_last_remote_change', '');
+				$obj->saveParam($this->model->get('id'), $service . '_last_local_change', '');
+				$obj->saveParam($this->model->get('id'), $service . '_sync_id', '');
+				$obj->saveParam($this->model->get('id'), $service . '_prev_sync_id', '');
+				$obj->saveParam($this->model->get('id'), $service . '_sync_lock', '');
+				$obj->saveParam($this->model->get('id'), $service . '_sync_queue', '');
+				$obj->saveParam($this->model->get('id'), $service . '_dir_id', '');
 			}
 
 			// Clean up token
-			$obj->saveParam($this->_project->id, $service . '_token', 0);
+			$obj->saveParam($this->model->get('id'), $service . '_token', 0);
 		}
 
 		return true;

@@ -33,12 +33,12 @@ if (!$this->ajax)
 // Get attachment type model
 $attModel = new \Components\Publications\Models\Attachments($this->database);
 
-$route = $this->project->provisioned == 1
+$route = $this->model->isProvisioned()
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 // Filter URL
-$filterUrl   = $this->project->provisioned == 1
+$filterUrl   = $this->model->isProvisioned()
 		? Route::url( $route) . '?active=files&amp;action=filter&amp;'
 		: Route::url( $route . '&active=files&amp;action=filter') .'/?';
 
@@ -46,8 +46,8 @@ $filterUrl .= 'p=' . $this->props . '&amp;pid=' . $this->publication->id
 				. '&amp;vid=' . $this->publication->version_id . '&amp;ajax=1&amp;no_html=1';
 
 // Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
+	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 $parents = array();
 $i = 0;
@@ -160,7 +160,7 @@ if ($this->task == 'filter')
 		)
 	);
 	$view->option 		= $this->option;
-	$view->project 		= $this->project;
+	$view->model 		= $this->model;
 	$view->items		= $this->items;
 	$view->showLevels 	= $this->filter ? false : true;
 	$view->requirements = $params;
@@ -196,7 +196,7 @@ foreach ($this->items as $item)
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
 	<fieldset >
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" id="selecteditems" name="selecteditems" value="" />
@@ -213,7 +213,7 @@ foreach ($this->items as $item)
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />
-		<?php if ($this->project->provisioned == 1) { ?>
+		<?php if ($this->model->isProvisioned()) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<input type="hidden" name="ajax" value="0" />
 		<?php }  ?>
@@ -235,7 +235,7 @@ foreach ($this->items as $item)
 				)
 			);
 			$view->option 		= $this->option;
-			$view->project 		= $this->project;
+			$view->model 		= $this->model;
 			$view->items		= $this->items;
 			$view->showLevels 	= $this->filter ? false : true;
 			$view->requirements = $params;
@@ -247,15 +247,15 @@ foreach ($this->items as $item)
 		?>
 	</div>
 	</form>
-	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+	<form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
 
 	<fieldset >
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 		<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-		<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
+		<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="action" value="save" />
 		<input type="hidden" name="json" value="1" />
@@ -263,7 +263,7 @@ foreach ($this->items as $item)
 		<input type="hidden" name="no_html" value="1" />
 	</fieldset>
 	<div id="status-box"></div>
-	<?php if ($this->project->provisioned == 1) { ?>
+	<?php if ($this->model->isProvisioned()) { ?>
 		<input type="hidden" name="provisioned" id="provisioned" value="1" />
 		<input type="hidden" name="task" value="submit" />
 	<div class="asset-uploader">

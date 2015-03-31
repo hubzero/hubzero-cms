@@ -26,16 +26,16 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 $p_url = Route::url($route . '&active=files');
 
 $shown = array();
 $skipped = 0;
 
 ?>
-<form action="<?php echo Route::url($route) . '?active=publications'; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
+<form action="<?php echo $p_url; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
 	<ul id="c-browser" 	<?php if (count($this->files) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?>>
 		<?php
 		if (count($this->files) > 0) {
@@ -112,21 +112,21 @@ $skipped = 0;
 	<label class="addnew">
 		<input name="upload[]" type="file" size="20" class="option" id="uploader" />
 	</label>
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="option" value="<?php echo $this->model->isProvisioned() ? 'com_publications' :  $this->option; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->pid; ?>" />
 		<input type="hidden" name="images" id="images" value="<?php echo $this->images; ?>" />
 		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="action" value="<?php echo $this->project->provisioned == 1 && !$this->pid  ? 'saveprov' : 'save'; ?>" />
+		<input type="hidden" name="action" value="<?php echo $this->model->isProvisioned() && !$this->model->exists()  ? 'saveprov' : 'save'; ?>" />
 		<input type="hidden" name="view" value="pub" />
 		<input type="hidden" name="ajax" value="0" />
 		<input type="hidden" name="no_html" value="0" />
 		<input type="hidden" name="return_status" id="return_status" value="0" />
 		<input type="hidden" name="expand_zip" id="expand_zip" value="0" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
-		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if ($this->project->provisioned == 1 ) { ?>
+		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->model->isProvisioned() ? 1 : 0; ?>" />
+		<?php if ($this->model->isProvisioned()) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
