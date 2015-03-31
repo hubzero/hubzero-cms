@@ -109,6 +109,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 		<?php } else { ?>
 			<p class="noresults"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_NO_COMMENTS')); ?></p>
 		<?php } ?>
+		<?php if ($this->model->access('content')) { ?>
 		<form action="<?php echo Route::url($url); ?>" method="post" >
 			<div class="addcomment td-comment">
 				<label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
@@ -124,5 +125,6 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 					<p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_COMMENT'); ?>" /></p>
 			</div>
 		</form>
+		<?php } ?>
 	</div>
 </div>
