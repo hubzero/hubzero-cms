@@ -48,18 +48,20 @@ $creator = \Hubzero\User\Profile::getInstance($a->userid);
 				</span>
 				<?php } ?>
 				<div class="blog-item"><img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
-					<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
-					<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
-					<?php  if ($a->commentable && count($comments) == 0) { ?>
-					<span class="item-time">
-					<?php if ($this->model->access('content')) { ?>
-						&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a>
-					</span><?php } ?>
-					<?php } ?>
-					<div class="<?php echo $class; ?> activity <?php if ($a->admin) { echo ' admin-action'; } ?>">
-						 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
+					<div class="blog-content">
+						<span class="actor"><?php echo $a->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $a->name; ?></span>
+						<span class="item-time">&middot; <?php echo \Components\Projects\Helpers\Html::showTime($a->recorded, true); ?></span>
+						<?php  if ($a->commentable && count($comments) == 0) { ?>
+						<span class="item-time">
+						<?php if ($this->model->access('content')) { ?>
+							&middot; <a href="#commentform_<?php echo $a->id; ?>" id="addc_<?php echo $a->id; ?>" class="showc"><?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?></a>
+						</span><?php } ?>
+						<?php } ?>
+						<div class="<?php echo $class; ?> activity <?php if ($a->admin) { echo ' admin-action'; } ?>">
+							 <?php echo $a->activity; ?><?php echo stripslashes($ebody); ?>
+						</div>
+						<?php echo stripslashes($preview); ?>
 					</div>
-					<?php echo stripslashes($preview); ?>
 				</div>
 			</div>
 
