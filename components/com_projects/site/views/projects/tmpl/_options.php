@@ -26,7 +26,18 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $role  = Lang::txt('COM_PROJECTS_PROJECT') . ' <span>';
-$role .= $this->model->access('manager') ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+if ($this->model->access('manager'))
+{
+	$role .= Lang::txt('COM_PROJECTS_LABEL_OWNER');
+}
+elseif (!$this->model->access('content'))
+{
+	$role .= Lang::txt('COM_PROJECTS_LABEL_REVIEWER');
+}
+else
+{
+	$role .= Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+}
 $role .= '</span>';
 
 $counts = $this->model->get('counts');
