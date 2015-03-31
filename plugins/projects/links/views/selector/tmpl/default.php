@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 $block   	= $this->block;
 $step  	 	= $this->step;
@@ -65,13 +65,13 @@ if ($block == 'citations')
 }
 
 //$newCiteUrl   = 'citations/add?publication=' . $this->publication->id;
-$newCiteUrl   = $this->project->provisioned == 1
+$newCiteUrl   = $this->model->isProvisioned()
 		? Route::url( $route) . '?active=links&amp;action=newcite'
 		: Route::url( $route . '&active=links&action=newcite') .'/?p=' . $this->props . '&amp;pid='
 		. $this->publication->id . '&amp;vid=' . $this->publication->version_id;
 
 // Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 ?>
 <div id="abox-content-wrap">
@@ -86,7 +86,7 @@ $url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.ph
 		</h3>
 		<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
 			<fieldset >
-				<input type="hidden" name="id" id="projectid" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="version" value="<?php echo $this->publication->version_number; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
@@ -101,7 +101,7 @@ $url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.ph
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
 				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo Route::url( $route); ?>" />
-				<?php if ($this->project->provisioned == 1) { ?>
+				<?php if ($this->model->isProvisioned()) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
 				<?php }  ?>

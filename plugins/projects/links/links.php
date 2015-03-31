@@ -65,6 +65,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	protected $_option = 'com_projects';
 
 	/**
+	 * Store internal message
+	 *
+	 * @var	   array
+	 */
+	protected $_msg = NULL;
+
+	/**
 	 * Event call to determine if this plugin should return data
 	 *
 	 * @return     array   Plugin name and title
@@ -111,7 +118,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function onProject ( $model, $action = '', $areas = NULL)
 	{
 		// What's the task?
-		$this->_task = $action ? $action : JRequest::getVar('action');
+		$this->_task = $action ? $action : Request::getVar('action');
 
 		// Get this area details
 		$this->_area = $this->onProjectAreas(NULL, true);
@@ -138,10 +145,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// Set vars
 			$this->_database 	= JFactory::getDBO();
 			$this->_uid 		= User::get('id');
-			$this->_project 	= $model->project();
 
 			// Load component configs
-			$this->_config 		= $model->config();;
+			$this->_config 		= $model->config();
 			$this->_pubconfig 	= Component::params('com_publications');
 
 			// Actions
@@ -202,9 +208,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function deleteCitation()
 	{
 		// Incoming
-		$cid 		= JRequest::getInt('cid', 0);
-		$version 	= JRequest::getVar('version', 'dev');
-		$pid 		= JRequest::getInt('pid', 0);
+		$cid 		= Request::getInt('cid', 0);
+		$version 	= Request::getVar('version', 'dev');
+		$pid 		= Request::getInt('pid', 0);
 
 		if (!$cid || !$pid)
 		{
@@ -213,7 +219,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Make sure this publication belongs to this project
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
-		if (!$objP->load($pid) || $objP->project_id != $this->_project->id)
+		if (!$objP->load($pid) || $objP->project_id != $this->model->get('id'))
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE') );
 		}
@@ -239,11 +245,11 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build pub url
-		$route = $this->_project->provisioned
+		$route = $this->model->isProvisioned()
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
-		$url = Route::url($route . '&pid=' . $pid).'/?version=' . $version . '&section=citations';
+		$url = Route::url($route . '&pid=' . $pid).'/?version=' . $version . '&amp;section=citations';
 
 		$this->_referer = $url;
 		return;
@@ -257,10 +263,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function addCitation()
 	{
 		// Incoming
-		$url 		= JRequest::getVar('citation-doi', '');
-		$url		= $url ? $url : urldecode(JRequest::getVar('url'));
-		$version 	= JRequest::getVar('version', 'dev');
-		$pid 		= JRequest::getInt('pid', 0);
+		$url 		= Request::getVar('citation-doi', '');
+		$url		= $url ? $url : urldecode(Request::getVar('url'));
+		$version 	= Request::getVar('version', 'dev');
+		$pid 		= Request::getInt('pid', 0);
 
 		if (!$url || !$pid)
 		{
@@ -288,12 +294,12 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build pub url
-		$route = $this->_project->provisioned
+		$route = $this->model->isProvisioned()
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
 		$url = Route::url($route .'&pid=' . $pid)
-			.'/?version=' . $version . '&section=citations';
+			.'/?version=' . $version . '&amp;section=citations';
 
 		$this->_referer = $url;
 		return;
@@ -307,9 +313,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function savecite()
 	{
 		// Incoming
-		$cite 		= JRequest::getVar('cite', array(), 'post', 'none', 2);
-		$pid  		= JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar('version', 'dev');
+		$cite 		= Request::getVar('cite', array(), 'post', 'none', 2);
+		$pid  		= Request::getInt('pid', 0);
+		$version 	= Request::getVar('version', 'dev');
 
 		$new  = $cite['id'] ? false : true;
 
@@ -371,12 +377,12 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build pub url
-		$route = $this->_project->provisioned
+		$route = $this->model->isProvisioned()
 			? 'index.php?option=com_publications&task=submit'
-			: 'index.php?option=com_projects&alias=' . $this->_project->alias
+			: 'index.php?option=com_projects&alias=' . $this->model->get('alias')
 				. '&active=publications';
 		$url = Route::url($route . '&pid=' . $pid)
-			.'/?version=' . $version . '&section=citations';
+			.'/?version=' . $version . '&amp;section=citations';
 
 		$this->_referer = $url;
 		return;
@@ -643,20 +649,17 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = JRequest::getVar( 'p', '' );
-		$ajax   = JRequest::getInt( 'ajax', 0 );
-		$pid    = JRequest::getInt( 'pid', 0 );
-		$vid    = JRequest::getInt( 'vid', 0 );
-		$filter = urldecode(JRequest::getVar( 'filter', '' ));
+		$props  = Request::getVar( 'p', '' );
+		$ajax   = Request::getInt( 'ajax', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
+		$filter = urldecode(Request::getVar( 'filter', '' ));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
 		$block   = isset($parts[0]) ? $parts[0] : 'content';
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
-
-		// Provisioned project?
-		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
 
 		$layout = $this->_task == 'newcite' ? 'edit' : 'default';
 
@@ -683,7 +686,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Get publication
 		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
+			$view->version->version_number, $this->model->get('id'));
 
 		if (!$view->publication)
 		{
@@ -711,7 +714,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt   				= new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->_project;
+		$view->publication->_project 	= $this->model->project();
 
 		// Get attachments
 		$pContent = new \Components\Publications\Tables\Attachment( $this->_database );
@@ -739,7 +742,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'newcite')
 		{
 			// Incoming
-			$cid    = JRequest::getInt( 'cid', 0 );
+			$cid    = Request::getInt( 'cid', 0 );
 
 			include_once( PATH_ROOT . DS . 'components'
 				. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
@@ -757,7 +760,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -784,9 +787,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function editcite()
 	{
 		// Incoming
-		$cid    = JRequest::getInt( 'cid', 0 );
-		$pid    = JRequest::getInt( 'pid', 0 );
-		$vid    = JRequest::getInt( 'vid', 0 );
+		$cid    = Request::getInt( 'cid', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -811,7 +814,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		// Get publication
 		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
+			$view->version->version_number, $this->model->get('id'));
 
 		if (!$view->publication)
 		{
@@ -851,10 +854,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->task			= $this->_task;
-		$view->ajax			= JRequest::getInt( 'ajax', 0 );
+		$view->ajax			= Request::getInt( 'ajax', 0 );
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -873,9 +876,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function browser()
 	{
 		// Incoming
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$primary 	= JRequest::getInt('primary', 1);
-		$versionid  = JRequest::getInt('versionid', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$primary 	= Request::getInt('primary', 1);
+		$versionid  = Request::getInt('versionid', 0);
 
 		if (!$ajax)
 		{
@@ -885,9 +888,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'links',
-				'name'=>'browser'
+				'folder'  =>'projects',
+				'element' =>'links',
+				'name'    =>'browser'
 			)
 		);
 
@@ -900,10 +903,9 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			$filters = array('role' => $role, 'type' => 'link'));
 
 		// Output HTML
-		$view->params 		= new JParameter( $this->_project->params );
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->primary		= $primary;
@@ -927,7 +929,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function parseDoi()
 	{
 		// Incoming
-		$url = JRequest::getVar('url', '');
+		$url = Request::getVar('url', '');
 
 		// Is this a DOI?
 		$parts 		= explode("doi:", $url);
@@ -947,7 +949,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 	public function parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa')
 	{
 		// Incoming
-		$url 			= $url ? $url : urldecode(JRequest::getVar('url', $url));
+		$url 			= $url ? $url : urldecode(Request::getVar('url', $url));
 		$output 		= array('rtype' => 'url', 'message' => '');
 
 		if (!$url)

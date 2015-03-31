@@ -25,13 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1
+$route = $this->model->isProvisioned()
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 // Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
+	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 $config = Component::params( 'com_publications' );
 $citationFormat = $config->get('citation_format', 'apa');
@@ -49,19 +49,19 @@ $useBlocks  = $config->get('curation', 0);
 			<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_LINKS_CANCEL'); ?></a>
 			<?php } ?>
 		</span></h3>
-		<form id="add-cite" class="add-cite" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+		<form id="add-cite" class="add-cite" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
 			<fieldset>
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-				<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
+				<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
 				<?php if ($useBlocks) { ?>
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="additem" />
-				<?php if ($this->project->provisioned == 1) { ?>
+				<?php if ($this->model->isProvisioned()) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
 				<?php }  ?>

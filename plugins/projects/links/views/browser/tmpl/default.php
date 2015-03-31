@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 $attached = isset($this->attachments) && count($this->attachments) > 0 ? $this->attachments[0] : '';
 $path 	  = $attached ? $attached->path : '';
