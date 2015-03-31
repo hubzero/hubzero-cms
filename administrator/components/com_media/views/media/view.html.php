@@ -112,7 +112,7 @@ class MediaViewMedia extends JViewLegacy
 			JToolBarHelper::preferences('com_media', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_CONTENT_MEDIA_MANAGER');
+		JToolBarHelper::help('media');
 	}
 
 	function getFolderLevel($folder)
