@@ -403,7 +403,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		if ($task == 'save' && $content == '' && $newlist == '')
 		{
 			$this->_referer = Route::url('index.php?option=' . $this->_option
-				. '&alias='.$this->model->get('alias') . '&active=todo');
+				. '&alias=' . $this->model->get('alias') . '&active=todo');
 			return;
 		}
 
@@ -479,12 +479,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			else
 			{
 				$this->_msg = $todoid
-					?  Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
+					? Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
 					: Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
 			}
 		}
 		// Assign todo
-		else if ($task == 'assign')
+		elseif ($task == 'assign')
 		{
 			$changed = $objTD->assigned_to == $assigned ? 0 : 1;
 			if ($changed)
