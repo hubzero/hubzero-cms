@@ -38,8 +38,6 @@ if (!$this->sub)
 $this->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
-$juser = JFactory::getUser();
-
 JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
@@ -165,7 +163,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } ?>
 	</fieldset><div class="clear"></div>
 
-<?php if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) {?>
+<?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>
 	<fieldset class="hidden">
 		<legend><?php echo Lang::txt('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 

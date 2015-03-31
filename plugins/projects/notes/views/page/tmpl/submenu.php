@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-
 if (!isset($this->controller))
 {
 	$this->controller = Request::getWord('controller', 'page');
@@ -40,7 +38,7 @@ if (!isset($this->controller))
 ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
-		<?php if (!$juser->get('guest') && $this->page->access('create')) { ?>
+		<?php if (!User::isGuest() && $this->page->access('create')) { ?>
 			<li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
 				<a class="icon-add add btn" href="<?php echo Route::url($this->page->link('base') . '&' . ($this->sub ? 'action' : 'task') . '=new'); ?>">
 					<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>

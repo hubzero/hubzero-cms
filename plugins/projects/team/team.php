@@ -552,7 +552,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 							$name = $parts[0];
 							$uid = preg_replace('/[)]/', '', $parts[1]);
 						}
-						elseif (intval($cid) && $validUser = JUser::getInstance( $cid ))
+						elseif (intval($cid) && $validUser = User::getInstance( $cid ))
 						{
 							$uid = $cid;
 						}
@@ -613,8 +613,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						}
 						else
 						{
-							$juser = JUser::getInstance( $uid );
-							if (!is_object($juser))
+							if (!User::getInstance( $uid ))
 							{
 								$invalid[] = $uid;
 								continue;
@@ -666,7 +665,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					$uu = $uids[$i];
 					if ($uu && is_numeric($uu) )
 					{
-						$xuser = JUser::getInstance( $uids[$i] );
+						$xuser = User::getInstance( $uids[$i] );
 						$note .= is_numeric($uids[$i]) && is_object($xuser)
 							? $xuser->get('name') : $uids[$i];
 					}
