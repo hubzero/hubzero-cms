@@ -25,22 +25,12 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->error) {
-?>
+$this->css();
 
-<div id="system-message-container">
-<dl id="system-message">
-	<dt class="error">Error</dt>
-	<dd class="error message">
-		<ul>
-			<li><?php echo $this->error?></li>
-		</ul>
-	</dd>
-</dl>
-
-<?php
-	return;
-}
+// Check for errors
+if ($this->getError()) {
+?> <p class="error"><?php echo $this->getError(); ?></p>
+<?php return; }
 
 $document = JFactory::getDocument();
 $document->addScript('/plugins/projects/databases/res/dataTables/jquery.dataTables.js');
@@ -51,13 +41,8 @@ $document->addStyleSheet('/plugins/projects/databases/res/spectrum/spectrum.css'
 $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 
 ?>
-<style>
-	.chzn-single {
-		border: 1px solid #AAAAAA;
-	}
-</style>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('Databases'); ?></a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? Lang::txt('Update Database') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
+<h3 class="databases c-header"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START'); ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
@@ -125,7 +110,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	<h3>Step 3: Title &amp; Description, Finish</h3>
 	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1')?>">
 		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
-		<label for="prj-db-desc" >Description:</label><br /><textarea type="text" name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
+		<label for="prj-db-desc" >Description:</label><br /><textarea name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
 		<input type="submit" value="Finish" class="btn" id="prj-db-finish-btn" />
 	</form>
 </div>
@@ -142,7 +127,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 			<input id="prj-db-col-label" class="col-prop" type="text" value="" /><br /><br />
 
 			<label for="prj-db-col-desc">Description:</label><br />
-			<textarea id="prj-db-col-desc" class="col-prop" type="text" style="width: 400px;"></textarea><br /><br />
+			<textarea id="prj-db-col-desc" class="col-prop" style="width: 400px;"></textarea><br /><br />
 
 			<label for="prj-db-col-width">Width:</label><br />
 			<input id="prj-db-col-width" class="col-prop" type="text" value="" /><br /><br />
@@ -176,12 +161,12 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 				<br />
 				<label for="prj-db-col-linkpath">Repository Path:</label><br />
 				<select class="col-prop" id="prj-db-col-linkpath"></select><br />
-				<span style="font-size: .8em;">
+				<div style="font-size: .8em;">
 					<ul>
 						<li>Only files in the source CSV file folder or  its sub folders can be used here.</li>
 						<li>Your CSV file should list <strong>only the file name</strong> for repository files.</li>
 					</ul>
-				</span>
+				</div>
 			</div>
 		</div>
 		<div id="tabs-3">

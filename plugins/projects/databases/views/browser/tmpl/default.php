@@ -101,5 +101,5 @@ $p_url = Route::url($route . '&active=databases');
 <?php } ?>
 
 <?php if (!$this->model->isProvisioned()) { ?>
-	<p class="addnew">Go to <a href="<?php echo Route::url($route).'?active=databases'; ?>">Databases</a> to create a new database</p>
+	<p class="addnew"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></p>
 <?php } ?>

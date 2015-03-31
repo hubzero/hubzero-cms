@@ -591,6 +591,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 */
 	public function act_create()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$db_id = Request::getInt('db_id', false);
 
@@ -650,7 +657,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->model   = $this->model;
 		$view->option  = $this->_option;
 		$view->files   = $files;
-		$view->error   = $error;
+		$view->msg     = NULL;
+
+		if ($error)
+		{
+			$view->setError( $error );
+		}
 
 		// Get project database object
 		$objPD = new \Components\Projects\Tables\Database($this->_database);
@@ -685,11 +697,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 		// Get project path
 		$path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
-		$path .= DS;
 
 		if ($dir != '')
 		{
-			$path .= $dir . DS;
+			$path .= DS . $dir;
 		}
 
 		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== FALSE)
@@ -698,7 +709,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$dd = array();
 
 			$sub_dirs = array();
-			$list =array();
+			$list = array();
 			chdir($path);
 			exec('find . -type d -not \( -name ".?*" -prune \)', $list);
 			foreach ($list as $d)
@@ -718,10 +729,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			);
 
 			// Check if expert mode CSV
-			$expert_mode = false;
-			$col_labels = fgetcsv($handle);
-			$col_prop = fgetcsv($handle);
-			$data_start = fgetcsv($handle);
+			$expert_mode  = false;
+			$col_labels   = fgetcsv($handle);
+			$col_prop     = fgetcsv($handle);
+			$data_start   = fgetcsv($handle);
 
 			if (isset($data_start[0]) && $data_start[0] == 'DATASTART')
 			{
@@ -955,6 +966,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 */
 	public function act_create_database()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$file 	= Request::getVar('file', false);
 		$dir 	= Request::getVar('dir', '');
@@ -1272,6 +1290,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 */
 	public function act_delete()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$id = Request::getVar('db_id', false);
 		$ds_db = $this->get_ds_db($this->model->get('id'));
@@ -1315,6 +1340,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 */
 	public function act_update()
 	{
+		// Check permission
+		if (!$this->model->access('content'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			return;
+		}
+
 		// Incoming
 		$id          = Request::getVar('db_id', false);
 		$title       = Request::getVar('db_title', false);

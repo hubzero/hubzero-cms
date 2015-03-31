@@ -104,7 +104,7 @@ if ($attachments)
 				<?php } ?>
 			</ul>
 			<?php } else { ?>
-			<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block">Go to <a href="<?php echo Route::url($route . '&active=databases'); ?>">Databases</a> to create a new database</span></p>
+			<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></span></p>
 		<?php } ?>
 		</form>
 	</div>

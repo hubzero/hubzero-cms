@@ -1,0 +1,31 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Project databses CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Update pop-up */
+.prj-db-update-dialog {
+	display: none;
+}
+.confirm-file-delete {
+	display: none;
+}
+.dialog label {
+	display: block;
+	margin: 1em 0;
+}
+.chzn-single {
+	border: 1px solid #AAAAAA;
+}
