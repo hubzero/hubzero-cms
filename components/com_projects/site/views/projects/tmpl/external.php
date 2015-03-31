@@ -125,7 +125,7 @@ $this->css('theme' . $theme . '.css');
 						)
 					);
 					$view->option 	= $this->option;
-					$view->project 	= $this->project;
+					$view->project 	= $this->model;
 					echo $view->loadTemplate();
 				 } ?>
 
