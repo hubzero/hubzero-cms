@@ -35,16 +35,16 @@ defined('_JEXEC') or die;
 	<thead>
 		<tr>
 			<th scope="col">
-				<?php echo JText::_('MOD_LATEST_LATEST_ITEMS'); ?>
+				<?php echo Lang::txt('MOD_LATEST_LATEST_ITEMS'); ?>
 			</th>
 			<th scope="col">
-				<?php echo JText::_('JSTATUS'); ?>
+				<?php echo Lang::txt('JSTATUS'); ?>
 			</th>
 			<th scope="col">
-				<?php echo JText::_('MOD_LATEST_CREATED'); ?>
+				<?php echo Lang::txt('MOD_LATEST_CREATED'); ?>
 			</th>
 			<th scope="col">
-				<?php echo JText::_('MOD_LATEST_CREATED_BY');?>
+				<?php echo Lang::txt('MOD_LATEST_CREATED_BY');?>
 			</th>
 		</tr>
 	</thead>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die;
 	<tbody>
 		<tr>
 			<td colspan="4">
-				<p class="noresults"><?php echo JText::_('MOD_LATEST_NO_MATCHING_RESULTS'); ?></p>
+				<p class="noresults"><?php echo Lang::txt('MOD_LATEST_NO_MATCHING_RESULTS'); ?></p>
 			</td>
 		</tr>
 	</tbody>

@@ -34,14 +34,14 @@ defined('_JEXEC') or die;
 //
 // Site SubMenu
 //
-$menu->addChild(new \Modules\Menu\Node(JText::_('JSITE'), null, 'disabled'));
+$menu->addChild(new \Modules\Menu\Node(Lang::txt('JSITE'), null, 'disabled'));
 
 //
 // Users Submenu
 //
 if ($user->authorise('core.manage', 'com_users'))
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COM_USERS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_COM_USERS'), null, 'disabled'));
 }
 
 //
@@ -49,7 +49,7 @@ if ($user->authorise('core.manage', 'com_users'))
 //
 if ($user->authorise('core.manage', 'com_menus'))
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_MENUS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_MENUS'), null, 'disabled'));
 }
 
 //
@@ -57,7 +57,7 @@ if ($user->authorise('core.manage', 'com_menus'))
 //
 if ($user->authorise('core.manage', 'com_content'))
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COM_CONTENT'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_COM_CONTENT'), null, 'disabled'));
 }
 
 //
@@ -67,7 +67,7 @@ if ($user->authorise('core.manage', 'com_content'))
 // Check if there are any components, otherwise, don't display the components menu item
 if ($components = $this->getComponents(true))
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COMPONENTS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_COMPONENTS'), null, 'disabled'));
 }
 
 //
@@ -81,7 +81,7 @@ $lm = $user->authorise('core.manage', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'disabled'));
 }
 
 //
@@ -89,5 +89,5 @@ if ($im || $mm || $pm || $tm || $lm)
 //
 if ($params->get('showhelp', 0) == 1)
 {
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_HELP'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(Lang::txt('MOD_MENU_HELP'), null, 'disabled'));
 }

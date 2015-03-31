@@ -31,6 +31,7 @@
 namespace Modules\Answers;
 
 use Hubzero\Module\Module;
+use User;
 
 /**
  * Module class for com_answers data
@@ -54,14 +55,13 @@ class Helper extends Module
 
 		if ($this->params->get('showMine', 0))
 		{
-			$juser = \JFactory::getUser();
-			$this->username = $juser->get('username');
+			$this->username = User::get('username');
 
 			// My Open
-			$queries['myclosed'] = "state=1 AND created_by=" . $juser->get('id');
+			$queries['myclosed'] = "state=1 AND created_by=" . User::get('id');
 
 			// My Closed
-			$queries['myopen']   = "state=0 AND created_by=" . $juser->get('id');
+			$queries['myopen']   = "state=0 AND created_by=" . User::get('id');
 		}
 
 		foreach ($queries as $key => $where)

@@ -31,10 +31,7 @@
 namespace Modules\Login;
 
 use Hubzero\Module\Module;
-use JLanguageHelper;
-use JFactory;
-use JHtml;
-use JText;
+use Lang;
 
 /**
  * Module class for displaying a login form
@@ -65,10 +62,10 @@ class Helper extends Module
 	public static function getLanguageList()
 	{
 		$languages = array();
-		$languages = JLanguageHelper::createLanguageList(null, JPATH_ADMINISTRATOR, false, true);
-		array_unshift($languages, JHtml::_('select.option', '', JText::_('JDEFAULT')));
+		$languages = \JLanguageHelper::createLanguageList(null, JPATH_ADMINISTRATOR, false, true);
+		array_unshift($languages, \JHtml::_('select.option', '', Lang::txt('JDEFAULT')));
 
-		return JHtml::_('select.genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
+		return \JHtml::_('select.genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
 	}
 
 	/**
@@ -78,7 +75,7 @@ class Helper extends Module
 	 */
 	public static function getReturnURI()
 	{
-		$return = 'index.php' . JFactory::getURI()->toString(array('query'));
+		$return = 'index.php' . \JFactory::getURI()->toString(array('query'));
 		if ($return != 'index.php?option=com_login')
 		{
 			return base64_encode($return);

@@ -45,6 +45,6 @@ $this->css()
 			?>
 		</ul>
 	<?php } else { ?>
-		<p class="no-results"><?php echo JText::_('MOD_SUPPORTACTIVITY_NO_RESULTS'); ?></p>
+		<p class="no-results"><?php echo Lang::txt('MOD_SUPPORTACTIVITY_NO_RESULTS'); ?></p>
 	<?php } ?>
 </div>

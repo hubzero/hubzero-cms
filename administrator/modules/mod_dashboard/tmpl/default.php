@@ -37,59 +37,59 @@ $this->css();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('MOD_DASHBOARD_COL_CATEGORY'); ?></th>
-				<th scope="col" class="numerical-data"><?php echo JText::_('MOD_DASHBOARD_COL_ITEMS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('MOD_DASHBOARD_COL_CATEGORY'); ?></th>
+				<th scope="col" class="numerical-data"><?php echo Lang::txt('MOD_DASHBOARD_COL_ITEMS'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr class="row0">
 				<th scope="row">
-					<a href="index.php?option=com_support&amp;controller=abusereports"><?php echo JText::_('MOD_DASHBOARD_ABUSE_REPORTS'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_support&controller=abusereports'); ?>"><?php echo Lang::txt('MOD_DASHBOARD_ABUSE_REPORTS'); ?></a>
 				</th>
 				<td>
-					<a href="index.php?option=com_support&amp;controller=abusereports"><?php echo $this->reports; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_support&controller=abusereports'); ?>"><?php echo $this->reports; ?></a>
 				</td>
 			</tr>
 			<tr class="row1">
 				<th scope="row">
-					<a href="index.php?option=com_resources&amp;task=pending&amp;status=3"><?php echo JText::_('MOD_DASHBOARD_PENDING_RESOURCES'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_resources&task=pending&status=3'); ?>"><?php echo Lang::txt('MOD_DASHBOARD_PENDING_RESOURCES'); ?></a>
 				</th>
 				<td>
-					<a href="index.php?option=com_resources&amp;task=pending&amp;status=3"><?php echo $this->pending; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_resources&task=pending&status=3'); ?>"><?php echo $this->pending; ?></a>
 				</td>
 			</tr>
 			<tr class="row0">
 				<th scope="row">
-					<a href="../index.php?option=com_tools"><?php echo JText::_('MOD_DASHBOARD_TOOLS'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_tools'); ?>"><?php echo Lang::txt('MOD_DASHBOARD_TOOLS'); ?></a>
 				</th>
 				<td>
-					<a href="../index.php?option=com_tools"><?php echo $this->contribtool; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_tools'); ?>"><?php echo $this->contribtool; ?></a>
 				</td>
 			</tr>
-		<?php if ($this->banking && JComponentHelper::isEnabled('com_store')) { ?>
+		<?php if ($this->banking && Component::isEnabled('com_store')) { ?>
 			<tr class="row1">
 				<th scope="row">
-					<a href="index.php?option=com_store"><?php echo JText::_('MOD_DASHBOARD_STORE_ORDERS'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_store'); ?>"><?php echo Lang::txt('MOD_DASHBOARD_STORE_ORDERS'); ?></a>
 				</th>
 				<td>
-					<a href="index.php?option=com_store"><?php echo $this->orders; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_store'); ?>"><?php echo $this->orders; ?></a>
 				</td>
 			</tr>
 		<?php } ?>
 			<tr class="row0">
 				<th scope="row">
-					<a href="index.php?option=com_feedback"><?php echo JText::_('MOD_DASHBOARD_STORIES'); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_feedback'); ?>"><?php echo Lang::txt('MOD_DASHBOARD_STORIES'); ?></a>
 				</th>
 				<td>
-					<a href="index.php?option=com_feedback"><?php echo $this->quotes; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_feedback'); ?>"><?php echo $this->quotes; ?></a>
 				</td>
 			</tr>
 			<tr class="row1">
 				<th scope="row">
-					<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->mainlist; ?>"><?php echo JText::sprintf('MOD_DASHBOARD_WISHES', $this->sitename); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->mainlist); ?>"><?php echo Lang::txt('MOD_DASHBOARD_WISHES', $this->sitename); ?></a>
 				</th>
 				<td>
-					<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->mainlist; ?>"><?php echo $this->wishes; ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->mainlist); ?>"><?php echo $this->wishes; ?></a>
 				</td>
 			</tr>
 		</tbody>

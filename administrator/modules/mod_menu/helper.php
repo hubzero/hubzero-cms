@@ -31,10 +31,9 @@
 namespace Modules\Menu;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JRequest;
-use JArrayHelper;
-use JText;
+use Request;
+use Lang;
+use User;
 
 /**
  * Module class for displaying the admin menu
@@ -55,10 +54,10 @@ class Helper extends Module
 		}
 
 		// Initialise variables.
-		$lang    = JFactory::getLanguage();
-		$user    = JFactory::getUser();
+		$lang    = \JFactory::getLanguage();
+		$user    = User::GetRoot();
 		$menu    = new Tree();
-		$enabled = JRequest::getInt('hidemainmenu') ? false : true;
+		$enabled = Request::getInt('hidemainmenu') ? false : true;
 
 		$params  = $this->params;
 
@@ -73,7 +72,7 @@ class Helper extends Module
 	 */
 	public static function getMenus()
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('a.*, SUM(b.home) AS home');
@@ -103,9 +102,9 @@ class Helper extends Module
 	public static function getComponents($authCheck = true)
 	{
 		// Initialise variables.
-		$lang   = JFactory::getLanguage();
-		$user   = JFactory::getUser();
-		$db     = JFactory::getDbo();
+		$lang   = \JFactory::getLanguage();
+		$user   = User::getRoot();
+		$db     = \JFactory::getDbo();
 		$query  = $db->getQuery(true);
 		$result = array();
 		$langs  = array();
@@ -161,7 +160,7 @@ class Helper extends Module
 						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
 						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
 					}
-					$component->text = $lang->hasKey($component->title) ? JText::_($component->title) : $component->alias;
+					$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 				}
 			}
 			else
@@ -172,14 +171,14 @@ class Helper extends Module
 					// Add the submenu link if it is defined.
 					if (isset($result[$component->parent_id]->submenu) && !empty($component->link))
 					{
-						$component->text = $lang->hasKey($component->title) ? JText::_($component->title) : $component->alias;
+						$component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
 						$result[$component->parent_id]->submenu[] =& $component;
 					}
 				}
 			}
 		}
 
-		$result = JArrayHelper::sortObjects($result, 'text', 1, true, $lang->getLocale());
+		$result = \JArrayHelper::sortObjects($result, 'text', 1, true, $lang->getLocale());
 
 		return $result;
 	}

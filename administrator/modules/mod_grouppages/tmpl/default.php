@@ -58,9 +58,9 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 	<table class="adminlist grouppages-list">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_GROUP'); ?></th>
-				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_PAGES'); ?></th>
-				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_MODULES'); ?></th>
+				<th scope="col"><?php echo Lang::txt('MOD_GROUPPAGES_COL_GROUP'); ?></th>
+				<th scope="col"><?php echo Lang::txt('MOD_GROUPPAGES_COL_PAGES'); ?></th>
+				<th scope="col"><?php echo Lang::txt('MOD_GROUPPAGES_COL_MODULES'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,12 +74,12 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 							?>
 						</td>
 						<td>
-							<a class="page" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=pages'); ?>">
+							<a class="page" href="<?php echo Route::url('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=pages'); ?>">
 								<?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
 							</a>
 						</td>
 						<td>
-							<a class="module" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=modules'); ?>">
+							<a class="module" href="<?php echo Route::url('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=modules'); ?>">
 								<?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
 							</a>
 						</td>
@@ -88,7 +88,7 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 			<?php else : ?>
 				<tr>
 					<td colspan="3">
-						<em><?php echo JText::_('MOD_GROUPPAGES_NO_RESULTS'); ?></em>
+						<em><?php echo Lang::txt('MOD_GROUPPAGES_NO_RESULTS'); ?></em>
 					</td>
 				</tr>
 			<?php endif; ?>

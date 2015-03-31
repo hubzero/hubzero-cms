@@ -49,21 +49,21 @@ $total = $this->confirmed + $this->unconfirmed;
 			</tr>
 			<tr>
 				<td class="confirmed">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&emailConfirmed=1&registerDate='); ?>" title="<?php echo JText::_('MOD_MEMBERS_CONFIRMED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&emailConfirmed=1&registerDate='); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_CONFIRMED_TITLE'); ?>">
 						<?php echo $this->escape($this->confirmed); ?>
-						<span><?php echo JText::_('MOD_MEMBERS_CONFIRMED'); ?></span>
+						<span><?php echo Lang::txt('MOD_MEMBERS_CONFIRMED'); ?></span>
 					</a>
 				</td>
 				<td class="unconfirmed">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&emailConfirmed=-1&registerDate='); ?>" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&emailConfirmed=-1&registerDate='); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>">
 						<?php echo $this->escape($this->unconfirmed); ?>
-						<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
+						<span><?php echo Lang::txt('MOD_MEMBERS_UNCONFIRMED'); ?></span>
 					</a>
 				</td>
 				<td class="newest">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&emailConfirmed=0&registerDate=' . gmdate("Y-m-d H:i:s", strtotime('-1 day'))); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&emailConfirmed=0&registerDate=' . gmdate("Y-m-d H:i:s", strtotime('-1 day'))); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_NEW_TITLE'); ?>">
 						<?php echo $this->escape($this->pastDay); ?>
-						<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
+						<span><?php echo Lang::txt('MOD_MEMBERS_NEW'); ?></span>
 					</a>
 				</td>
 			</tr>

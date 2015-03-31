@@ -35,13 +35,13 @@ defined('_JEXEC') or die;
 	<thead>
 		<tr>
 			<th scope="col">
-				<?php echo JText::_('MOD_POPULAR_ITEMS'); ?>
+				<?php echo Lang::txt('MOD_POPULAR_ITEMS'); ?>
 			</th>
 			<th scope="col">
-				<?php echo JText::_('MOD_POPULAR_CREATED'); ?>
+				<?php echo Lang::txt('MOD_POPULAR_CREATED'); ?>
 			</th>
 			<th scope="col">
-				<?php echo JText::_('JGLOBAL_HITS');?>
+				<?php echo Lang::txt('JGLOBAL_HITS');?>
 			</th>
 		</tr>
 	</thead>
@@ -75,7 +75,7 @@ defined('_JEXEC') or die;
 	<tbody>
 		<tr>
 			<td colspan="3">
-				<p class="noresults"><?php echo JText::_('MOD_POPULAR_NO_MATCHING_RESULTS'); ?></p>
+				<p class="noresults"><?php echo Lang::txt('MOD_POPULAR_NO_MATCHING_RESULTS'); ?></p>
 			</td>
 		</tr>
 	</tbody>

@@ -44,7 +44,7 @@ $total = $this->closed + $this->open;
 				<td colspan="2">
 					<div>
 						<div class="graph">
-							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo JText::sprintf('MOD_ANSWERS_TOTAL_CLOSED', round(($this->closed / $total) * 100, 2)); ?></span></strong>
+							<strong class="bar" style="width: <?php echo round(($this->closed / $total) * 100, 2); ?>%"><span><?php echo Lang::txt('MOD_ANSWERS_TOTAL_CLOSED', round(($this->closed / $total) * 100, 2)); ?></span></strong>
 						</div>
 					</div>
 				</td>
@@ -52,15 +52,15 @@ $total = $this->closed + $this->open;
 			<?php } ?>
 			<tr>
 				<td class="closed">
-					<a href="<?php echo JRoute::_('index.php?option=com_answers&filterby=closed'); ?>" title="<?php echo JText::_('MOD_ANSWERS_CLOSED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_answers&filterby=closed'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_CLOSED_TITLE'); ?>">
 						<?php echo $this->escape($this->closed); ?>
-						<span><?php echo JText::_('MOD_ANSWERS_CLOSED'); ?></span>
+						<span><?php echo Lang::txt('MOD_ANSWERS_CLOSED'); ?></span>
 					</a>
 				</td>
 				<td class="asked">
-					<a href="<?php echo JRoute::_('index.php?option=com_answers&filterby=open'); ?>" title="<?php echo JText::_('MOD_ANSWERS_ASKED_TITLE'); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_answers&filterby=open'); ?>" title="<?php echo Lang::txt('MOD_ANSWERS_ASKED_TITLE'); ?>">
 						<?php echo $this->escape($this->open); ?>
-						<span><?php echo JText::_('MOD_ANSWERS_ASKED'); ?></span>
+						<span><?php echo Lang::txt('MOD_ANSWERS_ASKED'); ?></span>
 					</a>
 				</td>
 			</tr>

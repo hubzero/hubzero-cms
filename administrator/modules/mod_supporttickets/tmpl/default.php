@@ -81,12 +81,12 @@ JHTML::_('behavior.chart');
 				datasets = [
 					{
 						color: "orange", //#AA4643 #93ACCA
-						label: "<?php echo JText::_('MOD_SUPPORTTICKETS_OPENED'); ?>",
+						label: "<?php echo Lang::txt('MOD_SUPPORTTICKETS_OPENED'); ?>",
 						data: [<?php echo $openeddata; ?>]
 					},
 					{
 						color: "#656565", //#CFCFAB
-						label: "<?php echo JText::_('MOD_SUPPORTTICKETS_CLOSED'); ?>",
+						label: "<?php echo Lang::txt('MOD_SUPPORTTICKETS_CLOSED'); ?>",
 						data: [<?php echo $closeddata; ?>]
 					}
 				];
@@ -143,21 +143,21 @@ JHTML::_('behavior.chart');
 			<tbody>
 				<tr>
 					<td class="major">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[0]->count); ?>
-							<span><?php echo JText::_('MOD_SUPPORTTICKETS_OPEN'); ?></span>
+							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_OPEN'); ?></span>
 						</a>
 					</td>
 					<td class="critical">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[2]->count); ?>
-							<span><?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
+							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
 						</a>
 					</td>
 					<td class="newt">
-						<a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_support&controller=tickets'); ?>" title="<?php echo Lang::txt('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
 							<?php echo $this->escape($this->topened[1]->count); ?>
-							<span><?php echo JText::_('MOD_SUPPORTTICKETS_NEW'); ?></span>
+							<span><?php echo Lang::txt('MOD_SUPPORTTICKETS_NEW'); ?></span>
 						</a>
 					</td>
 				</tr>

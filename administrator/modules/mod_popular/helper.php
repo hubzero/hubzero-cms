@@ -31,12 +31,9 @@
 namespace Modules\Popular;
 
 use Hubzero\Module\Module;
-use JModelLegacy;
-use JFactory;
-use JException;
-use JRoute;
-use JText;
-use JCategories;
+use Exception;
+use Route;
+use Lang;
 
 /**
  * Module class for displaying popular articles
@@ -50,7 +47,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/models', 'ContentModel');
+		\JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_content/models', 'ContentModel');
 
 		jimport('joomla.application.categories');
 
@@ -73,10 +70,10 @@ class Helper extends Module
 	public static function getList($params)
 	{
 		// Initialise variables
-		$user = JFactory::getuser();
+		$user = User::getRoot();
 
 		// Get an instance of the generic articles model
-		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$model = \JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
 		// Set List SELECT
 		$model->setState('list.select', 'a.id, a.title, a.checked_out, a.checked_out_time, a.created, a.hits');
@@ -114,7 +111,7 @@ class Helper extends Module
 
 		if ($error = $model->getError())
 		{
-			throw new JException($error, 500);
+			throw new Exception($error, 500);
 			return false;
 		}
 
@@ -123,7 +120,7 @@ class Helper extends Module
 		{
 			if ($user->authorise('core.edit', 'com_content.article.' . $item->id))
 			{
-				$item->link = JRoute::_('index.php?option=com_content&task=article.edit&id=' . $item->id);
+				$item->link = Route::url('index.php?option=com_content&task=article.edit&id=' . $item->id);
 			}
 			else
 			{
@@ -147,14 +144,14 @@ class Helper extends Module
 
 		if ($catid)
 		{
-			$category = JCategories::getInstance('Content')->get($catid);
+			$category = \JCategories::getInstance('Content')->get($catid);
 			if ($category)
 			{
 				$title = $category->title;
 			}
 			else
 			{
-				$title = JText::_('MOD_POPULAR_UNEXISTING');
+				$title = Lang::txt('MOD_POPULAR_UNEXISTING');
 			}
 		}
 		else
@@ -162,6 +159,6 @@ class Helper extends Module
 			$title = '';
 		}
 
-		return JText::plural('MOD_POPULAR_TITLE' . ($catid ? '_CATEGORY' : '') . ($who!='0' ? "_$who" : ''), (int)$params->get('count'), $title);
+		return Lang::txts('MOD_POPULAR_TITLE' . ($catid ? '_CATEGORY' : '') . ($who!='0' ? "_$who" : ''), (int)$params->get('count'), $title);
 	}
 }

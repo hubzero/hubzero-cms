@@ -34,5 +34,5 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 ?>
 <div id="system-environment">
-	<p class="<?php echo strtolower($this->environment); ?>"><?php echo JText::_('MOD_APPLICATION_ENV_' . strtoupper($this->environment)); ?></p>
+	<p class="<?php echo strtolower($this->environment); ?>"><?php echo Lang::txt('MOD_APPLICATION_ENV_' . strtoupper($this->environment)); ?></p>
 </div>

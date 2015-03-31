@@ -37,12 +37,12 @@ $this->css();
 <div class="<?php echo $this->module->module; ?>">
 	<?php if (count($this->unapproved) > 0) : ?>
 		<div class="pending-users">
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=users&filter.approved=0'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=users&filter.approved=0'); ?>">
 				<span class="count"><?php echo count($this->unapproved); ?></span>
-				<?php echo JText::plural('MOD_USERS_REQUIRE_APPROVAL', count($this->unapproved)); ?>
+				<?php echo Lang::txts('MOD_USERS_REQUIRE_APPROVAL', count($this->unapproved)); ?>
 			</a>
 		</div>
 	<?php else : ?>
-		<div class="none"><?php echo JText::_('MOD_USERS_ALL_CLEAR'); ?></div>
+		<div class="none"><?php echo Lang::txt('MOD_USERS_ALL_CLEAR'); ?></div>
 	<?php endif; ?>
 </div>
