@@ -135,12 +135,12 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-1"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php if ($this->filters['scope'] == 'group') { ?>
 					<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<?php } ?>
@@ -249,7 +249,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id') ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
@@ -263,10 +263,10 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
-				<td>
+				<td class="priority-1">
 					<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
 						<?php if ($canDo->get('core.edit.state')) { ?>
 							<a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
@@ -279,17 +279,17 @@ foreach ($this->rows as $row)
 						<?php } ?>
 					</span>
 				</td>
-				<td>
+				<td class="priority-5">
 					<time datetime="<?php echo $row->get('created'); ?>">
 						<?php echo $row->published('date'); ?>
 					</time>
 				</td>
-				<td>
+				<td class="priority-4">
 					<a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
 							<?php echo Lang::txt('COM_BLOG_COMMENTS', $row->get('comments')); ?>

@@ -77,14 +77,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->results );?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<!-- <th scope="col"><?php echo Lang::txt('COM_CRON_COL_RECURRENCE'); ?></th> -->
 			</tr>
 		</thead>
@@ -148,7 +148,7 @@ if ($this->results)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
@@ -173,7 +173,7 @@ if ($this->results)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span class="datetime">
 						<?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') { ?>
 							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo JFactory::getDate($row->get('publish_up'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
@@ -182,7 +182,7 @@ if ($this->results)
 						<?php } ?>
 					</span>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="datetime">
 						<?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') { ?>
 							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo JFactory::getDate($row->get('publish_down'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
@@ -191,12 +191,12 @@ if ($this->results)
 						<?php } ?>
 					</span>
 				</td>
-				<td>
+				<td class="priority-2">
 					<span class="state <?php echo $cls2; ?>">
 						<span><?php echo $alt2; ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span class="datetime">
 						<?php if ($row->get('last_run') && $row->get('last_run') != '0000-00-00 00:00:00') { ?>
 							<time datetime="<?php echo $this->escape($row->get('last_run')); ?>"><?php echo $this->escape($row->get('last_run')); ?></time>
@@ -205,7 +205,7 @@ if ($this->results)
 						<?php } ?>
 					</span>
 				</td>
-				<td>
+				<td class="priority-2">
 					<span class="datetime">
 						<?php $nxt = ($row->started() ? $row->get('next_run') : $row->get('publish_up')); ?>
 						<?php if ($nxt && $nxt != '0000-00-00 00:00:00') { ?>
