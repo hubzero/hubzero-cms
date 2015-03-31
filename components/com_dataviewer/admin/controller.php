@@ -33,7 +33,7 @@ function controller_exec()
 	$task = JRequest::getVar('task', 'list');
 
 	$task_file = JPATH_COMPONENT . DS . 'tasks' . DS . $task . '.php';
-	if(require_once($task_file)) {
+	if (require_once($task_file)) {
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
 			if (file_exists(JPATH_COMPONENT . DS . 'tasks' . DS . 'html' . DS . $task . '.js')) {

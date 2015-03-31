@@ -25,7 +25,7 @@ function dv_config_current()
 		$db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
 		if (!is_array($db_dv_conf)) {
 			$db_dv_conf = array();
-		} if(isset($db_dv_conf['settings'])) {
+		} if (isset($db_dv_conf['settings'])) {
 			$db_dv_conf['settings'] = array_merge($dv_conf['settings'], $db_dv_conf['settings']);
 		}
 	}

@@ -24,7 +24,8 @@
 
 defined('_JEXEC') or die;
 
-function view() {
+function view()
+{
 	global $html_path, $com_name, $dv_conf;
 
 	$base_path = $dv_conf['base_path'];

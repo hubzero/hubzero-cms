@@ -20,7 +20,7 @@ function dv_data_definition_update()
 	$dd_name = JRequest::getString('dd', false);
 	$dd_text = $_POST['dd_text'];
 
-	if(get_magic_quotes_gpc()) {
+	if (get_magic_quotes_gpc()) {
 		$dd_text = stripslashes($dd_text);
 	}
 

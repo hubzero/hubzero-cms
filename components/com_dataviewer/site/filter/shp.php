@@ -92,7 +92,8 @@ function filter($res, &$dd)
 	exit();
 }
 
-function dms2dc($cood) {
+function dms2dc($cood)
+{
 	$cood = explode('° ', $cood);
 	$d = $cood[0];
 	$cood = explode('\' ', $cood[1]);

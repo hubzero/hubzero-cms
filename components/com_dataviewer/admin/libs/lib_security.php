@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 function check_rid()
 {
-	if(isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
+	if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
 		return true;
 	}
 

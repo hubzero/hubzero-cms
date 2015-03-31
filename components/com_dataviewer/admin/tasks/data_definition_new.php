@@ -56,7 +56,7 @@ function dv_data_definition_new()
 	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $dd['table'] . '\';' . "\n";
 	$dd_text .= "\t" . '$dd[\'pk\'] = \'' . $pk . '\';' . "\n\n";
 
-	foreach($dd['cols'] as $col=>$val) {
+	foreach ($dd['cols'] as $col=>$val) {
 		$dd_text .= "\t" . '$dd[\'cols\'][\'' . $col . '\'] = ' . format_var(var_export($val, true)) . "\n";
 	}
 
@@ -101,7 +101,8 @@ function dv_data_definition_new()
 }
 
 
-function format_var($var) {
+function format_var($var)
+{
 	return str_replace(' => ', '=>', str_replace(',)', ');', str_replace(' (  ', '(', str_replace("\n", '', $var))));
 }
 ?>

@@ -11,10 +11,11 @@
 defined('_JEXEC') or die;
 
 
-function view($hash) {
+function view($hash)
+{
 	global $html_path, $com_name;
 
-	if(!isset($_SESSION['dv'])) {
+	if (!isset($_SESSION['dv'])) {
 		$_SESSION['dv'] = array();
 	}
 
@@ -42,7 +43,7 @@ function view($hash) {
 	$file_list = explode("\n", (`$cmd`));
 	array_pop($file_list);
 
-	foreach($file_list as $file) {
+	foreach ($file_list as $file) {
 
 		$pi = pathinfo($file);
 		$dir_name = str_replace(JPATH_BASE, '', $pi['dirname']);
@@ -50,7 +51,7 @@ function view($hash) {
 
 		$desc_file = str_replace($pi['extension'], 'txt', JPATH_BASE . $real_path . '/' . $file);
 		$desc = '';
-		if(file_exists($desc_file)) {
+		if (file_exists($desc_file)) {
 			$desc = htmlentities(file_get_contents($desc_file), ENT_QUOTES, 'UTF-8');
 		}
 
@@ -65,11 +66,11 @@ function view($hash) {
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Dataview: Image gallery</title>
-		<link rel="stylesheet" href="<?=$html_path?>/ui/themes/smoothness/jquery-ui.css" type="text/css" />
-		<link rel="stylesheet" href="<?=$html_path?>/dv_gallery.css" type="text/css" />
-		<script type="text/javascript" src="<?=$html_path?>/jquery.min.js"></script>
-		<script type="text/javascript" src="<?=$html_path?>/ui/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="<?=$html_path?>/dv_gallery.js"></script>
+		<link rel="stylesheet" href="<?php echo $html_path?>/ui/themes/smoothness/jquery-ui.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $html_path?>/dv_gallery.css" type="text/css" />
+		<script type="text/javascript" src="<?php echo $html_path?>/jquery.min.js"></script>
+		<script type="text/javascript" src="<?php echo $html_path?>/ui/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="<?php echo $html_path?>/dv_gallery.js"></script>
 		<style type="text/css">
 			.dv_gallery_toolbar { font: 62.5% "Trebuchet MS", sans-serif;}
 		</style>
@@ -79,14 +80,14 @@ function view($hash) {
 		<div id="dv_gallery_list" class="ui-widget ui-widget-header ui-corner-top">
 			<table style="padding:0px; margin:0px;">
 				<tr>
-					<td><?=implode("</td><td>", $image_list);?></td>
+					<td><?php echo implode("</td><td>", $image_list);?></td>
 				</tr>
 			</table>
 		</div>
 
 		<div id="dv_gallery_viewer">
 			<br />
-			<?=implode("\n", $image_viewer);?>
+			<?php echo implode("\n", $image_viewer);?>
 			<br style="line-haight: 5px;" />
 			<div id="dv_gallery_desc" class="ui-widget ui-widget-content ui-corner-all" style="display:none; margin: 0px 20px 0px 20px; border-style: inset;">The description will be displayed here...</div>
 			<br style="line-haight: 5px;" />
@@ -94,7 +95,7 @@ function view($hash) {
 
 		<div class="dv_gallery_toolbar ui-widget ui-widget-header ui-corner-bottom">
 			<span id="dv_gallery_dl_image">
-				<a href="" target="_blank"><img src="<?=$html_path?>/download-l.png" alt="Click here to download the full size image." title="Download Original Image (Right click and save image)" style="border: 1px #DDD solid;" /></a>
+				<a href="" target="_blank"><img src="<?php echo $html_path?>/download-l.png" alt="Click here to download the full size image." title="Download Original Image (Right click and save image)" style="border: 1px #DDD solid;" /></a>
 			</span>
 			&nbsp;
 			<input type="checkbox" id="description" /><label for="description">Description</label>

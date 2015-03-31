@@ -16,7 +16,7 @@ function get_dl_hash($path, $type = 'file_download')
 	$salt = "Ju   st( in c4s3.........:-0()";
 	$hash = md5($salt . $path);
 
-	if(!isset($_SESSION['dv'])) {
+	if (!isset($_SESSION['dv'])) {
 		$_SESSION['dv'] = array();
 	}
 
@@ -59,7 +59,7 @@ function zip_files($hash_list)
 
 	$fl = '';
 
-	foreach($hash_list as $hash) {
+	foreach ($hash_list as $hash) {
 		if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
 			$fullpath = '"' . $_SESSION['dv']['file_download']['list'][$hash] . '"';
 			$fl .= $fullpath . ' ';
