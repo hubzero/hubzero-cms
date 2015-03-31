@@ -73,4 +73,39 @@ class Lang extends Facade
 		$args = func_get_args();
 		return call_user_func_array(array('\JText', 'plural'), $args);
 	}
+
+	/**
+	 * Builds a list of the system languages which can be used in a select option
+	 *
+	 * @param   string   $actualLanguage  Client key for the area
+	 * @param   string   $basePath        Base path to use
+	 * @param   boolean  $caching         True if caching is used
+	 * @param   array    $installed       An array of arrays (text, value, selected)
+	 * @return  array    List of system languages
+	 */
+	public static function getList($actualLanguage, $basePath = JPATH_BASE, $caching = false, $installed = false)
+	{
+		return \JLanguageHelper::createLanguageList($actualLanguage, $basePath, $caching, $installed);
+	}
+
+	/**
+	 * Tries to detect the language.
+	 *
+	 * @return  string  locale or null if not found
+	 */
+	public static function detect()
+	{
+		return \JLanguageHelper::detectLanguage();
+	}
+
+	/**
+	 * Get available languages
+	 *
+	 * @param   string  $key  Array key
+	 * @return  array   An array of published languages
+	 */
+	public static function available($key = 'default')
+	{
+		return \JLanguageHelper::getLanguages($key);
+	}
 }
