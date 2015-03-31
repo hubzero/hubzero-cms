@@ -50,9 +50,8 @@ class Helper extends Module
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
 
-		$juser    = \JFactory::getUser();
+		$juser    = \User::getRoot();
 		$database = \JFactory::getDBO();
-		$jconfig  = \JFactory::getConfig();
 
 		$st = new Ticket($database);
 
@@ -102,9 +101,9 @@ class Helper extends Module
 
 		$this->topened = $types['common'];
 
-		$this->offset = $jconfig->getValue('config.offset');
+		$this->offset = \Config::get('offset');
 
-		$year  = \JRequest::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
+		$year  = \Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
 
 		$this->year = $year;

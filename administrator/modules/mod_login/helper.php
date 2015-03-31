@@ -62,7 +62,7 @@ class Helper extends Module
 	public static function getLanguageList()
 	{
 		$languages = array();
-		$languages = \JLanguageHelper::createLanguageList(null, JPATH_ADMINISTRATOR, false, true);
+		$languages = Lang::getList(null, JPATH_ADMINISTRATOR, false, true);
 		array_unshift($languages, \JHtml::_('select.option', '', Lang::txt('JDEFAULT')));
 
 		return \JHtml::_('select.genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
