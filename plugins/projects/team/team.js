@@ -36,40 +36,40 @@ HUB.ProjectTeam = {
 	bchecked: 0,
 	bselected: new Array(),
 	bgroups: new Array(),
-	
-	initialize: function() 
+
+	initialize: function()
 	{
 		var $ = this.jQuery;
-				
+
 		// Show manage options
-		if ($('#team-manage')) 
+		if ($('#team-manage'))
 		{
-			if ($('#team-manage').hasClass('hidden')) 
+			if ($('#team-manage').hasClass('hidden'))
 			{
 				$('#team-manage').removeClass('hidden');
 			}
 		}
-		
+
 		// Edit role inline
 		if ($('.frole').length > 0)
 		{
 			$('.frole').each(function(i, item)
 			{
-				$(item).on('click', function(e) 
+				$(item).on('click', function(e)
 				{
 					HUB.ProjectTeam.editRole(item);
 				});
 			});
 		}
-		
+
 		// Check boxes for team members
-		HUB.ProjectTeam.checkMembers();	
-		
+		HUB.ProjectTeam.checkMembers();
+
 		// Activate team management buttons
-		HUB.ProjectTeam.activateOptions();	
-				
+		HUB.ProjectTeam.activateOptions();
+
 	}, // end initialize
-	
+
 	checkMembers: function ()
 	{
 		var $ = this.jQuery;
@@ -77,27 +77,27 @@ HUB.ProjectTeam = {
 		var bselected = this.bselected;
 		var bgroups = this.bgroups;
 		var group = '';
-		
+
 		var boxes = $('.checkmember');
-		
+
 		// Check boxes for team members
-		if (boxes.length > 0) 
+		if (boxes.length > 0)
 		{
-			boxes.each(function(i, item) 
-			{	
-				$(item).on('click', function(e) 
+			boxes.each(function(i, item)
+			{
+				$(item).on('click', function(e)
 				{
 					var classes = $(item).attr('class').split(" ");
-					for (k=classes.length-1;k>=0;k--) 
+					for (k=classes.length-1;k>=0;k--)
 					{
 						if (classes[k].search("group:") >= 0)
 						{
-							var group = classes[k].split(":")[1];	
+							var group = classes[k].split(":")[1];
 						}
 					}
-					
+
 					// Is item checked?
-					if ($(item).attr('checked') != 'checked') 
+					if ($(item).attr('checked') != 'checked')
 					{
 					 	bchecked = bchecked - 1;
 						//var idx = bselected.indexOf($(item).val());
@@ -107,14 +107,14 @@ HUB.ProjectTeam = {
 						{
 							//var gidx = bgroups.indexOf(group);
 							var gidx = HUB.Projects.getArrayIndex(group, bgroups);
-							if (gidx!=-1) 
+							if (gidx!=-1)
 							{
 								HUB.ProjectTeam.selectGroup(group, 'uncheck');
 								bgroups.splice(gidx, 1);
 							}
 						}
-					} 
-					else 
+					}
+					else
 					{
 						bchecked = bchecked + 1;
 						bselected.push($(item).val());
@@ -129,73 +129,73 @@ HUB.ProjectTeam = {
 				});
 			});
 		}
-	}, 
-	
+	},
+
 	selectGroup: function (group, action)
 	{
 		var $ = this.jQuery;
 		var boxes = $('.checkmember');
-		
-		if (boxes.length > 0) 
+
+		if (boxes.length > 0)
 		{
-			boxes.each(function(i, item) 
-			{			
+			boxes.each(function(i, item)
+			{
 				if ($(item).attr('class').search('group:' + group) >= 0)
 				{
 					if (action == 'check')
 					{
 						$(item).attr('checked','checked');
 					}
-					else 
+					else
 					{
 						$(item).removeAttr("checked");
 					}
 				}
 			});
-		}		
+		}
 	},
-	
+
 	activateOptions: function ()
 	{
 		var $ = this.jQuery;
 		var bchecked = this.bchecked;
 		var bselected = this.bselected;
 		var bgroups = this.bgroups;
-		
+
 		var ops = $('.manage');
 		if (ops.length > 0)
 		{
 			// Control options
-			ops.each(function(i, item) 
+			ops.each(function(i, item)
 			{
 				// disable options until a box is checked
 				$(item).addClass('inactive');
 				$(item).on('click', function(e) {
 					e.preventDefault();
 					var aid = $(item).attr('id');
-					
-					if ($(item).hasClass('inactive')) 
+
+					if ($(item).hasClass('inactive'))
 					{
 						// do nothing
-					} 
-					else 
+					}
+					else
 					{
 						// Clean up url
 						var clean = $(item).attr('href').split('&owner[]=', 1);
 						$(item).attr('href', clean);
-					
+
 						// Add our checked boxes variables
-						if (bselected.length > 0) 
+						if (bselected.length > 0)
 						{
-							for (var k = 0; k < bselected.length; k++) 
+							for (var k = 0; k < bselected.length; k++)
 							{
 								$(item).attr('href', $(item).attr('href') + '?owner[]=' + bselected[k]);
 							}
 						}
 						// Add our selected groups variables
-						if (bgroups.length > 0) 
+						if (bgroups.length > 0)
 						{
-							for (var k = 0; k < bgroups.length; k++) 
+							for (var k = 0; k < bgroups.length; k++)
 							{
 								$(item).attr('href', $(item).attr('href') + '?group[]=' + bgroups[k]);
 							}
@@ -208,7 +208,7 @@ HUB.ProjectTeam = {
 							href = href + '&ajax=1';
 						}
 						$(item).attr('href', href);
-						
+
 						// make AJAX call
 						$.fancybox(this,{
 							type: 'ajax',
@@ -228,9 +228,9 @@ HUB.ProjectTeam = {
 					}
 				});
 			});
-		}		
+		}
 	},
-	
+
 	editRole: function (el)
 	{
 		var $ = this.jQuery;
@@ -248,27 +248,29 @@ HUB.ProjectTeam = {
 				role = classes[i].split(":")[1];
 			}
 		}
-		
+
 		var m_selected = role == 1 ? ' selected="selected"' : '';
-		var c_selected = role == 0 ? ' selected="selected"' : '';
-		
+		var c_selected = (role == 0 || role == 2 || role == 3) ? ' selected="selected"' : '';
+		var r_selected = role == 5 ? ' selected="selected"' : '';
+
 		// Hide your target element
 		$(el).addClass('hidden');
 		var form = 'form_' + $(el).attr('id');
 		var save = 'save_' + $(el).attr('id');
 		var cancel = 'cancel_' + $(el).attr('id');
-				
+
 		if ($(form) && $(form).hasClass('hidden'))
 		{
 			$(form).removeClass('hidden');
 		}
-		
-		$(el).after('<form id="' + form + '" class="editable" action="index.php">' + 
-			'<label>' + 
-				'<select name="role">' + 
-					'<option value="1" ' + m_selected + '>manager</option>' + 
-					'<option value="0" ' + c_selected + '>collaborator</option>' + 
-				'<select>' + 
+
+		$(el).after('<form id="' + form + '" class="editable" action="index.php">' +
+			'<label>' +
+				'<select name="role">' +
+					'<option value="1" ' + m_selected + '>manager</option>' +
+					'<option value="0" ' + c_selected + '>collaborator</option>' +
+					'<option value="5" ' + r_selected + '>reviewer (read-only)</option>' +
+				'<select>' +
 			'</label>' +
 			'<input type="hidden" name="ajax" value="1" />' +
 			'<input type="hidden" name="no_html" value="1" />' +
@@ -276,14 +278,14 @@ HUB.ProjectTeam = {
 			'<input type="submit" class="btn btn-success active" id="' + save + '" value="save" />' +
 			'<input type="button" class="btn btn-cancel" id="' + cancel + '" value="cancel" />' +
 		'</form>');
-				
+
 		$('#' + cancel).on('click', function(e){
 			e.preventDefault();
 			$('#' + form).addClass('hidden');
 			$(el).removeClass('hidden');
 		});
 		var formAction = '/projects/' + $('#pid').val() + '/team/assignrole/?1=1';
-		
+
 		$('#' + save).on('click', function(e){
 			e.preventDefault();
 			$.ajax({ type:'POST', url: formAction, data:$('#' + form).serialize(), success: function(response) {
@@ -292,23 +294,23 @@ HUB.ProjectTeam = {
 			}});
 		});
 	},
-	
-	watchSelections: function ( bchecked ) 
+
+	watchSelections: function ( bchecked )
 	{
-		var $ = this.jQuery;	
-				
+		var $ = this.jQuery;
+
 		// Get number of members
 		var num = $('#n_members').val();
 
-		if (bchecked == 0) 
+		if (bchecked == 0)
 		{
 			$('.manage').each(function(i, el) {
 				if (!$(el).hasClass('inactive')) {
 					$(el).addClass('inactive');
 				}
 			});
-		} 
-		else if (bchecked > 0 ) 
+		}
+		else if (bchecked > 0 )
 		{
 			if ($('#t-delete') && $('#t-delete').hasClass('inactive')) {
 				$('#t-delete').removeClass('inactive');

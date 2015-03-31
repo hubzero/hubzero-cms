@@ -28,15 +28,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="abox-content">
 <?php if ($this->ajax) { ?>
-<h3><?php echo JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_ACCESS'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_EDIT_AUTHORS_ACCESS'); ?></h3>
 <?php } ?>
 
 <?php if (!$this->ajax) { ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
-	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></h3>
+	<?php if ($this->model->isProvisioned()) { ?>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url . '?version=' . $this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_PUBLICATIONS')); ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></span>
+		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_PUBLICATIONS')); ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></span>
 		</h3>
 	<?php }
 }
@@ -45,26 +45,26 @@ else
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
 <fieldset>
-	<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
+	<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" id="projectid" />
 	<input type="hidden" name="active" value="team" />
 	<input type="hidden" name="action" value="saveauthors" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 	<input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
-	<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-	<?php if ($this->project->provisioned == 1 ) { ?>
+	<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->model->isProvisioned() ? 1 : 0; ?>" />
+	<?php if ($this->model->isProvisioned()) { ?>
 	<input type="hidden" name="task" value="submit" />
 	<?php } ?>
 </fieldset>
 <div id="author-access">
-	<p><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_ACCESS_TIPS'); ?></p>
+	<p><?php echo Lang::txt('PLG_PROJECTS_TEAM_PUB_AUTHOR_ACCESS_TIPS'); ?></p>
 	<table class="listing">
 		<thead>
 			<tr>
 				<th class="th_image"></th>
-				<th class="th_user"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_MEMBER_NAME'); ?></th>
-				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_FULL_ACCESS'); ?></th>
-				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_DELETE'); ?></th>
+				<th class="th_user"><?php echo Lang::txt('PLG_PROJECTS_TEAM_PUB_AUTHOR_MEMBER_NAME'); ?></th>
+				<th class="checkbox"><?php echo Lang::txt('PLG_PROJECTS_TEAM_PUB_AUTHOR_FULL_ACCESS'); ?></th>
+				<th class="checkbox"><?php echo Lang::txt('PLG_PROJECTS_TEAM_PUB_AUTHOR_DELETE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -76,7 +76,7 @@ else
 
 					// Determine css class for user
 					$username 	= $owner->username ? $owner->username : $owner->invited_email;
-					$creator 	= $this->project->created_by_user == $owner->userid ? 1 : 0;
+					$creator 	= $this->model->get('owned_by_user') == $owner->userid ? 1 : 0;
 					$usr_class 	= $creator ? ' class="usercreator"' : '';
 ?>
 			<tr class="mline" id="tr_<?php echo $owner->id; ?>">
@@ -89,7 +89,7 @@ else
 			</tbody>
 			</table>
 			<p class="submitarea">
-				<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_TEAM_SAVE_MY_CHANGES'); ?>" />
+				<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SAVE_MY_CHANGES'); ?>" />
 			</p>
 		</div>
 </form>

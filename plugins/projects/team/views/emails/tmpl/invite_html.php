@@ -34,60 +34,71 @@ $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'projects/' . $this->project->alias;
+	$sef = 'projects/' . $this->model->get('alias');
 }
 else
 {
-	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias'));
 }
 
 $projectUrl = rtrim($base, DS) . DS . trim($sef, DS);
-$sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
-$link = rtrim($base, DS) . DS . trim($sef, DS);
-$thumb = rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
+$sef 	   .= User::get('id') ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
+$link       = rtrim($base, DS) . DS . trim($sef, DS);
+$thumb      = rtrim($base, DS) . DS . 'projects/' . $this->model->get('alias') . '/media';
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
+$title = $hubShortName . ' ' . Lang::txt('COM_PROJECTS_PROJECTS');
 
 // Main message
-$subtitle  = $this->actor->get('name') . ' ';
-if ($this->project->provisioned)
+$subtitle  = User::get('name') . ' ';
+if ($this->model->isProvisioned())
 {
-	$subtitle .= $this->uid
-			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
-			: JText::_('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
-	$subtitle .= ' "'.$this->pub->title.'"';
+	$subtitle .= User::get('id')
+			? Lang::txt('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
+			: Lang::txt('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
+	$subtitle .= ' "' . $this->pub->title.'"';
 }
 else
 {
-	$subtitle .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$subtitle .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
+	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
+	$subtitle .= ' "' . $this->model->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
+	if ($this->role == 1)
+	{
+		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_OWNER');
+	}
+	elseif ($this->role == 5)
+	{
+		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_REVIEWER');
+	}
+	else
+	{
+		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
+	}
 }
 
 // Project owner
-$owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
-		 : $this->project->fullname;
+$owner   = $this->model->groupOwner()
+		 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+		 : $this->model->owner('name');
 
 // Get the actual message
 $comment = '';
 if ($this->uid)
 {
-	$comment .= $this->project->provisioned
-			? JText::_('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT')."\n"
-			: JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
+	$comment .= $this->model->isProvisioned()
+			? Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT') . "\n"
+			: Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT') . "\n";
 }
 else
 {
-	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
-	$comment .= JText::_('COM_PROJECTS_EMAIL_ACCEPT')."\n";
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $hubShortName.' ';
+	$comment .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
 $comment .= $link ."\n\n";
 
 // Extras
-$footnote = JText::_('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' '
-	. $this->actor->get('name') . '  - ' . $this->actor->get('email') . "\n";
+$footnote = Lang::txt('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' '
+	. User::get('name') . '  - ' . User::get('email') . "\n";
 
 $showThumb = $config->get('showthumbemail', 0);
 
@@ -294,18 +305,18 @@ $bdcolor = '#e1e1e1';
 													</td>
 													<?php } ?>
 													<td id="project-alias" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
-														<?php echo $this->project->alias; ?>
+														<?php echo $this->model->get('alias'); ?>
 													</td>
 													<td width="100%" style="padding: 8px;">
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Title:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->title; ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->model->get('title'); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
+																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->model->get('created'), Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->model->get('created'), Lang::txt('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>

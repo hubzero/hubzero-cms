@@ -25,13 +25,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$route = $this->project->provisioned == 1
+$route = $this->model->isProvisioned()
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->publication->id
-		: 'index.php?option=com_projects&alias=' . $this->project->alias;
+		: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 // Save Selection URL
-$url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
-	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned() ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
+	. $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
 
 $i = 0;
 
@@ -55,29 +55,29 @@ if (count($this->authors) > 0)
 ?>
 <script src="/plugins/projects/team/js/selector.js"></script>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?> </h3>
-		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias); ?>">
+<h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?> </h3>
+		<form id="add-author" class="add-author" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
 			<fieldset>
-				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
-				<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
+				<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="additem" />
-				<?php if ($this->project->provisioned == 1) { ?>
+				<?php if ($this->model->isProvisioned()) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
 				<?php }  ?>
 			</fieldset>
-			<p class="requirement"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?></p>
+			<p class="requirement"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?></p>
 			<div id="quick-add" class="quick-add">
-				<?php // if ($this->project->provisioned) { ?>
+				<?php // if ($this->model->isProvisioned()) { ?>
 					<div class="autoc">
 						<label>
-							<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID')); ?>:</span>
+							<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID')); ?>:</span>
 							<?php
 								if (count($this->mc) > 0) {
 									echo $this->mc[0];
@@ -132,13 +132,13 @@ if (count($this->authors) > 0)
 				<div class="block">
 					<div class="inlineblock">
 					<label>
-						<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME')); ?>*:</span>
+						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME')); ?>*:</span>
 						<input type="text" name="firstName" id="firstName" class="inputrequired" value="" maxlength="255" />
 					</label>
 					</div>
 					<div class="inlineblock">
 					<label>
-						<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME')); ?>*:</span>
+						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME')); ?>*:</span>
 						<input type="text" name="lastName" id="lastName" class="inputrequired" value="" maxlength="255" />
 					</label>
 					</div>
@@ -146,18 +146,18 @@ if (count($this->authors) > 0)
 				<div class="block">
 					<div class="block-liner">
 					<label for="organization">
-						<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
+						<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
 						<input type="text" class="inputrequired" name="organization" value="" maxlength="255" />
-					<p class="hint"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
+					<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_HINT'); ?></p>
 					</label>
 					</div>
 				</div>
-			<?php if (!$this->project->provisioned) { ?>
+			<?php if (!$this->model->isProvisioned()) { ?>
 				<div class="block">
-					<p class="invite-question"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM')); ?></p>
+					<p class="invite-question"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM')); ?></p>
 					<div class="block-liner">
 					<label for="email">
-							<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_EMAIL')); ?>:</span>
+							<span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_EMAIL')); ?>:</span>
 							<input type="text"  name="email" value="" maxlength="255" />
 					</label>
 					</div>
@@ -166,7 +166,7 @@ if (count($this->authors) > 0)
 
 				<div class="submitarea">
 					<div id="status-box"></div>
-					<a class="btn btn-success active" id="b-add"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_SAVE_NEW'); ?></a>
+					<a class="btn btn-success active" id="b-add"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_NEW'); ?></a>
 				</div>
 			</div>
 		</form>

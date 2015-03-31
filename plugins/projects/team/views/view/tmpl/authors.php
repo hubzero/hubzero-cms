@@ -26,9 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Build url
-$route = $this->project->provisioned
+$route = $this->model->isProvisioned()
 	? 'index.php?option=com_publications&task=submit'
-	: 'index.php?option=com_projects&alias=' . $this->project->alias;
+	: 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 $p_url = Route::url($route . '&active=team');
 
 $shown = array();
@@ -54,7 +54,7 @@ $shown = array();
 					$name = $owner->a_name ? $owner->a_name : $owner->fullname;
 					$name = trim($name) ? $name : $owner->invited_email;
 
-					$username = $owner->username ? $owner->username : JText::_('COM_PROJECTS_AUTHOR_UNCONFIRMED');
+					$username = $owner->username ? $owner->username : Lang::txt('COM_PROJECTS_AUTHOR_UNCONFIRMED');
 
 					 ?>
 					<li id="owner:<?php echo $owner->id; ?>" class="c-click  user:<?php echo $owner->userid; ?> owner:<?php echo $owner->id; ?>  name:<?php echo urlencode(htmlspecialchars($name)); ?> org:<?php echo urlencode(htmlspecialchars($org)); ?> credit:<?php echo urlencode(htmlspecialchars($owner->credit)); ?>">
@@ -102,7 +102,7 @@ $shown = array();
 					<li id="owner:<?php echo $miss['owner']; ?>" class="c-click  user:<?php echo $miss['userid']; ?> owner:<?php echo $miss['owner']; ?>  name:<?php echo urlencode($miss['name']); ?> org:<?php echo urlencode($miss['organization']); ?> credit:<?php echo urlencode($miss['credit']); ?> i-missing">
 						<img width="30" height="30" src="<?php echo $miss['thumb']; ?>" class="a-ima" alt="<?php echo htmlentities($miss['name']); ?>" />
 						<span class="a-name"><?php echo $miss['name']; ?> <span class="block prominent"><?php echo $miss['username']; ?></span></span>
-						<span class="c-missing"><?php echo JText::_('COM_PROJECTS_AUTHORS_MISSING'); ?></span>
+						<span class="c-missing"><?php echo Lang::txt('COM_PROJECTS_AUTHORS_MISSING'); ?></span>
 					</li>
 			<?php	}
 			}

@@ -31,58 +31,58 @@ $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
 	$base = substr($base, 0, strlen($base)-13);
-	$sef = 'projects/' . $this->project->alias;
+	$sef = 'projects/' . $this->model->get('alias');
 }
 else
 {
-	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->alias);
+	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias'));
 }
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-$message  = $this->actor->get('name') . ' ';
-if ($this->project->provisioned)
+$message  = User::get('name') . ' ';
+if ($this->model->isProvisioned())
 {
 	$message .= $this->uid
-			? JText::_('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
-			: JText::_('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
-	$message .= ' "'.$this->pub->title.'"';
+			? Lang::txt('COM_PROJECTS_EMAIL_ADDED_AS_PUB_AUTHOR')
+			: Lang::txt('COM_PROJECTS_EMAIL_INVITED_AS_PUB_AUTHOR');
+	$message .= ' "' . $this->model->get('title') . '"';
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";
+	$message .= '-------------------------------' . "\n";
 }
 else
 {
-	$message .= $this->uid ? JText::_('COM_PROJECTS_EMAIL_ADDED_YOU') : JText::_('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$message .= ' "'.$this->project->title.'" '.JText::_('COM_PROJECTS_EMAIL_IN_THE_ROLE').' ';
-	$message .= $this->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
+	$message .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
+	$message .= ' "' . $this->model->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
+	$message .= $this->role == 1 ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 	$message .= "\n";
-	$message .= '-------------------------------'."\n";
-	$message .= JText::_('COM_PROJECTS_PROJECT').': '.$this->project->title.' ('.$this->project->alias.')'."\n";
-	$message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
-			 .JHTML::_('date', $this->project->created, 'M d, Y').' '.JText::_('COM_PROJECTS_BY').' ';
-	$message .= $this->project->owned_by_group
-			 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
-			 : $this->project->fullname;
+	$message .= '-------------------------------' . "\n";
+	$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->model->get('title') . ' (' . $this->model->get('alias') . ')' . "\n";
+	$message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
+			 .JHTML::_('date', $this->model->get('created'), 'M d, Y') . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
+	$message .= $this->model->groupOwner()
+			 ? $this->model->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP')
+			 : $this->model->owner('name');
 	$message .= "\n";
-	$message .= JText::_('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n\n";
 }
 
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
 
-if ($this->uid)
+if (User::get('id'))
 {
-	$message .= $this->project->provisioned
-			? JText::_('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT')."\n"
-			: JText::_('COM_PROJECTS_EMAIL_ACCESS_PROJECT')."\n";
+	$message .= $this->model->isProvisioned()
+			? Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PUB_PROJECT') . "\n"
+			: Lang::txt('COM_PROJECTS_EMAIL_ACCESS_PROJECT') . "\n";
 }
 else
 {
-	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT').' '.$this->hubShortName.' ';
-	$message .= JText::_('COM_PROJECTS_EMAIL_ACCEPT')."\n";
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT_NEED_ACCOUNT') . ' ' . $this->hubShortName . ' ';
+	$message .= Lang::txt('COM_PROJECTS_EMAIL_ACCEPT') . "\n";
 }
-$message .= $link ."\n\n";
+$message .= $link . "\n\n";
 
-$message .= JText::_('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS').' '.$this->actor->get('name').'  - '.$this->actor->get('email')."\n";
+$message .= Lang::txt('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' ' . User::get('name') . '  - ' . User::get('email') . "\n";
 
 $message = str_replace('<br />', '', $message);
 $message = preg_replace('/\n{3,}/', "\n\n", $message);

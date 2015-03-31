@@ -24,9 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 ?>
 <div class="public-list-header">
-	<h3><?php echo JText::_('COM_PROJECTS_TEAM'); ?></h3>
+	<h3><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></h3>
 </div>
 <div id="team-horiz" class="public-list-wrap">
 	<?php
@@ -36,8 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				// Get profile thumb image
 				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-				$juser 	 = JFactory::getUser();
-				$actor   = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
 				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 			?>
 			<li>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li class="clear">&nbsp;</li>
 		</ul>
 	<?php } else { ?>
-		<div class="noresults"><?php echo JText::_('COM_PROJECTS_EXTERNAL_NO_TEAM'); ?></div>
+		<div class="noresults"><?php echo Lang::txt('COM_PROJECTS_EXTERNAL_NO_TEAM'); ?></div>
 	<?php }	?>
 	<div class="clear"></div>
 </div>

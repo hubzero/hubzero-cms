@@ -108,8 +108,11 @@
 		padding: 0;
 	}
 	#hubForm .editable label select {
-		font-size: 110%;
+		font-size: 100%;
 		padding: 0.3em 0;
+	}
+	#hubForm .editable .btn {
+		font-size: 90%;
 	}
 	
 /* Publication authors listing

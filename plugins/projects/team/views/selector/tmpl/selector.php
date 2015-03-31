@@ -34,15 +34,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				// Get profile thumb image
 				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-				$juser = JFactory::getUser();
-				$actor   = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$actor   = \Hubzero\User\Profile::getInstance(User::get('id'));
 				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 				$org  = $owner->a_organization ? $owner->a_organization : $owner->organization;
 				$name = $owner->a_name ? $owner->a_name : $owner->fullname;
 				$name = trim($name) ? $name : $owner->invited_email;
 
-				$username = $owner->username ? $owner->username : JText::_('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
+				$username = $owner->username ? $owner->username : Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
 
 				// Already an author?
 				$selected = !empty($this->selected) && in_array($owner->id, $this->selected) ? 1 : 0;
@@ -59,5 +58,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php } ?>
 		</ul>
 	<?php } else {  ?>
-		<p class="noresults"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_NO_MEMBERS'); ?></p>
+		<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_NO_MEMBERS'); ?></p>
 	<?php } ?>

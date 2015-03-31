@@ -80,7 +80,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	{
 		$area = array(
 			'name'    => 'team',
-			'title'   => JText::_('COM_PROJECTS_TAB_TEAM'),
+			'title'   => Lang::txt('COM_PROJECTS_TAB_TEAM'),
 			'submenu' => NULL,
 			'show'    => true
 		);
@@ -155,8 +155,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($returnhtml)
 		{
 			// Set vars
-			$this->_task 		= $action ? $action : JRequest::getVar('action','');
-			$this->_project 	= $model->project();
+			$this->_task 		= $action ? $action : Request::getVar('action','');
 			$this->_database 	= JFactory::getDBO();
 			$this->_uid 		= User::get('id');
 			$this->_config      = $model->config();
@@ -233,47 +232,47 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'team',
-				'name'=>$layout
+				'folder'   =>'projects',
+				'element'  =>'team',
+				'name'     => $layout
 			)
 		);
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO                      = $this->model->table('Owner');
 		$view->filters['limit']    =  intval($this->params->get('limit', 0));
-		$view->filters['start']    = JRequest::getInt( 't_limitstart', 0);
-		$view->filters['sortby']   = JRequest::getVar( 't_sortby', 'name');
-		$view->filters['sortdir']  = JRequest::getVar( 't_sortdir', 'ASC');
-		$view->filters['status']   = JRequest::getVar( 't_status', 'active');
+		$view->filters['start']    = Request::getInt( 't_limitstart', 0);
+		$view->filters['sortby']   = Request::getVar( 't_sortby', 'name');
+		$view->filters['sortdir']  = Request::getVar( 't_sortdir', 'ASC');
+		$view->filters['status']   = Request::getVar( 't_status', 'active');
 		if (!$edit)
 		{
 			$view->filters['online']   = 1;
 		}
 
 		// Get all active team members
-		$view->team = $objO->getOwners($this->_project->id, $view->filters);
+		$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
 
 		// Get total count
 		$count_filters = $view->filters;
 		$count_filters['limit'] = 0;
-		$view->total = $objO->countOwners($this->_project->id, $count_filters);
+		$view->total = $objO->countOwners($this->model->get('id'), $count_filters);
 
 		// Get native count
 		$count_filters['native'] = 1;
-		$view->native_count = $objO->countOwners($this->_project->id, $count_filters );
+		$view->native_count = $objO->countOwners($this->model->get('id'), $count_filters );
 
 		// Get managers count
-		$view->managers_count = count($objO->getIds($this->_project->id, $role = 1));
+		$view->managers_count = count($objO->getIds($this->model->get('id'), $role = 1));
 
 		// Get count of project groups
-		$groups = $objO->getProjectGroups( $this->_project->id );
+		$groups = $objO->getProjectGroups( $this->model->get('id') );
 		$view->count_groups = $groups ? count($groups) : 0;
 
-		$view->params 		= new JParameter($this->_project->params);
+		$view->params 		= $this->model->params;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->setup 		= $setup;
 		$view->config 		= $this->_config;
@@ -298,20 +297,17 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = JRequest::getVar( 'p', '' );
-		$ajax   = JRequest::getInt( 'ajax', 0 );
-		$pid    = JRequest::getInt( 'pid', 0 );
-		$vid    = JRequest::getInt( 'vid', 0 );
+		$props  = Request::getVar( 'p', '' );
+		$ajax   = Request::getInt( 'ajax', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
 		$block   = (isset($parts[0]) && in_array($parts[0], array('content', 'extras'))) ? $parts[0] : 'authors';
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 
-		// Provisioned project?
-		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
-
-		$layout = $this->_task == 'newauthor' || $prov ? 'newauthor' : 'default';
+		$layout = $this->_task == 'newauthor' || $this->model->isProvisioned() ? 'newauthor' : 'default';
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -331,16 +327,16 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
 		$view->publication = $objP->getPublication($view->version->publication_id,
-			$view->version->version_number, $this->_project->id);
+			$view->version->version_number, $this->model->get('id'));
 
 		if (!$view->publication)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -364,7 +360,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Load master type
 		$mt = new \Components\Publications\Tables\MasterType( $this->_database );
 		$view->publication->_type   	= $mt->getType($view->publication->base);
-		$view->publication->_project 	= $this->_project;
+		$view->publication->_project 	= $this->model->project();
 
 		// Get curation model
 		$view->publication->_curationModel = new \Components\Publications\Models\Curation($view->publication->_type->curation);
@@ -387,14 +383,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Instantiate project owner
 		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$view->filters['limit']    		=  0;
-		$view->filters['start']    		= JRequest::getInt( 't_limitstart', 0);
-		$view->filters['sortby']   		= JRequest::getVar( 't_sortby', 'name');
-		$view->filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$view->filters['start']    		= Request::getInt( 't_limitstart', 0);
+		$view->filters['sortby']   		= Request::getVar( 't_sortby', 'name');
+		$view->filters['sortdir']  		= Request::getVar( 't_sortdir', 'ASC');
 		$view->filters['status']   		= 'active';
 		$view->filters['pub_versionid'] = $vid;
 
 		// Get all active team members
-		$view->team = $objO->getOwners($this->_project->id, $view->filters);
+		$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
 
 		// Get current authors
 		$pa = new \Components\Publications\Tables\Author($this->_database);
@@ -409,7 +405,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->ajax			= $ajax;
 		$view->task			= $this->_task;
@@ -435,9 +431,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function authors()
 	{
 		// Incoming
-		$versionid 	= JRequest::getInt('versionid', 0);
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$pid 		= JRequest::getInt('pid', 0);
+		$versionid 	= Request::getInt('versionid', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$pid 		= Request::getInt('pid', 0);
 
 		if (!$ajax or !$versionid)
 		{
@@ -457,14 +453,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Instantiate project owner
 		$objO = new \Components\Projects\Tables\Owner($this->_database);
 		$view->filters['limit']    		=  0;
-		$view->filters['start']    		= JRequest::getInt( 't_limitstart', 0);
-		$view->filters['sortby']   		= JRequest::getVar( 't_sortby', 'name');
-		$view->filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$view->filters['start']    		= Request::getInt( 't_limitstart', 0);
+		$view->filters['sortby']   		= Request::getVar( 't_sortby', 'name');
+		$view->filters['sortdir']  		= Request::getVar( 't_sortdir', 'ASC');
 		$view->filters['status']   		= 'active';
 		$view->filters['pub_versionid'] = $versionid;
 
 		// Get all active team members
-		$view->team = $objO->getOwners($this->_project->id, $view->filters);
+		$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
 
 		// Get current authors
 		$pa = new \Components\Publications\Tables\Author($this->_database);
@@ -473,10 +469,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		// Exclude any owners?
 		$view->exclude = array();
 
-		$view->params 		= new JParameter( $this->_project->params );
+		$view->params 		= $this->model->params;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->versionid 	= $versionid;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
@@ -504,11 +500,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function _save()
 	{
 		// Incoming
-		$members 	= urldecode(trim(JRequest::getVar( 'newmember', '', 'post'  )));
-		$groups 	= urldecode(trim(JRequest::getVar( 'newgroup', '' )));
-		$role 		= JRequest::getInt( 'role', 0 );
-		$pid 		= JRequest::getInt('pid', 0);
-		$authors  	= JRequest::getVar('authors', 0, 'post');
+		$members 	= urldecode(trim(Request::getVar( 'newmember', '', 'post'  )));
+		$groups 	= urldecode(trim(Request::getVar( 'newgroup', '' )));
+		$role 		= Request::getInt( 'role', 0 );
+		$pid 		= Request::getInt('pid', 0);
+		$authors  	= Request::getVar('authors', 0, 'post');
 
 		// Result collectors
 		$m_added 	= 0; // count of individual members added
@@ -519,20 +515,19 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$invalid 	= array(); // collector for invalid names
 
 		// Setup stage?
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$setup = $this->_project->setup_stage == $setup_complete ? 0 : 1;
+		$setup = $this->model->inSetup() ? 1 : 2;
 
 		// Get owner class
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 
 		// Instantiate a new registration object
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
+		include_once(PATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 		$xregistration = new MembersModelRegistration();
 
 		// Owner names not supplied
 		if (!$members && !$groups)
 		{
-			$this->setError( JText::_('COM_PROJECTS_NO_NAMES_SUPPLIED') );
+			$this->setError( Lang::txt('COM_PROJECTS_NO_NAMES_SUPPLIED') );
 		}
 		else
 		{
@@ -571,14 +566,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 								if (!$uid)
 								{
 									// Make sure we aren't inviting twice
-									$invitee = $objO->checkInvited($this->_project->id, $cid);
+									$invitee = $objO->checkInvited($this->model->get('id'), $cid);
 									if (!$invitee)
 									{
 										// Generate invitation code
 										$code = \Components\Projects\Helpers\Html::generateCode();
 
 										// Add invitee record
-										if ($objO->saveInvite ($this->_project->id, $cid, $code, '', $role))
+										if ($objO->saveInvite ($this->model->get('id'), $cid, $code, '', $role))
 										{
 											$uids[] = $cid;
 											$m_invited++;
@@ -627,8 +622,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						}
 
 						// Save new author
-						$native = ($uid == $this->_project->created_by_user) ? 1 : 0;
-						if ($objO->saveOwners ( $this->_project->id, $this->_uid, $uid,
+						$native = ($this->model->access('owner')) ? 1 : 0;
+						if ($objO->saveOwners ( $this->model->get('id'), $this->_uid, $uid,
 							0, $role, $status = 1, $native))
 						{
 							$uids[] = $uid;
@@ -639,7 +634,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			if ($groups)
 			{
 				// Save new authors from group
-				$g_added = $objO->saveOwners ($this->_project->id, $this->_uid, 0, $groups, $role, $status = 1, $native = 0);
+				$g_added = $objO->saveOwners ($this->model->get('id'), $this->_uid, 0, $groups, $role, $status = 1, $native = 0);
 				if ($objO->getError())
 				{
 					$this->setError($objO->getError());
@@ -656,23 +651,24 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$uids = array_unique($uids);
 		if (count($uids) > 0)
 		{
-			$this->_msg = JText::_('COM_PROJECTS_SUCCESS_ADDED_OR_INVITED').' '.count($uids).' '.JText::_('COM_PROJECTS_NEW').' '.JText::_('COM_PROJECTS_TEAM_MEMBERS');
+			$this->_msg = Lang::txt('COM_PROJECTS_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('COM_PROJECTS_NEW') . ' ' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS');
 
 			if (count($invalid) > 0)
 			{
-				$this->_msg .= '<br />'.JText::_('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
+				$this->_msg .= '<br />' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
 			}
 
 			if (!$setup) {
 
-				$note  = strtolower(JText::_('COM_PROJECTS_SUCCESS_ADDED_OR_INVITED')).' ';
+				$note  = strtolower(Lang::txt('COM_PROJECTS_SUCCESS_ADDED_OR_INVITED')) . ' ';
 				for ( $i=0; $i< count($uids); $i++)
 				{
 					$uu = $uids[$i];
 					if ($uu && is_numeric($uu) )
 					{
 						$xuser = JUser::getInstance( $uids[$i] );
-						$note  .= is_numeric($uids[$i]) && is_object($xuser) ? $xuser->get('name') : $uids[$i];
+						$note .= is_numeric($uids[$i]) && is_object($xuser)
+							? $xuser->get('name') : $uids[$i];
 					}
 					else
 					{
@@ -684,15 +680,15 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 						$left = count($uids) - 3;
 						if ($left)
 						{
-							$note .= ' '.JText::_('COM_PROJECTS_AND').' '.$left.' '.JText::_('COM_PROJECTS_MORE').' ';
-							$note .= $left == 1 ? JText::_('COM_PROJECTS_ACTIVITY_PERSON')
-								: JText::_('COM_PROJECTS_ACTIVITY_PERSONS');
+							$note .= ' '.Lang::txt('COM_PROJECTS_AND') . ' ' . $left . ' ' . Lang::txt('COM_PROJECTS_MORE') . ' ';
+							$note .= $left == 1 ? Lang::txt('COM_PROJECTS_ACTIVITY_PERSON')
+								: Lang::txt('COM_PROJECTS_ACTIVITY_PERSONS');
 						}
 						break;
 					}
 					$note  .= $i == (count($uids) - 1) ? '' : ', ';
 				}
-				$note .= ' '.JText::_('COM_PROJECTS_TO_PROJECT_TEAM');
+				$note .= ' ' . Lang::txt('COM_PROJECTS_TO_PROJECT_TEAM');
 
 				// Send out emails
 				if ($this->_config->get('messaging') == 1)
@@ -705,12 +701,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			// Sync with system group
-			$objO->sysGroup($this->_project->alias, $this->_config->get('group_prefix', 'pr-'));
+			$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
 		}
 		elseif (count($invalid) > 0)
 		{
-			 $this->setError(JText::_('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES')
-				. '<br />'.JText::_('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
+			 $this->setError(Lang::txt('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES')
+				. '<br />' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
 		}
 
 		// Pass success or error message
@@ -726,9 +722,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		if ($authors && $pid)
 		{
 			// Build pub url
-			$route = $this->_project->provisioned
+			$route = $this->model->isProvisioned()
 				? 'index.php?option=com_publications&task=submit'
-				: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+				: 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 			$url = Route::url($route . '&pid=' . $pid);
 			$this->_redirect = $url;
 			return;
@@ -737,9 +733,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		{
 			$url = $setup
 							? Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->_project->alias . '&task=setup&step=1')
+							. '&alias=' . $this->model->get('alias') . '&task=setup&step=1')
 							: Route::url('index.php?option=' . $this->_option
-							. '&alias=' . $this->_project->alias . '&task=edit&edit=team');
+							. '&alias=' . $this->model->get('alias') . '&task=edit&edit=team');
 			$this->_referer = $url;
 		}
 
@@ -754,25 +750,24 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function delete()
 	{
 		// Incoming
-		$checked = JRequest::getVar( 'owner', '', 'request', 'array' );
-		$groups = JRequest::getVar( 'group', '', 'request', 'array' );
+		$checked = Request::getVar( 'owner', '', 'request', 'array' );
+		$groups  = Request::getVar( 'group', '', 'request', 'array' );
 
 		// Are we setting up project?
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$setup = $this->_project->setup_stage == $setup_complete ? 0 : 1; // setup stage?
+		$setup = $this->model->inSetup() ? 1 : 0;
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 
 		if (!empty($checked))
 		{
 			// Get owners info from owner id(s)
-			$selected = $objO->getInfo($this->_project->id, $checked, $groups);
+			$selected = $objO->getInfo($this->model->get('id'), $checked, $groups);
 		}
 		else
 		{
 			$selected = array();
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NOONE_TO_DELETE'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NOONE_TO_DELETE'));
 		}
 
 		if ($this->_task == 'delete')
@@ -789,10 +784,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			$view->selected 	= $selected;
 			$view->checked 		= $checked;
 			$view->option 		= $this->_option;
-			$view->project 		= $this->_project;
+			$view->model 		= $this->model;
 			$view->uid 			= $this->_uid;
 			$view->setup 		= $setup;
-			$view->aid 			= $objO->getOwnerID($this->_project->id, $this->_uid);
+			$view->aid 			= $objO->getOwnerID($this->model->get('id'), $this->_uid);
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError())
 			{
@@ -803,7 +798,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Get all managers
-			$all = $objO->getIds($this->_project->id, $role = 1);
+			$all = $objO->getIds($this->model->get('id'), $role = 1);
 			$remaining = array_diff($all, $checked);
 			$deleted = 0;
 
@@ -811,25 +806,25 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			if ($remaining)
 			{
 				// Perform delete
-				$deleted = $objO->removeOwners ( $this->_project->id, $checked, 1);
+				$deleted = $objO->removeOwners ( $this->model->get('id'), $checked, 1);
 				if ($deleted)
 				{
-					$this->_msg = JText::_('COM_PROJECTS_OWNERS_DELETED');
+					$this->_msg = Lang::txt('COM_PROJECTS_OWNERS_DELETED');
 				}
 			}
 			else {
 				if (count($all) > 0)
 				{
 					$left = array_diff($checked, array($all[0])); // leave one manager
-					$deleted = $objO->removeOwners ( $this->_project->id, $left, 1);
+					$deleted = $objO->removeOwners ( $this->model->get('id'), $left, 1);
 				}
-				$this->setError( JText::_('COM_PROJECTS_OWNERS_DELETE_NOMANAGERS') );
+				$this->setError( Lang::txt('COM_PROJECTS_OWNERS_DELETE_NOMANAGERS') );
 			}
 
 			if ($deleted)
 			{
 				// Sync with system group
-				$objO->sysGroup($this->_project->alias, $this->_config->get('group_prefix', 'pr-'));
+				$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
 			}
 
 			// Pass success or error message
@@ -842,7 +837,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$this->_message = array('message' => $this->_msg, 'type' => 'success');
 			}
 
-			$url = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&task=';
+			$url = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&task=';
 			$url .= $setup ? 'setup' : 'edit';
 			$url .= '&active=team';
 			$this->_referer = Route::url($url);
@@ -860,16 +855,16 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$html = '';
 
 		// Incoming
-		$confirm = JRequest::getInt( 'confirm', 0, 'post' );
+		$confirm = Request::getInt( 'confirm', 0, 'post' );
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 
 		// Check to make sure we are not deleting last manager
 		$onlymanager = 0;
-		if ($this->_project->role == 1)
+		if ($this->model->access('manager'))
 		{
-			$managers = $objO->getIds($this->_project->id, $role = 1);
+			$managers = $objO->getIds($this->model->get('id'), $role = 1);
 			if (count($managers) == 1)
 			{
 				$onlymanager = 1;
@@ -878,18 +873,18 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		if ($confirm && !$onlymanager)
 		{
-			$deleted = $objO->removeOwners ( $this->_project->id, array($this->_uid));
+			$deleted = $objO->removeOwners($this->model->get('id'), array($this->_uid));
 			if ($deleted)
 			{
-				$this->_msg = JText::_('COM_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
+				$this->_msg = Lang::txt('COM_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
 				// Record activity
 				$objAA = new \Components\Projects\Tables\Activity($this->_database);
-				$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
-					JText::_('COM_PROJECTS_TEAM_PROJECT_QUIT') , 0, '', '', 'team', 0 );
+				$aid = $objAA->recordActivity( $this->model->get('id'), $this->_uid,
+					Lang::txt('COM_PROJECTS_TEAM_PROJECT_QUIT') , 0, '', '', 'team', 0 );
 
 				// Sync with system group
-				$objO->sysGroup($this->_project->alias, $this->_config->get('group_prefix', 'pr-'));
+				$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
 			}
 		}
 		else
@@ -903,12 +898,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				)
 			);
 
-			$objO->loadOwner($this->_project->id, $this->_uid);
+			$objO->loadOwner($this->model->get('id'), $this->_uid);
 			$view->group 		= $objO->groupid;
 			$view->onlymanager 	= $onlymanager;
 			$view->option 		= $this->_option;
 			$view->database 	= $this->_database;
-			$view->project 		= $this->_project;
+			$view->model 		= $this->model;
 			$view->uid 			= $this->_uid;
 			$view->config 		= $this->_config;
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
@@ -942,10 +937,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	protected function _changeRole()
 	{
 		// Incoming
-		$checked 	= JRequest::getVar( 'owner', '', 'request', 'array' );
-		$groups 	= JRequest::getVar( 'group', '', 'request', 'array' );
-		$owner 		= JRequest::getVar( 'owner', '');
-		$role 		= JRequest::getInt ( 'role', 0 );
+		$checked 	= Request::getVar( 'owner', '', 'request', 'array' );
+		$groups 	= Request::getVar( 'group', '', 'request', 'array' );
+		$owner 		= Request::getVar( 'owner', '');
+		$role 		= Request::getInt ( 'role', 0 );
 
 		if ($owner)
 		{
@@ -953,21 +948,20 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we setting up project?
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
-		$s = $this->_project->setup_stage == $setup_complete ? 0 : 1; // setup stage?
+		$s = $this->model->inSetup() ? 1 : 0;
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 
 		if (!empty($checked))
 		{
 			// Get owners info from owner id(s)
-			$selected = $objO->getInfo($this->_project->id, $checked, $groups);
+			$selected = $objO->getInfo($this->model->get('id'), $checked, $groups);
 		}
 		else
 		{
 			$selected = array();
-			$this->setError(JText::_('COM_PROJECTS_ERROR_NOONE_TO_REASSIGN_ROLE'));
+			$this->setError(Lang::txt('COM_PROJECTS_ERROR_NOONE_TO_REASSIGN_ROLE'));
 		}
 
 		if ($this->_task == 'changerole')
@@ -975,18 +969,18 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			// Output HTML
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'team',
-					'name'=>'role'
+					'folder'  =>'projects',
+					'element' =>'team',
+					'name'    =>'role'
 				)
 			);
 
 			$view->selected 	= $selected;
 			$view->checked 		= $checked;
 			$view->option 		= $this->_option;
-			$view->project 		= $this->_project;
+			$view->model 		= $this->model;
 			$view->uid 			= $this->_uid;
-			$view->aid 			= $objO->getOwnerID($this->_project->id, $this->_uid);
+			$view->aid 			= $objO->getOwnerID($this->model->get('id'), $this->_uid);
 			$view->msg 			= isset($this->_msg) ? $this->_msg : '';
 			if ($this->getError())
 			{
@@ -1001,21 +995,21 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			if ($role == 0)
 			{
 				// Get all managers
-				$all = $objO->getIds($this->_project->id, 1);
+				$all = $objO->getIds($this->model->get('id'), 1);
 				$remaining = array_diff($all, $checked);
 				if (!$remaining && count($all) > 0)
 				{
 					$left = array_diff($checked, array($all[0])); // leave one manager
-					$this->setError(JText::_('COM_PROJECTS_OWNERS_REASSIGN_NOMANAGERS'));
+					$this->setError(Lang::txt('COM_PROJECTS_OWNERS_REASSIGN_NOMANAGERS'));
 				}
 			}
 
-			if ($objO->reassignRole ( $this->_project->id, $left, 1, $role))
+			if ($objO->reassignRole ( $this->model->get('id'), $left, 1, $role))
 			{
-				$this->_msg = JText::_('COM_PROJECTS_OWNERS_ROLE_CHANGED');
+				$this->_msg = Lang::txt('COM_PROJECTS_OWNERS_ROLE_CHANGED');
 
 				// Sync with system group
-				$objO->sysGroup($this->_project->alias, $this->_config->get('group_prefix', 'pr-'));
+				$objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
 			}
 
 			$this->_task = $s ? 'setup' : 'edit';
@@ -1038,22 +1032,26 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return boolean True on success
 	 */
-	public function sendInviteEmail( $uid = 0, $email = '', $code = '', $role = 0, $project = '', $option = '' )
+	public function sendInviteEmail(
+		$uid = 0, $email = '', $code = '',
+		$role = 0, $model = '', $option = ''
+	)
 	{
-
-		if ($uid && !$email)
-		{
-			$user = JUser::getInstance( $uid );
-			$email = is_object($user) ? $user->get('email') : '';
-		}
+		$uid   = $uid ? $uid : User::get('id');
+		$email = $email ? $email : User::get('email');
 
 		if (!$email || (!$uid && !$code))
 		{
 			return false;
 		}
 
-		$project = $project ? $project : $this->_project;
 		$option  = $option ? $option : $this->_option;
+		$model   = $model ? $model : $this->model;
+
+		if (!$model->exists())
+		{
+			return false;
+		}
 
 		$database = JFactory::getDBO();
 
@@ -1066,14 +1064,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Set up email config
 		$from = array();
-		$from['name']  = Config::get('config.sitename').' '.JText::_(strtoupper($option));
+		$from['name']  = Config::get('config.sitename') . ' ' . Lang::txt(strtoupper($option));
 		$from['email'] = Config::get('config.mailfrom');
 
 		// Email message subject
-		if ($project->provisioned == 1)
+		if ($model->isProvisioned())
 		{
-			$objPub 	= new \Components\Publications\Tables\Publication($database);
-			$pub 		= $objPub->getProvPublication($project->id);
+			$objPub = new \Components\Publications\Tables\Publication($database);
+			$pub 	= $objPub->getProvPublication($model->get('id'));
 
 			if (!$pub || !$pub->id)
 			{
@@ -1081,14 +1079,14 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			$subject 	= $uid
-						? JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED_PROV')
-						: JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE_PROV');
+						? Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED_PROV')
+						: Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE_PROV');
 		}
 		else
 		{
 			$subject = $uid
-					? JText::_('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $project->alias
-					: JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $project->alias;
+					? Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_ADDED') . ' ' . $model->get('alias')
+					: Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $model->get('alias');
 		}
 
 		// Message body for HUB user
@@ -1101,20 +1099,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Get profile of author group
-		if ($project->owned_by_group)
-		{
-			$eview->nativegroup = \Hubzero\User\Group::getInstance( $project->owned_by_group);
-		}
-
 		$eview->option 			= $option;
 		$eview->hubShortName 	= Config::get('config.sitename');
-		$eview->actor 			= JFactory::getUser();
-		$eview->uid 			= $uid;
-		$eview->project 		= $project;
+		$eview->model 		    = $this->model;
 		$eview->code 			= $code;
 		$eview->email 			= $email;
-		$eview->role 			= $role;
+		$eview->uid			    = $uid;
+		$eview->role			= $role;
 		$eview->pub 			= isset($pub) ? $pub : '';
 		$eview->delimiter  		= '';
 
@@ -1139,7 +1130,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			if (\Components\Projects\Helpers\Html::email($email, Config::get('config.sitename').': '.$subject, $message, $from))
+			if (\Components\Projects\Helpers\Html::email($email, Config::get('config.sitename') . ': ' . $subject, $message, $from))
 			{
 				return true;
 			}
@@ -1160,22 +1151,22 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	public function _publicationAuthors()
 	{
 		// Incoming
-		$version 	= JRequest::getVar( 'version', 'default' );
-		$pid 		= JRequest::getInt( 'pid', 0 );
-		$ajax 		= JRequest::getInt('ajax', 0);
+		$version 	= Request::getVar( 'version', 'default' );
+		$pid 		= Request::getInt( 'pid', 0 );
+		$ajax 		= Request::getInt('ajax', 0);
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication($this->_database);
 		$row  = new \Components\Publications\Tables\Version($this->_database);
 
 		// Make sure we have publication id
-		if (!$pid && $this->_project->provisioned == 1)
+		if (!$pid && $this->model->isProvisioned())
 		{
-			$pid = $objPub->getProvPublication($this->_project->id);
+			$pid = $objPub->getProvPublication($this->model->get('id'));
 		}
 		if (!$pid)
 		{
-			throw new Exception(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -1196,25 +1187,26 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		);
 
 		// Load publication
-		$view->pub = $objP->getPublication($pid, $version, $this->_project->id);
+		$view->pub = $objP->getPublication($pid, $version, $this->model->get('id'));
 
 		// Instantiate project owner
-		$objO = new \Components\Projects\Tables\Owner($this->_database);
+		$objO = $this->model->table('Owner');
 
 		// Set filters
 		$view->filters['limit']    =  0;
-		$view->filters['start']    = JRequest::getInt( 't_limitstart', 0);
-		$view->filters['sortby']   = JRequest::getVar( 't_sortby', 'name');
-		$view->filters['sortdir']  = JRequest::getVar( 't_sortdir', 'ASC');
-		$view->filters['status']   = JRequest::getVar( 't_status', 'active');
+		$view->filters['start']    = Request::getInt( 't_limitstart', 0);
+		$view->filters['sortby']   = Request::getVar( 't_sortby', 'name');
+		$view->filters['sortdir']  = Request::getVar( 't_sortdir', 'ASC');
+		$view->filters['status']   = Request::getVar( 't_status', 'active');
 
 		// Get all active team members
-		$view->team = $objO->getOwners( $this->_project->id, $view->filters );
+		$view->team = $objO->getOwners( $this->model->get('id'), $view->filters );
 
 		// Build pub url
-		$view->route = $this->_project->provisioned
+		$view->route = $this->model->isProvisioned()
 					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
+					: 'index.php?option=com_projects&alias='
+					. $this->model->get('alias') . '&active=publications';
 		$view->url = Route::url($view->route . '&pid=' . $pid . '&version=' . $version) ;
 
 		// Save incoming settings
@@ -1227,22 +1219,22 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 				foreach ($view->team as $member)
 				{
-					$role = JRequest::getInt('role_' . $member->id, 0);
+					$role = Request::getInt('role_' . $member->id, 0);
 
 					if ($role == 9)
 					{
 						// Delete user
-						$deleted = $objO->removeOwners ( $this->_project->id, array($member->id), 1);
+						$deleted = $objO->removeOwners($this->model->get('id'), array($member->id), 1);
 					}
 					elseif ($role != 0)
 					{
-						$changed = $objO->reassignRole( $this->_project->id, array($member->id), 1, $role);
+						$changed = $objO->reassignRole($this->model->get('id'), array($member->id), 1, $role);
 					}
 				}
 
 				if ($deleted || $changed)
 				{
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_CHANGED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_CHANGED');
 				}
 
 				// Pass success or error message
@@ -1261,13 +1253,13 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get all team members after changes
-			$view->team = $objO->getOwners( $this->_project->id, $view->filters );
+			$view->team = $objO->getOwners($this->model->get('id'), $view->filters);
 		}
 
-		$view->params 		= new JParameter($this->_project->params);
+		$view->params 		= $this->model->params;
 		$view->option 		= $this->_option;
 		$view->database 	= $this->_database;
-		$view->project 		= $this->_project;
+		$view->model 		= $this->model;
 		$view->uid 			= $this->_uid;
 		$view->config 		= $this->_config;
 		$view->task 		= $this->_task;
