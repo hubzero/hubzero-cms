@@ -39,11 +39,32 @@ div.width-80  { width: 78%; }
 	line-height: 0;
 }
 
-@media (max-width: 460px) {
+@media (max-width: 40em) {
+	div.width-20,
+	div.width-30,
+	div.width-35,
+	div.width-40,
+	div.width-45,
+	div.width-48,
+	div.width-50,
+	div.width-55,
+	div.width-60,
+	div.width-65,
+	div.width-70,
+	div.width-80  {
+		width: auto;
+	}
 	.col {
 		float: none;
 		width: auto;
 		margin-left: 0;
 		margin-right: 0;
+
+		&.fltrt {
+			float: none;
+		}
+		&.fltlft {
+			float: none;
+		}
 	}
 }

@@ -172,3 +172,84 @@ table {
 		}
 	}
 }
+
+/* Hide all prioritized columns by default */
+
+@media only all {
+	th.priority-6,
+	td.priority-6,
+	th.priority-5,
+	td.priority-5,
+	th.priority-4,
+	td.priority-4,
+	th.priority-3,
+	td.priority-3,
+	th.priority-2,
+	td.priority-2,
+	th.priority-1,
+	td.priority-1 {
+		display: none;
+	}
+}
+
+// Preset breakpoints if "" class added to table
+// Show priority 1 at 320px (20em x 16px)
+@media (min-width: 20em) {
+	th.priority-1,
+	td.priority-1 {
+		display: table-cell;
+	}
+}
+
+// Show priority 2 at 480px (30em x 16px)
+@media (min-width: 30em) {
+	th.priority-2,
+	td.priority-2 {
+		display: table-cell;
+	}
+}
+
+// Show priority 3 at 640px (40em x 16px)
+@media (min-width: 40em) {
+	th.priority-3,
+	td.priority-3 {
+		display: table-cell;
+	}
+}
+
+// Show priority 4 at 800px (50em x 16px)
+@media (min-width: 50em) {
+	th.priority-4,
+	td.priority-4 {
+		display: table-cell;
+	}
+}
+
+// Show priority 5 at 960px (60em x 16px)
+@media (min-width: 60em) {
+	th.priority-5,
+	td.priority-5 {
+		display: table-cell;
+	}
+}
+
+// Show priority 6 at 1,120px (70em x 16px)
+@media (min-width: 70em) {
+	th.priority-6,
+	td.priority-6 {
+		display: table-cell;
+	}
+}
+
+@media only all {
+	// Always hide
+	th.hidden,
+	td.hidden {
+		display: none;
+	}
+	// Always show
+	th.visible,
+	td.visible {
+		display: table-cell;
+	}
+}
