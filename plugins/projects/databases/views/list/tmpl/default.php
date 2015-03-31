@@ -65,7 +65,7 @@ $this->css();
 		</thead>
 		<tbody>
 		<?php
-			foreach ($this->list as $r) 
+			foreach ($this->list as $r)
 			{
 				if ($r['source_dir'] != '')
 				{
