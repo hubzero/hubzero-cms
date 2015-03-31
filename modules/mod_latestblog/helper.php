@@ -33,6 +33,7 @@ namespace Modules\LatestBlog;
 use Hubzero\Module\Module;
 use Hubzero\User\Group\Helper as GroupHelper;
 use Components\Blog\Models\Archive;
+use User;
 use JFactory;
 
 /**
@@ -49,8 +50,6 @@ class Helper extends Module
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$juser = JFactory::getUser();
-
 		$this->pullout   = $this->params->get('pullout', 'yes');
 		$this->feedlink  = $this->params->get('feedlink', 'yes');
 		$this->limit     = $this->params->get('limit', 5);
@@ -60,7 +59,7 @@ class Helper extends Module
 			'start'    => 0,
 			'scope'    => $this->params->get('blog', 'site'),
 			'scope_id' => 0,
-			'state'    => (!$juser->get('guest') ? 'registered' : 'public')
+			'state'    => (!User::isGuest() ? 'registered' : 'public')
 		);
 		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
 		{
@@ -90,8 +89,8 @@ class Helper extends Module
 					$blog_access = GroupHelper::getPluginAccess($group, 'blog');
 
 					if ($blog_access == 'nobody'
-					 || ($blog_access == 'registered' && $juser->get('guest'))
-					 || ($blog_access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
+					 || ($blog_access == 'registered' && User::isGuest())
+					 || ($blog_access == 'members' && !in_array(User::get('id'), $group->get('members'))))
 					{
 						$rows->offsetUnset($k);
 					}

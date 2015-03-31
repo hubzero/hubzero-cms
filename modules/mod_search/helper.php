@@ -34,9 +34,9 @@ namespace Modules\Search;
 use Hubzero\Module\Module;
 use JFactory;
 use JURI;
-use JText;
-use JRequest;
-use JRoute;
+use Lang;
+use Request;
+use Route;
 
 /**
  * Module class for displaying a search form
@@ -52,10 +52,10 @@ class Helper extends Module
 	{
 		if ($this->params->get('opensearch', 0))
 		{
-			$ostitle = $this->params->get('opensearch_title', JText::_('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . JFactory::getApplication()->getCfg('sitename'));
+			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . JFactory::getApplication()->getCfg('sitename'));
 
 			JFactory::getDocument()->addHeadLink(
-				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . JRoute::_('&option=com_search&format=opensearch'), 
+				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . Route::url('&option=com_search&format=opensearch'), 
 				'search',
 				'rel',
 				array('title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml')
@@ -68,10 +68,10 @@ class Helper extends Module
 		$params          = $this->params;
 		$button          = $this->params->get('button', '');
 		$button_pos      = $this->params->get('button_pos', 'right');
-		$button_text     = htmlspecialchars($this->params->get('button_text', JText::_('MOD_SEARCH_SEARCHBUTTON_TEXT')));
+		$button_text     = htmlspecialchars($this->params->get('button_text', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT')));
 		$width           = intval($this->params->get('width', 20));
-		$text            = htmlspecialchars($this->params->get('text', JText::_('MOD_SEARCH_SEARCHBOX_TEXT')));
-		$label           = htmlspecialchars($this->params->get('label', JText::_('MOD_SEARCH_LABEL_TEXT')));
+		$text            = htmlspecialchars($this->params->get('text', Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT')));
+		$label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
 		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
 
 		require $this->getLayoutPath($this->params->get('layout', 'default'));

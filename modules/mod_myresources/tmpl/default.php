@@ -31,22 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 if (!$this->no_html) {
 ?>
 	<ul class="module-nav">
 		<li>
-			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=contributions&area=resources'); ?>">
-				<?php echo JText::_('MOD_MYRESOURCES_ALL_PUBLICATIONS'); ?>
+			<a class="icon-browse" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=contributions&area=resources'); ?>">
+				<?php echo Lang::txt('MOD_MYRESOURCES_ALL_PUBLICATIONS'); ?>
 			</a>
 		</li>
 	</ul>
-	<form method="get" action="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>" data-module="<?php echo $this->module->id; ?>" id="myresources-form" enctype="multipart/form-data">
+	<form method="get" action="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>" data-module="<?php echo $this->module->id; ?>" id="myresources-form" enctype="multipart/form-data">
 <?php } ?>
 		<div id="myresources-content">
 		<?php if (!$this->contributions) { ?>
-			<p><?php echo JText::_('MOD_MYRESOURCES_NONE_FOUND'); ?></p>
+			<p><?php echo Lang::txt('MOD_MYRESOURCES_NONE_FOUND'); ?></p>
 		<?php } else { ?>
 			<ul class="expandedlist">
 			<?php
@@ -61,10 +59,10 @@ if (!$this->no_html) {
 						case 0:  $class = 'deleted';    break;  // pending
 					}
 
-					$thedate = JHTML::_('date', $this->contributions[$i]->publish_up, JText::_('DATE_FORMAT_HZ1'));
+					$thedate = JHTML::_('date', $this->contributions[$i]->publish_up, Lang::txt('DATE_FORMAT_HZ1'));
 			?>
 				<li class="<?php echo $class; ?>">
-					<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">
 						<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->contributions[$i]->title), 40); ?>
 					</a>
 					<span class="under">

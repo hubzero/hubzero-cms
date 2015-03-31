@@ -31,20 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 if ($this->getError()) {
-	echo '<p class="error">' . JText::_('MOD_MYMESSAGES_ERROR') . '</p>' . "\n";
+	echo '<p class="error">' . Lang::txt('MOD_MYMESSAGES_ERROR') . '</p>' . "\n";
 } else {
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<ul class="module-nav">
-		<li><a class="icon-email-alt" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=messages'); ?>"><?php echo JText::_('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
-		<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=messages&task=settings'); ?>"><?php echo JText::_('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
+		<li><a class="icon-email-alt" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
+		<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=settings'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
 	</ul>
 
 	<?php if (count($this->rows) <= 0) { ?>
-		<p><em><?php echo JText::_('MOD_MYMESSAGES_NO_MESSAGES'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYMESSAGES_NO_MESSAGES'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 			<?php
@@ -63,12 +61,12 @@ if ($this->getError()) {
 				}
 				?>
 				<li class="<?php echo $cls; ?>">
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=messages&msg=' . $row->id); ?>">
+					<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&msg=' . $row->id); ?>">
 						<?php echo $this->escape(stripslashes($row->subject)); ?>
 					</a>
 					<span>
 						<span>
-							<time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
+							<time datetime="<?php echo $this->escape($row->created); ?>"><?php echo JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</span>
 					</span>
 				</li>
@@ -78,7 +76,7 @@ if ($this->getError()) {
 		</ul>
 	<?php } ?>
 	<?php if ($this->total > $this->limit) { ?>
-		<p class="note"><?php echo JText::sprintf('MOD_MYMESSAGES_YOU_HAVE_MORE', $this->limit, $this->total, JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages')); ?></p>
+		<p class="note"><?php echo Lang::txt('MOD_MYMESSAGES_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages')); ?></p>
 	<?php } ?>
 </div>
 <?php } ?>

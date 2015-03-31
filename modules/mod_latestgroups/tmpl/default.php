@@ -37,7 +37,7 @@ if (!empty($this->groups)) { ?>
 		?>
 		<div class="latestGroup">
 			<h4>
-				<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $g->cn); ?>">
+				<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $g->cn); ?>">
 					<?php echo $this->escape(stripslashes($g->description)); ?>
 				</a>
 			</h4>
@@ -49,11 +49,11 @@ if (!empty($this->groups)) { ?>
 	}
 	?>
 <?php } else { ?>
-	<p><?php echo JText::_('MOD_LATESTGROUPS_NO_RESULTS'); ?></p>
+	<p><?php echo Lang::txt('MOD_LATESTGROUPS_NO_RESULTS'); ?></p>
 <?php } ?>
 
 	<p class="more">
-		<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">
-			<?php echo JText::_('MOD_LATESTGROUPS_ALL'); ?>
+		<a href="<?php echo Route::url('index.php?option=com_groups'); ?>">
+			<?php echo Lang::txt('MOD_LATESTGROUPS_ALL'); ?>
 		</a>
 	</p>

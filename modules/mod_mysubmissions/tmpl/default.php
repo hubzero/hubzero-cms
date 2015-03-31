@@ -31,9 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-if ($juser->get('guest')) { ?>
-	<p class="warning"><?php echo JText::_('MOD_MYSUBMISSIONS_WARNING'); ?></p>
+if (User::isGuest()) { ?>
+	<p class="warning"><?php echo Lang::txt('MOD_MYSUBMISSIONS_WARNING'); ?></p>
 <?php } else {
 	$steps = $this->steps;
 
@@ -48,14 +47,14 @@ if ($juser->get('guest')) { ?>
 			<div class="submission">
 				<h4>
 					<?php echo $this->escape(stripslashes($row->title)); ?>
-					<a class="edit" href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
-						<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
+					<a class="edit" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $row->id); ?>">
+						<?php echo Lang::txt('MOD_MYSUBMISSIONS_EDIT'); ?>
 					</a>
 				</h4>
 				<table>
 					<tbody>
 						<tr>
-							<th><?php echo JText::_('MOD_MYSUBMISSIONS_TYPE'); ?></th>
+							<th><?php echo Lang::txt('MOD_MYSUBMISSIONS_TYPE'); ?></th>
 							<td colspan="2"><?php echo $this->escape($row->typetitle); ?></td>
 						</tr>
 						<?php
@@ -68,19 +67,19 @@ if ($juser->get('guest')) { ?>
 
 								if ($stepchecks[$steps[$i]])
 								{
-									$completed = '<span class="yes">' . JText::_('MOD_MYSUBMISSIONS_COMPLETED') . '</span>';
+									$completed = '<span class="yes">' . Lang::txt('MOD_MYSUBMISSIONS_COMPLETED') . '</span>';
 								}
 								else
 								{
-									$completed = '<span class="no">' . JText::_('MOD_MYSUBMISSIONS_NOT_COMPLETED') . '</span>';
+									$completed = '<span class="no">' . Lang::txt('MOD_MYSUBMISSIONS_NOT_COMPLETED') . '</span>';
 								}
 								?>
 								<tr>
 									<th><?php echo $steps[$i]; ?></th>
 									<td><?php echo $completed; ?></td>
 									<td>
-										<a href="<?php echo JRoute::_('index.php?option=com_resources&task=draft&step=' . $i . '&id=' . $row->id); ?>">
-											<?php echo JText::_('MOD_MYSUBMISSIONS_EDIT'); ?>
+										<a href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=' . $i . '&id=' . $row->id); ?>">
+											<?php echo Lang::txt('MOD_MYSUBMISSIONS_EDIT'); ?>
 										</a>
 									</td>
 								</tr>
@@ -90,13 +89,13 @@ if ($juser->get('guest')) { ?>
 						?>
 				</table>
 				<p class="discrd">
-					<a href="<?php echo JRoute::_('index.php?option=com_resources&task=discard&id=' . $row->id); ?>">
-						<?php echo JText::_('MOD_MYSUBMISSIONS_DELETE'); ?>
+					<a href="<?php echo Route::url('index.php?option=com_resources&task=discard&id=' . $row->id); ?>">
+						<?php echo Lang::txt('MOD_MYSUBMISSIONS_DELETE'); ?>
 					</a>
 				</p>
 				<p class="review">
-					<a href="<?php echo JRoute::_('index.php?option=com_com_resources&task=draft&step=' . $laststep . '&id=' . $row->id); ?>">
-						<?php echo JText::_('MOD_MYSUBMISSIONS_REVIEW_SUBMIT'); ?>
+					<a href="<?php echo Route::url('index.php?option=com_com_resources&task=draft&step=' . $laststep . '&id=' . $row->id); ?>">
+						<?php echo Lang::txt('MOD_MYSUBMISSIONS_REVIEW_SUBMIT'); ?>
 					</a>
 				</p>
 				<div class="clear"></div>
@@ -107,7 +106,7 @@ if ($juser->get('guest')) { ?>
 	else
 	{
 		?>
-		<p><?php echo JText::_('MOD_MYSUBMISSIONS_NONE'); ?></p>
+		<p><?php echo Lang::txt('MOD_MYSUBMISSIONS_NONE'); ?></p>
 		<?php
 	}
 }

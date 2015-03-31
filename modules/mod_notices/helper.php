@@ -34,8 +34,9 @@ namespace Modules\Notices;
 use Hubzero\Module\Module;
 use JModuleHelper;
 use JFactory;
-use JRequest;
-use JText;
+use Request;
+use Config;
+use Lang;
 
 /**
  * Module class for displaying site wide notices
@@ -54,13 +55,11 @@ class Helper extends Module
 	 */
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
-		$config = JFactory::getConfig();
-
 		// Make a unix timestamp for the given date
 		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year, -1);
 
 		// Get current unix timestamp
-		$now = time() + ($config->getValue('config.offset') * 60 * 60);
+		$now = time() + (Config::get('offset') * 60 * 60);
 
 		$difference = $the_countdown_date - $now;
 		if ($difference < 0)
@@ -119,14 +118,14 @@ class Helper extends Module
 	{
 		if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0)
 		{
-			$o  = JText::_('MOD_NOTICES_IMMEDIATELY');
+			$o  = Lang::txt('MOD_NOTICES_IMMEDIATELY');
 		}
 		else
 		{
-			$o  = JText::_('MOD_NOTICES_IN') . ' ';
-			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . JText::_('MOD_NOTICES_DAYS') . ', '  : '';
-			$o .= ($stime[1] > 0) ? $stime[1] . ' ' . JText::_('MOD_NOTICES_HOURS') . ', ' : '';
-			$o .= ($stime[2] > 0) ? $stime[2] . ' ' . JText::_('MOD_NOTICES_MINUTES')      : '';
+			$o  = Lang::txt('MOD_NOTICES_IN') . ' ';
+			$o .= ($stime[0] > 0) ? $stime[0] . ' ' . Lang::txt('MOD_NOTICES_DAYS') . ', '  : '';
+			$o .= ($stime[1] > 0) ? $stime[1] . ' ' . Lang::txt('MOD_NOTICES_HOURS') . ', ' : '';
+			$o .= ($stime[2] > 0) ? $stime[2] . ' ' . Lang::txt('MOD_NOTICES_MINUTES')      : '';
 		}
 		return $o;
 	}
@@ -168,9 +167,9 @@ class Helper extends Module
 
 		// Get some initial parameters
 		$start = $this->params->get('start_publishing', $this->module->publish_up);
-		//$start = JHTML::_('date', $start, JText::_('DATE_FORMAT_HZ1'));
+		//$start = JHTML::_('date', $start, Lang::txt('DATE_FORMAT_HZ1'));
 		$stop  = $this->params->get('stop_publishing', $this->module->publish_down);
-		//$stop  = JHTML::_('date', $stop, JText::_('DATE_FORMAT_HZ1'));
+		//$stop  = JHTML::_('date', $stop, Lang::txt('DATE_FORMAT_HZ1'));
 
 		$this->publish = false;
 		if (!$start || $start == $database->getNullDate())
@@ -213,7 +212,7 @@ class Helper extends Module
 			$the_countdown_date = $this->_mkt($stop);
 
 			// get current unix timestamp
-			$now = time() + (JFactory::getConfig()->getValue('config.offset') * 60 * 60);
+			$now = time() + (Config::get('offset') * 60 * 60);
 
 			$difference = $the_countdown_date - $now;
 			if ($difference < 0)
@@ -225,11 +224,11 @@ class Helper extends Module
 
 			$expires = $now + 60*60*24*$this->days_left;
 
-			if ($hide = JRequest::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
+			if ($hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'get'))
 			{
 				setcookie($this->params->get('moduleid', 'sitenotice'), 'closed', $expires);
 			}
-			$hide = JRequest::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
+			$hide = Request::getVar($this->params->get('moduleid', 'sitenotice'), '', 'cookie');
 		}
 
 		// Only do something if the module's time frame hasn't expired

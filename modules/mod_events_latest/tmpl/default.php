@@ -49,7 +49,7 @@ if ($this->getError()) { ?>
 					<span class="day"><?php echo JHtml::_('date', $event->publish_up, 'd'); ?></span>
 				</td>
 				<td class="event-title">
-					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(html_entity_decode(stripslashes($event->title))); ?></a>
+					<a href="<?php echo Route::url('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(html_entity_decode(stripslashes($event->title))); ?></a>
 				</td>
 			</tr>
 			<?php
@@ -57,12 +57,12 @@ if ($this->getError()) { ?>
 			?>
 		<?php } else { ?>
 			<tr class="odd">
-				<td class="mod_events_latest_noevents"><?php echo JText::_('MOD_EVENTS_LATEST_NONE_FOUND'); ?></td>
+				<td class="mod_events_latest_noevents"><?php echo Lang::txt('MOD_EVENTS_LATEST_NONE_FOUND'); ?></td>
 			</tr>
 		<?php } ?>
 		</tbody>
 	</table>
 	<p class="more">
-		<a href="<?php echo JRoute::_('index.php?option=com_events&year=' . strftime("%Y", time()) . '&month=' . strftime("%m", time())); ?>"><?php echo JText::_('MOD_EVENTS_LATEST_MORE'); ?></a>
+		<a href="<?php echo Route::url('index.php?option=com_events&year=' . strftime("%Y", time()) . '&month=' . strftime("%m", time())); ?>"><?php echo Lang::txt('MOD_EVENTS_LATEST_MORE'); ?></a>
 	</p>
 <?php } ?>

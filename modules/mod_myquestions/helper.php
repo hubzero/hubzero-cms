@@ -31,10 +31,11 @@
 namespace Modules\MyQuestions;
 
 use Hubzero\Module\Module;
-use JComponentHelper;
+use Component;
 use JFactory;
-use JRoute;
-use JText;
+use Route;
+use Lang;
+use User;
 
 /**
  * Module class for displaying a user's questions
@@ -72,7 +73,7 @@ class Helper extends Module
 					// display tag
 					$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
 					$normalized = strtolower($normalized);
-					$out .= "\t" . '<a href="' . JRoute::_('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="' . Route::url('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)
@@ -94,12 +95,11 @@ class Helper extends Module
 	private function _getInterests($cloud=0)
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 		// Get tags of interest
-		$mt = new \MembersModelTags($juser->get('id'));
+		$mt = new \MembersModelTags(User::get('id'));
 		if ($cloud)
 		{
 			$tags = $mt->render();
@@ -122,7 +122,6 @@ class Helper extends Module
 	private function _getQuestions($kind='open', $interests=array())
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		// Get some classes we need
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
@@ -163,7 +162,7 @@ class Helper extends Module
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 				$TA = new \ToolAuthor($database);
-				$tools = $TA->getToolContributions($juser->get('id'));
+				$tools = $TA->getToolContributions(User::get('id'));
 				if ($tools)
 				{
 					foreach ($tools as $tool)
@@ -221,7 +220,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
 		// Push the module CSS to the template
@@ -266,7 +265,7 @@ class Helper extends Module
 			$this->interests = $this->_getInterests();
 			if (!$this->interests)
 			{
-				$this->intext = JText::_('MOD_MYQUESTIONS_NA');
+				$this->intext = Lang::txt('MOD_MYQUESTIONS_NA');
 			}
 			else
 			{

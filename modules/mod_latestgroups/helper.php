@@ -31,6 +31,7 @@
 namespace Modules\LatestGroups;
 
 use Hubzero\Module\Module;
+use User;
 use JFactory;
 
 /**
@@ -47,8 +48,7 @@ class Helper extends Module
 	{
 		$database = JFactory::getDBO();
 
-		$juser = JFactory::getUser();
-		$uid = $juser->get('id');
+		$uid = User::get('id');
 
 		//get the params
 		$this->cls = $this->params->get('moduleclass_sfx');

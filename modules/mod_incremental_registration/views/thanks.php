@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 <div id="overlay"></div>
 <div id="questions">
 	<p>
-		<?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_THANK_YOU'); ?>
+		<?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_THANK_YOU'); ?>
 		<?php if ($award): ?>
-			<?php echo JText::sprintf('MOD_INCREMENTAL_REGISTRATION_AWARDS_EARNED', $award); ?>
+			<?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_AWARDS_EARNED', $award); ?>
 		<?php endif; ?>
-		<?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_REDIRECTED_SOON'); ?>
+		<?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_REDIRECTED_SOON'); ?>
 	</p>
 
-	<a href="<?php echo JRequest::getVar('REQUEST_URI', JRequest::getVar('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>"><?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
+	<a href="<?php echo Request::getVar('REQUEST_URI', Request::getVar('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>"><?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
 
 	<script type="text/javascript">
 		setTimeout(function() {

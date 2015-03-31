@@ -33,7 +33,7 @@ namespace Modules\EventsLatest;
 
 use Hubzero\Module\Module;
 use JFactory;
-use JText;
+use Lang;
 
 /**
  * Parameters:
@@ -110,15 +110,11 @@ class Helper extends Module
 		}
 		else
 		{
-			$this->error = JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
+			$this->error = Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
 			return;
 		}
 
 		$database = JFactory::getDBO();
-
-		// Get the user GID (used in some queries)
-		$juser = JFactory::getUser();
-		//$gid = $juser->get('gid');
 
 		// Get the site language setting
 		$lang = JFactory::getLanguage();

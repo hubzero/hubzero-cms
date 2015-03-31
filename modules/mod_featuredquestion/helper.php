@@ -32,7 +32,7 @@ namespace Modules\Featuredresource;
 
 use Hubzero\Module\Module;
 use Components\Answers\Tables\Question;
-use JComponentHelper;
+use Component;
 use JFactory;
 
 /**
@@ -78,7 +78,7 @@ class Helper extends Module
 
 			$this->row = $row;
 
-			$config = JComponentHelper::getParams('com_answers');
+			$config = Component::params('com_answers');
 
 			$this->thumb = DS . trim($this->params->get('defaultpic', '/modules/mod_featuredquestion/assets/img/question_thumb.gif'), DS);
 			if ($this->thumb == '/modules/mod_featuredquestion/question_thumb.gif')

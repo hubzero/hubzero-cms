@@ -148,7 +148,7 @@ if ($this->feed)
 
 	<?php if (!is_null($this->params->get('moreurl'))  && $this->params->get('showmorelink', 0)) { ?>
 		<p class="more">
-			<a href="<?php echo $morelink; ?>" rel="external"><?php echo JText::_('MOD_FEED_YOUTUBE_MORE'); ?></a>
+			<a href="<?php echo $morelink; ?>" rel="external"><?php echo Lang::txt('MOD_FEED_YOUTUBE_MORE'); ?></a>
 		</p>
 	<?php } ?>
 <?php } ?>

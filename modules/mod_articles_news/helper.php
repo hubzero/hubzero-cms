@@ -32,13 +32,14 @@ namespace Modules\ArticlesNews;
 
 use Hubzero\Module\Module;
 use ContentHelperRoute;
-use JComponentHelper;
+use Component;
 use JModelLegacy;
 use JFactory;
 use JAccess;
-use JRoute;
-use JText;
+use Route;
+use Lang;
 use JHtml;
+use User;
 
 /**
  * Module class for displaying news articles
@@ -94,8 +95,8 @@ class Helper extends Module
 			' a.hits, a.featured, a.language' );
 
 		// Access filter
-		$access = !JComponentHelper::getParams('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
+		$access = !Component::params('com_content')->get('show_noauth');
+		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
 		$model->setState('filter.access', $access);
 
 		// Category filter
@@ -124,13 +125,13 @@ class Helper extends Module
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
-				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE');
+				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
+				$item->linkText = Lang::txt('MOD_ARTICLES_NEWS_READMORE');
 			}
 			else
 			{
-				$item->link = JRoute::_('index.php?option=com_users&view=login');
-				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE_REGISTER');
+				$item->link = Route::url('index.php?option=com_users&view=login');
+				$item->linkText = Lang::txt('MOD_ARTICLES_NEWS_READMORE_REGISTER');
 			}
 
 			$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_news.content');

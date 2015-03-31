@@ -32,8 +32,9 @@ namespace Modules\Menu;
 
 use Hubzero\Module\Module;
 use JFactory;
-use JRoute;
+use Route;
 use JSite;
+use User;
 
 /**
  * Module class for displaying a menu
@@ -80,7 +81,7 @@ class Helper extends Module
 		// If no active menu, use default
 		$active = ($menu->getActive()) ? $menu->getActive() : $menu->getDefault();
 
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 		$levels = $user->getAuthorisedViewLevels();
 		asort($levels);
 		$key = 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;
@@ -165,11 +166,11 @@ class Helper extends Module
 
 					if (strcasecmp(substr($item->flink, 0, 4), 'http') && (strpos($item->flink, 'index.php?') !== false))
 					{
-						$item->flink = JRoute::_($item->flink, true, $item->params->get('secure'));
+						$item->flink = Route::url($item->flink, true, $item->params->get('secure'));
 					}
 					else
 					{
-						$item->flink = JRoute::_($item->flink);
+						$item->flink = Route::url($item->flink);
 					}
 
 					$item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);

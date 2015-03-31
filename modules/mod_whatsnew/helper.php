@@ -34,7 +34,7 @@ namespace Modules\WhatsNew;
 use Hubzero\Module\Module;
 use JURI;
 use JFactory;
-use JRoute;
+use Route;
 use JPluginHelper;
 use JDispatcher;
 use Components\Whatsnew\Helpers\Period;
@@ -106,7 +106,7 @@ class Helper extends Module
 				if ($i < $num)
 				{
 					// display tag
-					$out .= "\t" . '<a href="' . JRoute::_($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="' . Route::url($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)
@@ -141,7 +141,7 @@ class Helper extends Module
 		// Build the feed link if necessary
 		if ($this->feed)
 		{
-			$this->feedlink = JRoute::_('index.php?option=com_whatsnew&task=feed.rss&period=' . $this->period);
+			$this->feedlink = Route::url('index.php?option=com_whatsnew&task=feed.rss&period=' . $this->period);
 			$this->feedlink = DS . trim($this->feedlink, DS);
 			$this->feedlink = $live_site . $this->feedlink;
 			if (substr($this->feedlink, 0, 5) == 'https')
@@ -238,10 +238,8 @@ class Helper extends Module
 
 		if ($this->tagged)
 		{
-			$juser = JFactory::getUser();
-
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
-			$mt = new MembersModelTags($juser->get('id'));
+			$mt = new MembersModelTags(User::get('id'));
 			$tags = $mt->tags();
 
 			$this->tags = $tags;

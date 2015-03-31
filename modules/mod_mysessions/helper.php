@@ -34,8 +34,9 @@ namespace Modules\MySessions;
 use Hubzero\Module\Module;
 use ToolsHelperUtils;
 use MwSession;
-use JComponentHelper;
+use Component;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying a user's sessions
@@ -101,9 +102,6 @@ class Helper extends Module
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 
-		// Get user object
-		$this->juser = JFactory::getUser();
-
 		// Get database object
 		$this->database = JFactory::getDBO();
 
@@ -111,10 +109,10 @@ class Helper extends Module
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Get tool paras
-		$this->toolsConfig = JComponentHelper::getParams('com_tools');
+		$this->toolsConfig = Component::params('com_tools');
 
 		// Set ACL for com_tools
-		$authorized = JFactory::getUser()->authorise('core.manage', 'com_tools');
+		$authorized = User::authorise('core.manage', 'com_tools');
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;
@@ -128,13 +126,13 @@ class Helper extends Module
 		// only take snapshots if screenshots are on
 		if ($this->params->get('show_screenshots', 1))
 		{
-			$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . $this->juser->get('username') . " 2>&1 </dev/null";
+			$cmd = "/bin/sh ". JPATH_SITE . "/components/com_tools/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
 			exec($cmd, $results, $status);
 		}
 
 		// Get sessions
 		$session = new MwSession($mwdb);
-		$this->sessions = $session->getRecords( $this->juser->get('username'), '', false );
+		$this->sessions = $session->getRecords(User::get('username'), '', false);
 
 		// Push the module CSS to the template
 		$this->css();

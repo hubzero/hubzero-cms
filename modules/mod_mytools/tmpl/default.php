@@ -37,27 +37,27 @@ $this->js();
 ?>
 <?php if ($this->fav || $this->no_html) { ?>
 	<?php echo $this->buildList($this->favtools, 'fav'); ?>
-	<p><?php echo JText::_('MOD_MYTOOLS_EXPLANATION'); ?></p>
+	<p><?php echo Lang::txt('MOD_MYTOOLS_EXPLANATION'); ?></p>
 <?php } else { ?>
 <div id="myToolsTabs">
 	<ul class="tab_titles">
-		<li title="recenttools" class="active"><?php echo JText::_('MOD_MYTOOLS_RECENT'); ?></li>
-		<li title="favtools"><?php echo JText::_('MOD_MYTOOLS_FAVORITES'); ?></li>
-		<li title="alltools"><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS'); ?></li>
+		<li title="recenttools" class="active"><?php echo Lang::txt('MOD_MYTOOLS_RECENT'); ?></li>
+		<li title="favtools"><?php echo Lang::txt('MOD_MYTOOLS_FAVORITES'); ?></li>
+		<li title="alltools"><?php echo Lang::txt('MOD_MYTOOLS_ALL_TOOLS'); ?></li>
 	</ul>
 
 	<div id="recenttools" class="tab_panel active">
 		<?php
 		$r = $this->rectools;
 		echo $this->buildList($r, 'recent'); ?>
-		<p><?php echo JText::_('MOD_MYTOOLS_RECENT_EXPLANATION'); ?></p>
+		<p><?php echo Lang::txt('MOD_MYTOOLS_RECENT_EXPLANATION'); ?></p>
 	</div>
 
 	<div id="favtools" class="tab_panel">
 		<?php
 		$f = $this->favtools;
 		echo $this->buildList($f, 'favs'); ?>
-		<p><?php echo JText::_('MOD_MYTOOLS_FAVORITES_EXPLANATION'); ?></p>
+		<p><?php echo Lang::txt('MOD_MYTOOLS_FAVORITES_EXPLANATION'); ?></p>
 	</div>
 
 	<div id="alltools" class="tab_panel">
@@ -67,7 +67,7 @@ $this->js();
 		<?php
 		$a = $this->alltools;
 		echo $this->buildList($a, 'all'); ?>
-		<p><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS_EXPLANATION'); ?></p>
+		<p><?php echo Lang::txt('MOD_MYTOOLS_ALL_TOOLS_EXPLANATION'); ?></p>
 	</div>
 </div>
 <input type="hidden" class="mytools_favs" value="<?php echo implode(',', $this->favs); ?>" />

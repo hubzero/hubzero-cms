@@ -33,7 +33,7 @@ namespace Modules\FeedYoutube;
 use Hubzero\Module\Module;
 use stdclass;
 use JFactory;
-use JText;
+use Lang;
 
 /**
  * Module class for displaying a YouTube feed
@@ -58,7 +58,7 @@ class Helper extends Module
 
 		if (!$options['rssUrl'])
 		{
-			echo '<p class="warning">' . JText::_('MOD_FEED_YOUTUBE_ERROR_NO_URL') . '</p>';
+			echo '<p class="warning">' . Lang::txt('MOD_FEED_YOUTUBE_ERROR_NO_URL') . '</p>';
 			return;
 		}
 

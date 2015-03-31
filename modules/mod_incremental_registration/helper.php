@@ -36,6 +36,7 @@ use ModIncrementalRegistrationGroups;
 use ModIncrementalRegistrationAwards;
 use JDocument;
 use JFactory;
+use User;
 
 /**
  * Incremental Registration Module controller class
@@ -77,14 +78,13 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$user = JFactory::getUser();
-		if ($user->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
 
 		$dbg = isset($_GET['dbg']);
-		$uid = (int) $user->get('id');
+		$uid = (int) User::get('id');
 		$dbh = JFactory::getDBO();
 
 		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
@@ -322,7 +322,7 @@ class Helper extends Module
 						if ($award)
 						{
 							$BTL = new \Hubzero\Bank\Teller($dbh, $uid);
-							$BTL->deposit($award, JText::_('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
+							$BTL->deposit($award, Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
 						}
 
 						$xp_update = 'UPDATE `#__xprofiles` SET ';

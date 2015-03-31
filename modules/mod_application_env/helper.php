@@ -3,7 +3,6 @@
  * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
- * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -32,7 +31,7 @@
 namespace Modules\ApplicationEnv;
 
 use Hubzero\Module\Module;
-use JFactory;
+use Config;
 
 /**
  * Module class for displaying current system environment
@@ -46,7 +45,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->environment = strtolower(JFactory::getConfig()->get('application_env', 'production'));
+		$this->environment = strtolower(Config::get('application_env', 'production'));
 		if ($this->environment == 'production')
 		{
 			return;

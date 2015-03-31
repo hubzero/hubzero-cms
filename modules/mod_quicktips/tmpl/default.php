@@ -36,8 +36,8 @@ if ($this->rows) { ?>
 		<?php foreach ($this->rows as $row) { ?>
 			<p><?php echo stripslashes($row->introtext); ?></p>
 			<p class="more">
-				<a href="<?php echo JRoute::_( 'index.php?option=com_content&task=view&id=' . $row->id); ?>">
-					<?php echo JText::_('MOD_QUICKTIPS_LEARN_MORE'); ?>
+				<a href="<?php echo Route::url( 'index.php?option=com_content&task=view&id=' . $row->id); ?>">
+					<?php echo Lang::txt('MOD_QUICKTIPS_LEARN_MORE'); ?>
 				</a>
 			</p>
 		<?php } ?>

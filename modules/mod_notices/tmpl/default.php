@@ -33,7 +33,7 @@ if ($this->publish)
 	<p>
 		<?php echo stripslashes($this->message); ?>
 		<?php
-		$page = JRequest::getVar('REQUEST_URI', '', 'server');
+		$page = Request::getVar('REQUEST_URI', '', 'server');
 		if ($page && $this->params->get('allowClose', 1))
 		{
 			$this->js();
@@ -41,8 +41,8 @@ if ($this->publish)
 			$page .= (strstr($page, '?')) ? '&' : '?';
 			$page .= $this->moduleid . '=close';
 			?>
-			<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('MOD_NOTICES_CLOSE_TITLE'); ?>">
-				<span><?php echo JText::_('MOD_NOTICES_CLOSE'); ?></span>
+			<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo Lang::txt('MOD_NOTICES_CLOSE_TITLE'); ?>">
+				<span><?php echo Lang::txt('MOD_NOTICES_CLOSE'); ?></span>
 			</a>
 			<?php
 		}

@@ -36,7 +36,7 @@ defined('_JEXEC') or die;
 	<?php foreach ($list as $item): ?>
 		<li>
 			<a href="<?php echo $item->route; ?>">
-				<?php if ($showDate) echo '<time datetime="' . $item->created . '">' . JHTML::_('date', $item->created, JText::_('DATE_FORMAT_LC4')) . '</time> - '; ?>
+				<?php if ($showDate) echo '<time datetime="' . $item->created . '">' . JHTML::_('date', $item->created, Lang::txt('DATE_FORMAT_LC4')) . '</time> - '; ?>
 				<?php echo $item->title; ?>
 			</a>
 		</li>

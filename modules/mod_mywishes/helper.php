@@ -31,6 +31,7 @@
 namespace Modules\MyWishes;
 
 use Hubzero\Module\Module;
+use User;
 use JFactory;
 
 /**
@@ -45,7 +46,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		$limit = intval($this->params->get('limit', 10));
@@ -55,7 +55,7 @@ class Helper extends Module
 			"(
 				SELECT id, wishlist, subject, about, proposed, status, accepted, assigned,
 					(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle
-				FROM #__wishlist_item as w WHERE w.proposed_by='" . $juser->get('id') . "' AND (w.status=0 or w.status=3)
+				FROM #__wishlist_item as w WHERE w.proposed_by='" . User::get('id') . "' AND (w.status=0 or w.status=3)
 				ORDER BY proposed DESC
 				LIMIT $limit
 			)
@@ -63,7 +63,7 @@ class Helper extends Module
 			(
 				SELECT id, wishlist, subject, about, proposed, status, accepted, assigned,
 					(SELECT wl.title FROM #__wishlist as wl WHERE wl.id=w.wishlist) as listtitle
-				FROM #__wishlist_item as w WHERE w.assigned='" . $juser->get('id') . "' AND (w.status=0 or w.status=3)
+				FROM #__wishlist_item as w WHERE w.assigned='" . User::get('id') . "' AND (w.status=0 or w.status=3)
 				ORDER BY proposed DESC
 				LIMIT $limit
 			)"
@@ -82,7 +82,7 @@ class Helper extends Module
 		{
 			foreach ($this->rows as $row)
 			{
-				if ($row->assigned == $juser->get('id'))
+				if ($row->assigned == User::get('id'))
 				{
 					$rows2[] = $row;
 				}

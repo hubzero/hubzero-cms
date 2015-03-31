@@ -30,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<form id="<?php echo ($this->params->get('moduleclass_sfx')) ? $this->params->get('moduleclass_sfx') : 'poll' . rand(); ?>" method="post" action="<?php echo JRoute::_('index.php?option=com_poll'); ?>">
+<form id="<?php echo ($this->params->get('moduleclass_sfx')) ? $this->params->get('moduleclass_sfx') : 'poll' . rand(); ?>" method="post" action="<?php echo Route::url('index.php?option=com_poll'); ?>">
 	<fieldset>
 		<h4><?php echo $this->escape($poll->title); ?></h4>
 		<ul class="poll">
@@ -47,9 +47,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<?php endfor; ?>
 		</ul>
 		<p>
-			<input type="submit" name="task_button" class="button" value="<?php echo JText::_('MOD_POLL_VOTE'); ?>" />
+			<input type="submit" name="task_button" class="button" value="<?php echo Lang::txt('MOD_POLL_VOTE'); ?>" />
 			 &nbsp;
-			<a href="<?php echo JRoute::_('index.php?option=com_poll&view=poll&id=' . $this->escape($poll->slug)); ?>"><?php echo JText::_('MOD_POLL_RESULTS'); ?></a>
+			<a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->escape($poll->slug)); ?>"><?php echo Lang::txt('MOD_POLL_RESULTS'); ?></a>
 		</p>
 
 		<input type="hidden" name="option" value="com_poll" />

@@ -38,7 +38,7 @@ defined('_JEXEC') or die;
 		<?php if (str_replace(' ', '', $text) != '') : ?>
 			<?php echo $text; ?>
 		<?php else : ?>
-			<?php echo JText::_('MOD_SYNDICATE_DEFAULT_FEED_ENTRIES'); ?>
+			<?php echo Lang::txt('MOD_SYNDICATE_DEFAULT_FEED_ENTRIES'); ?>
 		<?php endif; ?>
 		</span>
 	<?php endif; ?>

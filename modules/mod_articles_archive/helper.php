@@ -34,8 +34,8 @@ use Hubzero\Module\Module;
 use JFactory;
 use JHTML;
 use stdClass;
-use JRoute;
-use JText;
+use Route;
+use Lang;
 
 /**
  * Module class for displaying an article archive
@@ -105,8 +105,8 @@ class Helper extends Module
 
 			$lists[$i] = new stdClass;
 
-			$lists[$i]->link = JRoute::_('index.php?option=com_content&view=archive&year=' . $created_year . '&month=' . $created_month . $itemid);
-			$lists[$i]->text = JText::sprintf('MOD_ARTICLES_ARCHIVE_DATE', $month_name_cal, $created_year_cal);
+			$lists[$i]->link = Route::url('index.php?option=com_content&view=archive&year=' . $created_year . '&month=' . $created_month . $itemid);
+			$lists[$i]->text = Lang::txt('MOD_ARTICLES_ARCHIVE_DATE', $month_name_cal, $created_year_cal);
 
 			$i++;
 		}

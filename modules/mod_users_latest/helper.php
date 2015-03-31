@@ -33,6 +33,7 @@ namespace Modules\UsersLatest;
 
 use Hubzero\Module\Module;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying latest registered users
@@ -73,8 +74,7 @@ class Helper extends Module
 		$query->order('a.registerDate DESC');
 		$query->from('#__users AS a');
 
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.admin') && $params->get('filter_groups', 0) == 1)
+		if (!User::authorise('core.admin') && $params->get('filter_groups', 0) == 1)
 		{
 			$groups = $user->getAuthorisedGroups();
 			if (empty($groups))

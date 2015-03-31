@@ -31,16 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
-
 $total = count($this->courses);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
 	<?php if ($this->params->get('button_show_all', 1)) { ?>
 	<ul class="module-nav">
 		<li>
-			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_courses&task=browse'); ?>">
-				<?php echo JText::_('MOD_MYCOURSES_ALL_COURSES'); ?>
+			<a class="icon-browse" href="<?php echo Route::url('index.php?option=com_courses&task=browse'); ?>">
+				<?php echo Lang::txt('MOD_MYCOURSES_ALL_COURSES'); ?>
 			</a>
 		</li>
 	</ul>
@@ -67,21 +65,21 @@ $total = count($this->courses);
 					//$status = $this->getStatus($group);
 					?>
 					<li class="course">
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>">
 							<?php echo $this->escape(stripslashes($course->title)); ?>
 						</a>
 						<?php if ($course->section_title) { ?>
 							<small>
-								<strong><?php echo JText::_('MOD_MYCOURSES_SECTION'); ?></strong> <?php echo $this->escape($course->section_title); ?>
+								<strong><?php echo Lang::txt('MOD_MYCOURSES_SECTION'); ?></strong> <?php echo $this->escape($course->section_title); ?>
 							</small>
 						<?php } ?>
 						<?php
 						switch ($course->state)
 						{
-							case 3: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_DRAFT'); ?></small><?php break;
-							case 2: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_DELETED'); ?></small><?php break;
-							case 1: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_PUBLISHED'); ?></small><?php break;
-							case 0: ?><small><?php echo JText::_('MOD_MYCOURSES_COURSE_STATE_UNPUBLISHED'); ?></small><?php break;
+							case 3: ?><small><?php echo Lang::txt('MOD_MYCOURSES_COURSE_STATE_DRAFT'); ?></small><?php break;
+							case 2: ?><small><?php echo Lang::txt('MOD_MYCOURSES_COURSE_STATE_DELETED'); ?></small><?php break;
+							case 1: ?><small><?php echo Lang::txt('MOD_MYCOURSES_COURSE_STATE_PUBLISHED'); ?></small><?php break;
+							case 0: ?><small><?php echo Lang::txt('MOD_MYCOURSES_COURSE_STATE_UNPUBLISHED'); ?></small><?php break;
 						}
 						?>
 						<span>
@@ -95,10 +93,10 @@ $total = count($this->courses);
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><em><?php echo JText::_('MOD_MYCOURSES_NO_RESULTS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYCOURSES_NO_RESULTS'); ?></em></p>
 	<?php } ?>
 
 	<?php if ($total > $this->limit) { ?>
-		<p class="note"><?php echo JText::sprintf('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, $total, JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=courses')); ?></p>
+		<p class="note"><?php echo Lang::txt('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=courses')); ?></p>
 	<?php } ?>
 </div>

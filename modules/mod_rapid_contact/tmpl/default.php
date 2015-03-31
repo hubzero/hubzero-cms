@@ -35,11 +35,11 @@ $this->css();
 ?>
 <div class="<?php echo $this->module->module; ?>">
 <?php if ($this->recipient === '') { ?>
-	<p class="error"><?php echo JText::_('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
+	<p class="error"><?php echo Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
 <?php } else { ?>
 	<form method="post" action="<?php echo $this->url; ?>" id="<?php echo $this->module->module; ?>-form-<?php echo $this->module->id; ?>" class="<?php echo $this->mod_class_suffix; ?>">
 		<fieldset>
-			<legend><?php echo JText::_('MOD_RAPID_CONTACT_FORM'); ?></legend>
+			<legend><?php echo Lang::txt('MOD_RAPID_CONTACT_FORM'); ?></legend>
 
 			<?php if ($this->replacement) { ?>
 				<p class="passed"><?php echo $this->replacement; ?></p>
@@ -62,7 +62,7 @@ $this->css();
 
 			<div class="input-wrap">
 				<label for="contact-email<?php echo $this->module->id; ?>">
-					<?php echo $this->email_label; ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+					<?php echo $this->email_label; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				</label>
 				<span class="input">
 					<input type="text" id="contact-email<?php echo $this->module->id; ?>" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
@@ -90,7 +90,7 @@ $this->css();
 			<?php if ($this->enable_anti_spam) { ?>
 				<div class="input-wrap">
 					<label for="contact-antispam<?php echo $this->module->id; ?>">
-						<?php echo $this->anti_spam_q; ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+						<?php echo $this->anti_spam_q; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 					</label>
 					<span class="input">
 						<input type="text" id="contact-antispam<?php echo $this->module->id; ?>" name="rp[anti_spam_answer]" />

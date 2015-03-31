@@ -54,5 +54,5 @@ $widgetSettings .= ($this->params->get('displayBorders') == 'no') ? ' noborders'
 	</h3>
 <?php endif; ?>
 
-<a class="twitter-timeline" href="https://twitter.com/" data-widget-id="346714310770302976" data-screen-name="<?php echo $screenName; ?>" data-tweet-limit="<?php echo $count; ?>" data-chrome="<?php echo trim($widgetSettings); ?>"><?php echo JText::_('MOD_TWITTERFEED_LOADING'); ?></a>
+<a class="twitter-timeline" href="https://twitter.com/" data-widget-id="346714310770302976" data-screen-name="<?php echo $screenName; ?>" data-tweet-limit="<?php echo $count; ?>" data-chrome="<?php echo trim($widgetSettings); ?>"><?php echo Lang::txt('MOD_TWITTERFEED_LOADING'); ?></a>
 <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

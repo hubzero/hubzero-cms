@@ -32,7 +32,8 @@ namespace Modules\MyResources;
 
 use Hubzero\Module\Module;
 use JFactory;
-use JRequest;
+use Request;
+use User;
 
 /**
  * Module class for displaying a user's resources
@@ -46,7 +47,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->no_html = JRequest::getInt('no_html', 0);
+		$this->no_html = Request::getInt('no_html', 0);
 		if (!$this->no_html)
 		{
 			// Push the module CSS to the template
@@ -55,7 +56,6 @@ class Helper extends Module
 		}
 
 		$database = JFactory::getDBO();
-		$juser    = JFactory::getUser();
 
 		$this->limit = intval($this->params->get('limit', 5));
 
@@ -71,7 +71,7 @@ class Helper extends Module
 		}
 		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
 		//$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
-		$query .= "WHERE AA.authorid = ". $juser->get('id') ." ";
+		$query .= "WHERE AA.authorid = ". User::get('id') ." ";
 		$query .= "AND R.id = AA.subid ";
 		$query .= "AND AA.subtable = 'resources' ";
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND R.published=1 ";

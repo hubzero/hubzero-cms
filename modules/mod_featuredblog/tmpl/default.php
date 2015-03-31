@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->getError())
 {
 	?>
-	<p class="error"><?php echo JText::_('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
+	<p class="error"><?php echo Lang::txt('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>
 	<?php
 }
 else if ($this->row)
@@ -44,12 +44,12 @@ else if ($this->row)
 	?>
 	<div class="<?php echo $this->cls; ?>">
 		<p class="featured-img">
-			<a href="<?php echo JRoute::_($row->link()); ?>">
+			<a href="<?php echo Route::url($row->link()); ?>">
 				<img width="50" height="50" src="<?php echo $base; ?>/modules/mod_featuredblog/assets/img/blog_thumb.gif" alt="<?php echo $this->escape(stripslashes($row->get('title'))); ?>" />
 			</a>
 		</p>
 		<p>
-			<a href="<?php echo JRoute::_($row->link()); ?>">
+			<a href="<?php echo Route::url($row->link()); ?>">
 				<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 			</a>:
 		<?php if ($row->get('content')) { ?>

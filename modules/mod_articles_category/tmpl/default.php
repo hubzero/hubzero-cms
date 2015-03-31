@@ -78,7 +78,7 @@ defined('_JEXEC') or die;
 						<p class="mod-articles-category-readmore">
 							<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
 							<?php if ($item->params->get('access-view')== FALSE) :
-									echo JText::_('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
+									echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
 								elseif ($readmore = $item->alternative_readmore) :
 									echo $readmore;
 									echo JHtml::_('string.truncate', $item->title, $params->get('readmore_limit'));
@@ -86,10 +86,10 @@ defined('_JEXEC') or die;
 										echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
 									endif;
 								elseif ($params->get('show_readmore_title', 0) == 0) :
-									echo JText::sprintf('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
+									echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
 								else :
 
-									echo JText::_('MOD_ARTICLES_CATEGORY_READ_MORE');
+									echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
 									echo JHtml::_('string.truncate', ($item->title), $params->get('readmore_limit'));
 								endif; ?>
 							</a>
@@ -142,14 +142,14 @@ defined('_JEXEC') or die;
 			<p class="mod-articles-category-readmore">
 				<a class="mod-articles-category-title <?php echo $item->active; ?>" href="<?php echo $item->link; ?>">
 					<?php if ($item->params->get('access-view')== FALSE) :
-						echo JText::_('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
+						echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
 					elseif ($readmore = $item->alternative_readmore) :
 						echo $readmore;
 						echo JHtml::_('string.truncate', $item->title, $params->get('readmore_limit'));
 					elseif ($params->get('show_readmore_title', 0) == 0) :
-						echo JText::sprintf('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
+						echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
 					else :
-						echo JText::_('MOD_ARTICLES_CATEGORY_READ_MORE');
+						echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
 						echo JHtml::_('string.truncate', $item->title, $params->get('readmore_limit'));
 					endif; ?>
 				</a>

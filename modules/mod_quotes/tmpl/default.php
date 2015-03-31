@@ -38,8 +38,8 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a href="<?php echo JRoute::_('index.php?option=com_feedback&task=success_story'); ?>" class="icon-add btn add">
-					<?php echo JText::_('MOD_QUOTES_ADD_YOUR_STORY'); ?>
+				<a href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>" class="icon-add btn add">
+					<?php echo Lang::txt('MOD_QUOTES_ADD_YOUR_STORY'); ?>
 				</a>
 			</li>
 		</ul>
@@ -56,7 +56,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 					<div class="breadcrumbs">
 						<p>
-							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo JText::_('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+							<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
 							&rsaquo;
 							<strong><?php echo $this->escape(stripslashes($quote->fullname)); ?></strong>
 						</p>
@@ -78,8 +78,8 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 							<?php if ($quote->short_quote != $quote->quote) { ?>
 								<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
 								 &#8230;
-								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo JText::sprintf('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
-									<?php echo JText::_('MOD_QUOTES_MORE'); ?>
+								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
+									<?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
 								</a>
 							<?php } else { ?>
 								<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
@@ -138,7 +138,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 			</div>
 		<?php } ?>
 	<?php } else { ?>
-		<p><?php echo JText::_('MOD_QUOTES_NO_QUOTES_FOUND'); ?></p>
+		<p><?php echo Lang::txt('MOD_QUOTES_NO_QUOTES_FOUND'); ?></p>
 	<?php } ?>
 	<?php if ($this->params->get('cycle', 0) == 1) { ?>
 		</div>

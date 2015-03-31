@@ -35,7 +35,8 @@ use JPluginHelper;
 use JFactory;
 use JRegistry;
 use JURI;
-use JRequest;
+use Request;
+use User;
 
 /**
  * Module class for displaying a login form
@@ -123,8 +124,7 @@ class Helper extends Module
 	 */
 	static function getType()
 	{
-		$user = JFactory::getUser();
-		return (!$user->get('guest')) ? 'logout' : 'login';
+		return (!User::isGuest()) ? 'logout' : 'login';
 	}
 
 	/**
@@ -158,13 +158,13 @@ class Helper extends Module
 		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 
 		$type    = self::getType();
-		$return	 = JRequest::getVar('return', null);
+		$return	 = Request::getVar('return', null);
 		$freturn = base64_encode($_SERVER['REQUEST_URI']);
 
 		// If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if ($areturn = JRequest::getVar('return', null))
+		if ($areturn = Request::getVar('return', null))
 		{
 			$areturn = base64_decode($areturn);
 			$query   = parse_url($areturn);

@@ -32,6 +32,7 @@
 namespace Modules\MyTodos;
 
 use Hubzero\Module\Module;
+use User;
 use JFactory;
 
 /**
@@ -46,19 +47,17 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-
 		$this->rows = array();
 
 		// Find the user's most recent to do items
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$database = JFactory::getDBO();
 			$database->setQuery(
 				"SELECT a.id, a.content, b.title, b.alias
 				FROM `#__project_todo` a
 				INNER JOIN `#__projects` b ON b.id=a.projectid
-				WHERE a.assigned_to=" . $database->escape($juser->get('id')) . " AND a.state=0 LIMIT 0, " . intval($this->params->get('limit', 10))
+				WHERE a.assigned_to=" . $database->escape(User::get('id')) . " AND a.state=0 LIMIT 0, " . intval($this->params->get('limit', 10))
 			);
 			$this->rows = $database->loadObjectList();
 		}

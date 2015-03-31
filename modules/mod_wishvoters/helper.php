@@ -45,7 +45,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = \JFactory::getUser();
 		$database = \JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
@@ -59,9 +58,9 @@ class Helper extends Module
 		$objWishlist = new Wishlist($database);
 
 		// Which list is being viewed?
-		$listid   = \JRequest::getInt('id', 0);
-		$refid    = \JRequest::getInt('rid', 0);
-		$category = \JRequest::getVar('category', '');
+		$listid   = \Request::getInt('id', 0);
+		$refid    = \Request::getInt('rid', 0);
+		$category = \Request::getVar('category', '');
 
 		// Figure list id
 		if ($category && $refid)

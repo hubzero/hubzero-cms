@@ -36,12 +36,12 @@ $this->css()
 
 $foo = \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
 
-$url  = JRequest::getVar('REQUEST_URI', '', 'server');
+$url  = Request::getVar('REQUEST_URI', '', 'server');
 $url .= (strstr($url, '?') ? '&' : '?') . 'tryto=collect';
 ?>
 
 <p class="collector"<?php if ($this->params->get('id')) { echo ' id="' . $this->params->get('id') . '"'; } ?>>
 	<a class="icon-collect btn collect-this" href="<?php echo $url; ?>">
-		<?php echo JText::_('MOD_COLLECT_ACTION'); ?>
+		<?php echo Lang::txt('MOD_COLLECT_ACTION'); ?>
 	</a>
 </p>

@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php
 	foreach ($this->rows as $row)
 	{
-		$name = JText::_('MOD_RECENTQUESTIONS_ANONYMOUS');
+		$name = Lang::txt('MOD_RECENTQUESTIONS_ANONYMOUS');
 		if (!$row->get('anonymous'))
 		{
 			$name = $row->creator('name');
@@ -45,21 +45,21 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 		<li>
 		<?php if ($this->style == 'compact') { ?>
-			<a href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a>
+			<a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a>
 		<?php } else { ?>
-			<h4><a href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a></h4>
+			<h4><a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape($row->subject('clean')); ?></a></h4>
 			<p class="entry-details">
-				<?php echo JText::sprintf('MOD_RECENTQUESTIONS_ASKED_BY', $this->escape($name)); ?> @
+				<?php echo Lang::txt('MOD_RECENTQUESTIONS_ASKED_BY', $this->escape($name)); ?> @
 				<span class="entry-time"><?php echo $row->created('time'); ?></span> on
 				<span class="entry-date"><?php echo $row->created('date'); ?></span>
 				<span class="entry-details-divider">&bull;</span>
 				<span class="entry-comments">
-					<a href="<?php echo JRoute::_($row->link() . '#answers'); ?>" title="<?php echo JText::sprintf('MOD_RECENTQUESTIONS_RESPONSES', $row->get('rcount', 0)); ?>">
+					<a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('MOD_RECENTQUESTIONS_RESPONSES', $row->get('rcount', 0)); ?>">
 						<?php echo $row->get('rcount', 0); ?>
 					</a>
 				</span>
 			</p>
-			<p class="entry-tags"><?php echo JText::_('MOD_RECENTQUESTIONS_TAGS'); ?>:</p>
+			<p class="entry-tags"><?php echo Lang::txt('MOD_RECENTQUESTIONS_TAGS'); ?>:</p>
 			<?php
 			echo $row->tags('cloud');
 			?>
@@ -70,6 +70,6 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('MOD_RECENTQUESTIONS_NO_RESULTS'); ?></p>
+	<p><?php echo Lang::txt('MOD_RECENTQUESTIONS_NO_RESULTS'); ?></p>
 <?php } ?>
 </div>

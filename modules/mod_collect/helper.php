@@ -35,9 +35,9 @@ use Hubzero\Module\Module;
 use Components\Collections\Models\Archive;
 use Components\Collections\Models\Collection;
 use Components\Collections\Tables\Post;
-use JRequest;
-use JFactory;
-use JText;
+use Request;
+use User;
+use Lang;
 use stdClass;
 
 /**
@@ -52,24 +52,22 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->juser = JFactory::getUser();
-
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return;
 		}
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new Archive('member', $this->juser->get('id'));
+		$this->model = new Archive('member', User::get('id'));
 
-		$this->item = $this->model->collectible(JRequest::getCmd('option'));
+		$this->item = $this->model->collectible(Request::getCmd('option'));
 		if (!$this->item->canCollect())
 		{
 			return;
 		}
 
-		if (JRequest::getWord('tryto', '') == 'collect')
+		if (Request::getWord('tryto', '') == 'collect')
 		{
 			return $this->collect();
 		}
@@ -84,7 +82,7 @@ class Helper extends Module
 	 */
 	public function collect()
 	{
-		$collectible = JRequest::getVar('collectible', array(), 'post', 'none', 2);
+		$collectible = Request::getVar('collectible', array(), 'post', 'none', 2);
 
 		if (!$this->item->make())
 		{
@@ -97,7 +95,7 @@ class Helper extends Module
 			if (!$this->model->collections(array('count' => true)))
 			{
 				$collection = $this->model->collection();
-				$collection->setup($this->juser->get('id'), 'member');
+				$collection->setup(User::get('id'), 'member');
 			}
 
 			$this->myboards = $this->model->mine();
@@ -168,12 +166,12 @@ class Helper extends Module
 			}
 
 			ob_clean();
-			require(\JModuleHelper::getLayoutPath($this->module->module, 'collect'));
+			require($this->getLayoutPath($this->module->module, 'collect'));
 			exit;
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+		Request::checkToken('get') or Request::checkToken() or jexit('Invalid Token');
 
 		// Was a collection title submitted?
 		// If so, we'll create a new collection with that title.
@@ -182,7 +180,7 @@ class Helper extends Module
 			$collection = with(new Collection())
 				->set('title', $collectible['title'])
 				->set('access', 0)
-				->set('object_id', $this->juser->get('id'))
+				->set('object_id', User::get('id'))
 				->set('object_type', 'member');
 			if (!$collection->store())
 			{
@@ -195,7 +193,7 @@ class Helper extends Module
 		{
 			// Try loading the current post to see if this has
 			// already been posted to this collection (i.e., no duplicates)
-			$database = JFactory::getDBO();
+			$database = \JFactory::getDBO();
 
 			$post = new Post($database);
 			$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));
@@ -226,7 +224,7 @@ class Helper extends Module
 		}
 		else
 		{
-			$response->message = JText::_('MOD_COLLECT_PAGE_COLLECTED');
+			$response->message = Lang::txt('MOD_COLLECT_PAGE_COLLECTED');
 		}
 		ob_clean();
 		header('Content-type: text/plain');

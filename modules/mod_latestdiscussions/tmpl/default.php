@@ -46,14 +46,14 @@ $c = 0;
 						$post->set('category', $this->categories[$post->get('category_id')]->alias);
 
 						if ($post->get('scope_id') == 0) {
-							$location = '<a href="' . JRoute::_('index.php?option=com_forum') . '">' . JText::_('MOD_LATESTDISCUSSIONS_SITE_FORUM') . '</a>';
+							$location = '<a href="' . Route::url('index.php?option=com_forum') . '">' . Lang::txt('MOD_LATESTDISCUSSIONS_SITE_FORUM') . '</a>';
 						} else {
-							$location = '<a href="' . JRoute::_('index.php?option=com_groups&cn=' . $post->get('group_alias')) . '">' . $this->escape(stripslashes($post->get('group_title'))) . '</a>';
+							$location = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $post->get('group_alias')) . '">' . $this->escape(stripslashes($post->get('group_title'))) . '</a>';
 						}
 					?>
 					<li>
 						<h4>
-							<a href="<?php echo JRoute::_($post->link()); ?>">
+							<a href="<?php echo Route::url($post->link()); ?>">
 								<?php
 								echo ($post->get('parent') && isset($this->threads[$post->get('parent')]))
 									? $this->escape(stripslashes($this->threads[$post->get('parent')]))
@@ -64,9 +64,9 @@ $c = 0;
 						<span class="discussion-author">
 							<?php
 								if ($post->get('anonymous')) {
-									echo '<em>' . JText::_('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
+									echo '<em>' . Lang::txt('MOD_LATESTDISCUSSIONS_ANONYMOUS') . '</em>';
 								} else {
-									echo '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+									echo '<a href="' . Route::url('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
 								}
 								echo ', in&nbsp;'
 							?>
@@ -75,7 +75,7 @@ $c = 0;
 							<?php echo $location; ?>
 						</span>
 						<span class="discussion-date">
-							<time datetime="<?php echo $post->get('created'); ?>"><?php echo JText::sprintf('MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE', $post->created('time'), $post->created('date')); ?></time>
+							<time datetime="<?php echo $post->get('created'); ?>"><?php echo Lang::txt('MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE', $post->created('time'), $post->created('date')); ?></time>
 						</span>
 					<?php if ($this->charlimit > 0) : ?>
 						<span class="discussion-comment">
@@ -86,21 +86,21 @@ $c = 0;
 			<?php endforeach; ?>
 		</ul>
 	<?php else : ?>
-		<p><?php echo JText::_('MOD_LATESTDISCUSSIONS_NO_RESULTS'); ?></p>
+		<p><?php echo Lang::txt('MOD_LATESTDISCUSSIONS_NO_RESULTS'); ?></p>
 	<?php endif; ?>
 
 	<?php if ($more = $this->params->get('morelink', '')) : ?>
 		<p class="more">
 			<a href="<?php echo $more; ?>">
-				<?php echo JText::_('MOD_LATESTDISCUSSIONS_MORE_RESULTS'); ?>
+				<?php echo Lang::txt('MOD_LATESTDISCUSSIONS_MORE_RESULTS'); ?>
 			</a>
 		</p>
 	<?php endif; ?>
 
 	<?php if ($this->params->get('feedlink', 'yes') == 'yes') : ?>
 		<p>
-			<a href="<?php echo JRoute::_('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed">
-				<?php echo JText::_('MOD_LATESTDISCUSSIONS_FEED'); ?>
+			<a href="<?php echo Route::url('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed">
+				<?php echo Lang::txt('MOD_LATESTDISCUSSIONS_FEED'); ?>
 			</a>
 		</p>
 	<?php endif; ?>

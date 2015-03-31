@@ -31,9 +31,10 @@
 namespace Modules\MyProjects;
 
 use Hubzero\Module\Module;
-use JComponentHelper;
+use Component;
 use JFactory;
 use Project;
+use User;
 
 /**
  * Module class for displaying a user's projects
@@ -47,7 +48,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();
 
 		// Get the module parameters
@@ -59,10 +59,8 @@ class Helper extends Module
 		$config = Component::params('com_projects');
 
 		// Load classes
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'tables' . DS . 'project.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
-			. DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		// Set filters
 		$filters = array(
@@ -80,10 +78,10 @@ class Helper extends Module
 
 		// Get a record count
 		$obj = new \Components\Projects\Tables\Project($db);
-		$this->total = $obj->getCount($filters, false, $juser->get('id'), 0, $setup_complete);
+		$this->total = $obj->getCount($filters, false, User::get('id'), 0, $setup_complete);
 
 		// Get records
-		$this->rows = $obj->getRecords($filters, false, $juser->get('id'), 0, $setup_complete);
+		$this->rows = $obj->getRecords($filters, false, User::get('id'), 0, $setup_complete);
 
 		// pass limit to view
 		$this->limit = $limit;

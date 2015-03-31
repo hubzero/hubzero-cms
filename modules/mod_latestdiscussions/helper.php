@@ -32,6 +32,7 @@ namespace Modules\LatestDiscussions;
 
 use Hubzero\Module\Module;
 use Components\Forum\Models\Manager;
+use User;
 use JFactory;
 
 /**
@@ -47,13 +48,12 @@ class Helper extends Module
 	public function run()
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		//get the params
 		$this->limit = $this->params->get('limit', 5);
 		$this->charlimit = $this->params->get('charlimit', 100);
 
-		include_once(JPATH_ROOT . '/components/com_forum/models/manager.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'manager.php');
 
 		$forum = new Manager();
 
@@ -114,8 +114,8 @@ class Helper extends Module
 					$forum_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'forum');
 
 					if ($forum_access == 'nobody' 
-					 || ($forum_access == 'registered' && $juser->get('guest')) 
-					 || ($forum_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
+					 || ($forum_access == 'registered' && User::isGuest()) 
+					 || ($forum_access == 'members' && !in_array(User::get('id'), $group->get('members')))) 
 					{
 						$posts->remove($k);
 						continue;

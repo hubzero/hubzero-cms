@@ -34,7 +34,7 @@ use Hubzero\Module\Module;
 use JFactory;
 use JFile;
 use JFolder;
-use JText;
+use Lang;
 
 /**
  * Module class for displaying a YouTube feed
@@ -143,7 +143,7 @@ class Helper extends Module
 			$feed = $this->_feed($youtube_url, $this->params);
 			if (!$feed)
 			{
-				$this->html = '<p class="error">' . JText::_('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
+				$this->html = '<p class="error">' . Lang::txt('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
 				require $this->getLayoutPath();
 				return;
 			}
@@ -233,7 +233,7 @@ class Helper extends Module
 			{
 				if ($alt_link != '')
 				{
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . JText::_('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$alt_link}\">" . JText::_('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$alt_link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
 				}
 				else
 				{
@@ -249,7 +249,7 @@ class Helper extends Module
 							$link = "http://www.youtube.com/results?search_query=" . $content;
 						break;
 					}
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . JText::_('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$link}\">" . JText::_('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
 				}
 			}
 

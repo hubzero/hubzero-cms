@@ -46,7 +46,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
@@ -58,7 +57,7 @@ class Helper extends Module
 				SELECT id, summary, category, open, status, severity, owner, created, login, name,
 					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 				FROM #__support_tickets as st
-				WHERE st.login='" . $juser->get('username') . "' AND st.open=1 AND type=0
+				WHERE st.login='" . User::get('username') . "' AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
 			)
@@ -67,7 +66,7 @@ class Helper extends Module
 				SELECT id, summary, category, open, status, severity, owner, created, login, name,
 					(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
 				FROM #__support_tickets as st
-				WHERE st.owner='" . $juser->get('id') . "' AND st.open=1 AND type=0
+				WHERE st.owner='" . User::get('id') . "' AND st.open=1 AND type=0
 				ORDER BY created DESC
 				LIMIT $limit
 			)"
@@ -86,7 +85,7 @@ class Helper extends Module
 		{
 			foreach ($this->rows as $row)
 			{
-				if ($row->owner == $juser->get('id'))
+				if ($row->owner == User::get('id'))
 				{
 					$rows2[] = $row;
 				}
@@ -100,7 +99,7 @@ class Helper extends Module
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
-		$profile = Profile::getInstance($juser->get('id'));
+		$profile = Profile::getInstance(User::get('id'));
 		$xgroups = $profile->getGroups('members');
 
 		$groups = '';

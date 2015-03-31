@@ -37,8 +37,8 @@ defined('_JEXEC') or die;
 		<table>
 			<thead>
 				<tr>
-					<th><?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN'); ?></th>
-					<th><?php echo JText::_('MOD_WHOSONLINE_GUESTS'); ?></th>
+					<th><?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN'); ?></th>
+					<th><?php echo Lang::txt('MOD_WHOSONLINE_GUESTS'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 		<table>
 			<thead>
 				<tr>
-					<th colspan="2"><?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN_NAME'); ?></th>
+					<th colspan="2"><?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN_NAME'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,8 +62,8 @@ defined('_JEXEC') or die;
 					<tr>
 						<td><?php echo $loggedin->get('name'); ?></td>
 						<td align="right">
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $loggedin->get('uidNumber')); ?>">
-								<?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
+							<a href="<?php echo Route::url('index.php?option=com_members&id=' . $loggedin->get('uidNumber')); ?>">
+								<?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -75,8 +75,8 @@ defined('_JEXEC') or die;
 		<tbody>
 			<tr>
 				<td align="center">
-					<a class="btn btn-secondary opposite icon-next" href="<?php echo JRoute::_('index.php?option=com_members&task=activity'); ?>">
-						<?php echo JText::_('MOD_WHOSONLINE_VIEW_ALL_ACTIVITIY'); ?>
+					<a class="btn btn-secondary opposite icon-next" href="<?php echo Route::url('index.php?option=com_members&task=activity'); ?>">
+						<?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL_ACTIVITIY'); ?>
 					</a>
 				</td>
 			</tr>

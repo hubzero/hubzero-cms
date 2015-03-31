@@ -73,7 +73,7 @@ class modSlideshow extends \Hubzero\Module\Module
 		{
 			if (!JFolder::create( JPATH_ROOT . DS . $image_dir ))
 			{
-				echo JText::_('failed to create image directory') . ' ' . $image_dir;
+				echo Lang::txt('failed to create image directory') . ' ' . $image_dir;
 				$noflash = 1;
 			}
 			else

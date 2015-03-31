@@ -32,18 +32,19 @@ namespace Modules\ArticlesCategory;
 
 use Hubzero\Module\Module;
 use ContentHelperRoute;
-use JComponentHelper;
+use Component;
 use JModuleHelper;
 use JModelLegacy;
 use JArrayHelper;
 use JFactory;
-use JRequest;
+use Request;
 use JAccess;
-use JRoute;
+use Route;
 use JString;
 use JHtml;
 use JDate;
 use stdClass;
+use User;
 
 /**
  * Module class for displaying articles in a category
@@ -67,22 +68,22 @@ class Helper extends Module
 		switch ($mode)
 		{
 			case 'dynamic':
-				$option = JRequest::getCmd('option');
-				$view   = JRequest::getCmd('view');
+				$option = Request::getCmd('option');
+				$view   = Request::getCmd('view');
 				if ($option === 'com_content')
 				{
 					switch ($view)
 					{
 						case 'category':
-							$idbase = JRequest::getInt('id');
+							$idbase = Request::getInt('id');
 							break;
 						case 'categories':
-							$idbase = JRequest::getInt('id');
+							$idbase = Request::getInt('id');
 							break;
 						case 'article':
 							if ($params->get('show_on_article_page', 1))
 							{
-								$idbase = JRequest::getInt('catid');
+								$idbase = Request::getInt('catid');
 							}
 							break;
 					}
@@ -161,8 +162,8 @@ class Helper extends Module
 		$articles->setState('filter.published', 1);
 
 		// Access filter
-		$access = !JComponentHelper::getParams('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
+		$access = !Component::params('com_content')->get('show_noauth');
+		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
 		$articles->setState('filter.access', $access);
 
 		// Prep for Normal or Dynamic Modes
@@ -170,23 +171,23 @@ class Helper extends Module
 		switch ($mode)
 		{
 			case 'dynamic':
-				$option = JRequest::getCmd('option');
-				$view   = JRequest::getCmd('view');
+				$option = Request::getCmd('option');
+				$view   = Request::getCmd('view');
 				if ($option === 'com_content')
 				{
 					switch($view)
 					{
 						case 'category':
-							$catids = array(JRequest::getInt('id'));
+							$catids = array(Request::getInt('id'));
 							break;
 						case 'categories':
-							$catids = array(JRequest::getInt('id'));
+							$catids = array(Request::getInt('id'));
 							break;
 						case 'article':
 							if ($params->get('show_on_article_page', 1))
 							{
-								$article_id = JRequest::getInt('id');
-								$catid      = JRequest::getInt('catid');
+								$article_id = Request::getInt('id');
+								$catid      = Request::getInt('catid');
 
 								if (!$catid)
 								{
@@ -317,12 +318,12 @@ class Helper extends Module
 		$introtext_limit  = $params->get('introtext_limit', 100);
 
 		// Find current Article ID if on an article page
-		$option = JRequest::getCmd('option');
-		$view   = JRequest::getCmd('view');
+		$option = Request::getCmd('option');
+		$view   = Request::getCmd('view');
 
 		if ($option === 'com_content' && $view === 'article')
 		{
-			$active_article_id = JRequest::getInt('id');
+			$active_article_id = Request::getInt('id');
 		}
 		else
 		{
@@ -338,7 +339,7 @@ class Helper extends Module
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
+				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
 			}
 			else
 			{
@@ -350,13 +351,13 @@ class Helper extends Module
 				{
 					$Itemid = $menuitems[0]->id;
 				}
-				elseif (JRequest::getInt('Itemid') > 0)
+				elseif (Request::getInt('Itemid') > 0)
 				{
 					// Use Itemid from requesting page only if there is no existing menu
-					$Itemid = JRequest::getInt('Itemid');
+					$Itemid = Request::getInt('Itemid');
 				}
 
-				$item->link = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $Itemid);
+				$item->link = Route::url('index.php?option=com_users&view=login&Itemid=' . $Itemid);
 			}
 
 			// Used for styling the active article
@@ -370,7 +371,7 @@ class Helper extends Module
 
 			if ($item->catid)
 			{
-				$item->displayCategoryLink  = JRoute::_(ContentHelperRoute::getCategoryRoute($item->catid));
+				$item->displayCategoryLink  = Route::url(ContentHelperRoute::getCategoryRoute($item->catid));
 				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $item->category_title . '</a>' : '';
 			}
 			else

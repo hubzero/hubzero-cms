@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
 $groups = $this->groups;
 $total = count($this->groups);
 ?>
@@ -39,10 +38,10 @@ $total = count($this->groups);
 	<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 	<ul class="module-nav grouped">
 		<?php if ($this->params->get('button_show_all', 1)) { ?>
-			<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
+			<li><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_groups&task=browse'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
 		<?php } ?>
 		<?php if ($this->params->get('button_show_add', 1)) { ?>
-			<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
+			<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
 		<?php } ?>
 	</ul>
 	<?php } ?>
@@ -58,16 +57,16 @@ $total = count($this->groups);
 					$status = $this->getStatus($group);
 					?>
 					<li class="group">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
-						<span><span class="<?php echo $status; ?> status"><?php echo JText::_('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
+						<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
+						<span><span class="<?php echo $status; ?> status"><?php echo Lang::txt('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
 						<?php if (!$group->approved): ?>
 							<br />
-							<span class="status pending-approval"><?php echo JText::_('MOD_MYGROUPS_GROUP_STATUS_PENDING'); ?></span>
+							<span class="status pending-approval"><?php echo Lang::txt('MOD_MYGROUPS_GROUP_STATUS_PENDING'); ?></span>
 						<?php endif; ?>
 						<?php if ($group->regconfirmed && !$group->registered) : ?>
 							<span class="actions">
-								<a class="action-accept" href="<?php echo JRoute::_('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
-									<?php echo JText::_('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
+								<a class="action-accept" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
+									<?php echo Lang::txt('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
 								</a>
 							</span>
 						<?php endif; ?>
@@ -79,11 +78,11 @@ $total = count($this->groups);
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><em><?php echo JText::_('MOD_MYGROUPS_NO_GROUPS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYGROUPS_NO_GROUPS'); ?></em></p>
 	<?php } ?>
 
 	<?php if ($total > $this->limit) { ?>
-		<p class="note"><?php echo JText::sprintf('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=groups')); ?></p>
+		<p class="note"><?php echo Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups')); ?></p>
 	<?php } ?>
 </div>
 

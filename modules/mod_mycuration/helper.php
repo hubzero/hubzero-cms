@@ -32,7 +32,7 @@ namespace Modules\MyCuration;
 
 use Hubzero\Module\Module;
 use Publication;
-use JComponentHelper;
+use Component;
 use JFactory;
 
 /**
@@ -47,9 +47,8 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser    = JFactory::getUser();
 		$database = JFactory::getDBO();
-		$config   = JComponentHelper::getParams('com_publications');
+		$config   = Component::params('com_publications');
 
 		// Get some classes we need
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');

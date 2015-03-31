@@ -32,44 +32,44 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->getError()) { ?>
-	<p class="error"><?php echo JText::_('MOD_FEATUREDQUESTION_MISSING_CLASS'); ?></p>
+	<p class="error"><?php echo Lang::txt('MOD_FEATUREDQUESTION_MISSING_CLASS'); ?></p>
 <?php } else {
 	if ($this->row) {
-		$name = JText::_('MOD_FEATUREDQUESTION_ANONYMOUS');
+		$name = Lang::txt('MOD_FEATUREDQUESTION_ANONYMOUS');
 		if ($this->row->anonymous == 0)
 		{
-			$juser = JUser::getInstance($this->row->created_by);
-			if (is_object($juser))
+			$user = User::getInstance($this->row->created_by);
+			if (is_object($user))
 			{
-				$name = $juser->get('name');
+				$name = $user->get('name');
 			}
 		}
 
 		$when = JHTML::_('date.relative', $this->row->created);
-?>
+	?>
 	<div class="<?php echo $this->cls; ?>">
-		<h3><?php echo JText::_('MOD_FEATUREDQUESTION'); ?></h3>
+		<h3><?php echo Lang::txt('MOD_FEATUREDQUESTION'); ?></h3>
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
 		<p class="featured-img">
-			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
 			</a>
 		</p>
 	<?php } ?>
 		<p>
-			<a href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_answers&task=question&id=' . $this->row->id); ?>">
 				<?php echo $this->escape(strip_tags($this->row->subject)); ?>
 			</a>
 		<?php if ($this->row->question) { ?>
 			: <?php echo \Hubzero\Utility\String::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
 		<?php } ?>
 			<br />
-			<span><?php echo JText::sprintf('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> -
-			<span><?php echo JText::sprintf('MOD_FEATUREDQUESTION_AGO', $when); ?></span> -
-			<span><?php echo ($this->row->rcount == 1) ? JText::sprintf('MOD_FEATUREDQUESTION_RESPONSE', $this->row->rcount) : JText::sprintf('MOD_FEATUREDQUESTION_RESPONSES', $this->row->rcount); ?></span>
+			<span><?php echo Lang::txt('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> -
+			<span><?php echo Lang::txt('MOD_FEATUREDQUESTION_AGO', $when); ?></span> -
+			<span><?php echo ($this->row->rcount == 1) ? Lang::txt('MOD_FEATUREDQUESTION_RESPONSE', $this->row->rcount) : Lang::txt('MOD_FEATUREDQUESTION_RESPONSES', $this->row->rcount); ?></span>
 		</p>
 	</div>
-<?php
+	<?php
 	}
 }
 ?>

@@ -31,10 +31,10 @@
 namespace Modules\Spotlight;
 
 use Hubzero\Module\Module;
-use JComponentHelper;
+use Component;
 use JFactory;
-use JRoute;
-use JText;
+use Route;
+use Lang;
 use JFile;
 
 /**
@@ -305,9 +305,9 @@ class Helper extends Module
 				{
 					$title = $row->givenName . ' ' . $row->surname;
 				}
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->getPicture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
-				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->uidNumber) . '">' . $title . '</a></span>, ' . $row->organization . "\n";
-				$out .= ' - ' . JText::_('Contributions') . ': ' . $this->_countContributions($row->uidNumber) . "\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '"><img width="30" height="30" src="' . $profile->getPicture() . '" alt="' . htmlentities($title) . '" /></a></span>' . "\n";
+				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->uidNumber) . '">' . $title . '</a></span>, ' . $row->organization . "\n";
+				$out .= ' - ' . Lang::txt('Contributions') . ': ' . $this->_countContributions($row->uidNumber) . "\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -330,9 +330,9 @@ class Helper extends Module
 				}
 				else
 				{
-					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
-					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title . '</a></span> ';
-					$out .=  ' by <a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - ' . JText::_('in Blogs') . "\n";
+					$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+					$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title . '</a></span> ';
+					$out .=  ' by <a href="' . Route::url('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - ' . Lang::txt('in Blogs') . "\n";
 					$out .= '<div class="clear"></div>'."\n";
 				}
 			break;
@@ -350,9 +350,9 @@ class Helper extends Module
 					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
 				}
 
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
 				$out .= '<span class="spotlight-item"><a href="' . $url . '">'.stripslashes($row->title) . '</a></span> ';
-				$out .=  ' - ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_topics') . '">' . JText::_('Topics') . '</a>'."\n";
+				$out .=  ' - ' . Lang::txt('in') . ' <a href="' . Route::url('index.php?option=com_topics') . '">' . Lang::txt('Topics') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -367,18 +367,18 @@ class Helper extends Module
 					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
 				}
 
-				$name = JText::_('Anonymous');
+				$name = Lang::txt('Anonymous');
 				if ($row->anonymous == 0)
 				{
-					$juser = JUser::getInstance($row->created_by);
-					if (is_object($juser))
+					$user = User::getInstance($row->created_by);
+					if (is_object($user))
 					{
-						$name = $juser->get('name');
+						$name = $user->get('name');
 					}
 				}
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
-				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';
-				$out .=  ' - ' . JText::_('asked by') . ' ' . $name . ', ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('Answers') . '</a>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="' . Route::url('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';
+				$out .=  ' - ' . Lang::txt('asked by') . ' ' . $name . ', ' . Lang::txt('in') . ' <a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('Answers') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -398,7 +398,7 @@ class Helper extends Module
 				}
 				else
 				{
-					$rconfig = JComponentHelper::getParams('com_resources');
+					$rconfig = Component::params('com_resources');
 					$path = $rconfig->get('uploadpath');
 					if (substr($path, 0, 1) != DS)
 					{
@@ -457,12 +457,12 @@ class Helper extends Module
 
 				// resources
 				$out .= '<span class="spotlight-img">';
-				$out .= "\t" . '<a href="' . JRoute::_('index.php?option=com_resources&id=' . $row->id) . '">' . "\n";
+				$out .= "\t" . '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->id) . '">' . "\n";
 				$out .= "\t\t" . '<img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities($row->title) . '" />' . "\n";
 				$out .= "\t" . '</a>' . "\n";
 				$out .= '</span>' . "\n";
 				$out .= '<span class="spotlight-item">' . "\n";
-				$out .= "\t" . '<a href="' . JRoute::_('index.php?option=com_resources&id=' . $row->id) . '">' . $title . '</a>' . "\n";
+				$out .= "\t" . '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->id) . '">' . $title . '</a>' . "\n";
 				$out .= '</span>' . "\n";
 				if ($row->type == 7 && $remaining > 30)
 				{
@@ -478,11 +478,11 @@ class Helper extends Module
 				}
 				if ($tbl == 'itunes')
 				{
-					$out .=  ' - ' . JText::_('featured on') .' <a href="/itunes">' . JText::_('iTunes') . ' U</a>' . "\n";
+					$out .=  ' - ' . Lang::txt('featured on') .' <a href="/itunes">' . Lang::txt('iTunes') . ' U</a>' . "\n";
 				}
 				else
 				{
-					$out .=  ' - ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_resources&type=' . $normalized) . '">' . $row->typetitle . '</a>' . "\n";
+					$out .=  ' - ' . Lang::txt('in') . ' <a href="' . Route::url('index.php?option=com_resources&type=' . $normalized) . '">' . $row->typetitle . '</a>' . "\n";
 				}
 				$out .= '<div class="clear"></div>' . "\n";
 			break;
@@ -588,7 +588,7 @@ class Helper extends Module
 	private function _getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig = JComponentHelper::getParams('com_tools');
+		$tconfig = Component::params('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions)

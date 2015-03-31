@@ -32,6 +32,7 @@
 namespace Modules\Newsletter;
 
 use Hubzero\Module\Module;
+use User;
 use JFactory;
 
 /**
@@ -49,9 +50,6 @@ class Helper extends Module
 		// Instantiate database object
 		$this->database = JFactory::getDBO();
 
-		// Instantiate user object
-		$this->juser = JFactory::getUser();
-
 		// Get mailing list details that we are wanting users to sign up for
 		$sql = "SELECT * FROM `#__newsletter_mailinglists` WHERE deleted=0 AND private=0 AND id=" . $this->database->quote($this->params->get('mailinglist', 0));
 		$this->database->setQuery($sql);
@@ -60,9 +58,9 @@ class Helper extends Module
 		// Get mailing list subscription if not guest
 		$this->subscription   = null;
 		$this->subscriptionId = null;
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$sql = "SELECT * FROM `#__newsletter_mailinglist_emails` WHERE mid=" . $this->database->quote($this->params->get('mailinglist', 0)) . " AND email=" . $this->database->quote($this->juser->get('email'));
+			$sql = "SELECT * FROM `#__newsletter_mailinglist_emails` WHERE mid=" . $this->database->quote($this->params->get('mailinglist', 0)) . " AND email=" . $this->database->quote(User::get('email'));
 			$this->database->setQuery($sql);
 			$this->subscription = $this->database->loadObject();
 		}

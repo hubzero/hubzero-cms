@@ -32,20 +32,20 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->getError()) { ?>
-	<p class="error"><?php echo JText::_('MOD_FEATUREDRESOURCE_MISSING_CLASS'); ?></p>
+	<p class="error"><?php echo Lang::txt('MOD_FEATUREDRESOURCE_MISSING_CLASS'); ?></p>
 <?php } else {
 	if ($this->row) {
 ?>
 	<div class="<?php echo $this->cls; ?>">
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
 		<p class="featured-img">
-			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="" />
 			</a>
 		</p>
 	<?php } ?>
 		<p>
-			<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $this->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>">
 				<?php echo $this->escape(stripslashes($this->row->title)); ?>
 			</a>:
 		<?php if ($this->row->introtext) { ?>
@@ -56,7 +56,7 @@ if ($this->getError()) { ?>
 <?php } else { ?>
 	<div class="<?php echo $this->cls; ?>">
 		<p>
-			<?php echo JText::_('MOD_FEATUREDRESOURCE_NO_RESULTS'); ?>
+			<?php echo Lang::txt('MOD_FEATUREDRESOURCE_NO_RESULTS'); ?>
 		</p>
 	</div>
 <?php

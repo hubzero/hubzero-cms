@@ -33,6 +33,8 @@ namespace Modules\MyPoints;
 
 use Hubzero\Module\Module;
 use Hubzero\Bank\Teller;
+use Config;
+use User;
 use JFactory;
 
 /**
@@ -47,8 +49,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$jconfig  = JFactory::getConfig();
-		$juser    = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
@@ -59,7 +59,7 @@ class Helper extends Module
 		// installed with the com_support component
 		$tables = $database->getTableList();
 
-		if ($tables && array_search($jconfig->getValue('config.dbprefix') . 'users_points', $tables) === false)
+		if ($tables && array_search(Config::get('dbprefix') . 'users_points', $tables) === false)
 		{
 			// Points table not found
 			$this->error = true;
@@ -67,7 +67,7 @@ class Helper extends Module
 		else
 		{
 			// Get the user's point summary and history
-			$BTL = new Teller($database, $juser->get('id'));
+			$BTL = new Teller($database, User::get('id'));
 			$this->summary = $BTL->summary();
 			$this->history = $BTL->history($this->limit);
 

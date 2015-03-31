@@ -32,11 +32,12 @@ namespace Modules\ArticlesPopular;
 
 use Hubzero\Module\Module;
 use ContentHelperRoute;
-use JComponentHelper;
+use Component;
 use JModelLegacy;
 use JFactory;
 use JAccess;
-use JRoute;
+use Route;
+use User;
 
 /**
  * Module class for displaying popular articles
@@ -85,8 +86,8 @@ class Helper extends Module
 		$model->setState('filter.featured', $params->get('show_front', 1) == 1 ? 'show' : 'hide');
 
 		// Access filter
-		$access = !JComponentHelper::getParams('com_content')->get('show_noauth');
-		$authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
+		$access = !Component::params('com_content')->get('show_noauth');
+		$authorised = JAccess::getAuthorisedViewLevels(User::get('id'));
 		$model->setState('filter.access', $access);
 
 		// Category filter
@@ -109,11 +110,11 @@ class Helper extends Module
 			if ($access || in_array($item->access, $authorised))
 			{
 				// We know that user has the privilege to view the article
-				$item->link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
+				$item->link = Route::url(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
 			}
 			else
 			{
-				$item->link = JRoute::_('index.php?option=com_users&view=login');
+				$item->link = Route::url('index.php?option=com_users&view=login');
 			}
 		}
 

@@ -33,7 +33,7 @@ namespace Modules\Stats;
 use Hubzero\Module\Module;
 use JFactory;
 use JHtml;
-use JText;
+use Lang;
 
 /**
  * Module helper class for displaying stats
@@ -81,33 +81,33 @@ class Helper extends Module
 		if ($serverinfo)
 		{
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_OS');
+			$rows[$i]->title = Lang::txt('MOD_STATS_OS');
 			$rows[$i]->data  = substr(php_uname(), 0, 7);
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_PHP');
+			$rows[$i]->title = Lang::txt('MOD_STATS_PHP');
 			$rows[$i]->data  = phpversion();
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_MYSQL');
+			$rows[$i]->title = Lang::txt('MOD_STATS_MYSQL');
 			$rows[$i]->data  = $db->getVersion();
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_TIME');
+			$rows[$i]->title = Lang::txt('MOD_STATS_TIME');
 			$rows[$i]->data  = JHtml::_('date', 'now', 'H:i');
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_CACHING');
-			$rows[$i]->data  = $app->getCfg('caching') ? JText::_('JENABLED') : JText::_('JDISABLED');
+			$rows[$i]->title = Lang::txt('MOD_STATS_CACHING');
+			$rows[$i]->data  = $app->getCfg('caching') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title = JText::_('MOD_STATS_GZIP');
-			$rows[$i]->data  = $app->getCfg('gzip') ? JText::_('JENABLED') : JText::_('JDISABLED');
+			$rows[$i]->title = Lang::txt('MOD_STATS_GZIP');
+			$rows[$i]->data  = $app->getCfg('gzip') ? Lang::txt('JENABLED') : Lang::txt('JDISABLED');
 			$i++;
 		}
 
@@ -135,7 +135,7 @@ class Helper extends Module
 			if ($users)
 			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title = JText::_('MOD_STATS_USERS');
+				$rows[$i]->title = Lang::txt('MOD_STATS_USERS');
 				$rows[$i]->data  = $users;
 				$i++;
 			}
@@ -143,7 +143,7 @@ class Helper extends Module
 			if ($items)
 			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title = JText::_('MOD_STATS_ARTICLES');
+				$rows[$i]->title = Lang::txt('MOD_STATS_ARTICLES');
 				$rows[$i]->data  = $items;
 				$i++;
 			}
@@ -151,7 +151,7 @@ class Helper extends Module
 			if ($links)
 			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title = JText::_('MOD_STATS_WEBLINKS');
+				$rows[$i]->title = Lang::txt('MOD_STATS_WEBLINKS');
 				$rows[$i]->data  = $links;
 				$i++;
 			}
@@ -169,7 +169,7 @@ class Helper extends Module
 			if ($hits)
 			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title = JText::_('MOD_STATS_ARTICLES_VIEW_HITS');
+				$rows[$i]->title = Lang::txt('MOD_STATS_ARTICLES_VIEW_HITS');
 				$rows[$i]->data  = $hits + $increase;
 				$i++;
 			}

@@ -35,10 +35,10 @@ defined('_JEXEC') or die('Restricted access');
 	<?php if ($this->rows->total() > 0) { ?>
 		<ul class="articles">
 			<?php foreach ($this->rows as $row) { ?>
-				<li><a href="<?php echo JRoute::_($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a></li>
+				<li><a href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(stripslashes($row->get('title'))); ?></a></li>
 			<?php } ?>
 		</ul>
 	<?php } else { ?>
-		<p><?php echo JText::_('MOD_POPULARFAQ_NO_ARTICLES_FOUND'); ?></p>
+		<p><?php echo Lang::txt('MOD_POPULARFAQ_NO_ARTICLES_FOUND'); ?></p>
 	<?php } ?>
 </div>

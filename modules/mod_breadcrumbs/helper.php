@@ -33,8 +33,8 @@ namespace Modules\BreadCrumbs;
 use Hubzero\Module\Module;
 use JFactory;
 use JHtml;
-use JRoute;
-use JText;
+use Route;
+use Lang;
 use stdClass;
 
 /**
@@ -84,14 +84,14 @@ class Helper extends Module
 		{
 			$crumbs[$i] = new stdClass();
 			$crumbs[$i]->name = stripslashes(htmlspecialchars($items[$i]->name, ENT_COMPAT, 'UTF-8'));
-			$crumbs[$i]->link = JRoute::_($items[$i]->link);
+			$crumbs[$i]->link = Route::url($items[$i]->link);
 		}
 
 		if ($this->params->get('showHome', 1))
 		{
 			$item = new stdClass();
-			$item->name = htmlspecialchars($this->params->get('homeText', JText::_('MOD_BREADCRUMBS_HOME')));
-			$item->link = JRoute::_('index.php?Itemid=' . $app->getMenu()->getDefault()->id);
+			$item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
+			$item->link = Route::url('index.php?Itemid=' . $app->getMenu()->getDefault()->id);
 
 			array_unshift($crumbs, $item);
 		}

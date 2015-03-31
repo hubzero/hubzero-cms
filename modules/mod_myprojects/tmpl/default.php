@@ -31,7 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juser = JFactory::getUser();
 $projects = $this->rows;
 
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
@@ -41,15 +40,15 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 	<ul class="module-nav">
 		<?php if ($this->params->get('button_show_all', 1)) { ?>
 		<li>
-			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_projects&task=browse'); ?>">
-				<?php echo JText::_('MOD_MYPROJECTS_ALL_PROJECTS'); ?>
+			<a class="icon-browse" href="<?php echo Route::url('index.php?option=com_projects&task=browse'); ?>">
+				<?php echo Lang::txt('MOD_MYPROJECTS_ALL_PROJECTS'); ?>
 			</a>
 		</li>
 		<?php } ?>
 		<?php if ($this->params->get('button_show_add', 1)) { ?>
 		<li>
-			<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>">
-				<?php echo JText::_('MOD_MYPROJECTS_NEW_PROJECT'); ?>
+			<a class="icon-plus" href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
+				<?php echo Lang::txt('MOD_MYPROJECTS_NEW_PROJECT'); ?>
 			</a>
 		</li>
 		<?php } ?>
@@ -67,21 +66,21 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 					break;
 				}
 				$goto  = 'alias=' . $row->alias;
-				$owned_by = JText::_('MOD_MYPROJECTS_BY') . ' ';
+				$owned_by = Lang::txt('MOD_MYPROJECTS_BY') . ' ';
 				if ($row->owned_by_group)
 				{
 					$owned_by .= '<strong>' . \Hubzero\Utility\String::truncate($row->groupname, 20) . '</strong>';
 				}
-				else if ($row->created_by_user == $juser->get('id'))
+				else if ($row->created_by_user == User::get('id'))
 				{
-					$owned_by .= JText::_('MOD_MYPROJECTS_ME');
+					$owned_by .= Lang::txt('MOD_MYPROJECTS_ME');
 				}
 				else
 				{
 					$owned_by .= '<strong>' . $row->authorname . '</strong>';
 				}
-				$role = $row->role == 1 ? JText::_('MOD_MYPROJECTS_STATUS_MANAGER') : JText::_('MOD_MYPROJECTS_STATUS_COLLABORATOR');
-				$setup = ($row->setup_stage < $setup_complete) ? JText::_('MOD_MYPROJECTS_STATUS_SETUP') : '';
+				$role = $row->role == 1 ? Lang::txt('MOD_MYPROJECTS_STATUS_MANAGER') : Lang::txt('MOD_MYPROJECTS_STATUS_COLLABORATOR');
+				$setup = ($row->setup_stage < $setup_complete) ? Lang::txt('MOD_MYPROJECTS_STATUS_SETUP') : '';
 
 				$class = '';
 				if ($row->state == 1 && $row->setup_stage >= $setup_complete)
@@ -101,8 +100,8 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				$i++;
 				?>
 					<li <?php echo $class; ?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
-						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->title), 30); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
+						<a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate($this->escape($row->title), 30); ?></a>
 						<span class="sub">
 							<?php echo $owned_by; ?> | <?php echo $role; ?> <?php
 							if ($setup)
@@ -111,7 +110,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 							}
 							else if ($row->state == 0)
 							{
-								echo ' | ' . JText::_('MOD_MYPROJECTS_STATUS_SUSPENDED');
+								echo ' | ' . Lang::txt('MOD_MYPROJECTS_STATUS_SUSPENDED');
 							}
 							?>
 							<?php if ($row->newactivity && $row->state == 1 && !$setup) { ?>
@@ -124,12 +123,12 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 			?>
 		</ul>
 	<?php } else { ?>
-		<p><em><?php echo JText::_('MOD_MYPROJECTS_NO_PROJECTS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYPROJECTS_NO_PROJECTS'); ?></em></p>
 	<?php } ?>
 
 	<?php if ($this->total > $this->limit) { ?>
 		<p class="note">
-			<?php echo JText::sprintf('MOD_MYPROJECTS_YOU_HAVE_MORE', $this->limit, $this->total, JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=projects')); ?>
+			<?php echo Lang::txt('MOD_MYPROJECTS_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects')); ?>
 		</p>
 	<?php } ?>
 </div>

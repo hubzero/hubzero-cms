@@ -38,7 +38,7 @@ class modMegaMenuHelper
 		$maxdepth = $params->get('maxdepth',10);
 
 		// Build Menu Tree root down (orphan proof - child might have lower id than parent)
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 		$ids = array();
 		$ids[0] = true;
 		$last = null;
@@ -337,7 +337,7 @@ class MegaMenuTree extends JTree
 			if ($tmp->home == 1) {
 				$tmp->url = JURI::base();
 			} elseif (strcasecmp(substr($tmp->url, 0, 4), 'http') && (strpos($tmp->link, 'index.php?') !== false)) {
-				$tmp->url = JRoute::_($tmp->url, true, $iSecure);
+				$tmp->url = Route::url($tmp->url, true, $iSecure);
 			} else {
 				$tmp->url = str_replace('&', '&amp;', $tmp->url);
 			}

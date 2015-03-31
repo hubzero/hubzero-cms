@@ -33,9 +33,8 @@ namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
 use Components\Feedback\Tables\Quote;
-use JFactory;
-use JRequest;
-use JComponentHelper;
+use Request;
+use Component;
 
 /**
  * Module class for displaying quotes
@@ -51,12 +50,12 @@ class Helper extends Module
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
-		$this->database = JFactory::getDBO();
+		$this->database = \JFactory::getDBO();
 
 		//Get the admin configured settings
 		$this->filters = array(
 			'limit'         => trim($this->params->get('maxquotes')),
-			'id'            => JRequest::getInt('quoteid', 0),
+			'id'            => Request::getInt('quoteid', 0),
 			'notable_quote' => 1
 		);
 
@@ -64,7 +63,7 @@ class Helper extends Module
 		$sq = new Quote($this->database);
 		$this->quotes = $sq->find('list', $this->filters);
 
-		$feedbackConfig = JComponentHelper::getParams('com_feedback');
+		$feedbackConfig = Component::params('com_feedback');
 		$this->path = trim($feedbackConfig->get('uploadpath', '/site/quotes'), DS) . DS;
 
 		require $this->getLayoutPath($this->module->module);
@@ -85,11 +84,11 @@ class Helper extends Module
 
 		if (!$debug && intval($this->params->get('cache', 0)))
 		{
-			$cache = JFactory::getCache('callback');
+			$cache = \JFactory::getCache('callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
 			$cache->call(array($this, 'run'));
-			echo '<!-- cached ' . JFactory::getDate() . ' -->';
+			echo '<!-- cached ' . \JFactory::getDate() . ' -->';
 			return;
 		}
 

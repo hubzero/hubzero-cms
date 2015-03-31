@@ -47,8 +47,8 @@ if ($this->quote)
 				echo $text;
 				?>
 				<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
-					<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::sprintf('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->fullname))); ?>" class="showfullquote">
-						<?php echo JText::_('MOD_RANDOMQUOTE_VIEW'); ?>
+					<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo Lang::txt('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->fullname))); ?>" class="showfullquote">
+						<?php echo Lang::txt('MOD_RANDOMQUOTE_VIEW'); ?>
 					</a>
 				<?php } ?>
 			</p>
@@ -57,7 +57,7 @@ if ($this->quote)
 			<cite><?php echo $this->escape(stripslashes($this->quote->fullname)); ?></cite>,
 			<?php echo $this->escape(stripslashes($this->quote->org)); ?>
 			<span>-</span>
-			<span><?php echo JText::sprintf('MOD_RANDOMQUOTE_IN', $base . '/about/quotes'); ?></span>
+			<span><?php echo Lang::txt('MOD_RANDOMQUOTE_IN', $base . '/about/quotes'); ?></span>
 		</p>
 	</div>
 	<?php

@@ -102,7 +102,7 @@ function mosGetMenuLink($mitem, $level = 0, & $params, $open = null)
 	$menu_secure = $menu_params->def('secure', 0);
 
 	if (strcasecmp(substr($mitem->link, 0, 4), 'http')) {
-		$mitem->url = JRoute::_($mitem->link, true, $menu_secure);
+		$mitem->url = Route::url($mitem->link, true, $menu_secure);
 	} else {
 		$mitem->url = $mitem->link;
 	}
@@ -168,7 +168,7 @@ function mosShowVIMenu(& $params)
 
 	$template = $mainframe->getTemplate();
 	$menu = JFactory::getApplication()->getMenu();
-	$user = JFactory::getUser();
+	$user = User::getRoot();
 
 	// indent icons
 	switch ($params->get('indent_image')) {
@@ -341,7 +341,7 @@ function mosRecurseVIMenu($id, $level, & $children, & $open, & $indents, & $para
 function mosShowHFMenu(& $params, $style = 0)
 {
 	$menu = JFactory::getApplication()->getMenu();
-	$user =  JFactory::getUser();
+	$user = User::getRoot();
 
 	//get menu items
 	$rows = $menu->getItems('menutype', $params->get('menutype'));

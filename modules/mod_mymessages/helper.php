@@ -33,6 +33,7 @@ namespace Modules\MyMessages;
 use Hubzero\Module\Module;
 use Hubzero\Message\Recipient;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying the latest messages
@@ -46,7 +47,6 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->juser = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		$this->moduleclass = $this->params->get('moduleclass');
@@ -54,8 +54,8 @@ class Helper extends Module
 
 		// Find the user's most recent support tickets
 		$recipient = new Recipient($database);
-		$this->rows  = $recipient->getUnreadMessages($this->juser->get('id'), $this->limit);
-		$this->total = count($recipient->getUnreadMessages($this->juser->get('id')));
+		$this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
+		$this->total = count($recipient->getUnreadMessages(User::get('id')));
 
 		if ($recipient->getError())
 		{

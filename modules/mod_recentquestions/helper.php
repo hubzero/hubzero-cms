@@ -62,8 +62,8 @@ class Helper extends Module
 			default:       $st = ""; break;
 		}
 
-		$this->tag   = \JRequest::getVar('tag', '', 'get');
-		$this->style = \JRequest::getVar('style', '', 'get');
+		$this->tag   = \Request::getVar('tag', '', 'get');
+		$this->style = \Request::getVar('style', '', 'get');
 
 		if ($this->tag)
 		{

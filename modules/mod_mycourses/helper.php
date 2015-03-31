@@ -31,7 +31,7 @@
 namespace Modules\MyCourses;
 
 use Hubzero\Module\Module;
-use JFactory;
+use User;
 
 /**
  * Module class for displaying a list of courses for a user
@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	private function _getCourses($uid, $type='all')
 	{
-		$db = JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		// Get all courses the user is a member of
 		$query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, m.student, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, o.state AS offering_state, s.state AS section_state, s.alias AS section_alias, s.title AS section_title, s.is_default
@@ -59,7 +59,7 @@ class Helper extends Module
 					WHERE c.state IN (1, 3)
 					AND m.user_id=" . $db->quote($uid);
 
-		$now = JFactory::getDate()->toSql();
+		$now = \JFactory::getDate()->toSql();
 
 		$db->setQuery($query);
 
@@ -101,14 +101,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));
 
 		// Get the user's groups
-		$this->courses = $this->_getCourses($juser->get('id'), 'all');
+		$this->courses = $this->_getCourses(User::get('id'), 'all');
 
 		// Push the module CSS to the template
 		$this->css();

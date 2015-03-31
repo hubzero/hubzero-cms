@@ -34,7 +34,7 @@ namespace Modules\Footer;
 use Hubzero\Module\Module;
 use JFactory;
 use JString;
-use JText;
+use Lang;
 
 /**
  * Module class for diplaying site footer
@@ -57,13 +57,13 @@ class Helper extends Module
 		$cur_year   = $date->format('Y');
 		$csite_name = $app->getCfg('sitename');
 
-		if (is_int(JString::strpos(JText::_('MOD_FOOTER_LINE1'), '%date%')))
+		if (is_int(JString::strpos(Lang::txt('MOD_FOOTER_LINE1'), '%date%')))
 		{
-			$line1 = str_replace('%date%', $cur_year, JText::_('MOD_FOOTER_LINE1'));
+			$line1 = str_replace('%date%', $cur_year, Lang::txt('MOD_FOOTER_LINE1'));
 		}
 		else
 		{
-			$line1 = JText::_('MOD_FOOTER_LINE1');
+			$line1 = Lang::txt('MOD_FOOTER_LINE1');
 		}
 
 		if (is_int(JString::strpos($line1, '%sitename%')))

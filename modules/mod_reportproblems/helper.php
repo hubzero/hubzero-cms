@@ -34,9 +34,9 @@ namespace Modules\ReportProblems;
 use Hubzero\Module\Module;
 use Hubzero\User\Profile;
 use Hubzero\Browser\Detector;
-use JComponentHelper;
-use JFactory;
-use JRequest;
+use Component;
+use User;
+use Request;
 
 /**
  * Module class for displaying a report problems form
@@ -50,12 +50,10 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$this->juser = JFactory::getUser();
-
 		$this->verified = 0;
-		if (!$this->juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$profile = Profile::getInstance($this->juser->get('id'));
+			$profile = Profile::getInstance(User::get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
 			{
 				$this->verified = 1;
@@ -63,7 +61,7 @@ class Helper extends Module
 		}
 
 		// Figure out whether this is a guess or temporary account created during the auth_link registration process
-		if ($this->juser->get('guest') || (is_numeric($this->juser->get('username')) && $this->juser->get('username') < 0))
+		if (User::isGuest() || (is_numeric(User::get('username')) && User::get('username') < 0))
 		{
 			$this->guestOrTmpAccount = true;
 		}
@@ -72,7 +70,7 @@ class Helper extends Module
 			$this->guestOrTmpAccount = false;
 		}
 
-		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
+		$this->referrer = Request::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
 		$this->referrer = base64_encode($this->referrer);
 
@@ -86,7 +84,7 @@ class Helper extends Module
 		     ->js()
 		     ->js('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
 
-		$this->supportParams = JComponentHelper::getParams('com_support');
+		$this->supportParams = Component::params('com_support');
 
 		require $this->getLayoutPath();
 	}

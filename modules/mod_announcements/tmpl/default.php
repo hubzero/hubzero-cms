@@ -32,20 +32,20 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 ?>
 <?php if ($morelink or $subscribelink) { ?>
 <p class="sublinks">
-	<?php if ($morelink) { ?><a href="<?php echo $morelink;  ?>"><?php echo JText::_('MOD_ANNOUNCEMENTS_VIEW_ALL'); ?></a><?php } ?>
+	<?php if ($morelink) { ?><a href="<?php echo $morelink;  ?>"><?php echo Lang::txt('MOD_ANNOUNCEMENTS_VIEW_ALL'); ?></a><?php } ?>
 	<?php if ($morelink && $subscribelink) { ?> <span>|</span> <?php } ?>
-	<?php if ($subscribelink) { ?><a href="<?php echo $subscribelink;  ?>" class="add"><?php echo $this->params->get('subscribe_label', JText::_('MOD_ANNOUNCEMENTS_SUBSCRIBE')); ?></a><?php } ?>
+	<?php if ($subscribelink) { ?><a href="<?php echo $subscribelink;  ?>" class="add"><?php echo $this->params->get('subscribe_label', Lang::txt('MOD_ANNOUNCEMENTS_SUBSCRIBE')); ?></a><?php } ?>
 </p>
 <?php } ?>
 
 <div id="<?php echo $this->container; ?>">
 <?php if ($this->params->get('show_search', '')) { ?>
-	<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="search">
+	<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="search">
 		<fieldset>
 			<p>
 				<input type="text" name="terms" value="" />
 				<input type="hidden" name="section" value="content:announcements" />
-				<input type="submit" value="<?php echo JText::_('MOD_ANNOUNCEMENTS_SEARCH'); ?>" />
+				<input type="submit" value="<?php echo Lang::txt('MOD_ANNOUNCEMENTS_SEARCH'); ?>" />
 			</p>
 		</fieldset>
 	</form>
@@ -76,7 +76,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 				</span>
 			<?php if ($this->params->get('show_date', '')) { ?>
 				<span class="a-date">
-					<?php echo JHTML::_('date', $item->publish_up, JText::_('DATE_FORMAT_HZ1')); ?>
+					<?php echo JHTML::_('date', $item->publish_up, Lang::txt('DATE_FORMAT_HZ1')); ?>
 				</span>
 			<?php } ?>
 			<?php if ($this->params->get('show_desc', '')) { ?>
@@ -85,8 +85,8 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 					// get cleaned article body text
 					$desc = stripslashes($item->introtext);
 					$desc = strip_tags($desc);
-					$desc = str_replace("\n", "", $desc);
-					$desc = str_replace("&nbsp;", "", $desc);
+					$desc = str_replace("\n", '', $desc);
+					$desc = str_replace("&nbsp;", '', $desc);
 					echo \Hubzero\Utility\String::truncate($desc, $this->params->get('word_count', 200));
 					?>
 				</span>
@@ -94,7 +94,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 			<?php if ($this->params->get('show_morelink', '')) { ?>
 				<span class="a-link">
 					<a href="<?php echo $url; ?>">
-						<?php echo JText::_('MOD_ANNOUNCEMENTS_READ_MORE'); ?>
+						<?php echo Lang::txt('MOD_ANNOUNCEMENTS_READ_MORE'); ?>
 					</a>
 				</span>
 			<?php } ?>
@@ -103,6 +103,6 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 	<?php } ?>
 	</ul>
 <?php } else { ?>
-	<p><?php echo JText::_('MOD_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
+	<p><?php echo Lang::txt('MOD_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 <?php } ?>
 </div><!-- / #pane-sliders -->

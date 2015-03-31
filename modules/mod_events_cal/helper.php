@@ -33,8 +33,8 @@ namespace Modules\EventsCalendar;
 use Hubzero\Module\Module;
 use Components\Events\Helpers\Html;
 use JFactory;
-use JRoute;
-use JText;
+use Route;
+use Lang;
 
 /**
  * Class for events calendar module
@@ -90,7 +90,7 @@ class Helper extends Module
 		}
 		else
 		{
-			$this->setError(JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
+			$this->setError(Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
 			return;
 		}
 
@@ -149,8 +149,7 @@ class Helper extends Module
 		}
 
 		// Get the time with offset
-		$config = JFactory::getConfig();
-		$timeWithOffset = time() + ($config->getValue('config.offset')*60*60);
+		$timeWithOffset = time() + (Config::get('offset')*60*60);
 
 		// Get the start day
 		$startday = $this->params->get('start_day');
@@ -167,13 +166,13 @@ class Helper extends Module
 
 		// An array of the names of the days of the week
 		$day_name = array(
-			JText::_('EVENTS_CAL_LANG_SUNDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_MONDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_TUESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_THURSDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_FRIDAYSHORT'),
-			JText::_('EVENTS_CAL_LANG_SATURDAYSHORT')
+			Lang::txt('EVENTS_CAL_LANG_SUNDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_MONDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_TUESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_WEDNESDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_THURSDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
+			Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT')
 		);
 
 		$this->content = '';
@@ -187,17 +186,17 @@ class Helper extends Module
 		if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays))
 		{
 			// Build last month calendar
-			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") - 1, 1, date("Y")), JText::_('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
+			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") - 1, 1, date("Y")), Lang::txt('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
 		}
 
 		// Build this month
-		$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n"), 1, date("Y")), JText::_('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
+		$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n"), 1, date("Y")), Lang::txt('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
 
 		// Display next month?
 		if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays))
 		{
 			// Build next month calendar
-			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") + 1, 1, date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
+			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") + 1, 1, date("Y")), Lang::txt('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
 		}
 
 		require $this->getLayoutPath();
@@ -220,9 +219,6 @@ class Helper extends Module
 	{
 		$database = JFactory::getDBO();
 
-		$juser = JFactory::getUser();
-		//$gid = $juser->get('gid');
-
 		$cal_year  = date("Y", $time);
 		$cal_month = date("m", $time);
 		$calmonth  = date("n", $time);
@@ -233,16 +229,16 @@ class Helper extends Module
 		$content .= ' <caption>'."\n";
 		if ($this->params->get('show_nav_prev_month'))
 		{
-			$content .= ' <a class="prev month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)) . '">'.Html::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
+			$content .= ' <a class="prev month" href="' . Route::url('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)) . '">'.Html::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
 		}
-		$content .= ' <a class="current month" href="' . JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month) . '">' . Html::getMonthName($cal_month) . '</a>'."\n";
+		$content .= ' <a class="current month" href="' . Route::url('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month) . '">' . Html::getMonthName($cal_month) . '</a>'."\n";
 		if ($this->params->get('show_nav_next_month'))
 		{
-			$content .= ' <a class="next month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)) . '">'.Html::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
+			$content .= ' <a class="next month" href="' . Route::url('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)) . '">'.Html::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
 		}
 		$content .= ' </caption>'."\n";
 		$content .= ' <thead>'."\n";
-	    $content .= '  <tr>'."\n";
+		$content .= '  <tr>'."\n";
 		// Days name rows
 		for ($i=0;$i<7;$i++)
 		{
@@ -301,7 +297,7 @@ class Helper extends Module
 			$content .= '   <td class="'.$class.'">';
 			if ($class == 'todaywithevents' || $class == 'daywithevents')
 			{
-				$content .= '<a class="mod_events_daylink" href="'.JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month.'&day='.$do).'">'.$d.'</a>';
+				$content .= '<a class="mod_events_daylink" href="' . Route::url('index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month . '&day=' . $do) . '">' . $d . '</a>';
 			}
 			else
 			{

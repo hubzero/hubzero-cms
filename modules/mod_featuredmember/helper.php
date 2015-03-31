@@ -33,7 +33,8 @@ namespace Modules\Featuredmember;
 use Hubzero\Module\Module;
 use Hubzero\User\Profile;
 use MembersProfile;
-use JComponentHelper;
+use Component;
+use User;
 use JFactory;
 use JRegistry;
 
@@ -93,14 +94,14 @@ class Helper extends Module
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
-			$config = JComponentHelper::getParams('com_members');
+			$config = Component::params('com_members');
 
 			$rparams = new JRegistry($this->profile->get('params'));
 			$this->params = $config;
 			$this->params->merge($rparams);
 
 			if ($this->params->get('access_bio') == 0
-			 || ($this->params->get('access_bio') == 1 && !$juser->get('guest'))
+			 || ($this->params->get('access_bio') == 1 && !User::isGuest())
 			)
 			{
 				$this->txt = $this->profile->getBio('parsed');

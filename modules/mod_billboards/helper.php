@@ -31,7 +31,7 @@
 namespace Modules\Billboards;
 
 use Hubzero\Module\Module;
-use JComponentHelper;
+use Component;
 use JFactory;
 use Components\Billboards\Models\Billboard;
 

@@ -32,6 +32,7 @@ namespace Modules\MyContributions;
 
 use Hubzero\Module\Module;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying contributions in progress
@@ -46,12 +47,11 @@ class Helper extends Module
 	private function _getContributions()
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
 		$query .= "FROM `#__resource_types` AS rt, `#__resources` AS R ";
 		$query .= "LEFT JOIN `#__author_assoc` AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
-		$query .= "WHERE (aa.authorid='" . $juser->get('id') . "' OR R.created_by=" . $juser->get('id') . ") ";
+		$query .= "WHERE (aa.authorid='" . User::get('id') . "' OR R.created_by=" . User::get('id') . ") ";
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
 		$query .= "ORDER BY published ASC, title ASC";
 
@@ -71,7 +71,6 @@ class Helper extends Module
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
-		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		// Query filters defaults
@@ -148,7 +147,7 @@ class Helper extends Module
 						{
 							$controller = new \Components\Wishlist\Site\Controllers\Wishlists();
 							$filters = $controller->getFilters(1);
-							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
+							$wishes = $objWish->get_wishes($listid, $filters, 1, User::getRoot());
 							$unranked = 0;
 							if ($wishes)
 							{
@@ -258,8 +257,7 @@ class Helper extends Module
 	public function display()
 	{
 		// Get the user's profile
-		$juser = JFactory::getUser();
-		$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 

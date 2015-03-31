@@ -32,6 +32,7 @@ namespace Modules\MySubmissions;
 
 use Hubzero\Module\Module;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying a user's submissions and their progress
@@ -142,8 +143,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -161,7 +161,7 @@ class Helper extends Module
 		$query = "SELECT r.*, t.type AS typetitle
 			FROM " . $rr->getTableName() . " AS r
 			LEFT JOIN " . $rt->getTableName() . " AS t ON r.type=t.id
-			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=" . $juser->get('id');
+			WHERE r.published=2 AND r.standalone=1 AND r.type!=7 AND r.created_by=" . User::get('id');
 		$database->setQuery($query);
 		$this->rows = $database->loadObjectList();
 

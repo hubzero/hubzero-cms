@@ -42,22 +42,22 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	</div>
 
-	<form class="mailinglist-signup" action="<?php echo JRoute::_('index.php?option=com_newsletter'); ?>" method="post">
+	<form class="mailinglist-signup" action="<?php echo Route::url('index.php?option=com_newsletter'); ?>" method="post">
 		<fieldset>
 		<?php if (is_object($this->subscription)) : ?>
-			<span><?php echo JText::sprintf('MOD_NEWSLETTER_ALREADY_SUBSCRIBED', JRoute::_('index.php?option=com_newsletter&task=subscribe')); ?></span>
+			<span><?php echo Lang::txt('MOD_NEWSLETTER_ALREADY_SUBSCRIBED', Route::url('index.php?option=com_newsletter&task=subscribe')); ?></span>
 		<?php else : ?>
 			<label for="email">
-				<?php echo JText::_('MOD_NEWSLETTER_EMAIL'); ?> <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span>
-				<input type="text" name="email_<?php echo JUtility::getToken(); ?>" id="email" value="<?php echo $this->juser->get('email'); ?>" data-invalid="<?php echo JText::_('MOD_NEWSLETTER_EMAIL_INVALID'); ?>" />
+				<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+				<input type="text" name="email_<?php echo JUtility::getToken(); ?>" id="email" value="<?php echo User::get('email'); ?>" data-invalid="<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL_INVALID'); ?>" />
 			</label>
 
 			<label for="hp1_<?php echo JUtility::getToken(); ?>" id="hp1">
-				<?php echo JText::_('MOD_NEWSLETTER_HONEYPOT'); ?> <span class="optional"><?php echo JText::_('MOD_NEWSLETTER_HONEYPOT_LEAVE_BLANK'); ?></span>
+				<?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT'); ?> <span class="optional"><?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT_LEAVE_BLANK'); ?></span>
 				<input type="text" name="hp1" id="hp1_<?php echo JUtility::getToken(); ?>" value="" />
 			</label>
 
-			<input type="submit" value="<?php echo JText::_('MOD_NEWSLETTER_SIGN_UP'); ?>" id="sign-up-submit" />
+			<input type="submit" value="<?php echo Lang::txt('MOD_NEWSLETTER_SIGN_UP'); ?>" id="sign-up-submit" />
 
 			<input type="hidden" name="list_<?php echo JUtility::getToken(); ?>" value="<?php echo $this->mailinglist->id; ?>" />
 			<input type="hidden" name="option" value="com_newsletter" />
@@ -72,6 +72,6 @@ defined('_JEXEC') or die('Restricted access');
 	</form>
 <?php else : ?>
 	<p class="warning">
-		<?php echo JText::_('MOD_NEWSLETTER_SETUP_INCOMPLETE'); ?>
+		<?php echo Lang::txt('MOD_NEWSLETTER_SETUP_INCOMPLETE'); ?>
 	</p>
 <?php endif; ?>

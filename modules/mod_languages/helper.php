@@ -35,9 +35,10 @@ use JLanguageHelper;
 use JLanguage;
 use JFactory;
 use JLoader;
-use JRoute;
+use Route;
 use JString;
 use MenusHelper;
+use User;
 
 /**
  * Module class for displaying a menu
@@ -75,7 +76,7 @@ class Helper extends Module
 	{
 		JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
 
-		$user = JFactory::getUser();
+		$user = User::getRoot();
 		$lang = JFactory::getLanguage();
 		$app  = JFactory::getApplication();
 		$menu = $app->getMenu();
@@ -132,7 +133,7 @@ class Helper extends Module
 						$itemid = $associations[$language->lang_code];
 						if ($app->getCfg('sef')=='1')
 						{
-							$language->link = JRoute::_('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
+							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
 						}
 						else
 						{
@@ -144,7 +145,7 @@ class Helper extends Module
 						if ($app->getCfg('sef')=='1')
 						{
 							$itemid = isset($homes[$language->lang_code]) ? $homes[$language->lang_code]->id : $homes['*']->id;
-							$language->link = JRoute::_('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
+							$language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
 						}
 						else
 						{
@@ -154,7 +155,7 @@ class Helper extends Module
 				}
 				else
 				{
-					$language->link = JRoute::_('&Itemid=' . $homes['*']->id);
+					$language->link = Route::url('&Itemid=' . $homes['*']->id);
 				}
 			}
 		}

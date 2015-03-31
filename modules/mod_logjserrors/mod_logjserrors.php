@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
 	// Write to hubzero logs if available.
 	// Otherwise fallback to the Joomla logs.
-	$path = JFactory::getConfig()->getValue('config.log_path');
+	$path = Config::get('log_path');
 	if (is_dir('/var/log/hubzero'))
 	{
 		$path = '/var/log/hubzero';

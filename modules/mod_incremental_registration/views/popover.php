@@ -422,7 +422,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryorigin'])): ?>
 					<li>
-						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
+						<?php $country = isset($_POST['countryorigin']) ? $_POST['countryorigin'] : \Hubzero\Geocode\Geocode::ipcountry(Request::ip()); ?>
 							<label>Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryorigin'])): ?>
@@ -455,7 +455,7 @@ $defaultCountries = array(
 				<?php endif; ?>
 				<?php if (isset($row['countryresident'])): ?>
 					<li>
-						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : \Hubzero\Geocode\Geocode::ipcountry(JRequest::ip()); ?>
+						<?php $country = isset($_POST['countryresident']) ? $_POST['countryresident'] : \Hubzero\Geocode\Geocode::ipcountry(Request::ip()); ?>
 							<label>Do you currently live in the <abbr title="United States">US</abbr>?</label>
 							<div class="indented">
 								<?php if (isset($errors['countryresident'])): ?>
@@ -489,7 +489,7 @@ $defaultCountries = array(
 				<?php if (isset($row['race'])): ?>
 					<?php $race = isset($_POST['race']) ? $_POST['race'] : array(); ?>
 					<li>
-							<label>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=raceethnic'); ?>">more information</a>), select your race(s) below</label>
+							<label>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="<?php echo Route::url('index.php?option=com_members&controller=register&task=raceethnic'); ?>">more information</a>), select your race(s) below</label>
 							<?php if (isset($errors['race'])): ?>
 								<p class="warning">Please select your race(s)</p>
 							<?php endif; ?>

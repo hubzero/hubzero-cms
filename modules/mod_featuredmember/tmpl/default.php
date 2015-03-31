@@ -32,26 +32,26 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->getError()) { ?>
-	<p class="error"><?php echo JText::_('MOD_FEATUREDMEMBER_MISSING_CLASS'); ?></p>
+	<p class="error"><?php echo Lang::txt('MOD_FEATUREDMEMBER_MISSING_CLASS'); ?></p>
 <?php } else {
 
 	if ($this->row) {
 ?>
 	<div class="<?php echo $this->cls; ?>">
 	<?php if ($this->filters['show'] == 'contributors') { ?>
-		<h3><?php echo JText::_('MOD_FEATUREDMEMBER_PROFILE'); ?></h3>
+		<h3><?php echo Lang::txt('MOD_FEATUREDMEMBER_PROFILE'); ?></h3>
 	<?php } else { ?>
-		<h3><?php echo JText::_('MOD_FEATUREDMEMBER'); ?></h3>
+		<h3><?php echo Lang::txt('MOD_FEATUREDMEMBER'); ?></h3>
 	<?php } ?>
 	<?php if (is_file(JPATH_ROOT . $this->thumb)) { ?>
 		<p class="featured-img">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->id); ?>">
 				<img width="50" height="50" src="<?php echo $this->thumb; ?>" alt="<?php echo $this->escape(stripslashes($this->title)); ?>" />
 			</a>
 		</p>
 	<?php } ?>
 		<p>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->id); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->id); ?>">
 				<?php echo $this->escape(stripslashes($this->title)); ?>
 			</a>:
 	<?php if ($this->txt) { ?>

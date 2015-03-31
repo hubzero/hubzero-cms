@@ -33,7 +33,8 @@ namespace Modules\Featuredresource;
 
 use Hubzero\Module\Module;
 use ToolVersion;
-use JComponentHelper;
+use Component;
+use User;
 use JFactory;
 
 /**
@@ -91,7 +92,7 @@ class Helper extends Module
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
-			$config = JComponentHelper::getParams('com_resources');
+			$config = Component::params('com_resources');
 
 			// Resource
 			$id = $row->id;
@@ -144,9 +145,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-
-		if (!$juser->get('guest') && intval($this->params->get('cache', 0)))
+		if (!User::isGuest() && intval($this->params->get('cache', 0)))
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
@@ -224,7 +223,7 @@ class Helper extends Module
 	private function getToolImage($path, $versionid=0)
 	{
 		// Get contribtool parameters
-		$tconfig = JComponentHelper::getParams('com_tools');
+		$tconfig = Component::params('com_tools');
 		$allowversions = $tconfig->get('screenshot_edit');
 
 		if ($versionid && $allowversions)

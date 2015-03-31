@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$reveal = strtolower(JRequest::getWord('reveal', ''));
+$reveal = strtolower(Request::getWord('reveal', ''));
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
 ?>

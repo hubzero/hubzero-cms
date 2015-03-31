@@ -34,18 +34,18 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
 	<ul class="module-nav">
-		<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_support&task=tickets'); ?>"><?php echo JText::_('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
-		<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo JText::_('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
+		<li><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
+		<li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_feedback&task=report_problems'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
 	</ul>
 
 	<h4>
-		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=7'); ?>">
-			<?php echo JText::_('MOD_MYTICKETS_SUBMITTED'); ?>
-			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=7'); ?>">
+			<?php echo Lang::txt('MOD_MYTICKETS_SUBMITTED'); ?>
+			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
 		</a>
 	</h4>
 	<?php if (count($this->rows1) <= 0) { ?>
-		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
@@ -53,8 +53,8 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			?>
 			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+				<a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 			</li>
 			<?php
 		}
@@ -63,13 +63,13 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 
 	<h4>
-		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=8'); ?>">
-			<?php echo JText::_('MOD_MYTICKETS_ASSIGNED'); ?>
-			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=8'); ?>">
+			<?php echo Lang::txt('MOD_MYTICKETS_ASSIGNED'); ?>
+			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
 		</a>
 	</h4>
 	<?php if (count($this->rows2) <= 0) { ?>
-		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
@@ -77,8 +77,8 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			?>
 			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+				<a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 			</li>
 			<?php
 		}
@@ -87,13 +87,13 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 
 	<h4>
-		<a href="<?php echo JRoute::_('index.php?option=com_support&task=tickets&show=8'); ?>">
-			<?php echo JText::_('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
-			<span><?php echo JText::_('MOD_MYTICKETS_VIEW_ALL'); ?></span>
+		<a href="<?php echo Route::url('index.php?option=com_support&task=tickets&show=8'); ?>">
+			<?php echo Lang::txt('MOD_MYTICKETS_CONTRIBUTIONS'); ?>
+			<span><?php echo Lang::txt('MOD_MYTICKETS_VIEW_ALL'); ?></span>
 		</a>
 	</h4>
 	<?php if (count($this->rows3) <= 0) { ?>
-		<p><em><?php echo JText::_('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
+		<p><em><?php echo Lang::txt('MOD_MYTICKETS_NO_TICKETS'); ?></em></p>
 	<?php } else { ?>
 		<ul class="expandedlist">
 		<?php
@@ -101,8 +101,8 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			?>
 			<li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-				<a href="<?php echo JRoute::_('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo JText::sprintf('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+				<a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
+				<span><span><?php echo JHTML::_('date.relative', $row->created); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
 			</li>
 			<?php
 		}

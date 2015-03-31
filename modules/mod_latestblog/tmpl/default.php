@@ -50,13 +50,13 @@ $c = 0;
 						<?php } ?>
 						<div class="entry-content">
 							<h4>
-								<a href="<?php echo JRoute::_($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
+								<a href="<?php echo Route::url($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
 							</h4>
 						<?php if ($this->params->get('details', 1)) { ?>
 							<dl class="entry-meta">
 								<dt>
 									<span>
-										<?php echo JText::sprintf('MOD_LATESTBLOG_ENTRY_NUMBER', $post->get('id')); ?>
+										<?php echo Lang::txt('MOD_LATESTBLOG_ENTRY_NUMBER', $post->get('id')); ?>
 									</span>
 								</dt>
 								<dd class="date">
@@ -70,7 +70,7 @@ $c = 0;
 									</time>
 								</dd>
 								<dd class="author">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
+									<a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
 										<?php echo $this->escape(stripslashes($post->creator('name'))); ?>
 									</a>
 								</dd>
@@ -80,11 +80,11 @@ $c = 0;
 										switch ($post->get('scope')) 
 										{
 											case 'site':
-												echo JText::_('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
+												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_SITE');
 											break;
 
 											case 'member':
-												echo JText::_('MOD_LATESTBLOG_LOCATION_BLOG_MEMBER');
+												echo Lang::txt('MOD_LATESTBLOG_LOCATION_BLOG_MEMBER');
 											break;
 
 											case 'group':
@@ -119,12 +119,12 @@ $c = 0;
 		?>
 		</ul>
 	<?php else : ?>
-		<p><?php echo JText::_('MOD_LATESTBLOG_NO_RESULTS'); ?></p>
+		<p><?php echo Lang::txt('MOD_LATESTBLOG_NO_RESULTS'); ?></p>
 	<?php endif; ?>
 	
 	<?php if ($more = $this->params->get('morelink', '')) : ?>
 		<p class="more">
-			<a href="<?php echo $more; ?>"><?php echo JText::_('MOD_LATESTBLOG_MORE_RESULTS'); ?></a>
+			<a href="<?php echo $more; ?>"><?php echo Lang::txt('MOD_LATESTBLOG_MORE_RESULTS'); ?></a>
 		</p>
 	<?php endif; ?>
 </div>

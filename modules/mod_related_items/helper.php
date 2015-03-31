@@ -35,9 +35,10 @@ use Hubzero\Module\Module;
 use stdClass;
 use JModuleHelper;
 use ContentHelperRoute;
-use JRequest;
+use Request;
 use JFactory;
-use JRoute;
+use Route;
+use User;
 
 /**
  * Module class for displaying related articles
@@ -89,16 +90,16 @@ class Helper extends Module
 	{
 		$db     = JFactory::getDbo();
 		$app    = JFactory::getApplication();
-		$user   = JFactory::getUser();
+		$user   = User::getRoot();
 		$userId = (int) $user->get('id');
 		$count  = intval($params->get('count', 5));
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 		$date   = JFactory::getDate();
 
-		$option = JRequest::getCmd('option');
-		$view   = JRequest::getCmd('view');
+		$option = Request::getCmd('option');
+		$view   = Request::getCmd('view');
 
-		$temp   = JRequest::getString('id');
+		$temp   = Request::getString('id');
 		$temp   = explode(':', $temp);
 		$id     = $temp[0];
 
@@ -189,7 +190,7 @@ class Helper extends Module
 						{
 							if ($row->cat_state == 1)
 							{
-								$row->route = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->language));
+								$row->route = Route::url(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->language));
 								$related[] = $row;
 							}
 						}

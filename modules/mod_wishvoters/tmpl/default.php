@@ -32,14 +32,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
-	<h3><?php echo JText::_('MOD_WISHVOTERS_GIVING_MOST_INPUT'); ?></h3>
+	<h3><?php echo Lang::txt('MOD_WISHVOTERS_GIVING_MOST_INPUT'); ?></h3>
 <?php if (count($this->rows) <= 0) { ?>
-	<p><?php echo JText::_('MOD_WISHVOTERS_NO_VOTES'); ?></p>
+	<p><?php echo Lang::txt('MOD_WISHVOTERS_NO_VOTES'); ?></p>
 <?php } else { ?>
 	<ul class="voterslist">
 		<li class="title">
-			<?php echo JText::_('MOD_WISHVOTERS_COL_NAME'); ?>
-			<span><?php echo JText::_('MOD_WISHVOTERS_COL_RANKED'); ?></span>
+			<?php echo Lang::txt('MOD_WISHVOTERS_COL_NAME'); ?>
+			<span><?php echo Lang::txt('MOD_WISHVOTERS_COL_RANKED'); ?></span>
 		</li>
 		<?php
 			$k=1;
@@ -47,8 +47,8 @@ defined('_JEXEC') or die('Restricted access');
 			{
 				if ($k <= intval($this->params->get('limit', 10)))
 				{
-					$name = JText::_('MOD_WISHVOTERS_UNKNOWN');
-					$auser = JUser::getInstance($row->userid);
+					$name = Lang::txt('MOD_WISHVOTERS_UNKNOWN');
+					$auser = User::getInstance($row->userid);
 					if (is_object($auser))
 					{
 						$name  = $auser->get('name');

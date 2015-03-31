@@ -32,7 +32,7 @@
 namespace Modules\GoogleAnalytics;
 
 use Hubzero\Module\Module;
-use JFactory;
+use Config;
 
 /**
  * Module class for adding Google Analytics script to a page
@@ -46,7 +46,7 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		if (strtolower(JFactory::getConfig()->get('application_env', 'production')) != 'production')
+		if (strtolower(Config::get('application_env', 'production')) != 'production')
 		{
 			return;
 		}

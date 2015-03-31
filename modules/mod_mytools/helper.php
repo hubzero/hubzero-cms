@@ -34,11 +34,12 @@ use Hubzero\Module\Module;
 use ToolsModelVersion;
 use ToolsModelTool;
 use RecentTool;
-use JRequest;
+use Request;
 use JFactory;
-use JComponentHelper;
-use JText;
-use JRoute;
+use Component;
+use Lang;
+use User;
+use Route;
 
 /**
  * Module class for displaying a user's recently used/favorite tools
@@ -154,7 +155,7 @@ class Helper extends Module
 		$html  = "\t\t" . '<ul>' . "\n";
 		if (count($toollist) <= 0)
 		{
-			$html .= "\t\t" . ' <li>' . JText::_('MOD_MYTOOLS_NONE_FOUND') . '</li>' . "\n";
+			$html .= "\t\t" . ' <li>' . Lang::txt('MOD_MYTOOLS_NONE_FOUND') . '</li>' . "\n";
 		}
 		else
 		{
@@ -178,7 +179,7 @@ class Helper extends Module
 					/*$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 					//get tool params
-					$params = JComponentHelper::getParams('com_tools');
+					$params = Component::params('com_tools');
 					$launchOnIpad = $params->get('launch_ipad', 0);
 
 					//if we are on the ipad and we want to launch nanohub app
@@ -188,7 +189,7 @@ class Helper extends Module
 					}
 					else
 					{*/
-						$url = JRoute::_('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
+						$url = Route::url('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
 					//}
 
 					$cls = '';
@@ -214,12 +215,12 @@ class Helper extends Module
 					$html .= '>' . "\n";
 
 					// Tool info link
-					$html .= "\t\t\t" . ' <a href="' . JRoute::_('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname) . '" class="tooltips" title="' . $tool->caption . ' :: ' . $tool->desc . '">' . $tool->caption . '</a>' . "\n";
+					$html .= "\t\t\t" . ' <a href="' . Route::url('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname) . '" class="tooltips" title="' . $tool->caption . ' :: ' . $tool->desc . '">' . $tool->caption . '</a>' . "\n";
 
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all')
 					{
-						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="' . JText::sprintf('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption) . '">' . $tool->caption . '</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="' . Lang::txt('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption) . '">' . $tool->caption . '</a>' . "\n";
 					}
 
 					// Launch tool link
@@ -227,7 +228,7 @@ class Helper extends Module
 					{
 
 
-						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
 				}
@@ -262,24 +263,22 @@ class Helper extends Module
 
 		$params = $this->params;
 
-		$juser = JFactory::getUser();
-
-		$mconfig = JComponentHelper::getParams('com_tools');
+		$mconfig = Component::params('com_tools');
 
 		// Ensure we have a connection to the middleware
 		$this->can_launch = true;
 		if (!$mconfig->get('mw_on')
-		 || ($mconfig->get('mw_on') > 1 && !$juser->authorize('com_tools', 'manage')))
+		 || ($mconfig->get('mw_on') > 1 && !User::authorize('com_tools', 'manage')))
 		{
 			$this->can_launch = false;
 		}
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
-		$this->fav     = JRequest::getVar('fav', '');
-		$this->no_html = JRequest::getVar('no_html', 0);
+		$this->fav     = Request::getVar('fav', '');
+		$this->no_html = Request::getVar('no_html', 0);
 
-		$rconfig = JComponentHelper::getParams('com_resources');
+		$rconfig = Component::params('com_resources');
 		$this->supportedtag = $rconfig->get('supportedtag');
 
 		$database = JFactory::getDBO();
@@ -301,14 +300,12 @@ class Helper extends Module
 		}
 		else
 		{
-			$juser = JFactory::getUser();
-
 			// Add the JavaScript that does the AJAX magic to the template
 			$document = JFactory::getDocument();
 
 			// Get a list of recent tools
 			$rt = new RecentTool($database);
-			$rows = $rt->getRecords($juser->get('id'));
+			$rows = $rt->getRecords(User::get('id'));
 
 			$recent = array();
 			if (!empty($rows))

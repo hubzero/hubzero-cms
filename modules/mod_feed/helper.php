@@ -34,7 +34,7 @@ namespace Modules\Feed;
 use Hubzero\Module\Module;
 use JFactory;
 use stdClass;
-use JText;
+use Lang;
 
 /**
  * Module class for displaying items from a feed
@@ -110,7 +110,7 @@ class Helper extends Module
 		if (empty($rssurl))
 		{
 			echo '<p class="warning">';
-			echo JText::_('MOD_FEED_ERR_NO_URL');
+			echo Lang::txt('MOD_FEED_ERR_NO_URL');
 			echo '</p>';
 			return;
 		}

@@ -32,6 +32,7 @@ namespace Modules\MyGroups;
 
 use Hubzero\Module\Module;
 use JFactory;
+use User;
 
 /**
  * Module class for displaying a list of groups for a user
@@ -149,14 +150,12 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
-
 		// Get the module parameters
 		$this->moduleclass = $this->params->get('moduleclass');
 		$this->limit = intval($this->params->get('limit', 10));
 
 		// Get the user's groups
-		$members = $this->_getGroups($juser->get('id'), 'all');
+		$members = $this->_getGroups(User::get('id'), 'all');
 
 		$groups = array();
 		foreach ($members as $mem)

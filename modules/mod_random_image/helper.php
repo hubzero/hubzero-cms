@@ -35,7 +35,7 @@ use Hubzero\Module\Module;
 use stdClass;
 use JString;
 use JURI;
-use JText;
+use Lang;
 
 /**
  * Module class for displaying a random image
@@ -59,7 +59,7 @@ class Helper extends Module
 
 		if (!count($images))
 		{
-			echo JText::_('MOD_RANDOM_IMAGE_NO_IMAGES');
+			echo Lang::txt('MOD_RANDOM_IMAGE_NO_IMAGES');
 			return;
 		}
 

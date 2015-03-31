@@ -31,23 +31,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$url  = JRequest::getVar('REQUEST_URI', '', 'server');
+$url  = Request::getVar('REQUEST_URI', '', 'server');
 ?>
 
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo JRoute::_($url); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url($url); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
-		<legend><?php echo JText::_('MOD_COLLECT'); ?></legend>
+		<legend><?php echo Lang::txt('MOD_COLLECT'); ?></legend>
 
 		<?php if ($this->collections) { ?>
 			<div class="grid in-collections">
-				<p><?php echo JText::_('MOD_COLLECT_ALREADY_COLLECTED'); ?></p>
+				<p><?php echo Lang::txt('MOD_COLLECT_ALREADY_COLLECTED'); ?></p>
 				<ul>
 					<?php foreach ($this->collections as $collection) { ?>
-						<li><a href="<?php echo JRoute::_($collection->link()); ?>"><?php echo $this->escape(stripslashes($collection->get('title'))); ?></a></li>
+						<li><a href="<?php echo Route::url($collection->link()); ?>"><?php echo $this->escape(stripslashes($collection->get('title'))); ?></a></li>
 					<?php } ?>
 				</ul>
 			</div>
@@ -56,10 +56,10 @@ $url  = JRequest::getVar('REQUEST_URI', '', 'server');
 		<div class="grid">
 			<div class="col span-half">
 				<label for="field-collection">
-					<?php echo JText::_('MOD_COLLECT_SELECT_COLLECTION'); ?>
+					<?php echo Lang::txt('MOD_COLLECT_SELECT_COLLECTION'); ?>
 					<select name="collectible[collection_id]" id="field-collection">
-						<option value="0"><?php echo JText::_('MOD_COLLECT_SELECT'); ?></option>
-						<optgroup label="<?php echo JText::_('MOD_COLLECT_MY_COLLECTIONS'); ?>">
+						<option value="0"><?php echo Lang::txt('MOD_COLLECT_SELECT'); ?></option>
+						<optgroup label="<?php echo Lang::txt('MOD_COLLECT_MY_COLLECTIONS'); ?>">
 						<?php
 						$i = 0;
 						if ($this->myboards)
@@ -100,18 +100,18 @@ $url  = JRequest::getVar('REQUEST_URI', '', 'server');
 				</label>
 			</div>
 
-			<p class="or"><?php echo JText::_('MOD_COLLECT_OR'); ?></p>
+			<p class="or"><?php echo Lang::txt('MOD_COLLECT_OR'); ?></p>
 
 			<div class="col span-half omega">
 				<label for="field-collection_title">
-					<?php echo JText::_('MOD_COLLECT_CREATE_COLLECTION'); ?>
+					<?php echo Lang::txt('MOD_COLLECT_CREATE_COLLECTION'); ?>
 					<input type="text" name="collectible[title]" id="field-collection_title" />
 				</label>
 			</div>
 		</div>
 
 		<label for="field_description">
-			<?php echo JText::_('MOD_COLLECT_ADD_DESCRIPTION'); ?>
+			<?php echo Lang::txt('MOD_COLLECT_ADD_DESCRIPTION'); ?>
 			<?php echo \JFactory::getEditor()->display('collectible[description]', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
@@ -122,6 +122,6 @@ $url  = JRequest::getVar('REQUEST_URI', '', 'server');
 	<?php echo JHTML::_('form.token'); ?>
 
 	<p class="submit">
-		<input type="submit" value="<?php echo JText::_('MOD_COLLECT_SAVE'); ?>" />
+		<input type="submit" value="<?php echo Lang::txt('MOD_COLLECT_SAVE'); ?>" />
 	</p>
 </form>

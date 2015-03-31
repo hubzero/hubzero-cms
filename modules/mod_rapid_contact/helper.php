@@ -34,9 +34,9 @@ namespace Modules\RapidContact;
 use Hubzero\Module\Module;
 use Hubzero\Utility\Sanitize;
 use Hubzero\Mail\Message;
-use JFactory;
-use JRequest;
-use JText;
+use Request;
+use Config;
+use Lang;
 use JURI;
 
 /**
@@ -52,40 +52,39 @@ class Helper extends Module
 	public function display()
 	{
 		// Field labels
-		$this->name_label    = $this->params->get('name_label', JText::_('MOD_RAPID_CONTACT_FIELD_NAME'));
-		$this->email_label   = $this->params->get('email_label', JText::_('MOD_RAPID_CONTACT_FIELD_EMAIL'));
-		$this->subject_label = $this->params->get('subject_label', JText::_('MOD_RAPID_CONTACT_FIELD_SUBJECT'));
-		$this->message_label = $this->params->get('message_label', JText::_('MOD_RAPID_CONTACT_FIELD_MESSAGE'));
+		$this->name_label    = $this->params->get('name_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_NAME'));
+		$this->email_label   = $this->params->get('email_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_EMAIL'));
+		$this->subject_label = $this->params->get('subject_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_SUBJECT'));
+		$this->message_label = $this->params->get('message_label', Lang::txt('MOD_RAPID_CONTACT_FIELD_MESSAGE'));
 
 		// Button text
-		$this->button_text   = $this->params->get('button_text', JText::_('MOD_RAPID_CONTACT_SEND'));
+		$this->button_text   = $this->params->get('button_text', Lang::txt('MOD_RAPID_CONTACT_SEND'));
 
 		// Pre text
 		$this->pre_text      = $this->params->get('pre_text', '');
 
 		// Thank you message
-		$this->page_text     = $this->params->get('page_text', JText::_('MOD_RAPID_CONTACT_THANK_YOU'));
+		$this->page_text     = $this->params->get('page_text', Lang::txt('MOD_RAPID_CONTACT_THANK_YOU'));
 
 		// Error messages
-		$this->error_text    = $this->params->get('error_text', JText::_('MOD_RAPID_CONTACT_ERROR_SENDING'));
-		$this->no_email      = $this->params->get('no_email', JText::_('MOD_RAPID_CONTACT_ERROR_NO_EMAIL'));
-		$this->invalid_email = $this->params->get('invalid_email', JText::_('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
+		$this->error_text    = $this->params->get('error_text', Lang::txt('MOD_RAPID_CONTACT_ERROR_SENDING'));
+		$this->no_email      = $this->params->get('no_email', Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_EMAIL'));
+		$this->invalid_email = $this->params->get('invalid_email', Lang::txt('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
 
 		// From
-		$jconfig = JFactory::getConfig();
-		$this->from_name     = @$this->params->get('from_name', JText::_('MOD_RAPID_CONTACT'));
+		$this->from_name     = @$this->params->get('from_name', Lang::txt('MOD_RAPID_CONTACT'));
 		$this->from_email    = @$this->params->get('from_email', 'rapid_contact@yoursite.com');
 
 		// To
-		$this->recipient     = $this->params->get('email_recipient', $jconfig->getValue('config.mailfrom'));
+		$this->recipient     = $this->params->get('email_recipient', Config::get('mailfrom'));
 		if (!trim($this->recipient))
 		{
-			$this->recipient = $jconfig->getValue('config.mailfrom');
+			$this->recipient = Config::get('mailfrom');
 		}
 
 		// Enable Anti-spam?
 		$this->enable_anti_spam = $this->params->get('enable_anti_spam', true);
-		$this->anti_spam_q   = $this->params->get('anti_spam_q', JText::_('MOD_RAPID_CONTACT_ANTIPSAM'));
+		$this->anti_spam_q   = $this->params->get('anti_spam_q', Lang::txt('MOD_RAPID_CONTACT_ANTIPSAM'));
 		$this->anti_spam_a   = $this->params->get('anti_spam_a', '2');
 
 		$this->mod_class_suffix = $this->params->get('moduleclass_sfx', '');
@@ -131,13 +130,13 @@ class Helper extends Module
 
 		if (isset($_POST['rp']))
 		{
-			$this->posted = JRequest::getVar('rp', array(), 'post');
+			$this->posted = Request::getVar('rp', array(), 'post');
 
 			if ($this->enable_anti_spam)
 			{
 				if (!isset($this->posted['anti_spam_answer']) || ($this->posted['anti_spam_answer'] != $this->anti_spam_a))
 				{
-					$this->error = JText::_('MOD_RAPID_CONTACT_INVALID_ANTIPSAM_ANSWER');
+					$this->error = Lang::txt('MOD_RAPID_CONTACT_INVALID_ANTIPSAM_ANSWER');
 				}
 			}
 			if ($this->posted['email'] === '')
@@ -152,7 +151,7 @@ class Helper extends Module
 			if ($this->error == '')
 			{
 				$mySubject  = Sanitize::clean($this->posted['subject']);
-				$myMessage  = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], JRequest::getVar('HTTP_REFERER', '', 'SERVER'), $jconfig->getValue('config.sitename'));
+				$myMessage  = Lang::txt('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], Request::getVar('HTTP_REFERER', '', 'SERVER'), Config::get('sitename'));
 				$myMessage .= "\n\n". Sanitize::clean($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];

@@ -35,7 +35,7 @@ defined('_JEXEC') or die;
 	<?php
 	if ($params->get('showHere', 1))
 	{
-		echo '<span class="showHere">' . JText::_('MOD_BREADCRUMBS_HERE') . '</span>';
+		echo '<span class="showHere">' . Lang::txt('MOD_BREADCRUMBS_HERE') . '</span>';
 	}
 
 	// Get rid of duplicated entries on trail including home page when using multilanguage
