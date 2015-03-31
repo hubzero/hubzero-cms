@@ -12,16 +12,23 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
 		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
 
+		// Get the format type for the request
+		$this->format = JRequest::getVar('format', 'application/json');
+
 		switch ($this->segments[0])
 		{
 			case 'index':		$this->index();				break;
 			case 'info':		$this->info();				break;
 			case 'screenshot':	$this->screenshot();		break;
-			case 'screenshots': $this->screenshots();       break;
+			case 'screenshots':	$this->screenshots();		break;
 			case 'invoke':		$this->invoke();			break;
 			case 'view':		$this->view();				break;
 			case 'stop':		$this->stop();				break;
 			case 'unshare':		$this->unshare();			break;
+
+			case 'run':         $this->run();               break;
+			case 'status':      $this->status();            break;
+			case 'output':      $this->output();            break;
 
 			case 'storage':		$this->storage();			break;
 			case 'purge':		$this->purge();				break;
@@ -535,6 +542,335 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		}
 	}
 
+	/**
+	 * Runs a rappture job.
+	 *
+	 * This is more than just invoking a tool. We're expecting a driver file to pass to the
+	 * tool to be picked up and automatically run by rappture.
+	 *
+	 * @return void
+	 */
+	private function run()
+	{
+		// Set message format
+		$this->setMessageType($this->format);
+
+		// Get the user_id and attempt to load user profile
+		$userid  = JFactory::getApplication()->getAuthn('user_id');
+		$profile = \Hubzero\User\Profile::getInstance($userid);
+
+		// Make sure we have a user
+		if ($profile === false) return $this->not_found();
+
+		// Grab tool name and version
+		$tool_name    = Request::getVar('app', '');
+		$tool_version = Request::getVar('version', 'default');
+
+		// Build application object
+		$app          = new stdClass;
+		$app->name    = trim(str_replace(':', '-', $tool_name));
+		$app->version = $tool_version;
+		$app->ip      = $_SERVER["REMOTE_ADDR"];
+
+		// Check to make sure we have an app to invoke
+		if (!$app->name)
+		{
+			$this->setMessage(array('success' => false, 'message' => 'A valid app name must be provided'), 404, 'Not Found');
+			return;
+		}
+
+		// Include needed tool libraries
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+
+		// Create database object
+		JLoader::import("joomla.database.table");
+		$database = JFactory::getDBO();
+
+		// Load the tool version
+		$tv = new ToolVersion($database);
+		switch ($app->version)
+		{
+			case 1:
+			case 'default':
+				$app->name = $tv->getCurrentVersionProperty($app->name, 'instance');
+			break;
+			case 'test':
+			case 'dev':
+				$app->name .= '_dev';
+			break;
+			default:
+				$app->name .= '_r' . $app->version;
+			break;
+		}
+
+		$app->toolname = $app->name;
+		if ($parent = $tv->getToolname($app->name))
+		{
+			$app->toolname = $parent;
+		}
+
+		// Check of the toolname has a revision indicator
+		$r = substr(strrchr($app->name, '_'), 1);
+		if (substr($r, 0, 1) != 'r' && substr($r, 0, 3) != 'dev')
+		{
+			$r = '';
+		}
+		// No version passed and no revision
+		if ((!$app->version || $app->version == 'default') && !$r)
+		{
+			// Get the latest version
+			$app->version = $tv->getCurrentVersionProperty($app->toolname, 'revision');
+			$app->name    = $app->toolname . '_r' . $app->version;
+		}
+
+		// Get the caption/session title
+		$tv->loadFromInstance($app->name);
+		$app->caption = stripslashes($tv->title);
+		$app->title   = stripslashes($tv->title);
+
+		// Make sure we have a valid tool
+		if ($app->title == '' || $app->toolname == '')
+		{
+			$this->errorMessage(404, 'The tool "' . $tool_name . '" does not exist on the HUB.');
+			return;
+		}
+
+		// Get tool access
+		$toolAccess = ToolsHelperUtils::getToolAccess($app->name, $profile->get('username'));
+
+		// Do we have access
+		if ($toolAccess->valid != 1)
+		{
+			$this->errorMessage(404, $toolAccess->error->message);
+			return;
+		}
+
+		// Log the launch attempt
+		ToolsHelperUtils::recordToolUsage($app->toolname, $profile->get('id'));
+
+		// Get the middleware database
+		$mwdb = ToolsHelperUtils::getMWDBO();
+
+		// Find out how many sessions the user is running
+		$ms = new MwSession($mwdb);
+		$jobs = $ms->getCount($profile->get('username'));
+
+		// Find out how many sessions the user is ALLOWED to run.
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+
+		$preferences = new ToolsTablePreferences($database);
+		$preferences->loadByUser($profile->get('uidNumber'));
+		if (!$preferences || !$preferences->id)
+		{
+			$default = $preferences->find('one', array('alias' => 'default'));
+			$preferences->user_id  = $profile->get('uidNumber');
+			$preferences->class_id = $default->id;
+			$preferences->jobs     = $default->jobs;
+			$preferences->store();
+		}
+		$remain = $preferences->jobs - $jobs;
+
+		//can we open another session
+		if ($remain <= 0)
+		{
+			$this->errorMessage(401, 'You are using all (' . $jobs . ') your available job slots.');
+			return;
+		}
+
+		// Check for an incoming driver file
+		if ($driver = Request::getVar('xml', false, 'post', 'none', JREQUEST_ALLOWRAW))
+		{
+			// Build a path to where the driver file will go through webdav
+			$base = DS . 'webdav' . DS . 'home';
+			$user = DS . $profile->get('username');
+			$data = DS . 'data';
+			$drvr = DS . '.queued_drivers';
+			$inst = DS . md5(time()) . '.xml';
+
+			// Real home directory
+			$homeDir = $profile->get('homeDirectory');
+
+			// First, make sure webdav is there and that the necessary folders are there
+			if (!JFolder::exists($base))
+			{
+				$this->setMessage(array('success' => false, 'message' => 'Home directories are unavailable'), 500, 'Server Error');
+				return;
+			}
+
+			// Now see if the user has a home directory yet
+			if (!JFolder::exists($homeDir))
+			{
+				// Try to create their home directory
+				require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+
+				if (!ToolsHelperUtils::createHomeDirectory($profile->get('username')))
+				{
+					$this->setMessage(array('success' => false, 'message' => 'Failed to create user home directory'), 500, 'Server Error');
+					return;
+				}
+			}
+
+			// Check for, and create if needed a session data directory
+			if (!JFolder::exists($base . $user . $data) && !JFolder::create($base . $user . $data, 0700))
+			{
+				$this->setMessage(array('success' => false, 'message' => 'Failed to create data directory'), 500, 'Server Error');
+				return;
+			}
+
+			// Check for, and create if needed a queued drivers directory
+			if (!JFolder::exists($base . $user . $data . $drvr) && !JFolder::create($base . $user . $data . $drvr, 0700))
+			{
+				$this->setMessage(array('success' => false, 'message' => 'Failed to create drivers directory'), 500, 'Server Error');
+				return;
+			}
+
+			// Write the driver file out
+			if (!JFile::write($base . $user . $data . $drvr . $inst, $driver))
+			{
+				$this->setMessage(array('success' => false, 'message' => 'Failed to create driver file'), 500, 'Server Error');
+				return;
+			}
+		}
+		else
+		{
+			$this->setMessage(array('success' => false, 'message' => 'No driver file provided'), 404, 'Not Found');
+			return;
+		}
+
+		// Now build params path that will be included with tool execution
+		// We know from the checks above that this directory already exists
+		$params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . $inst;
+		$encoded = ' params=' . rawurlencode($params) . ' ';
+		$command = 'start user=' . $profile->get('username') . " ip={$app->ip} app={$app->name} version={$app->version}" . $encoded;
+		$status  = ToolsHelperUtils::middleware($command, $output);
+
+		$this->setMessage(array('success' => true, 'session' => $output->session), 200, 'OK');
+	}
+
+	/**
+	 * Gets the status of the session identified
+	 *
+	 * @return void
+	 **/
+	private function status()
+	{
+		// Set message format
+		$this->setMessageType($this->format);
+
+		// Get profile instance and session number
+		$profile = \Hubzero\User\Profile::getInstance(JFactory::getApplication()->getAuthn('user_id'));
+		$session = Request::getInt('session_num', 0);
+
+		// Require authorization
+		if ($profile === false) return $this->not_found();
+
+		// Get the middleware database
+		$mwdb = ToolsHelperUtils::getMWDBO();
+
+		// Make sure it's a valid sesssion number and the user is/was the owner of it
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		$ms = new MwSession($mwdb);
+		if (!$ms->checkSession($session))
+		{
+			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
+			return;
+		}
+
+		// Check for specific sesssion entry, either sesssion# or session#-expired
+		$dir = DS . 'webdav' . DS . 'home' . DS . $profile->get('username') . DS . 'data' . DS .'sessions' . DS . $session;
+
+		// If the active session dir doesn't exist, look for an expired one
+		if (!is_dir($dir))
+		{
+			$dir .= '-expired';
+
+			if (!is_dir($dir))
+			{
+				$this->setMessage(array('success' => false, 'message' => 'No session directory found.'), 404, 'Not found');
+				return;
+			}
+		}
+
+		// Look for a rappture.status file in that dir
+		$statusFile = $dir . DS . 'rappture.status';
+		if (!is_file($statusFile))
+		{
+			$this->setMessage(array('success' => false, 'message' => 'No status file found.'), 404, 'Not found');
+			return;
+		}
+
+		// Read the file
+		$status   = file_get_contents($statusFile);
+		$parsed   = explode("\n", trim($status));
+		$finished = (strpos(end($parsed), '[status] exit') !== false) ? true : false;
+		$runFile  = '';
+
+		if ($finished)
+		{
+			$count = count($parsed);
+			preg_match('/\[status\] output saved in [a-zA-Z0-9\/]*\/(run[0-9]*\.xml)/', $parsed[($count-2)], $matches);
+			$runFile = (isset($matches[1])) ? $matches[1] : '';
+		}
+
+		$this->setMessage(array('success' => true, 'status' => $parsed, 'finished' => $finished, 'run_file' => $runFile), 200, 'OK');
+	}
+
+	/**
+	 * Grabs the output from a tool session
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	private function output()
+	{
+		// Set message format
+		$this->setMessageType($this->format);
+
+		// Get profile instance and session number
+		$profile = \Hubzero\User\Profile::getInstance(JFactory::getApplication()->getAuthn('user_id'));
+		$session = Request::getInt('session_num', 0);
+		$runFile = Request::getVar('run_file', false);
+
+		// Require authorization
+		if ($profile === false) return $this->not_found();
+
+		// Get the middleware database
+		$mwdb = ToolsHelperUtils::getMWDBO();
+
+		// Make sure it's a valid sesssion number and the user is/was the owner of it
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php';
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php';
+		$ms = new MwSession($mwdb);
+		if (!$ms->checkSession($session))
+		{
+			$this->setMessage(array('success' => false, 'message' => 'You can only check the status of your sessions.'), 401, 'Not authorized');
+			return;
+		}
+
+		// Check for specific sesssion entry
+		$dir = DS . 'webdav' . DS . 'home' . DS . $profile->get('username') . DS . 'data' . DS .'results' . DS . $session;
+
+		if (!is_dir($dir))
+		{
+			$this->setMessage(array('success' => false, 'message' => 'No results directory found.'), 404, 'Not found');
+			return;
+		}
+
+		$outputFile = $dir . DS . $runFile;
+
+		if (!is_file($outputFile))
+		{
+			$this->setMessage(array('success' => false, 'message' => 'No run file found.'), 404, 'Not found');
+			return;
+		}
+
+		$output = file_get_contents($outputFile);
+
+		$this->setMessage(array('success' => true, 'output' => $output), 200, 'OK');
+	}
 
 	/**
 	 * Method to view tool session
