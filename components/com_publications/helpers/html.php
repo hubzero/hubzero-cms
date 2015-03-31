@@ -593,6 +593,10 @@ class PublicationsHtml
 		foreach ($cats as $cat)
 		{
 			$name = key($cat);
+			if ($name == 'usage')
+			{
+				continue;
+			}
 			if ($name != '')
 			{
 				if ($alias)
