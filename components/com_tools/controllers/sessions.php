@@ -581,10 +581,12 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$preferences->loadByUser($this->juser->get('id'));
 		if (!$preferences || !$preferences->id)
 		{
-			$default = $preferences->find('one', array('alias' => 'default'));
+			include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'sessionclass.php');
+			$scls = new ToolsTableSessionClass($this->database);
+			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = $this->juser->get('id');
 			$preferences->class_id = $default->id;
-			$preferences->jobs     = $default->jobs;
+			$preferences->jobs     = ($default->jobs ? $default->jobs : 3);
 			$preferences->store();
 		}
 
