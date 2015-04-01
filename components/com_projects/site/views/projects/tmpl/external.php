@@ -110,7 +110,7 @@ $this->css('theme' . $theme . '.css');
 						)
 					);
 					$view->option 	= $this->option;
-					$view->project 	= $this->project;
+					$view->model 	= $this->model;
 					echo $view->loadTemplate();
 				 } ?>
 
