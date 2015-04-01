@@ -52,11 +52,11 @@ Toolbar::help('billboards');
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo $this->rows->count(); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows->toArray()); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING') . JHTML::_('grid.order', $this->rows->toArray()); ?></th>
+				<th scope="col" class="priority-1"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -87,19 +87,19 @@ Toolbar::help('billboards');
 				<td>
 					<?php echo $checked; ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php echo $row->collection->name; ?>
 				</td>
-				<td class="order">
+				<td class="order priority-3">
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
 				</td>
-				<td>
+				<td class="priority-1">
 					<a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>

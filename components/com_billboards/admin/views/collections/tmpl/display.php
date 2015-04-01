@@ -45,7 +45,7 @@ Toolbar::help('collections');
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->rows->copy()->total();?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
 		</thead>
@@ -60,7 +60,7 @@ Toolbar::help('collections');
 		<?php foreach ($this->rows as $row) : ?>
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><?php echo $row->id; ?></td>
+				<td class="priority-3"><?php echo $row->id; ?></td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape(stripslashes($row->name)); ?>
