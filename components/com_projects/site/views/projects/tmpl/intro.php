@@ -89,7 +89,7 @@ $rows = $this->model->entries('list', $this->filters);
 		<?php
 		if (count($rows) > 0) { ?>
 			<ul class="flow">
-				<?php foreach ($rows as $row) 
+				<?php foreach ($rows as $row)
 				{
 					$setup = ($row->inSetup()) ? Lang::txt('COM_PROJECTS_COMPLETE_SETUP') : '';
 				?>

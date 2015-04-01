@@ -111,7 +111,7 @@ if (!$this->getError()) {
 				}
 			 }
 		}
- 		?>
+?>
 		<p class="submitarea">
 			<?php echo $this->type == 'folder'
 				? '<input type="hidden" name="folder" value="'.$this->item.'" />'

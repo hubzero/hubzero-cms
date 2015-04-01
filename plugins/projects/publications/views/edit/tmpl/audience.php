@@ -96,7 +96,7 @@ $canedit = (
 				<ul id="c-audience" class="c-list">
 					<li id="nosel" <?php if ($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
 					<li id="c-sel-audience" class="prominent<?php if ($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>">
-					<?php if ($picked) 
+					<?php if ($picked)
 					{
 						$view = new \Hubzero\Component\View(array(
 							'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',

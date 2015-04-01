@@ -75,7 +75,7 @@ if (!$this->getError()) {
 	$this->data = preg_replace('/[^(\x20-\x7F)\x0A]*/','', $this->data);
 ?>
 	<pre><?php echo htmlentities($this->data); ?></pre>
-<?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) { 
+<?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) {
 		$source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->embed );
 	?>
 	<div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
