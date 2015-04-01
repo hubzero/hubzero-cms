@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed models
-require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log.php';
+require_once dirname(__DIR__) . DS . 'log.php';
 
 /**
  * Group log archive model class

@@ -40,5 +40,6 @@ class GroupsHelperDocumentRenderer
 	public $params  = null;
 
 	public function __construct()
-	{}
+	{
+	}
 }

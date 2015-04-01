@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class GroupsHelperView
 {
@@ -43,16 +43,16 @@ class GroupsHelperView
 	 * @param    $group    \Hubzero\User\Group Object
 	 * @return   string
 	 */
-	public static function getTab( $group )
+	public static function getTab($group)
 	{
 		//do we already have an instance of tab?
 		if (!isset(self::$_tab))
 		{
 			//get request vars
-			$tab = JRequest::getVar('active', 'overview');
+			$tab = Request::getVar('active', 'overview');
 
 			//get group plugin access
-			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess( $group );
+			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
 
 			// If active tab not overview and an not one of available tabs
 			if ($tab != 'overview' && !in_array($tab, array_keys($pluginAccess)))
@@ -108,14 +108,14 @@ class GroupsHelperView
 	 * @param    $authorized    Authorization level
 	 * @return   array
 	 */
-	public static function getBeforeSectionsContent( $group )
+	public static function getBeforeSectionsContent($group)
 	{
 		// Get group plugins
 		JPluginHelper::importPlugin('groups');
 		$dispatcher = JDispatcher::getInstance();
 
 		// are we authorized
-		$authorized = self::authorize( $group );
+		$authorized = self::authorize($group);
 
 		//get before group content
 		$beforeGroupContent = $dispatcher->trigger('onBeforeGroup', array(
@@ -133,28 +133,28 @@ class GroupsHelperView
 	 *
 	 * @return   array
 	 */
-	public static function getSectionsContent( $group )
+	public static function getSectionsContent($group)
 	{
 		//do we already have an instance of sections?
 		if (!isset(self::$_sections_content))
 		{
 			// are we authorized
-			$authorized = self::authorize( $group );
+			$authorized = self::authorize($group);
 
 			// Get group plugins
 			JPluginHelper::importPlugin('groups');
 			$dispatcher = JDispatcher::getInstance();
 
 			//get active tab
-			$tab = self::getTab( $group );
+			$tab = self::getTab($group);
 
 			//get reqest vars
-			$action = JRequest::getVar('action', '');
-			$limit  = JRequest::getInt('limit', 15);
-			$start  = JRequest::getInt('limitstart', 0);
+			$action = Request::getVar('action', '');
+			$limit  = Request::getInt('limit', 15);
+			$start  = Request::getInt('limitstart', 0);
 
 			//get group plugin access
-			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess( $group );
+			$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
 
 			// Limit the records if we're on the overview page
 			$limit = ($limit == 0) ? 'all' : $limit;
@@ -191,13 +191,13 @@ class GroupsHelperView
 	 * @param    $group    \Hubzero\User\Group Object
 	 * @return   string
 	 */
-	public static function displayTab( $group )
+	public static function displayTab($group)
 	{
 		//get group categories
 		$sections = self::getSections();
 
 		//get active tab
-		$tab = self::getTab( $group );
+		$tab = self::getTab($group);
 
 		//return title of active tab
 		foreach ($sections as $section)
@@ -214,7 +214,7 @@ class GroupsHelperView
 	 *
 	 * @return    string
 	 */
-	public static function displaySections( $group, $classOrId = 'id="page_menu"' )
+	public static function displaySections($group, $classOrId = 'id="page_menu"')
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
@@ -235,11 +235,11 @@ class GroupsHelperView
 		$view->group           = $group;
 		$view->juser           = JFactory::getUser();
 		$view->classOrId       = $classOrId;
-		$view->tab             = self::getTab( $group );
+		$view->tab             = self::getTab($group);
 		$view->sections        = self::getSections();
-		$view->sectionsContent = self::getSectionsContent( $group );
+		$view->sectionsContent = self::getSectionsContent($group);
 		$view->pages           = $pages;
-		$view->pluginAccess    = \Hubzero\User\Group\Helper::getPluginAccess( $group );
+		$view->pluginAccess    = \Hubzero\User\Group\Helper::getPluginAccess($group);
 
 		// return template
 		return $view->loadTemplate();
@@ -253,9 +253,6 @@ class GroupsHelperView
 	 */
 	public static function buildRecursivePageMenu($group, $pageArray)
 	{
-		// get user object
-		$juser = JFactory::getUser();
-
 		// get overview section access
 		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 
@@ -278,8 +275,8 @@ class GroupsHelperView
 				$cls  = (GroupsHelperPages::isPageActive($page)) ? 'active' : '';
 
 				//page menu item
-				if (($pageAccess == 'registered' && $juser->get('guest')) ||
-				  ($pageAccess == 'members' && !in_array($juser->get("id"), $group->get('members'))))
+				if (($pageAccess == 'registered' && User::isGuest()) ||
+				  ($pageAccess == 'members' && !in_array(User::get("id"), $group->get('members'))))
 				{
 					$out .= "<li class=\"protected\"><span class=\"page\">" . $page->get('title') . "</span></li>";
 				}
@@ -311,10 +308,10 @@ class GroupsHelperView
 	 * @param    $authorized    Authorization level
 	 * @return   void
 	 */
-	public static function displayBeforeSectionsContent( $group )
+	public static function displayBeforeSectionsContent($group)
 	{
 		//get before content
-		$beforeGroupContent = self::getBeforeSectionsContent( $group );
+		$beforeGroupContent = self::getBeforeSectionsContent($group);
 
 		//echo before group content
 		foreach ($beforeGroupContent as $bgc)
@@ -329,7 +326,7 @@ class GroupsHelperView
 	 *
 	 * @return    string
 	 */
-	public static function displaySectionsContent( $group, $overviewSection = null )
+	public static function displaySectionsContent($group, $overviewSection = null)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
@@ -338,11 +335,10 @@ class GroupsHelperView
 		));
 
 		// need objects
-		$juser      = JFactory::getUser();
 		$content    = '';
-		$tab        = self::getTab( $group );
+		$tab        = self::getTab($group);
 		$categories = self::getSections();
-		$sections   = self::getSectionsContent( $group );
+		$sections   = self::getSectionsContent($group);
 
 		// add overview section to sections
 		if ($overviewSection !== null)
@@ -360,7 +356,7 @@ class GroupsHelperView
 		}
 
 		//get true tab
-		$trueTab = JRequest::getVar('active', 'overview');
+		$trueTab = Request::getVar('active', 'overview');
 
 		// do overview page checks
 		if ($tab == 'overview' && $trueTab != 'login')
@@ -372,13 +368,13 @@ class GroupsHelperView
 			$overviewPageAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
 
 			//if user isnt logged in and access level is set to registered users or members only
-			if ($juser->get('guest') && ($overviewPageAccess == 'registered' || $overviewPageAccess == 'members'))
+			if (User::isGuest() && ($overviewPageAccess == 'registered' || $overviewPageAccess == 'members'))
 			{
 				$userHasAccess = false;
 			}
 
 			//if the user isnt a group member or joomla admin
-			if (!in_array($juser->get('id'), $group->get('members')) && $overviewPageAccess == 'members')
+			if (!in_array(User::get('id'), $group->get('members')) && $overviewPageAccess == 'members')
 			{
 				$userHasAccess = false;
 			}
@@ -389,7 +385,7 @@ class GroupsHelperView
 				// if the group is not supposed to be discoverable throw 404
 				if ($group->get('discoverability') == 1)
 				{
-					JError::raiseError(404, JText::_('Group Access Denied'));
+					App::abort(404, Lang::txt('Group Access Denied'));
 					return;
 				}
 
@@ -412,7 +408,7 @@ class GroupsHelperView
 	 *
 	 * @return    string
 	 */
-	public static function displayToolbar( $group, $classOrId = 'id="group_options"', $displayLogoutLink = false )
+	public static function displayToolbar($group, $classOrId = 'id="group_options"', $displayLogoutLink = false)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
@@ -422,7 +418,7 @@ class GroupsHelperView
 
 		// pass vars to view
 		$view->group      = $group;
-		$view->juser      = JFactory::getUser();
+		$view->juser      = User::getRoot();
 		$view->classOrId  = $classOrId;
 		$view->logoutLink = $displayLogoutLink;
 
@@ -450,12 +446,12 @@ class GroupsHelperView
 		jimport('joomla.filesystem.folder');
 
 		// load com_groups params to get group folder path
-		$params = JComponentHelper::getParams('com_groups');
+		$params = Component::params('com_groups');
 		$base = $params->get('uploadpath', '/site/groups');
 		$base = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template';
 
 		// get all php files in template directory
-		$files = JFolder::files( JPATH_ROOT . $base, '\\.php', false, true );
+		$files = JFolder::files(JPATH_ROOT . $base, '\\.php', false, true);
 
 		// check to see if any of our files are page templates
 		foreach ($files as $file)
@@ -468,7 +464,7 @@ class GroupsHelperView
 			}
 
 			// get file contents
-			$contents = file_get_contents( $file );
+			$contents = file_get_contents($file);
 
 			// if template is defined
 			if (preg_match('|Template Name:(.*)$|mi', $contents, $header))
@@ -558,25 +554,22 @@ class GroupsHelperView
 	 *
 	 * @return    string
 	 */
-	public static function authorize( $group, $checkOnlyMembership = true )
+	public static function authorize($group, $checkOnlyMembership = true)
 	{
-		//get user objec
-		$juser = JFactory::getUser();
-
 		//check to see if they are a site admin
-		if (!$checkOnlyMembership && $juser->authorise('core.admin', 'com_groups'))
+		if (!$checkOnlyMembership && User::authorise('core.admin', 'com_groups'))
 		{
 			return 'admin';
 		}
 
 		//check to see if they are a group manager
-		if (in_array($juser->get('id'), $group->get('managers')))
+		if (in_array(User::get('id'), $group->get('managers')))
 		{
 			return 'manager';
 		}
 
 		//check to see if they are a group member
-		if (in_array($juser->get('id'), $group->get('members')))
+		if (in_array(User::get('id'), $group->get('members')))
 		{
 			return 'member';
 		}
@@ -590,12 +583,11 @@ class GroupsHelperView
 	 *
 	 * @return     array
 	 */
-	public static function attachCustomErrorHandler( $group )
+	public static function attachCustomErrorHandler($group)
 	{
 		// are we a super group?
 		// and do we have an error template?
-		if (!$group->isSuperGroup()
-			|| !GroupsHelperTemplate::hasTemplate($group, 'error'))
+		if (!$group->isSuperGroup() || !GroupsHelperTemplate::hasTemplate($group, 'error'))
 		{
 			return;
 		}
@@ -610,16 +602,16 @@ class GroupsHelperView
 	 *
 	 * @return     array
 	 */
-	public static function handleCustomError( JException $error )
+	public static function handleCustomError(JException $error)
 	{
 		// get error template
 		// must wrap in output buffer to capture contents since returning content through output method returns to the
 		// method that called handleSuperGroupError with call_user_func
 		ob_start();
 		$template = new GroupsHelperTemplate();
-		$template->set('group', \Hubzero\User\Group::getInstance(JRequest::getVar('cn', '')))
-			     ->set('tab', JRequest::getVar('active','overview'))
-			     ->set('error', $error )
+		$template->set('group', \Hubzero\User\Group::getInstance(Request::getVar('cn', '')))
+			     ->set('tab', Request::getVar('active','overview'))
+			     ->set('error', $error)
 			     ->parse()
 			     ->render();
 
@@ -652,16 +644,15 @@ class GroupsHelperView
 	 */
 	public static function superGroupLogin($group)
 	{
-		//get user and application objects
-		$juser = JFactory::getUser();
-		$app   = JFactory::getApplication();
+		//get application objects
+		$app = JFactory::getApplication();
 
 		// if user is already logged in go to
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$app->redirect(
-					JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')),
-					JText::sprintf('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', $juser->get('name'), $juser->get('email')),
+					Route::url('index.php?option=com_groups&cn=' . $group->get('cn')),
+					Lang::txt('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', User::get('name'), User::get('email')),
 					'warning'
 				);
 		}
@@ -677,7 +668,7 @@ class GroupsHelperView
 		if ($group->isSuperGroup())
 		{
 			$base = $group->getBasePath();
-			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+			$view->addTemplatePath(PATH_APP . $base . DS . 'template');
 		}
 
 		return $view->loadTemplate();
@@ -700,10 +691,10 @@ class GroupsHelperView
 		}
 
 		// get group upload path
-		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+		$uploadPath = Component::params('com_groups')->get('uploadpath');
 
 		// build path to group component
-		$templateComponentFolder = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'components' . DS . 'com_' . $tab;
+		$templateComponentFolder = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'components' . DS . 'com_' . $tab;
 		$templateComponentFile   = $templateComponentFolder . DS . $tab . '.php';
 
 		// do we have a group component?
@@ -735,7 +726,7 @@ class GroupsHelperView
 		if ($group->isSuperGroup())
 		{
 			$base = $group->getBasePath();
-			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+			$view->addTemplatePath(PATH_APP . $base . DS . 'template');
 		}
 
 		$view->content = $componentContent;
@@ -747,7 +738,7 @@ class GroupsHelperView
 	 *
 	 * @return     array
 	 */
-	public static function superGroupPhpPages( $group )
+	public static function superGroupPhpPages($group)
 	{
 		// var to hold content
 		$phpPageContent = null;
@@ -760,7 +751,7 @@ class GroupsHelperView
 
 		// get URI path
 		$path = JURI::getInstance()->getPath();
-		$path = trim(str_replace('groups'.DS.$group->get('cn'), '', $path), DS);
+		$path = trim(str_replace('groups' . DS . $group->get('cn'), '', $path), DS);
 
 		// make sure we have a path. if no path means were attempting to access the home page
 		if ($path == '')
@@ -769,10 +760,10 @@ class GroupsHelperView
 		}
 
 		// get group upload path
-		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+		$uploadPath = Component::params('com_groups')->get('uploadpath');
 
 		// build path to php page in template
-		$templatePhpPagePath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'pages' . DS . $path . '.php';
+		$templatePhpPagePath = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'pages' . DS . $path . '.php';
 
 		// if the file is not a valid path
 		if (!is_file($templatePhpPagePath))
@@ -821,7 +812,7 @@ class GroupsHelperView
 		if ($group->isSuperGroup())
 		{
 			$base = $group->getBasePath();
-			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+			$view->addTemplatePath(PATH_APP . $base . DS . 'template');
 		}
 
 		$view->content = $phpPageContent;

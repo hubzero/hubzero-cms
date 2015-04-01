@@ -1,0 +1,201 @@
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+$groupCname = Request::getVar('cn', '');
+?>
+
+<h1>Group Pages</h1>
+
+<h3>Accessing the Page Manager</h3>
+<p>The page manager is restricted to group managers and <a href="<?php echo Route::url('index.php?option=com_help&component=groups&page=membership'); ?>#member-roles">group roles</a> with permissions allowing page editing.</p>
+<ol>
+	<li>Click on the "Manage Group Pages" link in the group manager toolbar, to get to the page manager</li>
+</ol>
+<div class="grid">
+	<div class="col span3">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/toolbar.png">
+			<figcaption>Group Manager Toolbar</figcaption>
+		</figure>
+	</div>
+	<div class="col span8 ">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/manager.png">
+			<figcaption>Group Page Manager</figcaption>
+		</figure>
+	</div>
+	<div class="col span1 omega">
+	</div>
+</div>
+
+<hr />
+
+<h3>Searching &amp; Filtering Pages</h3>
+<p>With the new page manager, you are now able to filter and search group pages. You can filter pages based on page category and search on page title.</p>
+<figure>
+	<img src="/components/com_groups/help/images/pages/search&filter.png">
+	<figcaption>Page Filtering and Searching</figcaption>
+</figure>
+
+<hr />
+
+<h3>Adding Pages</h3>
+<p>Groups pages are a great way to add extra content pages to your group. Add as many pages as you would like.</p>
+<ol>
+	<li>Navigate to the page manager, as shown above.</li>
+	<li>Click the "New Page" button in the toolbar</li>
+	<li>Fill in all required fields and click the "Save Page" button in the right column.</li>
+	<li>You now have a new group page!!</li>
+</ol>
+
+<hr />
+
+<h3>Editing Pages</h3>
+<ol>
+	<li>Navigate to the page manager.</li>
+	<li>Click on either the "Manage Page" button or hover over the arrow next to the button to see more options, including "Edit Page".</li>
+	<li>One of the new features with the page manager is the page content WYSIWYG editor. It now uses CKEditor and HTML to manage your page content.</li>
+	<li>Modify any of the previously entered values, then click the "Save Page" button in the right column.</li>
+	<li>You have edited a group page!!</li>
+</ol>
+<figure>
+	<img src="/components/com_groups/help/images/pages/edit.png">
+	<figcaption>Edit Group Page</figcaption>
+</figure>
+
+<hr />
+
+<h3>Uploading &amp; Inserting Images/Files</h3>
+<p>All images uploaded through the group can be accessed via the edit interface or page manager and can be inserted into any group page.</p>
+
+<h6>Uploading Assets</h6>
+<ol>
+	<li>Navigate to the groups "Manage Pages" interface.</li>
+	<li>Click the "Upload Images/Files" button in the header on the right; a popup should come up displaying a file browser.</li>
+	<li>From here you can upload, rename, move, and delete images or files.</li>
+</ol>
+
+<h6>Inserting Assets</h6>
+<ol>
+	<li>Inserting an image or file into a group page is easy though the WYSIWYG editor.</li>
+	<li>When editing any group page, click on the image or link icon buttons in the editor toolbar.</li>
+	<li>If you know the url to the image/file, you can enter it in the url field, otherwise click "browse server".</li>
+	<li>This popup should look familiar, its the same popup for uploading assets. As you can see, you can also upload assets here.</li>
+	<li>Find the image/file you want to use, located in the "uploads" folder. Click on the row for that image/file. You should see a number of buttons, the "Insert File" button will close the popup and update the url field with the file chosen. You should also see a preview of the image if thats what your inserting.</li>
+	<li>Now just click "Ok" and you should see it appear in the editor.</li>
+	
+</ol>
+
+<h6>Editing Assets</h6>
+<ol>
+	<li>You can edit any image/file by double clicking the image/file in the editor.</li>
+	<li>In the popup you can update the url field directly or click the "browse server" button to pick from your uploaded assets.</li>
+	<li>Once you've selected the image/file you want to insert click "Ok" the the image/file should be updated in the editor.</li>
+</ol>
+
+<hr />
+
+<h3>Page Versions</h3>
+<p>Everytime a group page is saved, and the page content has changed, a new page version is created to prevent overriding other editors changes.</p>
+<ol>
+	<li>Navigate to the page manager.</li>
+	<li>Hover over the down arrow next to the "Manage Page" button. A dropdown should show you a number of options, one being "Version Histroy".</li>
+	<li>Clicking that link will take you to a page showing all the versions of that page, who created each version and when, who approved each version and when (if needed approval). There is also a button to view the raw HTML code of that page version.</li>
+</ol>
+<figure>
+	<img src="/components/com_groups/help/images/pages/versions.png">
+	<figcaption>Group Page Versions</figcaption>
+</figure>
+
+<hr />
+
+<h3>Publishing/Unpublishing Pages</h3>
+<ol>
+	<li>Navigate to the page manager.</li>
+	<li>You can publish/unpublish pages directly on the page manager, by clicking on the green checkmark or the red ban cirle icon.</li>
+	<li>You can also publish/unpublish by editing a page and changing its published state and then saving the page.</li>
+</ol>
+
+<hr />
+
+<h3>Reordering Pages</h3>
+<ol>
+	<li>Navigate to the page manager.</li>
+	<li>You can reorder pages directly on the page manager, by clicking and dragging a page up or down.</li>
+	<li>You can also reorder a page through the edit page interface. Simply change its ordering in the dropdown and save the page.</li>
+</ol>
+<div class="grid">
+	<div class="col span3">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/reorder.png">
+			<figcaption>Page Reordering Grabber</figcaption>
+		</figure>
+	</div>
+	<div class="col span8 ">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/reordering.png">
+			<figcaption>Group Pages Reordering</figcaption>
+		</figure>
+	</div>
+	<div class="col span1 omega">
+	</div>
+</div>
+
+<hr />
+
+<a name="grouphomepageoverride"></a>
+<h3>Group Home Page</h3>
+<p>It is now possible to override the default group overview page shown below, with any group page.</p>
+<ol>
+	<li>Navigate to the page manager. 
+		<?php if ($groupCname != '') : ?>
+			<a target="_blank" onclick="window.opener.location=this.href;return false;" href="<?php echo Route::url('index.php?option=com_groups&cn='.$groupCname.'&task=pages'); ?>">Open the group page manager</a>
+		<?php endif; ?>
+	</li>
+	<li>You can set or unset the group home page directly from the page manager, by clicking the home icon. When the icon is yellow, that means that page is set as the home page.</li>
+	<li>You can also set the group home page through the edit page interface. Change the "Home Page" option under "Settings" to the desired value and save the page.</li>
+</ol>
+<div class="grid">
+	<div class="col span6">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/default.png">
+			<figcaption>Default Overview Page</figcaption>
+		</figure>
+	</div>
+	<div class="col span6 omega">
+		<figure>
+			<img src="/components/com_groups/help/images/pages/override.png">
+			<figcaption>Group Overview Page Overridden</figcaption>
+		</figure>
+	</div>
+</div>

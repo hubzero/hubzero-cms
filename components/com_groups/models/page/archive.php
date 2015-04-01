@@ -76,7 +76,7 @@ class GroupsModelPageArchive extends JObject
 	public function __construct()
 	{
 		$this->_db    = JFactory::getDBO();
-		$this->_group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', ''));
+		$this->_group = \Hubzero\User\Group::getInstance(Request::getVar('cn', ''));
 	}
 
 	/**

@@ -1467,7 +1467,7 @@ class Group extends Object
 		$juser = \JFactory::getUser();
 
 		//default logo
-		$default_logo = DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
+		$default_logo = DS . 'components' . DS . 'com_groups' . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'group_default_logo.png';
 
 		//logo link - links to group overview page
 		$link = \JRoute::_('index.php?option=com_groups&cn=' . $this->get('cn'));
@@ -1476,7 +1476,7 @@ class Group extends Object
 		$path = '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
 
 		//if logo exists and file is uploaded use that logo instead of default
-		$src = ($this->get('logo') != '' && is_file(JPATH_ROOT . $path)) ? $path : $default_logo;
+		$src = ($this->get('logo') != '' && is_file(PATH_APP . $path)) ? $path : $default_logo;
 
 		//check to make sure were a member to show logo for hidden group
 		$members_and_invitees = array_merge($this->get('members'), $this->get('invitees'));
@@ -1489,7 +1489,7 @@ class Group extends Object
 		$what = strtolower($what);
 		if ($what == 'size')
 		{
-			return getimagesize(JPATH_ROOT . $src);
+			return getimagesize(PATH_APP . $src);
 		}
 
 		if ($what == 'path')
@@ -1507,7 +1507,7 @@ class Group extends Object
 	 */
 	public function getBasePath()
 	{
-		$groupParams = \JComponentHelper::getParams('com_groups');
+		$groupParams = \Component::params('com_groups');
 		$uploadPath  = $groupParams->get('uploadpath', '/site/groups');
 		return $uploadPath . DS . $this->get('gidNumber');
 	}
@@ -1534,7 +1534,7 @@ class Group extends Object
 		}
 
 		// build link
-		$link  = \JRoute::_('index.php?option=com_groups&cn=' . $this->get('cn'));
+		$link  = \Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 		$link .= DS . ucfirst($type) . ':' . implode(DS, $segments);
 
 		// return link
@@ -1564,7 +1564,7 @@ class Group extends Object
 					'scope'    => '', //$this->get('cn') . DS . 'wiki',
 					'pagename' => $this->get('cn'),
 					'pageid'   => 0, //$this->get('gidNumber'),
-					'filepath' => \JComponentHelper::getParams('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
+					'filepath' => \Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
 					'domain'   => $this->get('cn'),
 					'camelcase' => 0
 				);

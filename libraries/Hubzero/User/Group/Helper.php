@@ -567,8 +567,8 @@ class Helper
 		if (empty($config))
 		{
 			// build path to config file
-			$uploadPath = \JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
-			$configPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'config' . DS . 'db.php';
+			$uploadPath = \Component::params( 'com_groups' )->get('uploadpath');
+			$configPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'config' . DS . 'db.php';
 
 			// make sure file exists
 			if (!file_exists($configPath))

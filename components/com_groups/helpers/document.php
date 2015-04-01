@@ -52,7 +52,7 @@ class GroupsHelperDocument extends \Hubzero\Base\Object
 		// check to make sure we have content
 		if (!$this->get('document'))
 		{
-			JError::raiseError(406, 'GroupsHelperDocument: Requires document to parse');
+			App::abort(406, 'GroupsHelperDocument: Requires document to parse');
 		}
 
 		// parse content

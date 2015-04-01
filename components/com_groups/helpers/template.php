@@ -51,11 +51,11 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		// check to make sure we have group
 		if (!$this->get('group'))
 		{
-			JError::raiseError(406, 'Missing Needed Hubzero Group Object');
+			App::abort(406, 'Missing Needed Hubzero Group Object');
 		}
 
 		// define base path
-		$params = JComponentHelper::getParams('com_groups');
+		$params = Component::params('com_groups');
 		$base   = $params->get('uploadpath', '/site/groups');
 		$base   = DS . trim($base, DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS;
 
@@ -115,7 +115,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 			// get the template we want to load
 			foreach ($possibleTemplates as $possibleTemplate)
 			{
-				if (file_exists(JPATH_ROOT . $possibleTemplate))
+				if (file_exists(PATH_APP . $possibleTemplate))
 				{
 					$template = $possibleTemplate;
 					break;
@@ -131,12 +131,12 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 			//we we dont have a super group template
 			if ($template === null)
 			{
-				JError::raiseError(500, 'Missing "Super Group" template file.');
+				App::abort(500, 'Missing "Super Group" template file.');
 				return;
 			}
 
 			// load the template & set docuement
-			$this->set('document', $this->_load( JPATH_ROOT . $template ));
+			$this->set('document', $this->_load(PATH_APP . $template));
 		}
 
 		// return this for chainability
@@ -152,7 +152,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 	public static function hasTemplate($group, $template)
 	{
 		// define base path
-		$params = JComponentHelper::getParams('com_groups');
+		$params = Component::params('com_groups');
 		$base   = $params->get('uploadpath', '/site/groups');
 		$base   = DS . trim($base, DS) . DS . $group->get('gidNumber') . DS . 'template' . DS;
 
@@ -163,7 +163,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 		}
 
 		// does the file exist?
-		return file_exists(JPATH_ROOT . $base . $template);
+		return file_exists(PATH_APP . $base . $template);
 	}
 
 	/**
@@ -171,7 +171,7 @@ class GroupsHelperTemplate extends GroupsHelperDocument
 	 *
 	 * @return    void
 	 */
-	private function _load( $template )
+	private function _load($template)
 	{
 		ob_start();
 		require_once $template;

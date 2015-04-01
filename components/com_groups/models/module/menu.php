@@ -74,12 +74,12 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 	{
 		if ($this->get('pageid') == 0)
 		{
-			return  JText::_('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_ALL_PAGES');
+			return  Lang::txt('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_ALL_PAGES');
 		}
 
 		if ($this->get('pageid') == -1)
 		{
-			return  JText::_('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_NO_PAGES');
+			return  Lang::txt('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_NO_PAGES');
 		}
 
 		// new group page

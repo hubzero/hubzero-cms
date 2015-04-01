@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed jtables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
+require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
 
 /**
  * Group page version model class
@@ -146,14 +146,14 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 				if ($content == null)
 				{
 					// get group
-					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', JRequest::getVar('gid', '')));
+					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
 
 					// get base path
 					$basePath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
 
 					// build config
 					$config = array(
-						'option'         => JRequest::getCmd('option', 'com_groups'),
+						'option'         => Request::getCmd('option', 'com_groups'),
 						'scope'          => '',
 						'pagename'       => $group->get('cn'),
 						'pageid'         => 0,
@@ -254,6 +254,6 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 				$url .= '&controller=pages&task=raw&pageid=' . $page->get('id') . '&version=' . $this->get('version');
 		}
 
-		return JRoute::_($url);
+		return Route::url($url);
 	}
 }

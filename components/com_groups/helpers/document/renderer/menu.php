@@ -40,6 +40,6 @@ class GroupsHelperDocumentRendererMenu extends GroupsHelperDocumentRenderer
 	 */
 	public function render()
 	{
-		return GroupsHelperView::displaySections( $this->group, 'class="cf"' );
+		return GroupsHelperView::displaySections($this->group, 'class="cf"');
 	}
 }

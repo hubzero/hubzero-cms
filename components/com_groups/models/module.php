@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed tables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.php';
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'module.menu.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'module.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'module.menu.php';
 
 /**
  * Group module model class
@@ -289,14 +289,14 @@ class GroupsModelModule extends \Hubzero\Base\Model
 				if ($content == null)
 				{
 					// get group
-					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', JRequest::getVar('gid', '')));
+					$group = \Hubzero\User\Group::getInstance(Request::getVar('cn', Request::getVar('gid', '')));
 
 					// get base path 
 					$basePath = JComponentHelper::getparams('com_groups')->get('uploadpath');
 
 					// build config
 					$config = array(
-						'option'         => JRequest::getCmd('option', 'com_groups'),
+						'option'         => Request::getCmd('option', 'com_groups'),
 						'scope'          => '',
 						'pagename'       => $group->get('cn'),
 						'pageid'         => 0,

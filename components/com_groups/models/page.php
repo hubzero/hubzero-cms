@@ -32,12 +32,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include tables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.php';
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.hit.php';
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.hit.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.version.php';
 
 // include models
-require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version' . DS . 'archive.php';
+require_once dirname(__DIR__) . DS . 'models' . DS . 'page' . DS . 'version' . DS . 'archive.php';
 
 /**
  * Group page model class
@@ -296,7 +296,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$pageLink = '';
 		if ($includeBase)
 		{
-			$pageLink = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
+			$pageLink = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 		}
 
 		// get our parents

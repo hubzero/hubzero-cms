@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // include needed jtables
-require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'log.php';
+require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 
 /**
  * Group log model class

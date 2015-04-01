@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class GroupsHelperPages
 {
@@ -86,7 +86,7 @@ class GroupsHelperPages
 	 * @param    Object    $group    \Hubzero\User\Group Object
 	 * @return   String
 	 */
-	public static function getDefaultHomePage( $group )
+	public static function getDefaultHomePage($group)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
@@ -135,11 +135,11 @@ class GroupsHelperPages
 		$uri  = JURI::getInstance();
 
 		// get group
-		$cn = JRequest::getVar('cn','');
+		$cn = Request::getVar('cn','');
 		$group = Hubzero\User\Group::getInstance($cn);
 
 		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
-		$base = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
+		$base = Route::url('index.php?option=com_groups&cn=' . $group->get('cn'));
 
 		if (preg_match("/\/?groups\/(.*?)/i", $uri->getPath()))
 		{
@@ -245,7 +245,7 @@ class GroupsHelperPages
 	 *
 	 * @return void
 	 */
-	public static function isPageApprover( $username = null)
+	public static function isPageApprover($username = null)
 	{
 		$username  = (!is_null($username)) ? $username : JFactory::getUser()->get('username');
 		return (in_array($username, self::getPageApprovers())) ? true : false;
@@ -258,7 +258,7 @@ class GroupsHelperPages
 	 */
 	public static function getPageApprovers()
 	{
-		$approvers = JComponentHelper::getParams('com_groups')->get('approvers', '');
+		$approvers = Component::params('com_groups')->get('approvers', '');
 		return array_map("trim", explode(',', $approvers));
 	}
 
@@ -275,7 +275,7 @@ class GroupsHelperPages
 
 		foreach ($approvers as $approver)
 		{
-			$profile = \Hubzero\User\Profile::getInstance( $approver );
+			$profile = \Hubzero\User\Profile::getInstance($approver);
 			if ($profile)
 			{
 				$emails[$profile->get('email')] = $profile->get('name');
@@ -292,13 +292,13 @@ class GroupsHelperPages
 	 * @param     $object    object needing approval
 	 * @return    void
 	 */
-	public static function sendApproveNotification( $type, $object )
+	public static function sendApproveNotification($type, $object)
 	{
 		// build title
-		$title = JText::sprintf('Page "%s" Requires Approval', $object->get('title'));
+		$title = Lang::txt('Page "%s" Requires Approval', $object->get('title'));
 		if ($type == 'module')
 		{
-			$title = JText::sprintf('Module "%s" Requires Approval', $object->get('title'));
+			$title = Lang::txt('Module "%s" Requires Approval', $object->get('title'));
 		}
 
 		// get approvers w/ emails
@@ -308,11 +308,11 @@ class GroupsHelperPages
 		$jconfig = JFactory::getConfig();
 
 		// subject details
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
+		$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
 		// from details
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups'),
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups'),
 			'email' => $jconfig->getValue('config.mailfrom')
 		);
 
@@ -321,9 +321,9 @@ class GroupsHelperPages
 			'name'   => 'emails',
 			'layout' => $type
 		));
-		$eview->option     = JRequest::getCmd('option', 'com_groups');;
-		$eview->controller = JRequest::getCmd('controller', 'groups');
-		$eview->group      = \Hubzero\User\Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
+		$eview->option     = Request::getCmd('option', 'com_groups');;
+		$eview->controller = Request::getCmd('controller', 'groups');
+		$eview->group      = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
 		$html = str_replace("\n", "\r\n", $html);
@@ -349,17 +349,17 @@ class GroupsHelperPages
 	 * @param     $object    object approved
 	 * @return    void
 	 */
-	public static function sendApprovedNotification( $type, $object )
+	public static function sendApprovedNotification($type, $object)
 	{
 		// build title
-		$title = JText::sprintf('Page "%s" Approved', $object->get('title'));
+		$title = Lang::txt('Page "%s" Approved', $object->get('title'));
 		if ($type == 'module')
 		{
-			$title = JText::sprintf('Module "%s" Approved', $object->get('title'));
+			$title = Lang::txt('Module "%s" Approved', $object->get('title'));
 		}
 
 		// get \Hubzero\User\Group object
-		$group = \Hubzero\User\Group::getInstance(JRequest::getCmd('cn', JRequest::getCmd('gid')));
+		$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn', Request::getCmd('gid')));
 
 		// array to hold manager emails
 		$managers = array();
@@ -367,7 +367,7 @@ class GroupsHelperPages
 		// get all manager email addresses
 		foreach ($group->get('managers') as $m)
 		{
-			$profile = \Hubzero\User\Profile::getInstance( $m );
+			$profile = \Hubzero\User\Profile::getInstance($m);
 			if ($profile)
 			{
 				$managers[$profile->get('email')] = $profile->get('name');
@@ -378,23 +378,23 @@ class GroupsHelperPages
 		$jconfig = JFactory::getConfig();
 
 		// subject details
-		$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups') . ', ' . $title;
+		$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
 		// from details
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Groups'),
+			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups'),
 			'email' => $jconfig->getValue('config.mailfrom')
 		);
 
 		// build html email
 		$eview = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups',
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'site',
 			'name'   => 'emails',
 			'layout' => $type
 		));
 
-		$eview->option     = JRequest::getCmd('option', 'com_groups');;
-		$eview->controller = JRequest::getCmd('controller', 'groups');
+		$eview->option     = Request::getCmd('option', 'com_groups');;
+		$eview->controller = Request::getCmd('controller', 'groups');
 		$eview->group      = $group;
 		$eview->object     = $object;
 		$html = $eview->loadTemplate();
@@ -596,7 +596,7 @@ class GroupsHelperPages
 	 * @param    Object    $page     GroupsModelPage Object
 	 * @return   String
 	 */
-	public static function displayPage( $group, $page, $markHit = true )
+	public static function displayPage($group, $page, $markHit = true)
 	{
 		// create view object
 		$view = new \Hubzero\Component\View(array(
@@ -621,7 +621,7 @@ class GroupsHelperPages
 		// stops from displaying pages that dont exist
 		if ($page === null)
 		{
-			JError::raiseError(404, 'Group Page Not Found');
+			App::abort(404, 'Group Page Not Found');
 			return;
 		}
 
@@ -644,7 +644,7 @@ class GroupsHelperPages
 			}
 
 			// show 404
-			JError::raiseError(404, 'Group Page Not Found');
+			App::abort(404, 'Group Page Not Found');
 			return;
 		}
 
@@ -652,14 +652,14 @@ class GroupsHelperPages
 		// mark page hit
 		if ($markHit)
 		{
-			$groupsTablePageHit = new GroupsTablePageHit( $database );
+			$groupsTablePageHit = new GroupsTablePageHit($database);
 			$pageHit            = new stdClass;
 			$pageHit->gidNumber = $group->get('gidNumber');
 			$pageHit->pageid    = $page->get('id');
 			$pageHit->userid    = $juser->get('id');
 			$pageHit->date      = date('Y-m-d H:i:s');
 			$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
-			$groupsTablePageHit->save( $pageHit );
+			$groupsTablePageHit->save($pageHit);
 		}
 
 		// parse old wiki content
@@ -678,7 +678,7 @@ class GroupsHelperPages
 		$view->page       = $page;
 		$view->version    = $version;
 		$view->authorized = $authorized;
-		$view->config     = JComponentHelper::getParams('com_groups');
+		$view->config     = Component::params('com_groups');
 
 		// return rendered template
 		return $view->loadTemplate();
@@ -692,13 +692,13 @@ class GroupsHelperPages
 	 * @param    BOOL      $fullparse    Fully parse wiki content
 	 * @return   String
 	 */
-	public static function parseWiki( $group, $content, $fullparse = true )
+	public static function parseWiki($group, $content, $fullparse = true)
 	{
 		// do we have wiki content that needs parsing?
 		if (self::_isWiki($content))
 		{
 			// create path
-			$path = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+			$path = JComponentHelper::getparams('com_groups')->get('uploadpath');
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
 
@@ -764,7 +764,7 @@ class GroupsHelperPages
 	 *
 	 * @return 		void
 	 */
-	private static function parse( $group, $page, $document )
+	private static function parse($group, $page, $document)
 	{
 		// create new group document helper
 		$groupDocument = new GroupsHelperDocument();
@@ -777,7 +777,7 @@ class GroupsHelperPages
 		}
 
 		//get config
-		$config = JComponentHelper::getParams('com_groups');
+		$config = Component::params('com_groups');
 
 		// are we allowed to display group modules
 		if (!$group->isSuperGroup() && !$config->get('page_modules', 0))
@@ -831,14 +831,14 @@ class GroupsHelperPages
 	 * @param    $page   Group page object
 	 * @return   void
 	 */
-	public static function generatePreview( $page, $version = 0, $contentOnly = false )
+	public static function generatePreview($page, $version = 0, $contentOnly = false)
 	{
 		// get groups
 		$gidNumber = $page->get('gidNumber');
 		$group     = \Hubzero\User\Group::getInstance($gidNumber);
 
 		//get config
-		$config = JComponentHelper::getParams('com_groups');
+		$config = Component::params('com_groups');
 
 		// load page version
 		$content = $page->version($version)->content('parsed');
