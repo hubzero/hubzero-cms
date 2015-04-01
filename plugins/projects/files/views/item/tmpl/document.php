@@ -36,11 +36,13 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 
 ?>
 	<tr class="mini faded mline">
+		<?php if ($this->model->access('content')) { ?>
 		<td>
 			<?php if ($file['untracked'] == 0) { ?>
 			<input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if ($this->publishing && $file['pid']) { echo 'publ'; } ?>" />
 			<?php } ?>
 		</td>
+		<?php } ?>
 		<td class="top_valign nobsp">
 			<img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" />
 			<a href="<?php echo $this->url
@@ -51,7 +53,8 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 			<?php echo \Components\Projects\Helpers\Html::shortenFileName($file['name'], 50); ?></a>
 
 			<?php if ($file['untracked'] == 0) { ?>
-			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>
+				<?php if ($this->model->access('content')) { ?>
+			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span><?php } ?>
 			<?php } else { ?>
 				<span class="fileoptions"><?php echo Lang::txt('PLG_PROJECTS_FILES_UNTRACKED'); ?></span>
 			<?php } ?>
@@ -63,12 +66,16 @@ $tex = Components\Projects\Helpers\Compiler::isTexFile(basename($file['name']));
 		<?php } ?></td>
 		<td class="shrinked pale"><?php if ($me) { echo Lang::txt('PLG_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
-		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete' . '&amp;subdir='.urlencode($this->subdir)
-		. '&amp;asset='.urlencode($file['name']); ?>"
+		<td class="shrinked nojs">
+			<?php if ($this->model->access('content')) { ?>
+			<a href="<?php echo $this->url . '/?action=delete' . '&amp;subdir=' . urlencode($this->subdir)
+		. '&amp;asset=' . urlencode($file['name']); ?>"
 		 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
 		<a href="<?php echo $this->url . '/?action=move&amp;subdir=' . urlencode($this->subdir)
-		. '&amp;asset='.urlencode($file['name']); ?>"
-		 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
+		. '&amp;asset=' . urlencode($file['name']); ?>"
+		 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>
+		<?php } ?>
+		</td>
 		<?php if ($this->publishing) { ?>
 		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&active=publications&alias=' . $this->model->get('alias') . '&pid=' . $file['pid']) . '?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
 		<?php } ?>

@@ -70,7 +70,9 @@ $me = ($author == utf8_decode($params->get('google_name')) || $author == User::g
 
 ?>
 <tr class="mini faded mline google-resource">
+<?php if ($this->model->access('content')) { ?>
 	<td><input type="checkbox" value="<?php echo urlencode(basename($item->local_path)); ?>" name="asset[]" class="checkasset js remote service-google" /></td>
+<?php } ?>
 	<td class="sharing"><img src="<?php echo $img; ?>" alt="<?php echo urlencode($item->remote_title); ?>" />
 		<a href="<?php echo $url; ?>"
 		<?php if ($item->type == 'file') { ?> class="preview file:<?php echo urlencode(basename($item->local_path)); ?>" <?php } else { echo 'title="' . Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $item->remote_title . '"'; } ?> target="_blank"><?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 50); ?></a>
@@ -79,9 +81,13 @@ $me = ($author == utf8_decode($params->get('google_name')) || $author == User::g
 	<td class="shrinked"></td>
 	<td class="shrinked"><a href="<?php echo $this->url . '/?action=history&amp;subdir=' . urlencode($this->subdir) . '&amp;asset=' . urlencode(basename($item->local_path)); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a></td>
 	<td class="shrinked pale"><?php echo $me ? Lang::txt('PLG_PROJECTS_FILES_ME') : $author; ?></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete&amp;subdir=' . urlencode($this->subdir)
+	<td class="shrinked nojs">
+	<?php if ($this->model->access('content')) { ?>
+		<a href="<?php echo $this->url . '/?action=delete&amp;subdir=' . urlencode($this->subdir)
 	. '&amp;asset=' . urlencode(basename($item->local_path)); ?>"
-	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
+	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
+	<?php } ?>
+	</td>
 	<?php if ($this->publishing) { ?>
 	<td class="shrinked"></td>
 	<?php } ?>

@@ -46,6 +46,8 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 $lastsync = '';
 $connected = $this->oparams->get('google_token') ? true : false;
 
+$min = $this->model->access('content') ? 1 : 0;
+
 ?>
 <div id="sync_output" class="hidden"></div>
 
@@ -59,7 +61,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 	<input type="hidden" name="sync" id="sync" value="<?php echo $this->sync; ?>" />
 	<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
 	<input type="hidden" name="sharing" id="sharing" value="<?php echo $this->sharing; ?>" />
-<?php if ($this->sharing && !empty($this->services)) {
+<?php if ($this->sharing && !empty($this->services) && $this->model->access('content')) {
 
 		foreach ($this->services as $service)
 		{
@@ -103,6 +105,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 
 	<div class="list-editing">
 		<p>
+			<?php if ($this->model->access('content')) { ?>
 			<span id="manage_assets">
 				<a href="<?php echo $this->url . '/?action=upload' . $subdirlink; ?>" class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span></a>
 				<a href="<?php echo $this->url . '/?action=newdir' . $subdirlink; ?>" id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage<?php if ($this->task == 'newdir') { echo ' inactive'; } ?>"><span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span></a>
@@ -129,14 +132,17 @@ $connected = $this->oparams->get('google_token') ? true : false;
 				</span>
 			</span>
 			<?php } ?>
+			<?php } ?>
 		</p>
 	</div>
 	<table id="filelist" class="listing">
 		<thead>
 			<tr>
+				<?php if ($this->model->access('content')) { ?>
 				<th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
+				<?php } ?>
 				<th class="asset_doc <?php if ($this->filters['sortby'] == 'filename') { echo ' activesort'; } ?>">
-					<a href="<?php echo $this->url . '/?action=browse&amp;sortby=filename&amp;sortdir='.$sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
+					<a href="<?php echo $this->url . '/?action=browse&amp;sortby=filename&amp;sortdir=' .$sortbyDir . $subdirlink; ?>" class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
 					<?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?></a>
 				</th>
 				<th class="centeralign"></th>
@@ -155,30 +161,12 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		</thead>
 		<tbody>
 			<?php
-			if ($this->task == 'newdir') { ?>
-				<tr class="newfolder">
-					<td></td>
-					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>">
-							<fieldset>
-								<input type="hidden" name="action" value="savedir" />
-								<label>
-									<span class="mini block prominent ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?>:</span>
-									<img src="/plugins/projects/files/images/folder.gif" alt="" />
-									<input type="text" name="newdir" maxlength="100" value="untitled" />
-								</label>
-								<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
-								<span class="btn btncancel mini"><a href="<?php echo $this->url . '/?action=view' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a></span>
-							</fieldset>
-					</td>
-				</tr>
-			<?php } ?>
-			<?php
 			// Go back one level to parent directory
 			if ($this->subdir)
 			{ ?>
 				<tr>
 					<td></td>
-					<td colspan="<?php echo $this->publishing ? 7 : 6; ?>" class="mini">
+					<td colspan="<?php echo $this->publishing ? 7 - $min : 6 - $min; ?>" class="mini">
 						<a href="<?php echo $this->url . '/?action=browse&amp;subdir=' . $parent; ?>" class="uptoparent"><?php echo Lang::txt('PLG_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a>
 					</td>
 				</tr>
@@ -262,7 +250,7 @@ $connected = $this->oparams->get('google_token') ? true : false;
 			// Show directory as empty
 			if (count($this->items) == 0 || $empty == true) { ?>
 				<tr>
-					<td colspan="<?php echo $this->publishing ? 8 : 7; ?>" class="mini faded">
+					<td colspan="<?php echo $this->publishing ? 8 - $min : 7 - $min; ?>" class="mini faded">
 						<?php if ($this->subdir)
 							{
 								echo Lang::txt('PLG_PROJECTS_FILES_THIS_DIRECTORY_IS_EMPTY');
@@ -292,10 +280,12 @@ $connected = $this->oparams->get('google_token') ? true : false;
 		?>
 		</span>
 		<?php } ?>
+		<?php if ($this->model->access('content')) { ?>
 		<span class="rightfloat">
 			<a href="<?php echo $this->url . '/?action=trash'; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_FILES_SHOW_TRASH'); ?></a>
 			|
 			<a href="<?php echo $this->url . '/?action=status'; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_FILES_GIT_STATUS'); ?></a>
 		</span>
+		<?php } ?>
 	</p>
  </form>

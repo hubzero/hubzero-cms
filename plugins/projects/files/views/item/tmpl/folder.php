@@ -30,18 +30,26 @@ $dirpath = $this->subdir ? $this->subdir . DS . $this->item : $this->item;
 ?>
 
 <tr class="mini faded mline">
+<?php if ($this->model->access('content')) { ?>
 	<td><input type="checkbox" value="<?php echo urlencode($this->item); ?>" name="folder[]" class="checkasset js dirr" /></td>
+<?php } ?>
 	<td class="top_valign nobsp"><img src="/plugins/projects/files/images/folder.gif" alt="<?php echo $this->item; ?>" />
 		<a href="<?php echo $this->url. '/?action=browse&amp;subdir=' . urlencode($dirpath); ?>" class="dir:<?php echo urlencode($this->item); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $this->item; ?>" id="edit-c-<?php echo $this->c; ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($this->item, 50); ?></a>
+<?php if ($this->model->access('content')) { ?>
 		<span id="rename-c-<?php echo $this->c; ?>" class="rename js" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_DIR_TOOLTIP'); ?>">&nbsp;</span>
+<?php } ?>
 	</td>
 	<td></td>
 	<td></td>
 	<td></td>
 	<td></td>
-	<td class="shrinked nojs"><a href="<?php echo $this->url . '/?action=delete&amp;subdir=' . urlencode($this->subdir)
-	. '&amp;folder[]=' . urlencode($this->item); ?>"
-	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a></td>
+	<td class="shrinked nojs">
+	<?php if ($this->model->access('content')) { ?>
+		<a href="<?php echo $this->url . '/?action=delete&amp;subdir=' . urlencode($this->subdir)
+	. '&amp;folder=' . urlencode($this->item); ?>"
+	 title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
+	<?php } ?>
+	</td>
 	<?php if ($this->publishing) { ?>
 	<td></td>
 	<?php } ?>
