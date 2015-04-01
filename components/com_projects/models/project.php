@@ -778,9 +778,7 @@ class Project extends Model
 		else
 		{
 			// Verify name uniqueness
-			$database = \JFactory::getDBO();
-			$obj = new Tables\Project( $database );
-			if (!$obj->checkUniqueName( $name, $pid )
+			if (!$this->_tbl->checkUniqueName( $name, $pid )
 				|| in_array( $name, $reserved ) ||
 				in_array( $name, $tasks ))
 			{
