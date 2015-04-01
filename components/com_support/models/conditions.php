@@ -235,6 +235,14 @@ class Conditions extends Object
 			),
 			'text'
 		);
+		$conditions->closed = $this->_expression(
+			array(
+				$this->_operator('=', 'on', true),
+				$this->_operator('lt', 'before', false),
+				$this->_operator('gt', 'after', false)
+			),
+			'text'
+		);
 		$conditions->tag = $this->_expression(
 			array(
 				$this->_operator('=', 'is', true),

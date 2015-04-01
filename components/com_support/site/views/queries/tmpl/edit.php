@@ -104,6 +104,7 @@ if (!$tmpl && !$no_html) {
 									<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
 									<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
 									<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+									<option value="closed"<?php if ($this->row->sort == 'closed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
 									<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 								</select>
 							</td>
@@ -235,6 +236,7 @@ if (!$tmpl && !$no_html) {
 					<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
 					<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
 					<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+					<option value="closed"<?php if ($this->row->sort == 'closed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
 					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 				</select>
 				<select name="fields[sort_dir]" id="field-sort_dir">
