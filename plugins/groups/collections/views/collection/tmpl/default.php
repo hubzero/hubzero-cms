@@ -121,7 +121,7 @@ $viewas = JRequest::getWord('viewas', $this->collection->get('layout'));
 			?>
 				<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id')); ?>">
 					<div class="content">
-						<?php if (!$juser->get('guest') && $this->params->get('access-create-item')) { ?>
+						<?php if (!$juser->get('guest') && $this->params->get('access-create-item') && $this->collection->get('sort') == 'ordering') { ?>
 							<div class="sort-handle tooltips" title="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER'); ?>"></div>
 						<?php } ?>
 						<?php
