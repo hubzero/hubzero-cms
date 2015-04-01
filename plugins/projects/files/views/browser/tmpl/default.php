@@ -104,7 +104,7 @@ $skipped = 0;
 	// Add missing items
 	if (count($missing) > 0) {
 		foreach ($missing as $miss) { ?>
-			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
+			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo \Components\Projects\Helpers\Html::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo \Components\Projects\Helpers\Html::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
 	}
 	 ?>
@@ -129,11 +129,11 @@ $skipped = 0;
 		<?php if ($this->model->isProvisioned()) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
-		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
 		<p id="statusmsg"></p>
-		<p class="hint"><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_HINT'); ?></p>
+		<p class="hint"><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_HINT'); ?></p>
 </form>
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
-	<p class="noresults"><?php echo $this->images ? JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_IMAGES') : JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_FILES'); ?></p>
+	<p class="noresults"><?php echo $this->images ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_IMAGES') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_FILES'); ?></p>
 <?php } ?>

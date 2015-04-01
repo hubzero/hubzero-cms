@@ -32,7 +32,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 <?php
 // Display error or success message
 if ($this->getError()) { ?>
-	<h3><?php echo JText::_('PLG_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILED_PREVIEW'); ?></h3>
 	<?php
 	echo ('<p class="witherror">'.$this->getError().'</p>');
 
@@ -61,8 +61,8 @@ if (!$this->getError()) {
 		if ($this->ext == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed))
 		{
 			$view->extras  = '<span class="rightfloat">';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . JText::_('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
-			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . JText::_('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item . '" class="i-download">' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
+			$view->extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;file=' . $this->item . '" class="i-commit">' . Lang::txt('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
 			$view->extras .= '</span>';
 		}
 		echo $view->loadTemplate();
@@ -76,14 +76,14 @@ if (!$this->getError()) {
 ?>
 	<pre><?php echo htmlentities($this->data); ?></pre>
 <?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) { 
-		$source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->embed );
+		$source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->embed );
 	?>
 	<div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
 	  <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $source; ?>" id="pdf_content">
 		<embed src="<?php echo $source; ?>" type="application/pdf" />
-		<p><?php echo JText::_('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
+		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->item; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
 		<?php if ($this->image) { ?>
-			<img alt="" src="<?php echo Route::url('index.php?option=' . $this->option . '&task=media&alias=' . $this->project->alias . '&media=Compiled:' . $this->image ); ?>" />
+			<img alt="" src="<?php echo Route::url('index.php?option=' . $this->option . '&task=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->image ); ?>" />
 		<?php } ?>
 		</p>
 	  </object>

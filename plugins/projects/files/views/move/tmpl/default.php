@@ -47,7 +47,7 @@ foreach ($this->list as $item)
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_PROJECT_FILES'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_PROJECT_FILES'); ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
@@ -59,14 +59,14 @@ if (!$this->getError()) {
 ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 	<fieldset >
-		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="moveit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="case" value="<?php echo $this->case; ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<p><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_FILES_CONFIRM'); ?></p>
+		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_FILES_CONFIRM'); ?></p>
 
 		<ul class="sample">
 		<?php foreach ($this->items as $element)
@@ -85,7 +85,7 @@ if (!$this->getError()) {
 				{
 					// Get stored remote connection to file
 					$fpath  = $this->subdir ? $this->subdir . DS . $item : $item;
-					$remote = $objRFile->getConnection($this->project->id, '', $servicename, $fpath);
+					$remote = $objRFile->getConnection($this->model->get('id'), '', $servicename, $fpath);
 					if ($remote)
 					{
 						break;
@@ -106,11 +106,11 @@ if (!$this->getError()) {
 		</ul>
 
 		<div id="dirs" class="dirs">
-			<h4><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_WHERE'); ?></h4>
+			<h4><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_WHERE'); ?></h4>
 			<?php if (count($dirs) > 0) {  echo '<ul class="dirtree">';
 			?>
 				<li>
-					<input type="radio" name="newpath" value="" <?php if (!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo JText::_('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
+					<input type="radio" name="newpath" value="" <?php if (!$this->subdir) { echo 'disabled="disabled" '; } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
 				</li>
 			<?php
 			for ($i= 0; $i < count($dirs); $i++) {
@@ -131,21 +131,21 @@ if (!$this->getError()) {
 			echo '</ul>'; }
 			if ($maxlevel <= 100) { ?>
 			<?php if (count($dirs) > 0) { ?>
-				<div class="or"><?php echo JText::_('COM_PROJECTS_OR'); ?></div>
+				<div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
 			<?php }  ?>
-			<label><span class="block"><?php echo JText::_('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
+			<label><span class="block"><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
 				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir . DS : ''; ?></span>
 				<input type="text" name="newdir" maxlength="50" value="" />
 			</label>
 			<?php }  ?>
 		</div>
 		<p class="submitarea">
-			<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_FILES_MOVE'); ?>" />
+			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
 				<span>
-					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' .$subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+					<a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>

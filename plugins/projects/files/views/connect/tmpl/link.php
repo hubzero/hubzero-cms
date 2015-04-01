@@ -51,7 +51,7 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 		<?php if ($dropbox) { ?>
 		<span class="dropbox"></span>
 		<?php } ?>
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo JText::_('PLG_PROJECTS_FILES_CONNECT'); ?></a>
+		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a>
 		<?php }
 			// Connected to Google
 			if ($this->oparams->get('google_token') && $active) {  ?>
@@ -60,5 +60,5 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 	</span>
 </p>
 <?php } else { ?>
-	<p class="editing mini pale"><?php echo JText::_('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . $this->sizelimit; ?></p>
+	<p class="editing mini pale"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . $this->sizelimit; ?></p>
 <?php } ?>

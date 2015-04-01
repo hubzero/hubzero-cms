@@ -29,15 +29,15 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_GIT_STATUS'); ?></h3>
-<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
+<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_GIT_STATUS'); ?></h3>
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
 	<fieldset >
 		<?php echo $this->status; ?>
 		<p class="submitarea">
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
+				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
 			<?php } ?>
 		</p>
 	</fieldset>

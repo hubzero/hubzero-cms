@@ -29,20 +29,20 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
 
-<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
 	<fieldset >
 <?php if (empty($this->files)) { ?>
-	<p class="warning"><?php echo JText::_('PLG_PROJECTS_FILES_TRASH_EMPTY'); ?></p>
+	<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_FILES_TRASH_EMPTY'); ?></p>
 <?php } else { ?>
 	<div class="wrapper">
 		<table id="filelist" class="listing">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('PLG_PROJECTS_FILES_FILE'); ?></th>
-					<th><?php echo JText::_('PLG_PROJECTS_FILES_DELETED'); ?></th>
-					<th><?php echo JText::_('PLG_PROJECTS_FILES_OPTIONS'); ?></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_FILE'); ?></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETED'); ?></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_OPTIONS'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,7 +64,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 						<?php echo \Components\Projects\Helpers\Html::formatTime($file['date'], true, true); ?>
 						<span class="block"><?php echo $file['author']; ?></span>
 					</td>
-					<td><a href="<?php echo $this->url . '/?action=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo JText::_('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
+					<td><a href="<?php echo $this->url . '/?action=restore&amp;asset=' . urlencode($filename) . '&amp;hash=' . $file['hash'] . $subdirlink;  ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
 				</tr>
 			<?php } ?>
 			</tbody>
@@ -72,9 +72,9 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 	</div>
 		<p class="submitarea">
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_FILES_CLOSE'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CLOSE'); ?>" />
 			<?php } else {  ?>
-			<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo JText::_('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
+			<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
 			<?php } ?>
 		</p>
 

@@ -30,7 +30,7 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
 ?>
 
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo JText::_('PLG_PROJECTS_FILES_IN'); ?> <span class="folder"><?php echo $this->subdir; ?></span> <?php } ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) { ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <span class="folder"><?php echo $this->subdir; ?></span> <?php } ?></h3>
 <?php
 // Display error
 if ($this->getError()) {
@@ -46,8 +46,8 @@ if ($this->getError()) {
 				<img src="/plugins/projects/files/images/folder.gif" alt="" />
 				<input type="text" name="newdir" maxlength="100" value="untitled" />
 			</label>
-			<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_FILES_SAVE'); ?>" />
-			<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?>" />
+			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
+			<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?>" />
 		</fieldset>
 	</form>
 </div>

@@ -32,21 +32,21 @@ $database 	= JFactory::getDBO();
 $objSt 		= new \Components\Projects\Tables\Stamp( $database );
 
 // Get listed public files
-$items = $objSt->getPubList($this->project->id, 'files');
+$items = $objSt->getPubList($this->model->get('id'), 'files');
 
 $link = Route::url('index.php?option=com_projects&task=get') . '/?s=';
 
 // Load component configs
-$config = Component::params('com_projects');
+$config = $this->model->config();
 
 // Get project path
-$path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->project->alias);
+$path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
 $prefix = $config->get('offroot', 0) ? '' : PATH_APP;
 
 if ($items) {
 ?>
 <div class="public-list-header">
-	<h3><?php echo ucfirst(JText::_('COM_PROJECTS_PUBLIC')); ?> <?php echo JText::_('COM_PROJECTS_FILES'); ?></h3>
+	<h3><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')); ?> <?php echo Lang::txt('COM_PROJECTS_FILES'); ?></h3>
 </div>
 <div class="public-list-wrap">
 	<ul>

@@ -75,33 +75,33 @@ $minName = \Components\Projects\Helpers\Html::getNumberName($min);
 $maxName = \Components\Projects\Helpers\Html::getNumberName($max);
 
 // Spell out requirement
-$req = JText::_('PLG_PROJECTS_FILES_SELECTOR_CHOOSE') . ' ';
+$req = Lang::txt('PLG_PROJECTS_FILES_SELECTOR_CHOOSE') . ' ';
 if ($min && $max > $min)
 {
 	if ($max > 100)
 	{
 		// Do not say how many
-		$req .= '<strong>' . $minName . ' ' . JText::_('PLG_PROJECTS_FILES_SELECTOR_OR_MORE') . '</strong>';
+		$req .= '<strong>' . $minName . ' ' . Lang::txt('PLG_PROJECTS_FILES_SELECTOR_OR_MORE') . '</strong>';
 	}
 	else
 	{
-		$req .= '<strong>' . $min . '-' . $max . ' ' . JText::_('PLG_PROJECTS_FILES_SELECTOR_FILES') . '</strong>';
+		$req .= '<strong>' . $min . '-' . $max . ' ' . Lang::txt('PLG_PROJECTS_FILES_SELECTOR_FILES') . '</strong>';
 	}
 }
 elseif ($min && $min == $max)
 {
-	$req .= ' <strong>' . $minName . ' ' . JText::_('PLG_PROJECTS_FILES_SELECTOR_FILE');
+	$req .= ' <strong>' . $minName . ' ' . Lang::txt('PLG_PROJECTS_FILES_SELECTOR_FILE');
 	$req .= $min > 1 ? 's' : '';
 	$req .= '</strong>';
 }
 else
 {
-	$req .= $max == 1 ? JText::sprintf('PLG_PROJECTS_FILES_SELECTOR_COUNT', $max) : JText::_('PLG_PROJECTS_FILES_S');
+	$req .= $max == 1 ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_COUNT', $max) : Lang::txt('PLG_PROJECTS_FILES_S');
 }
 
 if (!empty($allowed))
 {
-	$req .= ' ' . JText::_('PLG_PROJECTS_FILES_SELECTOR_OF_FORMAT');
+	$req .= ' ' . Lang::txt('PLG_PROJECTS_FILES_SELECTOR_OF_FORMAT');
 	$req .= count($allowed) > 1 ? 's - ' : ' - ';
 	$x = 1;
 	foreach ($allowed as $al)
@@ -113,7 +113,7 @@ if (!empty($allowed))
 }
 else
 {
-	$req .= ' ' . JText::_('PLG_PROJECTS_FILES_SELECTOR_OF_ANY_TYPE');
+	$req .= ' ' . Lang::txt('PLG_PROJECTS_FILES_SELECTOR_OF_ANY_TYPE');
 }
 $req .= ':';
 
@@ -187,10 +187,10 @@ foreach ($this->items as $item)
 ?>
 <script src="/plugins/projects/files/js/fileselector.js"></script>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
-		<a class="btn btn-success active" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
+<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
+		<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
 		<?php if ($this->ajax) { ?>
-		<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
+		<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 		<?php } ?>
 	</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
@@ -267,9 +267,9 @@ foreach ($this->items as $item)
 		<input type="hidden" name="provisioned" id="provisioned" value="1" />
 		<input type="hidden" name="task" value="submit" />
 	<div class="asset-uploader">
-		<h5 class="add"><?php echo JText::_('PLG_PROJECTS_FILES_PROV_UPLOAD'); ?>
+		<h5 class="add"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROV_UPLOAD'); ?>
 			<span class="abox-controls">
-				<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success" id="f-upload"  />
+				<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success" id="f-upload"  />
 			</span>
 		</h5>
 		<div id="ajax-uploader" data-action="<?php echo Route::url( $route) . '?active=files&amp;action=save&amp;no_html=1&amp;ajax=1'; ?>" >
@@ -284,14 +284,14 @@ foreach ($this->items as $item)
 	</div>
 	<?php } else { ?>
 	<div id="quick-upload" class="quick-uploader">
-		<p><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
+		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
 
 		<label>
 			<input name="upload[]" type="file" id="uploader" multiple="multiple" />
 		</label>
 
 		<?php if (count($subdirOptions) > 1) { ?>
-		<label><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_INTO_SUBDIR'); ?>
+		<label><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_INTO_SUBDIR'); ?>
 			<select name="subdir">
 				<?php foreach ($subdirOptions as $sd) { ?>
 					<option value="<?php echo $sd['path']; ?>"><?php echo $sd['label']; ?></options>
@@ -299,7 +299,7 @@ foreach ($this->items as $item)
 			</select>
 		</label>
 		<?php } ?>
-		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
+		<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
 	</div>
 	<?php } ?>
 	</form>

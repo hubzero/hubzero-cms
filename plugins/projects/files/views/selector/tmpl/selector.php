@@ -121,5 +121,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php } ?>
 		</ul>
 	<?php } else {  ?>
-		<p class="noresults"><?php echo $this->model->isProvisioned() ? JText::_('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : JText::_('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></p>
+		<p class="noresults"><?php echo $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></p>
 	<?php } ?>
