@@ -13,7 +13,7 @@ $class = ' class="first"';
 
 <?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : ?>
 	<ul>
-	<?php foreach($this->children[$this->category->id] as $id => $child) : ?>
+	<?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
 		<?php
 		if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
 			if (!isset($this->children[$this->category->id][$id + 1])) :
@@ -32,7 +32,7 @@ $class = ' class="first"';
 					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_content.category'); ?>
 				</div>
 			<?php endif; ?>
-            <?php endif; ?>
+			<?php endif; ?>
 
 			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
 			<dl>

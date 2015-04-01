@@ -62,9 +62,9 @@ class ContentViewCategory extends JViewLegacy
 			$item->author		= $author;
 			if ($feedEmail == 'site')
 			{
- 				$item->authorEmail = $siteEmail;
+				$item->authorEmail = $siteEmail;
 			}
-			elseif($feedEmail === 'author')
+			elseif ($feedEmail === 'author')
 			{
 				$item->authorEmail = $row->author_email;
 			}

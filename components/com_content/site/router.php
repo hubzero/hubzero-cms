@@ -115,7 +115,7 @@ function ContentBuildRoute(&$query)
 
 		$array = array();
 
-		foreach($path as $id) {
+		foreach ($path as $id) {
 			if ((int)$id == (int)$mCatid) {
 				break;
 			}
@@ -292,11 +292,11 @@ function ContentParseRoute($segments)
 	$vars['id'] = $id;
 	$found = 0;
 
-	foreach($segments as $segment)
+	foreach ($segments as $segment)
 	{
 		$segment = str_replace(':', '-', $segment);
 
-		foreach($categories as $category)
+		foreach ($categories as $category)
 		{
 			if ($category->alias == $segment) {
 				$vars['id'] = $category->id;

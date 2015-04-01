@@ -205,7 +205,7 @@ class ContentControllerArticle extends JControllerForm
 			$append .= '&Itemid='.$itemId;
 		}
 
-		if($catId) {
+		if ($catId) {
 			$append .= '&catid='.$catId;
 		}
 

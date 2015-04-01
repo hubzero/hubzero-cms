@@ -114,9 +114,9 @@ class ContentModelArticle extends JModelAdmin
 
 			// Reset the ID because we are making a copy
 			$table->id = 0;
-			
+
 			// Reset hits because we are making a copy
- 			$table->hits = 0;			
+			$table->hits = 0;
 
 			// New category ID
 			$table->catid = $categoryId;
@@ -223,7 +223,7 @@ class ContentModelArticle extends JModelAdmin
 	{
 		// Set the publish date to now
 		$db = $this->getDbo();
-		if($table->state == 1 && intval($table->publish_up) == 0) {
+		if ($table->state == 1 && intval($table->publish_up) == 0) {
 			$table->publish_up = JFactory::getDate()->toSql();
 		}
 

@@ -40,7 +40,7 @@ abstract class ContentHelperRoute
 		{
 			$categories = JCategories::getInstance('Content');
 			$category = $categories->get((int)$catid);
-			if($category)
+			if ($category)
 			{
 				$needles['category'] = array_reverse($category->getPath());
 				$needles['categories'] = $needles['category'];
@@ -50,7 +50,7 @@ abstract class ContentHelperRoute
 		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
 		{
 			self::buildLanguageLookup();
-			if(isset(self::$lang_lookup[$language]))
+			if (isset(self::$lang_lookup[$language]))
 			{
 				$link .= '&lang='.self::$lang_lookup[$language];
 				$needles['language'] = $language;
@@ -114,7 +114,7 @@ abstract class ContentHelperRoute
 
 	protected static function buildLanguageLookup()
 	{
-		if(count(self::$lang_lookup) == 0)
+		if (count(self::$lang_lookup) == 0)
 		{
 			$db		= JFactory::getDbo();
 			$query	= $db->getQuery(true)
@@ -165,7 +165,7 @@ abstract class ContentHelperRoute
 			{
 				if (isset(self::$lookup[$language][$view]))
 				{
-					foreach($ids as $id)
+					foreach ($ids as $id)
 					{
 						if (isset(self::$lookup[$language][$view][(int)$id])) {
 							return self::$lookup[$language][$view][(int)$id];

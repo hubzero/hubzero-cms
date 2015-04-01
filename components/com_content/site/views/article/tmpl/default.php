@@ -28,9 +28,9 @@ $user		= JFactory::getUser();
 <?php
 if (!empty($this->item->pagination) AND $this->item->pagination && !$this->item->paginationposition && $this->item->paginationrelative)
 {
- echo $this->item->pagination;
+	echo $this->item->pagination;
 }
- ?>
+?>
 <div class="contentpane item-page<?php echo $this->pageclass_sfx?>">
 <?php if ($params->get('show_title')) : ?>
 	<div class="content-header">
@@ -173,12 +173,12 @@ endif; ?>
 <?php
 if (!empty($this->item->pagination) AND $this->item->pagination AND !$this->item->paginationposition AND !$this->item->paginationrelative):
 	echo $this->item->pagination;
- endif;
+endif;
 ?>
 <?php echo $this->item->text; ?>
 <?php
 if (!empty($this->item->pagination) AND $this->item->pagination AND $this->item->paginationposition AND!$this->item->paginationrelative):
-	 echo $this->item->pagination;?>
+	echo $this->item->pagination;?>
 <?php endif; ?>
 
 <?php if (isset($urls) AND ((!empty($urls->urls_position)  AND ($urls->urls_position=='1')) OR ( $params->get('urls_position')=='1') )): ?>

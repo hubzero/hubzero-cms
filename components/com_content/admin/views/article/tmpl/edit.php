@@ -252,7 +252,7 @@ endif;
 					<?php echo $this->form->getInput('images'); ?>
 				</div>
 
-				<?php foreach($this->form->getGroup('images') as $field): ?>
+				<?php foreach ($this->form->getGroup('images') as $field): ?>
 					<div class="input-wrap">
 						<?php if (!$field->hidden): ?>
 							<?php echo $field->label; ?>
@@ -261,7 +261,7 @@ endif;
 					</div>
 				<?php endforeach; ?>
 
-				<?php foreach($this->form->getGroup('urls') as $field): ?>
+				<?php foreach ($this->form->getGroup('urls') as $field): ?>
 					<div class="input-wrap">
 						<?php if (!$field->hidden): ?>
 							<?php echo $field->label; ?>

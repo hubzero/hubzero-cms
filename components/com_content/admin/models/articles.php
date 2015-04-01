@@ -246,9 +246,9 @@ class ContentModelArticles extends JModelList
 			$orderCol = 'c.title '.$orderDirn.', a.ordering';
 		}
 		//sqlsrv change
-		if($orderCol == 'language')
+		if ($orderCol == 'language')
 			$orderCol = 'l.title';
-		if($orderCol == 'access_level')
+		if ($orderCol == 'access_level')
 			$orderCol = 'ag.title';
 		$query->order($db->escape($orderCol.' '.$orderDirn));
 
@@ -262,7 +262,8 @@ class ContentModelArticles extends JModelList
 	 * @return	JDatabaseQuery
 	 * @since	1.6
 	 */
-	public function getAuthors() {
+	public function getAuthors()
+	{
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
