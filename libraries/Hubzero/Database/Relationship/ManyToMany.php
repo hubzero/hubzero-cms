@@ -47,21 +47,37 @@ class ManyToMany extends Relationship
 	private $associativeTable = null;
 
 	/**
+	 * Key on the left side of the associative table
+	 *
+	 * @var string
+	 **/
+	private $associativeLocal = null;
+
+	/**
+	 * Key on the right side of the associative table
+	 *
+	 * @var string
+	 **/
+	private $associativeRelated = null;
+
+	/**
 	 * Constructs a new object instance
 	 *
-	 * @param  \Hubzero\Database\Relational|static $model            the local model
-	 * @param  \Hubzero\Database\Relational|static $related          the related model
-	 * @param  string                              $associativeTable the associative entity
-	 * @param  string                              $localKey         the local key on the associative table
-	 * @param  string                              $relatedKey       the related key on the associative table
+	 * @param  \Hubzero\Database\Relational|static $model              the local model
+	 * @param  \Hubzero\Database\Relational|static $related            the related model
+	 * @param  string                              $associativeTable   the associative entity
+	 * @param  string                              $associativeLocal   the local key on the associative table
+	 * @param  string                              $associativeRelated the related key on the associative table
 	 * @return void
 	 * @since  1.3.2
 	 **/
-	public function __construct($model, $related, $associativeTable, $localKey, $relatedKey)
+	public function __construct($model, $related, $associativeTable, $associativeLocal, $associativeRelated)
 	{
-		parent::__construct($model, $related, $localKey, $relatedKey);
+		parent::__construct($model, $related, $model->getPrimaryKey(), $related->getPrimaryKey());
 
-		$this->associativeTable = $associativeTable;
+		$this->associativeTable   = $associativeTable;
+		$this->associativeLocal   = $associativeLocal;
+		$this->associativeRelated = $associativeRelated;
 	}
 
 	/**
@@ -85,24 +101,9 @@ class ManyToMany extends Relationship
 	{
 		$this->join();
 
-		$this->related->whereEquals($this->associativeTable . '.' . $this->localKey, $this->model->getPkValue());
+		$this->related->whereEquals($this->associativeTable . '.' . $this->associativeLocal, $this->model->getPkValue());
 
 		return $this->related;
-	}
-
-	/**
-	 * Get keys based on a given constraint
-	 *
-	 * @param  closure $constraint the constraint function to apply
-	 * @return array
-	 * @since  1.3.2
-	 **/
-	public function getConstrainedKeys($constraint)
-	{
-		call_user_func_array($constraint, array($this->related));
-
-		// Return the ids resulting from the contraint query
-		return $this->related->select($this->related->getPrimaryKey())->rows()->fieldsByKey($this->related->getPrimaryKey());
 	}
 
 	/**
@@ -114,10 +115,10 @@ class ManyToMany extends Relationship
 	public function join()
 	{
 		$this->related->select($this->related->getQualifiedFieldName('*'))
-		              ->select($this->localKey)
+		              ->select($this->associativeLocal)
 		              ->join($this->associativeTable,
-		                     $this->related->getQualifiedFieldName($this->related->getPrimaryKey()),
-		                     $this->relatedKey);
+		                     $this->related->getQualifiedFieldName($this->relatedKey),
+		                     $this->associativeRelated);
 
 		return $this;
 	}
@@ -133,13 +134,13 @@ class ManyToMany extends Relationship
 	 **/
 	public function seedRelationship($rows, $name, $subs=null)
 	{
-		if (!$keys = $rows->fieldsByKey($this->model->getPrimaryKey()))
+		if (!$keys = $rows->fieldsByKey($this->localKey))
 		{
 			return $rows;
 		}
 
 		$this->join();
-		$relations = $this->related->whereIn($this->associativeTable . '.' . $this->localKey, array_unique($keys));
+		$relations = $this->related->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys));
 
 		if (isset($subs))
 		{
@@ -150,19 +151,19 @@ class ManyToMany extends Relationship
 
 		foreach ($relations as $relation)
 		{
-			if (!isset($resultsByRelatedKey[$relation->{$this->localKey}]))
+			if (!isset($resultsByRelatedKey[$relation->{$this->associativeLocal}]))
 			{
-				$resultsByRelatedKey[$relation->{$this->localKey}] = new Rows;
+				$resultsByRelatedKey[$relation->{$this->associativeLocal}] = new Rows;
 			}
 
-			$resultsByRelatedKey[$relation->{$this->localKey}]->push($relation);
+			$resultsByRelatedKey[$relation->{$this->associativeLocal}]->push($relation);
 		}
 
 		foreach ($rows as $row)
 		{
-			if (isset($resultsByRelatedKey[$row->{$this->model->getPrimaryKey()}]))
+			if (isset($resultsByRelatedKey[$row->{$this->localKey}]))
 			{
-				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->model->getPrimaryKey()}]);
+				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->localKey}]);
 			}
 		}
 
@@ -187,7 +188,7 @@ class ManyToMany extends Relationship
 			$localKeyValue = $this->model->getPkValue();
 			foreach ($ids as $id)
 			{
-				$data  = [$this->localKey => $localKeyValue, $this->relatedKey => $id];
+				$data  = [$this->associativeLocal => $localKeyValue, $this->associativeRelated => $id];
 				$query = with(new Query)->push($this->associativeTable, $data, true);
 			}
 		}
@@ -214,9 +215,9 @@ class ManyToMany extends Relationship
 			$localKeyValue = $this->model->getPkValue();
 
 			// Get any existing entries
-			$existing = $query->select($this->relatedKey)
+			$existing = $query->select($this->associativeRelated)
 			                  ->from($this->associativeTable)
-			                  ->whereEquals($this->localKey, $localKeyValue)
+			                  ->whereEquals($this->associativeLocal, $localKeyValue)
 			                  ->fetch('column');
 
 			// See if there's anything to delete
@@ -224,8 +225,8 @@ class ManyToMany extends Relationship
 			if (!empty($deletes))
 			{
 				$query->delete($this->associativeTable)
-				      ->whereEquals($this->localKey, $localKeyValue)
-				      ->whereIn($this->relatedKey, $deletes)
+				      ->whereEquals($this->associativeLocal, $localKeyValue)
+				      ->whereIn($this->associativeRelated, $deletes)
 				      ->execute();
 			}
 
