@@ -77,7 +77,7 @@ class Entry extends Model
 	private $_comments_count = null;
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */

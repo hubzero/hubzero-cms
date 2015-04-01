@@ -153,7 +153,7 @@ class ResourceMapGenerator
 
 		// Gets the author name
 		$this->author_id = $resource->created_by;
-		$this->created_by = JUser::getInstance($this->author_id)->name;
+		$this->created_by = User::getInstance($this->author_id)->name;
 
 		// Set created date
 		$this->date_created = $this->formatDate($resource->created);
@@ -366,7 +366,7 @@ class ResourceMapGenerator
 	 */
 	public function pushDownload()
 	{
-		$alias = JRequest::getVar('alias', '');
+		$alias = Request::getVar('alias', '');
 
 		$this->id = '';
 		if (substr($alias, -4) == '.rdf')

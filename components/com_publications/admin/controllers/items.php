@@ -229,7 +229,7 @@ class Items extends AdminController
 		}
 
 		// Get name of resource creator
-		$creator = \JUser::getInstance($this->view->row->created_by);
+		$creator = User::getInstance($this->view->row->created_by);
 
 		$this->view->row->created_by_name = $creator->get('name');
 		$this->view->row->created_by_name = ($this->view->row->created_by_name)
@@ -238,7 +238,7 @@ class Items extends AdminController
 		// Get name of last person to modify resource
 		if ($this->view->row->modified_by)
 		{
-			$modifier = \JUser::getInstance($this->view->row->modified_by);
+			$modifier = User::getInstance($this->view->row->modified_by);
 
 			$this->view->row->modified_by_name = $modifier->get('name');
 			$this->view->row->modified_by_name = ($this->view->row->modified_by_name)
@@ -910,7 +910,7 @@ class Items extends AdminController
 					{
 						if ($f[0] == $tagname && end($f) == 1)
 						{
-							echo Helpers\Html::alert(\JText::sprintf('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
+							echo Helpers\Html::alert(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
 							exit();
 						}
 					}

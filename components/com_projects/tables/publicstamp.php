@@ -183,8 +183,7 @@ class Stamp extends \JTable
 
 		// Make new entry
 		$created = \JFactory::getDate()->toSql();
-		$juser = \JFactory::getUser();
-		$created_by	= $juser->get('id');
+		$created_by	= User::get('id');
 
 		// Generate stamp
 		require_once( PATH_CORE . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'html.php');

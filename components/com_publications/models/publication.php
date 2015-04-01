@@ -802,7 +802,7 @@ class Publication extends Object
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @return     mixed
 	 */

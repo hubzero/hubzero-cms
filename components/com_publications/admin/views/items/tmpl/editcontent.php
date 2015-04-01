@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$tmpl = JRequest::getVar('tmpl', '');
+$tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {

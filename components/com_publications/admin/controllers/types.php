@@ -981,7 +981,7 @@ class Types extends AdminController
 				// Redirect with error message
 				$this->setRedirect(
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-					\JText::sprintf('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
+					Lang::txt('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
 					'error'
 				);
 				return;
@@ -994,7 +994,7 @@ class Types extends AdminController
 		// Redirect
 		$this->setRedirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			\JText::sprintf('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
+			Lang::txt('COM_PUBLICATIONS_ITEMS_REMOVED', count($ids))
 		);
 	}
 }

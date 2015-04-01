@@ -52,7 +52,7 @@ if (!$this->ajax)
 	<?php
 		foreach ($history as $event)
 		{
-			$author  = JUser::getInstance($event->created_by);
+			$author  = User::getInstance($event->created_by);
 			$trClass = $i % 2 == 0 ? ' even' : ' odd';
 			$i++;
 			?>

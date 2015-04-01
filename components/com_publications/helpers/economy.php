@@ -94,7 +94,7 @@ class Economy extends Object
 		$points = round($con->ranking);
 
 		// Get qualifying users
-		$juser = \JUser::getInstance($con->user_id);
+		$juser = User::getInstance($con->user_id);
 
 		// Reward review author
 		if (is_object($juser) && $juser->get('id'))

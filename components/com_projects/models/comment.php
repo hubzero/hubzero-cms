@@ -54,7 +54,7 @@ class Comment extends Model
 	protected $_context = 'com_projects.comment.comment';
 
 	/**
-	 * JUser
+	 * User
 	 *
 	 * @var object
 	 */
@@ -127,7 +127,7 @@ class Comment extends Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire User object
 	 *
 	 * @param	   string $property What data to return
 	 * @param	   mixed  $default	Default value

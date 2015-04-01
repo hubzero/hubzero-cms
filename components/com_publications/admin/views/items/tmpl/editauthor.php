@@ -34,7 +34,7 @@ $this->css();
 
 $pageTitle = ($this->author->id) ? Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
 
-$tmpl = JRequest::getVar('tmpl', '');
+$tmpl = Request::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {

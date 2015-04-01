@@ -29,6 +29,8 @@ $this->css('introduction.css', 'system')
      ->css()
      ->js();
 
+$rows = $this->model->entries('list', $this->filters);
+
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -85,7 +87,7 @@ $this->css('introduction.css', 'system')
 	</div>
 	<div class="col span10 omega">
 		<?php
-		if ($rows = $this->model->entries('list', $this->filters)) { ?>
+		if (count($rows) > 0) { ?>
 			<ul class="flow">
 				<?php foreach ($rows as $row) 
 				{

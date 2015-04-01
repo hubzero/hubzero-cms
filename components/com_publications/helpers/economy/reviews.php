@@ -139,7 +139,7 @@ class Reviews extends Object
 		$points = $this->calculate_marketvalue($review, $type);
 
 		// Get qualifying users
-		$juser = \JUser::getInstance($review->author);
+		$juser = User::getInstance($review->author);
 
 		// Reward review author
 		if (is_object($juser))
@@ -149,8 +149,8 @@ class Reviews extends Object
 			if (intval($points) > 0)
 			{
 				$msg = ($type == 'royalty')
-					 ? \JText::sprintf('Royalty payment for posting a review on publication #%s', $review->pid)
-					 : \JText::sprintf('Commission for posting a review on publication #%s', $review->pid);
+					 ? Lang::txt('Royalty payment for posting a review on publication #%s', $review->pid)
+					 : Lang::txt('Commission for posting a review on publication #%s', $review->pid);
 				$BTL->deposit($points, $msg, $cat, $review->id);
 			}
 		}

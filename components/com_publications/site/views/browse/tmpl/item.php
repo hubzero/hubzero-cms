@@ -43,11 +43,11 @@ switch ($this->line->access)
 	case 0:
 	default: $html .= ' class="public"'; break;
 }
-$html .= '>'."\n";
+$html .= '>' . "\n";
 $html .= "\t". "\t". '<div class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $this->line->id . '&v=' . $this->line->version_id) . '/Image:thumb' . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
-$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>'."\n";
-$html .= '</p>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>' . "\n";
+$html .= '</p>' . "\n";
 
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	$database = \JFactory::getDBO();
@@ -59,16 +59,16 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 		$r = '0'.$r;
 	}
 
-	$html .= "\t\t".'<div class="metadata">'."\n";
-	$html .= "\t\t\t".'<dl class="rankinfo">'."\n";
-	$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.Lang::txt('COM_PUBLICATIONS_THIS_HAS').'</span> '.number_format($this->line->ranking,1).' '.Lang::txt('COM_PUBLICATIONS_RANKING').'</dt>'."\n";
-	$html .= "\t\t\t\t".'<dd>'."\n";
-	$html .= "\t\t\t\t\t".'<p>'.Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>'."\n";
-	$html .= "\t\t\t\t\t".'<div>'."\n";
-	$html .= "\t\t\t\t\t".'</div>'."\n";
-	$html .= "\t\t\t\t".'</dd>'."\n";
-	$html .= "\t\t\t".'</dl>'."\n";
-	$html .= "\t\t".'</div>'."\n";
+	$html .= "\t\t".'<div class="metadata">' . "\n";
+	$html .= "\t\t\t".'<dl class="rankinfo">' . "\n";
+	$html .= "\t\t\t\t".'<dt class="ranking"><span class="rank-'.$r.'">'.Lang::txt('COM_PUBLICATIONS_THIS_HAS').'</span> '.number_format($this->line->ranking,1).' '.Lang::txt('COM_PUBLICATIONS_RANKING').'</dt>' . "\n";
+	$html .= "\t\t\t\t".'<dd>' . "\n";
+	$html .= "\t\t\t\t\t".'<p>'.Lang::txt('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>' . "\n";
+	$html .= "\t\t\t\t\t".'<div>' . "\n";
+	$html .= "\t\t\t\t\t".'</div>' . "\n";
+	$html .= "\t\t\t\t".'</dd>' . "\n";
+	$html .= "\t\t\t".'</dl>' . "\n";
+	$html .= "\t\t".'</div>' . "\n";
 } elseif ($this->params->get('show_rating') && $this->config->get('show_rating')) {
 	switch ($this->line->rating)
 	{
@@ -91,9 +91,9 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 		$class = ' five-stars';
 	}
 
-	$html .= "\t\t".'<div class="metadata">'."\n";
-	$html .= "\t\t\t".'<p class="rating"><span title="'.JText::sprintf('COM_PUBLICATIONS_OUT_OF_5_STARS',$this->line->rating).'" class="avgrating'.$class.'"><span>'.JText::sprintf('COM_PUBLICATIONS_OUT_OF_5_STARS',$this->line->rating).'</span>&nbsp;</span></p>'."\n";
-	$html .= "\t\t".'</div>'."\n";
+	$html .= "\t\t".'<div class="metadata">' . "\n";
+	$html .= "\t\t\t".'<p class="rating"><span title="' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->rating).'" class="avgrating' . $class . '"><span>' . Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->rating) . '</span>&nbsp;</span></p>' . "\n";
+	$html .= "\t\t".'</div>' . "\n";
 }
 
 $info = array();
@@ -105,20 +105,20 @@ if (($this->line->category && !intval($this->filters['category']))) {
 	$info[] = $this->line->cat_name;
 }
 if ($this->authors && $this->params->get('show_authors')) {
-	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS').': '. \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
+	$info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '. \Components\Publications\Helpers\Html::showContributors( $this->authors, false, true );
 }
 if ($this->line->doi)
 {
-	$info[] = 'doi:'. $this->line->doi;
+	$info[] = 'doi:' . $this->line->doi;
 }
 
-$html .= "\t\t".'<p class="details">'.implode(' <span>|</span> ',$info).'</p>'."\n";
+$html .= "\t\t" . '<p class="details">' . implode(' <span>|</span> ', $info) . '</p>' . "\n";
 if ($this->line->abstract) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->abstract), 300 )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->abstract), 300 ) . "\n";
 } else if ($this->line->description) {
-	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->description), 300 )."\n";
+	$html .= "\t\t".\Hubzero\Utility\String::truncate( stripslashes($this->line->description), 300 ) . "\n";
 }
-$html .= "\t". "\t". '</div>'."\n";
-$html .= "\t".'</li>'."\n";
+$html .= "\t" . "\t" . '</div>' . "\n";
+$html .= "\t" . '</li>' . "\n";
 echo $html;
 ?>
