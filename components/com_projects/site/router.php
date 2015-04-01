@@ -365,7 +365,7 @@ class Router extends Base
 					// App actions
 					$appActions = array('status', 'history', 'wiki', 'browse',
 						'edit', 'start', 'save', 'register', 'attach', 'source',
-						'cancel', 'update', 'message', 'update'
+						'cancel', 'update', 'message', 'verify', 'addimage'
 					);
 					if (in_array( $segments[2], $appActions ))
 					{
