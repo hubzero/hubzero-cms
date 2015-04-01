@@ -56,6 +56,10 @@ class Lang extends Facade
 		$args = func_get_args();
 		if (count($args) > 1)
 		{
+			if (count($args) == 2 && is_bool($args[1]))
+			{
+				return \JText::_($string, $args[1]);
+			}
 			return call_user_func_array(array('\JText', 'sprintf'), $args);
 		}
 		return \JText::_($string);
