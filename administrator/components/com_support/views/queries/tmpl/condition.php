@@ -61,6 +61,7 @@ if ($this->condition->expressions)
 				<option value="tag"<?php if ($expression->fldval == 'tag') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
 				<option value="type"<?php if ($expression->fldval == 'type') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
 				<option value="created"<?php if ($expression->fldval == 'created') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+				<option value="closed"<?php if ($expression->fldval == 'closed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
 				<option value="category"<?php if ($expression->fldval == 'category') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
 			</select>
 			<select class="op">

@@ -15,6 +15,7 @@ var Support = {
 		'summary':'Summary',
 		'report':'Report',
 		'created':'Created',
+		'closed':'Closed',
 		'type':'Type',
 		'resolved':'Resolution'
 	},
