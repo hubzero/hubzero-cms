@@ -245,14 +245,14 @@ function submitbutton(pressbutton)
 				{
 					$path = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
-					$this_size = filesize(JPATH_ROOT . $path . DS . $file);
-					list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . DS . $file);
+					$this_size = filesize(PATH_APP . $path . DS . $file);
+					list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $file);
 					$pic = $this->row->get('logo');
 				}
 				else
 				{
 					$pic = 'blank.png';
-					$path = '/administrator/components/com_courses/assets/img';
+					$path = '/components/com_courses/admin/assets/img';
 				}
 				?>
 				<div id="img-container">

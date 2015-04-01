@@ -175,14 +175,14 @@ function submitbutton(pressbutton)
 					{
 						$path = $this->row->logo('path');
 
-						$this_size = filesize(JPATH_ROOT . $path . DS . $logo);
-						list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . DS . $logo);
+						$this_size = filesize(PATH_APP . $path . DS . $logo);
+						list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
 						$pic = $logo;
 					}
 					else
 					{
 						$pic  = 'blank.png';
-						$path = '/administrator/components/com_courses/assets/img';
+						$path = '/components/com_courses/admin/assets/img';
 					}
 					?>
 					<div id="img-container">

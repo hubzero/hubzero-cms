@@ -138,7 +138,12 @@ class JCategories
 		if (!class_exists($classname))
 		{
 			$path = JPATH_SITE . '/components/' . $component . '/helpers/category.php';
-			if (is_file($path))
+			$path2 = JPATH_SITE . '/components/' . $component . '/site/helpers/category.php';
+			if (is_file($path2))
+			{
+				include_once $path2;
+			}
+			else if (is_file($path))
 			{
 				include_once $path;
 			}

@@ -266,14 +266,14 @@ jQuery(document).ready(function($){
 							{
 								$path = $this->row->logo('path');
 
-								$this_size = filesize(JPATH_ROOT . $path . DS . $logo);
-								list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . $path . DS . $logo);
+								$this_size = filesize(PATH_APP . $path . DS . $logo);
+								list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
 								$pic = $logo;
 							}
 							else
 							{
 								$pic  = 'blank.png';
-								$path = '/administrator/components/com_courses/assets/img';
+								$path = '/components/com_courses/admin/assets/img';
 							}
 							?>
 							<div id="img-container">
@@ -348,7 +348,7 @@ jQuery(document).ready(function($){
 									var el = $(this);
 									$.getJSON(el.attr('href').nohtml(), {}, function(response) {
 										if (response.success) {
-											$('#img-display').attr('src', '../administrator/components/com_courses/assets/img/blank.png');
+											$('#img-display').attr('src', '../components/com_courses/admin/assets/img/blank.png');
 											$('#img-name').text('[ none ]');
 											$('#img-size').text('0');
 											$('#img-width').text('0');

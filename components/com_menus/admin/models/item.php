@@ -870,7 +870,7 @@ class MenusModelItem extends JModelAdmin
 			if (isset($args['option'])) {
 				// The option determines the base path to work with.
 				$option = $args['option'];
-				$base	= JPATH_SITE.'/components/'.$option;
+				$base	= JPATH_SITE.'/components/'.$option.'/site';
 			}
 
 			// Confirm a view is defined.
@@ -948,7 +948,7 @@ class MenusModelItem extends JModelAdmin
 
 			// We don't have a component. Load the form XML to get the help path
 
-			$xmlFile = JPath::find(JPATH_ROOT . '/administrator/components/com_menus/models/forms', 'item_' . $type . '.xml');
+			$xmlFile = JPath::find(JPATH_ROOT . '/components/com_menus/admin/models/forms', 'item_' . $type . '.xml');
 
 
 

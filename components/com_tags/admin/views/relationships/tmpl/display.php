@@ -124,10 +124,10 @@ $this->css('tag_graph.css');
 	<input type="hidden" name="plgAutocompleterCss" id="plgAutocompleterCss" value="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css" />
 </form>
 
-<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.min.js"></script>
-<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
-<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
-<script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
+<script src="<?php echo $base; ?>/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.min.js"></script>
+<script src="<?php echo $base; ?>/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.layout.min.js"></script>
+<script src="<?php echo $base; ?>/components/<?php echo $this->option; ?>/admin/assets/js/d3/d3.geom.min.js"></script>
+<script src="<?php echo $base; ?>/components/<?php echo $this->option; ?>/admin/assets/js/tag_graph.js"></script>
 <script type="text/javascript">
 var plgAutocompleterCss = '<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css';
 </script>
