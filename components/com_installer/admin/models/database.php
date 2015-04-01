@@ -81,14 +81,16 @@ class InstallerModelDatabase extends InstallerModel
 	 * @throws Exception
 	 */
 
-	public function getSchemaVersion() {
+	public function getSchemaVersion()
+	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('version_id')->from($db->qn('#__schemas'))
-		->where('extension_id = 700');
+			->where('extension_id = 700');
 		$db->setQuery($query);
 		$result = $db->loadResult();
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			throw new Exception('Database error - getSchemaVersion');
 		}
 		return $result;
@@ -129,7 +131,8 @@ class InstallerModelDatabase extends InstallerModel
 			$query->set($db->qn('extension_id') . '= 700');
 			$query->set($db->qn('version_id') . '= ' . $db->q($schema));
 			$db->setQuery($query);
-			if ($db->query()) {
+			if ($db->query())
+			{
 				$result = $schema;
 			}
 		}
@@ -178,7 +181,6 @@ class InstallerModelDatabase extends InstallerModel
 			{
 				return false;
 			}
-
 		}
 	}
 

@@ -45,7 +45,7 @@ class JFormFieldType extends JFormField
 		$query->select('type')->from('#__extensions');
 		$db->setQuery($query);
 		$types = array_unique($db->loadColumn());
-		foreach($types as $type)
+		foreach ($types as $type)
 		{
 			$options[] = JHtml::_('select.option', $type, Lang::txt('COM_INSTALLER_TYPE_'. strtoupper($type)));
 		}
