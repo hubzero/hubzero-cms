@@ -396,6 +396,12 @@ class Media extends Base
 			$media = str_replace('Compiled:', '', strstr($uri, 'Compiled:'));
 			$dir   = 'compiled';
 		}
+		if (strstr($uri, 'Tool:'))
+		{
+			$media = str_replace('Tool:', '', strstr($uri, 'Tool:'));
+			$media = $media ? $media : 'default';
+			$dir   = 'tools';
+		}
 
 		// Show project thumbnail
 		if ($media == 'thumb')
@@ -408,6 +414,17 @@ class Media extends Base
 			{
 				// Public picture
 				$source = Helpers\Html::getProjectImageSrc( $this->model->get('alias'), $this->model->get('picture'), $this->config );
+			}
+			elseif ($dir == 'tools')
+			{
+				$path     = trim($this->config->get('imagepath', '/site/projects'), DS);
+				$source   = $path . DS . $this->model->get('alias') . DS . $dir . DS . $media . '.png';
+
+				if (!is_file(PATH_APP . DS . $source))
+				{
+					// Get default tool image
+					$source = $this->config->get('toolpic', '/plugins/projects/tools/images/default.gif');
+				}
 			}
 			else
 			{

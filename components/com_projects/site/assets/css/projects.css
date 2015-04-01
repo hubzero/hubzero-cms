@@ -61,6 +61,8 @@
 	.btn.btn-cancel {
 		background: #FFFFFF;
 		border: 1px solid #CCC !important;
+		color: #666;
+		margin-top: 0.2em;
 	}
 
 /* Browse Projects - project thumbnail
