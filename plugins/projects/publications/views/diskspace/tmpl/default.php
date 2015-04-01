@@ -38,7 +38,7 @@ if ($this->total > 0 && $inuse < 1)
 
 $inuse 	= ($inuse > 100) ? 100 : $inuse;
 $quota 	= \Hubzero\Utility\Number::formatBytes($this->quota);
-$used  	= \Hubzero\Utility\Number::formatBytes($this->dirsize);
+$used  	= $this->dirsize ? \Hubzero\Utility\Number::formatBytes($this->dirsize) : 0;
 $unused = \Hubzero\Utility\Number::formatBytes($this->quota - $this->dirsize);
 $unused = $unused <= 0 ? 'none' : $unused;
 $approachingQuota = $this->config->get('approachingQuota', 85);
