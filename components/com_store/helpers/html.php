@@ -77,11 +77,11 @@ class Html
 		{
 			if ($category == 'service')
 			{
-				$html = '<img src="' . \JURI::base(true). '/components/' . $option . '/assets/img/premiumservice.gif" alt="' . Lang::txt('COM_STORE_PREMIUM_SERVICE') . '" />';
+				$html = '<img src="' . \Request::base(true). '/components/' . $option . '/site/assets/img/premiumservice.gif" alt="' . Lang::txt('COM_STORE_PREMIUM_SERVICE') . '" />';
 			}
 			else
 			{
-				$html = '<img src="' . \JURI::base(true). '/components/' . $option . '/assets/img/nophoto.gif" alt="' . Lang::txt('COM_STORE_MSG_NO_PHOTO') . '" />';
+				$html = '<img src="' . \Request::base(true). '/components/' . $option . '/site/assets/img/nophoto.gif" alt="' . Lang::txt('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
 		}
 

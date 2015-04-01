@@ -55,7 +55,7 @@ class Xml extends SiteController
 		$igran  = "YYYY-MM-DD";
 		$igran .= $this->config->get('gran', 'c') == 'c' ? "Thh:mm:ssZ" : '';
 
-		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \JURI::base())), '/');
+		$hubname = rtrim($this->config->get('base_url', str_replace('https', 'http', \Request::base())), '/');
 
 		$service = new Service($metadata);
 		$service->set('metadataPrefix', $metadata)
@@ -114,7 +114,7 @@ class Xml extends SiteController
 			break;
 
 			default:
-				$service->error($service::ERROR_BAD_VERB, Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
+				$service->error($service::ERROR_BAD_VERB, \Lang::txt('COM_OAIPMH_ILLEGAL_VERB'));
 			break;
 		}
 

@@ -32,8 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	/* Mini-login screen for employers */
 
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
+	$sitename = Config::get('sitename');
 	// get some configs
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
 	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
@@ -81,8 +80,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 							: Lang::txt('COM_JOBS_INTRO_BROWSE_INFO').' '.Lang::txt('COM_JOBS_INTRO_BROWSE_DETAILS'); ?>
 					<?php
 					echo ($this->task=='addjob')
-							? '<img src="'.JURI::Base(true).'/components/'.$this->option.'/site/assets/img/helper_job_search.gif" alt="'.Lang::txt('COM_JOBS_ACTION_POST_JOB').'" />'
-							: '<img src="'.JURI::Base(true).'/components/'.$this->option.'/site/assets/img/helper_browse_resumes.gif" alt="'.Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
+							? '<img src="'.Request::base(true).'/components/'.$this->option.'/site/assets/img/helper_job_search.gif" alt="'.Lang::txt('COM_JOBS_ACTION_POST_JOB').'" />'
+							: '<img src="'.Request::base(true).'/components/'.$this->option.'/site/assets/img/helper_browse_resumes.gif" alt="'.Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES').'" />';
 					?>
 				</p>
 			</div>

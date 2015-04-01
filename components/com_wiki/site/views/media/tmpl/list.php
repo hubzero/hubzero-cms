@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $no_html = Request::getInt('no_html', 0);
-$base = JURI::base(true);
+$base = Request::base(true);
 
 if (!$no_html) {
 	$this->css();

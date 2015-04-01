@@ -55,7 +55,7 @@ $first = $this->model->entries('first', $filters);
 		$feed = Route::url($path);
 		if (substr($feed, 0, 4) != 'http')
 		{
-			$live_site = rtrim(JURI::base(),'/');
+			$live_site = rtrim(Request::base(),'/');
 
 			$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 		}

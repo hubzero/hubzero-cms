@@ -860,7 +860,7 @@ class CoursesModelSection extends CoursesModelAbstract
 			$path .= '/' . $file;
 			if (file_exists(PATH_APP . $path))
 			{
-				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
+				$path = str_replace('/administrator', '', \Request::base(true)) . $path;
 			}
 
 			if ($rtrn == 'url')

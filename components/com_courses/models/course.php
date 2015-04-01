@@ -838,7 +838,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 				list($width, $height) = getimagesize(PATH_APP . $path);
 				$size['width']  = $width;
 				$size['height'] = $height;
-				$path = \JURI::base(true) . $path;
+				$path = \Request::base(true) . $path;
 
 				if ($rtrn == 'url')
 				{

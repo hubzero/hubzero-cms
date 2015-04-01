@@ -50,7 +50,7 @@ if ($canonical = $this->model->attribs->get('canonical', ''))
 
 	if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $url))
 	{
-		$url = rtrim(JURI::base(), DS) . DS . ltrim($url, DS);
+		$url = rtrim(Request::base(), DS) . DS . ltrim($url, DS);
 	}
 	?>
 	<div class="new-version grid">

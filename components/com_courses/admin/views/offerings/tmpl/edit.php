@@ -45,7 +45,7 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('offering');
 
-$base = str_replace('/administrator', '', JURI::base(true));
+$base = str_replace('/administrator', '', Request::base(true));
 
 $this->css();
 ?>

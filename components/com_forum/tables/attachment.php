@@ -146,7 +146,7 @@ class Attachment extends \JTable
 		$path = $this->getUploadPath($this->parent, $config) . DS . $this->parent . DS . $this->post_id . DS . $this->filename;
 		if ($this->filename && file_exists($path))
 		{
-			$url = rtrim(\JURI::base(), '/') . '/' . ltrim(Route::url($url . $this->filename), '/');
+			$url = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($url . $this->filename), '/');
 
 			$this->description = htmlentities(stripslashes($this->description), ENT_COMPAT, 'UTF-8');
 

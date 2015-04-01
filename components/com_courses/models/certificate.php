@@ -271,7 +271,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			break;
 
 			case 'web':
-				return str_replace('administrator', '', trim(JURI::base(true), '/')) . $this->_base;
+				return str_replace('administrator', '', trim(\Request::base(true), '/')) . $this->_base;
 			break;
 
 			default:

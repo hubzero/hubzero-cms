@@ -408,7 +408,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						$feed = Route::url($this->row->link() . '/comments.rss');
 						if (substr($feed, 0, 4) != 'http')
 						{
-							$live_site = rtrim(JURI::base(), '/');
+							$live_site = rtrim(Request::base(), '/');
 
 							$feed = rtrim($live_site, DS) . DS . ltrim($feed, DS);
 						}

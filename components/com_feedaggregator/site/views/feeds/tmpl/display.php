@@ -38,10 +38,10 @@ defined('_JEXEC') or die('Restricted access');
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li>
-				<a class="icon-browse btn" href="<?php echo JRoute::_('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_POSTS'); ?></a>
+				<a class="icon-browse btn" href="<?php echo Route::url('index.php?option='. $this->option . '&controller=posts'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POSTS'); ?></a>
 			</li>
 			<li class="last">
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
+				<a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
@@ -54,9 +54,9 @@ defined('_JEXEC') or die('Restricted access');
 			<table class="entries">
 				<thead class="table-head">
 					<tr>
-						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_NAME'); ?></th>
-						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_URL'); ?></th>
-						<th scope="col"><?php echo JText::_('COM_FEEDAGGREGATOR_COL_ACTIONS'); ?></th>
+						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_NAME'); ?></th>
+						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_URL'); ?></th>
+						<th scope="col"><?php echo Lang::txt('COM_FEEDAGGREGATOR_COL_ACTIONS'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -65,12 +65,12 @@ defined('_JEXEC') or die('Restricted access');
 						<td><?php echo $feed->name; ?></td>
 						<td><a href="<?php echo $feed->url; ?>"><?php echo $feed->url; ?></a></td>
 						<td>
-							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=posts&amp;task=PostsById&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
-							<a class="btn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=edit&amp;id=<?php echo $feed->id;?>"><?php echo JText::_('COM_FEEDAGGREGATOR_EDIT'); ?></a>
+							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=PostsById&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_VIEW_POST'); ?>s</a>
+							<a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=edit&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_EDIT'); ?></a>
 							<?php if ($feed->enabled == '1'):?>
-								<a class="btn disableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=disable&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
+								<a class="btn disableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=disable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_DISABLE'); ?></a>
 							<?php elseif ($feed->enabled == '0'): ?>
-								<a class="btn enableBtn" href="index.php?option=com_feedaggregator&amp;controller=feeds&amp;task=status&amp;action=enable&amp;id=<?php echo $feed->id; ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ENABLE'); ?></a>
+								<a class="btn enableBtn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=status&action=enable&id=' . $feed->id); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ENABLE'); ?></a>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -79,8 +79,8 @@ defined('_JEXEC') or die('Restricted access');
 			</table>
 		<?php else: ?>
 			<p>
-				<?php echo JText::_('COM_FEEDAGGREGATOR_NO_RESULTS'); ?><br />
-				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
+				<?php echo Lang::txt('COM_FEEDAGGREGATOR_NO_RESULTS'); ?><br />
+				<a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=feeds&task=new'); ?>"><?php echo Lang::txt('COM_FEEDAGGREGATOR_ADD_FEED'); ?></a>
 			</p>
 		<?php endif; ?>
 		</div>

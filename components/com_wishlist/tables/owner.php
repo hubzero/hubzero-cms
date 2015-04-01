@@ -113,21 +113,20 @@ class Owner extends \JTable
 					}
 
 					// send email to added user
-					$jconfig = \JFactory::getConfig();
-					$admin_email = $jconfig->getValue('config.mailfrom');
+					$admin_email = Config::get('mailfrom');
 
 					$kind = $type==2 ? Lang::txt('member of Advisory Committee') : Lang::txt('list administrator');
 					$subject = Lang::txt('Wish List') . ', ' . Lang::txt('You have been added as a') . ' ' . $kind . ' ' . Lang::txt('FOR') . ' ' . Lang::txt('Wish List') . ' #' . $listid;
 
 					$from = array(
-						'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Wish List'),
-						'email' => $jconfig->getValue('config.mailfrom')
+						'name'  => Config::get('sitename') . ' ' . Lang::txt('Wish List'),
+						'email' => Config::get('mailfrom')
 					);
 
 					$message  = $subject . '. ';
 					$message .= "\r\n\r\n";
 					$message .= '----------------------------' . "\r\n";
-					$url = \JURI::base() . Route::url('index.php?option=com_wishlist&id=' . $listid);
+					$url = Request::base() . Route::url('index.php?option=com_wishlist&id=' . $listid);
 					$message .= Lang::txt('Please go to %s to view the wish list and rank new wishes.', $url);
 
 					\JPluginHelper::importPlugin('xmessage');

@@ -68,7 +68,7 @@ class Record extends Object
 
 		// create core objects
 		$this->_database = \JFactory::getDBO();
-		$this->_user     = \JFactory::getUser();
+		$this->_user     = \User::getRoot();
 
 		// create resource objects
 		$this->record               = new stdClass;
@@ -253,7 +253,7 @@ class Record extends Object
 				$this->raw->id = $resource->id;
 
 				// add a notice with link to resource matched
-				$resourceLink = rtrim(str_replace('administrator', '', \JURI::base()), DS) . DS . 'resources' . DS . $resource->id;
+				$resourceLink = rtrim(str_replace('administrator', '', \Request::base()), DS) . DS . 'resources' . DS . $resource->id;
 				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
 				array_push($this->record->notices, Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
 			}

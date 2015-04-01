@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('media.css');
 
-$base = rtrim(JURI::base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 $course = CoursesModelCourse::getInstance($this->listdir);
 ?>

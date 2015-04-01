@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$live_site = rtrim(JURI::base(), '/');
+$live_site = rtrim(Request::base(), '/');
 
 $this->css()
      ->css('conditions.css')

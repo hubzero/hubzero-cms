@@ -185,9 +185,8 @@ class Format
 	public function formatCitation($citation, $highlight = NULL, $include_coins = true, $config, $coins_only = false)
 	{
 		//get hub specific details
-		$jconfig  = \JFactory::getConfig();
-		$hub_name = $jconfig->getValue('config.sitename');
-		$hub_url  = rtrim(\JURI::base(), '/');
+		$hub_name = \Config::get('sitename');
+		$hub_url  = rtrim(\Request::base(), '/');
 
 		$c_type = 'journal';
 
@@ -291,7 +290,7 @@ class Format
 							$id = trim($matches[1]);
 							if (is_numeric($id))
 							{
-								$user = \JUser::getInstance($id);
+								$user = \User::getInstance($id);
 								if (is_object($user))
 								{
 									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
@@ -891,8 +890,8 @@ class Format
 		$html = "\t" . '<p>';
 		if (self::keyExistsOrIsNotEmpty('author', $row))
 		{
-			$xprofile = Profile::getInstance(\JFactory::getUser()->get('id'));
-			$app   = \JFactory::getApplication();
+			$xprofile = Profile::getInstance(\User::get('id'));
+
 			$auths = explode(';', $row->author);
 			$a = array();
 			foreach ($auths as $auth)
@@ -908,7 +907,7 @@ class Format
 					}
 					else
 					{
-						$zuser = \JUser::getInstance(trim($matches[0]));
+						$zuser = \User::getInstance(trim($matches[0]));
 						if (is_object($zuser))
 						{
 							$aid = $zuser->get('id');

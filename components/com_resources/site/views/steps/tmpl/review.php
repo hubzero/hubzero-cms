@@ -180,7 +180,7 @@ $this->css('create.css')
 				<?php echo Lang::txt(
 					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
 					Config::get('sitename'),
-					'<a class="popup 760x560" href="' . JURI::base(true) . '/legal/license">' . Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
+					'<a class="popup 760x560" href="' . Request::base(true) . '/legal/license">' . Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
 				); ?>
 			</label>
 	<?php if ($this->config->get('cc_license')) { ?>

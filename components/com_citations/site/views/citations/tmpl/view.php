@@ -119,12 +119,12 @@ $params = new JParameter($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges
-$tags 	= \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
+$tags   = \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
 $badges = \Components\Citations\Helpers\Format::citationBadges($citation, $database, false);
 
 //are we allowed to show tags and badges
-$showTags 	= $config->get('citation_show_tags', 'yes');
-$showBadges	= $config->get('citation_show_badges', 'yes');
+$showTags   = $config->get('citation_show_tags', 'yes');
+$showBadges = $config->get('citation_show_badges', 'yes');
 
 //get internal associations
 $associationLinks = array();
@@ -144,7 +144,7 @@ foreach ($this->associations as $a)
 }
 
 //get the sub area we are trying to load
-$area = JRequest::getVar('area', 'about');
+$area = Request::getVar('area', 'about');
 ?>
 
 <header id="content-header" class="half">
@@ -169,7 +169,7 @@ $area = JRequest::getVar('area', 'about');
 						{
 							if (is_numeric($matches[1]))
 							{
-								$user = JUser::getInstance($matches[1]);
+								$user = User::getInstance($matches[1]);
 								if (is_object($user))
 								{
 									$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
@@ -678,14 +678,11 @@ $area = JRequest::getVar('area', 'about');
 <?php endif; ?>
 
 <?php
-	/**
-	 * Coins stuff
-	 */
+	// Coins stuff
 
 	//get hub url and name
-	$jconfig = JFactory::getConfig();
-	$hubName = $jconfig->getValue('config.sitename');
-	$hubUrl = rtrim(JURI::base(), '/');
+	$hubName = Config::get('sitename');
+	$hubUrl = rtrim(Request::base(), '/');
 
 	//get the type of resource for coins
 	switch (strtolower($type[0]['type_title']))

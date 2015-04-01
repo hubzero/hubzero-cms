@@ -137,7 +137,6 @@ foreach ($this->cats as $cat)
 		<div class="subject">
 			<div class="container">
 			<?php
-			$juri = JURI::getInstance();
 			$foundresults = false;
 			$dopaging = false;
 			$html = '';
@@ -212,7 +211,7 @@ foreach ($this->cats as $cat)
 						{
 							$feed = DS . $feed;
 						}
-						$live_site = rtrim(JURI::base(),'/');
+						$live_site = rtrim(Request::base(),'/');
 
 						$feed = $live_site . $feed;
 					}
@@ -271,7 +270,7 @@ foreach ($this->cats as $cat)
 							if ($row->text) {
 								$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))), 200) . '</p>' . "\n";
 							}
-							$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
+							$html .= "\t\t" . '<p class="href">' . Request::base() . $row->href . '</p>' . "\n";
 							$html .= "\t" . '</li>' . "\n";
 						}
 					}

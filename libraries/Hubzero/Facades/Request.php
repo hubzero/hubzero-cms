@@ -44,4 +44,45 @@ class Request extends \JRequest
 	{
 		return 'request';
 	}
+
+	/**
+	 * Get the current path info for the request.
+	 *
+	 * @return  string
+	 */
+	public static function base($pathonly = false)
+	{
+		return \JURI::base($pathonly);
+	}
+
+	/**
+	 * Returns the root URI for the request.
+	 *
+	 * @param   boolean  $pathonly  If false, prepend the scheme, host and port information. Default is false.
+	 * @param   string   $path      The path
+	 * @return  string  The root URI string.
+	 */
+	public static function root($pathonly = false, $path = null)
+	{
+		return \JURI::root($pathonly, $path);
+	}
+
+	/**
+	 * Returns the URL for the request, minus the query.
+	 *
+	 * @return  string
+	 */
+	public static function current()
+	{
+		return \JURI::current();
+	}
+
+	/**
+	 * Temporary placeholder
+	 *
+	 * @return  void
+	 */
+	public static function createFromGlobals()
+	{
+	}
 }

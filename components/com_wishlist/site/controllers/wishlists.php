@@ -911,7 +911,7 @@ class Wishlists extends SiteController
 
 		// Get URL to page explaining virtual economy
 		$aconfig = Component::params('com_answers');
-		$this->view->infolink = $aconfig->get('infolink', \JURI::base(true) . '/kb/points/');
+		$this->view->infolink = $aconfig->get('infolink', Request::base(true) . '/kb/points/');
 		$this->view->funds    = $funds;
 		$this->view->banking  = $this->banking;
 

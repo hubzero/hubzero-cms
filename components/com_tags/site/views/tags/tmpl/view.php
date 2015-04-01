@@ -190,7 +190,7 @@ foreach ($cats as $cat)
 							$ttl = $total;
 						}
 
-						$base = rtrim(JURI::base(), '/');
+						$base = rtrim(Request::base(), '/');
 
 						$html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . Lang::txt('COM_TAGS_RESULTS_THROUGH_OF', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>'."\n";
 

@@ -156,7 +156,7 @@ if ($mode != 'preview')
 						}
 					}
 
-					$live_site = rtrim(JURI::base(),'/');
+					$live_site = rtrim(Request::base(),'/');
 
 					if ($notes || $audio || $video)
 					{

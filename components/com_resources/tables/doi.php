@@ -199,7 +199,6 @@ class Doi extends \JTable
 		}
 
 		// Get configs
-		$jconfig    = \JFactory::getConfig();
 		$shoulder   = $config->get('doi_shoulder');
 		$service    = $config->get('doi_newservice');
 		$prefix     = $config->get('doi_newprefix');
@@ -215,7 +214,7 @@ class Doi extends \JTable
 		}
 
 		// Collect metadata
-		$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', $jconfig->getValue('config.sitename')));
+		$metadata['publisher'] = htmlspecialchars($config->get('doi_publisher', \Config::get('sitename')));
 		$metadata['pubYear']   = isset($metadata['pubYear']) ? $metadata['pubYear'] : date('Y');
 		$metadata['language']  = 'en';
 
@@ -234,7 +233,7 @@ class Doi extends \JTable
 		$call .= $prefix ? DS . $prefix : DS;
 
 		// Get config
-		$live_site = rtrim(\JURI::base(),'/');
+		$live_site = rtrim(\Request::base(),'/');
 
 		if (!$live_site || !isset($metadata['targetURL']) || !isset($metadata['title']))
 		{
@@ -249,8 +248,7 @@ class Doi extends \JTable
 		}
 		else
 		{
-			$juser = \JFactory::getUser();
-			$creatorName = $juser->get('name');
+			$creatorName = \User::get('name');
 		}
 
 		// Format name

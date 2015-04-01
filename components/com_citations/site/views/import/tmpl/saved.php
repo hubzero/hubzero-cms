@@ -37,7 +37,7 @@ $this->css()
 //citation params
 $label = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
-$citationsFormat = new \Components\Citations\Helpers\Format( $this->database );
+$citationsFormat = new \Components\Citations\Helpers\Format($this->database);
 $template = $citationsFormat->getDefaultFormat();
 
 //batch downloads
@@ -65,9 +65,9 @@ if ($label == "none") {
 	?>
 
 	<ul id="steps">
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import_review" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
-		<li><a href="<?php echo JURI::base(true); ?>/citations/import_saved" class="active"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
+		<li><a href="<?php echo Request::base(true); ?>/citations/import" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
+		<li><a href="<?php echo Request::base(true); ?>/citations/import_review" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
+		<li><a href="<?php echo Request::base(true); ?>/citations/import_saved" class="active"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
 	</ul><!-- / #steps -->
 
 	<?php if (count($this->citations) > 0) : ?>
@@ -78,7 +78,7 @@ if ($label == "none") {
 			$counter = 1;
 		?>
 		<div style="float:right;" class="back-links">
-			<a href="<?php echo JURI::base(true); ?>/citations/import"><?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?></a> | <a href="<?php echo JURI::base(true); ?>/citations/browse"><?php echo Lang::txt('COM_CITATIONS_IMPORT_BROWSE_ALL'); ?></a>
+			<a href="<?php echo Request::base(true); ?>/citations/import"><?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?></a> | <a href="<?php echo Request::base(true); ?>/citations/browse"><?php echo Lang::txt('COM_CITATIONS_IMPORT_BROWSE_ALL'); ?></a>
 		</div>
 		<h3><?php echo Lang::txt('COM_CITATIONS_IMPORT_SUCCESS'); ?></h3>
 		<table class="citations">
@@ -94,17 +94,17 @@ if ($label == "none") {
 											$type = $t['type_title'];
 										}
 									}
-									$type = ($type != "") ? $type : "Generic";
+									$type = ($type != '') ? $type : "Generic";
 
 									switch ($label)
 									{
-										case "number":
+										case 'number':
 											echo "<span class=\"number\">{$counter}.</span>";
 											break;
-										case "type":
+										case 'type':
 											echo "<span class=\"type\">{$type}</span>";
 											break;
-										case "both":
+										case 'both':
 											echo "<span class=\"number\">{$counter}.</span>";
 											echo "<span class=\"type\">{$type}</span>";
 											break;

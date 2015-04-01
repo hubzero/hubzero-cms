@@ -319,7 +319,7 @@ class Codes extends AdminController
 			throw new Exception(Lang::txt('No code provided'), 500);
 		}
 
-		$url = rtrim(\JURI::base(), '/') . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
+		$url = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
 
 		if ($no_html)
 		{

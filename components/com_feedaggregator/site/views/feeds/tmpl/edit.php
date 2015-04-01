@@ -49,14 +49,14 @@ $this->js('feeds');
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>
 
-	<form method="post" id="hubForm" action="<?php echo JRoute::_('index.php?option=' . $this->option . ' &task=save'); ?>">
+	<form method="post" id="hubForm" action="<?php echo Route::url('index.php?option=' . $this->option . ' &task=save'); ?>">
 		<div class="explaination">
 			<p>
-				<?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE'); ?>
+				<?php echo Lang::txt('COM_FEEDAGGREGATOR_FEED_INFO_ASIDE'); ?>
 			</p>
 		</div>
 		<fieldset>
-			<legend><?php echo JText::_('COM_FEEDAGGREGATOR_FEED_INFORMATION'); ?></legend>
+			<legend><?php echo Lang::txt('COM_FEEDAGGREGATOR_FEED_INFORMATION'); ?></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
@@ -65,22 +65,22 @@ $this->js('feeds');
 			<input type="hidden" name="task" value="save" />
 
 			<label for="feedTitle">
-				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_FEEDNAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				<input type="text" class="required-field" name="name" id="feedTitle" size="25" value="<?php echo (is_object($feed) ? $this->escape($feed->name) : ''); ?>"/>
 			</label>
 
 			<label for="feedURL">
-				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_FEEDURL'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_FEEDURL'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
 				<input type="text" class="required-field" name="url" id="feedURL" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->url) : ''); ?>" />
 			</label>
 
 			<label for="feedDescription">
-				<?php echo JText::_('COM_FEEDAGGREGATOR_LABEL_DESCRIPTION'); ?>
+				<?php echo Lang::txt('COM_FEEDAGGREGATOR_LABEL_DESCRIPTION'); ?>
 				<input type="text" name="description" id="feedDescription" size="50" value="<?php echo (is_object($feed) ? $this->escape($feed->description) : ''); ?>" />
 			</label>
 		</fieldset>
 		<p class="submit">
-			<input type="submit" id="submitBtn" class="btn btn-success" name="formsubmitBtn" value="<?php echo JText::_('COM_FEEDAGGREGATOR_SUBMIT'); ?>" />
+			<input type="submit" id="submitBtn" class="btn btn-success" name="formsubmitBtn" value="<?php echo Lang::txt('COM_FEEDAGGREGATOR_SUBMIT'); ?>" />
 		</p>
 
 		<?php echo JHTML::_('form.token'); ?>

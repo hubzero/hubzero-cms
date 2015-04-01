@@ -35,7 +35,7 @@ $this->css('media.css')
      ->js('jquery.fileuploader.js', 'system')
      ->js('courses.fileupload.js');
 
-$base = rtrim(JURI::base(true), '/');
+$base = rtrim(Request::base(true), '/');
 ?>
 <div id="file_browser">
 	<form action="index.php" id="adminForm" method="post" enctype="multipart/form-data">

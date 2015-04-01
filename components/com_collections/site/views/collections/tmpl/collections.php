@@ -77,7 +77,7 @@ $this->css()
 
 	<section class="main section">
 		<?php if ($this->rows->total() > 0) { ?>
-			<div id="posts" data-base="<?php echo JURI::base(true); ?>" class="view-as <?php echo $mode; ?>">
+			<div id="posts" data-base="<?php echo Request::base(true); ?>" class="view-as <?php echo $mode; ?>">
 				<?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
 					<div class="post new-post">
 						<a class="icon-add add" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=new'); ?>">

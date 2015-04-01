@@ -911,7 +911,7 @@ class Tickets extends SiteController
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
 
-		$live_site = rtrim(\JURI::base(), '/');
+		$live_site = rtrim(Request::base(), '/');
 
 		// Get plugins
 		\JPluginHelper::importPlugin('support');

@@ -1608,8 +1608,7 @@ class Jobs extends SiteController
 	 */
 	public function editjob()
 	{
-		$jconfig = \JFactory::getConfig();
-		$live_site = rtrim(\JURI::base(), '/');
+		$live_site = rtrim(Request::base(), '/');
 
 		// Incoming
 		$code  = Request::getVar('code', '');
@@ -1792,12 +1791,11 @@ class Jobs extends SiteController
 				}
 
 				// make sure we have dummy admin employer account
-				$jconfig = \JFactory::getConfig();
-				$live_site = rtrim(\JURI::base(), '/');
+				$live_site = rtrim(Request::base(), '/');
 
 				$employer->uid = 1;
 				$employer->subscriptionid  = $subscription->id;
-				$employer->companyName     = $jconfig->getValue('config.sitename');
+				$employer->companyName     = Config::get('sitename');
 				$employer->companyLocation = '';
 				$employer->companyWebsite  = $live_site;
 

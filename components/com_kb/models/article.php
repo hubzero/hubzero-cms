@@ -37,6 +37,9 @@ use Hubzero\Base\ItemList;
 use Hubzero\Base\Model;
 use Hubzero\Utility\String;
 use stdClass;
+use Request;
+use User;
+use Route;
 
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'article.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'vote.php');
@@ -511,7 +514,7 @@ class Article extends Model
 				$feed = Route::url($link);
 				if (substr($feed, 0, 4) != 'http')
 				{
-					$live_site = rtrim(\JURI::base(), '/');
+					$live_site = rtrim(Request::base(), '/');
 
 					$feed = $live_site . '/' . ltrim($feed, '/');
 				}
@@ -609,7 +612,7 @@ class Article extends Model
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+			$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 			// See if a person from this IP has already voted in the last week
 			$tbl = new Tables\Vote($this->_db);
@@ -645,7 +648,7 @@ class Article extends Model
 			return false;
 		}
 
-		$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
+		$juser = ($user_id) ? User::getInstance($user_id) : User::getRoot();
 
 		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');

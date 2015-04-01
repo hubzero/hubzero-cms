@@ -73,7 +73,7 @@ jimport('joomla.filesystem.file');
 			<table>
 				<tbody>
 				<?php
-				$base = rtrim(JURI::base(true), '/');
+				$base = rtrim(Request::base(true), '/');
 				foreach ($this->folders as $k => $folder)
 				{
 					$num_files = 0;

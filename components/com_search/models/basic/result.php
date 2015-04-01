@@ -242,7 +242,7 @@ abstract class Result
 			}
 			else
 			{
-				$this->canonicalized_link = rtrim(\JURI::base(), '/') . '/' . substr(ltrim(\Route::url($this->link), '/'), strlen(\JURI::base(true)));
+				$this->canonicalized_link = rtrim(\Request::base(), '/') . '/' . substr(ltrim(\Route::url($this->link), '/'), strlen(\Request::base(true)));
 			}
 		}
 		return $this->canonicalized_link;

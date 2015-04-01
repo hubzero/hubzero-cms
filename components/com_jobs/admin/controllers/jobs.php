@@ -125,7 +125,7 @@ class Jobs extends AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$live_site = rtrim(\JURI::base(),'/');
+		$live_site = rtrim(Request::base(),'/');
 
 		// Push some styles to the template
 		$this->css();
@@ -336,7 +336,7 @@ class Jobs extends AdminController
 				'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_JOBS')
 			);
 
-			$juri    = \JURI::getInstance();
+			$juri    = Request::getInstance();
 
 			$base = rtrim($juri->base(), DS);
 			if (substr($base, -13) == 'administrator')

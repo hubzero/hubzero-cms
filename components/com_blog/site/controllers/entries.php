@@ -638,7 +638,7 @@ class Entries extends SiteController
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
 			$message .= stripslashes($row->content)."\r\n\r\n";
 			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= JURI::base() . '/' . ltrim($sef, '/') . "\r\n";
+			$message .= Request::base() . '/' . ltrim($sef, '/') . "\r\n";
 
 			// Send the message
 			$activity = array(

@@ -121,7 +121,7 @@ function getMonthName($month)
 	return $monthname;
 }
 
-$base = str_replace('/administrator', '', JURI::base(true));
+$base = str_replace('/administrator', '', Request::base(true));
 $base = rtrim($base, '/');
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get" name="adminForm" id="adminForm" enctype="multipart/form-data">

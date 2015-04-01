@@ -33,10 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 	<div id="attachments">
-		<form action="<?php echo JURI::base(true); ?>/index.php" id="adminForm" method="post" enctype="multipart/form-data">
+		<form action="<?php echo Request::base(true); ?>/index.php" id="adminForm" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<div id="themanager" class="manager">
-					<iframe src="<?php echo JURI::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+					<iframe src="<?php echo RequestI::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 				</div>
 			</fieldset>
 

@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 // push css
 $this->css();
 
-JPluginHelper::importPlugin( 'hubzero' );
+JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 ?>
 <header id="content-header">
@@ -62,7 +62,7 @@ $dispatcher = JDispatcher::getInstance();
 		<div class="explaination">
 			<h3><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_TITLE'); ?></h3>
 			<p><?php echo Lang::txt('COM_GROUPS_INVITE_SIDEBAR_HELP_DESC'); ?></p>
-			<p><img src="<?php echo JURI::base(true); ?>/components/com_groups/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
+			<p><img src="<?php echo Request::base(true); ?>/components/com_groups/site/assets/img/invite_example.jpg" alt="Example Auto-Completer" width="100%" style="border:3px solid #aaa;" />
 		</div>
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>

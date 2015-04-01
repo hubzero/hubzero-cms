@@ -55,8 +55,8 @@ $full = "/site/stats/resource_impact/resource_impact_".$this->model->resource->i
 if (file_exists(JPATH_ROOT . $thumb))
 {
 	$html .= '</br>';
-	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="' . JURI::base(true) . $full . '" rel="lightbox">';
-	$html .= '<img src="' . JURI::base(true) . $thumb . '" alt="'.$resource->id.' Impact Graph"/></a>';
+	$html .= '<a id="member-stats-graph" title="'.$resource->id.' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
+	$html .= '<img src="' . Request::base(true) . $thumb . '" alt="'.$resource->id.' Impact Graph"/></a>';
 }
 ?>
 <section class="main section upperpane">
@@ -123,7 +123,7 @@ if (file_exists(JPATH_ROOT . $thumb))
 
 					echo $html;
 
-					$live_site = rtrim(JURI::base(),'/');
+					$live_site = rtrim(Request::base(),'/');
 					?>
 					<p>
 						<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />

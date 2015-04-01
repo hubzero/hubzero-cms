@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = rtrim(JURI::base(true), '/');
+$base = rtrim(Request::base(true), '/');
 
 $this->css();
 ?>

@@ -57,7 +57,7 @@ $this->css('form.css')
 				<input type="hidden" name="tmpl" value="<?php echo $tmpl ?>" />
 			<?php endif; ?>
 			<div class="navbar">
-				<div><a href="<?php echo JURI::base(true); ?>/courses/form" id="done">Done</a></div>
+				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="done">Done</a></div>
 				<button type="submit">Update deployment</button>
 			</div>
 		</fieldset>
