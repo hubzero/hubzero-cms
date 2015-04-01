@@ -84,7 +84,7 @@ class CartControllerOrder extends ComponentController
 		$verificationVar = PaymentDispatcher::getTransactionIdVerificationVarName($paymentGatewayProivder);
 
 		if ($verificationVar)
-        {
+		{
 			// Check the GET values passed
 			$customVar = JRequest::getVar($verificationVar, '');
 
@@ -99,7 +99,7 @@ class CartControllerOrder extends ComponentController
 
 			// Verify token
 			if (!$token || !CartModelCart::verifySecurityToken($token, $tId))
-            {
+			{
 				die('Error processing your order. Failed to verify security token.');
 			}
 		}
@@ -110,7 +110,7 @@ class CartControllerOrder extends ComponentController
 		//print_r($tInfo);die;
 
 		if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed')
-        {
+		{
 			die('Error processing your order...');
 			//JError::raiseError(404, JText::_('Error processing transaction.'));
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
@@ -198,7 +198,7 @@ class CartControllerOrder extends ComponentController
 		$test = false;
 		// TESTING ***********************
 		if ($test)
-        {
+		{
 			$postBackTransactionId = 331;
 		}
 
@@ -214,7 +214,7 @@ class CartControllerOrder extends ComponentController
 
 		// Get payment provider
 		if (!$test)
-        {
+		{
 			$paymentGatewayProivder = $params->get('paymentProvider');
 
 			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
@@ -236,7 +236,7 @@ class CartControllerOrder extends ComponentController
 		}
 		// test
 		else
-        {
+		{
 			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
 			$paymentDispatcher = new PaymentDispatcher('DUMMY AUTO PAYMENT');
 			$pay = $paymentDispatcher->getPaymentProvider();
