@@ -52,10 +52,10 @@ class String
 	 *   (Overwrites before, after, breaks escape / clean)
 	 * - clean: A boolean or array with instructions for String::cleanInsert
 	 *
-	 * @param  string $str     A string containing variable placeholders
-	 * @param  array  $data    A key => val array where each key stands for a placeholder to be replaced with val
-	 * @param  array  $options An array of options, see description above
-	 * @return string
+	 * @param   string  $str      A string containing variable placeholders
+	 * @param   array   $data     A key => val array where each key stands for a placeholder to be replaced with val
+	 * @param   array   $options  An array of options, see description above
+	 * @return  string
 	 */
 	public static function insert($str, $data, $options = array())
 	{
@@ -128,10 +128,10 @@ class String
 	 * is to replace all whitespace and unneeded markup around placeholders that did not get replaced
 	 * by String::insert().
 	 *
-	 * @param  string $str
-	 * @param  array  $options
-	 * @return string
-	 * @see String::insert()
+	 * @param   string  $str
+	 * @param   array   $options
+	 * @return  string
+	 * @see     String::insert()
 	 */
 	public static function cleanInsert($str, $options)
 	{
@@ -204,10 +204,10 @@ class String
 	 * - `html` If true, will ignore any HTML tags, ensuring that only the correct text is highlighted
 	 * - `regex` a custom regex rule that is used to match words, default is '|$tag|iu'
 	 *
-	 * @param  string $text    Text to search the phrase in
-	 * @param  string $phrase  The phrase that will be searched
-	 * @param  array  $options An array of html attributes and options.
-	 * @return string The highlighted text
+	 * @param   string  $text     Text to search the phrase in
+	 * @param   string  $phrase   The phrase that will be searched
+	 * @param   array   $options  An array of html attributes and options.
+	 * @return  string  The highlighted text
 	 */
 	public static function highlight($text, $phrase, $options = array())
 	{
@@ -264,10 +264,10 @@ class String
 	 * - `ellipsis` Will be used as Beginning and prepended to the trimmed string
 	 * - `exact` If false, $text will not be cut mid-word
 	 *
-	 * @param  string  $text    String to truncate.
-	 * @param  integer $length  Length of returned string, including ellipsis.
-	 * @param  array   $options An array of options.
-	 * @return string  Trimmed string.
+	 * @param   string   $text     String to truncate.
+	 * @param   integer  $length   Length of returned string, including ellipsis.
+	 * @param   array    $options  An array of options.
+	 * @return  string   Trimmed string.
 	 */
 	public static function tail($text, $length = 100, $options = array())
 	{
@@ -306,14 +306,14 @@ class String
 	 *
 	 * ### Options:
 	 *
-	 * - `ellipsis` Will be used as Ending and appended to the trimmed string (`ending` is deprecated)
+	 * - `ellipsis` Will be used as Ending and appended to the trimmed string
 	 * - `exact` If false, $text will not be cut mid-word
 	 * - `html` If true, HTML tags would be handled correctly
 	 *
-	 * @param  string  $text    String to truncate.
-	 * @param  integer $length  Length of returned string, including ellipsis.
-	 * @param  array   $options An array of html attributes and options.
-	 * @return string  Trimmed string.
+	 * @param   string   $text     String to truncate.
+	 * @param   integer  $length   Length of returned string, including ellipsis.
+	 * @param   array    $options  An array of html attributes and options.
+	 * @return  string   Trimmed string.
 	 */
 	public static function truncate($text, $length = 100, $options = array())
 	{
@@ -467,11 +467,11 @@ class String
 	 * Extracts an excerpt from the text surrounding the phrase with a number of characters on each side
 	 * determined by radius.
 	 *
-	 * @param  string  $text     String to search the phrase in
-	 * @param  string  $phrase   Phrase that will be searched for
-	 * @param  integer $radius   The amount of characters that will be returned on each side of the founded phrase
-	 * @param  string  $ellipsis Ending that will be appended
-	 * @return string  Modified string
+	 * @param   string   $text      String to search the phrase in
+	 * @param   string   $phrase    Phrase that will be searched for
+	 * @param   integer  $radius    The amount of characters that will be returned on each side of the founded phrase
+	 * @param   string   $ellipsis  Ending that will be appended
+	 * @return  string   Modified string
 	 */
 	public static function excerpt($text, $phrase, $radius = 100, $ellipsis = '...')
 	{
@@ -514,8 +514,8 @@ class String
 	/**
 	 * Obfuscate a string to prevent spam-bots from sniffing it.
 	 *
-	 * @param  string  $value
-	 * @return string
+	 * @param   string  $value
+	 * @return  string
 	 */
 	public static function obfuscate($value)
 	{
@@ -545,10 +545,10 @@ class String
 	/**
 	 * Format a number by prefixing a character to a specificed length.
 	 *
-	 * @param      integer $value  Number to format
-	 * @param      integer $length Final string length
-	 * @param      integer $prfx   Character to prepend
-	 * @return     string
+	 * @param   integer  $value   Number to format
+	 * @param   integer  $length  Final string length
+	 * @param   integer  $prfx    Character to prepend
+	 * @return  string
 	 */
 	public static function pad($value, $length = 5, $prfx = 0)
 	{
@@ -570,10 +570,10 @@ class String
 	/**
 	 * Looks for literal occurances of a string (i.e. unquoted) and returns their positions
 	 *
-	 * @param  string $needle   the item of interest
-	 * @param  string $haystack the text in which to look for the needle
-	 * @return array
-	 * @since  2.0.0
+	 * @param   string  $needle    The item of interest
+	 * @param   string  $haystack  The text in which to look for the needle
+	 * @return  array
+	 * @since   2.0.0
 	 */
 	public static function findLiteral($needle, $haystack)
 	{
@@ -644,5 +644,103 @@ class String
 		}
 
 		return $instances;
+	}
+
+	/**
+	 * Convert a string to snake case.
+	 * "this text is sname case" -> this_text_is_snake_case
+	 *
+	 * @param   string  $value
+	 * @param   string  $delimiter
+	 * @return  string
+	 * @since   2.0.0
+	 */
+	public static function snake($value, $delimiter = '_')
+	{
+		$replace = '$1' . $delimiter . '$2';
+
+		return ctype_lower($value) ? $value : strtolower(preg_replace('/(.)([A-Z])/', $replace, $value));
+	}
+
+	/**
+	 * Convert a value to camel case.
+	 * "this text is camel case" -> ThisTextIsCamelCase
+	 *
+	 * @param   string  $value
+	 * @return  string
+	 * @since   2.0.0
+	 */
+	public static function camel($value)
+	{
+		$value = ucwords(str_replace(array('-', '_'), ' ', $value));
+
+		return str_replace(' ', '', $value);
+	}
+
+	/**
+	 * Split a string in camel case format
+	 * ThisTextIsCamelCase -> "This Text Is Camel Case"
+	 *
+	 * @param   string  $string  The source string.
+	 * @return  array   The splitted string.
+	 * @since   2.0.0
+	 */
+	public static function splitCamel($string)
+	{
+		return preg_split('/(?<=[^A-Z_])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][^A-Z_])/x', $string);
+	}
+
+	/**
+	 * Determine if a given string contains a given substring.
+	 *
+	 * @param   string  $haystack
+	 * @param   mixed   $needles   string|array
+	 * @return  bool
+	 * @since   2.0.0
+	 */
+	public static function contains($haystack, $needles)
+	{
+		foreach ((array) $needles as $needle)
+		{
+			if ($needle != '' && strpos($haystack, $needle) !== false) return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if a given string starts with a given substring.
+	 *
+	 * @param   string  $haystack
+	 * @param   mixed   $needles   string|array
+	 * @return  bool
+	 * @since   2.0.0
+	 */
+	public static function startsWith($haystack, $needles)
+	{
+		foreach ((array) $needles as $needle)
+		{
+			if ($needle != '' && strpos($haystack, $needle) === 0) return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Determine if a given string ends with a given substring.
+	 *
+	 * @param   string  $haystack
+	 * @param   mixed   $needles   string|array
+	 * @return  bool
+	 * @since   2.0.0
+	 */
+	public static function endsWith($haystack, $needles)
+	{
+		foreach ((array) $needles as $needle)
+		{
+			if ((string) $needle === substr($haystack, -strlen($needle))) return true;
+		}
+
+		return false;
 	}
 }
