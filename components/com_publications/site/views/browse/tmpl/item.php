@@ -25,11 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if ($this->line->alias) 
+if ($this->line->alias)
 {
 	$sef = Route::url('index.php?option=' . $this->option . '&alias=' . $this->line->alias);
-} 
-else 
+}
+else
 {
 	$sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->line->id);
 }
