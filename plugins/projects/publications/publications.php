@@ -94,15 +94,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (JPluginHelper::isEnabled('projects', 'publications'))
-		{
-			$area = array(
-				'name'    => 'publications',
-				'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
-				'submenu' => NULL,
-				'show'    => true
-			);
-		}
+		$area = array(
+			'name'    => 'publications',
+			'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
+			'submenu' => NULL,
+			'show'    => true
+		);
 
 		return $area;
 	}
@@ -367,7 +364,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'diskspace':
-				$arr['html'] = $this->pubDiskSpace($this->_option, $project, $this->_task, $this->_config);
+				$arr['html'] = $this->pubDiskSpace($this->_option, $this->_project, $this->_task, $this->_config);
 				break;
 
 			// Handlers
@@ -6863,9 +6860,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'publications',
-				'name'=>'diskspace'
+				'folder'  =>'projects',
+				'element' =>'publications',
+				'name'    =>'diskspace'
 			)
 		);
 
@@ -6902,7 +6899,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$results = $objP->getCount($filters);
 		$view->total = ($results && is_array($results)) ? count($results) : 0;
 
-		$view->params = new JParameter( $project->params );
 		$view->action 	= $action;
 		$view->project 	= $project;
 		$view->option 	= $option;
