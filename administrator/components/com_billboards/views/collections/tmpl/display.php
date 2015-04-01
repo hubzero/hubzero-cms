@@ -45,7 +45,7 @@ JToolBarHelper::help('collections');
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
+				<th scope="col" class="priority-3"><?php echo JText::_('COM_BILLBOARDS_COL_ID'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
 			</tr>
 		</thead>
@@ -65,7 +65,7 @@ JToolBarHelper::help('collections');
 
 			<tr>
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
-				<td><?php echo $row->id; ?></td>
+				<td class="priority-3"><?php echo $row->id; ?></td>
 				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
 			</tr>
 
