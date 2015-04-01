@@ -80,7 +80,7 @@ if (substr($sef,0,1) == '/') {
 	$sef = substr($sef,1,strlen($sef));
 }
 
-if(substr($sef,-1,1) == DS)
+if (substr($sef,-1,1) == DS)
 {
 	$sef = rtrim($sef, DS);
 }
