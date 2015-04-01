@@ -35,10 +35,6 @@ $name	  = $block->name;
 
 $props = $name . '-' . $this->step;
 
-// Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
-
 $required = $this->manifest->params->required;
 
 $elName = "citationsPick";
@@ -68,6 +64,6 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 		</ul>
 	</div>
 	<?php  } else {
-		echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+		echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';
 	} ?>
 </div>

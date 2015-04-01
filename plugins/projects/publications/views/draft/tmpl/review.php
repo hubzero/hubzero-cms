@@ -48,7 +48,7 @@ $selectUrl   = $prov
 $editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
+$move = Request::getVar( 'move', '' );
 $move = $move ? '&move=continue' : '';
 
 $elName = "reviewPanel";
@@ -91,7 +91,7 @@ if ($this->pub->doi)
 }
 
 // Embargo
-$pubdate = JRequest::getVar('publish_date');
+$pubdate = Request::getVar('publish_date');
 
 // Get configs
 $config   = Component::params( 'com_publications' );
@@ -102,11 +102,11 @@ $termsUrl = $config->get('deposit_terms', '');
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="draft-review <?php echo $complete ? 'draft-complete' : 'draft-incomplete'; ?> <?php echo $this->pub->state == 7 ? ' draft-resubmit' : ''; ?>">
 	<?php if ($complete) { ?>
-	<p class="review-prompt"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_COMPLETE'); ?></p>
+	<p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_COMPLETE'); ?></p>
 	<?php } else { ?>
-	<p class="review-prompt"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
+	<p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
 	<div class="submitarea">
-		<a href="<?php echo $editUrl; ?>/?action=continue&version=dev" class="btn mini btn-success icon-next"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
+		<a href="<?php echo $editUrl; ?>/?action=continue&version=dev" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
 	</div>
 	<?php } ?>
 
@@ -117,11 +117,11 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW'); ?></h5>
 				<div class="element-instructions">
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
 					<div class="submitarea">
-						<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+						<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 					</div>
 				</div>
 			</div>
@@ -135,9 +135,9 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?></h5>
 				<div class="element-instructions">
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
 					<div class="list-wrapper">
 						<?php echo $this->pub->_curationModel->showPackageContents(); ?>
 					</div>
@@ -153,9 +153,9 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?></h5>
 				<div class="element-instructions">
-					<?php if ($citation) { echo '<p>' . JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>'; } else { echo '<p>' . JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>'; } ?>
+					<?php if ($citation) { echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>'; } else { echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>'; } ?>
 				</div>
 			</div>
 		</div>
@@ -166,12 +166,12 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE'); ?></h5>
 				<div class="element-instructions">
 					<label>
-						<span class="review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
-						<input type="text" id="publish_date" name="publish_date" value="<?php echo $pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-						<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
+						<span class="review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
+						<input type="text" id="publish_date" name="publish_date" value="<?php echo $pubdate; ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
+						<span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 					</label>
 
 					<?php if (isset($this->pub->_submitter)) {
@@ -189,20 +189,20 @@ $termsUrl = $config->get('deposit_terms', '');
 						}
 					?>
 					<label>
-						<span class="review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
+						<span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
 					</label>
 					<?php } ?>
 					<?php if ($requireDoi == 2 && !$this->pub->doi) { 	// Choice of publish/post  ?>
-					<h6><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_OR_PUBLISH'); ?></h6>
+					<h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_OR_PUBLISH'); ?></h6>
 					<label>
 						<input class="option" name="action" type="radio" value="publish" checked="checked" />
-						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
-						<span class="hint block ipadded"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
+						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
+						<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
 					</label>
 					<label>
 						<input class="option" name="action" type="radio" value="post" />
-						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
-						<span class="hint block ipadded"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
+						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
+						<span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
 					</label>
 					<?php } else { ?>
 					<input type="hidden" name="action" value="publish" />
@@ -216,10 +216,10 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
 				<div class="element-instructions">
-					<label><span class="optional"><?php echo JText::_('Optional'); ?></span>
-					<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>	
+					<label><span class="optional"><?php echo Lang::txt('Optional'); ?></span>
+					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>	
 						<textarea name="comment" cols="10" rows="5"></textarea>
 					</label>
 				</div>
@@ -231,13 +231,13 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE'); ?></h5>
+				<h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE'); ?></h5>
 				<div class="element-instructions">
-					<label><span class="required"><?php echo JText::_('Required'); ?></span>
+					<label><span class="required"><?php echo Lang::txt('Required'); ?></span>
 						<input class="option" name="agree" type="checkbox" value="1" />
-						<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO'); if ($termsUrl) { echo ' <a href="'
+						<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO'); if ($termsUrl) { echo ' <a href="'
 						. $termsUrl . '" class="popup">'; } echo
-						$sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT'); if ($termsUrl) { echo '</a>.'; }  ?>
+						$sitename . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT'); if ($termsUrl) { echo '</a>.'; }  ?>
 					</label>
 				</div>
 			</div>
@@ -246,9 +246,9 @@ $termsUrl = $config->get('deposit_terms', '');
 
 	<?php // Submission ?>
 	<div class="submitarea" id="submit-area">
-		<span class="submit-question"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
+		<span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
 		<span class="button-wrapper icon-apply">
-			<input type="submit" value="<?php echo $this->pub->state == 7 ? JText::_('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+			<input type="submit" value="<?php echo $this->pub->state == 7 ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
 		</span>
 	</div>
 	<?php } ?>

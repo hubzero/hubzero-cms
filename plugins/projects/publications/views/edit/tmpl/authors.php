@@ -29,17 +29,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->version == 'dev')
 {
 	$ptitle = $this->last_idx > $this->current_idx
-			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS'))
-			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_AUTHORS')) ;
+			? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS'))
+			: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECT_AUTHORS')) ;
 }
 else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_AUTHORS'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_AUTHORS'));
 }
-$ptitle   = $this->project->provisioned == 1 ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_AUTHORS'))  : $ptitle;
+$ptitle   = $this->project->provisioned == 1 ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_AUTHORS'))  : $ptitle;
 $instruct = $this->project->provisioned == 1
-			? JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ADD_AUTHORS')
-			: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SELECT_AUTHORS');
+			? Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ADD_AUTHORS')
+			: Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SELECT_AUTHORS');
 
 // Get image path
 $mconfig = Component::params( 'com_members' );
@@ -67,13 +67,13 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
 			<p><?php echo $instruct; ?></p>
 			<!-- Load content selection browser //-->
 			<div id="c-show" class="c-panel-authors">
 				<noscript>
-					<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
+					<p class="nojs"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 				</noscript>
 			</div>
 			<div id="pick-authors" class="addnew">
@@ -105,20 +105,20 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 					<?php if ($this->project->provisioned == 1 ) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
-					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" id="add-author" />
+					<input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" id="add-author" />
 			</form>
 			</div>
 			<!-- END content selection browser //-->
 			<?php if (!$this->project->provisioned) { ?>
-			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_AUTHORS'); ?></p><?php } ?>
+			<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_AUTHORS'); ?></p><?php } ?>
 			<?php } else { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
 			<?php if ($this->project->provisioned == 1 ) { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
 				. Route::url('index.php?option=com_publications&task=submit&pid='
 				. $this->pub->id) . '?active=team&amp;action=editauthors&amp;version='. $this->pub->version_number . '" class="showinbox">'
-				. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM') . '</a>.'; ?></p>
+				. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM') . '</a>.'; ?></p>
 			<?php } ?>
 		 </div>
 		</div>
@@ -145,12 +145,12 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			</fieldset>
 			 <div class="c-inner">
 					<?php if ($canedit) { ?>
-					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
+					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
 					<?php } ?>
 
-				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>: </h5>
+				<h5><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>: </h5>
 				<ul id="c-authors" class="c-list <?php if (!$canedit) { ?>noedit<?php } ?>">
-					<li id="nosel" <?php if (count($this->authors) > 0) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_NONE_SELECTED'); ?></li>
+					<li id="nosel" <?php if (count($this->authors) > 0) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_NONE_SELECTED'); ?></li>
 					<?php
 					// If we have authors selected
 					if (count($this->authors) > 0) {
@@ -172,7 +172,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 						<li id="clone-author::<?php echo $author->project_owner_id; ?>" class="c-drag <?php if ($active == 0) { echo 'i-missing'; } ?> clone-<?php echo $author->project_owner_id; ?>" >
 							<span class="a-ordernum"><?php echo $o; ?></span>
 							<?php if ($canedit) { ?>
-							<span class="c-edit"><a href="<?php echo $this->url . '?vid=' . $this->row->id . '&amp;uid=' . $author->user_id . '&amp;move=' . $this->move . '&amp;action=editauthor&amp;owner=' . $author->project_owner_id . '&amp;version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
+							<span class="c-edit"><a href="<?php echo $this->url . '?vid=' . $this->row->id . '&amp;uid=' . $author->user_id . '&amp;move=' . $this->move . '&amp;action=editauthor&amp;owner=' . $author->project_owner_id . '&amp;version=' . $this->version; ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
 							<?php } ?>
 							<span class="a-wrap">
 								<span class="a-authorname"><?php echo stripslashes($name); ?></span><span class="a-org"><?php echo $org ? ', '.stripslashes($org) : ''; ?></span>
@@ -186,19 +186,19 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 					if ($this->typeParams->get('show_submitter') && $this->submitter)
 					{ ?>
 
-					<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
+					<p class="submitter"><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
 						<?php echo $this->submitter->name; ?><?php echo $this->submitter->organization ? ', ' . $this->submitter->organization : ''; ?>
-						<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
+						<span class="block hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
 					</p>
 				<?php }
 				?>
 				<?php if ($canedit) { ?>
-				<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
+				<p id="c-instruct"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 				<?php } ?>
 				<?php if ($missing > 0) { ?>
-					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_MISSING'); ?></p>
+					<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_MISSING'); ?></p>
 				<?php } else if ($unconfirmed > 0) { ?>
-					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_UNCONFIRMED'); ?></p>
+					<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_UNCONFIRMED'); ?></p>
 				<?php } ?>
 			 </div>
 			</form>

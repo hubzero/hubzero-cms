@@ -28,9 +28,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="plg-header">
 <?php if ($this->project->provisioned == 1 ) { ?>
-<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
+<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
-<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
+<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
 <?php } ?>
 </div>
 <?php if ($this->project->provisioned == 1 ) { ?>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="col span9">
 <?php } ?>
 <div class="welcome">
-	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
 	<div id="suggestions" class="suggestions">
 		<?php for ( $i = 0; $i < count($this->choices); $i++)
 		{
@@ -69,9 +69,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 	</div><!-- / .subject -->
 	<div class="col span3 omega">
 		<div id="start-projectnote">
-			<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
+			<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
+			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
 		</div>
 	</div><!-- / .aside -->
 </div>

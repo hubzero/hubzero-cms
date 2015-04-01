@@ -75,9 +75,9 @@ tooltip: true,
 ?>
 <div id="plg-header">
 <?php if ($this->project->provisioned == 1 ) { ?>
-<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
+<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
 <?php } else { ?>
-<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></span></h3>
+<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> <?php if ($this->pub) { ?>  &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url . '?version=' . $this->version; ?>"><?php echo $this->pub->title; ?></a></span><?php } ?> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></span></h3>
 <?php } ?>
 </div>
 
@@ -85,7 +85,7 @@ tooltip: true,
 <?php if ($this->pubstats) {
 ?>
 <?php if (!$this->pub && $this->totals && count($this->pubstats) > 1) { ?>
-<p class="pubstats-overall"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
+<p class="pubstats-overall"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES'); ?>.</p>
 <?php } ?>
 <script src="/media/system/js/flot/jquery.flot.min.js"></script>
 <script src="/media/system/js/flot/jquery.flot.tooltip.min.js"></script>
@@ -94,7 +94,7 @@ tooltip: true,
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/media/system/js/excanvas/excanvas.min.js"></script><![endif]-->
 
 <?php if ($this->pub) { ?>
-<p class="viewallstats"><a href="<?php echo $this->route . '?action=stats'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
+<p class="viewallstats"><a href="<?php echo $this->route . '?action=stats'; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS'); ?> &raquo;</a></p>
 <?php } ?>
 
 <?php
@@ -112,23 +112,23 @@ tooltip: true,
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
 					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id) . '?version=' . $stat->version_number; ?>"><?php echo $stat->title; ?></a></span>
-					<span class="block mini faded"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, 'M d, Y') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
+					<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . JHTML::_('date', $stat->published_up, 'M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
 				</td></tr>
 				<tr>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td><?php
-						echo '<span class="pubstats-label">' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
+						echo '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
 					?></td>
 
-					<td><?php echo '<span class="pubstats-label">' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>';  ?></td>
 
-					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . JText::_('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' .JHTML::_('date', $toDate, 'M d, Y') . ' ' . '</span>';  ?></td>
+					<td><?php echo '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' .JHTML::_('date', $toDate, 'M d, Y') . ' ' . '</span>';  ?></td>
 
 				</tr>
 				<tr>
-					<td class="pubstats-sh"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
+					<td class="pubstats-sh"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_VIEWS_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
 					<td class="pubstats-graph">
 						<div id="view-<?php echo $stat->publication_id; ?>" class="ph"></div>
 						<script type="text/javascript">
@@ -223,7 +223,7 @@ tooltip: true,
 					<td><span class="stats-num"><?php echo $stat->total_views; ?></span></td>
 				</tr>
 				<tr>
-					<td class="pubstats-sh"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
+					<td class="pubstats-sh"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES'); ?> <?php if ($i == 1) { ?> <span class="info-pop tooltips" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_ACCESSES_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span> <?php } ?></td>
 					<td class="pubstats-graph"><div id="access-<?php echo $stat->publication_id; ?>" class="ph"></div>
 					<script type="text/javascript">
 						if (jQuery()) {
@@ -264,6 +264,6 @@ tooltip: true,
 			</table>
 <?php }
 	} else { ?>
-	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_NO_INFO'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_NO_INFO'); ?></p>
 <?php } ?>
 </div>

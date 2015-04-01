@@ -30,10 +30,10 @@ $model = new \Components\Publications\Models\Publication($this->pub);
 // Determine pane title
 if ($this->version == 'dev') {
 	$ptitle = $this->last_idx > $this->current_idx  ?
-	ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_TAGS')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_TAGS')) ;
+	ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_TAGS')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_TAGS')) ;
 }
 else {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_TAGS'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_TAGS'));
 }
 ?>
 	<?php echo $this->project->provisioned == 1
@@ -57,21 +57,21 @@ else {
 	<div id="pub-editor" class="pane-tags">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SELECT'); ?></p>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_SELECT'); ?></p>
 			<!-- Load content selection browser //-->
 			<div id="c-show">
 				<div id="pick-tags">
 					<noscript>
-							<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
+							<p class="nojs"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 					</noscript>
 				</div>
 			</div>
 			<!-- END content selection browser //-->
-			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_TAGS'); ?></p>
+			<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_TAGS'); ?></p>
 			<?php } else { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
 		 </div>
 		</div>
@@ -98,9 +98,9 @@ else {
 				</fieldset>
 			 <div class="c-inner">
 					<?php if ($canedit) { ?>
-							<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+							<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 					<?php } ?>
-					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS'); ?>: </h5>
+					<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS'); ?>: </h5>
 					<?php if ($canedit) { ?>
 					<label>
 						<?php
@@ -124,7 +124,7 @@ else {
 							$paramsClass = 'JRegistry';
 						}
 						?>
-					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_CATEGORY'); ?></h5>
+					<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_CATEGORY'); ?></h5>
 					<?php foreach ($this->categories as $cat) {
 						$params = new $paramsClass($cat->params);
 						// Skip inaplicable category
@@ -147,7 +147,7 @@ else {
 								echo $model->_tagCloud;
 						}
 						else {
-							echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+							echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';
 						}
 					} ?>
 			 </div>

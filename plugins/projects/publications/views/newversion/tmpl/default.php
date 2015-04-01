@@ -34,7 +34,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 ?>
 <div id="abox-content">
 <?php if ($this->ajax) { ?>
-<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_PROVIDE_LABEL'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_PROVIDE_LABEL'); ?></h3>
 <?php } ?>
 <?php
 // Display error  message
@@ -46,13 +46,13 @@ if ($this->getError()) {
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=publications'); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></h3>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
+		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
-	<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_PROVIDE_LABEL'); ?></h4>
+	<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_PROVIDE_LABEL'); ?></h4>
 <?php } else { ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
@@ -69,21 +69,21 @@ if ($this->getError()) {
 	</fieldset>
 	<div <?php if (!$this->ajax) { echo 'class="vform"'; } ?>>
 		<p>
-			<span class="faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')); ?></span> <?php echo $this->pub->version_label; ?>
+			<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')); ?></span> <?php echo $this->pub->version_label; ?>
 		</p>
 		<label for="version_label">
-			<span class="faded block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_LABEL'); ?></span>
+			<span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_LABEL'); ?></span>
 			<input type="text" name="version_label"  value="<?php echo $suggested; ?>" />
 		</label>
 	</div>
 		<p class="submitarea">
-			<input type="submit" class="btn active btn-success" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
+			<input type="submit" class="btn active btn-success" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
 				<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
 				<?php } else {
-					$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
+					$rtn = Request::getVar('HTTP_REFERER', $this->url, 'server');
 				?>
-				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a></span>
 				<?php } ?>
 		</p>
 </form>

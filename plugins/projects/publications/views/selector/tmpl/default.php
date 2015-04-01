@@ -33,8 +33,8 @@ $route = $this->project->provisioned == 1
 $url = $this->project->provisioned ? Route::url( $route) : Route::url( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
-$title = JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));
-$req   = JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block));
+$title = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block));
+$req   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block));
 
 $block   = $this->block;
 $step  	 = $this->step;
@@ -64,9 +64,9 @@ if ($block == 'license')
 <script src="/plugins/projects/publications/js/selector.js"></script>
 <div id="abox-content">
 <h3><?php echo $title; ?> 	<span class="abox-controls">
-				<a class="btn btn-success active" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>
+				<a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>
 				<?php if ($this->ajax) { ?>
-				<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
+				<a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 				<?php } ?>
 			</span></h3>
 <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo $url; ?>">
@@ -94,7 +94,7 @@ if ($block == 'license')
 
 	<?php if (!$selections)
 		{
-			echo '<p class="error">' . JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_SELECTIONS') . '</p>';
+			echo '<p class="error">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_SELECTIONS') . '</p>';
 		}
 		else
 		{

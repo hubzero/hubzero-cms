@@ -52,10 +52,10 @@ $i = 1;
 ?>
 <?php if ($this->pub->id) { ?>
 	<p id="version-label" class="version-label<?php if ($active == 'status') { echo ' active'; } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) { echo ' nobar'; } ?>">
-		<a href="<?php echo Route::url( $pubRoute) .'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
-		<a href="<?php echo Route::url( $pubRoute . '&version=' . $version); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$versionLabel.' (' . $status . ')'; ?></a>
+		<a href="<?php echo Route::url( $pubRoute) .'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
+		<a href="<?php echo Route::url( $pubRoute . '&version=' . $version); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$versionLabel.' (' . $status . ')'; ?></a>
 		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete) { ?>
-		- <a href="<?php echo Route::url( $pubRoute) . '/?action=review&amp;version='.$this->pub->version; ?>" class="readytosubmit"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
+		- <a href="<?php echo Route::url( $pubRoute) . '/?action=review&amp;version='.$this->pub->version; ?>" class="readytosubmit"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
 		<?php } ?>
     </p>
 <?php } ?>

@@ -45,16 +45,16 @@ switch ($this->task)
 {
 	case 'publish':
 	default:
-		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_IT');
-		$doi_txt =  JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_DOI');
+		$txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_IT');
+		$doi_txt =  Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PUBLISH_DOI');
 		break;
 	case 'republish':
-		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_REPUBLISH');
+		$txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_REPUBLISH');
 		break;
 	case 'post':
 		$class .= ' posting';
-		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_NO_DOI');
-		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SAVE_IT');
+		$doi_txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_NO_DOI');
+		$txt = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SAVE_IT');
 		break;
 }
 
@@ -85,16 +85,16 @@ if ($show_access) {
 	switch ($this->pub->access)
 	{
 		case 0: default:
-			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC');
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION');
+			$access = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC');
+			$access_tip = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION');
 			break;
 		case 1:
-			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED');
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION');
+			$access = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED');
+			$access_tip = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION');
 			break;
 		case 2: case 3:
-			$access = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED');
-			$access_tip = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION');
+			$access = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED');
+			$access_tip = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION');
 			break;
 	}
 }
@@ -110,8 +110,8 @@ if ($this->access_groups && ($this->pub->access == 2 || $this->pub->access == 3)
 	}
 }
 
-$append  = ' <span class="indlist">&raquo; ' . JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->row->version_label . ' ';
-$append .= ($this->row->state == 1) ? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW') : JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW');
+$append  = ' <span class="indlist">&raquo; ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->row->version_label . ' ';
+$append .= ($this->row->state == 1) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW');
 $append .= '</span>';
 ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form">
@@ -124,20 +124,20 @@ $append .= '</span>';
 
 <?php if ($canpublish) { ?>
 <p class="mini"><?php echo ($this->row->state == 1)
-	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) . ' '
-	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')) . ' '; ?>
+	? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) . ' '
+	: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')) . ' '; ?>
 	<?php if ($this->row->state != 1 && !$this->publication_allowed) {
-		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> ';
+		echo ' <span class="urgency block">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> ';
 	}
 	elseif ($this->publication_allowed)
 	{
 		if ($post)
 		{
-			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL_POST');
+			echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL_POST');
 		}
 		else
 		{
-			echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL');
+			echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_FINAL');
 		}
 	} ?>
 </p>
@@ -146,16 +146,16 @@ $append .= '</span>';
 <?php if ($this->publication_allowed && $canpublish) { ?>
 <div class="review-controls">
 	<div class="next_action">
-		<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_WHAT_TO_EXPECT'); ?></h5>
+		<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_WHAT_TO_EXPECT'); ?></h5>
 		<ul class="toexpect">
 			<?php if ($republish) { ?>
-			<li><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED_REPUBLISH'); ?></li>
+			<li><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED_REPUBLISH'); ?></li>
 			<?php } ?>
 			<?php if (!$republish && !$post) { ?>
 			<li><?php
 					echo ($this->pubconfig->get('autoapprove', 0) || $post)
-					? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED')
-					: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NEEDED'); ?>
+					? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED')
+					: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NEEDED'); ?>
 			</li>
 			<?php } ?>
 			<?php if (!$this->row->doi && !$republish && !$post && $doi_txt && $this->pubconfig->get('doi_service')) { ?>
@@ -163,26 +163,26 @@ $append .= '</span>';
 			<?php } ?>
 			<li>
 				<?php if ($show_access) { ?>
-				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS_IS').' <strong>'.strtolower($access).'</strong> - '.$access_tip; ?>.
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS_IS').' <strong>'.strtolower($access).'</strong> - '.$access_tip; ?>.
 				<?php } else {
 					if ($this->task == 'publish' || $republish)
 					{
-						echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');
+						echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');
 					}
 					else
 					{
 						echo $this->project->provisioned == 1
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_NOOPTIONS_PROV')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_NOOPTIONS');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_NOOPTIONS_PROV')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_NOOPTIONS');
 					}
 				 } ?>
 			</li>
 		</ul>
 		<p class="ipadded">
 			<input class="option" name="agree" type="radio" value="1" />
-			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO') . ' <a href="'
+			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_AGREE_TO') . ' <a href="'
 			. $this->pubconfig->get('deposit_terms', 'https://localhost:5000/legal/termsofdeposit?no_html=1'). '" class="popup">'
-			. $sitename . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT') . '</a>.'; ?>
+			. $sitename . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_TERMS_OF_DEPOSIT') . '</a>.'; ?>
 		</p>
 		<?php if ($this->task == 'publish') { ?>
 
@@ -203,13 +203,13 @@ $append .= '</span>';
 
 			?>
 			<label class="block">
-				<span class="review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
+				<span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
 			</label>
 			<?php } ?>
 			<label>
-				<span class="review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
-				<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->pubdate; ?>" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-				<span class="hint block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
+				<span class="review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
+				<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->pubdate; ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
+				<span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 			</label>
 		</p>
 		<?php } ?>
@@ -217,12 +217,12 @@ $append .= '</span>';
 
 	<?php if ($this->publication_allowed) { ?>
 		<div class="centeralign">
-			<span class="review-question"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_LOOKING_GOOD'); ?></span>
+			<span class="review-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_LOOKING_GOOD'); ?></span>
 			<span>
 				<input type="submit" id="submit-review" value="<?php echo $txt; ?>" class="btn btn-success active" />
 			</span>
 			<a href="<?php echo $this->url.'/?version='.$this->version; ?>" class="btn btn-cancel">
-			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_NOW'); ?></a>
+			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_NOT_NOW'); ?></a>
 		</div>
 	<?php } ?>
 </div>
@@ -260,7 +260,7 @@ $append .= '</span>';
 		?>
 		<div class="two columns first">
 		 <div id="pub-card">
-			<p class="pub-review-label"><span class="dark"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label; ?></strong> &nbsp; &nbsp; <span class="<?php echo $sClass; ?>"> <?php echo $status; ?></span></span></p>
+			<p class="pub-review-label"><span class="dark"><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label; ?></strong> &nbsp; &nbsp; <span class="<?php echo $sClass; ?>"> <?php echo $status; ?></span></span></p>
 			<h4><?php echo $this->pub->title; ?></h4>
 			<div id="authorslist">
 			<?php echo \Components\Publications\Helpers\Html::showContributors( $this->authors, true ); ?>
@@ -268,44 +268,44 @@ $append .= '</span>';
 			<?php echo $this->pub->abstract ? '<p>'.\Hubzero\Utility\String::truncate(stripslashes($this->pub->abstract), 250).'</p>'  : ''; ?>
 		 </div>
 			
-			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION'); ?></p>
-			<?php echo $description ? $description  : '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
+			<p class="pub-review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION'); ?></p>
+			<?php echo $description ? $description  : '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 			<?php
 				if ($show_metadata )
 				{
 					// Show metadata
 					echo $metadata['html']
 					? $metadata['html']
-					: '<p class="pub-review-label">'.JText::_('PLG_PROJECTS_PUBLICATIONS_METADATA').'</p><p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+					: '<p class="pub-review-label">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_METADATA').'</p><p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 			?>
 			<?php if ($show_notes) { ?>
-			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NOTES')); ?></p>
+			<p class="pub-review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NOTES')); ?></p>
 			<?php
 				// Show notes
 				if ($this->pub->release_notes) {
 					echo $model->notes('parsed');
 				}
 				else {
-					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+					echo '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 			?>
 			<?php } ?>
 			<?php if ($show_tags) { ?>
-			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS')); ?></p>
+			<p class="pub-review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS')); ?></p>
 			<?php
 				// Show tags
 				if ($this->tags) {
 					echo $this->tags;
 				}
 				else {
-					echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+					echo '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 			?>
 			<?php } ?>
 		</div>
 		<div class="two columns second">
-			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?> - <span class="dark"><strong><?php echo  JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TYPE_'.strtoupper($this->pub->base)); ?></strong></span></p>
+			<p class="pub-review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?> - <span class="dark"><strong><?php echo  Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TYPE_'.strtoupper($this->pub->base)); ?></strong></span></p>
 			<?php if (count($this->primary) > 0) {
 				$gitpath = $this->config->get('gitpath', '/opt/local/bin/git');
 				$primaryParams = new JParameter($this->primary[0]->params );
@@ -337,16 +337,16 @@ $append .= '</span>';
 			</div>
 			<div class="three columns third summary">
 				<span class="arrow-right"></span>
-				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_'.strtoupper($serveas)); ?>
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_'.strtoupper($serveas)); ?>
 			</div>
 			<div class="clear"></div>
 			<?php if ($this->version == 'dev') { ?>
-				<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?>
-				<?php if (!$post) { echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_REPUB_NOTICE')); } ?>
+				<p class="footnote">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?>
+				<?php if (!$post) { echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_REPUB_NOTICE')); } ?>
 				</p>
 			<?php } ?>
 			<?php } ?>
-			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?></p>
+			<p class="pub-review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?></p>
 				<?php if (count($this->secondary) > 0) { ?>
 				<ul class="c-list">
 					<li>
@@ -369,34 +369,34 @@ $append .= '</span>';
 				 } ?>
 				</ul>
 				<?php if ($this->version == 'dev') { ?>
-					<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?></p>
+					<p class="footnote">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?></p>
 				<?php } ?>
-				<?php } else { echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; } ?>
+				<?php } else { echo '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; } ?>
 
 				<?php if ($show_license) { ?>
-					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE')); ?></p>
+					<p class="pub-review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE')); ?></p>
 					<?php echo $this->license
 								? \Components\Publications\Helpers\Html::showLicense( $this->pub, $this->version, 'com_publications', $this->license )
-								: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
+								: '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 				<?php } ?>
 
 				<?php if ($this->pubconfig->get('show_audience')) { ?>
-					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE')); ?></p>
+					<p class="pub-review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE')); ?></p>
 					<?php
 						$ra 		= new \Components\Publications\Tables\Audience( $this->database );
 						$audience 	= $ra->getAudience($this->pub->id, $this->pub->version_id , $getlabels = 1, $numlevels = 4);
 						$audience = $audience ? $audience[0] : NULL;
 						echo $audience
 						? \Components\Publications\Helpers\Html::showSkillLevel($audience, $numlevels = 4)
-						: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+						: '<p class="nocontent">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 					?>
 				<?php } ?>
 				<?php if ($show_access) { ?>
-					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS')); ?></p>
+					<p class="pub-review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS')); ?></p>
 					<p class="mini">
 					<?php echo '<span class="dark"><strong>'.$access.'</strong></span> - '.$access_tip; if ($groups) { echo ': '.$groups; }?></p>
-					<?php if (!$post) { ?><p class="mini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE').' '; ?><strong>
-					<?php echo ($this->pub->access == 3) ? JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_PRIVATE') : JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_OPEN');  ?></strong>.
+					<?php if (!$post) { ?><p class="mini"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE').' '; ?><strong>
+					<?php echo ($this->pub->access == 3) ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_PRIVATE') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_OPEN');  ?></strong>.
 					</p><?php } ?>
 				<?php } ?>
 		</div>

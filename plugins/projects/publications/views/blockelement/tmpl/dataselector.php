@@ -97,7 +97,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&amp;el=' . $this->elementId . '#' . $elName; ?>"><?php echo JText::_('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&amp;el=' . $this->elementId . '#' . $elName; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 		</div>
 		<div class="block-aside-omega"></div>
@@ -106,7 +106,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
 		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
-			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
+			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php } ?>
 				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; }?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
@@ -149,7 +149,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 			</div>
 
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
-				<p class="warning"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
 			<?php } ?>
 		</div>
 		<?php if ($handlerOptions)  { ?>
@@ -174,12 +174,12 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					?>
 					<div class="handler-controls block">
 						<div class="handlertype multizip">
-							<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
+							<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
 							</p>
-							<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
+							<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
 								<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
 								<span class="save-param-status"></span>
-								<span class="save-param-wrap"><a href="<?php echo $prov ? Route::url( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : Route::url( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
+								<span class="save-param-wrap"><a href="<?php echo $prov ? Route::url( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : Route::url( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
 							</label>
 						</div>
 					</div>
@@ -193,7 +193,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					{
 						$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
 						$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-									. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+									. Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
 						$about.= ' <div class="hidden">';
 						$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
 						$about.= ' </div>';
@@ -215,7 +215,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 			<?php // display error
 			 if ($error) { echo '<span class="element-error">' . $error . '</span>'; } ?>
 				<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-				<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+				<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
 				</span>
 			</p>
 		</div>

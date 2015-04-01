@@ -45,12 +45,12 @@ $ptitle = '';
 if ($this->version == 'dev')
 {
 	$ptitle .= $this->last_idx > $this->current_idx
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_EDIT_'.strtoupper($this->_pubTypeHelper->_base))).' '
-		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_SELECT_'.strtoupper($this->_pubTypeHelper->_base))).' ' ;
+		? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE_EDIT_'.strtoupper($this->_pubTypeHelper->_base))).' '
+		: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE_SELECT_'.strtoupper($this->_pubTypeHelper->_base))).' ' ;
 }
 else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'));
 }
 
 ?>
@@ -60,10 +60,10 @@ else
 				? \Components\Publications\Helpers\Html::showPubTitleProvisioned( $this->pub, $this->route)
 				: \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->route, $this->title); ?>
 <?php } else if ($this->project->provisioned == 1 ) { ?>
-	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
+	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
 	<div id="plg-header">
-	<h3 class="publications c-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="indlist"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')); ?></span></h3>
+	<h3 class="publications c-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')); ?></span></h3>
 	</div>
 <?php } ?>
 
@@ -73,12 +73,12 @@ else
 	\Components\Publications\Helpers\Html::drawStatusBar($this, 'primary');
 
 	// Information text
-	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->_pubTypeHelper->_base));
+	$infotext = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->_pubTypeHelper->_base));
 
 	// Section body starts:
 ?>
 	<?php if (!$this->pub->id && $this->project->provisioned != 1 && count($this->choices) > 1) { ?>
-		<p class="editing mini"><a href="<?php echo $this->url; ?>" >&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION_CHANGE_TYPE'); ?></a></span>
+		<p class="editing mini"><a href="<?php echo $this->url; ?>" >&laquo; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION_CHANGE_TYPE'); ?></a></span>
 	<?php } ?>
 	<div id="pub-editor">
 		<?php if ($selOff) { ?>
@@ -88,11 +88,11 @@ else
 			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo $selOff ? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_CHOICE_FROM_'.strtoupper($this->_pubTypeHelper->_base)) : JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_FROM_'.strtoupper($this->_pubTypeHelper->_base)); ?></p>
+				<p><?php echo $selOff ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_CHOICE_FROM_'.strtoupper($this->_pubTypeHelper->_base)) : Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_FROM_'.strtoupper($this->_pubTypeHelper->_base)); ?></p>
 				<!-- Load content selection browser //-->
 				<div id="c-show">
 					<noscript>
-						<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
+						<p class="nojs"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 					</noscript>
 				</div>
 				<!-- END content selection browser //-->
@@ -101,9 +101,9 @@ else
 					<?php echo $infotext; ?>
 				</p>
 				<?php } ?>
-				<?php if ($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->_pubTypeHelper->_base)).'</p>'; } ?>
+				<?php if ($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->_pubTypeHelper->_base)).'</p>'; } ?>
 				<?php } else { ?>
-					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+					<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
 
 			</div>
@@ -134,11 +134,11 @@ else
 
 			<div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
 			<?php } ?>
-				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?>: </h5>
+				<h5><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?>: </h5>
 				<ul id="c-filelist" class="c-list <?php if (!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
-					<li id="nosel" <?php if ($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
+					<li id="nosel" <?php if ($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
 					<?php
 					// If we have content items selected
 					if (count($this->attachments) > 0)

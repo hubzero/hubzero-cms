@@ -98,7 +98,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$area = array(
 				'name'    => 'publications',
-				'title'   => JText::_('COM_PROJECTS_TAB_PUBLICATIONS'),
+				'title'   => Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'),
 				'submenu' => NULL,
 				'show'    => true
 			);
@@ -184,8 +184,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$this->model = $model;
 
 		// Get task
-		$this->_task = JRequest::getVar('action','');
-		$this->_pid  = JRequest::getInt('pid', 0);
+		$this->_task = Request::getVar('action','');
+		$this->_pid  = Request::getInt('pid', 0);
 		if (!$this->_task)
 		{
 			$this->_task = $this->_pid ? 'publication' : $action;
@@ -417,12 +417,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function handler()
 	{
 		// Incoming
-		$props  = JRequest::getVar( 'p', '' );
-		$ajax   = JRequest::getInt( 'ajax', 0 );
-		$pid    = JRequest::getInt( 'pid', 0 );
-		$vid    = JRequest::getInt( 'vid', 0 );
-		$handler= trim(JRequest::getVar( 'h', '' ));
-		$action = trim(JRequest::getVar( 'do', '' ));
+		$props  = Request::getVar( 'p', '' );
+		$ajax   = Request::getInt( 'ajax', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
+		$handler= trim(Request::getVar( 'h', '' ));
+		$action = trim(Request::getVar( 'do', '' ));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -445,7 +445,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
@@ -454,7 +454,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publication)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -486,7 +486,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Set block
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
 		{
-			$view->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
+			$view->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
 		}
 
 		// Set pub assoc and load curation
@@ -497,7 +497,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->handler = $modelHandler->ini($handler);
 		if (!$view->handler)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER') );
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER') );
 		}
 		else
 		{
@@ -539,11 +539,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function select()
 	{
 		// Incoming
-		$props  = JRequest::getVar( 'p', '' );
-		$ajax   = JRequest::getInt( 'ajax', 0 );
-		$pid    = JRequest::getInt( 'pid', 0 );
-		$vid    = JRequest::getInt( 'vid', 0 );
-		$filter = urldecode(JRequest::getVar( 'filter', '' ));
+		$props  = Request::getVar( 'p', '' );
+		$ajax   = Request::getInt( 'ajax', 0 );
+		$pid    = Request::getInt( 'pid', 0 );
+		$vid    = Request::getInt( 'vid', 0 );
+		$filter = urldecode(Request::getVar( 'filter', '' ));
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -568,7 +568,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->version->load($vid);
 		if (!$view->version->id)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// Get publication
@@ -577,7 +577,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$view->publication)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 		}
 
 		// On error
@@ -622,7 +622,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			$view->title  = '';
 			$view->option = $this->_option;
-			$view->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
+			$view->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
 			return $view->loadTemplate();
 		}
 
@@ -660,10 +660,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function saveParam()
 	{
 		// Incoming
-		$pid  	= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$vid  	= JRequest::getInt('vid', 0);
-		$param  = JRequest::getVar('param', '');
-		$value  = urldecode(JRequest::getVar('value', ''));
+		$pid  	= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$vid  	= Request::getInt('vid', 0);
+		$param  = Request::getVar('param', '');
+		$value  = urldecode(Request::getVar('value', ''));
 		$success= 0;
 
 		// Clean up incoming
@@ -673,13 +673,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$vid || !$param)
 		{
-			$this->setError(JText::_('Missing required input'));
+			$this->setError(Lang::txt('Missing required input'));
 		}
 
 		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->load($vid))
 		{
-			$this->setError(JText::_('Failed to load version'));
+			$this->setError(Lang::txt('Failed to load version'));
 		}
 		else
 		{
@@ -700,13 +700,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function checkStatus()
 	{
 		// Incoming
-		$pid  		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', 'default' );
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$block  	= JRequest::getVar( 'section', '' );
-		$sequence  	= JRequest::getInt( 'step', 0 );
-		$element  	= JRequest::getInt( 'element', 0 );
-		$props  	= JRequest::getVar( 'p', '' );
+		$pid  		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', 'default' );
+		$ajax 		= Request::getInt('ajax', 0);
+		$block  	= Request::getVar( 'section', '' );
+		$sequence  	= Request::getInt( 'step', 0 );
+		$element  	= Request::getInt( 'element', 0 );
+		$props  	= Request::getVar( 'p', '' );
 		$parts   	= explode('-', $props);
 
 		// Parse props for curation
@@ -762,20 +762,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function saveDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', '' );
-		$block  	= JRequest::getVar( 'section', '' );
-		$sequence  	= JRequest::getInt( 'step', 0 );
-		$element  	= JRequest::getInt( 'element', 0 );
-		$next  		= JRequest::getInt( 'next', 0 );
-		$json  		= JRequest::getInt( 'json', 0 );
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', '' );
+		$block  	= Request::getVar( 'section', '' );
+		$sequence  	= Request::getInt( 'step', 0 );
+		$element  	= Request::getInt( 'element', 0 );
+		$next  		= Request::getInt( 'next', 0 );
+		$json  		= Request::getInt( 'json', 0 );
 		$new		= false;
 
-		$props  	= JRequest::getVar( 'p', '' );
+		$props  	= Request::getVar( 'p', '' );
 		$parts   	= explode('-', $props);
 
 		// When saving individual attachment
-		$back 	= JRequest::getVar( 'backUrl', JRequest::getVar('HTTP_REFERER', NULL, 'server') );
+		$back 	= Request::getVar( 'backUrl', Request::getVar('HTTP_REFERER', NULL, 'server') );
 
 		// Parse props for curation
 		if ($this->_task == 'saveitem'
@@ -788,7 +788,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we in draft flow?
-		$move = JRequest::getVar( 'move', '' );
+		$move = Request::getVar( 'move', '' );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -812,7 +812,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_referer = Route::url($route);
 			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
+				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
 			return;
 		}
@@ -898,7 +898,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Pick up success message
 		$this->_msg = $pub->_curationModel->get('_message')
 			? $pub->_curationModel->get('_message')
-			: JText::_(ucfirst($block) . ' information successfully saved');
+			: Lang::txt(ucfirst($block) . ' information successfully saved');
 
 		// Record action, notify team
 		$this->onAfterSave( $pub );
@@ -1039,7 +1039,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 			$aid   = $objAA->recordActivity( $this->_project->id, $this->_uid,
-				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
+				   Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
 					.' (id ' . $row->publication_id . ')', $row->publication_id, 'publication',
 				   Route::url('index.php?option=' . $this->_option . a .
 				   'alias=' . $this->_project->alias . '&active=publications' . a .
@@ -1064,11 +1064,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_config,
 				$this->_project,
 				$managers,
-				JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
+				Lang::txt('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
 				'projects_admin_notice',
 				'publication',
 				$profile->get('name') . ' '
-					. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
+					. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
 					.' (id ' . $row->publication_id . ')' . ' - ' . $juri->base()
 					. $sef . '/?version=' . $row->version_number
 			);
@@ -1119,7 +1119,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
+			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
 			$view->url . '?action=start'
 		);
 
@@ -1151,7 +1151,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function createDraft()
 	{
 		// Incoming
-		$base = JRequest::getVar( 'base', 'files' );
+		$base = Request::getVar( 'base', 'files' );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -1257,7 +1257,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_project->delete();
 				$objP->delete();
 
-				throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
+				throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO') );
 				return false;
 			}
 			else
@@ -1270,7 +1270,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				{
 					// File auto ticket to report this - TBD
 					//*******
-					$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS').': '.$objO->getError() );
+					$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS').': '.$objO->getError() );
 					return false;
 				}
 			}
@@ -1317,10 +1317,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function editDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', '' );
-		$block  	= JRequest::getVar( 'section', 'status' );
-		$sequence  	= JRequest::getInt( 'step', 0 );
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', '' );
+		$block  	= Request::getVar( 'section', 'status' );
+		$sequence  	= Request::getInt( 'step', 0 );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -1370,7 +1370,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_referer = Route::url($route);
 			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
+				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
 			return;
 		}
@@ -1497,8 +1497,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function editItem()
 	{
 		// Incoming
-		$id 	= JRequest::getInt( 'aid', 0 );
-		$props  = JRequest::getVar( 'p', '' );
+		$id 	= Request::getInt( 'aid', 0 );
+		$props  = Request::getVar( 'p', '' );
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -1514,14 +1514,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			// Get author information
 			$row 	= new \Components\Publications\Tables\Author( $this->_database );
-			$error 	= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
+			$error 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
 			$layout = 'author';
 		}
 		else
 		{
 			// Load attachment
 			$row 	= new \Components\Publications\Tables\Attachment( $this->_database );
-			$error 	= JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
+			$error 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
 			$layout = 'attachment';
 		}
 
@@ -1600,8 +1600,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->project 	= $this->_project;
 		$view->pub		= $pub;
 		$view->row		= $row;
-		$view->backUrl	= JRequest::getVar('HTTP_REFERER', NULL, 'server');
-		$view->ajax		= JRequest::getInt( 'ajax', 0 );
+		$view->backUrl	= Request::getVar('HTTP_REFERER', NULL, 'server');
+		$view->ajax		= Request::getInt( 'ajax', 0 );
 		$view->props	= $props;
 
 		return $view->loadTemplate();
@@ -1633,10 +1633,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
-		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
-		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'title');
-		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$filters['limit'] 	 		= Request::getInt('limit', 25);
+		$filters['start'] 	 		= Request::getInt('limitstart', 0);
+		$filters['sortby']   		= Request::getVar( 't_sortby', 'title');
+		$filters['sortdir']  		= Request::getVar( 't_sortdir', 'ASC');
 		$filters['project']  		= $this->_project->id;
 		$filters['ignore_access']   = 1;
 		$filters['dev']   	 		= 1; // get dev versions
@@ -1748,7 +1748,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
+			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')),
 			$view->url . '?action=start'
 		);
 
@@ -1781,7 +1781,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function add()
 	{
 		// Incoming
-		$base = JRequest::getVar('base', 'files');
+		$base = Request::getVar('base', 'files');
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -1841,7 +1841,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			stripslashes(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')),
+			stripslashes(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_NEWPUB')),
 			$view->url
 		);
 
@@ -1899,8 +1899,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _stats()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', '' );
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', '' );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -1979,16 +1979,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function edit()
 	{
 		// Incoming
-		$move 		= JRequest::getInt( 'move', 0 );
-		$section  	= JRequest::getVar( 'section', 'version' );
-		$toolid 	= JRequest::getVar( 'toolid', 0 );
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', '' );
-		$step 		= JRequest::getVar( 'step', '' );
-		$base 		= JRequest::getVar( 'base', 'files' );
-		$primary 	= JRequest::getVar( 'primary', 1 );
+		$move 		= Request::getInt( 'move', 0 );
+		$section  	= Request::getVar( 'section', 'version' );
+		$toolid 	= Request::getVar( 'toolid', 0 );
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', '' );
+		$step 		= Request::getVar( 'step', '' );
+		$base 		= Request::getVar( 'base', 'files' );
+		$primary 	= Request::getVar( 'primary', 1 );
 		$layout 	= $section;
-		$inreview 	= JRequest::getInt( 'review', 0 );
+		$inreview 	= Request::getInt( 'review', 0 );
 
 		// Load publication & version classes
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -2011,7 +2011,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_referer = Route::url($route);
 			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
+				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
 			return;
 		}
@@ -2349,9 +2349,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _suggestLicense()
 	{
 		// Incoming
-		$pid  		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar( 'version', 'default' );
-		$ajax 		= JRequest::getInt('ajax', 0);
+		$pid  		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar( 'version', 'default' );
+		$ajax 		= Request::getInt('ajax', 0);
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -2361,7 +2361,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
 		if (!$pub)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			$this->_task = '';
 			return $this->browse();
 		}
@@ -2374,13 +2374,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if ($this->_task == 'save_license')
 		{
-			$l_title 	= htmlentities(JRequest::getVar('license_title', '', 'post'));
-			$l_url 		= htmlentities(JRequest::getVar('license_url', '', 'post'));
-			$l_text 	= htmlentities(JRequest::getVar('details', '', 'post'));
+			$l_title 	= htmlentities(Request::getVar('license_title', '', 'post'));
+			$l_url 		= htmlentities(Request::getVar('license_url', '', 'post'));
+			$l_text 	= htmlentities(Request::getVar('details', '', 'post'));
 
 			if (!$l_title && !$l_url && !$l_text)
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_ERROR'));
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_ERROR'));
 			}
 			else
 			{
@@ -2399,13 +2399,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$row->login = $juser->get('username');
 				$row->email = $juser->get('email');
 				$row->name = $juser->get('name');
-				$row->summary = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW');
+				$row->summary = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW');
 
-				$report 	 	= JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': '. $l_title ."\r\n";
-				$report 	   .= JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': '. $l_url ."\r\n";
-				$report 	   .= JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': '. $l_text ."\r\n";
+				$report 	 	= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE') . ': '. $l_title ."\r\n";
+				$report 	   .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL') . ': '. $l_url ."\r\n";
+				$report 	   .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_COMMENTS') . ': '. $l_text ."\r\n";
 				$row->report 	= $report;
-				$row->referrer 	= JRequest::getVar('HTTP_REFERER', NULL, 'server');
+				$row->referrer 	= Request::getVar('HTTP_REFERER', NULL, 'server');
 				$row->type	 	= 0;
 				$row->severity	= 'normal';
 
@@ -2422,7 +2422,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$ticketid = $row->id;
 
 					// Notify project admins
-					$message  = $row->name . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTED')."\r\n";;
+					$message  = $row->name . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTED')."\r\n";;
 					$message .= '----------------------------'."\r\n";
 					$message .=	$report;
 					$message .= '----------------------------'."\r\n";
@@ -2431,7 +2431,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					{
 						$juri = JURI::getInstance();
 
-						$message .= JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_TICKET_PATH') ."\n";
+						$message .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TICKET_PATH') ."\n";
 						$message .= $juri->base() . 'support/ticket/' . $ticketid . "\n\n";
 					}
 
@@ -2450,7 +2450,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 								$this->_config,
 								$this->_project,
 								$admins,
-								JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW'),
+								Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW'),
 								'projects_new_project_admin',
 								'admin',
 								$message
@@ -2458,7 +2458,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						}
 					}
 
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_SENT');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_SENT');
 				}
 			}
 		}
@@ -2532,13 +2532,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub->_curationModel->transfer($pub, $oldVersion, $newVersion);
 
 		// Set response message
-		$this->set('_msg', JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
+		$this->set('_msg', Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
 
 		// Set activity message
 		$pubTitle = \Hubzero\Utility\String::truncate($newVersion->title, 100);
-		$action   = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION')
+		$action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION')
 					. ' ' . $newVersion->version_label . ' ';
-		$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
+		$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
 		$this->set('_activity', $action);
 
 		// Record action, notify team
@@ -2555,9 +2555,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _newVersion()
 	{
 		// Incoming
-		$pid  = $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$ajax = JRequest::getInt('ajax', 0);
-		$label = trim(JRequest::getVar( 'version_label', '', 'post' ));
+		$pid  = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$ajax = Request::getInt('ajax', 0);
+		$label = trim(Request::getVar( 'version_label', '', 'post' ));
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -2567,7 +2567,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub = $objP->getPublication($pid, 'default', $this->_project->id);
 		if (!$pub)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			$this->_task = '';
 			return $this->browse();
 		}
@@ -2616,11 +2616,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$used_labels = $row->getUsedLabels( $pid, 'dev');
 			if (!$label)
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE') );
 			}
 			elseif ($label && in_array($label, $used_labels))
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 			}
 			else
 			{
@@ -2808,12 +2808,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$pAudienceNew->store();
 					}
 
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
 
 					// Record activity
 					$pubtitle = \Hubzero\Utility\String::truncate($new->title, 100);
-					$action  = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION').' '.$new->version_label.' ';
-					$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
+					$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION').' '.$new->version_label.' ';
+					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
 					$objAA = new \Components\Projects\Tables\Activity ( $this->_database );
 					$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 						   $action, $pid, $pubtitle,
@@ -2823,7 +2823,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_SAVING_NEW_VERSION') );
+					$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_SAVING_NEW_VERSION') );
 				}
 			}
 		}
@@ -2886,9 +2886,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function review()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$version 	= JRequest::getVar('version', '');
-		$pubdate 	= JRequest::getVar('publish_date');
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$version 	= Request::getVar('version', '');
+		$pubdate 	= Request::getVar('publish_date');
 
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'assets/css/calendar');
 
@@ -2903,7 +2903,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$pub = $objP->getPublication($pid, $version, $this->_project->id);
 		if (!$pub)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
 			$this->_task = '';
 			return $this->browse();
 		}
@@ -3082,16 +3082,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function save()
 	{
 		// Incoming
-		$move 		= JRequest::getInt( 'move', 0 );
-		$section 	= JRequest::getVar( 'section', 'version' );
-		$toolid 	= JRequest::getVar( 'toolid', 0 );
-		$pid 		= JRequest::getInt( 'pid', 0 );
-		$version 	= JRequest::getVar( 'version', '' );
-		$primary 	= JRequest::getVar( 'primary', 1 );
-		$base 		= JRequest::getVar( 'base', 'files' );
-		$selections = JRequest::getVar( 'selections', array(), 'post' );
-		$inreview 	= JRequest::getInt( 'review', 0 );
-		$step 		= JRequest::getVar( 'step', '' );
+		$move 		= Request::getInt( 'move', 0 );
+		$section 	= Request::getVar( 'section', 'version' );
+		$toolid 	= Request::getVar( 'toolid', 0 );
+		$pid 		= Request::getInt( 'pid', 0 );
+		$version 	= Request::getVar( 'version', '' );
+		$primary 	= Request::getVar( 'primary', 1 );
+		$base 		= Request::getVar( 'base', 'files' );
+		$selections = Request::getVar( 'selections', array(), 'post' );
+		$inreview 	= Request::getInt( 'review', 0 );
+		$step 		= Request::getVar( 'step', '' );
 
 		$layout 	= $section;
 		$newpub 	= 0;
@@ -3110,7 +3110,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Check for primary content
 			if ($section == 'content' && $primary && (empty($selections) || $selections['count'] == 0))
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_CONTENT_SELECTED') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_CONTENT_SELECTED') );
 			}
 			else
 			{
@@ -3127,7 +3127,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// If publication not found, raise error
 		if (!$objP->load($pid) && $section != 'content')
 		{
-			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 			return;
 		}
 		// Save new publication
@@ -3194,7 +3194,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$data = array('item' => $first_item)
 				);
 
-				$title = $title ? $title : JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
+				$title = $title ? $title : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE');
 
 				// Make a new publication entry
 				$objP->master_type 		= $mt->getTypeId($mastertype);
@@ -3234,7 +3234,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 							$this->_uid, $this->_uid,
 							0, 1, 1, 1 ))
 						{
-							$this->setError( JText::_('COM_PROJECTS_ERROR_SAVING_AUTHORS')
+							$this->setError( Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS')
 								. ': ' . $objO->getError());
 							return false;
 						}
@@ -3286,11 +3286,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						$this->_project->delete();
 					}
 
-					$this->setError( JText::_('COM_PROJECTS_ERROR_ATTACHING_CONTENT'));
+					$this->setError( Lang::txt('COM_PROJECTS_ERROR_ATTACHING_CONTENT'));
 				}
 				else
 				{
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_PUB_STARTED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_PUB_STARTED');
 				}
 
 			} // end if no error (new pub)
@@ -3298,7 +3298,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		elseif ($objP->project_id != $this->_project->id)
 		{
 			// Publication belongs to another project
-			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_PROJECT_ERROR'), 404);
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_PROJECT_ERROR'), 404);
 			return;
 		}
 
@@ -3312,7 +3312,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$row = new \Components\Publications\Tables\Version( $this->_database );
 			if (!$row->loadVersion( $pid, $version ))
 			{
-				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404 );
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404 );
 				return;
 			}
 			// Disable editing for some DOI-related info, if published
@@ -3333,18 +3333,18 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			switch ($section)
 			{
 				case 'version':
-					$label = trim(JRequest::getVar( 'label', '', 'post' ));
+					$label = trim(Request::getVar( 'label', '', 'post' ));
 					$used_labels = $row->getUsedLabels( $pid, $version );
 					if ($label && in_array($label, $used_labels))
 					{
-						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+						$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 					}
 					elseif ($label)
 					{
 						$row->version_label = $label;
 						if ($row->store())
 						{
-							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED');
+							$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL_SAVED');
 						}
 					}
 					break;
@@ -3356,7 +3356,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						// Check for primary content
 						if ($primary && (empty($selections) || $selections['count'] == 0) )
 						{
-							$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_CONTENT_SELECTED') );
+							$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_CONTENT_SELECTED') );
 						}
 						else
 						{
@@ -3365,13 +3365,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						}
 
 						$this->_msg = $primary
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_SAVED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_SUP_CONTENT_SAVED');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT_SAVED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUP_CONTENT_SAVED');
 					}
 					elseif ($version == 'default')
 					{
 						// Published version! cannot update primary content
-						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CANNOT_SAVE_PRIMARY') );
+						$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CANNOT_SAVE_PRIMARY') );
 					}
 					break;
 
@@ -3382,17 +3382,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 					else
 					{
-						$title 			= trim(JRequest::getVar( 'title', '', 'post' ));
+						$title 			= trim(Request::getVar( 'title', '', 'post' ));
 						$title 			= htmlspecialchars($title);
-						$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' ));
+						$abstract 		= trim(Request::getVar( 'abstract', '', 'post' ));
 						$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
-						$description 	= trim(JRequest::getVar( 'description', '', 'post', 'none', 2 ));
+						$description 	= trim(Request::getVar( 'description', '', 'post', 'none', 2 ));
 
 						if ($canedit)
 						{
 							if (!$title)
 							{
-								$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_MISSING_REQUIRED_INFO') );
+								$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_MISSING_REQUIRED_INFO') );
 							}
 							$row->title 		= $title;
 							$row->abstract 		= $abstract ? \Hubzero\Utility\String::truncate($abstract, 250) : $title;
@@ -3409,8 +3409,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					if (!$this->getError())
 					{
 						$this->_msg = $step == 'metadata'
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_METADATA_SAVED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION_SAVED');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_METADATA_SAVED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION_SAVED');
 					}
 
 					break;
@@ -3421,23 +3421,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					{
 						if ($this->_processAuthors($row->id, $selections))
 						{
-							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SAVED');
+							$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_SAVED');
 						}
 					}
 					elseif (in_array('authors', $required))
 					{
-						$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_NO_AUTHORS_SAVED') );
+						$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_AUTHORS_SAVED') );
 					}
 
 					break;
 
 				case 'access':
 					// Incoming
-					$access = JRequest::getInt( 'access', 0, 'post' );
+					$access = Request::getInt( 'access', 0, 'post' );
 
 					if ($access >= 2)
 					{
-						$access_groups = JRequest::getVar( 'access_group', 0, 'post' );
+						$access_groups = Request::getVar( 'access_group', 0, 'post' );
 
 						// Sys group
 						$cn = $this->_config->get('group_prefix', 'pr-').$this->_project->alias;
@@ -3449,7 +3449,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 						$paccess = new \Components\Publications\Tables\Access( $this->_database );
 						$paccess->saveGroups($row->id, $access_groups, $sysgroup->get('gidNumber'));
-						$private = JRequest::getVar( 'private', 0, 'post' );
+						$private = Request::getVar( 'private', 0, 'post' );
 						$access = $private ? 3 : 2;
 					}
 
@@ -3460,14 +3460,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						return false;
 					}
 
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_SAVED');
 					break;
 
 				case 'license':
 					// Incoming
-					$license = trim(JRequest::getVar( 'license', 0, 'post' ));
-					$text 	 = JRequest::getVar( 'license_text', '', 'post', 'array' );
-					$agree 	 = JRequest::getVar( 'agree', 0, 'post', 'array' );
+					$license = trim(Request::getVar( 'license', 0, 'post' ));
+					$text 	 = Request::getVar( 'license_text', '', 'post', 'array' );
+					$agree 	 = Request::getVar( 'agree', 0, 'post', 'array' );
 
 					// Get standard license info
 					$objL = new \Components\Publications\Tables\License( $this->_database);
@@ -3478,13 +3478,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						if ($selected_license->agreement == 1
 							&& (empty($agree) || !isset($agree[$license]) || $agree[$license] == 0))
 						{
-							$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
+							$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_AGREEMENT') );
 						}
 						elseif ($selected_license->customizable == 1
 							&& $selected_license->text && (empty($text)
 							|| !isset($text[$license]) || $text[$license] == ''))
 						{
-							$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
+							$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_TEXT') );
 						}
 						else
 						{
@@ -3495,12 +3495,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 								throw new Exception($row->getError(), 500);
 								return false;
 							}
-							$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SAVED');
+							$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SAVED');
 						}
 					}
 					else
 					{
-						$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_SELECTION_NOT_FOUND') );
+						$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SELECTION_NOT_FOUND') );
 					}
 
 					break;
@@ -3508,26 +3508,26 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				case 'audience':
 					if ($this->_processAudience($row->publication_id, $row->id))
 					{
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SAVED');
+						$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SAVED');
 					}
 
 					break;
 
 				case 'gallery':
 					$this->_processGallery($row->publication_id, $row->id, $selections);
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_SAVED');
 					break;
 
 				case 'tags':
 					$tagsHelper = new \Components\Publications\Helpers\Tags( $this->_database);
-					$tags = trim(JRequest::getVar('tags', '', 'post'));
+					$tags = trim(Request::getVar('tags', '', 'post'));
 					$tagsHelper->tag_object($this->_uid, $row->publication_id, $tags, 1);
 
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_SAVED');
 
 					// Save category
 					$objT = new \Components\Publications\Tables\Category( $this->_database );
-					$cat = JRequest::getInt( 'pubtype', 0 );
+					$cat = Request::getInt( 'pubtype', 0 );
 					if ($cat && $objP->category != $cat)
 					{
 						$objP->category = $cat;
@@ -3536,11 +3536,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'citations':
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SAVED');
 					break;
 
 				case 'notes':
-					$notes = trim(JRequest::getVar( 'notes', '', 'post', 'none', 2 ));
+					$notes = trim(Request::getVar( 'notes', '', 'post', 'none', 2 ));
 					$notes = stripslashes($notes);
 					$row->release_notes = $notes;
 					if (!$row->store())
@@ -3548,7 +3548,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 						throw new Exception($row->getError(), 500);
 						return false;
 					}
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_NOTES_SAVED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NOTES_SAVED');
 					break;
 			}
 		}
@@ -3577,7 +3577,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 				elseif ($section == 'description')
 				{
-					$add_metadata = JRequest::getInt( 'add_metadata', 0 );
+					$add_metadata = Request::getInt( 'add_metadata', 0 );
 					$layout = $add_metadata ? 'metadata' : 'authors';
 					$section = $add_metadata ? 'description' : 'authors';
 				}
@@ -3586,7 +3586,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					if ($next_idx == count($this->_panels))
 					{
 						// last step accomplished
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_DRAFT_COMPLETE');
+						$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_COMPLETE');
 						$section = 'version';
 					}
 					else
@@ -3598,7 +3598,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			else
 			{
 				// Determine layout
-				$primary = JRequest::getInt( 'primary', 0, 'post' );
+				$primary = Request::getInt( 'primary', 0, 'post' );
 				if ($section == 'content' && !$primary)
 				{
 					$layout = 'supportingdocs';
@@ -3693,17 +3693,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function publishDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$confirm 	= JRequest::getInt('confirm', 0);
-		$version 	= JRequest::getVar('version', 'dev');
-		$agree   	= JRequest::getInt('agree', 0);
-		$pubdate 	= JRequest::getVar('publish_date', '', 'post');
-		$submitter 	= JRequest::getInt('submitter', $this->_uid, 'post');
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$confirm 	= Request::getInt('confirm', 0);
+		$version 	= Request::getVar('version', 'dev');
+		$agree   	= Request::getInt('agree', 0);
+		$pubdate 	= Request::getVar('publish_date', '', 'post');
+		$submitter 	= Request::getInt('submitter', $this->_uid, 'post');
 		$notify 	= 1;
 
-		$block  	= JRequest::getVar( 'section', '' );
-		$sequence  	= JRequest::getInt( 'step', 0 );
-		$element  	= JRequest::getInt( 'element', 0 );
+		$block  	= Request::getVar( 'section', '' );
+		$sequence  	= Request::getInt( 'step', 0 );
+		$element  	= Request::getInt( 'element', 0 );
 
 		// Load review step
 		if (!$confirm && $this->_task != 'revert')
@@ -3725,7 +3725,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($confirm && !$agree)
 		{
 			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED') );
 			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 
 			// Redirect
@@ -3737,7 +3737,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_overQuota())
 		{
 			$url .= '/?action= ' . $this->_task . '&version=' . $version;
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE') );
 			$this->_message = array('message' => $this->getError(), 'type' => 'error');
 
 			// Redirect
@@ -3753,7 +3753,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_referer = Route::url($route);
 			$this->_message = array(
-				'message' => JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
+				'message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'),
 				'type' => 'error');
 			return;
 		}
@@ -3784,7 +3784,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			$this->_referer = Route::url($route);
 			$this->_message = array(
-				'message' => JText::_('Oups! The publication you are trying to change is hosted by another project.'),
+				'message' => Lang::txt('Oups! The publication you are trying to change is hosted by another project.'),
 				'type' => 'error');
 			return;
 		}
@@ -3793,13 +3793,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$used_labels = $model->version->getUsedLabels( $pid, $version );
 		if (!$model->version->version_label || in_array($model->version->version_label, $used_labels))
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED') );
 		}
 
 		// Is draft complete?
 		if (!$complete && $this->_task != 'revert')
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
 		}
 
 		// Is revert allowed?
@@ -3824,7 +3824,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Stop if more than 10 years from now
 			if ($pubdate > $tenYearsFromNow)
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
 			}
 		}
 
@@ -3839,12 +3839,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if ($this->_task == 'republish' && $model->version->state != 0)
 		{
 			// Can only re-publish unpublished version
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH') );
 		}
 		elseif ($this->_task == 'revert' && $model->version->state != 5 && !$revertAllowed)
 		{
 			// Can only revert a pending resource
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT') );
 		}
 
 		// On error
@@ -3928,7 +3928,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Can't proceed without a valid DOI
 			if (!$doi || $doiService->getError())
 			{
-				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI')
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_DOI')
 					. ' ' . $doiService->getError());
 			}
 		}
@@ -3944,7 +3944,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Save data
 			if (!$model->version->store())
 			{
-				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
 				return;
 			}
 
@@ -3990,37 +3990,37 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			case 1:
 			default:
-				$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
+				$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
 				$action 	= $this->_task == 'republish'
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REPUBLISHED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_PUBLISHED');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REPUBLISHED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_PUBLISHED');
 				break;
 
 			case 4:
 				$this->_msg = $this->_task == 'revert'
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED') ;
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED') ;
 				$action 	= $this->_task == 'revert'
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
 				$notify = 0;
 				break;
 
 			case 5:
 				$this->_msg = $originalStatus == 7
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING_RESUBMITTED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING_RESUBMITTED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING');
 				$action 	= $originalStatus == 7
-							? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_RESUBMITTED')
-							: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
+							? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_RESUBMITTED')
+							: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
 				break;
 		}
 		$this->_msg .= ' <a href="'.Route::url('index.php?option=com_publications' . a .
-			    'id=' . $row->publication_id ) .'">'. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
+			    'id=' . $row->publication_id ) .'">'. Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
 
 		$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
 		$action .= ' ' . $row->version_label . ' ';
-		$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle).'"';
+		$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . html_entity_decode($pubtitle).'"';
 		$action  = htmlentities($action, ENT_QUOTES, "UTF-8");
 
 		// Record activity
@@ -4039,7 +4039,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 		$actor 	 = $profile
 				? $profile->get('name')
-				: JText::_('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
+				: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
 		$juri 	 = JURI::getInstance();
 		$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
 		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
@@ -4064,7 +4064,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_config,
 					$this->_project,
 					$admins,
-					JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
+					Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
 					'projects_new_project_admin',
 					'publication',
 					$message
@@ -4074,7 +4074,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			// Notify curators by email
 			if ($this->useBlocks && isset($pub->_type))
 			{
-				$curatorMessage = ($state == 5) ? $message . "\n" . "\n" . JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim($juri->base(), DS) . DS . 'publications/curation' : $message;
+				$curatorMessage = ($state == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim($juri->base(), DS) . DS . 'publications/curation' : $message;
 
 				$curatorgroups = array($pub->_type->curatorgroup);
 				if ($this->_pubconfig->get('curatorgroup', ''))
@@ -4096,7 +4096,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					$this->_pubconfig,
 					$pub,
 					$admins,
-					JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
+					Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
 					$curatorMessage
 				);
 			}
@@ -4112,7 +4112,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$this->_config,
 				$this->_project,
 				$managers,
-				JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
+				Lang::txt('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
 				'projects_admin_notice',
 				'publication',
 				$message
@@ -4193,10 +4193,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function cancelDraft()
 	{
 		// Incoming
-		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
-		$confirm 	= JRequest::getInt('confirm', 0);
-		$version 	= JRequest::getVar('version', 'default');
-		$ajax 		= JRequest::getInt('ajax', 0);
+		$pid 		= $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+		$confirm 	= Request::getInt('confirm', 0);
+		$version 	= Request::getVar('version', 'default');
+		$ajax 		= Request::getInt('ajax', 0);
 
 		// Determine redirect path
 		$route = $this->_project->provisioned
@@ -4218,7 +4218,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
+				throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 				return;
 			}
 		}
@@ -4227,7 +4227,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$row = new \Components\Publications\Tables\Version( $this->_database );
 		if (!$row->loadVersion($pid, $version))
 		{
-			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -4248,7 +4248,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Can only unpublish published version or delete a draft
 		if ($pub->state != 1 && $pub->state != 3 && $pub->state != 4)
 		{
-			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CANT_DELETE'));
+			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANT_DELETE'));
 		}
 
 		// Get published versions count
@@ -4273,17 +4273,17 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 					if (!$row->store())
 					{
-						throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
+						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
 						return;
 					}
 					else
 					{
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_UNPUBLISHED');
+						$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_UNPUBLISHED');
 
 						// Add activity
-						$action  = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
-						$action .= ' '.strtolower(JText::_('version')).' '.$row->version_label.' '
-						.JText::_('PLG_PROJECTS_PUBLICATIONS_OF').' '.strtolower(JText::_('publication')).' "'
+						$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
+						$action .= ' '.strtolower(Lang::txt('version')).' '.$row->version_label.' '
+						.Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF').' '.strtolower(Lang::txt('publication')).' "'
 						.$pubtitle.'" ';
 
 						$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
@@ -4300,7 +4300,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					// Delete draft version
 					if (!$row->delete())
 					{
-						throw new Exception( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
+						throw new Exception( Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
 						return;
 					}
 
@@ -4359,14 +4359,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					}
 
 					// Add activity
-					$action  = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_DRAFT_DELETED');
+					$action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_DRAFT_DELETED');
 					$action .= ' '.$vlabel.' ';
-					$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
+					$action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.$pubtitle.'"';
 
 					$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
 						   $action, $pid, '', '', 'publication', 0 );
 
-					$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
+					$this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
 				}
 			}
 		}
@@ -4435,15 +4435,15 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _editContent()
 	{
 		// Incoming
-		$pid 		= JRequest::getInt( 'pid', 0 );
-		$vid 		= JRequest::getInt( 'vid', 0 );
+		$pid 		= Request::getInt( 'pid', 0 );
+		$vid 		= Request::getInt( 'vid', 0 );
 
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$no_html 	= JRequest::getInt('no_html', 0);
-		$move 		= JRequest::getInt('move', 0);
-		$role 		= JRequest::getInt('role', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$no_html 	= Request::getInt('no_html', 0);
+		$move 		= Request::getInt('move', 0);
+		$role 		= Request::getInt('role', 0);
 
-		$item 		= urldecode(JRequest::getVar( 'item', '' ));
+		$item 		= urldecode(Request::getVar( 'item', '' ));
 		$parts 		= explode('::', $item);
 		$type 		= array_shift($parts);
 		$type 		= strtolower($type);
@@ -4451,11 +4451,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$vid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 		}
 		if (!$item)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 		}
 
 		// Output HTML
@@ -4505,21 +4505,21 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _saveContent()
 	{
 		// Incoming
-		$pid 		= JRequest::getInt( 'pid', 0 );
-		$vid 		= JRequest::getInt( 'vid', 0 );
+		$pid 		= Request::getInt( 'pid', 0 );
+		$vid 		= Request::getInt( 'vid', 0 );
 
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$no_html 	= JRequest::getInt('no_html', 0);
-		$move 		= JRequest::getInt('move', 0);
-		$title 		= JRequest::getVar('title', '');
-		$role 		= JRequest::getInt('role', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$no_html 	= Request::getInt('no_html', 0);
+		$move 		= Request::getInt('move', 0);
+		$title 		= Request::getVar('title', '');
+		$role 		= Request::getInt('role', 0);
 
-		$item 		= urldecode(JRequest::getVar( 'item', '' ));
-		$type 		= JRequest::getVar('type', 'file');
+		$item 		= urldecode(Request::getVar( 'item', '' ));
+		$type 		= Request::getVar('type', 'file');
 
 		if (!$vid || !$pid || !$item)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 		}
 
 		// Get version label
@@ -4528,7 +4528,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$version = $row->version_number;
 
 		// Save any changes to selections/ordering
-		$selections = JRequest::getVar( 'selections', '', 'post' );
+		$selections = Request::getVar( 'selections', '', 'post' );
 		$selections = $this->_parseSelections($selections);
 		$this->_processContent( $pid, $vid, $selections, $role );
 
@@ -4560,11 +4560,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($objPA->store())
 		{
-			$this->_message = array('message' => JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM_SAVED'), 'type' => 'success');
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM_SAVED'), 'type' => 'success');
 		}
 		else
 		{
-			$this->_message = array('message' => JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_SAVING_ITEM'), 'type' => 'error');
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_SAVING_ITEM'), 'type' => 'error');
 		}
 
 		// Redirect
@@ -4591,11 +4591,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _loadContentItem()
 	{
 		// Incoming
-		$pid 	= JRequest::getInt( 'pid', 0 );
-		$vid 	= JRequest::getInt( 'vid', 0 );
-		$role 	= JRequest::getInt('role', 0);
-		$move 	= JRequest::getInt('move', 0);
-		$item 	= urldecode(JRequest::getVar( 'item', '' ));
+		$pid 	= Request::getInt( 'pid', 0 );
+		$vid 	= Request::getInt( 'vid', 0 );
+		$role 	= Request::getInt('role', 0);
+		$move 	= Request::getInt('move', 0);
+		$item 	= urldecode(Request::getVar( 'item', '' ));
 
 		$parts = explode('::', $item);
 		$type = array_shift($parts);
@@ -4605,7 +4605,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$type || !$item)
 		{
-			return '<p class="error">' . JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_ITEM') . '</p>';
+			return '<p class="error">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_ITEM') . '</p>';
 		}
 
 		// Contribute process outside of projects
@@ -4657,10 +4657,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _showOptions()
 	{
 		// Incoming
-		$pid 	= JRequest::getInt( 'pid', 0 );
-		$vid 	= JRequest::getInt( 'vid', 0 );
-		$picked = JRequest::getVar( 'serveas', '' );
-		$base 	= JRequest::getVar( 'base', '' );
+		$pid 	= Request::getInt( 'pid', 0 );
+		$vid 	= Request::getInt( 'vid', 0 );
+		$picked = Request::getVar( 'serveas', '' );
+		$base 	= Request::getVar( 'base', '' );
 
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)
@@ -4673,7 +4673,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$objPA = new \Components\Publications\Tables\Attachment( $this->_database );
 
 		// Get selections
-		$selections = JRequest::getVar( 'selections', '');
+		$selections = Request::getVar( 'selections', '');
 		$selections = $this->_parseSelections($selections);
 
 		// Allowed choices
@@ -4778,7 +4778,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$secret = '', $state = 0, $newpub = 0, $update_hash = 1 )
 	{
 		// Incoming
-		$serveas = JRequest::getVar('serveas', '');
+		$serveas = Request::getVar('serveas', '');
 
 		$added = 0;
 
@@ -4983,10 +4983,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _showAuthor()
 	{
 		// Incoming
-		$uid 		= JRequest::getInt('uid', 0);
-		$vid 		= JRequest::getInt('vid', 0);
-		$owner		= JRequest::getInt('owner', 0);
-		$move 		= JRequest::getInt('move', 0);
+		$uid 		= Request::getInt('uid', 0);
+		$vid 		= Request::getInt('vid', 0);
+		$owner		= Request::getInt('owner', 0);
+		$move 		= Request::getInt('move', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -5029,22 +5029,22 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// AJAX
 		// Incoming
-		$uid 		= JRequest::getInt('uid', 0);
-		$vid 		= JRequest::getInt('vid', 0);
-		$pid 		= JRequest::getInt('pid', 0);
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$no_html 	= JRequest::getInt('no_html', 0);
-		$move 		= JRequest::getInt('move', 0);
-		$owner 		= JRequest::getInt('owner', 0);
-		$new 		= JRequest::getVar('new', '');
+		$uid 		= Request::getInt('uid', 0);
+		$vid 		= Request::getInt('vid', 0);
+		$pid 		= Request::getInt('pid', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$no_html 	= Request::getInt('no_html', 0);
+		$move 		= Request::getInt('move', 0);
+		$owner 		= Request::getInt('owner', 0);
+		$new 		= Request::getVar('new', '');
 
 		if (!$vid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
 		}
 		if (!$uid && !$owner && !$new)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
 		}
 
 		// Output HTML
@@ -5064,7 +5064,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if ($owner)
 			{
-				 $this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
+				 $this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
 			}
 			else
 			{
@@ -5174,23 +5174,23 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _saveAuthor()
 	{
 		// Incoming
-		$uid 		= JRequest::getInt(	'uid', 0);
-		$vid 		= JRequest::getInt( 'vid', 0 );
-		$pid 		= JRequest::getInt( 'pid', 0 );
-		$email 		= JRequest::getVar( 'email', '', 'post' );
-		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
-		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
-		$org 		= JRequest::getVar( 'organization', '', 'post' );
-		$credit 	= JRequest::getVar( 'credit', '', 'post' );
-		$move 		= JRequest::getInt( 'move', 0 );
-		$owner 		= JRequest::getInt(	'owner', 0);
+		$uid 		= Request::getInt(	'uid', 0);
+		$vid 		= Request::getInt( 'vid', 0 );
+		$pid 		= Request::getInt( 'pid', 0 );
+		$email 		= Request::getVar( 'email', '', 'post' );
+		$firstName 	= Request::getVar( 'firstName', '', 'post' );
+		$lastName 	= Request::getVar( 'lastName', '', 'post' );
+		$org 		= Request::getVar( 'organization', '', 'post' );
+		$credit 	= Request::getVar( 'credit', '', 'post' );
+		$move 		= Request::getInt( 'move', 0 );
+		$owner 		= Request::getInt(	'owner', 0);
 		$new 		= 0;
 		$sendInvite = 0;
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 
 		// Save any changes to selections/ordering
-		$selections = JRequest::getVar('selections', '', 'post');
+		$selections = Request::getVar('selections', '', 'post');
 		$selections = explode("##", $selections);
 		if (count($selections) > 0 && trim($selections[0]) != '')
 		{
@@ -5200,7 +5200,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$now = JFactory::getDate()->toSql();
 		if (!$vid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
 		}
 
 		// Get owner class
@@ -5278,7 +5278,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Not part of team - throw an error
 		if (!$owner)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_EDIT_AUTHOR'));
 		}
 
 		// Get version label
@@ -5417,11 +5417,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($saved)
 		{
-			$this->_message = array('message' => JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_INFO_SAVED'), 'type' => 'success');
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_INFO_SAVED'), 'type' => 'success');
 		}
 		elseif (!$this->getError())
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
 		}
 		if ($this->getError())
 		{
@@ -5454,8 +5454,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _processMetadata( $rtype = 0 )
 	{
 		// Incoming
-		$rtype = $rtype ? $rtype : JRequest::getInt( 'rtype', 0 );
-		$nbtag = JRequest::getVar( 'nbtag', array(), 'request', 'array' );
+		$rtype = $rtype ? $rtype : Request::getInt( 'rtype', 0 );
+		$nbtag = Request::getVar( 'nbtag', array(), 'request', 'array' );
 		$metadata = '';
 
 		// Get custom areas, add wrapper tags, and compile into fulltext
@@ -5477,14 +5477,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$tagcontent = trim(stripslashes($tagcontent));
 			if ($tagcontent != '')
 			{
-				$metadata .= "\n".'<nb:'.$tagname.'>'.$tagcontent.'</nb:'.$tagname.'>'."\n";
+				$metadata .= "\n" . '<nb:' . $tagname . '>' . $tagcontent . '</nb:' . $tagname . '>' . "\n";
 			} else
 			{
 				foreach ($fields as $f)
 				{
 					if ($f[0] == $tagname && end($f) == 1)
 					{
-						$this->setError( JText::sprintf('PLG_PROJECTS_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]) );
+						$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]) );
 						return;
 					}
 				}
@@ -5505,8 +5505,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _processAudience( $pid, $vid )
 	{
 		// Incoming
-		$sel    = JRequest::getVar( 'audience', '', 'post' );
-		$noshow = JRequest::getVar( 'no_audience', false, 'post' );
+		$sel    = Request::getVar( 'audience', '', 'post' );
+		$noshow = Request::getVar( 'no_audience', false, 'post' );
 
 		$picked = array();
 		$picked = explode('-', $sel);
@@ -5529,7 +5529,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if ($noshow == false && $result == 0)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NO_SELECTIONS') );
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NO_SELECTIONS') );
 			return false;
 		}
 
@@ -5556,8 +5556,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _showAudience()
 	{
 		// Incoming
-		$sel    = JRequest::getVar( 'audience', '' );
-		$noshow = JRequest::getVar( 'no_audience', false );
+		$sel    = Request::getVar( 'audience', '' );
+		$noshow = Request::getVar( 'no_audience', false );
 
 		$picked = array();
 		$picked = explode('-', $sel);
@@ -5605,7 +5605,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			return JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN');
+			return Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN');
 		}
 	}
 
@@ -5750,21 +5750,21 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// AJAX
 		// Incoming
-		$ima 		= JRequest::getVar('ima', '');
-		$vid 		= JRequest::getInt('vid', 0);
-		$pid 		= JRequest::getInt('pid', 0);
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$no_html 	= JRequest::getInt('no_html', 0);
-		$move 		= JRequest::getInt('move', 0);
+		$ima 		= Request::getVar('ima', '');
+		$vid 		= Request::getInt('vid', 0);
+		$pid 		= Request::getInt('pid', 0);
+		$ajax 		= Request::getInt('ajax', 0);
+		$no_html 	= Request::getInt('no_html', 0);
+		$move 		= Request::getInt('move', 0);
 		$filename 	= basename($ima);
 
 		if (!$vid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
 		}
 		if (!$ima)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
 		}
 
 		// Output HTML
@@ -5837,10 +5837,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// AJAX
 		// Incoming
-		$ima 	= JRequest::getVar('ima', '');
-		$vid 	= JRequest::getInt('vid', 0);
-		$pid 	= JRequest::getInt('pid', 0);
-		$move 	= JRequest::getInt('move', 0);
+		$ima 	= Request::getVar('ima', '');
+		$vid 	= Request::getInt('vid', 0);
+		$pid 	= Request::getInt('pid', 0);
+		$move 	= Request::getInt('move', 0);
 
 		$hash 	= '';
 		$src 	= '';
@@ -5848,11 +5848,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$vid || !$pid)
 		{
-			return JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
+			return Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
 		}
 		if (!$ima)
 		{
-			return JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
+			return Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
 		}
 		else
 		{
@@ -5863,7 +5863,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$ext = \Components\Projects\Helpers\Html::getFileExtension($ima);
 		if (!in_array(strtolower($ext), $this->_image_ext) && !in_array(strtolower($ext), $this->_video_ext))
 		{
-			return JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_WRONG_EXT') . ' ' . $ext;
+			return Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_WRONG_EXT') . ' ' . $ext;
 		}
 
 		// Get screenshot path
@@ -5925,7 +5925,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			return JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
+			return Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE');
 		}
 	}
 
@@ -6043,26 +6043,26 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	protected function _saveScreenshot()
 	{
 		// Incoming
-		$ima 		= urldecode(JRequest::getVar( 'ima', '', 'post' ));
-		$vid 		= JRequest::getInt( 'vid', 0, 'post' );
-		$pid 		= JRequest::getInt( 'pid', 0, 'post' );
-		$title 		= JRequest::getVar( 'title', '', 'post' );
-		$srcfile 	= JRequest::getVar( 'srcfile', '', 'post' );
-		$move 		= JRequest::getInt( 'move', 0 );
+		$ima 		= urldecode(Request::getVar( 'ima', '', 'post' ));
+		$vid 		= Request::getInt( 'vid', 0, 'post' );
+		$pid 		= Request::getInt( 'pid', 0, 'post' );
+		$title 		= Request::getVar( 'title', '', 'post' );
+		$srcfile 	= Request::getVar( 'srcfile', '', 'post' );
+		$move 		= Request::getInt( 'move', 0 );
 
 		// Save any changes to selections/ordering
-		$selections = JRequest::getVar( 'selections', '', 'post' );
+		$selections = Request::getVar( 'selections', '', 'post' );
 		$selections = $this->_parseSelections($selections);
 		$this->_processGallery( $pid, $vid, $selections );
 		$now = JFactory::getDate()->toSql();
 
 		if (!$vid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
 		}
 		if (!$ima)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_GETTING_IMAGE'));
 		}
 
 		// Get version label
@@ -6095,11 +6095,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Pass success or error message
 		if ($pScreenshot->store())
 		{
-			$this->_message = array('message' => JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_IMAGE_SAVED'), 'type' => 'success');
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_IMAGE_SAVED'), 'type' => 'success');
 		}
 		else
 		{
-			$this->_message = array('message' => JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_SAVING_IMAGE'), 'type' => 'error');
+			$this->_message = array('message' => Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_ERROR_SAVING_IMAGE'), 'type' => 'error');
 		}
 
 		// Build pub url
@@ -6212,14 +6212,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	{
 		// AJAX
 		// Incoming
-		$vid 		= JRequest::getInt('vid', 0);
-		$pid 		= JRequest::getInt('pid', 0);
-		$limit 		= JRequest::getInt('limit', 8);
-		$newtag 	= JRequest::getVar('tags', '');
+		$vid 		= Request::getInt('vid', 0);
+		$pid 		= Request::getInt('pid', 0);
+		$limit 		= Request::getInt('limit', 8);
+		$newtag 	= Request::getVar('tags', '');
 		$tcount 	= 1; // minimum number of tagged objects
 
 		// Get original/new selections
-		$selections = JRequest::getVar('selections', '');
+		$selections = Request::getVar('selections', '');
 		$selections = explode("##", $selections);
 		$attached = array();
 		if (count($selections) > 0)
@@ -6252,7 +6252,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (!$vid || !$pid)
 		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_ERROR_NO_PUBLICATION'));
+			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_ERROR_NO_PUBLICATION'));
 		}
 		else
 		{
@@ -6260,7 +6260,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$pub = $objP->getPublication($pid, 'default');
 			if (!$pub)
 			{
-				$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_ERROR_NO_PUBLICATION'));
+				$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_ERROR_NO_PUBLICATION'));
 			}
 		}
 
@@ -6303,7 +6303,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function versions()
 	{
 		// Incoming
-		$pid = $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
+		$pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 
 		// Instantiate project publication
 		$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -6321,7 +6321,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->pub = $objP->getPublication($pid, 'default', $this->_project->id);
 		if (!$view->pub)
 		{
-			throw new Exception(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -6399,7 +6399,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$view->filters['mine']		= $juser->get('id');
 			$view->filters['dev']		= 1;
 			$view->filters['sortby']	= 'mine';
-			$view->filters['limit']  	= JRequest::getInt( 'limit', 3 );
+			$view->filters['limit']  	= Request::getInt( 'limit', 3 );
 
 			// Get publications created by user
 			$objP = new \Components\Publications\Tables\Publication( $this->_database );
@@ -6709,7 +6709,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if (!\JFolder::create( PATH_APP . $path ))
 			{
-				$this->setError(\JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				return;
 			}
 		}
@@ -6730,7 +6730,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		if (empty($this->_project) || !$this->_project->alias)
 		{
-			$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+			$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
 			return;
 		}
 
@@ -6744,7 +6744,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		{
 			if (!JFolder::create( $path ))
 			{
-				$this->setError( JText::_('UNABLE_TO_CREATE_UPLOAD_PATH') );
+				$this->setError( Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH') );
 				return;
 			}
 		}
@@ -6758,7 +6758,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Copy files from member directory
 		if (!JFolder::copy($memberPath, $path, '', true))
 		{
-			$this->setError( JText::_('COM_PROJECTS_FAILED_TO_COPY_FILES') );
+			$this->setError( Lang::txt('COM_PROJECTS_FAILED_TO_COPY_FILES') );
 			return false;
 		}
 
@@ -6877,10 +6877,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Build query
 		$filters = array();
-		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
-		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
-		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'title');
-		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$filters['limit'] 	 		= Request::getInt('limit', 25);
+		$filters['start'] 	 		= Request::getInt('limitstart', 0);
+		$filters['sortby']   		= Request::getVar( 't_sortby', 'title');
+		$filters['sortdir']  		= Request::getVar( 't_sortdir', 'ASC');
 		$filters['project']  		= $project->id;
 		$filters['ignore_access']   = 1;
 		$filters['dev']   	 		= 1; // get dev versions
@@ -6931,7 +6931,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 
 		// Archival name
-		$tarname = JText::_('Publication') . '_' . $pid . '.zip';
+		$tarname = Lang::txt('Publication') . '_' . $pid . '.zip';
 
 		$pubconfig = Component::params( 'com_publications' );
 
@@ -7013,7 +7013,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$sDocs 		= $pContent->getAttachmentsArray( $vid, '4' );
 			$pDocs 		= $pContent->getAttachmentsArray( $vid, '1' );
 
-			$mFolder 	= JText::_('Publication') . '_' . $pid;
+			$mFolder 	= Lang::txt('Publication') . '_' . $pid;
 
 			// Add primary and supporting content
 			$mainFiles = array();
@@ -7281,7 +7281,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!file_exists($serve))
 		{
 			// Throw error
-			throw new Exception(JText::_('COM_PROJECTS_FILE_NOT_FOUND'), 404);
+			throw new Exception(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'), 404);
 			return;
 		}
 
@@ -7295,7 +7295,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			throw new Exception(JText::_('COM_PUBLICATIONS_SERVER_ERROR'), 404);
+			throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
 		}
 		else
 		{

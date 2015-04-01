@@ -30,16 +30,16 @@ $ptitle = '';
 if ($this->version == 'dev')
 {
 	$ptitle .= $this->last_idx > $this->current_idx
-			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_DESCRIPTION'))
-			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIBE_YOUR_PUBLICATION')) ;
+			? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_DESCRIPTION'))
+			: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_DESCRIBE_YOUR_PUBLICATION')) ;
 }
 else
 {
-	$ptitle .= ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_DESCRIPTION'));
+	$ptitle .= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_DESCRIPTION'));
 }
 
 // Set title
-$this->row->title = $this->row->title == JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') ? '' : $this->row->title;
+$this->row->title = $this->row->title == Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DEFAULT_TITLE') ? '' : $this->row->title;
 
 $fields = array();
 if (trim($this->customFields) != '') {
@@ -105,26 +105,26 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 	  <div id="c-pane" class="columns">
 		 <div class="c-inner">
 			<?php if (!$noedit) { ?>
-			<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
+			<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
 			<?php } ?>
 			<h4><?php echo $ptitle; ?></h4>
 			<?php if ($noedit) { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php }
 			elseif ($canedit) { ?>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_DESCRIPTION_WRITE'); ?></p>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_DESCRIPTION_WRITE'); ?></p>
 			<?php } else { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
 				<table class="tbl-panel">
 					<tbody>
 					<tr>
 						<td colspan="2">
 							<label>
-								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>:
+								<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>:
 								<?php if ($canedit) { ?>
-								<span class="pub-info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE').' :: '.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span>
-								<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+								<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE').' :: '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span>
+								<span class="required"><?php echo Lang::txt('REQUIRED'); ?></span>
 								<input name="title" id="pub_title" maxlength="200" size="35" type="text" value="<?php echo $this->row->title; ?>" class="long pubinput" />
 								<?php } else { ?>
 									<p class="pubt"><?php echo stripslashes($this->row->title); ?></p>
@@ -135,10 +135,10 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 					<tr>
 						<td colspan="2">
 							<label>
-								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COMPOSE_MINI_ABSTRACT'); ?>:
+								<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_COMPOSE_MINI_ABSTRACT'); ?>:
 								<?php if ($canedit) { ?>
-									<span class="pub-info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT').' :: '.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT_ABOUT'); ?>">&nbsp;</span>
-									<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+									<span class="pub-info-pop tooltips" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT').' :: '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT_ABOUT'); ?>">&nbsp;</span>
+									<span class="required"><?php echo Lang::txt('REQUIRED'); ?></span>
 									<textarea name="abstract" id="pub_abstract" cols="40" rows="3" class="pubinput"><?php echo $this->row->abstract; ?></textarea>
 									<span id="counter_abstract" class="leftfloat mini"></span>
 								<?php } else { ?>
@@ -150,7 +150,7 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 					<tr>
 						<td colspan="2">
 							<label>
-								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COMPOSE_FULL_ABSTRACT'); ?>:
+								<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_COMPOSE_FULL_ABSTRACT'); ?>:
 							</label>
 							<span class="clear"></span>
 							<?php

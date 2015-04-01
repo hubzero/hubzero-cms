@@ -47,7 +47,7 @@ $selectUrl   = $prov
 $editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
 // Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
+$move = Request::getVar( 'move', '' );
 $move = $move ? '&move=continue' : '';
 
 $required 		= $this->manifest->params->required;
@@ -67,8 +67,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 <div class="element_editing">
 	<div class="pane-wrapper">
 		<span class="checker">&nbsp;</span>
-		<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php } ?>
-			<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>
+		<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php } ?>
+			<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>
 		</label>
 		<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 	<div class="list-wrapper">
@@ -89,17 +89,17 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 					if (!$active)
 					{
 						$details .= $details ? ' | ' : '';
-						$details .= JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_AUTHOR');
+						$details .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_AUTHOR');
 					}
 				 ?>
 				<li class="reorder pick" id="pick-<?php echo $author->id; ?>">
 					<span class="item-options">
 						<span>
 							<?php if (count($this->pub->_authors) > 1) { ?>
-							<span class="hint-reorder"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER'); ?></span>
+							<span class="hint-reorder"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER'); ?></span>
 							<?php } ?>
-							<a href="<?php echo $editUrl . '/?action=editauthor&aid=' . $author->id . '&p=' . $props; ?>" class="showinbox item-edit" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-							<a href="<?php echo $editUrl . '/?action=deleteitem&aid=' . $author->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+							<a href="<?php echo $editUrl . '/?action=editauthor&aid=' . $author->id . '&p=' . $props; ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+							<a href="<?php echo $editUrl . '/?action=deleteitem&aid=' . $author->id . '&p=' . $props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 						</span>
 					</span>
 					<span class="item-order"><?php echo $i; ?></span>
@@ -110,12 +110,12 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			</ul>
 		<?php  }  ?>
 			<div class="item-new">
-				<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS'); ?></a></span>
+				<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS'); ?></a></span>
 			</div>
 		</div>
 
 		<?php if (count($this->pub->_authors) > 1) { ?>
-		<p class="hint">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
+		<p class="hint">*<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
 		<?php } ?>
 
 		<?php
@@ -123,9 +123,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			if ($showSubmitter && $this->pub->_submitter)
 			{ ?>
 
-			<div class="submitter"><p><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
+			<div class="submitter"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
 				<?php echo $this->pub->_submitter->name; ?><?php echo $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : ''; ?></p>
-				<p class="hint">* <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?>
+				<p class="hint">* <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?>
 				</p>
 			</div>
 		<?php }
@@ -146,10 +146,10 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 					}
 				}
 				?>
-			<div class="submitter groupowner"><p><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->owned_by_group) { echo $group->description . '(' . $group->cn . ')'; } ?></p>
+			<div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->owned_by_group) { echo $group->description . '(' . $group->cn . ')'; } ?></p>
 				<?php if (!$this->pub->_project->owned_by_group) { ?>
 					<select name="group_owner">
-						<option value=""><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
+						<option value=""><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
 						<?php foreach ($this->groups as $g) {
 							if (in_array($g->gidNumber, $used))
 							{
@@ -163,7 +163,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				<?php } else { ?>
 				<input type="hidden" name="group_owner" value="<?php echo $this->pub->group_owner; ?>" />
 				<?php } ?>
-				<p class="hint">* <?php echo $this->pub->_project->owned_by_group ? JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT'); ?></p>
+				<p class="hint">* <?php echo $this->pub->_project->owned_by_group ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT'); ?></p>
 			</div>
 		<?php }
 		?>

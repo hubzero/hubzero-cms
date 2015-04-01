@@ -29,12 +29,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->version == 'dev')
 {
 	$ptitle = $this->last_idx > $this->current_idx
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUDIENCE'))
-		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_AUDIENCE')) ;
+		? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_AUDIENCE'))
+		: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECT_AUDIENCE')) ;
 }
 else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_AUDIENCE'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_AUDIENCE'));
 }
 
 ?>
@@ -64,9 +64,9 @@ $canedit = (
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-				<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
+				<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } ?></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SELECT'); ?></p>
+				<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_SELECT'); ?></p>
 				<div id="c-show">
 					<ul id="c-browser">
 					<?php foreach ($this->levels as $level) {
@@ -78,23 +78,23 @@ $canedit = (
 						<?php } ?>
 					</ul>
 				</div>
-				<p class="and_or vpadded"><?php echo strtoupper(JText::_('PLG_PROJECTS_PUBLICATIONS_OR')); ?>...</p>
-				<label><input type="checkbox" name="no_audience" id="no-audience" value="1" <?php echo (!$picked && $this->audience->id) ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOW'); ?>
+				<p class="and_or vpadded"><?php echo strtoupper(Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR')); ?>...</p>
+				<label><input type="checkbox" name="no_audience" id="no-audience" value="1" <?php echo (!$picked && $this->audience->id) ? 'checked="checked"' : '';  ?> />	<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOW'); ?>
 				</label>
-				<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_AUDIENCE'); ?></p>
+				<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_AUDIENCE'); ?></p>
 				<?php } else { ?>
-					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+					<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
 		 </div>
 		</div>
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
-				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUDIENCE')); ?>: </h5>
+				<h5><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUDIENCE')); ?>: </h5>
 				<ul id="c-audience" class="c-list">
-					<li id="nosel" <?php if ($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
+					<li id="nosel" <?php if ($this->last_idx > $this->current_idx && $this->audience->id) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NONE_SELECTED'); ?></li>
 					<li id="c-sel-audience" class="prominent<?php if ($this->last_idx <= $this->current_idx || !$this->audience->id) { echo ' hidden'; } ?>">
 					<?php if ($picked) 
 					{
@@ -107,7 +107,7 @@ $canedit = (
 						$view->showtips      = false;
 						$view->numlevels     = 4;
 						echo $view->loadTemplate();
-					} else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN'); } ?></li>
+					} else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUDIENCE_NOT_SHOWN'); } ?></li>
 				</ul>
 		 </div>
 		</div>

@@ -30,12 +30,12 @@ $ptitle = '';
 if ($this->version == 'dev')
 {
 	$ptitle .= $this->last_idx > $this->current_idx && $this->row->metadata
-			? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_EDIT_METADATA'))
-			: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_ADD_METADATA')) ;
+			? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_EDIT_METADATA'))
+			: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_ADD_METADATA')) ;
 }
 else
 {
-	$ptitle .= ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_METADATA'));
+	$ptitle .= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_METADATA'));
 }
 
 // Parse data
@@ -106,20 +106,20 @@ $canedit = (
 	  <div id="c-pane" class="columns">
 		 <div class="c-inner">
 			<?php if ($canedit) { ?>
-			<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
+			<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
 			<?php } ?>
 		<h4><?php echo $ptitle; ?></h4>
 
 		<?php if ($canedit) { ?>
 					<?php
 					if ($fields) { ?>
-						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA_WRITE'); ?></p>
-						<p class="hint rightfloat"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external" class="popup"><?php echo JText::_('WIKI_FORMATTING'); ?></a>. <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></p>
+						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_METADATA_WRITE'); ?></p>
+						<p class="hint rightfloat"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PLEASE_USE'); ?> <a href="/wiki/Help:WikiFormatting" rel="external" class="popup"><?php echo Lang::txt('WIKI_FORMATTING'); ?></a>. <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NOTICE_NO_HTML_ALLOWED'); ?></p>
 						<div class="metadata-compose">
 						<?php echo $fields; ?>
 						</div>
 					<?php } else { ?>
-						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_NO_METADATA_COLLECTED'); ?></p>
+						<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_NO_METADATA_COLLECTED'); ?></p>
 					<?php } ?>
 			<?php } else {
 				include_once(PATH_CORE . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
@@ -142,11 +142,11 @@ $canedit = (
 					0
 				);
 			?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE') . ' <a href="' . $this->url . '/?action=newversion">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')) . '</a>'; ?></p>
 
 			<?php 	echo $metadata['html']
 				? $metadata['html']
-				: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
+				: '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';
 			} ?>
 		 </div>
 	   </div>

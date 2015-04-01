@@ -46,10 +46,6 @@ $selectUrl   = $prov
 
 $editUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications&pid=' . $this->pub->id);
 
-// Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
-$move = $move ? '&move=continue' : '';
-
 $required 		= $this->manifest->params->required;
 
 $elName = "licensePick";
@@ -79,6 +75,6 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 			</div>
 
 		<?php } else { ?>
-			<?php echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
+			<?php echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>'; ?>
 		<?php } ?>
 </div>

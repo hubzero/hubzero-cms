@@ -29,12 +29,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->version == 'dev')
 {
 	$ptitle = $this->last_idx > $this->current_idx
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS'))
-		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SPECIFY_ACCESS')) ;
+		? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_ACCESS'))
+		: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SPECIFY_ACCESS')) ;
 }
 else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_ACCESS'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_ACCESS'));
 }
 
 // Which access is selected?
@@ -43,9 +43,9 @@ $access = $this->row->access;
 
 switch ($access)
 {
-	case 0: default: 	$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); 		break;
-	case 1: 			$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); 	break;
-	case 2: case 3:		$accesstext = JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); 	break;
+	case 0: default: 	$accesstext = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); 		break;
+	case 1: 			$accesstext = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); 	break;
+	case 2: case 3:		$accesstext = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); 	break;
 }
 
 // Restricted to group?
@@ -103,48 +103,48 @@ $row = $this->row;
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
-			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } ?></h4>
 			<?php if ($canedit) { ?>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT'); ?></p>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT'); ?></p>
 			<div id="c-show">
 				<ul id="c-browser">
-					<li id="access-public" class="c-radio"><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); ?></span>: <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION'); ?> (<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RECOMMENDED'); ?>)</li>
-					<li id="access-registered" class="c-radio"><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); ?></span>: <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION'); ?></li>
-					<li id="access-restricted" class="c-radio"><span class="prominent"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); ?></span>: <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION'); ?></li>
+					<li id="access-public" class="c-radio"><span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC'); ?></span>: <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_EXPLANATION'); ?> (<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RECOMMENDED'); ?>)</li>
+					<li id="access-registered" class="c-radio"><span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED'); ?></span>: <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_REGISTERED_EXPLANATION'); ?></li>
+					<li id="access-restricted" class="c-radio"><span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED'); ?></span>: <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_EXPLANATION'); ?></li>
 				</ul>
 			</div>
-			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS'); ?></p>
+			<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS'); ?></p>
 			<?php } else { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
 		 </div>
 		</div>
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
-			<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS')); ?>: </h5>
+			<h5><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS')); ?>: </h5>
 				<ul id="c-access" class="c-list">
-					<li id="nosel" <?php if ($access != '') { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_NONE_SELECTED'); ?></li>
+					<li id="nosel" <?php if ($access != '') { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_NONE_SELECTED'); ?></li>
 					<li id="c-sel-access" class="prominent<?php if ($access == '') { echo ' hidden'; } ?>"><?php echo $accesstext; ?></li>
 				</ul>
 				<div id="extra-0" class="c-extra<?php if ($access == '' || $access != 0) { echo ' hidden'; } ?>">
-					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_PUBLIC'); ?></p>
+					<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_PUBLIC'); ?></p>
 				</div>
 				<div id="extra-1" class="c-extra<?php if ($access != 1) { echo ' hidden'; } ?>">
-					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_REGISTERED'); ?></p>
+					<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ACCESS_REGISTERED'); ?></p>
 				</div>
 				<div id="extra-2" class="c-extra<?php if ($access != 2 && $access != 3) { echo ' hidden'; } ?>">
-					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO'); ?></h5>
+					<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO'); ?></h5>
 					<label>
-						<input type="checkbox" checked="checked" disabled="disabled" name="sysgroup" value="1" />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO_SYSGROUP'); ?>
+						<input type="checkbox" checked="checked" disabled="disabled" name="sysgroup" value="1" />	<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_RESTRICTED_TO_SYSGROUP'); ?>
 					</label>
-					<p class="and"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AND'); ?> <span class="optional">(<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?>)</span></p>
-					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT_GROUPS'); ?>
+					<p class="and"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AND'); ?> <span class="optional">(<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?>)</span></p>
+					<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_SELECT_GROUPS'); ?>
 						<input type="text" name="access_group" id="access-group" value="<?php echo $groups; ?>" class="block long" />
 					</label>
-					<label><input type="checkbox" name="private" value="1" <?php echo $access == 3 ? 'checked="checked"' : '';  ?> />	<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_ALL_PRIVATE'); ?>
+					<label><input type="checkbox" name="private" value="1" <?php echo $access == 3 ? 'checked="checked"' : '';  ?> />	<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCESS_ALL_PRIVATE'); ?>
 					</label>
 				</div>
 		 </div>

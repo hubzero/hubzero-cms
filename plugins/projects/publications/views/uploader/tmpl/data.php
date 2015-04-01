@@ -89,7 +89,7 @@ $p_url = Route::url($route . '&active=databases');
 		{
 			foreach ($missing as $miss)
 			{ ?>
-				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_DATABASE'); ?></span></li>
+				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MISSING_DATABASE'); ?></span></li>
 		<?php	}
 		}
 	}
@@ -97,7 +97,7 @@ $p_url = Route::url($route . '&active=databases');
 </ul>
 
 <?php if ((count($shown) + count($missing)) == 0) { ?>
-	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_DATA'); ?></p>
+	<p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_SELECTION_ITEMS_FOUND_DATA'); ?></p>
 <?php } ?>
 
 <?php if (!$this->project->provisioned) { ?>

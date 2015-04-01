@@ -104,7 +104,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo JText::_('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#element' . $this->elementId; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
 			</h5>
 			<?php if (!$coming && $value) {
 				// Parse editor text
@@ -130,7 +130,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				{
 					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
 					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . ' &raquo;</a>';
+								. Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . ' &raquo;</a>';
 					$about.= ' <div class="hidden">';
 					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
 					$about.= ' </div>';
@@ -145,7 +145,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 		</div>
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
-			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
+			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php } ?>
 				<?php echo $this->manifest->label; ?>
 				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 				<?php
@@ -181,16 +181,16 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				echo $output; ?>
 			</label>
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
-				<p class="warning"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
 			<?php } ?>
 			<?php // Navigate to next element
 				if ($active && $this->collapse) { ?>
 				<p class="element-move">
 					<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-						<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+						<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
 					</span>
 					<span class="button-wrapper icon-apply">
-						<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="apply-<?php echo $props; ?>" class="save-element btn icon-apply" />
+						<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="apply-<?php echo $props; ?>" class="save-element btn icon-apply" />
 					</span>
 				</p>
 			<?php } ?>

@@ -32,32 +32,32 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></h3>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></span>
+		<h3 class="publications c-header"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
 	<div class="list-editing">
-	 <p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TOTAL_VERSIONS')); ?>: <span class="prominent"><?php echo count($this->versions); ?></span></p>
+	 <p><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TOTAL_VERSIONS')); ?>: <span class="prominent"><?php echo count($this->versions); ?></span></p>
 	</div>
 	<?php if ($this->versions) { ?>
 		<table class="listing">
 		 <thead>
 			<tr>
 				<th class="tdmini"></th>
-				<th class="tdmini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>
-				<th><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOI').'/'.JText::_('PLG_PROJECTS_PUBLICATIONS_ARK'); ?></th>
-				<th><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONS')); ?></th>
+				<th class="tdmini"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
+				<th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
+				<th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>
+				<th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI').'/'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARK'); ?></th>
+				<th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONS')); ?></th>
 			</tr>
 		 </thead>
 		 <tbody>
 		<?php foreach ($this->versions as $v) {
 			// Get DOI
 			$doi = $v->doi ? 'doi:'.$v->doi : '';
-			$doi_notice = $doi ? $doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA');
+			$doi_notice = $doi ? $doi : Lang::txt('PLG_PROJECTS_PUBLICATIONS_NA');
 
 			// Version status
 			$status = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'status');
@@ -65,11 +65,11 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			$date   = \Components\Publications\Helpers\Html::getPubStateProperty($v, 'date');
 
 			$options = '<a href="' . $this->url . '?version=' . $v->version_number . '">'
-			. JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION') . '</a>';
+			. Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION') . '</a>';
 
 			$options .= '<span class="block"><a href="' . Route::url('index.php?option=com_publications'
 			. '&id=' . $this->pid) . '?v=' . $v->version_number . '">'
-			.JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE').'</a></span>';
+			. Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE') . '</a></span>';
 
 			?>
 			<tr class="mini <?php if ($v->main == 1) { echo ' vprime'; } ?>">

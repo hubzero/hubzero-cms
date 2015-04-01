@@ -32,7 +32,7 @@ $inDir	 = $dirname && $dirname != '.' ? ' in /' . \Components\Projects\Helpers\H
 
 ?>
 <div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_EDIT_ITEM'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_EDIT_ITEM'); ?></h3>
 <?php
 // Display error  message
 if ($this->getError()) {
@@ -58,22 +58,22 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 			<div class="content-edit">
-				<p><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
+				<p><span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
 					<?php echo '<span class="prominent">' . $name. '</span>' . $inDir;  ?>
 				</p>
 				<label for="title">
-					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION')); ?>:</span>
+					<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION')); ?>:</span>
 					<input type="text" name="title" maxlength="100" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>"  />
-					<span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
+					<span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 				</label>
 				<p class="submitarea">
-					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
+					<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
 					<?php if ($this->ajax) { ?>
-					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
 					<?php } else {
-						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
+						$rtn = Request::getVar('HTTP_REFERER', $this->url, 'server');
 					?>
-					<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+					<a href="<?php echo $rtn; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
 					<?php } ?>
 				</p>
 			</div>

@@ -38,7 +38,7 @@ $route = $this->pub->_project->provisioned
 $url = $this->pub->id ? Route::url($route . '&pid=' . $this->pub->id) : Route::url($route);
 
 // Are we in draft flow?
-//$move = JRequest::getVar( 'move', '' );
+//$move = Request::getVar( 'move', '' );
 $move = ($this->showControls) ? 'continue' : '';
 
 $title 	 = $move && $this->manifest->draftHeading ? $this->manifest->draftHeading : $this->manifest->title;
@@ -54,7 +54,7 @@ $required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest
 
 $activeEl = isset($this->master->props['showElement'])
 			? $this->master->props['showElement'] : 0;
-$element =  JRequest::getInt( 'el', $activeEl );
+$element =  Request::getInt( 'el', $activeEl );
 
 $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 ?>
@@ -84,7 +84,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 						<?php
 							if ($tagline && $move)
 							{ ?>
-							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
+							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
 						<?php }
 						?>
 						<?php echo $this->content; ?>
@@ -97,17 +97,17 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 						<div class="submit-area <?php echo $this->showControls == 2 ? ' extended' : ''; ?>" id="submit-area">
 							<?php if (!$isFirst && $this->showControls && $this->showControls != 3) { ?>
 								<span class="button-wrapper bw-previous icon-prev">
-									<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
+									<input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
 								</span>
 							<?php } ?>
 							<?php if ($this->showControls && $this->showControls != 3) { ?>
 							<span class="button-wrapper icon-apply">
-								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
 							</span>
 							<?php } ?>
 							<?php if ($this->showControls && $this->showControls != 3) { ?>
 							<span class="button-wrapper icon-next">
-								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="c-next" class="submitbutton btn icon-next" />
+								<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="c-next" class="submitbutton btn icon-next" />
 							</span>
 							<?php } ?>
 						</div>
@@ -126,14 +126,14 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 			<input type="hidden" name="p" id="props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="dispute" />
-			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
+			<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
 			<label>
-				<span class="block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
+				<span class="block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
 				<textarea name="review" id="notice-review" rows="5" cols="10"></textarea>
 			</label>
 			</fieldset>
 			<p class="submitarea">
-				<input type="submit" id="notice-submit" class="btn" value="<?php echo JText::_('COM_PUBLICATIONS_SAVE'); ?>" />
+				<input type="submit" id="notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
 			</p>
 		</form>
 	</div>
@@ -148,14 +148,14 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 			<input type="hidden" name="p" id="skip-props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="skip" />
-			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_TITLE'); ?></h5>
+			<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_TITLE'); ?></h5>
 			<label>
-				<span class="block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_LABEL'); ?></span>
+				<span class="block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_LABEL'); ?></span>
 				<textarea name="review" id="skip-notice-review" rows="5" cols="10"></textarea>
 			</label>
 			</fieldset>
 			<p class="submitarea">
-				<input type="submit" id="skip-notice-submit" class="btn" value="<?php echo JText::_('COM_PUBLICATIONS_SAVE'); ?>" />
+				<input type="submit" id="skip-notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
 			</p>
 		</form>
 	</div>

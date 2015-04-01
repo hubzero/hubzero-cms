@@ -41,7 +41,7 @@ $route = $prov
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 
 // Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
+$move = Request::getVar( 'move', '' );
 $move = $move ? '&move=continue' : '';
 
 $required 		= $this->manifest->params->required;
@@ -60,9 +60,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 				<div class="pane-wrapper col span8">
 					<span class="checker">&nbsp;</span>
 					<label id="<?php echo $elName; ?>-lbl">
-						<?php if ($required) { ?><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
-						<?php } else { ?><span class="optional"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
-						<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS')); ?>
+						<?php if ($required) { ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
+						<?php } else { ?><span class="optional"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
+						<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS')); ?>
 					</label>
 						<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
@@ -80,7 +80,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 						?>
 				</div>
 				<div class="col span3 omega block-aside">
-					<div class="block-info"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ABOUT_TAGS'); ?></p></div>
+					<div class="block-info"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ABOUT_TAGS'); ?></p></div>
 				</div>
 			</div>
 </div>
@@ -96,7 +96,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 	<div class="element_editing grid">
 		<div class="pane-wrapper col span8">
 				<span class="checker">&nbsp;</span>
-				<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
+				<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
 		<?php foreach ($this->categories as $cat) {
 			$params = new $paramsClass($cat->params);
 			// Skip inaplicable category

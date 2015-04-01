@@ -30,7 +30,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php
 			if (count($this->tags) > 0) {
 				$i = 0; ?>
-				<li class="c-head"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_SUGGESTED'); ?><a id="more-tags" href="<?php echo $this->url.'?section=tags'; ?>">	 &#43; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_MORE'); ?></a></li>
+				<li class="c-head"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_SUGGESTED'); ?><a id="more-tags" href="<?php echo $this->url.'?section=tags'; ?>">	 &#43; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_MORE'); ?></a></li>
 			<?php
 				foreach ($this->tags as $tag) {
 					 ?>
@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php }
 			}
 			else { ?>
-			<li class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_SUGGESTED'); ?></li>
+			<li class="noresults"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_SUGGESTED'); ?></li>
 		<?php	}
 			?>
 		</ul>

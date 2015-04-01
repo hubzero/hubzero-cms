@@ -48,9 +48,9 @@ $title = $this->manifest->title;
 			<h4><?php echo $title; ?></h4>
 			<div class="block-aside">
 				<div class="block-info">
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
 					<?php if ($this->pub->state == 1) {
-						echo ' <a href="'.$url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; } ?>
+						echo ' <a href="'.$url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; } ?>
 					</p>
 				</div>
 			</div>

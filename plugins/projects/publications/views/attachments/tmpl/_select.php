@@ -50,5 +50,5 @@ $selectUrl   = $prov
 			. $this->pub->id . '&amp;vid=' . $this->pub->version_id;
 ?>
 <div class="item-new">
-	<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox nox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT_' . strtoupper($this->type)); ?></a></span>
+	<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox nox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECT_' . strtoupper($this->type)); ?></a></span>
 </div>

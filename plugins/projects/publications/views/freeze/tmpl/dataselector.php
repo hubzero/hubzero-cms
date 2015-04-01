@@ -53,7 +53,7 @@ if ($shorten)
 {
 	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
 	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
+				. Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
 	$about.= ' <div class="hidden">';
 	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
 	$about.= ' </div>';
@@ -130,7 +130,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 		<?php } ?>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?>
 				<?php if (count($this->attachments)) { echo ' (' . count($this->attachments) .')'; }?>
-				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file') { ?><span class="download-all"><a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('Download all'); ?></a></span><?php } ?></h5>
+				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file') { ?><span class="download-all"><a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo Lang::txt('Download all'); ?></a></span><?php } ?></h5>
 				<?php if ($this->name == 'curator') { echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
 		<?php if (count($this->attachments) > 0) { ?>
 		<div class="list-wrapper">
@@ -161,11 +161,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 			</ul>
 		</div>
 		<?php } else {  ?>
-			<p class="noresults"><?php echo $this->name == 'curator' ? JText::_('No user input') : JText::_('No items attached'); ?></p>
+			<p class="noresults"><?php echo $this->name == 'curator' ? Lang::txt('No user input') : Lang::txt('No items attached'); ?></p>
 		<?php } ?>
 
 			<?php if ($this->pub->state != 1 && ($error || ($required && !$complete))) { ?>
-				<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
+				<p class="witherror"><?php echo $error ? $error : Lang::txt('Missing required input'); ?></p>
 			<?php } else { ?>
 
 			<?php } ?>

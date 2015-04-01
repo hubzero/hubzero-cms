@@ -32,10 +32,10 @@ $published = $this->pub->versions > 0 ? 1 : 0;
 $ptitle = '';
 if ($this->version == 'dev') {
 	$ptitle .= (($this->last_idx > $this->current_idx || $this->lastpane == 'review') && count($this->attachments) > 0)
-	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')).' '
-	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
+	? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT')).' '
+	: ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECT')).' ' ;
 }
-$ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
+$ptitle .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 
 ?>
 	<?php echo $this->project->provisioned == 1
@@ -57,19 +57,19 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 	<div id="pub-editor">
 		<div class="two columns first" id="c-selector">
 			<div class="c-inner" id="c-item-picker">
-				<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
+				<h4><?php echo $ptitle; ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>
+				<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_SUPPORTING_FILES'); ?></p>
 				<!-- Load content selection browser //-->
 				<div id="c-show">
 					<noscript>
-						<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
+						<p class="nojs"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 					</noscript>
 				</div>
 				<!-- END content selection browser //-->
-				<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_SUPPORTING_CONTENT_MORE'); ?></p>
+				<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_SUPPORTING_CONTENT_MORE'); ?></p>
 				<?php } else { ?>
-					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+					<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
 			</div>
 		</div>
@@ -97,11 +97,11 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 			</fieldset>
 			<div class="c-inner">
 		<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 		<?php } ?>
-				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?>: </h5>
+				<h5><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?>: </h5>
 				<ul id="c-filelist" class="c-list">
-					<li id="nosel" <?php if ($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
+					<li id="nosel" <?php if ($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
 					<?php
 					// If we have files selected
 					if (count($this->attachments) > 0) {
@@ -145,7 +145,7 @@ $ptitle .= JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS');
 					}
 				}  ?>
 			</ul>
-				<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_FILES_HINT_DRAG'); ?></p>
+				<p id="c-instruct"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILES_HINT_DRAG'); ?></p>
 			</div>
 			</form>
 		 </div>

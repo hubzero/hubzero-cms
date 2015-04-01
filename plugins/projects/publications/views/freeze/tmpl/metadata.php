@@ -49,7 +49,7 @@ if ($shorten)
 {
 	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
 	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
+				. Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
 	$about.= ' <div class="hidden">';
 	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
 	$about.= ' </div>';
@@ -103,7 +103,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 			<?php } else { ?>
 				<p class="noresults">No user input</p>
 				<?php if ($this->pub->state != 1 && ($this->status->getError() || ($required && !$complete))) { ?>
-					<p class="witherror"><?php echo $this->status->getError() ? $this->status->getError() : JText::_('Missing required input'); ?></p>
+					<p class="witherror"><?php echo $this->status->getError() ? $this->status->getError() : Lang::txt('Missing required input'); ?></p>
 				<?php } ?>
 			<?php } ?>
 		<?php if ($this->name == 'curator') { ?>

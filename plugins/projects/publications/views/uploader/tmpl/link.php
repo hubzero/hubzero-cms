@@ -39,8 +39,8 @@ $attached = isset($this->attachments) && count($this->attachments) > 0 ? $this->
 	<div id="link-preview" class="hidden"></div>
 	<div id="link-submit" class="hidden">
 		<p class="submitarea">
-			<a class="btn" id="l-submit"><?php echo JText::_('Attach this link'); ?></a>
+			<a class="btn" id="l-submit"><?php echo Lang::txt('Attach this link'); ?></a>
 		</p>
-		<span class="block hint mini"><?php echo JText::_('*The new link you attach will replace any current link attachment'); ?></span>
+		<span class="block hint mini"><?php echo Lang::txt('*The new link you attach will replace any current link attachment'); ?></span>
 	</div>
 </div>

@@ -29,11 +29,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->version == 'dev')
 {
 	$ptitle = $this->last_idx > $this->current_idx  ?
-	ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_GALLERY')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_GALLERY_IMAGES')) ;
+	ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_GALLERY')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_GALLERY_IMAGES')) ;
 }
 else
 {
-	$ptitle = ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PANEL_GALLERY'));
+	$ptitle = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PANEL_GALLERY'));
 }
 ?>
 <?php echo $this->project->provisioned == 1
@@ -57,20 +57,20 @@ else
 	<div id="pub-editor" class="pane-gallery">
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner" id="c-item-picker">
-			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
+			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span><?php } ?></h4>
 
 			<?php if ($canedit) { ?>
-			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_SELECT'); ?></p>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_SELECT'); ?></p>
 			<!-- Load content selection browser //-->
 			<div id="c-show">
 				<noscript>
-					<p class="nojs"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
+					<p class="nojs"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TAGS_NO_JS_MESSAGE'); ?></p>
 				</noscript>
 			</div>
 			<!-- END content selection browser //-->
-			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_GALLERY'); ?></p>
+			<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_GALLERY'); ?></p>
 			<?php } else { ?>
-				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
+				<p class="notice"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
 		 </div>
 		</div>
@@ -97,12 +97,12 @@ else
 			</fieldset>
 		 		<div class="c-inner">
 			<?php if ($canedit) { ?>
-					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
-					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_GALLERY'); ?>: </h5>
+					<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_GALLERY'); ?>: </h5>
 
 						<ul id="c-filelist" class="c-list">
-							<li id="nosel" <?php if (count($this->shots) > 0) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SHOTS_SELECTED_CLICK'); ?></li>
+							<li id="nosel" <?php if (count($this->shots) > 0) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_SHOTS_SELECTED_CLICK'); ?></li>
 							<?php
 							// If we have files selected
 							if (count($this->shots) > 0) {
@@ -132,7 +132,7 @@ else
 								</li>
 							<?php $i++; } }  ?>
 						</ul>
-						<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_HINT_DRAG'); ?></p>
+						<p id="c-instruct"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GALLERY_HINT_DRAG'); ?></p>
 		 		</div>
 			</form>
 		</div>

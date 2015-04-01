@@ -25,8 +25,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$title 		 = JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
-$placeholder = JText::_('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
+$title 		 = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
+$placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 $dTitle 	 = NULL;
 
 $allowRename = false;
@@ -36,8 +36,8 @@ if ($this->row->type == 'file')
 	$dirpath = dirname($this->row->path) == '.' ? '' : dirname($this->row->path) . DS;
 	$gone 	 = is_file($this->path . DS . $this->row->path) ? false : true;
 	$title   = !$allowRename
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL')
-		: JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
+		? Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL')
+		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
 }
 
 // Get block properties
@@ -62,7 +62,7 @@ if ($this->row->type == 'file')
 }
 if ($this->row->type == 'link')
 {
-	$title = JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE');
+	$title = Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE');
 }
 
 $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this->row->title : $dTitle;
@@ -89,35 +89,35 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 				<div class="content-edit">
 
 					<label for="title">
-						<span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
+						<span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
 						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : $defaultTitle; ?>" placeholder="<?php echo $placeholder; ?>"  />
 					</label>
 					<?php if ($this->row->type == 'link') { ?>
 					<p class="c-wrapper">
-						<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_URL')); ?>:</span>
+						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_URL')); ?>:</span>
 						<span class="content-filepath"><?php echo $this->row->path; ?></span>
 					</p>
 					<?php } ?>
 					<?php if ($this->row->type == 'file') { ?>
 						<?php if ($gone || !$allowRename) { ?>
 						<p class="c-wrapper">
-							<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
+							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
 							<span class="content-filepath"><?php echo $this->row->path; ?></span>
 						</p>
 						<?php } else { ?>
 						<p class="c-wrapper">
-							<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
+							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
 							<span><?php echo $dirpath; ?> <input type="text" name="filename" maxlength="100" value="<?php echo basename($this->row->path); ?>" /></span>
 						</p>
 						<?php } ?>
 					<?php } ?>
 
 					<p class="submitarea">
-						<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
+						<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
 						<?php if ($this->ajax) { ?>
-						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?>" />
+						<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?>" />
 						<?php } else { ?>
-						<a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
+						<a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a>
 						<?php } ?>
 					</p>
 				</div>

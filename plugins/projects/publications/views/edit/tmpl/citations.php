@@ -31,7 +31,7 @@ $published = $this->pub->versions > 0 ? 1 : 0;
 // Are we allowed to edit?
 $canedit = 1;
 
-$ptitle = JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS_TO_RELATED');
+$ptitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS_TO_RELATED');
 
 $config = Component::params( 'com_citations' );
 $allow_import = $config->get('citation_import', 1);
@@ -63,7 +63,7 @@ $newCiteUrl   = $this->project->provisioned == 1
 		 <div class="c-inner">
 			<h4><?php echo $ptitle; ?>
 				<?php if (in_array($this->active, $this->required)) { ?><span class="required">
-					<?php echo JText::_('REQUIRED'); ?></span><?php } ?>
+					<?php echo Lang::txt('REQUIRED'); ?></span><?php } ?>
 			</h4>
 
 			<form action="<?php echo Route::url($this->route . '&active=publications'); ?>" method="post" id="addmember-form">
@@ -77,17 +77,17 @@ $newCiteUrl   = $this->project->provisioned == 1
 					<input type="hidden" name="pid" value="<?php echo $this->pid; ?>" />
 					<input type="hidden" name="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
 				<div class="c-panel-citations">
-					<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ENTER_DOI'); ?>
-						<input name="citation-doi" id="citation-doi" maxlength="200" size="35" type="text" value="" class="long pubinput" placeholder="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_PLACEHOLDER'); ?>" />
+					<label><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ENTER_DOI'); ?>
+						<input name="citation-doi" id="citation-doi" maxlength="200" size="35" type="text" value="" class="long pubinput" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_PLACEHOLDER'); ?>" />
 					</label>
 				</div>
 				<div id="citation-preview"></div>
 			</form>
 			<?php if ($allow_import) { ?>
 			<p class="and_or centeralign">OR</p>
-			<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn showinbox" rel="external"><?php echo JText::_('Enter manually'); ?></a></p>
+			<p class="centeralign"><a href="<?php echo $newCiteUrl; ?>" class="btn showinbox" rel="external"><?php echo Lang::txt('Enter manually'); ?></a></p>
 			<?php } ?>
-			<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
+			<p class="pub-info"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_CITATIONS_PANEL'); ?></p>
 
 		 </div>
 		</div>
@@ -113,11 +113,11 @@ $newCiteUrl   = $this->project->provisioned == 1
 				</fieldset>
 		 		<div class="c-inner">
 					<?php if ($canedit) { ?>
-							<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+							<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 					<?php } ?>
-					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
+					<h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
 					<ul id="c-citations" class="c-list">
-						<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
+						<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
 					<?php if ($this->citations) {
 
 						$formatter = new \Components\Citations\Helpers\Format;
@@ -129,8 +129,8 @@ $newCiteUrl   = $this->project->provisioned == 1
 								: \Components\Citations\Helpers\Format::formatReference($cite, '');
 						?>
 						<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
-							<span class="c-delete"><a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->alias . '&active=links&action=deletecitation').'/?pid=' . $this->pub->id . '&amp;cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
-							<span class="c-edit"><a href="<?php echo $newCiteUrl .'&cid=' . $cite->id; ?>" class="showinbox" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
+							<span class="c-delete"><a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->alias . '&active=links&action=deletecitation').'/?pid=' . $this->pub->id . '&amp;cid=' . $cite->id; ?>">[<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
+							<span class="c-edit"><a href="<?php echo $newCiteUrl .'&cid=' . $cite->id; ?>" class="showinbox" rel="external">[<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
 							<span class="c-citation"><?php echo $citeText; ?></span>
 						</li>
 						<?php

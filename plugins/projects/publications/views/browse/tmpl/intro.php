@@ -35,19 +35,19 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 <?php	if (User::isGuest())
 	{
 		// Have user log in
-		echo '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' .
+		echo '<p class="noresults">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PLEASE') . ' <a href="' .
 		Route::url('index.php?option=com_publications&task=submit&action=login') . '">'
-		. JText::_('PLG_PROJECTS_PUBLICATIONS_LOGIN') . '</a> ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TO_VIEW_SUBMISSIONS')
+		. Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOGIN') . '</a> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TO_VIEW_SUBMISSIONS')
 		. '</p>';
 	}
 	else {
 		// Display submissions if any ?>
 		<div id="mypub">
 			<div class="columns three first second">
-			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED_BY_ME'); ?>
+			<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STARTED_BY_ME'); ?>
 				<?php if ($this->mypubs_count > count($this->mypubs)) { ?>
-					<span class="rightfloat mini"><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
-					. $this->mypubs_count . ' ' . strtolower(JText::_('PUBLICATIONS')) ; ?></a></span>
+					<span class="rightfloat mini"><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&limit=0'); ?>">&raquo; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
+					. $this->mypubs_count . ' ' . strtolower(Lang::txt('PUBLICATIONS')) ; ?></a></span>
 				<?php } ?></h3>
 			<?php if (count($this->mypubs) > 0 ) { ?>
 				<ul class="mypubs">
@@ -66,29 +66,29 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 					?>
 					<li>
 						<span class="mypub-options">
-							<a href="<?php echo $preview; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_TITLE'); ?>"><?php echo strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW')); ?></a> |
-							<a href="<?php echo $url; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a>
+							<a href="<?php echo $preview; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_TITLE'); ?>"><?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW')); ?></a> |
+							<a href="<?php echo $url; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a>
 						</span>
 						<span class="mypub-status"><span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span></span>
 						<span class="mypub-version"><?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label)
 						{ echo '<span class="mypub-newversion"><a href="' . $url . '/?version=dev'
 						. '">v.' . $row->dev_version_label . '</a> '
-						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
+						. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 						<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
 						<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 80); ?>
 						<?php if ($row->project_provisioned == 0) { echo '<span class="mypub-project">'
-						. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
+						. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
 						. Route::url('index.php?option=com_projects&alias=' . $row->project_alias) . '">'
 						. \Hubzero\Utility\String::truncate(stripslashes($row->project_title), 80) . '</a>' . '</span>'; } ?>
 					</li>
 					<?php }?>
 				</ul>
 			<?php } else {
-				echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); } ?>
-			<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COAUTHORED'); ?>
+				echo ('<p class="noresults">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); } ?>
+			<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_COAUTHORED'); ?>
 					<?php if ($this->coauthored_count > count($this->coauthored)) { ?>
-						<span class="rightfloat mini"><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&limit=0'); ?>">&raquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
-						. $this->coauthored_count . ' ' . strtolower(JText::_('PUBLICATIONS')) ; ?></a></span>
+						<span class="rightfloat mini"><a href="<?php echo Route::url('index.php?option=com_publications&task=submit&limit=0'); ?>">&raquo; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL') . ' '
+						. $this->coauthored_count . ' ' . strtolower(Lang::txt('PUBLICATIONS')) ; ?></a></span>
 					<?php } ?></h3>
 			<?php if (count($this->coauthored) > 0 ) { ?>
 					<ul class="mypubs">
@@ -111,32 +111,32 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 						?>
 						<li>
 							<span class="mypub-options">
-								<a href="<?php echo $preview; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_TITLE'); ?>"><?php echo strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW')); ?></a> <?php if ($owner != 3) { ?> |
-								<a href="<?php echo $url; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a><?php } ?>
+								<a href="<?php echo $preview; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_TITLE'); ?>"><?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW')); ?></a> <?php if ($owner != 3) { ?> |
+								<a href="<?php echo $url; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE'); ?></a><?php } ?>
 							</span>
 							<span class="mypub-status"><span class="<?php echo $class; ?> major_status"><?php echo $status; ?></span></span>
 							<span class="mypub-version"><?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label)
 							{ echo '<span class="mypub-newversion"><a href="' . $url . '/?version=dev'
 							. '">v.' . $row->dev_version_label . '</a> '
-							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
+							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS') . '</span> '; } ?> v.<?php echo $row->version_label; ?></span>
 							<span class="restype"><span class="<?php echo $cls; ?>"></span></span>
 							<?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 80); ?>
 							<?php if ($row->project_provisioned == 0) { echo '<span class="mypub-project">'
-							. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
+							. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="'
 							. Route::url('index.php?option=com_projects&alias=' . $row->project_alias) . '">'
 							. \Hubzero\Utility\String::truncate(stripslashes($row->project_title), 80) . '</a>' . '</span>'; } ?>
 						</li>
 						<?php }?>
 					</ul>
 			<?php } else {
-				echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></span></p>'); } ?>
+				echo ('<p class="noresults">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></span></p>'); } ?>
 			</div>
 			<div class="columns three third">
 				<div id="contrib-start">
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-					<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <span class="addnew"><a href="/projects/start"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></span></p>
-					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START_INDEPENDENT'); ?></p>
-					<p id="getstarted"><a href="<?php echo Route::url('index.php?option=com_publications&task=start'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GET_STARTED'); ?> &raquo;</a></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
+					<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <span class="addnew"><a href="/projects/start"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></span></p>
+					<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START_INDEPENDENT'); ?></p>
+					<p id="getstarted"><a href="<?php echo Route::url('index.php?option=com_publications&task=start'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GET_STARTED'); ?> &raquo;</a></p>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -145,23 +145,23 @@ $outside = isset($this->outside) && $this->outside == 1 ? 1 : 0;
 	</div>
 <?php } ?>
 <div id="pubintro">
-	<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pubconfig->get('documentation')) { ?>
-	<span class="learnmore"><a href="<?php echo $this->pubconfig->get('documentation'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
+	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pubconfig->get('documentation')) { ?>
+	<span class="learnmore"><a href="<?php echo $this->pubconfig->get('documentation'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
 	<?php } ?></h3>
 
 	<div class="columns three first">
-		<h4><span class="num">1</span> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE'); ?></h4>
+		<h4><span class="num">1</span> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE'); ?></h4>
 		<p><?php echo $outside
-						? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT_OUTSIDE')
-						: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT'); ?></p>
+						? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT_OUTSIDE')
+						: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_ONE_ABOUT'); ?></p>
 	</div>
 	<div class="columns three second">
-		<h4><span class="num">2</span> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_TWO'); ?></h4>
-		<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_TWO_ABOUT'); ?></p>
+		<h4><span class="num">2</span> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_TWO'); ?></h4>
+		<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_TWO_ABOUT'); ?></p>
 	</div>
 	<div class="columns three third">
-		<h4><span class="num">3</span> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE'); ?></h4>
-		<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE_ABOUT'); ?></p>
+		<h4><span class="num">3</span> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE'); ?></h4>
+		<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE_ABOUT'); ?></p>
 	</div>
 	<div class="clear"></div>
 </div>

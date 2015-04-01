@@ -66,18 +66,18 @@ $i = 1;
 	<?php
 	if (count($this->rows) > 0 ) {
 	?>
-	<div class="list-editing"><p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF') . ' ' . $this->total; }?> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
-		<span class="editlink addnew"><a href="<?php echo $url . '/?action=start'; ?>" ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a></span></p>
+	<div class="list-editing"><p><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) { echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OUT_OF') . ' ' . $this->total; }?> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
+		<span class="editlink addnew"><a href="<?php echo $url . '/?action=start'; ?>" ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a></span></p>
 		</div>
 		<table id="filelist" class="listing">
 			<thead>
 				<tr>
 					<th></th>
-					<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo $url . '/?t_sortby=title&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></a></th>
-					<th class="thtype<?php if ($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=id&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('ID'); ?>"><?php echo JText::_('ID'); ?></a></th>
-					<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=type&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' .  JText::_('PLG_PROJECTS_PUBLICATIONS_TYPE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'); ?></a></th>
-					<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?> colspan="2"><a href="<?php echo $url . '/?t_sortby=status&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
-					<th class="condensed centeralign"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASES'); ?></th>
+					<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo $url . '/?t_sortby=title&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></a></th>
+					<th class="thtype<?php if ($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=id&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('ID'); ?>"><?php echo Lang::txt('ID'); ?></a></th>
+					<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=type&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' .  Lang::txt('PLG_PROJECTS_PUBLICATIONS_TYPE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'); ?></a></th>
+					<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?> colspan="2"><a href="<?php echo $url . '/?t_sortby=status&amp;t_sortdir=' . $sortbyDir; ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
+					<th class="condensed centeralign"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELEASES'); ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -114,24 +114,24 @@ $i = 1;
 				<td>
 				<?php if ($row->dev_version_label && $row->dev_version_label != $row->version_label)
 				{ echo '<a href="'. Route::url($route . '&pid=' . $row->id) . '/?version=dev'
-				. '">&raquo; '. JText::_('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
+				. '">&raquo; '. Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
 				. ' <strong>' . $row->dev_version_label.'</strong></a> '
-				. JText::_('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
+				. Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
 				if ($this->pubconfig->get('curation', 0))
 				{
-					echo ' <span class="block"><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+					echo ' <span class="block"><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
 				}
 
 				} elseif ($row->state == 3 && $this->pubconfig->get('curation', 0))
 				{
-					echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . JText::_('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
-				} elseif ($row->state == 7) { echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=' . $row->version_number . '" class="btn mini icon-next btn-action">' . JText::_('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>
+					echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=dev" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+				} elseif ($row->state == 7) { echo ' <span><a href="' . Route::url($route . '&pid=' . $row->id) . '/?action=continue&version=' . $row->version_number . '" class="btn mini icon-next btn-action">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>'; } ?></td>
 
-				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid=' . $row->id . '&action=versions'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
+				<td class="centeralign mini faded"><?php if ($row->versions > 0) { ?><a href="<?php echo $url . '/?pid=' . $row->id . '&action=versions'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php } ?><?php echo $row->versions; ?><?php if ($row->versions > 0) { ?></a><?php } ?></td>
 				<td class="autowidth">
-					<a href="<?php echo Route::url($route . '&pid=' . $row->id); ?>" class="manageit" title="<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
+					<a href="<?php echo Route::url($route . '&pid=' . $row->id); ?>" class="manageit" title="<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
 
-					<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
+					<a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
 			</tr>
 			<?php
 		}
@@ -143,32 +143,32 @@ $i = 1;
 			<div class="nav_pager"><p>
 				<?php
 				if ($this->filters['start'] == 0) {	?>
-					<span>&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></span>
+					<span>&laquo; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></span>
 				<?php	} else {  ?>
-					<a href="<?php echo $url . '/?t_sortby=' . $this->filters['sortby'] . '&amp;limitstart=' . $prev_start . '&amp;t_sortdir=' . $this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></a>
+					<a href="<?php echo $url . '/?t_sortby=' . $this->filters['sortby'] . '&amp;limitstart=' . $prev_start . '&amp;t_sortdir=' . $this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS'); ?></a>
 				<?php } ?><span>&nbsp; | &nbsp;</span>
 				<?php
 				if ($whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
-					<span><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</span>
+					<span><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</span>
 				<?php	} else { ?>
-					<a href="<?php echo $url . '/?t_sortby='.$this->filters['sortby'] . '&amp;limitstart=' . $next_start . '&amp;t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</a>
+					<a href="<?php echo $url . '/?t_sortby=' . $this->filters['sortby'] . '&amp;limitstart=' . $next_start . '&amp;t_sortdir=' . $this->filters['sortdir']; ?>" class="ajax_action"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEXT'); ?> &raquo;</a>
 				<?php } ?></p>
 			</div>
 		<?php } ?>
 			<p class="extras">
 				<span class="leftfloat">
-				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
-				<a href="<?php echo $url . '/?action=diskspace'; ?>" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED'); ?></span></span></span></a>
-					 <span class="show-quota"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
+				<a href="<?php echo $url . '/?action=diskspace'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) { echo 'class="quota-warning"'; } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse.'% '.Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED'); ?></span></span></span></a>
+					 <span class="show-quota"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
 				</span>
 			</p>
 			<?php if ($showStats) { ?>
-			<p class="viewallstats mini"><a href="<?php echo $url . '?action=stats'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
+			<p class="viewallstats mini"><a href="<?php echo $url . '?action=stats'; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
 			<?php } ?>
 	<?php
 	}
 	else {
-		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="' . $url . '/?action=start"  >'.JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION').'</a></span></p>');
+		echo ('<p class="noresults">'.Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND').' <span class="addnew"><a href="' . $url . '/?action=start"  >' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') . '</a></span></p>');
 
 			// Show intro banner with publication steps
 			$this->view('intro')

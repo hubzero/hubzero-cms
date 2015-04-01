@@ -34,7 +34,7 @@ $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->
 ?>
 <div id="abox-content">
 <?php if ($this->ajax) { ?>
-<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h3>
+<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h3>
 <?php } ?>
 <?php
 // Display error  message
@@ -46,17 +46,17 @@ if ($this->getError()) {
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->project->id . '&active=publications'); ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a><span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></span>
+		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a><span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></span>
 		</h3>
 	<?php } ?>
 	</div>
-	<h4><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h4>
+	<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_FOR_NEXT_PUB'); ?></h4>
 <?php } else { ?>
 <form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 <?php } ?>
-	<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_HOW'); ?></p>
+	<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE_HOW'); ?></p>
 	<fieldset>
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
 		<input type="hidden" name="active" value="publications" />
@@ -71,24 +71,24 @@ if ($this->getError()) {
 	</fieldset>
 	<div <?php if (!$this->ajax) { echo 'class="vform"'; } ?>>
 		<label class="a-label">
-			<span class="faded block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE'); ?></span>
+			<span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE'); ?></span>
 			<input type="text" name="license_title"  class="long" value="" />
 		</label>
 		<label class="a-label">
-			<span class="faded block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL'); ?></span>
+			<span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_URL'); ?></span>
 			<input type="text" name="license_url"  class="long" value="" />
 		</label>
 		<label class="a-label">
-			<span class="faded block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_DETAILS'); ?></span>
+			<span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DETAILS'); ?></span>
 			<textarea name="details" id="details" rows="10" cols="50" class="long"></textarea>
 		</label>
 	</div>
 		<p class="submitarea">
-			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
+			<input type="submit" id="submit-ajaxform" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'); ?>" />
 			<?php if ($this->ajax) { ?>
-			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else { ?>
-			<a href="<?php echo $this->url . '?section=license&version=' . $this->version; ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+			<a href="<?php echo $this->url . '?section=license&version=' . $this->version; ?>" class="btn btn-cancel"><?php echo Lang::txt('COM_PROJECTS_CANCEL'); ?></a>
 			<?php } ?>
 		</p>
 </form>

@@ -30,12 +30,12 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 $draft = ($this->pub->state == 3 || $this->pub->state == 4) ? 1 : 0;
 
 $heading = $draft
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT')
-		: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH');
+		? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT')
+		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH');
 $heading.= ' ('.$this->pub->version_label.')';
 $crumbs = $draft
-		? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_CRUMBS')
-		: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_CRUMBS');
+		? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_CRUMBS')
+		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_CRUMBS');
 ?>
 <div id="abox-content">
 <?php if ($this->ajax) { ?>
@@ -46,7 +46,7 @@ $crumbs = $draft
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo $crumbs; ?></h3>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo $crumbs; ?></h3>
 	<?php } else { ?>
 		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo $crumbs; ?></span>
 		</h3>
@@ -74,22 +74,22 @@ $crumbs = $draft
 	<?php } else { ?>
 		<?php if ($this->pub->state == 1) { ?>
 		<p class="notice">
-			<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_INFO'); ?>
+			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_INFO'); ?>
 		</p>
 		<?php } ?>
 		<?php if ($this->pub->state == 3  || $this->pub->state == 4 || ($this->pub->state == 1 && $this->publishedCount == 1)) {
-			$warning = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_WARNING');
+			$warning = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_WARNING');
 			if ($this->pub->state == 3 || $this->pub->state == 4) {
 				$warning = '';
 				if ($this->pub->versions == 0) {
-					$warning .= JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING_SINGLE').' ';
+					$warning .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING_SINGLE').' ';
 				}
-				$warning .= JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING');
+				$warning .= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_WARNING');
 			}
 		 ?>
 		<p class="warning"><?php echo $warning; ?></p>
 		<?php } ?>
-		<p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo $this->url.'?version='.$this->version; ?>" class="btn btn-cancel"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a></span></p>
+		<p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo $this->url.'?version='.$this->version; ?>" class="btn btn-cancel"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CANCEL'); ?></a></span></p>
 	<?php } ?>
 </form>
 </div>

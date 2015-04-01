@@ -50,7 +50,7 @@ $delUrl = $prov ? Route::url($route) : Route::url($route . '&active=publications
 $editUrl = $prov ? Route::url($route) : Route::url($route . '&active=links&pid=' . $this->pub->id);
 
 // Are we in draft flow?
-$move = JRequest::getVar( 'move', '' );
+$move = Request::getVar( 'move', '' );
 $move = $move ? '&move=continue' : '';
 
 $required = $this->manifest->params->required;
@@ -68,8 +68,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 	<div class="element_editing">
 		<div class="pane-wrapper">
 			<span class="checker">&nbsp;</span>
-			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php } else { ?><span class="optional"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
-				<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS')); ?>
+			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php } else { ?><span class="optional"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
+				<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS')); ?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
@@ -88,8 +88,8 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 						 ?>
 						<li>
 							<span class="item-options">
-									<a href="<?php echo $editUrl . '/?action=newcite&amp;vid=' . $this->pub->version_id . '&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-edit showinbox" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo $delUrl . '/?action=deleteitem&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<a href="<?php echo $editUrl . '/?action=newcite&amp;vid=' . $this->pub->version_id . '&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
+									<a href="<?php echo $delUrl . '/?action=deleteitem&amp;cid=' . $cite->id . '&amp;p=' . $props; ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>
@@ -97,7 +97,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorS
 					</ul>
 				<?php  }  ?>
 					<div class="item-new">
-						<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION'); ?></a></span>
+						<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION'); ?></a></span>
 					</div>
 				</div>
 		</div>
