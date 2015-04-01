@@ -167,6 +167,10 @@ class Collection extends \JTable
 
 		$this->alias = str_replace(' ', '-', strtolower($this->title));
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
+		if (!$this->alias)
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_ALIAS'));
+		}
 
 		$this->object_id = intval($this->object_id);
 		if (!$this->object_id)
