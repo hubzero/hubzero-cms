@@ -107,6 +107,22 @@ class ManyToMany extends Relationship
 	}
 
 	/**
+	 * Get keys based on a given constraint
+	 *
+	 * @param  closure $constraint the constraint function to apply
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getConstrainedKeys($constraint)
+	{
+		call_user_func_array($constraint, array($this->related));
+
+		// Return the ids resulting from the contraint query
+		$this->join();
+		return array_unique($this->related->rows()->fieldsByKey($this->associativeLocal));
+	}
+
+	/**
 	 * Joins the related table together with the intermediate table for the pending query
 	 *
 	 * @return $this
