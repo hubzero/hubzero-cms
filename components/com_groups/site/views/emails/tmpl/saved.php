@@ -31,11 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri    = JURI::getInstance();
-$jconfig = JFactory::getConfig();
-
 // build urls
-$base      = rtrim(str_replace('administrator', '', $juri->base()), DS);
+$base      = rtrim(str_replace('administrator', '', Request::base()), DS);
 $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 ?>
 
@@ -154,14 +151,14 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo $jconfig->getValue('config.sitename'); ?>
+														<?php echo Config::get('sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo $base; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $base; ?></a>
 														</span>
 														<br />
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
 														Groups
@@ -550,7 +547,7 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you are a group manager for this group. Visit our <a href="<?php echo rtrim($base, DS); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, DS); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Config::get('sitename'); ?> sent this email because you are a group manager for this group. Visit our <a href="<?php echo rtrim($base, DS); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, DS); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

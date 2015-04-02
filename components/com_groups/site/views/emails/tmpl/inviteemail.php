@@ -31,29 +31,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
-$sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn'));
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
+$sef = ltrim(Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn')), '/');
 
 $message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->get('name'), $this->sitename)."\n\n";
 $message .= Lang::txt('COM_GROUPS_GROUP').': '.$this->group->get('description')."\n\n";
-//$message .= $juri->base().$sef."\n\n";
-if ($this->msg) {
+
+if ($this->msg)
+{
 	$message .= '====================='."\n";
 	$message .= stripslashes($this->msg)."\n";
 	$message .= '====================='."\n\n";
 }
 
 $message .= "If you already have a registered account on ".$this->sitename.", click or copy and paste the link below into a browser window. \r\n";
-$sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept&token='.$this->token);
-//$sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
-$message .= $juri->base().$sef."\n\n";
+$sef = ltrim(Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&task=accept&token='.$this->token), '/');
+
+$message .= rtrim(Request::base(), '/') . '/' . $sef."\n\n";
 $message .= "--------------------------------------------\n\n";
 
 //$message .= "If you do not have an account on ".$this->sitename.", you must first click or copy and paste the first link, where you will register for an account. Then you must come back to click or copy and paste link two. \n\n";
@@ -75,20 +68,11 @@ $message .= "If you DO NOT have an account on " . $this->sitename . ", please fo
 $return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept?token=" . $this->token;
 //$return = DS . "groups" . DS . $this->group->get('cn') . DS . "accept";
 
-$sef = Route::url('index.php?option=com_members&controller=register');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
+$sef = ltrim(Route::url('index.php?option=com_members&controller=register'), '/');
 
-if (substr($sef,-1,1) == DS)
-{
-	$sef = rtrim($sef, DS);
-}
-
-$message .= $juri->base().$sef."?return=".base64_encode($return)."\n\n\n";
+$message .= rtrim(Request::base(), '/') . '/' . $sef . "?return=".base64_encode($return)."\n\n\n";
 
 $message .= "--------------------------------------------\n\n";
 $message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 
 echo $message;
-?>

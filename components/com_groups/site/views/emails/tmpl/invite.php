@@ -32,9 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // get base url
-$JURI       = JURI::getInstance();
-$groupLink  = rtrim($JURI->base(), DS) . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
-$acceptLink = rtrim($JURI->base(), DS) . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
+$groupLink  = rtrim(Request::base(), '/') . '/' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
+$acceptLink = rtrim(Request::base(), '/') . '/' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
 
 // tell who just invited them on which hub
 $message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->juser->get('name'), $this->sitename)."\n\n";
@@ -62,4 +61,3 @@ $message .= $groupLink . "\n\n";
 $message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->juser->get('name'), $this->juser->get('email'))."\n";
 
 echo $message;
-?>

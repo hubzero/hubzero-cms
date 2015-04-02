@@ -27,10 +27,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // get configurations/ defaults
 $developer_site = $this->config->get('developer_site', 'hubFORGE');
-$live_site = rtrim(JURI::base(),'/');
+$live_site = rtrim(Request::base(),'/');
 $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
-$project_path 	= $this->config->get('project_path', '/tools/');
-$dev_suffix 	= $this->config->get('dev_suffix', '_dev');
+$project_path = $this->config->get('project_path', '/tools/');
+$dev_suffix   = $this->config->get('dev_suffix', '_dev');
 
 // get status name
 ToolsHelperHtml::getStatusName($this->status['state'], $state);
@@ -306,18 +306,12 @@ $this->css('pipeline.css')
 					</fieldset>
 				</form>
 				<?php
-				$juser = JFactory::getUser();
-				$jconfig = JFactory::getConfig();
-				$juri = JURI::getInstance();
-				//$juri->base();
-
-				$jconfig = JFactory::getConfig();
-				$sitename 	= $jconfig->getValue('config.sitename');
-				$hubShortURL 	= str_replace('https://', '', $juri->base()); //$hubShortURL;
+				$sitename = Config::get('sitename');
+				$hubShortURL = str_replace('https://', '', Request::base()); //$hubShortURL;
 
 				// get tool access text
 				$toolaccess = ToolsHelperHtml::getToolAccess($this->status['exec'], $this->status['membergroups']);
-				$live_site = rtrim(JURI::base(),'/');
+				$live_site = rtrim(Request::base(),'/');
 				$developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#','',$live_site);
 
 				// get configurations/ defaults

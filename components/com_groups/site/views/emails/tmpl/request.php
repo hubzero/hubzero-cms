@@ -31,12 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
 $sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
 
 $message  = Lang::txt('COM_GROUPS_JOIN_REQUEST_EMAIL_DETAILS',$this->sitename)."\n\n";
 $message .= "\t".' '.Lang::txt('COM_GROUPS_GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
@@ -49,7 +44,6 @@ if ($this->group->get('join_policy') == 1) {
 }
 $message .= "\n".'---------------------------------------------------------------------------------------'."\n\n";
 $message .= Lang::txt('COM_GROUPS_JOIN_REQUEST_LINK')."\n";
-$message .= $juri->base().$sef."\n";
+$message .= rtrim(Request::base(), '/').'/'.ltrim($sef, '/')."\n";
 
 echo $message;
-?>

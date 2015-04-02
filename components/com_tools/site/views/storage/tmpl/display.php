@@ -31,9 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juser = JFactory::getUser();
-$jconfig = JFactory::getConfig();
-
 $this->css('storage.css');
 ?>
 <header id="content-header">

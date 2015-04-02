@@ -448,7 +448,8 @@ class MembersModelRegistration
 	{
 		$this->clear();
 
-		if (!is_object($xprofile)) {
+		if (!is_object($xprofile))
+		{
 			return;
 		}
 
@@ -460,8 +461,8 @@ class MembersModelRegistration
 
 		//get member addresses
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
-		$membersAddress = new MembersAddress( JFactory::getDBO() );
-		$addresses = $membersAddress->getAddressesForMember( $xprofile->get("uidNumber") );
+		$membersAddress = new MembersAddress($database);
+		$addresses = $membersAddress->getAddressesForMember($xprofile->get("uidNumber"));
 
 		$this->set('countryresident', $xprofile->get('countryresident'));
 		$this->set('countryorigin', $xprofile->get('countryorigin'));
@@ -502,20 +503,21 @@ class MembersModelRegistration
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      object $juser Parameter description (if any) ...
+	 * @param      object $user Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	function loadAccount($juser = null)
+	public function loadAccount($user = null)
 	{
 		$this->clear();
 
-		if (!is_object($juser)) {
+		if (!is_object($user))
+		{
 			return;
 		}
 
-		$this->set('login', $juser->get('username'));
-		$this->set('name', $juser->get('name'));
-		$this->set('email', $juser->get('email'));
+		$this->set('login', $user->get('username'));
+		$this->set('name', $user->get('name'));
+		$this->set('email', $user->get('email'));
 
 		$this->_checked = false;
 	}
@@ -533,7 +535,9 @@ class MembersModelRegistration
 		//$this->logDebug("self:get($key)");
 
 		if (!array_key_exists($key, $this->_registration))
+		{
 			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
+		}
 
 		return $this->_registration[$key];
 	}
@@ -554,7 +558,9 @@ class MembersModelRegistration
 		$this->_checked = false;
 
 		if (!array_key_exists($key, $this->_registration))
+		{
 			die(__CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
+		}
 
 		$this->_registration[$key] = $value;
 
@@ -639,7 +645,7 @@ class MembersModelRegistration
 		// Initialize some variables
 		$db =  JFactory::getDBO();
 
-		$query = 'SELECT id FROM #__users WHERE email = ' . $db->Quote( $email );
+		$query = 'SELECT id FROM `#__users` WHERE email = ' . $db->Quote($email);
 		$db->setQuery($query, 0, 1);
 		return $db->loadResult();
 	}
@@ -655,19 +661,19 @@ class MembersModelRegistration
 	 */
 	public function check($task = 'create', $id = 0, $field_to_check = array())
 	{
-		$jconfig = JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
+		$sitename = Config::get('sitename');
 
-		$juser = JFactory::getUser();
-
-		if ($id == 0) {
-			$id = $juser->get('id');
+		if ($id == 0)
+		{
+			$id = User::get('id');
 		}
 
 		$registration = $this->_registration;
 
 		if ($task == 'proxy')
+		{
 			$task = 'proxycreate';
+		}
 
 		$this->_missing = array();
 		$_invalid = array();
@@ -697,17 +703,20 @@ class MembersModelRegistration
 
 		if ($task == 'update')
 		{
-			if (empty($registration['login'])) {
+			if (empty($registration['login']))
+			{
 				$registrationUsername = REG_REQUIRED;
 			}
-			else {
+			else
+			{
 				$registrationUsername = REG_READONLY;
 			}
 
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 
-			if (empty($registration['email'])) {
+			if (empty($registration['email']))
+			{
 				$registrationEmail = REG_REQUIRED;
 			}
 		}
@@ -719,7 +728,8 @@ class MembersModelRegistration
 			$registrationConfirmPassword = REG_HIDE;
 		}
 
-		if ($juser->get('auth_link_id') && $task == 'create') {
+		if (User::get('auth_link_id') && $task == 'create')
+		{
 			$registrationPassword = REG_HIDE;
 			$registrationConfirmPassword = REG_HIDE;
 		}
@@ -742,7 +752,9 @@ class MembersModelRegistration
 		{
 			$allowNumericFirstCharacter = ($task == 'update') ? true : false;
 			if (!empty($login) && !MembersHelperUtility::validlogin($login, $allowNumericFirstCharacter) )
+			{
 				$this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only alphanumeric characters.';
+			}
 		}
 
 		if (!empty($login) && ($task == 'create' || $task == 'proxycreate' || $task == 'update'))
@@ -803,25 +815,39 @@ class MembersModelRegistration
 		}
 
 		if ($registrationPassword != REG_HIDE && $registrationConfirmPassword != REG_HIDE)
+		{
 			if ($registration['password'] != $registration['confirmPassword'])
+			{
 				$this->_invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
+			}
+		}
 
-		if ($registrationPassword == REG_REQUIRED) {
+		if ($registrationPassword == REG_REQUIRED)
+		{
 			$score = $this->scorePassword($registration['password'], $registration['login']);
-			if ($score < PASS_SCORE_MEDIOCRE) {
+			if ($score < PASS_SCORE_MEDIOCRE)
+			{
 				$this->_invalid['password'] = 'Password strength is too weak.';
-			} else if ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
+			}
+			else if ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD)
+			{
 				// Mediocre pass
-			} else if ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
+			}
+			else if ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG)
+			{
 				// Good pass
-			} else if ($score >= PASS_SCORE_STRONG) {
+			}
+			else if ($score >= PASS_SCORE_STRONG)
+			{
 				// Strong pass
 			}
 
 			$rules = \Hubzero\Password\Rule::getRules();
 			$msg = \Hubzero\Password\Rule::validate($registration['password'],$rules,$login,$registration['name']);
 			if (!empty($msg))
+			{
 				$this->_invalid['password'] = $msg;
+			}
 		}
 
 		if ($registrationFullname == REG_REQUIRED)
@@ -830,7 +856,9 @@ class MembersModelRegistration
 			{
 				$this->_missing['name'] = 'Full Name';
 				$this->_invalid['name'] = 'Please provide a name.';
-			} else {
+			}
+			else
+			{
 				$bits = explode(' ',$registration['name']);
 				$surname = null;
 				$middleName = null;
@@ -844,15 +872,18 @@ class MembersModelRegistration
 				{
 					$surname = array_pop($bits);
 
-					if (count($bits) >= 1) {
+					if (count($bits) >= 1)
+					{
 						$givenName = array_shift($bits);
 					}
-					if (count($bits) >= 1) {
+					if (count($bits) >= 1)
+					{
 						$middleName = implode(' ',$bits);
 					}
 				}
 
-				if (!$givenName) {
+				if (!$givenName)
+				{
 					$this->_missing['name'] = 'Full Name';
 					$this->_invalid['name'] = 'Please provide a name.';
 				}
@@ -860,8 +891,12 @@ class MembersModelRegistration
 		}
 
 		if ($registrationFullname != REG_HIDE)
+		{
 			if (!empty($registration['name']) && !MembersHelperUtility::validname($registration['name']) )
+			{
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
+			}
+		}
 
 		if ($registrationEmail == REG_REQUIRED)
 		{
@@ -996,8 +1031,12 @@ class MembersModelRegistration
 		}
 
 		if ($registrationPhone != REG_HIDE)
+		{
 			if (!empty($registration['phone']) && !MembersHelperUtility::validphone($registration['phone']))
+			{
 				$this->_invalid['phone'] = 'Invalid phone number. You may be using characters that are not allowed.';
+			}
+		}
 
 		if ($registrationEmployment == REG_REQUIRED)
 		{
@@ -1028,9 +1067,12 @@ class MembersModelRegistration
 
 		if ($registrationOrganization != REG_HIDE)
 		{
-			if (!empty($registration['org']) && !MembersHelperUtility::validtext($registration['org'])) {
+			if (!empty($registration['org']) && !MembersHelperUtility::validtext($registration['org']))
+			{
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
-			} elseif (!empty($registration['orgtext']) && !MembersHelperUtility::validtext($registration['orgtext'])) {
+			}
+			elseif (!empty($registration['orgtext']) && !MembersHelperUtility::validtext($registration['orgtext']))
+			{
 				$this->_invalid['org'] = 'Invalid affiliation. You may be using characters that are not allowed.';
 			}
 		}
@@ -1079,8 +1121,12 @@ class MembersModelRegistration
 		}
 
 		if ($registrationSex != REG_HIDE)
+		{
 			if (!empty($registration['sex']) && !MembersHelperUtility::validtext($registration['sex']))
+			{
 				$this->_invalid['sex'] = 'Invalid gender selection.';
+			}
+		}
 
 		if ($registrationDisability == REG_REQUIRED)
 		{
@@ -1092,8 +1138,12 @@ class MembersModelRegistration
 		}
 
 		if ($registrationDisability != REG_HIDE)
+		{
 			if (!empty($registration['disability']) && in_array('yes', $registration['disability']))
+			{
 				$this->_invalid['disability'] = 'Invalid disability selection.';
+			}
+		}
 
 		if ($registrationHispanic == REG_REQUIRED)
 		{
@@ -1119,7 +1169,7 @@ class MembersModelRegistration
 			if ($task == 'edit')
 			{
 				$corigin_incoming = (in_array('countryorigin', $field_to_check)) ? true : false;
-				$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+				$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			}
 			else
 			{
@@ -1175,10 +1225,12 @@ class MembersModelRegistration
 
 		if ($registrationReason != REG_HIDE)
 		{
-			if (!empty($registration['reason']) && !MembersHelperUtility::validtext($registration['reason'])) {
+			if (!empty($registration['reason']) && !MembersHelperUtility::validtext($registration['reason']))
+			{
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
-			if (!empty($registration['reasontxt']) && !MembersHelperUtility::validtext($registration['reasontxt'])) {
+			if (!empty($registration['reasontxt']) && !MembersHelperUtility::validtext($registration['reasontxt']))
+			{
 				$this->_invalid['reason'] = 'Invalid reason text. You may be using characters that are not allowed.';
 			}
 		}
@@ -1195,15 +1247,19 @@ class MembersModelRegistration
 		if ($registrationCAPTCHA == REG_REQUIRED)
 		{
 			$botcheck = Request::getVar('botcheck','');
-			if ($botcheck) {
+			if ($botcheck)
+			{
 				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
 			}
 			JPluginHelper::importPlugin( 'hubzero' );
 			$dispatcher = JDispatcher::getInstance();
 			$validcaptchas = $dispatcher->trigger( 'onValidateCaptcha' );
-			if (count($validcaptchas) > 0) {
-				foreach ($validcaptchas as $validcaptcha) {
-					if (!$validcaptcha) {
+			if (count($validcaptchas) > 0)
+			{
+				foreach ($validcaptchas as $validcaptcha)
+				{
+					if (!$validcaptcha)
+					{
 						$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
 					}
 				}
@@ -1260,7 +1316,9 @@ class MembersModelRegistration
 		}
 
 		if (empty($this->_missing) && empty($this->_invalid))
+		{
 			return true;
+		}
 
 		return false;
 	}
@@ -1350,7 +1408,7 @@ class MembersModelRegistration
 		// Initialize database
 		$db =  JFactory::getDBO();
 
-		$query = 'SELECT id FROM #__users WHERE username = ' . $db->Quote( $username );
+		$query = 'SELECT id FROM `#__users` WHERE username = ' . $db->Quote( $username );
 		$db->setQuery($query);
 		$db->query();
 

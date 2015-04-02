@@ -423,15 +423,14 @@ if (!$no_html)
 									<option value="custom"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_CUSTOM'); ?></option>
 									<?php
 									$hi = array();
-									$jconfig = JFactory::getConfig();
 									foreach ($this->lists['messages'] as $message)
 									{
 										$message->message = str_replace('"','&quot;', stripslashes($message->message));
 										$message->message = str_replace('&quote;', '&quot;', $message->message);
 										$message->message = str_replace('#XXX', '#' . $this->row->get('id'), $message->message);
 										$message->message = str_replace('{ticket#}', $this->row->get('id'), $message->message);
-										$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
-										$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
+										$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
+										$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
 										?>
 											<option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
 										<?php

@@ -150,7 +150,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'economy.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'economy.php');
 
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'controllers' . DS . 'points.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'controllers' . DS . 'points.php');
 
 echo "_______________________________________________\n";
 echo date(DATE_RFC822)."\n";

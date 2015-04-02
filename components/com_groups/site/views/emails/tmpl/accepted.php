@@ -31,12 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
-$sef = Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members');
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
+$sef = ltrim(Route::url('index.php?option='.$this->option.'&cn='. $this->group->get('cn').'&active=members'), '/');
 
 $message  = Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_DETAILS',$this->sitename)."\n\n";
 $message .= "\t".' '.Lang::txt('COM_GROUPS_GROUP').': '. $this->group->get('description') .' ('.$this->group->get('cn').')'."\n";
@@ -44,7 +39,6 @@ $message .= "\t".' '.Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_SUBJECT').'
 $message .= "\t\t".$this->juser->get('name')."\n";
 $message .= "\t\t". $this->juser->get('username') .' ('. $this->juser->get('email') . ')'."\n\n";
 $message .= Lang::txt('COM_GROUPS_EMAIL_MEMBERSHIP_ACCEPTED_LINK')."\n";
-$message .= $juri->base().$sef."\n";
+$message .= rtrim(Request::base(), '/') . '/' . $sef."\n";
 
 echo $message;
-?>

@@ -44,8 +44,7 @@ if ($tmpl != 'component')
 
 JHTML::_('behavior.framework', true);
 
-$jconfig = \JFactory::getConfig();
-$offset = $jconfig->getValue('config.offset');
+$offset = Config::get('config.offset');
 
 $year  = strftime("%Y", time()+($offset*60*60));
 $month = strftime("%m", time()+($offset*60*60));

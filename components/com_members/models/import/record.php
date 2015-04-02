@@ -331,7 +331,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			}
 
 			$date = JFactory::getDate();
-			$user = JUser::getInstance();
+			$user = User::getRoot();
 			$user->set('username', $this->_profile->get('username'));
 			$user->set('name', $this->_profile->get('name'));
 			$user->set('email', $this->_profile->get('email'));
@@ -375,7 +375,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if (!$this->_profile->store())
 		{
-			throw new Exception(Lang::txt('Unable to save the entry data.'));
+			throw new Exception(\Lang::txt('Unable to save the entry data.'));
 		}
 
 		if ($password = $this->raw->password)
@@ -394,26 +394,24 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if ($isNew && $this->_options['emailnew'] == 1)
 		{
-			$jconfig = JFactory::getConfig();
-
 			$eview = new \Hubzero\Component\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_members',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'confirm'
 			));
 			$eview->option       = 'com_members';
 			$eview->controller   = 'register';
-			$eview->sitename     = $jconfig->getValue('config.sitename');
+			$eview->sitename     = \Config::get('sitename');
 			$eview->login        = $this->_profile->get('username');
 			$eview->name         = $this->_profile->get('name');
 			$eview->registerDate = $this->_profile->get('registerDate');
 			$eview->confirm      = $this->_profile->get('emailConfirmed');
-			$eview->baseURL      = JURI::base();
+			$eview->baseURL      = \Request::base();
 
 			$msg = new \Hubzero\Mail\Message();
-			$msg->setSubject($jconfig->getValue('config.sitename') .' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
+			$msg->setSubject(\Config::get('sitename') . ' ' . \Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
 			    ->addTo($this->_profile->get('email'))
-			    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addFrom(\Config::get('mailfrom'), \Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', 'com_members');
 
 			$message = $eview->loadTemplate();
@@ -429,7 +427,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 			if (!$msg->send())
 			{
-				array_push($this->record->errors, Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
+				array_push($this->record->errors, \Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
 			}
 		}
 	}

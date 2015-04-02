@@ -58,7 +58,7 @@ class CartMessenger
 	{
 		setlocale(LC_MONETARY, 'en_US.UTF-8');
 
-		$this->logFile = JPATH_ROOT . DS . 'site' . DS . 'com_cart' . DS . 'cart.log';
+		$this->logFile = PATH_APP . DS . 'site' . DS . 'com_cart' . DS . 'cart.log';
 		$this->caller = $caller;
 	}
 
@@ -77,7 +77,8 @@ class CartMessenger
 		if (is_writable($this->logFile))
 		{
 			$message = 'Log info: ';
-			if (!empty($this->postback)) {
+			if (!empty($this->postback))
+			{
 				$message = $this->message . "\n" . "Postback info: " . serialize($this->postback) . "\n";
 			}
 
@@ -89,12 +90,17 @@ class CartMessenger
 			);
 			$hzl->useFiles($this->logFile);
 
-			if ($loggingLevel == 0) {
+			if ($loggingLevel == 0)
+			{
 				$hzl->error($this->caller . ': ' . $message);
-			} elseif ($loggingLevel == 1) {
+			}
+			elseif ($loggingLevel == 1)
+			{
 				$log = $hzl->warning($this->caller . ': ' . $message);
 				return $log;
-			} elseif ($loggingLevel == 2) {
+			}
+			elseif ($loggingLevel == 2)
+			{
 				$log = $hzl->info($this->caller . ': ' . $message);
 				return $log;
 			}
@@ -102,14 +108,15 @@ class CartMessenger
 			// If error, needs to send email to admin
 			$this->emailError($this->message, 'POSTBACK');
 		}
-		else {
+		else
+		{
 			$this->emailError($this->logFile, 'LOG');
 		}
 	}
 
 	public function emailOrderComplete($transactionInfo)
 	{
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+		$params = Component::params(Request::getVar('option'));
 
 		$items = unserialize($transactionInfo->tiItems);
 		$meta = unserialize($transactionInfo->tiMeta);
@@ -168,7 +175,7 @@ class CartMessenger
 			if ($itemInfo->ptId == 20)
 			{
 				$action = ' Go to the course page at: ' .
-				$action .= JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
+				$action .= Route::url('index.php?option=com_courses/' . $item['meta']['courseId'] . '/' . $item['meta']['offeringId'], true, -1);
 			}
 
 			$summary .= "$cartInfo->qty x ";
@@ -192,7 +199,7 @@ class CartMessenger
 
 			$summary .= ' @ ' . money_format('%n', $itemInfo->sPrice);
 
-			if($action)
+			if ($action)
 			{
 				$summary .= "\n\t";
 				$summary .= $action;
@@ -206,12 +213,11 @@ class CartMessenger
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
-		$jconfig = JFactory::getConfig();
 
 		// "from" info
 		$from = array();
-		$from['name']  = $jconfig->getValue('config.sitename');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('sitename');
+		$from['email'] = Config::get('mailfrom');
 
 		// Email to admin
 		$adminEmail = "There is a new online store order: \n\n";
@@ -222,7 +228,7 @@ class CartMessenger
 		$dispatcher->trigger('onSendMessage', array('store_notifications', 'New order at ' . $from['name'], $adminEmail, $from, $to, '', null, '', 0, true));
 
 		// Email to client
-		$clientEmail = 'Thank you for your order at ' .  $jconfig->getValue('config.sitename') . "!\n\n";
+		$clientEmail = 'Thank you for your order at ' .  Config::get('sitename') . "!\n\n";
 		$clientEmail .= $summary;
 
 		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
@@ -233,7 +239,7 @@ class CartMessenger
 
 	private function emailError($error, $errorType = NULL)
 	{
-		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
+		$params = Component::params(Request::getVar('option'));
 
 		// Get message plugin
 		JPluginHelper::importPlugin('xmessage');
@@ -242,9 +248,8 @@ class CartMessenger
 		// "from" info
 		$from = array();
 
-		$jconfig = JFactory::getConfig();
-		$from['name']  = $jconfig->getValue('config.sitename');
-		$from['email'] = $jconfig->getValue('config.mailfrom');
+		$from['name']  = Config::get('sitename');
+		$from['email'] = Config::get('mailfrom');
 
 		// get admin id
 		$adminId = array($params->get('storeAdminId'));
@@ -268,12 +273,12 @@ class CartMessenger
 
 		$mailMessage .= $error;
 
-		if ($errorType != 'LOG') {
+		if ($errorType != 'LOG')
+		{
 			$mailMessage .= "\n\n" . 'Please see log for details';
 		}
 
 		// Send emails
 		$dispatcher->trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
 	}
-
 }

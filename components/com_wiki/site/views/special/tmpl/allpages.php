@@ -37,10 +37,7 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
-$dir = strtoupper(JRequest::getVar('dir', 'ASC'));
+$dir = strtoupper(Request::getVar('dir', 'ASC'));
 if (!in_array($dir, array('ASC', 'DESC')))
 {
 	$dir = 'ASC';
@@ -49,7 +46,7 @@ if (!in_array($dir, array('ASC', 'DESC')))
 $database = JFactory::getDBO();
 
 $where = '';
-$namespace = urldecode(JRequest::getVar('namespace', ''));
+$namespace = urldecode(Request::getVar('namespace', ''));
 if ($namespace)
 {
 	$where .= "AND LOWER(wp.pagename) LIKE " . $database->quote(strtolower($namespace) . '%');

@@ -41,13 +41,12 @@ class UsersViewEndsinglesignon extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Assign variables to the view
-		$authenticator = JRequest::getWord('authenticator', false);
+		$authenticator = \Request::getWord('authenticator', false);
 
 		\Hubzero\Document\Assets::addComponentStylesheet('com_user', 'login.css');
 
 		// Get the site name
-		$jconfig  = JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
+		$sitename = \Config::get('sitename');
 
 		// Get the display name for the current plugin being used
 		$plugin       = JPluginHelper::getPlugin('authentication', $authenticator);

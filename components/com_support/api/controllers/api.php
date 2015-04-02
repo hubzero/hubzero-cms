@@ -259,8 +259,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$group = Request::getVar('group', '');
 
 		// Set up some dates
-		$jconfig = JFactory::getConfig();
-		$this->offset = $jconfig->getValue('config.offset');
+		$this->offset = Config::get('offset');
 
 		$year  = Request::getInt('year', strftime("%Y", time()+($this->offset*60*60)));
 		$month = strftime("%m", time()+($this->offset*60*60));
@@ -757,8 +756,6 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$jconfig = JFactory::getConfig();
-
 		if ($ticket->get('owner'))
 		{
 			$comment->addTo(array(
@@ -796,8 +793,8 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
 
 			$from = array(
-				'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-				'email'     => $jconfig->getValue('config.mailfrom'),
+				'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
+				'email'     => Config::get('mailfrom'),
 				'multipart' => md5(date('U'))
 			);
 
@@ -832,7 +829,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 				{
 					// The reply-to address contains the token
 					$token = $encryptor->buildEmailToken(1, 1, $to['id'], $ticket->get('id'));
-					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+					$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
 				}
 
 				// Get the user's email address
@@ -855,7 +852,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 
 					$email = array(
 						$to['email'],
-						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+						'htc-' . $token . strstr(Config::get('mailfrom'), '@')
 					);
 
 					// In this case each item in email in an array, 1- To, 2:reply to address

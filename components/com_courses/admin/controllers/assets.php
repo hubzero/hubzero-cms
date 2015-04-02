@@ -393,7 +393,7 @@ class Assets extends AdminController
 			{
 				if (strtolower($ext) == 'zip')
 				{
-					require_once(JPATH_ROOT . DS . 'administrator' . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
+					require_once(JPATH_ROOT . DS . 'includes' . DS . 'pcl' . DS . 'pclzip.lib.php');
 
 					if (!extension_loaded('zlib'))
 					{

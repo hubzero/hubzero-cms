@@ -33,9 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Job Posting */
 
 	// load some classes
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
-	$juser = JFactory::getUser();
+	$sitename = Config::get('sitename');
 
 	$jobsHtml = new \Components\Jobs\Helpers\Html();
 
@@ -44,14 +42,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$job->cat = $job->cat ? $job->cat : 'unspecified';
 	$job->type = $job->type ? $job->type : 'unspecified';
 
-	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->startdate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
-	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date',$job->closedate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
+	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->startdate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
+	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $job->closedate, Lang::txt('DATE_FORMAT_HZ1')) : 'N/A';
 
 	$model = new \Components\Jobs\Models\Job($job);
 
 	$maintext = $model->content('parsed');
 
-	$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
+	$owner = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 	$html = '';
 ?>
@@ -62,7 +60,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($juser->get('guest')) { ?>
+		<?php if (User::isGuest()) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a href="'.Route::url('index.php?option='.$this->option.'&task=view').'?action=login">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>

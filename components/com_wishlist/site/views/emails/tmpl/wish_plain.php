@@ -31,10 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri = JURI::getInstance();
-
 // Build link to wish
-$base = rtrim($juri->base(), '/');
+$base = rtrim(Request::base(), '/');
 $base = rtrim(str_replace('/administrator', '', $base), '/');
 $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
 

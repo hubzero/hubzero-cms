@@ -31,9 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$juri    = JURI::getInstance();
-$jconfig = \JFactory::getConfig();
-$base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
+$base = Request::root() . 'courses/' . $this->course->get('alias');
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -153,15 +151,15 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
-														<?php echo $jconfig->getValue('config.sitename'); ?>
+														<?php echo Config::get('sitename'); ?>
 													</td>
 													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															<a href="<?php echo $juri->root(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $juri->root(); ?></a>
+															<a href="<?php echo Request::root(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::root(); ?></a>
 														</span>
 														<br />
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-															<?php echo $jconfig->getValue('config.MetaDesc'); ?>
+															<?php echo Config::get('MetaDesc'); ?>
 														</span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
@@ -183,7 +181,7 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 										<table id="course-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #F3F3F3; border: 1px solid #DDDDDD;">
 											<tr>
 												<td width="85" style="padding: 0 0 0 15px; opacity: 0.8">
-													<?php $cap_path = rtrim($juri->root(), '/') . '/components/com_courses/assets/img/cap.png'; ?>
+													<?php $cap_path = rtrim(Request::root(), '/') . '/components/com_courses/assets/img/cap.png'; ?>
 													<img width="80" src="<?php echo $cap_path; ?>" />
 												</td>
 												<td width="565" style="padding: 14px; border-bottom: 1px solid #CCCCCC;">
@@ -278,7 +276,7 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 											<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
 												<tr>
 													<td width="75" style="padding: 10px 0;">
-														<img width="50" src="<?php echo $juri->root() . \Hubzero\User\Profile::getInstance($post->created_by)->getPicture(); ?>" />
+														<img width="50" src="<?php echo Request::root() . \Hubzero\User\Profile::getInstance($post->created_by)->getPicture(); ?>" />
 													</td>
 													<td style="padding: 10px 0;">
 														<div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">
@@ -327,7 +325,7 @@ $base    = $juri->root() . 'courses' . DS . $this->course->get('alias');
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $juri->root(); ?> sent this email because you are the primary instructor of a course. Visit our <a href="<?php echo $juri->root(); ?>legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->root(); ?>support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo Request::root(); ?> sent this email because you are the primary instructor of a course. Visit our <a href="<?php echo Request::root(); ?>legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::root(); ?>support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

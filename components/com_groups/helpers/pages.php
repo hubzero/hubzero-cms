@@ -304,16 +304,13 @@ class GroupsHelperPages
 		// get approvers w/ emails
 		$approvers = self::getPageApproversEmail();
 
-		// get site config
-		$jconfig = JFactory::getConfig();
-
 		// subject details
-		$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
+		$subject = Config::get('sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
 		// from details
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups'),
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
+			'email' => Config::get('mailfrom')
 		);
 
 		// build html email
@@ -374,16 +371,13 @@ class GroupsHelperPages
 			}
 		}
 
-		// get site config
-		$jconfig = JFactory::getConfig();
-
 		// subject details
-		$subject = $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
+		$subject = Config::get('sitename') . ' ' . Lang::txt('Groups') . ', ' . $title;
 
 		// from details
 		$from = array(
-			'name'  => $jconfig->getValue('config.sitename') . ' ' . Lang::txt('Groups'),
-			'email' => $jconfig->getValue('config.mailfrom')
+			'name'  => Config::get('sitename') . ' ' . Lang::txt('Groups'),
+			'email' => Config::get('mailfrom')
 		);
 
 		// build html email

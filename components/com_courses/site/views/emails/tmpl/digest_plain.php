@@ -35,8 +35,6 @@ require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' .
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php';
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'section.php';
 
-$juri    = JURI::getInstance();
-$jconfig = \JFactory::getConfig();
 ?>
 
 Instructor Digest Course Update: <?php echo $this->course->get('title'); ?>
@@ -70,4 +68,4 @@ Latest Discussions:
 No new comments to display
 
 <?php endif; ?>
-<?php echo $juri->root(); ?> sent this email because you are the primary instructor of a course. Visit our <?php echo $juri->root(); ?>legal/privacy and our <?php echo $juri->root(); ?>support pages if you have any questions.
+<?php echo Request::root(); ?> sent this email because you are the primary instructor of a course. Visit our <?php echo Request::root(); ?>legal/privacy and our <?php echo Request::root(); ?>support pages if you have any questions.

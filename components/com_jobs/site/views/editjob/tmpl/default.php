@@ -33,9 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	/* Post New Job / Edit Job Form */
 
 	// load some classes
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
-	$juser 	  = JFactory::getUser();
+	$sitename = Config::get('sitename');
 
 	$jobsHtml = new \Components\Jobs\Helpers\Html();
 

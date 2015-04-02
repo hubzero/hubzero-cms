@@ -30,9 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	/* Intro */
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
+
+	$sitename = Config::get('sitename');
 
 	$jobsHtml = new \Components\Jobs\Helpers\Html();
 

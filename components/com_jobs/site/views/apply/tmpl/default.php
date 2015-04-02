@@ -33,23 +33,21 @@ defined('_JEXEC') or die( 'Restricted access' );
 /* Application Form */
 
 // load some classes
-$jconfig = JFactory::getConfig();
-$sitename = $jconfig->getValue('config.sitename');
-$juser 	  = JFactory::getUser();
+$sitename = Config::get('sitename');
 
 $jobsHtml = new \Components\Jobs\Helpers\Html();
 
 $job = $this->job;
 $seeker = $this->seeker;
 $application = $this->application;
-$owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
+$owner = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if ($juser->get('guest')) { ?>
+		<?php if (User::isGuest()) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a href="'.Route::url('index.php?option='.$this->option.'&task=view').'?action=login">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
@@ -69,7 +67,7 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 <?php if (!$seeker) { ?>
 	<p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY').' '.$sitename.' '.Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?></p>
 	<p>
-		<?php echo '<a href="'. Route::url('index.php?option=com_members&id='.$juser->get('id').'&active=resume').'" class="add">'.Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE').'</a>'; ?>
+		<?php echo '<a href="'. Route::url('index.php?option=com_members&id='.User::get('id').'&active=resume').'" class="add">'.Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE').'</a>'; ?>
 	</p>
 <?php } else { ?>
 	<section class="main section">
@@ -78,7 +76,7 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 		$appid = $application->status !=2 ? $application->id : 0;
 		?>
 
-		<?php if ((!$this->admin && $juser->get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) { ?>
+		<?php if ((!$this->admin && User::get('id') == $job->employerid) or ($this->admin && $job->employerid == 1) ) { ?>
 			<p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_WARNING_OWN_AD'); ?></p>
 		<?php } ?>
 
@@ -97,7 +95,7 @@ $owner = ($juser->get('id') == $job->employerid or $this->admin) ? 1 : 0;
 				<input type="hidden" id="code" name="code" value="<?php echo $job->code; ?>" />
 				<input type="hidden" id="jid" name="jid" value="<?php echo $job->id; ?>" />
 				<input type="hidden" id="appid" name="appid" value="<?php echo $appid; ?>" />
-				<input type="hidden" id="uid" name="uid" value="<?php echo $juser->get('id'); ?>" />
+				<input type="hidden" id="uid" name="uid" value="<?php echo User::get('id'); ?>" />
 				<h3><?php echo Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER'); ?> <span class="opt">(<?php echo Lang::txt('COM_JOBS_OPTIONAL'); ?>)</span></h3>
 				<label>
 					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $application->cover; ?></textarea>

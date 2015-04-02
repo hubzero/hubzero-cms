@@ -284,13 +284,11 @@ class Abuse extends SiteController
 			$defs = explode("\n", $defs);
 			$defs = array_map('trim', $defs);
 
-			$jconfig = \JFactory::getConfig();
-
 			$message = new \Hubzero\Mail\Message();
-			$message->setSubject($jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
+			$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_ABUSE_REPORT'))
 					->addFrom(
-						$jconfig->getValue('config.mailfrom'),
-						$jconfig->getValue('config.sitename') . ' ' . Lang::txt(strtoupper($this->_option))
+						Config::get('mailfrom'),
+						Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_option))
 					)
 					->addHeader('X-Component', 'com_support')
 					->addHeader('X-Component-Object', 'abuse_item_report');
@@ -325,7 +323,7 @@ class Abuse extends SiteController
 				// Check if the address should come from Joomla config
 				if ($def == '{config.mailfrom}')
 				{
-					$def = $jconfig->getValue('config.mailfrom');
+					$def = Config::get('mailfrom');
 				}
 
 				// Check for a valid address

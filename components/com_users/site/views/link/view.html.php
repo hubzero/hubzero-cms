@@ -106,8 +106,7 @@ class UsersViewLink extends JViewLegacy
 		// @TODO: Could also check for high probability of name matches???
 
 		// Get the site name
-		$jconfig  = JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
+		$sitename = \Config::get('sitename');
 
 		// Assign variables to the view
 		$this->assign('hzal', $hzal);

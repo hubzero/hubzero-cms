@@ -38,8 +38,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 class PaymentProvider
 {
 	private $options;
-    private $siteDetails;
-    private $transactionDetails;
+	private $siteDetails;
+	private $transactionDetails;
 
 	/**
 	 * Constructor
@@ -52,38 +52,36 @@ class PaymentProvider
 	 */
 	public function __construct()
 	{
-        $jconfig = JFactory::getConfig();
-        $hubName  = $jconfig->getValue('config.sitename');
+		$hubName  = Config::get('sitename');
 
-        $params = JComponentHelper::getParams(JRequest::getVar('option'));
+		$params = Component::params(Request::getVar('option'));
 
-        $this->options = new stdClass();
-        // Default action is payment
-        $this->options->postbackAction = 'payment';
-        $this->options->transactionName = "$hubName online purchase";
-        $this->options->env = $params->get('paymentProviderEnv');
-        $this->options->validationKey = $params->get('UPAY_VALIDATION_KEY');
-        // Posting Key should be configured in uPay to be the same as a validation key (UPAY_VALIDATION_KEY)
-        $this->options->postingKey = $this->options->validationKey;
+		$this->options = new stdClass();
+		// Default action is payment
+		$this->options->postbackAction = 'payment';
+		$this->options->transactionName = "$hubName online purchase";
+		$this->options->env = $params->get('paymentProviderEnv');
+		$this->options->validationKey = $params->get('UPAY_VALIDATION_KEY');
+		// Posting Key should be configured in uPay to be the same as a validation key (UPAY_VALIDATION_KEY)
+		$this->options->postingKey = $this->options->validationKey;
 
-        $this->siteDetails = new stdClass();
-        $this->siteDetails->siteId = $params->get('UPAY_SITE_ID');
+		$this->siteDetails = new stdClass();
+		$this->siteDetails->siteId = $params->get('UPAY_SITE_ID');
 	}
 
-    /**
-     * Set transaction details
-     *
-     */
-    public function setTransactionDetails($transactionDetails)
-    {
-        $this->transactionDetails = array();
-        $this->transactionDetails['EXT_TRANS_ID'] = $transactionDetails->info->tId;
-        $this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
-        $this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
-        $this->transactionDetails['VALIDATION_KEY'] = $this->generateValidationKey();
-        $this->transactionDetails['SUCCESS_LINK'] = JURI::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' .
-                                                    $transactionDetails->token . '-' . $transactionDetails->info->tId;
-    }
+	/**
+	 * Set transaction details
+	 *
+	 */
+	public function setTransactionDetails($transactionDetails)
+	{
+		$this->transactionDetails = array();
+		$this->transactionDetails['EXT_TRANS_ID'] = $transactionDetails->info->tId;
+		$this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
+		$this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
+		$this->transactionDetails['VALIDATION_KEY'] = $this->generateValidationKey();
+		$this->transactionDetails['SUCCESS_LINK'] = Request::base() . 'cart' . DS . 'order' . DS . 'complete?tId=' . $transactionDetails->token . '-' . $transactionDetails->info->tId;
+	}
 
 	/**
 	 * Get HTML code for payment button
@@ -91,128 +89,128 @@ class PaymentProvider
 	 */
 	public function getPaymentCode()
 	{
-        $code  = '<form method="post" action="' . $this->getPostURL() . '">';
-        $code .= '<input type="hidden" value="' . $this->siteDetails->siteId . '" name="UPAY_SITE_ID">';
+		$code  = '<form method="post" action="' . $this->getPostURL() . '">';
+		$code .= '<input type="hidden" value="' . $this->siteDetails->siteId . '" name="UPAY_SITE_ID">';
 
-        foreach ($this->transactionDetails as $k => $v)
-        {
-            $code .= '<input type="hidden" value="' . $v . '" name="' . $k . '">';
-        }
+		foreach ($this->transactionDetails as $k => $v)
+		{
+			$code .= '<input type="hidden" value="' . $v . '" name="' . $k . '">';
+		}
 
-        $code .= '<input type="submit" value="PAY">';
-        $code .= '</form>';
+		$code .= '<input type="submit" value="PAY">';
+		$code .= '</form>';
 		return $code;
 	}
 
-    /* ------------------------ Post back functions ---------------------------- */
+	/* ------------------------ Post back functions ---------------------------- */
 
-    /**
-     * Set the postback info ($_POST) that came from the payment gateway (whatever uPay posted back)
-     *
-     * @param 	array $_POST
-     * @return 	int transaction ID if $_POST data is valid, false otherwise
-     */
-    public function setPostBack($postBack)
-    {
-        $this->postBack = $postBack;
+	/**
+	 * Set the postback info ($_POST) that came from the payment gateway (whatever uPay posted back)
+	 *
+	 * @param 	array $_POST
+	 * @return 	int transaction ID if $_POST data is valid, false otherwise
+	 */
+	public function setPostBack($postBack)
+	{
+		$this->postBack = $postBack;
 
-        // Check if the post back is kosher (really comes from uPay).
-        if ($postBack['posting_key'] != $this->options->postingKey)
-        {
-            return false;
-        }
+		// Check if the post back is kosher (really comes from uPay).
+		if ($postBack['posting_key'] != $this->options->postingKey)
+		{
+			return false;
+		}
 
-        // Get transaction ID from the data received
-        $tId = $postBack['EXT_TRANS_ID'];
-        if (empty($tId) || !is_numeric($tId)) {
-            return false;
-        }
+		// Get transaction ID from the data received
+		$tId = $postBack['EXT_TRANS_ID'];
+		if (empty($tId) || !is_numeric($tId))
+		{
+			return false;
+		}
 
-        // Extract the post back action (if different from payment)
-        if ($postBack['pmt_status'] == 'cancelled')
-        {
-            $this->options->postbackAction = 'cancel';
-        }
+		// Extract the post back action (if different from payment)
+		if ($postBack['pmt_status'] == 'cancelled')
+		{
+			$this->options->postbackAction = 'cancel';
+		}
 
-        return $tId;
-    }
+		return $tId;
+	}
 
-    /**
-     * Get the post back action (payment, cancel transaction...)
-     */
-    public function getPostBackAction()
-    {
-        return $this->options->postbackAction;
-    }
+	/**
+	 * Get the post back action (payment, cancel transaction...)
+	 */
+	public function getPostBackAction()
+	{
+		return $this->options->postbackAction;
+	}
 
+	/**
+	 * Verify the payment -- make sure it matches the transaction awaiting payment
+	 *
+	 * @param 	object transaction info
+	 * @return 	bool
+	 */
+	public function verifyPayment($tInfo)
+	{
+		// This is where the amount received is verified against amount expected, etc.
 
-    /**
-     * Verify the payment -- make sure it matches the transaction awaiting payment
-     *
-     * @param 	object transaction info
-     * @return 	bool
-     */
-    public function verifyPayment($tInfo)
-    {
-        // This is where the amount received is verified against amount expected, etc.
+		// Get payment received
+		$payment = $this->postBack['pmt_amt'];
 
-        // Get payment received
-        $payment = $this->postBack['pmt_amt'];
+		// Transaction payment expected
+		$tAmount = $tInfo->info->tiTotal;
 
-        // Transaction payment expected
-        $tAmount = $tInfo->info->tiTotal;
+		if ($tAmount == $payment)
+		{
+			return true;
+		}
 
-        if ($tAmount == $payment)
-        {
-            return true;
-        }
+		// Generate error message
+		if ($tAmount > $payment)
+		{
+			$moreLess = Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_LESS');
+		}
+		else
+		{
+			$moreLess = Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_MORE');
+		}
 
-        // Generate error message
-        if ($tAmount > $payment)
-        {
-            $moreLess = JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_LESS');
-        }
-        else
-        {
-            $moreLess = JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_MORE');
-        }
+		$errorMessage = sprintf(Lang::txt('COM_CART_POSTBACK_INCORRECT_AMOUNT_ERROR'), $payment, $moreLess, $tAmount);
 
-        $errorMessage = sprintf(JText::_('COM_CART_POSTBACK_INCORRECT_AMOUNT_ERROR'), $payment, $moreLess, $tAmount);
+		// Set error
+		$this->error = new stdClass();
+		$this->error->msg = $errorMessage;
 
-        // Set error
-        $this->error = new stdClass();
-        $this->error->msg = $errorMessage;
+		return false;
+	}
 
-        return false;
-    }
+	/* ------------------------ Private helper functions ---------------------------- */
 
-    /* ------------------------ Private helper functions ---------------------------- */
+	/**
+	 * Get the Posting URL
+	 *
+	 */
+	private function getPostURL()
+	{
+		//return('http://www.conmerge.com/temp/post.php');
+		if ($this->options->env == 'LIVE')
+		{
+			return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
+		}
+		else
+		{
+			//return 'http://www.conmerge.com/temp/post.php';
+			return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
+		}
+	}
 
-    /**
-     * Get the Posting URL
-     *
-     */
-    private function getPostURL()
-    {
-        //return('http://www.conmerge.com/temp/post.php');
-        if ($this->options->env == 'LIVE')
-        {
-            return 'https://secure.touchnet.com/C21261_upay/web/index.jsp';
-        }
-        else {
-            //return 'http://www.conmerge.com/temp/post.php';
-            return 'https://secure.touchnet.com:8443/C21261test_upay/web/index.jsp';
-        }
-    }
-
-    /**
-     * Generate the validation key
-     *
-     */
-    private function generateValidationKey()
-    {
-        $base = $this->options->validationKey . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
-        return base64_encode(md5($base, true));
-    }
-
+	/**
+	 * Generate the validation key
+	 *
+	 */
+	private function generateValidationKey()
+	{
+		$base = $this->options->validationKey . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
+		return base64_encode(md5($base, true));
+	}
 }

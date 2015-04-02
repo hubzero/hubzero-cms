@@ -366,10 +366,10 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 							$usersConfig    = Component::params('com_users');
 							$useractivation = $usersConfig->get('useractivation', 1);
 							if ($useractivation != 0) { ?>
-								<p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\String::obfuscate($this->jconfig->getValue('config.mailfrom'))); ?></p>
+								<p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\String::obfuscate(Config::get('mailfrom'))); ?></p>
 							<?php } ?>
 						<?php } else { ?>
-							<p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\String::obfuscate($this->jconfig->getValue('config.mailfrom')); ?> in order to re-activate your account.</p>
+							<p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\String::obfuscate(Config::get('mailfrom')); ?> in order to re-activate your account.</p>
 						<?php } ?>
 					<?php } ?>
 				<?php } ?>
@@ -444,7 +444,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$message = (!empty($this->xregistration->_invalid['orgtype'])) ? '<span class="error">' . $this->xregistration->_invalid['orgtype'] . '</span>' : '';
 					$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
-					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 					$database = JFactory::getDBO();
 					$rot = new MembersTableOrganizationType($database);
 					$types = $rot->find('list');
@@ -468,7 +468,7 @@ if ($form_redirect = Request::getVar('return', '', 'get'))
 					$orgtext = $this->registration['org'];
 					$org_known = 0;
 
-					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 					$database = JFactory::getDBO();
 					$xo = new MembersTableOrganization($database);
 					$orgs = $xo->find('list');

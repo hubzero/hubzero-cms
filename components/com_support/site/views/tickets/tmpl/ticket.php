@@ -539,15 +539,14 @@ $cc = array();
 							$hi = array();
 							$o  = '<select name="messages" id="messages">' . "\n";
 							$o .= "\t" . '<option value="mc">' . Lang::txt('COM_SUPPORT_COMMENT_CUSTOM') . '</option>' . "\n";
-							$jconfig = JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
 								//$message->message = str_replace('"', '&quot;', $message->message);
 								$message->message = str_replace('&quote;', '&quot;', $message->message);
 								$message->message = str_replace('#XXX', '#' . $this->row->get('id'), $message->message);
 								$message->message = str_replace('{ticket#}', $this->row->get('id'), $message->message);
-								$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
-								$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
+								$message->message = str_replace('{sitename}', Config::get('sitename'), $message->message);
+								$message->message = str_replace('{siteemail}', Config::get('mailfrom'), $message->message);
 
 								$o .= "\t".'<option value="m' . $message->id . '">' . $this->escape(stripslashes($message->title)) . '</option>' . "\n";
 

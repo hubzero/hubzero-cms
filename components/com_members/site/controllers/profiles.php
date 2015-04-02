@@ -78,9 +78,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/groups.php';
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/options.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/awards.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/groups.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/options.php';
 
 		$ia = new ModIncrementalRegistrationAwards($profile);
 		$ia->optOut();
@@ -275,14 +275,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	public function browseTask()
 	{
-		// Get configuration
-		$jconfig = JFactory::getConfig();
-
 		$this->view->contribution_counting = $this->config->get('contribution_counting', true);
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit']  = Request::getVar('limit', $jconfig->getValue('config.list_limit'), 'request');
+		$this->view->filters['limit']  = Request::getVar('limit', Config::get('list_limit'), 'request');
 		$this->view->filters['start']  = Request::getInt('limitstart', 0, 'get');
 		$this->view->filters['show']   = strtolower(Request::getWord('show', $this->_view));
 		$this->view->filters['sortby'] = strtolower(Request::getWord('sortby', 'name'));
@@ -975,7 +972,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			switch ($k)
 			{
 				case 'sessions':
-					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+					include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 					$preferences = new ToolsTablePreferences($this->database);
 					$preferences->loadByUser($profile->get('uidNumber'));
@@ -1064,10 +1061,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Do we need to email admin?
 		if ($request !== null && !empty($resourcemessage))
 		{
-			$juri = JURI::getInstance();
-			$jconfig = JFactory::getConfig();
-			$sitename = $jconfig->getValue('config.sitename');
-			$live_site = rtrim(JURI::base(),'/');
+			$sitename =  Config::get('sitename');
+			$live_site = rtrim(Request::base(),'/');
 
 			// Email subject
 			$subject = $hubName . " Account Resource Request";
@@ -1095,20 +1090,20 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$message .= "Click the following link to grant this request:\r\n";
 
 			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task);
-			$url = $juri->base() . ltrim($sef, DS);
+			$url = Request::base() . ltrim($sef, DS);
 
 			$message .= $url . "\r\n\r\n";
 			$message .= "Click the following link to review this user's account:\r\n";
 
 			$sef = Route::url('index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber'));
-			$url = $juri->base() . ltrim($sef, DS);
+			$url = Request::base() . ltrim($sef, DS);
 
 			$message .= $url . "\r\n";
 
 			$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject($subject)
-			    ->addTo($jconfig->getValue('config.mailfrom'))
-			    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addTo(Config::get('mailfrom'))
+			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', $this->_option)
 			    ->setBody($message);
 
@@ -1635,11 +1630,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	 */
 	private function _sendConfirmationCode($login, $email, $confirm)
 	{
-		$jconfig = JFactory::getConfig();
-		$juri = JURI::getInstance();
-
 		// Email subject
-		$subject = $jconfig->getValue('config.sitename') .' account email confirmation';
+		$subject = Config::get('sitename') .' account email confirmation';
 
 		// Email message
 		$eview = new \Hubzero\Component\View(array(
@@ -1647,10 +1639,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			'layout' => 'confirm'
 		));
 		$eview->option   = $this->_option;
-		$eview->sitename = $jconfig->getValue('config.sitename');
+		$eview->sitename = Config::get('sitename');
 		$eview->login    = $login;
 		$eview->confirm  = $confirm;
-		$eview->baseURL  = $juri->base();
+		$eview->baseURL  = Request::base();
 
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
@@ -1658,7 +1650,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$msg = new \Hubzero\Mail\Message();
 		$msg->setSubject($subject)
 		    ->addTo($email)
-		    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+		    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 		    ->addHeader('X-Component', $this->_option)
 		    ->setBody($message);
 

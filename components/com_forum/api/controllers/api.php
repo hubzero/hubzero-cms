@@ -155,8 +155,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), DS));
 
 			foreach ($model->sections('list', array('state' => 1)) as $section)
 			{
@@ -232,8 +231,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), DS));
 
 			foreach ($section->categories('list', array('state' => 1)) as $category)
 			{
@@ -330,8 +328,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 
 		if ($response->total)
 		{
-			$juri = \JURI::getInstance();
-			$base = str_replace('/api', '', rtrim($juri->base(), DS));
+			$base = str_replace('/api', '', rtrim(Request::base(), DS));
 
 			foreach ($category->threads('list', array('state' => 1)) as $thread)
 			{
@@ -448,7 +445,7 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			{
 				if ($filters['start_id'])
 				{
-					$filters['limit'] = Request::getInt('limit', $jconfig->getValue('config.list_limit'));
+					$filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 
 					$children = array(
 						0 => array()

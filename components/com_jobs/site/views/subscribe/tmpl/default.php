@@ -30,11 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	/* Subscription screen */
-
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
-	$juser 	  = JFactory::getUser();
+	$sitename = Config::get('sitename');
 
 	$jobsHtml = new \Components\Jobs\Helpers\Html();
 
@@ -48,12 +44,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-		<?php if($juser->get('guest')) { ?>
-			<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a href="'.Route::url('index.php?option='.$this->option.'&task=view').'?action=login">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
-		<?php } else if($this->emp && $this->allowsubscriptions) {  ?>
+		<?php if (User::isGuest()) { ?>
+			<li><?php echo Lang::txt('COM_JOBS_PLEASE').' <a href="'.Route::url('index.php?option='.$this->option.'&task=view&action=login') . '">'.Lang::txt('COM_JOBS_ACTION_LOGIN').'</a> '.Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
 			<li><a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
 			<li><a class="shortlist btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=resumes').'?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
-		<?php } else if($this->admin) { ?>
+		<?php } else if ($this->admin) { ?>
 			<li><?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
 				<a class="myjobs btn" href="<?php echo Route::url('index.php?option='.$this->option.'&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
 		<?php } else { ?>

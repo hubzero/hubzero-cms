@@ -31,19 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri = JURI::getInstance();
-
-$sef = Route::url('index.php?option='.$this->option.'&gid='. $this->course->get('cn'));
-if (substr($sef,0,1) == '/') {
-	$sef = substr($sef,1,strlen($sef));
-}
+$sef = ltrim(Route::url('index.php?option='.$this->option.'&gid='. $this->course->get('cn')), '/');
 
 $message  = Lang::txt('COURSES_USER_HAS_DELETED_COURSE', $this->gcn, $this->juser->get('username'))."\n\n";
-if ($this->msg) {
+if ($this->msg)
+{
 	$message .= stripslashes($this->msg)."\n\n";
 }
 $message .= Lang::txt('COURSES_EMAIL_USER_IF_QUESTIONS', $this->juser->get('username'), $this->juser->get('email'))."\n";
-$message .= $juri->base().$sef."\n";
+$message .= rtrim(Request::base(), '/') . '/' . $sef."\n";
 
 echo $message;
-?>

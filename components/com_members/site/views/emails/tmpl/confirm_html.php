@@ -31,21 +31,20 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig = JFactory::getConfig();
 ?>
 	<!-- Start Header -->
 	<table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>
 				<td width="10%" align="left" valign="bottom" nowrap="nowrap" class="sitename">
-					<?php echo $jconfig->getValue('config.sitename'); ?>
+					<?php echo Config::get('sitename'); ?>
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>
 					</span>
 					<br />
-					<span class="description"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
+					<span class="description"><?php echo Config::get('MetaDesc'); ?></span>
 				</td>
 				<td width="10%" align="right" valign="bottom" nowrap="nowrap" class="component">
 					Accounts
@@ -163,7 +162,7 @@ $jconfig = JFactory::getConfig();
 		<tbody>
 			<tr>
 				<td align="left" valign="bottom">
-					<span><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because an account with this email address was registered on <a href="<?php echo $this->baseURL; ?>"><?php echo $this->baseURL; ?></a>. Visit our <a href="<?php echo $this->baseURL; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $this->baseURL; ?>/support">Support Center</a> if you have any questions.</span>
+					<span><?php echo Config::get('sitename'); ?> sent this email because an account with this email address was registered on <a href="<?php echo $this->baseURL; ?>"><?php echo $this->baseURL; ?></a>. Visit our <a href="<?php echo $this->baseURL; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $this->baseURL; ?>/support">Support Center</a> if you have any questions.</span>
 				</td>
 			</tr>
 		</tbody>

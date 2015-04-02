@@ -25,8 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig = JFactory::getConfig();
-
 $exec_pu = $this->config->get('exec_pu', 1);
 
 $execChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
@@ -160,7 +158,7 @@ $this->css('pipeline.css')
 				<label for="t_team">
 					<?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?>: <span class="required"><?php echo Lang::txt('COM_TOOLS_REQUIRED'); ?></span>
 					<input type="text" name="tool[developers]" id="t_team" value="<?php echo ToolsHelperHtml::getDevTeam($this->defaults['developers'], $this->id);  ?>" />
-					<p class="hint"><?php echo $jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></p>
+					<p class="hint"><?php echo Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_HINT_TEAM'); ?></p>
 				</label>
 
 				<p class="submit">

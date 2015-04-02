@@ -39,7 +39,7 @@ $pathway->addItem(
 
 $database = JFactory::getDBO();
 
-$limit = Request::getInt('limit', $jconfig->getValue('config.list_limit'));
+$limit = Request::getInt('limit', Config::get('list_limit'));
 $start = Request::getInt('limitstart', 0);
 
 $query = "SELECT COUNT(*)

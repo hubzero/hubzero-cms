@@ -30,11 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-	/* Employer Dashboard View */
-
-	// load some classes
-	$jconfig = JFactory::getConfig();
-	$sitename = $jconfig->getValue('config.sitename');
+	$sitename = Config::get('sitename');
 
 	$jobsHtml = new \Components\Jobs\Helpers\Html();
 
@@ -45,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$allowed_ads = $this->service->maxads - $this->activejobs;
 	$allowed_ads = $allowed_ads < 0 ? 0 : $allowed_ads;
 
-	$class= 'no';
+	$class = 'no';
 	switch( $this->subscription->status )
 	{
 		case '0':    $status = Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
@@ -61,13 +57,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$today = date( 'Y-m-d');
 
-	$status 	= $this->subscription->expires < $today && $this->subscription->status==1
+	$status = $this->subscription->expires < $today && $this->subscription->status==1
 				? Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED')
 				: $status;
-	$length 	= $this->subscription->status==0
+	$length = $this->subscription->status==0
 				? $this->subscription->pendingunits
 				: $this->subscription->units;
-	$pending 	= $this->subscription->pendingunits && $this->subscription->status==1
+	$pending = $this->subscription->pendingunits && $this->subscription->status==1
 				? ' <span class="no">('.$this->subscription->pendingunits.' '.Lang::txt('COM_JOBS_ADDITIONAL').' '.$this->service->unitmeasure.'MULTIPLE_S'.' '.Lang::txt('COM_JOBS_MONTHS_PENDING').')</span>'
 				: '';
 	$expiredate = $this->subscription->expires

@@ -130,14 +130,11 @@ class Wishlist extends \JTable
 			return false;
 		}
 
-		$jconfig = \JFactory::getConfig();
-		$sitename = $jconfig->getValue('config.sitename');
-
-		$juser = \JFactory::getUser();
+		$sitename = \Config::get('sitename');
 
 		$this->created     = \JFactory::getDate()->toSql();
 		$this->category    = $category;
-		$this->created_by  = $juser->get('id');
+		$this->created_by  = \User::get('id');
 		$this->referenceid = $refid;
 		$this->description = $description;
 		$this->public      = $public;

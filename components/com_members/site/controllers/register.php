@@ -53,7 +53,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		$this->baseURL = rtrim(Request::base(), DS);
-		$this->jconfig = JFactory::getConfig();
 
 		$this->registerTask('__default', 'create');
 
@@ -178,7 +177,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify the user
 			if ($updateEmail)
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 				$eview = new \Hubzero\Component\View(array(
 					'name'   => 'emails',
@@ -186,7 +185,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				));
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
-				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->sitename   = Config::get('sitename');
 				$eview->xprofile   = $target_xprofile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -195,7 +194,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
 				    ->addTo($target_xprofile->get('email'))
-				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message);
 
@@ -207,7 +206,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			}
 
 			// Notify administration
-			$subject = $this->jconfig->getValue('config.sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
+			$subject = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
 			$eaview = new \Hubzero\Component\View(array(
 				'name'   => 'emails',
@@ -215,7 +214,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			));
 			$eaview->option     = $this->_option;
 			$eaview->controller = $this->_controller;
-			$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eaview->sitename   = Config::get('sitename');
 			$eaview->xprofile   = $target_xprofile;
 			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
@@ -224,7 +223,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			/*$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject($subject)
 			    ->addTo($hubMonitorEmail)
-			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', $this->_option)
 			    ->setBody($message)
 			    ->send();*/
@@ -242,7 +241,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		{
 			if ($updateEmail)
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 				$eview = new \Hubzero\Component\View(array(
 					'name'   => 'emails',
@@ -250,7 +249,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				));
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
-				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->sitename   = Config::get('sitename');
 				$eview->xprofile   = $target_profile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -259,7 +258,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
 				    ->addTo($target_xprofile->get('email'))
-				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message);
 
@@ -271,7 +270,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			}
 
 			// Notify administration
-			$subject = $this->jconfig->getValue('config.sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
+			$subject = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
 			$eaview = new \Hubzero\Component\View(array(
 				'name'   => 'emails',
@@ -279,7 +278,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			));
 			$eaview->option     = $this->_option;
 			$eaview->controller = $this->_controller;
-			$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eaview->sitename   = Config::get('sitename');
 			$eaview->xprofile   = $target_xprofile;
 			$eaview->baseURL    = $this->baseURL;
 			$message = $eaview->loadTemplate();
@@ -288,7 +287,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			/*$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject($subject)
 			    ->addTo($hubMonitorEmail)
-			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', $this->_option)
 			    ->setBody($message)
 			    ->send();*/
@@ -306,7 +305,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		// Instantiate a new view
 		$this->view->setLayout('update');
 		$this->view->title = Lang::txt('COM_MEMBERS_REGISTER_UPDATE');
-		$this->view->sitename = $this->jconfig->getValue('config.sitename');
+		$this->view->sitename = Config::get('sitename');
 		$this->view->xprofile = $target_xprofile;
 		$this->view->self = $self;
 		if ($this->getError())
@@ -493,7 +492,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify the user
 			if ($updateEmail)
 			{
-				$subject  = $this->jconfig->getValue('config.sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+				$subject  = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 				$eview = new \Hubzero\Component\View(array(
 					'name'   => 'emails',
@@ -501,7 +500,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				));
 				$eview->option     = $this->_option;
 				$eview->controller = $this->_controller;
-				$eview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eview->sitename   = Config::get('sitename');
 				$eview->xprofile   = $xprofile;
 				$eview->baseURL    = $this->baseURL;
 				$message = $eview->loadTemplate();
@@ -510,7 +509,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
 				    ->addTo($xprofile->get('email'))
-				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message);
 
@@ -524,7 +523,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			// Notify administration
 			if (Request::getMethod() == 'POST')
 			{
-				$subject = $this->jconfig->getValue('config.sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
+				$subject = Config::get('sitename') .' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_UPDATE');
 
 				$eaview = new \Hubzero\Component\View(array(
 					'name'   => 'emails',
@@ -532,7 +531,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				));
 				$eaview->option     = $this->_option;
 				$eaview->controller = $this->_controller;
-				$eaview->sitename   = $this->jconfig->getValue('config.sitename');
+				$eaview->sitename   = Config::get('sitename');
 				$eaview->xprofile   = $xprofile;
 				$eaview->baseURL    = $this->baseURL;
 				$message = $eaview->loadTemplate();
@@ -541,7 +540,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				/*$msg = new \Hubzero\Mail\Message();
 				$msg->setSubject($subject)
 				    ->addTo($hubMonitorEmail)
-				    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+				    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 				    ->addHeader('X-Component', $this->_option)
 				    ->setBody($message)
 				    ->send();*/
@@ -569,7 +568,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			{
 				// Instantiate a new view
 				$this->view->title = Lang::txt('COM_MEMBERS_REGISTER_UPDATE');
-				$this->view->sitename = $this->jconfig->getValue('config.sitename');
+				$this->view->sitename = Config::get('sitename');
 				$this->view->xprofile = $xprofile;
 				$this->view->self = true;
 				$this->view->updateEmail = $updateEmail;
@@ -787,7 +786,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					if ($xprofile->get('emailConfirmed') < 0)
 					{
 						// Notify the user
-						$subject  = $this->jconfig->getValue('config.sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+						$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 						$eview = new \Hubzero\Mail\View(array(
 							'name'   => 'emails',
@@ -795,7 +794,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						));
 						$eview->option        = $this->_option;
 						$eview->controller    = $this->_controller;
-						$eview->sitename      = $this->jconfig->getValue('config.sitename');
+						$eview->sitename      = Config::get('sitename');
 						$eview->xprofile      = $xprofile;
 						$eview->baseURL       = $this->baseURL;
 						$eview->xregistration = $xregistration;
@@ -803,7 +802,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$msg = new \Hubzero\Mail\Message();
 						$msg->setSubject($subject)
 						    ->addTo($xprofile->get('email'), $xprofile->get('name'))
-						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+						    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 						    ->addHeader('X-Component', $this->_option);
 
 						$message = $eview->loadTemplate(false);
@@ -833,10 +832,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						));
 						$eview->option     = $this->_option;
 						$eview->controller = $this->_controller;
-						$eview->sitename   = $this->jconfig->get('sitename');
+						$eview->sitename   = Config::get('sitename');
 						$eview->xprofile   = $xprofile;
 						$eview->baseUrl    = $this->baseURL;
-						$eview->config     = $this->jconfig;
 
 						$plain = $eview->loadTemplate(false);
 						$plain = str_replace("\n", "\r\n", $plain);
@@ -847,12 +845,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$html = $eview->loadTemplate();
 						$html = str_replace("\n", "\r\n", $html);
 
-						$hubMonitorEmail = $this->jconfig->get('mailfrom');
+						$hubMonitorEmail = Config::get('mailfrom');
 
 						$message = new \Hubzero\Mail\Message();
-						$message->setSubject($this->jconfig->get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION'))
+						$message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION'))
 						        ->addTo($hubMonitorEmail)
-						        ->addFrom($this->jconfig->get('mailfrom'), $this->jconfig->get('sitename') . ' Administrator')
+						        ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 						        ->addHeader('X-Component', $this->_option)
 						        ->addHeader('X-Component-Object', 'user_creation_admin_notification')
 						        ->addPart($plain, 'text/plain')
@@ -868,7 +866,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					// Instantiate a new view
 					$this->view->setLayout('create');
 					$this->view->title = Lang::txt('COM_MEMBERS_REGISTER_CREATE_ACCOUNT');
-					$this->view->sitename = $this->jconfig->getValue('config.sitename');
+					$this->view->sitename = Config::get('sitename');
 					$this->view->xprofile = $xprofile;
 
 					if ($this->getError())
@@ -934,7 +932,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		// Instantiate a new view
 		$this->view->title = Lang::txt('COM_MEMBERS_REGISTER_SELECT_METHOD');
-		$this->view->sitename = $this->jconfig->getValue('config.sitename');
+		$this->view->sitename = Config::get('sitename');
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
@@ -1003,7 +1001,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	{
 		$this->view->setLayout('default');
 		$this->view->title = Lang::txt('COM_MEMBERS_REGISTER');
-		$this->view->sitename = $this->jconfig->getValue('config.sitename');
+		$this->view->sitename = Config::get('sitename');
 
 		$username = Request::getVar('username', $this->juser->get('username'),'get');
 		$this->view->self = ($this->juser->get('username') == $username);
@@ -1105,7 +1103,6 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$this->view->setError($this->getError());
 		}
 		$this->view->config = $this->config;
-		$this->view->jconfig = $this->jconfig;
 
 		$this->view->display();
 	}
@@ -1224,7 +1221,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$xprofile->set('emailConfirmed', $confirm);
 			$xprofile->update();
 
-			$subject  = $this->jconfig->getValue('config.sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+			$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
@@ -1232,7 +1229,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			));
 			$eview->option     = $this->_option;
 			$eview->controller = $this->_controller;
-			$eview->sitename   = $this->jconfig->getValue('config.sitename');
+			$eview->sitename   = Config::get('sitename');
 			$eview->login      = $login;
 			$eview->name       = $xprofile->get('name');
 			$eview->registerDate = $xprofile->get('registerDate');
@@ -1242,7 +1239,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$msg = new \Hubzero\Mail\Message();
 			$msg->setSubject($subject)
 			    ->addTo($email)
-			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 			    ->addHeader('X-Component', $this->_option);
 
 			$message = $eview->loadTemplate(false);
@@ -1267,7 +1264,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$this->view->email = $email;
 			$this->view->return = $return;
 			$this->view->show_correction_faq = true;
-			$this->view->hubName = $this->jconfig->getValue('config.sitename');
+			$this->view->hubName = Config::get('sitename');
 			if ($this->getError())
 			{
 				$this->view->setError($this->getError());
@@ -1379,7 +1376,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$xprofile->set('emailConfirmed', $confirm);
 						$xprofile->update();
 
-						$subject  = $this->jconfig->getValue('config.sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
+						$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
 						$eview = new \Hubzero\Mail\View(array(
 							'name'   => 'emails',
@@ -1387,7 +1384,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						));
 						$eview->option     = $this->_option;
 						$eview->controller = $this->_controller;
-						$eview->sitename   = $this->jconfig->getValue('config.sitename');
+						$eview->sitename   = Config::get('sitename');
 						$eview->login      = $login;
 						$eview->name       = $xprofile->get('name');
 						$eview->registerDate = $xprofile->get('registerDate');
@@ -1397,7 +1394,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						$msg = new \Hubzero\Mail\Message();
 						$msg->setSubject($subject)
 						    ->addTo($pemail)
-						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
+						    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
 						    ->addHeader('X-Component', $this->_option);
 
 						$message = $eview->loadTemplate(false);
@@ -1558,7 +1555,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->view->email    = $xprofile->get('email');
 		$this->view->code     = $code;
 		$this->view->redirect = (isset($return) ? $return : '');
-		$this->view->sitename = $this->jconfig->getValue('config.sitename');
+		$this->view->sitename = Config::get('sitename');
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
@@ -1604,7 +1601,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			$this->view->title    = Lang::txt('COM_MEMBERS_REGISTER_UNCONFIRMED');
 			$this->view->email    = $xprofile->get('email');
 			$this->view->return   = $return;
-			$this->view->sitename = $this->jconfig->getValue('config.sitename');
+			$this->view->sitename = Config::get('sitename');
 			if ($this->getError())
 			{
 				$this->view->setError($this->getError());

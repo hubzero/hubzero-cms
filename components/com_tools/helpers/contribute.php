@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Short description for 'ContribtoolHtml'
@@ -48,7 +48,7 @@ class ContribtoolHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function error( $msg, $tag='p' )
+	public static function error($msg, $tag='p')
 	{
 		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -62,7 +62,7 @@ class ContribtoolHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function warning( $msg, $tag='p' )
+	public static function warning($msg, $tag='p')
 	{
 		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -76,7 +76,7 @@ class ContribtoolHtml
 	 * @param      string $tag Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function passed( $msg, $tag='p' )
+	public static function passed($msg, $tag='p')
 	{
 		return '<'.$tag.' class="passed">'.$msg.'</'.$tag.'>'."\n";
 	}
@@ -89,7 +89,7 @@ class ContribtoolHtml
 	 * @param      string $msg Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function alert( $msg )
+	public static function alert($msg)
 	{
 		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
 	}
@@ -146,9 +146,9 @@ class ContribtoolHtml
 	 */
 	public static function mkt($stime)
 	{
-		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs ))
+		if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs))
 		{
-			$stime = mktime( $regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1] );
+			$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
 		}
 		return $stime;
 	}
@@ -320,18 +320,20 @@ class ContribtoolHtml
 	public static function getNumofTools($status, $toolnum='')
 	{
 		// get hub parameters
-		$jconfig = JFactory::getConfig();
-		$live_site = rtrim(JURI::base(),'/');
-		$sitename = $jconfig->getValue('config.sitename');
+		$live_site = rtrim(Request::base(),'/');
+		$sitename = Config::get('sitename');
 
 		$toolnum = ($status['state']!=9) ? Lang::txt('COM_TOOLS_THIS_TOOL').'  ': '';
-		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
+		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']))
+		{
 			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if ($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
+		else if ($status['published'] && ContribtoolHtml::toolActive($status['state']))
+		{
 			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_PUBLISHED')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if ($status['state']==8) {
+		else if ($status['state']==8)
+		{
 			$toolnum .= Lang::txt('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.Lang::txt('COM_TOOLS_ON').' '.$sitename.' '.Lang::txt('COM_TOOLS_NOW_RETIRED');
 		}
 
@@ -504,7 +506,7 @@ class ContribtoolHtml
 			foreach ($members as $member)
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
-				$juser = JUser::getInstance($uid);
+				$juser = User::getInstance($uid);
 				if (is_object($juser))
 				{
 					$login = $juser->get('username');
@@ -644,22 +646,24 @@ class ContribtoolHtml
 		$html .= "\t\t".'<ol id="steps">'."\n";
 		$html .= "\t\t".' <li>'.Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 
-		for ($i=0, $n=count( $stages ); $i < $n; $i++)
+		for ($i=0, $n=count($stages); $i < $n; $i++)
+		{
+			$html .= "\t\t".' <li';
+
+			if (strtolower($active_stage) == strtolower($stages[$i]))
 			{
-				$html .= "\t\t".' <li';
+				$html .= ' class="active"';
 
-				if (strtolower($active_stage) == strtolower($stages[$i])) {
-					$html .= ' class="active"';
-
-				}
-				else if (count($key) == 0 or $i > $key[0]) {
-					$html .= ' class="future"';
-				}
-
-				$html .= '>';
-				$html .= $stages[$i];
-				$html .= '</li>'."\n";
 			}
+			else if (count($key) == 0 or $i > $key[0])
+			{
+				$html .= ' class="future"';
+			}
+
+			$html .= '>';
+			$html .= $stages[$i];
+			$html .= '</li>'."\n";
+		}
 		$html .= "\t\t".'</ol>'."\n";
 		$html .= "\t\t".'<div class="clear"></div>'."\n";
 
@@ -678,7 +682,7 @@ class ContribtoolHtml
 	public static function selectAccess($as, $value)
 	{
 		$html  = '<select name="access">';
-		for ($i=0, $n=count( $as ); $i < $n; $i++)
+		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
 			if ($as[$i] != 'Registered' && $as[$i] != 'Special')
 			{
@@ -737,10 +741,10 @@ class ContribtoolHtml
 
 		$out ='';
 		$i = 0;
-		if (count($notes) > 0 )
+		if (count($notes) > 0)
 		{
 			$out .= '<ul class="features">'."\n";
-			for ($i=0, $n=count( $notes ); $i < $n; $i++)
+			for ($i=0, $n=count($notes); $i < $n; $i++)
 			{
 				$note = $notes[$i];
 				$out .= ' <li>'."\n";
@@ -794,11 +798,14 @@ class ContribtoolHtml
 	public static function parseTag($text, $tag)
 	{
 		preg_match("#<nb:".$tag.">(.*?)</nb:".$tag.">#s", $text, $matches);
-		if (count($matches) > 0) {
+		if (count($matches) > 0)
+		{
 			$match = $matches[0];
 			$match = str_replace('<nb:'.$tag.'>','',$match);
 			$match = str_replace('</nb:'.$tag.'>','',$match);
-		} else {
+		}
+		else
+		{
 			$match = '';
 		}
 		return $match;
@@ -849,14 +856,16 @@ class ContribtoolHtml
 	 * @param      string $base_path Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function getFileAttribs( $path, $base_path='' )
+	public static function getFileAttribs($path, $base_path='')
 	{
 		// Return nothing if no path provided
-		if (!$path) {
+		if (!$path)
+		{
 			return '';
 		}
 
-		if ($base_path) {
+		if ($base_path)
+		{
 			// Strip any trailing slash
 			if (substr($base_path, -1) == DS) {
 				$base_path = substr($base_path, 0, strlen($base_path) - 1);
@@ -868,31 +877,37 @@ class ContribtoolHtml
 		}
 
 		// Ensure a starting slash
-		if (substr($path, 0, 1) != DS) {
+		if (substr($path, 0, 1) != DS)
+		{
 			$path = DS.$path;
 		}
-		if (substr($path, 0, strlen($base_path)) == $base_path) {
+		if (substr($path, 0, strlen($base_path)) == $base_path)
+		{
 			// Do nothing
-		} else {
+		}
+		else
+		{
 			$path = $base_path.$path;
 		}
-		$path = JPATH_ROOT.$path;
+		$path = PATH_APP . $path;
 
 		//$file_name_arr = explode('.',$path);
-	    //$type = end($file_name_arr);
+		//$type = end($file_name_arr);
 		//$type = strtoupper($type);
 		$file_name_arr = explode(DS,$path);
-	    $type = end($file_name_arr);
+		$type = end($file_name_arr);
 
 		$fs = '';
 
 		// Get the file size if the file exist
-		if (file_exists( $path )) {
-			$fs = filesize( $path );
+		if (file_exists($path))
+		{
+			$fs = filesize($path);
 		}
 
 		$html  = $type;
-		if ($fs) {
+		if ($fs)
+		{
 			switch ($type)
 			{
 				case 'HTM':
@@ -921,13 +936,20 @@ class ContribtoolHtml
 	 */
 	public static function formatsize($file_size)
 	{
-		if ($file_size >= 1073741824) {
+		if ($file_size >= 1073741824)
+		{
 			$file_size = round($file_size / 1073741824 * 100) / 100 . ' <abbr title="gigabytes">Gb</abbr>';
-		} elseif ($file_size >= 1048576) {
+		}
+		else if ($file_size >= 1048576)
+		{
 			$file_size = round($file_size / 1048576 * 100) / 100 . ' <abbr title="megabytes">Mb</abbr>';
-		} elseif ($file_size >= 1024) {
+		}
+		else if ($file_size >= 1024)
+		{
 			$file_size = round($file_size / 1024 * 100) / 100 . ' <abbr title="kilobytes">Kb</abbr>';
-		} else {
+		}
+		else
+		{
 			$file_size = $file_size . ' <abbr title="bytes">b</abbr>';
 		}
 		return $file_size;

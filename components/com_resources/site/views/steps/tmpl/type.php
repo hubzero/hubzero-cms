@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$jconfig = JFactory::getConfig();
-
 $this->css('create.css')
      ->js('create.js');
 ?>
@@ -128,9 +126,9 @@ $this->css('create.css')
 ?>
 
 		<p class="info">
-			In order for <?php echo $jconfig->getValue('config.sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo $jconfig->getValue('config.sitename'); ?> must be authorized to
-			hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="/legal/license">this agreement</a>.
-			You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="/legal/licensing">license your contributions</a>
+			In order for <?php echo Config::get('sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo Config::get('sitename'); ?> must be authorized to
+			hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="<?php echo Request::base(true); ?>/legal/license">this agreement</a>.
+			You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="<?php echo Request::base(true); ?>/legal/licensing">license your contributions</a>
 			so that others can build upon them.
 		</p>
 
@@ -147,7 +145,7 @@ $this->css('create.css')
 				</div>
 				<div class="entry-content">
 					<h4><a name="unknowntype"></a>What if I want to contribute a type not listed here?</h4>
-					<p>If you feel your contribution does not fit into any of our predefined types, please <a href="feedback/report_problems/">contact us</a> with details of</p>
+					<p>If you feel your contribution does not fit into any of our predefined types, please <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a> with details of</p>
 					<ol>
 						<li>what you wish to contribute, including a description and file types</li>
 						<li>how you believe it should be categorized</li>
