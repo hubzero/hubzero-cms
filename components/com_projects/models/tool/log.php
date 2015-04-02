@@ -165,5 +165,28 @@ class Log extends Model
 
 		return $log;
 	}
+
+	/**
+	 * Get the actor
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function actor($property=null)
+	{
+		if (!isset($this->_actor) || !($this->_creator instanceof \Hubzero\User\Profile))
+		{
+			$this->_actor = \Hubzero\User\Profile::getInstance($this->get('actor'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_actor->get($property);
+		}
+		return $this->_actor;
+	}
 }
 

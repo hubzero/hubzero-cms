@@ -37,6 +37,7 @@ require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.log.php');
 require_once(dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php');
 require_once(__DIR__ . DS . 'tool' . DS . 'instance.php');
 require_once(__DIR__ . DS . 'tool' . DS . 'log.php');
+require_once(__DIR__ . DS . 'tool' . DS . 'status.php');
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
@@ -107,7 +108,7 @@ class Tool extends Model
 	 * @param      mixed $oid TODO ID
 	 * @return     object Todo
 	 */
-	static function &getInstance($oid=null)
+	static function &getInstance($oid=null, $projectid = NULL, $instance = NULL)
 	{
 		static $instances;
 
@@ -116,25 +117,45 @@ class Tool extends Model
 			$instances = array();
 		}
 
-		if (is_object($oid))
+		if (!isset($instances[$oid]))
 		{
-			$key = $oid->id;
-		}
-		else if (is_array($oid))
-		{
-			$key = $oid['id'];
-		}
-		else
-		{
-			$key = $oid;
+			$instances[$oid] = new static($oid, $projectid, $instance);
 		}
 
-		if (!isset($instances[$key]))
+		return $instances[$oid];
+	}
+
+	/**
+	 * Returns a reference to a tool model
+	 *
+	 * @param      mixed $oid TODO ID
+	 * @return     object Todo
+	 */
+	static function mapInstance($result)
+	{
+		if (!is_object($result))
 		{
-			$instances[$key] = new self($oid);
+			return false;
 		}
 
-		return $instances[$key];
+		$oid = $result->id;
+		static $instances;
+
+		if (!isset($instances))
+		{
+			$instances = array();
+		}
+
+		if (!isset($instances[$oid]))
+		{
+			$instances[$oid] = new static();
+			foreach ($result as $key => $value)
+			{
+				$instances[$oid]->set($key, $value);
+			}
+		}
+
+		return $instances[$oid];
 	}
 
 	/**
@@ -176,6 +197,57 @@ class Tool extends Model
 	}
 
 	/**
+	 * Get a status model
+	 *
+	 * @return     void
+	 */
+	public function status($id = NULL, $property = NULL)
+	{
+		if (!isset($this->_status) || ($id !== null && (int) $this->_status->get('id') != $id))
+		{
+			$this->_status = new Tool\Status($id);
+
+			if ($this->_status->exists() && $property)
+			{
+				return $this->_status->get($property);
+			}
+		}
+		return $this->_status;
+	}
+
+	/**
+	 * Return a formatted timestamp
+	 *
+	 * @param	   string $as What format to return
+	 * @return	   boolean
+	 */
+	public function statusChanged($as='')
+	{
+		switch (strtolower($as))
+		{
+			case 'date':
+				return \JHTML::_('date', $this->get('status_changed'), Lang::txt('DATE_FORMAT_HZ1'));
+			break;
+
+			case 'time':
+				return \JHTML::_('date', $this->get('status_changed'), Lang::txt('TIME_FORMAT_HZ1'));
+			break;
+
+			case 'datetime':
+				return $this->statusChanged('date') . ' &#64; ' . $this->statusChanged('time');
+			break;
+
+			case 'timeago':
+				return \Components\Projects\Helpers\Html::showTime($this->get('status_changed'), true);
+			break;
+
+			default:
+				return $this->get('status_changed');
+			break;
+		}
+	}
+
+	/**
 	 * Get a list of tools
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
@@ -205,13 +277,21 @@ class Tool extends Model
 				{
 					foreach ($results as $key => $result)
 					{
-						$results[$key] = Tool\Instance::getInstance($result);
+						/*
+						$results[$key] = self::getInstance(
+							$result->name,
+							$result->project_id,
+							$result->instance
+						);
+						*/
+						$results[$key] = self::mapInstance($result);
 					}
 				}
 				else
 				{
 					$results = array();
 				}
+
 				return new ItemList($results);
 			break;
 		}
@@ -329,6 +409,52 @@ class Tool extends Model
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the creator of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function creator($property=null)
+	{
+		if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\Profile))
+		{
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get($property);
+		}
+		return $this->_creator;
+	}
+
+	/**
+	 * Get the use who changed status of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire User object
+	 *
+	 * @return     mixed
+	 */
+	public function statusChanger($property=null)
+	{
+		if (!isset($this->_statusChanger) || !($this->_statusChanger instanceof \Hubzero\User\Profile))
+		{
+			$this->_statusChanger = \Hubzero\User\Profile::getInstance($this->get('status_changed_by'));
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : NULL;
+		}
+		return $this->_statusChanger;
 	}
 }
 
