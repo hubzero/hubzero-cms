@@ -43,7 +43,7 @@ if(!$juser->proEnabled)
 }
 
 // require base component controller
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . 'component.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'component.php');
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', '');
@@ -54,12 +54,12 @@ if (empty($controllerName))
 	$controllerName = 'cart';
 }
 
-elseif (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php'))
+elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	JError::raiseError(404, JText::_('Page Not Found'));
 }
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CartController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
