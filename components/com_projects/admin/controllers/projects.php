@@ -81,7 +81,6 @@ class Projects extends AdminController
 		$this->view->config = $this->config;
 
 		// Get configuration
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		// Get quotas
@@ -93,7 +92,7 @@ class Projects extends AdminController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.projects.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('config.list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
