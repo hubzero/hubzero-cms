@@ -34,7 +34,7 @@ $fieldsets = $this->form->getFieldsets();
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
 
-			<?php foreach($this->form->getFieldset('user_details') as $field) :?>
+			<?php foreach ($this->form->getFieldset('user_details') as $field) :?>
 				<div class="input-wrap">
 					<?php echo $field->label; ?>
 					<?php echo $field->input; ?>
@@ -62,7 +62,7 @@ $fieldsets = $this->form->getFieldsets();
 			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
 		?>
 		<fieldset class="panelform">
-			<?php foreach($this->form->getFieldset($fieldset->name) as $field): ?>
+			<?php foreach ($this->form->getFieldset($fieldset->name) as $field): ?>
 				<?php if ($field->hidden): ?>
 					<?php echo $field->input; ?>
 				<?php else: ?>

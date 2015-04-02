@@ -111,16 +111,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$thissub = ($this->services[$i]->id == $this->subscription->serviceid) ? 1 : 0;
 
 					// Determine expiration date
-					if($thissub) {
+					if ($thissub) {
 						$length = $this->subscription->status==0 ? $this->subscription->pendingunits : $this->subscription->units;
 						$expires  = $this->subscription->expires > $now && $this->subscription->status==1 ?  '<p class="yes">' : '<p class="no">';
 						$expires .= Lang::txt( 'COM_JOBS_YOUR' ).' '.$length.'-'.$this->services[$i]->unitmeasure.' '.Lang::txt( 'COM_JOBS_SUBSCRIPTION' ).' ';
-						if($this->subscription->status==1) {
+						if ($this->subscription->status==1) {
 							$expires .= $this->subscription->expires > $now ? strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES' )) : strtolower(Lang::txt( 'COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED' )) ;
 							$expires .= ' '.Lang::txt( 'COM_JOBS_ON' ).' '.JHTML::_('date', $this->subscription->expires, Lang::txt('DATE_FORMAT_HZ1')).'.';
 						}
 						else {
-						$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;
+							$expires .= Lang::txt( 'COM_JOBS_SUBSCRIPTION_IS_PENDING' ) ;
 						}
 
 						$expires .= '</p>'."\n";
@@ -133,7 +133,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$numunits = $this->services[$i]->maxunits / $this->services[$i]->unitsize;
 					$unitsize = $this->services[$i]->unitsize;
 
-					if ($thissub) { $units_select[0] = 0; }
+					if ($thissub)
+					{
+						$units_select[0] = 0;
+					}
 					for ($p=1; $p <= $numunits; $p++)
 					{
 						$units_select[$unitsize] = $unitsize;
@@ -145,7 +148,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$html .= '<div class="bindtogether product">'."\n";
 					$html .= '  <input class="option service" type="radio" name="serviceid" id="service_'.$this->services[$i]->id.'" value="'.$this->services[$i]->id.'" ';
-					if($thissub or ($this->subscription->serviceid==0 && $i==0) ){
+					if ($thissub or ($this->subscription->serviceid==0 && $i==0) )
+					{
 						$html .= 'checked="checked"';
 					}
 					$html .= ' /> ';
@@ -154,7 +158,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					$html .= '<div class="subdetails" id="plan_'.$this->services[$i]->id.'">'."\n";
 					$html .= $thissub ? $expires : '';
-					if($thissub or ($this->subscription->serviceid==0 && $i==0))
+					if ($thissub or ($this->subscription->serviceid==0 && $i==0))
 					{
 						$html .= $jobsHtml->confirmscreen(Route::url('index.php?option='.$this->option.'&task=dashboard&uid='.$this->uid), Route::url('index.php?option='.$this->option.'&task=cancel&uid='.$this->uid));
 					}

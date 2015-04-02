@@ -59,46 +59,51 @@ class UsersViewLogout extends JViewLegacy
 	function display($tpl = null)
 	{
 		// Initialize variables
-		$document	= JFactory::getDocument();
-		$user		= JFactory::getUser();
-		$image		= '';
+		$document = JFactory::getDocument();
+		$image    = '';
 
 		$menu = JFactory::getApplication()->getMenu();
 
-		$item   = $menu->getActive();
-		if($item)
+		$item = $menu->getActive();
+		if ($item)
+		{
 			$params	= $menu->getParams($item->id);
-		else {
+		}
+		else
+		{
 			$params = new JParameter( '' );
 			$template = JFactory::getApplication()->getTemplate();
-            $inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
-			if (file_exists($inifile)) {
+			$inifile = JPATH_SITE . DS . 'templates' . DS . $template . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
+			if (file_exists($inifile))
+			{
 				$params->loadINI( file_get_contents($inifile) );
 			}
 
-			$params->def('page_title',	JText::_( 'Logout' ));
+			$params->def('page_title', JText::_( 'Logout' ));
 		}
 
 		$type = 'logout';
 
 		// Set some default page parameters if not set
-		$params->def( 'show_page_title', 				1 );
-		if (!$params->get( 'page_title')) {
-				$params->set('page_title',	JText::_( 'Logout' ));
-			}
-		if(!$item)
+		$params->def( 'show_page_title', 1 );
+		if (!$params->get( 'page_title'))
 		{
-			$params->def( 'header_logout', 			'' );
+			$params->set('page_title', JText::_( 'Logout' ));
 		}
 
-		$params->def( 'pageclass_sfx', 			'' );
-		$params->def( 'logout', 				'/');
-		$params->def( 'description_logout', 		1 );
-		$params->def( 'description_logout_text',	JText::_( 'LOGOUT_DESCRIPTION' ) );
-		$params->def( 'image_logout', 				'key.jpg' );
-		$params->def( 'image_logout_align', 		'right' );
-		$usersConfig =  JComponentHelper::getParams( 'com_users' );
-		$params->def( 'registration', 				$usersConfig->get( 'allowUserRegistration' ) );
+		if (!$item)
+		{
+			$params->def( 'header_logout', '' );
+		}
+
+		$params->def( 'pageclass_sfx', '' );
+		$params->def( 'logout', '/');
+		$params->def( 'description_logout', 1 );
+		$params->def( 'description_logout_text', JText::_( 'LOGOUT_DESCRIPTION' ) );
+		$params->def( 'image_logout', 'key.jpg' );
+		$params->def( 'image_logout_align', 'right' );
+		$usersConfig =  Component::params( 'com_users' );
+		$params->def( 'registration', $usersConfig->get( 'allowUserRegistration' ) );
 
 		$title = JText::_( 'Logout');
 
@@ -106,13 +111,15 @@ class UsersViewLogout extends JViewLegacy
 		$document->setTitle( $title );
 
 		// Build logout image if enabled
-		if ( $params->get( 'image_'.$type ) != -1 ) {
+		if ( $params->get( 'image_'.$type ) != -1 )
+		{
 			$image = '/images/stories/'.$params->get( 'image_'.$type );
 			$image = '<img src="'. $image  .'" align="'. $params->get( 'image_'.$type.'_align' ) .'" hspace="10" alt="" />';
 		}
 
 		// Get the return URL
-		if (!$url = JRequest::getVar('return', '', 'method', 'base64')) {
+		if (!$url = JRequest::getVar('return', '', 'method', 'base64'))
+		{
 			$url = base64_encode($params->get($type));
 		}
 
@@ -134,6 +141,8 @@ class UsersViewLogout extends JViewLegacy
 	 *
 	 * @return     void
 	 */
-	function attach() {}
+	function attach()
+	{
+	}
 }
 

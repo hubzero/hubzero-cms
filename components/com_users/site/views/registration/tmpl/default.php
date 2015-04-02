@@ -28,7 +28,7 @@ JHtml::_('behavior.formvalidation');
 			<legend><?php echo JText::_($fieldset->label);?></legend>
 		<?php endif;?>
 			<dl>
-		<?php foreach($fields as $field):// Iterate through the fields in the set and display them.?>
+		<?php foreach ($fields as $field):// Iterate through the fields in the set and display them.?>
 			<?php if ($field->hidden):// If the field is hidden, just display the input.?>
 				<?php echo $field->input;?>
 			<?php else:?>

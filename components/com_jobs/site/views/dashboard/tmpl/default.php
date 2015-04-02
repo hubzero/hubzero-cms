@@ -42,7 +42,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$allowed_ads = $allowed_ads < 0 ? 0 : $allowed_ads;
 
 	$class = 'no';
-	switch( $this->subscription->status )
+	switch ( $this->subscription->status )
 	{
 		case '0':    $status = Lang::txt('COM_JOBS_JOB_STATUS_PENDING');
 		break;
@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		break;
 		case '2':    $status = Lang::txt('COM_JOBS_JOB_STATUS_CANCELLED');
 		break;
-		default: 	 $status = Lang::txt('N/A');
+		default:     $status = Lang::txt('N/A');
 		break;
 	}
 

@@ -10,20 +10,19 @@
 defined('_JEXEC') or die;
 
 // If the user is already logged in, redirect to the return or profile page.
-$user = JFactory::getUser();
-if ($user->get('guest') != 1) {
+if (User::isGuest())
+{
+	$return = base64_decode(JRequest::getVar('return', '',  'method', 'base64'));
 
-       $return = base64_decode(JRequest::getVar('return', '',  'method', 'base64'));
+	if ($return)
+	{
+		JFactory::getApplication()->redirect(JRoute::_($return, false));
+		return;
+	}
 
-       if ($return)
-       {
-               JFactory::getApplication()->redirect(JRoute::_($return, false));
-               return;
-       }
-
-       // Redirect to profile page.
-       JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
-       return;
+	// Redirect to profile page.
+	JFactory::getApplication()->redirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
+	return;
 }
 
 
@@ -35,7 +34,7 @@ if ($user->get('guest') != 1) {
 	</h1>
 	<?php endif; ?>
 
-	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '')|| $this->params->get('logout_image') != '') : ?>
+	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '') || $this->params->get('logout_image') != '') : ?>
 	<div class="logout-description">
 	<?php endif ; ?>
 
@@ -44,10 +43,10 @@ if ($user->get('guest') != 1) {
 		<?php endif; ?>
 
 		<?php if (($this->params->get('logout_image')!='')) :?>
-			<img src="<?php echo $this->escape($this->params->get('logout_image')); ?>" class="logout-image" alt="<?php echo JTEXT::_('COM_USER_LOGOUT_IMAGE_ALT')?>"/>
+			<img src="<?php echo $this->escape($this->params->get('logout_image')); ?>" class="logout-image" alt="<?php echo JText::_('COM_USER_LOGOUT_IMAGE_ALT')?>"/>
 		<?php endif; ?>
 
-	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '')|| $this->params->get('logout_image') != '') : ?>
+	<?php if (($this->params->get('logoutdescription_show') == 1 && str_replace(' ', '', $this->params->get('logout_description')) != '') || $this->params->get('logout_image') != '') : ?>
 	</div>
 	<?php endif ; ?>
 
