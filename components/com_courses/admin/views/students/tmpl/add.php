@@ -42,7 +42,7 @@ if ($canDo->get('core.edit'))
 }
 Toolbar::cancel();
 
-$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 $js = '';
 

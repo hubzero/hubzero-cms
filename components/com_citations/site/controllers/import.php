@@ -530,7 +530,7 @@ class Import extends SiteController
 
 		if (isset($group) && $group != '')
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
 			$gob = new \GroupsGroup($this->database);
 			$cn = $gob->getName($group);
 

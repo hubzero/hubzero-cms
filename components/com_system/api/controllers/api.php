@@ -41,10 +41,10 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 	 */
 	public function execute()
 	{
-		JLoader::import('joomla.environment.request');
-		JLoader::import('joomla.application.component.helper');
+		//JLoader::import('joomla.environment.request');
+		//JLoader::import('joomla.application.component.helper');
 
-		$this->config = JComponentHelper::getParams('com_system');
+		$this->config = Component::params('com_system');
 		$this->database = JFactory::getDBO();
 
 		switch ($this->segments[0])
@@ -70,9 +70,9 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 		$response->component = 'system';
 		$response->tasks = array(
 			'info' => array(
-				'description' => JText::_('Get an overview of a hub\'s status.'),
+				'description' => Lang::txt('Get an overview of a hub\'s status.'),
 				'parameters'  => array(
-					'values'      => JText::_('The verbosity of information returned.'),
+					'values'      => Lang::txt('The verbosity of information returned.'),
 					'type'        => 'string',
 					'default'     => 'all',
 					'accepts'     => array('all', 'short', 'comma-separated list of keys [cms, php, dbversion, dbcollation, phpversion, server, last_commit]')
@@ -80,7 +80,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			),
 		);
 
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 		$this->setMessage($response);
 	}
 
@@ -91,13 +91,13 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function infoTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessageType(Request::getWord('format', 'json'));
 
-		$values = JRequest::getVar('values', 'all');
+		$values = Request::getVar('values', 'all');
 
 		$response = new stdClass;
 
-		$ip = JRequest::ip();
+		$ip = Request::ip();
 		$ips = explode(',', $this->config->get('whitelist', '127.0.0.1'));
 		$ips = array_map('trim', $ips);
 		if (!in_array($ip, $ips))
@@ -131,7 +131,7 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 			'last_core_update' => null
 		);
 
-		require_once JPATH_ROOT . DS . 'administrator/components/com_update' . DS . 'helpers' . DS . 'cli.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_update' . DS . 'helpers' . DS . 'cli.php';
 
 		// Get the last update
 		$rows = json_decode(
@@ -205,12 +205,10 @@ class SystemControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function getSessionLifetimeTask()
 	{
-		$this->setMessageType(JRequest::getWord('format', 'json'));
-
-		$config = new \JConfig();
+		$this->setMessageType(Request::getWord('format', 'json'));
 
 		$response   = array();
-		$response[] = $config->lifetime;
+		$response[] = \Config::get('lifetime');
 
 		$this->setMessage($response);
 	}

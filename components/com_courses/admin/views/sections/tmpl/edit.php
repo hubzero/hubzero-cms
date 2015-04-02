@@ -45,7 +45,7 @@ Toolbar::cancel();
 JHtml::_('behavior.switcher', 'submenu');
 JHtml::_('behavior.calendar');
 
-$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+$base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 
 $this->css(); //->css('classic');
 

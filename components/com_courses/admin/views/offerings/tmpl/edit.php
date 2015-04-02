@@ -257,7 +257,7 @@ function submitbutton(pressbutton)
 							var el = $(this);
 							$.getJSON(el.attr('href').nohtml(), {}, function(response) {
 								if (response.success) {
-									$('#img-display').attr('src', '../administrator/components/com_courses/assets/img/blank.png');
+									$('#img-display').attr('src', '../components/com_courses/admin/assets/img/blank.png');
 									$('#img-name').text('[ none ]');
 									$('#img-size').text('0');
 									$('#img-width').text('0');

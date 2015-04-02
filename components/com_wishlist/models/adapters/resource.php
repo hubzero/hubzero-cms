@@ -31,7 +31,7 @@
 namespace Components\Wishlist\Models\Adapters;
 
 require_once(__DIR__ . DS . 'base.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 
 /**
  * Adapter class for a forum post link for course forum

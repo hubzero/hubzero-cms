@@ -736,8 +736,8 @@ class Items extends AdminController
 			// Build <select> of groups
 			$this->view->lists['groups'] = Html::selectGroup($groups, $this->view->row->group_owner);
 
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 			// Get all contributors
 			$mp = new \MembersProfile($this->database);

@@ -436,8 +436,8 @@ class Authors extends SiteController
 		$helper->getCons();
 
 		// Get a list of all existing contributors
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'association.php');
 
 		include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'contributor' . DS . 'roletype.php');
 

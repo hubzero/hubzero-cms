@@ -31,11 +31,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'plan.php');
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'owner.php');
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'ownergroup.php');
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php');
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'rank.php');
-include_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'attachment.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wishlist.php' );
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'plan.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'owner.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'ownergroup.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'rank.php');
+include_once(JPATH_ROOT.DS.'components'.DS.'com_wishlist'.DS.'tables'.DS.'wish' . DS . 'attachment.php');
 

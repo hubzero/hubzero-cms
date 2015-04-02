@@ -584,7 +584,7 @@ class Questions extends SiteController
 		// Get assigned questions
 		if ($this->view->filters['area'] == 'assigned')
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 			// What tools did this user contribute?
 			$TA = new \ToolAuthor($this->database);
@@ -889,8 +889,8 @@ class Questions extends SiteController
 			$tags = preg_split("/[,;]/", $tags);
 			if (count($tags) > 0)
 			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$TA = new \ToolAuthor($this->database);
 				$objV = new \ToolVersion($this->database);

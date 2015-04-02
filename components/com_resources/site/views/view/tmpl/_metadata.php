@@ -89,8 +89,8 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 		if ($this->model->params->get('show_audience'))
 		{
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.php');
-			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audiencelevel.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audience.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . $this->option . DS . 'tables' . DS . 'audiencelevel.php');
 			$ra = new \Components\Resources\Tables\Audience($database);
 			$audience = $ra->getAudience($this->model->resource->id, $versionid = 0 , $getlabels = 1, $numlevels = 4);
 

@@ -194,13 +194,12 @@ class Orders extends AdminController
 		// require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'receipt.pdf.php');
 
 		// Build the link displayed
-		$juri = \JURI::getInstance();
 		$sef = Route::url('index.php?option=' . $this->_option);
 		if (substr($sef, 0, 1) == '/')
 		{
 			$sef = substr($sef, 1, strlen($sef));
 		}
-		$webpath = str_replace('/administrator/', '/', $juri->base() . $sef);
+		$webpath = str_replace('/administrator/', '/', Request::base() . $sef);
 		$webpath = str_replace('//', '/', $webpath);
 		if (isset($_SERVER['HTTPS']))
 		{
