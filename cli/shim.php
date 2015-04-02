@@ -44,4 +44,61 @@ if (!defined('JPATH_BASE'))
 
 require_once JPATH_BASE.'/core/bootstrap/site/framework.php';
 
+/*
+|--------------------------------------------------------------------------
+| Create The Application
+|--------------------------------------------------------------------------
+|
+| The first thing we will do is create a new application instance which
+| serves as the "glue" for all the parts of a hub, and is the IoC container
+| for the system binding all of the various parts.
+|
+*/
+
+$app = new Hubzero\Base\Application;
+
+/*
+|--------------------------------------------------------------------------
+| Bind The Application In The Container
+|--------------------------------------------------------------------------
+|
+| This may look strange, but we actually want to bind the app into itself
+| in case we need to Facade test an application. This will allow us to
+| resolve the "app" key out of this container for this app's facade.
+|
+*/
+
+$app['app'] = $app;
+
+/*
+|--------------------------------------------------------------------------
+| Register The Core Service Providers
+|--------------------------------------------------------------------------
+|
+| Register all of the core pieces of the framework including session, 
+| caching, and more.
+|
+*/
+
+$providers = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'services.php';
+$services = file_exists($providers) ? require $providers : array();
+foreach ($services as $service)
+{
+	$app->register($service);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Load The Aliases
+|--------------------------------------------------------------------------
+|
+| The alias loader is responsible for lazy loading the class aliases setup
+| for the application.
+|
+*/
+
+$aliases = PATH_CORE . DS . 'core' . DS . 'bootstrap' . DS . 'site' .  DS . 'aliases.php';
+
+$app->registerBaseFacades(file_exists($aliases) ? require $aliases : array());
+
 \JFactory::getApplication('site');
