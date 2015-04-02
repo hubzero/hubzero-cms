@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset>
 		<table class="adminlist">
 			<thead>

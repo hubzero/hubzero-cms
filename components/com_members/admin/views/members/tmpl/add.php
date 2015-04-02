@@ -55,7 +55,7 @@ Toolbar::cancel();
 	}
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
 	<?php } ?>

@@ -44,7 +44,6 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
 		// Incoming
@@ -52,7 +51,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(
@@ -83,14 +82,6 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		// Get records and count
 		$this->view->total = $pbObj->getCount($this->view->filters);
 		$this->view->rows  = $pbObj->getRecords($this->view->filters);
-
-		// Initiate pagination
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -159,16 +150,15 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	public function applyTask()
 	{
 		// Save without redirect
-		$this->saveTask(0);
+		$this->saveTask();
 	}
 
 	/**
 	 * Save blacklisted password
 	 *
-	 * @param   integer  $redirect  Whether or not to redirect after save
 	 * @return  void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
@@ -184,7 +174,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -192,20 +182,17 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		}
 
 		// Redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'),
-				'message'
-			);
+			return $this->editTask($row->id);
 		}
-		else
-		{
-			$this->view->task = 'edit';
-			$this->editTask($row->id);
-		}
+
+		// Redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'),
+			'message'
+		);
 	}
 
 	/**
@@ -240,7 +227,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		{
 			// Output message and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'),
 				'warning'
 			);
@@ -248,20 +235,8 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_SUCCESS')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }

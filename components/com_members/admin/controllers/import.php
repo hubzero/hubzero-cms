@@ -48,11 +48,14 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		if (!\Components\Members\Helpers\Permissions::getActions('component')->get('core.admin'))
 		{
 			$this->setRedirect(
-				'index.php?option=com_members',
+				Rute::url('index.php?option=com_members', false),
 				Lang::txt('Not authorized'),
 				'warning'
 			);
 		}
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
 
 		parent::execute();
 	}
@@ -92,14 +95,6 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		$this->view->total   = $archive->imports('count', $this->view->filters);
 		$this->view->imports = $archive->imports('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -113,16 +108,6 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add an Import
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an Import
 	 *
 	 * @param   object  $row  \Members\Models\Import
@@ -133,11 +118,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if ($row instanceof Members\Models\Import)
-		{
-			$this->view->import = $row;
-		}
-		else
+		if (!($row instanceof Members\Models\Import))
 		{
 			// get request vars
 			$id = Request::getVar('id', array(0));
@@ -146,8 +127,10 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 				$id = (isset($id[0]) ? $id[0] : 0);
 			}
 
-			$this->view->import = new \Members\Models\Import($id);
+			$row = new \Members\Models\Import($id);
 		}
+
+		$this->view->import = $row;
 
 		// import params
 		$this->view->params = new JParameter($this->view->import->get('params'));
@@ -179,23 +162,12 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Save an Import
 	 *
-	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
-	 * Save an Import
-	 *
-	 * @return  void
-	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		Request::checkToken() or die('Invalid Token');
 
 		// Get request vars
 		$import = Request::getVar('import', array());
@@ -290,26 +262,25 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		}
 
 		// Inform user & redirect
-		if ($redirect)
+		if ($this->_task == '')
 		{
-			if ($isNew)
-			{
-				$this->view
-					->set('import', $this->import)
-					->setLayout('fields')
-					->display();
-				return;
-			}
+			return $this->editTask($this->import);
+		}
 
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_IMPORT_CREATED'),
-				'passed'
-			);
+		if ($isNew)
+		{
+			$this->view
+				->set('import', $this->import)
+				->setLayout('fields')
+				->display();
 			return;
 		}
 
-		$this->editTask($this->import);
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_IMPORT_CREATED'),
+			'passed'
+		);
 	}
 
 	/**
@@ -320,7 +291,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		Request::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$ids = Request::getVar('id', array());
@@ -408,7 +379,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//JSession::checkToken() or die('Invalid Token');
+		//Request::checkToken() or die('Invalid Token');
 
 		// Start of import
 		$start = microtime(true);

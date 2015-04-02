@@ -67,42 +67,42 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'state' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'',
+				'word'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				'',
+				'word'
+			))
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'ordering'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		$this->view->filters['state']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.state',
-			'state',
-			'',
-			'word'
-		);
-		$this->view->filters['search']    = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			'',
-			'word'
-		));
 
 		$where = array();
 		$this->client = Request::getWord('filter_client', 'site');
@@ -316,7 +316,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$this->database->query())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				$this->database->getErrorMsg(),
 				'error'
 			);

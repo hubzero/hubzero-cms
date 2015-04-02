@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
@@ -79,7 +79,16 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="3">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>

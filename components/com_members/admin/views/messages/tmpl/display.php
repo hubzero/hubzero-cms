@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="field-component"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
 		<select name="component" id="field-component">
@@ -90,7 +90,16 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="5">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>

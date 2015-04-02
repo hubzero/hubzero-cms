@@ -103,20 +103,8 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		$component->store();
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_REGISTRATION_SAVED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }

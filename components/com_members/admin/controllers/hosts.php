@@ -39,7 +39,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Add a host entry for a member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -85,7 +85,7 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Remove a host entry for a member
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -138,13 +138,11 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Display host entries for a member
 	 *
-	 * @param      object $profile \Hubzero\User\Profile
-	 * @return     void
+	 * @param   object  $profile  \Hubzero\User\Profile
+	 * @return  void
 	 */
 	public function displayTask($profile=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$profile)
 		{
@@ -166,7 +164,9 @@ class MembersControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 

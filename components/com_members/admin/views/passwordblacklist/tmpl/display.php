@@ -54,7 +54,7 @@ if ($canDo->get('core.edit'))
 	</ul>
 </nav>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -66,7 +66,16 @@ if ($canDo->get('core.edit'))
 		<tfoot>
 			<tr>
 				<td colspan="3">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>

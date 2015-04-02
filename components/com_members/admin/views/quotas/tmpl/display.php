@@ -84,7 +84,7 @@ $this->css('quotas.css');
 	     ->display();
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
 			<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
@@ -122,7 +122,16 @@ $this->css('quotas.css');
 		<tfoot>
 			<tr>
 				<td colspan="6">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>

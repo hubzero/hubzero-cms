@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/awards.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/groups.php';
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/options.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'awards.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'groups.php';
+require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'incremental' . DS . 'options.php';
 
 /**
  * Controller class for incremental registration
@@ -131,7 +131,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('Saved')
 		);
 	}

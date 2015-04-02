@@ -85,7 +85,16 @@ function submitbutton(pressbutton)
 			<tfoot>
 				<tr>
 					<td colspan="4">
-						<?php echo $this->pageNav->getListFooter(); ?>
+						<?php
+						// Initiate paging
+						jimport('joomla.html.pagination');
+						$pageNav = new JPagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+						);
+						echo $pageNav->getListFooter();
+						?>
 					</td>
 				</tr>
 			</tfoot>
@@ -123,7 +132,7 @@ function submitbutton(pressbutton)
 					<?php endforeach; ?>
 				<?php else : ?>
 					<tr>
-						<td colspan="4">Currently there are no import hooks.</td>
+						<td colspan="4"><?php echo Lang::txt('Currently there are no import hooks.'); ?></td>
 					</tr>
 				<?php endif; ?>
 			</tbody>

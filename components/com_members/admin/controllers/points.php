@@ -227,7 +227,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 				$this->view->row->earnings = 0;
 			}
 
-			$this->database->setQuery("SELECT * FROM #__users_transactions WHERE uid=" . $uid . " ORDER BY created DESC, id DESC");
+			$this->database->setQuery("SELECT * FROM `#__users_transactions` WHERE uid=" . $uid . " ORDER BY created DESC, id DESC");
 			$this->view->history = $this->database->loadObjectList();
 		}
 		else
@@ -236,12 +236,9 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -256,7 +253,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -390,7 +387,7 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 		$descriptions = Request::getVar('description', array());
 		$aliases = Request::getVar('alias', array());
 
-		$this->database->setQuery('DELETE FROM #__users_points_config');
+		$this->database->setQuery('DELETE FROM `#__users_points_config`');
 		$this->database->query();
 
 		for ($i=0; $i < count($points); $i++)
@@ -400,8 +397,8 @@ class MembersControllerPoints extends \Hubzero\Component\AdminController
 			$alias = $aliases[$i];
 			if ($point)
 			{
-			    $id = intval($i);
-				$this->database->setQuery("INSERT INTO #__users_points_config (`id`,`description`,`alias`,`points`) VALUES ($id,'$description','$alias', '$point')");
+				$id = intval($i);
+				$this->database->setQuery("INSERT INTO `#__users_points_config` (`id`,`description`,`alias`,`points`) VALUES ($id,'$description','$alias', '$point')");
 				$this->database->query();
 			}
 		}

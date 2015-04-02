@@ -32,8 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
-$juser =  JFactory::getUser();
-
 Toolbar::title(Lang::txt('COM_MEMBERS'), 'user.png');
 if ($canDo->get('core.admin'))
 {
@@ -74,7 +72,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
 			<label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
@@ -124,7 +122,16 @@ function submitbutton(pressbutton)
 		<tfoot>
 			<tr>
 				<td colspan="8">
-					<?php echo $this->pageNav->getListFooter(); ?>
+					<?php
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+					echo $pageNav->getListFooter();
+					?>
 				</td>
 			</tr>
 		</tfoot>
@@ -196,7 +203,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$thumb .= DS . ltrim($row->picture, DS);
 		$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 
-		if (file_exists(JPATH_ROOT . $thumb))
+		if (file_exists(PATH_APP . $thumb))
 		{
 			$picture = $thumb;
 		}

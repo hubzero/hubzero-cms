@@ -39,6 +39,19 @@ include_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'organizationtype.
 class MembersControllerEmployers extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display all employer types
 	 *
 	 * @return  void
@@ -90,14 +103,6 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows  = $obj->find('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -106,16 +111,6 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Add a new employer type
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -128,11 +123,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (is_object($model))
-		{
-			$this->view->model = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$id = Request::getVar('id', array());
@@ -144,9 +135,11 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			}
 
 			// Initiate database class and load info
-			$this->view->model = new MembersTableOrganizationType($this->database);
-			$this->view->model->load($id);
+			$model = new MembersTableOrganizationType($this->database);
+			$model->load($id);
 		}
+
+		$this->view->model = $model;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -161,22 +154,12 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a record and return to edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save a record
 	 *
 	 * @param   boolean  $redirect  Redirect after saving?
 	 * @return  void
 	 */
-	public function saveTask($redirect = true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
@@ -206,17 +189,16 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Output messsage and redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_MEMBERS_ORGTYPE_SAVED')
-			);
-			return;
+			return $this->editTask($model);
 		}
 
-		$this->editTask($model);
+		// Output messsage and redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_ORGTYPE_SAVED')
+		);
 	}
 
 	/**
@@ -248,20 +230,8 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_ORGTYPE_REMOVED')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }

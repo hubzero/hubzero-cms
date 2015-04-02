@@ -44,39 +44,38 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['component'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.component',
-			'component',
-			''
-		));
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'c.name'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'component' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.component',
+				'component',
+				''
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'c.name'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$obj = new \Hubzero\Message\Component($this->database);
@@ -87,24 +86,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows = $obj->getRecords($this->view->filters, true);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$this->view->components = $obj->getComponents();
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -131,11 +113,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = Request::getVar('id', array());
@@ -147,21 +125,22 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 			}
 
 			// Initiate database class and load info
-			$this->view->row = new \Hubzero\Message\Component($this->database);
-			$this->view->row->load($id);
+			$row = new \Hubzero\Message\Component($this->database);
+			$row->load($id);
 		}
 
+		$this->view->row = $row;
+
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -214,19 +193,17 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('Message Action saved'),
-				'message'
-			);
+			return $this->editTask($row);
 		}
-		else
-		{
-			$this->editTask($row);
-		}
+
+		// Redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('Message Action saved'),
+			'message'
+		);
 	}
 
 	/**
@@ -266,20 +243,8 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('Message Action removed')
-		);
-	}
-
-	/**
-	 * Cancel a task (redirects to default task)
-	 *
-	 * @return     void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 }

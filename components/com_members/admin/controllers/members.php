@@ -49,64 +49,61 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search_field',
-			'search_field',
-			'name'
-		));
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'registerDate'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['registerDate']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.registerDate',
-			'registerDate',
-			''
-		));
-		$this->view->filters['emailConfirmed']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.emailConfirmed',
-			'emailConfirmed',
-			0,
-			'int'
-		));
-		$this->view->filters['public']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.public',
-			'public',
-			-1,
-			'int'
-		));
-
-		//$this->view->filters['show']         = '';
-		//$this->view->filters['scope']        = '';
-		//$this->view->filters['authorized']   = true;
-
-		$this->view->filters['sortby']       = $this->view->filters['sort'].' '.$this->view->filters['sort_Dir'];
-
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'search_field' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search_field',
+				'search_field',
+				'name'
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'registerDate'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'registerDate' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.registerDate',
+				'registerDate',
+				''
+			),
+			'emailConfirmed' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.emailConfirmed',
+				'emailConfirmed',
+				0,
+				'int'
+			),
+			'public' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.public',
+				'public',
+				-1,
+				'int'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+
+		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
@@ -118,24 +115,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Get records
 		$this->view->rows = $obj->getRecordEntries($this->view->filters, true);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		$this->view->config = $this->config;
-
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
 
 		// Output the HTML
 		$this->view->display();
@@ -276,8 +256,6 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 	{
 		Request::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		if (!$id)
 		{
 			// Incoming
@@ -313,7 +291,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$this->view->validated = (isset($this->validated)) ? $this->validated : false;
 
 		// Get the user's interests (tags)
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
 		$mt = new MembersModelTags($id);
 		$this->view->tags = $mt->render('string');
@@ -325,7 +303,9 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -562,18 +542,18 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$tags = trim(Request::getVar('tags', ''));
 
 		// Process tags
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		include_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php');
 
 		$mt = new MembersModelTags($id);
 		$mt->setTags($tags, $id);
 
 		// Make sure certain changes make it back to the Joomla user table
-		$juser = JUser::getInstance($id);
-		$juser->set('name', $name);
-		$juser->set('email', $profile->get('email'));
-		if (!$juser->save())
+		$user = User::getInstance($id);
+		$user->set('name', $name);
+		$user->set('email', $profile->get('email'));
+		if (!$user->save())
 		{
-			JError::raiseWarning('', Lang::txt($juser->getError()));
+			App::abort('', Lang::txt($user->getError()));
 			return false;
 		}
 
@@ -613,7 +593,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				$id = intval($id);
 
 				// Delete any associated pictures
-				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
+				$path = PATH_APP . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
 				if (!file_exists($path . DS . $file) or !$file)
 				{
 					$this->setError(Lang::txt('COM_MEMBERS_FILE_NOT_FOUND'));
@@ -637,7 +617,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			Lang::txt('COM_MEMBERS_REMOVED')
 		);
 	}
@@ -680,7 +660,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				Lang::txt('COM_MEMBERS_NO_ID'),
 				'error'
 			);
@@ -741,8 +721,8 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Fetch results
 		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
-				FROM #__xprofiles AS xp
-				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+				FROM `#__xprofiles` AS xp
+				INNER JOIN `#__users` u ON u.id = xp.uidNumber AND u.block = 0
 				WHERE LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . " AND xp.emailConfirmed>0 $restrict
 				ORDER BY xp.name ASC";
 
@@ -772,7 +752,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 					$thumb .= DS . ltrim($row->picture, DS);
 					$thumb = \Hubzero\User\Profile\Helper::thumbit($thumb);
 
-					if (file_exists(JPATH_ROOT . $thumb))
+					if (file_exists(PATH_APP . $thumb))
 					{
 						$picture = $thumb;
 					}

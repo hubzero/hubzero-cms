@@ -62,9 +62,6 @@ if (!$surname)
 	}
 }
 
-//jimport('joomla.html.pane');
-//$tabs = JPane::getInstance('sliders');
-
 JHtml::_('behavior.switcher', 'submenu');
 ?>
 <script type="text/javascript">
@@ -84,7 +81,7 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
 <div class="col width-60 fltlft">
 	<nav role="navigation" class="sub-navigation">
@@ -240,9 +237,7 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-bio"><?php echo Lang::txt('COM_MEMBERS_FIELD_BIOGRAPHY'); ?>:</label><br />
 				<?php
-					jimport('joomla.html.editor');
-					$editor =  JEditor::getInstance();
-					echo $editor->display('profile[bio]', $this->escape($this->profile->getBio('raw')), '', '', 40, 10, false, 'field-bio');
+					echo JFactory::getEditor()->display('profile[bio]', $this->escape($this->profile->getBio('raw')), '', '', 40, 10, false, 'field-bio');
 				?>
 			</div>
 			<div class="input-wrap">
@@ -271,7 +266,7 @@ function submitbutton(pressbutton)
 				$pics = explode(DS, $pics);
 				$file = end($pics);
 			?>
-			<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&file=' . $file . '&id=' . $this->profile->get('uidNumber')); ?>"></iframe>
 			<?php
 			} else {
 				echo '<p class="warning">' . Lang::txt('COM_MEMBERS_PICTURE_ADDED_LATER') . '</p>';

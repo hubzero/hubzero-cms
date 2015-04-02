@@ -94,14 +94,6 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Get the records list
 		$this->view->rows = $prObj->getRecords($this->view->filters);
 
-		// Initiate pagination
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -171,16 +163,15 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	public function applyTask()
 	{
 		// Save without redirect
-		$this->saveTask(0);
+		$this->saveTask();
 	}
 
 	/**
 	 * Save password rule
 	 *
-	 * @param   integer  $redirect  Whether or not to redirect after save
 	 * @return  void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
@@ -199,20 +190,17 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'),
-				'message'
-			);
+			return $this->editTask($fields['id']);
 		}
-		else
-		{
-			$this->view->task = 'edit';
-			$this->editTask($fields['id']);
-		}
+
+		// Redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'),
+			'message'
+		);
 	}
 
 	/**

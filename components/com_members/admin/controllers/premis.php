@@ -91,7 +91,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 			$filename = substr($filename, 0, 230);
 		}
 
-		$path = JPATH_ROOT . DS . 'site' . DS . 'protected' . DS . 'premis_uploads';
+		$path = PATH_APP . DS . 'site' . DS . 'protected' . DS . 'premis_uploads';
 
 		if (!is_dir($path))
 		{
@@ -127,7 +127,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 			$ok = 0;
 			$fail = 0;
 
-			include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'Premis.php');
+			include_once(dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php');
 
 			if (($handle = fopen($filename, "r")) !== FALSE)
 			{

@@ -47,43 +47,44 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.quotas.search',
-			'search',
-			''
-		));
-		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.quotas.search_field',
-			'search_field',
-			'name'
-		));
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.quotas.sort',
-			'filter_order',
-			'user_id'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.quotas.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['class_alias']  = trim($app->getUserStateFromRequest(
-			$this->_option . '.quotas.class_alias',
-			'class_alias',
-			''
-		));
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.quotas.limit',
-			'limit',
-			Config::get('list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.quotas.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.quotas.search',
+				'search',
+				''
+			)),
+			'search_field' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.quotas.search_field',
+				'search_field',
+				'name'
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.quotas.sort',
+				'filter_order',
+				'user_id'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.quotas.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'class_alias' => $app->getUserStateFromRequest(
+				$this->_option . '.quotas.class_alias',
+				'class_alias',
+				''
+			),
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.quotas.limit',
+				'limit',
+				Config::get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.quotas.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$obj = new UsersQuotas($this->database);
@@ -94,14 +95,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		$classes = new MembersQuotasClasses($this->database);
 		$this->view->classes = $classes->getRecords();
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		$this->view->config = $this->config;
 
@@ -189,7 +182,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	public function applyTask()
 	{
 		// Save without redirect
-		$this->saveTask(0);
+		$this->saveTask();
 	}
 
 	/**
@@ -198,7 +191,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 * @param   integer  $redirect  Whether or not to redirect after save
 	 * @return  void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
@@ -223,7 +216,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$user = JFactory::getUser($fields['user_id']);
+		$user = User::getInstance($fields['user_id']);
 
 		if (!is_object($user) || !$user->get('id'))
 		{
@@ -245,20 +238,17 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 
 		// Redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
-				'message'
-			);
+			return $this->editTask($row->id);
 		}
-		else
-		{
-			$this->view->task = 'edit';
-			$this->editTask($row->id);
-		}
+
+		// Redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'),
+			'message'
+		);
 	}
 
 	/**
@@ -293,7 +283,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				{
 					// Output message and redirect
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
 						'error'
 					);
@@ -338,27 +328,19 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	public function displayClassesTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', Config::get('list_limit'), 'int'),
+			'start' => $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int')
+		);
 
 		$obj = new MembersQuotasClasses($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
 		$this->view->rows  = $obj->getRecords($this->view->filters, true);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		$this->view->config = $this->config;
 
@@ -439,7 +421,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	public function applyClassTask()
 	{
 		// Save without redirect
-		$this->saveClassTask(0);
+		$this->saveClassTask();
 	}
 
 	/**
@@ -448,7 +430,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 * @param   integer  $redirect  Whether or not to redirect after save
 	 * @return  void
 	 */
-	public function saveClassTask($redirect=1)
+	public function saveClassTask()
 	{
 		// Check for request forgeries
 		Request::checkToken() or jexit('Invalid Token');
@@ -485,20 +467,17 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$quotas->updateUsersByClassId($row->id);
 
 		// Redirect
-		if ($redirect)
+		if ($this->_task == 'applyClass')
 		{
-			// Redirect
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
-				Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'),
-				'message'
-			);
+			return $this->editClassTask($row->id);
 		}
-		else
-		{
-			$this->view->task = 'editClassTask';
-			$this->editClassTask($row->id);
-		}
+
+		// Redirect
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false),
+			Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'),
+			'message'
+		);
 	}
 
 	/**
@@ -612,7 +591,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		$quota = new UsersQuotas($this->database);
 		$quota->load($id);
-		$username = JFactory::getUser($quota->user_id)->get('username');
+		$username = User::getInstance($quota->user_id)->get('username');
 
 		$info = array();
 		$success = false;
@@ -679,18 +658,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	public function importTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML

@@ -83,17 +83,17 @@ foreach ($this->rows as $row)
 							$editAuthorized = $this->juser->authorize('com_users', 'manage');
 
 							//get user object
-							$juser = JUser::getInstance($row->username);
+							$user = User::getInstance($row->username);
 
 							//display link if we are authorized
 							if ($editAuthorized)
 							{
 								$editLink = Route::url('index.php?option=com_members&controller=members&task=edit&id='. $row->userid);
-								echo '<a href="' . $editLink . '" title="' . Lang::txt('JACTION_EDIT') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
+								echo '<a href="' . $editLink . '" title="' . Lang::txt('JACTION_EDIT') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
 							}
 							else
 							{
-								echo $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']';
+								echo $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']';
 							}
 						?>
 					</td>

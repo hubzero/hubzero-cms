@@ -37,6 +37,19 @@ defined('_JEXEC') or die('Restricted access');
 class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display records
 	 *
 	 * @return  void
@@ -71,14 +84,6 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		$this->view->total = $archive->hooks('count', $this->view->filters);
 		$this->view->hooks = $archive->hooks('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -92,16 +97,6 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a record
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a record
 	 *
 	 * @param   object  $row  \Hubzero\Content\Import\Model\Hook
@@ -112,11 +107,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		Request::setVar('hidemainmenu', 1);
 
 		// get the import object
-		if ($row instanceof \Hubzero\Content\Import\Model\Hook)
-		{
-			$this->view->hook = $row;
-		}
-		else
+		if (!($row instanceof \Hubzero\Content\Import\Model\Hook))
 		{
 			// get request vars
 			$id = Request::getVar('id', array(0));
@@ -125,8 +116,10 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 				$id = (isset($id[0]) ? $id[0] : 0);
 			}
 
-			$this->view->hook = new \Hubzero\Content\Import\Model\Hook($id);
+			$row = new \Hubzero\Content\Import\Model\Hook($id);
 		}
+
+		$this->view->hook = $row;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -141,25 +134,14 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save an Import
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save a record
 	 *
-	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// check token
-		JSession::checkToken() or die('Invalid Token');
+		Request::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$hook = Request::getVar('hook', array(), 'post');
@@ -212,17 +194,16 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 		}
 
 		// Inform user & redirect
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			$this->setRedirect(
-				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
-				Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'),
-				'passed'
-			);
-			return;
+			return $this->editTask($this->import);
 		}
 
-		$this->editTask($this->import);
+		$this->setRedirect(
+			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
+			Lang::txt('COM_MEMBERS_IMPORTHOOK_CREATED'),
+			'passed'
+		);
 	}
 
 	/**
@@ -268,7 +249,7 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		Request::checkToken() or die( 'Invalid Token' );
 
 		// get request vars
 		$ids = Request::getVar('id', array());
