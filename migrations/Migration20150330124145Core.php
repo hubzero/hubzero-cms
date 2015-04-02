@@ -21,7 +21,12 @@ class Migration20150330124145Core extends Base
 
 		// The configuration file typically doesn't even give write permissions to the owner
 		// Change that and then write it out
-		\JPath::setPermissions(JPATH_ROOT . DS . 'configuration.php', '0640');
+		$permissions = substr(decoct(fileperms(JPATH_ROOT . DS . 'configuration.php')), 2);
+
+		if (substr($permissions, 1, 1) != '6')
+		{
+			\JPath::setPermissions(JPATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
+		}
 
 		if (!file_put_contents(JPATH_ROOT . DS . 'configuration.php', $configuration))
 		{
@@ -29,7 +34,7 @@ class Migration20150330124145Core extends Base
 			return false;
 		}
 
-		// Change permissions back
-		\JPath::setPermissions(JPATH_ROOT . DS . 'configuration.php', '0440');
+		// Change permissions back to what they were before
+		\JPath::setPermissions(JPATH_ROOT . DS . 'configuration.php', $permissions);
 	}
 }
