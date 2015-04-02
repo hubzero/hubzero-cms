@@ -123,9 +123,7 @@
 	
 /* Team table 
 --------------------------------------------- */
-	table th.th_image {
-		width: 30px;
-	}
+
 	table th.activesort {
 		font-weight: bold !important;
 	}

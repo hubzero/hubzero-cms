@@ -240,7 +240,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Instantiate project owner
 		$objO                      = $this->model->table('Owner');
-		$view->filters['limit']    = Request::getInt( 'limit', intval($this->params->get('limit', 0)));
+		$view->filters['limit']    = Request::getVar(
+			'limit',
+			intval($this->params->get('limit', 25)),
+			'request'
+		);
 		$view->filters['start']    = Request::getInt( 'limitstart', 0);
 		$view->filters['sortby']   = Request::getVar( 'sortby', 'name');
 		$view->filters['sortdir']  = Request::getVar( 'sortdir', 'ASC');

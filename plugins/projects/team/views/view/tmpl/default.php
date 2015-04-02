@@ -74,7 +74,7 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 	<table id="teamlist" class="listing">
 		<thead>
 			<tr>
-				<th class="th_image"></th>
+				<th class="imagebox"></th>
 				<th class="th_user i_user"><?php echo Lang::txt('COM_PROJECTS_NAME'); ?></th>
 				<th><?php echo Lang::txt('COM_PROJECTS_ROLE'); ?></th>
 				<th><?php echo Lang::txt('COM_PROJECTS_JOINED'); ?></th>
@@ -114,9 +114,6 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 					$creator = $this->model->owner('id') == $owner->userid ? 1 : 0;
 
 					// Determine css class for user
-					$usr_class = $owner->status == 0 ? ' class="userinvited"' : ' class="useractive"';
-					$usr_class = ($creator || ($this->model->groupOwner('id') && $owner->native))
-						? ' class="userowner"' : $usr_class;
 					switch ($owner->role)
 					{
 						case '1':
@@ -133,7 +130,7 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 ?>
 			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
-				<td<?php echo $usr_class; ?>><a href="/members/<?php echo $owner->userid; ?>" <?php if ($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php } ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
+				<td class="imagebox"><a href="/members/<?php echo $owner->userid; ?>" <?php if ($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php } ?>><img src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini"><?php echo $role; ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, 'M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_INVITED').'</span>';  ?></td>
@@ -164,5 +161,5 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 </form>
 
 <?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
-<p class="extras"><a href="<?php echo Route::url('index.php?option=' . $this->option . $goto . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></p>
+<p class="extras"><span class="rightfloat"><a href="<?php echo Route::url('index.php?option=' . $this->option . $goto . '&active=team&action=quit'); ?>"><?php echo Lang::txt('COM_PROJECTS_LEAVE_PROJECT'); ?></a></span></p>
 <?php } ?>
