@@ -54,15 +54,15 @@ class ToolInstance extends  \JTable
 	 */
 	public function check()
 	{
-		if (!$this->id && trim($this->name) == '')
+		if (!$this->id && trim($this->parent_name) == '')
 		{
-			$this->setError(JText::_('COM_TOOLS_ERROR_NO_INSTANCE_PARENT_NAME'));
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE_PARENT_NAME'));
 			return false;
 		}
 
 		if (!$this->id && trim($this->instance) == '')
 		{
-			$this->setError(JText::_('COM_TOOLS_ERROR_NO_INSTANCE'));
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_INSTANCE'));
 			return false;
 		}
 
@@ -212,21 +212,19 @@ class ToolInstance extends  \JTable
 	/**
 	 * Update Parent Name
 	 *
-	 * @param      string $oldname
+	 * @param      string $parent_id
 	 * @param      string $newname
-	 * @param      int 	  $parent_id
 	 * @return     mixed
 	 */
-	public function updateParentName($oldname = NULL, $newname = NULL, $parent_id = NULL)
+	public function updateParentName($parent_id = NULL, $newname = NULL)
 	{
-		if ($oldname === NULL ||  $newname === NULL || $parent_id === NULL )
+		if ($newname === NULL || $parent_id === NULL )
 		{
 			return false;
 		}
 
 		$query = "UPDATE $this->_tbl SET parent_name =" . $this->_db->Quote($newname)
-				. " WHERE parent_name =" . $this->_db->Quote($oldname) . "
-				AND parent_id =" . $this->_db->Quote($parent_id);
+				. " WHERE parent_id =" . $this->_db->Quote($parent_id);
 		$this->_db->setQuery( $query );
 		if ($this->_db->query())
 		{

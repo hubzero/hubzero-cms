@@ -55,7 +55,7 @@ class Tool extends \JTable
 	{
 		if (trim($this->name) == '')
 		{
-			$this->setError(JText::_('COM_TOOLS_ERROR_NO_NAME'));
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_NO_NAME'));
 			return false;
 		}
 
