@@ -396,7 +396,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		$password_rules = \Hubzero\Password\Rule::getRules();
 		$this->view->password_rules = array();
 
-		foreach($password_rules as $rule)
+		foreach ($password_rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{

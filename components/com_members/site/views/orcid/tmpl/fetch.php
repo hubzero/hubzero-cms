@@ -35,12 +35,12 @@ $orcid_html = '';
 
 
 $orcid_html .= "<ol class=\"results\" id=\"orcid-results-list\">\n";
-foreach($this->records as $record) {
-
-  	$fname = array_key_exists ('given-names', $record) ? $record['given-names'] : '';
-	$lname = array_key_exists ('family-name', $record) ? $record['family-name'] : '';
-	$orcid_url = array_key_exists ('orcid-id', $record) ? $record['orcid-id'] : '';
-	$orcid = array_key_exists ('orcid', $record) ? $record['orcid'] : '';
+foreach ($this->records as $record)
+{
+	$fname     = array_key_exists('given-names', $record) ? $record['given-names'] : '';
+	$lname     = array_key_exists('family-name', $record) ? $record['family-name'] : '';
+	$orcid_url = array_key_exists('orcid-id', $record) ? $record['orcid-id'] : '';
+	$orcid     = array_key_exists('orcid', $record) ? $record['orcid'] : '';
 
 	$orcid_html .= "<li class=\"public\">";
 		$orcid_html .= "<div class=\"grid\">";
@@ -65,5 +65,3 @@ $orcid_html .= "</ol>\n";
 
 echo json_encode($orcid_html);
 exit();
-
-?>

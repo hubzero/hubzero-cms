@@ -28,7 +28,6 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-
 class ToolsControllerApi extends \Hubzero\Component\ApiController
 {
 	public function execute()
@@ -115,7 +114,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false)	return $this->not_found();
+		//if ($result === false) return $this->not_found();
 
 		//instantiate database object
 		$database = JFactory::getDBO();
@@ -688,7 +687,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$jobs = $ms->getCount($profile->get('username'));
 
 		// Find out how many sessions the user is ALLOWED to run.
-		include_once(JPATH_ROOT . DS . ='components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php');
 
 		$preferences = new ToolsTablePreferences($database);
 		$preferences->loadByUser($profile->get('uidNumber'));

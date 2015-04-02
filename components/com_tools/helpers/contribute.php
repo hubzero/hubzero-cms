@@ -328,10 +328,10 @@ class ContribtoolHtml
 		if (!$status['published'] && ContribtoolHtml::toolActive($status['state']) ) {
 			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
+		else if ($status['published'] && ContribtoolHtml::toolActive($status['state'])) {
 			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_PUBLISHED')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
-		else if($status['state']==8) {
+		else if ($status['state']==8) {
 			$toolnum .= Lang::txt('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.Lang::txt('COM_TOOLS_ON').' '.$sitename.' '.Lang::txt('COM_TOOLS_NOW_RETIRED');
 		}
 
@@ -648,7 +648,7 @@ class ContribtoolHtml
 			{
 				$html .= "\t\t".' <li';
 
-				if(strtolower($active_stage) == strtolower($stages[$i])) {
+				if (strtolower($active_stage) == strtolower($stages[$i])) {
 					$html .= ' class="active"';
 
 				}
@@ -772,11 +772,11 @@ class ContribtoolHtml
 	public static function addNoteArea($i, $option, $type = 'item')
 	{
 		$out  = '';
-	 	$out .= '<label>'."\n";
+		$out .= '<label>'."\n";
 		$out .= ' <span class="selectgroup editnote">'."\n";
 		$out .= '   <textarea name="'.$type.'[]" id="'.$type.$i.'"  rows="6" cols="35"></textarea>'."\n";
-        $out .= '   <span class="extras"><span></span></span>'."\n";
-        $out .= ' </span>'."\n";
+		$out .= '   <span class="extras"><span></span></span>'."\n";
+		$out .= ' </span>'."\n";
 		$out .= '</label>'."\n";
 
 		return $out;

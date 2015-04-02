@@ -560,7 +560,7 @@ class ToolsHelperHtml
 			{
 				$html .= "\t\t".' <li';
 
-				if(strtolower($active_stage) == strtolower($stages[$i])) {
+				if (strtolower($active_stage) == strtolower($stages[$i])) {
 					$html .= ' class="active"';
 
 				}
@@ -684,11 +684,11 @@ class ToolsHelperHtml
 	public static function addNoteArea($i, $option, $type = 'item')
 	{
 		$out  = '';
-	 	$out .= '<label>'."\n";
+		$out .= '<label>'."\n";
 		$out .= ' <span class="selectgroup editnote">'."\n";
 		$out .= '   <textarea name="'.$type.'[]" id="'.$type.$i.'"  rows="6" cols="35"></textarea>'."\n";
-        $out .= '   <span class="extras"><span></span></span>'."\n";
-        $out .= ' </span>'."\n";
+		$out .= '   <span class="extras"><span></span></span>'."\n";
+		$out .= ' </span>'."\n";
 		$out .= '</label>'."\n";
 
 		return $out;
