@@ -84,7 +84,8 @@ class AdminModelSysInfo extends JModelLegacy
 			$registry = new JRegistry(new JConfig);
 			$this->config = $registry->toArray();
 			$hidden = array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass');
-			foreach($hidden as $key) {
+			foreach ($hidden as $key)
+			{
 				$this->config[$key] = 'xxxxxx';
 			}
 		}
@@ -103,10 +104,12 @@ class AdminModelSysInfo extends JModelLegacy
 			$version = new JVersion();
 			$platform = new JPlatform();
 			$db = JFactory::getDBO();
-			if (isset($_SERVER['SERVER_SOFTWARE'])) {
+			if (isset($_SERVER['SERVER_SOFTWARE']))
+			{
 				$sf = $_SERVER['SERVER_SOFTWARE'];
 			}
-			else {
+			else
+			{
 				$sf = getenv('SERVER_SOFTWARE');
 			}
 			$this->info['php']			= php_uname();
@@ -152,7 +155,8 @@ class AdminModelSysInfo extends JModelLegacy
 	 *
 	 * @return array states of directories
 	 */
-	public function getDirectory() {
+	public function getDirectory()
+	{
 		if (is_null($this->directories))
 		{
 			$this->directories = array();
@@ -166,13 +170,15 @@ class AdminModelSysInfo extends JModelLegacy
 
 			// List all admin languages
 			$admin_langs = JFolder::folders(JPATH_ADMINISTRATOR.'/language');
-			foreach($admin_langs as $alang) {
+			foreach ($admin_langs as $alang)
+			{
 				$this->_addDirectory('administrator/language/' . $alang, JPATH_ADMINISTRATOR.'/language/'.$alang);
 			}
 
 			// List all manifests folders
 			$manifests = JFolder::folders(JPATH_ADMINISTRATOR.'/manifests');
-			foreach($manifests as $_manifest) {
+			foreach ($manifests as $_manifest)
+			{
 				$this->_addDirectory('administrator/manifests/' . $_manifest, JPATH_ADMINISTRATOR.'/manifests/'.$_manifest);
 			}
 
@@ -185,14 +191,16 @@ class AdminModelSysInfo extends JModelLegacy
 
 			$image_folders = JFolder::folders(JPATH_SITE.'/'.$cparams->get('image_path'));
 			// List all images folders
-			foreach ($image_folders as $folder) {
+			foreach ($image_folders as $folder)
+			{
 				$this->_addDirectory('images/' . $folder, JPATH_SITE.'/'.$cparams->get('image_path').'/'.$folder);
 			}
 
 			$this->_addDirectory('language', JPATH_SITE.'/language');
 			// List all site languages
 			$site_langs = JFolder::folders(JPATH_SITE . '/language');
-			foreach ($site_langs as $slang) {
+			foreach ($site_langs as $slang)
+			{
 				$this->_addDirectory('language/' . $slang, JPATH_SITE.'/language/'.$slang);
 			}
 
@@ -203,7 +211,8 @@ class AdminModelSysInfo extends JModelLegacy
 			$this->_addDirectory('plugins', JPATH_PLUGINS);
 
 			$plugin_groups = JFolder::folders(JPATH_PLUGINS);
-			foreach ($plugin_groups as $folder) {
+			foreach ($plugin_groups as $folder)
+			{
 				$this->_addDirectory('plugins/' . $folder, JPATH_PLUGINS.'/'.$folder);
 			}
 
@@ -218,8 +227,9 @@ class AdminModelSysInfo extends JModelLegacy
 		return $this->directories;
 	}
 
-	private function _addDirectory($name, $path, $message = '') {
-	    $this->directories[$name] = array('writable' => is_writable($path), 'message' => $message);
+	private function _addDirectory($name, $path, $message = '')
+	{
+		$this->directories[$name] = array('writable' => is_writable($path), 'message' => $message);
 	}
 
 	/**
@@ -233,8 +243,7 @@ class AdminModelSysInfo extends JModelLegacy
 	{
 		if (is_null($this->editor))
 		{
-			$config = JFactory::getConfig();
-			$this->editor = $config->get('editor');
+			$this->editor = \Config::get('editor');
 		}
 		return $this->editor;
 	}

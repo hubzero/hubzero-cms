@@ -64,7 +64,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 					$info = $item['info'];
 					$skuMeta = $item['meta'];
 					$action = '';
-					
 
 					// If course
 					if ($info->ptId == 20)
@@ -73,9 +72,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 						$action = '<a href="' . JRoute::_('index.php?option=com_courses/' . $item['meta']['courseId']);
 						$action .= '">Go to the course page</a>';
 					}
-					else {
+					else
+					{
 						$status = 'Purchased';
-						
+
 						if (!empty($skuMeta['purchaseNote']))
 						{
 							$action = $skuMeta['purchaseNote'];

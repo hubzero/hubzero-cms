@@ -103,7 +103,7 @@ class AdminModelHelp extends JModelLegacy
 			// Get Help files
 			$files = JFolder::files(JPATH_BASE . '/help/' . $lang_tag, '\.xml$|\.html$');
 			$this->toc = array();
-			foreach($files as $file)
+			foreach ($files as $file)
 			{
 				$buffer = file_get_contents(JPATH_BASE . '/help/' . $lang_tag . '/' . $file);
 				if (preg_match('#<title>(.*?)</title>#', $buffer, $m))

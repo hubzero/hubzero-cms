@@ -37,9 +37,9 @@ jimport('joomla.application.component.view');
 
 // enable only if PRO is enabled
 $juser = JFactory::getUser();
-if(!$juser->proEnabled)
+if (!$juser->proEnabled)
 {
-    JError::raiseError(404, JText::_('Component is not available at this time'));
+	JError::raiseError(404, JText::_('Component is not available at this time'));
 }
 
 // require base component controller
@@ -53,8 +53,7 @@ if (empty($controllerName))
 	// Load default controller if no controller provided
 	$controllerName = 'cart';
 }
-
-elseif (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+else if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	JError::raiseError(404, JText::_('Page Not Found'));
 }

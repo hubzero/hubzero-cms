@@ -100,7 +100,7 @@ class CartControllerTest extends ComponentController
 				// Add coupon
 				$coupon->add();
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -116,7 +116,7 @@ class CartControllerTest extends ComponentController
 			{
 				$warehouse->deleteCoupon('couponcode3');
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -166,7 +166,7 @@ class CartControllerTest extends ComponentController
 				$course->setTimeToLive('10 YEAR');
 				$course->update();
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -189,7 +189,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->update();
 				//print_r($info);
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
@@ -323,7 +323,7 @@ class CartControllerTest extends ComponentController
 	public function passportTask()
 	{
 		// Instantiate badges manager, provide badges provider (right now there is only one: 'PASSPORT').
-		$badges = new Hubzero_Badges('PASSPORT');
+		$badges = new \Hubzero\Badges\Badge('PASSPORT');
 
 		// Get the actual badges provider class
 		$passport = $badges->getProvider();
@@ -342,7 +342,7 @@ class CartControllerTest extends ComponentController
 		try {
 			$passport->setCredentials($credentials);
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			echo $e->getMessage();
 		}
@@ -363,7 +363,7 @@ class CartControllerTest extends ComponentController
 
 			echo 'Badges granted';
 		}
-		catch(Exception $e)
+		catch (Exception $e)
 		{
 			echo 'Error: ' . $e->getMessage();
 		}

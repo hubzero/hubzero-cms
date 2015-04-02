@@ -66,7 +66,7 @@ class CartControllerCart extends ComponentController
 	{
 		$cart = new CartModelCurrentCart();
 
-        // Initialize errors array
+		// Initialize errors array
 		$errors = array();
 
 		// Update cart if needed
@@ -101,7 +101,7 @@ class CartControllerCart extends ComponentController
 			}
 			else
 			{
-				if(!is_array($skus))
+				if (!is_array($skus))
 				{
 					$skus = array($skus => 1);
 				}
