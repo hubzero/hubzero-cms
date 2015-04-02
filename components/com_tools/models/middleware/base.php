@@ -58,9 +58,9 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -90,7 +90,7 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = \JComponentHelper::getParams('com_tools');
+			$this->_config = \Component::params('com_tools');
 		}
 
 		if ($key)

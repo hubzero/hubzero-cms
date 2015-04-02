@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
-require_once(__DIR__ . '/location.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.zones.php');
+require_once(__DIR__ . DS . 'location.php');
 
 /**
  * Middleware zone mdel
@@ -161,7 +161,7 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			$path .= '/' . $file;
 			if (file_exists($path))
 			{
-				$path = JRoute::_('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
+				$path = Route::url('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
 			}
 			return $path;
 		}
@@ -200,9 +200,9 @@ class MiddlewareModelZone extends MiddlewareModelBase
 			{
 				// Remove picture
 				jimport('joomla.filesystem.file');
-				if (!JFile::delete($this->logo('path') . DS . $file))
+				if (!\JFile::delete($this->logo('path') . DS . $file))
 				{
-					$this->setError(JText::_('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
+					$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
 				}
 			}
 		}

@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
-require_once(__DIR__ . '/middleware/zone.php');
-require_once(__DIR__ . '/middleware/session.php');
+require_once(__DIR__ . DS . 'middleware' . DS . 'zone.php');
+require_once(__DIR__ . DS . 'middleware' . DS . 'session.php');
 
 /**
  * Tools middleware model
@@ -256,7 +256,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_tools');
+			$this->_config = Component::params('com_tools');
 		}
 
 		if ($key)

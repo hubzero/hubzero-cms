@@ -37,83 +37,6 @@ defined('_JEXEC') or die('Restricted access');
 class MwSession extends JTable
 {
 	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $sessnum    = null;
-
-	/**
-	 * varchar(32)
-	 *
-	 * @var string
-	 */
-	var $username   = null;
-
-	/**
-	 * varchar(40)
-	 *
-	 * @var string
-	 */
-	var $remoteip   = null;
-
-	/**
-	 * varchar(40)
-	 *
-	 * @var string
-	 */
-	var $exechost   = null;
-
-	/**
-	 * int(10)
-	 *
-	 * @var integer
-	 */
-	var $dispnum    = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $start      = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $accesstime = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $timeout    = null;
-
-	/**
-	 * varchar(80)
-	 *
-	 * @var string
-	 */
-	var $appname    = null;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $sessname   = null;
-
-	/**
-	 * varchar(32)
-	 *
-	 * @var string
-	 */
-	var $sesstoken  = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -235,13 +158,12 @@ class MwSession extends JTable
 		else
 		{
 			// Note: this check is different from others.
-			// Here, we check that the $juser->get('username') OWNS the session.
-			$juser = JFactory::getUser();
+			// Here, we check that the User::get('username') OWNS the session.
 			$query = "SELECT * FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 					  ON v.sessnum = s.sessnum
 					  WHERE v.sessnum=" . $sess . "
-					  AND s.username='" . $juser->get('username') . "'
-					  AND v.viewuser='" . $juser->get('username') . "'";
+					  AND s.username='" . \User::get('username') . "'
+					  AND v.viewuser='" . \User::get('username') . "'";
 		}
 
 		$this->_db->setQuery($query);
@@ -373,69 +295,6 @@ class MwSession extends JTable
 class MwJob extends JTable
 {
 	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $sessnum   = null;
-
-	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $jobid     = null;
-
-	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $superjob  = null;
-
-	/**
-	 * varchar(40)
-	 *
-	 * @var string
-	 */
-	var $event     = null;
-
-	/**
-	 * smallint(5)
-	 *
-	 * @var integer
-	 */
-	var $ncpus     = null;
-
-	/**
-	 * varchar(80)
-	 *
-	 * @var string
-	 */
-	var $venue     = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $start     = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $heartbeat = null;
-
-	/**
-	 * smallint(2)
-	 *
-	 * @var integer
-	 */
-	var $active     = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -453,48 +312,6 @@ class MwJob extends JTable
 class MwView extends JTable
 {
 	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $viewid    = null;
-
-	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $sessnum   = null;
-
-	/**
-	 * varchar(32)
-	 *
-	 * @var string
-	 */
-	var $username  = null;
-
-	/**
-	 * varchar(40)
-	 *
-	 * @var string
-	 */
-	var $remoteip  = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $start     = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $heartbeat = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -511,62 +328,6 @@ class MwView extends JTable
  */
 class MwViewperm extends JTable
 {
-	/**
-	 * bigint(20)
-	 *
-	 * @var integer
-	 */
-	var $sessnum   = null;
-
-	/**
-	 * varchar(32)
-	 *
-	 * @var string
-	 */
-	var $viewuser  = null;
-
-	/**
-	 * varchar(32)
-	 *
-	 * @var string
-	 */
-	var $viewtoken = null;
-
-	/**
-	 * varchar(9)
-	 *
-	 * @var string
-	 */
-	var $geometry  = null;
-
-	/**
-	 * varchar(40)
-	 *
-	 * @var string
-	 */
-	var $fwhost    = null;
-
-	/**
-	 * smallint(5)
-	 *
-	 * @var integer
-	 */
-	var $fwport    = null;
-
-	/**
-	 * varchar(16)
-	 *
-	 * @var string
-	 */
-	var $vncpass   = null;
-
-	/**
-	 * varchar(4)
-	 *
-	 * @var string
-	 */
-	var $readonly  = null;
-
 	/**
 	 * Constructor
 	 *
@@ -853,34 +614,6 @@ class Hosttype
  */
 class RecentTool extends JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid     = NULL;
-
-	/**
-	 * varchar
-	 *
-	 * @var string
-	 */
-	var $tool    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
 	/**
 	 * Constructor
 	 *

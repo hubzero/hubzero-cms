@@ -31,10 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.job.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.session.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.view.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.viewperm.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'mw.job.php');
 
 /**
  * Middleware model for a tool session
@@ -77,9 +77,9 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			if (!($this->_tbl instanceof \JTable))
 			{
 				$this->_logError(
-					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \JText::_('Table class must be an instance of JTable.')
+					__CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Table class must be an instance of JTable.')
 				);
-				throw new \LogicException(\JText::_('Table class must be an instance of JTable.'));
+				throw new \LogicException(\Lang::txt('Table class must be an instance of JTable.'));
 			}
 
 			if (is_numeric($oid) || is_string($oid))
@@ -259,7 +259,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			// Check for invalid characters
 			if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $user))
 			{
-				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
+				$this->setError(Lang::txt('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
 
@@ -267,7 +267,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 			$zuser = JUser::getInstance($user);
 			if (!$zuser || !is_object($zuser) || !$zuser->get('id'))
 			{
-				$this->setError(JText::_('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
+				$this->setError(Lang::txt('MW_ERROR_INVALID_USERNAME') . ': ' . $user);
 				continue;
 			}
 

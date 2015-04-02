@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'zone.locations.php');
-require_once(__DIR__ . '/base.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'zone.locations.php');
+require_once(__DIR__ . DS . 'base.php');
 
 /**
  * Middleware zone location model

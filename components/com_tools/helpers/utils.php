@@ -47,7 +47,7 @@ class ToolsHelperUtils
 
 		if (!is_object($instance))
 		{
-			$config = JComponentHelper::getParams('com_tools');
+			$config = Component::params('com_tools');
 			$enabled = $config->get('mw_on');
 
 			if (!$enabled && !JFactory::getapplication()->isAdmin())
@@ -97,7 +97,7 @@ class ToolsHelperUtils
 	{
 		$info = array();
 
-		$config = JComponentHelper::getParams('com_tools');
+		$config = Component::params('com_tools');
 		$host = $config->get('storagehost');
 
 		if ($username && $host)
@@ -271,10 +271,10 @@ class ToolsHelperUtils
 		{
 			foreach ($uids as $uid)
 			{
-				$juser = JUser::getInstance($uid);
-				if ($juser)
+				$user = User::getInstance($uid);
+				if ($user)
 				{
-					$logins[] = $juser->get('username');
+					$logins[] = $user->get('username');
 				}
 			}
 		}
@@ -290,17 +290,17 @@ class ToolsHelperUtils
 	 *
 	 * @return     path
 	 */
-	public static function getResourcePath( $createdDate, $resourceId, $versionId )
+	public static function getResourcePath($createdDate, $resourceId, $versionId)
 	{
 		//include the resources html helper file
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
 
 		//get resource upload path
-		$resourceParams = JComponentHelper::getParams('com_resources');
+		$resourceParams = Component::params('com_resources');
 		$path = DS . trim($resourceParams->get("uploadpath"), DS);
 
 		//build path based on resource creation date and id
-		$path .= \Components\Resources\Helpers\Html::build_path( $createdDate, $resourceId, '');
+		$path .= \Components\Resources\Helpers\Html::build_path($createdDate, $resourceId, '');
 
 		//append version id if we have one
 		if ($versionId)
@@ -319,18 +319,17 @@ class ToolsHelperUtils
 	 *
 	 * @return     BOOL
 	 */
-	public static function getToolAccess( $tool, $login = '')
+	public static function getToolAccess($tool, $login = '')
 	{
 		//include tool models
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'tool.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'group.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 		//instantiate objects
-		$access 	= new stdClass();
-		$juser		= JFactory::getUser();
-		$database 	= JFactory::getDBO();
-		$xlog 		= JFactory::getLogger();
+		$access = new stdClass();
+		$database = JFactory::getDBO();
+		$xlog     = JFactory::getLogger();
 
 		// Ensure we have a tool
 		if (!$tool)
@@ -344,7 +343,7 @@ class ToolsHelperUtils
 		// Ensure we have a login
 		if ($login == '')
 		{
-			$login = $juser->get('username');
+			$login = User::get('username');
 			if ($login == '')
 			{
 				$access->valid = 0;
@@ -355,8 +354,8 @@ class ToolsHelperUtils
 		}
 
 		//load tool version
-		$toolVersion = new ToolVersion( $database );
-		$toolVersion->loadFromInstance( $tool );
+		$toolVersion = new ToolVersion($database);
+		$toolVersion->loadFromInstance($tool);
 		if (empty($toolVersion))
 		{
 			$access->valid = 0;
@@ -366,13 +365,13 @@ class ToolsHelperUtils
 		}
 
 		//load the tool groups
-		$toolGroup = new ToolGroup( $database );
+		$toolGroup = new ToolGroup($database);
 		$query = "SELECT * FROM " . $toolGroup->getTableName() . " WHERE toolid=" . $toolVersion->toolid;
-		$database->setQuery( $query );
+		$database->setQuery($query);
 		$toolgroups = $database->loadObjectList();
 
 		//get users groups
-		$xgroups = \Hubzero\User\Helper::getGroups( $juser->get('id'), 'members' );
+		$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
 
 		// Check if the user is in any groups for this app
 		$ingroup = false;
@@ -402,14 +401,14 @@ class ToolsHelperUtils
 
 		//check to see if we are an admin
 		$admin = false;
-		$ctconfig = JComponentHelper::getParams('com_tools');
+		$ctconfig = Component::params('com_tools');
 		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups))
 		{
 			$admin = true;
 		}
 
 		//get access settings
-		$exportAllowed = ToolsHelperUtils::getToolExportAccess( $toolVersion->exportControl );
+		$exportAllowed = ToolsHelperUtils::getToolExportAccess($toolVersion->exportControl);
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
 		$isToolGroupControlled = ($toolVersion->toolaccess == '@GROUP');
@@ -481,18 +480,18 @@ class ToolsHelperUtils
 	 *
 	 * @return     BOOL
 	 */
-	public static function getToolExportAccess( $export_control )
+	public static function getToolExportAccess($export_control)
 	{
 		//instaniate objects
 		$export_access = new stdClass;
 		$xlog = JFactory::getLogger();
-		$ip = JRequest::ip();
+		$ip = Request::ip();
 
 		//get the export control level
-		$export_control = strtolower( $export_control );
+		$export_control = strtolower($export_control);
 
 		//get the users country based on ip address
-		$country = \Hubzero\Geocode\Geocode::ipcountry( $ip );
+		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
 
 		//if we dont know the users location and its a restricted to we have to deny access
 		if (empty($country) && in_array($export_control, array('us', 'd1', 'pu')))
@@ -516,7 +515,7 @@ class ToolsHelperUtils
 		switch ($export_control)
 		{
 			case 'us':
-				if (\Hubzero\Geocode\Geocode::ipcountry( $ip ) != 'us')
+				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed from within the U.S. due to export/licensing restrictions.';
@@ -526,7 +525,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry( $ip )))
+				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may not be accessed from your current location due to export/license restrictions.';
@@ -536,7 +535,7 @@ class ToolsHelperUtils
 			break;
 
 			case 'pu':
-				if (!\Hubzero\Geocode\Geocode::is_iplocation( $ip, $export_control ))
+				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $export_control))
 				{
 					$export_access->valid = 0;
 					$export_access->error->message = 'This tool may only be accessed by authorized users while on the West Lafayette campus of Purdue University due to license restrictions.';
@@ -559,29 +558,28 @@ class ToolsHelperUtils
 	 *
 	 * @return 		BOOL
 	 */
-	public static function recordToolUsage( $tool, $userid = '' )
+	public static function recordToolUsage($tool, $userid = '')
 	{
 		//include needed files
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'recent.php');
 
 		//instantiate needed objects
-		$juser = JFactory::getUser();
 		$database = JFactory::getDBO();
 
 		//load tool version
-		$toolVersion = new ToolVersion( $database );
-		$toolVersion->loadFromName( $tool );
+		$toolVersion = new ToolVersion($database);
+		$toolVersion->loadFromName($tool);
 
 		//make sure we have a user id
 		if (!$userid)
 		{
-			$userid = $juser->get('id');
+			$userid = User::get('id');
 		}
 
 		//get recent tools
-		$recentTool = new ToolRecent( $database );
-		$rows = $recentTool->getRecords( $userid );
+		$recentTool = new ToolRecent($database);
+		$rows = $recentTool->getRecords($userid);
 
 		//check to see if any recently used tools are this one
 		$thisapp = 0;
@@ -603,10 +601,10 @@ class ToolsHelperUtils
 		if ($thisapp)
 		{
 			// There was one, so just update its creation time
-			$recentTool->id 		= $thisapp;
-			$recentTool->uid 		= $userid;
-			$recentTool->tool 		= $tool;
-			$recentTool->created 	= $created;
+			$recentTool->id      = $thisapp;
+			$recentTool->uid     = $userid;
+			$recentTool->tool    = $tool;
+			$recentTool->created = $created;
 		}
 		else
 		{
@@ -614,17 +612,17 @@ class ToolsHelperUtils
 			if (count($rows) < 5)
 			{
 				// Still under 5, so insert a new record
-				$recentTool->uid 		= $userid;
-				$recentTool->tool 		= $tool;
-				$recentTool->created 	= $created;
+				$recentTool->uid     = $userid;
+				$recentTool->tool    = $tool;
+				$recentTool->created = $created;
 			}
 			else
 			{
 				// We reached the limit, so update the oldest entry effectively replacing it
-				$recentTool->id 		= $oldest->id;
-				$recentTool->uid 		= $userid;
-				$recentTool->tool 		= $tool;
-				$recentTool->created 	= $created;
+				$recentTool->id      = $oldest->id;
+				$recentTool->uid     = $userid;
+				$recentTool->tool    = $tool;
+				$recentTool->created = $created;
 			}
 		}
 
@@ -636,7 +634,6 @@ class ToolsHelperUtils
 
 		return true;
 	}
-
 
 	/**
 	 * Run Middleware Scripts

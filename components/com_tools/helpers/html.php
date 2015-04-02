@@ -81,14 +81,14 @@ class ToolsHelperHtml
 
 		// Set the periods of time
 		$periods = array(
-			JText::_('COM_TOOLS_SECOND'),
-			JText::_('COM_TOOLS_MINUTE'),
-			JText::_('COM_TOOLS_HOUR'),
-			JText::_('COM_TOOLS_DAY'),
-			JText::_('COM_TOOLS_WEEK'),
-			JText::_('COM_TOOLS_MONTH'),
-			JText::_('COM_TOOLS_YEAR'),
-			JText::_('COM_TOOLS_DECADE')
+			Lang::txt('COM_TOOLS_SECOND'),
+			Lang::txt('COM_TOOLS_MINUTE'),
+			Lang::txt('COM_TOOLS_HOUR'),
+			Lang::txt('COM_TOOLS_DAY'),
+			Lang::txt('COM_TOOLS_WEEK'),
+			Lang::txt('COM_TOOLS_MONTH'),
+			Lang::txt('COM_TOOLS_YEAR'),
+			Lang::txt('COM_TOOLS_DECADE')
 		);
 
 		// Set the number of seconds per period
@@ -124,14 +124,14 @@ class ToolsHelperHtml
 		if ($number != 1)
 		{
 			$periods = array(
-				JText::_('COM_TOOLS_SECONDS'),
-				JText::_('COM_TOOLS_MINUTES'),
-				JText::_('COM_TOOLS_HOURS'),
-				JText::_('COM_TOOLS_DAYS'),
-				JText::_('COM_TOOLS_WEEKS'),
-				JText::_('COM_TOOLS_MONTHS'),
-				JText::_('COM_TOOLS_YEARS'),
-				JText::_('COM_TOOLS_DECADES')
+				Lang::txt('COM_TOOLS_SECONDS'),
+				Lang::txt('COM_TOOLS_MINUTES'),
+				Lang::txt('COM_TOOLS_HOURS'),
+				Lang::txt('COM_TOOLS_DAYS'),
+				Lang::txt('COM_TOOLS_WEEKS'),
+				Lang::txt('COM_TOOLS_MONTHS'),
+				Lang::txt('COM_TOOLS_YEARS'),
+				Lang::txt('COM_TOOLS_DECADES')
 			);
 		}
 
@@ -230,22 +230,21 @@ class ToolsHelperHtml
 	 */
 	public static function getNumofTools($status, $toolnum='')
 	{
-        // get hub parameters
-        $jconfig = JFactory::getConfig();
-        $sitename = $jconfig->getValue('config.sitename');
+		// get hub parameters
+		$sitename = Config::get('sitename');
 
-		$toolnum = ($status['state']!=9) ? JText::_('COM_TOOLS_THIS_TOOL').'  ': '';
+		$toolnum = ($status['state']!=9) ? Lang::txt('COM_TOOLS_THIS_TOOL').'  ': '';
 		if (!$status['published'] && self::toolActive($status['state']))
 		{
-			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_UNDER_DEVELOPMENT')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
+			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntoolsdev'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
 		else if ($status['published'] && self::toolActive($status['state']))
 		{
-			$toolnum .= JText::_('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(JText::_('COM_TOOLS_TOOLS')). ' '.strtolower(JText::_('COM_TOOLS_PUBLISHED')).' '.JText::_('COM_TOOLS_ON').' '.$sitename;
+			$toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF').' '.$status['ntools_published'].' '.strtolower(Lang::txt('COM_TOOLS_TOOLS')). ' '.strtolower(Lang::txt('COM_TOOLS_PUBLISHED')).' '.Lang::txt('COM_TOOLS_ON').' '.$sitename;
 		}
 		else if ($status['state']==8)
 		{
-			$toolnum .= JText::_('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.JText::_('COM_TOOLS_ON').' '.$sitename.' '.JText::_('COM_TOOLS_NOW_RETIRED');
+			$toolnum .= Lang::txt('COM_TOOLS_WAS_ONCE_PUBLISHED').' '.Lang::txt('COM_TOOLS_ON').' '.$sitename.' '.Lang::txt('COM_TOOLS_NOW_RETIRED');
 		}
 
 		return $toolnum;
@@ -337,15 +336,15 @@ class ToolsHelperHtml
 	{
 		switch ($statusNum)
 		{
-			case 1: $statusName = JText::_('COM_TOOLS_REGISTERED'); break;
-			case 2: $statusName = JText::_('COM_TOOLS_CREATED');    break;
-			case 3: $statusName = JText::_('COM_TOOLS_UPLOADED');   break;
-			case 4: $statusName = JText::_('COM_TOOLS_INSTALLED');  break;
-			case 5: $statusName = JText::_('COM_TOOLS_UPDATED');    break;
-			case 6: $statusName = JText::_('COM_TOOLS_APPROVED');   break;
-			case 7: $statusName = JText::_('COM_TOOLS_PUBLISHED');  break;
-			case 8: $statusName = JText::_('COM_TOOLS_RETIRED');    break;
-			case 9: $statusName = JText::_('COM_TOOLS_ABANDONED');  break;
+			case 1: $statusName = Lang::txt('COM_TOOLS_REGISTERED'); break;
+			case 2: $statusName = Lang::txt('COM_TOOLS_CREATED');    break;
+			case 3: $statusName = Lang::txt('COM_TOOLS_UPLOADED');   break;
+			case 4: $statusName = Lang::txt('COM_TOOLS_INSTALLED');  break;
+			case 5: $statusName = Lang::txt('COM_TOOLS_UPDATED');    break;
+			case 6: $statusName = Lang::txt('COM_TOOLS_APPROVED');   break;
+			case 7: $statusName = Lang::txt('COM_TOOLS_PUBLISHED');  break;
+			case 8: $statusName = Lang::txt('COM_TOOLS_RETIRED');    break;
+			case 9: $statusName = Lang::txt('COM_TOOLS_ABANDONED');  break;
 		}
 
 		return $statusName;
@@ -417,21 +416,21 @@ class ToolsHelperHtml
 			foreach ($members as $member)
 			{
 				$uid = ($obj) ? $member->uidNumber : $member;
-				$juser = JUser::getInstance($uid);
+				$juser = User::getInstance($uid);
 				if (is_object($juser))
 				{
 					$login = $juser->get('username');
 				}
 				else
 				{
-					$login = JText::_('COM_TOOLS_UNKNOWN');
+					$login = Lang::txt('COM_TOOLS_UNKNOWN');
 				}
 				$team .= ($member != end($members)) ? $login . ', ' : $login;
 			}
 		}
 		else
 		{
-			$team .= JText::_('COM_TOOLS_N/A');
+			$team .= Lang::txt('COM_TOOLS_N/A');
 		}
 		return $team;
 	}
@@ -476,7 +475,7 @@ class ToolsHelperHtml
 			case '@GROUP':
 				if (count($groups)>0)
 				{
-					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
+					$toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
 					foreach ($groups as $group)
 					{
 						$toolaccess .= ($group != end($groups)) ? $group->cn . ', ' : $group->cn;
@@ -484,14 +483,14 @@ class ToolsHelperHtml
 				}
 				else
 				{
-					$toolaccess = JText::_('COM_TOOLS_RESTRICTED') . ' ' . JText::_('COM_TOOLS_TO') . ' ' . JText::_('COM_TOOLS_UNSPECIFIED') . ' ' . JText::_('COM_TOOLS_GROUP_OR_GROUPS');
+					$toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_UNSPECIFIED') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
 				}
 			break;
 
-			case '@US': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_US'); break;
-			case '@PU': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_PU'); break;
-			case '@D1': $toolaccess = JText::_('COM_TOOLS_TOOLACCESS_D1'); break;
-			default:    $toolaccess = JText::_('COM_TOOLS_ACCESS_OPEN');   break;
+			case '@US': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_US'); break;
+			case '@PU': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_PU'); break;
+			case '@D1': $toolaccess = Lang::txt('COM_TOOLS_TOOLACCESS_D1'); break;
+			default:    $toolaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');   break;
 		}
 
 		return $toolaccess;
@@ -510,9 +509,9 @@ class ToolsHelperHtml
 	{
 		switch ($access)
 		{
-			case '@OPEN': $codeaccess = JText::_('COM_TOOLS_OPEN_SOURCE');   break;
-			case '@DEV':  $codeaccess = JText::_('COM_TOOLS_CLOSED_SOURCE'); break;
-			default:      $codeaccess = JText::_('COM_TOOLS_UNSPECIFIED');   break;
+			case '@OPEN': $codeaccess = Lang::txt('COM_TOOLS_OPEN_SOURCE');   break;
+			case '@DEV':  $codeaccess = Lang::txt('COM_TOOLS_CLOSED_SOURCE'); break;
+			default:      $codeaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');   break;
 		}
 
 		return $codeaccess;
@@ -531,9 +530,9 @@ class ToolsHelperHtml
 	{
 		switch ($access)
 		{
-			case '@OPEN': $wikiaccess = JText::_('COM_TOOLS_ACCESS_OPEN');       break;
-			case '@DEV':  $wikiaccess = JText::_('COM_TOOLS_ACCESS_RESTRICTED'); break;
-			default:      $wikiaccess = JText::_('COM_TOOLS_UNSPECIFIED');       break;
+			case '@OPEN': $wikiaccess = Lang::txt('COM_TOOLS_ACCESS_OPEN');       break;
+			case '@DEV':  $wikiaccess = Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'); break;
+			default:      $wikiaccess = Lang::txt('COM_TOOLS_UNSPECIFIED');       break;
 		}
 
 		return $wikiaccess;
@@ -549,13 +548,13 @@ class ToolsHelperHtml
 	 */
 	public static function writeApproval($active_stage)
 	{
-		//$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
-		$stages = array(JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), JText::_('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		//$stages = array(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_APPEND_NOTES'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
+		$stages = array(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_VERSION'),Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_LICENSE'), Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_CONFIRM_APPROVE'));
 		$key = array_keys($stages, $active_stage);
 
 		$html = "\t\t".'<div class="clear"></div>'."\n";
 		$html .= "\t\t".'<ol id="steps">'."\n";
-		$html .= "\t\t".' <li>'.JText::_('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
+		$html .= "\t\t".' <li>'.Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_PUBLICATION').':</li>'."\n";
 
 		for ($i=0, $n=count($stages); $i < $n; $i++)
 			{
@@ -600,7 +599,7 @@ class ToolsHelperHtml
 				{
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . JText::_('COM_TOOLS_ACCESS_' . strtoupper($as[$i])) . '</option>';
+				$html .= '>' . Lang::txt('COM_TOOLS_ACCESS_' . strtoupper($as[$i])) . '</option>';
 			}
 		}
 		$html .= '</select>';
@@ -619,7 +618,7 @@ class ToolsHelperHtml
 	public static function selectGroup($groups, $value)
 	{
 		$html  = '<select name="group_owner">'."\n";
-		$html .= '<option value="">'.JText::_('COM_TOOLS_SELECT_GROUP').'</option>'."\n";
+		$html .= '<option value="">'.Lang::txt('COM_TOOLS_SELECT_GROUP').'</option>'."\n";
 		foreach ($groups as $group)
 		{
 			$html .= '<option value="'.$group->cn.'"';
@@ -657,7 +656,7 @@ class ToolsHelperHtml
 			{
 				$note = $notes[$i];
 				$out .= ' <li>'."\n";
-				$out .= '  <span><span>'.JText::_('COM_TOOLS_EDIT').'</span></span>'."\n";
+				$out .= '  <span><span>'.Lang::txt('COM_TOOLS_EDIT').'</span></span>'."\n";
 				$out .= $note->note;
 				$out .= ' </li>'."\n";
 			}
@@ -782,10 +781,10 @@ class ToolsHelperHtml
 		{
 			$path = $base_path . $path;
 		}
-		$path = JPATH_ROOT . $path;
+		$path = PATH_APP . $path;
 
 		jimport('joomla.filesystem.file');
-	    $type = strtoupper(JFile::getExt($path));
+		$type = strtoupper(\JFile::getExt($path));
 
 		$fs = '';
 

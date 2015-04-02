@@ -48,11 +48,11 @@ class ContribtoolHelper
 	 */
 	public function makeArray($string='')
 	{
-		$string		= preg_replace('# #',',',$string);
-		$arr 		= preg_split('#,#',$string);
-		//$arr 		= $this->cleanArray($arr);
-		$arr 		= ContribtoolHelper::cleanArray($arr);
-		$arr 		= array_unique($arr);
+		$string = preg_replace('# #',',',$string);
+		$arr = preg_split('#,#',$string);
+		//$arr = $this->cleanArray($arr);
+		$arr = ContribtoolHelper::cleanArray($arr);
+		$arr = array_unique($arr);
 
 		return $arr;
 	}
@@ -157,10 +157,10 @@ class ContribtoolHelper
 		{
 			foreach ($uids as $uid)
 			{
-				$juser = JUser::getInstance($uid);
-				if ($juser)
+				$user = \User::getInstance($uid);
+				if ($user)
 				{
-					$logins[] = $juser->get('username');
+					$logins[] = $user->get('username');
 				}
 			}
 		}
@@ -178,16 +178,15 @@ class ContribtoolHelper
 	 */
 	public function record_view($database, $ticketid)
 	{
-		$juser = JFactory::getUser();
 		$when = JFactory::getDate()->toSql();
 
-		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . $juser->get('id');
+		$sql = "SELECT * FROM #__tool_statusviews WHERE ticketid='" . $ticketid . "' AND uid=" . \User::get('id');
 		$database->setQuery($sql);
 		$found = $database->loadObjectList();
 		if ($found)
 		{
 			$elapsed = strtotime($when) - strtotime($found[0]->viewed);
-			$database->setQuery("UPDATE #__tool_statusviews SET viewed='" . $when . "', elapsed='" . $elapsed . "' WHERE ticketid='" . $ticketid . "' AND uid=" . $juser->get('id'));
+			$database->setQuery("UPDATE #__tool_statusviews SET viewed='" . $when . "', elapsed='" . $elapsed . "' WHERE ticketid='" . $ticketid . "' AND uid=" . \User::get('id'));
 			if (!$database->query())
 			{
 				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg() . "');</script>\n";
@@ -196,7 +195,7 @@ class ContribtoolHelper
 		}
 		else
 		{
-			$database->setQuery("INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (" . $juser->get('id') . ", '" . $ticketid . "', '" . $when . "', '500000')");
+			$database->setQuery("INSERT INTO #__tool_statusviews (uid, ticketid, viewed, elapsed) VALUES (" . \User::get('id') . ", '" . $ticketid . "', '" . $when . "', '500000')");
 			if (!$database->query())
 			{
 				echo "<script type=\"text/javascript\"> alert('" . $database->getErrorMsg()."');</script>\n";

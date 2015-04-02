@@ -1476,18 +1476,18 @@ class ToolsModelTool
 
 		if ($result || (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id))
 		{
-			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME_EXISTS');
+			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
 		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
 		{
-			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME');
+			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
 		}
 
 		// Check if repository exists under /apps - added to allow for auto-AddRepo
 		jimport('joomla.filesystem.folder');
 		if (!$id && (is_dir('/apps/'.strtolower($tool['toolname'])) OR is_dir('/apps/'.$tool['toolname'])))
 		{
-			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME_EXISTS');
+			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
 
 		$query = "SELECT t.id FROM #__tool AS t WHERE LOWER(t.title)=LOWER(" . $db->Quote($tool['title']) . ") ";
@@ -1505,36 +1505,36 @@ class ToolsModelTool
 
 		if ($result)
 		{
-			$err['title'] = JText::_('COM_TOOLS_ERR_TITLE_EXISTS');
+			$err['title'] = Lang::txt('COM_TOOLS_ERR_TITLE_EXISTS');
 		}
 
 		if (empty($tool['title']))
 		{
-			$err['title'] = JText::_('COM_TOOLS_ERR_TITLE');
+			$err['title'] = Lang::txt('COM_TOOLS_ERR_TITLE');
 		}
 
 		if (empty($tool['description']))
 		{
-			$err['description'] = JText::_('COM_TOOLS_ERR_DESC');
+			$err['description'] = Lang::txt('COM_TOOLS_ERR_DESC');
 		}
 
 		if (empty($tool['version']))
 		{
-			$err['version'] = JText::_('COM_TOOLS_ERR_VERSION_BLANK');
+			$err['version'] = Lang::txt('COM_TOOLS_ERR_VERSION_BLANK');
 		}
 		else if (!preg_match("#^[_0-9a-zA-Z.:-]+$#i", $tool['version']))
 		{
-			$err['version'] = JText::_('COM_TOOLS_ERR_VERSION_ILLEGAL');
+			$err['version'] = Lang::txt('COM_TOOLS_ERR_VERSION_ILLEGAL');
 		}
 
 		if (empty($tool['exec']))
 		{
-			$err['exec'] = JText::_('COM_TOOLS_ERR_EXEC');
+			$err['exec'] = Lang::txt('COM_TOOLS_ERR_EXEC');
 		}
 
 		if ($tool['exec']=='@GROUP' && empty($tool['membergroups']))
 		{
-			$err['membergroups'] = JText::_('COM_TOOLS_ERR_GROUPS_EMPTY');
+			$err['membergroups'] = Lang::txt('COM_TOOLS_ERR_GROUPS_EMPTY');
 		}
 		else if (empty($tool['membergroups']) or $tool['exec']!='@GROUP')
 		{
@@ -1545,17 +1545,17 @@ class ToolsModelTool
 
 		if (empty($tool['code']))
 		{
-			$err['code'] = JText::_('COM_TOOLS_ERR_CODE');
+			$err['code'] = Lang::txt('COM_TOOLS_ERR_CODE');
 		}
 
 		if (empty($tool['wiki']))
 		{
-			$err['wiki'] = JText::_('COM_TOOLS_ERR_WIKI');
+			$err['wiki'] = Lang::txt('COM_TOOLS_ERR_WIKI');
 		}
 
 		if (empty($tool['developers']))
 		{
-			$err['developers'] =  JText::_('COM_TOOLS_ERR_TEAM_EMPTY');
+			$err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_EMPTY');
 		}
 		else
 		{
@@ -1564,21 +1564,21 @@ class ToolsModelTool
 			{
 				if (!is_object(JFactory::getUser($dev)))
 				{
-					$err['developers'] =  JText::sprintf('COM_TOOLS_ERR_TEAM_INVALID_USER', (string) $dev);
+					$err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_INVALID_USER', (string) $dev);
 				}
 			}
 
 			// Finally, make sure that the current user is either in the apps group, or on the dev team
 			// If the user were neither in apps, nor on the dev team, they would immediately lose access to the tool after saving
-			if (!JComponentHelper::getParams('com_tools')->get('access-manage-component') && !in_array(JFactory::getUser()->get('username'), $devs))
+			if (!Component::params('com_tools')->get('access-manage-component') && !in_array(JFactory::getUser()->get('username'), $devs))
 			{
-				$err['developers'] =  JText::_('COM_TOOLS_ERR_TEAM_CREATER_NOT_DEVELOPER');
+				$err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_CREATER_NOT_DEVELOPER');
 			}
 		}
 
 		if (empty($tool['vncGeometryX']) || empty($tool['vncGeometryY']) || preg_match('#[^0-9]#' , $tool['vncGeometryX']) || preg_match('#[^0-9]#' , $tool['vncGeometryY']))
 		{
-			$err['vncGeometry'] = JText::_('COM_TOOLS_ERR_VNCGEOMETRY');
+			$err['vncGeometry'] = Lang::txt('COM_TOOLS_ERR_VNCGEOMETRY');
 		}
 
 		if (count($err) > 0)
@@ -1608,11 +1608,11 @@ class ToolsModelTool
 
 		if (empty($newversion))
 		{
-			$err = JText::_('COM_TOOLS_ERR_VERSION_BLANK');
+			$err = Lang::txt('COM_TOOLS_ERR_VERSION_BLANK');
 		}
 		elseif (!preg_match('#^[_0-9a-zA-Z.:-]+$#i', $newversion))
 		{
-			$err = JText::_('COM_TOOLS_ERR_VERSION_ILLEGAL');
+			$err = Lang::txt('COM_TOOLS_ERR_VERSION_ILLEGAL');
 		}
 		else
 		{
@@ -1624,7 +1624,7 @@ class ToolsModelTool
 			$xlog->debug("validateVersion($newversion,$id) = $result");
 			if (!empty($result))
 			{
-				$err = JText::_('COM_TOOLS_ERR_VERSION_EXISTS');
+				$err = Lang::txt('COM_TOOLS_ERR_VERSION_EXISTS');
 			}
 		}
 		return empty($err);
@@ -1648,15 +1648,15 @@ class ToolsModelTool
 
 		if (!$license['text'])
 		{
-			$err = JText::_('COM_TOOLS_ERR_LICENSE_EMPTY') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY') ;
 		}
 		else if ($bingo)
 		{
-			$err = JText::_('COM_TOOLS_ERR_LICENSE_DEFAULTS') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS') ;
 		}
 		else if (!$license['authorize'] && $code=='@OPEN')
 		{
-			$err = JText::_('COM_TOOLS_ERR_LICENSE_AUTH_MISSING') ;
+			$err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING') ;
 		}
 		else
 		{
