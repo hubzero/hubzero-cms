@@ -187,6 +187,7 @@ class Tool extends \JTable
 			$query .= "JOIN #__projects as p ON p.id=f.project_id ";
 
 			// Get some extra info for sv tools
+			/*
 			$query .= "LEFT JOIN #__tool as T ON T.id=f.svntool_id ";
 			$query .= "LEFT JOIN #__tool_version as TV ON TV.id=v.svntool_version_id ";
 
@@ -194,6 +195,7 @@ class Tool extends \JTable
 			$query .= "LEFT JOIN #__publication_attachments as PA ON PA.type ='tool' AND
 					PA.object_id=f.id AND PA.object_instance=v.id ";
 			$query .= "LEFT JOIN #__publication_versions as PV ON PV.id=PA.publication_version_id AND PV.main=1 ";
+			*/
 		}
 
 		$query .= "$filter"
@@ -249,12 +251,7 @@ class Tool extends \JTable
 	public function getRecords($filters = array(), $admin = false)
 	{
 		$sql = "SELECT f.*, v.*, v.id as instanceId,
-			f.repotype, f.svntool_id, v.svntool_version_id,
-			TV.exportControl, TV.vnc_geometry, TV.vnc_timeout,
-			TV.vnc_depth, TV.vnc_command" ;
-
-		$sql .= ', PA.publication_id, PA.publication_version_id,
-				PV.title as publication_title, PV.state as publication_version_status ';
+			f.repotype, f.svntool_id, v.svntool_version_id";
 
 		$sql .= " FROM " . $this->buildQuery($filters, $admin);
 		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] != 0)
