@@ -412,7 +412,7 @@ class Helper extends Module
 
 					if ($row->type == 7)
 					{
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+						include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 						$tv = new \ToolVersion($this->database);
 
@@ -427,7 +427,7 @@ class Helper extends Module
 
 					$thumb = $path . DS . $picture;
 
-					if (!is_file(JPATH_ROOT . $thumb) or !$picture)
+					if (!is_file(PATH_APP . $thumb) or !$picture)
 					{
 						$thumb = DS . trim($rconfig->get('defaultpic', '/modules/mod_spotlight/assets/img/default.gif'), DS);
 						if ($thumb == '/modules/mod_spotlight/default.gif')
@@ -541,7 +541,7 @@ class Helper extends Module
 	 */
 	private function _getImage($path)
 	{
-		$d = @dir(JPATH_ROOT . $path);
+		$d = @dir(PATH_APP . $path);
 
 		$images = array();
 
@@ -549,7 +549,7 @@ class Helper extends Module
 		{
 			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(JPATH_ROOT . $path . DS . $entry)
+				if (is_file(PATH_APP . $path . DS . $entry)
 				 && substr($entry,0,1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
@@ -597,7 +597,7 @@ class Helper extends Module
 			//$path .= DS.$versionid;
 		}
 
-		$d = @dir(JPATH_ROOT . $path);
+		$d = @dir(PATH_APP . $path);
 
 		$images = array();
 
@@ -605,7 +605,7 @@ class Helper extends Module
 		{
 			while (false !== ($entry = $d->read()))
 			{
-				if (is_file(JPATH_ROOT . $path . DS . $entry)
+				if (is_file(PATH_APP . $path . DS . $entry)
 				 && substr($entry,0,1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{

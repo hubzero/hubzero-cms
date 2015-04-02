@@ -58,7 +58,7 @@ class JFormFieldResourcetype extends JFormFieldList
 
 		$options[] =  JHtml::_('select.option', '0', JText::_('All'));
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 
 		$db = JFactory::getDbo();
 		$sr = new \Components\Resources\Tables\Type($db);

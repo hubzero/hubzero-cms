@@ -207,7 +207,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
 
 				$wish = new \Components\Wishlist\Tables\Wish($database);
 				$wish->load($refid);
@@ -246,7 +246,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
 
 				$wish = new Wish($database);
 				$wish->load($refid);
@@ -288,13 +288,13 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'plan.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'owner.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'ownergroup.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'rank.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish' . DS . 'attachment.php');
 
 				// Delete the wish
 				$wish = new \Components\Wishlist\Tables\Wish($database);

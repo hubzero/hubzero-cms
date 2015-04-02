@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->results) {
-	include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
+	include_once( JPATH_ROOT.DS.'components'.DS.'com_resources'.DS.'tables'.DS.'review.php' );
 
 	plgGroupsResources::documents();
 

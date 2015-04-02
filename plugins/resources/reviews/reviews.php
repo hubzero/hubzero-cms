@@ -55,7 +55,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 		parent::__construct($subject, $config);
 
 		$this->infolink = '/kb/points/';
-		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
+		$this->banking = Component::params('com_members')->get('bankAccounts');
 	}
 
 	/**
@@ -482,7 +482,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 
 		if (!$voted && $vote) // && $rev->user_id != $juser->get('id'))
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 			$v = new Vote($database);
 			$v->referenceid = $id;
 			$v->category    = $cat;

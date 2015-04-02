@@ -230,8 +230,8 @@ class plgUserXusers extends JPlugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
 			$quota = new UsersQuotas($this->database);
 			$quota->load(array('user_id'=>$juser->get('id')));
@@ -431,8 +431,8 @@ class plgUserXusers extends JPlugin
 
 		if ($params->get('manage_quotas', false))
 		{
-			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
 			$quota = new UsersQuotas($this->database);
 			$quota->load(array('user_id'=>$user['id']));
@@ -483,7 +483,7 @@ class plgUserXusers extends JPlugin
 		\Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
 		// Check if quota exists for the user
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
 
 		$quota = new UsersQuotas($this->database);
 		$quota->load(array('user_id'=>$user['id']));

@@ -373,8 +373,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$tags = explode(',', $tags);
 			if (count($tags) > 0)
 			{
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$TA = new ToolAuthor($this->database);
 				$objV = new ToolVersion($this->database);
@@ -427,7 +427,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$juser = JFactory::getUser();
 
 			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'question_plaintext'
 			));

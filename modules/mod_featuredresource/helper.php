@@ -104,7 +104,7 @@ class Helper extends Module
 
 			if ($row->type == 7)
 			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
 				$tv = new ToolVersion($database);
 

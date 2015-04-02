@@ -159,7 +159,7 @@ class Helper extends Module
 
 			case 'assigned':
 				$filters['mine'] = 0;
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
+				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
 				$TA = new \ToolAuthor($database);
 				$tools = $TA->getToolContributions(User::get('id'));

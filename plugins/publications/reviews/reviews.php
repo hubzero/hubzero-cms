@@ -529,8 +529,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			//&& $rev->created_by != $juser->get('id')
 			if (!$voted && $vote)
 			{
-				require_once( JPATH_ROOT . DS . 'administrator' . DS
-					. 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
+				require_once( JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php' );
 				$v = new Vote( $database );
 				$v->referenceid = $id;
 				$v->category = $cat;

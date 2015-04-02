@@ -232,7 +232,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 		}
 		$database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 		$rr = new \Components\Resources\Tables\Resource($database);
 
 		$database->setQuery("SELECT COUNT(*) FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
