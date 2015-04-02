@@ -82,7 +82,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		}
 
 		//include address library
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'registration.php');
 
 		$arr = array(

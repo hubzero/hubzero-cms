@@ -204,30 +204,30 @@ class MembersModelRegistration
 		//
 		// TODO: more cleanup
 
-		$coriginus_p = JRequest::getVar('corigin_us', null, 'post');
-		$corigin_p = JRequest::getVar('corigin', null, 'post');
-		$cresidentus_p = JRequest::getVar('cresident_us', null, 'post');
-		$cresident_p = JRequest::getVar('cresident', null, 'post');
-		$disability_p = JRequest::getVar('disability', null, 'post');
-		$disabilityblind_p = JRequest::getVar('disabilityblind', null, 'post');
-		$disabilitydeaf_p = JRequest::getVar('disabilitydeaf', null, 'post');
-		$disabilityphysical_p = JRequest::getVar('disabilityphysical', null, 'post');
-		$disabilitylearning_p = JRequest::getVar('disabilitylearning', null, 'post');
-		$disabilityvocal_p = JRequest::getVar('disabilityvocal', null, 'post');
-		$disabilityother_p = JRequest::getVar('disabilityother', null, 'post');
-		$hispanic_p = JRequest::getVar('hispanic', null, 'post');
-		$hispaniccuban_p = JRequest::getVar('hispaniccuban', null, 'post');
-		$hispanicmexican_p = JRequest::getVar('hispanicmexican', null, 'post');
-		$hispanicpuertorican_p = JRequest::getVar('hispanicpuertorican', null, 'post');
-		$hispanicother_p = JRequest::getVar('hispanicother',null,'post');
-		$racenativeamerican_p = JRequest::getVar('racenativeamerican', null, 'post');
-		$racenativetribe_p = JRequest::getVar('racenativetribe', null, 'post');
-		$raceasian_p = JRequest::getVar('raceasian', null, 'post');
-		$raceblack_p = JRequest::getVar('raceblack', null, 'post');
-		$racehawaiian_p = JRequest::getVar('racehawaiian', null, 'post');
-		$racewhite_p = JRequest::getVar('racewhite', null, 'post');
-		$racerefused_p = JRequest::getVar('racerefused', null, 'post');
-		//$interests_p = JRequest::getVar('interests',null,'post');
+		$coriginus_p = Request::getVar('corigin_us', null, 'post');
+		$corigin_p = Request::getVar('corigin', null, 'post');
+		$cresidentus_p = Request::getVar('cresident_us', null, 'post');
+		$cresident_p = Request::getVar('cresident', null, 'post');
+		$disability_p = Request::getVar('disability', null, 'post');
+		$disabilityblind_p = Request::getVar('disabilityblind', null, 'post');
+		$disabilitydeaf_p = Request::getVar('disabilitydeaf', null, 'post');
+		$disabilityphysical_p = Request::getVar('disabilityphysical', null, 'post');
+		$disabilitylearning_p = Request::getVar('disabilitylearning', null, 'post');
+		$disabilityvocal_p = Request::getVar('disabilityvocal', null, 'post');
+		$disabilityother_p = Request::getVar('disabilityother', null, 'post');
+		$hispanic_p = Request::getVar('hispanic', null, 'post');
+		$hispaniccuban_p = Request::getVar('hispaniccuban', null, 'post');
+		$hispanicmexican_p = Request::getVar('hispanicmexican', null, 'post');
+		$hispanicpuertorican_p = Request::getVar('hispanicpuertorican', null, 'post');
+		$hispanicother_p = Request::getVar('hispanicother',null,'post');
+		$racenativeamerican_p = Request::getVar('racenativeamerican', null, 'post');
+		$racenativetribe_p = Request::getVar('racenativetribe', null, 'post');
+		$raceasian_p = Request::getVar('raceasian', null, 'post');
+		$raceblack_p = Request::getVar('raceblack', null, 'post');
+		$racehawaiian_p = Request::getVar('racehawaiian', null, 'post');
+		$racewhite_p = Request::getVar('racewhite', null, 'post');
+		$racerefused_p = Request::getVar('racerefused', null, 'post');
+		//$interests_p = Request::getVar('interests',null,'post');
 
 		//if ($coriginus_p === null) { // field not on form
 		if ($coriginus_p || $corigin_p) { // field not on form
@@ -348,29 +348,29 @@ class MembersModelRegistration
 		// 	$role = array();
 		// 	$edulevel = array();
 
-		// 	if ( JRequest::getVar('rolestudent', '', 'post') )
+		// 	if ( Request::getVar('rolestudent', '', 'post') )
 		// 		$role[] = 'student';
 
-	 // 		if ( JRequest::getVar('roleeducator', '', 'post') )
+	 // 		if ( Request::getVar('roleeducator', '', 'post') )
 		// 		$role[] = 'educator';
 
-		// 	if ( JRequest::getVar('roleresearcher', '', 'post') )
+		// 	if ( Request::getVar('roleresearcher', '', 'post') )
 		// 		$role[] = 'researcher';
 
-		// 	if ( JRequest::getVar('roledeveloper', '', 'post') )
+		// 	if ( Request::getVar('roledeveloper', '', 'post') )
 		// 		$role[] = 'developer';
 
-		// 	if ( JRequest::getVar('edulevelk12', '', 'post') )
+		// 	if ( Request::getVar('edulevelk12', '', 'post') )
 		// 		$edulevel[] = 'k12';
 
-		// 	if ( JRequest::getVar('edulevelundergraduate', '', 'post') )
+		// 	if ( Request::getVar('edulevelundergraduate', '', 'post') )
 		// 		$edulevel[] = 'undergraduate';
 
-		// 	if ( JRequest::getVar('edulevelgraduate', '', 'post') )
+		// 	if ( Request::getVar('edulevelgraduate', '', 'post') )
 		// 		$edulevel[] = 'graduate';
 		// }
 
-		$name = JRequest::getVar('name', array(), 'post');
+		$name = Request::getVar('name', array(), 'post');
 		if (!is_array($name))
 		{
 			$name = array();
@@ -397,28 +397,28 @@ class MembersModelRegistration
 		$this->_registration['hispanic'] = $hispanic;
 		$this->_registration['disability'] = $disability;
 		$this->_registration['race'] = $race;
-		$this->_registration['login'] = strtolower(JRequest::getVar('login', null, 'post'));
-		$this->_registration['email'] = JRequest::getVar('email', null, 'post');
-		$this->_registration['confirmEmail'] = JRequest::getVar('email2', null, 'post');
-		$this->_registration['web'] = JRequest::getVar('web', null, 'post');
-		$this->_registration['phone'] = JRequest::getVar('phone', null, 'post');
-		//$this->_registration['name'] = JRequest::getVar('name', null, 'post');
-		$this->_registration['orgtype']	= JRequest::getVar('orgtype', null, 'post');
-		$this->_registration['org'] = JRequest::getVar('org', null, 'post');
-		$this->_registration['orgtext']	= JRequest::getVar('orgtext', null, 'post');
+		$this->_registration['login'] = strtolower(Request::getVar('login', null, 'post'));
+		$this->_registration['email'] = Request::getVar('email', null, 'post');
+		$this->_registration['confirmEmail'] = Request::getVar('email2', null, 'post');
+		$this->_registration['web'] = Request::getVar('web', null, 'post');
+		$this->_registration['phone'] = Request::getVar('phone', null, 'post');
+		//$this->_registration['name'] = Request::getVar('name', null, 'post');
+		$this->_registration['orgtype']	= Request::getVar('orgtype', null, 'post');
+		$this->_registration['org'] = Request::getVar('org', null, 'post');
+		$this->_registration['orgtext']	= Request::getVar('orgtext', null, 'post');
 		if (!$this->_registration['org'])
 		{
 			$this->_registration['org'] = $this->_registration['orgtext'];
 		}
-		$this->_registration['reason'] = JRequest::getVar('reason', null, 'post');
-		$this->_registration['reasontxt'] = JRequest::getVar('reasontxt', null, 'post');
-		$this->_registration['password'] = JRequest::getVar('password', null, 'post');
-		$this->_registration['confirmPassword'] = JRequest::getVar('password2', null, 'post');
-		$this->_registration['usageAgreement'] = JRequest::getVar('usageAgreement', null, 'post');
-		$this->_registration['mailPreferenceOption'] = JRequest::getVar('mailPreferenceOption', null, 'post');
-		$this->_registration['sex'] = JRequest::getVar('sex', null, 'post');
-		$this->_registration['interests'] = JRequest::getVar('interests',null,'post');
-		$this->_registration['orcid'] = JRequest::getVar('orcid', null, 'post');
+		$this->_registration['reason'] = Request::getVar('reason', null, 'post');
+		$this->_registration['reasontxt'] = Request::getVar('reasontxt', null, 'post');
+		$this->_registration['password'] = Request::getVar('password', null, 'post');
+		$this->_registration['confirmPassword'] = Request::getVar('password2', null, 'post');
+		$this->_registration['usageAgreement'] = Request::getVar('usageAgreement', null, 'post');
+		$this->_registration['mailPreferenceOption'] = Request::getVar('mailPreferenceOption', null, 'post');
+		$this->_registration['sex'] = Request::getVar('sex', null, 'post');
+		$this->_registration['interests'] = Request::getVar('interests',null,'post');
+		$this->_registration['orcid'] = Request::getVar('orcid', null, 'post');
 
 		if ($this->_registration['sex'] !== null)
 		{
@@ -459,7 +459,7 @@ class MembersModelRegistration
 		$tag_string = $mt->render('string');
 
 		//get member addresses
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');
 		$membersAddress = new MembersAddress( JFactory::getDBO() );
 		$addresses = $membersAddress->getAddressesForMember( $xprofile->get("uidNumber") );
 
@@ -599,7 +599,7 @@ class MembersModelRegistration
 			break;
 		}
 
-		$hconfig = JComponentHelper::getParams('com_members');
+		$hconfig = Component::params('com_members');
 
 		$default    = str_pad($default, 4, '-');
 		$configured  = $hconfig->get($name);
@@ -884,7 +884,7 @@ class MembersModelRegistration
 			}
 			else
 			{
-				$usersConfig =  JComponentHelper::getParams( 'com_users' );
+				$usersConfig =  Component::params( 'com_users' );
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
 
 				// Check if the email is already in use
@@ -1194,7 +1194,7 @@ class MembersModelRegistration
 
 		if ($registrationCAPTCHA == REG_REQUIRED)
 		{
-			$botcheck = JRequest::getVar('botcheck','');
+			$botcheck = Request::getVar('botcheck','');
 			if ($botcheck) {
 				$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
 			}

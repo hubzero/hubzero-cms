@@ -87,9 +87,9 @@ class Helper extends Module
 		$uid = (int) User::get('id');
 		$dbh = JFactory::getDBO();
 
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/groups.php';
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/options.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/awards.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/groups.php';
+		require_once JPATH_BASE . '/components/com_members/tables/incremental/options.php';
 
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid))

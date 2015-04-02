@@ -104,13 +104,13 @@ class Helper
 		static $dfthumb;
 		static $dffull;
 
-		$config = \JComponentHelper::getParams('com_members');
+		$config = \Component::params('com_members');
 
 		// Get the default picture
 		// We need to do this here as it may be needed by the Gravatar service
 		if (!$dffull)
 		{
-			$dffull = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+			$dffull = DS . 'components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
 		}
 		if (!$dfthumb)
 		{
@@ -143,7 +143,7 @@ class Helper
 					// Do we auto-generate a picture?
 					if ($config->get('identicon'))
 					{
-						$path = JPATH_ROOT . DS . trim($config->get('webpath', '/site/members'), DS) . DS . self::niceidformat($member->get('uidNumber'));
+						$path = PATH_APP . DS . trim($config->get('webpath', '/site/members'), DS) . DS . self::niceidformat($member->get('uidNumber'));
 
 						if (!is_dir($path))
 						{
@@ -206,7 +206,7 @@ class Helper
 						return $protocol
 								. '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
 								. (!$thumbit ? 's=300&' : '')
-								. 'd=' . urlencode(str_replace('/administrator', '', rtrim(\JURI::base(), DS)) . DS . $dfthumb);
+								. 'd=' . urlencode(str_replace('/administrator', '', rtrim(\Request::base(), DS)) . DS . $dfthumb);
 					}
 				}
 			}
@@ -218,7 +218,7 @@ class Helper
 		// Start running through paths until we find a valid one
 		foreach ($paths as $path)
 		{
-			if ($path && file_exists(JPATH_ROOT . $path))
+			if ($path && file_exists(PATH_APP . $path))
 			{
 				if (!$anonymous)
 				{
@@ -235,17 +235,17 @@ class Helper
 						// build serve link
 						if (\JFactory::getApplication()->isAdmin())
 						{
-							$link = \JRoute::_('index.php?option=com_members&controller=members&task=picture&id=' . $member->get('uidNumber') . '&image=' . $pic);
+							$link = \Route::url('index.php?option=com_members&controller=members&task=picture&id=' . $member->get('uidNumber') . '&image=' . $pic);
 						}
 						else
 						{
-							$link = \JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber')) . DS . 'Image:' . $pic;
+							$link = \Route::url('index.php?option=com_members&id=' . $member->get('uidNumber')) . DS . 'Image:' . $pic;
 						}
 						return $link;
 					}
 				}
 
-				return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $path;
+				return str_replace('/administrator', '', rtrim(\Request::base(true), DS)) . $path;
 			}
 		}
 	}

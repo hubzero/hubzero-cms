@@ -48,9 +48,9 @@ class MembersHtml
 	public static function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array(
-			0 => JText::_('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
-			1 => JText::_('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
-			2 => JText::_('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
+			0 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
+			1 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
+			2 => Lang::txt('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
 		);
 
 		$html  = '<select name="' . $name . '"';
@@ -79,9 +79,9 @@ class MembersHtml
 		$html = '';
 		switch ($response)
 		{
-			case '':        $html .= JText::_('COM_MEMBERS_FIELD_VALUE_NA');      break;
-			case 'no':      $html .= JText::_('COM_MEMBERS_FIELD_VALUE_NONE');    break;
-			case 'refused': $html .= JText::_('COM_MEMBERS_FIELD_VALUE_REFUSED'); break;
+			case '':        $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NA');      break;
+			case 'no':      $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NONE');    break;
+			case 'refused': $html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_REFUSED'); break;
 			default:        $html .= htmlentities(ucfirst($response), ENT_COMPAT, 'UTF-8'); break;
 		}
 		return $html;
@@ -98,7 +98,7 @@ class MembersHtml
 		$html = '';
 		if (count($response_array) == 0)
 		{
-			$html .= JText::_('COM_MEMBERS_FIELD_VALUE_NA');
+			$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NA');
 		}
 		else
 		{
@@ -110,11 +110,11 @@ class MembersHtml
 				}
 				if ($response_array[$i] == 'no')
 				{
-					$html .= JText::_('COM_MEMBERS_FIELD_VALUE_NONE');
+					$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_NONE');
 				}
 				elseif ($response_array[$i] == 'refused')
 				{
-					$html .= JText::_('COM_MEMBERS_FIELD_VALUE_REFUSED');
+					$html .= Lang::txt('COM_MEMBERS_FIELD_VALUE_REFUSED');
 				}
 				else
 				{

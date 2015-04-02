@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Image manipulation class
  */
-class MembersImgHandler extends JObject
+class MembersImgHandler extends \Hubzero\Base\Object
 {
 	/**
 	 * Description for 'path'
@@ -122,14 +122,14 @@ class MembersImgHandler extends JObject
 		// Make sure that the requested file is actually an image
 		if (!$image)
 		{
-			$this->setError(JText::_('No image set.'));
+			$this->setError(Lang::txt('No image set.'));
 			return false;
 		}
 
 		// Make sure that the requested file is actually an image
 		if (!$docRoot)
 		{
-			$this->setError(JText::_('No image path set.'));
+			$this->setError(Lang::txt('No image path set.'));
 			return false;
 		}
 
@@ -138,7 +138,7 @@ class MembersImgHandler extends JObject
 
 		if (!is_file($docRoot . $image))
 		{
-			$this->setError(JText::_('File/path not found.'));
+			$this->setError(Lang::txt('File/path not found.'));
 			return false;
 		}
 
@@ -149,7 +149,7 @@ class MembersImgHandler extends JObject
 		// Make sure that the requested file is actually an image
 		if (substr($mime, 0, 6) != 'image/')
 		{
-			$this->setError(JText::_('File is not an image.'));
+			$this->setError(Lang::txt('File is not an image.'));
 			return false;
 		}
 
@@ -347,15 +347,15 @@ class MembersImgHandler extends JObject
 			{
 				if (file_exists($docRoot . $image))
 				{
-					if (!JFile::delete($docRoot . $image))
+					if (!\JFile::delete($docRoot . $image))
 					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+						$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 						return false;
 					}
 				}
-				if (!JFile::move($resized, $docRoot . $image))
+				if (!\JFile::move($resized, $docRoot . $image))
 				{
-					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+					$this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
 					return false;
 				}
 			}
@@ -379,14 +379,14 @@ class MembersImgHandler extends JObject
 		}
 		if (!$image)
 		{
-			$this->setError(JText::_('No image set.'));
+			$this->setError(Lang::txt('No image set.'));
 			return false;
 		}
 
 		jimport('joomla.filesystem.file');
-		$ext = JFile::getExt($image);
+		$ext = \JFile::getExt($image);
 
-		return JFile::stripExt($image) . $tn . '.' . $ext;
+		return \JFile::stripExt($image) . $tn . '.' . $ext;
 	}
 
 	/**
