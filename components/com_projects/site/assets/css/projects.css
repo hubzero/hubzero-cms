@@ -161,6 +161,13 @@
 	.msg-total {
 		margin: 0;
 	}
+	table .imagebox {
+		width: 40px;
+		padding: 0.6em;
+	}
+	table .imagebox img {
+		width: 40px;
+	}
 
 /* Introduction page
 --------------------------------------------- */
@@ -597,10 +604,9 @@
 		font-size: 85%;
 		border-top: 1px dotted #CCC;
 		margin-top: 3em;
-		padding: 0 0.5em;
+		padding: 0.5em 0.5em 0 0.5em;
 		height: 25px;
 		color: #a8a8a8;
-		text-align: right;
 	}
 	.extras a {
 		color: #666;
