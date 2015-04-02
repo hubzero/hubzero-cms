@@ -143,7 +143,7 @@ class CartControllerTest extends ComponentController
 				$info = $course->add();
 				//print_r($info);
 			}
-			catch(Exception $e)
+			catch (Exception $e)
 			{
 				echo 'ERROR: ' . $e->getMessage();
 			}
