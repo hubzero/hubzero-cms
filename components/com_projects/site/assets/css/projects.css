@@ -158,6 +158,9 @@
 		-moz-border-radius: 10px;
 		border-radius: 10px;
 	}
+	.msg-total {
+		margin: 0;
+	}
 
 /* Introduction page
 --------------------------------------------- */
@@ -592,12 +595,12 @@
 --------------------------------------------- */
 	.extras {
 		font-size: 85%;
-		background: #f3f3f3;
 		border-top: 1px dotted #CCC;
 		margin-top: 3em;
 		padding: 0 0.5em;
 		height: 25px;
 		color: #a8a8a8;
+		text-align: right;
 	}
 	.extras a {
 		color: #666;

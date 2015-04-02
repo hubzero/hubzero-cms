@@ -240,11 +240,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		// Instantiate project owner
 		$objO                      = $this->model->table('Owner');
-		$view->filters['limit']    =  intval($this->params->get('limit', 0));
-		$view->filters['start']    = Request::getInt( 't_limitstart', 0);
-		$view->filters['sortby']   = Request::getVar( 't_sortby', 'name');
-		$view->filters['sortdir']  = Request::getVar( 't_sortdir', 'ASC');
-		$view->filters['status']   = Request::getVar( 't_status', 'active');
+		$view->filters['limit']    = Request::getInt( 'limit', intval($this->params->get('limit', 0)));
+		$view->filters['start']    = Request::getInt( 'limitstart', 0);
+		$view->filters['sortby']   = Request::getVar( 'sortby', 'name');
+		$view->filters['sortdir']  = Request::getVar( 'sortdir', 'ASC');
+		$view->filters['status']   = Request::getVar( 'status', 'active');
 		if (!$edit)
 		{
 			$view->filters['online']   = 1;
