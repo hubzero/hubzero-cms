@@ -30,6 +30,6 @@
 
 // Create aliaes for runtime
 return array(
-	'Module'      => 'Hubzero\Facades\Module',
-	'Breadcrumbs' => 'Hubzero\Facades\Breadcrumbs',
+	'Module'  => 'Hubzero\Facades\Module',
+	'Pathway' => 'Hubzero\Facades\Pathway',
 );

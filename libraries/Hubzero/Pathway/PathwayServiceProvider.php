@@ -28,14 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Breadcrumbs;
+namespace Hubzero\Pathway;
 
 use Hubzero\Base\ServiceProvider;
 
 /**
  * Breadcrumbs service provider
  */
-class BreadcrumbsServiceProvider extends ServiceProvider
+class PathwayServiceProvider extends ServiceProvider
 {
 	/**
 	 * Register the service provider.
@@ -44,7 +44,7 @@ class BreadcrumbsServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['breadcrumbs'] = function($app)
+		$this->app['pathway'] = function($app)
 		{
 			$trail = new Trail();
 

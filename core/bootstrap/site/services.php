@@ -30,5 +30,5 @@
 
 return array(
 	'Hubzero\Module\ModuleServiceProvider',
-	'Hubzero\Breadcrumbs\BreadcrumbsServiceProvider',
+	'Hubzero\Pathway\PathwayServiceProvider',
 );

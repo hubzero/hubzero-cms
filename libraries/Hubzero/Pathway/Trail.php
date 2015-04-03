@@ -28,10 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Breadcrumbs;
+namespace Hubzero\Pathway;
 
 /**
- * Breadcrumbs class
+ * Pathway trail class
  */
 class Trail implements \Iterator, \ArrayAccess, \Countable
 {
@@ -40,7 +40,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 *
 	 * @var  array
 	 */
-	private $crumbs = array();
+	private $items = array();
 
 	/**
 	 * Cursor position
@@ -58,7 +58,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function append($name, $link = '')
 	{
-		$this->crumbs[] = new Crumb($name, $link);
+		$this->items[] = new Item($name, $link);
 
 		return $this;
 	}
@@ -72,8 +72,8 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function prepend($name, $link = '')
 	{
-		$b = new Crumb($name, $link);
-		array_unshift($this->crumbs, $b);
+		$b = new Item($name, $link);
+		array_unshift($this->items, $b);
 
 		return $this;
 	}
@@ -86,7 +86,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	public function names()
 	{
 		$names = array();
-		foreach ($this->crumbs as $item)
+		foreach ($this->items as $item)
 		{
 			$names[] = $item->text;
 		}
@@ -101,7 +101,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function items()
 	{
-		return $this->crumbs;
+		return $this->items;
 	}
 
 	/**
@@ -156,7 +156,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function clear()
 	{
-		$this->crumbs = array();
+		$this->items = array();
 
 		return $this;
 	}
@@ -168,7 +168,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function rewind()
 	{
-		return reset($this->crumbs);
+		return reset($this->items);
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function current()
 	{
-		return current($this->crumbs);
+		return current($this->items);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function key()
 	{
-		return key($this->crumbs);
+		return key($this->items);
 	}
 
 	/**
@@ -198,7 +198,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function next()
 	{
-		return next($this->crumbs);
+		return next($this->items);
 	}
 
 	/**
@@ -208,7 +208,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function valid()
 	{
-		return key($this->crumbs) !== null;
+		return key($this->items) !== null;
 	}
 
 	/**
@@ -219,7 +219,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function offsetExists($offset)
 	{
-		return isset($this->crumbs[$offset]);
+		return isset($this->items[$offset]);
 	}
 
 	/**
@@ -231,7 +231,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function offsetSet($offset, $value)
 	{
-		$this->crumbs[$offset] = $value;
+		$this->items[$offset] = $value;
 	}
 
 	/**
@@ -242,7 +242,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function offsetGet($offset)
 	{
-		return isset($this->crumbs[$offset]) ? $this->crumbs[$offset] : null;
+		return isset($this->items[$offset]) ? $this->items[$offset] : null;
 	}
 
 	/**
@@ -253,7 +253,7 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function offsetUnset($offset)
 	{
-		unset($this->crumbs[$offset]);
+		unset($this->items[$offset]);
 	}
 
 	/**
@@ -263,6 +263,6 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	 */
 	public function count()
 	{
-		return count($this->crumbs);
+		return count($this->items);
 	}
 }
