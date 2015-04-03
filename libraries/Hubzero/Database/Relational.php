@@ -258,7 +258,7 @@ class Relational implements \IteratorAggregate
 		if (in_array($name, get_class_methods($this->query)))
 		{
 			// @FIXME: hack to fully qualify field names in one location...is there a better way/location?
-			if ($name == 'where')
+			if ((substr($name, 0, 5) == 'where' || substr($name, 0, 7) == 'orWhere') && $name != 'whereRaw' && $name != 'orWhereRaw')
 			{
 				$arguments[0] = (strpos($arguments[0], '.') === false)
 								? $this->getQualifiedFieldName($arguments[0])
@@ -1123,6 +1123,23 @@ class Relational implements \IteratorAggregate
 			$related->group($rel->getRelatedKey())->having('COUNT(*)', '>=', $count);
 		});
 
+		return $this;
+	}
+
+	/**
+	 * Applies a where clause comparing a field to the current juser id
+	 *
+	 * NOTE: whereas other 'where' clauses can be called statically due to their
+	 * location in the query builder class, this method cannot be as it is attached
+	 * directly to the model itself.
+	 *
+	 * @param  string $column the field to use for ownership, defaulting to 'created_by'
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function whereIsMine($column='created_by')
+	{
+		$this->whereEquals($column, \JFactory::getUser()->get('id'));
 		return $this;
 	}
 

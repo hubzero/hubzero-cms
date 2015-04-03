@@ -367,19 +367,6 @@ class Query
 	}
 
 	/**
-	 * Applies a where clause comparing a field to the current juser id
-	 *
-	 * @param  string $column the field to use for ownership, defaulting to 'created_by'
-	 * @return $this
-	 * @since  1.3.2
-	 **/
-	public function whereIsMine($column='created_by')
-	{
-		$this->whereEquals($column, \JFactory::getUser()->get('id'));
-		return $this;
-	}
-
-	/**
 	 * Applies order by clause
 	 *
 	 * @param  string $column the column to which the order by will apply
