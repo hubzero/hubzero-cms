@@ -28,102 +28,17 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-use \Hubzero\Console\Event;
+namespace Components\Courses\Tables;
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+use Hubzero\Console\Event;
 
 /**
  *
  * Course assets table class
  *
  */
-class CoursesTableAsset extends JTable
+class Asset extends \JTable
 {
-	/**
-	 * ID, primary key for course assets table
-	 *
-	 * @var int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * Assets title
-	 *
-	 * @var varchar(255)
-	 */
-	var $title = NULL;
-
-	/**
-	 * mediumtext
-	 *
-	 * @var text
-	 */
-	var $content = NULL;
-
-	/**
-	 * Assets type
-	 *
-	 * @var varchar(255)
-	 */
-	var $type = NULL;
-
-	/**
-	 * Assets subtype
-	 *
-	 * @var varchar(255)
-	 */
-	var $subtype = NULL;
-
-	/**
-	 * Association url (basically an alternative to [associated_id + scope])
-	 *
-	 * @var string
-	 */
-	var $url = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $course_id = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $graded = NULL;
-
-	/**
-	 * Asset weighting classification for grading purposes
-	 *
-	 * @var varchar(255)
-	 */
-	var $grade_weight = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -166,9 +81,8 @@ class CoursesTableAsset extends JTable
 		{
 			$this->state = (isset($this->state)) ? $this->state : 1;
 
-			$juser = \JFactory::getUser();
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

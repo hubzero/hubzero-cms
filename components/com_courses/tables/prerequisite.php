@@ -28,56 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses prerequisites table
  */
-class CoursesTablePrerequisites extends JTable
+class Prerequisites extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 **/
-	var $section_id;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $item_scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $item_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $requisite_scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $requisite_id = NULL;
-
 	/**
 	 * Constructor
 	 *

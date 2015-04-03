@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -223,7 +225,7 @@ class SubtitleAssetHandler extends AssetHandler
 		$transcript  = $manifest->presentation->title . PHP_EOL . str_repeat('==', 20) . PHP_EOL . ltrim($transcript, PHP_EOL);
 
 		// Create our asset table object
-		$assetObj = new CoursesTableAsset($this->db);
+		$assetObj = new Tables\Asset($this->db);
 		$this->asset['title']      = 'Video Transcript';
 		$this->asset['type']       = 'file';
 		$this->asset['subtype']    = 'file';
@@ -239,7 +241,7 @@ class SubtitleAssetHandler extends AssetHandler
 		}
 
 		// Create asset assoc object
-		$assocObj = new CoursesTableAssetAssociation($this->db);
+		$assocObj = new Tables\AssetAssociation($this->db);
 		$this->assoc['asset_id'] = $assetObj->get('id');
 		$this->assoc['scope']    = $scope;
 		$this->assoc['scope_id'] = $scope_id;

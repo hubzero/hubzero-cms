@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -46,7 +48,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableAsset';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Asset';
 
 	/**
 	 * Object scope
@@ -106,7 +108,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		}
 		else if (in_array($property, self::$_section_keys))
 		{
-			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl = new Tables\SectionDate($this->_db);
 			$tbl->load($this->get('id'), 'asset', $this->get('section_id'));
 
 			$this->set('publish_up', $tbl->get('publish_up', ''));
@@ -122,7 +124,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 				$key = str_replace('_', ' ', $parts[0]);
 				$key = ucwords($key);
 				$key = str_replace(' ', '', $key);
-				$tbl = "CoursesTable{$key}";
+				$tbl = "Tables\{$key}";
 				$tbl = new $tbl($this->_db);
 				$aux = array();
 				foreach (self::$_aux_tablekeys[$parts[0]] as $item)
@@ -193,7 +195,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		if ($value && $this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load(
 				$this->get('id'),
 				$this->_scope,
@@ -217,7 +219,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 				$key = str_replace('_', ' ', $key);
 				$key = ucwords($key);
 				$key = str_replace(' ', '', $key);
-				$tbl = "CoursesTable{$key}";
+				$tbl = "Tables\{$key}";
 				$tbl = new $tbl($this->_db);
 
 				if ($v == 'delete')
@@ -259,7 +261,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// Remove dates
 		if ($this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 			if (!$dt->delete())
 			{
@@ -316,7 +318,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 			return false;
 		}
 
-		$view = new CoursesTableAssetViews($this->_db);
+		$view = new Tables\AssetViews($this->_db);
 		$view->asset_id          = $this->_tbl->id;
 		$view->course_id         = $this->get('course_id');
 		$view->viewed            = \JFactory::getDate()->toSql();
@@ -456,7 +458,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$filters['asset_id'] = (int) $this->get('id');
 		}
 
-		$tbl = new CoursesTableAssetAssociation($this->_db);
+		$tbl = new Tables\AssetAssociation($this->_db);
 
 		if (isset($filters['count']) && $filters['count'])
 		{

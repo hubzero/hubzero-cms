@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -103,7 +104,7 @@ class Assets extends AdminController
 			)
 		);
 
-		$tbl = new \CoursesTableAsset($this->database);
+		$tbl = new Tables\Asset($this->database);
 
 		$rows = $tbl->find(array(
 			'w' => $this->view->filters
@@ -161,7 +162,7 @@ class Assets extends AdminController
 		$course_id = Request::getInt('course_id', 0);
 
 		// Get the element moving down - item 1
-		$tbl = new \CoursesTableAssetAssociation($this->database);
+		$tbl = new Tables\AssetAssociation($this->database);
 		$tbl->scope    = $scope;
 		$tbl->scope_id = $scope_id;
 		$tbl->asset_id = $asset_id;
@@ -199,7 +200,7 @@ class Assets extends AdminController
 		$course_id = Request::getInt('course_id', 0);
 
 		// Load association
-		$tbl = new \CoursesTableAssetAssociation($this->database);
+		$tbl = new Tables\AssetAssociation($this->database);
 		$tbl->loadByAssetScope($asset_id, $scope_id, $scope);
 
 		// Remove association
@@ -250,7 +251,7 @@ class Assets extends AdminController
 				$id = 0;
 			}
 
-			$model = new \CoursesTableAsset($this->database);
+			$model = new Tables\Asset($this->database);
 			$model->load($id);
 		}
 
@@ -289,7 +290,7 @@ class Assets extends AdminController
 		$tmpl   = Request::getVar('tmpl', '');
 
 		// instatiate course page object for saving
-		$row = new \CoursesTableAsset($this->database);
+		$row = new Tables\Asset($this->database);
 
 		if (!$row->bind($fields))
 		{
@@ -314,7 +315,7 @@ class Assets extends AdminController
 
 		$fields['asset_id'] = $row->get('id');
 
-		$row2 = new \CoursesTableAssetAssociation($this->database);
+		$row2 = new Tables\AssetAssociation($this->database);
 		$row2->loadByAssetScope($fields['asset_id'], $fields['scope_id'], $fields['scope']);
 		if (!$row2->id)
 		{
@@ -462,7 +463,7 @@ class Assets extends AdminController
 		$course_id = Request::getInt('course_id', 0);
 
 		// Get the element moving down - item 1
-		$tbl = new \CoursesTableAssetAssociation($this->database);
+		$tbl = new Tables\AssetAssociation($this->database);
 		$tbl->loadByAssetScope($id, $scope_id, $scope);
 
 		if (!$tbl->move($move, "scope=" . $this->database->Quote($scope) . " AND scope_id=" . $this->database->Quote(intval($scope_id))))

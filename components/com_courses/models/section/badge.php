@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -45,7 +47,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableSectionBadge';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionBadge';
 
 	/**
 	 * Object scope
@@ -72,7 +74,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 		}
 
 		// Get criteria text
-		$criteria = new CoursesTableSectionBadgeCriteria($this->_db);
+		$criteria = new Tables\SectionBadgeCriteria($this->_db);
 		$criteria->load($this->get('criteria_id'));
 
 		if ($criteria->get('text'))
@@ -99,7 +101,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 		$model->_tbl->load(array('section_id'=>$id));
 
 		// Get criteria text
-		$criteria = new CoursesTableSectionBadgeCriteria($model->_db);
+		$criteria = new Tables\SectionBadgeCriteria($model->_db);
 		$criteria->load($model->get('criteria_id'));
 
 		if ($criteria->get('text'))
@@ -142,7 +144,7 @@ class CoursesModelSectionBadge extends CoursesModelAbstract
 		if ($this->get('criteria_text_new'))
 		{
 			// We'll always save a new entry if the text is changing
-			$criteria = new CoursesTableSectionBadgeCriteria($this->_db);
+			$criteria = new Tables\SectionBadgeCriteria($this->_db);
 			$criteria->set('text', $this->get('criteria_text_new'));
 			$criteria->set('section_badge_id', $this->get('id'));
 			$criteria->store();

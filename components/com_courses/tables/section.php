@@ -28,113 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Course section table class
  */
-class CoursesTableSection extends JTable
+class Section extends \JTable
 {
-	/**
-	 * ID, primary key for course instances table
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $offering_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $alias = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * Start date for instance
-	 *
-	 * @var string
-	 */
-	var $start_date = NULL;
-
-	/**
-	 * End date for instance
-	 *
-	 * @var string
-	 */
-	var $end_date = NULL;
-
-	/**
-	 * Start publishing date
-	 *
-	 * @var string
-	 */
-	var $publish_up = NULL;
-
-	/**
-	 * End publishing date
-	 *
-	 * @var string
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * Created date for unit
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $enrollment = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $grade_policy_id = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -147,14 +47,11 @@ class CoursesTableSection extends JTable
 	}
 
 	/**
-	 * Returns a reference to a CoursesTableSection object
-	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesTableSection::getInstance($alias);
+	 * Returns a reference to a section object
 	 *
 	 * @param   string  $pagename  The page to load
 	 * @param   string  $scope     The page scope
-	 * @return  object  CoursesTableSection
+	 * @return  object
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array())
 	{
@@ -170,7 +67,7 @@ class CoursesTableSection extends JTable
 
 		if (!isset($instances[$alias . '_' . $offering_id]))
 		{
-			$inst = new CoursesTableSection(\JFactory::getDBO());
+			$inst = new self(\JFactory::getDBO());
 			$inst->load($alias, $offering_id);
 
 			$instances[$alias . '_' . $offering_id] = $inst;
@@ -252,7 +149,7 @@ class CoursesTableSection extends JTable
 		if (!$this->id)
 		{
 			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

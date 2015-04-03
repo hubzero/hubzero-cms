@@ -28,56 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses grade book table
  */
-class CoursesTableGradePolicies extends JTable
+class GradePolicies extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * mediumtext
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * decimal(3,2)
-	 *
-	 * @var decimal
-	 */
-	var $threshold = NULL;
-
-	/**
-	 * decimal(3,2)
-	 *
-	 * @var decimal
-	 */
-	var $exam_weight = NULL;
-
-	/**
-	 * decimal(3,2)
-	 *
-	 * @var decimal
-	 */
-	var $quiz_weight = NULL;
-
-	/**
-	 * decimal(3,2)
-	 *
-	 * @var decimal
-	 */
-	var $homework_weight = NULL;
-
 	/**
 	 * Constructor
 	 *

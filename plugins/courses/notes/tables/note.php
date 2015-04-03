@@ -28,113 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Course announcement table class
  */
-class CoursesTableMemberNote extends JTable
+class MemberNote extends \JTable
 {
-	/**
-	 * ID, primary key for course asset grouping table
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var text
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pos_x = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pos_y = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $width = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $height = NULL;
-
-	/**
-	 * 00:00:00
-	 *
-	 * @var integer
-	 */
-	var $timestamp = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $access = NULL;
-
 	/**
 	 * Constructor method for JTable class
 	 *

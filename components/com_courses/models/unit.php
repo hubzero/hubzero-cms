@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -49,7 +51,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableUnit';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Unit';
 
 	/**
 	 * Object scope
@@ -166,7 +168,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 		}
 		else if (in_array($property, self::$_section_keys))
 		{
-			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl = new Tables\SectionDate($this->_db);
 			$tbl->load($this->get('id'), 'unit', $this->get('section_id'));
 
 			if (!$this->_tbl->{'__publish_up'})
@@ -259,7 +261,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 		if (!isset($this->assetgroups) || !($this->assetgroups instanceof CoursesModelIterator))
 		{
-			$tbl = new CoursesTableAssetGroup($this->_db);
+			$tbl = new Tables\AssetGroup($this->_db);
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
 				$list = array();
@@ -464,7 +466,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$filters['section_id']     = (int) $this->get('section_id');
 			}
 
-			$tbl = new CoursesTableAsset($this->_db);
+			$tbl = new Tables\Asset($this->_db);
 
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
@@ -496,7 +498,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 
 		if ($value && $this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 
 			$dt->set('publish_up', $this->get('publish_up'));
@@ -508,7 +510,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 				$dt->set('scope', $this->_scope);
 				$dt->set('scope_id', $this->get('id'));
 				$dt->set('created', \JFactory::getDate()->toSql());
-				$dt->set('created_by', \JFactory::getUser()->get('id'));
+				$dt->set('created_by', User::get('id'));
 			}
 
 			if (!$dt->store())
@@ -554,7 +556,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 		// Remove dates
 		if ($this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 			if (!$dt->delete())
 			{
@@ -606,7 +608,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 		if ($deep)
 		{
 			// Copy assets
-			$tbl = new CoursesTableAssetAssociation($this->_db);
+			$tbl = new Tables\AssetAssociation($this->_db);
 			//foreach ($this->assets(array('asset_scope_id' => $u_id)) as $asset)
 			foreach ($tbl->find(array('scope_id' => $u_id, 'scope' => 'unit')) as $asset)
 			{

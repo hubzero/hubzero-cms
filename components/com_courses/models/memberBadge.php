@@ -44,7 +44,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableMemberBadge';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\MemberBadge';
 
 	/**
 	 * Object scope

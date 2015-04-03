@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -47,7 +49,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableMember';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Member';
 
 	/**
 	 * Object scope
@@ -83,7 +85,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	{
 		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CoursesTableMember($this->_db);
+		$this->_tbl = new Tables\Member($this->_db);
 
 		if (is_numeric($uid) || is_string($uid))
 		{
@@ -96,7 +98,7 @@ class CoursesModelMember extends CoursesModelAbstract
 
 		if (!$this->get('role_alias'))
 		{
-			$result = new CoursesTableRole($this->_db);
+			$result = new Tables\Role($this->_db);
 			if ($result->load($this->get('role_id')))
 			{
 				foreach ($result->getProperties() as $key => $property)

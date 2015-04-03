@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -118,7 +119,7 @@ class Students extends AdminController
 		}
 		$this->view->filters['student'] = 1;
 
-		$tbl = new \CoursesTableMember($this->database);
+		$tbl = new Tables\Member($this->database);
 
 		$this->view->total = $tbl->count($this->view->filters); //$this->view->offering->students($this->view->filters);
 
@@ -442,7 +443,7 @@ class Students extends AdminController
 		}
 		$this->view->filters['student'] = 1;
 
-		$tbl = new \CoursesTableMember($this->database);
+		$tbl = new Tables\Member($this->database);
 
 		$this->view->rows = $tbl->find($this->view->filters); //$this->view->offering->students($this->view->filters);
 		if ($this->view->rows)

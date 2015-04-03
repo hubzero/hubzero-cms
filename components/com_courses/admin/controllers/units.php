@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -322,7 +323,7 @@ class Units extends AdminController
 				}
 
 				// Log the course approval
-				$log = new \CoursesTableLog($this->database);
+				$log = new Tables\Log($this->database);
 				$log->scope_id  = $id;
 				$log->scope     = 'course_unit';
 				$log->user_id   = $this->juser->get('id');
@@ -415,7 +416,7 @@ class Units extends AdminController
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);
 
-		$row = new \CoursesTableUnit($this->database);
+		$row = new Tables\Unit($this->database);
 		$row->load($uid);
 		$row->move($inc, 'offering_id=' . $this->database->Quote($row->offering_id));
 

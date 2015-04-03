@@ -28,80 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
- *
  * Course section table class
- *
  */
-class CoursesTableSectionDate extends JTable
+class SectionDate extends \JTable
 {
-	/**
-	 * ID, primary key for course instances table
-	 * int(11)
-	 *
-	 * @var int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * Start publishing date
-	 *
-	 * @var string
-	 */
-	var $publish_up = NULL;
-
-	/**
-	 * End publishing date
-	 *
-	 * @var string
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * Created date for unit
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -174,9 +107,8 @@ class CoursesTableSectionDate extends JTable
 
 		if (!$this->id)
 		{
-			$juser = \JFactory::getUser();
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 
 			// Make sure the record doesn't already exist
 			$query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->Quote($this->scope) . " AND scope_id=" . $this->_db->Quote($this->scope_id);

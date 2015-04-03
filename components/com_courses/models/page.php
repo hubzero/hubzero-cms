@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,7 +46,7 @@ class CoursesModelPage extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTablePage';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Page';
 
 	/**
 	 * Model context

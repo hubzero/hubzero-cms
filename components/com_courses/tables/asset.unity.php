@@ -28,56 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Table class for tracking unity asset results
  */
-class CoursesTableAssetUnity extends JTable
+class AssetUnity extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $member_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $asset_id = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $passed = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $details = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -87,6 +44,7 @@ class CoursesTableAssetUnity extends JTable
 	public function __construct(&$db)
 	{
 		parent::__construct('#__courses_asset_unity', 'id', $db);
+
 		$this->_trackAssets = false;
 	}
 }

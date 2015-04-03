@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
 
 /**
@@ -218,7 +219,7 @@ class Managers extends SiteController
 		foreach ($entries as $key => $data)
 		{
 			// Retrieve user's account info
-			$tbl = new \CoursesTableMember($this->database);
+			$tbl = new Tables\Member($this->database);
 			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
 			if ($tbl->role_id == $data['role_id'])
 			{

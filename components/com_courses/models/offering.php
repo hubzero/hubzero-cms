@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+use Components\Courses\Tables;
+
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'offering.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
@@ -55,7 +57,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableOffering';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Offering';
 
 	/**
 	 * Object scope
@@ -202,7 +204,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CoursesTableOffering($this->_db);
+		$this->_tbl = new Tables\Offering($this->_db);
 
 		if ($oid)
 		{
@@ -360,14 +362,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableSection($this->_db);
+			$tbl = new Tables\Section($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!($this->_sections instanceof CoursesModelIterator) || $clear)
 		{
-			$tbl = new CoursesTableSection($this->_db);
+			$tbl = new Tables\Section($this->_db);
 
 			if (($results = $tbl->find($filters)))
 			{
@@ -444,14 +446,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableUnit($this->_db);
+			$tbl = new Tables\Unit($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!($this->_units instanceof CoursesModelIterator) || $clear)
 		{
-			$tbl = new CoursesTableUnit($this->_db);
+			$tbl = new Tables\Unit($this->_db);
 
 			if (($results = $tbl->find($filters)))
 			{
@@ -539,14 +541,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_managers) || !is_array($this->_managers) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -671,7 +673,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$filters['asset_scope']    = 'offering';
 			}
 
-			$tbl = new CoursesTableAsset($this->_db);
+			$tbl = new Tables\Asset($this->_db);
 
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
@@ -771,14 +773,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_members) || !is_array($this->_members) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -828,7 +830,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}*/
 		if (!$user_id)
 		{
-			$user_id = \JFactory::getUser()->get('id');
+			$user_id = User::get('id');
 		}
 		$filters['user_id'] = (int) $user_id;
 		$filters['sort'] = 'offering_id ASC, student';
@@ -836,14 +838,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_membership[$user_id]) || !is_array($this->_membership[$user_id]))
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -889,13 +891,13 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableRole($this->_db);
+			$tbl = new Tables\Role($this->_db);
 
 			return $tbl->count($filters);
 		}
 		if (!isset($this->_roles) || !is_array($this->_roles) || $clear)
 		{
-			$tbl = new CoursesTableRole($this->_db);
+			$tbl = new Tables\Role($this->_db);
 
 			if (!($results = $tbl->find($filters)))
 			{
@@ -965,14 +967,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTablePage($this->_db);
+			$tbl = new Tables\Page($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_pages) || !is_array($this->_pages) || $reload)
 		{
-			$tbl = new CoursesTablePage($this->_db);
+			$tbl = new Tables\Page($this->_db);
 
 			$results = array();
 
@@ -1014,14 +1016,14 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableAnnouncement($this->_db);
+			$tbl = new Tables\Announcement($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_announcements) || !is_array($this->_announcements))
 		{
-			$tbl = new CoursesTableAnnouncement($this->_db);
+			$tbl = new Tables\Announcement($this->_db);
 
 			$results = array();
 
@@ -1100,7 +1102,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			$data = array($data);
 		}
 
-		$role = new CoursesTableRole($this->_db);
+		$role = new Tables\Role($this->_db);
 		$role->load($role_id);
 		if (is_string($role_id))
 		{
@@ -1414,7 +1416,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 					else
 					{
 						// Copy asset associations
-						$tbl = new CoursesTableAssetAssociation($this->_db);
+						$tbl = new Tables\AssetAssociation($this->_db);
 						foreach ($tbl->find(array('scope_id' => $o_id, 'scope' => 'offering', 'asset_id' => $oldAssetId)) as $aa)
 						{
 							$tbl->bind($aa);

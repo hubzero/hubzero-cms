@@ -44,7 +44,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	 * 
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableCertificate';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Certificate';
 
 	/**
 	 * Object scope

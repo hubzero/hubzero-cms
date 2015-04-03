@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -105,7 +107,7 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Create our asset table object
-		$assetObj = new CoursesTableAsset($this->db);
+		$assetObj = new Tables\Asset($this->db);
 
 		$this->asset['title']      = $filename;
 		$this->asset['type']       = (!empty($this->asset['type'])) ? $this->asset['type'] : 'file';
@@ -122,7 +124,7 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Create asset assoc object
-		$assocObj = new CoursesTableAssetAssociation($this->db);
+		$assocObj = new Tables\AssetAssociation($this->db);
 
 		$this->assoc['asset_id'] = $assetObj->get('id');
 		$this->assoc['scope']    = Request::getCmd('scope', 'asset_group');

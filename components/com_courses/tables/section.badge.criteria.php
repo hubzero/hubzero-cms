@@ -28,28 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses section badge criteria table
  */
-class CoursesTableSectionBadgeCriteria extends JTable
+class SectionBadgeCriteria extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $text = NULL;
-
 	/**
 	 * Constructor
 	 *

@@ -28,70 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses table class for section coupon codes
  */
-class CoursesTableSectionCode extends JTable
+class SectionCode extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * varchar(10)
-	 *
-	 * @var string
-	 */
-	var $code = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $expires = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $redeemed = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $redeemed_by = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -129,7 +72,7 @@ class CoursesTableSectionCode extends JTable
 		if (!$this->id)
 		{
 			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

@@ -28,93 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
- *
  * Course Units table class
- *
  */
-class CoursesTableUnit extends JTable
+class Unit extends \JTable
 {
-	/**
-	 * ID, primary key for course units table
-	 *
-	 * @var int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * Course instance id of this unit (references #__course_instances.id)
-	 *
-	 * @var int(11)
-	 */
-	var $offering_id = NULL;
-
-	/**
-	 * Alias
-	 *
-	 * @var varchar(255)
-	 */
-	var $alias = NULL;
-
-	/**
-	 * Unit title
-	 *
-	 * @var varchar(255)
-	 */
-	var $title = NULL;
-
-	/**
-	 * Unit description
-	 *
-	 * @var longtext
-	 */
-	var $description = NULL;
-
-	/**
-	 * Ordering
-	 *
-	 * @var int(11)
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * Start date for unit
-	 *
-	 * @var date
-	 */
-	//var $start_date = NULL;
-
-	/**
-	 * End date for unit
-	 *
-	 * @var date
-	 */
-	//var $end_date = NULL;
-
-	/**
-	 * Created date for unit
-	 *
-	 * @var datetime
-	 */
-	var $created = NULL;
-
-	/**
-	 * Who created the unit (reference #__users.id)
-	 *
-	 * @var int(11)
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -193,9 +113,8 @@ class CoursesTableUnit extends JTable
 
 		if (!$this->id)
 		{
-			$juser = \JFactory::getUser();
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 
 			$this->state = ($this->state) ? $this->state : 1;
 

@@ -703,7 +703,7 @@ class PdfFormDeployment
 		if ($result = $dbh->loadResult())
 		{
 			// Get our asset object
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+			require_once(__DIR__ . DS . 'asset.php');
 			$asset = new CoursesModelAsset($result);
 			$asset->set('url', $this->crumb);
 			$asset->store();

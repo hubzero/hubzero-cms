@@ -28,105 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses table
  */
-class CoursesTableCourse extends JTable
+class Course extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $alias    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $group_id = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $state = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $type = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $access = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $blurb = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $logo = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $params = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -177,7 +85,7 @@ class CoursesTableCourse extends JTable
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_courses'));
@@ -233,7 +141,7 @@ class CoursesTableCourse extends JTable
 		if (!$this->id)
 		{
 			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

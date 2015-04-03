@@ -45,7 +45,7 @@ class CoursesModelGradePolicies extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableGradePolicies';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\GradePolicies';
 
 	/**
 	 * Object scope

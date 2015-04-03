@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -856,7 +858,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		if (!$id)
 		{
 			// Create asset assoc object
-			$assocObj = new CoursesTableAssetAssociation($this->db);
+			$assocObj = new Tables\AssetAssociation($this->db);
 
 			$row->asset_id  = $asset->get('id');
 			$row->scope     = Request::getCmd('scope', 'asset_group');
@@ -879,7 +881,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id)
 			{
 				// Create asset assoc object
-				$assocObj = new CoursesTableAssetAssociation($this->db);
+				$assocObj = new Tables\AssetAssociation($this->db);
 
 				if (!$assocObj->loadByAssetScope($asset->get('id'), $original_scope_id, $scope))
 				{
@@ -953,7 +955,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
 
 		// First, delete the asset association
-		$assocObj = new CoursesTableAssetAssociation($this->db);
+		$assocObj = new Tables\AssetAssociation($this->db);
 
 		// Get vars
 		$asset_id  = Request::getInt('asset_id', 0);
@@ -987,7 +989,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Then, lookup whether or not there are other assocations connected to this asset
-		$assetObj = new CoursesTableAsset($this->db);
+		$assetObj = new Tables\Asset($this->db);
 
 		if (!$assetObj->load($asset_id))
 		{
@@ -1100,7 +1102,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Get our asset group object
 		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
-		$assetAssocationObj = new CoursesTableAssetAssociation($this->db);
+		$assetAssocationObj = new Tables\AssetAssociation($this->db);
 
 		$assets   = Request::getVar('asset', array());
 		$scope_id = Request::getInt('scope_id', 0);
@@ -1297,7 +1299,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'prerequisite.php';
 
-		$tbl = new CoursesTablePrerequisites($this->db);
+		$tbl = new Tables\Prerequisites($this->db);
 		$tbl->set('item_scope', Request::getWord('item_scope', 'asset'));
 		$tbl->set('item_id', Request::getInt('item_id', 0));
 		$tbl->set('requisite_scope', Request::getWord('requisite_scope', 'asset'));
@@ -1333,7 +1335,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		$tbl = new CoursesTablePrerequisites($this->db);
+		$tbl = new Tables\Prerequisites($this->db);
 		$tbl->load($id);
 		$tbl->delete();
 
@@ -1575,7 +1577,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Save the unity details
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.unity.php';
-		$unity = new CoursesTableAssetUnity($this->db);
+		$unity = new Tables\AssetUnity($this->db);
 		$unity->set('member_id', $member_id);
 		$unity->set('asset_id', $asset_id);
 		$unity->set('created', $now);
@@ -1589,7 +1591,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		// Now set/update the gradebook item
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'grade.book.php';
-		$gradebook = new CoursesTableGradeBook($this->db);
+		$gradebook = new Tables\GradeBook($this->db);
 		$gradebook->loadByUserAndAssetId($member_id, $asset_id);
 
 		// Score is either 100 or 0

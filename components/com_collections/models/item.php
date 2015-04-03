@@ -67,7 +67,7 @@ class Item extends Base
 	protected $_context = 'com_collections.item.description';
 
 	/**
-	 * CoursesTableInstance
+	 * Modifier
 	 *
 	 * @var object
 	 */

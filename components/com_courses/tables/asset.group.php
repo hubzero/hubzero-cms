@@ -28,93 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
- *
  * Course asset groups table class
- *
  */
-class CoursesTableAssetGroup extends JTable
+class AssetGroup extends \JTable
 {
-	/**
-	 * int(11) ID, primary key for course asset grouping table
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11) Course unit id of this asset group (references #__course_units.gidNumber)
-	 *
-	 * @var integer
-	 */
-	var $unit_id = NULL;
-
-	/**
-	 * varchar(255) Alias
-	 *
-	 * @var string
-	 */
-	var $alias = NULL;
-
-	/**
-	 * varchar(255) Asset grouping title
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * varchar(255) Asset group description
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11) Ordering
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * varchar(255) Asset group type
-	 *
-	 * @var string
-	 */
-	var $parent = NULL;
-
-	/**
-	 * datetime Created date for unit
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11) Who created the unit (reference #__users.id)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -161,9 +81,8 @@ class CoursesTableAssetGroup extends JTable
 
 			$this->state = ($this->state) ? $this->state : 1;
 
-			$juser = \JFactory::getUser();
 			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

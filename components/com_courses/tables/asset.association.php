@@ -28,51 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
- *
  * Course asset associations table class
- *
  */
-class CoursesTableAssetAssociation extends JTable
+class AssetAssociation extends \JTable
 {
-	/**
-	 * ID, primary key for course asset grouping table
-	 *
-	 * @var int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * Course asset id (references #__course_assets.id)
-	 *
-	 * @var int(11)
-	 */
-	var $asset_id = NULL;
-
-	/**
-	 * Course asset group id (references #__course_asset_groups.id)
-	 *
-	 * @var int(11)
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * Association scope (i.e. is it associated with the course, a unit directly, or a asset grouping?)
-	 *
-	 * @var varchar(255)
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *

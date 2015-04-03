@@ -23,37 +23,18 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Ben Mollet <bmollet@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
-class CoursesTableCertificate extends JTable
+/**
+ * Course certificate table class
+ */
+class Certificate extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 * 
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 * 
-	 * @var integer
-	 */
-	var $course_id = NULL;
-
-	/**
-	 * text
-	 * 
-	 * @var string
-	 */
-	var $properties = NULL;
-
 	/**
 	 * Constructor
 	 * 

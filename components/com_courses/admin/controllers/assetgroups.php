@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -475,7 +476,7 @@ class Assetgroups extends AdminController
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);
 
-		$row = new \CoursesTableAssetgroup($this->database);
+		$row = new Tables\Assetgroup($this->database);
 		$row->load($uid);
 		$row->move($inc, 'unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));
 		$row->reorder('unit_id=' . $this->database->Quote($row->unit_id) . ' AND parent=' . $this->database->Quote($row->parent));

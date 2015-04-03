@@ -28,93 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Course announcement table class
  */
-class CoursesTableAnnouncement extends JTable
+class Announcement extends \JTable
 {
-	/**
-	 * ID, primary key for course asset grouping table
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * Course unit id of this asset group (references #__course_units.gidNumber)
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $offering_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var text
-	 */
-	var $content = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $priority = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_up = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $sticky = NULL;
-
 	/**
 	 * Constructor method for JTable class
 	 *
@@ -191,9 +111,8 @@ class CoursesTableAnnouncement extends JTable
 
 		if (!$this->id)
 		{
-			$juser = \JFactory::getUser();
-			$this->created = \JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = \JFactory::getDate()->toSql();
+			$this->created_by = User::get('id');
 		}
 
 		return true;

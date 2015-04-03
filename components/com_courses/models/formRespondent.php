@@ -29,6 +29,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -174,7 +176,7 @@ class PdfFormRespondent
 		$score   = $results['summary']['score'];
 
 		// Load gradebook entry
-		$gradebook = new CoursesTableGradeBook($database);
+		$gradebook = new Tables\GradeBook($database);
 		$gradebook->loadByUserAndAssetId($this->member_id, $asset_id);
 
 		if (!$gradebook->get('id'))

@@ -28,49 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Table class for course membership reason
  */
-class CoursesTableRole extends JTable
+class Role extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $offering_id = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $alias = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $permissions   = NULL;
-
 	/**
 	 * Constructor
 	 *

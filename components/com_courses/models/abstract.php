@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -183,7 +185,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	{
 		if (!($this->_creator instanceof JUser))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = User::getInstance($this->get('created_by'));
 		}
 		if ($property)
 		{
@@ -230,7 +232,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	 */
 	public function log($scope_id, $scope, $action, $log=null)
 	{
-		$log = new CoursesTableLog($this->_db);
+		$log = new Tables\Log($this->_db);
 		$log->scope_id  = $scope_id;
 		$log->scope     = $scope;
 		$log->user_id   = User::get('id');

@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -48,7 +50,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableAssetGroup';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\AssetGroup';
 
 	/**
 	 * Object scope
@@ -147,7 +149,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 		}
 		else if (in_array($property, self::$_section_keys))
 		{
-			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl = new Tables\SectionDate($this->_db);
 			$tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
 
 			$this->set('publish_up', $tbl->get('publish_up', ''));
@@ -296,7 +298,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 				$filters['section_id']     = (int) $this->get('section_id');
 			}
 
-			$tbl = new CoursesTableAsset($this->_db);
+			$tbl = new Tables\Asset($this->_db);
 
 			if (($results = $tbl->find(array('w' => $filters))))
 			{
@@ -414,7 +416,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 
 		if ($value && $this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 			$dt->set('publish_up', $this->get('publish_up'));
 			$dt->set('publish_down', $this->get('publish_down'));
@@ -459,7 +461,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 
 		if ($this->get('section_id'))
 		{
-			$dt = new CoursesTableSectionDate($this->_db);
+			$dt = new Tables\SectionDate($this->_db);
 			$dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
 			if ($dt->id)
 			{
@@ -524,7 +526,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 					else
 					{
 						// Copy asset associations
-						$tbl = new CoursesTableAssetAssociation($this->_db);
+						$tbl = new Tables\AssetAssociation($this->_db);
 						foreach ($tbl->find(array('scope_id' => $oldAssetGroupId, 'scope' => 'asset_group', 'asset_id' => $oldAssetId)) as $aa)
 						{
 							$tbl->bind($aa);

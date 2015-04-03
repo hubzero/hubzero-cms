@@ -44,7 +44,7 @@ class CoursesModelSectionDate extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableSectionDate';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionDate';
 
 	/**
 	 * Object scope

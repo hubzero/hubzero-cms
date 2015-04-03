@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -269,7 +270,7 @@ class Pages extends AdminController
 			return;
 		}
 
-		$tbl = new \CoursesTablePage($this->database);
+		$tbl = new Tables\Page($this->database);
 
 		$i = 0;
 		foreach ($ids as $id)
@@ -825,7 +826,7 @@ class Pages extends AdminController
 		$uid = $id[0];
 		$inc = ($this->_task == 'orderup' ? -1 : 1);
 
-		$row = new \CoursesTablePage($this->database);
+		$row = new Tables\Page($this->database);
 		$row->load($uid);
 		$row->move($inc, 'course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));
 		$row->reorder('course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));

@@ -28,70 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses member badges table
  */
-class CoursesTableMemberBadge extends JTable
+class MemberBadge extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $member_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $section_badge_id = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $earned = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $earned_on = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $action = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $action_on = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $validation_token = NULL;
-
 	/**
 	 * Constructor
 	 *

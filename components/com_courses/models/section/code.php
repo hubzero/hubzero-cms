@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -44,7 +46,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableSectionCode';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionCode';
 
 	/**
 	 * Object scope
@@ -140,7 +142,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 	{
 		if (!($this->_redeemer instanceof JUser))
 		{
-			$this->_redeemer = JUser::getInstance($this->get('redeemed_by'));
+			$this->_redeemer = User::getInstance($this->get('redeemed_by'));
 		}
 		if ($property)
 		{
@@ -209,7 +211,7 @@ class CoursesModelSectionCode extends CoursesModelAbstract
 		}
 		if (!$redeemed_by)
 		{
-			$redeemed_by = \JFactory::getUser()->get('id');
+			$redeemed_by = User::get('id');
 		}
 		$this->set('redeemed_by', $redeemed_by);
 		$this->set('redeemed', \JFactory::getDate()->toSql());

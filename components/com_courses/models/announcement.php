@@ -44,7 +44,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableAnnouncement';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Announcement';
 
 	/**
 	 * Model context

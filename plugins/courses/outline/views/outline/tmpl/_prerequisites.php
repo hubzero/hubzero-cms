@@ -38,7 +38,7 @@ $this->js('prerequisites');
 \Hubzero\Document\Assets::AddSystemScript('handlebars');
 $includeForm = (isset($this->includeForm)) ? $this->includeForm : true;
 
-$prereqs  = new CoursesTablePrerequisites($db);
+$prereqs  = new \Components\Courses\Tables\Prerequisites($db);
 $existing = $prereqs->loadAllByScope($this->scope, $this->scope_id, $this->section_id);
 $ids      = array();
 foreach ($existing as $value)

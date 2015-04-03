@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -45,11 +47,11 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 class CoursesModelSection extends CoursesModelAbstract
 {
 	/**
-	 * JTable class name
+	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableSection';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Section';
 
 	/**
 	 * Object scope
@@ -138,7 +140,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	{
 		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CoursesTableSection($this->_db);
+		$this->_tbl = new Tables\Section($this->_db);
 
 		if (is_numeric($oid) || is_string($oid))
 		{
@@ -382,16 +384,14 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_members) || !is_array($this->_members) || $clear)
 		{
-			//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'iterator.php');
-
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -452,14 +452,14 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl = new Tables\SectionDate($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!($this->_dates instanceof CoursesModelIterator) || $clear)
 		{
-			$tbl = new CoursesTableSectionDate($this->_db);
+			$tbl = new Tables\SectionDate($this->_db);
 
 			if (($results = $tbl->find($filters)))
 			{
@@ -491,7 +491,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		{
 			$data = array($data);
 		}
-		$role = new CoursesTableRole($this->_db);
+		$role = new Tables\Role($this->_db);
 		$role->load($role_id);
 		if (is_string($role_id))
 		{
@@ -499,7 +499,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 		if (!$this->get('course_id'))
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'offering.php');
+			require_once(__DIR__ . DS . 'offering.php');
 			$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
 			$this->set('course_id', $offering->get('course_id'));
 		}
@@ -628,7 +628,7 @@ class CoursesModelSection extends CoursesModelAbstract
 	public function delete()
 	{
 		// Remove associated date data
-		$sd = new CoursesTableSectionDate($this->_db);
+		$sd = new Tables\SectionDate($this->_db);
 		if (!$sd->deleteBySection($this->get('id')))
 		{
 			$this->setError($sd->getError());
@@ -636,7 +636,7 @@ class CoursesModelSection extends CoursesModelAbstract
 		}
 
 		// Remove associated member data
-		$sm = new CoursesTableMember($this->_db);
+		$sm = new Tables\Member($this->_db);
 		if (!$sm->deleteBySection($this->get('id')))
 		{
 			$this->setError($sm->getError());
@@ -702,14 +702,14 @@ class CoursesModelSection extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableSectionCode($this->_db);
+			$tbl = new Tables\SectionCode($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!($this->_codes instanceof CoursesModelIterator) || $clear)
 		{
-			$tbl = new CoursesTableSectionCode($this->_db);
+			$tbl = new Tables\SectionCode($this->_db);
 
 			if (($results = $tbl->find($filters)))
 			{

@@ -343,7 +343,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$grades = $this->course->offering()->gradebook()->grades();
 
 		// Get the assets
-		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$asset  = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 		$assets = $asset->find(
 			array(
 				'w' => array(
@@ -406,7 +406,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$stats = $this->course->offering()->gradebook()->summaryStats();
 
 		// Get the assets
-		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$asset  = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 		$assets = $asset->find(
 			array(
 				'w' => array(
@@ -474,7 +474,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		$grades = $this->course->offering()->gradebook()->grades();
 
 		// Get the assets
-		$asset  = new CoursesTableAsset(JFactory::getDBO());
+		$asset  = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 		$assets = $asset->find(
 			array(
 				'w' => array(
@@ -611,7 +611,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			}
 
 			// Get the rest of the asset row
-			$asset = new CoursesTableAsset($this->db);
+			$asset = new \Components\Courses\Tables\Asset($this->db);
 			$asset->load($asset_id);
 
 			// Make sure asset is a part of this course
@@ -684,7 +684,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
 		$dbo = JFactory::getDBO();
 
-		$asset = new CoursesTableAsset($dbo);
+		$asset = new \Components\Courses\Tables\Asset($dbo);
 
 		$new = false;
 
@@ -724,7 +724,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		if ($new)
 		{
 			// Create asset assoc object
-			$assoc = new CoursesTableAssetAssociation($dbo);
+			$assoc = new \Components\Courses\Tables\AssetAssociation($dbo);
 			$assoc->set('asset_id', $asset->get('id'));
 			$assoc->set('scope', 'offering');
 			$assoc->set('scope_id', $this->course->offering()->get('id'));
@@ -762,7 +762,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		$asset = new CoursesTableAsset(JFactory::getDBO());
+		$asset = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 
 		// Get request variables
 		if ($asset_id = JRequest::getInt('asset_id', false))
@@ -823,7 +823,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		$db    = JFactory::getDBO();
-		$grade = new CoursesTableGradeBook($db);
+		$grade = new \Components\Courses\Tables\GradeBook($db);
 		$grade->loadByUserAndAssetId($member_id, $asset_id);
 
 		if (!$grade->id)
@@ -873,7 +873,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 		}
 
 		$db    = JFactory::getDBO();
-		$grade = new CoursesTableGradeBook($db);
+		$grade = new \Components\Courses\Tables\GradeBook($db);
 		$grade->loadByUserAndAssetId($member_id, $asset_id);
 
 		if (!$grade->id)

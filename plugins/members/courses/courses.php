@@ -472,7 +472,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'course.php');
 
 		// Instantiate some needed objects
-		$tbl = new CoursesTableCourse($database);
+		$tbl = new \Components\Courses\Tables\Course($database);
 
 		// Build query
 		if (!$limit)

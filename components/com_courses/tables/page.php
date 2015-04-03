@@ -27,84 +27,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Table class for course page
  */
-Class CoursesTablePage extends JTable
+Class Page extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $course_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $offering_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $section_id = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $url = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $active = NULL;
-
-	/**
-	 * varchar(10)
-	 *
-	 * @var string
-	 */
-	var $privacy = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -327,7 +256,7 @@ Class CoursesTablePage extends JTable
 
 		require_once(__DIR__ . DS . 'page.hit.php');
 
-		$tbl = new CoursesTablePageHit($this->_db);
+		$tbl = new PageHit($this->_db);
 		if (!$tbl->hit($offering_id, $page_id))
 		{
 			$this->setError($tbl->getError());

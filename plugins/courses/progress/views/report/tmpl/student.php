@@ -53,7 +53,7 @@ $details['exams_taken']         = 0;
 $details['forms']               = array();
 
 // Get the assets
-$asset  = new CoursesTableAsset(JFactory::getDBO());
+$asset  = new \Components\Courses\Tables\Asset(JFactory::getDBO());
 $assets = $asset->find(
 	array(
 		'w' => array(

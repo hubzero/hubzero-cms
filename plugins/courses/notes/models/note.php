@@ -44,7 +44,7 @@ class CoursesPluginModelNote extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableMemberNote';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\MemberNote';
 
 	/**
 	 * Object scope

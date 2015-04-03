@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Site\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\SiteController;
 use Hubzero\Base\Object;
 use Hubzero\Content\Server;
@@ -636,7 +637,7 @@ class Course extends SiteController
 		}
 
 		// Log the deletion
-		$xlog = new CoursesTableLog($this->database);
+		$xlog = new Tables\Log($this->database);
 		$xlog->gid       = $this->course->get('id');
 		$xlog->uid       = User::get('id');
 		$xlog->timestamp = \JFactory::getDate()->toSql();

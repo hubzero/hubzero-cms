@@ -54,7 +54,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableGradeBook';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\GradeBook';
 
 	/**
 	 * Object scope
@@ -262,7 +262,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$filters['progress_calculation'] = true;
 
 				// Get the asset views
-				$assetViews = new CoursesTableAssetViews($dbo);
+				$assetViews = new Tables\AssetViews($dbo);
 				$views      = $assetViews->find($filters);
 			break;
 
@@ -271,14 +271,14 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				$filters['asset_type'] = 'video';
 
 				// Get the asset views
-				$assetViews = new CoursesTableAssetViews($dbo);
+				$assetViews = new Tables\AssetViews($dbo);
 				$views      = $assetViews->find($filters);
 			break;
 
 			case 'all':
 			default:
 				// Get the asset views
-				$assetViews = new CoursesTableAssetViews($dbo);
+				$assetViews = new Tables\AssetViews($dbo);
 				$views      = $assetViews->find($filters);
 			break;
 		}
@@ -302,7 +302,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				if (!isset($counts[$unit_id]))
 				{
 					// Get the assets
-					$asset = new CoursesTableAsset($dbo);
+					$asset = new Tables\Asset($dbo);
 					$filters = array(
 						'w' => array(
 							'course_id'   => $this->course->get('id'),
@@ -357,7 +357,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		// Get the asset views
 		$database   = \JFactory::getDBO();
-		$assetViews = new CoursesTableAssetViews($database);
+		$assetViews = new Tables\AssetViews($database);
 		$results    = $assetViews->find($filters);
 
 		$views = array();
@@ -397,7 +397,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 		elseif (!is_null($asset_id) && is_numeric($asset_id))
 		{
-			$asset = new CoursesTableAsset(\JFactory::getDBO());
+			$asset = new Tables\Asset(\JFactory::getDBO());
 			$asset->load($asset_id);
 			$course_id = $asset->course_id;
 
@@ -786,7 +786,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		if (!isset($assets))
 		{
 			// Get the graded assets
-			$asset  = new CoursesTableAsset(\JFactory::getDBO());
+			$asset  = new Tables\Asset(\JFactory::getDBO());
 			$assets = $asset->find(
 				array(
 					'w' => array(
@@ -940,7 +940,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badgesProvider->setCredentials($credentials);
 
 						$dbo = \JFactory::getDBO();
-						$memberTbl = new CoursesTableMember($dbo);
+						$memberTbl = new Tables\Member($dbo);
 						$memberTbl->loadByMemberId($m);
 						$user_id = $memberTbl->get('user_id');
 

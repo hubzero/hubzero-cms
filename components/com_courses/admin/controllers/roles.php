@@ -30,6 +30,7 @@
 
 namespace Components\Courses\Admin\Controllers;
 
+use Components\Courses\Tables;
 use Hubzero\Component\AdminController;
 use Exception;
 
@@ -82,7 +83,7 @@ class Roles extends AdminController
 		);
 
 		// Instantiate an object
-		$model = new \CoursesTableRole($this->database);
+		$model = new Tables\Role($this->database);
 
 		// Get a record count
 		$this->view->total = $model->count($this->view->filters);
@@ -129,7 +130,7 @@ class Roles extends AdminController
 			}
 
 			// Load the object
-			$row = new \CoursesTableRole($this->database);
+			$row = new Tables\Role($this->database);
 			$row->load($id);
 		}
 
@@ -171,7 +172,7 @@ class Roles extends AdminController
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
-		$row = new \CoursesTableRole($this->database);
+		$row = new Tables\Role($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -228,7 +229,7 @@ class Roles extends AdminController
 			return;
 		}
 
-		$rt = new \CoursesTableRole($this->database);
+		$rt = new Tables\Role($this->database);
 
 		foreach ($ids as $id)
 		{

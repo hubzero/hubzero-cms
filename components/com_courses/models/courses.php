@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -41,7 +43,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 class CoursesModelCourses extends \Hubzero\Base\Object
 {
 	/**
-	 * CoursesTableCourse
+	 * Tables\Course
 	 *
 	 * @var object
 	 */
@@ -78,7 +80,7 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	{
 		$this->_db = \JFactory::getDBO();
 
-		$this->_tbl = new CoursesTableCourse($this->_db);
+		$this->_tbl = new Tables\Course($this->_db);
 	}
 
 	/**

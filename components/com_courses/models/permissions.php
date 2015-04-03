@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -238,14 +240,14 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_managers) || !is_array($this->_managers) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -347,14 +349,14 @@ class CoursesModelPermissions extends \Hubzero\Base\Object
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_students) || !is_array($this->_students) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 

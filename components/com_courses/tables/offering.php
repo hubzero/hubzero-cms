@@ -28,107 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
- *
  * Course Instances table class
- *
  */
-class CoursesTableOffering extends JTable
+class Offering extends \JTable
 {
-	/**
-	 * ID, primary key for course instances table
-	 *
-	 * @var int(11)
-	 */
-	var $id = NULL;
-
-	/**
-	 * Course id of this instance (references #__courses.gidNumber)
-	 *
-	 * @var int(11)
-	 */
-	var $course_id = NULL;
-
-	/**
-	 * Instance alias
-	 *
-	 * @var varchar(255)
-	 */
-	var $alias = NULL;
-
-	/**
-	 * Instance title
-	 *
-	 * @var varchar(255)
-	 */
-	var $title = NULL;
-
-	/**
-	 * Instance term (i.e. semester, but more generic language)
-	 *
-	 * @var varchar(255)
-	 */
-	var $term = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * Start date for instance
-	 *
-	 * @var date
-	 */
-	//var $start_date = NULL;
-
-	/**
-	 * End date for instance
-	 *
-	 * @var date
-	 */
-	//var $end_date = NULL;
-
-	/**
-	 * Start publishing date
-	 *
-	 * @var datetime
-	 */
-	var $publish_up = NULL;
-
-	/**
-	 * End publishing date
-	 *
-	 * @var datetime
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * Created date for unit
-	 *
-	 * @var datetime
-	 */
-	var $created = NULL;
-
-	/**
-	 * Who created the unit (reference #__users.id)
-	 *
-	 * @var int(11)
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params = NULL;
-
 	/**
 	 * Contructor method for JTable class
 	 *
@@ -149,7 +55,7 @@ class CoursesTableOffering extends JTable
 	 * @param   string  $type    The page to load
 	 * @param   string  $prefix  The page scope
 	 * @param   array   $config  Config options
-	 * @return  object  CoursesTableOffering
+	 * @return  object
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array())
 	{
@@ -164,7 +70,7 @@ class CoursesTableOffering extends JTable
 
 		if (!isset($instances[$alias]))
 		{
-			$inst = new CoursesTableOffering(\JFactory::getDBO());
+			$inst = new self(\JFactory::getDBO());
 			$inst->load($alias);
 
 			$instances[$alias] = $inst;
@@ -228,7 +134,7 @@ class CoursesTableOffering extends JTable
 		if (!$this->id)
 		{
 			$this->created    = \JFactory::getDate()->toSql();
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 		}
 
 		return true;

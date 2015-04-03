@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use Components\Courses\Tables;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -50,7 +52,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'CoursesTableCourse';
+	protected $_tbl_name = '\\Components\\Courses\\Tables\\Course';
 
 	/**
 	 * Object scope
@@ -268,7 +270,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		// Perform a record count?
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableOffering($this->_db);
+			$tbl = new Tables\Offering($this->_db);
 
 			return $tbl->count($filters);
 		}
@@ -276,7 +278,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		// Is the data is not set OR is it not the right type?
 		if (!($this->_offerings instanceof CoursesModelIterator) || $clear)
 		{
-			$tbl = new CoursesTableOffering($this->_db);
+			$tbl = new Tables\Offering($this->_db);
 
 			// Attempt to get database results
 			if (($results = $tbl->find($filters)))
@@ -367,14 +369,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_managers) || !is_array($this->_managers) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -425,14 +427,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_students) || !is_array($this->_students) || $clear)
 		{
-			$tbl = new CoursesTableMember($this->_db);
+			$tbl = new Tables\Member($this->_db);
 
 			$results = array();
 
@@ -473,7 +475,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 	{
 		$user_ids = $this->_userIds($data);
 
-		$tbl = new CoursesTableMember($this->_db);
+		$tbl = new Tables\Member($this->_db);
 
 		$filters = array(
 			'course_id' => (int) $this->get('id')
@@ -708,14 +710,14 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 		if (isset($filters['count']) && $filters['count'])
 		{
-			$tbl = new CoursesTablePage($this->_db);
+			$tbl = new Tables\Page($this->_db);
 
 			return $tbl->count($filters);
 		}
 
 		if (!isset($this->_pages) || !is_array($this->_pages))
 		{
-			$tbl = new CoursesTablePage($this->_db);
+			$tbl = new Tables\Page($this->_db);
 
 			$results = array();
 

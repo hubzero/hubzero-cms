@@ -174,7 +174,7 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 					continue;
 				}
 
-				$name    = JUser::getInstance($aux->user_id)->get('name');
+				$name    = User::getInstance($aux->user_id)->get('name');
 				$attempt = $aux->attempt;
 				$fields  = array();
 

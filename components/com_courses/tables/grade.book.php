@@ -28,70 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Courses\Tables;
 
 /**
  * Courses grade book table
  */
-class CoursesTableGradeBook extends JTable
+class GradeBook extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $member_id = NULL;
-
-	/**
-	 * decimal(5,2)
-	 *
-	 * @var decimal
-	 */
-	var $score = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * decimal(5,2)
-	 *
-	 * @var decimal
-	 */
-	var $override = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $score_recorded = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $override_recorded = NULL;
-
 	/**
 	 * Constructor
 	 *
@@ -308,7 +251,7 @@ class CoursesTableGradeBook extends JTable
 		}
 
 		// Get the assets
-		$asset  = new CoursesTableAsset($this->_db);
+		$asset  = new Asset($this->_db);
 		$assets = $asset->find(
 			array(
 				'w' => array(
@@ -358,7 +301,7 @@ class CoursesTableGradeBook extends JTable
 					continue;
 				}
 
-				$dep = PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
+				$dep = \PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
 
 				$results = $dep->getResults('member_id', $member_id);
 
