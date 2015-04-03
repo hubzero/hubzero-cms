@@ -8,19 +8,19 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-$user = JFactory::getUser();
+
 ?>
 <form target="_parent" action="index.php?option=com_media&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>" method="post" id="mediamanager-form" name="mediamanager-form">
 	<div class="manager">
 	<table width="100%" cellspacing="0">
 	<thead>
 		<tr>
-			<th width="1%"><?php echo JText::_('JGLOBAL_PREVIEW'); ?></th>
-			<th><?php echo JText::_('COM_MEDIA_NAME'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_MEDIA_PIXEL_DIMENSIONS'); ?></th>
-			<th width="8%"><?php echo JText::_('COM_MEDIA_FILESIZE'); ?></th>
-		<?php if ($user->authorise('core.delete', 'com_media')):?>
-			<th width="8%"><?php echo JText::_('JACTION_DELETE'); ?></th>
+			<th width="1%"><?php echo Lang::txt('JGLOBAL_PREVIEW'); ?></th>
+			<th><?php echo Lang::txt('COM_MEDIA_NAME'); ?></th>
+			<th width="8%"><?php echo Lang::txt('COM_MEDIA_PIXEL_DIMENSIONS'); ?></th>
+			<th width="8%"><?php echo Lang::txt('COM_MEDIA_FILESIZE'); ?></th>
+		<?php if (User::authorise('core.delete', 'com_media')):?>
+			<th width="8%"><?php echo Lang::txt('JACTION_DELETE'); ?></th>
 		<?php endif;?>
 		</tr>
 	</thead>

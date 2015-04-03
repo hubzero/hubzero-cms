@@ -14,13 +14,13 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 ?>
 
-<h2 class="modal-title"><?php echo JText::_('COM_MODULES_TYPE_CHOOSE')?></h2>
+<h2 class="modal-title"><?php echo Lang::txt('COM_MODULES_TYPE_CHOOSE')?></h2>
 
 <table id="new-modules-list" class="adminlist">
 	<thead>
 		<tr>
-			<th scope="col"><?php echo JText::_('JGLOBAL_TITLE'); ?></th>
-			<th scope="col"><?php echo JText::_('COM_MODULES_HEADING_MODULE'); ?></th>
+			<th scope="col"><?php echo Lang::txt('JGLOBAL_TITLE'); ?></th>
+			<th scope="col"><?php echo Lang::txt('COM_MODULES_HEADING_MODULE'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -29,12 +29,12 @@ JHtml::_('behavior.tooltip');
 			<?php
 			// Prepare variables for the link.
 
-			$link	= 'index.php?option=com_modules&task=module.add&eid='. $item->extension_id;
-			$name	= $this->escape($item->name);
-			$desc	= $this->escape($item->desc);
+			$link = 'index.php?option=com_modules&task=module.add&eid='. $item->extension_id;
+			$name = $this->escape($item->name);
+			$desc = $this->escape($item->desc);
 			?>
 			<td>
-				<span class="editlinktip hasTip" title="<?php echo $name.' :: '.$desc; ?>"><a href="<?php echo JRoute::_($link);?>" target="_top"><?php echo $name; ?></a></span>
+				<span class="editlinktip hasTip" title="<?php echo $name.' :: '.$desc; ?>"><a href="<?php echo Route::url($link);?>" target="_top"><?php echo $name; ?></a></span>
 			</td>
 			<td>
 				<?php echo $this->escape($item->module); ?>

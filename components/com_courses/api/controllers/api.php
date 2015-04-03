@@ -778,7 +778,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Check to see if the asset should be a link to a tool
 		if ($tool_param = Request::getInt('tool_param', false))
 		{
-			$config = JComponentHelper::getParams('com_courses');
+			$config = Component::params('com_courses');
 
 			// Make sure the tool path parameter is set
 			if ($config->get('tool_path'))

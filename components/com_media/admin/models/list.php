@@ -22,8 +22,9 @@ class MediaModelList extends JModelLegacy
 	{
 		static $set;
 
-		if (!$set) {
-			$folder = JRequest::getVar('folder', '', '', 'path');
+		if (!$set)
+		{
+			$folder = Request::getVar('folder', '', '', 'path');
 			$this->setState('folder', $folder);
 
 			$parent = str_replace("\\", "/", dirname($folder));

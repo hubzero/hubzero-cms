@@ -26,16 +26,16 @@ $script .= "	Joomla.submitform(task, document.getElementById('item-form'));
 					window.top.setTimeout('window.parent.$.fancybox().close()', 1000);
 				}
 			} else {
-				alert('".$this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'))."');
+				alert('".$this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'))."');
 			}
 	}";
 
 JFactory::getDocument()->addScriptDeclaration($script);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_modules&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_modules&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?><br />
@@ -117,35 +117,35 @@ JFactory::getDocument()->addScriptDeclaration($script);
 			<?php endif; ?>
 				<tr>
 					<th>
-						<?php echo JText::_('COM_MODULES_HEADING_MODULE'); ?>
+						<?php echo Lang::txt('COM_MODULES_HEADING_MODULE'); ?>
 						<?php echo $this->form->getLabel('module'); ?>
 					</th>
 					<td>
 						<?php echo $this->form->getInput('module'); ?>
-						<?php if ($this->item->xml) echo ($text = (string) $this->item->xml->name) ? JText::_($text) : $this->item->module;else echo JText::_('COM_MODULES_ERR_XML');?>
+						<?php if ($this->item->xml) echo ($text = (string) $this->item->xml->name) ? Lang::txt($text) : $this->item->module;else echo Lang::txt('COM_MODULES_ERR_XML');?>
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<?php echo JText::_('Client'); ?>
+						<?php echo Lang::txt('Client'); ?>
 						<?php echo $this->form->getLabel('client_id'); ?>
 					</th>
 					<td>
 						<?php echo $this->form->getInput('client_id'); ?>
-						<?php echo $this->item->client_id == 0 ? JText::_('JSITE') : JText::_('JADMINISTRATOR'); ?>
+						<?php echo $this->item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<?php echo JText::_('COM_MODULES_MODULE_DESCRIPTION'); ?>
+						<?php echo Lang::txt('COM_MODULES_MODULE_DESCRIPTION'); ?>
 					</th>
 					<td>
 						<?php if ($this->item->xml) : ?>
 							<?php if ($text = trim($this->item->xml->description)) : ?>
-								<?php echo JText::_($text); ?>
+								<?php echo Lang::txt($text); ?>
 							<?php endif; ?>
 						<?php else : ?>
-							<p class="error"><?php echo JText::_('COM_MODULES_ERR_XML'); ?></p>
+							<p class="error"><?php echo Lang::txt('COM_MODULES_ERR_XML'); ?></p>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -160,7 +160,7 @@ JFactory::getDocument()->addScriptDeclaration($script);
 	<?php if ($hasContent) : ?>
 		<div class="width-60 fltlft">
 			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('COM_MODULES_CUSTOM_OUTPUT'); ?></span></legend>
+				<legend><span><?php echo Lang::txt('COM_MODULES_CUSTOM_OUTPUT'); ?></span></legend>
 
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('content'); ?><br />

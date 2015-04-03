@@ -234,10 +234,10 @@ class Comment extends Model
 				{
 					if (!$attach)
 					{
-						$config = \JComponentHelper::getParams('com_support');
+						$config = Component::params('com_support');
 						$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('ticket');
 
-						$webpath = str_replace('//', '/', rtrim(\JURI::getInstance()->base(), '/') . '/' . $path);
+						$webpath = str_replace('//', '/', rtrim(Request::base(), '/') . '/' . $path);
 						if (isset($_SERVER['HTTPS']))
 						{
 							$webpath = str_replace('http:', 'https:', $webpath);
@@ -422,7 +422,7 @@ class Comment extends Model
 		// User ID
 		if (is_numeric($to))
 		{
-			$user = \JUser::getInstance($to);
+			$user = User::getInstance($to);
 			if (is_object($user) && $user->get('id'))
 			{
 				if (isset($this->_cache['recipients.added'][$user->get('email')]))
@@ -458,7 +458,7 @@ class Comment extends Model
 			// Username
 			else
 			{
-				$user = \JUser::getInstance($to);
+				$user = User::getInstance($to);
 				if (is_object($user) && $user->get('id'))
 				{
 					if (isset($this->_cache['recipients.added'][$user->get('email')]))

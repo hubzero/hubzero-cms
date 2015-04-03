@@ -80,7 +80,7 @@ class ModulesModelModules extends JModelList
 
 		$clientId = $this->getUserStateFromRequest($this->context.'.filter.client_id', 'filter_client_id', 0, 'int', false);
 		$previousId = $app->getUserState($this->context.'.filter.client_id_previous', null);
-		if($previousId != $clientId || $previousId === null){
+		if ($previousId != $clientId || $previousId === null){
 			$this->getUserStateFromRequest($this->context.'.filter.client_id_previous', 'filter_client_id_previous', 0, 'int', true);
 			$app->setUserState($this->context.'.filter.client_id_previous', $clientId);
 		}
@@ -90,7 +90,7 @@ class ModulesModelModules extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_modules');
+		$params = Component::params('com_modules');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -174,20 +174,20 @@ class ModulesModelModules extends JModelList
 	{
 		$lang = JFactory::getLanguage();
 		$client = $this->getState('filter.client_id') ? 'administrator' : 'site';
-		foreach($items as $item) {
+		foreach ($items as $item) {
 			$extension = $item->module;
 			$source = constant('JPATH_' . strtoupper($client)) . "/modules/$extension";
 				$lang->load("$extension.sys", constant('JPATH_' . strtoupper($client)), null, false, true)
 			||	$lang->load("$extension.sys", $source, null, false, true);
-			$item->name = JText::_($item->name);
+			$item->name = Lang::txt($item->name);
 			if (is_null($item->pages)) {
-				$item->pages = JText::_('JNONE');
+				$item->pages = Lang::txt('JNONE');
 			} elseif ($item->pages < 0) {
-				$item->pages = JText::_('COM_MODULES_ASSIGNED_VARIES_EXCEPT');
+				$item->pages = Lang::txt('COM_MODULES_ASSIGNED_VARIES_EXCEPT');
 			} elseif ($item->pages > 0) {
-				$item->pages = JText::_('COM_MODULES_ASSIGNED_VARIES_ONLY');
+				$item->pages = Lang::txt('COM_MODULES_ASSIGNED_VARIES_ONLY');
 			} else {
-				$item->pages = JText::_('JALL');
+				$item->pages = Lang::txt('JALL');
 			}
 		}
 	}

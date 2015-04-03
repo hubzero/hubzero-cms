@@ -45,22 +45,24 @@ class MediaHelper
 	 */
 	function canUpload($file, &$err)
 	{
-		$params = JComponentHelper::getParams('com_media');
+		$params = Component::params('com_media');
 
 		jimport('joomla.filesystem.file');
 		$format = JFile::getExt($file['name']);
 
 		$allowable = explode(',', $params->get('upload_extensions'));
 
-		if (!in_array($format, $allowable)) {
-			$err = JText('COM_MEDIA_ERROR_WARNFILETYPE');
+		if (!in_array($format, $allowable))
+		{
+			$err = Lang::txt('COM_MEDIA_ERROR_WARNFILETYPE');
 			return false;
 		}
 
 		$maxSize = (int) ($params->get('upload_maxsize', 0) * 1024 * 1024);
 
-		if ($maxSize > 0 && (int) $file['size'] > $maxSize) {
-			$err = JText('COM_MEDIA_ERROR_WARNFILETOOLARGE');
+		if ($maxSize > 0 && (int) $file['size'] > $maxSize)
+		{
+			$err = Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE');
 
 			return false;
 		}
@@ -70,14 +72,17 @@ class MediaHelper
 
 	public static function parseSize($size)
 	{
-		if ($size < 1024) {
-			return JText::sprintf('COM_MEDIA_FILESIZE_BYTES', $size);
+		if ($size < 1024)
+		{
+			return Lang::txt('COM_MEDIA_FILESIZE_BYTES', $size);
 		}
-		elseif ($size < 1024 * 1024) {
-			return JText::sprintf('COM_MEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
+		elseif ($size < 1024 * 1024)
+		{
+			return Lang::txt('COM_MEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
 		}
-		else {
-			return JText::sprintf('COM_MEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
+		else
+		{
+			return Lang::txt('COM_MEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
 		}
 	}
 
@@ -107,16 +112,19 @@ class MediaHelper
 		$total_file = 0;
 		$total_dir = 0;
 
-		if (is_dir($dir)) {
+		if (is_dir($dir))
+		{
 			$d = dir($dir);
 
 			while (false !== ($entry = $d->read()))
 			{
-				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false && strpos($entry, '.php') === false) {
+				if (substr($entry, 0, 1) != '.' && is_file($dir . DIRECTORY_SEPARATOR . $entry) && strpos($entry, '.html') === false && strpos($entry, '.php') === false)
+				{
 					$total_file++;
 				}
 
-				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry)) {
+				if (substr($entry, 0, 1) != '.' && is_dir($dir . DIRECTORY_SEPARATOR . $entry))
+				{
 					$total_dir++;
 				}
 			}

@@ -27,9 +27,9 @@ class ModulesViewModule extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->state	= $this->get('State');
+		$this->form  = $this->get('Form');
+		$this->item  = $this->get('Item');
+		$this->state = $this->get('State');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -48,32 +48,32 @@ class ModulesViewModule extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		Request::setVar('hidemainmenu', true);
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
-		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
+		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == User::get('id'));
 		$canDo		= ModulesHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
 		$item		= $this->get('Item');
 
-		JToolBarHelper::title( JText::sprintf('COM_MODULES_MANAGER_MODULE', JText::_($this->item->module)), 'module.png');
+		Toolbar::title( Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)), 'module.png');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create') )) {
-			JToolBarHelper::apply('module.apply');
-			JToolBarHelper::save('module.save');
+			Toolbar::apply('module.apply');
+			Toolbar::save('module.save');
 		}
 		if (!$checkedOut && $canDo->get('core.create')) {
-			JToolBarHelper::save2new('module.save2new');
+			Toolbar::save2new('module.save2new');
 		}
 			// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {
-			JToolBarHelper::save2copy('module.save2copy');
+			Toolbar::save2copy('module.save2copy');
 		}
 		if (empty($this->item->id))  {
-			JToolBarHelper::cancel('module.cancel');
+			Toolbar::cancel('module.cancel');
 		} else {
-			JToolBarHelper::cancel('module.cancel', 'JTOOLBAR_CLOSE');
+			Toolbar::cancel('module.cancel', 'JTOOLBAR_CLOSE');
 		}
 
 		// Get the help information for the menu item.
@@ -82,12 +82,12 @@ class ModulesViewModule extends JViewLegacy
 		$help = $this->get('Help');
 		if ($lang->hasKey($help->url)) {
 			$debug = $lang->setDebug(false);
-			$url = JText::_($help->url);
+			$url = Lang::txt($help->url);
 			$lang->setDebug($debug);
 		}
 		else {
 			$url = null;
 		}
-		JToolBarHelper::help('module'); //$help->key, false, $url);
+		Toolbar::help('module'); //$help->key, false, $url);
 	}
 }

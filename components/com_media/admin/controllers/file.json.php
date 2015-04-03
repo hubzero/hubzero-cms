@@ -26,25 +26,24 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	function upload()
 	{
-		$params = JComponentHelper::getParams('com_media');
+		$params = Component::params('com_media');
 		// Check for request forgeries
 		if (!JSession::checkToken('request')) {
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('JINVALID_TOKEN')
+				'error' => Lang::txt('JINVALID_TOKEN')
 			);
 			echo json_encode($response);
 			return;
 		}
 
 		// Get the user
-		$user		= JFactory::getUser();
 		$log		= JLog::getInstance('upload.error.php');
 
 		// Get some data from the request
-		$file		= JRequest::getVar('Filedata', '', 'files', 'array');
-		$folder		= JRequest::getVar('folder', '', '', 'path');
-		$return		= JRequest::getVar('return-url', null, 'post', 'base64');
+		$file		= Request::getVar('Filedata', '', 'files', 'array');
+		$folder		= Request::getVar('folder', '', '', 'path');
+		$return		= Request::getVar('return-url', null, 'post', 'base64');
 
 		if (
 			$_SERVER['CONTENT_LENGTH']>($params->get('upload_maxsize', 0) * 1024 * 1024) ||
@@ -55,7 +54,7 @@ class MediaControllerFile extends JControllerLegacy
 		{
 			$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_WARNFILETOOLARGE')
+					'error' => Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE')
 			);
 			echo json_encode($response);
 			return;
@@ -79,7 +78,7 @@ class MediaControllerFile extends JControllerLegacy
 				$log->addEntry(array('comment' => 'Invalid: '.$filepath.': '.$err));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_($err)
+					'error' => Lang::txt($err)
 				);
 				echo json_encode($response);
 				return;
@@ -105,21 +104,21 @@ class MediaControllerFile extends JControllerLegacy
 			if (JFile::exists($filepath))
 			{
 				// File exists
-				$log->addEntry(array('comment' => 'File exists: '.$filepath.' by user_id '.$user->id));
+				$log->addEntry(array('comment' => 'File exists: '.$filepath.' by user_id '.User::get('id')));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_FILE_EXISTS')
+					'error' => Lang::txt('COM_MEDIA_ERROR_FILE_EXISTS')
 				);
 				echo json_encode($response);
 				return;
 			}
-			elseif (!$user->authorise('core.create', 'com_media'))
+			elseif (!User::authorise('core.create', 'com_media'))
 			{
 				// File does not exist and user is not authorised to create
-				$log->addEntry(array('comment' => 'Create not permitted: '.$filepath.' by user_id '.$user->id));
+				$log->addEntry(array('comment' => 'Create not permitted: '.$filepath.' by user_id '.User::get('id')));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_CREATE_NOT_PERMITTED')
+					'error' => Lang::txt('COM_MEDIA_ERROR_CREATE_NOT_PERMITTED')
 				);
 				echo json_encode($response);
 				return;
@@ -132,7 +131,7 @@ class MediaControllerFile extends JControllerLegacy
 				$log->addEntry(array('comment' => 'Error on upload: '.$filepath));
 				$response = array(
 					'status' => '0',
-					'error' => JText::_('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
+					'error' => Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE')
 				);
 				echo json_encode($response);
 				return;
@@ -144,7 +143,7 @@ class MediaControllerFile extends JControllerLegacy
 				$log->addEntry(array('comment' => $folder));
 				$response = array(
 					'status' => '1',
-					'error' => JText::sprintf('COM_MEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_MEDIA_BASE)))
+					'error' => Lang::txt('COM_MEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_MEDIA_BASE)))
 				);
 				echo json_encode($response);
 				return;
@@ -154,7 +153,7 @@ class MediaControllerFile extends JControllerLegacy
 		{
 			$response = array(
 				'status' => '0',
-				'error' => JText::_('COM_MEDIA_ERROR_BAD_REQUEST')
+				'error' => Lang::txt('COM_MEDIA_ERROR_BAD_REQUEST')
 			);
 
 			echo json_encode($response);

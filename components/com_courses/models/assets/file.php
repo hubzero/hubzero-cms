@@ -62,9 +62,9 @@ class FileAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
@@ -87,7 +87,7 @@ class FileAssetHandler extends AssetHandler
 
 		// @FIXME: should these come from the global settings, or should they be courses specific
 		// Get config
-		$config = JComponentHelper::getParams('com_media');
+		$config = Component::params('com_media');
 
 		// Max upload size
 		$sizeLimit = (int) $config->get('upload_maxsize');
@@ -135,10 +135,10 @@ class FileAssetHandler extends AssetHandler
 		}
 
 		// Get courses config
-		$cconfig = JComponentHelper::getParams('com_courses');
+		$cconfig = Component::params('com_courses');
 
 		// Build the upload path if it doesn't exist
-		$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+		$uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
 
 		// Make sure upload directory exists and is writable
 		if (!is_dir($uploadDirectory))

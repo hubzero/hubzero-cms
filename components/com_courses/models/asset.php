@@ -84,7 +84,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	{
 		parent::__construct($oid);
 
-		$this->_params = JComponentHelper::getParams('com_courses');
+		$this->_params = Component::params('com_courses');
 	}
 
 	/**
@@ -291,7 +291,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 */
 	public function logView($course=null)
 	{
-		require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.views.php');
 
 		if (!$course || !is_object($course))
 		{
@@ -304,11 +304,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 			$course->offering()->section($section);
 		}
 
-		$member = $course->offering()->section()->member(\JFactory::getUser()->get('id'));
+		$member = $course->offering()->section()->member(\User::get('id'));
 
 		if (!$member->get('id'))
 		{
-			$member = $course->offering()->member(\JFactory::getUser()->get('id'));
+			$member = $course->offering()->member(\User::get('id'));
 		}
 
 		if (!$member || !is_object($member) || !$member->get('id'))
@@ -348,17 +348,17 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$this->logView($course);
 
 		// Check to see that the view template exists, otherwise, use the default
-		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))
+		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php'))
 		{
 			$layout = $type . '_' . $subtype;
 		}
-		elseif (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
+		elseif (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php'))
 		{
 			$layout = $type;
 		}
 
 		$view = new \Hubzero\Component\View(array(
-			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses',
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'site',
 			'name'      => 'assets',
 			'layout'    => $layout
 		));
@@ -381,7 +381,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		// Get some needed libraries
 		if (!$course->access('view'))
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 			return;
 		}
 
@@ -398,7 +398,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		$filename = urldecode($filename);
 
 		// Get the configured upload path
-		$config = JComponentHelper::getParams('com_courses');
+		$config = Component::params('com_courses');
 		$base_path = $this->path($course->get('id'));
 
 		// Does the path start with a slash?
@@ -416,12 +416,12 @@ class CoursesModelAsset extends CoursesModelAbstract
 		}
 
 		// Add JPATH_ROOT
-		$filename = JPATH_ROOT . $filename;
+		$filename = PATH_APP . $filename;
 
 		// Ensure the file exist
 		if (!file_exists($filename))
 		{
-			JError::raiseError(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
+			App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
 			return;
 		}
 
@@ -434,7 +434,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
+			App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
 		}
 		else
 		{

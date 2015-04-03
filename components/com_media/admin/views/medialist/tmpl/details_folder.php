@@ -8,7 +8,7 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-$user = JFactory::getUser();
+
 ?>
 		<tr>
 			<td class="imgTotal">
@@ -24,9 +24,9 @@ $user = JFactory::getUser();
 			<td>&#160;
 
 			</td>
-		<?php if ($user->authorise('core.delete', 'com_media')):?>
+		<?php if (User::authorise('core.delete', 'com_media')):?>
 			<td>
-				<a class="delete-item" target="_top" href="index.php?option=com_media&amp;task=folder.delete&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>&amp;<?php echo JSession::getFormToken(); ?>=1&amp;rm[]=<?php echo $this->_tmp_folder->name; ?>" rel="<?php echo $this->_tmp_folder->name; ?>' :: <?php echo $this->_tmp_folder->files+$this->_tmp_folder->folders; ?>"><?php echo JHtml::_('image', 'media/remove.png', JText::_('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
+				<a class="delete-item" target="_top" href="index.php?option=com_media&amp;task=folder.delete&amp;tmpl=index&amp;folder=<?php echo $this->state->folder; ?>&amp;<?php echo JSession::getFormToken(); ?>=1&amp;rm[]=<?php echo $this->_tmp_folder->name; ?>" rel="<?php echo $this->_tmp_folder->name; ?>' :: <?php echo $this->_tmp_folder->files+$this->_tmp_folder->folders; ?>"><?php echo JHtml::_('image', 'media/remove.png', Lang::txt('JACTION_DELETE'), array('width' => 16, 'height' => 16), true); ?></a>
 				<input type="checkbox" name="rm[]" value="<?php echo $this->_tmp_folder->name; ?>" />
 			</td>
 		<?php endif;?>

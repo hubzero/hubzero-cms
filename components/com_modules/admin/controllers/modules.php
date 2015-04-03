@@ -25,24 +25,24 @@ class ModulesControllerModules extends JControllerAdmin
 	public function duplicate()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$pks = JRequest::getVar('cid', array(), 'post', 'array');
+		$pks = Request::getVar('cid', array(), 'post', 'array');
 		JArrayHelper::toInteger($pks);
 
 		try {
 			if (empty($pks)) {
-				throw new Exception(JText::_('COM_MODULES_ERROR_NO_MODULES_SELECTED'));
+				throw new Exception(Lang::txt('COM_MODULES_ERROR_NO_MODULES_SELECTED'));
 			}
 			$model = $this->getModel();
 			$model->duplicate($pks);
-			$this->setMessage(JText::plural('COM_MODULES_N_MODULES_DUPLICATED', count($pks)));
+			$this->setMessage(Lang::txts('COM_MODULES_N_MODULES_DUPLICATED', count($pks)));
 		} catch (Exception $e) {
 			JError::raiseWarning(500, $e->getMessage());
 		}
 
-		$this->setRedirect('index.php?option=com_modules&view=modules');
+		$this->setRedirect(Route::url('index.php?option=com_modules&view=modules', false));
 	}
 
 	/**

@@ -17,16 +17,17 @@ class MediaViewImages extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$config = JComponentHelper::getParams('com_media');
-		$app	= JFactory::getApplication();
-		$lang	= JFactory::getLanguage();
+		$config = Component::params('com_media');
+		$app    = JFactory::getApplication();
+		$lang   = JFactory::getLanguage();
 		$append = '';
 
 		JHtml::_('behavior.framework', true);
 		JHtml::_('script', 'media/popup-imagemanager.js', true, true);
 		JHtml::_('stylesheet', 'media/popup-imagemanager.css', array(), true);
 
-		if ($lang->isRTL()) {
+		if ($lang->isRTL())
+		{
 			JHtml::_('stylesheet', 'media/popup-imagemanager_rtl.css', array(), true);
 		}
 

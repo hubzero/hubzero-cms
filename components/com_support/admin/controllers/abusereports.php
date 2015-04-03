@@ -351,7 +351,7 @@ class Abusereports extends AdminController
 		// Notify item owner
 		if ($email)
 		{
-			$juser = \JUser::getInstance($reported->author);
+			$user = User::getInstance($reported->author);
 
 			// Email "from" info
 			$from = array(
@@ -365,7 +365,7 @@ class Abusereports extends AdminController
 
 			// Plain text
 			$eview = new View(array(
-				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'site',
 				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
 			));
@@ -388,7 +388,7 @@ class Abusereports extends AdminController
 			$message = new Message();
 			$message->setSubject($subject)
 			        ->addFrom($from['email'], $from['name'])
-			        ->addTo($juser->get('email'), $juser->get('name'))
+			        ->addTo($user->get('email'), $user->get('name'))
 			        ->addHeader('X-Component', 'com_support')
 			        ->addHeader('X-Component-Object', 'abuse_item_removal');
 
@@ -404,7 +404,7 @@ class Abusereports extends AdminController
 		}
 
 		// Check the HUB configuration to see if banking is turned on
-		$upconfig = \JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$banking = $upconfig->get('bankAccounts');
 
 		// Give some points to whoever reported abuse
@@ -414,7 +414,7 @@ class Abusereports extends AdminController
 			$ar = $BC->get('abusereport');  // How many points?
 			if ($ar)
 			{
-				$ruser = \JUser::getInstance($report->created_by);
+				$ruser = User::getInstance($report->created_by);
 				if (is_object($ruser) && $ruser->get('id'))
 				{
 					$BTL = new \Hubzero\Bank\Teller($this->database, $ruser->get('id'));

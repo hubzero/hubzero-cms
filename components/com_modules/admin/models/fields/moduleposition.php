@@ -75,7 +75,7 @@ class JFormFieldModulePosition extends JFormFieldText
 
 		// The user select button.
 		$html[] = '<span class="input-cell">';
-		$html[] = '<a class="button modal" title="'.JText::_('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
+		$html[] = '<a class="button modal" title="'.Lang::txt('COM_MODULES_CHANGE_POSITION_TITLE').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.Lang::txt('COM_MODULES_CHANGE_POSITION_BUTTON').'</a>';
 		$html[] = '</span>';
 		$html[] = '</div>';
 

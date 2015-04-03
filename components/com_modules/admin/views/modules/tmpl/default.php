@@ -13,20 +13,19 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
 $client		= $this->state->get('filter.client_id') ? 'administrator' : 'site';
-$user		= JFactory::getUser();
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= $user->authorise('core.edit.state', 'com_modules');
+$canOrder	= User::authorise('core.edit.state', 'com_modules');
 $saveOrder	= $listOrder == 'ordering';
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_modules'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_modules'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_MODULES_MODULES_FILTER_SEARCH_DESC'); ?>" />
+			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_MODULES_MODULES_FILTER_SEARCH_DESC'); ?>" />
 
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="filter-select fltrt">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
@@ -34,27 +33,27 @@ $saveOrder	= $listOrder == 'ordering';
 			</select>
 
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', ModulesHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
 			<select name="filter_position" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('COM_MODULES_OPTION_SELECT_POSITION');?></option>
+				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></option>
 				<?php echo JHtml::_('select.options', ModulesHelper::getPositions($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.position'));?>
 			</select>
 
 			<select name="filter_module" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('COM_MODULES_OPTION_SELECT_MODULE');?></option>
+				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></option>
 				<?php echo JHtml::_('select.options', ModulesHelper::getModules($this->state->get('filter.client_id')), 'value', 'text', $this->state->get('filter.module'));?>
 			</select>
 
 			<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'));?>
 			</select>
 
 			<select name="filter_language" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'));?>
 			</select>
 		</div>
@@ -109,10 +108,10 @@ $saveOrder	= $listOrder == 'ordering';
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$ordering	= ($listOrder == 'ordering');
-			$canCreate	= $user->authorise('core.create',		'com_modules');
-			$canEdit	= $user->authorise('core.edit',			'com_modules');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id')|| $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_modules') && $canCheckin;
+			$canCreate	= User::authorise('core.create',		'com_modules');
+			$canEdit	= User::authorise('core.edit',			'com_modules');
+			$canCheckin	= User::authorise('core.manage',		'com_checkin') || $item->checked_out == User::get('id')|| $item->checked_out==0;
+			$canChange	= User::authorise('core.edit.state',	'com_modules') && $canCheckin;
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -123,14 +122,14 @@ $saveOrder	= $listOrder == 'ordering';
 						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_modules&task=module.edit&id='.(int) $item->id); ?>">
+						<a href="<?php echo Route::url('index.php?option=com_modules&task=module.edit&id='.(int) $item->id); ?>">
 							<?php echo $this->escape($item->title); ?></a>
 					<?php else : ?>
 							<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
 					<?php if (!empty($item->note)) : ?>
 					<p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note));?></p>
+						<?php echo Lang::txt('JGLOBAL_LIST_NOTE', $this->escape($item->note));?></p>
 					<?php endif; ?>
 				</td>
 				<td class="center">
@@ -140,7 +139,7 @@ $saveOrder	= $listOrder == 'ordering';
 					<?php if ($item->position) : ?>
 						<?php echo $item->position; ?>
 					<?php else : ?>
-						<?php echo ':: '.JText::_('JNONE').' ::'; ?>
+						<?php echo ':: '.Lang::txt('JNONE').' ::'; ?>
 					<?php endif; ?>
 				</td>
 				<td class="order">
@@ -171,11 +170,11 @@ $saveOrder	= $listOrder == 'ordering';
 				</td>
 				<td class="center">
 					<?php if ($item->language==''):?>
-						<?php echo JText::_('JDEFAULT'); ?>
+						<?php echo Lang::txt('JDEFAULT'); ?>
 					<?php elseif ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
 					<?php else:?>
-						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
 				<td class="center">
@@ -187,7 +186,7 @@ $saveOrder	= $listOrder == 'ordering';
 	</table>
 
 	<?php //Load the batch processing form.is user is allowed ?>
-	<?php if($user->authorize('core.create', 'com_modules') && $user->authorize('core.edit', 'com_modules') && $user->authorize('core.edit.state', 'com_modules')) : ?>
+	<?php if (User::authorize('core.create', 'com_modules') && User::authorize('core.edit', 'com_modules') && User::authorize('core.edit.state', 'com_modules')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 

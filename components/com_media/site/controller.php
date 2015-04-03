@@ -29,19 +29,19 @@ class MediaController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		JPluginHelper::importPlugin('content');
-		$vName = JRequest::getCmd('view', 'images');
+		$vName = Request::getCmd('view', 'images');
 
 		switch ($vName)
 		{
 			case 'imagesList':
 				$mName = 'list';
-				$vLayout = JRequest::getCmd('layout', 'default');
+				$vLayout = Request::getCmd('layout', 'default');
 
 				break;
 
 			case 'images':
 			default:
-				$vLayout = JRequest::getCmd('layout', 'default');
+				$vLayout = Request::getCmd('layout', 'default');
 				$mName = 'manager';
 				$vName = 'images';
 
@@ -49,14 +49,15 @@ class MediaController extends JControllerLegacy
 		}
 
 		$document = JFactory::getDocument();
-		$vType		= $document->getType();
+		$vType = $document->getType();
 
 		// Get/Create the view
 		$view = $this->getView($vName, $vType);
 		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.strtolower($vName).'/tmpl');
 
 		// Get/Create the model
-		if ($model = $this->getModel($mName)) {
+		if ($model = $this->getModel($mName))
+		{
 			// Push the model into the view (as default)
 			$view->setModel($model, true);
 		}

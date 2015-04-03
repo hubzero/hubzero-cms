@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$function	= JRequest::getCmd('function', 'jSelectPosition');
+$function	= Request::getCmd('function', 'jSelectPosition');
 $lang		= JFactory::getLanguage();
 $ordering	= $this->escape($this->state->get('list.ordering'));
 $direction	= $this->escape($this->state->get('list.direction'));
@@ -21,32 +21,32 @@ $state		= $this->state->get('filter.state');
 $template	= $this->state->get('filter.template');
 $type		= $this->state->get('filter.type');
 ?>
-<h2 class="modal-title"><?php echo JText::_('COM_MODULES'); ?></h2>
-<form action="<?php echo JRoute::_('index.php?option=com_modules&view=positions&layout=modal&tmpl=component&function='.$function.'&client_id=' .$clientId);?>" method="post" name="adminForm" id="adminForm">
+<h2 class="modal-title"><?php echo Lang::txt('COM_MODULES'); ?></h2>
+<form action="<?php echo Route::url('index.php?option=com_modules&view=positions&layout=modal&tmpl=component&function='.$function.'&client_id=' .$clientId);?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filters clearfix">
 		<div class="col width-40 fltlft">
 			<label for="filter_search">
-				<?php echo JText::_('JSearch_Filter_Label'); ?>
+				<?php echo Lang::txt('JSearch_Filter_Label'); ?>
 			</label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo JText::_('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="30" placeholder="<?php echo Lang::txt('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
 
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="col width-60 fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('modules.templateStates'), 'value', 'text', $state, true);?>
 			</select>
 
 			<select name="filter_type" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('COM_MODULES_OPTION_SELECT_TYPE');?></option>
+				<option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('modules.types'), 'value', 'text', $type, true);?>
 			</select>
 
 			<select name="filter_template" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_TEMPLATE');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('modules.templates', $clientId), 'value', 'text', $template, true);?>
 			</select>
 		</div>
@@ -81,7 +81,7 @@ $type		= $this->state->get('filter.type');
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $value; ?>');">
 						<ul>
 						<?php foreach ($templates as $template => $label):?>
-							<li><?php echo $lang->hasKey($label) ? JText::sprintf('COM_MODULES_MODULE_TEMPLATE_POSITION', JText::_($template), JText::_($label)) : JText::_($template);?></li>
+							<li><?php echo $lang->hasKey($label) ? Lang::txt('COM_MODULES_MODULE_TEMPLATE_POSITION', Lang::txt($template), Lang::txt($label)) : Lang::txt($template);?></li>
 						<?php endforeach;?>
 						</ul>
 					</a>

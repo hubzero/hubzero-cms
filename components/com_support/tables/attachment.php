@@ -72,7 +72,7 @@ class Attachment extends \JTable
 
 		if (!$this->id)
 		{
-			$this->created_by = \JFactory::getUser()->get('id');
+			$this->created_by = User::get('id');
 			$this->created    = \JFactory::getDate()->toSql();
 		}
 
@@ -125,9 +125,8 @@ class Attachment extends \JTable
 
 		if (is_file($this->uppath . DS . $a[0]))
 		{
-			$juri = \JURI::getInstance();
 			$sef = Route::url('index.php?option=com_support&task=download&id=' . $id . '&file=' . $a[0]);
-			$url = $juri->base() . trim($sef, DS);
+			$url = Request::base() . trim($sef, DS);
 			$url = str_replace('/administrator/administrator', '/administrator', $url);
 
 			if ($this->output != 'email' && preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $a[0]))
@@ -190,7 +189,7 @@ class Attachment extends \JTable
 			return false;
 		}
 
-		$config = \JComponentHelper::getParams('com_support');
+		$config = Component::params('com_support');
 		$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS) . DS . $ticket;
 		if (is_dir($path))
 		{

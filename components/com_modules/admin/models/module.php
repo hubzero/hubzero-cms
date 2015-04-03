@@ -53,7 +53,7 @@ class ModulesModelModule extends JModelAdmin
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		if (!($pk = (int) JRequest::getInt('id')))
+		if (!($pk = (int) Request::getInt('id')))
 		{
 			if ($extensionId = (int) $app->getUserState('com_modules.add.module.extension_id'))
 			{
@@ -63,7 +63,7 @@ class ModulesModelModule extends JModelAdmin
 		$this->setState('module.id', $pk);
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_modules');
+		$params	= Component::params('com_modules');
 		$this->setState('params', $params);
 	}
 
@@ -92,7 +92,7 @@ class ModulesModelModule extends JModelAdmin
 
 		if (empty($pks))
 		{
-			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+			$this->setError(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
 			return false;
 		}
 
@@ -146,7 +146,7 @@ class ModulesModelModule extends JModelAdmin
 
 		if (!$done)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 			return false;
 		}
 
@@ -241,7 +241,7 @@ class ModulesModelModule extends JModelAdmin
 			}
 			else
 			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+				$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 				return false;
 			}
 		}
@@ -307,7 +307,7 @@ class ModulesModelModule extends JModelAdmin
 			}
 			else
 			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
 				return false;
 			}
 		}
@@ -342,8 +342,8 @@ class ModulesModelModule extends JModelAdmin
 				// Access checks.
 				if (!$user->authorise('core.delete', 'com_modules') || $table->published != -2)
 				{
-					JError::raiseWarning(403, JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
-					//	throw new Exception(JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					//	throw new Exception(Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 					return;
 				}
 
@@ -397,7 +397,7 @@ class ModulesModelModule extends JModelAdmin
 		// Access checks.
 		if (!$user->authorise('core.create', 'com_modules'))
 		{
-			throw new Exception(JText::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
+			throw new Exception(Lang::txt('JERROR_CORE_CREATE_NOT_PERMITTED'));
 		}
 
 		$table = $this->getTable();
@@ -656,7 +656,7 @@ class ModulesModelModule extends JModelAdmin
 				else
 				{
 					$app = JFactory::getApplication();
-					$app->redirect(JRoute::_('index.php?option=com_modules&view=modules', false));
+					$app->redirect(Route::url('index.php?option=com_modules&view=modules', false));
 					return false;
 				}
 			}
@@ -816,13 +816,13 @@ class ModulesModelModule extends JModelAdmin
 			// Get the module form.
 			if (!$form->loadFile($formFile, false, '//config'))
 			{
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 
 			// Attempt to load the xml file.
 			if (!$xml = simplexml_load_file($formFile))
 			{
-				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
+				throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
 			}
 
 			// Get the help data from the XML file if present.
@@ -887,15 +887,15 @@ class ModulesModelModule extends JModelAdmin
 		}
 
 		// Alter the title and published state for Save as Copy
-		if (JRequest::getVar('task') == 'save2copy')
+		if (Request::getVar('task') == 'save2copy')
 		{
-			$orig_data	= JRequest::getVar('jform', array(), 'post', 'array');
+			$orig_data	= Request::getVar('jform', array(), 'post', 'array');
 			$orig_table = clone($this->getTable());
 			$orig_table->load((int) $orig_data['id']);
 
 			if ($data['title'] == $orig_table->title)
 			{
-				$data['title'] .= ' '.JText::_('JGLOBAL_COPY');
+				$data['title'] .= ' '.Lang::txt('JGLOBAL_COPY');
 				$data['published'] = 0;
 			}
 		}

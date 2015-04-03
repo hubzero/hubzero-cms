@@ -11,10 +11,10 @@ defined('_JEXEC') or die;
 ?>
 <div class="configuration">
 	<div class="configuration-options">
-		<button type="button" onclick="Joomla.submitbutton('module.save');"><?php echo JText::_('JSAVE');?></button>
-		<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('JCANCEL');?></button>
+		<button type="button" onclick="Joomla.submitbutton('module.save');"><?php echo Lang::txt('JSAVE');?></button>
+		<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo Lang::txt('JCANCEL');?></button>
 	</div>
-	<?php echo JText::sprintf('COM_MODULES_MANAGER_MODULE', JText::_($this->item->module)) ?>
+	<?php echo Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)) ?>
 </div>
 
 <?php

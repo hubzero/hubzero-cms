@@ -37,7 +37,7 @@ class ModulesModelSelect extends JModelList
 		$this->setState('filter.client_id', (int) $clientId);
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_modules');
+		$params	= Component::params('com_modules');
 		$this->setState('params', $params);
 
 		// Manually set limits to get all modules.
@@ -131,13 +131,13 @@ class ModulesModelSelect extends JModelList
 			// 1.6 3PD Extension Support
 				$lang->load($item->module . '.sys', $client->path, null, false, true)
 			||	$lang->load($item->module . '.sys', $client->path . '/modules/' . $item->module, null, false, true);
-			$item->name	= JText::_($item->name);
+			$item->name	= Lang::txt($item->name);
 
 			if (isset($item->xml) && $text = trim($item->xml->description)) {
-				$item->desc = JText::_($text);
+				$item->desc = Lang::txt($text);
 			}
 			else {
-				$item->desc = JText::_('COM_MODULES_NODESCRIPTION');
+				$item->desc = Lang::txt('COM_MODULES_NODESCRIPTION');
 			}
 		}
 		$items = JArrayHelper::sortObjects($items, 'name', 1, true, $lang->getLocale());

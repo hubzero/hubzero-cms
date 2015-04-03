@@ -31,6 +31,9 @@
 namespace Modules\Dashboard;
 
 use Hubzero\Module\Module;
+use Component;
+use Config;
+use User;
 
 /**
  * Module class for Administrator dashboard
@@ -47,15 +50,14 @@ class Helper extends Module
 		$mosConfig_bankAccounts = 0;
 		$database = \JFactory::getDBO();
 
-		$jconfig  = \JFactory::getConfig();
-		$upconfig = \JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$this->banking  = $upconfig->get('bankAccounts');
-		$this->sitename = $jconfig->getValue('config.sitename');
+		$this->sitename = Config::get('sitename');
 
 		$threemonths = \JFactory::getDate(time() - (92 * 24 * 60 * 60))->toSql();
 		$onemonth    = \JFactory::getDate(time() - (30 * 24 * 60 * 60))->toSql();
 
-		if ($this->banking && \JComponentHelper::isEnabled('com_store'))
+		if ($this->banking && Component::isEnabled('com_store'))
 		{
 			// get new store orders
 			$database->setQuery( "SELECT count(*) FROM `#__orders` WHERE status=0");
@@ -103,9 +105,8 @@ class Helper extends Module
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
-			$obj = new \Wishlist($database);
-			$objWish = new \Wish($database);
-			$juser   = \JFactory::getUser();
+			$obj = new \Components\Wishlist\Tables\Wishlist($database);
+			$objWish = new \Components\Wishlist\Tables\Wish($database);
 
 			// Check if main wishlist exists, create one if missing
 			$this->mainlist = $obj->get_wishlistID(1, 'general');
@@ -114,7 +115,7 @@ class Helper extends Module
 				$this->mainlist = $obj->createlist('general', 1);
 			}
 			$filters = array('filterby'=>'pending', 'sortby'=>'date');
-			$wishes = $objWish->get_wishes($this->mainlist, $filters, 1, $juser);
+			$wishes = $objWish->get_wishes($this->mainlist, $filters, 1, User::getRoot());
 
 			$this->wishes = count($wishes);
 		}

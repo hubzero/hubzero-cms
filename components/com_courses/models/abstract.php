@@ -230,16 +230,14 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	 */
 	public function log($scope_id, $scope, $action, $log=null)
 	{
-		$juser = \JFactory::getUser();
-
 		$log = new CoursesTableLog($this->_db);
 		$log->scope_id  = $scope_id;
 		$log->scope     = $scope;
-		$log->user_id   = $juser->get('id');
+		$log->user_id   = User::get('id');
 		$log->timestamp = \JFactory::getDate()->toSql();
 		$log->action    = $action;
 		$log->comments  = $log;
-		$log->actor_id  = $juser->get('id');
+		$log->actor_id  = User::get('id');
 		if (!$log->store())
 		{
 			$this->setError($log->getError());
@@ -257,7 +255,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_courses');
+			$this->_config = Component::params('com_courses');
 		}
 		if ($property)
 		{

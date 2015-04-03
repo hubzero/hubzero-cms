@@ -260,7 +260,7 @@ class Ticket extends Model
 	 */
 	public function isSubmitter($username='')
 	{
-		$username = $username ?: \JFactory::getUser()->get('username');
+		$username = $username ?: User::get('username');
 
 		if ($this->get('login') == $username)
 		{
@@ -581,7 +581,7 @@ class Ticket extends Model
 
 		if (!$user)
 		{
-			$user = \JFactory::getUser();
+			$user = User::getRoot();
 		}
 		if (is_numeric($user))
 		{
@@ -589,7 +589,7 @@ class Ticket extends Model
 		}
 		else if (is_string($user))
 		{
-			$user = \JUser::getInstance($user);
+			$user = User::getInstance($user);
 		}
 
 		if ($user instanceof \JUser)
@@ -748,10 +748,10 @@ class Ticket extends Model
 
 				if ($content === null)
 				{
-					$config = \JComponentHelper::getParams('com_support');
+					$config = Component::params('com_support');
 					$path = trim($config->get('webpath', '/site/tickets'), DS) . DS . $this->get('id');
 
-					$webpath = str_replace('//', '/', rtrim(\JURI::getInstance()->base(), '/') . '/' . $path);
+					$webpath = str_replace('//', '/', rtrim(Request::base(), '/') . '/' . $path);
 					if (isset($_SERVER['HTTPS']))
 					{
 						$webpath = str_replace('http:', 'https:', $webpath);
@@ -1061,12 +1061,11 @@ class Ticket extends Model
 
 		if ($action == 'read' && $item == 'tickets' && !$this->_acl->check('read', 'tickets') && !$this->get('_cc-check-done'))
 		{
-			$user = \JFactory::getUser();
-			if (!$user->get('guest') && $this->comments()->total() > 0)
+			if (!User::get('guest') && $this->comments()->total() > 0)
 			{
 				$last = $this->comments('list')->last(); //, array('access' => 1), true)->last();
 				$cc = $last->changelog()->get('cc');
-				if (in_array($user->get('username'), $cc) || in_array($user->get('email'), $cc))
+				if (in_array(User::get('username'), $cc) || in_array(User::get('email'), $cc))
 				{
 					$this->_acl->setAccess('read', 'tickets', 1);
 					$this->_acl->setAccess('create', 'comments', -1);

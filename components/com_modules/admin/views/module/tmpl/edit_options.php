@@ -13,9 +13,9 @@ defined('_JEXEC') or die;
 
 	foreach ($fieldSets as $name => $fieldSet) :
 		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_MODULES_'.$name.'_FIELDSET_LABEL';
-		echo JHtml::_('sliders.panel', JText::_($label), $name.'-options');
+		echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options');
 			if (isset($fieldSet->description) && trim($fieldSet->description)) :
-				echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+				echo '<p class="tip">'.$this->escape(Lang::txt($fieldSet->description)).'</p>';
 			endif;
 			?>
 		<fieldset class="panelform">

@@ -43,7 +43,7 @@ abstract class MediaHelper
 	 */
 	public static function canUpload($file, &$err)
 	{
-		$params = JComponentHelper::getParams('com_media');
+		$params = Component::params('com_media');
 
 		if (empty($file['name']))
 		{
@@ -74,7 +74,7 @@ abstract class MediaHelper
 			{
 				if (in_array($extensionName, $explodedFileName))
 				{
-					$app->enqueueMessage(JText::_('JLIB_MEDIA_ERROR_WARNFILETYPE'), 'notice');
+					$app->enqueueMessage(Lang::txt('JLIB_MEDIA_ERROR_WARNFILETYPE'), 'notice');
 
 					return false;
 				}
@@ -96,7 +96,6 @@ abstract class MediaHelper
 			return false;
 		}
 
-		$user = JFactory::getUser();
 		$imginfo = null;
 		if ($params->get('restrict_uploads', 1)) {
 			$images = explode(',', $params->get('image_extensions'));
@@ -131,7 +130,7 @@ abstract class MediaHelper
 						$err = 'COM_MEDIA_ERROR_WARNINVALID_MIME';
 						return false;
 					}
-				} elseif (!$user->authorise('core.manage')) {
+				} elseif (!User::authorise('core.manage')) {
 					$err = 'COM_MEDIA_ERROR_WARNNOTADMIN';
 					return false;
 				}
@@ -140,7 +139,7 @@ abstract class MediaHelper
 
 		$xss_check =  JFile::read($file['tmp_name'], false, 256);
 		$html_tags = array('abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big', 'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col', 'colgroup', 'comment', 'custom', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'fn', 'font', 'form', 'frame', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'hr', 'html', 'iframe', 'ilayer', 'img', 'input', 'ins', 'isindex', 'keygen', 'kbd', 'label', 'layer', 'legend', 'li', 'limittext', 'link', 'listing', 'map', 'marquee', 'menu', 'meta', 'multicol', 'nobr', 'noembed', 'noframes', 'noscript', 'nosmartquotes', 'object', 'ol', 'optgroup', 'option', 'param', 'plaintext', 'pre', 'rt', 'ruby', 's', 'samp', 'script', 'select', 'server', 'shadow', 'sidebar', 'small', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE', '!--');
-		foreach($html_tags as $tag) {
+		foreach ($html_tags as $tag) {
 			// A tag is '<tagname ', so we need to add < and a space or '<tagname>'
 			if (stristr($xss_check, '<'.$tag.' ') || stristr($xss_check, '<'.$tag.'>')) {
 				$err = 'COM_MEDIA_ERROR_WARNIEXSS';
@@ -153,13 +152,13 @@ abstract class MediaHelper
 	public static function parseSize($size)
 	{
 		if ($size < 1024) {
-			return JText::sprintf('COM_MEDIA_FILESIZE_BYTES', $size);
+			return Lang::txt('COM_MEDIA_FILESIZE_BYTES', $size);
 		}
 		elseif ($size < 1024 * 1024) {
-			return JText::sprintf('COM_MEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
+			return Lang::txt('COM_MEDIA_FILESIZE_KILOBYTES', sprintf('%01.2f', $size / 1024.0));
 		}
 		else {
-			return JText::sprintf('COM_MEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
+			return Lang::txt('COM_MEDIA_FILESIZE_MEGABYTES', sprintf('%01.2f', $size / (1024.0 * 1024)));
 		}
 	}
 

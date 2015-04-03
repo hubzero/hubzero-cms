@@ -57,9 +57,9 @@ class SubtitleAssetHandler extends AssetHandler
 	public function create()
 	{
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components'    . DS . 'com_courses' . DS . 'models'      . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
 
 		// joomla libs
 		jimport('joomla.filesystem.folder');
@@ -83,7 +83,7 @@ class SubtitleAssetHandler extends AssetHandler
 
 		// @FIXME: should these come from the global settings, or should they be courses specific
 		// Get config
-		$config = JComponentHelper::getParams('com_media');
+		$config = Component::params('com_media');
 
 		// Max upload size
 		$sizeLimit = (int) $config->get('upload_maxsize');
@@ -322,34 +322,34 @@ class SubtitleAssetHandler extends AssetHandler
 
 		foreach ($lines as $line)
 		{
-		    switch ($state)
-		    {
-		        case SRT_STATE_SUBNUMBER:
-		            $subNum = trim($line);
-		            $state  = SRT_STATE_TIME;
-		            break;
-		        case SRT_STATE_TIME:
-		            $subTime = trim($line);
-		            $state   = SRT_STATE_TEXT;
-		            break;
-		        case SRT_STATE_TEXT:
-		            if (trim($line) == '')
-		            {
-		                $sub = new stdClass;
-		                $sub->number = $subNum;
-		                list($sub->startTime, $sub->stopTime) = explode(' --> ', $subTime);
-		                $sub->text   = $subText;
-		                $subText     = '';
-		                $state       = SRT_STATE_SUBNUMBER;
+			switch ($state)
+			{
+				case SRT_STATE_SUBNUMBER:
+					$subNum = trim($line);
+					$state  = SRT_STATE_TIME;
+					break;
+				case SRT_STATE_TIME:
+					$subTime = trim($line);
+					$state   = SRT_STATE_TEXT;
+					break;
+				case SRT_STATE_TEXT:
+					if (trim($line) == '')
+					{
+						$sub = new stdClass;
+						$sub->number = $subNum;
+						list($sub->startTime, $sub->stopTime) = explode(' --> ', $subTime);
+						$sub->text   = $subText;
+						$subText     = '';
+						$state       = SRT_STATE_SUBNUMBER;
 
-		                $subs[]      = $sub;
-		            }
-		            else
-		            {
-		                $subText .= ' ' . $line;
-		            }
-		            break;
-		    }
+						$subs[]      = $sub;
+					}
+					else
+					{
+						$subText .= ' ' . $line;
+					}
+					break;
+			}
 		}
 
 		//return subs

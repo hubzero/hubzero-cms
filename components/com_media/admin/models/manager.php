@@ -20,11 +20,12 @@ class MediaModelManager extends JModelLegacy
 	{
 		static $set;
 
-		if (!$set) {
-			$folder = JRequest::getVar('folder', '', '', 'path');
+		if (!$set)
+		{
+			$folder = Request::getVar('folder', '', '', 'path');
 			$this->setState('folder', $folder);
 
-			$fieldid = JRequest::getCmd('fieldid', '');
+			$fieldid = Request::getCmd('fieldid', '');
 			$this->setState('field.id', $fieldid);
 
 			$parent = str_replace("\\", "/", dirname($folder));
@@ -45,7 +46,8 @@ class MediaModelManager extends JModelLegacy
 	function getFolderList($base = null)
 	{
 		// Get some paths from the request
-		if (empty($base)) {
+		if (empty($base))
+		{
 			$base = COM_MEDIA_BASE;
 		}
 		//corrections for windows paths
@@ -57,21 +59,22 @@ class MediaModelManager extends JModelLegacy
 		$folders = JFolder::folders($base, '.', true, true);
 
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_MEDIA_INSERT_IMAGE'));
+		$document->setTitle(Lang::txt('COM_MEDIA_INSERT_IMAGE'));
 
 		// Build the array of select options for the folder list
 		$options[] = JHtml::_('select.option', "", "/");
 
 		foreach ($folders as $folder)
 		{
-			$folder		= str_replace($com_media_base_uni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
-			$value		= substr($folder, 1);
-			$text		= str_replace(DIRECTORY_SEPARATOR, "/", $folder);
-			$options[]	= JHtml::_('select.option', $value, $text);
+			$folder = str_replace($com_media_base_uni, "", str_replace(DIRECTORY_SEPARATOR, '/', $folder));
+			$value  = substr($folder, 1);
+			$text   = str_replace(DIRECTORY_SEPARATOR, "/", $folder);
+			$options[] = JHtml::_('select.option', $value, $text);
 		}
 
 		// Sort the folder list array
-		if (is_array($options)) {
+		if (is_array($options))
+		{
 			sort($options);
 		}
 
@@ -89,7 +92,8 @@ class MediaModelManager extends JModelLegacy
 	function getFolderTreeJoomla($base = null)
 	{
 		// Get some paths from the request
-		if (empty($base)) {
+		if (empty($base))
+		{
 			$base = COM_MEDIA_BASE;
 		}
 
@@ -128,7 +132,7 @@ class MediaModelManager extends JModelLegacy
 				}
 			}
 		}
-		$tree['data'] = (object) array('name' => JText::_('COM_MEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
+		$tree['data'] = (object) array('name' => Lang::txt('COM_MEDIA_MEDIA'), 'relative' => '', 'absolute' => $base);
 
 		return $tree;
 	}

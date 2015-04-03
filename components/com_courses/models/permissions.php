@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 /**
  * Courses model class for course permissions
  */
-class CoursesModelPermissions extends JObject
+class CoursesModelPermissions extends \Hubzero\Base\Object
 {
 	/**
 	 * JUser
@@ -140,7 +140,7 @@ class CoursesModelPermissions extends JObject
 	{
 		if (!isset($this->_config))
 		{
-			$this->_config = JComponentHelper::getParams('com_courses');
+			$this->_config = Component::params('com_courses');
 		}
 		return $this->_config;
 	}
@@ -379,8 +379,6 @@ class CoursesModelPermissions extends JObject
 	 */
 	private function _calculate()
 	{
-		$juser = \JFactory::getUser();
-
 		// List of actions
 		$actions = array(
 			'admin', 'manage', 'create', 'delete', 'edit', 'edit-state', 'edit-own', 'view'
@@ -427,11 +425,10 @@ class CoursesModelPermissions extends JObject
 			$this->config()->set('access-view-course', true);
 		}
 
-		//$juser = \JFactory::getUser();
 		// If they're logged in
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$manager = $this->manager($juser->get('id'));
+			$manager = $this->manager(User::get('id'));
 			// If they're NOT an admin
 			if ($manager->exists())
 			{
@@ -468,7 +465,7 @@ class CoursesModelPermissions extends JObject
 				}
 			}
 			// If they're a student
-			else if (($student = $this->student($juser->get('id'))))
+			else if (($student = $this->student(User::get('id'))))
 			{
 				if ($student->exists())
 				{
@@ -515,9 +512,9 @@ class CoursesModelPermissions extends JObject
 		}
 
 		// If they're logged in
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$manager = $this->manager($juser->get('id'));
+			$manager = $this->manager(User::get('id'));
 			if ($manager->exists())
 			{
 				// If no specific permissions set
@@ -553,7 +550,7 @@ class CoursesModelPermissions extends JObject
 				}
 			}
 			// If they're a student
-			else if (($student = $this->student($juser->get('id'))))
+			else if (($student = $this->student(User::get('id'))))
 			{
 				if ($student->exists())
 				{

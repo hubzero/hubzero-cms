@@ -18,7 +18,7 @@ class MediaViewMedia extends JViewLegacy
 	function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
-		$config = JComponentHelper::getParams('com_media');
+		$config = Component::params('com_media');
 
 		$lang	= JFactory::getLanguage();
 
@@ -89,37 +89,34 @@ class MediaViewMedia extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
-		$user = JFactory::getUser();
-
 		// Set the titlebar text
-		JToolBarHelper::title(JText::_('COM_MEDIA'), 'mediamanager.png');
+		Toolbar::title(Lang::txt('COM_MEDIA'), 'mediamanager.png');
 
 		// Add a delete button
-		if ($user->authorise('core.delete', 'com_media'))
+		if (User::authorise('core.delete', 'com_media'))
 		{
-			$title = JText::_('JTOOLBAR_DELETE');
+			$title = Lang::txt('JTOOLBAR_DELETE');
 			$dhtml = "<a href=\"#\" onclick=\"MediaManager.submit('folder.delete')\" data-title=\"$title\">
 						<span class=\"icon-32-delete\">$title</span>
 					</a>";
-			$bar->appendButton('Custom', $dhtml, 'delete');
-			JToolBarHelper::divider();
+			Toolbar::appendButton('Custom', $dhtml, 'delete');
+			Toolbar::divider();
 		}
 		// Add a delete button
-		if ($user->authorise('core.admin', 'com_media'))
+		if (User::authorise('core.admin', 'com_media'))
 		{
-			JToolBarHelper::preferences('com_media', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_media', 450, 800, 'JToolbar_Options', '', 'window.location.reload()');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('media');
+		Toolbar::help('media');
 	}
 
 	function getFolderLevel($folder)
 	{
 		$this->folders_id = null;
 		$txt = null;
-		if (isset($folder['children']) && count($folder['children'])) {
+		if (isset($folder['children']) && count($folder['children']))
+		{
 			$tmp = $this->folders;
 			$this->folders = $folder;
 			$txt = $this->loadTemplate('folders');

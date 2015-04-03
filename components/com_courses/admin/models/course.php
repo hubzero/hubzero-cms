@@ -41,7 +41,7 @@ class CoursesModelCourse extends JModelAdmin
 		$this->setState($this->getName().'.id', $pk);
 
 		// Load the parameters.
-		$value = JComponentHelper::getParams($this->option);
+		$value = Component::params($this->option);
 		$this->setState('params', $value);
 	}
 

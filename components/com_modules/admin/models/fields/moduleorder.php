@@ -62,19 +62,22 @@ class JFormFieldModuleOrder extends JFormField
 
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
-		if ($error = $db->getErrorMsg()) {
+		if ($error = $db->getErrorMsg())
+		{
 			JError::raiseWarning(500, $error);
 			return false;
 		}
 
 		$orders2 = array();
-		for ($i = 0, $n = count($orders); $i < $n; $i++) {
-			if (!isset($orders2[$orders[$i]->position])) {
+		for ($i = 0, $n = count($orders); $i < $n; $i++)
+		{
+			if (!isset($orders2[$orders[$i]->position]))
+			{
 				$orders2[$orders[$i]->position] = 0;
 			}
 			$orders2[$orders[$i]->position]++;
 			$ord = $orders2[$orders[$i]->position];
-			$title = JText::sprintf('COM_MODULES_OPTION_ORDER_POSITION', $ord, addslashes($orders[$i]->title));
+			$title = Lang::txt('COM_MODULES_OPTION_ORDER_POSITION', $ord, addslashes($orders[$i]->title));
 
 			$html[] = 'orders['.$i.'] =  new Array("'.$orders[$i]->position.'","'.$ord.'","'.$title.'");';
 		}

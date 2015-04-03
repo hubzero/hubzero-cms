@@ -21,11 +21,13 @@ abstract class JHtmlModules
 	static public function templates($clientId = 0, $state = '')
 	{
 		$templates = ModulesHelper::getTemplates($clientId, $state);
-		foreach ($templates as $template) {
-			$options[]	= JHtml::_('select.option', $template->element, $template->name);
+		foreach ($templates as $template)
+		{
+			$options[] = JHtml::_('select.option', $template->element, $template->name);
 		}
 		return $options;
 	}
+
 	/**
 	 */
 	static public function types()
@@ -117,20 +119,20 @@ abstract class JHtmlModules
 	{
 		// Create the copy/move options.
 		$options = array(
-			JHtml::_('select.option', 'c', JText::_('JLIB_HTML_BATCH_COPY')),
-			JHtml::_('select.option', 'm', JText::_('JLIB_HTML_BATCH_MOVE'))
+			JHtml::_('select.option', 'c', Lang::txt('JLIB_HTML_BATCH_COPY')),
+			JHtml::_('select.option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 		);
 
 		// Create the batch selector to change select the category by which to move or copy.
 		$lines = array(
 			'<label id="batch-choose-action-lbl" for="batch-choose-action">',
-			JText::_('COM_MODULES_BATCH_POSITION_LABEL'),
+			Lang::txt('COM_MODULES_BATCH_POSITION_LABEL'),
 			'</label>',
 			'<fieldset id="batch-choose-action" class="combo">',
 			'<select name="batch[position_id]" class="inputbox" id="batch-position-id">',
-			'<option value="">' . JText::_('JSELECT') . '</option>',
-			'<option value="nochange">' . JText::_('COM_MODULES_BATCH_POSITION_NOCHANGE') . '</option>',
-			'<option value="noposition">' . JText::_('COM_MODULES_BATCH_POSITION_NOPOSITION') . '</option>',
+			'<option value="">' . Lang::txt('JSELECT') . '</option>',
+			'<option value="nochange">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOCHANGE') . '</option>',
+			'<option value="noposition">' . Lang::txt('COM_MODULES_BATCH_POSITION_NOPOSITION') . '</option>',
 			JHtml::_('select.options',	self::positionList($clientId)),
 			'</select>',
 			JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'),
@@ -151,8 +153,8 @@ abstract class JHtmlModules
 	 */
 	public static function positionList($clientId = 0)
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('DISTINCT(position) as value');
 		$query->select('position as text');

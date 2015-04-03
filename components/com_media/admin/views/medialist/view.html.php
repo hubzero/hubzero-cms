@@ -20,10 +20,10 @@ class MediaViewMediaList extends JViewLegacy
 		// Do not allow cache
 		JResponse::allowCache(false);
 
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
 
-		$lang	= JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 
 		JHtml::_('behavior.framework', true);
 
@@ -49,12 +49,12 @@ class MediaViewMediaList extends JViewLegacy
 
 		// Check for invalid folder name
 		if (empty($state->folder)) {
-			$dirname = JRequest::getVar('folder', '', '', 'string');
+			$dirname = Request::getVar('folder', '', '', 'string');
 			if (!empty($dirname)) {
 				$dirname = htmlspecialchars($dirname, ENT_COMPAT, 'UTF-8');
 				if ($lang->hasKey('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME'))
 				{
-					JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname));
+					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname));
 				}
 				else
 				{

@@ -217,7 +217,7 @@ class Attachment extends Model
 			case 'filepath':
 				if (!$path)
 				{
-					$config = \JComponentHelper::getParams('com_support');
+					$config = Component::params('com_support');
 					$path = PATH_APP . DS . trim($config->get('webpath', '/site/tickets'), DS);
 				}
 				return $path . DS . $this->get('ticket') . DS . $this->get('filename');
@@ -231,7 +231,7 @@ class Attachment extends Model
 
 		if ($absolute)
 		{
-			$link = rtrim(\JURI::getInstance()->base(), '/') . '/' . trim(Route::url($link), '/');
+			$link = rtrim(Request::base(), '/') . '/' . trim(Route::url($link), '/');
 		}
 
 		return $link;

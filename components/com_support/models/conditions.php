@@ -81,7 +81,7 @@ class Conditions extends Object
 			$this->setRecord($record);
 		}*/
 		$this->database = \JFactory::getDBO();
-		$this->config = \JComponentHelper::getParams('com_support');
+		$this->config = Component::params('com_support');
 	}
 
 	/**
@@ -133,8 +133,8 @@ class Conditions extends Object
 		$items = array(
 			$this->_value('*', Lang::txt('(any of mine)'), true)
 		);
-		$juser = \JFactory::getUser();
-		if ($xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members'))
+
+		if ($xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members'))
 		{
 			foreach ($xgroups as $xgroup)
 			{

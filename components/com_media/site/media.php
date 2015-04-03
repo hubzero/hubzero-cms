@@ -9,23 +9,23 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$params = JComponentHelper::getParams('com_media');
+$params = Component::params('com_media');
+
 // Make sure the user is authorized to view this page
-$user = JFactory::getUser();
-$asset = JRequest::getCmd('asset');
-$author = JRequest::getCmd('author');
+$asset = Request::getCmd('asset');
+$author = Request::getCmd('author');
 if (!$asset or
-		!$user->authorise('core.edit', $asset)
-	&&	!$user->authorise('core.create', $asset)
-	&& 	count($user->getAuthorisedCategories($asset, 'core.create')) == 0
-	&&	!($user->id==$author && $user->authorise('core.edit.own', $asset)))
+		!User::authorise('core.edit', $asset)
+	&&	!User::authorise('core.create', $asset)
+	&&	count(User::getAuthorisedCategories($asset, 'core.create')) == 0
+	&&	!(User::get('id') == $author && User::authorise('core.edit.own', $asset)))
 {
-	return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Set the path definitions
-define('COM_MEDIA_BASE',	JPATH_ROOT.'/'.$params->get('image_path', 'images'));
-define('COM_MEDIA_BASEURL', JURI::root().'/'.$params->get('image_path', 'images'));
+define('COM_MEDIA_BASE', JPATH_ROOT.'/'.$params->get('image_path', 'images'));
+define('COM_MEDIA_BASEURL', Request::root().'/'.$params->get('image_path', 'images'));
 
 $lang = JFactory::getLanguage();
 
@@ -39,11 +39,11 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/media.php';
 require_once JPATH_COMPONENT.'/controller.php';
 
 // Make sure the user is authorized to view this page
-$user	= JFactory::getUser();
-$app	= JFactory::getApplication();
-$cmd	= JRequest::getCmd('task', null);
+$app JFactory::getApplication();
+$cmd = Request::getCmd('task', null);
 
-if (strpos($cmd, '.') != false) {
+if (strpos($cmd, '.') != false)
+{
 	// We have a defined controller/task pair -- lets split them out
 	list($controllerName, $task) = explode('.', $cmd);
 
@@ -52,11 +52,13 @@ if (strpos($cmd, '.') != false) {
 	$controllerPath	= JPATH_COMPONENT_ADMINISTRATOR.'/controllers/'.$controllerName.'.php';
 
 	// If the controller file path exists, include it ... else lets die with a 500 error
-	if (file_exists($controllerPath)) {
+	if (file_exists($controllerPath))
+	{
 		require_once $controllerPath;
 	}
-	else {
-		JError::raiseError(500, JText::_('JERROR_INVALID_CONTROLLER'));
+	else
+	{
+		App::abort(500, Lang::txt('JERROR_INVALID_CONTROLLER'));
 	}
 }
 else {
@@ -68,11 +70,12 @@ else {
 // Set the name for the controller and instantiate it
 $controllerClass = 'MediaController'.ucfirst($controllerName);
 
-if (class_exists($controllerClass)) {
+if (class_exists($controllerClass))
+{
 	$controller = new $controllerClass();
 }
 else {
-	JError::raiseError(500, JText::_('JERROR_INVALID_CONTROLLER_CLASS'));
+	App::abort(500, Lang::txt('JERROR_INVALID_CONTROLLER_CLASS'));
 }
 
 // Set the model and view paths to the administrator folders

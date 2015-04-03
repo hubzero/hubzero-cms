@@ -33,13 +33,13 @@ abstract class ModulesHelper
 	 */
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result = new JObject;
 
 		$actions = JAccess::getActions('com_modules');
 
-		foreach ($actions as $action) {
-			$result->set($action->name, $user->authorise($action->name, 'com_modules'));
+		foreach ($actions as $action)
+		{
+			$result->set($action->name, User::authorise($action->name, 'com_modules'));
 		}
 
 		return $result;
@@ -54,9 +54,9 @@ abstract class ModulesHelper
 	{
 		// Build the filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option',	'1',	JText::_('JPUBLISHED'));
-		$options[]	= JHtml::_('select.option',	'0',	JText::_('JUNPUBLISHED'));
-		$options[]	= JHtml::_('select.option',	'-2',	JText::_('JTRASHED'));
+		$options[]	= JHtml::_('select.option',	'1',	Lang::txt('JPUBLISHED'));
+		$options[]	= JHtml::_('select.option',	'0',	Lang::txt('JUNPUBLISHED'));
+		$options[]	= JHtml::_('select.option',	'-2',	Lang::txt('JTRASHED'));
 		return $options;
 	}
 
@@ -69,8 +69,8 @@ abstract class ModulesHelper
 	{
 		// Build the filter options.
 		$options	= array();
-		$options[]	= JHtml::_('select.option', '0', JText::_('JSITE'));
-		$options[]	= JHtml::_('select.option', '1', JText::_('JADMINISTRATOR'));
+		$options[]	= JHtml::_('select.option', '0', Lang::txt('JSITE'));
+		$options[]	= JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'));
 		return $options;
 	}
 
@@ -101,7 +101,7 @@ abstract class ModulesHelper
 		{
 			if (!$position)
 			{
-				$options[]	= JHtml::_('select.option', 'none', ':: '.JText::_('JNONE').' ::');
+				$options[]	= JHtml::_('select.option', 'none', ':: '.Lang::txt('JNONE').' ::');
 
 			}
 			else
@@ -165,7 +165,7 @@ abstract class ModulesHelper
 			$source = $path . "/modules/$extension";
 				$lang->load("$extension.sys", $path, null, false, true)
 			||	$lang->load("$extension.sys", $source, null, false, true);
-			$modules[$i]->text = JText::_($module->text);
+			$modules[$i]->text = Lang::txt($module->text);
 		}
 		JArrayHelper::sortObjects($modules, 'text', 1, true, $lang->getLocale());
 		return $modules;

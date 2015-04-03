@@ -56,7 +56,7 @@ class ModulesModelPositions extends JModelList
 		$state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $state);
 
-		$clientId = JRequest::getInt('client_id', 0);
+		$clientId = Request::getInt('client_id', 0);
 		$this->setState('filter.client_id', $clientId);
 
 		$template = $this->getUserStateFromRequest($this->context.'.filter.template', 'filter_template', '', 'string');
@@ -66,7 +66,7 @@ class ModulesModelPositions extends JModelList
 		$this->setState('filter.type', $type);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_modules');
+		$params = Component::params('com_modules');
 		$this->setState('params', $params);
 
 		// List state information.

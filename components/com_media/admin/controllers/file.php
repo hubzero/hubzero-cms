@@ -32,12 +32,12 @@ class MediaControllerFile extends JControllerLegacy
 	public function upload()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-		$params = JComponentHelper::getParams('com_media');
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
+		$params = Component::params('com_media');
 		// Get some data from the request
-		$files			= JRequest::getVar('Filedata', '', 'files', 'array');
-		$return			= JRequest::getVar('return-url', null, 'post', 'base64');
-		$this->folder	= JRequest::getVar('folder', '', '', 'path');
+		$files			= Request::getVar('Filedata', '', 'files', 'array');
+		$return			= Request::getVar('return-url', null, 'post', 'base64');
+		$this->folder	= Request::getVar('folder', '', '', 'path');
 
 		// Set the redirect
 		if ($return)
@@ -57,7 +57,7 @@ class MediaControllerFile extends JControllerLegacy
 			(($_SERVER['CONTENT_LENGTH'] > (int) (ini_get('memory_limit')) * 1024 * 1024) && ((int) (ini_get('memory_limit')) != -1))
 		)
 		{
-			JError::raiseWarning(100, JText::_('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+			JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 			return false;
 		}
 		// Input is in the form of an associative array containing numerically indexed arrays
@@ -72,26 +72,26 @@ class MediaControllerFile extends JControllerLegacy
 		{
 			if ($file['error']==1)
 			{
-				JError::raiseWarning(100, JText::_('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 				return false;
 			}
 			if ($file['size']>($params->get('upload_maxsize', 0) * 1024 * 1024))
 			{
-				JError::raiseNotice(100, JText::_('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
+				JError::raiseNotice(100, Lang::txt('COM_MEDIA_ERROR_WARNFILETOOLARGE'));
 				return false;
 			}
 
 			if (JFile::exists($file['filepath']))
 			{
 				// A file with this name already exists
-				JError::raiseWarning(100, JText::_('COM_MEDIA_ERROR_FILE_EXISTS'));
+				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_FILE_EXISTS'));
 				return false;
 			}
 
 			if (!isset($file['name']))
 			{
 				// No filename (after the name was cleaned by JFile::makeSafe)
-				$this->setRedirect('index.php', JText::_('COM_MEDIA_INVALID_REQUEST'), 'error');
+				$this->setRedirect('index.php', Lang::txt('COM_MEDIA_INVALID_REQUEST'), 'error');
 				return false;
 			}
 		}
@@ -108,7 +108,7 @@ class MediaControllerFile extends JControllerLegacy
 			if (!MediaHelper::canUpload($file, $err))
 			{
 				// The file can't be upload
-				JError::raiseNotice(100, JText::_($err));
+				JError::raiseNotice(100, Lang::txt($err));
 				return false;
 			}
 
@@ -125,14 +125,14 @@ class MediaControllerFile extends JControllerLegacy
 			if (!JFile::upload($file['tmp_name'], $file['filepath']))
 			{
 				// Error in upload
-				JError::raiseWarning(100, JText::_('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
+				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_UPLOAD_FILE'));
 				return false;
 			}
 			else
 			{
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_media.file', &$object_file, true));
-				$this->setMessage(JText::sprintf('COM_MEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_MEDIA_BASE))));
+				$this->setMessage(Lang::txt('COM_MEDIA_UPLOAD_COMPLETE', substr($file['filepath'], strlen(COM_MEDIA_BASE))));
 			}
 		}
 
@@ -178,7 +178,7 @@ class MediaControllerFile extends JControllerLegacy
 		if (!JFactory::getUser()->authorise('core.' . strtolower($action), 'com_media'))
 		{
 			// User is not authorised
-			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
+			JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_' . strtoupper($action) . '_NOT_PERMITTED'));
 			return false;
 		}
 
@@ -192,12 +192,12 @@ class MediaControllerFile extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
-		$tmpl	= JRequest::getCmd('tmpl');
-		$paths	= JRequest::getVar('rm', array(), '', 'array');
-		$folder = JRequest::getVar('folder', '', '', 'path');
+		$tmpl	= Request::getCmd('tmpl');
+		$paths	= Request::getVar('rm', array(), '', 'array');
+		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
 		if ($tmpl == 'component')
@@ -233,7 +233,7 @@ class MediaControllerFile extends JControllerLegacy
 			{
 				// filename is not safe
 				$filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-				JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_MEDIA_BASE))));
+				JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME', substr($filename, strlen(COM_MEDIA_BASE))));
 				continue;
 			}
 
@@ -254,7 +254,7 @@ class MediaControllerFile extends JControllerLegacy
 
 				// Trigger the onContentAfterDelete event.
 				$dispatcher->trigger('onContentAfterDelete', array('com_media.file', &$object_file));
-				$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
+				$this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
 			}
 			elseif (is_dir($fullPath))
 			{
@@ -274,12 +274,12 @@ class MediaControllerFile extends JControllerLegacy
 
 					// Trigger the onContentAfterDelete event.
 					$dispatcher->trigger('onContentAfterDelete', array('com_media.folder', &$object_file));
-					$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
+					$this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
 				}
 				else
 				{
 					// This makes no sense...
-					JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
+					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
 				}
 			}
 		}

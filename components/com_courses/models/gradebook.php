@@ -220,8 +220,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return $instances[$key];
 		}
 
-		$offeringParams = new JRegistry($this->course->offering()->get('params'));
-		$sectionParams  = new JRegistry($this->course->offering()->section()->get('params'));
+		$offeringParams = new \JRegistry($this->course->offering()->get('params'));
+		$sectionParams  = new \JRegistry($this->course->offering()->section()->get('params'));
 
 		$progress_calculation = $this->course->config()->get('progress_calculation', 'all');
 		$progress_calculation = ($offeringParams->get('progress_calculation', false)) ? $offeringParams->get('progress_calculation') : $progress_calculation;
@@ -926,7 +926,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 						$badge->store();
 
 						// Get courses config
-						$cconfig = JComponentHelper::getParams('com_courses');
+						$cconfig = Component::params('com_courses');
 
 						// Tell the badge provider that they've earned the badge
 						$request_type   = $cconfig->get('badges_request_type', 'oauth');

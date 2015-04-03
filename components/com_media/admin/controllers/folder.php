@@ -27,14 +27,12 @@ class MediaControllerFolder extends JControllerLegacy
 	 */
 	public function delete()
 	{
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-
-		$user	= JFactory::getUser();
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get some data from the request
-		$tmpl	= JRequest::getCmd('tmpl');
-		$paths	= JRequest::getVar('rm', array(), '', 'array');
-		$folder = JRequest::getVar('folder', '', '', 'path');
+		$tmpl	= Request::getCmd('tmpl');
+		$paths	= Request::getVar('rm', array(), '', 'array');
+		$folder = Request::getVar('folder', '', '', 'path');
 
 		$redirect = 'index.php?option=com_media&folder=' . $folder;
 		if ($tmpl == 'component') {
@@ -49,10 +47,10 @@ class MediaControllerFolder extends JControllerLegacy
 			return true;
 		}
 
-		if (!$user->authorise('core.delete', 'com_media'))
+		if (!User::authorise('core.delete', 'com_media'))
 		{
 			// User is not authorised to delete
-			JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+			JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 			return false;
 		}
 
@@ -71,7 +69,7 @@ class MediaControllerFolder extends JControllerLegacy
 				if ($path !== JFile::makeSafe($path))
 				{
 					$dirname = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-					JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_MEDIA_BASE))));
+					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_WARNDIRNAME', substr($dirname, strlen(COM_MEDIA_BASE))));
 					continue;
 				}
 
@@ -91,7 +89,7 @@ class MediaControllerFolder extends JControllerLegacy
 
 					// Trigger the onContentAfterDelete event.
 					$dispatcher->trigger('onContentAfterDelete', array('com_media.file', &$object_file));
-					$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
+					$this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
 				}
 				elseif (is_dir($fullPath))
 				{
@@ -110,12 +108,12 @@ class MediaControllerFolder extends JControllerLegacy
 
 						// Trigger the onContentAfterDelete event.
 						$dispatcher->trigger('onContentAfterDelete', array('com_media.folder', &$object_file));
-						$this->setMessage(JText::sprintf('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
+						$this->setMessage(Lang::txt('COM_MEDIA_DELETE_COMPLETE', substr($fullPath, strlen(COM_MEDIA_BASE))));
 					}
 					else
 					{
 						//This makes no sense...
-						JError::raiseWarning(100, JText::sprintf('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
+						JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_DELETE_FOLDER_NOT_EMPTY', substr($fullPath, strlen(COM_MEDIA_BASE))));
 					}
 				}
 			}
@@ -132,33 +130,31 @@ class MediaControllerFolder extends JControllerLegacy
 	public function create()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
-		$user = JFactory::getUser();
+		$folder      = Request::getCmd('foldername', '');
+		$folderCheck = Request::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
+		$parent      = Request::getVar('folderbase', '', '', 'path');
 
-		$folder			= JRequest::getCmd('foldername', '');
-		$folderCheck	= JRequest::getVar('foldername', null, '', 'string', JREQUEST_ALLOWRAW);
-		$parent			= JRequest::getVar('folderbase', '', '', 'path');
-
-		$this->setRedirect('index.php?option=com_media&folder='.$parent.'&tmpl='.JRequest::getCmd('tmpl', 'index'));
+		$this->setRedirect('index.php?option=com_media&folder='.$parent.'&tmpl='.Request::getCmd('tmpl', 'index'));
 
 		if (strlen($folder) > 0)
 		{
-			if (!$user->authorise('core.create', 'com_media'))
+			if (!User::authorise('core.create', 'com_media'))
 			{
 				// User is not authorised to delete
-				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
+				JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_CREATE_NOT_PERMITTED'));
 				return false;
 			}
 
 			// Set FTP credentials, if given
 			JClientHelper::setCredentialsFromRequest('ftp');
 
-			JRequest::setVar('folder', $parent);
+			Request::setVar('folder', $parent);
 
 			if (($folderCheck !== null) && ($folder !== $folderCheck))
 			{
-				$this->setMessage(JText::_('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
+				$this->setMessage(Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_CREATE_FOLDER_WARNDIRNAME'));
 				return false;
 			}
 
@@ -183,9 +179,9 @@ class MediaControllerFolder extends JControllerLegacy
 
 				// Trigger the onContentAfterSave event.
 				$dispatcher->trigger('onContentAfterSave', array('com_media.folder', &$object_file, true));
-				$this->setMessage(JText::sprintf('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(COM_MEDIA_BASE))));
+				$this->setMessage(Lang::txt('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(COM_MEDIA_BASE))));
 			}
-			JRequest::setVar('folder', ($parent) ? $parent.'/'.$folder : $folder);
+			Request::setVar('folder', ($parent) ? $parent.'/'.$folder : $folder);
 		}
 	}
 }
