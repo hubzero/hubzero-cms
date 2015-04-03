@@ -66,8 +66,8 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->types); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('CITATION_TYPES_ID'); ?></th>
-				<th scope="col"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('CITATION_TYPES_ID'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></th>
 			</tr>
 		</thead>
@@ -77,10 +77,10 @@ function submitbutton(pressbutton)
 					<td>
 						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $t['id']; ?>" onclick="isChecked(this.checked);" />
 					</td>
-					<td>
+					<td class="priority-3">
 						<?php echo $t['id']; ?>
 					</td>
-					<td>
+					<td class="priority-2">
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $t['id']); ?>">
 							<span><?php echo $this->escape($t['type']); ?></span>
 						</a>

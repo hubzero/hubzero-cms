@@ -42,26 +42,13 @@ if (User::authorise('core.admin', 'com_cache'))
 Toolbar::help('purge_expired');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th>
-					<?php echo Lang::txt('COM_CACHE_PURGE_EXPIRED_ITEMS'); ?>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<p class="mod-purge-instruct"><?php echo Lang::txt('COM_CACHE_PURGE_INSTRUCTIONS'); ?></p>
-					<p class="warning"><?php echo Lang::txt('COM_CACHE_RESOURCE_INTENSIVE_WARNING'); ?></p>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+<form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="item-form">
+
+	<p class="mod-purge-instruct"><?php echo Lang::txt('COM_CACHE_PURGE_INSTRUCTIONS'); ?></p>
+	<p class="warning"><?php echo Lang::txt('COM_CACHE_RESOURCE_INTENSIVE_WARNING'); ?></p>
 
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="option" value="com_cache" />
 
 	<?php echo JHtml::_('form.token'); ?>
 </form>

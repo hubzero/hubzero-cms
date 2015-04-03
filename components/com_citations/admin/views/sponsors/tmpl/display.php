@@ -56,10 +56,10 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo Lang::txt('CITATION_ID'); ?></th>
+				<th class="priority-3"><?php echo Lang::txt('CITATION_ID'); ?></th>
 				<th><?php echo Lang::txt('CITATION_SPONSORS'); ?></th>
-				<th><?php echo Lang::txt('CITATION_SPONSORS_LINK'); ?></th>
-				<th><?php echo Lang::txt('CITATION_SPONSORS_IMAGE'); ?></th>
+				<th class="priority-2"><?php echo Lang::txt('CITATION_SPONSORS_LINK'); ?></th>
+				<th class="priority-4"><?php echo Lang::txt('CITATION_SPONSORS_IMAGE'); ?></th>
 				<th><?php echo Lang::txt('CITATION_SPONSORS_ACTIONS'); ?></th>
 			</tr>
 		</thead>
@@ -67,10 +67,10 @@ function submitbutton(pressbutton)
 			<?php if (count($this->sponsors) > 0) : ?>
 				<?php foreach ($this->sponsors as $sponsor) : ?>
 					<tr>
-						<td><?php echo $sponsor['id']; ?></td>
+						<td class="priority-3"><?php echo $sponsor['id']; ?></td>
 						<td><?php echo $sponsor['sponsor']; ?></td>
-						<td><?php echo $sponsor['link']; ?></td>
-						<td><?php echo $sponsor['image']; ?></td>
+						<td class="priority-2"><?php echo $sponsor['link']; ?></td>
+						<td class="priority-4"><?php echo $sponsor['image']; ?></td>
 						<td>
 							<?php if ($canDo->get('core.edit')) { ?>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |

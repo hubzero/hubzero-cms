@@ -58,31 +58,32 @@ $saveOrder	= $listOrder == 'fp.ordering';
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th class="priority-2" width="5%">
 					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'a.catid', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-3" width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'fp.ordering', $listDirn, $listOrder); ?>
 					<?php if ($canOrder && $saveOrder) :?>
 						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'featured.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="10%">
+				<th class="priority-4" width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 				</th>
-				<th>
+				<th class="priority-6">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th class="priority-5" width="5%">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
+				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-				</th>
-				<th width="5%">
+				</th> -->
+				<th class="priority-6" width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th width="1%" class="priority-5 nowrap">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -125,10 +126,10 @@ $saveOrder	= $listOrder == 'fp.ordering';
 				<td class="center">
 					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-2">
 					<?php echo $this->escape($item->category_title); ?>
 				</td>
-				<td class="order">
+				<td class="order priority-3">
 					<?php if ($canChange) : ?>
 						<?php if ($saveOrder) :?>
 							<?php if ($listDirn == 'asc') : ?>
@@ -145,10 +146,10 @@ $saveOrder	= $listOrder == 'fp.ordering';
 						<?php echo $item->ordering; ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
+				<td class="center priority-4">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
-				<td class="center">
+				<td class="center priority-6">
 					<?php if ($item->created_by_alias) : ?>
 						<?php echo $this->escape($item->author_name); ?>
 						<p class="smallsub"> <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
@@ -156,20 +157,21 @@ $saveOrder	= $listOrder == 'fp.ordering';
 						<?php echo $this->escape($item->author_name); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center nowrap">
+				<td class="center nowrap priority-5">
 					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
+				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<td class="center">
 					<?php echo (int) $item->hits; ?>
-				</td>
-				<td class="center">
+				</td> -->
+				<td class="center priority6">
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 					<?php endif;?>
 				</td>
-				<td class="center">
+				<td class="center priority-5">
 					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>

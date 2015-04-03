@@ -59,28 +59,28 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
+				<th>
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th>
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th class="priority-2">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th class="priority-2">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.lft', $listDirn, $listOrder); ?>
 					<?php if ($saveOrder) :?>
 						<?php echo JHtml::_('grid.order',  $this->items, 'filesave.png', 'categories.saveorder'); ?>
 					<?php endif; ?>
 				</th>
-				<th width="10%">
+				<th class="priority-3">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%" class="nowrap">
+				<th class="priority-4 nowrap">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $this->state->get('list.direction'), $this->state->get('list.ordering')); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th class="priority-4 nowrap">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -125,10 +125,10 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
 							<?php endif; ?></p>
 					</td>
-					<td class="center">
+					<td class="priority-2 center">
 						<?php echo JHtml::_('jgrid.published', $item->published, $i, 'categories.', $canChange);?>
 					</td>
-					<td class="order">
+					<td class="priority-2 order">
 						<?php if ($canChange) : ?>
 							<?php if ($saveOrder) : ?>
 								<span><?php echo $this->pagination->orderUpIcon($i, isset($this->ordering[$item->parent_id][$orderkey - 1]), 'categories.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
@@ -141,17 +141,17 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 							<?php echo $orderkey + 1;?>
 						<?php endif; ?>
 					</td>
-					<td class="center">
+					<td class="priority-3 center">
 						<?php echo $this->escape($item->access_level); ?>
 					</td>
-					<td class="center nowrap">
+					<td class="priority-4 center nowrap">
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 					<?php endif;?>
 					</td>
-					<td class="center">
+					<td class="priority-4 center">
 						<span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt);?>">
 							<?php echo (int) $item->id; ?></span>
 					</td>

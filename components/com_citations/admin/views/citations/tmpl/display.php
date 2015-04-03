@@ -94,17 +94,17 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo Lang::txt('TYPE'); ?></th>
+				<th scope="col" class="priority-2"><?php echo Lang::txt('TYPE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('TITLE'); ?> / <?php echo Lang::txt('AUTHORS'); ?></th>
 				<th scope="col"><?php echo Lang::txt('PUBLISHED') ?></th>
-				<th scope="col"><?php echo Lang::txt('YEAR') ?></th>
-				<th scope="col"><?php echo Lang::txt('AFFILIATED'); ?></th>
-				<th scope="col"><?php echo Lang::txt('FUNDED_BY'); ?></th>
+				<th scope="col" class="priority-3"><?php echo Lang::txt('YEAR') ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('AFFILIATED'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('FUNDED_BY'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6">
+				<td colspan="7">
 					<?php
 					// Initiate paging
 					jimport('joomla.html.pagination');
@@ -128,7 +128,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" /></td>
-				<td>
+				<td class="priority-2">
 					<?php
 						$type = "";
 						foreach ($this->types as $t)
@@ -175,11 +175,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo Lang::txt('PUBLISH'); ?></span></span></a>
 					<?php endif; ?>
 				</td>
-				<td><?php echo $this->escape($row->year); ?></td>
-				<td>
+				<td class="priority-3">
+					<?php echo $this->escape($row->year); ?>
+				</td>
+				<td class="priority-4">
 					<?php if ($row->affiliated == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php if ($row->fundedby == 1) { echo '<span class="state publish"><span>' . Lang::txt('JYES') . '</span></span>'; } ?>
 				</td>
 			</tr>

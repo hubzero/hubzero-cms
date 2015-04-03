@@ -47,7 +47,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 <form action="<?php echo Route::url('index.php?option=com_cache'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<div class="filter-select fltrt">
+		<div class="filter-select">
 			<select name="filter_client_id" class="inputbox" onchange="this.form.submit()">
 				<?php echo JHtml::_('select.options', \Components\Cache\Helpers\Cache::getClientOptions(), 'value', 'text', $this->state->get('clientId'));?>
 			</select>
@@ -58,7 +58,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col">
+				<th scope="col" class="priority-3">
 					<?php echo Lang::txt('COM_CACHE_NUM'); ?>
 				</th>
 				<th scope="col">
@@ -67,7 +67,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<th scope="col" class="title nowrap">
 					<?php echo JHtml::_('grid.sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
 				</th>
-				<th scope="col" class="center nowrap">
+				<th scope="col" class="center nowrap priority-2">
 					<?php echo JHtml::_('grid.sort', 'COM_CACHE_NUMBER_OF_FILES', 'count', $listDirn, $listOrder); ?>
 				</th>
 				<th scope="col" class="center">
@@ -87,7 +87,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			$i = 0;
 			foreach ($this->data as $folder => $item): ?>
 				<tr class="row<?php echo $i % 2; ?>">
-					<td>
+					<td class="priority-3">
 						<?php echo $this->pagination->getRowOffset($i); ?>
 					</td>
 					<td>
@@ -96,7 +96,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<td>
 						<strong><?php echo $item->group; ?></strong>
 					</td>
-					<td class="center">
+					<td class="center priority-2">
 						<?php echo $item->count; ?>
 					</td>
 					<td class="center">
