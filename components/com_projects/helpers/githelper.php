@@ -239,11 +239,12 @@ class ProjectsGitHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function gitLogAll ($path = '', $subdir = '')
+	public function gitLogAll ($path = '', $subdir = '', $limit = 500)
 	{
-		return NULL; // disable
+		// return NULL; // disable
 		chdir($this->_prefix . $path);
-		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%s" --name-only ' . $subdir;
+
+		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%s" --name-only --max-count=' . $limit . ' ' . escapeshellarg($subdir);
 
 		// Exec command
 		exec($this->_gitpath . ' '. $exec . ' 2>&1', $out1);
@@ -251,6 +252,7 @@ class ProjectsGitHelper extends JObject
 		$collector = array();
 		$entry 	   = array();
 
+		$i = 0;
 		foreach ($out1 as $line)
 		{
 			if (substr($line, 0, 3) == '>>>')
@@ -263,7 +265,7 @@ class ProjectsGitHelper extends JObject
 				$entry['author'] 	= $data[1];
 				$entry['email'] 	= $data[2];
 				$entry['hash'] 		= $data[3];
-				$entry['message'] 	= $data[4];
+				$entry['message'] 	= substr($data[4], 0, 100);
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
