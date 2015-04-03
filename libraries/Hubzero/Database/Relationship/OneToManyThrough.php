@@ -34,69 +34,58 @@ namespace Hubzero\Database\Relationship;
 use Hubzero\Database\Rows;
 
 /**
- * Database one to many relationship
+ * Database one to many through relationship
+ *
+ * This also serves as the base for the many to many relationship,
+ * so some of the language herein may reflect that class as well.
  */
-class OneToManyThrough extends Relationship
+class OneToManyThrough extends OneToMany
 {
 	/**
-	 * The parent side of the relationship
-	 *
-	 * @var \Hubzero\Database\Relational|static
-	 **/
-	private $one = null;
-
-	/**
-	 * The many side of the relationship
-	 *
-	 * @var \Hubzero\Database\Relational|static
-	 **/
-	private $many = null;
-
-	/**
-	 * The though portion of the relationship
-	 *
-	 * @var \Hubzero\Database\Relational|static
-	 **/
-	private $through = null;
-
-	/**
-	 * The relationship key on the one side
+	 * The associative table used to capture the through relationship
 	 *
 	 * @var string
 	 **/
-	private $oneKey = null;
+	protected $associativeTable = null;
 
 	/**
-	 * The key relating this model to the parent
+	 * Key on the left side of the associative table
 	 *
 	 * @var string
 	 **/
-	private $manyKey = null;
+	protected $associativeLocal = null;
+
+	/**
+	 * Key on the right side of the associative table
+	 *
+	 * @var string
+	 **/
+	protected $associativeRelated = null;
 
 	/**
 	 * Constructs a new object instance
 	 *
-	 * @param  \Hubzero\Database\Relational|static $one the one side
-	 * @param  \Hubzero\Database\Relational|static $many the many side
-	 * @param  \Hubzero\Database\Relational|static $through the through side
-	 * @param  \Hubzero\Database\Relational|static $oneKey the parent key
-	 * @param  \Hubzero\Database\Relational|static $manyKey the foreign key
+	 * @param  \Hubzero\Database\Relational|static $model              the local model
+	 * @param  \Hubzero\Database\Relational|static $related            the related model
+	 * @param  string                              $associativeTable   the associative entity
+	 * @param  string                              $associativeLocal   the local key on the associative table
+	 * @param  string                              $associativeRelated the related key on the associative table
 	 * @return void
 	 * @since  1.3.2
 	 **/
-	public function __construct($one, $many, $through, $oneKey, $manyKey)
+	public function __construct($model, $related, $associativeTable, $associativeLocal, $associativeRelated)
 	{
-		$this->one        = $one;
-		$this->many       = $many;
-		$this->through    = $through;
-		$this->oneKey     = $oneKey;
-		$this->manyKey    = $manyKey;
+		parent::__construct($model, $related, $model->getPrimaryKey(), $related->getPrimaryKey());
+
+		$this->associativeTable   = $associativeTable;
+		$this->associativeLocal   = $associativeLocal;
+		$this->associativeRelated = $associativeRelated;
 	}
 
 	/**
-	 * Fetch results of relationship
+	 * Fetches tbe results of tbe relationship
 	 *
-	 * @return \Hubzero\Database\Relational
+	 * @return \Hubzero\Database\Rows
 	 * @since  1.3.2
 	 **/
 	public function rows()
@@ -105,21 +94,38 @@ class OneToManyThrough extends Relationship
 	}
 
 	/**
-	 * Loads the relationship content and returns the many side of the model
+	 * Loads the relationship content and returns the related side of the model
 	 *
 	 * @return object
 	 * @since  1.3.2
 	 **/
 	public function constrain()
 	{
-		$this->join();
-		$this->many->whereEquals($this->through->getQualifiedFieldName($this->oneKey), $this->one->{$this->one->getPrimaryKey()});
+		$this->mediate();
 
-		return $this->many;
+		$this->related->whereEquals($this->associativeTable . '.' . $this->associativeLocal, $this->model->getPkValue());
+
+		return $this->related;
 	}
 
 	/**
-	 * Joins the related table together for the pending query
+	 * Get keys based on a given constraint
+	 *
+	 * @param  closure $constraint the constraint function to apply
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	public function getConstrainedKeys($constraint)
+	{
+		call_user_func_array($constraint, array($this->related));
+
+		// Return the ids resulting from the contraint query
+		$this->mediate();
+		return array_unique($this->related->rows()->fieldsByKey($this->associativeLocal));
+	}
+
+	/**
+	 * Joins the intermediate and related tables together to the model for the pending query
 	 *
 	 * @return $this
 	 * @since  1.3.2
@@ -128,61 +134,73 @@ class OneToManyThrough extends Relationship
 	{
 		// We do a left outer join here because we're not trying to limit the primary table's results
 		// This function is primarily used when needing to sort by a field in the joined table
-		$this->many
-		     ->select($this->many->getQualifiedFieldName('*'))
-		     ->select($this->through->getQualifiedFieldName($this->oneKey))
-		     ->join($this->through->getTableName(),
-		            $this->through->getQualifiedFieldName($this->through->getPrimaryKey()),
-		            $this->many->getQualifiedFieldName($this->manyKey),
-		            'LEFT OUTER');
+		$this->model->select($this->model->getQualifiedFieldName('*'))
+		            ->select($this->related->getQualifiedFieldName('*'))
+		            ->join($this->associativeTable,
+		                     $this->model->getQualifiedFieldName($this->localKey),
+		                     $this->associativeLocal,
+		                     'LEFT OUTER')
+		            ->join($this->related->getTableName(),
+		                   $this->associativeRelated,
+		                   $this->related->getQualifiedFieldName($this->relatedKey));
 
 		return $this;
 	}
 
 	/**
-	 * Loads the relationship content, and sets it on the related model
+	 * Joins the related table together with the intermediate table for the pending query
 	 *
-	 * @param  array  $rows the rows that we'll be seeding
-	 * @param  string $name the relationship name that we'll use to attach to the rows
-	 * @param  string $subs the nested relationships that should be passed on to the child
-	 * @return object
+	 * This is primarily used when we're getting the related results and we need to work
+	 * our way backwards through the intermediate table.
+	 *
+	 * @return $this
 	 * @since  1.3.2
 	 **/
-	public function seedRelationship($rows, $name, $subs=null)
+	public function mediate()
 	{
-		if (!$keys = $rows->fieldsByKey($this->one->getPrimaryKey()))
-		{
-			return $rows;
-		}
+		$this->related->select($this->related->getQualifiedFieldName('*'))
+		              ->select($this->associativeLocal)
+		              ->join($this->associativeTable,
+		                     $this->related->getQualifiedFieldName($this->relatedKey),
+		                     $this->associativeRelated);
 
-		$this->join();
-		$relations = $this->related->whereIn($this->through->getQualifiedFieldName($this->oneKey), array_unique($keys));
+		return $this;
+	}
 
-		if (isset($subs))
-		{
-			$relations = $relations->including($subs);
-		}
+	/**
+	 * Gets the relations that will be seeded on to the provided rows
+	 *
+	 * @param  array $keys the keys for which to fetch related items
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getRelations($keys)
+	{
+		$this->mediate();
+		return $this->related->whereIn($this->associativeTable . '.' . $this->associativeLocal, array_unique($keys));
+	}
 
-		$resultsByRelatedKey = array();
+	/**
+	 * Sorts the relations into arrays keyed by the related key
+	 *
+	 * @param  array $relations the relations to sort
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getResultsByRelatedKey($relations)
+	{
+		$resultsByRelatedKey = [];
 
 		foreach ($relations as $relation)
 		{
-			if (!isset($resultsByRelatedKey[$relation->{$this->oneKey}]))
+			if (!isset($resultsByRelatedKey[$relation->{$this->associativeLocal}]))
 			{
-				$resultsByRelatedKey[$relation->{$this->oneKey}] = new Rows;
+				$resultsByRelatedKey[$relation->{$this->associativeLocal}] = new Rows;
 			}
 
-			$resultsByRelatedKey[$relation->{$this->oneKey}]->push($relation);
+			$resultsByRelatedKey[$relation->{$this->associativeLocal}]->push($relation);
 		}
 
-		foreach ($rows as $row)
-		{
-			if (isset($resultsByRelatedKey[$row->{$this->one->getPrimaryKey()}]))
-			{
-				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->one->getPrimaryKey()}]);
-			}
-		}
-
-		return $rows;
+		return $resultsByRelatedKey;
 	}
 }

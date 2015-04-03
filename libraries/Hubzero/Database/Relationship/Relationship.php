@@ -33,6 +33,10 @@ namespace Hubzero\Database\Relationship;
 
 /**
  * Database base relationship
+ *
+ * This is essentially the base relationship for 1-1 relationships.
+ * Multiplicitous relationships will override all methods that are
+ * otherwise singular in this class.
  */
 class Relationship
 {
@@ -125,10 +129,7 @@ class Relationship
 	 **/
 	public function rows()
 	{
-		$rows    = $this->constrain()->rows();
-		$related = $this->related;
-
-		return ($rows->count()) ? $rows->first() : $related::blank();
+		return $this->constrain()->row();
 	}
 
 	/**
@@ -154,6 +155,9 @@ class Relationship
 		call_user_func_array($constraint, array($this->related));
 
 		// Return the ids resulting from the contraint query
+		// Note that rows is called on the base relational model, not on this relationship,
+		// thus it is not calling the constrain method...which is how we want it to work.
+		// Constraining here would not make sense as that would limit our result to 1 entry.
 		return $this->related->select($this->relatedKey)->rows()->fieldsByKey($this->relatedKey);
 	}
 
@@ -208,26 +212,6 @@ class Relationship
 		$model->set($this->relatedKey, $this->model->getPkValue());
 
 		return $model->save();
-	}
-
-	/**
-	 * Deletes all rows attached to the current model
-	 *
-	 * @return bool
-	 * @since  1.3.2
-	 **/
-	public function destroyAll()
-	{
-		// @FIXME: could make this a single query...
-		foreach ($this->related as $model)
-		{
-			if (!$model->destroy())
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	/**

@@ -732,6 +732,8 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function rows()
 	{
+		// @FIXME: if we have rows from a join, can we go ahead and seed those relationships here?
+
 		// Fetch the results
 		$rows = $this->rowsFromRaw($this->query->fetch());
 
@@ -740,6 +742,22 @@ class Relational implements \IteratorAggregate
 		$rows->orderBy    = $this->orderBy;
 		$rows->orderDir   = $this->orderDir;
 		return $rows;
+	}
+
+	/**
+	 * Gets the first/only row from the established query
+	 *
+	 * Not quite the same as rows, in that we're assuming an intentional
+	 * call to only get one row wouldn't want any pagination info included.
+	 *
+	 * @return \Hubzero\Database\Relational|static
+	 * @since  1.3.2
+	 **/
+	public function row()
+	{
+		$row = $this->query->fetch('row');
+
+		return self::newFromResults($row);
 	}
 
 	/**
@@ -1059,6 +1077,8 @@ class Relational implements \IteratorAggregate
 		$rel  = $this->$relationship();
 		$keys = $rel->getConstrainedKeys($constraint);
 
+		// @FIXME: should this attach the related data to the model the same way including does?
+
 		$this->where($rel->getLocalKey(), 'IN', $keys, 'and', $depth);
 	}
 
@@ -1349,6 +1369,9 @@ class Relational implements \IteratorAggregate
 	/**
 	 * Retrieves a one to many through model relationship
 	 *
+	 * Note that here, versus the manyToMany relationship, we assume the 'through' item
+	 * actually has a formal model for it, rather than just an intermediate table name.
+	 *
 	 * @param  string      $model      the name of the related model to associate to the current one
 	 * @param  string      $through    the name of the intermediate model
 	 * @param  string|null $relatedKey the related key used to associate the model to its parent
@@ -1366,7 +1389,7 @@ class Relational implements \IteratorAggregate
 		$localKey   = $localKey   ?: strtolower($this->getModelName()) . '_id';
 		$relatedKey = $relatedKey ?: strtolower($through->getModelName()) . '_id';
 
-		return new OneToManyThrough($this, $related, $through, $localKey, $relatedKey);
+		return new OneToManyThrough($this, $related, $through->getTableName(), $localKey, $relatedKey);
 	}
 
 	/**
@@ -1399,6 +1422,10 @@ class Relational implements \IteratorAggregate
 	 **/
 	public function including()
 	{
+		// @FIXME: should this defer until ready to use, like any other request
+		//         this could just set includings, and rows() would process them
+		//         then you could also attach constraints to the includings in the form of
+		//         relationship.something and those will be processed when seeding
 		$rows = $this->rows();
 		$subs = null;
 		foreach (func_get_args() as $relationship)
@@ -1406,6 +1433,7 @@ class Relational implements \IteratorAggregate
 			// Parse for nested relationships
 			if (strpos($relationship, '.'))
 			{
+				// If we have a nested relationship, pull out the first one
 				list($relationship, $subs) = explode('.', $relationship, 2);
 			}
 			$rows = $this->$relationship()->seedRelationship($rows, $relationship, $subs);

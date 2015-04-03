@@ -50,6 +50,54 @@ class OneToMany extends Relationship
 	}
 
 	/**
+	 * Saves new related models with the given data
+	 *
+	 * @param  array $data an array of datasets being saved to new models
+	 * @return bool
+	 * @since  1.3.2
+	 **/
+	public function save($data)
+	{
+		// Check and make sure this is an array of arrays
+		if (!is_array($data)) return false;
+
+		if (is_array($data[0]))
+		{
+			foreach ($data as $d)
+			{
+				if (!parent::save($d)) return false;
+			}
+		}
+		else
+		{
+			// If not an array of arrays, we'll assume it's just one item to save
+			if (!parent::save($data)) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Deletes all rows attached to the current model
+	 *
+	 * @return bool
+	 * @since  1.3.2
+	 **/
+	public function destroyAll()
+	{
+		// @FIXME: could make this a single query...i.e. delete where id in (...)
+		foreach ($this->related as $model)
+		{
+			if (!$model->destroy())
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get keys based on given constraint
 	 *
 	 * @param  closure $constraint the constraint function to apply
@@ -82,14 +130,49 @@ class OneToMany extends Relationship
 			return $rows;
 		}
 
-		$relations = $this->related->whereIn($this->relatedKey, array_unique($keys));
+		$relations = $this->getRelations($keys);
 
 		if (isset($subs))
 		{
 			$relations = $relations->including($subs);
 		}
 
-		$resultsByRelatedKey = array();
+		$resultsByRelatedKey = $this->getResultsByRelatedKey($relations);
+
+		// Add the relationships back to the original models
+		foreach ($rows as $row)
+		{
+			if (isset($resultsByRelatedKey[$row->{$this->localKey}]))
+			{
+				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->localKey}]);
+			}
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * Gets the relations that will be seeded on to the provided rows
+	 *
+	 * @param  array $keys the keys for which to fetch related items
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getRelations($keys)
+	{
+		return $this->related->whereIn($this->relatedKey, array_unique($keys));
+	}
+
+	/**
+	 * Sorts the relations into arrays keyed by the related key
+	 *
+	 * @param  array $relations the relations to sort
+	 * @return array
+	 * @since  1.3.2
+	 **/
+	protected function getResultsByRelatedKey($relations)
+	{
+		$resultsByRelatedKey = [];
 
 		foreach ($relations as $relation)
 		{
@@ -101,14 +184,6 @@ class OneToMany extends Relationship
 			$resultsByRelatedKey[$relation->{$this->relatedKey}]->push($relation);
 		}
 
-		foreach ($rows as $row)
-		{
-			if (isset($resultsByRelatedKey[$row->{$this->localKey}]))
-			{
-				$row->addRelationship($name, $resultsByRelatedKey[$row->{$this->localKey}]);
-			}
-		}
-
-		return $rows;
+		return $resultsByRelatedKey;
 	}
 }
