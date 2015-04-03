@@ -57,7 +57,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_GROUPS'),
+			'title'   => Lang::txt('PLG_TAGS_GROUPS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -79,10 +79,9 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 
 		$from = '';
 
-		$juser = JFactory::getUser();
-		if (!$juser->authorise('core.view', 'com_groups'))
+		if (!User::authorise('core.view', 'com_groups'))
 		{
-			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . $juser->get('id');
+			$from = " JOIN #__xgroups_members AS m ON m.gidNumber=a.gidNumber AND m.uidNumber=" . User::get('id');
 		}
 
 		// Build the query
@@ -121,7 +120,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
 				// Loop through the results and set each item's HREF
 				foreach ($response['results'] as $key => $row)
 				{
-					$response['results'][$key]->href = JRoute::_('index.php?option=com_groups&cn=' . $row->alias);
+					$response['results'][$key]->href = Route::url('index.php?option=com_groups&cn=' . $row->alias);
 				}
 			}
 		}

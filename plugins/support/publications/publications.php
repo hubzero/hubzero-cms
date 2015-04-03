@@ -77,7 +77,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 				{
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_publications&id=' . $parent . '&active=reviews') : '';
+				$rows[$key]->href = ($parent) ? Route::url('index.php?option=com_publications&id=' . $parent . '&active=reviews') : '';
 			}
 		}
 		return $rows;
@@ -120,7 +120,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 
 		if ($category == 'review')
 		{
-			$database->setQuery("SELECT publication_id FROM #__publication_ratings WHERE id=" . $refid);
+			$database->setQuery("SELECT publication_id FROM `#__publication_ratings` WHERE id=" . $refid);
 			return $database->loadResult();
 		}
 	}
@@ -160,11 +160,11 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'pubreview':
-				return JText::sprintf('PLG_SUPPORT_PUBLICATIONS_REVIEW_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_PUBLICATIONS_REVIEW_OF', $parentid);
 			break;
 
 			case 'pubreviewcomment':
-				return JText::sprintf('PLG_SUPPORT_PUBLICATIONS_COMMENT_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_PUBLICATIONS_COMMENT_OF', $parentid);
 			break;
 		}
 	}
@@ -187,7 +187,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$msg = JText::_('PLG_SUPPORT_PUBLICATIONS_CONTENT_FOUND_OBJECTIONABLE');
+		$msg = Lang::txt('PLG_SUPPORT_PUBLICATIONS_CONTENT_FOUND_OBJECTIONABLE');
 
 		$database = JFactory::getDBO();
 
@@ -233,7 +233,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_PUBLICATIONS_NOTIFICATION_OF_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_PUBLICATIONS_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 
 			case 'reviewcomment':
@@ -266,7 +266,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_PUBLICATIONS_NOTIFICATION_OF_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_PUBLICATIONS_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 		}
 

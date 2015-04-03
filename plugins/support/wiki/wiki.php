@@ -88,7 +88,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 				$entry = new \Components\Wiki\Models\Comment($rows[$key]->entry_id);
 
 				$rows[$key]->text = $rows[$key]->text; //$entry->content('raw');
-				$rows[$key]->href = JRoute::_($entry->link() . '#c' . $rows[$key]->id);
+				$rows[$key]->href = Route::url($entry->link() . '#c' . $rows[$key]->id);
 			}
 		}
 		return $rows;

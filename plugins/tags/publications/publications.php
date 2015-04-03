@@ -72,7 +72,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'     => $this->_name,
-			'title'    => JText::_('PLG_TAGS_PUBLICATIONS'),
+			'title'    => Lang::txt('PLG_TAGS_PUBLICATIONS'),
 			'total'    => 0,
 			'results'  => null,
 			'sql'      => '',
@@ -114,8 +114,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
-		$juser = JFactory::getUser();
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 
 		$filters['select'] = 'count';
 
@@ -187,7 +186,6 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 	private function _buildPluginQuery($filters=array())
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'category.php');
 		$rt = new \Components\Publications\Tables\Category($database);
@@ -291,16 +289,16 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		include_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'author.php');
 		require_once(PATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'html.php');
 
-		$row->href = JRoute::_('index.php?option=com_publications&id=' . $row->id);
+		$row->href = Route::url('index.php?option=com_publications&id=' . $row->id);
 
 		$database = JFactory::getDBO();
 
 		// Get version authors
-		$pa = new \Components\Publications\Tables\Author( $database );
+		$pa = new \Components\Publications\Tables\Author($database);
 		$authors = $pa->getAuthors($row->ftext);
 
 		// Get the component params
-		$config = JComponentHelper::getParams('com_publications');
+		$config = Component::params('com_publications');
 
 		$row->rating   = $row->rcount;
 		$row->category = $row->data1;
@@ -311,16 +309,15 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		switch ($config->get('show_date'))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_HZ1'));    break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1'));    break;
+			case 1: $thedate = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1'));    break;
 		}
 
 		if (strstr($row->href, 'index.php'))
 		{
-			$row->href = JRoute::_($row->href);
+			$row->href = Route::url($row->href);
 		}
-		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t".'<li class="';
@@ -331,7 +328,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
 		if ($authors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS')
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS')
 				. ' ' . stripslashes(\Components\Publications\Helpers\Html::showContributors( $authors, true, false ));
 		}
 		$html .= '</p>' . "\n";
@@ -340,7 +337,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
 
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href . '/?v=' . $row->alias, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href . '/?v=' . $row->alias, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output

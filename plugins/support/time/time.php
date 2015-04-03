@@ -69,7 +69,6 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();
 
 		$view = new \Hubzero\Plugin\View(
@@ -97,9 +96,9 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		if (empty($view->row->user_id))
 		{
 			// Set some defaults
-			$view->row->user_id = $juser->get('id');
-			$view->row->uname   = $juser->get('name');
-			$view->row->date    = date('Y-m-d');
+			$view->row->user_id = User::get('id');
+			$view->row->uname   = User::get('name');
+			$view->row->date    = gmdate('Y-m-d');
 		}
 
 		$view->htimelist = TimeHTML::buildTimeListHours($hrs);
@@ -140,13 +139,13 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		$db = JFactory::getDBO();
 
 		// Incoming posted data
-		$record = JRequest::getVar('records', array(), 'post');
+		$record = Request::getVar('records', array(), 'post');
 		$record = array_map('trim', $record);
 
 		// Combine the time entry
-		$record['user_id']     = JFactory::getUser()->get('id');
+		$record['user_id']     = User::get('id');
 		$record['time']        = $record['htime'] . '.' . $record['mtime'];
-		$record['date']        = JFactory::getDate($record['date'], JFactory::getConfig()->get('offset'))->toSql();
+		$record['date']        = JFactory::getDate($record['date'], Config::get('offset'))->toSql();
 		$record['description'] = $comment->get('comment');
 
 		// Don't attempt to save a record if no time or task was chosen

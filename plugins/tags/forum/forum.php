@@ -72,7 +72,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_FORUM'),
+			'title'   => Lang::txt('PLG_TAGS_FORUM'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -88,16 +88,16 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 		$ids = implode(',', $ids);
 
 		$addtl_where = array();
-		$juser = JFactory::getUser();
-		$gids = $this->_getGroupIds($juser->get('id'));
 
-		if (!$juser->authorise('core.view', 'com_forum'))
+		$gids = $this->_getGroupIds(User::get('id'));
+
+		if (!User::authorise('core.view', 'com_forum'))
 		{
 			$addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
 		}
 		else
 		{
-			$viewlevels	= '0,' . implode(',', $juser->getAuthorisedViewLevels());
+			$viewlevels	= '0,' . implode(',', User::getAuthorisedViewLevels());
 
 			if ($gids)
 			{

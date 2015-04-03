@@ -53,21 +53,20 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 	 */
 	public function transferItem($from_type, $from_id, $to_type, $rid=0, $deactivate=1)
 	{
-		$upconfig = JComponentHelper::getParams('com_members');
+		$upconfig = Component::params('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		if ($from_type == NULL or $from_id == NULL or $to_type == NULL)
 		{
-			$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_MISSING_INFO'));
+			$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_MISSING_INFO'));
 			return false;
 		}
 
 		if ($from_type == $to_type)
 		{
-			$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_CATEGORIES_MUST_BE_DIFFERENT'));
+			$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_CATEGORIES_MUST_BE_DIFFERENT'));
 			return false;
 		}
 
@@ -84,7 +83,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
-		$wconfig = JComponentHelper::getParams('com_wishlist');
+		$wconfig = Component::params('com_wishlist');
 		$admingroup = $wconfig->get('group') ? $wconfig->get('group') : 'hubadmin';
 
 		// Get needed scripts & initial data
@@ -112,7 +111,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
+					$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
@@ -139,14 +138,14 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
+					$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
 
 			// Transfer from a Wish
 			case 'wish':
-				$row = new Wish($database);
+				$row = new \Components\Wishlist\Tables\Wish($database);
 				$row->load($from_id);
 
 				if ($row->id)
@@ -182,7 +181,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				}
 				else
 				{
-					$this->setError(JText::_('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
+					$this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
 					return false;
 				}
 			break;
@@ -190,10 +189,10 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		}
 
 		// if no author can be found, use current administrator
-		$author = JUser::getInstance($author);
+		$author = User::getInstance($author);
 		if (!is_object($author))
 		{
-			$author = JUser::getInstance($juser->get('id'));
+			$author = User::getInstance(User::get('id'));
 		}
 
 		$today = JFactory::getDate()->toSql();
@@ -277,7 +276,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 						// Tag new ticket
 						if ($tags)
 						{
-							$newrow->tag($tags, $juser->get('id'), 0);
+							$newrow->tag($tags, User::get('id'), 0);
 						}
 					break;
 
@@ -285,7 +284,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 						// Tag new question
 						if ($tags)
 						{
-							$newrow->tag($tags, $juser->get('id'), 0);
+							$newrow->tag($tags, User::get('id'), 0);
 						}
 					break;
 				}

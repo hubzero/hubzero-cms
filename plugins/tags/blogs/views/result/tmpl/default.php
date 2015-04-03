@@ -33,17 +33,17 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <li class="blog-entry">
 	<p class="title">
-		<a href="<?php echo JRoute::_($this->entry->link()); ?>"><?php echo $this->escape(stripslashes($this->entry->get('title'))); ?></a>
+		<a href="<?php echo Route::url($this->entry->link()); ?>"><?php echo $this->escape(stripslashes($this->entry->get('title'))); ?></a>
 	</p>
 	<p class="details">
 		<?php echo $this->entry->published('date'); ?>
 		<span>|</span>
-		<?php echo JText::sprintf('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . JRoute::_('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator('name'))) . '</a></cite>'); ?>
+		<?php echo Lang::txt('PLG_TAGS_BLOGS_POSTED_BY', '<cite><a href="' . Route::url('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator('name'))) . '</a></cite>'); ?>
 	</p>
 	<?php if ($content = $this->entry->content('clean', 200)) { ?>
 		<p><?php echo $content; ?></p>
 	<?php } ?>
 	<p class="href">
-		<?php echo rtrim(JURI::base(), DS) . DS . ltrim(JRoute::_($this->entry->link()), DS); ?>
+		<?php echo rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->entry->link()), '/'); ?>
 	</p>
 </li>

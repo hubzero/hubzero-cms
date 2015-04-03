@@ -80,7 +80,7 @@ class Miner extends Object implements Provider
 
 		if (!($db instanceof \JDatabase))
 		{
-			throw new Exception(\JText::_('Database must be of type JDatabase'), 500);
+			throw new \Exception(\Lang::txt('Database must be of type JDatabase'), 500);
 		}
 
 		$this->database = $db;

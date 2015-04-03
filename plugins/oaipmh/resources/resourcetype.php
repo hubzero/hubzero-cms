@@ -56,7 +56,7 @@ class JFormFieldResourcetype extends JFormFieldList
 	{
 		$options = array();
 
-		$options[] =  JHtml::_('select.option', '0', JText::_('All'));
+		$options[] =  JHtml::_('select.option', '0', Lang::txt('All'));
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 

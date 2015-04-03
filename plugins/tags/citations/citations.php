@@ -57,7 +57,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_CITATIONS'),
+			'title'   => Lang::txt('PLG_TAGS_CITATIONS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -86,12 +86,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
 		$e_from  = " FROM #__citations AS e, #__tags_object AS t"; //", #__users AS u";
 		$e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND
-		/*$juser = JFactory::getUser();
-		if ($juser->get('guest')) {
-			$e_where .= " AND e.state=1";
-		} else {
-			$e_where .= " AND e.state>0";
-		}*/
+
 		$e_where .= " AND e.published=1 AND e.id!='' ";
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";

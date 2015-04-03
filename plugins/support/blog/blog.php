@@ -88,7 +88,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 				$entry = new \Components\Blog\Models\Entry($rows[$key]->entry_id);
 
 				$rows[$key]->text = strip_tags($rows[$key]->text);
-				$rows[$key]->href = JRoute::_($entry->link() . '#c' . $rows[$key]->id);
+				$rows[$key]->href = Route::url($entry->link() . '#c' . $rows[$key]->id);
 			}
 		}
 		return $rows;

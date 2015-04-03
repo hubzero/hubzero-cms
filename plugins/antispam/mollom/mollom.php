@@ -44,16 +44,14 @@ class plgAntispamMollom extends JPlugin
 	 */
 	public function onAntispamDetector()
 	{
-		include_once(__DIR__ . '/Service/Provider.php');
-
-		$user = JFactory::getUser();
+		include_once(__DIR__ . DS . 'Service' . DS . 'Provider.php');
 
 		$mollom = new \Plugins\Antispam\Mollom\Service\Provider();
 		$mollom->set('apiPublicKey', $this->params->get('apiPublicKey'))
 		       ->set('apiPrivateKey', $this->params->get('apiPrivateKey'))
-		       ->set('user_email', $user->get('email'))
-		       ->set('user_id', $user->get('id'))
-		       ->set('user_name', $user->get('name'));
+		       ->set('user_email', User::get('email'))
+		       ->set('user_id', User::get('id'))
+		       ->set('user_name', User::get('name'));
 
 		return $mollom;
 	}
@@ -71,14 +69,14 @@ class plgAntispamMollom extends JPlugin
 
 		if (!$this->params->get('learn', 0)) return;
 
-		$user = JFactory::getUser();
+		include_once(__DIR__ . DS . 'Service' . DS . 'Provider.php');
 
 		$mollom = new \Plugins\Antispam\Mollom\Service\Provider();
 		$mollom->set('apiPublicKey', $this->params->get('apiPublicKey'))
 		       ->set('apiPrivateKey', $this->params->get('apiPrivateKey'))
-		       ->set('user_email', $user->get('email'))
-		       ->set('user_id', $user->get('id'))
-		       ->set('user_name', $user->get('name'));
+		       ->set('user_email', User::get('email'))
+		       ->set('user_id', User::get('id'))
+		       ->set('user_name', User::get('name'));
 
 		$mollom->learn($content, $isSpam);
 	}

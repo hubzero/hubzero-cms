@@ -72,7 +72,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'     => $this->_name,
-			'title'    => JText::_('PLG_TAGS_RESOURCES'),
+			'title'    => Lang::txt('PLG_TAGS_RESOURCES'),
 			'total'    => 0,
 			'results'  => null,
 			'sql'      => '',
@@ -114,8 +114,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$filters['sortby'] = ($sort) ? $sort : 'ranking';
 		$filters['authorized'] = false;
 
-		$juser = JFactory::getUser();
-		$filters['usergroups'] = \Hubzero\User\Helper::getGroups($juser->get('id'), 'all');
+		$filters['usergroups'] = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
 
 		$filters['select'] = 'count';
 
@@ -190,7 +189,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 	private function _buildPluginQuery($filters=array())
 	{
 		$database = JFactory::getDBO();
-		$juser = JFactory::getUser();
 
 		$rt = new \Components\Resources\Tables\Type($database);
 
@@ -226,7 +224,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$query .= ", #__tags_object AS t ";
 		}
 		$query .= "WHERE r.standalone=1 ";
-		if ($juser->get('guest') || (isset($filters['authorized']) && !$filters['authorized']))
+		if (User::isGuest() || (isset($filters['authorized']) && !$filters['authorized']))
 		{
 			$query .= "AND r.published=1 AND r.access<4 ";
 		}
@@ -297,11 +295,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 
 		if ($row->alias)
 		{
-			$row->href = JRoute::_('index.php?option=com_resources&alias=' . $row->alias);
+			$row->href = Route::url('index.php?option=com_resources&alias=' . $row->alias);
 		}
 		else
 		{
-			$row->href = JRoute::_('index.php?option=com_resources&id=' . $row->id);
+			$row->href = Route::url('index.php?option=com_resources&id=' . $row->id);
 		}
 
 		$database = JFactory::getDBO();
@@ -311,7 +309,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$helper->getContributors();
 
 		// Get the component params and merge with resource params
-		$config = JComponentHelper::getParams('com_resources');
+		$config = Component::params('com_resources');
 
 		$rparams = new JRegistry($row->params);
 		//$params = $config;
@@ -326,16 +324,15 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		switch ($rparams->get('show_date', $config->get('show_date', 3)))
 		{
 			case 0: $thedate = ''; break;
-			case 1: $thedate = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));    break;
-			case 2: $thedate = JHTML::_('date', $row->modified, JText::_('DATE_FORMAT_HZ1'));   break;
-			case 3: $thedate = JHTML::_('date', $row->publish_up, JText::_('DATE_FORMAT_HZ1')); break;
+			case 1: $thedate = JHTML::_('date', $row->created, Lang::txt('DATE_FORMAT_HZ1'));    break;
+			case 2: $thedate = JHTML::_('date', $row->modified, Lang::txt('DATE_FORMAT_HZ1'));   break;
+			case 3: $thedate = JHTML::_('date', $row->publish_up, Lang::txt('DATE_FORMAT_HZ1')); break;
 		}
 
 		if (strstr($row->href, 'index.php'))
 		{
-			$row->href = JRoute::_($row->href);
+			$row->href = Route::url($row->href);
 		}
-		$juri = JURI::getInstance();
 
 		// Start building the HTML
 		$html  = "\t".'<li class="';
@@ -374,9 +371,9 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 				$r = '0' . $r;
 			}
 			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_TAGS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_TAGS_RESOURCES_RANKING') . '</dt>' . "\n";
+			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . Lang::txt('PLG_TAGS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . Lang::txt('PLG_TAGS_RESOURCES_RANKING') . '</dt>' . "\n";
 			$html .= "\t\t\t\t" . '<dd>' . "\n";
-			$html .= "\t\t\t\t\t" . '<p>' . JText::_('PLG_TAGS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
+			$html .= "\t\t\t\t\t" . '<p>' . Lang::txt('PLG_TAGS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
 			$html .= "\t\t\t\t\t" . '<div>' . "\n";
 			$html .= $statshtml;
 			$html .= "\t\t\t\t\t" . '</div>' . "\n";
@@ -403,13 +400,13 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t" . '<div class="metadata">' . "\n";
-			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . JText::sprintf('PLG_TAGS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
+			$html .= "\t\t\t" . '<p class="rating"><span class="avgrating' . $class . '"><span>' . Lang::txt('PLG_TAGS_RESOURCES_OUT_OF_5_STARS', $row->rating) . '</span>&nbsp;</span></p>' . "\n";
 			$html .= "\t\t" . '</div>'."\n";
 		}
 		$html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
 		if ($helper->contributors)
 		{
-			$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_RESOURCES_CONTRIBUTORS') . ' ' . stripslashes($helper->contributors);
+			$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_RESOURCES_CONTRIBUTORS') . ' ' . stripslashes($helper->contributors);
 		}
 		$html .= '</p>' . "\n";
 		if ($row->itext)
@@ -420,7 +417,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, '/') . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";
 
 		// Return output

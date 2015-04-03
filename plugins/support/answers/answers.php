@@ -115,10 +115,10 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 				switch ($category)
 				{
 					case 'answer':
-						$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_answers&task=question&id=' . $parent) : '';
+						$rows[$key]->href = ($parent) ? Route::url('index.php?option=com_answers&task=question&id=' . $parent) : '';
 					break;
 					case 'question':
-						$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $rows[$key]->id);
+						$rows[$key]->href = Route::url('index.php?option=com_answers&task=question&id=' . $rows[$key]->id);
 					break;
 				}
 			}
@@ -197,15 +197,15 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'answer':
-				return JText::sprintf('PLG_SUPPORT_ANSWERS_ANSWER_TO', $parentid);
+				return Lang::txt('PLG_SUPPORT_ANSWERS_ANSWER_TO', $parentid);
 			break;
 
 			case 'question':
-				return JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $parentid);
+				return Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $parentid);
 			break;
 
 			case 'answercomment':
-				return JText::sprintf('PLG_SUPPORT_ANSWERS_COMMENT_TO', $parentid);
+				return Lang::txt('PLG_SUPPORT_ANSWERS_COMMENT_TO', $parentid);
 			break;
 		}
 	}
@@ -308,7 +308,6 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 		}
 
 		$database = JFactory::getDBO();
-		$juser 	  = JFactory::getUser();
 
 		switch ($category)
 		{
@@ -320,7 +319,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_ANSWER_REMOVED', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_ANSWERS_NOTIFY_ANSWER_REMOVED', $parentid);
 			break;
 
 			case 'question':
@@ -369,7 +368,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					{
 						foreach ($responders as $r)
 						{
-							$zuser = JUser::getInstance($r);
+							$zuser = User::getInstance($r);
 							if (is_object($zuser))
 							{
 								if (\Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email')) && $email)
@@ -377,16 +376,16 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 									$jconfig = JFactory::getConfig();
 
 									$admin_email = $jconfig->getValue('config.mailfrom');
-									$sub  = JText::sprintf('PLG_SUPPORT_ANSWERS_SUBJECT', $jconfig->getValue('config.sitename'), $referenceid);
-									$from = JText::sprintf('PLG_SUPPORT_ANSWERS_TITLE', $jconfig->getValue('config.sitename'));
+									$sub  = Lang::txt('PLG_SUPPORT_ANSWERS_SUBJECT', $jconfig->getValue('config.sitename'), $referenceid);
+									$from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', $jconfig->getValue('config.sitename'));
 									$hub  = array(
 										'email' => $admin_email,
 										'name'  => $from
 									);
 
-									$mes  = JText::_('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
+									$mes  = Lang::txt('PLG_SUPPORT_ANSWERS_BODY') . "\r\n";
 									$mes .= '----------------------------' . "\r\n\r\n";
-									$mes .= JText::sprintf('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
+									$mes .= Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
 									\Components\Support\Helpers\Utilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
 								}
@@ -426,7 +425,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					}
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_QUESTION_REMOVED', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_ANSWERS_NOTIFY_QUESTION_REMOVED', $parentid);
 			break;
 
 			case 'answercomment':
@@ -439,7 +438,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_ANSWERS_NOTIFY_COMMENT_REMOVED', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_ANSWERS_NOTIFY_COMMENT_REMOVED', $parentid);
 			break;
 		}
 

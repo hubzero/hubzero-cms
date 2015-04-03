@@ -39,25 +39,25 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Retrieve records for items tagged with specific tags
 	 *
-	 * @param      array   $tags       Tags to match records against
-	 * @param      mixed   $limit      SQL record limit
-	 * @param      integer $limitstart SQL record limit start
-	 * @param      string  $sort       The field to sort records by
-	 * @param      mixed   $areas      An array or string of areas that should retrieve records
-	 * @return     mixed Returns integer when counting records, array when retrieving records
+	 * @param   array    $tags        Tags to match records against
+	 * @param   mixed    $limit       SQL record limit
+	 * @param   integer  $limitstart  SQL record limit start
+	 * @param   string   $sort        The field to sort records by
+	 * @param   mixed    $areas       An array or string of areas that should retrieve records
+	 * @return  mixed    Returns integer when counting records, array when retrieving records
 	 */
 	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_WIKI'),
+			'title'   => Lang::txt('PLG_TAGS_WIKI'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -108,7 +108,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 				// Loop through the results and set each item's HREF
 				foreach ($response['results'] as $key => $row)
 				{
-					$response['results'][$key]->href = JRoute::_($response['results'][$key]->href);
+					$response['results'][$key]->href = Route::url($response['results'][$key]->href);
 					$response['results'][$key]->text = $response['results'][$key]->itext;
 				}
 			}
@@ -127,13 +127,11 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build a database query
 	 *
-	 * @param      array $filters Options for building the query
-	 * @return     string SQL
+	 * @param   array   $filters  Options for building the query
+	 * @return  string  SQL
 	 */
 	private function _buildPluginQuery($filters=array())
 	{
-		$juser = JFactory::getUser();
-
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$searchquery = $filters['search'];
@@ -142,10 +140,10 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 
 		$groupAuth = array();
 		$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
 			$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			$gids = array();
 			foreach ($profile->getGroups() as $group)
 			{
@@ -236,13 +234,12 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if a user is logged in
 	 *
-	 * @return     boolean True if logged in
+	 * @return  boolean  True if logged in
 	 */
 	private function _authorize()
 	{
 		// Check if they are logged in
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}

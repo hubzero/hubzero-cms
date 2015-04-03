@@ -44,7 +44,7 @@ class plgAntispamAkismet extends JPlugin
 	 */
 	public function onAntispamDetector()
 	{
-		include_once(__DIR__ . '/Service/Provider.php');
+		include_once(__DIR__ . DS . 'Service' . DS . 'Provider.php');
 
 		$service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 
@@ -74,7 +74,7 @@ class plgAntispamAkismet extends JPlugin
 
 		if (!$this->params->get('learn', 0)) return;
 
-		$user = JFactory::getUser();
+		include_once(__DIR__ . DS . 'Service' . DS . 'Provider.php');
 
 		$service = new \Plugins\Antispam\SpamAssassin\Service\Provider();
 

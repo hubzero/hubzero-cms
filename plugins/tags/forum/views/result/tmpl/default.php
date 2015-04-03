@@ -33,15 +33,15 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <li class="forum-entry">
 	<p class="title">
-		<a href="<?php echo JRoute::_($this->post->link()); ?>"><?php echo $this->escape(stripslashes($this->post->get('title'))); ?></a>
+		<a href="<?php echo Route::url($this->post->link()); ?>"><?php echo $this->escape(stripslashes($this->post->get('title'))); ?></a>
 	</p>
 	<p class="details">
-		<?php echo JText::_('PLG_TAGS_FORUM') . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('section'))) . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('category'))); ?>
+		<?php echo Lang::txt('PLG_TAGS_FORUM') . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('section'))) . ' &rsaquo; ' . $this->escape(stripslashes($this->post->get('category'))); ?>
 	</p>
 	<?php if ($content = $this->post->content('clean', 200)) { ?>
 		<p><?php echo $content; ?></p>
 	<?php } ?>
 	<p class="href">
-		<?php echo rtrim(JURI::base(), DS) . DS . ltrim(JRoute::_($this->post->link()), DS); ?>
+		<?php echo rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->post->link()), '/'); ?>
 	</p>
 </li>

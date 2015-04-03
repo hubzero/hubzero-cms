@@ -57,7 +57,7 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_KB'),
+			'title'   => Lang::txt('PLG_TAGS_KB'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -88,7 +88,7 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 		 			LEFT JOIN #__faq_categories AS c ON c.id = e.section
 					LEFT JOIN #__faq_categories AS cc ON cc.id = e.category
 					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
-		$e_where  = " WHERE e.state=1 AND e.access IN (" . implode(',', \JFactory::getUser()->getAuthorisedViewLevels()) . ")";
+		$e_where  = " WHERE e.state=1 AND e.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
 		$e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
@@ -124,13 +124,7 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 	 */
 	public function out($row)
 	{
-		$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
-		if (strstr($row->href, 'index.php'))
-		{
-			$row->href = JRoute::_('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
-		}
-		$juri = JURI::getInstance();
-		//$row->href = ltrim($row->href, DS);
+		$row->href = Route::url('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
 
 		// Start building the HTML
 		$html  = "\t" . '<li class="kb-entry">' . "\n";
@@ -139,7 +133,7 @@ class plgTagsKb extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

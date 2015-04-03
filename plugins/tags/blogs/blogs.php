@@ -57,7 +57,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_BLOGS'),
+			'title'   => Lang::txt('PLG_TAGS_BLOGS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -87,8 +87,8 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 					e.scope_id AS data2, NULL AS data3 ";
 		$e_from  = " FROM #__blog_entries AS e, #__tags_object AS t, #__users AS u";
 		$e_where = " WHERE e.created_by=u.id AND t.objectid=e.id AND t.tbl='blog' AND t.tagid IN ($ids)";
-		$juser = JFactory::getUser();
-		if ($juser->get('guest'))
+
+		if (User::isGuest())
 		{
 			$e_where .= " AND e.state=1";
 		}

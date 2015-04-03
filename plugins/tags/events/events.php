@@ -57,7 +57,7 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_EVENTS'),
+			'title'   => Lang::txt('PLG_TAGS_EVENTS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -135,9 +135,7 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$row->href = JRoute::_($row->href);
-
-		$juri = JURI::getInstance();
+		$row->href = Route::url($row->href);
 
 		$month = JHTML::_('date', $row->publish_up, 'M');
 		$day   = JHTML::_('date', $row->publish_up, 'd');
@@ -152,7 +150,7 @@ class plgTagsEvents extends \Hubzero\Plugin\Plugin
 			$row->ftext = str_replace('[[BR]]', '', $row->ftext);
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		// Return output

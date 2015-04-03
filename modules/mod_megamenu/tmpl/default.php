@@ -8,7 +8,6 @@ if ( ! defined('modMegaMenuXMLCallbackDefined') )
 {
 function modMegaMenuXMLCallback(&$node, $args)
 {
-	$user	=  JFactory::getUser();
 	$menu	= JFactory::getApplication()->getMenu();
 	$active	= $menu->getActive();
 	$path	= isset($active) ? array_reverse($active->tree) : null;
@@ -27,7 +26,7 @@ function modMegaMenuXMLCallback(&$node, $args)
 	if ($node->name() == 'ul') {
 		foreach ($node->children() as $child)
 		{
-			if ($child->attributes('access') > $user->get('aid', 0)) {
+			if ($child->attributes('access') > User::get('aid', 0)) {
 				$node->removeChild($child);
 			}
 		}

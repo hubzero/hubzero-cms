@@ -92,7 +92,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 				{
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews') : '';
+				$rows[$key]->href = ($parent) ? Route::url('index.php?option=com_resources&id=' . $parent . '&active=reviews') : '';
 			}
 		}
 		return $rows;
@@ -175,11 +175,11 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'review':
-				return JText::sprintf('PLG_SUPPORT_RESOURCES_REVIEW_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_RESOURCES_REVIEW_OF', $parentid);
 			break;
 
 			case 'reviewcomment':
-				return JText::sprintf('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
 			break;
 		}
 	}
@@ -279,7 +279,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 
 			case 'reviewcomment':
@@ -292,7 +292,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_RESOURCES_NOTIFICATION_OF_REMOVAL', $parentid);
 			break;
 		}
 

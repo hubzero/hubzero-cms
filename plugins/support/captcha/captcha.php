@@ -198,11 +198,9 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$juser = JFactory::getUser();
-
-		if (!$juser->get('guest'))
+		if (!User::isGuest())
 		{
-			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
 			{
 				$this->_verified = true;
@@ -268,8 +266,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 			return true;
 		}
 
-		$captcha = JRequest::getVar('captcha', array());
-		$task = JRequest::getVar('task', '');
+		$captcha = Request::getVar('captcha', array());
+		$task = Request::getVar('task', '');
 
 		if (!isset($captcha['instance']) || !isset($captcha['answer']))
 		{
@@ -314,7 +312,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$question = $this->_questions[$use];
 
 		$html  = '<label for="captcha-answer">' . "\n";
-		$html .= JText::_('PLG_SUPPORT_TEXTCAPTCHA_PLEASE_ANSWER') . ' <span class="required">' . JText::_('PLG_SUPPORT_TEXTCAPTCHA_REQUIRED') . '</span><br />' . "\n";
+		$html .= Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_PLEASE_ANSWER') . ' <span class="required">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_REQUIRED') . '</span><br />' . "\n";
 		switch ($question['type'])
 		{
 			case 'math':
@@ -324,30 +322,30 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 				$problem['operand2'] = rand(0, 10);
 				$key = $problem['operand1'] + $problem['operand2'];
 
-				$html .= "\t" . JText::sprintf($question['question'], $problem['operand1'], $problem['operand2']);
+				$html .= "\t" . Lang::txt($question['question'], $problem['operand1'], $problem['operand2']);
 				$html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" />' . "\n";
 			break;
 
 			case 'list':
-				$key = strtolower(JText::_($question['answer']));
+				$key = strtolower(Lang::txt($question['answer']));
 				$numseq = count($this->_sequence);
 				$set = rand(0, $numseq-1);
 
-				$html .= "\t" . JText::_($question['question']) . "\n";
+				$html .= "\t" . Lang::txt($question['question']) . "\n";
 				$html .= "\t" . '<select name="captcha[answer]" id="captcha-answer">' . "\n";
-				$html .= "\t\t" . '<option value="">' . JText::_('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
+				$html .= "\t\t" . '<option value="">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
 				foreach ($this->_sequence[$set] as $row)
 				{
-					$html .= "\t\t" . '<option value="' . JText::_($question['options'][$row]) . '">' . JText::_($question['options'][$row]) . '</option>' . "\n";
+					$html .= "\t\t" . '<option value="' . Lang::txt($question['options'][$row]) . '">' . Lang::txt($question['options'][$row]) . '</option>' . "\n";
 				}
 				$html .= "\t" . '</select>' . "\n";
 			break;
 
 			case 'text':
 			default:
-				$key = strtolower(JText::_($question['answer']));
+				$key = strtolower(Lang::txt($question['answer']));
 
-				$html .= "\t" . JText::_($question['question']) . "\n";
+				$html .= "\t" . Lang::txt($question['question']) . "\n";
 				$html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" />' . "\n";
 			break;
 		}
@@ -357,7 +355,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		//$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
+		$currentSession->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
 		if ($this->_verified)
 		{
@@ -399,7 +397,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	private function _generateImageCaptcha()
 	{
-		$showCaptcha = JRequest::getVar('showCaptcha', '');
+		$showCaptcha = Request::getVar('showCaptcha', '');
 		if ($showCaptcha)
 		{
 			return $this->_displayImage();
@@ -472,9 +470,9 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 				'name'    => 'image'
 			)
 		);
-		$view->task       = JRequest::getVar('task', '');
-		$view->controller = JRequest::getVar('controller', '');
-		$view->option     = JRequest::getVar('option', '');
+		$view->task       = Request::getVar('task', '');
+		$view->controller = Request::getVar('controller', '');
+		$view->option     = Request::getVar('option', '');
 		$view->total      = $GLOBALS['totalCaptchas'];
 
 		return $view->loadTemplate();
@@ -742,7 +740,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		//Set the session to store the security code
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
+		$currentSession->set('securiy_code' . Request::getVar('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
 		$width = 120;
 		$height = 40;
 	}
@@ -763,7 +761,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 		// Set the session to store the security code
 		$currentSession = JFactory::getSession();
-		$currentSession->set('securiy_code' . (JRequest::getVar('instanceNo') + 0), $security_code);
+		$currentSession->set('securiy_code' . (Request::getVar('instanceNo') + 0), $security_code);
 
 		$width  = 120;
 		$height = 40;

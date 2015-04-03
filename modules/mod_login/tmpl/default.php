@@ -37,7 +37,7 @@ $crypt = new JSimpleCrypt();
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false))
 {
 	$primary  = $cookie->authenticator;
-	$user     = JFactory::getUser($cookie->user_id);
+	$user     = User::getInstance($cookie->user_id);
 	$user_img = $cookie->user_img;
 	Request::setVar('primary', $primary);
 }
@@ -72,7 +72,7 @@ endforeach;
 	<div class="auth">
 		<div class="person">
 			<?php if (isset($user_img)) : ?>
-				<?php $img_properties = getimagesize(JPATH_ROOT . DS . $user_img); ?>
+				<?php $img_properties = getimagesize(PATH_APP . DS . $user_img); ?>
 				<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
 				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('User profile picture'); ?>" />
 			<?php endif; ?>
@@ -147,13 +147,13 @@ endforeach;
 <?php endif; ?>
 <?php if (isset($user) && is_object($user)) : ?>
 	<div class="others">
-		<a href="<?php echo Route::url(JURI::current() . '?reset=1' . $returnQueryString); ?>">
+		<a href="<?php echo Route::url(Request::current() . '?reset=1' . $returnQueryString); ?>">
 			<?php echo Lang::txt('Sign in with a different account'); ?>
 		</a>
 	</div>
 <?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 	<p class="create">
-		<a href="<?php echo JURI::base(true); ?>/register" class="register">
+		<a href="<?php echo Request::base(true); ?>/register" class="register">
 			<?php echo Lang::txt('Create an account'); ?>
 		</a>
 	</p>

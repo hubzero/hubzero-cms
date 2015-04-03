@@ -80,7 +80,7 @@ class Miner extends Object implements Provider
 
 		if (!($db instanceof \JDatabase))
 		{
-			throw new Exception(\JText::_('Database must be of type JDatabase'), 500);
+			throw new \Exception(\Lang::txt('Database must be of type JDatabase'), 500);
 		}
 
 		$this->database = $db;
@@ -409,7 +409,7 @@ class Miner extends Object implements Provider
 		}
 		else
 		{
-			$identifier = rtrim(\JURI::base(), '/') . '/' . ltrim(\JRoute::_('index.php?option=com_resources&id=' . $id . ($rev ? '&rev=' . $rev : '')), '/');
+			$identifier = rtrim(\Request::base(), '/') . '/' . ltrim(\Route::url('index.php?option=com_resources&id=' . $id . ($rev ? '&rev=' . $rev : '')), '/');
 		}
 
 		return $identifier;

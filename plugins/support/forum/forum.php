@@ -99,7 +99,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 					break;
 				}
 
-				$rows[$key]->href = JRoute::_($url);
+				$rows[$key]->href = Route::url($url);
 			}
 		}
 		return $rows;

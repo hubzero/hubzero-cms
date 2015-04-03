@@ -92,10 +92,10 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 				{
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
-				$rows[$key]->href = ($parent) ? JRoute::_('index.php?option=com_wishlist&task=wishlist&id=' . $parent) : '';
+				$rows[$key]->href = ($parent) ? Route::url('index.php?option=com_wishlist&task=wishlist&id=' . $parent) : '';
 				if ($rows[$key]->parent_category == 'wishcomment')
 				{
-					$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
+					$rows[$key]->href = Route::url('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
 				}
 			}
 		}
@@ -179,11 +179,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 		switch ($category)
 		{
 			case 'wish':
-				return JText::sprintf('PLG_SUPPORT_WISHLIST_WISH_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_WISHLIST_WISH_OF', $parentid);
 			break;
 
 			case 'wishcomment':
-				return JText::sprintf('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
+				return Lang::txt('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
 			break;
 		}
 	}
@@ -248,7 +248,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 			case 'wish':
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
 
-				$wish = new Wish($database);
+				$wish = new \Components\Wishlist\Tables\Wish($database);
 				$wish->load($refid);
 				$wish->status = 0;
 				$wish->store();
@@ -304,7 +304,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 				$objR = new \Components\Wishlist\Tables\Rank($database);
 				$objR->remove_vote($referenceid);
 
-				$message .= JText::sprintf('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_WISH_REMOVAL', $parentid);
 			break;
 
 			case 'wishcomment':
@@ -317,7 +317,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$message .= JText::sprintf('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_COMMENT_REMOVAL', $parentid);
+				$message .= Lang::txt('PLG_SUPPORT_WISHLIST_NOTIFICATION_OF_COMMENT_REMOVAL', $parentid);
 			break;
 		}
 

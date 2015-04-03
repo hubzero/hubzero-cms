@@ -57,7 +57,7 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_ANSWERS'),
+			'title'   => Lang::txt('PLG_TAGS_ANSWERS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -122,30 +122,25 @@ class plgTagsAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public static function out($row)
 	{
-		$row->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id);
-		if (strstr($row->href, 'index.php'))
-		{
-			$row->href = JRoute::_($row->href);
-		}
-		$juri = JURI::getInstance();
+		$row->href = Route::url('index.php?option=com_answers&task=question&id=' . $row->id);
 
 		$html  = "\t" . '<li class="answer">' . "\n";
 		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . strip_tags(stripslashes($row->title)) . '</a></p>' . "\n";
 		$html .= "\t\t" . '<p class="details">';
 		if ($row->state == 1)
 		{
-			$html .= JText::_('PLG_TAGS_ANSWERS_OPEN');
+			$html .= Lang::txt('PLG_TAGS_ANSWERS_OPEN');
 		}
 		else
 		{
-			$html .= JText::_('PLG_TAGS_ANSWERS_CLOSED');
+			$html .= Lang::txt('PLG_TAGS_ANSWERS_CLOSED');
 		}
-		$html .= ' <span>|</span> ' . JText::_('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
+		$html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
 		if ($row->ftext)
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 
 		return $html;

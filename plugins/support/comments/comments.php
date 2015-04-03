@@ -71,38 +71,38 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 					switch ($row->parent_category)
 					{
 						case 'collection':
-							$rows[$key]->href = JRoute::_('index.php?option=com_collections&controller=posts&post=' . $parent);
+							$rows[$key]->href = Route::url('index.php?option=com_collections&controller=posts&post=' . $parent);
 						break;
 
 						case 'coursescomment':
 							require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
 							$course = CoursesModelCourse::getInstance($parent);
-							$rows[$key]->href = JRoute::_($course->link() . '&active=reviews');
+							$rows[$key]->href = Route::url($course->link() . '&active=reviews');
 						break;
 
 						case 'citations':
 						case 'citationscomment':
-							$rows[$key]->href = JRoute::_('index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews');
+							$rows[$key]->href = Route::url('index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews');
 						break;
 
 						case 'review':
 						case 'reviewcomment':
-							$rows[$key]->href = JRoute::_('index.php?option=com_resources&id=' . $parent . '&active=reviews');
+							$rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $parent . '&active=reviews');
 						break;
 
 						case 'pubreview':
 						case 'pubreviewcomment':
-							$rows[$key]->href = JRoute::_('index.php?option=com_publications&id=' . $parent . '&active=reviews');
+							$rows[$key]->href = Route::url('index.php?option=com_publications&id=' . $parent . '&active=reviews');
 						break;
 
 						case 'answer':
 						case 'answercomment':
-							$rows[$key]->href = JRoute::_('index.php?option=com_answers&task=question&id=' . $parent);
+							$rows[$key]->href = Route::url('index.php?option=com_answers&task=question&id=' . $parent);
 						break;
 
 						case 'wish':
 						case 'wishcomment':
-							$rows[$key]->href = JRoute::_('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
+							$rows[$key]->href = Route::url('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
 						break;
 					}
 				}
@@ -183,7 +183,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 
 		$this->loadLanguage();
 
-		$msg = JText::_('PLG_SUPPORT_COMMENTS_CONTENT_FOUND_OBJECTIONABLE');
+		$msg = Lang::txt('PLG_SUPPORT_COMMENTS_CONTENT_FOUND_OBJECTIONABLE');
 
 		$comment = new \Hubzero\Item\Comment($database);
 		$comment->load($refid);

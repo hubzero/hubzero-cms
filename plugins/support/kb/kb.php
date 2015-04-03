@@ -73,7 +73,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 				{
 					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
 				}
-				$rows[$key]->href = JRoute::_('index.php?option=com_kb&section=' . $row->section . '&category=' . $row->category . '&alias=' . $row->article);
+				$rows[$key]->href = Route::url('index.php?option=com_kb&section=' . $row->section . '&category=' . $row->category . '&alias=' . $row->article);
 			}
 		}
 		return $rows;

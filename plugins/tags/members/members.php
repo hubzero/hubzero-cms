@@ -57,7 +57,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	{
 		$response = array(
 			'name'    => $this->_name,
-			'title'   => JText::_('PLG_TAGS_MEMBERS'),
+			'title'   => Lang::txt('PLG_TAGS_MEMBERS'),
 			'total'   => 0,
 			'results' => null,
 			'sql'     => ''
@@ -142,12 +142,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 	{
 		$member = \Hubzero\User\Profile::getInstance($row->id);
 
-		$row->href = JRoute::_('index.php?option=com_members&id=' . $row->id);
-		if (strstr($row->href, 'index.php'))
-		{
-			$row->href = JRoute::_($row->href);
-		}
-		$juri = JURI::getInstance();
+		$row->href = Route::url('index.php?option=com_members&id=' . $row->id);
 
 		$html  = "\t" . '<li class="member">' . "\n";
 		$html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->getPicture() . '" alt="" /></p>' . "\n";
@@ -156,7 +151,7 @@ class plgTagsMembers extends \Hubzero\Plugin\Plugin
 		{
 			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
 		}
-		$html .= "\t\t" . '<p class="href">' . $juri->base() . ltrim($row->href, DS) . '</p>' . "\n";
+		$html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>' . "\n";
 		return $html;
 	}

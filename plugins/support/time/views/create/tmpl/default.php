@@ -36,20 +36,20 @@ $this->css()
 ?>
 
 <fieldset>
-	<legend><?php echo JText::_('PLG_SUPPORT_TIME'); ?></legend>
+	<legend><?php echo Lang::txt('PLG_SUPPORT_TIME'); ?></legend>
 
 	<div id="plg_time_records">
 		<div class="grid">
 			<div class="col span6">
 				<div id="time-group">
-					<span><?php echo JText::_('PLG_SUPPORT_TIME_TIME'); ?>:</span>
+					<span><?php echo Lang::txt('PLG_SUPPORT_TIME_TIME'); ?>:</span>
 					<?php echo $this->htimelist; ?>
 					<?php echo $this->mtimelist; ?>
 				</div>
 			</div>
 			<div class="col span6 omega">
 			<label for="date">
-				<?php echo JText::_('PLG_SUPPORT_TIME_DATE'); ?>:
+				<?php echo Lang::txt('PLG_SUPPORT_TIME_DATE'); ?>:
 				<input type="text" name="records[date]" id="datepicker" class="hadDatepicker" value="<?php echo $this->escape(stripslashes($this->row->date)); ?>" size="10" />
 			</label>
 		</div>
@@ -57,11 +57,11 @@ $this->css()
 		<div class="clear"></div>
 
 		<div class="grouping">
-			<label for="hub"><?php echo JText::_('PLG_SUPPORT_TIME_HUB'); ?>:
+			<label for="hub"><?php echo Lang::txt('PLG_SUPPORT_TIME_HUB'); ?>:
 			<?php echo $this->hubslist; ?>
 			</label>
 
-			<label for="task"><?php echo JText::_('PLG_SUPPORT_TIME_TASK'); ?>:
+			<label for="task"><?php echo Lang::txt('PLG_SUPPORT_TIME_TASK'); ?>:
 			<?php echo $this->tasklist; ?>
 			</label>
 		</div>
