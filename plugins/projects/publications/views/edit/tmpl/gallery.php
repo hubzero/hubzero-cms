@@ -101,7 +101,7 @@ else
 			<?php } ?>
 					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_GALLERY'); ?>: </h5>
 
-						<ul id="c-filelist" class="c-list">
+						<ul id="c-filelist" class="c-list <?php if (!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
 							<li id="nosel" <?php if (count($this->shots) > 0) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_SHOTS_SELECTED_CLICK'); ?></li>
 							<?php
 							// If we have files selected
@@ -133,7 +133,9 @@ else
 								</li>
 							<?php $i++; } }  ?>
 						</ul>
+						<?php if ($canedit) { ?>
 						<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_HINT_DRAG'); ?></p>
+						<?php } ?>
 		 		</div>
 			</form>
 		</div>

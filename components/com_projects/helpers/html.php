@@ -1540,13 +1540,14 @@ foreach ($view->tabs as $tab)
 		$original = $name;
 
 		$chars = $chars < 10 ? 10 : $chars;
+		$cutter = $chars > 40 ? 25 : 10;
 
 		if (strlen($name) > $chars)
 		{
-			$cutFront = $chars - 10;
+			$cutFront = $chars - $cutter;
 			$name = substr($name, 0, $cutFront);
 			$name = $name . '&#8230;';
-			$name = $name . substr($original, -10, 10);
+			$name = $name . substr($original, -$cutter, $cutter);
 		}
 		if ($name == '')
 		{

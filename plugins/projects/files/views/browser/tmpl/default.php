@@ -77,7 +77,7 @@ $skipped = 0;
 				$shown[] = $file['fpath'];
 
 				 ?>
-			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($file['fpath'], 50); ?></li>
+			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>" title="<?php echo $file['fpath']; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($file['fpath'], 50); ?></li>
 		<?php
 			$i++;
 		?>
@@ -120,7 +120,7 @@ $skipped = 0;
 	// Add missing items
 	if (count($missing) > 0) {
 		foreach ($missing as $miss) { ?>
-			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
+			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>" title="<?php echo $miss['fpath']; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
 	}
 	 ?>

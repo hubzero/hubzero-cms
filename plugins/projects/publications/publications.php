@@ -1741,6 +1741,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get content plugin JS/CSS
 		\Hubzero\Document\Assets::addPluginScript('projects', $base);
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', $base);
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
 
 		// Contribute process outside of projects
 		if (!is_object($this->_project) or !$this->_project->id)

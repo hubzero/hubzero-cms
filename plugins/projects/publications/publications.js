@@ -810,7 +810,6 @@ HUB.ProjectPublications = {
 			if (response)
 			{
 				$(output).html(response);
-
 			}
 			else
 			{
@@ -1403,7 +1402,7 @@ HUB.ProjectPublications = {
 		{
 			return false;
 		}
-		if ($(list).length == 0 || $(list).hasClass('noedit'))
+		if ($(list).length == 0 || $(list).hasClass('noedit') || $(list).hasClass('nodrag'))
 		{
 			return false;
 		}

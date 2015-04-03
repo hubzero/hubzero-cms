@@ -357,12 +357,10 @@ class typeFiles extends JObject
 		$old  			= $this->__get('old');
 		$secret  		= $this->__get('secret');
 
-		if (empty($selections) || !isset($selections['files']))
-		{
-			return false;
-		}
+		$selected = !empty($selections) && isset($selections['files']) && count($selections['files']) > 0
+				? $selections['files'] : array();
 
-		if (!in_array(trim($old->path), $selections['files']))
+		if (!in_array(trim($old->path), $selected))
 		{
 			$objPA = new PublicationAttachment( $this->_database );
 			$objPA->deleteAttachment($vid, $old->path, $old->type);
@@ -593,6 +591,7 @@ class typeFiles extends JObject
 		$revision 	= NULL;
 
 		// Get file revision
+/*
 		if ($this->_project && $this->_project->provisioned != 1)
 		{
 			// Get projects helper
@@ -605,9 +604,10 @@ class typeFiles extends JObject
 			$gitpath  = $config->get('gitpath', '/opt/local/bin/git');
 			$revision = $projectsHelper->showGitInfo($gitpath, $path, $att->vcs_hash, $file);
 		}
+*/
 
-		$html = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . ProjectsHtml::shortenFileName($file, 50);
-		if($canedit && $pid) {
+		$html = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . $file;
+		if ($canedit && $pid) {
 		$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
 		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
 		}
