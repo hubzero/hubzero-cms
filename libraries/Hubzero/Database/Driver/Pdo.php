@@ -194,6 +194,7 @@ class Pdo extends Driver
 		// Execute the query
 		if (!$this->statement->execute())
 		{
+			// @FIXME: this should honor error reporting settings
 			throw new QueryFailedException('Query failed.', 500);
 		}
 
