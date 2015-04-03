@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2015 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,41 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2015 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Create aliaes for runtime
-return array(
-	'Module'      => 'Hubzero\Facades\Module',
-	'Breadcrumbs' => 'Hubzero\Facades\Breadcrumbs',
-);
+namespace Hubzero\Breadcrumbs;
+
+/**
+ * Breadcrumbs item
+ */
+class Crumb
+{
+	/**
+	 * Item url
+	 *
+	 * @var  string
+	 */
+	public $url;
+
+	/**
+	 * Item text
+	 *
+	 * @var  string
+	 */
+	public $text;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   string  $text  The name of the item.
+	 * @param   string  $url   The link to the item.
+	 * @return  void
+	 */
+	public function __construct($text = '', $url = '')
+	{
+		$this->text = $text;
+		$this->url  = $url;
+	}
+}
