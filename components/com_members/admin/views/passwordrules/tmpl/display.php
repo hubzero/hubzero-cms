@@ -132,8 +132,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</a>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pageNav->orderUpIcon($i, $row->ordering, 'orderup', 'JLIB_HTML_MOVE_UP', $row->ordering); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering); ?></span>
+					<span><?php echo $pageNav->orderUpIcon($i, $row->ordering, 'orderup', 'JLIB_HTML_MOVE_UP', $row->ordering); ?></span>
+					<span><?php echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering); ?></span>
 					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
