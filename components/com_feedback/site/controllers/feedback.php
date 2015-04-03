@@ -267,7 +267,7 @@ class Feedback extends SiteController
 			$this->storyTask($row);
 			return;
 		}
-		
+
 		// Check for an author
 		if (!$row->fullname)
 		{
@@ -275,7 +275,7 @@ class Feedback extends SiteController
 			$this->storyTask($row);
 			return;
 		}
-		
+
 		// Check for an organization
 		if (!$row->org)
 		{

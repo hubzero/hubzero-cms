@@ -403,7 +403,7 @@ class Create extends SiteController
 		{
 			if ($check == TRUE)
 			{
-				foreach($this->steps as $step => $name)
+				foreach ($this->steps as $step => $name)
 				{
 					if ($name == 'Attach')
 					{

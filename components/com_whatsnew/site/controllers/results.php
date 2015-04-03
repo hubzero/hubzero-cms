@@ -132,7 +132,6 @@ class Results extends SiteController
 		}
 
 		// Load plugins
-		
 		$dispatcher = \JDispatcher::getInstance();
 
 		// Process the keyword for exact phrase matches, etc.
