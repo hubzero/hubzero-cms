@@ -35,7 +35,9 @@ $this->css()
 				<select name="fields[section_id]" id="field-section_id">
 					<option value="0"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
 				<?php foreach ($this->model->sections() as $section) { ?>
+					<?php if ($section->get('state') == 1): ?>
 					<option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php endif; ?>
 				<?php } ?>
 				</select>
 			</label>
