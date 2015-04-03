@@ -322,7 +322,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	public function getNumRows($cursor = null)
 	{
-		return $cur ? $cur->rowCount() : $this->cursor->rowCount();
+		return $cursor ? $cursor->rowCount() : $this->cursor->rowCount();
 	}
 
 	/**
