@@ -208,26 +208,24 @@ class User extends Base
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (!$title)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Members'),
 				'index.php?option=' . $this->get('option')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->_item->title),
 				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Wishlist'),
 				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				$url
 			);

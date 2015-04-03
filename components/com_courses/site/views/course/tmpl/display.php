@@ -207,8 +207,7 @@ $this->css('course.css')
 
 					if ($plugin->get('name') == $this->active)
 					{
-						$pathway = \JFactory::getApplication()->getPathway();
-						$pathway->addItem($plugin->get('title'), $url);
+						Pathway::append($plugin->get('title'), $url);
 
 						if ($this->active != 'overview')
 						{

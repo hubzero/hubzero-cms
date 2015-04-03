@@ -177,15 +177,12 @@ class Jobs extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-
 		$comtitle  = Lang::txt(strtoupper($this->_option));
 		$comtitle .= $this->_industry ? ' ' . Lang::txt('COM_JOBS_IN') . ' ' . $this->_industry : '';
 
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$comtitle,
 				'index.php?option=' . $this->_option
 			);
@@ -195,7 +192,7 @@ class Jobs extends SiteController
 			switch ($this->_task)
 			{
 				case 'browse':
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_BROWSE'),
 						'index.php?option=' . $this->_option . '&task=browse'
 					);
@@ -203,7 +200,7 @@ class Jobs extends SiteController
 				case 'all':
 					if (!$this->_allowsubscriptions)
 					{
-						$pathway->addItem(
+						Pathway::append(
 							Lang::txt(strtoupper($this->_option) . '_BROWSE'),
 							'index.php?option=' . $this->_option . '&task=browse'
 						);
@@ -221,43 +218,43 @@ class Jobs extends SiteController
 					// nothing
 				break;
 				case 'apply':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_jobtitle,
 						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
 					);
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_APPLY'),
 						'index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode
 					);
 				break;
 				case 'editapp':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_jobtitle,
 						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
 					);
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_EDITAPP'),
 						'index.php?option=' . $this->_option . '&task=apply&code=' . $this->_jobcode
 					);
 				break;
 				case 'job':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_jobtitle,
 						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
 					);
 				break;
 				case 'editjob':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_jobtitle,
 						'index.php?option=' . $this->_option . '&task=job&code=' . $this->_jobcode
 					);
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_EDITJOB'),
 						'index.php?option=' . $this->_option . '&task=editjob&code=' . $this->_jobcode
 					);
 				break;
 				default:
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);
@@ -1128,10 +1125,9 @@ class Jobs extends SiteController
 		if (!$job->loadJob($code))
 		{
 			// Set the pathway
-			$pathway = \JFactory::getApplication()->getPathway();
-			if (count($pathway->getPathWay()) <= 0)
+			if (Pathway::count() <= 0)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_name)),
 					'index.php?option=' . $this->_option
 				);
@@ -1311,10 +1307,10 @@ class Jobs extends SiteController
 
 			// Set the pathway
 			$app = \JFactory::getApplication();
-			$pathway = $app->getPathway();
-			if (count($pathway->getPathWay()) <= 0)
+
+			if (Pathway::count() <= 0)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_name)),
 					'index.php?option=' . $this->_option
 				);

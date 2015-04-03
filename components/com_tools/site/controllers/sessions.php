@@ -61,11 +61,9 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway($session=null)
 	{
-		$pathway = JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
@@ -82,11 +80,11 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			{
 				$appname = $this->app->name;
 			}
-			$pathway->addItem(
+			Pathway::append(
 				$this->app->caption,
 				'index.php?option=' . $this->_option . '&app=' . $appname
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&app=' . $appname . '&version=' . $this->app->version
 			);
@@ -95,7 +93,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		{
 			if ($this->_task && $this->_task != 'tools')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 				);
@@ -103,7 +101,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		}
 		if (is_object($session))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				Route::url('index.php?option=' . $this->_option . '&tag=' . $lnk)
 			);
@@ -234,18 +232,18 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_MEMBERS'),
 				'index.php?option=com_members'
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes(User::get('name')),
 			'index.php?option=com_members&id=' . User::get('id')
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task
 		);
@@ -1297,18 +1295,18 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		// Set the breadcrumbs
 		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_RESOURCES'),
 				'index.php?option=com_resources'
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS'),
 			'index.php?option=com_resources&type=tools'
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$app->title,
 			'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname
 		);
@@ -1316,7 +1314,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($this->_task)
 		{
 			$t = ($app->caption) ? $app->sess . ' "' . $app->caption . '"' : $app->sess;
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_SESSION_NUMBER', $t),
 				'index.php?option=' . $this->_option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess
 			);

@@ -80,11 +80,9 @@ class Events extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -93,7 +91,7 @@ class Events extends SiteController
 		{
 			case 'year':
 				if ($this->year) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->year,
 						'index.php?option=' . $this->_option . '&year='.$this->year
 					);
@@ -101,13 +99,13 @@ class Events extends SiteController
 			break;
 			case 'month':
 				if ($this->year) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->year,
 						'index.php?option=' . $this->_option . '&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->month,
 						'index.php?option=' . $this->_option . '&year=' . $this->year . '&month='.$this->month
 					);
@@ -115,19 +113,19 @@ class Events extends SiteController
 			break;
 			case 'day':
 				if ($this->year) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->year,
 						'index.php?option=' . $this->_option . '&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->month,
 						'index.php?option=' . $this->_option . '&year=' . $this->year . '&month='.$this->month
 					);
 				}
 				if ($this->day) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->day,
 						'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day
 					);
@@ -135,24 +133,24 @@ class Events extends SiteController
 			break;
 			case 'week':
 				if ($this->year) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->year,
 						'index.php?option=' . $this->_option . '&year='.$this->year
 					);
 				}
 				if ($this->month) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->month,
 						'index.php?option=' . $this->_option . '&year=' . $this->year . '&month='.$this->month
 					);
 				}
 				if ($this->day) {
-					$pathway->addItem(
+					Pathway::append(
 						$this->day,
 						'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day
 					);
 				}
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt('EVENTS_WEEK_OF',$this->day),
 					'index.php?option=' . $this->_option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'
 				);
@@ -834,27 +832,26 @@ class Events extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)) . ': ' . stripslashes($row->title));
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(Lang::txt(
+			Pathway::append(Lang::txt(
 				strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			$eyear,
 			'index.php?option=' . $this->_option . '&year=' . $eyear
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$emonth,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$eday,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
 		);
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($row->title),
 			'index.php?option=' . $this->_option . '&task=details&id=' . $row->id
 		);
@@ -874,7 +871,7 @@ class Events extends SiteController
 
 		if ($alias)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($page->title),
 				'index.php?option=' . $this->_option . '&task=details&id=' . $row->id . '&page=' . $page->alias
 			);
@@ -982,31 +979,30 @@ class Events extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)).': '.Lang::txt('EVENTS_REGISTER').': '.stripslashes($event->title));
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(Lang::txt(
+			Pathway::append(Lang::txt(
 				strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			$eyear,
 			'index.php?option=' . $this->_option . '&year=' . $eyear
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$emonth,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$eday,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
 		);
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($event->title),
 			'index.php?option=' . $this->_option . '&task=details&id=' . $event->id
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('EVENTS_REGISTER'),
 			'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'
 		);
@@ -1155,31 +1151,30 @@ class Events extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(Lang::txt(
+			Pathway::append(Lang::txt(
 				strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			$eyear,
 			'index.php?option=' . $this->_option . '&year=' . $eyear
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$emonth,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth
 		);
-		$pathway->addItem(
+		Pathway::append(
 			$eday,
 			'index.php?option=' . $this->_option . '&year=' . $eyear . '&month=' . $emonth . '&day=' . $eday
 		);
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($event->title),
 			'index.php?option=' . $this->_option . '&task=details&id=' . $event->id
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('EVENTS_REGISTER'),
 			'index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'
 		);
@@ -1406,17 +1401,16 @@ class Events extends SiteController
 	public function editTask($row=NULL)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
-			$pathway = \JFactory::getApplication()->getPathway();
-			if (count($pathway->getPathWay()) <= 0)
+			if (Pathway::count() <= 0)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_name)),
 					'index.php?option=' . $this->_option
 				);
 			}
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('EVENTS_CAL_LANG_ADD_TITLE'),
 				'index.php?option=' . $this->_option . '&task=add'
 			);
@@ -1620,11 +1614,9 @@ class Events extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)));
 
 		// Set the pathway
-		$app = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -1634,13 +1626,13 @@ class Events extends SiteController
 		{
 			$p .= '&id=' . $row->id;
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->_task)),
 			$p
 		);
 		if ($row->id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($row->title),
 				'index.php?option=' . $this->_option . '&task=details&id=' . $row->id
 			);

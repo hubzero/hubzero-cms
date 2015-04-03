@@ -67,9 +67,7 @@ foreach ($this->cats as $cat)
 		{
 			$a = ' class="active"';
 
-			$app = JFactory::getApplication();
-			$pathway = $app->getPathway();
-			$pathway->addItem($cat['title'],'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
+			Pathway::append($cat['title'],'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
 		}
 
 		// Build the HTML
@@ -79,8 +77,6 @@ foreach ($this->cats as $cat)
 		{
 			// An array for storing the HTML we make
 			$k = array();
-
-			$pathway = JFactory::getApplication()->getPathway();
 
 			// Loop through each sub-category
 			foreach ($cat['_sub'] as $subcat)
@@ -104,7 +100,7 @@ foreach ($this->cats as $cat)
 					{
 						$a = ' class="active"';
 
-						$pathway->addItem(
+						Pathway::append(
 							$subcat['title'],
 							'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))
 						);

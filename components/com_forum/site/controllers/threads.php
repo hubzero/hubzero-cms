@@ -67,32 +67,30 @@ class Threads extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if (isset($this->view->section))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				String::truncate(stripslashes($this->view->section->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
 			);
 		}
 		if (isset($this->view->category))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				String::truncate(stripslashes($this->view->category->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
 			);
 		}
 		if (isset($this->view->thread) && $this->view->thread->exists())
 		{
-			$pathway->addItem(
+			Pathway::append(
 				'#' . $this->view->thread->get('id') . ' - ' . String::truncate(stripslashes($this->view->thread->get('title')), 100, array('exact' => true)),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias') . '&thread=' . $this->view->thread->get('id')
 			);

@@ -410,18 +410,16 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function _buildPathway($product)
 	{
-		$pathway = JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				JText::_($product)
 			);
 		}

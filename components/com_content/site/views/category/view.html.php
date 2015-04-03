@@ -191,7 +191,6 @@ class ContentViewCategory extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
 		$title		= null;
 
 		// Because the application sets a default page title,
@@ -221,7 +220,7 @@ class ContentViewCategory extends JViewLegacy
 
 			foreach ($path as $item)
 			{
-				$pathway->addItem($item['title'], $item['link']);
+				Pathway::append($item['title'], $item['link']);
 			}
 		}
 

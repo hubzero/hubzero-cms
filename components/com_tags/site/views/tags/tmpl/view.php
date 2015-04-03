@@ -52,7 +52,6 @@ array_unshift($cats, $all);
 
 // An array for storing all the links we make
 $links = array();
-$pathway = JFactory::getApplication()->getPathway();
 
 // Loop through each category
 foreach ($cats as $cat)
@@ -81,7 +80,7 @@ foreach ($cats as $cat)
 		$name  = $cat['title'];
 		$total = $cat['total'];
 
-		$pathway->addItem($cat['title'], $here . '&area=' . stripslashes($blob));
+		Pathway::append($cat['title'], $here . '&area=' . stripslashes($blob));
 	}
 
 	// Build the HTML
@@ -110,7 +109,7 @@ foreach ($cats as $cat)
 					$name  = $subcat['title'];
 					$total = $subcat['total'];
 
-					$pathway->addItem($subcat['title'], $here . '&area=' . stripslashes($blob));
+					Pathway::append($subcat['title'], $here . '&area=' . stripslashes($blob));
 				}
 
 				// Build the HTML

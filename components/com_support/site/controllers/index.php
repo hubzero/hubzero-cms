@@ -50,10 +50,9 @@ class Index extends SiteController
 		\JFactory::getDocument()->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);

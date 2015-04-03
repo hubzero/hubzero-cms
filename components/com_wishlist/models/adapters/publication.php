@@ -282,26 +282,24 @@ class Publication extends Base
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (!$title)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Publications'),
 				'index.php?option=com_publications'
 			);
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->_item->title),
 				'index.php?option=com_publications&id=' . $this->get('referenceid')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Wishlist'),
 				'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				$url
 			);

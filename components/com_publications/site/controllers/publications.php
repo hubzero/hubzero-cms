@@ -138,12 +138,9 @@ class Publications extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option='.$this->_option
 			);
@@ -155,7 +152,7 @@ class Publications extends SiteController
 			$url = $this->_route;
 
 			// Link to category
-			$pathway->addItem(
+			Pathway::append(
 				$this->model->_category->name,
 				'index.php?option=' . $this->_option . '&category=' . $this->model->_category->url_alias
 			);
@@ -165,20 +162,20 @@ class Publications extends SiteController
 			{
 				$url .= '&v=' . $this->_version;
 			}
-			$pathway->addItem(
+			Pathway::append(
 				$this->model->version->title,
 				$url
 			);
 
 			if ($this->_task == 'serve' || $this->_task == 'wiki')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt('COM_PUBLICATIONS_SERVING_CONTENT'),
 					$this->_route . '&task=' . $this->_task
 				);
 			}
 		}
-		elseif (count($pathway->getPathWay()) <= 1 && $this->_task)
+		elseif (Pathway::count() <= 1 && $this->_task)
 		{
 			switch ($this->_task)
 			{
@@ -186,7 +183,7 @@ class Publications extends SiteController
 				case 'submit':
 					if ($this->_task_title)
 					{
-						$pathway->addItem(
+						Pathway::append(
 							$this->_task_title,
 							'index.php?option=' . $this->_option . '&task=' . $this->_task
 						);
@@ -196,7 +193,7 @@ class Publications extends SiteController
 				case 'start':
 					if ($this->_task_title)
 					{
-						$pathway->addItem(
+						Pathway::append(
 							$this->_task_title,
 							'index.php?option=' . $this->_option . '&task=submit'
 						);
@@ -209,7 +206,7 @@ class Publications extends SiteController
 					break;
 
 				default:
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);

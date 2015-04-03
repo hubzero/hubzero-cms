@@ -290,26 +290,24 @@ class Resource extends Base
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (!$title)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Resources'),
 				'index.php?option=com_resources'
 			);
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->_item->title),
 				'index.php?option=com_resources&id=' . $this->get('referenceid')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Wishlist'),
 				'index.php?option=com_resources&active=wishlist&id=' . $this->get('referenceid')
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				$url
 			);

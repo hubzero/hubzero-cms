@@ -310,18 +310,16 @@ class General extends Base
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (!$title)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->get('option'))),
 				'index.php?option=' . $this->get('option')
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				$url
 			);

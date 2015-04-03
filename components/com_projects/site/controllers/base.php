@@ -282,9 +282,6 @@ class Base extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app     = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-
 		$group_tasks = array('start', 'setup', 'view');
 		$group       = isset($this->group) ? $this->group : NULL;
 		$active      = isset($this->active) ? $this->active : NULL;
@@ -292,23 +289,23 @@ class Base extends SiteController
 		// Point to group if group project
 		if (is_object($group) && in_array($this->_task, $group_tasks) )
 		{
-			$pathway->setPathway(array());
-			$pathway->addItem(
+			Pathway::clear();
+			Pathway::append(
 				Lang::txt('COM_PROJECTS_GROUPS_COMPONENT'),
 				Route::url('index.php?option=com_groups')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				\Hubzero\Utility\String::truncate($group->get('description'), 50),
 				Route::url('index.php?option=com_groups&cn=' . $group->cn)
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_PROJECTS_PROJECTS'),
 				Route::url('index.php?option=com_groups&cn=' . $group->cn . '&active=projects')
 			);
 		}
-		elseif (count($pathway->getPathWay()) <= 0)
+		elseif (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COMPONENT_LONG_NAME'),
 				Route::url('index.php?option=' . $this->_option)
 			);
@@ -326,7 +323,7 @@ class Base extends SiteController
 		{
 			if (!empty($provisioned))
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes(Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT')),
 					Route::url('index.php?option=' . $this->_option . '&alias='
 					. $alias . '&action=activate')
@@ -334,7 +331,7 @@ class Base extends SiteController
 			}
 			else
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($title),
 					Route::url('index.php?option=' . $this->_option . '&alias=' . $alias)
 				);
@@ -345,7 +342,7 @@ class Base extends SiteController
 		switch ($this->_controller)
 		{
 			case 'reports':
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
 					Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 				);
@@ -374,7 +371,7 @@ class Base extends SiteController
 						break;
 
 						default:
-							$pathway->addItem(
+							Pathway::append(
 								ucfirst(Lang::txt('COM_PROJECTS_TAB_'.strtoupper($this->active))),
 								Route::url('index.php?option=' . $this->_option . '&alias='
 								. $alias . '&active=' . $active)
@@ -388,7 +385,7 @@ class Base extends SiteController
 			case 'edit':
 				if (empty($alias))
 				{
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 						Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
@@ -405,7 +402,7 @@ class Base extends SiteController
 										? Lang::txt('COM_PROJECTS_REVIEWER_SPS')
 										: Lang::txt('COM_PROJECTS_REVIEWER_HIPAA');
 
-					$pathway->addItem(
+					Pathway::append(
 						$title,
 						Route::url('index.php?option=' . $this->_option
 						. '&task=browse&reviewer=' . $reviewer)
@@ -413,7 +410,7 @@ class Base extends SiteController
 				}
 				else
 				{
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 						Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
@@ -426,7 +423,7 @@ class Base extends SiteController
 				break;
 
 			default:
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option).'_'.strtoupper($this->_task)),
 					Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task)
 				);

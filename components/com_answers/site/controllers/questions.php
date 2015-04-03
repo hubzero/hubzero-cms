@@ -69,25 +69,23 @@ class Questions extends SiteController
 	 */
 	protected function _buildPathway($question=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task && in_array($this->_task, array('new', 'myquestions', 'search')))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
 		if (is_object($question) && $question->get('subject'))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				String::truncate($question->subject('clean'), 50),
 				$question->link()
 			);

@@ -17,14 +17,13 @@ $doc = JFactory::getDocument();
 $doc->addStyleSheet('/components/com_pdf2form/resources/pdf2form.css');
 $doc->addScript('/media/system/js/jquery.ui.js');
 
-$path = JFactory::getApplication()->getPathway();
-$path->addItem('PDF Forms', '/pdf2form');
+\Pathway::append('PDF Forms', '/pdf2form');
 
 $errors = array();
 
 function authzFaculty()
 {
-	if (!($uid = JFactory::getUser()->id))
+	if (!($uid = \User::get('id')))
 	{
 		throw new NeedLoginError;
 	}

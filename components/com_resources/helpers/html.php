@@ -521,9 +521,7 @@ class Html
 				}
 				if (strtolower($name) == $active)
 				{
-					$app = \JFactory::getApplication();
-					$pathway = $app->getPathway();
-					$pathway->addItem($cat[$name],$url);
+					Pathway::append($cat[$name], $url);
 
 					if ($active != 'about')
 					{

@@ -77,29 +77,27 @@ class Form extends SiteController
 	 */
 	public function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(ucfirst($this->course->get('title'))),
 			'index.php?option=com_courses&controller=form&gid=' . $this->course->get('alias')
 		);
 
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(ucfirst($this->course->offering()->get('title'))),
 			$this->base
 		);
 
 		if ($this->_task != 'index')
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(ucfirst($this->_task)),
 				'index.php?option=' . $this->_option . '&controller=form&task=' . $this->_task
 			);

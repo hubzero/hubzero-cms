@@ -81,31 +81,28 @@ class Mailinglist extends SiteController
 	 */
 	public function _buildPathway($newsletter = null)
 	{
-		//get the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		//add 'newlsetters' item to pathway
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
+			Pathway::append(Lang::txt(strtoupper($this->_option)), 'index.php?option=' . $this->_option);
 		}
 
 		//add campaign
 		if (is_object($newsletter) && $newsletter->id)
 		{
-			$pathway->addItem(Lang::txt($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
+			Pathway::append(Lang::txt($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
 		}
 
 		//if we are unsubscribing
 		if ($this->_task == 'unsubscribe')
 		{
-			$pathway->addItem(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=unsubscribe');
+			Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=unsubscribe');
 		}
 
 		//if we are subscribing
 		if ($this->_task == 'subscribe')
 		{
-			$pathway->addItem(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=subscribe');
+			Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=subscribe');
 		}
 	}
 

@@ -98,11 +98,9 @@ class Offering extends SiteController
 	 */
 	public function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
@@ -110,14 +108,14 @@ class Offering extends SiteController
 
 		if ($this->course->exists())
 		{
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->course->get('title')),
 				'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
 			);
 
 			if ($this->course->offering()->exists())
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($this->course->offering()->get('title')),
 					'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')
 				);

@@ -585,7 +585,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task))
 		);
 
-		JFactory::getApplication()->getPathway()->addItem(
+		Pathway::append(
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);

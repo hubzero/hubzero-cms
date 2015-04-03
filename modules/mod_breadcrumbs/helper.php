@@ -71,7 +71,7 @@ class Helper extends Module
 	{
 		$app = \JFactory::getApplication();
 
-		$items = \Breadcrumbs::items();
+		$items = \Pathway::items();
 
 		$count = count($items);
 

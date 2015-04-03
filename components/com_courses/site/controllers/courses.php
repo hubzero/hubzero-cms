@@ -74,18 +74,16 @@ class Courses extends SiteController
 	 */
 	public function _buildPathway($course_pages = array())
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task && $this->_task != 'intro')
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);

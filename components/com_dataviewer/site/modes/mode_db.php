@@ -18,7 +18,7 @@ function get_conf($db_id)
 	$db_name = $db_id['name'];
 
 	// Base directory
-	$dv_conf['db_base_dir'] = JComponentHelper::getParams('com_databases')->get('base_dir');
+	$dv_conf['db_base_dir'] = Component::params('com_databases')->get('base_dir');
 	if (!$dv_conf['db_base_dir'] || $dv_conf['db_base_dir'] == '') {
 		$dv_conf['db_base_dir'] = '/db/databases';
 	}
@@ -193,15 +193,13 @@ function pathway($dd)
 {
 	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
-	$mainframe = JFactory::getApplication();
-	$pathway = $mainframe->getPathway();
 
 	if (isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
-		$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);
+		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}
 
-	$pathway->addItem($dd['title'], $_SERVER['REQUEST_URI']);
+	Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
 }
 ?>

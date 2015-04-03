@@ -78,20 +78,18 @@ class ToolsControllerStorage extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_MEMBERS'),
 				'index.php?option=com_members'
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes(User::get('name')),
 			'index.php?option=com_members&id=' . User::get('id')
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			'index.php?option=' . $this->_option . '&task=storage'
 		);

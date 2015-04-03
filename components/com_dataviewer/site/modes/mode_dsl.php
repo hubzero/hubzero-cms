@@ -75,9 +75,9 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 		if ($state != 1) {
 			// curator groups
-			$curation_enabled = JComponentHelper::getParams('com_publications')->get('curation');
+			$curation_enabled = Component::params('com_publications')->get('curation');
 
-			$curator_group = trim(JComponentHelper::getParams('com_publications')->get('curatorgroup'));
+			$curator_group = trim(Component::params('com_publications')->get('curatorgroup'));
 
 			if ($curation_enabled && $curator_group != '') {
 				$curator_groups[] = $curator_group;
@@ -212,18 +212,15 @@ function pathway($dd)
 	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
 
-	$mainframe = JFactory::getApplication();
-	$pathway = $mainframe->getPathway();
-
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$ref_title = "Datastore";
-		$pathway->addItem($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+		Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
 	} elseif (isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
-		$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);
+		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}
 
-	$pathway->addItem($dd['title'], $_SERVER['REQUEST_URI']);
+	Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
 }
 ?>

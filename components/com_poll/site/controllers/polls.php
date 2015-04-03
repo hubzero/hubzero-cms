@@ -63,7 +63,6 @@ class Polls extends SiteController
 		$app = \JFactory::getApplication();
 
 		$document = \JFactory::getDocument();
-		$pathway  = $app->getPathway();
 
 		$poll_id = Request::getVar('id', 0, '', 'int');
 
@@ -100,7 +99,7 @@ class Polls extends SiteController
 		$document->setTitle($params->get('page_title'));
 
 		//Set pathway information
-		$pathway->addItem($poll->title, '');
+		Pathway::append($poll->title, '');
 
 		$params->def('show_page_title', 1);
 		$params->def('page_title', $poll->title);
@@ -241,7 +240,6 @@ class Polls extends SiteController
 	{
 		$app      = \JFactory::getApplication();
 		$document = \JFactory::getDocument();
-		$pathway  = $app->getPathway();
 
 		$model = new Poll($this->database);
 		$poll = $model->getLatest();
@@ -278,7 +276,7 @@ class Polls extends SiteController
 		$document->setTitle($params->get('page_title'));
 
 		//Set pathway information
-		$pathway->addItem($poll->title, '');
+		Pathway::append($poll->title, '');
 
 		$params->def('show_page_title', 1);
 		$params->def('page_title', $poll->title);

@@ -110,23 +110,21 @@ class Resources extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1 && $this->_task)
+		if (Pathway::count() <= 1 && $this->_task)
 		{
 			switch ($this->_task)
 			{
 				case 'browse':
 					if ($this->_task_title)
 					{
-						$pathway->addItem(
+						Pathway::append(
 							$this->_task_title,
 							'index.php?option=' . $this->_option . '&task=' . $this->_task
 						);
@@ -135,14 +133,14 @@ class Resources extends SiteController
 				case 'browsetags':
 					if ($this->_task_title)
 					{
-						$pathway->addItem(
+						Pathway::append(
 							$this->_task_title,
 							'index.php?option=' . $this->_option . '&type=' . $this->type
 						);
 					}
 				break;
 				default:
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . $this->_task
 					);
@@ -1227,7 +1225,6 @@ class Resources extends SiteController
 
 		// Build the pathway
 		$app = \JFactory::getApplication();
-		$pathway = $app->getPathway();
 		if ($this->model->inGroup())
 		{
 			// Alter the pathway to reflect a group owned resource
@@ -1235,28 +1232,28 @@ class Resources extends SiteController
 
 			if ($group)
 			{
-				$pathway->setPathway(array());
+				Pathway::clear();
 
-				$pathway->addItem(
+				Pathway::append(
 					'Groups',
 					Route::url('index.php?option=com_groups')
 				);
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($group->get('description')),
 					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner)
 				);
-				$pathway->addItem(
+				Pathway::append(
 					'Resources',
 					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources')
 				);
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($this->model->type->type),
 					Route::url('index.php?option=com_groups&cn=' . $this->model->resource->group_owner . '&active=resources&area=' . $this->model->type->alias)
 				);
 			}
 			else
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($this->model->type->type),
 					Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 				);
@@ -1264,7 +1261,7 @@ class Resources extends SiteController
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->model->type->type),
 				Route::url('index.php?option=' . $this->_option . '&type=' . $this->model->type->alias)
 			);
@@ -1490,7 +1487,7 @@ class Resources extends SiteController
 			$document->addHeadLink($canonical, 'canonical');
 		}
 
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($this->model->resource->title),
 			Route::url('index.php?option=' . $this->_option . '&id=' . $this->model->resource->id)
 		);

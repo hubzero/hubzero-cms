@@ -356,21 +356,20 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1)
+		if (Pathway::count() <= 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
 			);
@@ -595,21 +594,20 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway (breadcrumbs)
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1)
+		if (Pathway::count() <= 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_STATUS_FOR', $thistool->toolname),
 				'index.php?option=' . $this->_option . '&controller=pipeline&task=status&app=' . $alias
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
 			);

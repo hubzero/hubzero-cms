@@ -313,26 +313,24 @@ class Group extends Base
 	 */
 	public function pathway($title=null, $url=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		if (!$title)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Groups'),
 				'index.php?option=' . $this->get('option')
 			);
-			$pathway->addItem(
+			Pathway::append(
 				stripslashes($this->_item->get('description')),
 				'index.php?option=com_groups&cn=' . $this->_segments['cn']
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('Wishlist'),
 				'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist'
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				$url
 			);

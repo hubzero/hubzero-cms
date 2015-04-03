@@ -31,8 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$pathway = JFactory::getApplication()->getPathway();
-$pathway->addItem(
+Pathway::append(
 	Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'
 );

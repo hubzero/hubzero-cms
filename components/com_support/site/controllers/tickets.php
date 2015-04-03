@@ -69,16 +69,14 @@ class Tickets extends SiteController
 	 */
 	protected function _buildPathway($ticket=null)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_SUPPORT'),
 				'index.php?option=' . $this->_option . '&controller=index'
 			);
 		}
-		if (count($pathway->getPathWay()) == 1  && $this->_task)
+		if (Pathway::count() == 1  && $this->_task)
 		{
 			$task = $this->_task;
 			if (in_array($this->_task, array('ticket', 'new', 'display', 'save')))
@@ -89,13 +87,13 @@ class Tickets extends SiteController
 			{
 				$task = 'ticket';
 			}
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_SUPPORT_' . strtoupper($task)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $task
 			);
 			if ($this->_task == 'new')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt('COM_SUPPORT_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task
 				);
@@ -103,7 +101,7 @@ class Tickets extends SiteController
 		}
 		if (is_object($ticket) && $ticket->exists())
 		{
-			$pathway->addItem(
+			Pathway::append(
 				'#' . $ticket->get('id'),
 				$ticket->link()
 			);

@@ -74,22 +74,21 @@ class Basic extends SiteController
 		$app = \JFactory::getApplication();
 
 		// Set breadcrumbs
-		$pathway = $app->getPathway();
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_SEARCH'),
 			'index.php?option=com_search'
 		);
 
-		$terms = new Terms(\JRequest::getString('terms'));
+		$terms = new Terms(Request::getString('terms'));
 
 		// Set the document title
 		\JFactory::getDocument()->setTitle($terms->is_set() ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
 
 		// Get search results
 		$results = new Set($terms);
-		$results->set_limit($app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int'));
-		$results->set_offset(\JRequest::getInt('limitstart', 0));
-		$results->collect(\JRequest::getBool('force-generic'));
+		$results->set_limit($app->getUserStateFromRequest('global.list.limit', 'limit', Config::get('list_limit'), 'int'));
+		$results->set_offset(Request::getInt('limitstart', 0));
+		$results->collect(Request::getBool('force-generic'));
 
 		$this->view->url_terms = urlencode($terms->get_raw_without_section());
 		@list($plugin, $section) = $terms->get_section();

@@ -48,8 +48,7 @@ $amaFormatRetrieved = 'M d, Y';
 
 $now = JFactory::getDate()->toSql();
 
-$juri = JURI::getInstance();
-$permalink = rtrim($juri->base(), DS) . DS . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), DS);
+$permalink = rtrim(Request::base(), DS) . DS . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), DS);
 ?>
 <div class="admon-note">
 <p>

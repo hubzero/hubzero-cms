@@ -110,39 +110,37 @@ class Create extends SiteController
 	 */
 	public function _buildPathway($row)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($row->id && $row->published == 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_CONTRIBUTE_EDIT'),
 				'index.php?option=' . $this->_option . '&task=new'
 			);
 		}
 		else
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_CONTRIBUTE_NEW'),
 				'index.php?option=' . $this->_option . '&task=new'
 			);
 		}
 		if ($this->_task)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
 		if ($this->step)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step])),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task . '&step=' . $this->step
 			);

@@ -246,21 +246,17 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->juser = $this->juser;
@@ -325,10 +321,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the document pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -337,7 +332,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		if ($this->view->filters['index'])
 		{
 			// Add to the pathway
-			$pathway->addItem(
+			Pathway::append(
 				strtoupper($this->view->filters['index']),
 				'index.php?option=' . $this->_option . '&index=' . $this->view->filters['index']
 			);
@@ -401,12 +396,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 		$this->view->view = $this->_view;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -475,10 +467,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->title  = Lang::txt(strtoupper($this->_name));
 		$this->view->title .= ($this->_task) ? ': ' . Lang::txt(strtoupper($this->_task)) : '';
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -495,7 +486,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
@@ -512,7 +503,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have a member
 		if (!is_object($profile) || (!$profile->get('name') && !$profile->get('surname')))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
@@ -543,7 +534,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				);
 				return;
 			}
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
@@ -599,7 +590,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
 
 		// Set the pathway
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
@@ -610,12 +601,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->profile = $profile;
 		$this->view->overwrite_content = '';
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -642,10 +630,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($title);
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -655,7 +642,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = Request::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=changepassword'), 'server');
 			$this->setRedirect(
@@ -666,13 +653,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		if (!$id)
 		{
-			$id = $this->juser->get('id');
+			$id = User::get('id');
 		}
 
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -684,7 +671,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$authorized = $this->_authorize($id);
 		if (!$authorized)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -698,7 +685,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have a member
 		if (!$profile->get('name'))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -707,11 +694,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Add to the pathway
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
@@ -886,10 +873,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -899,7 +885,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = Request::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=raiselimit'), 'server');
 			$this->setRedirect(
@@ -911,7 +897,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -923,7 +909,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->authorized = $this->_authorize($id);
 		if (!$this->view->authorized)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -937,7 +923,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have a member
 		if (!$profile->get('name'))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -948,11 +934,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->profile = $profile;
 
 		// Add to the pathway
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
@@ -1157,10 +1143,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
@@ -1170,7 +1155,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$id = Request::getInt('id', 0);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
 			$this->setRedirect(
@@ -1182,7 +1167,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have an ID
 		if (!$id)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -1191,9 +1176,9 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 		// Check authorization
 		$this->view->authorized = $this->_authorize($id);
-		if ($id != $this->juser->get('id'))
+		if ($id != User::get('id'))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -1211,7 +1196,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Ensure we have a member
 		if (!$profile->get('name') && !$profile->get('surname'))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&id=' . $id . '&task=' . $this->_task
 			);
@@ -1224,11 +1209,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->tags = $mt->render('string');
 
 		// Add to the pathway
-		$pathway->addItem(
+		Pathway::append(
 			stripslashes($profile->get('name')),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber')
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&id=' . $profile->get('uidNumber') . '&task=' . $this->_task
 		);
@@ -1675,8 +1660,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	public function saveaccessTask()
 	{
 		// Check if they are logged in
-		$juser = JFactory::getUser();
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
@@ -1727,21 +1711,20 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_task)));
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);
 
 		// Check if they're logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			$rtrn = Request::getVar('REQUEST_URI', Route::url('index.php?option=' . $this->_controller . '&task=activity'), 'server');
 			$this->setRedirect(
@@ -1749,7 +1732,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
-		if (!$this->juser->authorize($this->_option, 'manage'))
+		if (!User::authorize($this->_option, 'manage'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option)
@@ -1821,12 +1804,10 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$this->view->title = Lang::txt('Active Users and Guests');
 		$this->view->users = $users;
 		$this->view->guests = $guests;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -1859,15 +1840,15 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 	protected function _authorize($uid=0, $assetType='component', $assetId=null)
 	{
 		// Check if they are logged in
-		if ($this->juser->get('guest'))
+		if (User::isGuest())
 		{
 			return false;
 		}
 
 		// Check if they're a site admin (from Joomla)
 		// Admin
-		$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $assetId));
-		$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $assetId));
+		$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $assetId));
+		$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $assetId));
 
 		if ($this->config->get('access-admin-' . $assetType))
 		{
@@ -1877,14 +1858,14 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Check if they're the member
 		if (is_numeric($uid))
 		{
-			if ($this->juser->get('id') == $uid)
+			if (User::get('id') == $uid)
 			{
 				return true;
 			}
 		}
 		else
 		{
-			if ($this->juser->get('username') == $uid)
+			if (User::get('username') == $uid)
 			{
 				return true;
 			}

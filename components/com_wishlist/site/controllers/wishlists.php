@@ -95,8 +95,7 @@ class Wishlists extends SiteController
 	 */
 	protected function _buildPathway($wishlist)
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-		$pathway->setPathway(array());
+		Pathway::clear();
 
 		$comtitle  = Lang::txt(strtoupper($this->_option));
 		$comtitle .= $this->_list_title ? ' - ' . $this->_list_title : '';
@@ -108,7 +107,7 @@ class Wishlists extends SiteController
 			switch ($this->_task)
 			{
 				case 'wish':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_wishtitle,
 						$this->_wishpath
 					);
@@ -116,13 +115,13 @@ class Wishlists extends SiteController
 				case 'add':
 				case 'savewish':
 				case 'editwish':
-					$pathway->addItem(
+					Pathway::append(
 						$this->_taskname,
 						$this->_taskpath
 					);
 				break;
 				case 'settings':
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 						'index.php?option=' . $this->_option . '&task=settings&id=' . $this->_listid
 					);
@@ -147,7 +146,7 @@ class Wishlists extends SiteController
 
 				default:
 					// XSS fix, passing raw user supplied/maniuplatable data to function that creates link. See ticket 1420
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 						'index.php?option=' . $this->_option . '&task=' . htmlentities($this->_task)
 					);

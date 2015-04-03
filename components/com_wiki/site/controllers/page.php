@@ -144,10 +144,9 @@ class Page extends SiteController
 		}
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
@@ -227,7 +226,7 @@ class Page extends SiteController
 					$p = Article::getInstance($bit, implode('/', $s));
 					if ($p->exists())
 					{
-						$pathway->addItem(
+						Pathway::append(
 							$p->get('title'),
 							$p->link()
 						);
@@ -237,7 +236,7 @@ class Page extends SiteController
 			}
 		}
 
-		$pathway->addItem(
+		Pathway::append(
 			$this->view->title,
 			$this->page->link()
 		);
@@ -432,21 +431,20 @@ class Page extends SiteController
 		}
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
 		if (!$this->_sub)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$this->view->title,
 				$this->page->link()
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 				$this->page->link() . '&task=' . $this->_task
 			);
@@ -803,19 +801,18 @@ class Page extends SiteController
 				$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 				// Set the pathway
-				$pathway = \JFactory::getApplication()->getPathway();
-				if (count($pathway->getPathWay()) <= 0)
+				if (Pathway::count() <= 0)
 				{
-					$pathway->addItem(
+					Pathway::append(
 						Lang::txt(strtoupper($this->_option)),
 						'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 					);
 				}
-				$pathway->addItem(
+				Pathway::append(
 					$this->view->title,
 					$this->page->link()
 				);
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 					$this->page->link('delete')
 				);
@@ -879,19 +876,18 @@ class Page extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . Lang::txt('RENAME'));
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_name)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			$this->view->title,
 			$this->page->link()
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper('COM_WIKI_RENAME')),
 			$this->page->link('rename')
 		);

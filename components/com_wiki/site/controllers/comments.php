@@ -149,19 +149,18 @@ class Comments extends SiteController
 		$document->setTitle(Lang::txt(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
-		$pathway = \JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			$this->view->title,
 			$this->page->link()
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link('comments')
 		);

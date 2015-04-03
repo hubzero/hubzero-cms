@@ -46,11 +46,6 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		$this->pathway = $pathway;
-
 		// Get the task
 		$this->_task  = JRequest::getCmd('task', '');
 
@@ -110,7 +105,7 @@ class StorefrontControllerBrowse extends \Hubzero\Component\SiteController
 		$view->products = $products;
 
 		// Breadcrumbs
-		$this->pathway->addItem('Browsing collection', JRoute::_('index.php?id=' . '5'));
+		Pathway::addItem('Browsing collection', JRoute::_('index.php?id=' . '5'));
 
 		$view->display();
 	}

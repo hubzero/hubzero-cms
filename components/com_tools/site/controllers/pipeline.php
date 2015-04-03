@@ -135,15 +135,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$this->view->filters['limit']
 		);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS_PIPELINE'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
@@ -272,19 +271,18 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS_PIPELINE'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
 		);
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=status&app=' . $status['toolname']
 		);
@@ -376,21 +374,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			'currentversion'  => (is_object($hztv_current) ? $hztv_current->version : '')
 		);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $this->view->status['toolname'],
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=status&app=' . $this->view->status['toolname']
 		);
 		if ($this->_action != 'confirm')
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_TASK_VERSIONS'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=versions&app=' . $this->view->status['toolname']
 			);
@@ -470,15 +467,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 		);
@@ -571,23 +567,22 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1)
+		if (Pathway::count() <= 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
 			);
 			if ($this->_action != 'confirm')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt('COM_TOOLS_TASK_LICENSE'),
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=license&app=' . $this->_toolid
 				);
@@ -766,17 +761,16 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1)
+		if (Pathway::count() <= 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_TASK_CREATE_NEW_TOOL'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=create'
 			);
@@ -847,21 +841,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
-		$pathway = JFactory::getApplication()->getPathway();
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
-		if (count($pathway->getPathWay()) <= 1)
+		if (Pathway::count() <= 1)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname'],
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']
 			);
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $status['toolname']
 			);

@@ -23,8 +23,7 @@ foreach (array('SCRIPT_URL', 'URL', 'REDIRECT_SCRIPT_URL', 'REDIRECT_URL') as $k
 $basePath = preg_replace('#^'.preg_quote(JPATH_BASE).'#', '', dirname(__FILE__));
 
 
-$path = JFactory::getApplication()->getPathway();
-$path->addItem('Search', $base);
+\Pathway::append('Search', $base);
 
 function hgView($view, $args = array())
 {
@@ -50,9 +49,9 @@ function a($str)
 
 function assertSuperAdmin()
 {
-	if (JFactory::getUser()->usertype != 'Super Administrator')
+	if (\User::get('usertype') != 'Super Administrator')
 	{
-		JError::raiseError(405, 'Forbidden');
+		\App::abort(405, 'Forbidden');
 	}
 }
 

@@ -29,7 +29,6 @@ class ContentViewArchive extends JViewLegacy
 		$items 		= $this->get('Items');
 		$pagination	= $this->get('Pagination');
 
-		$pathway	= $app->getPathway();
 		$document	= JFactory::getDocument();
 
 		// Get the page/component configuration
@@ -106,7 +105,6 @@ class ContentViewArchive extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
 		$title 		= null;
 
 		// Because the application sets a default page title,

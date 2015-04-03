@@ -215,7 +215,6 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
 		$title		= null;
 
 		// Because the application sets a default page title,
@@ -250,7 +249,7 @@ class NewsfeedsViewNewsfeed extends JViewLegacy
 			$path = array_reverse($path);
 			foreach ($path as $item)
 			{
-				$pathway->addItem($item['title'], $item['link']);
+				Pathway::append($item['title'], $item['link']);
 			}
 		}
 

@@ -121,12 +121,10 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 */
 	public function _buildPathway($pages = array())
 	{
-		$pathway = JFactory::getApplication()->getPathway();
-
 		//add 'groups' item to pathway
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
@@ -139,7 +137,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			$group = \Hubzero\User\Group::getInstance($this->cn);
 			if ($group)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($group->get('description')),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn
 				);
@@ -152,14 +150,14 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			// if we browsing or creating a new group
 			if (in_array($this->_task, array('new', 'browse')))
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
 			}
 			else
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task
 				);
@@ -180,14 +178,14 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 			if ($page !== null)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt($page->get('title')),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
 				);
 			}
 			else if ($this->active != 'overview')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->active)),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
 				);
@@ -196,14 +194,14 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 		if (in_array($this->_controller, array('pages', 'modules', 'categories')))
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt('COM_GROUPS_PAGES'),
 				'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller
 			);
 
 			if ($this->_task && $this->_task != 'view')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt('COM_GROUPS_PAGES_'.strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller . '&task=' . $this->_task
 				);

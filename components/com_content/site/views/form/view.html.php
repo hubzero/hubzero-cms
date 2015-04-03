@@ -85,7 +85,6 @@ class ContentViewForm extends JViewLegacy
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
-		$pathway	= $app->getPathway();
 		$title 		= null;
 
 		// Because the application sets a default page title,
@@ -107,8 +106,7 @@ class ContentViewForm extends JViewLegacy
 		}
 		$this->document->setTitle($title);
 
-		$pathway = $app->getPathWay();
-		$pathway->addItem($title, '');
+		Pathway::append($title, '');
 
 		if ($this->params->get('menu-meta_description'))
 		{

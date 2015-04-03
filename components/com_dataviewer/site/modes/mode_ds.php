@@ -15,7 +15,7 @@ function get_conf($db_id)
 {
 	global $dv_conf, $com_name;
 
-	$params = JComponentHelper::getParams('com_datastores');
+	$params = Component::params('com_datastores');
 	$dv_conf['db']['host'] = $params->get('db_host');
 	$dv_conf['db']['user'] = $params->get('db_ro_user');
 	$dv_conf['db']['password'] = $params->get('db_ro_pass');
@@ -287,18 +287,15 @@ function pathway($dd)
 	$document = JFactory::getDocument();
 	$document->setTitle($dd['title']);
 
-	$mainframe = JFactory::getApplication();
-	$pathway = $mainframe->getPathway();
-
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$ref_title = "Datastore";
-		$pathway->addItem($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+		Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
 	} elseif (isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
-		$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);
+		Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
 	}
 
-	$pathway->addItem($dd['title'], $_SERVER['REQUEST_URI']);
+	Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
 }
 ?>

@@ -47,16 +47,14 @@ class Abuse extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option . '&controller=index'
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt(strtoupper('COM_SUPPORT_REPORT_ABUSE')),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=reportabuse'
 		);

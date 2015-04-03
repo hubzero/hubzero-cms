@@ -73,8 +73,10 @@ class Hubgraph extends SiteController
 		// Try to execute
 		try
 		{
-			$path = \JFactory::getApplication()->getPathway();
-			$path->addItem(Lang::txt('COM_SEARCH'), 'index.php?option=' . $this->_option);
+			Pathway::append(
+				Lang::txt('COM_SEARCH'),
+				'index.php?option=' . $this->_option
+			);
 
 			parent::execute();
 		}

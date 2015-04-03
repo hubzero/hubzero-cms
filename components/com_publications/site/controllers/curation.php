@@ -188,24 +188,21 @@ class Curation extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option='.$this->_option
 			);
 		}
-		$pathway->addItem(
+		Pathway::append(
 			Lang::txt('COM_PUBLICATIONS_CURATION'),
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=display'
 		);
 
 		if ($this->_pub)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$this->_pub->title,
 				'index.php?option=' . $this->_option . '&controller='
 					. $this->_controller .  '&task=view' . '&id=' . $this->_pub->id

@@ -74,13 +74,11 @@ class Entries extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = \JFactory::getApplication()->getPathway();
-
 		$title = ($this->config->get('title')) ? $this->config->get('title') : Lang::txt(strtoupper($this->_option));
 
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
-			$pathway->addItem(
+			Pathway::append(
 				$title,
 				'index.php?option=' . $this->_option
 			);
@@ -89,7 +87,7 @@ class Entries extends SiteController
 		{
 			if ($this->_task != 'entry' && $this->_task != 'savecomment' && $this->_task != 'deletecomment')
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&task=' . $this->_task
 				);
@@ -97,7 +95,7 @@ class Entries extends SiteController
 			$year = Request::getInt('year', 0);
 			if ($year)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					$year,
 					'index.php?option=' . $this->_option . '&year=' . $year
 				);
@@ -105,14 +103,14 @@ class Entries extends SiteController
 			$month = Request::getInt('month', 0);
 			if ($month)
 			{
-				$pathway->addItem(
+				Pathway::append(
 					sprintf("%02d",$month),
 					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month)
 				);
 			}
 			if (isset($this->view->row))
 			{
-				$pathway->addItem(
+				Pathway::append(
 					stripslashes($this->view->row->get('title')),
 					'index.php?option=' . $this->_option . '&year=' . $year . '&month=' . sprintf("%02d", $month) . '&alias=' . $this->view->row->get('alias')
 				);

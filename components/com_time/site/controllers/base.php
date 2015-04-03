@@ -101,25 +101,22 @@ class Base extends SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$app     = \JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
+		if (Pathway::count() <= 0)
 		{
 			// Base option
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 			// Controller
-			$pathway->addItem(
+			Pathway::append(
 				Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 			// Task
 			if (isset($this->_task) && !empty($this->_task))
 			{
-				$pathway->addItem(
+				Pathway::append(
 					Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller) . '_' . strtoupper($this->_task)),
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task
 				);
