@@ -81,7 +81,7 @@ $filterUrl .= $this->images ? '&images=1' : '';
 			<li class="c-click" id="file::<?php echo urlencode($file['fpath']); ?>" title="<?php echo $file['fpath']; ?>"><img src="<?php echo ProjectsHtml::getFileIcon($file['ext']); ?>" alt="<?php echo $file['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($file['fpath'], 50); ?></li>
 		<?php
 			$i++;
- 		}
+		}
 
 			// Show selected files
 			$missing = array();

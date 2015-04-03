@@ -240,7 +240,7 @@ class typeFiles extends JObject
 				$mt = new \Hubzero\Content\Mimetypes();
 				$mimetypes = array();
 
-				foreach($selections['files'] as $file)
+				foreach ($selections['files'] as $file)
 				{
 					$mtype = $mt->getMimeType(urldecode($file));
 					$parts = explode('/', $mtype);
