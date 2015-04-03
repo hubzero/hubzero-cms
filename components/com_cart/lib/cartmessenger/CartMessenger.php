@@ -30,7 +30,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-class LoggingLevel {
+class LoggingLevel
+{
 	const INFO = 2;
 	const WARN = 1;
 	const ERROR = 0;
@@ -85,7 +86,7 @@ class CartMessenger
 			$message .= "\n";
 
 			$hzl = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
+				new \Monolog\Logger(Config::('application_env')),
 				\JDispatcher::getInstance()
 			);
 			$hzl->useFiles($this->logFile);

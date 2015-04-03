@@ -86,18 +86,18 @@ class PdfForm
 		$this->id = (int)$id;
 
 		// Get courses config
-		$config = JComponentHelper::getParams('com_courses');
+		$config = Component::params('com_courses');
 
 		// Build the upload path if it doesn't exist
 		$coursesPath = trim($config->get('uploadpath', '/site/courses'), DS);
 
 		// If the direcotry doesn't exist, create it
-		if (!is_dir(JPATH_ROOT . DS . $coursesPath))
+		if (!is_dir(PATH_APP . DS . $coursesPath))
 		{
-			mkdir(JPATH_ROOT . DS . $coursesPath);
+			mkdir(PATH_APP . DS . $coursesPath);
 		}
 
-		$this->base = JPATH_ROOT . DS . $coursesPath . DS . 'forms' . DS;
+		$this->base = PATH_APP . DS . $coursesPath . DS . 'forms' . DS;
 
 		// If the direcotry doesn't exist, create it
 		if (!is_dir($this->base))
@@ -226,7 +226,7 @@ class PdfForm
 	{
 		if (!$this->id)
 		{
-			JError::raiseError(422, 'No pages exist for equally nonexistent form');
+			\App::abort(422, 'No pages exist for equally nonexistent form');
 			return;
 		}
 
@@ -290,7 +290,7 @@ class PdfForm
 		foreach ($images as $img)
 		{
 			$session_id = \JFactory::getSession()->getId();
-			$secret     = \JFactory::getConfig()->getValue('secret');
+			$secret     = \Config::get('secret');
 			$token      = hash('sha256', $session_id . ':' . $secret);
 			$path       = '/api/courses/form/image?id='.$this->getId().'&file='.$img.'&token='.$token;
 			$path      .= (isset($version_dir)) ? '&version=' . $version_dir : '';

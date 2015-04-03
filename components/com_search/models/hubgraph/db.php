@@ -48,8 +48,7 @@ class Db
 	{
 		if (!self::$dbh)
 		{
-			$cfg = new \JConfig;
-			self::$dbh = new PDO('mysql:host=localhost;dbname=' . $cfg->db, $cfg->user, $cfg->password, array(
+			self::$dbh = new PDO('mysql:host=localhost;dbname=' . \Config::get('db'), \Config::get('user'), \Config::get('password'), array(
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 			));
 		}
@@ -180,7 +179,7 @@ class Db
 		$startPos  = 0;
 		$quoteChar = '';
 		$literal   = '';
-		$tablePrefix = \JFactory::getConfig()->get('dbprefix');
+		$tablePrefix = \Config::get('dbprefix');
 
 		$sql = trim($sql);
 		$n = strlen($sql);

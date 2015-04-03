@@ -27,15 +27,16 @@ class TemplatesViewSource extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Initialise variables.
-		$this->form		= $this->get('Form');
-		$this->ftp		= JClientHelper::setCredentialsFromRequest('ftp');
-		$this->source	= $this->get('Source');
-		$this->state	= $this->get('State');
-		$this->template	= $this->get('Template');
+		$this->form      = $this->get('Form');
+		$this->ftp      = JClientHelper::setCredentialsFromRequest('ftp');
+		$this->source   = $this->get('Source');
+		$this->state    = $this->get('State');
+		$this->template = $this->get('Template');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -50,21 +51,21 @@ class TemplatesViewSource extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		Request::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
-		$canDo		= TemplatesHelper::getActions();
+		$canDo = TemplatesHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_TEMPLATES_MANAGER_EDIT_FILE'), 'thememanager');
+		Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_EDIT_FILE'), 'thememanager');
 
 		// Can save the item.
-		if ($canDo->get('core.edit')) {
-			JToolBarHelper::apply('source.apply');
-			JToolBarHelper::save('source.save');
+		if ($canDo->get('core.edit'))
+		{
+			Toolbar::apply('source.apply');
+			Toolbar::save('source.save');
 		}
 
-		JToolBarHelper::cancel('source.cancel');
-		JToolBarHelper::divider();
-		JToolBarHelper::help('source');
+		Toolbar::cancel('source.cancel');
+		Toolbar::divider();
+		Toolbar::help('source');
 	}
 }

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_users'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Register helper class
@@ -19,5 +19,5 @@ JLoader::register('UsersHelper', dirname(__FILE__) . '/helpers/users.php');
 
 // Execute the task.
 $controller	= JControllerLegacy::getInstance('Users');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(Request::getCmd('task'));
 $controller->redirect();

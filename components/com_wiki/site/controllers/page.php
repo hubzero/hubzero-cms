@@ -1022,7 +1022,7 @@ class Page extends SiteController
 		$pdf->SetFont('dejavusans', '', 11, '', true);
 
 		$pdf->setAuthor  = $this->page->creator('name');
-		$pdf->setCreator = \JFactory::getConfig()->get('sitename');
+		$pdf->setCreator = \Config::get('sitename');
 
 		$pdf->setDocModificationTimeStamp($this->page->modified());
 		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->get('itle')), NULL, array(84, 94, 124), array(146, 152, 169));

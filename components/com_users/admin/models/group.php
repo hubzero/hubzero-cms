@@ -145,7 +145,7 @@ class UsersModelGroup extends JModelAdmin
 		{
 			try
 			{
-				throw new Exception(JText::_('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+				throw new Exception(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
 			}
 			catch (Exception $e)
 			{
@@ -175,7 +175,7 @@ class UsersModelGroup extends JModelAdmin
 				{
 					try
 					{
-						throw new Exception(JText::_('JLIB_USER_ERROR_CANNOT_DEMOTE_SELF'));
+						throw new Exception(Lang::txt('JLIB_USER_ERROR_CANNOT_DEMOTE_SELF'));
 					}
 					catch (Exception $e)
 					{
@@ -219,7 +219,7 @@ class UsersModelGroup extends JModelAdmin
 		{
 			if (in_array($pk, $groups))
 			{
-				JError::raiseWarning( 403, JText::_('COM_USERS_DELETE_ERROR_INVALID_GROUP'));
+				JError::raiseWarning( 403, Lang::txt('COM_USERS_DELETE_ERROR_INVALID_GROUP'));
 				return false;
 			}
 		}
@@ -253,7 +253,7 @@ class UsersModelGroup extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 				}
 			}
 			else

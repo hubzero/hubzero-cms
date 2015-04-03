@@ -146,7 +146,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Import needed courses JTable libraries
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'unit.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php');
 
 		// Make sure we have an incoming 'id'
 		$id = Request::getInt('id', null);
@@ -174,8 +174,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$unit->set('title', Request::getString('title', $title));
 		$unit->set('alias', strtolower(str_replace(' ', '', $unit->get('title'))));
 
-		$config = new \JConfig();
-		$offset = $config->offset;
+		$offset = \Config::get('offset');
 
 		// If we have dates coming in, save those
 		if ($publish_up = Request::getVar('publish_up', false))
@@ -210,7 +209,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		if (!$id)
 		{
 			// Included needed classes
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
+			require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php');
 
 			// Get the courses config
 			$config = Component::params('com_courses');
@@ -280,7 +279,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'prerequisites'  => $prerequisites
 			),
 			$status['code'],
-			$status['text']);
+			$status['text']
+		);
 	}
 
 	//--------------------------
@@ -306,7 +306,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed classes
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php');
 
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
@@ -419,7 +419,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Include needed classes
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assetgroup.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php');
 
 		$groups = Request::getVar('assetgroupitem', array());
 
@@ -473,7 +473,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$ext  = strtolower(array_pop($exts));
 
 		// Initiate our file handler
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
 		$assetHandler = new AssetHandler($this->db, $ext);
 
 		// Get the handlers
@@ -538,7 +538,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		require_once(dirname(dirname(__DIR__)). DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
 		$assetHandler = new AssetHandler($this->db, $ext);
 
 		// Create the new asset
@@ -581,7 +581,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
 		$assetHandler = new AssetHandler($this->db);
 
 		// Edit the asset
@@ -624,7 +624,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Initiate our file handler
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
 		$assetHandler = new AssetHandler($this->db);
 
 		// Edit the asset
@@ -660,8 +660,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed file(s)
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
 
 		// Grab incoming id, if applicable
 		$id = Request::getInt('id', null);
@@ -786,7 +786,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				$tool_alias = Request::getCmd('tool_alias');
 				$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
 				$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
-				$file       = JFolder::files(JPATH_ROOT . $asset_path);
+				$file       = \JFolder::files(PATH_APP . $asset_path);
 
 				// We're assuming there's only one file there...
 				if (isset($file[0]) && !empty($file[0]))
@@ -797,13 +797,13 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 					if (!is_dir(dirname($param_path)))
 					{
 						mkdir(dirname($param_path));
-						copy(JPATH_ROOT . $asset_path . DS . $file[0], $param_path);
+						copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
 					}
 					else
 					{
-						if (!is_file(JPATH_ROOT . $asset_path . DS . $file[0], $param_path))
+						if (!is_file(PATH_APP . $asset_path . DS . $file[0], $param_path))
 						{
-							copy(JPATH_ROOT . $asset_path . DS . $file[0], $param_path);
+							copy(PATH_APP . $asset_path . DS . $file[0], $param_path);
 						}
 					}
 
@@ -817,10 +817,10 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && Request::getInt('edit_tool_param', false))
 		{
 			// This is the scenario where it was a tool launch link, but the box was unchecked
-			$config     = JComponentHelper::getParams('com_courses');
+			$config     = Component::params('com_courses');
 			$tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
 			$asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
-			$file       = JFolder::files(JPATH_ROOT . $asset_path);
+			$file       = \JFolder::files(PATH_APP . $asset_path);
 			$param_path = $tool_path . $asset->get('id') . DS . $file[0];
 
 			// Delete the file (it still exists in the site directory)
@@ -949,8 +949,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed files
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
-		require_once(JPATH_ROOT . DS . 'components'  . DS . 'com_courses' . DS . 'tables' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php');
 
 		// First, delete the asset association
 		$assocObj = new CoursesTableAssetAssociation($this->db);
@@ -1008,14 +1008,14 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		jimport('joomla.filesystem.file');
 
 		$deleted = array();
-		$params  = JComponentHelper::getParams('com_courses');
+		$params  = Component::params('com_courses');
 		$path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;
 
 		// If the path exists, delete it!
-		if (JFolder::exists($path))
+		if (\JFolder::exists($path))
 		{
-			$deleted = JFolder::listFolderTree($path);
-			JFolder::delete($path);
+			$deleted = \JFolder::listFolderTree($path);
+			\JFolder::delete($path);
 		}
 
 		// Then we'll delete the asset entry itself
@@ -1031,7 +1031,9 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'asset_id' => $assetObj->id,
 				'deleted'  => $deleted
 			),
-			200, 'OK');
+			200,
+			'OK'
+		);
 		return;
 	}
 
@@ -1054,7 +1056,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Include needed file(s)
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
 
 		// Grab incoming id, if applicable
 		$id       = Request::getInt('id', null);
@@ -1073,13 +1075,13 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$path     = $basePath . $filename;
 		$dirname  = dirname($path);
 
-		if (!is_file(JPATH_ROOT . $path) || $dirname != rtrim($basePath, DS))
+		if (!is_file(PATH_APP . $path) || $dirname != rtrim($basePath, DS))
 		{
 			$this->setMessage('Illegal file path', 500, 'Internal server error');
 			return;
 		}
 
-		unlink(JPATH_ROOT . $path);
+		unlink(PATH_APP . $path);
 
 		// Return message
 		$this->setMessage('File deleted', 200, 'OK');
@@ -1097,7 +1099,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$this->setMessageType($this->format);
 
 		// Get our asset group object
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.association.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php');
 		$assetAssocationObj = new CoursesTableAssetAssociation($this->db);
 
 		$assets   = Request::getVar('asset', array());
@@ -1157,7 +1159,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get our asset object
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+		require_once(dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php');
 		$asset = new CoursesModelAsset($id);
 
 		// Make sure we have an asset model
@@ -1240,14 +1242,14 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function formImage()
 	{
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php';
 
 		$id = Request::getInt('id', 0);
 		$version = Request::getInt('version', false);
 
 		$filename = Request::getVar('file', '');
 		$filename = urldecode($filename);
-		$filename = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
+		$filename = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
 
 		// Ensure the file exist
 		if (!file_exists($filename))
@@ -1260,7 +1262,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		// Add silly simple security check
 		$token      = Request::getString('token', false);
 		$session_id = \JFactory::getSession()->getId();
-		$secret     = \JFactory::getConfig()->getValue('secret');
+		$secret     = Config::get('secret');
 		$hash       = hash('sha256', $session_id . ':' . $secret);
 
 		if ($token !== $hash)
@@ -1293,7 +1295,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType($this->format);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'prerequisite.php';
 
 		$tbl = new CoursesTablePrerequisites($this->db);
 		$tbl->set('item_scope', Request::getWord('item_scope', 'asset'));
@@ -1323,7 +1325,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType($this->format);
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'prerequisite.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'prerequisite.php';
 
 		if (!$id = Request::getInt('id', false))
 		{
@@ -1398,9 +1400,9 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$user_id = $user->get('uidNumber');
 
 		// Make sure a few things are included
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'member.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'memberBadge.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section' . DS . 'badge.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'memberBadge.php';
 
 		// Get section from provider badge id
 		$section_badge = CoursesModelSectionBadge::loadByProviderBadgeId($badge_id);
@@ -1532,7 +1534,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$section_alias  = $parts[1];
 		}
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 		$course = CoursesModelCourse::getInstance($course_alias);
 		$course->offering($offering_alias);
@@ -1572,7 +1574,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$now = \JFactory::getDate()->toSql();
 
 		// Save the unity details
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'asset.unity.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.unity.php';
 		$unity = new CoursesTableAssetUnity($this->db);
 		$unity->set('member_id', $member_id);
 		$unity->set('asset_id', $asset_id);
@@ -1586,7 +1588,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Now set/update the gradebook item
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'grade.book.php';
 		$gradebook = new CoursesTableGradeBook($this->db);
 		$gradebook->loadByUserAndAssetId($member_id, $asset_id);
 

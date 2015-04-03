@@ -17,7 +17,7 @@ class UsersControllerMail extends JControllerLegacy
 	public function send()
 	{
 		// Check for request forgeries.
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$model = $this->getModel('Mail');
 		if ($model->send()) {
@@ -33,7 +33,7 @@ class UsersControllerMail extends JControllerLegacy
 	public function cancel()
 	{
 		// Check for request forgeries.
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 		$this->setRedirect('index.php');
 	}
 }

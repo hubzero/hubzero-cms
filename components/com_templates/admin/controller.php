@@ -33,18 +33,18 @@ class TemplatesController extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		// Load the submenu.
-		TemplatesHelper::addSubmenu(JRequest::getCmd('view', 'styles'));
+		TemplatesHelper::addSubmenu(Request::getCmd('view', 'styles'));
 
-		$view		= JRequest::getCmd('view', 'styles');
-		$layout 	= JRequest::getCmd('layout', 'default');
-		$id			= JRequest::getInt('id');
+		$view   = Request::getCmd('view', 'styles');
+		$layout = Request::getCmd('layout', 'default');
+		$id     = Request::getInt('id');
 
 		// Check for edit form.
 		if ($view == 'style' && $layout == 'edit' && !$this->checkEditId('com_templates.edit.style', $id)) {
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_templates&view=styles', false));
+			$this->setRedirect(Route::url('index.php?option=com_templates&view=styles', false));
 
 			return false;
 		}
@@ -57,7 +57,7 @@ class TemplatesController extends JControllerLegacy
 	*/
 	function preview()
 	{
-		JRequest::setVar('view', 'prevuuw');
+		Request::setVar('view', 'prevuuw');
 		parent::display();
 	}
 }

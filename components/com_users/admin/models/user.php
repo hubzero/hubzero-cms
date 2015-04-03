@@ -192,7 +192,7 @@ class UsersModelUser extends JModelAdmin
 
 		if ($data['block'] && $pk == $my->id && !$my->block)
 		{
-			$this->setError(JText::_('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+			$this->setError(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
 
 			return false;
 		}
@@ -213,7 +213,7 @@ class UsersModelUser extends JModelAdmin
 
 			if (!$stillSuperAdmin)
 			{
-				$this->setError(JText::_('COM_USERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
+				$this->setError(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
 
 				return false;
 			}
@@ -265,7 +265,7 @@ class UsersModelUser extends JModelAdmin
 
 		if (in_array($user->id, $pks))
 		{
-			$this->setError(JText::_('COM_USERS_USERS_ERROR_CANNOT_DELETE_SELF'));
+			$this->setError(Lang::txt('COM_USERS_USERS_ERROR_CANNOT_DELETE_SELF'));
 
 			return false;
 		}
@@ -305,7 +305,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JERROR_CORE_DELETE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JERROR_CORE_DELETE_NOT_PERMITTED'));
 				}
 			}
 			else
@@ -350,7 +350,7 @@ class UsersModelUser extends JModelAdmin
 			{
 				// Cannot block yourself.
 				unset($pks[$i]);
-				JError::raiseWarning(403, JText::_('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
+				JError::raiseWarning(403, Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
 			}
 			elseif ($table->load($pk))
 			{
@@ -370,7 +370,7 @@ class UsersModelUser extends JModelAdmin
 					// Skip changing of same state
 					if ($table->block == $value)
 					{
-						JError::raiseNotice(405, JText::_('COM_USERS_USERS_ERROR_CANNOT_BLOCK_ALREADY_BLOCKED'));
+						JError::raiseNotice(405, Lang::txt('COM_USERS_USERS_ERROR_CANNOT_BLOCK_ALREADY_BLOCKED'));
 						unset($pks[$i]);
 						continue;
 					}
@@ -430,7 +430,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}
@@ -522,7 +522,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}
@@ -606,7 +606,7 @@ class UsersModelUser extends JModelAdmin
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 				}
 			}
 		}
@@ -639,7 +639,7 @@ class UsersModelUser extends JModelAdmin
 
 		if (empty($pks))
 		{
-			$this->setError(JText::_('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			$this->setError(Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
 
 			return false;
 		}
@@ -660,7 +660,7 @@ class UsersModelUser extends JModelAdmin
 
 		if (!$done)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
 
 			return false;
 		}
@@ -692,7 +692,7 @@ class UsersModelUser extends JModelAdmin
 		// Non-super admin cannot work with super-admin group
 		if ((!JFactory::getUser()->get('isRoot') && JAccess::checkGroup($group_id, 'core.admin')) || $group_id < 1)
 		{
-			$this->setError(JText::_('COM_USERS_ERROR_INVALID_GROUP'));
+			$this->setError(Lang::txt('COM_USERS_ERROR_INVALID_GROUP'));
 
 			return false;
 		}
@@ -771,7 +771,7 @@ class UsersModelUser extends JModelAdmin
 			// If we have no users to process, throw an error to notify the user
 			if (!$groups)
 			{
-				$this->setError(JText::_('COM_USERS_ERROR_NO_ADDITIONS'));
+				$this->setError(Lang::txt('COM_USERS_ERROR_NO_ADDITIONS'));
 
 				return false;
 			}

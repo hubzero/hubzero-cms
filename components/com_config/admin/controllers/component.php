@@ -65,9 +65,9 @@ class Component extends AdminController
 		$model = new Models\Component();
 
 		// Access check.
-		if (!$this->juser->authorise('core.admin', $model->getState('component.option')))
+		if (!User::authorise('core.admin', $model->getState('component.option')))
 		{
-			return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+			return \JError::raiseWarning(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$form = $model->getForm();
@@ -76,7 +76,7 @@ class Component extends AdminController
 		// Check for errors.
 		if (count($errors = $this->getErrors()))
 		{
-			\JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -88,9 +88,9 @@ class Component extends AdminController
 
 		// Get the document object.
 		$document = \JFactory::getDocument();
-		$document->setTitle(\JText::_('JGLOBAL_EDIT_PREFERENCES'));
+		$document->setTitle(Lang::txt('JGLOBAL_EDIT_PREFERENCES'));
 
-		\JRequest::setVar('hidemainmenu', true);
+		Request::setVar('hidemainmenu', true);
 
 		$this->view
 			->set('model', $model)
@@ -109,7 +109,7 @@ class Component extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		\JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set FTP credentials, if given.
 		\JClientHelper::setCredentialsFromRequest('ftp');
@@ -118,14 +118,14 @@ class Component extends AdminController
 		$app    = \JFactory::getApplication();
 		$model  = new Models\Component(); //$this->getModel('Component');
 		$form   = $model->getForm();
-		$data   = \JRequest::getVar('jform', array(), 'post', 'array');
-		$id     = \JRequest::getInt('id');
-		$option = \JRequest::getCmd('component');
+		$data   = Request::getVar('jform', array(), 'post', 'array');
+		$id     = Request::getInt('id');
+		$option = Request::getCmd('component');
 
 		// Check if the user is authorized to do this.
 		if (!$this->juser->authorise('core.admin', $option))
 		{
-			$this->setRedirect('index.php', \JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->setRedirect('index.php', \Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -155,7 +155,9 @@ class Component extends AdminController
 			$app->setUserState($this->_option . '.config.global.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(\JRoute::_('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false));
+			$this->setRedirect(
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false)
+			);
 			return false;
 		}
 
@@ -174,9 +176,9 @@ class Component extends AdminController
 			$app->setUserState($this->_option . '.config.global.data', $data);
 
 			// Save failed, go back to the screen and display a notice.
-			$message = \JText::sprintf('JERROR_SAVE_FAILED', $model->getError());
+			$message = \Lang::txt('JERROR_SAVE_FAILED', $model->getError());
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component',
+				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component', false),
 				$message,
 				'error'
 			);
@@ -184,18 +186,20 @@ class Component extends AdminController
 		}
 
 		// Set the redirect based on the task.
-		switch (\JRequest::getCmd('task'))
+		switch (Request::getCmd('task'))
 		{
 			case 'apply':
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&refresh=1',
-					\JText::_('COM_CONFIG_SAVE_SUCCESS')
+					Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&refresh=1', false),
+					Lang::txt('COM_CONFIG_SAVE_SUCCESS')
 				);
 				break;
 
 			case 'save':
 			default:
-				$this->setRedirect('index.php?option=' . $this->_option . '&view=close&tmpl=component');
+				$this->setRedirect(
+					Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component', false)
+				);
 				break;
 		}
 	}

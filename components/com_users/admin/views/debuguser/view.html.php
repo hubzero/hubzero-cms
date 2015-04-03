@@ -26,9 +26,9 @@ class UsersViewDebugUser extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Access check.
-		if (!JFactory::getUser()->authorise('core.manage', 'com_users') || !JFactory::getConfig()->get('debug'))
+		if (!User::authorise('core.manage', 'com_users') || !Config::get('debug'))
 		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+			return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$this->actions		= $this->get('DebugActions');
@@ -40,8 +40,9 @@ class UsersViewDebugUser extends JViewLegacy
 		$this->components	= UsersHelperDebug::getComponents();
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -56,8 +57,8 @@ class UsersViewDebugUser extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::sprintf('COM_USERS_VIEW_DEBUG_USER_TITLE', $this->user->id, $this->user->name), 'user');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_DEBUG_USER_TITLE', $this->user->id, $this->user->name), 'user');
 
-		JToolBarHelper::help('JHELP_USERS_DEBUG_USERS');
+		Toolbar::help('JHELP_USERS_DEBUG_USERS');
 	}
 }

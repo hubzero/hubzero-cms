@@ -22,13 +22,13 @@ class TemplatesHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		JSubMenuHelper::addEntry(
-			JText::_('COM_TEMPLATES_SUBMENU_STYLES'),
+		Submenu::addEntry(
+			Lang::txt('COM_TEMPLATES_SUBMENU_STYLES'),
 			'index.php?option=com_templates&view=styles',
 			$vName == 'styles'
 		);
-		JSubMenuHelper::addEntry(
-			JText::_('COM_TEMPLATES_SUBMENU_TEMPLATES'),
+		Submenu::addEntry(
+			Lang::txt('COM_TEMPLATES_SUBMENU_TEMPLATES'),
 			'index.php?option=com_templates&view=templates',
 			$vName == 'templates'
 		);
@@ -41,13 +41,12 @@ class TemplatesHelper
 	 */
 	public static function getActions()
 	{
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$result = new JObject;
 
 		$actions = JAccess::getActions('com_templates');
 
 		foreach ($actions as $action) {
-			$result->set($action->name, $user->authorise($action->name, 'com_templates'));
+			$result->set($action->name, User::authorise($action->name, 'com_templates'));
 		}
 
 		return $result;
@@ -61,9 +60,9 @@ class TemplatesHelper
 	public static function getClientOptions()
 	{
 		// Build the filter options.
-		$options	= array();
-		$options[]	= JHtml::_('select.option', '0', JText::_('JSITE'));
-		$options[]	= JHtml::_('select.option', '1', JText::_('JADMINISTRATOR'));
+		$options = array();
+		$options[] = JHtml::_('select.option', '0', Lang::txt('JSITE'));
+		$options[] = JHtml::_('select.option', '1', Lang::txt('JADMINISTRATOR'));
 
 		return $options;
 	}

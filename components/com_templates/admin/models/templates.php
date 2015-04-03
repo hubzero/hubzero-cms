@@ -148,7 +148,7 @@ class TemplatesModelTemplates extends JModelList
 		$this->setState('filter.client_id', $clientId);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_templates');
+		$params = Component::params('com_templates');
 		$this->setState('params', $params);
 
 		// List state information.

@@ -39,11 +39,11 @@ class LanguagesModelLanguage extends JModelAdmin
 	 */
 	protected function populateState()
 	{
-		$app		= JFactory::getApplication('administrator');
-		$params		= JComponentHelper::getParams('com_languages');
+		$app = JFactory::getApplication('administrator');
+		$params = Component::params('com_languages');
 
 		// Load the User state.
-		$langId = (int) JRequest::getInt('lang_id');
+		$langId = (int) Request::getInt('lang_id');
 		$this->setState('language.id', $langId);
 
 		// Load the parameters.
@@ -61,8 +61,8 @@ class LanguagesModelLanguage extends JModelAdmin
 	public function getItem($langId = null)
 	{
 		// Initialise variables.
-		$langId	= (!empty($langId)) ? $langId : (int) $this->getState('language.id');
-		$false		= false;
+		$langId = (!empty($langId)) ? $langId : (int) $this->getState('language.id');
+		$false  = false;
 
 		// Get a member row instance.
 		$table = $this->getTable();
@@ -79,7 +79,7 @@ class LanguagesModelLanguage extends JModelAdmin
 		// Set a valid accesslevel in case '0' is stored due to a bug in the installation SQL.
 		if ($table->access == '0')
 		{
-			$table->access = (int) JFactory::getConfig()->get('access');
+			$table->access = (int) Config::get('access');
 		}
 
 		$properties = $table->getProperties(1);
@@ -136,8 +136,8 @@ class LanguagesModelLanguage extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$langId	= (int) $this->getState('language.id');
-		$isNew	= true;
+		$langId = (int) $this->getState('language.id');
+		$isNew  = true;
 
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('extension');

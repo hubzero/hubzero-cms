@@ -14,10 +14,10 @@ defined('_JEXEC') or die;
 	$k = 0;
 	foreach ($fieldSets as $name => $fieldSet) :
 		$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_TEMPLATES_'.$name.'_FIELDSET_LABEL';
-		echo JHtml::_('sliders.panel', JText::_($label), $name.'-options');
+		echo JHtml::_('sliders.panel', Lang::txt($label), $name.'-options');
 
 			if (isset($fieldSet->description) && trim($fieldSet->description)) :
-				echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+				echo '<p class="tip">'.$this->escape(Lang::txt($fieldSet->description)).'</p>';
 			endif;
 		$k++;
 			?>
@@ -33,5 +33,5 @@ defined('_JEXEC') or die;
 		</fieldset>
 	<?php endforeach;  ?>
 	<?php if (!$k) { ?>
-		<p class="warning"><?php echo JText::_('No options found for this template.'); ?></p>
+		<p class="warning"><?php echo Lang::txt('No options found for this template.'); ?></p>
 	<?php } ?>

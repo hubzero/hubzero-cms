@@ -64,7 +64,7 @@ class UsersModelUsers extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		// Adjust the context to support modal layouts.
-		if ($layout = JRequest::getVar('layout', 'default'))
+		if ($layout = Request::getVar('layout', 'default'))
 		{
 			$this->context .= '.'.$layout;
 		}
@@ -88,14 +88,14 @@ class UsersModelUsers extends JModelList
 		$range = $this->getUserStateFromRequest($this->context.'.filter.range', 'filter_range');
 		$this->setState('filter.range', $range);
 
-		$groups = json_decode(base64_decode(JRequest::getVar('groups', '', 'default', 'BASE64')));
+		$groups = json_decode(base64_decode(Request::getVar('groups', '', 'default', 'BASE64')));
 		if (isset($groups))
 		{
 			JArrayHelper::toInteger($groups);
 		}
 		$this->setState('filter.groups', $groups);
 
-		$excluded = json_decode(base64_decode(JRequest::getVar('excluded', '', 'default', 'BASE64')));
+		$excluded = json_decode(base64_decode(Request::getVar('excluded', '', 'default', 'BASE64')));
 		if (isset($excluded))
 		{
 			JArrayHelper::toInteger($excluded);

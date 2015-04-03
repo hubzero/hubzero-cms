@@ -55,7 +55,7 @@ class UsersViewLogin extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ class UsersViewLogin extends JViewLegacy
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if ($return = JRequest::getVar('return', null, 'GET', 'BASE64'))
+		if ($return = Request::getVar('return', null, 'GET', 'BASE64'))
 		{
 			$decoded_return = base64_decode($return);
 			$query  = parse_url($decoded_return);
@@ -100,7 +100,7 @@ class UsersViewLogin extends JViewLegacy
 		// Set return if is isn't already
 		if (is_null($return) && is_object($active))
 		{
-			$return = $active->params->get('login_redirect_url', JRoute::_('index.php?option=com_members&task=myaccount'));
+			$return = $active->params->get('login_redirect_url', Route::url('index.php?option=com_members&task=myaccount'));
 			$return = base64_encode($return);
 		}
 
@@ -129,7 +129,7 @@ class UsersViewLogin extends JViewLegacy
 		}
 
 		// Override $multiAuth if authenticator is set to hubzero
-		if (JRequest::getWord('authenticator') == 'hubzero')
+		if (Request::getWord('authenticator') == 'hubzero')
 		{
 			$multiAuth = false;
 		}
@@ -143,7 +143,7 @@ class UsersViewLogin extends JViewLegacy
 		$this->remember_me_default = $remember_me_default;
 
 		// if authenticator is specified call plugin display method, otherwise (or if method does not exist) use default
-		$authenticator = JRequest::getVar('authenticator', '', 'method');
+		$authenticator = Request::getVar('authenticator', '', 'method');
 
 		JPluginHelper::importPlugin('authentication');
 
@@ -194,7 +194,7 @@ class UsersViewLogin extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', $login ? JText::_('JLOGIN') : JText::_('JLOGOUT'));
+			$this->params->def('page_heading', $login ? Lang::txt('JLOGIN') : Lang::txt('JLOGOUT'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -202,10 +202,10 @@ class UsersViewLogin extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

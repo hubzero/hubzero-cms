@@ -18,14 +18,14 @@ JHtml::_('behavior.formvalidation');
 	<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
 <?php endif; ?>
 
-	<form id="member-registration" action="<?php echo JRoute::_('index.php?option=com_users&task=registration.register'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
+	<form id="member-registration" action="<?php echo Route::url('index.php?option=com_users&task=registration.register'); ?>" method="post" class="form-validate" enctype="multipart/form-data">
 <?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
 	<?php $fields = $this->form->getFieldset($fieldset->name);?>
 	<?php if (count($fields)):?>
 		<fieldset>
 		<?php if (isset($fieldset->label)):// If the fieldset has a label set, display it as the legend.
 		?>
-			<legend><?php echo JText::_($fieldset->label);?></legend>
+			<legend><?php echo Lang::txt($fieldset->label);?></legend>
 		<?php endif;?>
 			<dl>
 		<?php foreach ($fields as $field):// Iterate through the fields in the set and display them.?>
@@ -35,7 +35,7 @@ JHtml::_('behavior.formvalidation');
 				<dt>
 					<?php echo $field->label; ?>
 					<?php if (!$field->required && $field->type!='Spacer'): ?>
-						<span class="optional"><?php echo JText::_('COM_USERS_OPTIONAL'); ?></span>
+						<span class="optional"><?php echo Lang::txt('COM_USERS_OPTIONAL'); ?></span>
 					<?php endif; ?>
 				</dt>
 				<dd><?php echo ($field->type!='Spacer') ? $field->input : "&#160;"; ?></dd>
@@ -46,9 +46,9 @@ JHtml::_('behavior.formvalidation');
 	<?php endif;?>
 <?php endforeach;?>
 		<div>
-			<button type="submit" class="validate"><?php echo JText::_('JREGISTER');?></button>
-			<?php echo JText::_('COM_USERS_OR');?>
-			<a href="<?php echo JRoute::_('');?>" title="<?php echo JText::_('JCANCEL');?>"><?php echo JText::_('JCANCEL');?></a>
+			<button type="submit" class="validate"><?php echo Lang::txt('JREGISTER');?></button>
+			<?php echo Lang::txt('COM_USERS_OR');?>
+			<a href="<?php echo Route::url('');?>" title="<?php echo Lang::txt('JCANCEL');?>"><?php echo Lang::txt('JCANCEL');?></a>
 			<input type="hidden" name="option" value="com_users" />
 			<input type="hidden" name="task" value="registration.register" />
 			<?php echo JHtml::_('form.token');?>

@@ -14,7 +14,6 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 
-$user = JFactory::getUser();
 $canDo = TemplatesHelper::getActions();
 ?>
 <script type="text/javascript">
@@ -26,10 +25,10 @@ $canDo = TemplatesHelper::getActions();
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_templates&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_templates&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('JDETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('JDETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?>
@@ -46,8 +45,8 @@ $canDo = TemplatesHelper::getActions();
 				<div class="input-wrap">
 					<?php echo $this->form->getLabel('client_id'); ?>
 					<?php echo $this->form->getInput('client_id'); ?>
-					<label for="client-readonly"><?php echo JText::_('Client');?></label>
-					<input type="text" id="client-readonly" value="<?php echo $this->item->client_id == 0 ? JText::_('JSITE') : JText::_('JADMINISTRATOR'); ?>" class="readonly" readonly="readonly" />
+					<label for="client-readonly"><?php echo Lang::txt('Client');?></label>
+					<input type="text" id="client-readonly" value="<?php echo $this->item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>" class="readonly" readonly="readonly" />
 				</div>
 			</div>
 			<div class="clr"></div>
@@ -71,14 +70,14 @@ $canDo = TemplatesHelper::getActions();
 					<?php if ($this->item->xml) : ?>
 						<?php if ($text = trim($this->item->xml->description)) : ?>
 							<tr>
-								<th><?php echo JText::_('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></th>
-								<td><?php echo JText::_($text); ?></td>
+								<th><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></th>
+								<td><?php echo Lang::txt($text); ?></td>
 							</tr>
 						<?php endif; ?>
 					<?php else : ?>
 						<tr>
 							<td colspan="2">
-								<p class="error"><?php echo JText::_('COM_TEMPLATES_ERR_XML'); ?></p>
+								<p class="error"><?php echo Lang::txt('COM_TEMPLATES_ERR_XML'); ?></p>
 							</td>
 						</tr>
 					<?php endif; ?>
@@ -102,7 +101,7 @@ $canDo = TemplatesHelper::getActions();
 		<?php echo JHtml::_('sliders.end'); ?>
 	</div>
 
-	<?php if ($user->authorise('core.edit', 'com_menu') && $this->item->client_id==0):?>
+	<?php if (User::authorise('core.edit', 'com_menu') && $this->item->client_id==0):?>
 		<?php if ($canDo->get('core.edit.state')) : ?>
 			<div class="width-60 fltlft">
 			<?php echo $this->loadTemplate('assignment'); ?>

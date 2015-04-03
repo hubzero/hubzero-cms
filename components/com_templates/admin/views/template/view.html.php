@@ -24,13 +24,14 @@ class TemplatesViewTemplate extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->files	= $this->get('Files');
-		$this->state	= $this->get('State');
-		$this->template	= $this->get('Template');
+		$this->files    = $this->get('Files');
+		$this->state    = $this->get('State');
+		$this->template = $this->get('Template');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -45,14 +46,14 @@ class TemplatesViewTemplate extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
-		$user		= JFactory::getUser();
-		$canDo		= TemplatesHelper::getActions();
+		Request::setVar('hidemainmenu', true);
 
-		JToolBarHelper::title(JText::_('COM_TEMPLATES_MANAGER_VIEW_TEMPLATE'), 'thememanager');
+		$canDo = TemplatesHelper::getActions();
 
-		JToolBarHelper::cancel('template.cancel', 'JTOOLBAR_CLOSE');
-		JToolBarHelper::divider();
-		JToolBarHelper::help('template');
+		Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_VIEW_TEMPLATE'), 'thememanager');
+
+		Toolbar::cancel('template.cancel', 'JTOOLBAR_CLOSE');
+		Toolbar::divider();
+		Toolbar::help('template');
 	}
 }

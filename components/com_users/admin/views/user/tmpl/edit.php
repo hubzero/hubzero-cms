@@ -29,10 +29,10 @@ $fieldsets = $this->form->getFieldsets();
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" enctype="multipart/form-data">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_USERS_USER_ACCOUNT_DETAILS'); ?></span></legend>
 
 			<?php foreach ($this->form->getFieldset('user_details') as $field) :?>
 				<div class="input-wrap">
@@ -44,7 +44,7 @@ $fieldsets = $this->form->getFieldsets();
 
 		<?php if ($this->grouplist) :?>
 		<fieldset id="user-groups" class="adminform">
-			<legend><?php echo JText::_('COM_USERS_ASSIGNED_GROUPS'); ?></legend>
+			<legend><?php echo Lang::txt('COM_USERS_ASSIGNED_GROUPS'); ?></legend>
 
 			<?php echo $this->loadTemplate('groups');?>
 		</fieldset>
@@ -59,7 +59,7 @@ $fieldsets = $this->form->getFieldsets();
 			if ($fieldset->name == 'user_details') :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo JHtml::_('sliders.panel', Lang::txt($fieldset->label), $fieldset->name);
 		?>
 		<fieldset class="panelform">
 			<?php foreach ($this->form->getFieldset($fieldset->name) as $field): ?>

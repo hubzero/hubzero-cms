@@ -65,13 +65,13 @@ class UsersControllerUser extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('User', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_users&view=users' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::url('index.php?option=com_users&view=users' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
@@ -88,7 +88,7 @@ class UsersControllerUser extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = null)
 	{
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$data = Request::getVar('jform', array(), 'post', 'array');
 
 		// TODO: JForm should really have a validation handler for this.
 		if (isset($data['password']) && isset($data['password2']))
@@ -96,8 +96,8 @@ class UsersControllerUser extends JControllerForm
 			// Check the passwords match.
 			if ($data['password'] != $data['password2'])
 			{
-				$this->setMessage(JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'warning');
-				$this->setRedirect(JRoute::_('index.php?option=com_users&view=user&layout=edit', false));
+				$this->setMessage(Lang::txt('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'warning');
+				$this->setRedirect(Route::url('index.php?option=com_users&view=user&layout=edit', false));
 			}
 
 			unset($data['password2']);

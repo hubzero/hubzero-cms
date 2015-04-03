@@ -12,17 +12,17 @@ JHtml::_('behavior.formvalidation');
 <?php endif; ?>
 
 <section class="main section">
-	<form action="<?php echo JRoute::_( 'index.php?option=com_users&task=remind.remind' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
+	<form action="<?php echo Route::url( 'index.php?option=com_users&task=remind.remind' ); ?>" method="post" class="josForm form-validate" name="hubForm" id="hubForm">
 		<div class="explaination">
 			<p class="info">
-				If you already know your username, and only need your password reset, <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">go here now</a>.
+				If you already know your username, and only need your password reset, <a href="<?php echo Route::url('index.php?option=com_users&view=reset'); ?>">go here now</a>.
 			</p>
 		</div>
 		<fieldset>
 			<legend>Recover Username(s)</legend>
 
 			<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
-				<p><?php echo JText::_($fieldset->label); ?></p>
+				<p><?php echo Lang::txt($fieldset->label); ?></p>
 				<?php foreach ($this->form->getFieldset($fieldset->name) as $name => $field): ?>
 					<?php echo $field->label; ?>
 					<?php echo $field->input; ?>
@@ -33,7 +33,7 @@ JHtml::_('behavior.formvalidation');
 				<h4>What if I have also lost my password?</h4>
 				<p>
 					Fill out this form to retrieve your username(s). Then go to the 
-					<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">password reset page</a>.
+					<a href="<?php echo Route::url('index.php?option=com_users&view=reset'); ?>">password reset page</a>.
 				</p>
 
 				<h4>What if I have multiple accounts?</h4>
@@ -51,7 +51,7 @@ JHtml::_('behavior.formvalidation');
 		</fieldset>
 		<div class="clear"></div>
 
-		<p class="submit"><button type="submit" class="validate"><?php echo JText::_('Submit'); ?></button></p>
+		<p class="submit"><button type="submit" class="validate"><?php echo Lang::txt('Submit'); ?></button></p>
 		<?php echo JHTML::_( 'form.token' ); ?>
 	</form>
 </div><!-- / .main section -->

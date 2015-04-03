@@ -35,11 +35,11 @@ defined('_JEXEC') or die;
 	<div class="submenu-box">
 		<div class="submenu-pad">
 			<ul id="submenu" class="configuration">
-				<li><a href="#page-site" id="site" class="active"><?php echo JText::_('JSITE'); ?></a></li>
-				<li><a href="#page-system" id="system"><?php echo JText::_('COM_CONFIG_SYSTEM'); ?></a></li>
-				<li><a href="#page-server" id="server"><?php echo JText::_('COM_CONFIG_SERVER'); ?></a></li>
-				<li><a href="#page-permissions" id="permissions"><?php echo JText::_('COM_CONFIG_PERMISSIONS'); ?></a></li>
-				<li><a href="#page-filters" id="filters"><?php echo JText::_('COM_CONFIG_TEXT_FILTERS')?></a></li>
+				<li><a href="#page-site" id="site" class="active"><?php echo Lang::txt('JSITE'); ?></a></li>
+				<li><a href="#page-system" id="system"><?php echo Lang::txt('COM_CONFIG_SYSTEM'); ?></a></li>
+				<li><a href="#page-server" id="server"><?php echo Lang::txt('COM_CONFIG_SERVER'); ?></a></li>
+				<li><a href="#page-permissions" id="permissions"><?php echo Lang::txt('COM_CONFIG_PERMISSIONS'); ?></a></li>
+				<li><a href="#page-filters" id="filters"><?php echo Lang::txt('COM_CONFIG_TEXT_FILTERS')?></a></li>
 			</ul>
 			<div class="clr"></div>
 		</div>

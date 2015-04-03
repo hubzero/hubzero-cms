@@ -65,7 +65,7 @@ class Hubgraph extends SiteController
 
 		$this->req  = new Request($_GET);
 		$this->conf = Configuration::instance();
-		$this->perPage = \JFactory::getConfig()->get('list_limit', 50);
+		$this->perPage = \Config::get('list_limit', 50);
 
 		$this->registerTask('page', 'index');
 		$this->registerTask('__default', 'index');
@@ -90,7 +90,7 @@ class Hubgraph extends SiteController
 
 				// Redirect back to this component wil the fallback flag set
 				// so it knows to load the default, basic controller.
-				$terms = \JRequest::getVar('terms', '', 'get');
+				$terms = \Request::getVar('terms', '', 'get');
 				$this->setRedirect(
 					Route::url('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
 					(JDEBUG ? $ex->getMessage() : null),
@@ -117,7 +117,7 @@ class Hubgraph extends SiteController
 		$this->view->users     = $this->req->getContributors();
 		$this->view->groups    = $this->req->getGroup();
 		$this->view->domainMap = $this->req->getDomainMap();
-		$this->view->loggedIn  = (bool) \JFactory::getUser()->get('id');
+		$this->view->loggedIn  = (bool) \User::get('id');
 		$this->view->perPage   = $this->perPage;
 		ksort($this->view->domainMap);
 
@@ -191,7 +191,7 @@ class Hubgraph extends SiteController
 		$this->view->users     = $this->req->getContributors();
 		$this->view->groups    = $this->req->getGroup();
 		$this->view->domainMap = $this->req->getDomainMap();
-		$this->view->loggedIn  = (bool) \JFactory::getUser()->get('id');
+		$this->view->loggedIn  = (bool) \User::get('id');
 		$this->view->perPage   = $this->perPage;
 		ksort($this->view->domainMap);
 

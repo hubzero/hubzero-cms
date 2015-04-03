@@ -79,7 +79,7 @@ class UsersViewLogout extends JViewLegacy
 				$params->loadINI( file_get_contents($inifile) );
 			}
 
-			$params->def('page_title', JText::_( 'Logout' ));
+			$params->def('page_title', Lang::txt( 'Logout' ));
 		}
 
 		$type = 'logout';
@@ -88,7 +88,7 @@ class UsersViewLogout extends JViewLegacy
 		$params->def( 'show_page_title', 1 );
 		if (!$params->get( 'page_title'))
 		{
-			$params->set('page_title', JText::_( 'Logout' ));
+			$params->set('page_title', Lang::txt( 'Logout' ));
 		}
 
 		if (!$item)
@@ -99,13 +99,13 @@ class UsersViewLogout extends JViewLegacy
 		$params->def( 'pageclass_sfx', '' );
 		$params->def( 'logout', '/');
 		$params->def( 'description_logout', 1 );
-		$params->def( 'description_logout_text', JText::_( 'LOGOUT_DESCRIPTION' ) );
+		$params->def( 'description_logout_text', Lang::txt( 'LOGOUT_DESCRIPTION' ) );
 		$params->def( 'image_logout', 'key.jpg' );
 		$params->def( 'image_logout_align', 'right' );
 		$usersConfig =  Component::params( 'com_users' );
 		$params->def( 'registration', $usersConfig->get( 'allowUserRegistration' ) );
 
-		$title = JText::_( 'Logout');
+		$title = Lang::txt( 'Logout');
 
 		// Set page title
 		$document->setTitle( $title );
@@ -118,7 +118,7 @@ class UsersViewLogout extends JViewLegacy
 		}
 
 		// Get the return URL
-		if (!$url = JRequest::getVar('return', '', 'method', 'base64'))
+		if (!$url = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$url = base64_encode($params->get($type));
 		}

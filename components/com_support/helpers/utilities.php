@@ -177,7 +177,6 @@ class Utilities
 	public static function getFilters()
 	{
 		$app = \JFactory::getApplication();
-		$config = \JFactory::getConfig();
 
 		// Query filters defaults
 		$filters = array();
@@ -193,7 +192,7 @@ class Utilities
 		$filters['sortdir']    = trim($app->getUserStateFromRequest('com_support.tickets.sortdir', 'filter_order_Dir', 'DESC'));
 
 		// Paging vars
-		$filters['limit']      = $app->getUserStateFromRequest('com_support.tickets.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$filters['limit']      = $app->getUserStateFromRequest('com_support.tickets.limit', 'limit', Config::get('list_limit'), 'int');
 		$filters['start']      = $app->getUserStateFromRequest('com_support.tickets.limitstart', 'limitstart', 0, 'int');
 
 		// Incoming
@@ -271,8 +270,7 @@ class Utilities
 					{
 						if ($pieces[1] == 'me')
 						{
-							$juser = JFactory::getUser();
-							$pieces[1] = $juser->get('username');
+							$pieces[1] = User::get('username');
 						}
 						else if ($pieces[1] == 'none')
 						{

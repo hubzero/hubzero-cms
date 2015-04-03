@@ -120,8 +120,8 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Filter and validate the form data.
-		$data	= $form->filter($data);
-		$return	= $form->validate($data);
+		$data   = $form->filter($data);
+		$return = $form->validate($data);
 
 		// Check for an error.
 		if ($return instanceof Exception) {
@@ -144,21 +144,21 @@ class UsersModelReset extends JModelForm
 
 		// Check the token and user id.
 		if (empty($token) || empty($id)) {
-			return new JException(JText::_('COM_USERS_RESET_COMPLETE_TOKENS_MISSING'), 403);
+			return new Exception(Lang::txt('COM_USERS_RESET_COMPLETE_TOKENS_MISSING'), 403);
 		}
 
 		// Get the user object.
-		$user = JUser::getInstance($id);
+		$user = User::getInstance($id);
 
 		// Check for a user and that the tokens match.
 		if (empty($user) || $user->activation !== $token) {
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
 
 		// Make sure the user isn't blocked.
 		if ($user->block) {
-			$this->setError(JText::_('COM_USERS_USER_BLOCKED'));
+			$this->setError(Lang::txt('COM_USERS_USER_BLOCKED'));
 			return false;
 		}
 
@@ -167,7 +167,7 @@ class UsersModelReset extends JModelForm
 		$profile->load( $id );
 
 		if (\Hubzero\User\Helper::isXDomainUser($user->get('id'))) {
-			JError::raiseError( 403, JText::_('This is a linked account. To change your password you must change it using the procedures available where the account you are linked to is managed.') );
+			App::abort( 403, Lang::txt('This is a linked account. To change your password you must change it using the procedures available where the account you are linked to is managed.') );
 			return;
 		}
 
@@ -185,13 +185,13 @@ class UsersModelReset extends JModelForm
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php');
 
 		if (!$password1 || !$password2) {
-			$this->setError( JText::_('you must enter your new password twice to ensure we have it correct') );
+			$this->setError( Lang::txt('you must enter your new password twice to ensure we have it correct') );
 		} elseif ($password1 != $password2) {
-			$this->setError( JText::_('the new password and confirmation you entered do not match. Please try again') );
+			$this->setError( Lang::txt('the new password and confirmation you entered do not match. Please try again') );
 		} elseif (!MembersHelperUtility::validpassword($password1)) {
-			$this->setError( JText::_('the password you entered was invalid password. You may be using characters that are not allowed') );
+			$this->setError( Lang::txt('the password you entered was invalid password. You may be using characters that are not allowed') );
 		} elseif (!empty($msg)) {
-			$this->setError( JText::_('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
+			$this->setError( Lang::txt('the password does not meet site password requirements. Please choose a password meeting all the requirements listed below.') );
 		}
 
 		if ($this->getError()) {
@@ -204,7 +204,7 @@ class UsersModelReset extends JModelForm
 
 		// Save the changes
 		if (!$result) {
-			$this->setError( JText::_('There was an error changing your password.') );
+			$this->setError( Lang::txt('There was an error changing your password.') );
 			return false;
 		}
 
@@ -247,31 +247,31 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Get the token and user id from the confirmation process.
-		$app	= JFactory::getApplication();
-		$id		= $app->getUserState('com_users.reset.user', null);
+		$app = JFactory::getApplication();
+		$id  = $app->getUserState('com_users.reset.user', null);
 
 		// Get the user object.
-		$user = JUser::getInstance($id);
+		$user = User::getInstance($id);
 
-		$parts	= explode( ':', $user->activation );
-		$crypt	= $parts[0];
+		$parts = explode( ':', $user->activation );
+		$crypt = $parts[0];
 		if (!isset($parts[1])) {
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
-		$salt	= $parts[1];
+		$salt = $parts[1];
 		$testcrypt = JUserHelper::getCryptedPassword($data['token'], $salt);
 
 		// Verify the token
 		if (!($crypt == $testcrypt))
 		{
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
 
 		// Make sure the user isn't blocked.
 		if ($user->block) {
-			$this->setError(JText::_('COM_USERS_USER_BLOCKED'));
+			$this->setError(Lang::txt('COM_USERS_USER_BLOCKED'));
 			return false;
 		}
 
@@ -289,8 +289,6 @@ class UsersModelReset extends JModelForm
 	 */
 	public function processResetRequest($data)
 	{
-		$config	= JFactory::getConfig();
-
 		// Get the form.
 		$form = $this->getForm();
 
@@ -300,8 +298,8 @@ class UsersModelReset extends JModelForm
 		}
 
 		// Filter and validate the form data.
-		$data	= $form->filter($data);
-		$return	= $form->validate($data);
+		$data   = $form->filter($data);
+		$return = $form->validate($data);
 
 		// Check for an error.
 		if ($return instanceof Exception) {
@@ -330,13 +328,13 @@ class UsersModelReset extends JModelForm
 
 		// Check for an error.
 		if ($db->getErrorNum()) {
-			$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
+			$this->setError(Lang::txt('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
 			return false;
 		}
 
 		// Check for a user.
 		if (empty($userId)) {
-			$this->setError(JText::_('COM_USERS_INVALID_USERNAME'));
+			$this->setError(Lang::txt('COM_USERS_INVALID_USERNAME'));
 			return false;
 		}
 
@@ -345,13 +343,13 @@ class UsersModelReset extends JModelForm
 
 		// Make sure the user isn't blocked.
 		if ($user->block) {
-			$this->setError(JText::_('COM_USERS_USER_BLOCKED'));
+			$this->setError(Lang::txt('COM_USERS_USER_BLOCKED'));
 			return false;
 		}
 
 		// Make sure the user isn't a Super Admin.
 		if ($user->authorise('core.admin')) {
-			$this->setError(JText::_('COM_USERS_REMIND_SUPERADMIN_ERROR'));
+			$this->setError(Lang::txt('COM_USERS_REMIND_SUPERADMIN_ERROR'));
 			return false;
 		}
 
@@ -370,30 +368,30 @@ class UsersModelReset extends JModelForm
 
 		// Save the user to the database.
 		if (!$user->save(true)) {
-			return new JException(JText::sprintf('COM_USERS_USER_SAVE_FAILED', $user->getError()), 500);
+			return new Exception(Lang::txt('COM_USERS_USER_SAVE_FAILED', $user->getError()), 500);
 		}
 
 		// Assemble the password reset confirmation link.
-		$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
+		$mode = Config::get('force_ssl', 0) == 2 ? 1 : -1;
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
 		$link = 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
 
 		// Put together the email template data.
 		$data = $user->getProperties();
-		$data['fromname']	= $config->get('fromname');
-		$data['mailfrom']	= $config->get('mailfrom');
-		$data['sitename']	= $config->get('sitename');
-		$data['link_text']	= JRoute::_($link, false, $mode);
-		$data['link_html']	= JRoute::_($link, true, $mode);
-		$data['token']		= $token;
+		$data['fromname']  = Config::get('fromname');
+		$data['mailfrom']  = Config::get('mailfrom');
+		$data['sitename']  = Config::get('sitename');
+		$data['link_text'] = Route::url($link, false, $mode);
+		$data['link_html'] = Route::url($link, true, $mode);
+		$data['token']     = $token;
 
-		$subject = JText::sprintf(
+		$subject = Lang::txt(
 			'COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT',
 			$data['sitename']
 		);
 
-		$body = JText::sprintf(
+		$body = Lang::txt(
 			'COM_USERS_EMAIL_PASSWORD_RESET_BODY',
 			$data['sitename'],
 			$data['token'],
@@ -403,8 +401,9 @@ class UsersModelReset extends JModelForm
 		// Send the password reset request email.
 		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $user->email, $subject, $body);
 		// Check for an error.
-		if ($return !== true) {
-			return new JException(JText::_('COM_USERS_MAIL_FAILED'), 500);
+		if ($return !== true)
+		{
+			return new Exception(Lang::txt('COM_USERS_MAIL_FAILED'), 500);
 		}
 
 		// Push the user data into the session.

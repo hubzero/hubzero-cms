@@ -32,29 +32,29 @@ class UsersController extends JControllerLegacy
 		$document = JFactory::getDocument();
 
 		// Set the default view name and format from the Request.
-		$vName   = JRequest::getCmd('view', 'login');
+		$vName   = Request::getCmd('view', 'login');
 		$vFormat = $document->getType();
-		$lName   = JRequest::getCmd('layout', 'default');
+		$lName   = Request::getCmd('layout', 'default');
 
 		if ($view = $this->getView($vName, $vFormat)) {
 			// Do any specific processing by view.
 			switch ($vName) {
 				case 'registration':
-					JError::raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+					App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 					return;
 
 					// If the user is already logged in, redirect to the profile page.
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
 						// Redirect to profile page.
-						$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile', false));
+						$this->setRedirect(Route::url('index.php?option=com_users&view=profile', false));
 						return;
 					}
 
 					// Check if user registration is enabled
 					if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') == 0) {
 						// Registration is disabled - Redirect to login page.
-						$this->setRedirect(JRoute::_('index.php?option=com_users&view=login', false));
+						$this->setRedirect(Route::url('index.php?option=com_users&view=login', false));
 						return;
 					}
 
@@ -64,14 +64,14 @@ class UsersController extends JControllerLegacy
 
 				// Handle view specific models.
 				case 'profile':
-					JError::raiseError(403, JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
+					App::abort(403, Lang::txt('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'));
 					return;
 
 					// If the user is a guest, redirect to the login page.
 					$user = JFactory::getUser();
 					if ($user->get('guest') == 1) {
 						// Redirect to login page.
-						$this->setRedirect(JRoute::_('index.php?option=com_users&view=login', false));
+						$this->setRedirect(Route::url('index.php?option=com_users&view=login', false));
 						return;
 					}
 					$model = $this->getModel($vName);
@@ -87,7 +87,7 @@ class UsersController extends JControllerLegacy
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
 						// Redirect to profile page.
-						$this->setRedirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
+						$this->setRedirect(Route::url('index.php?option=com_members&task=myaccount', false));
 						return;
 					}
 
@@ -99,7 +99,7 @@ class UsersController extends JControllerLegacy
 					$user = JFactory::getUser();
 					if ($user->get('guest') != 1) {
 						// Redirect to profile page.
-						$this->setRedirect(JRoute::_('index.php?option=com_members&task=myaccount', false));
+						$this->setRedirect(Route::url('index.php?option=com_members&task=myaccount', false));
 						return;
 					}
 

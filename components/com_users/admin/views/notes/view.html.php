@@ -97,45 +97,45 @@ class UsersViewNotes extends JViewLegacy
 	{
 		$canDo = UsersHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_USERS_VIEW_NOTES_TITLE'), 'user');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_NOTES_TITLE'), 'user');
 
 		if ($canDo->get('core.create'))
 		{
-			JToolBarHelper::addNew('note.add');
+			Toolbar::addNew('note.add');
 		}
 
 		if ($canDo->get('core.edit'))
 		{
-			JToolBarHelper::editList('note.edit');
+			Toolbar::editList('note.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('notes.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('notes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			Toolbar::divider();
+			Toolbar::publish('notes.publish', 'JTOOLBAR_PUBLISH', true);
+			Toolbar::unpublish('notes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
-			JToolBarHelper::divider();
-			JToolBarHelper::archiveList('notes.archive');
-			JToolBarHelper::checkin('notes.checkin');
+			Toolbar::divider();
+			Toolbar::archiveList('notes.archive');
+			Toolbar::checkin('notes.checkin');
 		}
 
 		if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'notes.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			Toolbar::deleteList('', 'notes.delete', 'JTOOLBAR_EMPTY_TRASH');
+			Toolbar::divider();
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::trash('notes.trash');
-			JToolBarHelper::divider();
+			Toolbar::trash('notes.trash');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_users');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_users');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('notes');
+		Toolbar::help('notes');
 	}
 }

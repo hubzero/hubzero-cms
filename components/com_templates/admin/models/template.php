@@ -52,8 +52,8 @@ class TemplatesModelTemplate extends JModelLegacy
 			jimport('joomla.filesystem.folder');
 
 			$client = JApplicationHelper::getClientInfo($template->client_id);
-			$path	= JPath::clean($client->path.'/templates/'.$template->element.'/');
-			$lang	= JFactory::getLanguage();
+			$path   = JPath::clean($client->path.'/templates/'.$template->element.'/');
+			$lang   = JFactory::getLanguage();
 
 			// Load the core and/or local language file(s).
 				$lang->load('tpl_' . $template->element, $client->path, null, false, true)
@@ -61,7 +61,8 @@ class TemplatesModelTemplate extends JModelLegacy
 
 			// Check if the template path exists.
 
-			if (is_dir($path)) {
+			if (is_dir($path))
+			{
 				$result['main'] = array();
 				$result['css'] = array();
 				$result['clo'] = array();
@@ -77,12 +78,15 @@ class TemplatesModelTemplate extends JModelLegacy
 				// Handle the CSS files.
 				$files = JFolder::files($path.'/css', '\.css$', true, true);
 
-				foreach ($files as $file) {
+				foreach ($files as $file)
+				{
 					$file = str_replace($client->path.'/templates/'.$template->element.'/', '', $file);
 					$result['css'][] = $this->getFile($path.'/css/', $file);
 				}
-			} else {
-				$this->setError(JText::_('COM_TEMPLATES_ERROR_TEMPLATE_FOLDER_NOT_FOUND'));
+			}
+			else
+			{
+				$this->setError(Lang::txt('COM_TEMPLATES_ERROR_TEMPLATE_FOLDER_NOT_FOUND'));
 				return false;
 			}
 		}
@@ -102,11 +106,11 @@ class TemplatesModelTemplate extends JModelLegacy
 		$app = JFactory::getApplication('administrator');
 
 		// Load the User state.
-		$pk = (int) JRequest::getInt('id');
+		$pk = (int) Request::getInt('id');
 		$this->setState('extension.id', $pk);
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_templates');
+		$params = Component::params('com_templates');
 		$this->setState('params', $params);
 	}
 
@@ -120,9 +124,9 @@ class TemplatesModelTemplate extends JModelLegacy
 	{
 		if (empty($this->template)) {
 			// Initialise variables.
-			$pk		= $this->getState('extension.id');
-			$db		= $this->getDbo();
-			$result	= false;
+			$pk = $this->getState('extension.id');
+			$db = $this->getDbo();
+			$result = false;
 
 			// Get the template information.
 			$db->setQuery(
@@ -137,7 +141,7 @@ class TemplatesModelTemplate extends JModelLegacy
 				if ($error = $db->getErrorMsg()) {
 					$this->setError($error);
 				} else {
-					$this->setError(JText::_('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
+					$this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
 				}
 				$this->template = false;
 			} else {
@@ -196,7 +200,7 @@ class TemplatesModelTemplate extends JModelLegacy
 			{
 				if (!JFolder::delete($toPath))
 				{
-					JError::raiseWarning(403, JText::_('COM_TEMPLATES_ERROR_COULD_NOT_WRITE'));
+					JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_WRITE'));
 					return false;
 				}
 			}
@@ -211,7 +215,7 @@ class TemplatesModelTemplate extends JModelLegacy
 		}
 		else
 		{
-			JError::raiseWarning(403, JText::_('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
+			JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_INVALID_FROM_NAME'));
 			return false;
 		}
 	}

@@ -114,7 +114,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<div class="col span-half">
 						<label for="field-publish_up">
 							<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>
-							<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')) : ''); ?>" />
+							<input type="text" name="entry[publish_up]" class="datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up') ? $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')) : ''); ?>" />
 							<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>
@@ -122,7 +122,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<div class="col span-half omega">
 						<label for="field-publish_down">
 							<?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
-							<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(JFactory::getConfig()->get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
+							<input type="text" name="entry[publish_down]" class="datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), JDate::getInstance('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
 							<span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 						</label>
 					</div>

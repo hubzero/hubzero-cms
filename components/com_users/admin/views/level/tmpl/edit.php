@@ -83,10 +83,10 @@ jQuery(document).ready(function($){
 </script>
 
 
-<form action="<?php echo JRoute::_('index.php?option=com_users&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_users&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_USERS_LEVEL_DETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_USERS_LEVEL_DETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?>
@@ -97,7 +97,7 @@ jQuery(document).ready(function($){
 
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_USERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_USERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo JHtml::_('access.usergroups', 'jform[rules]', $this->item->rules); ?>

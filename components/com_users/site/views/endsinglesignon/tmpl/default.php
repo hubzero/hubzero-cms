@@ -41,7 +41,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		If you would like to end all <?php echo $this->display_name; ?> account shared sessions as well, you may do so now.
 	</p>
 	<p>
-		<a class="logout btn" href="<?php echo JRoute::_('index.php?option=com_users&task=user.logout&authenticator=' . $this->authenticator); ?>">
+		<a class="logout btn" href="<?php echo Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $this->authenticator); ?>">
 			End all <?php echo $this->display_name; ?> account sessions!
 		</a>
 	</p>

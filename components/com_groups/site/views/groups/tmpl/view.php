@@ -35,7 +35,6 @@ $this->css()
      ->js();
 
 //get objects
-$config   = JFactory::getConfig();
 $database = JFactory::getDBO();
 
 //get no_html request var

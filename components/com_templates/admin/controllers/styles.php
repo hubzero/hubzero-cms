@@ -24,22 +24,22 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function duplicate()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$pks = JRequest::getVar('cid', array(), 'post', 'array');
+		$pks = Request::getVar('cid', array(), 'post', 'array');
 
 		try
 		{
 			if (empty($pks)) {
-				throw new Exception(JText::_('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
+				throw new Exception(Lang::txt('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
 			JArrayHelper::toInteger($pks);
 
 			$model = $this->getModel();
 			$model->duplicate($pks);
-			$this->setMessage(JText::_('COM_TEMPLATES_SUCCESS_DUPLICATED'));
+			$this->setMessage(Lang::txt('COM_TEMPLATES_SUCCESS_DUPLICATED'));
 		}
 		catch (Exception $e)
 		{
@@ -68,15 +68,15 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function setDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$pks = JRequest::getVar('cid', array(), 'post', 'array');
+		$pks = Request::getVar('cid', array(), 'post', 'array');
 
 		try
 		{
 			if (empty($pks)) {
-				throw new Exception(JText::_('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
+				throw new Exception(Lang::txt('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
 			JArrayHelper::toInteger($pks);
@@ -85,7 +85,7 @@ class TemplatesControllerStyles extends JControllerAdmin
 			$id = array_shift($pks);
 			$model = $this->getModel();
 			$model->setHome($id);
-			$this->setMessage(JText::_('COM_TEMPLATES_SUCCESS_HOME_SET'));
+			$this->setMessage(Lang::txt('COM_TEMPLATES_SUCCESS_HOME_SET'));
 
 		}
 		catch (Exception $e)
@@ -103,23 +103,23 @@ class TemplatesControllerStyles extends JControllerAdmin
 	public function unsetDefault()
 	{
 		// Check for request forgeries
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$pks = JRequest::getVar('cid', array(), 'get', 'array');
+		$pks = Request::getVar('cid', array(), 'get', 'array');
 		JArrayHelper::toInteger($pks);
 
 		try
 		{
 			if (empty($pks)) {
-				throw new Exception(JText::_('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
+				throw new Exception(Lang::txt('COM_TEMPLATES_NO_TEMPLATE_SELECTED'));
 			}
 
 			// Pop off the first element.
 			$id = array_shift($pks);
 			$model = $this->getModel();
 			$model->unsetHome($id);
-			$this->setMessage(JText::_('COM_TEMPLATES_SUCCESS_HOME_UNSET'));
+			$this->setMessage(Lang::txt('COM_TEMPLATES_SUCCESS_HOME_UNSET'));
 
 		}
 		catch (Exception $e)

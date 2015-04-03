@@ -30,7 +30,7 @@ class UsersViewUsers extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -50,33 +50,33 @@ class UsersViewUsers extends JViewLegacy
 	{
 		$canDo	= UsersHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_USERS_VIEW_USERS_TITLE'), 'user');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_USERS_TITLE'), 'user');
 
 		if ($canDo->get('core.create')) {
-			//JToolBarHelper::addNew('user.add');
+			//Toolbar::addNew('user.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('user.edit');
+			Toolbar::editList('user.edit');
 		}
 
 		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('users.approve', 'COM_USERS_TOOLBAR_APPROVE', true);
-			JToolBarHelper::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
-			JToolBarHelper::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
-			JToolBarHelper::divider();
+			Toolbar::divider();
+			Toolbar::publish('users.approve', 'COM_USERS_TOOLBAR_APPROVE', true);
+			Toolbar::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
+			Toolbar::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'users.delete');
-			JToolBarHelper::divider();
+			Toolbar::deleteList('', 'users.delete');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_users');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_users');
+			Toolbar::divider();
 		}
 
-		JToolBarHelper::help('users');
+		Toolbar::help('users');
 	}
 }

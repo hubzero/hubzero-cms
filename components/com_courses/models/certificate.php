@@ -31,8 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'certificate.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
+require_once(dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php');
+require_once(__DIR__ . DS . 'abstract.php');
 
 /**
  * Courses model class for a certificate
@@ -173,7 +173,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 			if (!file_exists($base))
 			{
 				jimport('joomla.filesystem.folder');
-				if (!JFolder::create($base))
+				if (!\JFolder::create($base))
 				{
 					$this->setError(Lang::txt('Unable to create directory.'));
 					return false;
@@ -218,7 +218,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	{
 		if (!$this->exists())
 		{
-			JError::raiseError(422, 'No pages exist for nonexistent certificate.');
+			\App::abort(422, 'No pages exist for nonexistent certificate.');
 			return;
 		}
 
@@ -238,7 +238,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		natsort($images);
 
 		$base  = $this->path('web');
-		$token = hash('sha256', \JFactory::getSession()->getId() . ':' . \JFactory::getConfig()->getValue('secret'));
+		$token = hash('sha256', \JFactory::getSession()->getId() . ':' . \Config::get('secret'));
 
 		$idx = 0;
 		foreach ($images as $img)
@@ -316,7 +316,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	{
 		if (!$user)
 		{
-			$user = \JFactory::getUser();
+			$user = \User::getRoot();
 		}
 
 		if (!class_exists('CoursesModelCourse'))
@@ -423,9 +423,9 @@ class CoursesModelCertificate extends CoursesModelAbstract
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path))
+			if (!\JFolder::delete($path))
 			{
-				$this->setError(Lang::txt('Unable to remove upload directory and files for certificate.'));
+				$this->setError(\Lang::txt('Unable to remove upload directory and files for certificate.'));
 				return false;
 			}
 		}

@@ -156,7 +156,7 @@ class UsersModelLevels extends JModelList
 
 		if (!$allow)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+			$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 			return false;
 		}
 
@@ -182,7 +182,7 @@ class UsersModelLevels extends JModelList
 
 		if (empty($pks))
 		{
-			return JError::raiseWarning(500, JText::_('COM_USERS_ERROR_LEVELS_NOLEVELS_SELECTED'));
+			return JError::raiseWarning(500, Lang::txt('COM_USERS_ERROR_LEVELS_NOLEVELS_SELECTED'));
 		}
 
 		// update ordering values
@@ -197,7 +197,7 @@ class UsersModelLevels extends JModelList
 			{
 				// Prune items that you can't change.
 				unset($pks[$i]);
-				JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				JError::raiseWarning(403, Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 			}
 			elseif ($table->ordering != $order[$i])
 			{

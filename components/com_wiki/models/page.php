@@ -1059,12 +1059,11 @@ class Page extends Model
 		$this->log('page_deleted');
 
 		// Clear cached data
-		$conf = \JFactory::getConfig();
 		$cache = \JCache::getInstance('', array(
 			'defaultgroup' => '',
-			'storage'      => $conf->get('cache_handler', ''),
+			'storage'      => Config::get('cache_handler', ''),
 			'caching'      => true,
-			'cachebase'    => $conf->get('cache_path', PATH_APP . '/cache')
+			'cachebase'    => Config::get('cache_path', PATH_APP . '/cache')
 		));
 		$cache->clean('wiki');
 

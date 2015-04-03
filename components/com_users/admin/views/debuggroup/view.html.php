@@ -26,9 +26,9 @@ class UsersViewDebugGroup extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Access check.
-		if (!JFactory::getUser()->authorise('core.manage', 'com_users') || !JFactory::getConfig()->get('debug'))
+		if (!User::authorise('core.manage', 'com_users') || !Config::get('debug'))
 		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+			return JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$this->actions		= $this->get('DebugActions');
@@ -41,7 +41,7 @@ class UsersViewDebugGroup extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -56,8 +56,8 @@ class UsersViewDebugGroup extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::sprintf('COM_USERS_VIEW_DEBUG_GROUP_TITLE', $this->group->id, $this->group->title), 'groups');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_DEBUG_GROUP_TITLE', $this->group->id, $this->group->title), 'groups');
 
-		JToolBarHelper::help('JHELP_USERS_DEBUG_GROUPS');
+		Toolbar::help('JHELP_USERS_DEBUG_GROUPS');
 	}
 }

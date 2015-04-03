@@ -22,11 +22,11 @@ Joomla.submitbutton = function(task)
 	}
 }
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_users&view=note&id='.(int) $this->item->id);?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_users&view=note&id='.(int) $this->item->id);?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend>
-				<span><?php echo $this->item->id ? JText::sprintf('COM_USERS_EDIT_NOTE_N', $this->item->id) : JText::_('COM_USERS_NEW_NOTE');?></span>
+				<span><?php echo $this->item->id ? Lang::txt('COM_USERS_EDIT_NOTE_N', $this->item->id) : Lang::txt('COM_USERS_NEW_NOTE');?></span>
 			</legend>
 
 			<div class="input-wrap">

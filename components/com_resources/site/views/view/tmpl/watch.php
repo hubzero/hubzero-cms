@@ -29,7 +29,7 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $this->css('hubpresenter.css')
      ->js('hubpresenter.js')
@@ -38,13 +38,13 @@ $this->css('hubpresenter.css')
      ->js('jquery.colpick', 'system');
 
 //get the manifest for the presentation
-$contents = file_get_contents(JPATH_ROOT.$this->manifest);
+$contents = file_get_contents(PATH_APP . $this->manifest);
 
 //content folder
 $content_folder = $this->content_folder;
 
 //decode the json formatted manifest so we can use the information
-$presentation = json_decode( $contents );
+$presentation = json_decode($contents);
 $presentation = $presentation->presentation;
 if (!is_object($presentation))
 {
@@ -56,36 +56,36 @@ if (!is_object($presentation))
 }
 
 //get this resource
-$rr = new \Components\Resources\Tables\Resource( $this->database );
-$rr->load( $this->resid );
+$rr = new \Components\Resources\Tables\Resource($this->database);
+$rr->load($this->resid);
 
 //get the parent resource
-$rh = new \Components\Resources\Helpers\Helper( $this->resid, $this->database );
+$rh = new \Components\Resources\Helpers\Helper($this->resid, $this->database);
 $rh->getParents();
 
 $parent = $rh->parents[0];
 
 //check to see if parent type is series
-$rt = new \Components\Resources\Tables\Type( $this->database );
+$rt = new \Components\Resources\Tables\Type($this->database);
 $rt->load($parent->type);
 
 //if we have a series get children
 if ($rt->type == "Series" || $rt->type == "Courses")
 {
-	$rh->getChildren( $parent->id, 0, 'yes' );
+	$rh->getChildren($parent->id, 0, 'yes');
 	$children = $rh->children;
 
 	//remove any children without a HUBpresenter
 	foreach ($children as $k => $c)
 	{
-		$rh = new \Components\Resources\Helpers\Helper( $c->id, $this->database );
+		$rh = new \Components\Resources\Helpers\Helper($c->id, $this->database);
 		$rh->getChildren();
 		$sub_child = $rh->children;
 		$hasHUBpresenter = false;
 
 		foreach ($sub_child as $sc)
 		{
-			$rt = new \Components\Resources\Tables\Type( $this->database );
+			$rt = new \Components\Resources\Tables\Type($this->database);
 			$rt->load($sc->type);
 			if (strtolower($rt->type) == "hubpresenter")
 			{
@@ -110,7 +110,7 @@ $sql = "SELECT authorid, role, name FROM #__author_assoc "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
 
-$this->database->setQuery( $sql );
+$this->database->setQuery($sql);
 $lectureAuthors = $this->database->loadObjectList();
 
 //get the author names from ids
@@ -126,7 +126,7 @@ if (!empty($lectureAuthors))
 			continue;
 		}
 		//load author object
-		$author = JUser::getInstance( $la->authorid );
+		$author = User::getInstance($la->authorid);
 		if (is_object($author) && $author->id)
 		{
 			$a[] = '<a href="/members/' . $author->id . '">' . $author->name . '</a>';
@@ -157,7 +157,7 @@ foreach ($presentation->subtitles as $k => $subtitle)
 }
 
 //get all local subtitles
-$localSubtitles = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
+$localSubtitles = JFolder::files(PATH_APP . DS . $content_folder, '.srt|.SRT');
 
 // add local subtitles too
 foreach ($localSubtitles as $k => $subtitle)
@@ -186,10 +186,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="/resources/<?php echo $rr->id; ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
-		<span>powered by</span> <?php echo JFactory::getConfig()->get('sitename'); ?>
+	<a href="/resources/<?php echo $rr->id; ?>" id="powered" title="Powered by <?php echo Config::get('sitename'); ?>">
+		<span>powered by</span> <?php echo Config::get('sitename'); ?>
 	</a>
-	
+
 	<?php if ($children) : ?>
 		<form name="presentation-picker" id="presentation-picker" method="post">
 			<label for="presentations">Select a different presentation: 
@@ -217,7 +217,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 		<div id="author"><?php if ($a) { echo "by: " . implode(", ", $a); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
-	
+
 	<div id="presenter-content">
 		<div id="presenter-left">
 			<div id="slides">
@@ -440,7 +440,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									//if were playing local files
 									if (substr($subtitle->source, 0, 4) != 'http')
 									{
-										$modified = filemtime( JPATH_ROOT . $source );
+										$modified = filemtime(PATH_APP . $source);
 									}
 									else
 									{
@@ -461,9 +461,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 							<?php
 								switch ($source->type)
 								{
-									case 'mp3':		$type = 'audio/mp3';	break;
+									case 'mp3': $type = 'audio/mp3'; break;
 									case 'ogv':
-									case 'ogg':		$type = 'audio/ogg';	break;
+									case 'ogg': $type = 'audio/ogg'; break;
 								}
 							?>
 							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
@@ -486,7 +486,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder.DS.$slide->media;
-									if ($slide->thumb && file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
+									if ($slide->thumb && file_exists(PATH_APP . $content_folder.DS.$slide->thumb))
 									{
 										$thumb = $content_folder.DS.$slide->thumb;
 									}

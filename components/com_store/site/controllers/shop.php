@@ -180,7 +180,7 @@ class Shop extends SiteController
 	{
 		// Incoming
 		$this->view->filters = array(
-			'limit'  => Request::getInt('limit', \JFactory::getConfig()->getValue('config.list_limit')),
+			'limit'  => Request::getInt('limit', Config::get('list_limit')),
 			'start'  => Request::getInt('limitstart', 0),
 			'sortby' => Request::getVar('sortby', '')
 		);

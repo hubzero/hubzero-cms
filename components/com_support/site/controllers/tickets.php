@@ -558,7 +558,6 @@ class Tickets extends SiteController
 		// Create a Ticket object
 		$obj = new Tables\Ticket($this->database);
 
-		$config = \JFactory::getConfig();
 		$app = \JFactory::getApplication();
 
 		$this->view->total = 0;
@@ -569,7 +568,7 @@ class Tickets extends SiteController
 		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
-			$config->getValue('config.list_limit'),
+			Config::get('list_limit'),
 			'int'
 		);
 		$this->view->filters['start'] = $app->getUserStateFromRequest(
@@ -1452,7 +1451,7 @@ class Tickets extends SiteController
 		$this->view->row = Ticket::getInstance($id);
 		if (!$this->view->row->exists())
 		{
-			JError::raiseError(404, Lang::txt('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
 			return;
 		}
 
@@ -1469,12 +1468,11 @@ class Tickets extends SiteController
 		// Ensure the user is authorized to view this ticket
 		if (!$this->view->row->access('read', 'tickets'))
 		{
-			JError::raiseError(403, Lang::txt('COM_SUPPORT_ERROR_NOT_AUTH'));
+			App::abort(403, Lang::txt('COM_SUPPORT_ERROR_NOT_AUTH'));
 			return;
 		}
 
 		// Incoming
-		$config = \JFactory::getConfig();
 		$app    = \JFactory::getApplication();
 
 		$this->view->filters = array(
@@ -1482,7 +1480,7 @@ class Tickets extends SiteController
 			'limit' => $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.limit',
 				'limit',
-				$config->getValue('config.list_limit'),
+				Config::get('list_limit'),
 				'int'
 			),
 			'start' => $app->getUserStateFromRequest(

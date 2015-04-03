@@ -538,7 +538,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// make sure this is production hub
-		$environment = strtolower(JFactory::getConfig()->get('application_env', 'development'));
+		$environment = strtolower(Config::get('application_env', 'development'));
 		if ($environment != 'production')
 		{
 			return;
@@ -607,7 +607,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 		// build author info for making first commit
-		$authorInfo = '"' . JFactory::getConfig()->get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>"';
+		$authorInfo = '"' . Config::get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>"';
 
 		// check to see if we already have git repo
 		// only run gitlab setup once.
@@ -708,7 +708,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			if (!is_dir($uploadPath . DS . '.git'))
 			{
 				// only do stage setup on stage
-				$environment = strtolower(JFactory::getConfig()->get('application_env', 'development'));
+				$environment = strtolower(Config::get('application_env', 'development'));
 				if ($environment != 'staging')
 				{
 					$failed[] = array('group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));

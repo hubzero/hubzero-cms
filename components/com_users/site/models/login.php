@@ -54,7 +54,7 @@ class UsersModelLogin extends JModelForm
 		$data	= $app->getUserState('users.login.form.data', array());
 
 		// check for return URL from the request first
-		if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
+		if ($return = Request::getVar('return', '', 'method', 'base64')) {
 			$data['return'] = base64_decode($return);
 			if (!JURI::isInternal($data['return'])) {
 				$data['return'] = '';
@@ -80,7 +80,7 @@ class UsersModelLogin extends JModelForm
 	protected function populateState()
 	{
 		// Get the application object.
-		$params	= JFactory::getApplication()->getParams('com_users');
+		$params = JFactory::getApplication()->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -101,22 +101,22 @@ class UsersModelLogin extends JModelForm
 		JPluginHelper::importPlugin($group);
 
 		// Get the dispatcher.
-		$dispatcher	= JDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		// Trigger the form preparation event.
 		$results = $dispatcher->trigger('onContentPrepareForm', array($form, $data));
 
 		// Check for errors encountered while preparing the form.
-		if (count($results) && in_array(false, $results, true)) {
+		if (count($results) && in_array(false, $results, true))
+		{
 			// Get the last error.
 			$error = $dispatcher->getError();
 
-			// Convert to a JException if necessary.
-			if (!($error instanceof Exception)) {
+			// Convert to a Exception if necessary.
+			if (!($error instanceof Exception))
+			{
 				throw new Exception($error);
 			}
 		}
 	}
-
-
 }

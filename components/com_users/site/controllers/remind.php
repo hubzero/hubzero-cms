@@ -27,11 +27,11 @@ class UsersControllerRemind extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Remind', 'UsersModel');
-		$data  = JRequest::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Submit the password reset request.
 		$return	= $model->processRemindRequest($data);
@@ -45,8 +45,8 @@ class UsersControllerRemind extends UsersController
 			$route	= 'index.php?option=com_users&view=remind'.$itemid;
 
 			// Go back to the request form.
-			$message = JText::sprintf('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'warning');
+			$message = Lang::txt('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
+			$this->setRedirect(Route::url($route, false), $message, 'warning');
 			return false;
 		} else {
 			// The request succeeded.
@@ -56,8 +56,8 @@ class UsersControllerRemind extends UsersController
 			$route	= 'index.php?option=com_users&view=login'.$itemid;
 
 			// Proceed to step two.
-			$message = JText::_('COM_USERS_REMIND_REQUEST_SUCCESS');
-			$this->setRedirect(JRoute::_($route, false), $message);
+			$message = Lang::txt('COM_USERS_REMIND_REQUEST_SUCCESS');
+			$this->setRedirect(Route::url($route, false), $message);
 			return true;
 		}
 	}

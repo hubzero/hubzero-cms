@@ -81,7 +81,7 @@ class AdminModelSysInfo extends JModelLegacy
 	{
 		if (is_null($this->config))
 		{
-			$registry = new JRegistry(new JConfig);
+			$registry = new JRegistry(Config::getRoot());
 			$this->config = $registry->toArray();
 			$hidden = array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass');
 			foreach ($hidden as $key)
@@ -161,9 +161,8 @@ class AdminModelSysInfo extends JModelLegacy
 		{
 			$this->directories = array();
 
-			$registry = JFactory::getConfig();
 			jimport('joomla.filesystem.folder');
-			$cparams = JComponentHelper::getParams('com_media');
+			$cparams = Component::params('com_media');
 
 			$this->_addDirectory('administrator/components', JPATH_ADMINISTRATOR.'/components');
 			$this->_addDirectory('administrator/language', JPATH_ADMINISTRATOR.'/language');
@@ -221,8 +220,8 @@ class AdminModelSysInfo extends JModelLegacy
 			$this->_addDirectory('cache', JPATH_SITE.'/cache', 'COM_ADMIN_CACHE_DIRECTORY');
 			$this->_addDirectory('administrator/cache', JPATH_CACHE, 'COM_ADMIN_CACHE_DIRECTORY');
 
-			$this->_addDirectory($registry->get('log_path', JPATH_ROOT . '/log'), $registry->get('log_path', JPATH_ROOT.'/log'), 'COM_ADMIN_LOG_DIRECTORY');
-			$this->_addDirectory($registry->get('tmp_path', JPATH_ROOT . '/tmp'), $registry->get('tmp_path', JPATH_ROOT.'/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
+			$this->_addDirectory(Config::get('log_path', JPATH_ROOT . '/log'), Config::get('log_path', JPATH_ROOT.'/log'), 'COM_ADMIN_LOG_DIRECTORY');
+			$this->_addDirectory(Config::get('tmp_path', JPATH_ROOT . '/tmp'), Config::get('tmp_path', JPATH_ROOT.'/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
 		}
 		return $this->directories;
 	}
@@ -243,7 +242,7 @@ class AdminModelSysInfo extends JModelLegacy
 	{
 		if (is_null($this->editor))
 		{
-			$this->editor = \Config::get('editor');
+			$this->editor = Config::get('editor');
 		}
 		return $this->editor;
 	}

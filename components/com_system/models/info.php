@@ -104,7 +104,7 @@ class Info extends \JModelLegacy
 	{
 		if (is_null($this->config))
 		{
-			$registry = new \JRegistry(new \JConfig);
+			$registry = new \JRegistry(Config::getRoot());
 			$this->config = $registry->toArray();
 
 			foreach (array('host', 'user', 'password', 'ftp_user', 'ftp_pass', 'smtpuser', 'smtppass') as $key)
@@ -191,7 +191,6 @@ class Info extends \JModelLegacy
 		{
 			$this->directories = array();
 
-			$registry = \JFactory::getConfig();
 			jimport('joomla.filesystem.folder');
 			$cparams = \Component::params('com_media');
 
@@ -251,8 +250,8 @@ class Info extends \JModelLegacy
 			$this->_addDirectory('cache', JPATH_SITE . '/cache', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 			$this->_addDirectory('administrator/cache', JPATH_CACHE, 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 
-			$this->_addDirectory($registry->get('log_path', PATH_APP . '/log'), $registry->get('log_path', PATH_APP . '/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
-			$this->_addDirectory($registry->get('tmp_path', PATH_APP . '/tmp'), $registry->get('tmp_path', PATH_APP . '/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
+			$this->_addDirectory(Config::get('log_path', PATH_APP . '/log'), Config::get('log_path', PATH_APP . '/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
+			$this->_addDirectory(Config::get('tmp_path', PATH_APP . '/tmp'), Config::get('tmp_path', PATH_APP . '/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
 		}
 		return $this->directories;
 	}
@@ -283,7 +282,7 @@ class Info extends \JModelLegacy
 	{
 		if (is_null($this->editor))
 		{
-			$this->editor = \JFactory::getConfig()->get('editor');
+			$this->editor = \Config::get('editor');
 		}
 		return $this->editor;
 	}

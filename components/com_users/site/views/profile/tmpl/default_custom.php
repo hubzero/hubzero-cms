@@ -21,7 +21,7 @@ foreach ($fieldsets as $group => $fieldset): // Iterate through the form fieldse
 ?>
 <fieldset id="users-profile-custom" class="users-profile-custom-<?php echo $group;?>">
 	<?php if (isset($fieldset->label)):// If the fieldset has a label set, display it as the legend.?>
-	<legend><?php echo JText::_($fieldset->label); ?></legend>
+	<legend><?php echo Lang::txt($fieldset->label); ?></legend>
 	<?php endif;?>
 	<dl>
 	<?php foreach ($fields as $field):

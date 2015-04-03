@@ -123,8 +123,8 @@ class Helper
 		$mailingTokenParts = explode(':', $mailingToken);
 
 		//get the mailing id and email from parts
-		$mailingId 	= (isset($mailingTokenParts[0])) ? $mailingTokenParts[0] : '';
-		$email 		= (isset($mailingTokenParts[1])) ? $mailingTokenParts[1] : '';
+		$mailingId = (isset($mailingTokenParts[0])) ? $mailingTokenParts[0] : '';
+		$email = (isset($mailingTokenParts[1])) ? $mailingTokenParts[1] : '';
 
 		//make sure we have a mailing id and email
 		if ($mailingId == '' || $email == '')
@@ -181,8 +181,8 @@ class Helper
 		$confirmationTokenParts = array_map("trim", explode(':', $confirmationToken));
 
 		//get mailing list id & email
-		$mailinglistId 	= (isset($confirmationTokenParts[0])) ? $confirmationTokenParts[0] : '';
-		$email 			= (isset($confirmationTokenParts[1])) ? $confirmationTokenParts[1] : '';
+		$mailinglistId = (isset($confirmationTokenParts[0])) ? $confirmationTokenParts[0] : '';
+		$email = (isset($confirmationTokenParts[1])) ? $confirmationTokenParts[1] : '';
 
 		//make sure we have a mailing list and email
 		if ($mailinglistId == '' || $email == '')
@@ -232,12 +232,9 @@ class Helper
 	 */
 	public static function sendMailinglistConfirmationEmail($emailAddress, $mailinglistObject, $addedByAdmin = true)
 	{
-		//get site config
-		$hubConfig = \JFactory::getConfig();
-
 		// create from details
 		$from = array(
-			'name'  => $hubConfig->getValue('sitename') . ' Mailing Lists',
+			'name'  => \Config::get('sitename') . ' Mailing Lists',
 			'email' => 'hubmail-mailinglists@' . $_SERVER['HTTP_HOST']
 		);
 
@@ -248,7 +245,7 @@ class Helper
 		);
 
 		//build subject
-		$subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . $hubConfig->getValue('sitename');
+		$subject = "Confirm Email Subscription to '" . $mailinglistObject->name . "' on " . \Config::get('sitename');
 
 		//get token
 		$token = self::generateConfirmationToken($emailAddress, $mailinglistObject);

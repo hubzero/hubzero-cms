@@ -63,7 +63,7 @@ class TemplatesModelStyles extends JModelList
 		$this->setState('filter.client_id', $clientId);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_templates');
+		$params = Component::params('com_templates');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -99,8 +99,8 @@ class TemplatesModelStyles extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(

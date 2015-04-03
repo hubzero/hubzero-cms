@@ -49,7 +49,7 @@ class UsersViewLink extends JViewLegacy
 				|| !is_numeric($user->get('username'))
 				|| !$user->get('username') < 0)
 		{
-			JError::raiseError('405', 'Method not allowed');
+			App::abort('405', 'Method not allowed');
 			return;
 		}
 

@@ -164,7 +164,7 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $i = 0;
-$config = JFactory::getConfig();
+
 $now    = JFactory::getDate();
 $db     = JFactory::getDBO();
 
@@ -174,8 +174,8 @@ foreach ($this->rows as $row)
 {
 	$publish_up   = JFactory::getDate($row->get('publish_up'));
 	$publish_down = JFactory::getDate($row->get('publish_down'));
-	$publish_up->setOffset($config->getValue('config.offset'));
-	$publish_down->setOffset($config->getValue('config.offset'));
+	$publish_up->setOffset(Config::get('offset'));
+	$publish_down->setOffset(Config::get('offset'));
 
 	if ($now->toUnix() <= $publish_up->toUnix() && $row->get('state') == 1)
 	{

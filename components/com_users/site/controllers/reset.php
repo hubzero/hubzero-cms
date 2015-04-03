@@ -27,11 +27,11 @@ class UsersControllerReset extends UsersController
 	public function request()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Reset', 'UsersModel');
-		$data  = JRequest::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Submit the password reset request.
 		$return	= $model->processResetRequest($data);
@@ -42,7 +42,7 @@ class UsersControllerReset extends UsersController
 			if ($app->getCfg('error_reporting')) {
 				$message = $return->getMessage();
 			} else {
-				$message = JText::_('COM_USERS_RESET_REQUEST_ERROR');
+				$message = Lang::txt('COM_USERS_RESET_REQUEST_ERROR');
 			}
 
 			// Get the route to the next page.
@@ -51,7 +51,7 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset'.$itemid;
 
 			// Go back to the request form.
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} elseif ($return === false) {
 			// The request failed.
@@ -61,8 +61,8 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset'.$itemid;
 
 			// Go back to the request form.
-			$message = JText::sprintf('COM_USERS_RESET_REQUEST_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$message = Lang::txt('COM_USERS_RESET_REQUEST_FAILED', $model->getError());
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} else {
 			// The request succeeded.
@@ -72,7 +72,7 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
 
 			// Proceed to step two.
-			$this->setRedirect(JRoute::_($route, false));
+			$this->setRedirect(Route::url($route, false));
 			return true;
 		}
 	}
@@ -86,11 +86,11 @@ class UsersControllerReset extends UsersController
 	function confirm()
 	{
 		// Check the request token.
-		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('request') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('Reset', 'UsersModel');
-		$data	= JRequest::getVar('jform', array(), 'request', 'array');
+		$data	= Request::getVar('jform', array(), 'request', 'array');
 
 		// Confirm the password reset request.
 		$return	= $model->processResetConfirm($data);
@@ -102,7 +102,7 @@ class UsersControllerReset extends UsersController
 			if ($app->getCfg('error_reporting')) {
 				$message = $return->getMessage();
 			} else {
-				$message = JText::_('COM_USERS_RESET_CONFIRM_ERROR');
+				$message = Lang::txt('COM_USERS_RESET_CONFIRM_ERROR');
 			}
 
 			// Get the route to the next page.
@@ -111,7 +111,7 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
 
 			// Go back to the confirm form.
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} elseif ($return === false) {
 			// Confirm failed.
@@ -121,8 +121,8 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
 
 			// Go back to the confirm form.
-			$message = JText::sprintf('COM_USERS_RESET_CONFIRM_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$message = Lang::txt('COM_USERS_RESET_CONFIRM_FAILED', $model->getError());
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} else {
 			// Confirm succeeded.
@@ -132,7 +132,7 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=complete'.$itemid;
 
 			// Proceed to step three.
-			$this->setRedirect(JRoute::_($route, false));
+			$this->setRedirect(Route::url($route, false));
 			return true;
 		}
 	}
@@ -145,11 +145,11 @@ class UsersControllerReset extends UsersController
 	public function complete()
 	{
 		// Check for request forgeries
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$app   = JFactory::getApplication();
 		$model = $this->getModel('Reset', 'UsersModel');
-		$data  = JRequest::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Complete the password reset request.
 		$return	= $model->processResetComplete($data);
@@ -160,7 +160,7 @@ class UsersControllerReset extends UsersController
 			if ($app->getCfg('error_reporting')) {
 				$message = $return->getMessage();
 			} else {
-				$message = JText::_('COM_USERS_RESET_COMPLETE_ERROR');
+				$message = Lang::txt('COM_USERS_RESET_COMPLETE_ERROR');
 			}
 
 			// Get the route to the next page.
@@ -169,7 +169,7 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=complete'.$itemid;
 
 			// Go back to the complete form.
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} elseif ($return === false) {
 			// Complete failed.
@@ -179,8 +179,8 @@ class UsersControllerReset extends UsersController
 			$route	= 'index.php?option=com_users&view=reset&layout=complete'.$itemid;
 
 			// Go back to the complete form.
-			$message = JText::sprintf('COM_USERS_RESET_COMPLETE_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$message = Lang::txt('COM_USERS_RESET_COMPLETE_FAILED', $model->getError());
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} else {
 			// Complete succeeded.
@@ -190,8 +190,8 @@ class UsersControllerReset extends UsersController
 			$route = 'index.php?option=com_users&view=login'.$itemid;
 
 			// Proceed to the login form.
-			$message = JText::_('COM_USERS_RESET_COMPLETE_SUCCESS');
-			$this->setRedirect(JRoute::_($route, false), $message);
+			$message = Lang::txt('COM_USERS_RESET_COMPLETE_SUCCESS');
+			$this->setRedirect(Route::url($route, false), $message);
 			return true;
 		}
 	}

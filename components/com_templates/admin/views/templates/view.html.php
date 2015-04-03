@@ -43,21 +43,22 @@ class TemplatesViewTemplates extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
-		$this->preview		= JComponentHelper::getParams('com_templates')->get('template_positions_display');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->preview    = Component::params('com_templates')->get('template_positions_display');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
 		// Check if there are no matching items
-		if (!count($this->items)) {
+		if (!count($this->items))
+		{
 			JFactory::getApplication()->enqueueMessage(
-				JText::_('COM_TEMPLATES_MSG_MANAGE_NO_TEMPLATES')
+				Lang::txt('COM_TEMPLATES_MSG_MANAGE_NO_TEMPLATES')
 				, 'warning'
 			);
 		}
@@ -74,14 +75,15 @@ class TemplatesViewTemplates extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$state	= $this->get('State');
-		$canDo	= TemplatesHelper::getActions();
+		$state = $this->get('State');
+		$canDo = TemplatesHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_TEMPLATES_MANAGER_TEMPLATES'), 'thememanager');
-		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_templates');
-			JToolBarHelper::divider();
+		Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_TEMPLATES'), 'thememanager');
+		if ($canDo->get('core.admin'))
+		{
+			Toolbar::preferences('com_templates');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('templates');
+		Toolbar::help('templates');
 	}
 }

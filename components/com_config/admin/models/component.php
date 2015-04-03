@@ -64,11 +64,11 @@ class Component extends \JModelForm
 	protected function populateState()
 	{
 		// Set the component (option) we are dealing with.
-		$component = \JRequest::getCmd('component');
+		$component = Request::getCmd('component');
 		$this->setState('component.option', $component);
 
 		// Set an alternative path for the configuration file.
-		if ($path = \JRequest::getString('path'))
+		if ($path = Request::getString('path'))
 		{
 			$path = \JPath::clean(JPATH_SITE . '/' . $path);
 			\JPath::check($path);
@@ -131,7 +131,7 @@ class Component extends \JModelForm
 		$lang->load($option, JPATH_BASE, null, false, true)
 		|| $lang->load($option, JPATH_BASE . "/components/$option", null, false, true);
 
-		return \JComponentHelper::getComponent($option);
+		return Component::load($option);
 	}
 
 	/**

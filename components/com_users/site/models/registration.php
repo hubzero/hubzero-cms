@@ -35,9 +35,8 @@ class UsersModelRegistration extends JModelForm
 	 */
 	public function activate($token)
 	{
-		$config	= JFactory::getConfig();
-		$userParams	= JComponentHelper::getParams('com_users');
-		$db		= $this->getDbo();
+		$userParams = Component::params('com_users');
+		$db = $this->getDbo();
 
 		// Get the user id based on the token.
 		$db->setQuery(
@@ -50,7 +49,7 @@ class UsersModelRegistration extends JModelForm
 
 		// Check for a valid user id.
 		if (!$userId) {
-			$this->setError(JText::_('COM_USERS_ACTIVATION_TOKEN_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_ACTIVATION_TOKEN_NOT_FOUND'));
 			return false;
 		}
 
@@ -58,7 +57,7 @@ class UsersModelRegistration extends JModelForm
 		JPluginHelper::importPlugin('user');
 
 		// Activate the user.
-		$user = JFactory::getUser($userId);
+		$user = User::getInstance($userId);
 
 		// Admin activation is on and user is verifying their email
 		if (($userParams->get('useractivation') == 2) && !$user->getParam('activate', 0))
@@ -69,20 +68,20 @@ class UsersModelRegistration extends JModelForm
 			$data = $user->getProperties();
 			$data['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
 			$user->set('activation', $data['activation']);
-			$data['siteurl']	= JUri::base();
+			$data['siteurl'] = Request::base();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-			$data['activate'] = $base.JRoute::_('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
-			$data['fromname'] = $config->get('fromname');
-			$data['mailfrom'] = $config->get('mailfrom');
-			$data['sitename'] = $config->get('sitename');
+			$data['activate'] = $base.Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
+			$data['fromname'] = Config::get('fromname');
+			$data['mailfrom'] = Config::get('mailfrom');
+			$data['sitename'] = Config::get('sitename');
 			$user->setParam('activate', 1);
-			$emailSubject	= JText::sprintf(
+			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACTIVATE_WITH_ADMIN_ACTIVATION_SUBJECT',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBody = JText::sprintf(
+			$emailBody = Lang::txt(
 				'COM_USERS_EMAIL_ACTIVATE_WITH_ADMIN_ACTIVATION_BODY',
 				$data['sitename'],
 				$data['name'],
@@ -109,7 +108,7 @@ class UsersModelRegistration extends JModelForm
 
 					// Check for an error.
 					if ($return !== true) {
-						$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+						$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 						return false;
 					}
 				}
@@ -127,17 +126,17 @@ class UsersModelRegistration extends JModelForm
 			// Compile the user activated notification mail values.
 			$data = $user->getProperties();
 			$user->setParam('activate', 0);
-			$data['fromname'] = $config->get('fromname');
-			$data['mailfrom'] = $config->get('mailfrom');
-			$data['sitename'] = $config->get('sitename');
-			$data['siteurl']	= JUri::base();
-			$emailSubject	= JText::sprintf(
+			$data['fromname'] = Config::get('fromname');
+			$data['mailfrom'] = Config::get('mailfrom');
+			$data['sitename'] = Config::get('sitename');
+			$data['siteurl']  = Request::base();
+			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBody = JText::sprintf(
+			$emailBody = Lang::txt(
 				'COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_BODY',
 				$data['name'],
 				$data['siteurl'],
@@ -148,7 +147,7 @@ class UsersModelRegistration extends JModelForm
 
 			// Check for an error.
 			if ($return !== true) {
-				$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+				$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 				return false;
 			}
 		}
@@ -160,7 +159,7 @@ class UsersModelRegistration extends JModelForm
 
 		// Store the user object.
 		if (!$user->save()) {
-			$this->setError(JText::sprintf('COM_USERS_REGISTRATION_ACTIVATION_SAVE_FAILED', $user->getError()));
+			$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_SAVE_FAILED', $user->getError()));
 			return false;
 		}
 
@@ -299,7 +298,6 @@ class UsersModelRegistration extends JModelForm
 	 */
 	public function register($temp)
 	{
-		$config = JFactory::getConfig();
 		$db		= $this->getDbo();
 		$params = JComponentHelper::getParams('com_users');
 
@@ -326,7 +324,7 @@ class UsersModelRegistration extends JModelForm
 
 		// Bind the data.
 		if (!$user->bind($data)) {
-			$this->setError(JText::sprintf('COM_USERS_REGISTRATION_BIND_FAILED', $user->getError()));
+			$this->setError(Lang::txt('COM_USERS_REGISTRATION_BIND_FAILED', $user->getError()));
 			return false;
 		}
 
@@ -335,16 +333,16 @@ class UsersModelRegistration extends JModelForm
 
 		// Store the data.
 		if (!$user->save()) {
-			$this->setError(JText::sprintf('COM_USERS_REGISTRATION_SAVE_FAILED', $user->getError()));
+			$this->setError(Lang::txt('COM_USERS_REGISTRATION_SAVE_FAILED', $user->getError()));
 			return false;
 		}
 
 		// Compile the notification mail values.
 		$data = $user->getProperties();
-		$data['fromname']	= $config->get('fromname');
-		$data['mailfrom']	= $config->get('mailfrom');
-		$data['sitename']	= $config->get('sitename');
-		$data['siteurl']	= JUri::root();
+		$data['fromname']	= Config::get('fromname');
+		$data['mailfrom']	= Config::get('mailfrom');
+		$data['sitename']	= Config::get('sitename');
+		$data['siteurl']	= Request::root();
 
 		// Handle account activation/confirmation emails.
 		if ($useractivation == 2)
@@ -352,9 +350,9 @@ class UsersModelRegistration extends JModelForm
 			// Set the link to confirm the user email.
 			$uri = JURI::getInstance();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-			$data['activate'] = $base.JRoute::_('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
+			$data['activate'] = $base.Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
 
-			$emailSubject	= JText::sprintf(
+			$emailSubject	= Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
@@ -362,7 +360,7 @@ class UsersModelRegistration extends JModelForm
 
 			if ($sendpassword)
 			{
-				$emailBody = JText::sprintf(
+				$emailBody = Lang::txt(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY',
 					$data['name'],
 					$data['sitename'],
@@ -374,7 +372,7 @@ class UsersModelRegistration extends JModelForm
 			}
 			else
 			{
-				$emailBody = JText::sprintf(
+				$emailBody = Lang::txt(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY_NOPW',
 					$data['name'],
 					$data['sitename'],
@@ -389,9 +387,9 @@ class UsersModelRegistration extends JModelForm
 			// Set the link to activate the user account.
 			$uri = JURI::getInstance();
 			$base = $uri->toString(array('scheme', 'user', 'pass', 'host', 'port'));
-			$data['activate'] = $base.JRoute::_('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
+			$data['activate'] = $base.Route::url('index.php?option=com_users&task=registration.activate&token='.$data['activation'], false);
 
-			$emailSubject	= JText::sprintf(
+			$emailSubject	= Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
@@ -399,7 +397,7 @@ class UsersModelRegistration extends JModelForm
 
 			if ($sendpassword)
 			{
-				$emailBody = JText::sprintf(
+				$emailBody = Lang::txt(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY',
 					$data['name'],
 					$data['sitename'],
@@ -411,7 +409,7 @@ class UsersModelRegistration extends JModelForm
 			}
 			else
 			{
-				$emailBody = JText::sprintf(
+				$emailBody = Lang::txt(
 					'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY_NOPW',
 					$data['name'],
 					$data['sitename'],
@@ -424,13 +422,13 @@ class UsersModelRegistration extends JModelForm
 		else
 		{
 
-			$emailSubject	= JText::sprintf(
+			$emailSubject	= Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBody = JText::sprintf(
+			$emailBody = Lang::txt(
 				'COM_USERS_EMAIL_REGISTERED_BODY',
 				$data['name'],
 				$data['sitename'],
@@ -443,13 +441,13 @@ class UsersModelRegistration extends JModelForm
 
 		//Send Notification mail to administrators
 		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1)) {
-			$emailSubject = JText::sprintf(
+			$emailSubject = Lang::txt(
 				'COM_USERS_EMAIL_ACCOUNT_DETAILS',
 				$data['name'],
 				$data['sitename']
 			);
 
-			$emailBodyAdmin = JText::sprintf(
+			$emailBodyAdmin = Lang::txt(
 				'COM_USERS_EMAIL_REGISTERED_NOTIFICATION_TO_ADMIN_BODY',
 				$data['name'],
 				$data['username'],
@@ -471,14 +469,14 @@ class UsersModelRegistration extends JModelForm
 
 				// Check for an error.
 				if ($return !== true) {
-					$this->setError(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+					$this->setError(Lang::txt('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
 					return false;
 				}
 			}
 		}
 		// Check for an error.
 		if ($return !== true) {
-			$this->setError(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
+			$this->setError(Lang::txt('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
 
 			// Send a system message to administrators receiving system mails
 			$db = JFactory::getDBO();
@@ -497,7 +495,7 @@ class UsersModelRegistration extends JModelForm
 				$messages = array();
 
 				foreach ($sendEmail as $userid) {
-					$messages[] = "(".$userid.", ".$userid.", '".$jdate->toSql()."', '".JText::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')."', '".JText::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username'])."')";
+					$messages[] = "(".$userid.", ".$userid.", '".$jdate->toSql()."', '".Lang::txt('COM_USERS_MAIL_SEND_FAILURE_SUBJECT')."', '".Lang::txt('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username'])."')";
 				}
 				$q .= implode(',', $messages);
 				$db->setQuery($q);

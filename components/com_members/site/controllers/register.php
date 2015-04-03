@@ -73,7 +73,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		$app = JFactory::getApplication();
 
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$jsession = JFactory::getSession();
 
 		// Get the return URL
@@ -92,7 +92,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		$target_xprofile = \Hubzero\User\Profile::getInstance($username);
 
-		$admin = $this->juser->authorize($this->_option, 'manage');
+		$admin = User::authorize($this->_option, 'manage');
 		$self = ($xprofile->get('username') == $username);
 
 		if (!$admin && !$self)
@@ -594,7 +594,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
-		if (!$this->juser->get('guest') && !$this->juser->get('tmp_user'))
+		if (!User::isGuest() && !User::get('tmp_user'))
 		{
 			$this->setRedirect(
 				Route::url('index.php?option=' . $this->_option . '&task=myaccount'),
@@ -623,9 +623,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		}
 
 		$hzal = null;
-		if ($this->juser->get('auth_link_id'))
+		if (User::get('auth_link_id'))
 		{
-			$hzal = \Hubzero\Auth\Link::find_by_id($this->juser->get('auth_link_id'));
+			$hzal = \Hubzero\Auth\Link::find_by_id(User::get('auth_link_id'));
 		}
 
 		// Instantiate a new registration object
@@ -643,9 +643,8 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			if ($xregistration->check('create'))
 			{
 				// Get required system objects
-				$user      = clone(JFactory::getUser());
+				$user      = clone(User::getRoot());
 				$pathway   = JFactory::getApplication()->getPathway();
-				$config    = JFactory::getConfig();
 				$authorize = JFactory::getACL();
 				$document  = JFactory::getDocument();
 
@@ -899,9 +898,9 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (Request::getMethod() == 'GET')
 		{
-			if ($this->juser->get('tmp_user'))
+			if (User::get('tmp_user'))
 			{
-				$xregistration->loadAccount($this->juser);
+				$xregistration->loadAccount(User::getRoot());
 
 				$username = $xregistration->get('login');
 				$email = $xregistration->get('email');
@@ -1003,7 +1002,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 		$this->view->title = Lang::txt('COM_MEMBERS_REGISTER');
 		$this->view->sitename = Config::get('sitename');
 
-		$username = Request::getVar('username', $this->juser->get('username'),'get');
+		$username = Request::getVar('username', User::get('username'),'get');
 		$this->view->self = ($this->juser->get('username') == $username);
 
 		// Get the registration object
@@ -1204,7 +1203,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$xprofile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$xprofile = \Hubzero\User\Profile::getInstance(User::get('id'));
 		$login = $xprofile->get('username');
 		$email = $xprofile->get('email');
 		$email_confirmed = $xprofile->get('emailConfirmed');

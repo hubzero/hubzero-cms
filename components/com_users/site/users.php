@@ -15,5 +15,5 @@ require_once JPATH_COMPONENT . '/helpers/route.php';
 
 // Launch the controller.
 $controller = JControllerLegacy::getInstance('Users');
-$controller->execute(JRequest::getCmd('task', 'display'));
+$controller->execute(Request::getCmd('task', 'display'));
 $controller->redirect();

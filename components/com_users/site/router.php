@@ -230,7 +230,7 @@ function UsersParseRoute($segments)
 			$vars['view'] = 'login';
 		}
 	} else {
-		JError::raiseError(404, JText::_('JGLOBAL_RESOURCE_NOT_FOUND'));
+		App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
 	}
 
 	return $vars;

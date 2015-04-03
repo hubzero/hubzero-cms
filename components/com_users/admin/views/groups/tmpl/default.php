@@ -44,13 +44,13 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		Joomla.submitform(task);
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_users&view=groups');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_users&view=groups');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('COM_USERS_SEARCH_GROUPS_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_USERS_SEARCH_IN_GROUPS'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_USERS_SEARCH_GROUPS_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_GROUPS'); ?>" />
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 	</fieldset>
 	<div class="clr"> </div>
@@ -59,16 +59,16 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 		<thead>
 			<tr>
 				<th width="1%">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
-					<?php echo JText::_('COM_USERS_HEADING_GROUP_TITLE'); ?>
+					<?php echo Lang::txt('COM_USERS_HEADING_GROUP_TITLE'); ?>
 				</th>
 				<th width="10%">
-					<?php echo JText::_('COM_USERS_HEADING_USERS_IN_GROUP'); ?>
+					<?php echo Lang::txt('COM_USERS_HEADING_USERS_IN_GROUP'); ?>
 				</th>
 				<th width="5%">
-					<?php echo JText::_('JGRID_HEADING_ID'); ?>
+					<?php echo Lang::txt('JGRID_HEADING_ID'); ?>
 				</th>
 			</tr>
 		</thead>
@@ -98,14 +98,14 @@ JText::script('COM_USERS_GROUPS_CONFIRM_DELETE');
 				<td>
 					<?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->level) ?>
 					<?php if ($canEdit) : ?>
-					<a href="<?php echo JRoute::_('index.php?option=com_users&task=group.edit&id='.$item->id);?>">
+					<a href="<?php echo Route::url('index.php?option=com_users&task=group.edit&id='.$item->id);?>">
 						<?php echo $this->escape($item->title); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
 					<?php if (JDEBUG) : ?>
-						<a class="button fltrt" href="<?php echo JRoute::_('index.php?option=com_users&view=debuggroup&group_id='.(int) $item->id);?>">
-							<?php echo JText::_('COM_USERS_DEBUG_GROUP');?>
+						<a class="button fltrt" href="<?php echo Route::url('index.php?option=com_users&view=debuggroup&group_id='.(int) $item->id);?>">
+							<?php echo Lang::txt('COM_USERS_DEBUG_GROUP');?>
 						</a>
 					<?php endif; ?>
 				</td>

@@ -30,7 +30,7 @@ class UsersViewLevels extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -47,23 +47,23 @@ class UsersViewLevels extends JViewLegacy
 	{
 		$canDo	= UsersHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_USERS_VIEW_LEVELS_TITLE'), 'levels');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_LEVELS_TITLE'), 'levels');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('level.add');
+			Toolbar::addNew('level.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('level.edit');
-			JToolBarHelper::divider();
+			Toolbar::editList('level.edit');
+			Toolbar::divider();
 		}
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'level.delete');
-			JToolBarHelper::divider();
+			Toolbar::deleteList('', 'level.delete');
+			Toolbar::divider();
 		}
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_users');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_users');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('levels');
+		Toolbar::help('levels');
 	}
 }

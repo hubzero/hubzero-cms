@@ -52,7 +52,7 @@ class TemplatesModelSource extends JModelForm
 		$app->setUserState('editor.source.syntax', JFile::getExt($fileName));
 
 		// Load the parameters.
-		$params	= JComponentHelper::getParams('com_templates');
+		$params	= Component::params('com_templates');
 		$this->setState('params', $params);
 	}
 
@@ -78,7 +78,7 @@ class TemplatesModelSource extends JModelForm
 		$db->setQuery($query);
 		$state = $db->loadResult();
 		if ((int)$state < 1 ) {
-			$app->enqueueMessage(JText::_('COM_TEMPLATES_ERROR_EDITOR_DISABLED'), 'warning');
+			$app->enqueueMessage(Lang::txt('COM_TEMPLATES_ERROR_EDITOR_DISABLED'), 'warning');
 		}
 
 		// Get the form.
@@ -122,18 +122,18 @@ class TemplatesModelSource extends JModelForm
 		}
 
 		if ($this->_template) {
-			$fileName	= $this->getState('filename');
-			$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
-			$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
+			$fileName = $this->getState('filename');
+			$client   = JApplicationHelper::getClientInfo($this->_template->client_id);
+			$filePath = JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
 
 			if (file_exists($filePath)) {
 				jimport('joomla.filesystem.file');
 
-				$item->extension_id	= $this->getState('extension.id');
-				$item->filename		= $this->getState('filename');
-				$item->source		= JFile::read($filePath);
+				$item->extension_id = $this->getState('extension.id');
+				$item->filename     = $this->getState('filename');
+				$item->source       = JFile::read($filePath);
 			} else {
-				$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}
 		}
 
@@ -149,9 +149,9 @@ class TemplatesModelSource extends JModelForm
 	public function &getTemplate()
 	{
 		// Initialise variables.
-		$pk		= $this->getState('extension.id');
-		$db		= $this->getDbo();
-		$result	= false;
+		$pk     = $this->getState('extension.id');
+		$db     = $this->getDbo();
+		$result = false;
 
 		// Get the template information.
 		$db->setQuery(
@@ -167,7 +167,7 @@ class TemplatesModelSource extends JModelForm
 				$this->setError($error);
 			}
 			else {
-				$this->setError(JText::_('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
 			}
 			$this->_template = false;
 		} else {
@@ -196,9 +196,9 @@ class TemplatesModelSource extends JModelForm
 		}
 
 		$dispatcher = JDispatcher::getInstance();
-		$fileName	= $this->getState('filename');
-		$client		= JApplicationHelper::getClientInfo($template->client_id);
-		$filePath	= JPath::clean($client->path.'/templates/'.$template->element.'/'.$fileName);
+		$fileName   = $this->getState('filename');
+		$client     = JApplicationHelper::getClientInfo($template->client_id);
+		$filePath   = JPath::clean($client->path.'/templates/'.$template->element.'/'.$fileName);
 
 		// Include the extension plugins for the save events.
 		JPluginHelper::importPlugin('extension');
@@ -209,7 +209,7 @@ class TemplatesModelSource extends JModelForm
 
 		// Try to make the template file writeable.
 		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0644')) {
-			$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'));
+			$this->setError(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_WRITABLE'));
 			return false;
 		}
 
@@ -227,10 +227,10 @@ class TemplatesModelSource extends JModelForm
 
 		// Try to make the template file unwriteable.
 		if (!$ftp['enabled'] && JPath::isOwner($filePath) && !JPath::setPermissions($filePath, '0444')) {
-			$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
+			$this->setError(Lang::txt('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_UNWRITABLE'));
 			return false;
 		} elseif (!$return) {
-			$this->setError(JText::sprintf('COM_TEMPLATES_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
+			$this->setError(Lang::txt('COM_TEMPLATES_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
 			return false;
 		}
 

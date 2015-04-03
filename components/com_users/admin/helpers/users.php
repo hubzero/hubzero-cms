@@ -37,7 +37,7 @@ class UsersHelper
 	public static function addSubmenu($vName)
 	{
 		JSubMenuHelper::addEntry(
-			JText::_('COM_USERS_SUBMENU_USERS'),
+			Lang::txt('COM_USERS_SUBMENU_USERS'),
 			'index.php?option=com_users&view=users',
 			$vName == 'users'
 		);
@@ -48,24 +48,24 @@ class UsersHelper
 		if ($canDo->get('core.admin'))
 		{
 			JSubMenuHelper::addEntry(
-				JText::_('COM_USERS_SUBMENU_GROUPS'),
+				Lang::txt('COM_USERS_SUBMENU_GROUPS'),
 				'index.php?option=com_users&view=groups',
 				$vName == 'groups'
 			);
 			JSubMenuHelper::addEntry(
-				JText::_('COM_USERS_SUBMENU_LEVELS'),
+				Lang::txt('COM_USERS_SUBMENU_LEVELS'),
 				'index.php?option=com_users&view=levels',
 				$vName == 'levels'
 			);
 			JSubMenuHelper::addEntry(
-				JText::_('COM_USERS_SUBMENU_NOTES'),
+				Lang::txt('COM_USERS_SUBMENU_NOTES'),
 				'index.php?option=com_users&view=notes',
 				$vName == 'notes'
 			);
 
-			$extension = JRequest::getString('extension');
+			$extension = Request::getString('extension');
 			JSubMenuHelper::addEntry(
-				JText::_('COM_USERS_SUBMENU_NOTE_CATEGORIES'),
+				Lang::txt('COM_USERS_SUBMENU_NOTE_CATEGORIES'),
 				'index.php?option=com_categories&extension=com_users',
 				$vName == 'categories' || $extension == 'com_users'
 			);
@@ -109,8 +109,8 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', JText::_('JENABLED'));
-		$options[] = JHtml::_('select.option', '1', JText::_('JDISABLED'));
+		$options[] = JHtml::_('select.option', '0', Lang::txt('JENABLED'));
+		$options[] = JHtml::_('select.option', '1', Lang::txt('JDISABLED'));
 
 		return $options;
 	}
@@ -126,8 +126,8 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', JText::_('COM_USERS_ACTIVATED'));
-		$options[] = JHtml::_('select.option', '1', JText::_('COM_USERS_UNACTIVATED'));
+		$options[] = JHtml::_('select.option', '0', Lang::txt('COM_USERS_ACTIVATED'));
+		$options[] = JHtml::_('select.option', '1', Lang::txt('COM_USERS_UNACTIVATED'));
 
 		return $options;
 	}
@@ -143,9 +143,9 @@ class UsersHelper
 	{
 		// Build the filter options.
 		$options = array();
-		$options[] = JHtml::_('select.option', '0', JText::_('COM_USERS_UNAPPROVED'));
-		$options[] = JHtml::_('select.option', '1', JText::_('COM_USERS_APPROVED_MANUALLY'));
-		$options[] = JHtml::_('select.option', '2', JText::_('COM_USERS_APPROVED_AUTOMATICALLY'));
+		$options[] = JHtml::_('select.option', '0', Lang::txt('COM_USERS_UNAPPROVED'));
+		$options[] = JHtml::_('select.option', '1', Lang::txt('COM_USERS_APPROVED_MANUALLY'));
+		$options[] = JHtml::_('select.option', '2', Lang::txt('COM_USERS_APPROVED_AUTOMATICALLY'));
 
 		return $options;
 	}
@@ -195,13 +195,13 @@ class UsersHelper
 	public static function getRangeOptions()
 	{
 		$options = array(
-			JHtml::_('select.option', 'today', JText::_('COM_USERS_OPTION_RANGE_TODAY')),
-			JHtml::_('select.option', 'past_week', JText::_('COM_USERS_OPTION_RANGE_PAST_WEEK')),
-			JHtml::_('select.option', 'past_1month', JText::_('COM_USERS_OPTION_RANGE_PAST_1MONTH')),
-			JHtml::_('select.option', 'past_3month', JText::_('COM_USERS_OPTION_RANGE_PAST_3MONTH')),
-			JHtml::_('select.option', 'past_6month', JText::_('COM_USERS_OPTION_RANGE_PAST_6MONTH')),
-			JHtml::_('select.option', 'past_year', JText::_('COM_USERS_OPTION_RANGE_PAST_YEAR')),
-			JHtml::_('select.option', 'post_year', JText::_('COM_USERS_OPTION_RANGE_POST_YEAR')),
+			JHtml::_('select.option', 'today', Lang::txt('COM_USERS_OPTION_RANGE_TODAY')),
+			JHtml::_('select.option', 'past_week', Lang::txt('COM_USERS_OPTION_RANGE_PAST_WEEK')),
+			JHtml::_('select.option', 'past_1month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_1MONTH')),
+			JHtml::_('select.option', 'past_3month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_3MONTH')),
+			JHtml::_('select.option', 'past_6month', Lang::txt('COM_USERS_OPTION_RANGE_PAST_6MONTH')),
+			JHtml::_('select.option', 'past_year', Lang::txt('COM_USERS_OPTION_RANGE_PAST_YEAR')),
+			JHtml::_('select.option', 'post_year', Lang::txt('COM_USERS_OPTION_RANGE_POST_YEAR')),
 		);
 		return $options;
 	}

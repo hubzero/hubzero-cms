@@ -31,13 +31,13 @@
 // No direct access
 defined('_JEXEC') or die;
 
-JToolBarHelper::title(JText::_('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config.png');
-JToolBarHelper::apply('application.apply');
-JToolBarHelper::save('application.save');
-JToolBarHelper::divider();
-JToolBarHelper::cancel('application.cancel');
-JToolBarHelper::divider();
-JToolBarHelper::help('global_config');
+Toolbar::title(Lang::txt('COM_CONFIG_GLOBAL_CONFIGURATION'), 'config.png');
+Toolbar::apply('application.apply');
+Toolbar::save('application.save');
+Toolbar::divider();
+Toolbar::cancel('application.cancel');
+Toolbar::divider();
+Toolbar::help('global_config');
 
 // Load tooltips behavior
 JHtml::_('behavior.formvalidation');
@@ -57,7 +57,7 @@ $this->document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submen
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_config');?>" id="application-form" method="post" name="adminForm" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_config');?>" id="application-form" method="post" name="adminForm" class="form-validate">
 	<?php if ($this->ftp) : ?>
 		<?php echo $this->loadTemplate('ftplogin'); ?>
 	<?php endif; ?>

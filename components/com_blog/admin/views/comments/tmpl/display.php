@@ -106,7 +106,7 @@ function submitbutton(pressbutton)
 		<tbody>
 <?php
 $k = 0;
-$config = JFactory::getConfig();
+
 $now    = JFactory::getDate();
 $db     = JFactory::getDBO();
 

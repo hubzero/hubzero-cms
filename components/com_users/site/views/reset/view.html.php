@@ -48,14 +48,14 @@ class UsersViewReset extends JViewLegacy
 		}
 
 		// Get the view data.
-		$this->form	= $this->get($formname);
-		$this->state	= $this->get('State');
-		$this->params	= $this->state->params;
+		$this->form   = $this->get($formname);
+		$this->state  = $this->get('State');
+		$this->params = $this->state->params;
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
@@ -98,7 +98,7 @@ class UsersViewReset extends JViewLegacy
 		}
 		else
 		{
-			$this->params->def('page_heading', JText::_('COM_USERS_RESET'));
+			$this->params->def('page_heading', Lang::txt('COM_USERS_RESET'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -108,11 +108,11 @@ class UsersViewReset extends JViewLegacy
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

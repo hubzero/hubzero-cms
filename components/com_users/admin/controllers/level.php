@@ -46,18 +46,18 @@ class UsersControllerLevel extends JControllerForm
 	public function delete()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JInvalid_Token'));
+		JSession::checkToken() or jexit(Lang::txt('JInvalid_Token'));
 
 		// Initialise variables.
 		$user	= JFactory::getUser();
-		$ids	= JRequest::getVar('cid', array(), '', 'array');
+		$ids	= Request::getVar('cid', array(), '', 'array');
 
 		if (!JFactory::getUser()->authorise('core.admin', $this->option)) {
-			JError::raiseError(500, JText::_('JERROR_ALERTNOAUTHOR'));
+			App::abort(500, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			jexit();
 		}
 		elseif (empty($ids)) {
-			JError::raiseWarning(500, JText::_('COM_USERS_NO_LEVELS_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('COM_USERS_NO_LEVELS_SELECTED'));
 		}
 		else {
 			// Get the model.

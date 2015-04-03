@@ -30,7 +30,7 @@ class UsersViewGroup extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -45,33 +45,33 @@ class UsersViewGroup extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		Request::setVar('hidemainmenu', 1);
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$canDo		= UsersHelper::getActions();
 
-		JToolBarHelper::title(JText::_($isNew ? 'COM_USERS_VIEW_NEW_GROUP_TITLE' : 'COM_USERS_VIEW_EDIT_GROUP_TITLE'), 'groups-add');
+		Toolbar::title(Lang::txt($isNew ? 'COM_USERS_VIEW_NEW_GROUP_TITLE' : 'COM_USERS_VIEW_EDIT_GROUP_TITLE'), 'groups-add');
 
 		if ($canDo->get('core.edit')||$canDo->get('core.create')) {
-			JToolBarHelper::apply('group.apply');
-			JToolBarHelper::save('group.save');
+			Toolbar::apply('group.apply');
+			Toolbar::save('group.save');
 		}
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::save2new('group.save2new');
+			Toolbar::save2new('group.save2new');
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && $canDo->get('core.create')) {
-			JToolBarHelper::save2copy('group.save2copy');
+			Toolbar::save2copy('group.save2copy');
 		}
 
 		if (empty($this->item->id))  {
-			JToolBarHelper::cancel('group.cancel');
+			Toolbar::cancel('group.cancel');
 		} else {
-			JToolBarHelper::cancel('group.cancel', 'JTOOLBAR_CLOSE');
+			Toolbar::cancel('group.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('group');
+		Toolbar::divider();
+		Toolbar::help('group');
 	}
 }

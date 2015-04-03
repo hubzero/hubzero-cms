@@ -54,9 +54,9 @@ class JHtmlUsers
 	 */
 	public static function addNote($userId)
 	{
-		$title = JText::_('COM_USERS_ADD_NOTE');
+		$title = Lang::txt('COM_USERS_ADD_NOTE');
 
-		return '<a class="state notes" href="' . JRoute::_('index.php?option=com_users&task=note.add&u_id=' . (int) $userId) . '" title="' . $title . '"><span>' . JText::_('COM_USERS_NOTES') . '</span></a>';
+		return '<a class="state notes" href="' . Route::url('index.php?option=com_users&task=note.add&u_id=' . (int) $userId) . '" title="' . $title . '"><span>' . Lang::txt('COM_USERS_NOTES') . '</span></a>';
 	}
 
 	/**
@@ -76,9 +76,9 @@ class JHtmlUsers
 			return '';
 		}
 
-		$title = JText::_('COM_USERS_FILTER_NOTES');
+		$title = Lang::txt('COM_USERS_FILTER_NOTES');
 
-		return '<a class="state filter" href="' . JRoute::_('index.php?option=com_users&view=notes&filter_search=uid:' . (int) $userId) . '" title="' . $title . '"><span>' . JText::_('COM_USERS_NOTES') . '</span></a>';
+		return '<a class="state filter" href="' . Route::url('index.php?option=com_users&view=notes&filter_search=uid:' . (int) $userId) . '" title="' . $title . '"><span>' . Lang::txt('COM_USERS_NOTES') . '</span></a>';
 	}
 
 	/**
@@ -101,7 +101,7 @@ class JHtmlUsers
 		$title = JText::plural('COM_USERS_N_USER_NOTES', $count);
 
 		return '<a class="modal state notes"' .
-			' href="' . JRoute::_('index.php?option=com_users&view=notes&tmpl=component&layout=modal&u_id=' . (int) $userId) . '"' .
-			' rel="{handler: \'iframe\', size: {x: 800, y: 450}}" title="' . $title . '"><span>' . JText::_('COM_USERS_NOTES') . '</span></a>';
+			' href="' . Route::url('index.php?option=com_users&view=notes&tmpl=component&layout=modal&u_id=' . (int) $userId) . '"' .
+			' rel="{handler: \'iframe\', size: {x: 800, y: 450}}" title="' . $title . '"><span>' . Lang::txt('COM_USERS_NOTES') . '</span></a>';
 	}
 }

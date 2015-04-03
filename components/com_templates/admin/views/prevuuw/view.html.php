@@ -33,15 +33,16 @@ class TemplatesViewPrevuuw extends JViewLegacy
 		require_once JPATH_COMPONENT.'/helpers/templates.php';
 
 		// Initialise some variables
-		$this->client	= JApplicationHelper::getClientInfo(JRequest::getVar('client', '0', '', 'int'));
-		$this->id		= JRequest::getVar('id', '', 'method', 'int');
-		$this->option	= JRequest::getCmd('option');
-		$this->template	= TemplatesHelper::getTemplateName($this->id);
-		$this->tp		= true;
-		$this->url		= $client->id ? JURI::base() : JURI::root();
+		$this->client   = JApplicationHelper::getClientInfo(Request::getVar('client', '0', '', 'int'));
+		$this->id       = Request::getVar('id', '', 'method', 'int');
+		$this->option   = Request::getCmd('option');
+		$this->template = TemplatesHelper::getTemplateName($this->id);
+		$this->tp       = true;
+		$this->url      = $client->id ? JURI::base() : JURI::root();
 
-		if (!$this->template) {
-			return JError::raiseWarning(500, JText::_('COM_TEMPLATES_TEMPLATE_NOT_SPECIFIED'));
+		if (!$this->template)
+		{
+			return App::abort(500, Lang::txt('COM_TEMPLATES_TEMPLATE_NOT_SPECIFIED'));
 		}
 
 		// Set FTP credentials, if given
@@ -59,7 +60,7 @@ class TemplatesViewPrevuuw extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_TEMPLATES_MANAGER'), 'thememanager');
-		JToolBarHelper::custom('edit', 'back.png', 'back_f2.png', 'Back', false, false);
+		Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER'), 'thememanager');
+		Toolbar::custom('edit', 'back.png', 'back_f2.png', 'Back', false, false);
 	}
 }

@@ -35,17 +35,17 @@ namespace Components\Config;
 // Tell the browser not to cache this page.
 \JResponse::setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT', true);
 
-if (strstr(\JRequest::getCmd('task'), '.'))
+if (strstr(\Request::getCmd('task'), '.'))
 {
-	@list($ctrl, $task) = explode('.', \JRequest::getCmd('task'));
-	\JRequest::setVar('controller', $ctrl);
-	\JRequest::setVar('task', $task);
+	@list($ctrl, $task) = explode('.', \Request::getCmd('task'));
+	\Request::setVar('controller', $ctrl);
+	\Request::setVar('task', $task);
 }
 
-$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'application'));
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'application'));
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	\JError::raiseError(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+	\App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 

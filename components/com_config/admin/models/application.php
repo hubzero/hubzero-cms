@@ -93,13 +93,13 @@ class Application extends JModelForm
 		$data['asset_id'] = 1;
 
 		// Get the text filter data
-		$params = JComponentHelper::getParams('com_config');
+		$params = \Component::params('com_config');
 		$data['filters'] = JArrayHelper::fromObject($params->get('filters'));
 
 		// If no filter data found, get from com_content (update of 1.6/1.7 site)
 		if (empty($data['filters']))
 		{
-			$contentParams = JComponentHelper::getParams('com_content');
+			$contentParams = \Component::params('com_content');
 			$data['filters'] = JArrayHelper::fromObject($contentParams->get('filters'));
 		}
 
@@ -131,11 +131,11 @@ class Application extends JModelForm
 
 			// Check that we aren't removing our Super User permission
 			// Need to get groups from database, since they might have changed
-			$myGroups = JAccess::getGroupsByUser(JFactory::getUser()->get('id'));
+			$myGroups = JAccess::getGroupsByUser(\User::get('id'));
 			$myRules = $rules->getData();
 			$hasSuperAdmin = $myRules['core.admin']->allow($myGroups);
 			if (!$hasSuperAdmin) {
-				$this->setError(JText::_('COM_CONFIG_ERROR_REMOVING_SUPER_ADMIN'));
+				$this->setError(\Lang::txt('COM_CONFIG_ERROR_REMOVING_SUPER_ADMIN'));
 				return false;
 			}
 
@@ -151,7 +151,7 @@ class Application extends JModelForm
 			}
 			else
 			{
-				$this->setError(JText::_('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
+				$this->setError(\Lang::txt('COM_CONFIG_ERROR_ROOT_ASSET_NOT_FOUND'));
 				return false;
 			}
 			unset($data['rules']);
@@ -178,7 +178,7 @@ class Application extends JModelForm
 			}
 			else
 			{
-				$this->setError(JText::_('COM_CONFIG_ERROR_CONFIG_EXTENSION_NOT_FOUND'));
+				$this->setError(Lang::txt('COM_CONFIG_ERROR_CONFIG_EXTENSION_NOT_FOUND'));
 				return false;
 			}
 			unset($data['filters']);
@@ -221,7 +221,7 @@ class Application extends JModelForm
 		$config->loadArray($data);
 
 		// Overwrite the old FTP credentials with the new ones.
-		$temp = JFactory::getConfig();
+		$temp = \Config::getRoot();
 		$temp->set('ftp_enable', $data['ftp_enable']);
 		$temp->set('ftp_host', $data['ftp_host']);
 		$temp->set('ftp_port', $data['ftp_port']);
@@ -281,21 +281,21 @@ class Application extends JModelForm
 		// Attempt to make the file writeable if using FTP.
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0640'))
 		{
-			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
+			JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
 		}
 
 		// Attempt to write the configuration file as a PHP class named JConfig.
 		$configuration = $config->toString('PHP', array('class' => 'JConfig', 'closingtag' => false));
 		if (!JFile::write($file, $configuration))
 		{
-			$this->setError(JText::_('COM_CONFIG_ERROR_WRITE_FAILED'));
+			$this->setError(Lang::txt('COM_CONFIG_ERROR_WRITE_FAILED'));
 			return false;
 		}
 
 		// Attempt to make the file unwriteable if using FTP.
 		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0440'))
 		{
-			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
+			JError::raiseNotice('SOME_ERROR_CODE', Lang::txt('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
 		}
 
 		return true;

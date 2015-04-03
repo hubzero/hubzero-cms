@@ -9,20 +9,20 @@
 // No direct access.
 defined('_JEXEC') or die;
 ?>
-<fieldset class="adminform" title="<?php echo JText::_('COM_TEMPLATES_FTP_TITLE'); ?>">
-	<legend><?php echo JText::_('COM_TEMPLATES_FTP_TITLE'); ?></legend>
+<fieldset class="adminform" title="<?php echo Lang::txt('COM_TEMPLATES_FTP_TITLE'); ?>">
+	<legend><?php echo Lang::txt('COM_TEMPLATES_FTP_TITLE'); ?></legend>
 
-	<?php echo JText::_('COM_TEMPLATES_FTP_DESC'); ?>
+	<?php echo Lang::txt('COM_TEMPLATES_FTP_DESC'); ?>
 
 	<?php if ($this->ftp instanceof Exception): ?>
-		<p class="error"><?php echo JText::_($this->ftp->message); ?></p>
+		<p class="error"><?php echo Lang::txt($this->ftp->message); ?></p>
 	<?php endif; ?>
 
 	<table class="adminform">
 		<tbody>
 			<tr>
 				<td width="120">
-					<label for="username"><?php echo JText::_('JGLOBAL_USERNAME'); ?></label>
+					<label for="username"><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></label>
 				</td>
 				<td>
 					<input type="text" id="username" name="username" class="inputbox" size="70" value="" />
@@ -30,7 +30,7 @@ defined('_JEXEC') or die;
 			</tr>
 			<tr>
 				<td width="120">
-					<label for="password"><?php echo JText::_('JGLOBAL_PASSWORD'); ?></label>
+					<label for="password"><?php echo Lang::txt('JGLOBAL_PASSWORD'); ?></label>
 				</td>
 				<td>
 					<input type="password" id="password" name="password" class="inputbox" size="70" value="" />

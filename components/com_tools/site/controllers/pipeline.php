@@ -115,7 +115,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 
 		// Paging vars
-		$this->view->filters['limit'] = Request::getInt('limit', JFactory::getConfig()->getValue('config.list_limit'));
+		$this->view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
 		$this->view->filters['start'] = Request::getInt('limitstart', 0);
 
 		// Create a Tool object

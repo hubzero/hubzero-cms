@@ -266,7 +266,7 @@ class UsersModelProfile extends JModelForm
 
 		// Bind the data.
 		if (!$user->bind($data)) {
-			$this->setError(JText::sprintf('COM_USERS_PROFILE_BIND_FAILED', $user->getError()));
+			$this->setError(Lang::txt('COM_USERS_PROFILE_BIND_FAILED', $user->getError()));
 			return false;
 		}
 

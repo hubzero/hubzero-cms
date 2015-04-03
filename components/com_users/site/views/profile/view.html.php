@@ -38,13 +38,13 @@ class UsersViewProfile extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
 		// Check if a user was found.
 		if (!$this->data->id) {
-			JError::raiseError(404, JText::_('JERROR_USERS_PROFILE_NOT_FOUND'));
+			App::abort(404, Lang::txt('JERROR_USERS_PROFILE_NOT_FOUND'));
 			return false;
 		}
 
@@ -81,7 +81,7 @@ class UsersViewProfile extends JViewLegacy
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $user->name));
 		} else {
-			$this->params->def('page_heading', JText::_('COM_USERS_PROFILE'));
+			$this->params->def('page_heading', Lang::txt('COM_USERS_PROFILE'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -89,10 +89,10 @@ class UsersViewProfile extends JViewLegacy
 			$title = $app->getCfg('sitename');
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Lang::txt('JPAGETITLE', $app->getCfg('sitename'), $title);
 		}
 		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Lang::txt('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

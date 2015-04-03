@@ -26,10 +26,10 @@ $canDo = UsersHelper::getActions();
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<form action="<?php echo Route::url('index.php?option=com_users&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
 	<div class="width-100">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_USERS_USERGROUP_DETAILS');?></span></legend>
+			<legend><span><?php echo Lang::txt('COM_USERS_USERGROUP_DETAILS');?></span></legend>
 
 			<div class="input-wrap">
 				<?php echo $this->form->getLabel('title'); ?>

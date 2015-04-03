@@ -62,8 +62,8 @@ class UsersModelRemind extends JModelForm
 	protected function populateState()
 	{
 		// Get the application object.
-		$app	= JFactory::getApplication();
-		$params	= $app->getParams('com_users');
+		$app = JFactory::getApplication();
+		$params = $app->getParams('com_users');
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -100,8 +100,8 @@ class UsersModelRemind extends JModelForm
 		}
 
 		// Find the user id for the given email address.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from($db->quoteName('#__users'));
 		$query->where($db->quoteName('email').' = '.$db->Quote($data['email']));
@@ -113,13 +113,13 @@ class UsersModelRemind extends JModelForm
 
 		// Check for an error.
 		if ($db->getErrorNum()) {
-			$this->setError(JText::sprintf('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
+			$this->setError(Lang::txt('COM_USERS_DATABASE_ERROR', $db->getErrorMsg()), 500);
 			return false;
 		}
 
 		// Check for a user.
 		if (count($users) < 1) {
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
 
@@ -135,32 +135,30 @@ class UsersModelRemind extends JModelForm
 
 		// Check for a user.
 		if (count($users) < 1) {
-			$this->setError(JText::_('COM_USERS_USER_NOT_FOUND'));
+			$this->setError(Lang::txt('COM_USERS_USER_NOT_FOUND'));
 			return false;
 		}
-
-		$config	= JFactory::getConfig();
 
 		// Assemble the login link.
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-		$link	= 'index.php?option=com_users&view=login'.$itemid;
-		$mode	= $config->get('force_ssl', 0) == 2 ? 1 : -1;
+		$link = 'index.php?option=com_users&view=login'.$itemid;
+		$mode = Config::get('force_ssl', 0) == 2 ? 1 : -1;
 
 		// Put together the email template data.
 		$data = array();
 		$data['username']	= implode(', ', $usersnames);
-		$data['fromname']	= $config->get('fromname');
-		$data['mailfrom']	= $config->get('mailfrom');
-		$data['sitename']	= $config->get('sitename');
-		$data['link_text']	= JRoute::_($link, false, $mode);
-		$data['link_html']	= JRoute::_($link, true, $mode);
+		$data['fromname']	= Config::get('fromname');
+		$data['mailfrom']	= Config::get('mailfrom');
+		$data['sitename']	= Config::get('sitename');
+		$data['link_text']	= Route::url($link, false, $mode);
+		$data['link_html']	= Route::url($link, true, $mode);
 
-		$subject = JText::sprintf(
+		$subject = Lang::txt(
 			'COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT',
 			$data['sitename']
 		);
-		$body = JText::sprintf(
+		$body = Lang::txt(
 			'COM_USERS_EMAIL_USERNAME_REMINDER_BODY',
 			$data['sitename'],
 			$data['username'],
@@ -172,7 +170,7 @@ class UsersModelRemind extends JModelForm
 
 		// Check for an error.
 		if ($return !== true) {
-			$this->setError(JText::_('COM_USERS_MAIL_FAILED'), 500);
+			$this->setError(Lang::txt('COM_USERS_MAIL_FAILED'), 500);
 			return false;
 		}
 

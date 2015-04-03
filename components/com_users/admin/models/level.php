@@ -91,7 +91,7 @@ class UsersModelLevel extends JModelAdmin
 
 		if (in_array($record->id, $this->levelsInUse))
 		{
-			$this->setError(JText::sprintf('COM_USERS_ERROR_VIEW_LEVEL_IN_USE', $record->id, $record->title));
+			$this->setError(Lang::txt('COM_USERS_ERROR_VIEW_LEVEL_IN_USE', $record->id, $record->title));
 
 			return false;
 		}

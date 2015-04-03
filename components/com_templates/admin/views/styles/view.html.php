@@ -24,21 +24,23 @@ class TemplatesViewStyles extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
-		$this->preview		= JComponentHelper::getParams('com_templates')->get('template_positions_display');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->preview    = Component::params('com_templates')->get('template_positions_display');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
 			// Check if there are no matching items
-		if (!count($this->items)) {
+		if (!count($this->items))
+		{
 			JFactory::getApplication()->enqueueMessage(
-				JText::_('COM_TEMPLATES_MSG_MANAGE_NO_STYLES')
+				Lang::txt('COM_TEMPLATES_MSG_MANAGE_NO_STYLES')
 				, 'warning'
 			);
 		}
@@ -54,34 +56,35 @@ class TemplatesViewStyles extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$state	= $this->get('State');
-		$canDo	= TemplatesHelper::getActions();
-		$isSite	= ($state->get('filter.client_id') == 0);
+		$state  = $this->get('State');
+		$canDo  = TemplatesHelper::getActions();
+		$isSite = ($state->get('filter.client_id') == 0);
 
-		JToolBarHelper::title(JText::_('COM_TEMPLATES_MANAGER_STYLES'), 'thememanager');
-
-		if ($canDo->get('core.edit.state')) {
-			JToolBarHelper::makeDefault('styles.setDefault', 'COM_TEMPLATES_TOOLBAR_SET_HOME');
-			JToolBarHelper::divider();
+		Toolbar::title(Lang::txt('COM_TEMPLATES_MANAGER_STYLES'), 'thememanager');
+		if ($canDo->get('core.edit.state'))
+		{
+			Toolbar::makeDefault('styles.setDefault', 'COM_TEMPLATES_TOOLBAR_SET_HOME');
+			Toolbar::divider();
 		}
-
-		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('style.edit');
+		if ($canDo->get('core.edit'))
+		{
+			Toolbar::editList('style.edit');
 		}
-		if ($canDo->get('core.create')) {
-			JToolBarHelper::custom('styles.duplicate', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
-			JToolBarHelper::divider();
+		if ($canDo->get('core.create'))
+		{
+			Toolbar::custom('styles.duplicate', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
+			Toolbar::divider();
 		}
-
-		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'styles.delete');
-			JToolBarHelper::divider();
+		if ($canDo->get('core.delete'))
+		{
+			Toolbar::deleteList('', 'styles.delete');
+			Toolbar::divider();
 		}
-
-		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_templates');
-			JToolBarHelper::divider();
+		if ($canDo->get('core.admin'))
+		{
+			Toolbar::preferences('com_templates');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('styles');
+		Toolbar::help('styles');
 	}
 }

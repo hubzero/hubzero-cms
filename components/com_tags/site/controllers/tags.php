@@ -400,12 +400,9 @@ class Tags extends SiteController
 			}
 		}
 
-		// Get configuration
-		$config = \JFactory::getConfig();
-
 		// Paging variables
 		$limitstart = Request::getInt('limitstart', 0);
-		$limit = Request::getInt('limit', $config->getValue('config.list_limit'));
+		$limit = Request::getInt('limit', Config::get('list_limit'));
 
 		// Load plugins
 		\JPluginHelper::importPlugin('tags');

@@ -31,11 +31,11 @@ class UsersControllerUser extends UsersController
 		// Populate the data array:
 		$data             = array();
 		$options          = array();
-		$data['return']   = base64_decode(JRequest::getVar('return', '', 'POST', 'BASE64'));
-		$data['username'] = JRequest::getVar('username', '', 'method', 'username');
-		$data['password'] = JRequest::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
+		$data['return']   = base64_decode(Request::getVar('return', '', 'POST', 'BASE64'));
+		$data['username'] = Request::getVar('username', '', 'method', 'username');
+		$data['password'] = Request::getString('passwd', '', 'post', JREQUEST_ALLOWRAW);
 
-		$authenticator    = JRequest::getVar('authenticator', '', 'method');
+		$authenticator    = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the login method for that plugin
 		if (!empty($authenticator)) {
@@ -73,16 +73,16 @@ class UsersControllerUser extends UsersController
 		// If no authenticator is specified, or the login method for that plugin did not exist then use joomla default
 		if (!isset($myplugin)) {
 			// Check for request forgeries
-			JRequest::checkToken('request') or jexit( 'Invalid Token' );
+			Request::checkToken('request') or jexit( 'Invalid Token' );
 
-			if ($return = JRequest::getVar('return', '', 'method', 'base64')) {
+			if ($return = Request::getVar('return', '', 'method', 'base64')) {
 				$return = base64_decode($return);
 				if (!JURI::isInternal($return)) {
 					$return = '';
 				}
 			}
 
-			if ($freturn = JRequest::getVar('freturn', '', 'method', 'base64')) {
+			if ($freturn = Request::getVar('freturn', '', 'method', 'base64')) {
 				$freturn = base64_decode($freturn);
 				if (!JURI::isInternal($freturn)) {
 					$freturn = '';
@@ -91,7 +91,7 @@ class UsersControllerUser extends UsersController
 
 			// Get the log in options.
 			$options = array();
-			$options['remember'] = JRequest::getBool('remember', false);
+			$options['remember'] = Request::getBool('remember', false);
 			$options['return'] = $data['return'];
 			if (!empty($authenticator)) {
 				$options['authenticator'] = $authenticator;
@@ -118,14 +118,14 @@ class UsersControllerUser extends UsersController
 			$app->setUserState('users.login.form.data', array());
 
 			// If no_html is set, return json response
-			if (JRequest::getInt('no_html', 0))
+			if (Request::getInt('no_html', 0))
 			{
-				echo json_encode( array("success" => true, "redirect" => JRoute::_($app->getUserState('users.login.form.return'), false)) );
+				echo json_encode( array("success" => true, "redirect" => Route::url($app->getUserState('users.login.form.return'), false)) );
 				exit;
 			}
 			else
 			{
-				$app->redirect(JRoute::_($app->getUserState('users.login.form.return'), false));
+				$app->redirect(Route::url($app->getUserState('users.login.form.return'), false));
 			}
 		} else {
 			// Login failed !
@@ -134,7 +134,7 @@ class UsersControllerUser extends UsersController
 
 			// Facilitate third party login forms
 			if (!$return) {
-				$return	= JRoute::_('index.php?option=com_users&view=login');
+				$return	= Route::url('index.php?option=com_users&view=login');
 			}
 
 			if (isset($freturn)) {
@@ -142,16 +142,16 @@ class UsersControllerUser extends UsersController
 			}
 
 			// If no_html is set, return json response
-			if (JRequest::getInt('no_html', 0))
+			if (Request::getInt('no_html', 0))
 			{
 				$error = ($result) ? $result->getMessage() : 'An unknown error has occurred';
-				echo json_encode( array("error" => $error, "freturn" => JRoute::_($return, false)) );
+				echo json_encode( array("error" => $error, "freturn" => Route::url($return, false)) );
 				exit;
 			}
 			else
 			{
 				// Redirect to a login form
-				$app->redirect(JRoute::_($return, false));
+				$app->redirect(Route::url($return, false));
 			}
 		}
 	}
@@ -167,7 +167,7 @@ class UsersControllerUser extends UsersController
 
 		$juser = JFactory::getUser();
 
-		$authenticator = JRequest::getVar('authenticator', '', 'method');
+		$authenticator = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the logout method for that plugin
 		if (!empty($authenticator)) {
@@ -227,28 +227,28 @@ class UsersControllerUser extends UsersController
 
 					if ($auto_logoff)
 					{
-						$app->redirect(JRoute::_('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
+						$app->redirect(Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
 						return;
 					}
 					else
 					{
-						$app->redirect(JRoute::_('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
+						$app->redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
 						return;
 					}
 				}
 			}
 
 			// Get the return url from the request and validate that it is internal.
-			$return = JRequest::getVar('return', '', 'method', 'base64');
+			$return = Request::getVar('return', '', 'method', 'base64');
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return)) {
 				$return = '';
 			}
 
 			// Redirect the user.
-			$app->redirect(JRoute::_($return, false));
+			$app->redirect(Route::url($return, false));
 		} else {
-			$app->redirect(JRoute::_('index.php?option=com_users&view=login', false));
+			$app->redirect(Route::url('index.php?option=com_users&view=login', false));
 		}
 	}
 
@@ -259,10 +259,10 @@ class UsersControllerUser extends UsersController
 	 */
 	public function register()
 	{
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Get the form data.
-		$data	= JRequest::getVar('user', array(), 'post', 'array');
+		$data	= Request::getVar('user', array(), 'post', 'array');
 
 		// Get the model and validate the data.
 		$model	= $this->getModel('Registration', 'UsersModel');
@@ -300,7 +300,7 @@ class UsersControllerUser extends UsersController
 			$app->setUserState('users.registration.form.data', $data);
 
 			// Redirect back to the registration form.
-			$message = JText::sprintf('COM_USERS_REGISTRATION_SAVE_FAILED', $model->getError());
+			$message = Lang::txt('COM_USERS_REGISTRATION_SAVE_FAILED', $model->getError());
 			$this->setRedirect('index.php?option=com_users&view=registration', $message, 'error');
 			return false;
 		}
@@ -319,11 +319,11 @@ class UsersControllerUser extends UsersController
 	public function remind()
 	{
 		// Check the request token.
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		$app	= JFactory::getApplication();
 		$model	= $this->getModel('User', 'UsersModel');
-		$data	= JRequest::getVar('jform', array(), 'post', 'array');
+		$data	= Request::getVar('jform', array(), 'post', 'array');
 
 		// Submit the username remind request.
 		$return	= $model->processRemindRequest($data);
@@ -334,7 +334,7 @@ class UsersControllerUser extends UsersController
 			if ($app->getCfg('error_reporting')) {
 				$message = $return->getMessage();
 			} else {
-				$message = JText::_('COM_USERS_REMIND_REQUEST_ERROR');
+				$message = Lang::txt('COM_USERS_REMIND_REQUEST_ERROR');
 			}
 
 			// Get the route to the next page.
@@ -343,7 +343,7 @@ class UsersControllerUser extends UsersController
 			$route	= 'index.php?option=com_users&view=remind'.$itemid;
 
 			// Go back to the complete form.
-			$this->setRedirect(JRoute::_($route, false), $message, 'error');
+			$this->setRedirect(Route::url($route, false), $message, 'error');
 			return false;
 		} elseif ($return === false) {
 			// Complete failed.
@@ -353,8 +353,8 @@ class UsersControllerUser extends UsersController
 			$route	= 'index.php?option=com_users&view=remind'.$itemid;
 
 			// Go back to the complete form.
-			$message = JText::sprintf('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'notice');
+			$message = Lang::txt('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
+			$this->setRedirect(Route::url($route, false), $message, 'notice');
 			return false;
 		} else {
 			// Complete succeeded.
@@ -364,8 +364,8 @@ class UsersControllerUser extends UsersController
 			$route	= 'index.php?option=com_users&view=login'.$itemid;
 
 			// Proceed to the login form.
-			$message = JText::_('COM_USERS_REMIND_REQUEST_SUCCESS');
-			$this->setRedirect(JRoute::_($route, false), $message);
+			$message = Lang::txt('COM_USERS_REMIND_REQUEST_SUCCESS');
+			$this->setRedirect(Route::url($route, false), $message);
 			return true;
 		}
 	}
@@ -378,7 +378,7 @@ class UsersControllerUser extends UsersController
 	public function resend()
 	{
 		// Check for request forgeries
-		JSession::checkToken('post') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken('post') or jexit(Lang::txt('JINVALID_TOKEN'));
 	}
 
 	public function link()
@@ -389,14 +389,14 @@ class UsersControllerUser extends UsersController
 		// First, they should already be logged in, so check for that
 		if ($user->get('guest'))
 		{
-			JError::raiseError( 403, JText::_( 'You must be logged in to perform this function' ));
+			App::abort( 403, Lang::txt( 'You must be logged in to perform this function' ));
 			return;
 		}
 
 		// Do we have a return
 		$return  = '';
 		$options = array();
-		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = Request::getVar('return', '', 'method', 'base64'))
 		{
 			$return = base64_decode($return);
 			if (!JURI::isInternal($return))
@@ -409,7 +409,7 @@ class UsersControllerUser extends UsersController
 			}
 		}
 
-		$authenticator = JRequest::getVar('authenticator', '', 'method');
+		$authenticator = Request::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the link method for that plugin
 		if (!empty($authenticator)) {
@@ -427,19 +427,19 @@ class UsersControllerUser extends UsersController
 					$myplugin->link($options);
 				} else {
 					// No Link method is availble
-					$app->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+					$app->redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 						'Linked accounts are not currently available for this provider.',
 						'error');
 				}
 			}
 		} else {
 			// No authenticator provided...
-			JError::raiseError( 400, JText::_( 'Missing authenticator' ));
+			App::abort( 400, Lang::txt( 'Missing authenticator' ));
 			return;
 		}
 
 		// Success!  Redict with message
-		$app->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
+		$app->redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
 			'Your account has been successfully linked!');
 	}
 

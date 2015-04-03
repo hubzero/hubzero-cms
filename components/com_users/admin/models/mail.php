@@ -71,7 +71,7 @@ class UsersModelMail extends JModelAdmin
 	public function send()
 	{
 		// Initialise variables.
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$data = Request::getVar('jform', array(), 'post', 'array');
 		$app  = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$acl  = JFactory::getACL();
@@ -96,7 +96,7 @@ class UsersModelMail extends JModelAdmin
 		if (!$message_body || !$subject)
 		{
 			$app->setUserState('com_users.display.mail.data', $data);
-			$this->setError(JText::_('COM_USERS_MAIL_PLEASE_FILL_IN_THE_FORM_CORRECTLY'));
+			$this->setError(Lang::txt('COM_USERS_MAIL_PLEASE_FILL_IN_THE_FORM_CORRECTLY'));
 			return false;
 		}
 
@@ -134,11 +134,11 @@ class UsersModelMail extends JModelAdmin
 			$app->setUserState('com_users.display.mail.data', $data);
 			if (in_array($user->id, $to))
 			{
-				$this->setError(JText::_('COM_USERS_MAIL_ONLY_YOU_COULD_BE_FOUND_IN_THIS_GROUP'));
+				$this->setError(Lang::txt('COM_USERS_MAIL_ONLY_YOU_COULD_BE_FOUND_IN_THIS_GROUP'));
 			}
 			else
 			{
-				$this->setError(JText::_('COM_USERS_MAIL_NO_USERS_COULD_BE_FOUND_IN_THIS_GROUP'));
+				$this->setError(Lang::txt('COM_USERS_MAIL_NO_USERS_COULD_BE_FOUND_IN_THIS_GROUP'));
 			}
 			return false;
 		}
@@ -177,7 +177,7 @@ class UsersModelMail extends JModelAdmin
 		elseif (empty($rs))
 		{
 			$app->setUserState('com_users.display.mail.data', $data);
-			$this->setError(JText::_('COM_USERS_MAIL_THE_MAIL_COULD_NOT_BE_SENT'));
+			$this->setError(Lang::txt('COM_USERS_MAIL_THE_MAIL_COULD_NOT_BE_SENT'));
 			return false;
 		}
 		else

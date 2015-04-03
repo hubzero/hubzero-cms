@@ -30,7 +30,7 @@ class UsersViewGroups extends JViewLegacy
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
+			App::abort(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -47,24 +47,24 @@ class UsersViewGroups extends JViewLegacy
 	{
 		$canDo	= UsersHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_USERS_VIEW_GROUPS_TITLE'), 'groups');
+		Toolbar::title(Lang::txt('COM_USERS_VIEW_GROUPS_TITLE'), 'groups');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('group.add');
+			Toolbar::addNew('group.add');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('group.edit');
-			JToolBarHelper::divider();
+			Toolbar::editList('group.edit');
+			Toolbar::divider();
 		}
 		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'groups.delete');
-			JToolBarHelper::divider();
+			Toolbar::deleteList('', 'groups.delete');
+			Toolbar::divider();
 		}
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences('com_users');
-			JToolBarHelper::divider();
+			Toolbar::preferences('com_users');
+			Toolbar::divider();
 		}
-		JToolBarHelper::help('groups');
+		Toolbar::help('groups');
 	}
 }

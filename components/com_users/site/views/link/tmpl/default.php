@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$step = (int) JRequest::getInt('step', 1);
+$step = (int) Request::getInt('step', 1);
 ?>
 
 <header id="content-header">
@@ -44,10 +44,10 @@ $step = (int) JRequest::getInt('step', 1);
 			Have you ever logged into <?php echo $this->sitename; ?> before?
 		</div>
 		<div class="responses">
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=link&step=2'); ?>">
 				<div data-step="1" class="button next forward">Yes</div>
 			</a>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=update'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_members&controller=register&task=update'); ?>">
 				<div data-step="1" class="button backwards">No</div>
 			</a>
 		</div>
@@ -58,10 +58,10 @@ $step = (int) JRequest::getInt('step', 1);
 			Great! Did you want to link your <?php echo $this->display_name; ?> account to that existing account or create a new account?
 		</div>
 		<div class="responses">
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=3'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=link&step=3'); ?>">
 				<div data-step="2" class="button next link">Link</div>
 			</a>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=update'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_members&controller=register&task=update'); ?>">
 				<div data-step="2" class="button create-new">Create new</div>
 			</a>
 		</div>
@@ -72,12 +72,12 @@ $step = (int) JRequest::getInt('step', 1);
 			We can do that. Just login with that existing account now and we'll link them up!
 		</div>
 		<div class="responses">
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout&return=' .
-				base64_encode(JRoute::_('index.php?option=com_users&view=login&reset=1&return=' .
-					base64_encode(JRoute::_('index.php?option=com_users&view=login&authenticator=' . $this->hzad->authenticator))))); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=logout&return=' .
+				base64_encode(Route::url('index.php?option=com_users&view=login&reset=1&return=' .
+					base64_encode(Route::url('index.php?option=com_users&view=login&authenticator=' . $this->hzad->authenticator))))); ?>">
 				<div data-step="3" class="button ok">OK</div>
 			</a>
-			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
+			<a href="<?php echo Route::url('index.php?option=com_users&view=link&step=2'); ?>">
 				<div data-step="3" class="button previous back">Go back</div>
 			</a>
 		</div>

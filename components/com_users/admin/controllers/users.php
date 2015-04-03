@@ -71,17 +71,17 @@ class UsersControllerUsers extends JControllerAdmin
 	public function changeBlock()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= JRequest::getVar('cid', array(), '', 'array');
+		$ids	= Request::getVar('cid', array(), '', 'array');
 		$values	= array('block' => 1, 'unblock' => 0);
 		$task	= $this->getTask();
 		$value	= JArrayHelper::getValue($values, $task, 0, 'int');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, JText::_('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
 		}
 		else
 		{
@@ -119,14 +119,14 @@ class UsersControllerUsers extends JControllerAdmin
 	public function activate()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids	= JRequest::getVar('cid', array(), '', 'array');
+		$ids	= Request::getVar('cid', array(), '', 'array');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, JText::_('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
 		}
 		else
 		{
@@ -155,14 +155,14 @@ class UsersControllerUsers extends JControllerAdmin
 	public function approve()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$ids = JRequest::getVar('cid', array(), '', 'array');
+		$ids = Request::getVar('cid', array(), '', 'array');
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, JText::_('COM_USERS_USERS_NO_ITEM_SELECTED'));
+			JError::raiseWarning(500, Lang::txt('COM_USERS_USERS_NO_ITEM_SELECTED'));
 		}
 		else
 		{

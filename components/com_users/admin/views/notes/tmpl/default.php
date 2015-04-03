@@ -13,28 +13,27 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.tooltip');
 
-$user = JFactory::getUser();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
-$canEdit = $user->authorise('core.edit', 'com_users');
+$canEdit = User::authorise('core.edit', 'com_users');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_users&view=notes');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_users&view=notes');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo JText::_('COM_USERS_SEARCH_IN_NOTE_TITLE'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			<label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NOTE_TITLE'); ?>" />
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 
 		<div class="filter-select fltrt">
 			<select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_users.notes'), 'value', 'text', $this->state->get('filter.category_id'));?>
 			</select>
 
 			<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 		</div>
@@ -44,7 +43,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 		<thead>
 			<tr>
 				<th width="1%">
-					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+					<input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
 				<th class="left">
 					<?php echo JHtml::_('grid.sort', 'COM_USERS_USER_HEADING', 'u.name', $listDirn, $listOrder); ?>
@@ -75,7 +74,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) : ?>
-			<?php $canChange	= $user->authorise('core.edit.state',	'com_users'); ?>
+			<?php $canChange = User::authorise('core.edit.state',  'com_users'); ?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center checklist">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
@@ -85,7 +84,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_users&task=note.edit&id='.$item->id);?>">
+						<a href="<?php echo Route::url('index.php?option=com_users&task=note.edit&id='.$item->id);?>">
 							<?php echo $this->escape($item->user_name); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($item->user_name); ?>
@@ -95,7 +94,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 					<?php if ($item->subject) : ?>
 						<?php echo $this->escape($item->subject); ?>
 					<?php else : ?>
-						<?php echo JText::_('COM_USERS_EMPTY_SUBJECT'); ?>
+						<?php echo Lang::txt('COM_USERS_EMPTY_SUBJECT'); ?>
 					<?php endif; ?>
 				</td>
 				<td class="center">
@@ -111,7 +110,7 @@ $canEdit = $user->authorise('core.edit', 'com_users');
 					<?php if (intval($item->review_time)) : ?>
 						<?php echo $this->escape($item->review_time); ?>
 					<?php else : ?>
-						<?php echo JText::_('COM_USERS_EMPTY_REVIEW'); ?>
+						<?php echo Lang::txt('COM_USERS_EMPTY_REVIEW'); ?>
 					<?php endif; ?>
 				</td>
 				<td class="center">

@@ -33,7 +33,7 @@ defined('_JEXEC') or die;
 ?>
 <div class="width-100">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_CONFIG_SYSTEM_SETTINGS'); ?></span></legend>
+		<legend><span><?php echo Lang::txt('COM_CONFIG_SYSTEM_SETTINGS'); ?></span></legend>
 
 		<?php
 		foreach ($this->form->getFieldset('system') as $field):

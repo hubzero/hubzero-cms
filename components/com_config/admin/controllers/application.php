@@ -68,9 +68,9 @@ class Application extends AdminController
 		$model = new Models\Application();
 
 		// Access check.
-		if (!$this->juser->authorise('core.admin', $model->getState('component.option')))
+		if (!User::authorise('core.admin', $model->getState('component.option')))
 		{
-			return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+			return \JError::raiseWarning(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$form = $model->getForm();
@@ -79,7 +79,7 @@ class Application extends AdminController
 		// Check for model errors.
 		if ($errors = $model->getErrors())
 		{
-			\JError::raiseError(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $errors));
 			return false;
 		}
 
@@ -90,10 +90,10 @@ class Application extends AdminController
 		}
 
 		// Get the params for com_users.
-		$usersParams = \JComponentHelper::getParams('com_users');
+		$usersParams = Component::params('com_users');
 
 		// Get the params for com_media.
-		$mediaParams = \JComponentHelper::getParams('com_media');
+		$mediaParams = Component::params('com_media');
 
 		// Load settings for the FTP layer.
 		$ftp = \JClientHelper::setCredentialsFromRequest('ftp');
@@ -118,12 +118,15 @@ class Application extends AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries.
-		\JRequest::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		Request::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Check if the user is authorized to do this.
-		if (!$this->juser->authorise('core.admin'))
+		if (!User::authorise('core.admin'))
 		{
-			$this->setRedirect('index.php', \JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->setRedirect(
+				Route::url('index.php', false),
+				Lang::txt('JERROR_ALERTNOAUTHOR')
+			);
 			return;
 		}
 
@@ -134,7 +137,7 @@ class Application extends AdminController
 		$app   = \JFactory::getApplication();
 		$model = new Models\Application();
 		$form  = $model->getForm();
-		$data  = \JRequest::getVar('jform', array(), 'post', 'array');
+		$data  = Request::getVar('jform', array(), 'post', 'array');
 
 		// Validate the posted data.
 		$return = $model->validate($form, $data);
@@ -162,7 +165,7 @@ class Application extends AdminController
 			$app->setUserState($this->_option . '.config.global.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(\JRoute::_('index.php?option=' . $this->_option . '&view=application', false));
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&view=application', false));
 			return false;
 		}
 
@@ -177,24 +180,24 @@ class Application extends AdminController
 			$app->setUserState($this->_option . '.config.global.data', $data);
 
 			// Save failed, go back to the screen and display a notice.
-			$message = \JText::sprintf('JERROR_SAVE_FAILED', $model->getError());
-			$this->setRedirect('index.php?option=' . $this->_option . '&view=application', $message, 'error');
+			$message = Lang::txt('JERROR_SAVE_FAILED', $model->getError());
+			$this->setRedirect(Route::url('index.php?option=' . $this->_option . '&view=application', false), $message, 'error');
 			return false;
 		}
 
 		// Set the success message.
-		$message = \JText::_('COM_CONFIG_SAVE_SUCCESS');
+		$message = Lang::txt('COM_CONFIG_SAVE_SUCCESS');
 
 		// Set the redirect based on the task.
-		switch (\JRequest::getCmd('task'))
+		switch (Request::getCmd('task'))
 		{
 			case 'apply':
-				$this->setRedirect('index.php?option=' . $this->_option, $message);
+				$this->setRedirect(Route::url('index.php?option=' . $this->_option, false), $message);
 				break;
 
 			case 'save':
 			default:
-				$this->setRedirect('index.php', $message);
+				$this->setRedirect(Route::url('index.php', false), $message);
 				break;
 		}
 	}
@@ -207,9 +210,9 @@ class Application extends AdminController
 	public function cancelTask()
 	{
 		// Check if the user is authorized to do this.
-		if (!$this->juser->authorise('core.admin', 'com_config'))
+		if (!User::authorise('core.admin', 'com_config'))
 		{
-			$this->setRedirect('index.php', \JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->setRedirect(Route::url('index.php', false), Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -236,15 +239,15 @@ class Application extends AdminController
 
 		if (($data = file_get_contents('http://help.joomla.org/helpsites.xml')) === false)
 		{
-			$this->setRedirect('index.php?option=com_config', \JText::_('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
+			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
 		}
 		elseif (!\JFile::write(JPATH_BASE . '/help/helpsites.xml', $data))
 		{
-			$this->setRedirect('index.php?option=com_config', \JText::_('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
+			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
 		}
 		else
 		{
-			$this->setRedirect('index.php?option=com_config', \JText::_('COM_CONFIG_HELPREFRESH_SUCCESS'));
+			$this->setRedirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
 		}
 	}
 
@@ -261,7 +264,7 @@ class Application extends AdminController
 		// Check if the user is authorized to do this.
 		if (!$this->juser->authorise('core.admin'))
 		{
-			\JFactory::getApplication()->redirect('index.php', \JText::_('JERROR_ALERTNOAUTHOR'));
+			\JFactory::getApplication()->redirect('index.php', Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
 
@@ -276,14 +279,14 @@ class Application extends AdminController
 		{
 			// Save failed, go back to the screen and display a notice.
 			$this->setRedirect(
-				'index.php',
-				\JText::sprintf('JERROR_SAVE_FAILED', $model->getError()),
+				Route::url('index.php', false),
+				Lang::txt('JERROR_SAVE_FAILED', $model->getError()),
 				'error'
 			);
 			return;
 		}
 
 		// Set the redirect based on the task.
-		$this->setRedirect('index.php', \JText::_('COM_CONFIG_SAVE_SUCCESS'));
+		$this->setRedirect(Route::url('index.php', false), Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 	}
 }

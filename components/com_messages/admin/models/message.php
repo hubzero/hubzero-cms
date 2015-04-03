@@ -34,13 +34,12 @@ class MessagesModelMessage extends JModelAdmin
 	{
 		parent::populateState();
 
-		$user = JFactory::getUser();
-		$this->setState('user.id', $user->get('id'));
+		$this->setState('user.id', \User::get('id'));
 
-		$messageId = (int) JRequest::getInt('message_id');
+		$messageId = (int) \Request::getInt('message_id');
 		$this->setState('message.id', $messageId);
 
-		$replyId = (int) JRequest::getInt('reply_id');
+		$replyId = (int) \Request::getInt('reply_id');
 		$this->setState('reply.id', $replyId);
 	}
 
@@ -57,18 +56,17 @@ class MessagesModelMessage extends JModelAdmin
 	{
 		$pks = (array) $pks;
 		$table = $this->getTable();
-		$user = JFactory::getUser();
 
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
 		{
 			if ($table->load($pk))
 			{
-				if ($table->user_id_to !== $user->id)
+				if ($table->user_id_to !== \User::get('id'))
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
+					JError::raiseWarning(403, \Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
 					return false;
 				}
 			}
@@ -106,7 +104,8 @@ class MessagesModelMessage extends JModelAdmin
 	{
 		if (!isset($this->item))
 		{
-			if ($this->item = parent::getItem($pk)) {
+			if ($this->item = parent::getItem($pk))
+			{
 				// Prime required properties.
 				if (empty($this->item->message_id))
 				{
@@ -114,12 +113,12 @@ class MessagesModelMessage extends JModelAdmin
 					if ($replyId = $this->getState('reply.id'))
 					{
 						// If replying to a message, preload some data.
-						$db		= $this->getDbo();
-						$query	= $db->getQuery(true);
+						$db = $this->getDbo();
+						$query = $db->getQuery(true);
 
 						$query->select('subject, user_id_from');
 						$query->from('#__messages');
-						$query->where('message_id = '.(int) $replyId);
+						$query->where('message_id = ' . (int) $replyId);
 						$message = $db->setQuery($query)->loadObject();
 
 						if ($error = $db->getErrorMsg())
@@ -130,30 +129,33 @@ class MessagesModelMessage extends JModelAdmin
 
 
 						$this->item->set('user_id_to', $message->user_id_from);
-						$re = JText::_('COM_MESSAGES_RE');
-						if (stripos($message->subject, $re) !== 0) {
-							$this->item->set('subject', $re.$message->subject);
+						$re = \Lang::txt('COM_MESSAGES_RE');
+						if (stripos($message->subject, $re) !== 0)
+						{
+							$this->item->set('subject', $re . $message->subject);
 						}
 					}
 				}
-				elseif ($this->item->user_id_to != JFactory::getUser()->id)
+				elseif ($this->item->user_id_to != \User::get('id'))
 				{
-					$this->setError(JText::_('JERROR_ALERTNOAUTHOR'));
+					$this->setError(\Lang::txt('JERROR_ALERTNOAUTHOR'));
 					return false;
 				}
-				else {
+				else
+				{
 					// Mark message read
-					$db		= $this->getDbo();
-					$query	= $db->getQuery(true);
+					$db = $this->getDbo();
+					$query = $db->getQuery(true);
 					$query->update('#__messages');
 					$query->set('state = 1');
-					$query->where('message_id = '.$this->item->message_id);
+					$query->where('message_id = ' . $this->item->message_id);
 					$db->setQuery($query)->query();
 				}
 			}
 
 			// Get the user name for an existing messasge.
-			if ($this->item->user_id_from && $fromUser = new JUser($this->item->user_id_from)) {
+			if ($this->item->user_id_from && $fromUser = new JUser($this->item->user_id_from))
+			{
 				$this->item->set('from_user_name', $fromUser->name);
 			}
 		}
@@ -172,7 +174,8 @@ class MessagesModelMessage extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm('com_messages.message', 'message', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -190,7 +193,8 @@ class MessagesModelMessage extends JModelAdmin
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_messages.edit.message.data', array());
 
-		if (empty($data)) {
+		if (empty($data))
+		{
 			$data = $this->getItem();
 		}
 
@@ -209,7 +213,6 @@ class MessagesModelMessage extends JModelAdmin
 	 */
 	public function publish(&$pks, $value = 1)
 	{
-		$user = JFactory::getUser();
 		$table = $this->getTable();
 		$pks = (array) $pks;
 
@@ -220,11 +223,11 @@ class MessagesModelMessage extends JModelAdmin
 
 			if ($table->load($pk))
 			{
-				if ($table->user_id_to !== $user->id)
+				if ($table->user_id_to !== \User::get('id'))
 				{
 					// Prune items that you can't change.
 					unset($pks[$i]);
-					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+					JError::raiseWarning(403, \Lang::txt('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
 					return false;
 				}
 			}
@@ -253,7 +256,7 @@ class MessagesModelMessage extends JModelAdmin
 
 		// Assign empty values.
 		if (empty($table->user_id_from)) {
-			$table->user_id_from = JFactory::getUser()->get('id');
+			$table->user_id_from = \User::get('id');
 		}
 		if (intval($table->date_time) == 0) {
 			$table->date_time = JFactory::getDate()->toSql();
@@ -274,8 +277,9 @@ class MessagesModelMessage extends JModelAdmin
 			return false;
 		}
 
-		if ($config->get('locked', false)) {
-			$this->setError(JText::_('COM_MESSAGES_ERR_SEND_FAILED'));
+		if ($config->get('locked', false))
+		{
+			$this->setError(\Lang::txt('COM_MESSAGES_ERR_SEND_FAILED'));
 			return false;
 		}
 
@@ -287,18 +291,18 @@ class MessagesModelMessage extends JModelAdmin
 
 		if ($config->get('mail_on_new', true)) {
 			// Load the user details (already valid from table check).
-			$fromUser = JUser::getInstance($table->user_id_from);
-			$toUser = JUser::getInstance($table->user_id_to);
+			$fromUser = \User::getInstance($table->user_id_from);
+			$toUser = \User::getInstance($table->user_id_to);
 			$debug = JFactory::getConfig()->get('debug_lang');
-			$default_language = JComponentHelper::getParams('com_languages')->get('administrator');
+			$default_language = \Component::params('com_languages')->get('administrator');
 			$lang = JLanguage::getInstance($toUser->getParam('admin_language', $default_language), $debug);
 			$lang->load('com_messages', JPATH_ADMINISTRATOR);
 
-			$siteURL	= JURI::root() . 'administrator/index.php?option=com_messages&view=message&message_id='.$table->message_id;
-			$sitename	= JFactory::getApplication()->getCfg('sitename');
+			$siteURL  = \Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
+			$sitename = \Config::get('sitename');
 
-			$subject	= sprintf ($lang->_('COM_MESSAGES_NEW_MESSAGE_ARRIVED'), $sitename);
-			$msg		= sprintf ($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
+			$subject = sprintf ($lang->_('COM_MESSAGES_NEW_MESSAGE_ARRIVED'), $sitename);
+			$msg     = sprintf ($lang->_('COM_MESSAGES_PLEASE_LOGIN'), $siteURL);
 			JFactory::getMailer()->sendMail($fromUser->email, $fromUser->name, $toUser->email, $subject, $msg);
 		}
 

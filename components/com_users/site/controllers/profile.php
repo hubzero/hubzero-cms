@@ -32,11 +32,11 @@ class UsersControllerProfile extends UsersController
 
 		// Get the previous user id (if any) and the current user id.
 		$previousId = (int) $app->getUserState('com_users.edit.profile.id');
-		$userId	= (int) JRequest::getInt('user_id', null, '', 'array');
+		$userId	= (int) Request::getInt('user_id', null, '', 'array');
 
 		// Check if the user is trying to edit another users profile.
 		if ($userId != $loginUserId) {
-			JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return false;
 		}
 
@@ -57,7 +57,7 @@ class UsersControllerProfile extends UsersController
 		}
 
 		// Redirect to the edit screen.
-		$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&layout=edit', false));
+		$this->setRedirect(Route::url('index.php?option=com_users&view=profile&layout=edit', false));
 	}
 
 	/**
@@ -69,7 +69,7 @@ class UsersControllerProfile extends UsersController
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Lang::txt('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app    = JFactory::getApplication();
@@ -78,7 +78,7 @@ class UsersControllerProfile extends UsersController
 		$userId = (int) $user->get('id');
 
 		// Get the user data.
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$data = Request::getVar('jform', array(), 'post', 'array');
 
 		// Force the ID to this user.
 		$data['id'] = $userId;
@@ -86,7 +86,7 @@ class UsersControllerProfile extends UsersController
 		// Validate the posted data.
 		$form = $model->getForm();
 		if (!$form) {
-			JError::raiseError(500, $model->getError());
+			App::abort(500, $model->getError());
 			return false;
 		}
 
@@ -112,7 +112,7 @@ class UsersControllerProfile extends UsersController
 
 			// Redirect back to the edit screen.
 			$userId = (int) $app->getUserState('com_users.edit.profile.id');
-			$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
+			$this->setRedirect(Route::url('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
 			return false;
 		}
 
@@ -126,8 +126,8 @@ class UsersControllerProfile extends UsersController
 
 			// Redirect back to the edit screen.
 			$userId = (int)$app->getUserState('com_users.edit.profile.id');
-			$this->setMessage(JText::sprintf('COM_USERS_PROFILE_SAVE_FAILED', $model->getError()), 'warning');
-			$this->setRedirect(JRoute::_('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
+			$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_FAILED', $model->getError()), 'warning');
+			$this->setRedirect(Route::url('index.php?option=com_users&view=profile&layout=edit&user_id='.$userId, false));
 			return false;
 		}
 
@@ -139,8 +139,8 @@ class UsersControllerProfile extends UsersController
 				$model->checkout($return);
 
 				// Redirect back to the edit screen.
-				$this->setMessage(JText::_('COM_USERS_PROFILE_SAVE_SUCCESS'));
-				$this->setRedirect(JRoute::_(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&layout=edit&hidemainmenu=1', false));
+				$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_SUCCESS'));
+				$this->setRedirect(Route::url(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&layout=edit&hidemainmenu=1', false));
 				break;
 
 			default:
@@ -154,8 +154,8 @@ class UsersControllerProfile extends UsersController
 				$app->setUserState('com_users.edit.profile.id', null);
 
 				// Redirect to the list screen.
-				$this->setMessage(JText::_('COM_USERS_PROFILE_SAVE_SUCCESS'));
-				$this->setRedirect(JRoute::_(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&user_id='.$return, false));
+				$this->setMessage(Lang::txt('COM_USERS_PROFILE_SAVE_SUCCESS'));
+				$this->setRedirect(Route::url(($redirect = $app->getUserState('com_users.edit.profile.redirect')) ? $redirect : 'index.php?option=com_users&view=profile&user_id='.$return, false));
 				break;
 		}
 

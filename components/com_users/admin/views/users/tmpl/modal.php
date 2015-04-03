@@ -11,24 +11,24 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$field		= JRequest::getCmd('field');
+$field		= Request::getCmd('field');
 $function	= 'jSelectUser_'.$field;
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
-<h2 class="modal-title"><?php echo JText::_('Users'); ?></h2>
-<form action="<?php echo JRoute::_('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.JRequest::getVar('groups', '', 'default', 'BASE64').'&excluded='.JRequest::getVar('excluded', '', 'default', 'BASE64'));?>" method="post" name="adminForm" id="adminForm">
+<h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
+<form action="<?php echo Route::url('index.php?option=com_users&view=users&layout=modal&tmpl=component&groups='.Request::getVar('groups', '', 'default', 'BASE64').'&excluded='.Request::getVar('excluded', '', 'default', 'BASE64'));?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar" class="filter clearfix">
 		<div class="col width-70 fltlft">
-			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="40" placeholder="<?php echo JText::_('COM_USERS_SEARCH_IN_NAME'); ?>" />
+			<label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" size="40" placeholder="<?php echo Lang::txt('COM_USERS_SEARCH_IN_NAME'); ?>" />
 
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
-			<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('', '<?php echo JText::_('JLIB_FORM_SELECT_USER') ?>');"><?php echo JText::_('JOPTION_NO_USER')?></button>
+			<button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+			<button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
 		</div>
 		<div class="col width-30 fltrt">
-			<label for="filter_group_id"><?php echo JText::_('COM_USERS_FILTER_USER_GROUP'); ?></label>
+			<label for="filter_group_id"><?php echo Lang::txt('COM_USERS_FILTER_USER_GROUP'); ?></label>
 			<?php echo JHtml::_('access.usergroup', 'filter_group_id', $this->state->get('filter.group_id'), 'onchange="this.form.submit()"'); ?>
 		</div>
 	</fieldset>

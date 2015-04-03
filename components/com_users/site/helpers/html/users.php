@@ -24,7 +24,7 @@ abstract class JHtmlUsers
 			$value = trim($value);
 		}
 		if (empty($value)) {
-			return JText::_('COM_USERS_PROFILE_VALUE_NOT_FOUND');
+			return Lang::txt('COM_USERS_PROFILE_VALUE_NOT_FOUND');
 		}
 		else {
 			return htmlspecialchars($value);
@@ -167,7 +167,7 @@ abstract class JHtmlUsers
 					$lang->load("plg_editors_$value.sys", JPATH_ADMINISTRATOR, null, false, true)
 				||	$lang->load("plg_editors_$value.sys", JPATH_PLUGINS . '/editors/' . $value, null, false, true);
 				$lang->load($title.'.sys');
-				return JText::_($title);
+				return Lang::txt($title);
 			}
 			else
 			{
