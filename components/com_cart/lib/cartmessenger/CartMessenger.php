@@ -41,7 +41,7 @@ class LoggingLevel {
  *
  * Long description (if any) ...
  */
-class CartMessenger
+class CartMessenger extends \Hubzero\Component\SiteController
 {
 	private $logFile;
 	private $caller;
@@ -229,6 +229,44 @@ class CartMessenger
 		$to = array(CartModelCart::getCartUser($transactionInfo->crtId));
 
 		$dispatcher->trigger('onSendMessage', array('store_notifications', 'Your order at ' . $from['name'], $clientEmail, $from, $to, '', null, '', 0, true));
+
+        // Email notification extra
+        $notifyTo = $params->get('sendNotificationTo');
+        if (!empty($notifyTo)) {
+
+            $notifyTo = explode(',', str_replace(' ', '', $notifyTo));
+
+            $notifyEmail = 'There is a new online store order at ' .  $jconfig->getValue('config.sitename') . "\n\n";
+            $notifyEmail .= $summary;
+            // Plain text email
+            $eview = new \Hubzero\Component\View(array(
+                'name' => 'emails',
+                'layout' => 'order_notify'
+            ));
+            $eview->option     = $this->_option;
+            $eview->controller = $this->_controller;
+            $eview->message = $notifyEmail;
+
+            $plain = $eview->loadTemplate();
+            $plain = str_replace("\n", "\r\n", $plain);
+
+            $message = new \Hubzero\Mail\Message();
+            $message->setSubject('ORDER NOTIFICATION: New order at ' . $from['name']);
+            $message->addFrom(
+                $jconfig->getValue('config.mailfrom'),
+                $jconfig->getValue('config.sitename')
+            );
+            $message->addPart($plain, 'text/plain');
+            foreach ($notifyTo as $email)
+            {
+                if (\Hubzero\Utility\Validate::email($email))
+                {
+                    $message->addTo($email);
+                }
+            }
+            $message->setBody($plain);
+            $message->send();
+        }
 	}
 
 	private function emailError($error, $errorType = NULL)
