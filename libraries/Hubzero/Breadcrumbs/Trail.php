@@ -52,13 +52,13 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	/**
 	 * Create and add an item to the pathway.
 	 *
-	 * @param   string  $text  The name of the item.
-	 * @param   string  $url   The link to the item.
+	 * @param   string  $name  The name of the item.
+	 * @param   string  $link  The link to the item.
 	 * @return  object
 	 */
-	public function append($text, $url = '')
+	public function append($name, $link = '')
 	{
-		$this->crumbs[] = new Crumb($text, $url);
+		$this->crumbs[] = new Crumb($name, $link);
 
 		return $this;
 	}
@@ -66,22 +66,22 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	/**
 	 * Create and prepend an item to the pathway.
 	 *
-	 * @param   string  $text  The name of the item.
-	 * @param   string  $url   The link to the item.
+	 * @param   string  $name  The name of the item.
+	 * @param   string  $link  The link to the item.
 	 * @return  object
 	 */
-	public function prepend($text, $url = '')
+	public function prepend($name, $link = '')
 	{
-		$b = new Crumb($text, $url);
+		$b = new Crumb($name, $link);
 		array_unshift($this->crumbs, $b);
 
 		return $this;
 	}
 
 	/**
-	 * Create and return an array of the pathway names.
+	 * Create and return an array of the crumb names.
 	 *
-	 * @return  array  Array of names of pathway items
+	 * @return  array
 	 */
 	public function names()
 	{
@@ -95,6 +95,39 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	}
 
 	/**
+	 * Return the list of crumbs
+	 *
+	 * @return  array
+	 */
+	public function items()
+	{
+		return $this->crumbs;
+	}
+
+	/**
+	 * Set an item in the list
+	 *
+	 * @param   integer  $offset
+	 * @param   object   $value
+	 * @return  void
+	 */
+	public function set($offset, $value)
+	{
+		return $this->offsetSet($offset, $value);
+	}
+
+	/**
+	 * Get an item from the list
+	 *
+	 * @param   integer  $offset
+	 * @return  mixed
+	 */
+	public function get($offset)
+	{
+		return $this->offsetGet($offset);
+	}
+
+	/**
 	 * Check if an item exists
 	 *
 	 * @param   integer  $offset
@@ -103,6 +136,17 @@ class Trail implements \Iterator, \ArrayAccess, \Countable
 	public function has($offset)
 	{
 		return $this->offsetExists($offset);
+	}
+
+	/**
+	 * Unset an item
+	 *
+	 * @param   integer  $offset
+	 * @return  void
+	 */
+	public function forget($offset)
+	{
+		return $this->offsetUnset($offset);
 	}
 
 	/**

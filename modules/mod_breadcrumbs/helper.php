@@ -31,8 +31,6 @@
 namespace Modules\BreadCrumbs;
 
 use Hubzero\Module\Module;
-use JFactory;
-use JHtml;
 use Route;
 use Lang;
 use stdClass;
@@ -71,10 +69,9 @@ class Helper extends Module
 	 */
 	public function getList()
 	{
-		// Get the PathWay object from the application
-		$app     = JFactory::getApplication();
-		$pathway = $app->getPathway();
-		$items   = $pathway->getPathWay();
+		$app = \JFactory::getApplication();
+
+		$items = \Breadcrumbs::items();
 
 		$count = count($items);
 
@@ -111,13 +108,13 @@ class Helper extends Module
 		// specific one first, and if that is not present we load the default separator
 		if ($custom == null)
 		{
-			if (JFactory::getLanguage()->isRTL())
+			if (\JFactory::getLanguage()->isRTL())
 			{
-				$_separator = JHtml::_('image', 'system/arrow_rtl.png', NULL, NULL, true);
+				$_separator = \JHtml::_('image', 'system/arrow_rtl.png', NULL, NULL, true);
 			}
 			else
 			{
-				$_separator = JHtml::_('image', 'system/arrow.png', NULL, NULL, true);
+				$_separator = \JHtml::_('image', 'system/arrow.png', NULL, NULL, true);
 			}
 		}
 		else

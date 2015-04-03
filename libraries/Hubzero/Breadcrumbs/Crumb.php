@@ -40,25 +40,25 @@ class Crumb
 	 *
 	 * @var  string
 	 */
-	public $url;
+	public $link;
 
 	/**
 	 * Item text
 	 *
 	 * @var  string
 	 */
-	public $text;
+	public $name;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string  $text  The name of the item.
-	 * @param   string  $url   The link to the item.
+	 * @param   string  $name  The name of the item.
+	 * @param   string  $link  The link to the item.
 	 * @return  void
 	 */
-	public function __construct($text = '', $url = '')
+	public function __construct($name = '', $link = '')
 	{
-		$this->text = $text;
-		$this->url  = $url;
+		$this->name = $name;
+		$this->link = $link;
 	}
 }

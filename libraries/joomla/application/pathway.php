@@ -98,6 +98,12 @@ class JPathway extends JObject
 	 */
 	public function getPathway()
 	{
+		// [!] HUBzero compatibility
+		if (class_exists('\\Breadcrumbs'))
+		{
+			return \Breadcrumbs::items();
+		}
+
 		$pw = $this->_pathway;
 
 		// Use array_values to reset the array keys numerically
@@ -115,6 +121,18 @@ class JPathway extends JObject
 	 */
 	public function setPathway($pathway)
 	{
+		// [!] HUBzero compatibility
+		if (class_exists('\\Breadcrumbs'))
+		{
+			$oldPathway = \Breadcrumbs::items();
+			\Breadcrumbs::clear();
+			foreach ($pathway as $path)
+			{
+				\Breadcrumbs::append($path);
+			}
+			return $oldPathway;
+		}
+
 		$oldPathway = $this->_pathway;
 		$pathway = (array) $pathway;
 
@@ -133,6 +151,12 @@ class JPathway extends JObject
 	 */
 	public function getPathwayNames()
 	{
+		// [!] HUBzero compatibility
+		if (class_exists('\\Breadcrumbs'))
+		{
+			return \Breadcrumbs::names();
+		}
+
 		// Initialise variables.
 		$names = array(null);
 
@@ -158,6 +182,12 @@ class JPathway extends JObject
 	 */
 	public function addItem($name, $link = '')
 	{
+		// [!] HUBzero compatibility
+		if (class_exists('\\Breadcrumbs'))
+		{
+			return \Breadcrumbs::append($name, $link);
+		}
+
 		// Initialize variables
 		$ret = false;
 
@@ -182,6 +212,12 @@ class JPathway extends JObject
 	 */
 	public function setItemName($id, $name)
 	{
+		// [!] HUBzero compatibility
+		if (class_exists('\\Breadcrumbs'))
+		{
+			return \Breadcrumbs::get($id)->name = $name;
+		}
+
 		// Initialize variables
 		$ret = false;
 
