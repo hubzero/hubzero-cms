@@ -86,7 +86,7 @@ class CartMessenger
 			$message .= "\n";
 
 			$hzl = new \Hubzero\Log\Writer(
-				new \Monolog\Logger(Config::('application_env')),
+				new \Monolog\Logger(Config::get('application_env')),
 				\JDispatcher::getInstance()
 			);
 			$hzl->useFiles($this->logFile);
