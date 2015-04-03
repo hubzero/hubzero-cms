@@ -137,12 +137,13 @@ class OneToManyThrough extends OneToMany
 		$this->model->select($this->model->getQualifiedFieldName('*'))
 		            ->select($this->related->getQualifiedFieldName('*'))
 		            ->join($this->associativeTable,
-		                     $this->model->getQualifiedFieldName($this->localKey),
-		                     $this->associativeLocal,
-		                     'LEFT OUTER')
+		                   $this->model->getQualifiedFieldName($this->localKey),
+		                   $this->associativeLocal,
+		                   'LEFT OUTER')
 		            ->join($this->related->getTableName(),
 		                   $this->associativeRelated,
-		                   $this->related->getQualifiedFieldName($this->relatedKey));
+		                   $this->related->getQualifiedFieldName($this->relatedKey),
+		                   'LEFT OUTER');
 
 		return $this;
 	}
