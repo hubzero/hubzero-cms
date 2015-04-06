@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,32 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-
-$config = JFactory::getConfig();
-
 //define tempate
 $this->template = 'hubbasic2013';
 
-//get device info
 $browser = new \Hubzero\Browser\Detector();
-
-//get joomla version
-$joomlaVersion = new JVersion();
-$joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
+$cls = array(
+	$browser->name(),
+	$browser->name() . $browser->major()
+);
 ?>
 <!DOCTYPE html>
-<html class="<?php echo strtolower($browser->device() . ' ' . $browser->platform() . ' ' . $browser->platformVersion()); ?> <?php echo $joomlaRelease; ?>">
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
-		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
+		<meta name="viewport" content="width=device-width" />
+		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
 
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'tooltip', 'comments', 'voting', 'icons', 'buttons', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/mobile.css" />
 
@@ -69,8 +70,8 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 			<header id="masthead" role="banner">
 				<div class="inner">
 					<h1>
-						<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-							<span><?php echo $config->getValue('config.sitename'); ?></span>
+						<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+							<span><?php echo Config::get('sitename'); ?></span>
 						</a>
 					</h1>
 					<div class="mobile-search">
@@ -87,7 +88,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		</div><!-- / #top -->
 
 		<div id="wrap" class="mobile-wrap">
-			<main id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo Request::getVar('option', ''); ?>" role="main">
 				<div class="inner">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
@@ -122,8 +123,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 			</main><!-- / #content -->
 
 			<footer id="footer" class="mobile-footer">
-				<a name="footer" id="footer-anchor"></a>
-				<a href="<?php echo $_SERVER['SCRIPT_URI']; ?>?tmpl=fullsite">View Full Site</a>
+				<a id="footer-anchor" href="<?php echo Request::base(true); ?>?tmpl=fullsite"><?php echo Lang::txt('View Full Site'); ?></a>
 			</footer><!-- / #footer -->
 		</div><!-- / #wrap -->
 

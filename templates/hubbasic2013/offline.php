@@ -1,18 +1,35 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-$config = JFactory::getConfig();
+defined( '_JEXEC' ) or die('Restricted access');
 
 $this->template = 'hubbasic2013';
 
@@ -22,17 +39,17 @@ $cls = array(
 	$browser->name() . $browser->major()
 );
 
-$this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down for maintenance'));
+$this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('Down for maintenance'));
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie9"> <![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
 		<meta name="viewport" content="width=device-width" />
-		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
+		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
 
 		<jdoc:include type="head" />
 
@@ -45,8 +62,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 				<div id="masthead" role="banner">
 					<div class="inner">
 						<h1>
-							<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-								<span><?php echo $config->getValue('config.sitename'); ?></span>
+							<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+								<span><?php echo Config::get('sitename'); ?></span>
 							</a>
 						</h1>
 					</div>
@@ -55,7 +72,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 				<div id="sub-masthead">
 					<div class="inner">
 						<div id="trail">
-							<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
+							<span class="pathway"><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></span>
 						</div><!-- / #trail -->
 					</div><!-- / .inner -->
 				</div><!-- / #sub-masthead -->
@@ -66,9 +83,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 							<div class="wrap">
 								<jdoc:include type="message" />
 								<div id="offline-message">
-									<h2><?php echo JText::_('TPL_HUBBASIC_OFFLINE'); ?></h2>
+									<h2><?php echo Lang::txt('TPL_HUBBASIC_OFFLINE'); ?></h2>
 									<p>
-										<?php echo $config->getValue('config.offline_message'); ?>
+										<?php echo Config::get('offline_message'); ?>
 									</p>
 								</div>
 							</div><!-- / .wrap -->
@@ -81,7 +98,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 		 		<div id="footer">
 					<div class="inner">
 						<ul id="legalese">
-							<li class="policy">Copyright &copy; <?php echo date("Y"); ?> <?php echo $config->getValue('config.sitename'); ?></li>
+							<li class="policy">Copyright &copy; <?php echo gmdate("Y"); ?> <?php echo Config::get('sitename'); ?></li>
 							<li>Powered by <a href="http://hubzero.org" rel="external">HUBzero<sup>&reg;</sup></a>, a <a href="http://www.purdue.edu" title="Purdue University" rel="external">Purdue</a> project</li>
 						</ul><!-- / footer #legalese -->
 					</div>

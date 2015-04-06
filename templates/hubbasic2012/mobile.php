@@ -1,23 +1,53 @@
 <?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
-$config = JFactory::getConfig();
 
 //define tempate
 $this->template = 'hubbasic2012';
 
-//get device info
-$hd = new \Hubzero\Browser\Detector();
-
-//get joomla version
-$joomlaVersion = new JVersion();
-$joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
+$browser = new \Hubzero\Browser\Detector();
+$cls = array(
+	$browser->name(),
+	$browser->name() . $browser->major()
+);
 ?>
 <!DOCTYPE html>
-<html class="<?php echo strtolower($hd->device() . ' ' . $hd->platform() . ' ' . $hd->platformVersion()); ?> <?php echo $joomlaRelease; ?>">
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'tooltip', 'comments', 'voting', 'icons', 'buttons', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/mobile.css" />
 		<jdoc:include type="head" />
@@ -36,10 +66,10 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 					<header id="masthead" role="banner">
 						<div class="inner">
 							<h1>
-								<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-									<span><?php echo $config->getValue('config.sitename'); ?></span>
+								<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+									<span><?php echo Config::get('sitename'); ?></span>
 								</a>
-								<span class="tagline"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
+								<span class="tagline"><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></span>
 							</h1>
 
 							<div class="mobile-search">
@@ -58,7 +88,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 			</div><!-- / .inner-wrap -->
 		</div><!-- / #top -->
 		<div id="wrap" class="mobile-wrap">
-			<main id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo Request::getVar('option', ''); ?>" role="main">
 				<div class="inner">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
@@ -94,7 +124,7 @@ $joomlaRelease = 'joomla' . $joomlaVersion->RELEASE;
 		</div><!-- / #wrap -->
 
 		<footer id="footer" class="mobile-footer">
-			<a href="?tmpl=fullsite">View Full Site</a>
+			<a id="footer-anchor" href="<?php echo Request::base(true); ?>?tmpl=fullsite"><?php echo Lang::txt('View Full Site'); ?></a>
 		</footer><!-- / #footer -->
 
 		<jdoc:include type="modules" name="endpage" />

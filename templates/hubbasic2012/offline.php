@@ -30,8 +30,6 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$config = JFactory::getConfig();
-
 $this->template = 'hubbasic2012';
 
 $browser = new \Hubzero\Browser\Detector();
@@ -40,13 +38,13 @@ $cls = array(
 	$browser->name() . $browser->major()
 );
 
-$this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down for maintenance'));
+$this->setTitle(Config::get('sitename') . ' - ' . Lang::txt('Down for maintenance'));
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?> ie ie9"> <![endif]-->
+<!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo implode(' ', $cls); ?>"> <!--<![endif]-->
 	<head>
 		<meta name="viewport" content="width=device-width" />
@@ -63,14 +61,14 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 					<div class="inner">
 
 						<div id="topbar">
-							<p><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></p>
+							<p><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></p>
 						</div><!-- / #topbar -->
 
 						<div id="masthead" role="banner">
 							<div class="inner">
 								<h1>
-									<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-										<span><?php echo $config->getValue('config.sitename'); ?></span>
+									<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+										<span><?php echo Config::get('sitename'); ?></span>
 									</a>
 								</h1>
 							</div>
@@ -80,9 +78,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 							<jdoc:include type="message" />
 							<div id="splash">
 								<div id="offline-message">
-									<h2><?php echo JText::_('TPL_HUBBASIC_OFFLINE'); ?></h2>
+									<h2><?php echo Lang::txt('TPL_HUBBASIC_OFFLINE'); ?></h2>
 									<p>
-										<?php echo $config->getValue('config.offline_message'); ?>
+										<?php echo Config::get('offline_message'); ?>
 									</p>
 								</div>
 							</div><!-- / #splash -->
@@ -95,7 +93,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . JText::_('Down fo
 		 	<div id="footer">
 				<div class="inner">
 					<ul id="legalese">
-						<li class="policy">Copyright &copy; <?php echo date("Y"); ?> <?php echo $config->getValue('config.sitename'); ?></li>
+						<li class="policy">Copyright &copy; <?php echo gmdate("Y"); ?> <?php echo Config::get('sitename'); ?></li>
 						<li>Powered by <a href="http://hubzero.org" rel="external">HUBzero<sup>&reg;</sup></a>, a <a href="http://www.purdue.edu" title="Purdue University" rel="external">Purdue</a> project</li>
 					</ul><!-- / footer #legalese -->
 				</div>

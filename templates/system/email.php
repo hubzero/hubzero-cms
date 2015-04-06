@@ -31,11 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-
 if ($title = $this->getTitle())
 {
-	$this->setTitle($config->getValue('config.sitename') . ' - ' . $title);
+	$this->setTitle(Config::get('sitename') . ' - ' . $title);
 }
 $this->setMetaData('viewport', 'width=device-width, initial-scale=1.0');
 

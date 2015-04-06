@@ -1,8 +1,31 @@
 <?php
 /**
- * @package		Joomla.Site
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
@@ -20,21 +43,26 @@ function modChrome_none($module, &$params, &$attribs)
  * Module chrome that wraps the module in a table
  */
 function modChrome_table($module, &$params, &$attribs)
-{ ?>
-	<table cellpadding="0" cellspacing="0" class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
-	<?php if ($module->showtitle != 0) : ?>
-		<tr>
-			<th>
-				<?php echo $module->title; ?>
-			</th>
-		</tr>
-	<?php endif; ?>
-		<tr>
-			<td>
-				<?php echo $module->content; ?>
-			</td>
-		</tr>
-		</table>
+{
+	?>
+	<table class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+		<?php if ($module->showtitle != 0) : ?>
+			<thead>
+				<tr>
+					<th>
+						<?php echo $module->title; ?>
+					</th>
+				</tr>
+			</thead>
+		<?php endif; ?>
+		<tbody>
+			<tr>
+				<td>
+					<?php echo $module->content; ?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 	<?php
 }
 
@@ -42,27 +70,30 @@ function modChrome_table($module, &$params, &$attribs)
  * Module chrome that wraps the tabled module output in a <td> tag of another table
  */
 function modChrome_horz($module, &$params, &$attribs)
-{ ?>
-	<table cellspacing="1" cellpadding="0" width="100%">
-		<tr>
-			<td>
-				<?php modChrome_table($module, $params, $attribs); ?>
-			</td>
-		</tr>
+{
+	?>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<?php modChrome_table($module, $params, $attribs); ?>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 	<?php
 }
 
 /*
- * xhtml (divs and font headder tags)
+ * xhtml (divs and font header tags)
  */
 function modChrome_xhtml($module, &$params, &$attribs)
 {
 	if (!empty ($module->content)) : ?>
-		<div class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
-		<?php if ($module->showtitle != 0) : ?>
-			<h3><?php echo $module->title; ?></h3>
-		<?php endif; ?>
+		<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+			<?php if ($module->showtitle != 0) : ?>
+				<h3><?php echo $module->title; ?></h3>
+			<?php endif; ?>
 			<?php echo $module->content; ?>
 		</div>
 	<?php endif;
@@ -72,19 +103,20 @@ function modChrome_xhtml($module, &$params, &$attribs)
  * Module chrome that allows for rounded corners by wrapping in nested div tags
  */
 function modChrome_rounded($module, &$params, &$attribs)
-{ ?>
-		<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+{
+	?>
+	<div class="module<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+		<div>
 			<div>
 				<div>
-					<div>
-						<?php if ($module->showtitle != 0) : ?>
-							<h3><?php echo $module->title; ?></h3>
-						<?php endif; ?>
-					<?php echo $module->content; ?>
-					</div>
+					<?php if ($module->showtitle != 0) : ?>
+						<h3><?php echo $module->title; ?></h3>
+					<?php endif; ?>
+				<?php echo $module->content; ?>
 				</div>
 			</div>
 		</div>
+	</div>
 	<?php
 }
 
@@ -93,10 +125,11 @@ function modChrome_rounded($module, &$params, &$attribs)
  */
 function modChrome_outline($module, &$params, &$attribs)
 {
-	static $css=false;
+	static $css = false;
+
 	if (!$css)
 	{
-		$css=true;
+		$css = true;
 		jimport('joomla.environment.browser');
 		$doc = JFactory::getDocument();
 		$browser = JBrowser::getInstance();
@@ -128,4 +161,3 @@ function modChrome_outline($module, &$params, &$attribs)
 	</div>
 	<?php
 }
-?>

@@ -31,16 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-$juser = JFactory::getUser();
-
 $this->template = 'hubbasic';
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-$this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
+$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie6"> <![endif]-->
@@ -71,94 +68,94 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<!--[if lte IE 7]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" /><![endif]-->
 	</head>
 	<body>
-		<?php \Hubzero\Module\Helper::displayModules('notices'); ?>
+		<?php echo Module::position('notices'); ?>
 		<div id="top">
-			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
+			<p class="skip" id="to-content"><a href="#content"><?php echo Lang::txt('Skip to content'); ?></a></p>
 			<p id="tab">
-				<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
-					<span>Need Help?</span>
+				<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Need help? Send a trouble report to our support team.'); ?>">
+					<span><?php echo Lang::txt('Need Help?'); ?></span>
 				</a>
 			</p>
 			<div class="clear"></div>
 		</div><!-- / #top -->
 
-		<?php \Hubzero\Module\Helper::displayModules('helppane'); ?>
+		<?php echo Module::position('helppane'); ?>
 
 		<header id="header">
 			<div id="header-wrap">
 				<h1>
-					<a href="." title="<?php echo $config->getValue('config.sitename'); ?>">
-						<?php echo $config->getValue('config.sitename'); ?>
-						<span id="tagline">A HUBzero site</span>
+					<a href="<?php echo Request::base(); ?>" title="<?php echo Config::get('sitename'); ?>">
+						<?php echo Config::get('sitename'); ?>
+						<span id="tagline"><?php echo Lang::txt('A HUBzero site'); ?></span>
 					</a>
 				</h1>
 
-				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
+				<ul id="toolbar" class="<?php if (!User::get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 				<?php
-					if (!$juser->get('guest')) {
+					if (!User::isGuest()) {
 						// Find the user's most recent support tickets
 						$database = JFactory::getDBO();
 						$recipient = new \Hubzero\Message\Recipient($database);
-						$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
+						$rows = $recipient->getUnreadMessages(User::get('id'), 0);
 				?>
-					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
-					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
-					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
-					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
+					<li id="logout"><a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('Logout'); ?></span></a></li>
+					<li id="myaccount"><a href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo Lang::txt('My Account'); ?></span></a></li>
+					<li id="username"><a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=profile'); ?>"><?php echo User::get('name'); ?> (<?php echo User::get('username'); ?>)</a></li>
+					<li id="usermessages"><a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=inbox'); ?>"><?php echo <?php echo Lang::txt('%s New Messages', count($rows)); ?></a></li>
 				<?php } else { ?>
-					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
+					<li id="login"><a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('Login'); ?>"><?php echo Lang::txt('Sign In'); ?></a></li>
 				<?php } ?>
 				</ul>
 
-				<?php \Hubzero\Module\Helper::displayModules('search'); ?>
+				<?php echo Module::position('search'); ?>
 			</div><!-- / #header-wrap -->
 		</header><!-- / #header -->
 
 		<nav id="nav">
 			<h2>Navigation</h2>
-			<?php \Hubzero\Module\Helper::displayModules('user3'); ?>
+			<?php echo Module::position('user3'); ?>
 			<div class="clear"></div>
 		</nav><!-- / #nav -->
 
 		<div id="trail">
-			<?php \Hubzero\Module\Helper::displayModules('breadcrumbs'); ?>
+			<?php echo Module::position('breadcrumbs'); ?>
 		</div><!-- / #trail -->
 
 		<div id="wrap">
-			<main id="content" class="<?php echo JRequest::getCmd('option', ''); ?>">
+			<main id="content" class="<?php echo Request::getCmd('option', ''); ?>">
 				<div id="content-wrap">
 
 					<div id="outline">
 						<div id="errorbox" class="code-<?php echo $this->error->getCode(); ?>">
 							<h2><?php echo $this->error->getMessage(); ?></h2>
 
-							<p><?php echo JText::_('You may not be able to visit this page because of:'); ?></p>
+							<p><?php echo Lang::txt('You may not be able to visit this page because of:'); ?></p>
 
 							<ol>
 								<?php if ($this->error->getCode() != 403) { ?>
-									<li><?php echo JText::_('An out-of-date bookmark/favourite.'); ?></li>
-									<li><?php echo JText::_('A search engine that has an out-of-date listing for this site.'); ?></li>
-									<li><?php echo JText::_('A mis-typed address.'); ?></li>
-									<li><?php echo JText::_('The requested resource was not found.'); ?></li>
+									<li><?php echo Lang::txt('An out-of-date bookmark/favourite.'); ?></li>
+									<li><?php echo Lang::txt('A search engine that has an out-of-date listing for this site.'); ?></li>
+									<li><?php echo Lang::txt('A mis-typed address.'); ?></li>
+									<li><?php echo Lang::txt('The requested resource was not found.'); ?></li>
 								<?php } ?>
-								<li><?php echo JText::_('This page may belong to a group with restricted access.  Only members of the group can view the contents.'); ?></li>
-								<li><?php echo JText::_('An error has occurred while processing your request.'); ?></li>
+								<li><?php echo Lang::txt('This page may belong to a group with restricted access.  Only members of the group can view the contents.'); ?></li>
+								<li><?php echo Lang::txt('An error has occurred while processing your request.'); ?></li>
 							</ol>
 							<?php if ($this->error->getCode() != 403) { ?>
-								<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
+								<p><?php echo Lang::txt('If difficulties persist, please contact the system administrator of this site.'); ?></p>
 							<?php } else { ?>
-								<p><?php echo JText::_('If difficulties persist and you feel that you should have access to the page, please file a trouble report by clicking on the Help! option on the menu above.'); ?></p>
+								<p><?php echo Lang::txt('If difficulties persist and you feel that you should have access to the page, please file a trouble report by clicking on the Help! option on the menu above.'); ?></p>
 							<?php } ?>
 						</div><!-- / #errorbox -->
 
-						<form method="get" action="/search">
+						<form method="get" action="<?php echo Route::url('index.php?option=com_search'); ?>">
 							<fieldset>
-								<?php echo JText::_('Please try the'); ?> <a href="<?php echo JURI::base(true); ?>" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span>
+								<?php echo Lang::txt('Please try the'); ?> <a href="<?php echo JURI::base(true); ?>" title="<?php echo Lang::txt('Go to the home page'); ?>"><?php echo Lang::txt('Home Page'); ?></a> <span><?php echo Lang::txt('or'); ?></span>
 								<label>
-									<?php echo JText::_('Search:'); ?>
+									<?php echo Lang::txt('Search:'); ?>
 									<input type="text" name="searchword" value="" />
 								</label>
-								<input type="submit" value="<?php echo JText::_('Go'); ?>" />
+								<input type="submit" value="<?php echo Lang::txt('Go'); ?>" />
 							</fieldset>
 						</form>
 					</div><!-- / #outline -->
@@ -173,7 +170,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 		<footer id="footer">
 			<!-- Start footer modules output -->
-			<?php \Hubzero\Module\Helper::displayModules('footer'); ?>
+			<?php echo Module::position('footer'); ?>
 			<!-- End footer modules output -->
 		</footer><!-- / #footer -->
 

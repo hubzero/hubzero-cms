@@ -31,20 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$option = JRequest::getCmd('option');
-$config = JFactory::getConfig();
-$juser  = JFactory::getUser();
-
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(JPATH_ROOT . '/templates/' . $this->template . '/js/hub.js'));
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-$this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
+$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
@@ -74,7 +70,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 			<?php if ($this->countModules('helppane')) : ?>
 				<p id="tab">
-					<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
+					<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
 						<span>Need Help?</span>
 					</a>
 				</p>
@@ -88,41 +84,41 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div id="header-wrap">
 				<a name="header"></a>
 				<h1>
-					<a href="<?php echo $this->baseurl ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-						<?php echo $config->getValue('config.sitename'); ?>
+					<a href="<?php echo $this->baseurl ?>" title="<?php echo Config::get('sitename'); ?>">
+						<?php echo Config::get('sitename'); ?>
 						<span id="tagline">powered by HUBzero&reg;</span>
 					</a>
 				</h1>
 
-				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
+				<ul id="toolbar" class="<?php if (!User::isGuest()) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
 					<?php
-						if (!$juser->get('guest')) {
+						if (!User::isGuest()) {
 							// Find the user's most recent support tickets
 							$database = JFactory::getDBO();
 							$recipient = new \Hubzero\Message\Recipient($database);
-							$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
+							$rows = $recipient->getUnreadMessages(User::get('id'), 0);
 							?>
 							<li id="logout">
-								<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a>
+								<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('Logout'); ?></span></a>
 							</li>
 							<li id="myaccount">
-								<a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a>
+								<a href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo Lang::txt('My Dashboard'); ?></span></a>
 							</li>
-							<?php if (is_numeric($juser->get('username')) && $juser->get('username') < 0) { ?>
+							<?php if (is_numeric(User::get('username')) && User::get('username') < 0) { ?>
 								<li id="username">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?></a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=profile'); ?>"><?php echo User::get('name'); ?></a>
 								</li>
 							<?php } else { ?>
 								<li id="username">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a>
+									<a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=profile'); ?>"><?php echo User::get('name'); ?> (<?php echo User::get('username'); ?>)</a>
 								</li>
 							<?php } ?>
 							<li id="usermessages">
-								<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a>
+								<a href="<?php echo Route::url('index.php?option=com_members&id='.User::get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a>
 							</li>
 					<?php } else { ?>
 						<li id="login">
-							<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a>
+							<a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('Login'); ?>"><?php echo Lang::txt('Sign In'); ?></a>
 						</li>
 					<?php } ?>
 				</ul>
@@ -159,7 +155,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<?php endif; ?>
 
 		<div id="wrap">
-			<main id="content" class="<?php echo $option; ?>">
+			<main id="content" class="<?php echo Request::getCmd('option', 'com_content'); ?>">
 				<div id="content-wrap">
 					<?php if ($this->getBuffer('message')) : ?>
 						<jdoc:include type="message" />

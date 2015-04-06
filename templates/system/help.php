@@ -39,7 +39,7 @@ JHTML::_('behavior.modal');
 <html>
 	<head>
 		<jdoc:include type="head" />
-		<link rel="stylesheet" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications','icons', 'buttons')); ?>" type="text/css" />
+		<link rel="stylesheet" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" type="text/css" />
 		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/help.css" type="text/css" />
 	</head>
 	<body>

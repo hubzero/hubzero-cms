@@ -52,12 +52,12 @@ $cls = array(
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 
-		<?php if ($this->direction == 'rtl' && (!file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component_rtl.css') || !file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component.css'))) : ?>
+		<?php if ($this->direction == 'rtl' && (!file_exists(__DIR__ . DS . 'css/component_rtl.css') || !file_exists(__DIR__ . DS . 'css/component.css'))) : ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/template_rtl.css" />
 		<?php elseif ($this->direction == 'rtl' ) : ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component.css" />
 			<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component_rtl.css" />
-		<?php elseif ($this->direction == 'ltr' && !file_exists(JPATH_THEMES . DS . $this->template . DS . 'css/component.css')) : ?>
+		<?php elseif ($this->direction == 'ltr' && !file_exists(__DIR__ . DS . 'css/component.css')) : ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/template.css" />
 		<?php elseif ($this->direction == 'ltr' ) : ?>
 			<link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component.css" />

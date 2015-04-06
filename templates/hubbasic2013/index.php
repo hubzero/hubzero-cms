@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,19 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 defined('_JEXEC') or die('Restricted access');
 
-$config = JFactory::getConfig();
-$juser  = JFactory::getUser();
-
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(JPATH_ROOT . '/templates/' . $this->template . '/js/hub.js'));
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(
@@ -44,7 +41,7 @@ $cls = array(
 	$browser->name() . $browser->major()
 );
 
-$this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle());
+$this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
@@ -77,8 +74,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<header id="masthead" role="banner">
 				<div class="inner">
 					<h1>
-						<a href="<?php echo $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-							<span><?php echo $config->getValue('config.sitename'); ?></span>
+						<a href="<?php echo $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+							<span><?php echo Config::get('sitename'); ?></span>
 						</a>
 					</h1>
 
@@ -87,7 +84,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<li>
 								<a id="mobile-menu" href="#">
 									<p id="nav-icon"><span></span></p>
-									<em><?php echo JText::_('TPL_HUBBASIC_MENU'); ?></em>
+									<em><?php echo Lang::txt('TPL_HUBBASIC_MENU'); ?></em>
 								</a>
 							</li>
 						</ul>
@@ -96,49 +93,47 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 					<nav id="main-navigation">
 						<div class="wrapper cf">
 							<div id="account" role="navigation" class="cf">
-							<?php if (!$juser->get('guest')) { ?>
-								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+							<?php if (!User::isGuest()) : ?>
+								<ul class="menu loggedin">
 									<li>
 										<div id="account-info">
 											<?php
-											$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+											$profile = \Hubzero\User\Profile::getInstance(User::get('id'));
 											?>
-											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" class="profile-pic thumb" width="30" height="30" />
-											<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-												<?php echo stripslashes($juser->get('name')); ?> 
-												<span class="account-email"><?php echo $juser->get('email'); ?></span>
+											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo User::get('name'); ?>" class="profile-pic thumb" width="30" height="30" />
+											<a class="account-details" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>">
+												<?php echo stripslashes(User::get('name')); ?> 
+												<span class="account-email"><?php echo User::get('email'); ?></span>
 											</a>
 										</div>
 										<ul>
 											<li id="account-dashboard">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-profile">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
 											</li>
 											<li id="account-messages">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
 											<li id="account-logout">
-												<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span></a>
+												<a href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_HUBBASIC_LOGOUT'); ?></span></a>
 											</li>
 										</ul>
 									</li>
 								</ul>
-							<?php } else { ?>
-								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+							<?php else : ?>
+								<ul class="menu loggedout">
 									<li id="account-login">
-										<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
+										<a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_HUBBASIC_LOGIN'); ?>"><?php echo Lang::txt('TPL_HUBBASIC_LOGIN'); ?></a>
 									</li>
-									<?php
-									$usersConfig = JComponentHelper::getParams('com_users');
-									if ($usersConfig->get('allowUserRegistration') != '0') : ?>
+									<?php if (Component::params('com_users')->get('allowUserRegistration') != '0') : ?>
 										<li id="account-register">
-											<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
+											<a href="<?php echo Route::url('index.php?option=com_register'); ?>" title="<?php echo Lang::txt('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo Lang::txt('TPL_HUBBASIC_REGISTER'); ?></a>
 										</li>
 									<?php endif; ?>
 								</ul>
-							<?php } ?>
+							<?php endif; ?>
 							</div><!-- / #account -->
 
 							<div id="nav" role="menu">
@@ -153,8 +148,8 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				<div class="inner">
 					<?php if ($this->countModules('helppane')) : ?>
 						<p id="tab">
-							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
-								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
+							<a href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('TPL_HUBBASIC_NEED_HELP'); ?>">
+								<span><?php echo Lang::txt('TPL_HUBBASIC_HELP'); ?></span>
 							</a>
 						</p>
 					<?php endif; ?>
@@ -163,7 +158,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 						<?php if (!$this->countModules('welcome')) : ?>
 							<jdoc:include type="modules" name="breadcrumbs" />
 						<?php else: ?>
-							<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
+							<span class="pathway"><?php echo Lang::txt('TPL_HUBBASIC_TAGLINE'); ?></span>
 						<?php endif; ?>
 					</div><!-- / #trail -->
 				</div><!-- / .inner -->
@@ -184,7 +179,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		</div><!-- / #top -->
 
 		<div id="wrap">
-			<main id="content" class="<?php echo JRequest::getVar('option', ''); ?>" role="main">
+			<main id="content" class="<?php echo Request::getVar('option', ''); ?>" role="main">
 				<div class="inner<?php if ($this->countModules('left or right')) { echo ' withmenu'; } ?>">
 					<?php if ($this->countModules('left or right')) : ?>
 						<section class="main section">
