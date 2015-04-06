@@ -962,6 +962,29 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			);
 		}
 
+		// forge an alias from the title
+		if ($model->get('alias') == '')
+		{
+			// lowercase
+			$alias = strtolower($model->get('title'));
+
+			//remove whitespaces
+			$alias = preg_replace('/\s+/', '', $alias);
+
+			//append -category
+			$alias = $alias . '-category';
+
+			//set it
+			$model->set('alias', $alias);
+		}
+
+		//check for alias duplicates within section?
+		if ($model->uniqueAliasCheck())
+		{
+			$this->addPluginMessage($model->getError(), 'error');
+			return $this->editcategory($model);
+		}
+
 		$model->set('closed', (isset($fields['closed']) && $fields['closed']) ? 1 : 0);
 
 		// Store new content
