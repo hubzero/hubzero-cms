@@ -105,13 +105,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_GROUP', 'group', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_REVISIONS', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_GROUP', 'group', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_REVISIONS', 'revisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -164,7 +164,7 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
@@ -179,7 +179,7 @@ foreach ($this->rows as $row)
 					<?php } ?>
 					<br /><?php if ($row->get('scope')) { ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('scope'))); ?>/</span> &nbsp; <?php } ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('pagename'))); ?></span>
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->param('mode')); ?>
 				</td>
 				<td>
@@ -193,25 +193,23 @@ foreach ($this->rows as $row)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span class="group">
 						<span><?php echo $this->escape($row->get('group_cn')); ?></span>
 					</span>
 				</td>
-			<?php if ($row->get('revisions') > 0) { ?>
-				<td>
-					<a class="revisions" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=revisions&pageid=' . $row->get('id')); ?>">
-						<span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $this->escape($row->get('revisions'))); ?></span>
-					</a>
+				<td class="priority-2">
+					<?php if ($row->get('revisions') > 0) { ?>
+						<a class="revisions" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=revisions&pageid=' . $row->get('id')); ?>">
+							<span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $this->escape($row->get('revisions'))); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="revisions">
+							<span><?php echo $this->escape($row->get('revisions')); ?></span>
+						</span>
+					<?php } ?>
 				</td>
-			<?php } else { ?>
-				<td>
-					<span class="revisions">
-						<span><?php echo $this->escape($row->get('revisions')); ?></span>
-					</span>
-				</td>
-			<?php } ?>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&pageid=' . $row->get('id')); ?>">
 							<?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>

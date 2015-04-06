@@ -69,14 +69,14 @@ function submitbutton(pressbutton)
 			<tr>
 				<th><?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?></th>
 				<td><?php echo $this->escape(stripslashes($this->page->get('title'))); ?></td>
-				<th><?php echo Lang::txt('COM_WIKI_COL_SCOPE'); ?></th>
-				<td><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
+				<th class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_SCOPE'); ?></th>
+				<td class="priority-2"><?php echo $this->escape(stripslashes($this->page->get('scope'))); ?></td>
 			</tr>
 			<tr>
 				<th>(<?php echo Lang::txt('COM_WIKI_COL_ID'); ?>) <?php echo Lang::txt('COM_WIKI_COL_PAGENAME'); ?></th>
 				<td>(<?php echo $this->page->get('id'); ?>) <?php echo $this->escape(stripslashes($this->page->get('pagename'))); ?></td>
-				<th><?php echo Lang::txt('COM_WIKI_COL_GROUP'); ?></th>
-				<td><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
+				<th class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_GROUP'); ?></th>
+				<td class="priority-2"><?php echo $this->escape(stripslashes($this->page->get('group_cn'))); ?></td>
 			</tr>
 		</tbody>
 	</table>
@@ -94,13 +94,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_REVISION', 'revision', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_EDIT_SUMMARY', 'summary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_EDIT_SUMMARY', 'summary', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_MINOR_EDIT', 'minor_edit', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-4"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_MINOR_EDIT', 'minor_edit', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_WIKI_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -150,43 +150,43 @@ foreach ($this->rows as $row)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo $this->escape($row->get('id')); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
-						<?php echo Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
+							<?php echo Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo Lang::txt('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
+						</span>
+					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-5">
 					<?php echo $this->escape(stripslashes($row->get('summary'))); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&approve=' . $task . '&' . JUtility::getToken() . '=1'); ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="access <?php echo $class . ' ' . $color_access; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&approve=' . $task . '&' . JUtility::getToken() . '=1'); ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="access <?php echo $class . ' ' . $color_access; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-4">
 					<span class="state <?php echo ($row->get('minor_edit') ? 'yes' : 'no'); ?>">
 						<span><?php echo $this->escape($row->get('minor_edit')); ?></span>
 					</span>
 				</td>
-				<td>
+				<td class="priority-2">
 					<time datetime="<?php echo $this->escape($row->get('created')); ?>"><?php echo $this->escape($row->get('created')); ?></time>
 				</td>
-				<td>
+				<td class="priority-3">
 					<span class="glyph user">
 						<?php echo $this->escape(stripslashes($row->get('created_by_name'))); ?>
 					</span>

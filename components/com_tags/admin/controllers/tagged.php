@@ -30,6 +30,8 @@
 
 namespace Components\Tags\Admin\Controllers;
 
+use Components\Tags\Tables;
+use Components\Tags\Models\Object;
 use Hubzero\Component\AdminController;
 
 /**

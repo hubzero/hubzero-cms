@@ -82,12 +82,12 @@ function submitbutton(pressbutton)
 			<tr>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_SUBMITTED', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_AUTHOR', 'fullname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-2"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_SUBMITTED', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-3"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_AUTHOR', 'fullname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" class="priority-5"><?php echo JHTML::_('grid.sort', 'COM_FEEDBACK_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_FEEDBACK_COL_QUOTE'); ?></th>
 				<th scope="col"><?php echo Lang::txt('COM_FEEDBACK_COL_QUOTES'); ?></th>
-				<th scope="col"><?php echo Lang::txt('COM_FEEDBACK_COL_OK_PUBLISH'); ?></th>
+				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_FEEDBACK_COL_OK_PUBLISH'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -131,12 +131,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onClick="isChecked(this.checked);" />
 				</td>
-				<td>
+				<td class="priority-2">
 					<?php if ($row->date && $row->date != '0000-00-00 00:00:00') { ?>
 						<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 					<?php } ?>
 				</td>
-				<td>
+				<td class="priority-3">
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<?php echo $this->escape(stripslashes($row->fullname)); ?>
@@ -147,8 +147,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
-				<td>
-					<?php echo ($row->org) ? $this->escape(stripslashes($row->org)) : '&nbsp;';?></td>
+				<td class="priority-5">
+					<?php echo ($row->org) ? $this->escape(stripslashes($row->org)) : '&nbsp;'; ?>
+				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
@@ -164,7 +165,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->notable_quote == 1) ? '<span class="state yes"><span>' . Lang::txt('JYES') . '</span></span>' : ''; ?>
 
 				</td>
-				<td>
+				<td class="priority-4">
 					<?php echo ($row->publish_ok == 1) ? '<span class="state yes"><span>' . Lang::txt('JYES') . '</span></span>' : ''; ?>
 				</td>
 			</tr>

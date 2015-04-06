@@ -112,7 +112,7 @@ class Pages extends AdminController
 			),
 			'state' => array(0, 1, 2)
 		);
-		$this->view->filters['sortby' => $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
