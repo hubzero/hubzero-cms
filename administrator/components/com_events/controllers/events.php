@@ -320,9 +320,15 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$this->view->times['end_time'] = $end_time;
 		$this->view->times['end_pm'] = $end_pm;
 
-		// Get tags on this event
-		$rt = new EventsModelTags($this->view->row->id);
-		$this->view->tags = $rt->render('string');
+
+		// only load tags on existing events
+		if ($this->view->row->id != NULL)
+		{
+			// Get tags on this event
+			$rt = new EventsModelTags($this->view->row->id);
+			$this->view->tags = $rt->render('string');
+		}
+
 
 		// Set any errors
 		if ($this->getError())
