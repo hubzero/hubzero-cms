@@ -693,6 +693,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'parent'     => 0,
 			'access'     => 0
 		);
+
 		if (!$this->juser->get('guest'))
 		{
 			$this->view->filters['access'] = array(0, 1, 3);
@@ -947,6 +948,29 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$model = new ForumModelCategory($fields['id']);
 		if (!$model->bind($fields))
+		{
+			$this->addPluginMessage($model->getError(), 'error');
+			return $this->editcategory($model);
+		}
+
+		// forge an alias from the title
+		if ($model->get('alias') == '')
+		{
+			// lowercase
+			$alias = strtolower($model->get('title'));
+
+			//remove whitespaces
+			$alias = preg_replace('/\s+/', '', $alias);
+
+			//append -category
+			$alias = $alias . '-category';
+
+			//set it
+			$model->set('alias', $alias);
+		}
+
+		//check for alias duplicates within section?
+		if ($model->uniqueAliasCheck())
 		{
 			$this->addPluginMessage($model->getError(), 'error');
 			return $this->editcategory($model);

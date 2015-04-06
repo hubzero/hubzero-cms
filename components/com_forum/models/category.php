@@ -351,5 +351,37 @@ class ForumModelCategory extends ForumModelAbstract
 
 		return $this->_adapter;
 	}
-}
 
+
+	/**
+	* Verifies no duplicate aliases within a secton's categories listing.
+	* Returns true if duplicate detected.
+	*
+	*
+	* @return boolean
+	*/
+	public function uniqueAliasCheck()
+	{
+		$alias = $this->get('alias');
+		$section = new ForumModelSection($this->get('section_id'));
+
+		// all categories within a section
+		$categories = $section->categories('list');
+
+		// check for duplicate aliases within the same section;
+		foreach ($categories as $category)
+		{
+			$existing = $category->get('alias');
+			if ($alias == $existing)
+			{
+				$this->setError(JText::_('The alias must be unique within a section.'));
+				return true;
+			}
+			else
+			{
+				continue;
+			}
+		}
+		return false;
+	}
+}
