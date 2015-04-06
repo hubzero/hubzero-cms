@@ -68,7 +68,7 @@ var HUB = {};
 			</div>
 
 			<div class="input-wrap">
-				<label for="catid"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:</label><br />
+				<label for="catid"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
 				<?php echo \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', 0, $this->option);?></td>
 			</div>
 

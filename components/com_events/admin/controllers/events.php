@@ -421,6 +421,10 @@ class Events extends AdminController
 		{
 			$row->catid = intval($row->catid);
 		}
+		elseif (!$row->catid)
+		{
+			throw new Exception(Lang::txt('EVENT_CAL_LANG_EVENT_REQUIRED'), 500);
+		}
 
 		//$row->title = $this->view->escape($row->title);
 
