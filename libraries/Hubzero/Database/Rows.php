@@ -92,6 +92,17 @@ class Rows implements Iterator
 	}
 
 	/**
+	 * Removes model from the stack
+	 *
+	 * @return void
+	 * @since  1.3.2
+	 **/
+	public function drop($key)
+	{
+		unset($this->rows[$key]);
+	}
+
+	/**
 	 * Clears out any existing rows
 	 *
 	 * @return void
@@ -298,7 +309,7 @@ class Rows implements Iterator
 	public function search($key, $value)
 	{
 		foreach ($this->rows as $row)
-		{ 
+		{
 			if ($row->$key == $value)
 			{
 				return true;
