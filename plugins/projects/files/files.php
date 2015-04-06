@@ -382,7 +382,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 */
 	public function data()
 	{
-		
+
 	}
 
 	/**
