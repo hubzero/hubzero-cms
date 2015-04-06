@@ -854,7 +854,7 @@ class ModulesModelModule extends JModelAdmin
 	 */
 	function validate($form, $data, $group = null)
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_content/helpers/content.php';
+		require_once JPATH_ROOT.'/components/com_content/admin/helpers/content.php';
 
 		return parent::validate($form, $data, $group);
 	}

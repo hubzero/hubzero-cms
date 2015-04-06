@@ -43,17 +43,7 @@ class Helper
 	 */
 	public static function countModules($condition)
 	{
-		$words = explode(' ', $condition);
-		for ($i = 0; $i < count($words); $i+=2)
-		{
-			// odd parts (modules)
-			$name = strtolower($words[$i]);
-			$words[$i] = count(\Module::byPosition($name));
-		}
-
-		$str = 'return ' . implode(' ', $words) . ';';
-
-		return eval($str);
+		return \Module::count($condition);
 	}
 
 	/**
@@ -91,9 +81,7 @@ class Helper
 	 */
 	public static function renderModule($name, $style=-1)
 	{
-		$module = \Module::byName($name);
-
-		return \Module::render($module, array('style' => $style));
+		return \Module::name($module, ($style == -1 ? 'none' : $style));
 	}
 
 	/**
@@ -105,21 +93,7 @@ class Helper
 	 */
 	public static function renderModules($position, $style=-2)
 	{
-		$document = \JFactory::getDocument();
-		$renderer = $document->loadRenderer('module');
-		$params   = array('style' => $style);
-
-		$contents = '';
-		foreach (\Module::byPosition($position) as $mod)
-		{
-			if ($mod->showtitle != 0)
-			{
-				$contents .= '<h3>' . stripslashes($mod->title) . '</h3>';
-			}
-			$contents .= $renderer->render($mod, $params);
-		}
-
-		return $contents;
+		return \Module::position($position, ($style == -1 ? 'none' : $style));
 	}
 
 	/**

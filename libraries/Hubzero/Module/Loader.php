@@ -36,6 +36,27 @@ namespace Hubzero\Module;
 class Loader
 {
 	/**
+	 * Count the modules based on the given condition
+	 *
+	 * @param   string   $condition  The condition to use
+	 * @return  integer  Number of modules found
+	 */
+	public function count($condition)
+	{
+		$words = explode(' ', $condition);
+		for ($i = 0; $i < count($words); $i+=2)
+		{
+			// odd parts (modules)
+			$name = strtolower($words[$i]);
+			$words[$i] = count($this->byPosition($name));
+		}
+
+		$str = 'return ' . implode(' ', $words) . ';';
+
+		return eval($str);
+	}
+
+	/**
 	 * Get module by name (real, eg 'Breadcrumbs' or folder, eg 'mod_breadcrumbs')
 	 *
 	 * @param   string  $name   The name of the module
@@ -129,6 +150,39 @@ class Loader
 		$result = $this->byName($module);
 
 		return !is_null($result);
+	}
+
+	/**
+	 * Render modules for a position
+	 *
+	 * @param   string  $position  Position to render modules for
+	 * @param   string  $style     Module style (deprecated?)
+	 * @return  string  HTML
+	 */
+	public function position($position, $style='none')
+	{
+		$contents = '';
+		foreach ($this->byPosition($position) as $mod)
+		{
+			$contents .= $this->render($mod, array('style' => $style));
+		}
+
+		return $contents;
+	}
+
+	/**
+	 * Render module by name
+	 *
+	 * @param   string  $name   Module name
+	 * @param   string  $style  Module style (deprecated?)
+	 * @return  string  HTML
+	 */
+	public function name($name, $style='none')
+	{
+		return $this->render(
+			$this->byName($name),
+			array('style' => $style)
+		);
 	}
 
 	/**

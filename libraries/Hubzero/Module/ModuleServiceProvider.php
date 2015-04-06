@@ -44,7 +44,7 @@ class ModuleServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app['module'] = function()
+		$this->app['module'] = function($app)
 		{
 			return new Loader();
 		};
