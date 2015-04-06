@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,10 +41,11 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * Plugin that loads module positions within content
 	 *
-	 * @param	string	The context of the content being passed to the plugin.
-	 * @param	object	The article object.  Note $article->text is also available
-	 * @param	object	The article params
-	 * @param	int		The 'page' number
+	 * @param   string   $context  The context of the content being passed to the plugin.
+	 * @param   object   $article  The article object.  Note $article->text is also available
+	 * @param   object   $params   The article params
+	 * @param   integer  $page     The 'page' number
+	 * @return  void
 	 */
 	public function onContentPrepare($context, &$article, &$params, $page = 0)
 	{
@@ -109,8 +110,8 @@ class plgContentXhubtags extends JPlugin
 	 * {xhub:module position="position" style="style"}
 	 * Renders a module from an {xhub} tag
 	 *
-	 * @param  string $options Tag options (e.g. 'component="support"')
-	 * @return string
+	 * @param   string  $options  Tag options (e.g. 'component="support"')
+	 * @return  string
 	 */
 	private function _modules($options)
 	{
@@ -125,16 +126,16 @@ class plgContentXhubtags extends JPlugin
 
 		if (!preg_match($regex, $options, $style))
 		{
-			$style[2] = $this->params->def('style', 'none');
+			$style[2] = $this->params->def('style', 'xhtml');
 		}
 
-		return \Hubzero\Module\Helper::renderModules($position[2], $style[2]);
+		return \Module::position($position[2], $style[2]);
 	}
 
 	/**
 	 * {xhub:templatedir}
 	 *
-	 * @return string Template path
+	 * @return  string  Template path
 	 */
 	private function _templateDir()
 	{
@@ -147,13 +148,11 @@ class plgContentXhubtags extends JPlugin
 	 * {xhub:include type="script" component="component" filename="filename"}
 	 * {xhub:include type="stylesheet" component="component" filename="filename"}
 	 *
-	 * @param  string $options Tag options (e.g. 'component="support"')
-	 * @return string
+	 * @param   string  $options  Tag options (e.g. 'component="support"')
+	 * @return  string
 	 */
 	private function _include($options)
 	{
-		$app = JFactory::getApplication();
-
 		$regex = "/type\s*=\s*(\"|&quot;)(script|stylesheet)(\"|&quot;)/i";
 
 		if (!preg_match($regex, $options, $type))
@@ -170,6 +169,7 @@ class plgContentXhubtags extends JPlugin
 
 		$regex = "/component\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
+		$app = JFactory::getApplication();
 		$template = $app->getTemplate();
 
 		if ($file[2][0] == '/')
@@ -199,20 +199,20 @@ class plgContentXhubtags extends JPlugin
 			$filename .= $file[2];
 		}
 
-		$document = JFactory::getDocument();
-
 		if (!file_exists(JPATH_SITE . $filename))
 		{
 			return '';
 		}
 
+		$document = JFactory::getDocument();
+
 		if ($type[2] == 'script')
 		{
-			$document->addScript(JURI::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
+			$document->addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename));
 		}
 		else if ($type[2] == 'stylesheet')
 		{
-			$document->addStyleSheet(JURI::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
+			$document->addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(JPATH_SITE . $filename), 'text/css', 'screen');
 		}
 
 		return '';
@@ -221,8 +221,8 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * {xhub:image component="component" filename="filename"}
 	 *
-	 * @param  string $options Tag options (e.g. 'component="support"')
-	 * @return string
+	 * @param   string  $options  Tag options (e.g. 'component="support"')
+	 * @return  string
 	 */
 	private function _image($options)
 	{
@@ -263,17 +263,15 @@ class plgContentXhubtags extends JPlugin
 	/**
 	 * {xhub:getcfg variable}
 	 *
-	 * @param  string $options Variable name
-	 * @return string
+	 * @param   string  $options  Variable name
+	 * @return  string
 	 */
 	private function _getCfg($options)
 	{
-		$jconfig = JFactory::getConfig();
-
 		$options = trim($options, " \n\t\r}");
 
-		$sitename = $jconfig->getValue('config.sitename');
-		$live_site = rtrim(JURI::base(),'/');
+		$sitename = Config::get('sitename');
+		$live_site = rtrim(Request::base(),'/');
 
 		if ($options == 'hubShortName')
 		{
