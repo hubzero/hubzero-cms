@@ -54,17 +54,17 @@ $url = 'index.php?option=' . $this->option . $goto . '&active=team';
 	<div class="list-menu">
 		<ul class="entries-menu order-options">
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(JText::_('COM_PROJECTS_JOINED')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'date') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_JOINED')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_JOINED'); ?>
 				</a>
 			</li>
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'role') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(JText::_('COM_PROJECTS_ROLE')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'role') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_ROLE')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_ROLE'); ?>
 				</a>
 			</li>
 			<li>
-				<a class="sort-title<?php if ($this->filters['sortby'] == 'name') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(JText::_('COM_PROJECTS_NAME')); ?>">
+				<a class="sort-title<?php if ($this->filters['sortby'] == 'name') { echo ' active'; } ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . strtolower(Lang::txt('COM_PROJECTS_NAME')); ?>">
 					&darr; <?php echo Lang::txt('COM_PROJECTS_NAME'); ?>
 				</a>
 			</li>
