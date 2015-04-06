@@ -106,7 +106,7 @@ Lang::load('tpl_' . $this->template);
 										<p class="signature"><?php echo Lang::txt('TPL_KAMELEON_403_SIGNATURE'); ?></p>
 										<?php 
 										break;
-										case 500: 
+										case 500:
 										default: ?>
 										<h3><?php echo Lang::txt('TPL_KAMELEON_HEADER_500'); ?></h3>
 										<blockquote>
