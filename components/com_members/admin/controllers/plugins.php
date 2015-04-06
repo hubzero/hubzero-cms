@@ -170,7 +170,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			return false;
 		}
 
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as &$item)
@@ -194,7 +194,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 
 		$this->view->client = $this->client;
 		$this->view->states = JHTML::_('grid.state', $this->view->filters['state']);
-		$this->view->user = $this->juser;
+		$this->view->user   = User::getRoot();
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

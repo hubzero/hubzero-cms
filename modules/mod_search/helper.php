@@ -37,6 +37,7 @@ use JURI;
 use Lang;
 use Request;
 use Route;
+use Config;
 
 /**
  * Module class for displaying a search form
@@ -52,7 +53,7 @@ class Helper extends Module
 	{
 		if ($this->params->get('opensearch', 0))
 		{
-			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . JFactory::getApplication()->getCfg('sitename'));
+			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename'));
 
 			JFactory::getDocument()->addHeadLink(
 				JURI::getInstance()->toString(array('scheme', 'host', 'port')) . Route::url('&option=com_search&format=opensearch'),
@@ -62,7 +63,7 @@ class Helper extends Module
 			);
 		}
 
-		//$upper_limit = JFactory::getLanguage()->getUpperLimitSearchWord();
+		//$upper_limit = Lang::getUpperLimitSearchWord();
 		//$maxlength   = $upper_limit;
 
 		$params          = $this->params;

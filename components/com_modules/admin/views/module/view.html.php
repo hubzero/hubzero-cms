@@ -77,7 +77,7 @@ class ModulesViewModule extends JViewLegacy
 		}
 
 		// Get the help information for the menu item.
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 
 		$help = $this->get('Help');
 		if ($lang->hasKey($help->url)) {

@@ -174,8 +174,7 @@ class Collection extends Base
 	 */
 	public function setup($object_id, $object_type)
 	{
-		$lang = \JFactory::getLanguage();
-		$lang->load('com_collections');
+		Lang::load('com_collections');
 
 		$result = array(
 			'id'          => 0,

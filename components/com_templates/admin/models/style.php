@@ -311,7 +311,7 @@ class TemplatesModelStyle extends JModelAdmin
 		// Initialise variables.
 		$clientId	= $this->getState('item.client_id');
 		$template	= $this->getState('item.template');
-		$lang		= JFactory::getLanguage();
+		$lang		= Lang::getRoot();
 		$client		= JApplicationHelper::getClientInfo($clientId);
 		if (!$form->loadFile('style_'.$client->name, true)) {
 			throw new Exception(Lang::txt('JERROR_LOADFILE_FAILED'));

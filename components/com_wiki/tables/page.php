@@ -1016,7 +1016,7 @@ class Page extends \JTable
 
 		if (!isset($RE))
 		{
-			$language = strtolower(\JFactory::getLanguage()->getTag());
+			$language = strtolower(\Lang::getTag());
 
 			// This mess splits between a lower-case letter followed by
 			// either an upper-case or a numeral; except that it wont

@@ -52,7 +52,7 @@ class Finder
 		$name   = str_replace('com_', '', $component);
 		$client = \JFactory::getApplication()->isAdmin() ? 'admin' : 'site';
 		$tmpl   = \JFactory::getApplication()->getTemplate();
-		$lang   = \JFactory::getLanguage()->getTag();
+		$lang   = \Lang::getTag();
 
 		$paths = array(
 			// Template override help page
@@ -137,7 +137,7 @@ class Finder
 		}
 
 		// Path to help pages
-		$helpPagesPath = self::path($component) . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
+		$helpPagesPath = self::path($component) . DS . 'help' . DS . \Lang::getTag();
 
 		// Make sure directory exists
 		$pages = array();

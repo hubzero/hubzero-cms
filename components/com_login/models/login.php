@@ -132,7 +132,7 @@ class Login extends \JModelLegacy
 		}
 
 		$app      = \JFactory::getApplication();
-		$lang     = \JFactory::getLanguage()->getTag();
+		$lang     = \Lang::getTag();
 		$clientId = (int) $app->getClientId();
 
 		$cache       = \JFactory::getCache('com_modules', '');

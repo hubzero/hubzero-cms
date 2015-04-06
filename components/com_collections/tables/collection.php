@@ -119,8 +119,7 @@ class Collection extends \JTable
 	 */
 	public function setup($object_id=0, $object_type='')
 	{
-		$lang = \JFactory::getLanguage();
-		$lang->load('com_collections');
+		Lang::load('com_collections');
 
 		$result = array(
 			'id'          => 0,
@@ -134,8 +133,7 @@ class Collection extends \JTable
 		);
 		if (!$result['created_by'])
 		{
-			$juser = \JFactory::getUser();
-			$result['created_by'] = $juser->get('id');
+			$result['created_by'] = User::get('id');
 		}
 		if (!$this->bind($result))
 		{
@@ -205,9 +203,8 @@ class Collection extends \JTable
 				return false;
 			}
 
-			$juser = \JFactory::getUser();
 			$this->created    = ($this->created ? $this->created : \JFactory::getDate()->toSql());
-			$this->created_by = ($this->created_by ? $this->created_by : $juser->get('id'));
+			$this->created_by = ($this->created_by ? $this->created_by : User::get('id'));
 			$this->state      = 1;
 		}
 		else

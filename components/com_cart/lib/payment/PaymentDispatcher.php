@@ -54,7 +54,7 @@ class PaymentDispatcher
 	public function __construct($paymentGatewayProivder)
 	{
 		// Load language file
-		JFactory::getLanguage()->load('com_cart');
+		Lang::load('com_cart');
 
 		switch ($paymentGatewayProivder)
 		{

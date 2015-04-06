@@ -60,13 +60,14 @@ class MenusModelItem extends JModelAdmin
 	 */
 	protected function canDelete($record)
 	{
-		if (!empty($record->id)) {
-			if ($record->published != -2) {
+		if (!empty($record->id))
+		{
+			if ($record->published != -2)
+			{
 				return ;
 			}
-			$user = JFactory::getUser();
 
-		return $user->authorise('core.delete', 'com_menus.item.'.(int) $record->id);
+			return User::authorise('core.delete', 'com_menus.item.'.(int) $record->id);
 		}
 	}
 
@@ -80,13 +81,13 @@ class MenusModelItem extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
-		if (!empty($record->id)) {
-			return $user->authorise('core.edit.state', 'com_menus.item.'.(int) $record->id);
+		if (!empty($record->id))
+		{
+			return User::authorise('core.edit.state', 'com_menus.item.'.(int) $record->id);
 		}
 		// Default to component settings if menu item not known.
-		else {
+		else
+		{
 			return parent::canEditState($record);
 		}
 	}
@@ -228,8 +229,7 @@ class MenusModelItem extends JModelAdmin
 		}
 
 		// Check that user has create permission for menus
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_menus'))
+		if (!User::authorise('core.create', 'com_menus'))
 		{
 			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
 			return false;
@@ -409,14 +409,13 @@ class MenusModelItem extends JModelAdmin
 		}
 
 		// Check that user has create and edit permission for menus
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.create', 'com_menus'))
+		if (!User::authorise('core.create', 'com_menus'))
 		{
 			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_CREATE'));
 			return false;
 		}
 
-		if (!$user->authorise('core.edit', 'com_menus'))
+		if (!User::authorise('core.edit', 'com_menus'))
 		{
 			$this->setError(Lang::txt('COM_MENUS_BATCH_MENU_ITEM_CANNOT_EDIT'));
 			return false;
@@ -670,7 +669,7 @@ class MenusModelItem extends JModelAdmin
 
 				if (isset($args['option'])) {
 					// Load the language file for the component.
-					$lang = JFactory::getLanguage();
+					$lang = Lang::getRoot();
 						$lang->load($args['option'], JPATH_ADMINISTRATOR, null, false, true)
 					||	$lang->load($args['option'], JPATH_ADMINISTRATOR . '/components/' . $args['option'], null, false, true);
 
@@ -1299,7 +1298,6 @@ class MenusModelItem extends JModelAdmin
 		// Initialise variables.
 		$table		= $this->getTable();
 		$pks		= (array) $pks;
-		$user		= JFactory::getUser();
 
 		$languages	= array();
 		$onehome	= false;

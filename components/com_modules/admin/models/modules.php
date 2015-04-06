@@ -136,7 +136,7 @@ class ModulesModelModules extends JModelList
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			$this->translate($result);
-			$lang = JFactory::getLanguage();
+			$lang = Lang::getRoot();
 			JArrayHelper::sortObjects($result, $ordering, $this->getState('list.direction') == 'desc' ? -1 : 1, true, $lang->getLocale());
 			$total = count($result);
 			$this->cache[$this->getStoreId('getTotal')] = $total;
@@ -172,7 +172,7 @@ class ModulesModelModules extends JModelList
 	 */
 	protected function translate(&$items)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		$client = $this->getState('filter.client_id') ? 'administrator' : 'site';
 		foreach ($items as $item) {
 			$extension = $item->module;

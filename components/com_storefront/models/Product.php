@@ -56,7 +56,7 @@ class StorefrontModelProduct
 	public function __construct()
 	{
 		// Load language file
-		JFactory::getLanguage()->load('com_storefront');
+		Lang::load('com_storefront');
 	}
 
 	/**

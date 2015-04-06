@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$client		= $this->state->get('filter.client_id') ? 'administrator' : 'site';
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= User::authorise('core.edit.state', 'com_modules');
-$saveOrder	= $listOrder == 'ordering';
+$client    = $this->state->get('filter.client_id') ? 'administrator' : 'site';
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$canOrder  = User::authorise('core.edit.state', 'com_modules');
+$saveOrder = $listOrder == 'ordering';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_modules'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -107,11 +107,11 @@ $saveOrder	= $listOrder == 'ordering';
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$ordering	= ($listOrder == 'ordering');
-			$canCreate	= User::authorise('core.create',		'com_modules');
-			$canEdit	= User::authorise('core.edit',			'com_modules');
-			$canCheckin	= User::authorise('core.manage',		'com_checkin') || $item->checked_out == User::get('id')|| $item->checked_out==0;
-			$canChange	= User::authorise('core.edit.state',	'com_modules') && $canCheckin;
+			$ordering   = ($listOrder == 'ordering');
+			$canCreate  = User::authorise('core.create',     'com_modules');
+			$canEdit    = User::authorise('core.edit',       'com_modules');
+			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out == User::get('id')|| $item->checked_out==0;
+			$canChange  = User::authorise('core.edit.state', 'com_modules') && $canCheckin;
 		?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -172,7 +172,7 @@ $saveOrder	= $listOrder == 'ordering';
 					<?php if ($item->language==''):?>
 						<?php echo Lang::txt('JDEFAULT'); ?>
 					<?php elseif ($item->language=='*'):?>
-						<?php echo JText::alt('JALL', 'language'); ?>
+						<?php echo Lang::txt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>

@@ -66,7 +66,7 @@ class InstallerModel extends JModelList
 		{
 			$db->setQuery($query);
 			$result = $db->loadObjectList();
-			$lang = JFactory::getLanguage();
+			$lang = Lang::getRoot();
 			$this->translate($result);
 			if (!empty($search))
 			{
@@ -105,7 +105,7 @@ class InstallerModel extends JModelList
 	 */
 	private function translate(&$items)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		foreach ($items as &$item)
 		{
 			if (strlen($item->manifest_cache))

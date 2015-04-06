@@ -14,13 +14,12 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
-$extension	= $this->escape($this->state->get('filter.extension'));
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$ordering 	= ($listOrder == 'a.lft');
-$saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
+$userId    = User::get('id');
+$extension = $this->escape($this->state->get('filter.extension'));
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$ordering  = ($listOrder == 'a.lft');
+$saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 ?>
 <form action="<?php echo Route::url('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
 
@@ -96,11 +95,11 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 			<?php
 			$originalOrders = array();
 			foreach ($this->items as $i => $item) :
-				$orderkey	= array_search($item->id, $this->ordering[$item->parent_id]);
-				$canEdit	= $user->authorise('core.edit',			$extension.'.category.'.$item->id);
-				$canCheckin	= $user->authorise('core.admin', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-				$canEditOwn	= $user->authorise('core.edit.own',		$extension.'.category.'.$item->id) && $item->created_user_id == $userId;
-				$canChange	= $user->authorise('core.edit.state',	$extension.'.category.'.$item->id) && $canCheckin;
+				$orderkey   = array_search($item->id, $this->ordering[$item->parent_id]);
+				$canEdit    = User::authorise('core.edit',       $extension.'.category.'.$item->id);
+				$canCheckin = User::authorise('core.admin',      'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+				$canEditOwn = User::authorise('core.edit.own',   $extension.'.category.'.$item->id) && $item->created_user_id == $userId;
+				$canChange  = User::authorise('core.edit.state', $extension.'.category.'.$item->id) && $canCheckin;
 			?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="center">
@@ -146,7 +145,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 					</td>
 					<td class="priority-4 center nowrap">
 					<?php if ($item->language=='*'):?>
-						<?php echo JText::alt('JALL', 'language'); ?>
+						<?php echo Lang::txt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
@@ -160,7 +159,7 @@ $saveOrder 	= ($listOrder == 'a.lft' && $listDirn == 'asc');
 		</tbody>
 	</table>
 	<?php //Load the batch processing form. ?>
-	<?php if ($user->authorize('core.create', $extension) & $user->authorize('core.edit', $extension) && $user->authorize('core.edit.state', $extension)) : ?>
+	<?php if (User::authorize('core.create', $extension) & User::authorize('core.edit', $extension) && User::authorize('core.edit.state', $extension)) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 

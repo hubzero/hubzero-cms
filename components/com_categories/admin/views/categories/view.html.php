@@ -29,7 +29,8 @@ class CategoriesViewCategories extends JViewLegacy
 		$this->pagination	= $this->get('Pagination');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
@@ -70,17 +71,16 @@ class CategoriesViewCategories extends JViewLegacy
 		$component	= $this->state->get('filter.component');
 		$section	= $this->state->get('filter.section');
 		$canDo		= null;
-		$user		= JFactory::getUser();
 
 		// Avoid nonsense situation.
-		if ($component == 'com_categories') {
+		if ($component == 'com_categories')
+		{
 			return;
 		}
 
 		// Need to load the menu language file as mod_menu hasn't been loaded yet.
-		$lang = JFactory::getLanguage();
-			$lang->load($component, JPATH_BASE, null, false, true)
-		||	$lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component, null, false, true);
+			Lang::load($component, JPATH_BASE, null, false, true)
+		||	Lang::load($component, JPATH_ADMINISTRATOR . '/components/' . $component, null, false, true);
 
 		// Load the category helper.
 		require_once JPATH_COMPONENT.'/helpers/categories.php';
@@ -89,15 +89,18 @@ class CategoriesViewCategories extends JViewLegacy
 		$canDo = CategoriesHelper::getActions($component, $categoryId);
 
 		// If a component categories title string is present, let's use it.
-		if ($lang->hasKey($component_title_key = strtoupper($component.($section?"_$section":'')).'_CATEGORIES_TITLE')) {
+		if (Lang::hasKey($component_title_key = strtoupper($component.($section?"_$section":'')).'_CATEGORIES_TITLE'))
+		{
 			$title = Lang::txt($component_title_key);
 		}
 		// Else if the component section string exits, let's use it
-		elseif ($lang->hasKey($component_section_key = strtoupper($component.($section?"_$section":'')))) {
+		elseif (Lang::hasKey($component_section_key = strtoupper($component.($section?"_$section":''))))
+		{
 			$title = Lang::txt( 'COM_CATEGORIES_CATEGORIES_TITLE', $this->escape(Lang::txt($component_section_key)));
 		}
 		// Else use the base title
-		else {
+		else
+		{
 			$title = Lang::txt('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
 		}
 
@@ -107,7 +110,7 @@ class CategoriesViewCategories extends JViewLegacy
 		// Prepare the toolbar.
 		Toolbar::title($title, 'categories '.substr($component, 4).($section?"-$section":'').'-categories');
 
-		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($component, 'core.create'))) > 0 ) {
+		if ($canDo->get('core.create') || (count(User::getAuthorisedCategories($component, 'core.create'))) > 0 ) {
 			 Toolbar::addNew('category.add');
 		}
 
@@ -142,7 +145,7 @@ class CategoriesViewCategories extends JViewLegacy
 		}
 
 		// Compute the ref_key if it does exist in the component
-		if (!$lang->hasKey($ref_key = strtoupper($component.($section?"_$section":'')).'_CATEGORIES_HELP_KEY')) {
+		if (!Lang::hasKey($ref_key = strtoupper($component.($section?"_$section":'')).'_CATEGORIES_HELP_KEY')) {
 			$ref_key = 'JHELP_COMPONENTS_'.strtoupper(substr($component, 4).($section?"_$section":'')).'_CATEGORIES';
 		}
 
@@ -150,10 +153,10 @@ class CategoriesViewCategories extends JViewLegacy
 		// -remotely searching in a language defined dedicated URL: *component*_HELP_URL
 		// -locally  searching in a component help file if helpURL param exists in the component and is set to ''
 		// -remotely searching in a component URL if helpURL param exists in the component and is NOT set to ''
-		if ($lang->hasKey($lang_help_url = strtoupper($component).'_HELP_URL')) {
-			$debug = $lang->setDebug(false);
+		if (Lang::hasKey($lang_help_url = strtoupper($component).'_HELP_URL')) {
+			$debug = Lang::setDebug(false);
 			$url = Lang::txt($lang_help_url);
-			$lang->setDebug($debug);
+			Lang::setDebug($debug);
 		}
 		else {
 			$url = null;

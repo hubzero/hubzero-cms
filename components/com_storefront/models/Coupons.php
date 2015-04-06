@@ -52,7 +52,7 @@ class StorefrontModelCoupons
 		$this->_db = JFactory::getDBO();
 
 		// Load language file
-		JFactory::getLanguage()->load('com_storefront');
+		Lang::load('com_storefront');
 	}
 
 	/**

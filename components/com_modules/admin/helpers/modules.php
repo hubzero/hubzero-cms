@@ -158,7 +158,7 @@ abstract class ModulesHelper
 
 		$db->setQuery($query);
 		$modules = $db->loadObjectList();
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		foreach ($modules as $i=>$module) {
 			$extension = $module->value;
 			$path = $clientId ? JPATH_ADMINISTRATOR : JPATH_SITE;

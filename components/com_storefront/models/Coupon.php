@@ -51,7 +51,7 @@ class StorefrontModelCoupon
 	public function __construct($code = false)
 	{
 		// Load language file
-		JFactory::getLanguage()->load('com_storefront');
+		Lang::load('com_storefront');
 
 		if ($code)
 		{

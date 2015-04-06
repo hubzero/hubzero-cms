@@ -84,7 +84,7 @@ class TemplatesControllerTemplate extends JControllerLegacy
 			// Call installation model
 			Request::setVar('install_directory', Config::get('tmp_path') . '/' . $model->getState('tmp_prefix'));
 			$installModel = $this->getModel('Install', 'InstallerModel');
-			JFactory::getLanguage()->load('com_installer');
+			Lang::load('com_installer');
 			if (!$installModel->install())
 			{
 				JError::raiseWarning(403, Lang::txt('COM_TEMPLATES_ERROR_COULD_NOT_INSTALL'));

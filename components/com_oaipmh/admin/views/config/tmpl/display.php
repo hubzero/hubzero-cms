@@ -36,7 +36,7 @@ Toolbar::help('oaipmh');
 
 $this->css();
 
-$lang = \JFactory::getLanguage()->getTag();
+$lang = \Lang::getTag();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">

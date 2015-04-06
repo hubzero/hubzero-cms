@@ -61,7 +61,7 @@ class PluginsViewPlugin extends JViewLegacy
 		Toolbar::divider();
 		// Get the help information for the plugin item.
 
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 
 		$help = $this->get('Help');
 		if ($lang->hasKey($help->url)) {

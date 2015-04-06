@@ -57,7 +57,7 @@ class Help extends SiteController
 		$extension = Request::getWord('extension', '');
 
 		$tmpl = \JFactory::getApplication()->getTemplate();
-		$lang = \JFactory::getLanguage()->getTag();
+		$lang = Lang::getTag();
 
 		$finalHelpPage = Finder::page($component, $extension, $page);
 

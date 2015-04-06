@@ -3,8 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->template = 'hubbasic2012';
 
-$lang = JFactory::getLanguage();
-$lang->load('tpl_' . $this->template);
+Lang::load('tpl_' . $this->template);
 
 $browser = new \Hubzero\Browser\Detector();
 $cls = array(

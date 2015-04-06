@@ -83,7 +83,7 @@ class ModulesModelPositions extends JModelList
 	{
 		if (!isset($this->items))
 		{
-			$lang				= JFactory::getLanguage();
+			$lang				= Lang::getRoot();
 			$search				= $this->getState('filter.search');
 			$state				= $this->getState('filter.state');
 			$clientId			= $this->getState('filter.client_id');

@@ -800,7 +800,7 @@ class ModulesModelModule extends JModelAdmin
 		jimport('joomla.filesystem.folder');
 
 		// Initialise variables.
-		$lang		= JFactory::getLanguage();
+		$lang		= Lang::getRoot();
 		$clientId	= $this->getState('item.client_id');
 		$module		= $this->getState('item.module');
 

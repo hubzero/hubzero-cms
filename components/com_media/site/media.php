@@ -20,17 +20,15 @@ if (!$asset or
 	&&	count(User::getAuthorisedCategories($asset, 'core.create')) == 0
 	&&	!(User::get('id') == $author && User::authorise('core.edit.own', $asset)))
 {
-	return JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Set the path definitions
 define('COM_MEDIA_BASE', JPATH_ROOT.'/'.$params->get('image_path', 'images'));
 define('COM_MEDIA_BASEURL', Request::root().'/'.$params->get('image_path', 'images'));
 
-$lang = JFactory::getLanguage();
-
-	$lang->load('com_media', JPATH_ADMINISTRATOR, null, false, true)
-||	$lang->load('com_media', JPATH_SITE, null, false, true);
+	Lang::load('com_media', JPATH_ADMINISTRATOR, null, false, true)
+||	Lang::load('com_media', JPATH_SITE, null, false, true);
 
 // Load the admin HTML view
 require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/media.php';

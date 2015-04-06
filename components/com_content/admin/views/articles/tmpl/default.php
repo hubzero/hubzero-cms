@@ -13,11 +13,10 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$saveOrder	= $listOrder == 'a.ordering';
+$userId    = User::get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$saveOrder = $listOrder == 'a.ordering';
 ?>
 <form action="<?php echo Route::url('index.php?option=com_content&view=articles');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -117,12 +116,12 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$item->max_ordering = 0; //??
-			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= $user->authorise('core.create',		'com_content.category.'.$item->catid);
-			$canEdit	= $user->authorise('core.edit',			'com_content.article.'.$item->id);
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn	= $user->authorise('core.edit.own',		'com_content.article.'.$item->id) && $item->created_by == $userId;
-			$canChange	= $user->authorise('core.edit.state',	'com_content.article.'.$item->id) && $canCheckin;
+			$ordering   = ($listOrder == 'a.ordering');
+			$canCreate  = User::authorise('core.create',     'com_content.category.'.$item->catid);
+			$canEdit    = User::authorise('core.edit',       'com_content.article.'.$item->id);
+			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+			$canEditOwn = User::authorise('core.edit.own',   'com_content.article.'.$item->id) && $item->created_by == $userId;
+			$canChange  = User::authorise('core.edit.state', 'com_content.article.'.$item->id) && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -187,7 +186,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 				</td> -->
 				<td class="priority-6 center">
 					<?php if ($item->language=='*'):?>
-						<?php echo JText::alt('JALL', 'language'); ?>
+						<?php echo Lang::txt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
@@ -201,7 +200,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 	</table>
 
 	<?php //Load the batch processing form. ?>
-	<?php if ($user->authorize('core.create', 'com_content') && $user->authorize('core.edit', 'com_content') && $user->authorize('core.edit.state', 'com_content')) : ?>
+	<?php if (User::authorize('core.create', 'com_content') && User::authorize('core.edit', 'com_content') && User::authorize('core.edit.state', 'com_content')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif;?>
 

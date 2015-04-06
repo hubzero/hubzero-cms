@@ -116,9 +116,6 @@ class Helper extends Module
 
 		$database = JFactory::getDBO();
 
-		// Get the site language setting
-		$lang = JFactory::getLanguage();
-
 		// Get module parameters
 		$mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;
 		$days              = $this->params->get('days')                ? abs(intval($this->params->get('days'))) : 7;

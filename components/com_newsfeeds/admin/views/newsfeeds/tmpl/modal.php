@@ -12,9 +12,9 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 
-$function	= Request::getCmd('function', 'jSelectNewsfeed');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$function  = Request::getCmd('function', 'jSelectNewsfeed');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo Route::url('index.php?option=com_newsfeeds&view=newsfeeds&layout=modal&tmpl=component&function='.$function);?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="filter clearfix">
@@ -83,7 +83,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function);?>('<?php echo $item->id; ?>', '<?php echo $this->escape(addslashes($item->name)); ?>');">
-						<?php echo $this->escape($item->name); ?></a>
+						<?php echo $this->escape($item->name); ?>
+					</a>
 				</td>
 				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
@@ -93,7 +94,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php if ($item->language=='*'):?>
-						<?php echo JText::alt('JALL', 'language'); ?>
+						<?php echo Lang::txt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>

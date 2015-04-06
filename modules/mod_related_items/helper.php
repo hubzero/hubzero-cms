@@ -39,6 +39,7 @@ use Request;
 use JFactory;
 use Route;
 use User;
+use Lang;
 
 /**
  * Module class for displaying related articles
@@ -177,7 +178,7 @@ class Helper extends Module
 					// Filter by language
 					if ($app->getLanguageFilter())
 					{
-						$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+						$query->where('a.language in (' . $db->Quote(Lang::getTag()) . ',' . $db->Quote('*') . ')');
 					}
 
 					$db->setQuery($query);

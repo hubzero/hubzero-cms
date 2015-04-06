@@ -49,8 +49,7 @@ class CategoriesViewCategory extends JViewLegacy
 	{
 		// Initialise variables.
 		$extension	= Request::getCmd('extension');
-		$user		= JFactory::getUser();
-		$userId		= $user->get('id');
+		$userId		= User::get('id');
 
 		$isNew		= ($this->item->id == 0);
 		$checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
@@ -66,7 +65,7 @@ class CategoriesViewCategory extends JViewLegacy
 		$section = (count($parts) > 1) ? $parts[1] : null;
 
 		// Need to load the menu language file as mod_menu hasn't been loaded yet.
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 			$lang->load($component, JPATH_BASE, null, false, false)
 		||	$lang->load($component, JPATH_ADMINISTRATOR.'/components/'.$component, null, false, false)
 		||	$lang->load($component, JPATH_BASE, $lang->getDefault(), false, false)
@@ -98,7 +97,7 @@ class CategoriesViewCategory extends JViewLegacy
 		Toolbar::title($title, 'category-'.($isNew?'add':'edit').' '.substr($component, 4).($section?"-$section":'').'-category-'.($isNew?'add':'edit'));
 
 		// For new records, check the create permission.
-		if ($isNew && (count($user->getAuthorisedCategories($component, 'core.create')) > 0)) {
+		if ($isNew && (count(User::getAuthorisedCategories($component, 'core.create')) > 0)) {
 			Toolbar::apply('category.apply');
 			Toolbar::save('category.save');
 			Toolbar::save2new('category.save2new');

@@ -127,9 +127,8 @@ class Component extends \JModelForm
 		$option = $this->getState('component.option');
 
 		// Load common and local language files.
-		$lang = \JFactory::getLanguage();
-		$lang->load($option, JPATH_BASE, null, false, true)
-		|| $lang->load($option, JPATH_BASE . "/components/$option", null, false, true);
+		Lang::load($option, JPATH_BASE, null, false, true)
+		|| Lang::load($option, JPATH_BASE . "/components/$option", null, false, true);
 
 		return Component::load($option);
 	}

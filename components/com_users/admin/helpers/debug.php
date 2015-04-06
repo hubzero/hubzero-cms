@@ -39,7 +39,7 @@ class UsersHelperDebug
 
 		if (count($items))
 		{
-			$lang = JFactory::getLanguage();
+			$lang = Lang::getRoot();
 
 			foreach ($items as &$item)
 			{
@@ -119,7 +119,7 @@ class UsersHelperDebug
 				}
 
 				// Load language
-				$lang      = JFactory::getLanguage();
+				$lang      = Lang::getRoot();
 				$extension = 'com_config';
 				$source    = JPATH_SITE . '/components/' . $extension . '/admin';
 

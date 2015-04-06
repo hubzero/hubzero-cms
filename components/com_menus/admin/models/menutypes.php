@@ -30,7 +30,8 @@ class MenusModelMenutypes extends JModelLegacy
 	 */
 	public function getReverseLookup()
 	{
-		if (empty($this->rlu)) {
+		if (empty($this->rlu))
+		{
 			$this->getTypeOptions();
 		}
 		return $this->rlu;
@@ -47,7 +48,7 @@ class MenusModelMenutypes extends JModelLegacy
 		jimport('joomla.filesystem.file');
 
 		// Initialise variables.
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		$list = array();
 
 		// Get the list of components.
@@ -72,7 +73,8 @@ class MenusModelMenutypes extends JModelLegacy
 					if (isset($option->request)) {
 						$this->rlu[MenusHelper::getLinkKey($option->request)] = $option->get('title');
 
-						if (isset($option->request['option'])) {
+						if (isset($option->request['option']))
+						{
 								$lang->load($option->request['option'] . '.sys', JPATH_ADMINISTRATOR, null, false, true)
 							||	$lang->load($option->request['option'] . '.sys', JPATH_ADMINISTRATOR. '/components/'.$option->request['option'], null, false, true);
 						}
@@ -271,7 +273,7 @@ class MenusModelMenutypes extends JModelLegacy
 		$layouts = array();
 		$layoutNames = array();
 		$templateLayouts = array();
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 
 		// Get the layouts from the view folder.
 		$path = JPATH_SITE.'/components/'.$component.'/views/'.$view.'/tmpl';

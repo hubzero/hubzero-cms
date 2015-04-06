@@ -204,7 +204,7 @@ class PluginsModelPlugin extends JModelAdmin
 		// Initialise variables.
 		$folder		= $this->getState('item.folder');
 		$element	= $this->getState('item.element');
-		$lang		= JFactory::getLanguage();
+		$lang		= Lang::getRoot();
 		$client		= JApplicationHelper::getClientInfo(0);
 
 	// Load the core and/or local language sys file(s) for the ordering field.

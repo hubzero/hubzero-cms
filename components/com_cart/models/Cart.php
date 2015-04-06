@@ -66,7 +66,7 @@ abstract class CartModelCart
 		$this->_db = JFactory::getDBO();
 
 		// Load language file
-		JFactory::getLanguage()->load('com_cart');
+		Lang::load('com_cart');
 	}
 
 	/**

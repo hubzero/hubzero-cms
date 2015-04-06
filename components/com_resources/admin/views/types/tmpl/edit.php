@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 					$found[] = 'plg_' . $plugin->element;
 					if (strstr($plugin->name, '_'))
 					{
-						$lang = JFactory::getLanguage();
+						$lang = Lang::getRoot();
 						$lang->load($plugin->name);
 					}
 					?>

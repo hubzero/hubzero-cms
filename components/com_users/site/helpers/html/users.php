@@ -154,7 +154,7 @@ abstract class JHtmlUsers
 		else
 		{
 			$db = JFactory::getDbo();
-			$lang = JFactory::getLanguage();
+			$lang = Lang::getRoot();
 			$query = $db->getQuery(true);
 			$query->select('name');
 			$query->from('#__extensions');

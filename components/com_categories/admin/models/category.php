@@ -44,9 +44,8 @@ class CategoriesModelCategory extends JModelAdmin
 			{
 				return;
 			}
-			$user = JFactory::getUser();
 
-			return $user->authorise('core.delete', $record->extension . '.category.' . (int) $record->id);
+			return User::authorise('core.delete', $record->extension . '.category.' . (int) $record->id);
 		}
 	}
 
@@ -61,22 +60,20 @@ class CategoriesModelCategory extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		// Check for existing category.
 		if (!empty($record->id))
 		{
-			return $user->authorise('core.edit.state', $record->extension . '.category.' . (int) $record->id);
+			return User::authorise('core.edit.state', $record->extension . '.category.' . (int) $record->id);
 		}
 		// New category, so check against the parent.
 		elseif (!empty($record->parent_id))
 		{
-			return $user->authorise('core.edit.state', $record->extension . '.category.' . (int) $record->parent_id);
+			return User::authorise('core.edit.state', $record->extension . '.category.' . (int) $record->parent_id);
 		}
 		// Default to component settings if neither category nor parent known.
 		else
 		{
-			return $user->authorise('core.edit.state', $record->extension);
+			return User::authorise('core.edit.state', $record->extension);
 		}
 	}
 
@@ -159,7 +156,7 @@ class CategoriesModelCategory extends JModelAdmin
 
 			// Convert the created and modified dates to local user time for display in the form.
 			jimport('joomla.utilities.date');
-			$tz = new DateTimeZone(JFactory::getApplication()->getCfg('offset'));
+			$tz = new DateTimeZone(Config::get('offset'));
 
 			if (intval($result->created_time))
 			{
@@ -226,8 +223,8 @@ class CategoriesModelCategory extends JModelAdmin
 		{
 			$data['extension'] = $extension;
 		}
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.edit.state', $extension . '.category.' . $jinput->get('id')))
+
+		if (!User::authorise('core.edit.state', $extension . '.category.' . $jinput->get('id')))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
@@ -295,10 +292,9 @@ class CategoriesModelCategory extends JModelAdmin
 		jimport('joomla.filesystem.path');
 
 		// Initialise variables.
-		$lang = JFactory::getLanguage();
 		$extension = $this->getState('category.extension');
 		$component = $this->getState('category.component');
-		$section = $this->getState('category.section');
+		$section   = $this->getState('category.section');
 
 		// Get the component form if it exists
 		jimport('joomla.filesystem.path');
@@ -315,8 +311,8 @@ class CategoriesModelCategory extends JModelAdmin
 
 		if (file_exists($path))
 		{
-			$lang->load($component, JPATH_BASE, null, false, true);
-			$lang->load($component, JPATH_BASE . '/components/' . $component, null, false, true);
+			Lang::load($component, JPATH_BASE, null, false, true);
+			Lang::load($component, JPATH_BASE . '/components/' . $component, null, false, true);
 
 			if (!$form->loadFile($path, false))
 			{
@@ -335,8 +331,8 @@ class CategoriesModelCategory extends JModelAdmin
 
 			if (class_exists($cName) && is_callable(array($cName, 'onPrepareForm')))
 			{
-					$lang->load($component, JPATH_BASE, null, false, true)
-				||	$lang->load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
+					Lang::load($component, JPATH_BASE, null, false, true)
+				||	Lang::load($component, JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $component), null, false, true);
 				call_user_func_array(array($cName, 'onPrepareForm'), array(&$form));
 
 				// Check for an error.
@@ -472,8 +468,8 @@ class CategoriesModelCategory extends JModelAdmin
 	{
 		if (parent::publish($pks, $value)) {
 			// Initialise variables.
-			$dispatcher	= JDispatcher::getInstance();
-			$extension	= Request::getCmd('extension');
+			$dispatcher = JDispatcher::getInstance();
+			$extension  = Request::getCmd('extension');
 
 			// Include the content plugins for the change of category state event.
 			JPluginHelper::importPlugin('content');

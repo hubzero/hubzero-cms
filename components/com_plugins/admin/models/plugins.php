@@ -134,7 +134,7 @@ class PluginsModelPlugins extends JModelList
 				}
 			}
 
-			$lang = JFactory::getLanguage();
+			$lang = Lang::getRoot();
 			$direction = ($this->getState('list.direction') == 'desc') ? -1 : 1;
 			JArrayHelper::sortObjects($result, $ordering, $direction, true, $lang->getLocale());
 
@@ -173,7 +173,7 @@ class PluginsModelPlugins extends JModelList
 	 */
 	protected function translate(&$items)
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		foreach ($items as &$item)
 		{
 			$source = JPATH_PLUGINS . '/' . $item->folder . '/' . $item->element;

@@ -108,7 +108,7 @@ class Helper extends Module
 		// specific one first, and if that is not present we load the default separator
 		if ($custom == null)
 		{
-			if (\JFactory::getLanguage()->isRTL())
+			if (Lang::isRTL())
 			{
 				$_separator = \JHtml::_('image', 'system/arrow_rtl.png', NULL, NULL, true);
 			}

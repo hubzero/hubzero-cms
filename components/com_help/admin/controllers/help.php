@@ -111,7 +111,7 @@ class Help extends AdminController
 	public static function getComponents($authCheck = true)
 	{
 		// Initialise variables.
-		$lang   = \JFactory::getLanguage();
+		$lang   = Lang::getRoot();
 		$db     = \JFactory::getDbo();
 		$query  = $db->getQuery(true);
 		$result = array();
@@ -208,8 +208,8 @@ class Help extends AdminController
 		}
 
 		// Path to help pages
-		$helpPagesPath  = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
-		$helpPagesPath2 = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
+		$helpPagesPath  = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'admin' . DS . 'help' . DS . Lang::getTag();
+		$helpPagesPath2 = JPATH_ADMINISTRATOR . DS . 'components' . DS . $component . DS . 'help' . DS . Lang::getTag();
 
 		// Make sure directory exists
 		$pages = array();

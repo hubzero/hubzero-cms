@@ -28,16 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$config = JFactory::getConfig();
-
 $this->template = 'kameleon';
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
 
-$lang = JFactory::getLanguage();
-$lang->load('tpl_' . $this->template);
+Lang::load('tpl_' . $this->template);
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie ie6"> <![endif]-->
@@ -48,9 +45,9 @@ $lang->load('tpl_' . $this->template);
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-		<title><?php echo $config->getValue('config.sitename') . ' - ' . (in_array($this->error->getCode(), array(404, 403, 500)) ? $this->error->getCode() : 500); ?></title>
+		<title><?php echo Config::get('sitename') . ' - ' . (in_array($this->error->getCode(), array(404, 403, 500)) ? $this->error->getCode() : 500); ?></title>
 
-		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(JPATH_ROOT . '/templates/' . $this->template . '/css/error.css'); ?>" />
+		<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/media/cms/css/debug.css" />
 
 		<!--[if lt IE 9]>
@@ -69,8 +66,8 @@ $lang->load('tpl_' . $this->template);
 		<div id="wrap">
 			<header id="masthead" role="banner">
 				<h1>
-					<a href="<?php echo empty($this->baseurl) ? '/' : $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
-						<span><?php echo $config->getValue('config.sitename'); ?></span>
+					<a href="<?php echo empty($this->baseurl) ? '/' : $this->baseurl; ?>" title="<?php echo Config::get('sitename'); ?>">
+						<span><?php echo Config::get('sitename'); ?></span>
 					</a>
 				</h1>
 			</header>
@@ -94,28 +91,28 @@ $lang->load('tpl_' . $this->template);
 									switch ($this->error->getCode())
 									{
 										case 404: ?>
-										<h3><?php echo JText::_('TPL_KAMELEON_404_HEADER'); ?></h3>
+										<h3><?php echo Lang::txt('TPL_KAMELEON_404_HEADER'); ?></h3>
 										<blockquote>
-											<p><?php echo JText::_('TPL_KAMELEON_404_MESSAGE'); ?></p>
+											<p><?php echo Lang::txt('TPL_KAMELEON_404_MESSAGE'); ?></p>
 										</blockquote>
-										<p class="signature"><?php echo JText::_('TPL_KAMELEON_404_SIGNATURE'); ?></p>
+										<p class="signature"><?php echo Lang::txt('TPL_KAMELEON_404_SIGNATURE'); ?></p>
 										<?php 
 										break;
 										case 403: ?>
-										<h3><?php echo JText::_('TPL_KAMELEON_HEADER_403'); ?></h3>
+										<h3><?php echo Lang::txt('TPL_KAMELEON_HEADER_403'); ?></h3>
 										<blockquote>
-											<p><?php echo JText::_('TPL_KAMELEON_403_MESSAGE'); ?></p>
+											<p><?php echo Lang::txt('TPL_KAMELEON_403_MESSAGE'); ?></p>
 										</blockquote>
-										<p class="signature"><?php echo JText::_('TPL_KAMELEON_403_SIGNATURE'); ?></p>
+										<p class="signature"><?php echo Lang::txt('TPL_KAMELEON_403_SIGNATURE'); ?></p>
 										<?php 
 										break;
 										case 500: 
 										default: ?>
-										<h3><?php echo JText::_('TPL_KAMELEON_HEADER_500'); ?></h3>
+										<h3><?php echo Lang::txt('TPL_KAMELEON_HEADER_500'); ?></h3>
 										<blockquote>
-											<p><?php echo JText::_('TPL_KAMELEON_500_MESSAGE'); ?></p>
+											<p><?php echo Lang::txt('TPL_KAMELEON_500_MESSAGE'); ?></p>
 										</blockquote>
-										<p class="signature"><?php echo JText::_('TPL_KAMELEON_500_SIGNATURE'); ?></p>
+										<p class="signature"><?php echo Lang::txt('TPL_KAMELEON_500_SIGNATURE'); ?></p>
 										<?php 
 										break;
 									} ?>

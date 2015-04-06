@@ -51,7 +51,7 @@ class CategoriesHelper
 			if (class_exists($cName)) {
 
 				if (is_callable(array($cName, 'addSubmenu'))) {
-					$lang = JFactory::getLanguage();
+					$lang = Lang::getRoot();
 					// loading language file from the administrator/language directory then
 					// loading language file from the administrator/components/*extension*/language directory
 						$lang->load($component, JPATH_BASE, null, false, true)

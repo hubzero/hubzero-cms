@@ -19,7 +19,7 @@ if (!User::authorise('core.manage', 'com_media')
 		&& 	count(User::getAuthorisedCategories($asset, 'core.create')) == 0)
 		&&	!(User::get('id') == $author && User::authorise('core.edit.own', $asset))))
 {
-	return JError::raiseWarning(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+	return App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 $params = Component::params('com_media');
@@ -32,12 +32,13 @@ $popup_upload = Request::getCmd('pop_up', null);
 $path = "file_path";
 
 $view = Request::getCmd('view');
-if (substr(strtolower($view), 0, 6) == "images" || $popup_upload == 1) {
+if (substr(strtolower($view), 0, 6) == "images" || $popup_upload == 1)
+{
 	$path = "image_path";
 }
 
-define('COM_MEDIA_BASE', JPATH_ROOT.'/'.$params->get($path, 'images'));
-define('COM_MEDIA_BASEURL', Request::root().$params->get($path, 'images'));
+define('COM_MEDIA_BASE', JPATH_ROOT . '/' . $params->get($path, 'images'));
+define('COM_MEDIA_BASEURL', Request::root() . $params->get($path, 'images'));
 
 $controller	= JControllerLegacy::getInstance('Media');
 $controller->execute(Request::getCmd('task'));

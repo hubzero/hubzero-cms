@@ -79,8 +79,6 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		$lang = JFactory::getLanguage();
-
 		// Check the events component
 		if (file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php'))
 		{

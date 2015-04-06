@@ -80,7 +80,7 @@ class Helper extends Module
 		// Filter by language
 		if (JFactory::getApplication()->getLanguageFilter())
 		{
-			$query->where('language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->where('language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
 		}
 
 		$db->setQuery($query, 0, intval($params->get('count')));

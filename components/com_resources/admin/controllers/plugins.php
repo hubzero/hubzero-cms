@@ -174,7 +174,7 @@ class Plugins extends AdminController
 			throw new Exception($this->database->stderr(), 500);
 		}
 
-		$lang = \JFactory::getLanguage();
+		$lang = \Lang::getRoot();
 		if ($this->view->rows)
 		{
 			foreach ($this->view->rows as &$item)

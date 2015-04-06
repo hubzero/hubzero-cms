@@ -46,6 +46,16 @@ class Lang extends Facade
 	}
 
 	/**
+	 * Get the root object behind the facade.
+	 *
+	 * @return  object
+	 */
+	public static function getRoot()
+	{
+		return \JFactory::getLanguage();
+	}
+
+	/**
 	 * Translates a string into the current language.
 	 *
 	 * @param   string  $string  The string to translate.
@@ -76,6 +86,25 @@ class Lang extends Facade
 	{
 		$args = func_get_args();
 		return call_user_func_array(array('\JText', 'plural'), $args);
+	}
+
+	/**
+	 * Translates a string into the current language.
+	 *
+	 * Examples:
+	 * <?php echo JText::alt("JALL","language");?> it will generate a 'All' string in English but a "Toutes" string in French
+	 * <?php echo JText::alt("JALL","module");?> it will generate a 'All' string in English but a "Tous" string in French
+	 *
+	 * @param   string   $string                The string to translate.
+	 * @param   string   $alt                   The alternate option for global string
+	 * @param   mixed    $jsSafe                Boolean: Make the result javascript safe.
+	 * @param   boolean  $interpretBackSlashes  To interpret backslashes (\\=\, \n=carriage return, \t=tabulation)
+	 * @param   boolean  $script                To indicate that the string will be pushed in the javascript language store
+	 * @return  string   The translated string or the key if $script is true
+	 */
+	public static function alt($string, $alt, $jsSafe = false, $interpretBackSlashes = true, $script = false)
+	{
+		return \JText::alt($string, $alt, $jsSafe, $interpretBackSlashes, $script);
 	}
 
 	/**

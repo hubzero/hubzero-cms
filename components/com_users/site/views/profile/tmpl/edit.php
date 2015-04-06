@@ -13,7 +13,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 //load user_profile plugin language
-$lang = JFactory::getLanguage();
+$lang = Lang::getRoot();
 $lang->load( 'plg_user_profile', JPATH_ADMINISTRATOR );
 ?>
 <div class="profile-edit<?php echo $this->pageclass_sfx?>">

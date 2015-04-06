@@ -582,7 +582,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$objV->compileResource($thistool, '', $resource, 'dev', $this->rconfig);
 
 		// get language library
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		if (!$lang->load(strtolower('com_resources'), JPATH_BASE))
 		{
 			$this->setError(Lang::txt('COM_TOOLS_ERROR_LOADING_LANGUAGE'));

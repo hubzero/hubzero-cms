@@ -23,13 +23,11 @@ class MediaViewMediaList extends JViewLegacy
 		$app = JFactory::getApplication();
 		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
 
-		$lang = JFactory::getLanguage();
-
 		JHtml::_('behavior.framework', true);
 
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('../media/media/css/medialist-'.$style.'.css');
-		if ($lang->isRTL()) :
+		if (Lang::isRTL()) :
 			$document->addStyleSheet('../media/media/css/medialist-'.$style.'_rtl.css');
 		endif;
 
@@ -42,17 +40,19 @@ class MediaViewMediaList extends JViewLegacy
 			});
 		});");
 
-		$images = $this->get('images');
+		$images    = $this->get('images');
 		$documents = $this->get('documents');
-		$folders = $this->get('folders');
-		$state = $this->get('state');
+		$folders   = $this->get('folders');
+		$state     = $this->get('state');
 
 		// Check for invalid folder name
-		if (empty($state->folder)) {
+		if (empty($state->folder))
+		{
 			$dirname = Request::getVar('folder', '', '', 'string');
-			if (!empty($dirname)) {
+			if (!empty($dirname))
+			{
 				$dirname = htmlspecialchars($dirname, ENT_COMPAT, 'UTF-8');
-				if ($lang->hasKey('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME'))
+				if (Lang::hasKey('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME'))
 				{
 					JError::raiseWarning(100, Lang::txt('COM_MEDIA_ERROR_UNABLE_TO_BROWSE_FOLDER_WARNDIRNAME', $dirname));
 				}
@@ -63,7 +63,7 @@ class MediaViewMediaList extends JViewLegacy
 			}
 		}
 
-		$this->baseURL = JURI::root();
+		$this->baseURL = Request::root();
 		$this->assignRef('images', $images);
 		$this->assignRef('documents', $documents);
 		$this->assignRef('folders', $folders);
@@ -74,28 +74,37 @@ class MediaViewMediaList extends JViewLegacy
 
 	function setFolder($index = 0)
 	{
-		if (isset($this->folders[$index])) {
+		if (isset($this->folders[$index]))
+		{
 			$this->_tmp_folder = &$this->folders[$index];
-		} else {
-			$this->_tmp_folder = new JObject;
+		}
+		else
+		{
+			$this->_tmp_folder = new \Hubzero\Base\Object;
 		}
 	}
 
 	function setImage($index = 0)
 	{
-		if (isset($this->images[$index])) {
+		if (isset($this->images[$index]))
+		{
 			$this->_tmp_img = &$this->images[$index];
-		} else {
-			$this->_tmp_img = new JObject;
+		}
+		else
+		{
+			$this->_tmp_img = new \Hubzero\Base\Object;
 		}
 	}
 
 	function setDoc($index = 0)
 	{
-		if (isset($this->documents[$index])) {
+		if (isset($this->documents[$index]))
+		{
 			$this->_tmp_doc = &$this->documents[$index];
-		} else {
-			$this->_tmp_doc = new JObject;
+		}
+		else
+		{
+			$this->_tmp_doc = new \Hubzero\Base\Object;
 		}
 	}
 }

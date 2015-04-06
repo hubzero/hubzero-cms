@@ -14,13 +14,12 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user      = JFactory::getUser();
 $app       = JFactory::getApplication();
-$userId    = $user->get('id');
+$userId    = User::get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $ordering  = ($listOrder == 'a.lft');
-$canOrder  = $user->authorise('core.edit.state', 'com_menus');
+$canOrder  = User::authorise('core.edit.state', 'com_menus');
 $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 ?>
 <?php //Set up the filter bar. ?>
@@ -116,10 +115,10 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 		$originalOrders = array();
 		foreach ($this->items as $i => $item) :
 			$orderkey = array_search($item->id, $this->ordering[$item->parent_id]);
-			$canCreate	= $user->authorise('core.create',		'com_menus');
-			$canEdit	= $user->authorise('core.edit',			'com_menus');
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out==$user->get('id')|| $item->checked_out==0;
-			$canChange	= $user->authorise('core.edit.state',	'com_menus') && $canCheckin;
+			$canCreate  = User::authorise('core.create',     'com_menus');
+			$canEdit    = User::authorise('core.edit',       'com_menus');
+			$canCheckin = User::authorise('core.manage',     'com_checkin') || $item->checked_out==User::get('id')|| $item->checked_out==0;
+			$canChange  = User::authorise('core.edit.state', 'com_menus') && $canCheckin;
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -198,7 +197,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 					<?php if ($item->language==''):?>
 						<?php echo Lang::txt('JDEFAULT'); ?>
 					<?php elseif ($item->language=='*'):?>
-						<?php echo JText::alt('JALL', 'language'); ?>
+						<?php echo Lang::txt('JALL', 'language'); ?>
 					<?php else:?>
 						<?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
 					<?php endif;?>
@@ -212,7 +211,7 @@ $saveOrder = ($listOrder == 'a.lft' && $listDirn == 'asc');
 		</tbody>
 	</table>
 	<?php //Load the batch processing form.is user is allowed ?>
-	<?php if ($user->authorize('core.create', 'com_menus') && $user->authorize('core.edit', 'com_menus') && $user->authorize('core.edit.state', 'com_menus')) : ?>
+	<?php if (User::authorize('core.create', 'com_menus') && User::authorize('core.edit', 'com_menus') && User::authorize('core.edit.state', 'com_menus')) : ?>
 		<?php echo $this->loadTemplate('batch'); ?>
 	<?php endif; ?>
 

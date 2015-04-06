@@ -17,12 +17,10 @@ class MediaViewMedia extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		$app	= JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$config = Component::params('com_media');
 
-		$lang	= JFactory::getLanguage();
-
-		$style = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
+		$style  = $app->getUserStateFromRequest('media.list.layout', 'layout', 'thumbs', 'word');
 
 		$document = JFactory::getDocument();
 		$document->setBuffer($this->loadTemplate('navigation'), 'modules', 'submenu');
@@ -31,7 +29,7 @@ class MediaViewMedia extends JViewLegacy
 
 		JHtml::_('script', 'media/mediamanager.js', true, true);
 		JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
-		if ($lang->isRTL()) :
+		if (Lang::isRTL()) :
 			JHtml::_('stylesheet', 'media/mediamanager_rtl.css', array(), true);
 		endif;
 
@@ -43,7 +41,7 @@ class MediaViewMedia extends JViewLegacy
 
 		JHtml::_('script', 'system/jquery.treeview.js', true, true, false, false);
 		JHtml::_('stylesheet', 'system/jquery.treeview.css', array(), true);
-		if ($lang->isRTL()) :
+		if (Lang::isRTL()) :
 			JHtml::_('stylesheet', 'media/jquery.treeview_rtl.css', array(), true);
 		endif;
 
@@ -60,14 +58,12 @@ class MediaViewMedia extends JViewLegacy
 		" ;
 		$document->addScriptDeclaration($js);
 
-		/*
-		 * Display form for FTP credentials?
-		 * Don't set them here, as there are other functions called before this one if there is any file write operation
-		 */
+		// Display form for FTP credentials?
+		// Don't set them here, as there are other functions called before this one if there is any file write operation
 		$ftp = !JClientHelper::hasCredentials('ftp');
 
-		$session	= JFactory::getSession();
-		$state		= $this->get('state');
+		$session = JFactory::getSession();
+		$state   = $this->get('state');
 		$this->assignRef('session', $session);
 		$this->assignRef('config', $config);
 		$this->assignRef('state', $state);
@@ -79,6 +75,7 @@ class MediaViewMedia extends JViewLegacy
 		$this->addToolbar();
 
 		parent::display($tpl);
+
 		echo JHtml::_('behavior.keepalive');
 	}
 

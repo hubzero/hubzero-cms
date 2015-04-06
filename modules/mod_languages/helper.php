@@ -77,7 +77,7 @@ class Helper extends Module
 		JLoader::register('MenusHelper', JPATH_ADMINISTRATOR . '/components/com_menus/helpers/menus.php');
 
 		$user = User::getRoot();
-		$lang = JFactory::getLanguage();
+		$lang = Lang::getRoot();
 		$app  = JFactory::getApplication();
 		$menu = $app->getMenu();
 

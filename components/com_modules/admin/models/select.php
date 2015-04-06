@@ -115,7 +115,7 @@ class ModulesModelSelect extends JModelList
 
 		// Initialise variables.
 		$client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
-		$lang	= JFactory::getLanguage();
+		$lang	= Lang::getRoot();
 
 		// Loop through the results to add the XML metadata,
 		// and load language support.

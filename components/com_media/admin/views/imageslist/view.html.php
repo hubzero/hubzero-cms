@@ -22,19 +22,17 @@ class MediaViewImagesList extends JViewLegacy
 
 		$app = JFactory::getApplication();
 
-		$lang	= JFactory::getLanguage();
-
 		JHtml::_('stylesheet', 'media/popup-imagelist.css', array(), true);
-		if ($lang->isRTL()) :
+		if (Lang::isRTL()) :
 			JHtml::_('stylesheet', 'media/popup-imagelist_rtl.css', array(), true);
 		endif;
 
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration("var ImageManager = window.parent.ImageManager;");
 
-		$images = $this->get('images');
+		$images  = $this->get('images');
 		$folders = $this->get('folders');
-		$state = $this->get('state');
+		$state   = $this->get('state');
 
 		$this->baseURL = COM_MEDIA_BASEURL;
 		$this->assignRef('images', $images);
@@ -47,19 +45,25 @@ class MediaViewImagesList extends JViewLegacy
 
 	function setFolder($index = 0)
 	{
-		if (isset($this->folders[$index])) {
+		if (isset($this->folders[$index]))
+		{
 			$this->_tmp_folder = &$this->folders[$index];
-		} else {
-			$this->_tmp_folder = new JObject;
+		}
+		else
+		{
+			$this->_tmp_folder = new \Hubzero\Base\Object;
 		}
 	}
 
 	function setImage($index = 0)
 	{
-		if (isset($this->images[$index])) {
+		if (isset($this->images[$index]))
+		{
 			$this->_tmp_img = &$this->images[$index];
-		} else {
-			$this->_tmp_img = new JObject;
+		}
+		else
+		{
+			$this->_tmp_img = new \Hubzero\Base\Object;
 		}
 	}
 }

@@ -118,7 +118,7 @@ class ContentModelArticle extends JModelItem
 				// Filter by language
 				if ($this->getState('filter.language'))
 				{
-					$subQuery->where('(contact.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ') OR contact.language IS NULL)');
+					$subQuery->where('(contact.language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ') OR contact.language IS NULL)');
 				}
 
 				// [!] Hubzero - Removed contact_details table
@@ -128,7 +128,7 @@ class ContentModelArticle extends JModelItem
 				// Filter by language
 				if ($this->getState('filter.language'))
 				{
-					$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+					$query->where('a.language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
 				}
 
 				// Join over the categories to get parent category titles
