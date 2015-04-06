@@ -145,7 +145,7 @@ if ($this->getError()) {
 				$origin		= $version['remote']
 					? JText::_('COM_PROJECTS_FILE_STATUS_REMOTE')
 					: JText::_('COM_PROJECTS_FILE_STATUS_LOCAL');
-				if (!$version['remote'] && preg_match("/[SFTP]/", $version['message']))
+				if (!$version['remote'] && substr($version['message'], 0, 5) == 'SFTP-')
 				{
 					$origin = 'SFTP';
 				}

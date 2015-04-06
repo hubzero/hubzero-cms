@@ -4839,10 +4839,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['date']  	= isset($gitData['date']) ? $gitData['date'] : NULL;
 			$entry['author'] 	= isset($gitData['author']) ? $gitData['author'] : NULL;
 			$entry['email'] 	= isset($gitData['email']) ? $gitData['email'] : NULL;
-			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
+			$entry['message']	= isset($entry['message']) ? $entry['message'] : NULL;
 
 			// SFTP?
-			if (strpos($entry['message'], '[SFTP]') !== false)
+			if (substr($entry['message'], 0, 5) == 'SFTP-')
 			{
 				if (isset($this->_profileAssoc) && isset($this->_profileAssoc[trim($entry['author'])]))
 				{
