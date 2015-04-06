@@ -145,7 +145,7 @@ class MathRenderer
 		$this->tex    = $tex;
 		$this->params = $params;
 		$this->config = Component::params('com_wiki');
- 	}
+	}
 
 	/**
 	 * Set the output mode (0 - 5)

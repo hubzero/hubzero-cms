@@ -66,7 +66,7 @@ class GroupEventMacro extends WikiMacro
 		$args = explode(',', $this->args);
 
 		//parse each arg into key value pair
-		foreach($args as $a)
+		foreach ($args as $a)
 		{
 			$kv[] = explode('=', trim($a));
 		}
